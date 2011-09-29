@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="${lang}">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="Content-Language" content="${lang}" />
+
+
+      <title>Models index</title>
+      <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('c2cgeoportail:static/app/images/favicon.png')}" />
+      <link rel="stylesheet" href="${request.static_url('fa.jquery:jquery-ui/css/smoothness/jquery-ui-1.8.8.custom.css')}" />
+      <link rel="stylesheet" href="${request.static_url('fa.jquery:jquery-ui/fa.jquery.min.css')}" />
+      <link rel="stylesheet" href="${request.static_url('c2cgeoportail:static/build/admin.css')}" />
+      <link rel="stylesheet" href="${request.static_url('project:static/build/admin.css')}" />
+      <script type="text/javascript" src="${request.static_url('fa.jquery:jquery-ui/fa.jquery.min.js')}"></script>
+    </head>
+    <body>
+      <div id="content" class="ui-admin ui-widget">
+        <h1 id="header" class="ui-widget-header ui-corner-all">
+          <div>Admin interface</div>
+        </h1>
+        %if displayName:
+            <p class="auth">Logged as: ${displayName},
+            <a href="${request.application_url}/logout?came_from=${request.route_url('admin')}">Logout</a></p>
+            <div>
+              %for entity in entities:
+                <a href="${request.route_url('admin/' + entity, traverse='')}"
+                  class="fa_model ui-widget-header ui-corner-all">${_(entity + 's')}</a>
+              %endfor
+            </div>
+        %else:
+            <form action="${request.route_url('login')}?__do_login=true&amp;came_from=${request.route_url('admin')}" method="post">
+              <label>Username: <input type="text" name="login"/></label><br/>
+              <label>Password: <input type="password" name="password" /></label><br/>
+              <input type="submit" value="Login"/>
+            </form>
+        %endif
+      </div>
+    </body>
+</html>

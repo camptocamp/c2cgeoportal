@@ -1,0 +1,275 @@
+Introduction
+============
+
+c2cgeoportail can't be use directly it should be include in a project 
+like it:
+
+c2cgeoportail - svn:externals to c2cgeoportail svn
+tilecache/tilecache.cfg.in - tilecache configuration (parent only)
+bootstrap.py - used to initialyse the buildout environement
+buildout*.cfg - buildout scriptes that contains the configurations vartiables
+buildout - empty directory needed by buildout
+deploy/deploy.cfg.in - deployment configuration
+print/config.yaml.in - print configuration
+print/... - images and other files neded by the print
+mapserver/c2cgeoportail.map.in - the mapfile
+static/lang/*.js - the localisation
+static/images/favicon.ico - favicon
+static/images - image needed by the application
+static/css/proj.css - specifics css
+
+In the emptyproj folder there a small skeleton of a project.
+
+
+Installation of a new project instance
+======================================
+
+* Checkout your project (should be empty):
+    svn co https://project.camptocamp.com/svn/project/trunk newproj
+    cd newproj
+
+* Export the empty project:
+    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportail/branches/pyramid/emptyproj .
+
+* Rename the right buildout file,
+  for parent:
+    mv buildout_parent.cfg buildout.cfg
+    rm buildout_child.cfg
+  for child:
+    mv buildout_child.cfg buildout.cfg
+    rm buildout_parent.cfg
+    rm -rf tilecache # not used on a child
+
+* Link to c2cgeoportail:
+    svn propset svn:externals "c2cgeoportail https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportail/branches/pyramid" .
+
+* Add to your project svn:
+    svn add *
+    svn propset svn:ignore ".installed.cfg" .
+    svn propset svn:ignore "*" buildout
+    svn propset svn:ignore "deploy.cfg" deploy
+    svn propset svn:ignore "*.map" mapserver
+    svn propset svn:ignore "*.war
+    config.yaml" print
+    svn propset svn:ignore "tilecache.cfg" tilecache
+    svn ci -m "initial project"
+
+
+Create the DataBase tables
+==========================
+
+The project shoulld allredy be built (see below).
+
+* It the database don't exists create it (replace ${vars:db} by what you want):
+    sudo -u postgres createdb ${vars:db} -T template_postgis
+
+* The schema shouldn't exists than create it (replace ${vars:schema} by the schema name if different):
+    sudo -u postgres psql -c "CREATE SCHEMA ${vars:schema};" ${vars:db}
+    sudo -u postgres psql -c "GRANT ALL ON SCHEMA ${vars:schema} TO \"${vars:dbuser}\";" ${vars:db}
+
+* Create the tables and populate:
+    sudo -u ${vars:dbuser} buildout/bin/create_db c2cgeoportail/development.ini -p
+
+* Set the version
+    ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
+
+
+Create and Populate the FullTextSearch table
+============================================
+
+The database should already exists (see above).
+
+To simplify we consider that the used schema is '${vars:schema}'.
+
+* Drop the previus table (sqlalchemy will not create the tsvector column):
+    DROP TABLE ${vars:schema}.tsearch;
+
+* Create the table:
+    CREATE TABLE ${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR); 
+    SELECT AddGeometryColumn ('${vars:schema}', 'tsearch', 'the_geom', 21781, 'GEOMETRY', 2);
+    CREATE INDEX tsearch_ts_idx ON ${vars:schema}.tsearch USING gin(ts);
+    GRANT SELECT ON TABLE ${vars:schema}.tsearch TO "${vars:dbuser}";
+
+Populate
+--------
+* With one value:
+    INSERT INTO ${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
+
+* With a sub select:
+    INSERT INTO ${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), 21781), 'layer group name', text, to_tsvector('german', text) FROM table;
+  - layer group name should be replace by the name of the layer group.
+  - text can be replace by any prosgres functions.
+
+
+Overview map
+============
+
+* Add ot image in the static/proj/images/ folder and define the tree folowings vars:
+    overwiewimage
+    overwiewimage_bounds
+    overwiewimage_size
+
+
+QueryBuilder
+============
+
+* In the mapfile define a layer with:
+    TEMPLATE fooOnlyForWMSGetFeatureInfo
+    DUMP TRUE
+* And the METADATA:
+   "gml_include_items" "all"
+* In the builddout.cfg file define the vars 'query_builder_layer' to the layers name.
+
+
+Queryable Layer (GetFeatureInfo)
+================================
+
+* In the mapfile define a layer with:
+    TEMPLATE fooOnlyForWMSGetFeatureInfo
+    DUMP TRUE
+* And the METADATA:
+    "gml_include_items" "all"
+    "ows_geom_type" "polygon"
+    "ows_geometries" "geom"
+ 
+
+Restricted layer
+================
+
+The restricted layers work only with Prostgres data.
+All layer define a restricted in the MapFile should be define as it in the 
+admin interface and the inverce.
+
+To define a restricted layer in the mapfile we should define the DATA in the layer 
+like (in one line):
+    DATA "geometrie FROM (SELECT geo.geom as geom 
+        FROM geodata.table AS geo, $${mapserver_join_tables} 
+        WHERE ST_Contains($${mapserver_join_area}, geo.geometrie) 
+        AND $${mapserver_join_where} 'layer_name') AS foo 
+        USING UNIQUE gid USING srid=-1"
+The important point is to have $${mapserver_join_tables} in the table list,
+have ST_Contains($${mapserver_join_area}, geo.geometrie) 
+AND $${mapserver_join_where} 'layer_name' in the where close to do the 
+restriction. The first part is used to filter on the geometry, the segont is to
+do the table joining and select the right layer.
+
+This should be in a .map.in because it use template variable that's replace by 
+SQL code in the .map file.
+
+
+Installation of the project
+===========================
+
+go to the project directory (that includes c2cgeoportail)
+
+Install the buildout environment:
+
+  python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/ --setup-source \
+        http://pypi.camptocamp.net/distribute_setup.py
+
+Build c2cgeoportail (_dev for development build):
+
+  ./buildout/bin/buildout -c c2cgeoportail/buildout_build.cfg 
+
+Install the project:
+    
+  ./buildout/bin/buildout -c buildout_myconfig.cfg
+
+Now look at apache/README.txt and go configure your Apache virtual host.
+
+
+Internationalization
+====================
+
+Client
+------
+
+For the client parts you have localisation files at 
+'c2cgeoportal/c2cgeoportal/static/app/lib/App/Lang/' and 
+'project/static/js/Proj/Lang/fr.js' for the project part.
+
+Server
+------
+
+1) Extract all messages from the project:
+
+  ./buildout/bin/python setup.py extract_messages
+
+2) Initialize a catalog for every supported language, for example:
+
+  ./buildout/bin/python setup.py init_catalog -l en
+  ./buildout/bin/python setup.py init_catalog -l fr
+  ./buildout/bin/python setup.py init_catalog -l de
+
+3) Edit the .po files in c2cgeoportail/locale/*/LC_MESSAGES/c2cgeoportail.po
+
+4) Run buildout to compile all the .po files to .mo:
+
+  ./buildout/bin/buildout -c buildout_build.cfg
+
+5) Finally don't forget to restart apache:
+
+  sudo apache2ctl graceful
+
+When you add a new messagge repeat all steps but replace the step 3) by :
+
+  ./buildout/bin/python setup.py update_catalog
+
+c2cgeoportal
+------------
+
+If you want to translate the c2cgeoportal part of the admin interface, 
+start to go to the c2cgeoportal directory, and do the same steps by replacing
+'./buildout/bin/python' by '../buildout/bin/python'.
+
+
+Source: http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization
+
+
+Deployement 
+===========
+
+From dev to demo
+----------------
+  ssh devserver
+  cd /var/www/your_vhost/public/Project
+  svn up # update the code
+  ./buildout/bin/buildout -c c2cgeoportail/buildout_build.cfg # build c2cgeoportail
+  ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportail
+  ### Test on the dev server ###
+  cd deploy
+  sudo -u deploy deploy -r deploy.cfg demo 
+  ### Test on the demo server ###
+
+From demo to prod
+-----------------
+  ### Test on the demo server ###
+  cd deploy
+  sudo -u deploy deploy -r deploy.cfg prod 
+  ### Test on the prod server ###
+
+
+Database migration
+==================
+
+To migrate the database we use the sqlalchemy-migrate framwork.
+
+C2cgeoportal version:
+    ./buildout/bin/manage_db version 2> /dev/null
+
+Database version:
+    ./buildout/bin/manage_db db_version 2> /dev/null
+
+Upgrade:
+    ./buildout/bin/manage_db upgrade
+
+
+Some tip for posix tools users
+==============================
+
+* Have the toc of this document
+   grep -B1 ^=== c2cgeoportail/README.txt
+
+* Display only one chapter
+   grep -A30 "Title" c2cgeoportail/README.txt

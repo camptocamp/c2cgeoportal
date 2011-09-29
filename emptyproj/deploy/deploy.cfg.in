@@ -1,0 +1,27 @@
+[DEFAULT]
+project = c2cgeoportail
+
+[main]
+hookdir = %(here)s/hooks/
+
+[files]
+active = false
+
+[databases]
+names = ${vars:db}
+psql = sudo -u postgres psql
+dump = sudo -u postgres pg_dump -Fc
+createdb = sudo -u postgres createdb
+restore_tmp = sudo -u postgres pg_restore --no-owner -Fc -d
+
+[code]
+dir = /var/www/c2cgeoportail_mapfish/private/c2cgeoportail
+
+[apache]
+dest = /var/www/c2cgeoportail_mapfish/conf/c2cgeoportail.conf
+content = Include /var/www/c2cgeoportail_mapfish/private/c2cgeoportail/apache/*.conf
+
+[remote_hosts]
+demo = c2cpc.camptocamp.com
+prod = deploy@c2cpc.camptocamp.com
+

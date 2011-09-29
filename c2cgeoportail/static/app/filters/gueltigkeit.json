@@ -1,0 +1,7 @@
+{
+    items: [
+        {label: 'Rechtskraeftig', value: 'rechtskraeftig'},
+        {label: 'Unvollständig', value: 'unvollständig'},
+        {label: 'Streitig', value: 'streitig'}
+    ]
+}

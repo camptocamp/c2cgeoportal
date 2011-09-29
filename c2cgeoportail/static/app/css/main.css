@@ -1,0 +1,315 @@
+html, body {
+    background-color: white;
+    font-family: tahoma, arial, verdana, sans-serif;
+    font-size: 12px;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.app-accordion-body {
+    padding: 3px;
+}
+.x-toolbar .maxExtent {
+    background: url('../images/map_magnify.png') top left no-repeat;
+}
+.x-toolbar .mapZoomIn {
+    background: url('../images/zoom_in.png') top left no-repeat;
+}
+.x-toolbar .mapZoomOut {
+    background: url('../images/zoom_out.png') top left no-repeat;
+}
+.x-toolbar .mapHistoryPrevious {
+    background: url('../images/arrow_left.png') top left no-repeat;
+}
+.x-toolbar .mapHistoryNext {
+    background: url('../images/arrow_right.png') top left no-repeat;
+}
+.x-toolbar .mapMeasurePosition {
+    background: url('../images/bullet_orange.png') top left no-repeat;
+}
+.x-toolbar .permalink {
+    background: url('../images/permalink.png') top left no-repeat;
+}
+.x-toolbar .info {
+    background: url('../images/information.png') top left no-repeat;
+}
+.x-toolbar .help {
+    background: url('../images/help.png') top left no-repeat;
+}
+div.olControlScaleLine, div.olControlMousePosition, div.baseLayersOpacitySlider, div.olControlOverviewMapElement {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 11px;
+    bottom: 0;
+}
+div.olControlScaleLine, div.olControlMousePosition, div.baseLayersOpacitySlider {
+    height: 26px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+div.olControlScaleLine {
+    padding: 0 5px;
+    line-height: 16px;
+    -moz-border-radius: 0 0.4em 0 0;
+    border-radius: 0 0.4em 0 0;
+    left: 0;
+}
+div.olControlScaleLine div.olControlScaleLineTop {
+    border: solid 2px white;
+    border-top: none;
+    margin-top: 5px;
+}
+div.olControlMousePosition {
+    padding: 0 5px;
+    right: 0;
+    line-height: 26px;
+    -moz-border-radius: 0.4em 0 0 0;
+    border-radius: 0.4em 0 0 0;
+}
+div.baseLayersOpacitySlider {
+    position: absolute;
+    z-index: 1015;
+    left: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 0.4em 0.4em 0 0;
+    border-radius: 0.4em 0.4em 0 0;
+}
+div.baseLayersOpacitySlider .opacityToolbar {
+     background: none;
+     border: 0;
+}
+.olControlAttribution {
+    bottom: 5em;
+    right: 1em;
+}
+.tools-baselayer-label {
+    margin-right: 1em;
+}
+.layertree .layertree-bbar {
+    background-color: transparent;
+    background-image: none;
+}
+.layertree .x-tree-node .x-tree-node-over {
+    background-color: transparent;
+}
+.gx-tree-layer-actions {
+    float: right;
+}
+.gx-tree-layer-action {
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 0 none;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    width: 16px;
+}
+.gx-tree-layer-actions .up {
+    background: transparent url(../images/bullet_arrow_up.png);
+}
+.gx-tree-layer-actions .down {
+    background: transparent url(../images/bullet_arrow_down.png);
+}
+.gx-tree-layer-actions .metadata {
+    background: transparent url(../images/page_world.png) no-repeat;
+    margin-right: 3px;
+}
+.gx-tree-layer-actions .opacity {
+    background: transparent url(../images/layer_opacity.png) no-repeat;
+}
+.gx-tree-layer-actions .delete {
+    background: transparent url(../images/layer_delete.gif) no-repeat center center;
+}
+.gx-tree-layer-actions .disabled {
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+.gx-tree-layer-actions .zoomtoscale {
+    background: transparent url(../images/magnifier--arrow.png) no-repeat;
+}
+.x-tree-root-node li {
+    padding: 4px 0;
+    border-bottom: 1px solid #ddd;
+}
+.x-tree-root-node li li {
+    padding: 0;
+    border-bottom: 0;
+}
+.x-tree-node-theme {
+    padding-top: 2px;
+    font-weight: bold;
+}
+.x-tree-node-el .no-icon {
+    width: 0;
+}
+.x-tree-node-leaf .x-tree-node-icon {
+    width: 20px;
+}
+.x-tree-node-leaf .x-tree-node-icon-wms {
+    vertical-align: middle;
+    height: 10px;
+}
+.gx-tree-node-loading {
+    background: transparent url(../images/loading.gif) no-repeat 75% 2px;
+}
+.x-tree-node .x-slider-horz {
+    margin-left: 18px;
+}
+.gx-tree-layer-actions .legend {
+    background: transparent url(../images/legend.png) no-repeat;
+}
+.gx-tree-layer-actions .legend-on {
+    background: transparent url(../images/legend-up.png) no-repeat;
+}
+.x-tree-node .gx-tree-layer-outofrange .x-tree-node-icon {
+    opacity: 0.5;
+}
+.gx-tree-layer-outofrange .x-tree-node-anchor span {
+    color: #777;
+}
+
+.styledCheckbox {
+    height: 13px;
+    width: 13px;
+    filter: alpha(opacity=0.0);
+    opacity: 0.0;
+    outline: 0;
+}
+
+.styledCheckboxWrap {
+    position: relative;
+    background: url('../images/checkboxes.gif') no-repeat top left;
+    width: 13px;
+    height: 13px;
+    margin: 3px;
+}
+
+.wrapChecked{ background-position: 0px -13px; }
+
+.wrapPartial{ background-position: 0px -26px; }
+
+.toolwindow {
+    border: 1px solid #D0D0D0;
+    border-top: 0;
+    padding: 2px;
+    background-color: #F0F0F0;
+}
+.toolwindow .x-toolbar {
+    background: none;
+    border-width: 0 !important;
+}
+
+.loading {
+    background-image: url(../images/loading.gif) !important;
+}
+
+.opacityToolbar {
+    background: white;
+    border: 0;
+}
+
+.x-btn button.query {
+    background: transparent url(../images/cog_go.png);
+}
+
+div.external-documents div.x-panel-body {
+    padding: 5px;
+}
+
+div.legend div.x-plain-tl {
+    height: 15px;
+}
+div.legend img {
+    display: block;
+}
+div.legend label {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.pdf-window .x-window-mc {
+    font-weight: normal;
+    text-align: center;
+}
+.pdf-window .x-window-mc .x-panel, .pdf-window .x-window-mc .x-panel-body {
+    border: 0;
+    background-color: transparent;
+}
+.pdf-window .x-window-mc .x-panel-body {
+    padding: 5px;
+}
+.pdf-window .x-window-mc table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* theme selector */
+.themes .x-btn-mc em {
+    text-align: left;
+}
+.themes .x-btn-mc em button {
+    font-weight: bold;
+}
+.themes .x-btn-text {
+    background: url(../images/map.png);
+}
+.theme-selector {
+    background: white;
+    font-size: 11px;
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+.theme-selector .thumb {
+    background: #dddddd;
+    padding: 3px;
+}
+.theme-selector .thumb img {
+    height: 60px;
+    width: 110px;
+}
+.theme-selector .thumb-wrap {
+    float: left;
+    margin: 4px;
+    margin-right: 0;
+    padding: 5px;
+}
+.theme-selector .thumb-wrap span {
+    display: block;
+    overflow: hidden;
+    text-align: center;
+}
+
+.theme-selector .x-view-over {
+    border:1px solid #dddddd;
+    background-color: #efefef;
+    padding: 4px;
+}
+
+.theme-selector .x-view-selected {
+    background-color: #eff5fb;
+    border: 1px solid #99bbe8;
+    padding: 4px;
+}
+
+/* search */
+
+.x-combo-list-group {
+    background-color: #c9cffd;
+    font-weight: bold;
+    padding: 4px 0;
+}
+#search-tip ul {
+    list-style-type: disc;
+    margin-left: 15px;
+}
+#search-tip strong {
+    font-weight: bold;
+}
+
+#search-tip em, #search-tip em strong {
+    font-style: italic;
+}

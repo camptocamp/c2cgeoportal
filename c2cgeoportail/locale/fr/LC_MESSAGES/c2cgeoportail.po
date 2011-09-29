@@ -1,0 +1,230 @@
+# French translations for c2cgeoportail.
+# Copyright (C) 2011 ORGANIZATION
+# This file is distributed under the same license as the c2cgeoportail
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: c2cgeoportail 0.2\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2011-09-27 18:50+0200\n"
+"PO-Revision-Date: 2011-08-31 17:17+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: c2cgeoportail/forms.py:42
+msgid "Duplicate record"
+msgstr "Enregistrement dupliquer"
+
+#: c2cgeoportail/forms.py:71
+msgid "Passwords do not match"
+msgstr "Les mot de passes ne correspondent pas"
+
+#: c2cgeoportail/forms.py:149
+msgid "Restriction area"
+msgstr "Aire de restriction"
+
+#: c2cgeoportail/forms.py:172
+msgid "Extent"
+msgstr "Empreinte"
+
+#: c2cgeoportail/models.py:53
+msgid "functionality"
+msgstr "Fonctionalité"
+
+#: c2cgeoportail/models.py:54
+msgid "functionalitys"
+msgstr "Fonctionalités"
+
+#: c2cgeoportail/models.py:61 c2cgeoportail/models.py:171
+#: c2cgeoportail/models.py:216 c2cgeoportail/models.py:365
+#: c2cgeoportail/models.py:396
+msgid "Name"
+msgstr "Nom"
+
+#: c2cgeoportail/models.py:62
+msgid "Value"
+msgstr "Valeur"
+
+#: c2cgeoportail/models.py:94
+msgid "user"
+msgstr "Utilisateurs"
+
+#: c2cgeoportail/models.py:95
+msgid "users"
+msgstr "Utilisateurs"
+
+#: c2cgeoportail/models.py:108
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: c2cgeoportail/models.py:110
+msgid "Password"
+msgstr "Mot de passe"
+
+#: c2cgeoportail/models.py:111
+msgid "E-mail"
+msgstr "E-mail"
+
+#: c2cgeoportail/models.py:163
+msgid "role"
+msgstr "Rôle"
+
+#: c2cgeoportail/models.py:164
+msgid "roles"
+msgstr "Rôles"
+
+#: c2cgeoportail/models.py:172 c2cgeoportail/models.py:366
+msgid "Description"
+msgstr "Déscription"
+
+#: c2cgeoportail/models.py:217
+msgid "Order"
+msgstr "Ordre"
+
+#: c2cgeoportail/models.py:253
+msgid "layergroup"
+msgstr "Groups de couches"
+
+#: c2cgeoportail/models.py:254
+msgid "layergroups"
+msgstr "Groups de couches"
+
+#: c2cgeoportail/models.py:263
+msgid "Expanded"
+msgstr "Etendu"
+
+#: c2cgeoportail/models.py:264
+msgid "Internal WMS"
+msgstr "WMS interne"
+
+#: c2cgeoportail/models.py:266
+msgid "Group of base layers"
+msgstr "Group de layer de base"
+
+#: c2cgeoportail/models.py:276
+msgid "theme"
+msgstr "Thème"
+
+#: c2cgeoportail/models.py:277
+msgid "themes"
+msgstr "Thèmes"
+
+#: c2cgeoportail/models.py:286 c2cgeoportail/models.py:307
+msgid "Icon"
+msgstr "Icon"
+
+#: c2cgeoportail/models.py:287
+msgid "Display"
+msgstr "Affiche"
+
+#: c2cgeoportail/models.py:295
+msgid "layer"
+msgstr "Couche"
+
+#: c2cgeoportail/models.py:296
+msgid "layers"
+msgstr "Couches"
+
+#: c2cgeoportail/models.py:306
+msgid "Public"
+msgstr "Publique"
+
+#: c2cgeoportail/models.py:310
+msgid "Type"
+msgstr "Type"
+
+#: c2cgeoportail/models.py:311
+msgid "Base URL"
+msgstr "URL de base"
+
+#: c2cgeoportail/models.py:312
+msgid "Server Resolutions"
+msgstr "Resolution du serveur"
+
+#: c2cgeoportail/models.py:313
+msgid "Max Extent"
+msgstr "Emprise maximale"
+
+#: c2cgeoportail/models.py:315
+msgid "Image type"
+msgstr "Type d'image"
+
+#: c2cgeoportail/models.py:316
+msgid "KML 3D"
+msgstr ""
+
+#: c2cgeoportail/models.py:317
+msgid "Simgle tile"
+msgstr ""
+
+#: c2cgeoportail/models.py:318
+msgid "Visible"
+msgstr "Visible"
+
+#: c2cgeoportail/models.py:319
+msgid "No 2D"
+msgstr ""
+
+#: c2cgeoportail/models.py:320
+msgid "Display legend"
+msgstr "Affiche la légende"
+
+#: c2cgeoportail/models.py:321
+msgid "Legend Image"
+msgstr "Image de légande"
+
+#: c2cgeoportail/models.py:322
+msgid "Legend Rule"
+msgstr ""
+
+#: c2cgeoportail/models.py:323
+msgid "Metadata URL"
+msgstr ""
+
+#: c2cgeoportail/models.py:324
+msgid "Min resolution"
+msgstr "Résolution minimale"
+
+#: c2cgeoportail/models.py:325
+msgid "Max resolution"
+msgstr "Résolution maximale"
+
+#: c2cgeoportail/models.py:355
+msgid "restrictionarea"
+msgstr "Aire de restriction"
+
+#: c2cgeoportail/models.py:356
+msgid "restrictionareas"
+msgstr "Aires de restriction"
+
+#: c2cgeoportail/models.py:388
+msgid "parentrole"
+msgstr "Rôle parent"
+
+#: c2cgeoportail/models.py:389
+msgid "parentroles"
+msgstr "Rôles parent"
+
+#: c2cgeoportail/templates/admin.html:27
+msgid "s"
+msgstr ""
+
+#: c2cgeoportail/templates/index.html:58
+msgid "Loading message"
+msgstr "Chargement..."
+
+#: c2cgeoportail/templates/testi18n.html:12
+msgid "my translation test"
+msgstr "mon test de traduction"
+
+#: c2cgeoportail/views/entry.py:46
+msgid "title i18n"
+msgstr "Test de l'i18n"
+
