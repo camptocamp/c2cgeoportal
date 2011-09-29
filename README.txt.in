@@ -81,9 +81,6 @@ The database should already exists (see above).
 
 To simplify we consider that the used schema is '${vars:schema}'.
 
-* Drop the previus table (sqlalchemy will not create the tsvector column):
-    DROP TABLE ${vars:schema}.tsearch;
-
 * Create the table:
     CREATE TABLE ${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR); 
     SELECT AddGeometryColumn ('${vars:schema}', 'tsearch', 'the_geom', 21781, 'GEOMETRY', 2);

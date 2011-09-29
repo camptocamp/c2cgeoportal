@@ -30,10 +30,16 @@ Available options:
 
     if "-d" in sys.argv[2:] or '--drop' in sys.argv[2:]:
         print "Dropping tables"
-        c2cmodels.Base.metadata.drop_all()
+        for table in reversed(Base.metadata.sorted_tables):
+            if table.name != 'tsearch' and table.schema == schema: 
+                print "Dropping table %s" % table.name
+                table.drop(bind=DBSession.bind, checkfirst=True)
 
     print "Creating tables"
-    c2cmodels.Base.metadata.create_all()
+    for table in Base.metadata.sorted_tables:
+        if table.name != 'tsearch' and table.schema == schema: 
+            print "Creating table %s" % table.name
+            table.create(bind=DBSession.bind, checkfirst=True)
     sess = c2cmodels.DBSession()
 
     admin = models.User(username=u'admin', 
