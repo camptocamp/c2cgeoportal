@@ -8,7 +8,7 @@ def add_renderer_globals(event):
         event['_'] = request.translate
         event['localizer'] = request.localizer
 
-tsf = TranslationStringFactory('c2cgeoportail')
+tsf = TranslationStringFactory('c2cgeoportal')
 
 @subscriber(NewRequest)
 def add_localizer(event):

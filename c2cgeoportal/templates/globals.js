@@ -4,8 +4,8 @@
 // this code may execute before the App namespace exists. If it
 // does not exist, we create it ourselves.
 if(!window.App) App = {};
-App["OpenLayers.ImgPath"] = "${request.static_url('c2cgeoportail:static/app/images/ol/')}";
-App["Ext.BLANK_IMAGE_URL"] = "${request.static_url('c2cgeoportail:static/lib/ext/Ext/resources/images/default/s.gif')}";
+App["OpenLayers.ImgPath"] = "${request.static_url('c2cgeoportal:static/app/images/ol/')}";
+App["Ext.BLANK_IMAGE_URL"] = "${request.static_url('c2cgeoportal:static/lib/ext/Ext/resources/images/default/s.gif')}";
 App["fullTextSearchURL"] = "${request.route_url('fulltextsearch', path='')}";
 % if len(tilecache_url) == 0:
 App["tilecacheURL"] = "${request.route_url('tilecache', path='')}";
@@ -37,7 +37,7 @@ App["themes"] = {
 % endif
 };
 App["default_themes"] = ${default_themes | n};
-App["HelpURL"] = "${request.static_url('c2cgeoportail:static/app/pdf/Hilfedokument_geoag.pdf')}";
+App["HelpURL"] = "${request.static_url('c2cgeoportal:static/app/pdf/Hilfedokument_geoag.pdf')}";
 App["queryBuilderLayer"] = "${query_builder_layer}";
 % if encodedLayers_plan and encodedLayers_plan_color and encodedLayers_ortho:
 App["encodedLayers"] = {

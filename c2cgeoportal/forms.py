@@ -22,13 +22,13 @@ from geoformalchemy.base import GeometryFieldRenderer
 from geoalchemy import geometry
 from pyramid.i18n import TranslationStringFactory
 
-from c2cgeoportail import models
-from c2cgeoportail import (formalchemy_language, formalchemy_default_zoom,
+from c2cgeoportal import models
+from c2cgeoportal import (formalchemy_language, formalchemy_default_zoom,
                            formalchemy_default_lon, formalchemy_default_lat,
                            formalchemy_available_functionalities)
 
 log = logging.getLogger(__name__)
-_ = TranslationStringFactory('c2cgeoportail')
+_ = TranslationStringFactory('c2cgeoportal')
 
 fa_config.encoding = 'utf-8'
 fa_config.engine = TemplateEngine()

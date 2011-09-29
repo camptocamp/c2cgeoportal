@@ -10,7 +10,7 @@ def add_renderer_globals(event):
 
 # use two translator to tranlate each strings in Make
 tsf1 = TranslationStringFactory('project')
-tsf2 = TranslationStringFactory('c2cgeoportail')
+tsf2 = TranslationStringFactory('c2cgeoportal')
 
 @subscriber(NewRequest)
 def add_localizer(event):

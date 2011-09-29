@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = "c2cgeoportail, generic gis protail made by camptocamp"
+README = "c2cgeoportal, generic gis protail made by camptocamp"
 
 requires = [
     'pyramid',
@@ -24,9 +24,9 @@ requires = [
     'tileforge',
     ]
 
-setup(name='c2cgeoportail',
+setup(name='c2cgeoportal',
       version='0.2',
-      description='c2cgeoportail',
+      description='c2cgeoportal',
       long_description=README,
       classifiers=[
         "Programming Language :: Python",
@@ -37,21 +37,21 @@ setup(name='c2cgeoportail',
       author='camptocamp',
       author_email='info@camptocamp.com',
       url='http://www.camptocamp.com/geospatial-solutions',
-      keywords='web gis geoportail c2cgeoportail geocommune pyramid',
+      keywords='web gis geoportail c2cgeoportal geocommune pyramid',
       packages=find_packages(),
       include_package_data=True,
-      message_extractors={'c2cgeoportail': [
+      message_extractors={'c2cgeoportal': [
           ('static/**', 'ignore', None),
           ('**.py', 'python', None),
           ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="c2cgeoportail",
+      test_suite="c2cgeoportal",
       entry_points = {
         'console_scripts': [
-            'print_tpl = c2cgeoportail.scripts.print_tpl:main',
-            'manage_db = c2cgeoportail.scripts.manage_db:run',
+            'print_tpl = c2cgeoportal.scripts.print_tpl:main',
+            'manage_db = c2cgeoportal.scripts.manage_db:run',
         ],
       }
 )

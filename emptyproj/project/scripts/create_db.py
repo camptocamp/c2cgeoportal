@@ -4,8 +4,8 @@
 import sys
 from pyramid.paster import get_app
 
-from c2cgeoportail import schema
-from c2cgeoportail import parentschema
+from c2cgeoportal import schema
+from c2cgeoportal import parentschema
 
 import transaction
 
@@ -19,14 +19,14 @@ Available options:
 
     # read the configuration
     ini_file = sys.argv[1]
-    app = get_app(ini_file, "c2cgeoportail")
+    app = get_app(ini_file, "c2cgeoportal")
     settings = app.registry.settings
 
     # sets the schema and load the database model
     schema = settings['schema']
     parentschema = settings['parentschema']
     from project import models
-    from c2cgeoportail import models as c2cmodels
+    from c2cgeoportal import models as c2cmodels
 
     if "-d" in sys.argv[2:] or '--drop' in sys.argv[2:]:
         print "Dropping tables"

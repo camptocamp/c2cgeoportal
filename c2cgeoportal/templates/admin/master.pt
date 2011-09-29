@@ -4,16 +4,16 @@
       <title tal:condition="request.model_name is None" i18n:domain="fa_jquery" i18n:translate="">Models index</title>
       <link rel="stylesheet" tal:attributes="href request.static_url('fa.jquery:jquery-ui/css/smoothness/jquery-ui-1.8.8.custom.css')" />
       <link rel="stylesheet" tal:attributes="href request.static_url('fa.jquery:jquery-ui/fa.jquery.min.css')" />
-      <link rel="stylesheet" tal:attributes="href request.static_url('c2cgeoportail:static/build/admin.css')" />
+      <link rel="stylesheet" tal:attributes="href request.static_url('c2cgeoportal:static/build/admin.css')" />
       <link rel="stylesheet" tal:attributes="href request.static_url('project:static/build/admin.css')" />
       <script type="text/javascript">
         if (!window.App) App = {};
-        App["OpenLayers.ImgPath"] = "${request.static_url('c2cgeoportail:static/app/images/ol/')}";
+        App["OpenLayers.ImgPath"] = "${request.static_url('c2cgeoportal:static/app/images/ol/')}";
       </script>
       <script type="text/javascript" tal:attributes="src request.static_url('fa.jquery:jquery-ui/fa.jquery.min.js')"></script>
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/i18n/jquery-ui-i18n.min.js"></script>
       <script type="text/javascript" tal:attributes="src request.static_url('fa.jquery:jquery-ui/fa/jquery.pyramid_formalchemy.js')"></script>
-      <script type="text/javascript" tal:attributes="src request.static_url('c2cgeoportail:static/build/admin.js')"></script>
+      <script type="text/javascript" tal:attributes="src request.static_url('c2cgeoportal:static/build/admin.js')"></script>
       <script type="text/javascript">
         jQuery(document).ready(function() {
           $('select#models')

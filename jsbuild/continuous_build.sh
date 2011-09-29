@@ -13,7 +13,7 @@
 # To use it enter the following command at the root of the project
 # (where the jsbuild dir is):
 #
-# $ nosier -p c2cgeoportail/static -b 'build' -b '*.sw*' jsbuild/continuous_build.sh
+# $ nosier -p c2cgeoportal/static -b 'build' -b '*.sw*' jsbuild/continuous_build.sh
 
 state_file="/tmp/.javascript_build_failed"
 

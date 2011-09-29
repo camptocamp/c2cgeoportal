@@ -9,8 +9,8 @@ from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 from pyramid.security import authenticated_userid
 
-from c2cgeoportail.models import DBSession, User
-from c2cgeoportail.lib.functionality import get_functionalities
+from c2cgeoportal.models import DBSession, User
+from c2cgeoportal.lib.functionality import get_functionalities
 
 class Printproxy(object):
 

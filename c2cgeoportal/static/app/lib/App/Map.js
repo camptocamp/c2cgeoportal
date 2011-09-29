@@ -205,7 +205,7 @@ App.Map = function(options, events) {
             extent = maxExtent.clone().transform(fromproj,proj);
         } else {
             overviewMapLayer = new OpenLayers.Layer.Image(
-                OpenLayers.Util.createUniqueID("c2cgeoportail"),
+                OpenLayers.Util.createUniqueID("c2cgeoportal"),
                 App.overwiewImage,
                 OpenLayers.Bounds.fromArray(App.overwiewImageBounds),
                 new OpenLayers.Size(

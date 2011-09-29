@@ -7,7 +7,7 @@ debug_routematch = false
 debug_templates = true
 default_locale_name = ${default_language}
 mako.directories = project:templates
-    c2cgeoportail:templates
+    c2cgeoportal:templates
 authtkt_secret = ${authtkt_secret}
 
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
@@ -80,7 +80,7 @@ port = ${vars:paster_port}
 # Begin logging configuration
 
 [loggers]
-keys = rooti, c2cgeoportail, project
+keys = rooti, c2cgeoportal, project
 
 [handlers]
 keys = console
@@ -92,10 +92,10 @@ keys = generic
 level = INFO
 handlers = console
 
-[logger_c2cgeoportail]
+[logger_c2cgeoportal]
 level = DEBUG
 handlers =
-qualname = c2cgeoportail
+qualname = c2cgeoportal
 
 [logger_project]
 level = DEBUG

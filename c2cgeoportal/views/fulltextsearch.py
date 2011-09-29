@@ -4,7 +4,7 @@ from pyramid.view import view_config
 from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
 
-from c2cgeoportail.models import DBSession, FullTextSearch
+from c2cgeoportal.models import DBSession, FullTextSearch
 
 @view_config(route_name='fulltextsearch', renderer='geojson')
 def fulltextsearch(request):

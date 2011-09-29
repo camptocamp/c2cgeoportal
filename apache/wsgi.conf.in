@@ -23,7 +23,7 @@ RewriteRule ^${vars:apache-entry-point}apihelp.html$ /${vars:instanceid}/wsgi/ap
 RewriteRule ^${vars:apache-entry-point}apiloader.js$ /${vars:instanceid}/wsgi/apiloader.js [PT]
 
 # define a process group
-WSGIDaemonProcess c2cgeoportail:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
+WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
 
 # define the path to the WSGI app
 WSGIScriptAlias /${vars:instanceid}/wsgi ${buildout:directory/buildout/parts/modwsgi/wsgi}
@@ -32,6 +32,6 @@ WSGIScriptAlias /${vars:instanceid}/wsgi ${buildout:directory/buildout/parts/mod
 # app instance in the global application group so it is always executed within
 # the main interpreter
 <Location /${vars:instanceid}/wsgi>
-    WSGIProcessGroup c2cgeoportail:${vars:instanceid}
+    WSGIProcessGroup c2cgeoportal:${vars:instanceid}
     WSGIApplicationGroup %{GLOBAL}
 </Location>

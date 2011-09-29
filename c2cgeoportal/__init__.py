@@ -10,8 +10,8 @@ import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON
 
-from c2cgeoportail.resources import Root
-from c2cgeoportail.views.tilecache import load_tilecache_config
+from c2cgeoportal.resources import Root
+from c2cgeoportal.views.tilecache import load_tilecache_config
 
 # used by (sql|form)alchemy
 schema = None
@@ -46,8 +46,8 @@ def includeme(config):
     global formalchemy_default_lat
     global formalchemy_available_functionalities
 
-    # configure 'locale' dir as the translation dir for c2cgeoportail app
-    config.add_translation_dirs('c2cgeoportail:locale/')
+    # configure 'locale' dir as the translation dir for c2cgeoportal app
+    config.add_translation_dirs('c2cgeoportal:locale/')
 
     # initialize database
     engine = sqlalchemy.engine_from_config(config.get_settings(), 'sqlalchemy.')
@@ -64,7 +64,7 @@ def includeme(config):
     # add a TileCache view
     load_tilecache_config(config.get_settings())
     config.add_route('tilecache', '/tilecache{path:.*?}')
-    config.add_view(view='c2cgeoportail.views.tilecache:tilecache', route_name='tilecache')
+    config.add_view(view='c2cgeoportal.views.tilecache:tilecache', route_name='tilecache')
 
     # add an OGCProxy view
     config.include(papyrus_ogcproxy.includeme)
@@ -120,30 +120,30 @@ def includeme(config):
 
     config.override_asset( 
             to_override="fa.jquery:templates/admin/", 
-            override_with="c2cgeoportail:templates/admin/") 
+            override_with="c2cgeoportal:templates/admin/") 
  
     # register an admin UI 
-    config.formalchemy_model('/admin/functionality', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.Functionality')
-    config.formalchemy_model('/admin/theme', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.Theme')
-    config.formalchemy_model('/admin/layer', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.Layer')
-    config.formalchemy_model('/admin/layergroup', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.LayerGroup')
-    config.formalchemy_model('/admin/restrictionarea', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.RestrictionArea')
-    config.formalchemy_model('/admin/role', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.Role')
-    config.formalchemy_model('/admin/user', package='c2cgeoportail', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportail.models.User')
+    config.formalchemy_model('/admin/functionality', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Functionality')
+    config.formalchemy_model('/admin/theme', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Theme')
+    config.formalchemy_model('/admin/layer', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Layer')
+    config.formalchemy_model('/admin/layergroup', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.LayerGroup')
+    config.formalchemy_model('/admin/restrictionarea', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.RestrictionArea')
+    config.formalchemy_model('/admin/role', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Role')
+    config.formalchemy_model('/admin/user', package='c2cgeoportal', 
+            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.User')
     config.add_route('admin', '/admin')
 
-    config.formalchemy_admin('administration', package='c2cgeoportail', factory=Models)
+    config.formalchemy_admin('administration', package='c2cgeoportal', factory=Models)
 
     # scan view decorator for adding routes
     config.scan()
 
     # add the static view (for static resources)
-    config.add_static_view('static', 'c2cgeoportail:static')
+    config.add_static_view('static', 'c2cgeoportal:static')
 

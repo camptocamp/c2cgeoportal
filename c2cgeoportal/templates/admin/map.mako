@@ -14,10 +14,10 @@ options['map_height'] = 256
 options['base_layer'] = 'new OpenLayers.Layer.WMS("WMS", "http://labs.metacarta.com/wms/vmap0", {layers: "basic"})'
 options['openlayers_lib'] = 'http://openlayers.org/dev/OpenLayers.js'
 from pyramid.threadlocal import get_current_request
-options['image_select_feature_on'] = get_current_request().static_url('c2cgeoportail:static/adminapp/images/select_feature_on.png')
-options['image_select_feature_off'] = get_current_request().static_url('c2cgeoportail:static/adminapp/images/select_feature_off.png')
-options['image_remove_feature_on'] = get_current_request().static_url('c2cgeoportail:static/adminapp/images/remove_feature_on.png')
-options['image_remove_feature_off'] = get_current_request().static_url('c2cgeoportail:static/adminapp/images/remove_feature_off.png')
+options['image_select_feature_on'] = get_current_request().static_url('c2cgeoportal:static/adminapp/images/select_feature_on.png')
+options['image_select_feature_off'] = get_current_request().static_url('c2cgeoportal:static/adminapp/images/select_feature_off.png')
+options['image_remove_feature_on'] = get_current_request().static_url('c2cgeoportal:static/adminapp/images/remove_feature_on.png')
+options['image_remove_feature_off'] = get_current_request().static_url('c2cgeoportal:static/adminapp/images/remove_feature_off.png')
 %>
 
 <script src="${openlayers_lib or options['openlayers_lib']}"></script>

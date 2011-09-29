@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>API description</title>
-    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('c2cgeoportail:static/proj/images/favicon.ico', qualified=True)}" />
+    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('c2cgeoportal:static/proj/images/favicon.ico', qualified=True)}" />
     <script type="text/javascript" src="${(request.route_url('apiloader') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
     <style type="text/css">
       TABLE.api {
@@ -22,7 +22,7 @@
     </style>
     <script>
     window.onload = function() {
-        map1 = new c2cgeoportail.Map({
+        map1 = new c2cgeoportal.Map({
             div: 'map1',
             zoom: 12,
             easting: 645513,
@@ -30,7 +30,7 @@
             height: 500,
             width: 800
         });
-        map2 = new c2cgeoportail.Map({
+        map2 = new c2cgeoportal.Map({
             div: 'map2',
             zoom: 12,
             easting: 645513,
@@ -39,7 +39,7 @@
             width: 800,
             showMarker: true
         });
-        map3 = new c2cgeoportail.Map({
+        map3 = new c2cgeoportal.Map({
             div: 'map3',
             zoom: 14,
             easting: 663382,
@@ -71,7 +71,7 @@
 &lt;script type="text/javascript" src="${request.route_url('apiloader')}"&gt;&lt;/script&gt;
 &lt;script&gt;
     window.onload = function() {
-        var map1 = new c2cgeoportail.Map({
+        var map1 = new c2cgeoportal.Map({
             div: 'map1',
             zoom: 12,
             easting: 645513,
@@ -101,7 +101,7 @@
 &lt;script type="text/javascript" src="${request.route_url('apiloader')}"&gt;&lt;/script&gt;
 &lt;script&gt;
     window.onload = function() {
-        var map2 = new c2cgeoportail.Map({
+        var map2 = new c2cgeoportal.Map({
             div: 'map2',
             zoom: 12,
             easting: 645513,
@@ -133,7 +133,7 @@
 &lt;script type="text/javascript" src="${request.route_url('apiloader')}"&gt;&lt;/script&gt;
 &lt;script&gt;
     window.onload = function() {
-        var map3 = new c2cgeoportail.Map({
+        var map3 = new c2cgeoportal.Map({
             div: 'map3',
             zoom: 14,
             easting: 663382,

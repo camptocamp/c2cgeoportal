@@ -134,7 +134,7 @@ App.ResultsPanel = function(map, events, uiOptions) {
     // a ResultsPanel object has its own vector layer, which
     // is added to the map once for good
     var vectorLayer = new OpenLayers.Layer.Vector(
-        OpenLayers.Util.createUniqueID("c2cgeoportail"), {
+        OpenLayers.Util.createUniqueID("c2cgeoportal"), {
             displayInLayerSwitcher: false,
             alwaysInRange: true
     });

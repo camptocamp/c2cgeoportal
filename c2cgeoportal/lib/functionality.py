@@ -3,7 +3,7 @@ import simplejson as json
 
 from pyramid.security import authenticated_userid
 
-from c2cgeoportail.models import DBSession, User
+from c2cgeoportal.models import DBSession, User
 
 def _cleanup(value, config):
     result = config[value]

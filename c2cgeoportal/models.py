@@ -17,10 +17,10 @@ from pyramid.threadlocal import get_current_registry
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
 from pyramid.i18n import TranslationStringFactory
 
-from c2cgeoportail import schema
-from c2cgeoportail import parentschema
+from c2cgeoportal import schema
+from c2cgeoportal import parentschema
 
-_ = TranslationStringFactory('c2cgeoportail')
+_ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
 
 Base = sqlahelper.get_base()

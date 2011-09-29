@@ -7,7 +7,7 @@ from formalchemy import fields
 from formalchemy import FieldSet, Grid
 
 from project import models
-from c2cgeoportail import forms
+from c2cgeoportal import forms
 
 _ = TranslationStringFactory('project')
 log = logging.getLogger(__name__)

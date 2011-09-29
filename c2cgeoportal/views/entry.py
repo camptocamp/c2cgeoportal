@@ -11,8 +11,8 @@ from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 
-from c2cgeoportail.lib.functionality import get_functionality, get_functionalities
-from c2cgeoportail.models import (DBSession, Layer, LayerGroup, Theme,
+from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
+from c2cgeoportal.models import (DBSession, Layer, LayerGroup, Theme,
                                   RestrictionArea, Role,
                                   layer_ra, role_ra, User)
 
@@ -220,7 +220,7 @@ class Entry(object):
 
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
-                           self.request.static_url('c2cgeoportail:static' + \
+                           self.request.static_url('c2cgeoportal:static' + \
                                                    '/app/images/ol/blank.gif')
                     exportThemes.append({
                         'name': theme.name,
@@ -262,7 +262,7 @@ class Entry(object):
         d['restricted_extent'] = self.settings.get("restricted_extent")
 
         d['overwiewimage_type'] = self.settings.get("overwiewimage_type")
-        d['overwiewimage'] = 'c2cgeoportail:static' + \
+        d['overwiewimage'] = 'c2cgeoportal:static' + \
                              self.settings.get("overwiewimage")
         d['overwiewimage_bounds'] = self.settings.get("overwiewimage_bounds")
         d['overwiewimage_size'] = self.settings.get("overwiewimage_size")

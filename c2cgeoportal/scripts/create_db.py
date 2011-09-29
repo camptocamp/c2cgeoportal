@@ -3,7 +3,7 @@
 
 Run this once after installing the application::
 
-    python -m c2cgeoportail.scripts.create_db development.ini [-d|--drop]
+    python -m c2cgeoportal.scripts.create_db development.ini [-d|--drop]
 """
 import logging.config
 import sys
@@ -11,23 +11,23 @@ import sys
 from pyramid.paster import get_app
 import transaction
 
-from c2cgeoportail import schema
-from c2cgeoportail import parentschema
+from c2cgeoportal import schema
+from c2cgeoportal import parentschema
 
 def main():
     if len(sys.argv) < 2:
-        sys.exit("Usage: python -m c2cgeoportail.scripts.create_db " \
+        sys.exit("Usage: python -m c2cgeoportal.scripts.create_db " \
                  "INI_FILE [-d|--drop]")
     ini_file = sys.argv[1]
     logging.config.fileConfig(ini_file)
     log = logging.getLogger(__name__)
 
-    app = get_app(ini_file, "c2cgeoportail")
+    app = get_app(ini_file, "c2cgeoportal")
     settings = app.registry.settings
 
     schema = settings['schema']
     parentschema = settings['parentschema']
-    import c2cgeoportail.models as models
+    import c2cgeoportal.models as models
 
     if len(sys.argv) > 2 and sys.argv[2] in ['-d', '--drop']:
         log.info("Dropping tables")

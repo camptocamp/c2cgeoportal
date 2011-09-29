@@ -1,10 +1,10 @@
 Introduction
 ============
 
-c2cgeoportail can't be use directly it should be include in a project 
+c2cgeoportal can't be use directly it should be include in a project 
 like it:
 
-c2cgeoportail - svn:externals to c2cgeoportail svn
+c2cgeoportal - svn:externals to c2cgeoportal svn
 tilecache/tilecache.cfg.in - tilecache configuration (parent only)
 bootstrap.py - used to initialyse the buildout environement
 buildout*.cfg - buildout scriptes that contains the configurations vartiables
@@ -12,7 +12,7 @@ buildout - empty directory needed by buildout
 deploy/deploy.cfg.in - deployment configuration
 print/config.yaml.in - print configuration
 print/... - images and other files neded by the print
-mapserver/c2cgeoportail.map.in - the mapfile
+mapserver/c2cgeoportal.map.in - the mapfile
 static/lang/*.js - the localisation
 static/images/favicon.ico - favicon
 static/images - image needed by the application
@@ -29,7 +29,7 @@ Installation of a new project instance
     cd newproj
 
 * Export the empty project:
-    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportail/branches/pyramid/emptyproj .
+    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/branches/pyramid/emptyproj .
 
 * Rename the right buildout file,
   for parent:
@@ -40,8 +40,8 @@ Installation of a new project instance
     rm buildout_parent.cfg
     rm -rf tilecache # not used on a child
 
-* Link to c2cgeoportail:
-    svn propset svn:externals "c2cgeoportail https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportail/branches/pyramid" .
+* Link to c2cgeoportal:
+    svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/branches/pyramid" .
 
 * Add to your project svn:
     svn add *
@@ -68,7 +68,7 @@ The project shoulld allredy be built (see below).
     sudo -u postgres psql -c "GRANT ALL ON SCHEMA ${vars:schema} TO \"${vars:dbuser}\";" ${vars:db}
 
 * Create the tables and populate:
-    sudo -u ${vars:dbuser} buildout/bin/create_db c2cgeoportail/development.ini -p
+    sudo -u ${vars:dbuser} buildout/bin/create_db c2cgeoportal/development.ini -p
 
 * Set the version
     ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
@@ -160,7 +160,7 @@ SQL code in the .map file.
 Installation of the project
 ===========================
 
-go to the project directory (that includes c2cgeoportail)
+go to the project directory (that includes c2cgeoportal)
 
 Install the buildout environment:
 
@@ -168,9 +168,9 @@ Install the buildout environment:
         http://pypi.camptocamp.net/ --setup-source \
         http://pypi.camptocamp.net/distribute_setup.py
 
-Build c2cgeoportail (_dev for development build):
+Build c2cgeoportal (_dev for development build):
 
-  ./buildout/bin/buildout -c c2cgeoportail/buildout_build.cfg 
+  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
 
 Install the project:
     
@@ -202,7 +202,7 @@ Server
   ./buildout/bin/python setup.py init_catalog -l fr
   ./buildout/bin/python setup.py init_catalog -l de
 
-3) Edit the .po files in c2cgeoportail/locale/*/LC_MESSAGES/c2cgeoportail.po
+3) Edit the .po files in c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 
 4) Run buildout to compile all the .po files to .mo:
 
@@ -235,8 +235,8 @@ From dev to demo
   ssh devserver
   cd /var/www/your_vhost/public/Project
   svn up # update the code
-  ./buildout/bin/buildout -c c2cgeoportail/buildout_build.cfg # build c2cgeoportail
-  ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportail
+  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg # build c2cgeoportal
+  ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportal
   ### Test on the dev server ###
   cd deploy
   sudo -u deploy deploy -r deploy.cfg demo 
@@ -269,7 +269,7 @@ Some tip for posix tools users
 ==============================
 
 * Have the toc of this document
-   grep -B1 ^=== c2cgeoportail/README.txt
+   grep -B1 ^=== c2cgeoportal/README.txt
 
 * Display only one chapter
-   grep -A30 "Title" c2cgeoportail/README.txt
+   grep -A30 "Title" c2cgeoportal/README.txt

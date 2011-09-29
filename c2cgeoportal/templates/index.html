@@ -31,7 +31,7 @@
           z-index: 20001;
         }
         .loading-indicator-static {
-          background: url("${request.static_url('c2cgeoportail:static/app/images/loading.gif')}") no-repeat transparent;
+          background: url("${request.static_url('c2cgeoportal:static/app/images/loading.gif')}") no-repeat transparent;
           font-size: 13px;
           font-family: tahoma,arial,verdana,sans-serif;
           padding-left: 20px;
@@ -39,15 +39,15 @@
         </style>
 
 % if debug:
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/ext/Ext/resources/css/ext-all.css')}" />
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/ext/Ext/resources/css/xtheme-gray.css')}" />
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/openlayers/theme/default/style.css')}" />
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/Measure/resources/css/measure.css')}" />
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/sandbox/FeatureEditing/resources/css/feature-editing.css')}"/>
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/lib/styler/theme/css/styler.css')}" />
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/app/css/main.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/ext/Ext/resources/css/ext-all.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/ext/Ext/resources/css/xtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/openlayers/theme/default/style.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/Measure/resources/css/measure.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/sandbox/FeatureEditing/resources/css/feature-editing.css')}"/>
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/lib/styler/theme/css/styler.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/app/css/main.css')}" />
 % else:
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportail:static/build/app.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/build/app.css')}" />
 % endif
         <link rel="stylesheet" type="text/css" href="${request.static_url('project:static/build/app.css')}" />
     </head>
@@ -75,69 +75,69 @@
       </div>
 
 % if debug:
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/ext/Ext/adapter/ext/ext-base.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/ext/Ext/ext-all-debug.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/ext/Ext/src/locale/ext-lang-%s.js' % lang)}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/ext/Ext/src/ext-core/examples/jsonp/jsonp.js', qualified=True)}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/ext/Ext/adapter/ext/ext-base.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/ext/Ext/ext-all-debug.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/ext/Ext/src/locale/ext-lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/ext/Ext/src/ext-core/examples/jsonp/jsonp.js', qualified=True)}"></script>
 
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/proj4js/proj4js/lib/proj4js.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/proj4js/proj4js/lib/proj4js.js')}"></script>
         <!-- hardcoded inclusion of proj file so they are loaded soon enough in debug mode (solve timing problems) -->
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/proj4js/proj4js/lib/projCode/somerc.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/proj4js/proj4js/lib/projCode/merc.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/proj4js/proj4js/lib/defs/EPSG21781.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/proj4js/proj4js/lib/defs/EPSG900913.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/proj4js/proj4js/lib/projCode/somerc.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/proj4js/proj4js/lib/projCode/merc.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/proj4js/proj4js/lib/defs/EPSG21781.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/proj4js/proj4js/lib/defs/EPSG900913.js')}"></script>
 
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/openlayers/lib/OpenLayers.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/openlayers/lib/OpenLayers/Lang/%s.js' % lang)}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext/lib/GeoExt.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/SimplePrint/lib/GeoExt.ux/SimplePrint.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/Measure.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/MeasureLength.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/MeasureArea.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/geoext.ux/ux/FeatureBrowser/lib/GeoExt.ux/FeatureBrowser.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/sandbox/Styler/ux/LayerStyleManager.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/sandbox/Styler/ux/widgets/StyleSelectorComboBox.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/sandbox/FeatureEditing/ux/FeatureEditing.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/openlayers/lib/OpenLayers.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/openlayers/lib/OpenLayers/Lang/%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext/lib/GeoExt.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/SimplePrint/lib/GeoExt.ux/SimplePrint.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/Measure.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/MeasureLength.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/Measure/lib/GeoExt.ux/MeasureArea.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/geoext.ux/ux/FeatureBrowser/lib/GeoExt.ux/FeatureBrowser.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/sandbox/Styler/ux/LayerStyleManager.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/sandbox/Styler/ux/widgets/StyleSelectorComboBox.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/sandbox/FeatureEditing/ux/FeatureEditing.js')}"></script>
         
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/form/SpatialComboBox.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/form/ComparisonComboBox.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/BaseFilterPanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/SpatialFilterPanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/FilterPanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/lib/styler/lib/Styler/widgets/FilterBuilder.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/form/SpatialComboBox.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/form/ComparisonComboBox.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/BaseFilterPanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/SpatialFilterPanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/FilterPanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/lib/styler/lib/Styler/widgets/FilterBuilder.js')}"></script>
         
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/FeaturePanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Lang/%s.js' % lang)}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/globals.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Map.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/ThemeSelector.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/TreeNodeTriStateUI.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/LayerTree.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/TreeNodeLoading.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/TreeNodeComponent.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/ToolButton.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/ToolWindow.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Tools.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Print.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Locator.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Permalink.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/TwinTriggerComboBox.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Search.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Query.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/QueryBuilder.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/main.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/ResultsPanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/ExternalDocsPanel.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Lang/en.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Lang/fr.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/app/lib/App/Lang/de.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/FeaturePanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Lang/%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/globals.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Map.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/ThemeSelector.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/TreeNodeTriStateUI.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/LayerTree.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/TreeNodeLoading.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/TreeNodeComponent.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/ToolButton.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/ToolWindow.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Tools.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Print.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Locator.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Permalink.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/TwinTriggerComboBox.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Search.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Query.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/QueryBuilder.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/main.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/ResultsPanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/ExternalDocsPanel.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Lang/en.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Lang/fr.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/app/lib/App/Lang/de.js')}"></script>
 ## TODO: make use of the right request.static_url
-##        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/proj/lang/en.js')}"></script>
-##        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/proj/lang/fr.js')}"></script>
-##        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/proj/lang/de.js')}"></script>
+##        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/proj/lang/en.js')}"></script>
+##        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/proj/lang/fr.js')}"></script>
+##        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/proj/lang/de.js')}"></script>
 % else:
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/build/app.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportail:static/build/lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/build/app.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/build/lang-%s.js' % lang)}"></script>
 % endif
 
         <script type="text/javascript">

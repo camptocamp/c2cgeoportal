@@ -3,7 +3,7 @@ import logging
 
 from sqlalchemy import Column, types
 
-from c2cgeoportail.models import Base, DBSession, _schema, User
+from c2cgeoportal.models import Base, DBSession, _schema, User
 
 _ = TranslationStringFactory('project')
 log = logging.getLogger(__name__)

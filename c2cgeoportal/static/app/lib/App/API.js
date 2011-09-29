@@ -10,7 +10,7 @@
  * @include App/globals.js
  */
 
-Ext.namespace('c2cgeoportail');
+Ext.namespace('c2cgeoportal');
 
 /**
  * Note to developers: to use Ext.ux.JSONP the
@@ -19,7 +19,7 @@ Ext.namespace('c2cgeoportail');
  */
 
 /**
- * Class: c2cgeoportail.Map
+ * Class: c2cgeoportal.Map
  *
  * Usage example:
  * (code)
@@ -28,7 +28,7 @@ Ext.namespace('c2cgeoportail');
 <script type="text/javascript" src='build/api.js'></script>
 <script type='text/javascript'>
     window.onload = function() {
-        var map = new c2cgeoportail.Map({
+        var map = new c2cgeoportal.Map({
             div: 'map',
             zoom: 10,
             easting: 500000,
@@ -45,7 +45,7 @@ Ext.namespace('c2cgeoportail');
 </html>
  * (end)
  */
-c2cgeoportail.Map = function(options) {
+c2cgeoportal.Map = function(options) {
 
     // Private
 
@@ -130,7 +130,7 @@ c2cgeoportail.Map = function(options) {
 
 
     var vectorLayer = new OpenLayers.Layer.Vector(
-        OpenLayers.Util.createUniqueID("c2cgeoportail"), {
+        OpenLayers.Util.createUniqueID("c2cgeoportal"), {
             displayInLayerSwitcher: false,
             alwaysInRange: true
     });

@@ -2,8 +2,8 @@ This is a database migration repository.
 
 Add a new script:
     ./buildout/bin/manage_db script "Explicite name"
-    svn ci -m c2cgeoportail/c2cgeoportail/migration/versions/xxx_Explicite_name.py
-  Than fill the script c2cgeoportail/c2cgeoportail/migration/versions/xxx_Explicite_name.py.
+    svn ci -m c2cgeoportal/c2cgeoportal/migration/versions/xxx_Explicite_name.py
+  Than fill the script c2cgeoportal/c2cgeoportal/migration/versions/xxx_Explicite_name.py.
 
 More information at
 http://code.google.com/p/sqlalchemy-migrate/

@@ -1,7 +1,7 @@
 [cache]
 module = tileforge.utils.cache.s3disk
 type = S3Disk
-base = /var/sig/tilecache/c2cgeoportail-${instanceid}_tilecache
+base = /var/sig/tilecache/c2cgeoportal-${instanceid}_tilecache
 
 [DEFAULT]
 type = WMS

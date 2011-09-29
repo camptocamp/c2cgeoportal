@@ -139,7 +139,7 @@ App.Search = function(map) {
     // a Search object has its own vector layer, which is added
     // to the map once for good
     var vectorLayer = new OpenLayers.Layer.Vector(
-        OpenLayers.Util.createUniqueID("c2cgeoportail"),
+        OpenLayers.Util.createUniqueID("c2cgeoportal"),
         {displayInLayerSwitcher: false, alwaysInRange: true}
     );
     map.addLayer(vectorLayer);

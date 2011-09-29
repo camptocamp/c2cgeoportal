@@ -10,7 +10,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 
-from c2cgeoportail.models import DBSession, User
+from c2cgeoportal.models import DBSession, User
 
 @view_config(route_name='mapserverproxy')
 def proxy(request):
