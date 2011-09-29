@@ -209,7 +209,7 @@ Server
 
   sudo apache2ctl graceful
 
-When you add a new messagge repeat all steps but replace the step 3) by :
+When you add a new message repeat all steps but replace the step 2) by :
 
   ./buildout/bin/python setup.py update_catalog
 
