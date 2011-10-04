@@ -1,5 +1,10 @@
 var app;
 Ext.onReady(function() {
+    /*
+     * Initialize the application.
+     */
+    App.setGlobals();
+
     var maxExtent = OpenLayers.Bounds.fromArray(App.restrictedExtent);
     app = new gxp.Viewer({
         portalConfig: {
@@ -159,7 +164,7 @@ Ext.onReady(function() {
                     bottomOutUnits: false
                 }),
                 new OpenLayers.Control.MousePosition({numDigits: 0}),
-                createOverviewMap(maxExtent)
+                App.createOverviewMap(maxExtent)
             ],
             // TODO: configure layers
             layers: [
@@ -175,9 +180,9 @@ Ext.onReady(function() {
             }
                 */
             ],
-            items: [{
+            items: [/*{
                 xtype: "cgxp_opacityslider"
-            }]
+            }*/]
         }
     });
 });

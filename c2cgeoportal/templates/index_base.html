@@ -1,8 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html lang="${lang}">
     <%block name="page_head">\
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,6 +9,9 @@
         <title><%block name="page_title">Camtocamp Geoportal Application</%block></title>
         <%block name="page_head_cssstyle">\
         <style>
+        html, body {
+            margin: 0;
+        }
         #loading-mask {
           background-color: white;
           height: 100%;
@@ -23,17 +23,18 @@
         }
         #loading {
           height: auto;
-          left: 45%;
-          padding: 2px;
+          width: 100%;
+          text-align: center;
           position: absolute;
-          top: 40%;
+          top: 50%;
           z-index: 20001;
         }
         .loading-indicator-static {
-          background: url("${request.static_url('c2cgeoportal:static/app/images/loading.gif')}") no-repeat transparent;
+          background: url("${request.static_url('c2cgeoportal:static/images/loading.gif')}") no-repeat transparent;
           font-size: 13px;
           font-family: tahoma,arial,verdana,sans-serif;
-          padding-left: 20px;
+          padding: 0 0 3px 20px;
+          display: inline;
         }
         </style>
         </%block>\
@@ -44,7 +45,7 @@
         </%block>\
 % else:
         <%block name="page_head_cssurls_nodebug">\
-        <link rel="stylesheet" type="text/css" href="${request.static_url('c2cgeoportal:static/build/app.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('project:static/build/app.css')}" />
         </%block>\
 % endif
         </%block>\
@@ -92,10 +93,11 @@
         </%block>\
 % else:
         <%block name="page_jsurls_nodebug">\
-        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/build/app.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('c2cgeoportal:static/build/lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('project:static/build/app.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('project:static/build/lang-%s.js' % lang)}"></script>
         </%block>\
 % endif
+
         <script type="text/javascript">
             <%block name="page_js_script">\
             <%include file="globals.js" />
@@ -104,6 +106,7 @@
             <%include file="viewer.js" />
             </%block>\
         </script>
+        </%block>\
     </body>
     </%block>\
 </html>
