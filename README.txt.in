@@ -42,6 +42,7 @@ Installation of a new project instance
 
 * Link to c2cgeoportal:
     svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/branches/pyramid" .
+    svn propset svn:externals "project/static/lib https://project.camptocamp.com/svn/c2c_mapfish/cgxp" .
 
 * Add to your project svn:
     svn add *
