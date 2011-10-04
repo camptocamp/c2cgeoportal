@@ -51,12 +51,10 @@ Ext.onReady(function() {
                 }, {
                     id: "querier-container",
                     xtype: "panel",
-                    title: OpenLayers.i18n("querier"),
                     layout: "fit"
                 }, {
                     id: "print-container",
                     xtype: "panel",
-                    title: OpenLayers.i18n("print"),
                     layout: "fit"
                 }]
             }]
