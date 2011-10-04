@@ -34,7 +34,7 @@ Ext.onReady(function() {
                 border: false,
                 defaults: {width: 300},
                 items: [{
-                    xtype: "container",
+                    xtype: "panel",
                     title: OpenLayers.i18n("layertree"),
                     layout: "vbox",
                     align: "stretch",
@@ -50,11 +50,13 @@ Ext.onReady(function() {
                     }]
                 }, {
                     id: "querier-container",
-                    xtype: "container",
+                    xtype: "panel",
+                    title: OpenLayers.i18n("querier"),
                     layout: "fit"
                 }, {
                     id: "print-container",
-                    xtype: "container",
+                    xtype: "panel",
+                    title: OpenLayers.i18n("print"),
                     layout: "fit"
                 }]
             }]
@@ -64,6 +66,7 @@ Ext.onReady(function() {
         tools: [{
             ptype: "cgxp_themeselector",
             outputTarget: "themeselector-container"
+        /*
         }, {
             ptype: "cgxp_layertree",
             outputConfig: {
@@ -78,9 +81,11 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_print",
             outputTarget: "print-container"
+        */
         }, {
             ptype: "gxp_zoomtoextent",
             actionTarget: "map.tbar"
+        /*
         }, {
             ptype: "cgxp_zoomin",
             actionTarget: "map.tbar",
@@ -88,9 +93,11 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_zoomout",
             actionTarget: "map.tbar"
+        */
         }, {
             ptype: "gxp_navigationhistory",
             actionTarget: "map.tbar"
+        /*
         }, {
             ptype: "cgxp_permalink",
             actionTarget: "map.tbar"
@@ -127,6 +134,7 @@ Ext.onReady(function() {
             ptype: "cgxp_featuregrid",
             featureManager: "featuremanager",
             outputTarget: "featuregrid-container"
+        */
         }],
 
         // layer sources
@@ -184,5 +192,11 @@ Ext.onReady(function() {
                 xtype: "cgxp_opacityslider"
             }*/]
         }
+    });
+
+    // remove loading message
+    Ext.get('loading').remove();
+    Ext.fly('loading-mask').fadeOut({
+        remove:true
     });
 });
