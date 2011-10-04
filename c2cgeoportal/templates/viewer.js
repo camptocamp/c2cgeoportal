@@ -1,109 +1,134 @@
 var app;
 Ext.onReady(function() {
+    var maxExtent = OpenLayers.Bounds.fromArray(App.restrictedExtent);
     app = new gxp.Viewer({
-        proxy: "/geoserver/rest/proxy?url=",
         portalConfig: {
-            renderTo: document.body,
             layout: "border",
-            width: 650,
-            height: 465,
-            
             // by configuring items here, we don't need to configure portalItems
             // and save a wrapping container
             items: [{
-                // a TabPanel with the map and a dummy tab
-                id: "centerpanel",
-                xtype: "tabpanel",
-                region: "center",
-                activeTab: 0, // map needs to be visible on initialization
-                border: true,
-                items: ["mymap", {title: "Dummy Tab"}]
-            }, {
-                // container for the FeatureGrid
-                id: "south",
+                region: "north",
+                contentEl: 'header-out'
+            },
+            "app-map",
+            {
+                id: "featuregrid-container",
                 xtype: "container",
                 layout: "fit",
                 region: "south",
-                height: 150
+                height: 160,
+                split: true,
+                collapseMode: "mini"
             }, {
-                // container for the queryform
-                id: "west",
-                xtype: "container",
-                layout: "fit",
+                layout: "accordion",
                 region: "west",
-                width: 200
-            }],
-            bbar: {id: "mybbar"}
+                width: 300,
+                minWidth: 300,
+                split: true,
+                collapseMode: "mini",
+                border: false,
+                defaults: {width: 300},
+                items: [{
+                    xtype: "container",
+                    title: OpenLayers.i18n("layertree"),
+                    layout: "vbox",
+                    align: "stretch",
+                    items: [{
+                        id: "themeselector-container",
+                        xtype: "container",
+                        layout: "fit",
+                        style: "padding: 3px;"
+                    }, {
+                        id: "layertree-container",
+                        xtype: "container",
+                        layout: "fit"
+                    }]
+                }, {
+                    id: "querier-container",
+                    xtype: "container",
+                    layout: "fit"
+                }, {
+                    id: "print-container",
+                    xtype: "container",
+                    layout: "fit"
+                }]
+            }]
         },
-        
+
         // configuration of all tool plugins for this application
         tools: [{
-            ptype: "gxp_layertree",
+            ptype: "cgxp_themeselector",
+            outputTarget: "themeselector-container"
+        }, {
+            ptype: "cgxp_layertree",
             outputConfig: {
-                id: "tree",
-                border: true,
-                tbar: [] // we will add buttons to "tree.bbar" later
+                header: false,
+                flex: 1,
+                autoScroll: true
             },
-            outputTarget: "west"
+            outputTarget: "layertree-container"
         }, {
-            ptype: "gxp_addlayers",
-            actionTarget: "tree.tbar"
+            ptype: "cgxp_querier",
+            outputTarget: "querier-container"
         }, {
-            ptype: "gxp_removelayer",
-            actionTarget: ["tree.tbar", "tree.contextMenu"]
+            ptype: "cgxp_print",
+            outputTarget: "print-container"
         }, {
             ptype: "gxp_zoomtoextent",
             actionTarget: "map.tbar"
         }, {
-            ptype: "gxp_zoom",
+            ptype: "cgxp_zoomin",
+            actionTarget: "map.tbar",
+            toggleGroup: "maptools"
+        }, {
+            ptype: "cgxp_zoomout",
             actionTarget: "map.tbar"
         }, {
             ptype: "gxp_navigationhistory",
             actionTarget: "map.tbar"
         }, {
-            ptype: "gxp_wmsgetfeatureinfo",
-            outputConfig: {
-                width: 400,
-                height: 200
-            },
-            actionTarget: "map.tbar", // this is the default, could be omitted
-            toggleGroup: "layertools"
+            ptype: "cgxp_permalink",
+            actionTarget: "map.tbar"
+        }, {
+            ptype: "cgxp_measure",
+            actionTarget: "map.tbar",
+            toggleGroup: "maptools"
+        }, {
+            ptype: "cgxp_wmsgetfeatureinfo",
+            featureManager: "featuremanager",
+            actionTarget: "map.tbar",
+            toggleGroup: "maptools"
+        }, {
+            ptype: "cgxp_fulltextsearch",
+            actionTarget: "map.tbar"
+        }, {
+            ptype: "cgxp_legend",
+            actionTarget: "map.tbar"
+        }, {
+            ptype: "cgxp_loginform",
+            actionTarget: "map.tbar"
+        }, {
+            ptype: "cgxp_help",
+            url: "#help-url",
+            actionTarget: "map.tbar"
+        }, {
+            ptype: "cgxp_redlining",
+            actionTarget: "map.tbar"
         }, {
             // shared FeatureManager for feature editing, grid and querying
-            ptype: "gxp_featuremanager",
-            id: "featuremanager",
-            maxFeatures: 20
+            ptype: "cgxp_featuremanager",
+            id: "featuremanager"
         }, {
-            ptype: "gxp_featureeditor",
+            ptype: "cgxp_featuregrid",
             featureManager: "featuremanager",
-            autoLoadFeatures: true, // no need to "check out" features
-            outputConfig: {panIn: false},
-            toggleGroup: "layertools"
-        }, {
-            ptype: "gxp_featuregrid",
-            featureManager: "featuremanager",
-            outputConfig: {
-                id: "featuregrid"
-            },
-            outputTarget: "south"
-        }, {
-            ptype: "gxp_queryform",
-            featureManager: "featuremanager",
-            outputConfig: {
-                title: "Query",
-                width: 320
-            },
-            actionTarget: ["featuregrid.bbar", "tree.contextMenu"],
-            appendActions: false
-        }, {
-            // not a useful tool - just a demo for additional items
-            actionTarget: "mybbar", // ".bbar" would also work
-            actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
+            outputTarget: "featuregrid-container"
         }],
-        
+
         // layer sources
         defaultSourceType: "gxp_wmssource",
         sources: {
+            // TODO: configure sources
+            /*
             local: {
                 url: "/geoserver/wms",
                 version: "1.1.1"
@@ -111,18 +136,35 @@ Ext.onReady(function() {
             google: {
                 ptype: "gxp_googlesource"
             }
+            */
         },
-        
+
         // map and layers
         map: {
-            id: "mymap", // id needed to reference map in portalConfig above
-            title: "Map",
-            projection: "EPSG:900913",
+            id: "app-map", // id needed to reference map in portalConfig above
+            projection: "EPSG:21781",
+            maxExtent: maxExtent,
+            restrictedExtent: maxExtent,
             units: "m",
-            maxResolution: 156543.0339,
-            center: [-10764594.758211, 4523072.3184791],
-            zoom: 3,
-            layers: [{
+            theme: null, // or OpenLayers will attempt to load it default theme
+            resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
+            controls: [
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.KeyboardDefaults(),
+                new OpenLayers.Control.PanZoomBar({panIcons: false}),
+                new OpenLayers.Control.ArgParser(),
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.ScaleLine({
+                    bottomInUnits: false,
+                    bottomOutUnits: false
+                }),
+                new OpenLayers.Control.MousePosition({numDigits: 0}),
+                createOverviewMap(maxExtent)
+            ],
+            // TODO: configure layers
+            layers: [
+                /*
+            {
                 source: "google",
                 name: "TERRAIN",
                 group: "background"
@@ -130,11 +172,11 @@ Ext.onReady(function() {
                 source: "local",
                 name: "usa:states",
                 selected: true
-            }],
+            }
+                */
+            ],
             items: [{
-                xtype: "gx_zoomslider",
-                vertical: true,
-                height: 100
+                xtype: "cgxp_opacityslider"
             }]
         }
     });
