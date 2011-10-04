@@ -154,6 +154,26 @@ do the table joining and select the right layer.
 This should be in a .map.in because it use template variable that's replace by 
 SQL code in the .map file.
 
+Print config.yaml templating
+============================
+
+If you intend to have more than one pdf config per paper format for your pdf
+print output, a templating system is implemented to allow you to use mako
+template so you dont have to duplicate huge quantiy of code in your config.yaml.
+
+The system check if there is a file "print.mako" in a folder "templates" in 
+the "print" folder (print/templates/print.mako).
+If that file exists, it will be used to generate the file "config.yaml" placed 
+in the "print" folder.
+If the file doesnt exists, the system does nothing.
+
+It is possible to manually trigger the system by calling the following command:
+
+./buildout/bin/print_tpl
+
+If you want to include some buildout variables in your mako template, you need to 
+name your mako template(s) with a .in as the variable replacement must be done 
+before the mako templating is called (for example print/templates/print.mako.in)
 
 Installation of the project
 ===========================
