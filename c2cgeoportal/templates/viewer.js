@@ -37,7 +37,9 @@ Ext.onReady(function() {
                     xtype: "panel",
                     title: OpenLayers.i18n("layertree"),
                     layout: "vbox",
-                    align: "stretch",
+                    layoutConfig: {
+                        align: "stretch"
+                    },
                     items: [{
                         id: "themeselector-container",
                         xtype: "container",
@@ -63,7 +65,9 @@ Ext.onReady(function() {
         // configuration of all tool plugins for this application
         tools: [{
             ptype: "cgxp_themeselector",
-            outputTarget: "themeselector-container"
+            outputTarget: "themeselector-container",
+            themes: App.themes,
+            tree: {}//layerTreePanel // TODO
         /*
         }, {
             ptype: "cgxp_layertree",
