@@ -36,7 +36,6 @@ App["themes"] = {
     , "external": ${external_themes | n}
 % endif
 };
-App["default_themes"] = ${default_themes | n};
 App["HelpURL"] = "${request.static_url('c2cgeoportal:static/app/pdf/Hilfedokument_geoag.pdf')}";
 App["queryBuilderLayer"] = "${query_builder_layer}";
 % if encodedLayers_plan and encodedLayers_plan_color and encodedLayers_ortho:

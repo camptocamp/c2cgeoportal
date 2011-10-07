@@ -5,7 +5,7 @@ Ext.onReady(function() {
      */
     App.setGlobals();
 
-    var maxExtent = OpenLayers.Bounds.fromArray(App.restrictedExtent);
+    var maxExtent = App.restrictedExtent;
     app = new gxp.Viewer({
         portalConfig: {
             layout: "border",
@@ -44,10 +44,12 @@ Ext.onReady(function() {
                         id: "themeselector-container",
                         xtype: "container",
                         layout: "fit",
+                        flex: 0.1,
                         style: "padding: 3px;"
                     }, {
                         id: "layertree-container",
                         xtype: "container",
+                        flex: 1,
                         layout: "fit"
                     }]
                 }, {
@@ -66,17 +68,20 @@ Ext.onReady(function() {
         tools: [{
             ptype: "cgxp_themeselector",
             outputTarget: "themeselector-container",
-            themes: App.themes,
-            tree: {}//layerTreePanel // TODO
-        /*
+            layerTreeId: "layertree",
+            themes: App.themes
         }, {
             ptype: "cgxp_layertree",
+            id: "layertree",
             outputConfig: {
                 header: false,
-                flex: 1,
-                autoScroll: true
+                autoScroll: true,
+                themes: App.themes,
+                wmsURL: "${request.route_url('mapserverproxy', path='')}",
+                defaultThemes: ${default_themes | n}
             },
             outputTarget: "layertree-container"
+        /*
         }, {
             ptype: "cgxp_querier",
             outputTarget: "querier-container"
@@ -161,7 +166,7 @@ Ext.onReady(function() {
             maxExtent: maxExtent,
             restrictedExtent: maxExtent,
             units: "m",
-            theme: null, // or OpenLayers will attempt to load it default theme
+            theme: null, // or OpenLayers will attempt to load its default theme
             resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
                 new OpenLayers.Control.Navigation(),
@@ -174,7 +179,7 @@ Ext.onReady(function() {
                     bottomOutUnits: false
                 }),
                 new OpenLayers.Control.MousePosition({numDigits: 0}),
-                App.createOverviewMap(maxExtent)
+                App.createOverviewMap(OpenLayers.Bounds.fromArray(maxExtent))
             ],
             // TODO: configure layers
             layers: [
