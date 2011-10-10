@@ -1,1 +1,1 @@
-<%inherit file="globals_base.html"/>
+<%inherit file="globals_base.js"/>
