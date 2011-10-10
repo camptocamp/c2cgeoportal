@@ -29,7 +29,7 @@ Installation of a new project instance
     cd newproj
 
 * Export the empty project:
-    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/branches/pyramid/emptyproj .
+    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk/emptyproj .
 
 * Rename the right buildout file,
   for parent:
@@ -41,8 +41,8 @@ Installation of a new project instance
     rm -rf tilecache # not used on a child
 
 * Link to c2cgeoportal:
-    svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/branches/pyramid" .
-    svn propset svn:externals "project/static/lib https://project.camptocamp.com/svn/c2c_mapfish/cgxp" .
+    svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk" .
+    svn propset svn:externals "cgxp https://project.camptocamp.com/svn/c2c_mapfish/cgxp" project/static/lib
 
 * Add to your project svn:
     svn add *
