@@ -45,7 +45,6 @@
         </%block>\
 % else:
         <%block name="page_head_cssurls_nodebug">\
-        <link rel="stylesheet" type="text/css" href="${request.static_url('project:static/build/app.css')}" />
         </%block>\
 % endif
         </%block>\
@@ -93,8 +92,6 @@
         </%block>\
 % else:
         <%block name="page_jsurls_nodebug">\
-        <script type="text/javascript" src="${request.static_url('project:static/build/app.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('project:static/build/lang-%s.js' % lang)}"></script>
         </%block>\
 % endif
 
