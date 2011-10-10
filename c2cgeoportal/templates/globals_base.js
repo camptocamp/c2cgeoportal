@@ -47,4 +47,4 @@ App["functionality"] = ${functionality | n};
 App["functionalities"] = ${functionalities | n};
 % endif
 <%block name="globals">\
-<%/block>\
+</%block>\
