@@ -12,9 +12,8 @@ from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
-from c2cgeoportal.models import (DBSession, Layer, LayerGroup, Theme,
-                                  RestrictionArea, Role,
-                                  layer_ra, role_ra, User)
+from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
+        RestrictionArea, Role, layer_ra, role_ra, User
 
 log = logging.getLogger(__name__)
 
@@ -216,7 +215,8 @@ class Entry(object):
                             children.append(c)
 
                     elif type(item) == Layer:
-                        children.append(self._layer(item, wms_layers, wms))
+                        if (item in layers):
+                            children.append(self._layer(item, wms_layers, wms))
 
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \

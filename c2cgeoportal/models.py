@@ -281,7 +281,7 @@ class Theme(TreeGroup):
     icon = Column(types.Unicode, label=_(u'Icon'))
     display = Column(types.Boolean, label=_(u'Display')) # display in theme selector
 
-    def __init__(self, name=u'', order=u'', icon=u'', display=True):
+    def __init__(self, name=u'', order=100, icon=u'', display=True):
         TreeGroup.__init__(self, name=name, order=order) 
         self.icon = icon
         self.display = display

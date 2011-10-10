@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pyramid.config import Configurator
 from project.resources import Root
+import c2cgeoportal
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(root_factory=Root, settings=settings)
 
-    config.include(c2cgeoporal)
+    config.include(c2cgeoportal)
 
     config.add_translation_dirs('project:locale/')
 

@@ -19,7 +19,7 @@ Available options:
 
     # read the configuration
     ini_file = sys.argv[1]
-    app = get_app(ini_file, "c2cgeoportal")
+    app = get_app(ini_file, "project")
     settings = app.registry.settings
 
     # sets the schema and load the database model
@@ -30,13 +30,13 @@ Available options:
 
     if "-d" in sys.argv[2:] or '--drop' in sys.argv[2:]:
         print "Dropping tables"
-        for table in reversed(Base.metadata.sorted_tables):
+        for table in reversed(c2cmodels.Base.metadata.sorted_tables):
             if table.name != 'tsearch' and table.schema == schema: 
                 print "Dropping table %s" % table.name
                 table.drop(bind=DBSession.bind, checkfirst=True)
 
     print "Creating tables"
-    for table in Base.metadata.sorted_tables:
+    for table in c2cmodels.Base.metadata.sorted_tables:
         if table.name != 'tsearch' and table.schema == schema: 
             print "Creating table %s" % table.name
             table.create(bind=DBSession.bind, checkfirst=True)
