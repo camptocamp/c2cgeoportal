@@ -92,15 +92,10 @@ Ext.onReady(function() {
         }, {
             ptype: "gxp_zoomtoextent",
             actionTarget: "map.tbar"
-        /*
         }, {
-            ptype: "cgxp_zoomin",
+            ptype: "cgxp_zoom",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
-        }, {
-            ptype: "cgxp_zoomout",
-            actionTarget: "map.tbar"
-        */
         }, {
             ptype: "gxp_navigationhistory",
             actionTarget: "map.tbar"
@@ -108,10 +103,12 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_permalink",
             actionTarget: "map.tbar"
+        */
         }, {
-            ptype: "cgxp_measure",
+            ptype: "gxp_measure",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
+        /*
         }, {
             ptype: "cgxp_wmsgetfeatureinfo",
             featureManager: "featuremanager",
