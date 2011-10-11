@@ -1,0 +1,130 @@
+MAP
+    NAME "c2cgeoportail"
+
+    EXTENT -180 -90 180 90
+    UNITS dd
+
+    # MAXSIZE shouldn't be less than 4000 for MF print
+    MAXSIZE 4000
+
+    SHAPEPATH ''
+
+    IMAGECOLOR 255 255 255
+    STATUS ON
+
+    #FONTSET "fonts.conf"
+    #SYMBOLSET "symbole.sym"
+
+    OUTPUTFORMAT
+        NAME jpeg
+        DRIVER "AGG/JPEG"
+        IMAGEMODE RGB
+        EXTENSION "jpeg"
+        FORMATOPTION "QUALITY=75,PROGRESSIVE=TRUE"
+    END
+
+    OUTPUTFORMAT
+        NAME png
+        DRIVER AGG/PNG
+        MIMETYPE "image/png"
+        IMAGEMODE RGBA
+        EXTENSION "png"
+        FORMATOPTION "INTERLACE=OFF"
+    END
+
+    PROJECTION
+        "init=epsg:21781"
+    END
+
+    WEB
+        METADATA
+            "wms_title" "changeme"
+            "wms_abstract" "changeme"
+            "wms_onlineresource" "changeme"
+            "wms_srs" "epsg:21781"
+            "wms_encoding" "UTF-8"
+            "wms_enable_request" "*"
+            "ows_title" "changeme"
+            "ows_enable_request" "*"
+        END
+    END
+
+    SYMBOL
+        NAME "square"
+        TYPE vector
+        POINTS
+            0 0
+            0 1
+            1 1
+            1 0
+            0 0
+        END
+        FILLED true
+    END
+
+    LAYER
+        NAME "testpoint_unprotected"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "${mapserver_connection}"
+        DATA "the_geom from test.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "polygon"
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_unprotected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "testpoint_protected"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "${mapserver_connection}"
+        DATA "the_geom from (SELECT tp.* FROM test.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom))) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+
+            ${mapserver_layer_metadata}
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_protected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+END

@@ -22,6 +22,8 @@ requires = [
     'GeoFormAlchemy',
     'OWSLib',
     'tileforge',
+    'nose',
+    'nosexcover'
     ]
 
 setup(name='c2cgeoportal',
