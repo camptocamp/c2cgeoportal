@@ -5,7 +5,33 @@ Ext.onReady(function() {
      */
     App.setGlobals();
 
+    var WMTS_OPTIONS = {
+% if len(tilecache_url) == 0:
+        url: "${request.route_url('tilecache', path='')}",
+% else:
+        url: '${tilecache_url}',
+% endif
+        style: 'default',
+        dimensions: ['TIME'],
+        params: {
+            'time': '2011'
+        },
+        matrixSet: 'swissgrild',
+        maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
+        isBaseLayer: true,
+        displayInLayerSwitcher: false,
+        requestEncoding: 'REST',
+        projection: new OpenLayers.Projection("EPSG:21781"),
+        units: "m",
+        formatSuffix: 'png',
+        serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05],
+        getMatrix: function() {
+            return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
+        },
+        buffer: 0
+    }
     var maxExtent = App.restrictedExtent;
+
     app = new gxp.Viewer({
         portalConfig: {
             layout: "border",
@@ -91,7 +117,13 @@ Ext.onReady(function() {
         */
         }, {
             ptype: "gxp_zoomtoextent",
-            actionTarget: "map.tbar"
+            actionTarget: "map.tbar",
+            closest: true,
+% if user:
+            extent: ${user.role.jsextent}
+% else:
+            extent: ${default_initial_extent | n}
+% endif
         }, {
             ptype: "cgxp_zoom",
             actionTarget: "map.tbar",
@@ -108,7 +140,7 @@ Ext.onReady(function() {
             ptype: "gxp_measure",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
-        /*
+        /*        
         }, {
             ptype: "cgxp_wmsgetfeatureinfo",
             featureManager: "featuremanager",
@@ -142,18 +174,10 @@ Ext.onReady(function() {
         }],
 
         // layer sources
-        defaultSourceType: "gxp_wmssource",
         sources: {
-            // TODO: configure sources
-            /*
-            local: {
-                url: "/geoserver/wms",
-                version: "1.1.1"
-            },
-            google: {
-                ptype: "gxp_googlesource"
+            "olsource": {
+                ptype: "gxp_olsource",
             }
-            */
         },
 
         // map and layers
@@ -176,10 +200,78 @@ Ext.onReady(function() {
                     bottomOutUnits: false
                 }),
                 new OpenLayers.Control.MousePosition({numDigits: 0}),
-                App.createOverviewMap(OpenLayers.Bounds.fromArray(maxExtent))
+                // Static image version
+                /*
+                return new OpenLayers.Control.OverviewMap({
+                    size: new OpenLayers.Size(200, 100),
+                    layers: [new OpenLayers.Layer.Image(
+                        OpenLayers.Util.createUniqueID("c2cgeoportal"),
+                        "/proj/images/overviewmap.png",
+                        OpenLayers.Bounds.fromArray([630000, 238000, 678000, 262000]),
+                        new OpenLayers.Size([200, 100]),
+                        {isBaseLayer: true}
+                    )],
+                    mapOptions: {
+                        numZoomLevels: 1
+                    }
+                })*/
+                // OSM version
+                new OpenLayers.Control.OverviewMap({
+                    size: new OpenLayers.Size(200, 100),
+                    minRatio: 64, 
+                    maxRatio: 64, 
+                    layers: [new OpenLayers.Layer.OSM("OSM", [
+                            'http://a.tile.openstreetmap.org/${"${z}"}/${"${x}"}/${"${y}"}.png',
+                            'http://b.tile.openstreetmap.org/${"${z}"}/${"${x}"}/${"${y}"}.png',
+                            'http://c.tile.openstreetmap.org/${"${z}"}/${"${x}"}/${"${y}"}.png'
+                        ], {
+                            transitionEffect: 'resize',
+                            attribution: [
+                                "(c) <a href='http://openstreetmap.org/'>OSM</a>",
+                                "<a href='http://creativecommons.org/licenses/by-sa/2.0/'>by-sa</a>"
+                            ].join(' ')
+                        }
+                    )]
+                })
             ],
-            // TODO: configure layers
-            layers: [
+            layers: [{
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('ortho'),
+                    ref: 'ortho',
+                    layer: 'ortho',
+                    formatSuffix: 'jpeg',
+                    opacity: 0,
+                    isBaseLayer: false
+                }, WMTS_OPTIONS)]
+            }, {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('plan'),
+                    ref: 'plan',
+                    layer: 'plan'
+                }, WMTS_OPTIONS)]
+            }, {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('plan color'),
+                    ref: 'plan_color',
+                    layer: 'plan_color'
+                }, WMTS_OPTIONS)]
+            }, {
+                source: "olsource",
+                type: "OpenLayers.Layer",
+                args: [OpenLayers.i18n('blank'), {
+                    isBaseLayer: true,
+                    displayInLayerSwitcher: false,
+                    ref: 'blank'
+                }]
+            }
+
+
                 /*
             {
                 source: "google",
