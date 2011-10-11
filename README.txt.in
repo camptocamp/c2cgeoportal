@@ -291,3 +291,24 @@ Some tip for posix tools users
 
 * Display only one chapter
    grep -A30 "Title" c2cgeoportal/README.txt
+
+
+Testing
+=======
+
+Run the tests: 
+* Have the c2cgeoportal as a dev egg
+
+* Have the template working in the c2cgeoportal by adding in the
+ buildout_user.cfg:
+    [template]
+    exclude-directories -= c2cgeoportal
+
+* run buildout
+    ./buildout/bin/buildout -c buildout_user.cfg:
+* run the tests
+   . buildout/bin/activate
+   cd c2cgeoportail/
+   nosetests
+   cd -
+   desactivate
