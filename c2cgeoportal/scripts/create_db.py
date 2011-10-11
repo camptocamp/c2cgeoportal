@@ -27,7 +27,7 @@ def main():
 
     schema = settings['schema']
     parentschema = settings['parentschema']
-    import c2cgeoportal.models as models
+    import c2cgeoportal.models
 
     if len(sys.argv) > 2 and sys.argv[2] in ['-d', '--drop']:
         log.info("Dropping tables")
