@@ -190,7 +190,6 @@ Ext.onReady(function() {
             maxExtent: maxExtent,
             restrictedExtent: maxExtent,
             units: "m",
-            theme: null, // or OpenLayers will attempt to load its default theme
             resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
                 new OpenLayers.Control.Navigation(),
