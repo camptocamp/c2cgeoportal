@@ -4,6 +4,7 @@ Ext.onReady(function() {
      * Initialize the application.
      */
     App.setGlobals();
+    var events = new Ext.util.Observable();
 
     var WMTS_OPTIONS = {
 % if len(tilecache_url) == 0:
@@ -44,12 +45,13 @@ Ext.onReady(function() {
             "app-map",
             {
                 id: "featuregrid-container",
-                xtype: "container",
+                xtype: "panel",
                 layout: "fit",
                 region: "south",
                 height: 160,
                 split: true,
-                collapseMode: "mini"
+                collapseMode: "mini",
+                hidden: true
             }, {
                 layout: "accordion",
                 region: "west",
@@ -78,7 +80,7 @@ Ext.onReady(function() {
                         flex: 1,
                         layout: "fit"
                     }]
-                }, {
+/*                }, {
                     id: "querier-container",
                     xtype: "panel",
                     layout: "fit"
@@ -86,7 +88,7 @@ Ext.onReady(function() {
                     id: "print-container",
                     xtype: "panel",
                     layout: "fit"
-                }]
+*/                }]
             }]
         },
 
@@ -140,12 +142,13 @@ Ext.onReady(function() {
             ptype: "gxp_measure",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
-        /*        
         }, {
             ptype: "cgxp_wmsgetfeatureinfo",
             featureManager: "featuremanager",
             actionTarget: "map.tbar",
-            toggleGroup: "maptools"
+            toggleGroup: "maptools",
+            events: events
+        /*
         }, {
             ptype: "cgxp_fulltextsearch",
             actionTarget: "map.tbar"
@@ -166,11 +169,11 @@ Ext.onReady(function() {
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
             id: "featuremanager"
-        }, {
+*/        }, {
             ptype: "cgxp_featuregrid",
             featureManager: "featuremanager",
-            outputTarget: "featuregrid-container"
-        */
+            outputTarget: "featuregrid-container",
+            events: events
         }],
 
         // layer sources
@@ -269,21 +272,7 @@ Ext.onReady(function() {
                     displayInLayerSwitcher: false,
                     ref: 'blank'
                 }]
-            }
-
-
-                /*
-            {
-                source: "google",
-                name: "TERRAIN",
-                group: "background"
-            }, {
-                source: "local",
-                name: "usa:states",
-                selected: true
-            }
-                */
-            ],
+            }],
             items: [/*{
                 xtype: "cgxp_opacityslider"
             }*/]
