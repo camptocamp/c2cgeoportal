@@ -19,7 +19,6 @@ Ext.onReady(function() {
         },
         matrixSet: 'swissgrild',
         maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
-        isBaseLayer: true,
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
         projection: new OpenLayers.Projection("EPSG:21781"),
@@ -174,6 +173,8 @@ Ext.onReady(function() {
             featureManager: "featuremanager",
             outputTarget: "featuregrid-container",
             events: events
+        }, {
+            ptype: "cgxp_mapopacityslider"
         }],
 
         // layer sources
@@ -244,37 +245,39 @@ Ext.onReady(function() {
                     ref: 'ortho',
                     layer: 'ortho',
                     formatSuffix: 'jpeg',
-                    opacity: 0,
-                    isBaseLayer: false
+                    opacity: 0
                 }, WMTS_OPTIONS)]
             }, {
                 source: "olsource",
                 type: "OpenLayers.Layer.WMTS",
+                group: 'background',
                 args: [Ext.applyIf({
                     name: OpenLayers.i18n('plan'),
                     ref: 'plan',
-                    layer: 'plan'
+                    layer: 'plan',
+                    group: 'background'
                 }, WMTS_OPTIONS)]
             }, {
                 source: "olsource",
                 type: "OpenLayers.Layer.WMTS",
+                group: 'background',
                 args: [Ext.applyIf({
                     name: OpenLayers.i18n('plan color'),
                     ref: 'plan_color',
-                    layer: 'plan_color'
+                    layer: 'plan_color',
+                    group: 'background'
                 }, WMTS_OPTIONS)]
             }, {
                 source: "olsource",
                 type: "OpenLayers.Layer",
+                group: 'background',
                 args: [OpenLayers.i18n('blank'), {
-                    isBaseLayer: true,
                     displayInLayerSwitcher: false,
-                    ref: 'blank'
+                    ref: 'blank',
+                    group: 'background'
                 }]
             }],
-            items: [/*{
-                xtype: "cgxp_opacityslider"
-            }*/]
+            items: []
         }
     });
 
