@@ -50,7 +50,7 @@ admin_js = Resource(
 admin_css = Resource(
         fanstatic_lib,
         'admin/admin.css',
-        depends=[fanstatic_resources.css_uiadmin])
+        depends=[fanstatic_resources.fa_uiadmin_css])
 
 # HACK to invoke fanstatic to inject a script which content is dynamic:
 # the content of the script sets OpenLayers.ImgPath to an url that is
