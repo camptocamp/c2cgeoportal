@@ -2,6 +2,8 @@
 import logging
 import os
 
+from fanstatic import Library, Group, Resource
+from fanstatic.core import set_resource_file_existence_checking
 from pyramid.i18n import Localizer
 from pyramid_formalchemy.utils import TemplateEngine
 from sqlalchemy import UniqueConstraint
@@ -18,6 +20,8 @@ from formalchemy.ext.fsblob import FileFieldRenderer
 from formalchemy.ext.fsblob import ImageFieldRenderer
 from mako.lookup import TemplateLookup
 from fa.jquery import renderers as fa_renderers
+from fa.jquery import fanstatic_resources
+from pyramid_formalchemy import events as fa_events
 from geoformalchemy.base import GeometryFieldRenderer
 from geoalchemy import geometry
 from pyramid.i18n import TranslationStringFactory
@@ -27,11 +31,75 @@ from c2cgeoportal import (formalchemy_language, formalchemy_default_zoom,
                            formalchemy_default_lon, formalchemy_default_lat,
                            formalchemy_available_functionalities)
 
+__all__ = ['Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
+'RestrictionArea', 'LayerGrid', 'LayerGroupGrid', 'ThemeGrid',
+'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid']
+
+
 log = logging.getLogger(__name__)
 _ = TranslationStringFactory('c2cgeoportal')
 
 fa_config.encoding = 'utf-8'
 fa_config.engine = TemplateEngine()
+
+fanstatic_lib = Library('admin', 'static/build')
+admin_js = Resource(
+        fanstatic_lib,
+        'admin/admin.js',
+        depends=[fanstatic_resources.jqueryui])
+admin_css = Resource(
+        fanstatic_lib,
+        'admin/admin.css',
+        depends=[fanstatic_resources.css_uiadmin])
+
+# HACK to invoke fanstatic to inject a script which content is dynamic:
+# the content of the script sets OpenLayers.ImgPath to an url that is
+# dynamically generated using request.static_url
+olimgpath_js = None
+# deactive resource checking in fanstatic
+set_resource_file_existence_checking(False)
+def get_fanstatic_resources(request):
+    global olimgpath_js
+    olimgpath = request.static_url('c2cgeoportal:static/lib/openlayers/img/')
+    def olimgpath_renderer(url):
+        return '<script>OpenLayers.ImgPath="%s";</script>' % olimgpath
+    if olimgpath_js is None:
+        olimgpath_js = Resource(
+                fanstatic_lib,
+                'whatever.js',
+                renderer=olimgpath_renderer,
+                depends=[admin_js])
+
+    return Group([admin_js, olimgpath_js, admin_css])
+# end of HACK
+
+@fa_events.subscriber([models.Functionality, fa_events.IBeforeRenderEvent])
+def before_render_functionnality(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.Theme, fa_events.IBeforeRenderEvent])
+def before_render_theme(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.Layer, fa_events.IBeforeRenderEvent])
+def before_render_layer(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.LayerGroup, fa_events.IBeforeRenderEvent])
+def before_render_layergroup(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.RestrictionArea, fa_events.IBeforeRenderEvent])
+def before_render_restrictionarea(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.Role, fa_events.IBeforeRenderEvent])
+def before_render_role(context, event):
+    get_fanstatic_resources(event.request).need()
+
+@fa_events.subscriber([models.User, fa_events.IBeforeRenderEvent])
+def before_render_user(context, event):
+    get_fanstatic_resources(event.request).need()
 
 # validator to check uniqueness of unique key in db (prevent duplicate key error)
 def unique_validator(value,f):

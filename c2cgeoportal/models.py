@@ -14,11 +14,13 @@ from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
 from formalchemy import Column
 from pyramid.threadlocal import get_current_registry
-from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
+from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
 
-from c2cgeoportal import schema
-from c2cgeoportal import parentschema
+from c2cgeoportal import schema, parentschema
+
+__all__ = ['Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
+'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea']
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
@@ -35,9 +37,7 @@ _parentschema = parentschema
 class FullTextSearch(GeoInterface, Base):
     __tablename__ = 'tsearch'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
-    ]
+    __acl__ = [DENY_ALL]
     id = Column('id', types.Integer, primary_key=True)
     label = Column('label', types.Unicode)
     layer_name = Column('layer_name', types.Unicode)
@@ -202,9 +202,7 @@ GeometryDDL(Role.__table__)
 class TreeItem(Base):
     __tablename__ = 'treeitem'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
-    ]
+    __acl__ = [DENY_ALL]
     itemType = Column('type', types.String(10), nullable=False)
     __mapper_args__ = {'polymorphic_on': itemType}
     id = Column(types.Integer, primary_key=True)
@@ -230,9 +228,7 @@ layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
 class TreeGroup(TreeItem):
     __tablename__ = 'treegroup'
     __table_args__ = {'schema': _schema}
-    __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
-    ]
+    __acl__ = [DENY_ALL]
     __mapper_args__ = {'polymorphic_identity': 'treegroup'}
     id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'), 
             primary_key=True)

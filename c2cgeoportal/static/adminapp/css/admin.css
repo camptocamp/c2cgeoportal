@@ -1,20 +1,3 @@
-
-.User form div.fa_field, .Layer form div.fa_field {
-    display: table-row;
-}
-.User form div.fa_field div.label, .Layer form div.fa_field div.label {
-    display: table-cell;
-    width: 200px;
-}
-.User form input[type="text"], .Layer form > div input[type="text"] {
-    width: 250px;
-}
-.User form input[type="password"] {
-    width: 124px;
-}
-.User form div.fa_controls, .Layer form div.fa_controls {
-    display: block;
-}
 form div div.label div {
     display: inline;
 }
@@ -41,57 +24,4 @@ h1#header div.breadcrumb {
 }
 .auth { 
     text-align: right; 
-}
-/* from original master.pt */
-label {
-    font-weight: bold;
-}
-h1, h3 {
-    padding: 0.1 0.3em;
-}
-h1 a, h3 a {
-    text-decoration: none;
-}
-#header { 
-    height: 2em; 
-    font-size: 1.5em; 
-}
-#header div { 
-    font-size: 1.5em; 
-}
-#header a { 
-    font-size: 1em; 
-}
-ul#languages {
-    float: right;
-}
-ul#languages li {
-    display: inline;
-}
-ul#languages a {
-    text-decoration: none; 
-    color: grey;
-}
-ul#languages a.lang_active {
-    text-decoration: underline;
-}
-div.breadcrumb {
-    float: right;
-    width: 20%;
-    margin-right: 20px;
-}
-div.breadcrumb a {
-    text-decoration: none;
-}
-h1 a.ui-selectmenu {
-    height: 1em;
-}
-a.ui-state-default {
-    padding: 0.1em 0.3em;
-}
-a.fm-button {
-    padding: 0.4em 0.5em;
-}
-a.fm-button-icon-left {
-    padding-left: 1.9em;
 }

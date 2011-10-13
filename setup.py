@@ -19,6 +19,7 @@ requires = [
     'Babel',
     'pyramid_formalchemy',
     'fa.jquery',
+    'fanstatic',
     'GeoFormAlchemy',
     'OWSLib',
     'tileforge',
@@ -54,6 +55,9 @@ setup(name='c2cgeoportal',
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_db = c2cgeoportal.scripts.manage_db:run',
+        ],
+        'fanstatic.libraries': [
+            'admin = c2cgeoportal.forms:fanstatic_lib',
         ],
       }
 )

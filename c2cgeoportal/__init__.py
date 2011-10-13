@@ -1,7 +1,6 @@
 from pyramid.config import Configurator
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.authentication import AuthTktAuthenticationPolicy
-from pyramid_formalchemy.resources import Models
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
@@ -10,7 +9,7 @@ import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON
 
-from c2cgeoportal.resources import Root
+from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
 
 # used by (sql|form)alchemy
@@ -118,28 +117,9 @@ def includeme(config):
     formalchemy_default_lat = config.get_settings()['formalchemy_default_lat']
     formalchemy_available_functionalities = config.get_settings()['formalchemy_available_functionalities']
 
-    config.override_asset( 
-            to_override="fa.jquery:templates/admin/", 
-            override_with="c2cgeoportal:templates/admin/") 
- 
     # register an admin UI 
-    config.formalchemy_model('/admin/functionality', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Functionality')
-    config.formalchemy_model('/admin/theme', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Theme')
-    config.formalchemy_model('/admin/layer', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Layer')
-    config.formalchemy_model('/admin/layergroup', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.LayerGroup')
-    config.formalchemy_model('/admin/restrictionarea', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.RestrictionArea')
-    config.formalchemy_model('/admin/role', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.Role')
-    config.formalchemy_model('/admin/user', package='c2cgeoportal', 
-            view='fa.jquery.pyramid.ModelView', model='c2cgeoportal.models.User')
-    config.add_route('admin', '/admin')
-
-    config.formalchemy_admin('administration', package='c2cgeoportal', factory=Models)
+    config.formalchemy_admin('admin', package='c2cgeoportal',
+            view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     # scan view decorator for adding routes
     config.scan()

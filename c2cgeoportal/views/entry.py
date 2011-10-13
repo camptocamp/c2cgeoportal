@@ -347,14 +347,3 @@ class Entry(object):
         else:
             return HTTPFound(location = self.request.route_url('home'),
                     headers = headers)
-
-    @view_config(route_name='admin', renderer='admin.html')
-    def admin(self):
-        _ = self.request.translate
-        return {
-            'lang': self.lang, 
-            'debug': self.debug, 
-            'displayName': self.username, 
-            'user': self.user,
-            'entities': self.settings.get('formalchemy_entities').split()
-        }
