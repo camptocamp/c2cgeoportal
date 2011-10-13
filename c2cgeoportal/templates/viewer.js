@@ -166,9 +166,12 @@ Ext.onReady(function() {
             ptype: "cgxp_help",
             url: "#help-url",
             actionTarget: "map.tbar"
+            */
         }, {
             ptype: "cgxp_redlining",
+            toggleGroup: "maptools",
             actionTarget: "map.tbar"
+            /*
         }, {
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
@@ -287,6 +290,7 @@ Ext.onReady(function() {
     });
 
     // remove loading message
+    // FIXME: really works?
     Ext.get('loading').remove();
     Ext.fly('loading-mask').fadeOut({
         remove:true
