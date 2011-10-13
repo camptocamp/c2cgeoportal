@@ -151,6 +151,11 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_fulltextsearch",
             actionTarget: "map.tbar"
+        */
+        }, {
+            ptype: "cgxp_menushortcut",
+            type: '->'
+        /*
         }, {
             ptype: "cgxp_legend",
             actionTarget: "map.tbar"
