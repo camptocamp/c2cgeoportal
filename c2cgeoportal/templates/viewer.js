@@ -155,10 +155,16 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_menushortcut",
             type: '->'
-        /*
+        }, {
+            ptype: "cgxp_redlining",
+            toggleGroup: "maptools",
+            actionTarget: "map.tbar"
         }, {
             ptype: "cgxp_legend",
+            id: "legendPanel",
+            toggleGroup: "maptools",
             actionTarget: "map.tbar"
+        /*
         }, {
             ptype: "cgxp_loginform",
             actionTarget: "map.tbar"
@@ -166,12 +172,6 @@ Ext.onReady(function() {
             ptype: "cgxp_help",
             url: "#help-url",
             actionTarget: "map.tbar"
-            */
-        }, {
-            ptype: "cgxp_redlining",
-            toggleGroup: "maptools",
-            actionTarget: "map.tbar"
-            /*
         }, {
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
