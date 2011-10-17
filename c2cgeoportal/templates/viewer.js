@@ -53,6 +53,7 @@ Ext.onReady(function() {
                 hidden: true
             }, {
                 layout: "accordion",
+                id: "left-panel",
                 region: "west",
                 width: 300,
                 minWidth: 300,
@@ -79,15 +80,13 @@ Ext.onReady(function() {
                         flex: 1,
                         layout: "fit"
                     }]
-/*                }, {
+                }/*,
+                {
                     id: "querier-container",
                     xtype: "panel",
                     layout: "fit"
-                }, {
-                    id: "print-container",
-                    xtype: "panel",
-                    layout: "fit"
-*/                }]
+                }*/              
+                ]
             }]
         },
 
@@ -112,10 +111,21 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_querier",
             outputTarget: "querier-container"
+        */
         }, {
             ptype: "cgxp_print",
-            outputTarget: "print-container"
-        */
+            legendPanelId: "legendPanel",
+            featureGridId: "featureGrid",
+            outputTarget: "left-panel",
+            options: {
+                labelAlign: 'top',
+                defaults: {
+                    anchor:'100%'
+                }
+            },
+            outputConfig: {
+                layout: "fit"
+            }
         }, {
             ptype: "gxp_zoomtoextent",
             actionTarget: "map.tbar",
@@ -178,6 +188,7 @@ Ext.onReady(function() {
             id: "featuremanager"
 */        }, {
             ptype: "cgxp_featuregrid",
+            id: "featureGrid",
             featureManager: "featuremanager",
             outputTarget: "featuregrid-container",
             events: events
