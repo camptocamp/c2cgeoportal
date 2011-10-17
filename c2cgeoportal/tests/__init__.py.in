@@ -15,15 +15,10 @@ external_themes_url = '${external_themes_url}'
 encodedLayers_plan = '${encodedLayers_plan}'
 encodedLayers_plan_color = '${encodedLayers_plan_color}'
 encodedLayers_ortho = '${encodedLayers_ortho}'
-page_title = '${page_title}'
-page_link = '${page_link}'
-page_keywords = '${page_keywords}'
-page_description = '${page_description}'
 anonymous_functionalities = ${anonymous_functionalities|path-repr}
 registered_functionalities = ${registered_functionalities|path-repr}
 webclient_string_functionalities = '${webclient_string_functionalities}'
 webclient_array_functionalities = '${webclient_array_functionalities}'
-overwiewimage = '${overwiewimage}'
 mapserv_host = '${vars:mapserv_host}'
 instanceid = '${vars:instanceid}'
 
@@ -44,7 +39,6 @@ class DummyRequest(testing.DummyRequest):
         self.registry.registerUtility(DummyRoutesMapper(), IRoutesMapper)
         self.registry.settings = {
             "external_themes_url": external_themes_url,
-            'overwiewimage': overwiewimage,
             'anonymous_functionalities': anonymous_functionalities,
             'registered_functionalities': registered_functionalities,
             'webclient_string_functionalities': webclient_string_functionalities,
@@ -52,10 +46,6 @@ class DummyRequest(testing.DummyRequest):
             'encodedLayers_plan': encodedLayers_plan,
             'encodedLayers_plan_color': encodedLayers_plan_color,
             'encodedLayers_ortho': encodedLayers_ortho,
-            'page_keywords': page_keywords,
-            'page_description': page_description,
-            'page_title': page_title,
-            'page_link': page_link,
         }
 
 class DummyRoute:

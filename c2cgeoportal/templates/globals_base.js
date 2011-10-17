@@ -15,10 +15,6 @@ App["printURL"] = "${request.route_url('printproxy', path='')}";
 App["csvURL"] = "${request.route_url('csvecho')}";
 App["loginURL"] = "${request.route_url('login')}";
 App["logoutURL"] = "${request.route_url('logout')}";
-App["overwiewImageType"] = "${overwiewimage_type}";
-App["overwiewImage"] = "${request.static_url(overwiewimage)}";
-App["overwiewImageBounds"] = ${overwiewimage_bounds};
-App["overwiewImageSize"] = ${overwiewimage_size};
 App["lang"] = "${lang}";
 % if user:
 App["user"] = "${user.username}";

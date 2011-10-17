@@ -261,12 +261,6 @@ class Entry(object):
         d['default_initial_extent'] = self.settings.get("default_initial_extent")
         d['restricted_extent'] = self.settings.get("restricted_extent")
 
-        d['overwiewimage_type'] = self.settings.get("overwiewimage_type")
-        d['overwiewimage'] = 'c2cgeoportal:static' + \
-                             self.settings.get("overwiewimage")
-        d['overwiewimage_bounds'] = self.settings.get("overwiewimage_bounds")
-        d['overwiewimage_size'] = self.settings.get("overwiewimage_size")
-
         functionality = dict()
         for func in self.settings.get("webclient_string_functionalities").split():
             functionality[func] = get_functionality(func, self.settings, self.request)
@@ -288,10 +282,6 @@ class Entry(object):
         d['encodedLayers_ortho'] = json.dumps(
                 self.settings.get("encodedLayers_ortho").split(','))
 
-        d['page_keywords'] = self._getForLang("page_keywords")
-        d['page_description'] = self._getForLang("page_description")
-        d['page_title'] = self._getForLang("page_title")
-        d['page_link'] = self._getForLang("page_link")
         d['lang'] = self.lang
         d['debug'] = self.debug
 

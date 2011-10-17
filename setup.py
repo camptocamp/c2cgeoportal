@@ -56,6 +56,9 @@ setup(name='c2cgeoportal',
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_db = c2cgeoportal.scripts.manage_db:run',
         ],
+        'paste.paster_create_template': [
+            'update_c2cgeoportal = c2cgeoportal.paste_templates:TemplateUpdate',
+        ],
         'fanstatic.libraries': [
             'admin = c2cgeoportal.forms:fanstatic_lib',
         ],

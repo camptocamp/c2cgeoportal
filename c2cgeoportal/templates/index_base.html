@@ -61,9 +61,11 @@
         <%block name="page_header">\
         <div id="header-out">
             <div class="linkplaceholdercontainer">
-                <a href="${page_link}">
+                <%block name="page_link">\ 
+                <a href="http://camptocamp.com">
                     <div class="linkplaceholder"></div>
                 </a>
+                </%block>\
             </div>
             <div id="header-in"></div>
         </div>

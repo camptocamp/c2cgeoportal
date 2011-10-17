@@ -1,0 +1,445 @@
+[buildout]
+parts = eggs 
+        activate 
+        template 
+        modwsgi 
+        jsbuild 
+        cssbuild 
+        cssbuildadmin 
+        po2mo 
+        print-template 
+        print-war
+develop = . 
+        c2cgeoportal 
+        c2cgeoportal/tileforge 
+        c2cgeoportal/GeoFormAlchemy/GeoFormAlchemy
+        c2cgeoportal/fa.jquery
+        c2cgeoportal/pyramid_formalchemy
+        c2cgeoportal/fanstatic-0ef2510a6594
+index = http://pypi.camptocamp.net/pypi
+newest = false
+prefer-final = true
+extensions = buildout.dumppickedversions
+versions = versions
+
+# isolate ourself from the System Python
+allowed-eggs-from-site-packages = osgeo.*
+exec-sitecustomize = false
+
+develop-eggs-directory = buildout/develop-eggs
+eggs-directory = buildout/eggs
+parts-directory = buildout/parts
+bin-directory = buildout/bin
+
+[versions]
+# list of the dependencies versions
+# (to be copied from the dumppickedversions output)
+Chameleon = 2.4.1
+FormAlchemy = 1.4.1
+GeoAlchemy = 0.6
+JSTools = 0.5
+mako = 0.4.2
+markdown = 2.0.3
+MarkupSafe = 0.15
+PasteScript = 1.7.4.2
+sqlahelper = 1.0b1
+sqlalchemy = 0.7.2
+Shapely = 1.2.12
+tempita = 0.5.1
+c2c.recipe.jarfile = 0.4.3
+collective.recipe.cmd = 0.5
+collective.recipe.modwsgi = 1.2
+distribute = 0.6.14
+evg.recipe.activate = 0.5
+geojson = 1.0.1
+venusian = 1.0a1
+z3c.recipe.filetemplate = 2.2.0
+z3c.recipe.scripts = 1.0.1
+zc.recipe.egg = 1.3.2
+zope.component = 3.10.0
+c2c.recipe.cssmin = 0.5.1
+c2c.recipe.msgfmt = 0.2.1
+
+#Required by:
+#c2cgeoportal 0.2
+#pyramid-formalchemy 0.4.1
+#fa.jquery 0.9.4
+Babel = 0.9.6
+
+#Required by:
+#tileforge 0.2
+PIL = 1.1.7
+
+#Required by:
+#repoze.who 1.0.19
+Paste = 1.7.5.1
+
+#Required by:
+#pyramid 1.2
+#PasteScript 1.7.4.2
+PasteDeploy = 1.5.0
+
+#Required by:
+#WebError 0.10.3
+Pygments = 1.4
+
+#Required by:
+#tileforge 0.2
+TileCache = 2.11
+
+#Required by:
+#papyrus-ogcproxy 0.1
+#c2cgeoportal 0.2
+#pyramid-formalchemy 0.4.1
+WebError = 0.10.3
+
+#Required by:
+#fa.jquery 0.9.4
+#FormAlchemy 1.4.1
+WebHelpers = 1.3
+
+#Required by:
+#WebError 0.10.3
+#FormAlchemy 1.4.1
+WebOb = 1.1
+
+#Required by:
+#tileforge 0.2
+boto = 2.0
+
+#Required by:
+#c2cgeoportal 0.2
+httplib2 = 0.7.1
+
+#Required by:
+#Chameleon 2.4.1
+ordereddict = 1.1
+
+#Required by:
+#c2cgeoportal 0.2
+papyrus = 0.5
+
+#Required by:
+#c2cgeoportal 0.2
+papyrus-ogcproxy = 0.1
+
+#Required by:
+#fa.jquery 0.9.4
+postmarkup = 1.1.4
+
+#Required by:
+#c2cgeoportal 0.2
+psycopg2 = 2.4.2
+
+#Required by:
+#tileforge 0.2
+pyproj = 1.8.9
+
+#Required by:
+#papyrus-ogcproxy 0.1
+#c2cgeoportal 0.2
+pyramid = 1.2
+
+#Required by:
+#c2cgeoportal 0.2
+pyramid-tm = 0.2.1
+
+#Required by:
+#pyramid 1.2
+repoze.lru = 0.4
+
+#Required by:
+#c2cgeoportal 0.2
+repoze.who = 1.0.19
+
+#Required by:
+#c2cgeoportal 0.2
+repoze.who.plugins.sa = 1.0
+
+#Required by:
+#fa.jquery 0.9.4
+simplejson = 2.2.1
+
+#Required by:
+#fa.jquery 0.9.4
+textile = 2.1.5
+
+#Required by:
+#pyramid-tm 0.2.1
+transaction = 1.1.1
+
+#Required by:
+#pyramid 1.2
+translationstring = 0.3
+
+#Required by:
+#Chameleon 2.4.1
+unittest2 = 0.5.1
+
+#Required by:
+#pyramid 1.2
+zope.deprecation = 3.5.0
+
+#Required by:
+#zope.component 3.10.0
+zope.event = 3.5.1
+
+#Required by:
+#SQLAHelper 1.0b1
+#repoze.who 1.0.19
+zope.interface = 3.7.0
+
+#Required by:
+#SQLAHelper 1.0b1
+zope.sqlalchemy = 0.6.1
+
+#Required by:
+#c2cgeoportal 0.2
+OWSLib = 0.4.0
+owslib = 0.4.0
+
+#Required by:
+#c2c.recipe.cssmin 0.5.1
+cssmin = 0.1.4
+
+#Required by:
+#sqlalchemy-migrate 0.7.1
+decorator = 3.3.2
+
+#Required by:
+#c2cgeoportal 0.2
+nose = 1.1.2
+
+#Required by:
+#c2cgeoportal 0.2
+sqlalchemy-migrate = 0.7.1
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.jqgrid = 4.1.0
+
+#Required by:
+#fa.jquery 0.9.5dev
+#js.jquery-markitup 1.1.10-1
+#js.jquery-jgrowl 1.2.5
+#js.jqueryui 1.8.16-1
+#js.jqgrid 4.1.0
+js.jquery = 1.6.1
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.jquery-jgrowl = 1.2.5
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.jquery-markitup = 1.1.10-1
+
+#Required by:
+#js.jqueryui-selectmenu 0.1
+#fa.jquery 0.9.5dev
+#js.jqueryui-syronex-colorpicker 1.0.0
+#js.jqgrid 4.1.0
+js.jqueryui = 1.8.16-1
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.jqueryui-selectmenu = 0.1
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.jqueryui-syronex-colorpicker = 1.0.0
+
+#Required by:
+#fa.jquery 0.9.5dev
+js.tinymce = 3.4.5
+
+[vars]
+# project instance id
+instanceid = override_me
+# the Unix user under which the modwsgi daemon processes are executed,          
+# can be overriden in development-specific buildout config files                
+modwsgi_user = www-data
+# url-path where the instance must respond.
+# defaults is '/$${vars:instanceid}/wsgi'.
+apache-entry-point = /$${vars:instanceid}/wsgi
+# cookie session secret
+authtkt_secret = __import__('uuid').uuid4().hex
+# database user
+dbuser = www-data
+# database password
+dbpassword = www-data
+# database host
+dbhost = localhost
+# database port
+dbport = 5432
+# database name
+db = override_me
+# sqlalchemy schema
+schema = webapp
+# sqlalchemy parent project schema
+parentschema = 
+# WSGI host
+wsgi_host = override_me
+# wmts tiles host
+wmts_host = override_me
+# wmts tiles url
+wmts_url = http://$${vars:wmts_host}/$${vars:instanceid}/tilecache/tilecache
+# mapserv host
+mapserv_host = override_me
+# mapserv URL
+mapserv_url = http://$${vars:mapserv_host}/$${vars:instanceid}/mapserv
+# mapserver apache allows for clients (ex: Allow from camptocamp.com)
+mapserv_allow =  
+# mapserver connexion string
+mapserver_connection = user=$${vars:dbuser} password=$${vars:dbpassword} dbname=$${vars:db} host=$${vars:dbhost}
+# mapserver join tables
+mapserver_join_tables = $${vars:schema}.restrictionarea AS ra, $${vars:schema}.role_restrictionarea AS rra, $${vars:schema}.layer_restrictionarea AS lra, $${vars:schema}.treeitem AS la
+# mapserver visible area
+mapserver_join_area = ra.area
+# mapserver join close
+mapserver_join_where = rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = 
+# mapserver metadata for validation
+mapserver_layer_metadata = 
+    "default_role_id" "-1"
+    "role_id_validation_pattern" "^-?[0-9]*$$"
+# Uncomment to define it if you want to use an external tilecache
+tilecache_url = 
+# print host
+print_host = override_me
+# print path
+print_path = /print-c2cgeoportal-$${vars:instanceid}/pdf/
+# print URL
+print_url = http://$${vars:print_host}:8080$${vars:print_path}
+# port for paster
+paster_port = 5000
+
+# languages
+available_languages = en fr de
+default_language = fr
+
+# for formalchemy OpenLayers map
+formalchemy_default_zoom = 10
+formalchemy_default_lon = 740000
+formalchemy_default_lat = 5860000
+
+formalchemy_available_functionalities = default_basemap print_template
+
+anonymous_functionalities = {
+        "print_template": ["1 A4 portrait", "2 A3 landscape"],
+        "default_basemap": "plan"
+    }
+registered_functionalities = {
+    }
+webclient_string_functionalities = default_basemap
+webclient_array_functionalities = 
+
+# optional external (parent) themes provider URL example: http://example.com/main/wsgi/themes
+external_themes_url = 
+# optional external (parent) mapserver url
+external_mapserv_url =
+
+# default themes
+default_themes = []
+
+# query builder layer
+query_builder_layer =
+
+# base layers encoded layers
+encodedLayers_plan = plan
+encodedLayers_plan_color = plan_color
+encodedLayers_ortho = ortho
+
+# map
+default_initial_extent = [657650, 241130, 668470, 248390]
+restricted_extent = [635200, 238000, 672800, 262000]
+
+[eggs]
+recipe = z3c.recipe.scripts
+eggs = ${project}
+       c2cgeoportal 
+       owslib
+       tileforge
+dependent-scripts = true
+interpreter = python
+initialization =
+    import paste.script.command
+    for egg in ['PasteScript', 'Pyramid', 'c2cgeoportal']: paste.script.command.system_plugins.append(egg)
+
+[activate]
+recipe = evg.recipe.activate
+
+[print-template]
+recipe = collective.recipe.cmd:py
+on_install = true
+on_update = true
+cmds = 
+    >>> from subprocess import call
+    >>> from os.path import join
+    >>> cmd = join('buildout', 'bin', 'print_tpl')
+    >>> print 'calling ' + cmd
+    >>> call([cmd])
+uninstall_cmds =
+    >>> from os import path, remove
+    >>> fpath = path.join('print', 'templates', 'print.mako')
+    >>> if path.isfile(fpath):
+    >>>    print 'removing ' + fpath
+    >>>    remove(fpath)
+
+[print-war]
+recipe = c2c.recipe.jarfile
+mode = update
+basewar = print-servlet-1.2-SNAPSHOT.war
+basedir = print/
+input = $${basewar} WEB-INF/classes/log4j.properties config.yaml *.tif *.bmp *.jpg *.jpeg *.gif *.png
+output = /srv/tomcat/tomcat1/webapps/print-c2cgeoportal-$${vars:instanceid}.war
+
+[modwsgi]
+recipe = collective.recipe.modwsgi
+eggs = ${project}
+config-file = $${buildout:directory}/CONST_production.ini
+
+[template]
+recipe = z3c.recipe.filetemplate
+source-directory = .
+exclude-directories = buildout
+    c2cgeoportal
+interpreted-options = authtkt_secret
+extends = vars
+
+[jsbuild]
+recipe = JSTools:buildjs
+resource-dir = $${buildout:directory}/jsbuild
+# the following jsbuild config files must be written on
+# one line, otherwise Paste will throw a syntax error
+config = $${jsbuild:resource-dir}/CONST_app.cfg $${jsbuild:resource-dir}/app.cfg
+output-dir = ${project}/static/build
+# base-dir to be removed, is there because of a regression
+# in JSTools 0.4 and 0.5
+base-dir = $${buildout:directory}
+compress = True
+ 
+[cssbuild]
+recipe = c2c.recipe.cssmin
+input = 
+    ${project}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
+    ${project}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
+    ${project}/static/lib/cgxp/openlayers/theme/default/style.css
+    ${project}/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css
+    ${project}/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css
+    ${project}/static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css
+    ${project}/static/lib/cgxp/styler/theme/css/styler.css
+    ${project}/static/lib/cgxp/gxp/src/theme/all.css
+    ${project}/static/lib/cgxp/core/src/theme/all.css
+    ${project}/static/css/proj.css
+output = ${project}/static/build/app.css
+
+[cssbuildadmin]
+recipe = c2c.recipe.cssmin
+input = 
+    ${project}/static/css/admin.css
+output = ${project}/static/build/admin.css
+
+[po2mo]
+recipe = c2c.recipe.msgfmt
+po-directory = ${project}/locale/
+
