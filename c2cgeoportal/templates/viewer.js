@@ -124,7 +124,7 @@ Ext.onReady(function() {
                 }
             },
             outputConfig: {
-                layout: "fit"
+                autoFit: true
             }
         }, {
             ptype: "gxp_zoomtoextent",
