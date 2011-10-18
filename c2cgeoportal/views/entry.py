@@ -195,6 +195,7 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')
+        log.info("GetCapabilities for base url: %s"%wms_url)
         wms = WebMapService(wms_url, version='1.1.1')
         wms_layers = list(wms.contents)
 
