@@ -51,7 +51,7 @@ To simplify we consider that the used schema is '$${vars:schema}'.
 Populate
 --------
 * With one value:
-    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
+    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
 
 * With a sub select:
     INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), 21781), 'layer group name', text, to_tsvector('german', text) FROM table;
