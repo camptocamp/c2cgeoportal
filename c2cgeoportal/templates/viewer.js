@@ -169,10 +169,15 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_loginform",
             actionTarget: "map.tbar"
+        */
         }, {
+            ptype: "cgxp_menushortcut",
+            type: '-'
+        },{
             ptype: "cgxp_help",
             url: "#help-url",
             actionTarget: "map.tbar"
+        /*
         }, {
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
