@@ -23,6 +23,7 @@ requires = [
     'GeoFormAlchemy',
     'OWSLib',
     'tileforge',
+    'JSTools',
     'nose',
     'nosexcover'
     ]

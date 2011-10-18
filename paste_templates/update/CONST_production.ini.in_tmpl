@@ -104,12 +104,12 @@ level = WARN
 handlers = console
 
 [logger_c2cgeoportal]
-level = WARN
+level = INFO
 handlers =
 qualname = c2cgeoportal
 
 [logger_${package}]
-level = WARN
+level = INFO
 handlers =
 qualname = ${package}
 
