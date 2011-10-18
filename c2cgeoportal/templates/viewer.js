@@ -69,13 +69,7 @@ Ext.onReady(function() {
                     layoutConfig: {
                         align: "stretch"
                     }
-                }/*,
-                {
-                    id: "querier-container",
-                    xtype: "panel",
-                    layout: "fit"
-                }*/              
-                ]
+                }]
             }]
         },
 
@@ -102,11 +96,13 @@ Ext.onReady(function() {
                 defaultThemes: ${default_themes | n}
             },
             outputTarget: "layerpanel"
-        /*
         }, {
             ptype: "cgxp_querier",
-            outputTarget: "querier-container"
-        */
+            outputTarget: "left-panel",
+            events: events,
+            outputConfig: {
+                //hidden: App.user ? false : true
+            }
         }, {
             ptype: "cgxp_print",
             legendPanelId: "legendPanel",

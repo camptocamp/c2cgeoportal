@@ -88,6 +88,12 @@
         </%block>\
 
         <%block name="page_jsurls">\
+        <script type="text/javascript">
+            ## include global App js variables, must be available before loading js files
+            <%block name="page_js_script">\
+            <%include file="globals.js" />
+            </%block>\
+        </script>
 % if debug:
         <%block name="page_jsurls_debug">\
         ## include debug js files
@@ -96,11 +102,7 @@
         <%block name="page_jsurls_nodebug">\
         </%block>\
 % endif
-
         <script type="text/javascript">
-            <%block name="page_js_script">\
-            <%include file="globals.js" />
-            </%block>\
             <%block name="page_js_viewer">\
             <%include file="viewer.js" />
             </%block>\
