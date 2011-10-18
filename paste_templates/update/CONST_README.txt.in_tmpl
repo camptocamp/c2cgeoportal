@@ -105,11 +105,16 @@ like (in one line):
         WHERE ST_Contains($${mapserver_join_area}, geo.geometrie) 
         AND $${mapserver_join_where} 'layer_name') AS foo 
         USING UNIQUE gid USING srid=-1"
+And in the METADATA of the layer:
+    ${mapserver_layer_metadata}
 The important point is to have $${mapserver_join_tables} in the table list,
 have ST_Contains($${mapserver_join_area}, geo.geometrie) 
 AND $${mapserver_join_where} 'layer_name' in the where close to do the 
 restriction. The first part is used to filter on the geometry, the segont is to
 do the table joining and select the right layer.
+
+The matatata is needed because mapserver 6 want apply a validation with a pattern
+for all the variable substitution present in the DATA.
 
 This should be in a .map.in because it use template variable that's replace by 
 SQL code in the .map file.
