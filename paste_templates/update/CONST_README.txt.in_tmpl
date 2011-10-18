@@ -29,7 +29,7 @@ The project shoulld allredy be built (see below).
     sudo -u postgres psql -c "GRANT ALL ON SCHEMA $${vars:schema} TO \"$${vars:dbuser}\";" $${vars:db}
 
 * Create the tables and populate:
-    sudo -u $${vars:dbuser} buildout/bin/create_db c2cgeoportal/development.ini -p
+    sudo -u $${vars:dbuser} buildout/bin/create_db CONST_development.ini -p
 
 * Set the version
     ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`

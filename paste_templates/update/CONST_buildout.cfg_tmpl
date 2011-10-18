@@ -407,7 +407,7 @@ config-file = $${buildout:directory}/CONST_production.ini
 recipe = z3c.recipe.filetemplate
 source-directory = .
 exclude-directories = buildout
-    c2cgeoportal
+    c2cgeoportal/paste_templates
 interpreted-options = authtkt_secret
 extends = vars
 
