@@ -288,7 +288,7 @@ wsgi_host = override_me
 # wmts tiles host
 wmts_host = override_me
 # wmts tiles url
-wmts_url = http://$${vars:wmts_host}/$${vars:instanceid}/tilecache/tilecache
+wmts_url = http://$${vars:wmts_host}/$${vars:instanceid}/tilecache
 # mapserv host
 mapserv_host = override_me
 # mapserv URL
