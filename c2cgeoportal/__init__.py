@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pyramid.config import Configurator
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.authentication import AuthTktAuthenticationPolicy

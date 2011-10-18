@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 """Pyramid application test package
 """
+
 from unittest import TestCase
 
 from pyramid import testing

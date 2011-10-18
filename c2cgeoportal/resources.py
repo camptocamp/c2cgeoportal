@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
 from pyramid_formalchemy.resources import Models
 

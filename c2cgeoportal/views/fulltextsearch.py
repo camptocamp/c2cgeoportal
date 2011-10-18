@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
