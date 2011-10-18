@@ -64,22 +64,11 @@ Ext.onReady(function() {
                 items: [{
                     xtype: "panel",
                     title: OpenLayers.i18n("layertree"),
+                    id: 'layerpanel',
                     layout: "vbox",
                     layoutConfig: {
                         align: "stretch"
-                    },
-                    items: [{
-                        id: "themeselector-container",
-                        xtype: "container",
-                        layout: "fit",
-                        flex: 0.1,
-                        style: "padding: 3px;"
-                    }, {
-                        id: "layertree-container",
-                        xtype: "container",
-                        flex: 1,
-                        layout: "fit"
-                    }]
+                    }
                 }/*,
                 {
                     id: "querier-container",
@@ -93,20 +82,26 @@ Ext.onReady(function() {
         // configuration of all tool plugins for this application
         tools: [{
             ptype: "cgxp_themeselector",
-            outputTarget: "themeselector-container",
+            outputTarget: "layerpanel",
             layerTreeId: "layertree",
-            themes: App.themes
+            themes: App.themes,
+            outputConfig: {
+                layout: "fit",
+                style: "padding: 3px;"
+            }
         }, {
             ptype: "cgxp_layertree",
             id: "layertree",
             outputConfig: {
                 header: false,
+                flex: 1,
+                layout: "fit",
                 autoScroll: true,
                 themes: App.themes,
                 wmsURL: "${request.route_url('mapserverproxy', path='')}",
                 defaultThemes: ${default_themes | n}
             },
-            outputTarget: "layertree-container"
+            outputTarget: "layerpanel"
         /*
         }, {
             ptype: "cgxp_querier",
