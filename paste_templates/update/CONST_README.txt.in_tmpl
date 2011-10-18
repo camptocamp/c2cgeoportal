@@ -255,7 +255,7 @@ Update c2cgeoportal
 * Update c2cgeoportal by doing svn up or somthing other...
 
 * Build it
-    ./buildout/bin/buildout -c buildout-user.cfg
+    ./buildout/bin/buildout -c buildout_user.cfg
 
 * Apply update template ('IOError: No egg-info directory found (...)' should be ignore)
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. project_dir package=${package}
