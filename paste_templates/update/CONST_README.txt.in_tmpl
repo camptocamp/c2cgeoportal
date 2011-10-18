@@ -106,7 +106,7 @@ like (in one line):
         AND $${mapserver_join_where} 'layer_name') AS foo 
         USING UNIQUE gid USING srid=-1"
 And in the METADATA of the layer:
-    ${mapserver_layer_metadata}
+    $${mapserver_layer_metadata}
 The important point is to have $${mapserver_join_tables} in the table list,
 have ST_Contains($${mapserver_join_area}, geo.geometrie) 
 AND $${mapserver_join_where} 'layer_name' in the where close to do the 
