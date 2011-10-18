@@ -6,10 +6,10 @@ from pyramid.i18n import TranslationStringFactory
 from formalchemy import fields
 from formalchemy import FieldSet, Grid
 
-from project import models
+from ${package} import models
 from c2cgeoportal import forms
 
-_ = TranslationStringFactory('project')
+_ = TranslationStringFactory('${package}')
 log = logging.getLogger(__name__)
 
 # Title

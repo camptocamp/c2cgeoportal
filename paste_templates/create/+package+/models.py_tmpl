@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+
 import logging
 
 from sqlalchemy import Column, types
 
 from c2cgeoportal.models import Base, DBSession, _schema, User
 
-_ = TranslationStringFactory('project')
+_ = TranslationStringFactory('${package}')
 log = logging.getLogger(__name__)
 
 

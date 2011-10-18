@@ -13,47 +13,7 @@ deploy/deploy.cfg.in - deployment configuration
 print/config.yaml.in - print configuration
 print/... - images and other files neded by the print
 mapserver/c2cgeoportal.map.in - the mapfile
-static/lang/*.js - the localisation
-static/images/favicon.ico - favicon
-static/images - image needed by the application
-static/css/proj.css - specifics css
-
-In the emptyproj folder there a small skeleton of a project.
-
-
-Installation of a new project instance
-======================================
-
-* Checkout your project (should be empty):
-    svn co https://project.camptocamp.com/svn/project/trunk newproj
-    cd newproj
-
-* Export the empty project:
-    svn export --force https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk/emptyproj .
-
-* Rename the right buildout file,
-  for parent:
-    mv buildout_parent.cfg buildout.cfg
-    rm buildout_child.cfg
-  for child:
-    mv buildout_child.cfg buildout.cfg
-    rm buildout_parent.cfg
-    rm -rf tilecache # not used on a child
-
-* Link to c2cgeoportal:
-    svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk" .
-    svn propset svn:externals "cgxp https://project.camptocamp.com/svn/c2c_mapfish/cgxp" project/static/lib
-
-* Add to your project svn:
-    svn add *
-    svn propset svn:ignore ".installed.cfg" .
-    svn propset svn:ignore "*" buildout
-    svn propset svn:ignore "deploy.cfg" deploy
-    svn propset svn:ignore "*.map" mapserver
-    svn propset svn:ignore "*.war
-    config.yaml" print
-    svn propset svn:ignore "tilecache.cfg" tilecache
-    svn ci -m "initial project"
+${project}/static/lang/*.js - the localisation
 
 
 Create the DataBase tables
@@ -61,15 +21,15 @@ Create the DataBase tables
 
 The project shoulld allredy be built (see below).
 
-* It the database don't exists create it (replace ${vars:db} by what you want):
-    sudo -u postgres createdb ${vars:db} -T template_postgis
+* It the database don't exists create it (replace $${vars:db} by what you want):
+    sudo -u postgres createdb $${vars:db} -T template_postgis
 
-* The schema shouldn't exists than create it (replace ${vars:schema} by the schema name if different):
-    sudo -u postgres psql -c "CREATE SCHEMA ${vars:schema};" ${vars:db}
-    sudo -u postgres psql -c "GRANT ALL ON SCHEMA ${vars:schema} TO \"${vars:dbuser}\";" ${vars:db}
+* The schema shouldn't exists than create it (replace $${vars:schema} by the schema name if different):
+    sudo -u postgres psql -c "CREATE SCHEMA $${vars:schema};" $${vars:db}
+    sudo -u postgres psql -c "GRANT ALL ON SCHEMA $${vars:schema} TO \"$${vars:dbuser}\";" $${vars:db}
 
 * Create the tables and populate:
-    sudo -u ${vars:dbuser} buildout/bin/create_db c2cgeoportal/development.ini -p
+    sudo -u $${vars:dbuser} buildout/bin/create_db c2cgeoportal/development.ini -p
 
 * Set the version
     ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
@@ -80,21 +40,21 @@ Create and Populate the FullTextSearch table
 
 The database should already exists (see above).
 
-To simplify we consider that the used schema is '${vars:schema}'.
+To simplify we consider that the used schema is '$${vars:schema}'.
 
 * Create the table:
-    CREATE TABLE ${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR); 
-    SELECT AddGeometryColumn ('${vars:schema}', 'tsearch', 'the_geom', 21781, 'GEOMETRY', 2);
-    CREATE INDEX tsearch_ts_idx ON ${vars:schema}.tsearch USING gin(ts);
-    GRANT SELECT ON TABLE ${vars:schema}.tsearch TO "${vars:dbuser}";
+    CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR); 
+    SELECT AddGeometryColumn ('$${vars:schema}', 'tsearch', 'the_geom', 21781, 'GEOMETRY', 2);
+    CREATE INDEX tsearch_ts_idx ON $${vars:schema}.tsearch USING gin(ts);
+    GRANT SELECT ON TABLE $${vars:schema}.tsearch TO "$${vars:dbuser}";
 
 Populate
 --------
 * With one value:
-    INSERT INTO ${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
+    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
 
 * With a sub select:
-    INSERT INTO ${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), 21781), 'layer group name', text, to_tsvector('german', text) FROM table;
+    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), 21781), 'layer group name', text, to_tsvector('german', text) FROM table;
   - layer group name should be replace by the name of the layer group.
   - text can be replace by any prosgres functions.
 
@@ -154,6 +114,7 @@ do the table joining and select the right layer.
 This should be in a .map.in because it use template variable that's replace by 
 SQL code in the .map file.
 
+
 Print config.yaml templating
 ============================
 
@@ -205,7 +166,7 @@ Client
 
 For the client parts you have localisation files at 
 'c2cgeoportal/c2cgeoportal/static/app/lib/App/Lang/' and 
-'project/static/js/Proj/Lang/fr.js' for the project part.
+'${package}/static/js/Proj/Lang/fr.js' for the project part.
 
 Server
 ------
@@ -283,14 +244,16 @@ Upgrade:
     ./buildout/bin/manage_db upgrade
 
 
-Some tip for posix tools users
-==============================
+Update c2cgeoportal
+===================
 
-* Have the toc of this document
-   grep -B1 ^=== c2cgeoportal/README.txt
+* Update c2cgeoportal by doing svn up or somthing other...
 
-* Display only one chapter
-   grep -A30 "Title" c2cgeoportal/README.txt
+* Build it
+    ./buildout/bin/buildout -c buildout-user.cfg
+
+* Apply update template ('IOError: No egg-info directory found (...)' should be ignore)
+    ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. project_dir package=${package}
 
 
 Testing
@@ -312,3 +275,13 @@ Run the tests:
    nosetests
    cd -
    desactivate
+
+
+Some tip for posix tools users
+==============================
+
+* Have the toc of this document
+   grep -B1 ^=== CONST_README.txt
+
+* Display only one chapter
+   grep -A30 "Title" CONST_README.txt

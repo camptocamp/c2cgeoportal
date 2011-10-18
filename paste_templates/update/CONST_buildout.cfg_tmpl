@@ -355,7 +355,7 @@ restricted_extent = [635200, 238000, 672800, 262000]
 
 [eggs]
 recipe = z3c.recipe.scripts
-eggs = ${project}
+eggs = ${package}
        c2cgeoportal 
        owslib
        tileforge
@@ -390,12 +390,12 @@ recipe = c2c.recipe.jarfile
 mode = update
 basewar = print-servlet-1.2-SNAPSHOT.war
 basedir = print/
-input = $${basewar} WEB-INF/classes/log4j.properties config.yaml *.tif *.bmp *.jpg *.jpeg *.gif *.png
+input = $${print-war:basewar} WEB-INF/classes/log4j.properties config.yaml *.tif *.bmp *.jpg *.jpeg *.gif *.png
 output = /srv/tomcat/tomcat1/webapps/print-c2cgeoportal-$${vars:instanceid}.war
 
 [modwsgi]
 recipe = collective.recipe.modwsgi
-eggs = ${project}
+eggs = ${package}
 config-file = $${buildout:directory}/CONST_production.ini
 
 [template]
@@ -412,7 +412,7 @@ resource-dir = $${buildout:directory}/jsbuild
 # the following jsbuild config files must be written on
 # one line, otherwise Paste will throw a syntax error
 config = $${jsbuild:resource-dir}/CONST_app.cfg $${jsbuild:resource-dir}/app.cfg
-output-dir = ${project}/static/build
+output-dir = ${package}/static/build
 # base-dir to be removed, is there because of a regression
 # in JSTools 0.4 and 0.5
 base-dir = $${buildout:directory}
@@ -421,25 +421,25 @@ compress = True
 [cssbuild]
 recipe = c2c.recipe.cssmin
 input = 
-    ${project}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
-    ${project}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
-    ${project}/static/lib/cgxp/openlayers/theme/default/style.css
-    ${project}/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css
-    ${project}/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css
-    ${project}/static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css
-    ${project}/static/lib/cgxp/styler/theme/css/styler.css
-    ${project}/static/lib/cgxp/gxp/src/theme/all.css
-    ${project}/static/lib/cgxp/core/src/theme/all.css
-    ${project}/static/css/proj.css
-output = ${project}/static/build/app.css
+    ${package}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
+    ${package}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
+    ${package}/static/lib/cgxp/openlayers/theme/default/style.css
+    ${package}/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css
+    ${package}/static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css
+    ${package}/static/lib/cgxp/styler/theme/css/styler.css
+    ${package}/static/lib/cgxp/gxp/src/theme/all.css
+    ${package}/static/lib/cgxp/core/src/theme/all.css
+    ${package}/static/css/proj.css
+output = ${package}/static/build/app.css
 
 [cssbuildadmin]
 recipe = c2c.recipe.cssmin
 input = 
-    ${project}/static/css/admin.css
-output = ${project}/static/build/admin.css
+    ${package}/static/css/admin.css
+output = ${package}/static/build/admin.css
 
 [po2mo]
 recipe = c2c.recipe.msgfmt
-po-directory = ${project}/locale/
+po-directory = ${package}/locale/
 

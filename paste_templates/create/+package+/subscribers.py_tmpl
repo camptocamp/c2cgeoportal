@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pyramid.i18n import get_localizer, TranslationStringFactory
 from pyramid.events import subscriber, BeforeRender, NewRequest
 
@@ -9,7 +11,7 @@ def add_renderer_globals(event):
         event['localizer'] = request.localizer
 
 # use two translator to tranlate each strings in Make
-tsf1 = TranslationStringFactory('project')
+tsf1 = TranslationStringFactory('${package}')
 tsf2 = TranslationStringFactory('c2cgeoportal')
 
 @subscriber(NewRequest)

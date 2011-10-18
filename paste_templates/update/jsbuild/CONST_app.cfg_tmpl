@@ -1,16 +1,16 @@
 [app.js]
 root =
-    ${project}/static/lib/cgxp/core/src/script
-    ${project}/static/lib/cgxp/ext
-    ${project}/static/lib/cgxp/geoext/lib
-    ${project}/static/lib/cgxp/openlayers/lib
-    ${project}/static/lib/cgxp/gxp/src/script
-    ${project}/static/lib/cgxp/proj4js
-    ${project}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${project}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${project}/static/lib/cgxp/sandbox
-    ${project}/static/lib/cgxp/styler/lib
-    ${project}/static/js
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
@@ -36,17 +36,17 @@ exclude =
 
 [api.js]
 root =
-    ${project}/static/lib/cgxp/core/src/script
-    ${project}/static/lib/cgxp/ext
-    ${project}/static/lib/cgxp/geoext/lib
-    ${project}/static/lib/cgxp/openlayers/lib
-    ${project}/static/lib/cgxp/gxp/src/script
-    ${project}/static/lib/cgxp/proj4js
-    ${project}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${project}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${project}/static/lib/cgxp/sandbox
-    ${project}/static/lib/cgxp/styler/lib
-    ${project}/static/js
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
@@ -70,13 +70,13 @@ exclude =
 
 [lang-en.js]
 root =
-    ${project}/static/lib/cgxp/core/src/script
-    ${project}/static/lib/cgxp/ext
-    ${project}/static/lib/cgxp/geoext/lib
-    ${project}/static/lib/cgxp/openlayers/lib
-    ${project}/static/lib/cgxp/sandbox
-    ${project}/static/lib/cgxp/gxp/src/script
-    ${project}/static/js
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/js
 include =
     Proj/Lang/en.js
     Ext/src/locale/ext-lang-en.js
@@ -90,13 +90,13 @@ exclude =
 
 [lang-fr.js]
 root =
-    ${project}/static/lib/cgxp/core/src/script
-    ${project}/static/lib/cgxp/ext
-    ${project}/static/lib/cgxp/geoext/lib
-    ${project}/static/lib/cgxp/openlayers/lib
-    ${project}/static/lib/cgxp/sandbox
-    ${project}/static/lib/cgxp/gxp/src/script
-    ${project}/static/js
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/js
 include =
     Proj/Lang/fr.js
     Ext/src/locale/ext-lang-fr.js
@@ -110,13 +110,13 @@ exclude =
 
 [lang-de.js]
 root =
-    ${project}/static/lib/cgxp/core/src/script
-    ${project}/static/lib/cgxp/ext
-    ${project}/static/lib/cgxp/geoext/lib
-    ${project}/static/lib/cgxp/openlayers/lib
-    ${project}/static/lib/cgxp/sandbox
-    ${project}/static/lib/cgxp/gxp/src/script
-    ${project}/static/js
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/js
 include =
     Proj/Lang/de.js
     Ext/src/locale/ext-lang-de.js

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Create the application's database.
 """
 
@@ -19,13 +21,13 @@ Available options:
 
     # read the configuration
     ini_file = sys.argv[1]
-    app = get_app(ini_file, "project")
+    app = get_app(ini_file, "${package}")
     settings = app.registry.settings
 
     # sets the schema and load the database model
     schema = settings['schema']
     parentschema = settings['parentschema']
-    from project import models
+    from ${package} import models
     from c2cgeoportal import models as c2cmodels
 
     if "-d" in sys.argv[2:] or '--drop' in sys.argv[2:]:

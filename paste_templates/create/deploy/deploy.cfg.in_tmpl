@@ -1,5 +1,5 @@
 [DEFAULT]
-project = c2cgeoportal
+project = ${package} 
 
 [main]
 hookdir = %(here)s/hooks/
@@ -8,7 +8,7 @@ hookdir = %(here)s/hooks/
 active = false
 
 [databases]
-names = ${vars:db}
+names = $${vars:db}
 psql = sudo -u postgres psql
 dump = sudo -u postgres pg_dump -Fc
 createdb = sudo -u postgres createdb
@@ -23,5 +23,5 @@ content = Include /var/www/c2cgeoportal_mapfish/private/c2cgeoportal/apache/*.co
 
 [remote_hosts]
 demo = c2cpc.camptocamp.com
-prod = deploy@c2cpc.camptocamp.com
+prod = c2cpc.camptocamp.com
 

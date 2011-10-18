@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from pyramid.config import Configurator
-from project.resources import Root
+from ${package}.resources import Root
 import c2cgeoportal
 
 def main(global_config, **settings):
@@ -10,12 +11,12 @@ def main(global_config, **settings):
 
     config.include(c2cgeoportal)
 
-    config.add_translation_dirs('project:locale/')
+    config.add_translation_dirs('${package}:locale/')
 
     # scan view decorator for adding routes
     config.scan()
 
     # add the static view (for static resources)
-    config.add_static_view('proj', 'project:static')
+    config.add_static_view('proj', '${package}:static')
 
     return config.make_wsgi_app()
