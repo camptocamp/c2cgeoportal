@@ -2,7 +2,7 @@
 
 import httplib2
 import urllib
-from io import RawIOBase, StringIO
+from io import StringIO
 from xml.sax import make_parser, handler
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 from xml.sax.xmlreader import InputSource
