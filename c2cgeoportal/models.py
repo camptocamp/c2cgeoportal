@@ -17,7 +17,7 @@ from pyramid.threadlocal import get_current_registry
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
 
-from c2cgeoportal import schema, parentschema
+from c2cgeoportal import schema, parentschema, srid
 
 __all__ = ['Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
 'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea']
@@ -34,6 +34,11 @@ else:
     raise Exception('schema not specified, you need to add it to your buildout config')
 _parentschema = parentschema
 
+if srid is not None:
+    _srid = srid
+else:
+    raise Exception('srid not specified, you need to add it to your buildout config')
+
 class FullTextSearch(GeoInterface, Base):
     __tablename__ = 'tsearch'
     __table_args__ = {'schema': _schema}
@@ -41,7 +46,7 @@ class FullTextSearch(GeoInterface, Base):
     id = Column('id', types.Integer, primary_key=True)
     label = Column('label', types.Unicode)
     layer_name = Column('layer_name', types.Unicode)
-    the_geom = GeometryColumn(Geometry(srid=21781))
+    the_geom = GeometryColumn(Geometry(srid=_srid))
 GeometryDDL(FullTextSearch.__table__)
 
 class Functionality(Base):
@@ -165,7 +170,7 @@ class Role(Base):
     id = Column(types.Integer, primary_key=True)
     name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
     description = Column(types.Unicode, label=_(u'Description'))
-    extent = GeometryColumn(Polygon(srid=21781))
+    extent = GeometryColumn(Polygon(srid=_srid))
     #product = Column(types.Unicode)
 
     # functionality
@@ -352,7 +357,7 @@ class RestrictionArea(Base):
     ]
 
     id = Column(types.Integer, primary_key=True)
-    area = GeometryColumn(Polygon(srid=21781))
+    area = GeometryColumn(Polygon(srid=_srid))
     name = Column(types.Unicode, label=_(u'Name'))
     description = Column(types.Unicode, label=_(u'Description'))
 

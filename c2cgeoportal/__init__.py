@@ -15,6 +15,7 @@ from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
 
 # used by (sql|form)alchemy
+srid = None
 schema = None
 parentschema = None
 formalchemy_language = None
@@ -39,6 +40,7 @@ def locale_negotiator(request):
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
+    global srid
     global schema
     global parentschema
     global formalchemy_language
@@ -111,7 +113,8 @@ def includeme(config):
     config.include('pyramid_formalchemy')
     config.include('fa.jquery')
 
-    # define the schema as a global variavle to be usable in the model
+    # define the srid, schema and parentschema as global variables to be usable in the model
+    srid = config.get_settings()['srid']
     schema = config.get_settings()['schema']
     parentschema = config.get_settings()['parentschema']
     formalchemy_default_zoom = config.get_settings()['formalchemy_default_zoom']

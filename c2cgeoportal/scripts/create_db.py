@@ -11,8 +11,7 @@ import sys
 from pyramid.paster import get_app
 import transaction
 
-from c2cgeoportal import schema
-from c2cgeoportal import parentschema
+from c2cgeoportal import schema, parentschema, srid
 
 def main():
     if len(sys.argv) < 2:
@@ -27,6 +26,7 @@ def main():
 
     schema = settings['schema']
     parentschema = settings['parentschema']
+    srid = settings['srid']
     import c2cgeoportal.models
 
     if len(sys.argv) > 2 and sys.argv[2] in ['-d', '--drop']:

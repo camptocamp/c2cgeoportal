@@ -17,6 +17,7 @@ print.url = $${print_url}
 
 parentschema = $${vars:parentschema}
 schema = $${vars:schema}
+srid = $${vars:srid}
 
 jsbuild_cfg = $${jsbuild:config}
 jsbuild_root_dir = $${jsbuild:base-dir}
