@@ -1,0 +1,45 @@
+<%inherit file="index_base.html"/>
+
+<%block name="page_head_cssurls_debug">\
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/openlayers/theme/default/style.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/geoext/resources/css/gxtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/styler/theme/css/styler.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/gxp/src/theme/all.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/core/src/theme/all.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/css/proj.css')}" />
+</%block>\
+<%block name="page_head_cssurls_nodebug">\
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/build/app.css')}" />
+</%block>\
+
+<%block name="page_jsurls_debug">\
+<%!
+from jstools.merge import Merger
+%>
+<%
+jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
+jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
+%>
+% for script in Merger.from_fn(jsbuild_cfg.split(), root_dir=jsbuild_root_dir).list_run(['app.js', 'lang-%s.js' % lang]):
+<script type="text/javascript" src="$${request.static_url(script.replace('/', ':', 1))}"></script>
+% endfor
+</%block>\
+
+<%block name="page_jsurls_nodebug">\
+        <script type="text/javascript" src="$${request.static_url('${package}:static/build/app.js')}"></script>
+        <script type="text/javascript" src="$${request.static_url('${package}:static/build/lang-%s.js' % lang)}"></script>
+</%block>\
+
+<%block name="page_title">$${package} Geoportal Application</%block>
+<%block name="page_keywords">$${package}, geoportal</%block>
+<%block name="page_description">$${package} Geoportal Application.</%block>
+<%block name="shortcut_icon">$${request.static_url('${package}:static/images/favicon.ico')}</%block>
+<%block name="page_link">\ 
+<a href="http://camptocamp.com">
+    <div class="linkplaceholder"></div>
+</a>
+</%block>\
