@@ -56,7 +56,7 @@ Procedure
     svn import -m "add $specific_project" $specific_project https://project.camptocamp.com/svn/$global_project/trunk/$specific_project
     rm -rf $specific_project
     svn co https://project.camptocamp.com/svn/$global_project/trunk/$specific_project
-    cp -
+    cd -
 
 * Link to c2cgeoportal:
     svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk" .
@@ -71,4 +71,5 @@ Procedure
 config.yaml" print
     svn propset svn:ignore "tilecache.cfg" tilecache
 * Commit
-    svn ci -m "setup of specific__project"
+    svn ci -m "setup of $specific_project"
+
