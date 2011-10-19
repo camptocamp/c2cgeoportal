@@ -165,11 +165,18 @@ Ext.onReady(function() {
             id: "legendPanel",
             toggleGroup: "maptools",
             actionTarget: "map.tbar"
-        /*
         }, {
-            ptype: "cgxp_loginform",
-            actionTarget: "map.tbar"
-        */
+            ptype: "cgxp_menushortcut",
+            type: '-'
+        }, {
+            ptype: "cgxp_login",
+            actionTarget: "map.tbar",
+            toggleGroup: "maptools",
+% if user:
+            username: "${user.username}",
+% endif
+            loginURL: "${request.route_url('login', path='')}",
+            logoutURL: "${request.route_url('logout', path='')}"
         }, {
             ptype: "cgxp_menushortcut",
             type: '-'

@@ -13,15 +13,7 @@ App["tilecacheURL"] = '${tilecache_url}';
 App["mapserverproxyURL"] = "${request.route_url('mapserverproxy', path='')}";
 App["printURL"] = "${request.route_url('printproxy', path='')}";
 App["csvURL"] = "${request.route_url('csvecho')}";
-App["loginURL"] = "${request.route_url('login')}";
-App["logoutURL"] = "${request.route_url('logout')}";
 App["lang"] = "${lang}";
-% if user:
-App["user"] = "${user.username}";
-App["extent"] = ${user.role.jsextent};
-% else:
-App["extent"] = ${default_initial_extent | n};
-% endif
 App["restrictedExtent"] = ${restricted_extent | n};
 /*${themesError | n}*/
 App["themes"] = {
