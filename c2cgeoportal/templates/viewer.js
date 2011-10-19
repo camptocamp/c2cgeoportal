@@ -101,7 +101,9 @@ Ext.onReady(function() {
             outputTarget: "left-panel",
             events: events,
             outputConfig: {
-                //hidden: App.user ? false : true
+% if not user:
+                hidden: true
+% endif
             }
         }, {
             ptype: "cgxp_print",
