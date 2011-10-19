@@ -5,16 +5,16 @@ Installation of a new project instance
 If we use the parent child concept:
 $global_project is the name of the common part of all project, it can be 'project'.
 $specific_project is the name of the subproject.
-    export $global_project=project
-    export $specific_project=commune
-    export package=package=$global_project
+    global_project=project
+    specific_project=commune
+    package=package=$global_project
 
 Otherwise:
 $specific_project is the name of the project.
 package=$global_project should be removes.
-    export $global_project=project
-    export $specific_project=project
-    export package=
+    global_project=project
+    specific_project=project
+    package=
 
 
 Procedure
