@@ -61,6 +61,7 @@ Procedure
 * Link to c2cgeoportal:
     svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk" .
     svn propset svn:externals "cgxp https://project.camptocamp.com/svn/c2c_mapfish/cgxp" $global_project/static/lib
+    svn up
 
 * Add svn:ignore:
     svn propset svn:ignore ".installed.cfg" .
