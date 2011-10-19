@@ -100,6 +100,12 @@ Ext.onReady(function() {
             ptype: "cgxp_querier",
             outputTarget: "left-panel",
             events: events,
+            mapserverproxyURL: App.mapserverproxyURL,
+            // don't work with actual version of mapserver, the proxy will limit to 200
+            // it is intended to be reactivated this once mapserver is fixed
+            //maxFeatures: 200,
+            srsName: 'EPSG:21781',
+            featureType: App["queryBuilderLayer"],
             outputConfig: {
 % if not user:
                 hidden: true
