@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, getopt
+import os
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
