@@ -13,7 +13,7 @@ Otherwise:
 $specific_project is the name of the project.
 package=$global_project should be removes.
     global_project=project
-    specific_project=project
+    specific_project=$global_project
     package=
 
 
