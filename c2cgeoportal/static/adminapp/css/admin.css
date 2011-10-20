@@ -34,3 +34,23 @@ h1#header div.breadcrumb a span.ui-selectmenu-status {
 #languages {
     display: none;
 }
+
+form div.fa_field {
+    display: table-row;
+}
+form div.fa_field div.label, form div.fa_field div.field_input {
+    display: table-cell;
+    vertical-align: top;
+    padding-top: 0.5em;
+    width: 200px;
+}
+form input[type="text"] {
+    width: 250px;
+}
+form input[type="password"] {
+    width: 124px;
+}
+form div.fa_controls {
+    display: block;
+}
+
