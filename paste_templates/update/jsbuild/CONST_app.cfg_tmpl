@@ -10,6 +10,7 @@ root =
     ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js

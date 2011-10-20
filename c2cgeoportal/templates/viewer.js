@@ -156,11 +156,13 @@ Ext.onReady(function() {
             actionTarget: "map.tbar",
             toggleGroup: "maptools",
             events: events
-        /*
+        }, {
+            ptype: "cgxp_menushortcut",
+            type: '-',
         }, {
             ptype: "cgxp_fulltextsearch",
+            url: "${request.route_url('fulltextsearch', path='')}",
             actionTarget: "map.tbar"
-        */
         }, {
             ptype: "cgxp_menushortcut",
             type: '->'

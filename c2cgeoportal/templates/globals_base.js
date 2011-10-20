@@ -4,7 +4,6 @@
 // this code may execute before the App namespace exists. If it
 // does not exist, we create it ourselves.
 if(!window.App) App = {};
-App["fullTextSearchURL"] = "${request.route_url('fulltextsearch', path='')}";
 % if len(tilecache_url) == 0:
 App["tilecacheURL"] = "${request.route_url('tilecache', path='')}";
 % else:
