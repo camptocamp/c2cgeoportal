@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from paste.script.templates import Template
+from paste.script import templates
 
-class TemplateCreate(Template):
+vars = [
+    templates.var('srid', 'A Spatial Reference System Identifier (e.g. 21781)'),
+    ]
+
+class TemplateCreate(templates.Template):
     _template_dir = 'create'
     summary = 'Template used to create a c2cgeoportal project'
-    vars = []
+    vars = vars
 
-class TemplateUpdate(Template):
+class TemplateUpdate(templates.Template):
     _template_dir = 'update'
     summary = 'Template used to update a c2cgeoportal project'
-    vars = []
+    vars = vars
 

@@ -34,6 +34,7 @@ Procedure
 * Create the project ('IOError: No egg-info directory found (...)' should be ignore)
     (env) $ paster create --template=c2cgeoportal_create $specific_project $package
     (env) $ paster create --template=c2cgeoportal_update $specific_project $package
+  You need to provide an SRID. For EPSG:21781 enter 21781.
 
 * Cleanup
     (env) $ deactivate

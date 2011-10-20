@@ -9,6 +9,8 @@ def main(global_config, **settings):
     """
     config = Configurator(root_factory=Root, settings=settings)
 
+    config.add_settings({'srid': ${srid}})
+
     config.include(c2cgeoportal)
 
     config.add_translation_dirs('${package}:locale/')

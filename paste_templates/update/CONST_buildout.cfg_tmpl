@@ -283,8 +283,6 @@ db = override_me
 schema = webapp
 # sqlalchemy parent project schema
 parentschema = 
-# geometries projection system
-srid = 21781
 # WSGI host
 wsgi_host = override_me
 # wmts tiles host
