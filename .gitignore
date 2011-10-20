@@ -4,3 +4,4 @@ c2cgeoportal/static/lib/openlayers/
 fa.jquery/
 pyramid_formalchemy/
 tileforge/
+*.pyc
