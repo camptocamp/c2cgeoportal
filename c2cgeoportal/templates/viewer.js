@@ -147,7 +147,7 @@ Ext.onReady(function() {
             actionTarget: "map.tbar"
         */
         }, {
-            ptype: "gxp_measure",
+            ptype: "cgxp_measure",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
         }, {
