@@ -75,7 +75,7 @@ debug = false
 [filter:fanstatic]
 use = egg:fanstatic#fanstatic
 publisher_signature = fanstatic
-base_url = $${apache-entry-point}
+base_url = /$${vars:instanceid}/wsgi
 recompute_hashes = false
 versioning = false
 bottom = true
