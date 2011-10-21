@@ -3,8 +3,31 @@ Ext.onReady(function() {
     /*
      * Initialize the application.
      */
-    App.setGlobals();
-    var events = new Ext.util.Observable();
+    // OpenLayers
+    OpenLayers.Number.thousandsSeparator = ' ';
+    OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+    OpenLayers.DOTS_PER_INCH = 72;
+    OpenLayers.ImgPath = "${request.static_url('project:static/lib/cgxp/core/src/theme/img/ol/')}";
+
+    // Ext
+    Ext.BLANK_IMAGE_URL = "${request.static_url('project:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    Ext.QuickTips.init();
+
+    // Apply same language than on the server side
+    OpenLayers.Lang.setCode("${lang}");
+
+    // Themes definitions
+    /* errors (if any): ${themesError | n} */
+    THEMES = {
+        "local": ${themes | n}
+    % if external_themes:
+        , "external": ${external_themes | n}
+    % endif
+    };
+
+
+    // Used to transmit event thros the allpication
+    var EVENTS = new Ext.util.Observable();
 
     var WMTS_OPTIONS = {
 % if len(tilecache_url) == 0:
@@ -30,7 +53,7 @@ Ext.onReady(function() {
         },
         buffer: 0
     }
-    var maxExtent = App.restrictedExtent;
+    var MAXEXTENT = ${restricted_extent | n};
 
     app = new gxp.Viewer({
         portalConfig: {
@@ -78,7 +101,7 @@ Ext.onReady(function() {
             ptype: "cgxp_themeselector",
             outputTarget: "layerpanel",
             layerTreeId: "layertree",
-            themes: App.themes,
+            themes: THEMES,
             outputConfig: {
                 layout: "fit",
                 style: "padding: 3px;"
@@ -91,7 +114,7 @@ Ext.onReady(function() {
                 flex: 1,
                 layout: "fit",
                 autoScroll: true,
-                themes: App.themes,
+                themes: THEMES,
                 wmsURL: "${request.route_url('mapserverproxy', path='')}",
                 defaultThemes: ${default_themes | n}
             },
@@ -99,13 +122,13 @@ Ext.onReady(function() {
         }, {
             ptype: "cgxp_querier",
             outputTarget: "left-panel",
-            events: events,
-            mapserverproxyURL: App.mapserverproxyURL,
+            events: EVENTS,
+            mapserverproxyURL: "${request.route_url('mapserverproxy', path='')}",
             // don't work with actual version of mapserver, the proxy will limit to 200
             // it is intended to be reactivated this once mapserver is fixed
             //maxFeatures: 200,
             srsName: 'EPSG:21781',
-            featureType: App["queryBuilderLayer"],
+            featureType: "${query_builder_layer}",
             outputConfig: {
 % if not user:
                 hidden: true
@@ -116,6 +139,8 @@ Ext.onReady(function() {
             legendPanelId: "legendPanel",
             featureGridId: "featureGrid",
             outputTarget: "left-panel",
+            printURL: "${request.route_url('printproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}", 
             options: {
                 labelAlign: 'top',
                 defaults: {
@@ -155,7 +180,7 @@ Ext.onReady(function() {
             featureManager: "featuremanager",
             actionTarget: "map.tbar",
             toggleGroup: "maptools",
-            events: events
+            events: EVENTS
         }, {
             ptype: "cgxp_menushortcut",
             type: '-',
@@ -192,6 +217,7 @@ Ext.onReady(function() {
             type: '-'
         },{
             ptype: "cgxp_help",
+            // TODO for geoag "${request.static_url('c2cgeoportal:static/app/pdf/Hilfedokument_geoag.pdf')}";
             url: "#help-url",
             actionTarget: "map.tbar"
         /*
@@ -203,8 +229,10 @@ Ext.onReady(function() {
             ptype: "cgxp_featuregrid",
             id: "featureGrid",
             featureManager: "featuremanager",
+            csvURL: "${request.route_url('csvecho')}",
+            maxFeatures: 200,
             outputTarget: "featuregrid-container",
-            events: events
+            events: EVENTS
         }, {
             ptype: "cgxp_mapopacityslider"
         }],
@@ -220,8 +248,8 @@ Ext.onReady(function() {
         map: {
             id: "app-map", // id needed to reference map in portalConfig above
             projection: "EPSG:21781",
-            maxExtent: maxExtent,
-            restrictedExtent: maxExtent,
+            maxExtent: MAXEXTENT,
+            restrictedExtent: MAXEXTENT,
             units: "m",
             resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
@@ -274,6 +302,7 @@ Ext.onReady(function() {
                 type: "OpenLayers.Layer.WMTS",
                 args: [Ext.applyIf({
                     name: OpenLayers.i18n('ortho'),
+                    mapserverLayers: ${encodedLayers_ortho | n},
                     ref: 'ortho',
                     layer: 'ortho',
                     formatSuffix: 'jpeg',
@@ -285,6 +314,7 @@ Ext.onReady(function() {
                 group: 'background',
                 args: [Ext.applyIf({
                     name: OpenLayers.i18n('plan'),
+                    mapserverLayers: ${encodedLayers_plan | n},
                     ref: 'plan',
                     layer: 'plan',
                     group: 'background'
@@ -295,6 +325,7 @@ Ext.onReady(function() {
                 group: 'background',
                 args: [Ext.applyIf({
                     name: OpenLayers.i18n('plan color'),
+                    mapserverLayers: ${encodedLayers_plan_color | n},
                     ref: 'plan_color',
                     layer: 'plan_color',
                     group: 'background'
@@ -313,10 +344,20 @@ Ext.onReady(function() {
         }
     });
 
-    // remove loading message
-    // FIXME: really works?
-    Ext.get('loading').remove();
-    Ext.fly('loading-mask').fadeOut({
-        remove:true
-    });
+    app.on('ready', function() {
+        this.mapPanel.map.zoomToExtent(OpenLayers.Bounds.fromArray(
+% if user:
+                ${user.role.jsextent}), true);
+% else:
+                ${default_initial_extent | n}), true);
+% endif
+
+        // remove loading message
+        // FIXME: really works?
+        Ext.get('loading').remove();
+        Ext.fly('loading-mask').fadeOut({
+            remove:true
+        });
+    }, app);
+
 });
