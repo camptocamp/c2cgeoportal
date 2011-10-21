@@ -100,7 +100,9 @@
 % endif
         <script type="text/javascript">
             <%block name="page_js_viewer">\
+            Ext.onReady(function() {
             <%include file="viewer.js" />
+            });
             </%block>\
         </script>
         </%block>\

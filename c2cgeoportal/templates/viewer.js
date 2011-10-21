@@ -1,5 +1,3 @@
-var app;
-Ext.onReady(function() {
     /*
      * Initialize the application.
      */
@@ -358,5 +356,3 @@ Ext.onReady(function() {
             remove:true
         });
     }, app);
-
-});
