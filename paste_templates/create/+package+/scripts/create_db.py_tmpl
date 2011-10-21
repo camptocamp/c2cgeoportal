@@ -35,13 +35,13 @@ Available options:
         for table in reversed(c2cmodels.Base.metadata.sorted_tables):
             if table.name != 'tsearch' and table.schema == schema: 
                 print "Dropping table %s" % table.name
-                table.drop(bind=DBSession.bind, checkfirst=True)
+                table.drop(bind=c2cmodels.DBSession.bind, checkfirst=True)
 
     print "Creating tables"
     for table in c2cmodels.Base.metadata.sorted_tables:
         if table.name != 'tsearch' and table.schema == schema: 
             print "Creating table %s" % table.name
-            table.create(bind=DBSession.bind, checkfirst=True)
+            table.create(bind=c2cmodels.DBSession.bind, checkfirst=True)
     sess = c2cmodels.DBSession()
 
     admin = models.User(username=u'admin', 

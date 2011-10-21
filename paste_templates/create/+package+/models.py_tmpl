@@ -3,6 +3,7 @@
 import logging
 
 from sqlalchemy import Column, types
+from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal.models import Base, DBSession, _schema, User
 
