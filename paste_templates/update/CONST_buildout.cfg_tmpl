@@ -343,21 +343,6 @@ external_themes_url =
 # optional external (parent) mapserver url
 external_mapserv_url =
 
-# default themes
-default_themes = []
-
-# query builder layer
-query_builder_layer =
-
-# base layers encoded layers
-encodedLayers_plan = plan
-encodedLayers_plan_color = plan_color
-encodedLayers_ortho = ortho
-
-# map
-default_initial_extent = [657650, 241130, 668470, 248390]
-restricted_extent = [635200, 238000, 672800, 262000]
-
 [eggs]
 recipe = z3c.recipe.scripts
 eggs = ${package}
