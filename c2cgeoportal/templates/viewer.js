@@ -353,7 +353,6 @@ Ext.onReady(function() {
 % endif
 
         // remove loading message
-        // FIXME: really works?
         Ext.get('loading').remove();
         Ext.fly('loading-mask').fadeOut({
             remove:true
