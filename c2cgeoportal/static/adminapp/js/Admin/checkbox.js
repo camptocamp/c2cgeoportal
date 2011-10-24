@@ -151,6 +151,7 @@
             else {
                 $(e[0]).addClass('disabledinput');
             }
+            e[0].readOnly = state;
         }
 
         change("url", fields);
