@@ -42,14 +42,14 @@ _ = TranslationStringFactory('c2cgeoportal')
 fa_config.encoding = 'utf-8'
 fa_config.engine = TemplateEngine()
 
-fanstatic_lib = Library('admin', 'static/build')
+fanstatic_lib = Library('admin', 'static')
 admin_js = Resource(
         fanstatic_lib,
-        'admin/admin.js',
+        'build/admin/admin.js',
         depends=[fanstatic_resources.jqueryui])
 admin_css = Resource(
         fanstatic_lib,
-        'admin/admin.css',
+        'build/admin/admin.css',
         depends=[fanstatic_resources.fa_uiadmin_css])
 
 # HACK to invoke fanstatic to inject a script which content is dynamic:
@@ -146,6 +146,168 @@ class DblPasswordField(Field):
         return (password_field(self.renderer.name, value="")
             + password_field(self.renderer.name + '_confirm', value=""))
 
+class CheckBoxTreeSet(CheckBoxSet):
+    def __init__(self, attribute, dom_id, auto_check=True, auto_collapsed=True):
+        super(CheckBoxTreeSet, self).__init__(attribute)
+        self.dom_id = dom_id
+        self.auto_check = auto_check
+        self.auto_collapsed = auto_collapsed
+
+    def render_tree(self):
+        return ""
+
+    def render(self, options, **kwargs):
+        opt = ""
+        if self.auto_collapsed:
+            opt += '"initializeUnchecked": "collapsed"'
+        if self.auto_collapsed and not self.auto_check:
+            opt += ","
+        if not self.auto_check:
+            opt += """'onCheck': {
+                'others': false, 
+                'descendants': false,
+                'ancestors': false },
+            'onUncheck': {
+                'others': false, 
+                'descendants': false,
+                'ancestors': false }"""
+        result = """<script lang="text/javascript" >
+            $(document).ready(function(){
+                $("#%(id)s").checkboxTree({%(opt)s});
+            });
+        </script>
+        <ul id="%(id)s" class="checkboxtree">
+        """%{'id': self.dom_id, 'opt': opt}
+        result += self.render_tree()
+        result += '</ul>'
+        return result
+
+class LayerCheckBoxTreeSet(CheckBoxTreeSet):
+    def __init__(self, attribute, dom_id='layer_tree', 
+            auto_check=True, only_private=True):
+        super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
+        self.only_private = only_private
+
+    def render_children(self, item, depth):
+        # escape loop
+        if (depth >= 5):
+            return ""
+
+        result = ""
+        if isinstance(item, models.TreeGroup):
+            result += "<ul>"
+            for child in item.children:
+                result += self.render_item(child, depth + 1)
+            result += "</ul>"
+        return result
+
+    def render_organisational_item(self, item, depth):
+        if item in self.tree_items:
+            print item.name
+            self.tree_items.remove(item)
+
+        result = """
+        <li>
+            <input type="checkbox"></input>
+            <label>%(label)s</label>
+            """ % {
+            'label': item.name
+        }
+        result += self.render_children(item, depth)
+        result += '</li>'
+        return result
+
+    def render_item(self, item, depth):
+        # no link to theme
+        # if autocheck mean that we want select only layers.
+        if isinstance(item, models.Theme) or \
+                self.auto_check and not isinstance(item, models.Layer):
+            return self.render_organisational_item(item, depth)
+        
+        # escape public layer if wanted
+        if self.only_private and isinstance(item, models.Layer) and item.public:
+            return ""
+
+        if item in self.tree_items:
+            print item.name
+            self.tree_items.remove(item)
+
+        result = """
+        <li>
+            <input type="checkbox" id="%(id)s" name="%(name)s" value="%(value)s"%(add)s></input>
+            <label>%(label)s</label>
+            """ % {
+            'id': '%s_%i' % (self.name, self.i),
+            'name': self.name,
+            'value': item.id,
+            'add': ' checked="checked"' if self._is_checked(item.id) else "",
+            'label': item.name
+        }
+        self.i += 1
+        result += self.render_children(item, depth)
+        result += '</li>'
+        return result
+
+    def render_tree(self):
+        self.tree_items = models.DBSession.query(models.TreeItem). \
+                order_by(models.TreeItem.name).all()
+        themes = models.DBSession.query(models.Theme). \
+                order_by(models.Theme.name).all()
+        self.i = 0
+        result = ""
+        for item in themes:
+            result += self.render_item(item, 1)
+
+        # add unlinked layers 
+        if len(self.tree_items) >= 0:
+            result += """
+            <li>
+                <input type="checkbox"></input>
+                <label>%(name)s</label>
+                """ % {
+                'name': _('Unlinked layers')
+            }
+            result += "<ul>"
+            for item in self.tree_items:
+                result += self.render_item(item, 2)
+            result += "</ul>"
+            result += '</li>'
+        return result
+
+class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):
+    def __init__(self, attribute):
+        super(TreeItemCheckBoxTreeSet, self).__init__(attribute, 
+                auto_check=False, only_private=False)
+
+class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
+    def __init__(self, attribute):
+        super(FunctionalityCheckBoxTreeSet, self).__init__(
+            attribute, dom_id='tree_func', auto_collapsed=False)
+
+    def render_tree(self):
+        functionalities = models.DBSession.query(models.Functionality). \
+                order_by(models.Functionality.name). \
+                order_by(models.Functionality.value).all()
+        i = 0
+        prev_name = u''
+        result = u""
+        for functionality in functionalities:
+            if prev_name != functionality.name:
+                if prev_name != u'':
+                    result += '</ul></li>\n'
+                prev_name = functionality.name
+                result += '<li><input type="checkbox" style="display:none"></input><label>%s</label><ul>\n' \
+                          % (functionality.name)
+            result += '<li><input type="checkbox" id="%s" name="%s" value="%i"%s></input><label>%s</label></li>\n' % \
+                ('%s_%i' % (self.name, i),
+                self.name,
+                functionality.id,
+                ' checked="checked"' if self._is_checked(functionality.id) else "",
+                functionality.value)
+            i += 1
+        result += '</ul></li>'
+        return result 
+
 ####################################################################################
 # FIELDS defs
 #
@@ -168,13 +330,13 @@ Layer.parents.set(readonly=True)
 # LayerGroup
 LayerGroup = FieldSet(models.LayerGroup)
 LayerGroup.order.set(metadata=dict(mandatory='')).required()
-LayerGroup.children.set(size=20)
+LayerGroup.children.set(renderer=TreeItemCheckBoxTreeSet)
 LayerGroup.parents.set(readonly=True)
 
 # Theme
 Theme = FieldSet(models.Theme)
 Theme.order.set(metadata=dict(mandatory='')).required()
-Theme.children.set(size=20)
+Theme.children.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.configure(exclude=[Theme.parents])
 
 # Functionality
@@ -186,32 +348,7 @@ Functionality.value.set(metadata=dict(mandatory='')).required()
 # RestrictionArea
 RestrictionArea = FieldSet(models.RestrictionArea)
 RestrictionArea.name.set(metadata=dict(mandatory='')).required()
-class CheckBoxTreeSet(CheckBoxSet):
-    def render(self, options, **kwargs):
-        layer_groups = models.DBSession.query(models.LayerGroup).order_by(models.LayerGroup.name).all()
-        result = '<script lang="text/javascript" >\n'
-        result += '$(document).ready(function(){\n'
-        result += '$("#tree_layer").checkboxTree({"initializeUnchecked": "collapsed"});\n'
-        result += '});\n'
-        result += '</script>\n'
-        result += '<ul id="tree_layer">\n'
-        i = 0
-        for group in layer_groups:
-            result += '<li><input type="checkbox"></input><label>%s</label><ul>\n' % \
-                    (group.name)
-            for layer in group.children:
-                if type(layer) == models.Layer and layer.public == False:
-                    result += '<li><input type="checkbox" id="%s" name="%s" value="%i"%s></input><label>%s</label></li>\n' % \
-                            ('%s_%i' % (self.name, i),
-                            self.name,
-                            layer.id,
-                            ' checked="checked"' if self._is_checked(layer.id) else "",
-                            layer.name)
-                    i += 1
-            result += '</ul></li>\n'
-        result += '</ul>'
-        return result
-RestrictionArea.layers.set(renderer=CheckBoxTreeSet)
+RestrictionArea.layers.set(renderer=LayerCheckBoxTreeSet)
 RestrictionArea.roles.set(renderer=fields.CheckBoxSet)
 RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('map_srid', 900913),
@@ -229,36 +366,6 @@ fieldOrder = [RestrictionArea.name,
               RestrictionArea.roles,
               RestrictionArea.area]
 RestrictionArea.configure(include=fieldOrder)
-
-class FunctionalityCheckBoxTreeSet(CheckBoxSet):
-    def render(self, options, **kwargs):
-        functionalities = models.DBSession.query(models.Functionality). \
-                          order_by(models.Functionality.name). \
-                          order_by(models.Functionality.value).all()
-        result = '<script lang="text/javascript" >\n'
-        result += '$(document).ready(function(){\n'
-        result += '$("#tree_layer").checkboxTree({"initializeUnchecked": "collapsed"});\n'
-        result += '});\n'
-        result += '</script>\n'
-        result += '<ul id="tree_layer">\n'
-        i = 0
-        prev_name = u''
-        for functionality in functionalities:
-            if prev_name != functionality.name:
-                if prev_name != u'':
-                    result += '</ul></li>\n'
-                prev_name = functionality.name
-                result += '<li><input type="checkbox" style="display:none"></input><label>%s</label><ul>\n' \
-                          % (functionality.name)
-            result += '<li><input type="checkbox" id="%s" name="%s" value="%i"%s></input><label>%s</label></li>\n' % \
-                ('%s_%i' % (self.name, i),
-                self.name,
-                functionality.id,
-                ' checked="checked"' if self._is_checked(functionality.id) else "",
-                functionality.value)
-            i += 1
-        result += '</ul></li></ul>\n'
-        return result 
 
 # Role
 Role = FieldSet(models.Role)

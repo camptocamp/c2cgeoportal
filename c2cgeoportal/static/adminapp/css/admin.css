@@ -53,4 +53,8 @@ form input[type="password"] {
 form div.fa_controls {
     display: block;
 }
+.checkboxtree {
+    padding-left: 15px;
+    white-space: nowrap;
+}
 
