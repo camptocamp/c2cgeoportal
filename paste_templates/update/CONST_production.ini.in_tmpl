@@ -45,13 +45,7 @@ default_themes = $${default_themes}
 
 # Mapserver
 external_mapserv.url = $${external_mapserv_url}
-query_builder_layer = $${query_builder_layer}
 tilecache_url = $${tilecache_url}
-
-# BaseLayers
-encodedLayers_plan = $${encodedLayers_plan}
-encodedLayers_plan_color = $${encodedLayers_plan_color}
-encodedLayers_ortho = $${encodedLayers_ortho}
 
 # Map
 default_initial_extent = $${default_initial_extent}

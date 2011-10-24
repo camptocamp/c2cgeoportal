@@ -158,7 +158,7 @@ Build c2cgeoportal (_dev for development build):
 
 Install the project:
     
-  ./buildout/bin/buildout -c buildout_myconfig.cfg
+  ./buildout/bin/buildout -c buildout_$$USER.cfg
 
 Now look at apache/README.txt and go configure your Apache virtual host.
 
@@ -190,7 +190,7 @@ Server
 
 4) Run buildout to compile all the .po files to .mo:
 
-  ./buildout/bin/buildout -c buildout_build.cfg
+  ./buildout/bin/buildout -c buildout_$$USER.cfg
 
 5) Finally don't forget to restart apache:
 
@@ -255,7 +255,7 @@ Update c2cgeoportal
 * Update c2cgeoportal by doing svn up or somthing other...
 
 * Build it
-    ./buildout/bin/buildout -c buildout_user.cfg
+    ./buildout/bin/buildout -c buildout_$$USER.cfg
 
 * Apply update template ('IOError: No egg-info directory found (...)' should be ignore)
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. ${project} package=${package}
@@ -267,13 +267,8 @@ Testing
 Run the tests: 
 * Have the c2cgeoportal as a dev egg
 
-* Have the template working in the c2cgeoportal by adding in the
- buildout_user.cfg:
-    [template]
-    exclude-directories -= c2cgeoportal
-
 * run buildout
-    ./buildout/bin/buildout -c buildout_user.cfg:
+    ./buildout/bin/buildout -c buildout_$$USER.cfg:
 * run the tests
    . buildout/bin/activate
    cd c2cgeoportail/
