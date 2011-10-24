@@ -47,10 +47,6 @@ default_themes = $${default_themes}
 external_mapserv_url = $${external_mapserv_url}
 tilecache_url = $${tilecache_url}
 
-# Map
-default_initial_extent = $${default_initial_extent}
-restricted_extent = $${restricted_extent}
-
 [filter:fanstatic]
 use = egg:fanstatic#fanstatic
 publisher_signature = fanstatic
