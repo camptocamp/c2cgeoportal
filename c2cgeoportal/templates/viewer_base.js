@@ -205,11 +205,9 @@
         }, {
             ptype: "gxp_navigationhistory",
             actionTarget: "map.tbar"
-        /*
         }, {
             ptype: "cgxp_permalink",
             actionTarget: "map.tbar"
-        */
         }, {
             ptype: "cgxp_measure",
             actionTarget: "map.tbar",
@@ -297,6 +295,7 @@
             <%block name="viewer_map">\
             id: "app-map", // id needed to reference map in portalConfig above
             projection: "EPSG:21781",
+            extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
             restrictedExtent: RESTRICTED_EXTENT,
             <%block name="viewer_map_options">\
@@ -384,8 +383,6 @@
 
     app.on('ready', function() {
     <%block name="viewer_ready">\
-        this.mapPanel.map.zoomToExtent(OpenLayers.Bounds.fromArray(INITIAL_EXTENT), true);
-
         // remove loading message
         Ext.get('loading').remove();
         Ext.fly('loading-mask').fadeOut({
