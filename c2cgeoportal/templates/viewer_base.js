@@ -302,6 +302,7 @@
             extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
             restrictedExtent: RESTRICTED_EXTENT,
+            stateId: "map",
             <%block name="viewer_map_options">\
             units: "m",
             resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
