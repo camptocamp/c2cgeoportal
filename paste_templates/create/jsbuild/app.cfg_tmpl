@@ -40,6 +40,7 @@ include =
     CGXP/plugins/Login.js
     CGXP/plugins/Measure.js
     CGXP/plugins/FullTextSearch.js
+    CGXP/plugins/Permalink.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
     OpenLayers/Control/PanZoomBar.js
