@@ -40,11 +40,11 @@
 % endif
     </%block>\
 
-    <%block name="restricted_axextent">\
+    <%block name="restricted_extent">\
     var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
     </%block>\
 
-    // Used to transmit event thros the allpication
+    // Used to transmit event throw the application
     var EVENTS = new Ext.util.Observable();
 
     <%block name="wmts_options">\
@@ -79,8 +79,9 @@
     <%block name="viewer">\
     app = new gxp.Viewer({
         portalConfig: {
-            <%block name="viewer_config">\
+            <%block name="viewer_portal_config">\
             layout: "border",
+            id: 'main-container',
             // by configuring items here, we don't need to configure portalItems
             // and save a wrapping container
             items: [{
@@ -337,7 +338,6 @@
                 </%block>\
             ],
             layers: [
-            <%block name="viewer_all_layers">\
             <%block name="viewer_layers">\
             {
                 source: "olsource",
@@ -362,7 +362,6 @@
                     group: 'background'
                 }, WMTS_OPTIONS)]
             }, 
-            </%block>\
             {
                 source: "olsource",
                 type: "OpenLayers.Layer",
