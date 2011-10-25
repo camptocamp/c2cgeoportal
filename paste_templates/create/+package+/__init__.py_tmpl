@@ -11,6 +11,12 @@ def main(global_config, **settings):
 
     config.add_settings({'srid': ${srid}})
 
+    ## Checker configuration ##
+    # print template used to test the print
+    config.add_settings({'check_print_template': '1 A4 portrait'})
+    # search text
+    config.add_settings({'check_FullTextSearch': 'te'})
+
     config.include(c2cgeoportal)
 
     config.add_translation_dirs('${package}:locale/')

@@ -23,8 +23,8 @@ class Checker(object):
     # Then this name must not change.
     @view_config(route_name='checker_summary')
     def summary(self): 
+#               "<p>API loader: %s</p>\n" % (self._apiloader()) + \
         body = "<p>Main page: %s</p>\n" % (self._main()) + \
-               "<p>API loader: %s</p>\n" % (self._apiloader()) + \
                "<p>Print capabilities: %s</p>\n" % (self._printcapabilities()) + \
                "<p>Print PDF: %s</p>\n" % (self._pdf()) + \
                "<p>FullTextSearch: %s</p>\n" % (self._fts()) + \
@@ -75,10 +75,10 @@ class Checker(object):
             'comment': 'Foobar',
             'title': 'Bouchon',
             'units': 'm',
-            'srs': "EPSG:21781",
+            'srs': "EPSG:%i"%self.request.registry.settings.srid,
             'dpi': 254,
             'layers': [],
-            'layout': "1 Wohlen A4 portrait",
+            'layout': self.request.registry.settings.check_print_template,
             'pages': [{
                 'center': [663000, 245000],
                 'col0': '',
@@ -118,7 +118,11 @@ class Checker(object):
         return self.make_response(self._fts())
 
     def _fts(self):
-        _url = self.request.route_url('fulltextsearch') + '?query=4030&limit=20'
+
+        _url = '%s?query=%s&limit=1' % (
+            self.request.route_url('fulltextsearch'),
+            self.request.registry.settings.check_FullTextSearch
+        )
         h = Http()
         resp, content = h.request(_url)
 
