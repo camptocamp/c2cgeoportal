@@ -81,7 +81,6 @@
         portalConfig: {
             <%block name="viewer_portal_config">\
             layout: "border",
-            id: 'main-container',
             // by configuring items here, we don't need to configure portalItems
             // and save a wrapping container
             items: [{
@@ -97,7 +96,8 @@
                 height: 160,
                 split: true,
                 collapseMode: "mini",
-                hidden: true
+                hidden: true,
+                bodyStyle: 'background-color: transparent;'
             }, {
                 layout: "accordion",
                 id: "left-panel",
@@ -193,6 +193,17 @@
             }
         }, 
         </%block>\
+        <%block name="viewer_tools_featuregrid">\
+        {
+            ptype: "cgxp_featuregrid",
+            id: "featureGrid",
+            featureManager: "featuremanager",
+            csvURL: "${request.route_url('csvecho')}",
+            maxFeatures: 200,
+            outputTarget: "featuregrid-container",
+            events: EVENTS
+        }, 
+        </%block>\
         <%block name="viewer_tools_toolbar">\
         {
             ptype: "gxp_zoomtoextent",
@@ -264,15 +275,7 @@
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
             id: "featuremanager"
-*/        }, {
-            ptype: "cgxp_featuregrid",
-            id: "featureGrid",
-            featureManager: "featuremanager",
-            csvURL: "${request.route_url('csvecho')}",
-            maxFeatures: 200,
-            outputTarget: "featuregrid-container",
-            events: EVENTS
-        }, 
+*/        },
         </%block>\
         <%block name="viewer_tools_mapopacityslider">\
         {
