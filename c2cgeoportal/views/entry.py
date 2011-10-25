@@ -257,12 +257,7 @@ class Entry(object):
         else:
             d['external_themes'] = None
 
-        d['default_themes'] = self.settings.get("default_themes")
-        d['query_builder_layer'] = self.settings.get("query_builder_layer")
-
         d['tilecache_url'] = self.settings.get("tilecache_url")
-        d['default_initial_extent'] = self.settings.get("default_initial_extent")
-        d['restricted_extent'] = self.settings.get("restricted_extent")
 
         functionality = dict()
         for func in self.settings.get("webclient_string_functionalities").split():
@@ -278,12 +273,6 @@ class Entry(object):
     @view_config(route_name='home', renderer='index.html')
     def home(self):
         d = self._getVars()
-        d['encodedLayers_plan'] = json.dumps(
-                self.settings.get("encodedLayers_plan").split(','))
-        d['encodedLayers_plan_color'] = json.dumps(
-                self.settings.get("encodedLayers_plan_color").split(','))
-        d['encodedLayers_ortho'] = json.dumps(
-                self.settings.get("encodedLayers_ortho").split(','))
 
         d['lang'] = self.lang
         d['debug'] = self.debug
@@ -293,9 +282,6 @@ class Entry(object):
     @view_config(route_name='apiloader', renderer='apiloader.js')
     def apiloader(self):
         d = self._getVars()
-        d['encodedLayers_plan'] = None
-        d['encodedLayers_plan_color'] = None
-        d['encodedLayers_ortho'] = None
         d['lang'] = self.lang
         d['debug'] = self.debug
 

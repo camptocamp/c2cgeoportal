@@ -41,7 +41,6 @@ webclient_array_functionalities = $${webclient_array_functionalities}
 
 # Themes
 external_themes_url = $${external_themes_url}
-default_themes = $${default_themes}
 
 # Mapserver
 external_mapserv.url = $${external_mapserv_url}
