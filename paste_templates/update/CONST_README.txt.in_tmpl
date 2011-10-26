@@ -16,6 +16,28 @@ mapserver/c2cgeoportal.map.in - the mapfile
 ${project}/static/lang/*.js - the localisation
 
 
+Installation of the project
+===========================
+
+go to the project directory (that includes c2cgeoportal)
+
+Install the buildout environment:
+
+  python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/ --setup-source \
+        http://pypi.camptocamp.net/distribute_setup.py
+
+Build c2cgeoportal (_dev for development build):
+
+  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
+
+Install the project:
+    
+  ./buildout/bin/buildout -c buildout_$$USER.cfg
+
+Now look at apache/README.txt and go configure your Apache virtual host.
+
+
 Create the DataBase tables
 ==========================
 
@@ -32,7 +54,7 @@ The project shoulld allredy be built (see below).
     sudo -u $${vars:dbuser} buildout/bin/create_db CONST_development.ini -p
 
 * Set the version
-    ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
+    sudo -u $${vars:dbuser} ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
 
 
 Create and Populate the FullTextSearch table
@@ -42,8 +64,11 @@ The database should already exists (see above).
 
 To simplify we consider that the used schema is '$${vars:schema}'.
 
+* Connect to postgres:
+    sudo -u $${vars:dbuser} $${vars:db}
+    
 * Create the table:
-    CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR); 
+    CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR);
     SELECT AddGeometryColumn ('$${vars:schema}', 'tsearch', 'the_geom', 21781, 'GEOMETRY', 2);
     CREATE INDEX tsearch_ts_idx ON $${vars:schema}.tsearch USING gin(ts);
     GRANT SELECT ON TABLE $${vars:schema}.tsearch TO "$${vars:dbuser}";
@@ -59,15 +84,6 @@ Populate
   - text can be replace by any prosgres functions.
 
 
-Overview map
-============
-
-* Add ot image in the static/proj/images/ folder and define the tree folowings vars:
-    overwiewimage
-    overwiewimage_bounds
-    overwiewimage_size
-
-
 QueryBuilder
 ============
 
@@ -76,7 +92,11 @@ QueryBuilder
     DUMP TRUE
 * And the METADATA:
    "gml_include_items" "all"
-* In the builddout.cfg file define the vars 'query_builder_layer' to the layers name.
+* In the file ${package}/templates/viewer.js update the block:
+    <%block name="viewer_tools_querier_options">\
+        srsName: 'EPSG:21781',
+        featureType: "Query_layer",
+    </%block>\
 
 
 Queryable Layer (GetFeatureInfo)
@@ -140,27 +160,6 @@ It is possible to manually trigger the system by calling the following command:
 If you want to include some buildout variables in your mako template, you need to 
 name your mako template(s) with a .in as the variable replacement must be done 
 before the mako templating is called (for example print/templates/print.mako.in)
-
-Installation of the project
-===========================
-
-go to the project directory (that includes c2cgeoportal)
-
-Install the buildout environment:
-
-  python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/ --setup-source \
-        http://pypi.camptocamp.net/distribute_setup.py
-
-Build c2cgeoportal (_dev for development build):
-
-  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
-
-Install the project:
-    
-  ./buildout/bin/buildout -c buildout_$$USER.cfg
-
-Now look at apache/README.txt and go configure your Apache virtual host.
 
 
 Internationalization
