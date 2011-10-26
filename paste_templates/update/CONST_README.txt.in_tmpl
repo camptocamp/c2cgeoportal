@@ -1,17 +1,17 @@
 Introduction
 ============
 
-c2cgeoportal can't be use directly it should be include in a project 
-like it:
+c2cgeoportal can't be used directly. It should be included in a project 
+like this:
 
 c2cgeoportal - svn:externals to c2cgeoportal svn
 tilecache/tilecache.cfg.in - tilecache configuration (parent only)
-bootstrap.py - used to initialyse the buildout environement
-buildout*.cfg - buildout scriptes that contains the configurations vartiables
+bootstrap.py - used to initialize the buildout environment
+buildout*.cfg - buildout scripts that contain the configuration variables
 buildout - empty directory needed by buildout
 deploy/deploy.cfg.in - deployment configuration
 print/config.yaml.in - print configuration
-print/... - images and other files neded by the print
+print/... - images and other files needed by the print
 mapserver/c2cgeoportal.map.in - the mapfile
 ${project}/static/lang/*.js - the localisation
 
@@ -41,16 +41,16 @@ Now look at apache/README.txt and go configure your Apache virtual host.
 Create the DataBase tables
 ==========================
 
-The project shoulld allredy be built (see below).
+The project should already be built (see below).
 
-* It the database don't exists create it (replace $${vars:db} by what you want):
+* If the database doesn't exist, create it (replace $${vars:db} by what you want):
     sudo -u postgres createdb $${vars:db} -T template_postgis
 
-* The schema shouldn't exists than create it (replace $${vars:schema} by the schema name if different):
+* The schema shouldn't exist then create it (replace $${vars:schema} by the schema name if different):
     sudo -u postgres psql -c "CREATE SCHEMA $${vars:schema};" $${vars:db}
     sudo -u postgres psql -c "GRANT ALL ON SCHEMA $${vars:schema} TO \"$${vars:dbuser}\";" $${vars:db}
 
-* Create the tables and populate:
+* Create the tables and populate them:
     sudo -u $${vars:dbuser} buildout/bin/create_db CONST_development.ini -p
 
 * Set the version
@@ -60,7 +60,7 @@ The project shoulld allredy be built (see below).
 Create and Populate the FullTextSearch table
 ============================================
 
-The database should already exists (see above).
+The database should already exist (see above).
 
 To simplify we consider that the used schema is '$${vars:schema}'.
 
@@ -80,8 +80,8 @@ Populate
 
 * With a sub select:
     INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), 21781), 'layer group name', text, to_tsvector('german', text) FROM table;
-  - layer group name should be replace by the name of the layer group.
-  - text can be replace by any prosgres functions.
+  - layer group name should be replaced by the name of the layer group.
+  - text can be replaced by any postgres function.
 
 
 QueryBuilder
@@ -114,9 +114,9 @@ Queryable Layer (GetFeatureInfo)
 Restricted layer
 ================
 
-The restricted layers work only with Prostgres data.
-All layer define a restricted in the MapFile should be define as it in the 
-admin interface and the inverce.
+The restricted layers work only with postgres data.
+All layer defined as restricted in the MapFile should be defined as well in the 
+admin interface and vice versa.
 
 To define a restricted layer in the mapfile we should define the DATA in the layer 
 like (in one line):
@@ -130,38 +130,60 @@ And in the METADATA of the layer:
 The important point is to have $${mapserver_join_tables} in the table list,
 have ST_Contains($${mapserver_join_area}, geo.geometrie) 
 AND $${mapserver_join_where} 'layer_name' in the where close to do the 
-restriction. The first part is used to filter on the geometry, the segont is to
+restriction. The first part is used to filter on the geometry, the second is to
 do the table joining and select the right layer.
 
-The matatata is needed because mapserver 6 want apply a validation with a pattern
+The metadata section is needed because mapserver 6 applies a validation with a pattern
 for all the variable substitution present in the DATA.
 
-This should be in a .map.in because it use template variable that's replace by 
+This should be in a .map.in because it uses template variable that is replaced by 
 SQL code in the .map file.
 
 
 Print config.yaml templating
 ============================
 
-If you intend to have more than one pdf config per paper format for your pdf
+If you intend to have more than one paper format for your PDF
 print output, a templating system is implemented to allow you to use mako
 template so you dont have to duplicate huge quantiy of code in your config.yaml.
 
-The system check if there is a file "print.mako" in a folder "templates" in 
+The system checks if there is a file "print.mako" in a folder "templates" in 
 the "print" folder (print/templates/print.mako).
 If that file exists, it will be used to generate the file "config.yaml" placed 
 in the "print" folder.
-If the file doesnt exists, the system does nothing.
+If the file does not exist, the system does nothing.
 
 It is possible to manually trigger the system by calling the following command:
 
 ./buildout/bin/print_tpl
 
 If you want to include some buildout variables in your mako template, you need to 
-name your mako template(s) with a .in as the variable replacement must be done 
+add a .in extension to your mako template(s) as the variable replacement must be done 
 before the mako templating is called (for example print/templates/print.mako.in)
 
 
+<<<<<<< .mine
+Go to the project directory (that includes c2cgeoportal)
+
+Install the buildout environment:
+
+  python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/ --setup-source \
+        http://pypi.camptocamp.net/distribute_setup.py
+
+Build c2cgeoportal (_dev for development build):
+
+  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
+
+Install the project:
+    
+  ./buildout/bin/buildout -c buildout_$$USER.cfg
+
+Now look at apache/README.txt and configure your Apache virtual host.
+
+
+=======
+>>>>>>> .r1581
 Internationalization
 ====================
 
@@ -203,14 +225,14 @@ c2cgeoportal
 ------------
 
 If you want to translate the c2cgeoportal part of the admin interface, 
-start to go to the c2cgeoportal directory, and do the same steps by replacing
+go to the c2cgeoportal directory, and do the same steps by replacing
 './buildout/bin/python' by '../buildout/bin/python'.
 
 
 Source: http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization
 
 
-Deployement 
+Deployment 
 ===========
 
 From dev to demo
@@ -238,7 +260,7 @@ Database migration
 
 To migrate the database we use the sqlalchemy-migrate framwork.
 
-C2cgeoportal version:
+c2cgeoportal version:
     ./buildout/bin/manage_db version 2> /dev/null
 
 Database version:
@@ -251,7 +273,8 @@ Upgrade:
 Update c2cgeoportal
 ===================
 
-* Update c2cgeoportal by doing svn up or somthing other...
+* Update c2cgeoportal
+    svn up
 
 * Build it
     ./buildout/bin/buildout -c buildout_$$USER.cfg
