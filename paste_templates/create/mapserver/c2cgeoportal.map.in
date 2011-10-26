@@ -25,7 +25,6 @@ MAP
     # http://mapserver.org/development/rfc/ms-rfc-55.html
     RESOLUTION 72 ## Also set in Openlayers for especially legends
     DEFRESOLUTION 72
-    UNITS METERS
 
     # MAXSIZE shouldn't be less than 5000 for MF print on A3
     MAXSIZE 5000
