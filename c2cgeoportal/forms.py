@@ -229,7 +229,6 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
             return ""
 
         if item in self.tree_items:
-            print item.name
             self.tree_items.remove(item)
 
         result = """
@@ -257,6 +256,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         result = ""
         for item in themes:
             result += self.render_item(item, 1)
+            self.tree_items.remove(item)
 
         # add unlinked layers 
         if len(self.tree_items) >= 0:
