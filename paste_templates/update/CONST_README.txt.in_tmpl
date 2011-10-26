@@ -162,28 +162,6 @@ add a .in extension to your mako template(s) as the variable replacement must be
 before the mako templating is called (for example print/templates/print.mako.in)
 
 
-<<<<<<< .mine
-Go to the project directory (that includes c2cgeoportal)
-
-Install the buildout environment:
-
-  python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/ --setup-source \
-        http://pypi.camptocamp.net/distribute_setup.py
-
-Build c2cgeoportal (_dev for development build):
-
-  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
-
-Install the project:
-    
-  ./buildout/bin/buildout -c buildout_$$USER.cfg
-
-Now look at apache/README.txt and configure your Apache virtual host.
-
-
-=======
->>>>>>> .r1581
 Internationalization
 ====================
 
