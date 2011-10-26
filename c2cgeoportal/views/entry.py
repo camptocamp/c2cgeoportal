@@ -133,7 +133,7 @@ class Entry(object):
     def _group(self, group, layers, wms_layers, wms):
         children = [] 
         error = ""
-        for treeItem in group.children:
+        for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                     group.isInternalWMS == treeItem.isInternalWMS):
@@ -209,8 +209,7 @@ class Entry(object):
             if theme.display:
                 children = []
 
-                for item in theme.children:
-
+                for item in sorted(theme.children, key=lambda item: item.order):
                     if type(item) == LayerGroup: 
                         (c, e) = self._group(item, layers, wms_layers, wms)
                         error += e
