@@ -202,8 +202,8 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         return result
 
     def render_organisational_item(self, item, depth):
-        if item in self.tree_items:
-            self.tree_items.remove(item)
+        if item in self.layer_group:
+            self.layer_group.remove(item)
 
         result = """
         <li>
@@ -227,8 +227,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         if self.only_private and isinstance(item, models.Layer) and item.public:
             return ""
 
-        if item in self.tree_items:
-            self.tree_items.remove(item)
+        if item in self.layer_group:
+            self.layer_group.remove(item)
+        elif item in self.layer:
+            self.layer.remove(item)
 
         result = """
         <li>
@@ -247,17 +249,19 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         return result
 
     def render_tree(self):
-        self.tree_items = models.DBSession.query(models.TreeItem). \
-                order_by(models.TreeItem.name).all()
+        self.layer = models.DBSession.query(models.Layer). \
+                order_by(models.Layer.order).all()
+        self.layer_group = models.DBSession.query(models.LayerGroup). \
+                order_by(models.LayerGroup.order).all()
         themes = models.DBSession.query(models.Theme). \
-                order_by(models.Theme.name).all()
+                order_by(models.Theme.order).all()
         self.i = 0
         result = ""
         for item in themes:
             result += self.render_item(item, 1)
 
         # add unlinked layers 
-        if len(self.tree_items) >= 0:
+        if len(self.layer) >= 0 or len(self.layer_group) > 0:
             result += """
             <li>
                 <input type="checkbox"></input>
@@ -266,8 +270,12 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
                 'name': _('Unlinked layers')
             }
             result += "<ul>"
-            for item in self.tree_items:
-                result += self.render_item(item, 2)
+
+            while len(self.layer_group) > 0:
+                result += self.render_item(self.layer_group.pop(0), 2)
+            while len(self.layer) > 0:
+                result += self.render_item(self.layer.pop(0), 2)
+
             result += "</ul>"
             result += '</li>'
         return result
