@@ -54,7 +54,7 @@ The project should already be built (see below).
     sudo -u $${vars:dbuser} buildout/bin/create_db CONST_development.ini -p
 
 * Set the version
-    sudo -u $${vars:dbuser} ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version 2> /dev/null`
+    sudo -u $${vars:dbuser} ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
 
 
 Create and Populate the FullTextSearch table
@@ -86,7 +86,7 @@ Populate
 Create a WMTS layer
 ===================
 
-* Make sure that /var/sig/tilecache/c2cgeoportal-$${vars:instanceid}_tilecache exists and is writeable by the tileforge user.
+* Make sure that /var/sig/tilecache/ exists and is writeable by the user 'www-data'.
 * Add the matching layers definitions in the mapfile (mapserver/c2cgeoportal.map.in).
 * Add a layer entry in tilecache/tilecache.cfg.in. The "layers" attribute must contain the list of mapserver layers defined above.
 * Update the layers sources list ("viewer_layers" block) in the ${package}/templates/viewer.js template. The "layer" parameter is the name of the tilecache layer entry just added in tilecache/tilecache.cfg.in.
@@ -246,10 +246,10 @@ Database migration
 To migrate the database we use the sqlalchemy-migrate framwork.
 
 c2cgeoportal version:
-    ./buildout/bin/manage_db version 2> /dev/null
+    ./buildout/bin/manage_db version 2
 
 Database version:
-    ./buildout/bin/manage_db db_version 2> /dev/null
+    ./buildout/bin/manage_db db_version 2
 
 Upgrade:
     ./buildout/bin/manage_db upgrade
