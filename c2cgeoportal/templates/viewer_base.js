@@ -63,7 +63,7 @@
         params: {
             'time': '2011'
         },
-        matrixSet: 'swissgrild',
+        matrixSet: 'swissgrid',
         maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
         projection: new OpenLayers.Projection("EPSG:21781"),
         units: "m",
