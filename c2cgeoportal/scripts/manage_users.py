@@ -21,8 +21,8 @@ def main():
     ./buildout/bin/manage_users -h
     """
 
-    usage = 'usage: %prog [options] USERNAME \n-h, --help for help\n\n\
-reset a user password. \nthe username is used as password if the password is not \
+    usage = 'usage: %prog [options] USERNAME \n\n\
+Reset a user password.\nThe username is used as password if the password is not \
 provided with the corresponding option.\nuser can be created if it doesnt exist.'
 
     parser = OptionParser(usage)

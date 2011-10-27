@@ -1,3 +1,6 @@
+[app:c2cgeoportal]
+project = ${package}
+
 [app:${package}]
 use = egg:${package}
 reload_templates = false

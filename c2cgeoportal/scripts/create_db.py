@@ -5,8 +5,10 @@ Run this once after installing the application::
 
     python -m c2cgeoportal.scripts.create_db development.ini [-d|--drop]
 """
-import logging.config
+
+import logging
 import sys
+from optparse import OptionParser
 
 from pyramid.paster import get_app
 import transaction
@@ -14,14 +16,23 @@ import transaction
 from c2cgeoportal import schema, parentschema, srid
 
 def main():
-    if len(sys.argv) < 2:
-        sys.exit("Usage: python -m c2cgeoportal.scripts.create_db " \
-                 "INI_FILE [-d|--drop]")
-    ini_file = sys.argv[1]
-    logging.config.fileConfig(ini_file)
+    parser = OptionParser("Create and populate the database tables.")
+    parser.add_option('-i', '--iniconfig', default='CONST_production.ini', 
+            help='project .ini config file')
+    parser.add_option('-d', '--drop', action="store_true",  default=False, 
+            help='drop the table if already exists')
+    parser.add_option('-p', '--populate', action="store_true",  default=False, 
+            help='populate the database')
+
+    (options, args) = parser.parse_args()
+
+    logging.config.fileConfig(options.iniconfig)
     log = logging.getLogger(__name__)
 
-    app = get_app(ini_file, "c2cgeoportal")
+    config = ConfigParser()
+    config.read(options.iniconfig)
+
+    app = get_app(options.iniconfig, config.get('app:c2cgeoportal', 'project'))
     settings = app.registry.settings
 
     schema = settings['schema']
@@ -29,7 +40,7 @@ def main():
     srid = settings['srid']
     import c2cgeoportal.models
 
-    if len(sys.argv) > 2 and sys.argv[2] in ['-d', '--drop']:
+    if options.drop:
         log.info("Dropping tables")
         models.Base.metadata.drop_all()
     # Abort if any tables exist to prevent accidental overwriting
