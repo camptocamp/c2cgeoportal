@@ -83,6 +83,13 @@ Populate
   - layer group name should be replaced by the name of the layer group.
   - text can be replaced by any postgres function.
 
+Create a WMTS layer
+===================
+
+* Make sure that /var/sig/tilecache/c2cgeoportal-$${vars:instanceid}_tilecache exists and is writeable by the tileforge user.
+* Add the matching layers definitions in the mapfile (mapserver/c2cgeoportal.map.in).
+* Add a layer entry in tilecache/tilecache.cfg.in. The "layers" attribute must contain the list of mapserver layers defined above.
+* Update the layers sources list ("viewer_layers" block) in the ${package}/templates/viewer.js template. The "layer" parameter is the name of the tilecache layer entry just added in tilecache/tilecache.cfg.in.
 
 QueryBuilder
 ============
