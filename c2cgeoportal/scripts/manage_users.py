@@ -6,7 +6,7 @@ from optparse import OptionParser
 from ConfigParser import ConfigParser
 
 from pyramid.paster import get_app
-from c2cgeoportal import schema, models
+from c2cgeoportal import schema
 import transaction
 
 def main():
@@ -66,6 +66,9 @@ used as password)')
     app = get_app(ini_file, config.get(section, option))
     settings = app.registry.settings
     schema = settings['schema']
+
+    # must be done only once we have loaded the project config
+    from c2cgeoportal import models
 
     print "\n"
 
