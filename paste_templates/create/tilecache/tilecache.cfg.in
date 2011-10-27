@@ -41,4 +41,4 @@ metaSize = 1,1
 [ortho]
 layers = ${encodedLayers_ortho}
 extension = jpeg
-
+mime_type = image/jpeg
