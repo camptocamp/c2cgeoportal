@@ -65,7 +65,7 @@ The database should already exist (see above).
 To simplify we consider that the used schema is '$${vars:schema}'.
 
 * Connect to postgres:
-    sudo -u $${vars:dbuser} $${vars:db}
+    sudo -u $${vars:dbuser} psql $${vars:db}
     
 * Create the table:
     CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR);
