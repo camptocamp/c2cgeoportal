@@ -31,6 +31,10 @@ def load_tilecache_config(settings):
     """
     global _service
     _service = Service.load(settings.get('tilecache.cfg'))
+    if 'traceback' in _service.metadata:
+        print 'Tilecache loading error: '
+        print _service.metadata['exception']
+        print _service.metadata['traceback']
 
 def createImage (path_info, service):
     path = path_info.split('/')
