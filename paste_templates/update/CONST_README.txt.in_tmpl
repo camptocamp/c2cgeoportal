@@ -176,8 +176,8 @@ Client
 ------
 
 For the client parts you have localisation files at 
-'c2cgeoportal/c2cgeoportal/static/app/lib/App/Lang/' and 
-'${package}/static/js/Proj/Lang/fr.js' for the project part.
+'${package}/static/js/Proj/Lang/lang.js' where lang is the ISO 639-1 
+code, ex: en, de or fr.
 
 Server
 ------
