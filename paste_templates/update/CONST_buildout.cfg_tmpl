@@ -5,7 +5,6 @@ parts = eggs
         modwsgi 
         jsbuild 
         cssbuild 
-        cssbuildadmin 
         po2mo 
         print-template 
         print-war
@@ -422,12 +421,6 @@ input =
     ${package}/static/lib/cgxp/core/src/theme/all.css
     ${package}/static/css/proj.css
 output = ${package}/static/build/app.css
-
-[cssbuildadmin]
-recipe = c2c.recipe.cssmin
-input = 
-    ${package}/static/css/admin.css
-output = ${package}/static/build/admin.css
 
 [po2mo]
 recipe = c2c.recipe.msgfmt
