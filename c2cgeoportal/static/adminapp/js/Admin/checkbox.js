@@ -134,13 +134,13 @@
             fields = ["legendRule"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "isSingleTile", "minResolution", "maxResolution"];
+            fields = ["url", "isSingleTile"];
         }
         else if (state == "internal WMTS") {
-            fields = ["legendImage", "minResolution", "maxResolution"];
+            fields = ["legendImage"];
         }
         else if (state == "external WMTS") {
-            fields = ["url", "serverResolutions", "maxExtent", "legendImage", "minResolution", "maxResolution"];
+            fields = ["url", "serverResolutions", "maxExtent", "legendImage"];
         }
 
         var change = function(field, fields) {
@@ -160,8 +160,6 @@
         change("isSingleTile", fields);
         change("legendImage", fields);
         change("legendRule", fields);
-        change("minResolution", fields);
-        change("maxResolution", fields);
     };
 
     /**
