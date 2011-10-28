@@ -58,8 +58,8 @@ class Entry(object):
         resolutionHintMin = float('inf')
         resolutionHintMax = 0
         if layer.scaleHint:
-            resolutionHintMin = layer.scaleHint['min']
-            resolutionHintMax = layer.scaleHint['max']
+            resolutionHintMin = float(layer.scaleHint['min'])
+            resolutionHintMax = float(layer.scaleHint['max'])
         for childLayer in layer.layers:
             resolution = self._getLayerResolutionHint(childLayer)
             resolutionHintMin = min(resolutionHintMin, resolution[0])
@@ -88,24 +88,31 @@ class Entry(object):
         l = { 
             'name': layer.name,
             'type': layer.layerType,
-            'icon': self._getIconPath(layer.icon),
             'imageType': layer.imageType,
-            'kml': layer.kml,
             'no2D': layer.no2D,
             'legend': layer.legend,
             'isVisible': layer.isVisible
         }
+        if layer.icon:
+            l['icon'] = self._getIconPath(layer.icon)
+        if layer.kml:
+            l['kml'] = layer.kml
+
         if layer.layerType == "internal WMS":
             metadataUrls = layer.metadataURL or ""
             # this is a leaf, ie. a Mapserver layer
             # => add the metadata URL if any
             if len(metadataUrls) == 0 and layer.name in wms_layers:
                 metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
-            if layer.name in wms_layers:
-                resolutions = self._getLayerResolutionHint(wms[layer.name])
-                if resolutions[0] <= resolutions[1]:
-                    l['minResolutionHint'] = resolutions[0]
-                    l['maxResolutionHint'] = resolutions[1]
+            if layer.minResolution and layer.maxResolution:
+                l['minResolutionHint'] = layer.minResolution
+                l['maxResolutionHint'] = layer.maxResolution
+            else:
+                if layer.name in wms_layers:
+                    resolutions = self._getLayerResolutionHint(wms[layer.name])
+                    if resolutions[0] <= resolutions[1]:
+                        l['minResolutionHint'] = float('%0.2f'%resolutions[0])
+                        l['maxResolutionHint'] = float('%0.2f'%resolutions[1])
             if len(metadataUrls) > 0:
                 l['metadataUrls'] = metadataUrls
             if layer.legendRule:
@@ -114,8 +121,9 @@ class Entry(object):
         else:
             if layer.legendImage:
                 l['legendImage'] = layer.legendImage
-            l['minResolutionHint'] = layer.minResolution
-            l['maxResolutionHint'] = layer.maxResolution
+            if layer.minResolution and layer.maxResolution:
+                l['minResolutionHint'] = layer.minResolution
+                l['maxResolutionHint'] = layer.maxResolution
             if layer.metadataURL:
                 l['metadataURL'] = layer.metadataURL
 
