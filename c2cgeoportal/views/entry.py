@@ -76,7 +76,7 @@ class Entry(object):
             try:
                 # test full resource ref
                 if icon.find(':') < 0:
-                    icon = self.request.static_url('project:static' + icon)
+                    icon = self.request.static_url(self.settings['project'] + ':static' + icon)
                 else:
                     icon = self.request.static_url(icon)
             except ValueError:

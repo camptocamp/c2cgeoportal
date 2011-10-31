@@ -3,6 +3,7 @@ project = ${package}
 
 [app:${package}]
 use = egg:${package}
+project = ${package}
 reload_templates = true
 debug_authorization = false
 debug_notfound = false
