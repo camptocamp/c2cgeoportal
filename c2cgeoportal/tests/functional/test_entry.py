@@ -5,7 +5,7 @@ import sqlahelper
 from sqlalchemy import create_engine
 from geoalchemy import WKTSpatialElement
 from pyramid import testing
-from pyramid.configuration import Configurator
+from pyramid.config import Configurator
 
 import c2cgeoportal
 from c2cgeoportal.tests import TestView, DummyRequest, sqlalchemy_url
