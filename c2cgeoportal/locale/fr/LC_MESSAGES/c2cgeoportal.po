@@ -222,7 +222,7 @@ msgstr "Chargement..."
 
 #: c2cgeoportal/templates/search-tip.html:2
 msgid "search tip message"
-msgstr "Ici vous pouvez chercher des adresses, des lieux-dits, des parcelles, des coordonnées."
+msgstr "Ici vous pouvez chercher des adresses, des lieux-dits, des parcelles,\ndes coordonnées: swiss projection: 600000 200000 ; lon lat: 7.3 46.8."
 
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"

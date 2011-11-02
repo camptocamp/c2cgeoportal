@@ -222,7 +222,7 @@ msgstr "Loading..."
 
 #: c2cgeoportal/templates/search-tip.html:2
 msgid "search tip message"
-msgstr "Akzeptierte Suchewerte sind: Adressen, Orte, Liegenschaften, Koordinaten."
+msgstr "Akzeptierte Suchewerte sind: Adressen, Orte, Liegenschaften,\nKoordinaten: swiss projection 600000 200000 ; lon lat: 7.3 46.8."
 
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"
