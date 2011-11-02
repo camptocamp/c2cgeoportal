@@ -34,13 +34,11 @@ ${package}.Map = Ext.extend(cgxp.api.Map, {
     },
 
     /**
-     * Method: getViewer
-     * Returns the gxp viewer object
+     * Method: initializeViewer
+     * Initialize the gxp viewer
      */
-    getViewer: function (viewerConfig, apiConfig) {
-        return API.getViewer(viewerConfig);
+    initializeViewer: function(viewerConfig, apiConfig) {
+        Ext.apply(this, API.getConfig(viewerConfig));
     }
-
-    // project API
 });
 

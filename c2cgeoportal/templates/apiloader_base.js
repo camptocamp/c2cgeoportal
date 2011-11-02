@@ -18,8 +18,12 @@ document.write('<link rel="stylesheet" type="text/css" href="' + "${request.stat
 % endif
 
 API = {};
-API.getViewer = function(config) {
+API.getConfig = function(config) {
     <%include file="apiviewer.js" />
-    return app;
+    return {
+        viewer: app,
+        mapserverproxyURL: "${request.route_url('mapserverproxy', path='')}",
+        themes: THEMES 
+    };
 }
 
