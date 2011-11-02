@@ -217,23 +217,28 @@
         }, {
             ptype: "gxp_navigationhistory",
             actionTarget: "map.tbar"
-        }, {
+        }, 
+        <%block name="viewer_tools_toolbar_permalink">\
+        {
             ptype: "cgxp_permalink",
             actionTarget: "map.tbar"
-        }, {
+        }, 
+        </%block>\
+        {
             ptype: "cgxp_measure",
             actionTarget: "map.tbar",
             toggleGroup: "maptools"
-        }, {
+        }, 
+        <%block name="viewer_tools_toolbar_getfeatureinfo">\
+        {
             ptype: "cgxp_wmsgetfeatureinfo",
             featureManager: "featuremanager",
             actionTarget: "map.tbar",
             toggleGroup: "maptools",
             events: EVENTS
-        }, {
-            ptype: "cgxp_menushortcut",
-            type: '-',
-        }, {
+        }, 
+        </%block>\
+        {
             ptype: "cgxp_fulltextsearch",
             url: "${request.route_url('fulltextsearch', path='')}",
             actionTarget: "map.tbar"
@@ -252,7 +257,9 @@
         }, {
             ptype: "cgxp_menushortcut",
             type: '-'
-        }, {
+        }, 
+        <%block name="viewer_tools_toolbar_login">\
+        {
             ptype: "cgxp_login",
             actionTarget: "map.tbar",
             toggleGroup: "maptools",
@@ -261,10 +268,12 @@
 % endif
             loginURL: "${request.route_url('login', path='')}",
             logoutURL: "${request.route_url('logout', path='')}"
-        }, {
+        },{
             ptype: "cgxp_menushortcut",
             type: '-'
-        },{
+        }, 
+        </%block>\
+        {
             ptype: "cgxp_help",
             <%block name="viewer_tools_toolbar_helpurl">\
             url: "#help-url",
@@ -297,7 +306,9 @@
         // map and layers
         map: {
             <%block name="viewer_map">\
+            <%block name="viewer_map_id">\
             id: "app-map", // id needed to reference map in portalConfig above
+            </%block>\
             projection: "EPSG:21781",
             extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
@@ -389,7 +400,7 @@
         // remove loading message
         Ext.get('loading').remove();
         Ext.fly('loading-mask').fadeOut({
-            remove:true
+            remove: true
         });
     </%block>\
     }, app);
