@@ -310,7 +310,7 @@ class Layer(TreeItem):
     imageType = Column(types.Enum("image/jpeg", "image/png", 
             name=_schema+".imageType"), label=_(u'Image type'))
     kml = Column(types.Unicode, label=_(u'KML 3D')) # for kml 3D
-    isSingleTile = Column(types.Boolean, label=_(u'Simgle tile')) # for extenal WMS
+    isSingleTile = Column(types.Boolean, label=_(u'Single tile')) # for extenal WMS
     isVisible = Column(types.Boolean, label=_(u'Visible')) # by default
     no2D = Column(types.Boolean, label=_(u'No 2D')) # only kml 3D
     legend = Column(types.Boolean, label=_(u'Display legend')) # on the tree

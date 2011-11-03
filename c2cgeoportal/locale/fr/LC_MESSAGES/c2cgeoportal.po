@@ -161,7 +161,7 @@ msgid "KML 3D"
 msgstr ""
 
 #: c2cgeoportal/models.py:312
-msgid "Simgle tile"
+msgid "Single tile"
 msgstr ""
 
 #: c2cgeoportal/models.py:313
