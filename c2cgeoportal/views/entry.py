@@ -76,6 +76,8 @@ class Entry(object):
             try:
                 # test full resource ref
                 if icon.find(':') < 0:
+                    if icon[0] is not '/':
+                        icon = '/' + icon
                     icon = self.request.static_url(self.settings['project'] + ':static' + icon)
                 else:
                     icon = self.request.static_url(icon)
@@ -231,7 +233,7 @@ class Entry(object):
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
                            self.request.static_url('c2cgeoportal:static' + \
-                                                   '/app/images/ol/blank.gif')
+                                                   '/images/blank.gif')
                     exportThemes.append({
                         'name': theme.name,
                         'icon': icon,
