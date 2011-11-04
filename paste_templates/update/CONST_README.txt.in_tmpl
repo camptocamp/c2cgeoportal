@@ -255,10 +255,10 @@ Database migration
 To migrate the database we use the sqlalchemy-migrate framwork.
 
 c2cgeoportal version:
-    ./buildout/bin/manage_db version 2
+    ./buildout/bin/manage_db version
 
 Database version:
-    ./buildout/bin/manage_db db_version 2
+    ./buildout/bin/manage_db db_version
 
 Upgrade:
     ./buildout/bin/manage_db upgrade
