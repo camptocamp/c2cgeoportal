@@ -336,6 +336,9 @@
                     size: new OpenLayers.Size(200, 100),
                     minRatio: 64, 
                     maxRatio: 64, 
+                    mapOptions: {
+                        theme: null
+                    },
                     layers: [new OpenLayers.Layer.OSM("OSM", [
                             'http://a.tile.openstreetmap.org/${"${z}"}/${"${x}"}/${"${y}"}.png',
                             'http://b.tile.openstreetmap.org/${"${z}"}/${"${x}"}/${"${y}"}.png',
