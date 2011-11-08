@@ -419,6 +419,7 @@ input =
     ${package}/static/lib/cgxp/styler/theme/css/styler.css
     ${package}/static/lib/cgxp/gxp/src/theme/all.css
     ${package}/static/lib/cgxp/core/src/theme/all.css
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker/ressources/colorpicker.css
     ${package}/static/css/proj.css
 output = ${package}/static/build/app.css
 

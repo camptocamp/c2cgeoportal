@@ -11,6 +11,7 @@ root =
     ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js
@@ -48,6 +49,7 @@ root =
     ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js
@@ -76,8 +78,14 @@ root =
     ${package}/static/lib/cgxp/ext
     ${package}/static/lib/cgxp/geoext/lib
     ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/js
 include =
     Proj/Lang/en.js
@@ -96,8 +104,14 @@ root =
     ${package}/static/lib/cgxp/ext
     ${package}/static/lib/cgxp/geoext/lib
     ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/js
 include =
     Proj/Lang/fr.js
@@ -116,8 +130,14 @@ root =
     ${package}/static/lib/cgxp/ext
     ${package}/static/lib/cgxp/geoext/lib
     ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/sandbox
     ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/js
 include =
     Proj/Lang/de.js

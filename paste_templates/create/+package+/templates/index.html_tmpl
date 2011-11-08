@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/styler/theme/css/styler.css')}" />
         <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/gxp/src/theme/all.css')}" />
         <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/core/src/theme/all.css')}" />
+        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/ext.ux/ColorPicker/ressources/colorpicker.css')}" />
         <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/css/proj.css')}" />
 </%block>\
 <%block name="page_head_cssurls_nodebug">\
