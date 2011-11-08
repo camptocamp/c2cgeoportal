@@ -30,7 +30,7 @@ include =
     CGXP/plugins/FeatureGrid.js
     CGXP/plugins/Zoom.js
     CGXP/plugins/WMSGetFeatureInfo.js
-    CGXP/plugins/Redlining.js
+    CGXP/plugins/RedliningColorPicker.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Print.js
@@ -71,7 +71,7 @@ include =
     Proj/Lang/en.js
     api/Map.js
     CGXP/plugins/Zoom.js
-    CGXP/plugins/Redlining.js
+    CGXP/plugins/RedliningColorPicker.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Legend.js

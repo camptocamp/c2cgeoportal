@@ -1,0 +1,15 @@
+
+In this file all the changest that can affect the defferant project should be present.
+
+The dates can be generated with « date -R ».
+
+-------------------------------
+Mon, 07 Nov 2011 10:05:22 +0100
+
+Add a Color pocher for the RedLingning.
+
+In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replace by
+CGXP/plugins/RedliningColorPicker.js for the new colorpicher or by
+CGXP/plugins/RedliningCombo.js to have the old combobox.
+-------------------------------
+
