@@ -309,6 +309,7 @@
             <%block name="viewer_map_id">\
             id: "app-map", // id needed to reference map in portalConfig above
             </%block>\
+            xtype: 'cgxp_mappanel',
             projection: "EPSG:21781",
             extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
