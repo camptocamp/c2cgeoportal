@@ -30,7 +30,7 @@ include =
     CGXP/plugins/FeatureGrid.js
     CGXP/plugins/Zoom.js
     CGXP/plugins/WMSGetFeatureInfo.js
-    CGXP/plugins/RedliningColorPicker.js
+    CGXP/widgets/RedliningColorPicker.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Print.js
