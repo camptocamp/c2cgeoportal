@@ -13,3 +13,9 @@ CGXP/plugins/RedliningColorPicker.js for the new colorpicher or by
 CGXP/plugins/RedliningCombo.js to have the old combobox.
 -------------------------------
 
+Wed, 09 Nov 2011 17:15:13 +0100
+
+Extended GeoExt.MapPanel to override the getState methode
+
+Add CGXP/widgets/MapPanel.js in app.cfg
+-------------------------------
