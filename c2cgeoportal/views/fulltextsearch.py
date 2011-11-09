@@ -22,7 +22,8 @@ def fulltextsearch(request):
     if limit > 30:
         limit = 30
 
-    terms = '&'.join([w + ':*' for w in query.split(' ')])
+    terms = '&'.join([w + ':*' for w in 
+            query.split(' ') if w != ''])
     filter = "%(tsvector)s @@ to_tsquery('german', '%(terms)s')" % \
         {'tsvector': 'ts', 'terms': terms}
 
