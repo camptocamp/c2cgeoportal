@@ -136,7 +136,7 @@ And in the METADATA of the layer:
     $$$${mapserver_layer_metadata}
 The important point is to have $$$${mapserver_join_tables} in the table list,
 have ST_Contains($$$${mapserver_join_area}, geo.geometrie) 
-AND $$$${mapserver_join_where} 'layer_name' in the where close to do the 
+AND $$$${mapserver_join_where} 'layer_name' in the where clause to do the 
 restriction. The first part is used to filter on the geometry, the second is to
 do the table joining and select the right layer.
 
