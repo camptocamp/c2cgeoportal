@@ -201,7 +201,7 @@ Server
   ./buildout/bin/python setup.py init_catalog -l fr
   ./buildout/bin/python setup.py init_catalog -l de
 
-3) Edit the .po files in c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
+3) Edit the .po files in ${package}/locale/*/LC_MESSAGES/${package}.po
 
 4) Run buildout to compile all the .po files to .mo:
 
