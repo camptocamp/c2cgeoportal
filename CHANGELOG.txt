@@ -1,21 +1,21 @@
 
-In this file all the changest that can affect the defferant project should be present.
+In this file all the changes that can affect the different projects should be present.
 
 The dates can be generated with « date -R ».
 
 -------------------------------
 Mon, 07 Nov 2011 10:05:22 +0100
 
-Add a Color pocher for the RedLingning.
+Added a colorpicker to the redlining tool.
 
-In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replace by
-CGXP/plugins/RedliningColorPicker.js for the new colorpicher or by
-CGXP/plugins/RedliningCombo.js to have the old combobox.
+In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replaced by
+CGXP/widgets/RedliningColorPicker.js for the new colorpicker or by
+CGXP/widgets/RedliningCombo.js to have the old combobox.
 -------------------------------
 
 Wed, 09 Nov 2011 17:15:13 +0100
 
-Extended GeoExt.MapPanel to override the getState methode
+Extended GeoExt.MapPanel to override the getState method
 
 Add CGXP/widgets/MapPanel.js in app.cfg
 -------------------------------
