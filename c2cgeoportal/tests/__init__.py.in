@@ -11,6 +11,7 @@ from pyramid.interfaces import IRoutesMapper, IStaticURLInfo
 import c2cgeoportal
 
 c2cgeoportal.schema = 'test' 
+c2cgeoportal.srid = 2056
 
 sqlalchemy_url = 'postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}'
 mapserv_url = '${mapserv_url}'
