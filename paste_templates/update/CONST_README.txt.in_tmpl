@@ -288,10 +288,10 @@ Run the tests:
     ./buildout/bin/buildout -c buildout_$$USER.cfg:
 * run the tests
    . buildout/bin/activate
-   cd c2cgeoportail/
+   cd c2cgeoportal/
    nosetests
    cd -
-   desactivate
+   deactivate
 
 
 Some tip for posix tools users
