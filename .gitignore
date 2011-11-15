@@ -8,8 +8,8 @@ tileforge/
 MANIFEST
 c2cgeoportal.egg-info/
 c2cgeoportal/migration/migrate.cfg
-c2cgeoportal/tests/__init__.py
 c2cgeoportal/tests/functional/c2cgeoportal_test.map
+c2cgeoportal/tests/test.ini
 fanstatic-0ef2510a6594/MANIFEST
 fanstatic-0ef2510a6594/fanstatic.egg-info/
 fanstatic-0ef2510a6594/fanstatic/testdata/MyPackage/MANIFEST

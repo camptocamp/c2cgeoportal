@@ -1,28 +1,19 @@
 # -*- coding: utf-8 -*-
+from unittest import TestCase
 
 import transaction
-import sqlahelper
-from sqlalchemy import create_engine
 from geoalchemy import WKTSpatialElement
 from pyramid import testing
-from pyramid.config import Configurator
 
-import c2cgeoportal
-from c2cgeoportal.tests import TestView, DummyRequest, sqlalchemy_url
-from c2cgeoportal.models import DBSession, User, Role, Layer, RestrictionArea, \
-        Functionality, Theme
-from c2cgeoportal.views.entry import Entry
+from c2cgeoportal.tests import tearDownModule, setUpModule
 
-class TestEntryView(TestView):
+class TestEntryView(TestCase):
 
     def setUp(self):
-        self.config = Configurator(package=c2cgeoportal)
-        self.config.begin()
+        self.config = testing.setUp()
 
-        engine = create_engine(sqlalchemy_url)
-        sqlahelper.add_engine(engine)
-
-        self.tearDown()
+        from c2cgeoportal.models import DBSession, User, Role, Layer, \
+                RestrictionArea, Functionality, Theme
 
         user = User(u'__test_user', u'__test_user')
         pt1 = Functionality(name=u'print_template', value=u'1 Wohlen A4 portrait')
@@ -48,6 +39,11 @@ class TestEntryView(TestView):
         transaction.commit()
 
     def tearDown(self):
+        testing.tearDown()
+
+        from c2cgeoportal.models import DBSession, User, Role, Layer, \
+                RestrictionArea, Functionality, Theme
+
         DBSession.query(User).filter(User.username == '__test_user').delete()
         for f in DBSession.query(Functionality).filter(Functionality.value == u'1 Wohlen A4 portrait').all():
             DBSession.delete(f)
@@ -62,7 +58,10 @@ class TestEntryView(TestView):
             DBSession.delete(layer)
         transaction.commit()
 
-    def log_in(self):
+    def test_login(self):
+        from c2cgeoportal.views.entry import Entry
+        from pyramid.security import authenticated_userid
+
         request = testing.DummyRequest()
         request.params['login'] = u'__test_user'
         request.params['password'] = u'__test_user'
@@ -70,41 +69,85 @@ class TestEntryView(TestView):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302) 
         self.assertEquals(response.headers['Location'], "/came_from") 
-        self.config.testing_securitypolicy(userid=u'__test_user')
 
-    def log_out(self):
+    def test_logout(self):
+        from c2cgeoportal.views.entry import Entry
+
         request = testing.DummyRequest(path='/')
         request.params['came_from'] = '/came_from'
         response = Entry(request).logout()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from") 
-        self.config.testing_securitypolicy(userid=None)
 
     def test_index_no_auth(self):
-        request = DummyRequest()
-        response = Entry(request).home()
+        from c2cgeoportal.views.entry import Entry
+        from mock import patch, MagicMock
+
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'external_themes_url': '',
+                'webclient_string_functionalities': '',
+                'webclient_array_functionalities': '',
+                }
+        request.static_url = lambda url: '/dummy/static/url'
+        request.route_url = lambda url: '/dummy/route/url'
+        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
+            response = Entry(request).home()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
     def test_index_auth(self):
-        self.log_in()
-        request = DummyRequest()
-        response = Entry(request).home()
-        self.log_out()
+        from c2cgeoportal.views.entry import Entry
+        from mock import patch, MagicMock
+
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'external_themes_url': '',
+                'webclient_string_functionalities': '',
+                'webclient_array_functionalities': '',
+                }
+        request.static_url = lambda url: '/dummy/static/url'
+        request.route_url = lambda url: '/dummy/route/url'
+        entry = Entry(request)
+        entry.username = u'__test_user'
+        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
+            response = entry.home()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
 
     def test_apiloader_no_auth(self):
-        request = DummyRequest()
-        response = Entry(request).apiloader()
+        from c2cgeoportal.views.entry import Entry
+        from mock import patch, MagicMock
+
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'external_themes_url': '',
+                'webclient_string_functionalities': '',
+                'webclient_array_functionalities': '',
+                }
+        request.static_url = lambda url: '/dummy/static/url'
+        request.route_url = lambda url: '/dummy/route/url'
+        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
+            response = Entry(request).apiloader()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
     def test_apiloader_auth(self):
-        self.log_in()
-        request = DummyRequest()
-        response = Entry(request).apiloader()
-        self.log_out()
+        from c2cgeoportal.views.entry import Entry
+        from mock import patch, MagicMock
+
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'external_themes_url': '',
+                'webclient_string_functionalities': '',
+                'webclient_array_functionalities': '',
+                }
+        request.static_url = lambda url: '/dummy/static/url'
+        request.route_url = lambda url: '/dummy/route/url'
+        entry = Entry(request)
+        entry.username = u'__test_user'
+        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
+            response = entry.apiloader()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
 

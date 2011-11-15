@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+from unittest import TestCase
 
-from c2cgeoportal.tests import TestView 
-
-class TestExportcsvView(TestView):
+class TestExportcsvView(TestCase):
 
     def test_index(self):
         pass

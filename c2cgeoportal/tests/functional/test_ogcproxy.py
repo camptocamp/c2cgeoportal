@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+from unittest import TestCase
 
-from c2cgeoportal.tests import TestView
 from papyrus_ogcproxy.views import ogcproxy
 from pyramid import testing
 
-class TestOgcproxyView(TestView):
+class TestOgcproxyView(TestCase):
 
     def test_nourl(self):
         request = testing.DummyRequest()

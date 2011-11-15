@@ -8,36 +8,36 @@
 # md5sum with no squares: ef33223235b26c782736c88933b35331
 #
 #
-
+from unittest import TestCase
 import os
 import hashlib
 
-from sqlalchemy import Column, types, create_engine
-import sqlahelper
+from sqlalchemy import Column, types
 from geoalchemy import GeometryColumn, Point, GeometryDDL, WKTSpatialElement
 import transaction
 from pyramid import testing
+import sqlahelper
 
-from c2cgeoportal.tests import TestView, sqlalchemy_url
-from c2cgeoportal import schema, tests
-from c2cgeoportal.models import User, Role, Layer, RestrictionArea, Base, \
-        Functionality, DBSession
-from c2cgeoportal.views import mapserverproxy
+from c2cgeoportal.tests import setUpModule, tearDownModule, mapserv_url
+
+Base = sqlahelper.get_base()
 
 class TestPoint(Base):
     __tablename__ = 'testpoint'
-    __table_args__ = {'schema': schema}
+    __table_args__ = {'schema': 'main'}
     id = Column(types.Integer, primary_key=True)
     the_geom = GeometryColumn(Point(srid=21781))
 GeometryDDL(TestPoint.__table__)
 
-class TestMapserverproxyView(TestView):
+class TestMapserverproxyView(TestCase):
+
 
     def setUp(self):
-        engine = create_engine(sqlalchemy_url)
-        sqlahelper.add_engine(engine)
+        self.config = testing.setUp()
 
-        self.tearDown()
+        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
+                Functionality, DBSession
+
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         geom = WKTSpatialElement("POINT(-90 -45)", srid=21781)
@@ -77,6 +77,10 @@ class TestMapserverproxyView(TestView):
         transaction.commit()
 
     def tearDown(self):
+        testing.tearDown()
+
+        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
+                Functionality, DBSession
         
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
@@ -108,12 +112,16 @@ class TestMapserverproxyView(TestView):
         return {'Authorization': 'Basic %s' % userpass.encode('base64')}
 
     def test_GetMap_unprotected_layer_anonymous(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
         request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -122,14 +130,18 @@ class TestMapserverproxyView(TestView):
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_unprotected_layer_user1(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
-        request = self._log_in('__test_user1')
+        self.config.testing_securitypolicy('__test_user1')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
-        self._log_out()
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 square
@@ -137,14 +149,18 @@ class TestMapserverproxyView(TestView):
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_unprotected_layer_user2(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
-        request = self._log_in('__test_user2')
+        self.config.testing_securitypolicy('__test_user2')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
-        self._log_out()
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 square
@@ -152,12 +168,16 @@ class TestMapserverproxyView(TestView):
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_protected_layer_anonymous(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
         request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -166,14 +186,18 @@ class TestMapserverproxyView(TestView):
         assert md5sum == 'ef33223235b26c782736c88933b35331'
 
     def test_GetMap_protected_layer_user1(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
-        request = self._log_in('__test_user1')
+        self.config.testing_securitypolicy('__test_user1')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
-        self._log_out()
         
         md5sum = hashlib.md5(response.body).hexdigest()
         # two squares
@@ -181,14 +205,18 @@ class TestMapserverproxyView(TestView):
         assert md5sum == '0a4fac2209d06c6fa36048c125b1679a'
 
     def test_GetMap_protected_layer_user2(self):
+        from c2cgeoportal.views import mapserverproxy
+
         map = self._get_mapfile_path()
-        request = self._log_in('__test_user2')
+        self.config.testing_securitypolicy('__test_user2')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
-        request.registry.settings = {'mapserv.url': tests.mapserv_url}
         response = mapserverproxy.proxy(request)
-        self._log_out()
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # empty

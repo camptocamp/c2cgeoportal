@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+from unittest import TestCase
 
-from c2cgeoportal.tests import TestView
-
-class TestObjsView(TestView):
+class TestObjsView(TestCase):
     def test_index(self):
         pass

@@ -28,6 +28,10 @@ requires = [
     'nosexcover'
     ]
 
+tests_require = requires + [
+    'mock',
+    ]
+
 setup(name='c2cgeoportal',
       version='0.2',
       description='c2cgeoportal',
@@ -50,7 +54,7 @@ setup(name='c2cgeoportal',
           ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
       zip_safe=False,
       install_requires=requires,
-      tests_require=requires,
+      tests_require=tests_require,
       test_suite="c2cgeoportal",
       entry_points = {
         'console_scripts': [
