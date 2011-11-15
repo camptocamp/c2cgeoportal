@@ -19,7 +19,7 @@ requires = [
     'Babel',
     'pyramid_formalchemy',
     'fa.jquery',
-    'fanstatic',
+    'fanstatic>=0.11.3',
     'GeoFormAlchemy',
     'OWSLib',
     'tileforge',

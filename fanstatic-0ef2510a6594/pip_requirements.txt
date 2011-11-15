@@ -1,2 +1,0 @@
-# pip requirements for readthedocs.org
-sphinxcontrib_cheeseshop
