@@ -14,3 +14,8 @@ fanstatic-0ef2510a6594/MANIFEST
 fanstatic-0ef2510a6594/fanstatic.egg-info/
 fanstatic-0ef2510a6594/fanstatic/testdata/MyPackage/MANIFEST
 fanstatic-0ef2510a6594/fixtures/MyPackage/MANIFEST
+.coverage
+.installed.cfg
+c2cgeoportal/locale/de/LC_MESSAGES/c2cgeoportal.mo
+c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.mo
+c2cgeoportal/locale/fr/LC_MESSAGES/c2cgeoportal.mo
