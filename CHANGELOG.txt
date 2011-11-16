@@ -19,3 +19,8 @@ Extended GeoExt.MapPanel to override the getState method
 
 Add CGXP/widgets/MapPanel.js in app.cfg
 -------------------------------
+
+Wed, 16 Nov 2011 16:11:54 +0100
+
+Fixed gettext config in order to take into account translations from the project templates
+-------------------------------
