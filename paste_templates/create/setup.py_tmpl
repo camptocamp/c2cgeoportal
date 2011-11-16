@@ -20,7 +20,7 @@ setup(
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
-    message_extractors={'bl_gis2012': [
+    message_extractors={'${package}': [
         ('static/**', 'ignore', None),
         ('**.py', 'python', None),
         ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
