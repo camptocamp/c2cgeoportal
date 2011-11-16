@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import os
 try:
     from hashlib import sha1
 except ImportError:
@@ -8,12 +7,10 @@ except ImportError:
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
-from sqlalchemy import ForeignKey, types, Table, MetaData, Integer, \
-        UniqueConstraint
+from sqlalchemy import ForeignKey, types, Table, Integer
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
 from formalchemy import Column
-from pyramid.threadlocal import get_current_registry
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
 
