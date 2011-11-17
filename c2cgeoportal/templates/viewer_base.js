@@ -209,7 +209,7 @@
             ptype: "cgxp_mapopacityslider"
         },
         </%block>\
-        <%block name="viewer_tools_additional">\        
+        <%block name="viewer_tools_additional">\
         </%block>\
         <%block name="viewer_tools_toolbar">\
         {
