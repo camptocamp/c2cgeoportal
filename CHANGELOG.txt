@@ -24,3 +24,8 @@ Wed, 16 Nov 2011 16:11:54 +0100
 
 Fixed gettext config in order to take into account translations from the project templates
 -------------------------------
+
+Thu, 17 Nov 2011 11:24:25 +0100
+
+Added block tools_additional in viewer_base.js
+-------------------------------

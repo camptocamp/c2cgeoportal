@@ -204,6 +204,13 @@
             events: EVENTS
         }, 
         </%block>\
+        <%block name="viewer_tools_mapopacityslider">\
+        {
+            ptype: "cgxp_mapopacityslider"
+        },
+        </%block>\
+        <%block name="viewer_tools_additional">\        
+        </%block>\
         <%block name="viewer_tools_toolbar">\
         {
             ptype: "gxp_zoomtoextent",
@@ -284,12 +291,7 @@
             // shared FeatureManager for feature editing, grid and querying
             ptype: "cgxp_featuremanager",
             id: "featuremanager"
-*/        },
-        </%block>\
-        <%block name="viewer_tools_mapopacityslider">\
-        {
-            ptype: "cgxp_mapopacityslider"
-        }
+*/        }
         </%block>\
         </%block>\
         ],
