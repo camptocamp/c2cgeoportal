@@ -7,13 +7,11 @@ Run this once after installing the application::
 """
 
 import logging
-import sys
 from optparse import OptionParser
 
 from pyramid.paster import get_app
 import transaction
 
-from c2cgeoportal import schema, parentschema, srid
 
 def main():
     parser = OptionParser("Create and populate the database tables.")
