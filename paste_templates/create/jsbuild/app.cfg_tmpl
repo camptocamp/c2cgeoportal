@@ -72,7 +72,7 @@ include =
     Proj/Lang/en.js
     api/Map.js
     CGXP/plugins/Zoom.js
-    CGXP/plugins/RedliningColorPicker.js
+    CGXP/widgets/RedliningColorPicker.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Legend.js
