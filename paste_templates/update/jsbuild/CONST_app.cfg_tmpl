@@ -68,6 +68,7 @@ first =
     OpenLayers/Lang/en.js
     OpenLayers/Lang/de.js
     OpenLayers/Lang/fr.js
+    proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
