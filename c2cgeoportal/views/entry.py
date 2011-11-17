@@ -294,7 +294,7 @@ class Entry(object):
         d['lang'] = self.lang
         d['debug'] = self.debug
 
-        self.request.response_content_type = 'application/javascript'
+        self.request.response.content_type = 'application/javascript'
         return d
 
     @view_config(route_name='apihelp', renderer='apihelp.html')
