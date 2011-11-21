@@ -316,6 +316,7 @@ class Layer(TreeItem):
     metadataURL = Column(types.Unicode, label=_(u'Metadata URL'))
     minResolution = Column(types.Float, label=_(u'Min resolution')) # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
+    disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
 
     def __init__(self, name=u'', order=0, public=False, icon=u'', 
             layerType=u'internal WMS'):
