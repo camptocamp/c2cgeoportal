@@ -95,6 +95,8 @@ class Entry(object):
             'legend': layer.legend,
             'isVisible': layer.isVisible
         }
+        if layer.disclaimer:
+            l['disclaimer'] = layer.disclaimer
         if layer.icon:
             l['icon'] = self._getIconPath(layer.icon)
         if layer.kml:
