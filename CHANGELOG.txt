@@ -4,6 +4,17 @@ In this file all the changes that can affect the different projects should be pr
 The dates can be generated with « date -R ».
 
 -------------------------------
+
+Mon, 21 Nov 2011 12:58:23 +0100
+
+Added a disclaimer cgxp plugin
+
+Add CGXP/plugins/Disclaimer.js to jsbuild/app.cfg so that the Disclaimer
+plugin can be used.
+Note that the database should also be updated for the disclaimer plugin to
+work correctly.
+-------------------------------
+
 Mon, 07 Nov 2011 10:05:22 +0100
 
 Added a colorpicker to the redlining tool.
