@@ -40,6 +40,7 @@ include =
     CGXP/plugins/Measure.js
     CGXP/plugins/FullTextSearch.js
     CGXP/plugins/Permalink.js
+    CGXP/plugins/Disclaimer.js
     CGXP/widgets/MapPanel.js
     CGXP/widgets/RedliningColorPicker.js
     OpenLayers/Control/Navigation.js
