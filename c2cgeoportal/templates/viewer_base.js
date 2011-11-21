@@ -124,6 +124,12 @@
         // configuration of all tool plugins for this application
         tools: [
         <%block name="viewer_tools">\
+        <%block name="viewer_tools_disclaimer">\
+        {
+            ptype: "cgxp_disclaimer",
+            outputTarget: "map"
+        },
+        </%block>\
         <%block name="viewer_tools_themeselector">\
         {
             ptype: "cgxp_themeselector",
