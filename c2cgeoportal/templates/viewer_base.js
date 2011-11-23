@@ -251,11 +251,14 @@
             events: EVENTS
         }, 
         </%block>\
+        <%block name="viewer_tools_fulltextsearch">\
         {
             ptype: "cgxp_fulltextsearch",
             url: "${request.route_url('fulltextsearch', path='')}",
             actionTarget: "map.tbar"
-        }, {
+        },
+        </%block>\
+        {
             ptype: "cgxp_menushortcut",
             type: '->'
         }, {
