@@ -296,7 +296,9 @@ class Layer(TreeItem):
     id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'), 
             primary_key=True)
 
-    public = Column(types.Boolean, default=False, label=_(u'Public'))
+    public = Column(types.Boolean, default=True, label=_(u'Public'))
+    isVisible = Column(types.Boolean, label=_(u'Visible')) # by default
+    isChecked = Column(types.Boolean, default=True, label=_(u'Checked')) # by default
     icon = Column(types.Unicode, label=_(u'Icon')) # on the tree
     layerType = Column(types.Enum("internal WMS", "external WMS", 
             "internal WMTS", "external WMTS", "empty", 
@@ -308,7 +310,6 @@ class Layer(TreeItem):
             name=_schema+".imageType"), label=_(u'Image type'))
     kml = Column(types.Unicode, label=_(u'KML 3D')) # for kml 3D
     isSingleTile = Column(types.Boolean, label=_(u'Single tile')) # for extenal WMS
-    isVisible = Column(types.Boolean, label=_(u'Visible')) # by default
     no2D = Column(types.Boolean, label=_(u'No 2D')) # only kml 3D
     legend = Column(types.Boolean, label=_(u'Display legend')) # on the tree
     legendImage = Column(types.Unicode, label=_(u'Legend Image')) # fixed legend image
@@ -318,7 +319,7 @@ class Layer(TreeItem):
     maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
 
-    def __init__(self, name=u'', order=0, public=False, icon=u'', 
+    def __init__(self, name=u'', order=0, public=True, icon=u'', 
             layerType=u'internal WMS'):
         TreeItem.__init__(self, name=name, order=order) 
         self.public = public

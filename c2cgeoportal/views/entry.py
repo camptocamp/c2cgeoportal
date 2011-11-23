@@ -93,7 +93,8 @@ class Entry(object):
             'imageType': layer.imageType,
             'no2D': layer.no2D,
             'legend': layer.legend,
-            'isVisible': layer.isVisible
+            'isVisible': layer.isVisible,
+            'isChecked': layer.isChecked
         }
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
