@@ -52,7 +52,7 @@ def main():
             table.create(bind=c2cmodels.DBSession.bind, checkfirst=True)
     sess = c2cmodels.DBSession()
 
-    admin = models.User(username=u'admin', 
+    admin = c2cmodels.User(username=u'admin', 
                 password=u'admin',
                 )
     roleadmin = c2cmodels.Role(name=u'role_admin') 
