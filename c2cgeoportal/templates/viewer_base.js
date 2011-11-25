@@ -73,7 +73,7 @@
         getMatrix: function() {
             return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
         }
-    }
+    };
     </%block>\
 
     <%block name="viewer">\
@@ -309,7 +309,7 @@
         sources: {
             <%block name="viewer_sources">\
             "olsource": {
-                ptype: "gxp_olsource",
+                ptype: "gxp_olsource"
             }
             </%block>\
         },
