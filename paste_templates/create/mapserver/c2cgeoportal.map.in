@@ -34,7 +34,7 @@ MAP
     IMAGECOLOR 255 255 255
     STATUS ON
 
-    #FONTSET "fonts.conf"
+    FONTSET "fonts.conf"
     #SYMBOLSET "symbole.sym"
 
     OUTPUTFORMAT
@@ -67,6 +67,15 @@ MAP
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_enable_request" "*"
+        END
+    END
+
+    LEGEND
+        LABEL
+            ENCODING "UTF-8"
+            TYPE TRUETYPE
+            FONT "Arial"
+            SIZE 9
         END
     END
 
