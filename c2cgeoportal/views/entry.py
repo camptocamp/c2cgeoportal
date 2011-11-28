@@ -204,7 +204,7 @@ class Entry(object):
                                  functions.area(RestrictionArea.area) > 0))
             query = query.union(query2)
 
-        layers = query.order_by(Layer.order.asc()).all()
+        layers = query.filter(Layer.isVisible == True).order_by(Layer.order.asc()).all()
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')

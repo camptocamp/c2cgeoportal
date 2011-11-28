@@ -297,7 +297,7 @@ class Layer(TreeItem):
             primary_key=True)
 
     public = Column(types.Boolean, default=True, label=_(u'Public'))
-    isVisible = Column(types.Boolean, label=_(u'Visible')) # by default
+    isVisible = Column(types.Boolean, default=True, label=_(u'Visible')) # by default
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked')) # by default
     icon = Column(types.Unicode, label=_(u'Icon')) # on the tree
     layerType = Column(types.Enum("internal WMS", "external WMS", 
