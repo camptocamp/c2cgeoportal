@@ -83,6 +83,7 @@ Populate
   - layer group name should be replaced by the name of the layer group.
   - text can be replaced by any postgres function.
 
+
 Create a WMTS layer
 ===================
 
@@ -91,31 +92,32 @@ Create a WMTS layer
 * Add a layer entry in tilecache/tilecache.cfg.in. The "layers" attribute must contain the list of mapserver layers defined above.
 * Update the layers sources list ("viewer_layers" block) in the ${package}/templates/viewer.js template. The "layer" parameter is the name of the tilecache layer entry just added in tilecache/tilecache.cfg.in.
 
-QueryBuilder
-============
 
-* In the mapfile define a layer with:
+WFS GetFeature (QueryBuilder and BBOX Query layers)
+===================================================
+
+* In the mapfile define responsive LAYER with:
     TEMPLATE fooOnlyForWMSGetFeatureInfo
-    DUMP TRUE
-* And the METADATA:
-   "gml_include_items" "all"
-* In the file ${package}/templates/viewer.js update the block:
+* And his METADATA:
+    "gml_include_items" "all"
+    "gml_types" "auto"
+* All the geometry columns should have the same name, "geom" by default.
+* In the file ${package}/templates/viewer.js update the block fot the QueryBuilder:
     <%block name="viewer_tools_querier_options">\
         srsName: 'EPSG:${srid}',
         featureType: "Query_layer",
     </%block>\
 
 
-Queryable Layer (GetFeatureInfo)
-================================
+WMS GetFeatureInfo (Query layers)
+=================================
 
-* In the mapfile define a layer with:
+* In the mapfile define the responsive LAYER with:
     TEMPLATE fooOnlyForWMSGetFeatureInfo
-    DUMP TRUE
-* And the METADATA:
+* And his METADATA:
     "gml_include_items" "all"
-    "ows_geom_type" "polygon"
-    "ows_geometries" "geom"
+    "gml_geom_type" "polygon"
+    "gml_geometries" "geom"
  
 
 Restricted layer
@@ -270,12 +272,14 @@ Update c2cgeoportal
 * Update c2cgeoportal
     svn up
 
-* Build it
-    ./buildout/bin/buildout -c buildout_$$USER.cfg
-
 * Apply update template ('IOError: No egg-info directory found (...)' should be ignore)
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
             ${project} package=${package} srid=${srid}
+
+* Read the CONT_CHANGELOG.txt to see if there is comething to change in the project.
+
+* Build it
+    ./buildout/bin/buildout -c buildout_$$USER.cfg
 
 
 Testing
