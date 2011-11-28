@@ -1,6 +1,8 @@
 [buildout]
 parts = eggs 
         activate 
+        libs-main
+        libs-submodules
         template 
         modwsgi 
         jsbuild 
@@ -359,6 +361,20 @@ initialization =
 
 [activate]
 recipe = evg.recipe.activate
+
+[libs-main]
+recipe = minitage.recipe.fetch
+urls = 
+    https://github.com/camptocamp/cgxp|git||${buildout:directory}/bl_gis2012/static/lib/cgxp
+
+[libs-submodules]
+recipe = collective.recipe.cmd
+on_install = true
+on_update = true
+cmds =
+    cd bl_gis2012/static/lib/cgxp
+    git submodule update --init --recursive
+    cd -
 
 [print-template]
 recipe = collective.recipe.cmd:py
