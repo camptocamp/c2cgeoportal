@@ -14,7 +14,7 @@
 #
 
 MAP
-    NAME "geoportail"
+    NAME "geoportal"
 
     EXTENT 620000 218000 690000 278000 ##
     UNITS METERS
