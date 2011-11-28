@@ -61,7 +61,6 @@ Procedure
 
 * Link to c2cgeoportal:
     svn propset svn:externals "c2cgeoportal https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk" .
-    svn propset svn:externals "cgxp https://project.camptocamp.com/svn/c2c_mapfish/cgxp" $global_project/static/lib
     svn up
 
 * Add svn:ignore:
@@ -72,6 +71,7 @@ Procedure
     svn propset svn:ignore "*.war
 config.yaml" print
     svn propset svn:ignore "tilecache.cfg" tilecache
+    svn propset svn:ignore "cgxp" $specific_project/static/lib
 * Commit
     svn ci -m "setup of $specific_project"
 
