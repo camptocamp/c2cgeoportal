@@ -5,45 +5,16 @@ The dates can be generated with « date -R ».
 
 -------------------------------
 
-Mon, 07 Nov 2011 10:05:22 +0100
+Mon, 28 Nov 2011 17:43:25 +0100
 
-Added a colorpicker to the redlining tool.
+Added apiloader.js in the project templates directory.
 
-In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replaced by
-CGXP/widgets/RedliningColorPicker.js for the new colorpicker or by
-CGXP/widgets/RedliningCombo.js to have the old combobox.
 -------------------------------
 
-Wed, 09 Nov 2011 17:15:13 +0100
+Mon, 28 Nov 2011 16:13:41 +0100
 
-Extended GeoExt.MapPanel to override the getState method
-
-Add CGXP/widgets/MapPanel.js in app.cfg
--------------------------------
-
-Wed, 16 Nov 2011 16:11:54 +0100
-
-Fixed gettext config in order to take into account translations from the project templates
--------------------------------
-
-Thu, 17 Nov 2011 11:24:25 +0100
-
-Added block tools_additional in viewer_base.js
--------------------------------
-
-Mon, 21 Nov 2011 12:58:23 +0100
-
-Added a disclaimer cgxp plugin
-
-Add CGXP/plugins/Disclaimer.js to jsbuild/app.cfg so that the Disclaimer
-plugin can be used.
-Note that the database should also be updated for the disclaimer plugin to
-work correctly.
------------------------------
-
-Mon, 28 Nov 2011 11:42:25 +0100
-
-Add WFSGetFeature to query feature in a BBOX but desable by default. 
+Added missing encoder in the mapfile. In MAP/WEB/METADATA added:
+    "wfs_encoding" "UTF-8"
 -------------------------------
 
 Mon, 28 Nov 2011 14:51:37 +0100
@@ -57,8 +28,43 @@ $$ rm -rf /static/lib/cgxp
 $$ svn propset svn:ignore cgxp ${package}/static/lib/
 -------------------------------
 
-Mon, 28 Nov 2011 16:13:41 +0100
+Mon, 28 Nov 2011 11:42:25 +0100
 
-Add missing encoder in the mapfile, in MAP/WEB/METADATA add:
-    "wfs_encoding" "UTF-8"
+Added WFSGetFeature to query feature in a BBOX but desable by default. 
+-------------------------------
+
+Mon, 21 Nov 2011 12:58:23 +0100
+
+Added a disclaimer cgxp plugin
+
+Added CGXP/plugins/Disclaimer.js to jsbuild/app.cfg so that the Disclaimer
+plugin can be used.
+Note that the database should also be updated for the disclaimer plugin to
+work correctly.
+-------------------------------
+
+Thu, 17 Nov 2011 11:24:25 +0100
+
+Added block tools_additional in viewer_base.js
+-------------------------------
+
+Wed, 16 Nov 2011 16:11:54 +0100
+
+Fixed gettext config in order to take into account translations from the project templates
+-------------------------------
+
+Wed, 09 Nov 2011 17:15:13 +0100
+
+Extended GeoExt.MapPanel to override the getState method
+
+Add CGXP/widgets/MapPanel.js in app.cfg
+-------------------------------
+
+Mon, 07 Nov 2011 10:05:22 +0100
+
+Added a colorpicker to the redlining tool.
+
+In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replaced by
+CGXP/widgets/RedliningColorPicker.js for the new colorpicker or by
+CGXP/widgets/RedliningCombo.js to have the old combobox.
 

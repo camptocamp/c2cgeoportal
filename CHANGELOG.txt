@@ -1,2 +1,1 @@
-the changelog has been movet to the update template to bi in the project in 
-the file name CONST_CHANGELOG.txt
+The changelog has been moved to the "update" template to be available within the project as a file named CONST_CHANGELOG.txt.

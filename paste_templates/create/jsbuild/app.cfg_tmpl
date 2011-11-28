@@ -80,6 +80,8 @@ include =
     CGXP/plugins/Help.js
     CGXP/plugins/Measure.js
     CGXP/plugins/FullTextSearch.js
+    CGXP/plugins/Disclaimer.js
+    CGXP/widgets/MapPanel.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
     OpenLayers/Control/PanZoomBar.js

@@ -54,6 +54,7 @@ root =
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
+    GeoExt/Lang.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
