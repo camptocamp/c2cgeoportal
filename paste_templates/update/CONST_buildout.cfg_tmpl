@@ -365,14 +365,14 @@ recipe = evg.recipe.activate
 [libs-main]
 recipe = minitage.recipe.fetch
 urls = 
-    https://github.com/camptocamp/cgxp|git||${buildout:directory}/bl_gis2012/static/lib/cgxp
+    https://github.com/camptocamp/cgxp|git||$${buildout:directory}/${package}/static/lib/cgxp
 
 [libs-submodules]
 recipe = collective.recipe.cmd
 on_install = true
 on_update = true
 cmds =
-    cd bl_gis2012/static/lib/cgxp
+    cd ${package}/static/lib/cgxp
     git submodule update --init --recursive
     cd -
 
