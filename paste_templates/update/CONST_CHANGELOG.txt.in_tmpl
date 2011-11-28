@@ -52,7 +52,13 @@ CGXP mode from SVN to GIT(hub).
 Now we use a buildout task to do the clone.
 
 To update your project do:
-$ svn propdel svn:externals ${package}/static/lib/
-$ rm -rf /static/lib/cgxp
-$ svn propset svn:ignore cgxp ${package}/static/lib/
+$$ svn propdel svn:externals ${package}/static/lib/
+$$ rm -rf /static/lib/cgxp
+$$ svn propset svn:ignore cgxp ${package}/static/lib/
+-------------------------------
+
+Mon, 28 Nov 2011 16:13:41 +0100
+
+Add missing encoder in the mapfile, in MAP/WEB/METADATA add:
+    "wfs_encoding" "UTF-8"
 

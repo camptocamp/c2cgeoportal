@@ -2,10 +2,6 @@
 
 import httplib2
 import urllib
-from io import StringIO
-from xml.sax import make_parser, handler
-from xml.sax.saxutils import XMLFilterBase, XMLGenerator
-from xml.sax.xmlreader import InputSource
 
 from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
 from pyramid.response import Response
@@ -13,6 +9,8 @@ from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 
 from c2cgeoportal.models import DBSession, User
+from c2cgeoportal.lib.wfsparsing import (is_get_feature,
+                                         limit_featurecollection)
 
 @view_config(route_name='mapserverproxy')
 def proxy(request):
@@ -66,75 +64,8 @@ def proxy(request):
     if not resp.has_key("content-type"):
         return HTTPNotAcceptable()
 
-    if method == "POST" and _is_get_feature(request):
-        class CurrentHandler(XMLFilterBase):
-            def __init__(self, upstream, downstream):
-                XMLFilterBase.__init__(self, upstream)
-                self._count = 0
-                self._downstream = downstream
-
-            def startDocument(self):
-                # Set the initial state, and set up the stack of states
-                self._exportContent = True
-
-            def startElement(self, name, attrs):
-                if name == "gml:featureMember":
-                    if self._count >= 200:
-                        self._exportContent = False
-                    else:
-                        self._count += 1
-                # Only forward the event if the state warrants it
-                if self._exportContent:
-                    self._downstream.startElement(name, attrs)
-
-            def endElement(self, name):
-                # Only forward the event if the state warrants it
-                if self._exportContent:
-                    self._downstream.endElement(name)
-
-                if name == "gml:featureMember":
-                    self._exportContent = True
-
-            def characters(self, content):
-                # Only forward the event if the state warrants it
-                if self._exportContent:
-                    self._downstream.characters(content)
-
-        class StringStringIO(StringIO):
-            def write(self, s):
-                return StringIO.write(self, unicode(s))
-
-        parser = make_parser()
-        inputSource = InputSource()
-        contentbuffer = StringIO(content, encoding='utf-8')
-        inputSource.setByteStream(contentbuffer)
-        resultbuffer = StringStringIO(encoding='utf-8')
-        downstream_handler = XMLGenerator(resultbuffer, 'utf-8')
-        filter_handler = CurrentHandler(parser, downstream_handler)
-        filter_handler.parse(inputSource)
-        content = resultbuffer.getvalue()
-        contentbuffer.close()
-        resultbuffer.close()
+    if method == "POST" and is_get_feature(request.body):
+        content = limit_featurecollection(content, limit=200)
 
     return Response(content, status=resp.status,
             headers={"Content-Type": resp["content-type"]})
-
-def _is_get_feature(request):
-    class CurrentHandler(handler.ContentHandler):
-        def __init__(self):
-            self.result = False
-
-        def startElement(self, name, attrs):
-            if name == "wfs:GetFeature":
-                self.result = True
-
-    parser = make_parser()
-    currentHandler = CurrentHandler()
-    parser.setContentHandler(currentHandler)
-    inputSource = InputSource()
-    contentbuffer = StringIO(request.body)
-    inputSource.setByteStream(contentbuffer)
-    parser.parse(inputSource)
-    contentbuffer.close()
-    return currentHandler.result
-
