@@ -12,6 +12,7 @@ from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
+from xml.dom.minidom import parseString
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
@@ -208,7 +209,7 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')
-        log.info("GetCapabilities for base url: %s"%wms_url)
+        log.info("WMS GetCapabilities for base url: %s"%wms_url)
         wms = WebMapService(wms_url, version='1.1.1')
         wms_layers = list(wms.contents)
 
@@ -251,12 +252,34 @@ class Entry(object):
         except ValueError:
             return self.settings.get(key)
 
+    def _WFSTypes(self, external=False):
+        # retrieve layers metadata via GetCapabilities
+        wfs_url = self.request.route_url('mapserverproxy')
+        wfsgc_url = wfs_url + "?service=WFS&version=1.0.0&request=GetCapabilities"
+        if external: 
+            wfsgc_url += '&EXTERNAL=true'
+        log.info("WFS GetCapabilities for base url: %s"%wfsgc_url)
+
+        getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
+        try:
+            getCapabilities_dom = parseString(getCapabilities_xml)
+            featuretypes = []
+            for featureType in getCapabilities_dom.getElementsByTagName("FeatureType"):
+                featuretypes.append(featureType.getElementsByTagName("Name").item(0).childNodes[0].data)
+            return featuretypes
+        except:
+            return getCapabilities_xml
+
     def _getVars(self):
         d = {}
         (themes, errors) = self._themes(d)
         d['themes'] = json.dumps(themes)
         d['themesError'] = errors
         d['user'] = self.user
+        d['WFSTypes'] = json.dumps(self._WFSTypes());
+        d['externalWFSTypes'] = json.dumps(self._WFSTypes(True)) \
+                if hasattr(self.request.registry.settings, 'external_mapserv.url') \
+                else '[]'
         
         if self.settings.get("external_themes_url") != '':
             ext_url = self.settings.get("external_themes_url")
