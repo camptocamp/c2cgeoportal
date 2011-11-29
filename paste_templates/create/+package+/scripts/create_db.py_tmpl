@@ -10,7 +10,6 @@ from optparse import OptionParser
 from pyramid.paster import get_app
 
 from c2cgeoportal import schema
-from c2cgeoportal import parentschema
 
 import transaction
 
@@ -32,9 +31,7 @@ def main():
     app = get_app(options.iniconfig, "${package}")
     settings = app.registry.settings
 
-    # sets the schema and load the database model
-    schema = settings['schema']
-    parentschema = settings['parentschema']
+    # should be import after the configuration is read.
     from ${package} import models
     from c2cgeoportal import models as c2cmodels
 
