@@ -29,7 +29,6 @@ def main():
 
     # read the configuration
     app = get_app(options.iniconfig, "${package}")
-    settings = app.registry.settings
 
     # should be import after the configuration is read.
     from ${package} import models
