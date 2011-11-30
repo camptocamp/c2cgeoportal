@@ -311,7 +311,7 @@ class Layer(TreeItem):
     kml = Column(types.Unicode, label=_(u'KML 3D')) # for kml 3D
     isSingleTile = Column(types.Boolean, label=_(u'Single tile')) # for extenal WMS
     no2D = Column(types.Boolean, label=_(u'No 2D')) # only kml 3D
-    legend = Column(types.Boolean, label=_(u'Display legend')) # on the tree
+    legend = Column(types.Boolean, default=True, label=_(u'Display legend')) # on the tree
     legendImage = Column(types.Unicode, label=_(u'Legend Image')) # fixed legend image
     legendRule = Column(types.Unicode, label=_(u'Legend Rule')) # on wms legend only one rule
     metadataURL = Column(types.Unicode, label=_(u'Metadata URL'))
