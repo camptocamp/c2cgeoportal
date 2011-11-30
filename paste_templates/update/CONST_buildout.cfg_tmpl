@@ -60,6 +60,9 @@ zope.component = 3.10.0
 c2c.recipe.cssmin = 0.5.1
 c2c.recipe.msgfmt = 0.2.1
 coverage = 3.5.1
+Cheetah = 2.2.1
+minitage.paste = 1.3.1859
+minitage.recipe.fetch = 1.43
 
 #Required by:
 #c2cgeoportal 0.2
@@ -261,6 +264,23 @@ nosexcover = 1.0.7
 #Required by:
 #c2cgeoportal 0.2
 fanstatic = 0.11.3
+
+#Required by:
+#minitage.paste 1.3.1859
+ZopeSkel = 2.21.2
+
+#Required by:
+#minitage.recipe.fetch 1.43
+iniparse = 0.4
+
+#Required by:
+#minitage.recipe.fetch 1.43
+#minitage.recipe.common 1.79
+minitage.core = 2.0.27
+
+#Required by:
+#minitage.recipe.fetch 1.43
+minitage.recipe.common = 1.79
 
 [vars]
 # project instance id
