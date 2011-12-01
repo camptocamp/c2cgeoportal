@@ -103,13 +103,16 @@ class Entry(object):
             l['icon'] = self._getIconPath(layer.icon)
         if layer.kml:
             l['kml'] = layer.kml
+        if layer.metadataURL:
+            l['metadataURL'] = layer.metadataURL
 
         if layer.layerType == "internal WMS":
-            metadataUrls = layer.metadataURL or ""
             # this is a leaf, ie. a Mapserver layer
             # => add the metadata URL if any
-            if len(metadataUrls) == 0 and layer.name in wms_layers:
+            if layer.name in wms_layers:
                 metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
+                if len(metadataUrls) > 0:
+                    l['metadataUrls'] = metadataUrls
             if layer.minResolution and layer.maxResolution:
                 l['minResolutionHint'] = layer.minResolution
                 l['maxResolutionHint'] = layer.maxResolution
@@ -119,8 +122,6 @@ class Entry(object):
                     if resolutions[0] <= resolutions[1]:
                         l['minResolutionHint'] = float('%0.2f'%resolutions[0])
                         l['maxResolutionHint'] = float('%0.2f'%resolutions[1])
-            if len(metadataUrls) > 0:
-                l['metadataUrls'] = metadataUrls
             if layer.legendRule:
                 l['legendRule'] = layer.legendRule
 
@@ -130,8 +131,6 @@ class Entry(object):
             if layer.minResolution and layer.maxResolution:
                 l['minResolutionHint'] = layer.minResolution
                 l['maxResolutionHint'] = layer.maxResolution
-            if layer.metadataURL:
-                l['metadataURL'] = layer.metadataURL
 
             if layer.layerType == "external WMS":
                 l['url'] == layer.url
@@ -170,14 +169,16 @@ class Entry(object):
                                  (treeItem.name, treeItem.layerType, group.name)
 
         if len(children) > 0:
-            group = {
+            g = {
                 'name': group.name,
                 'children': children,
                 'isExpanded': group.isExpanded,
                 'isInternalWMS' : group.isInternalWMS,
                 'isBaseLayer' : group.isBaseLayer
             }
-            return (group, error)
+            if group.metadataURL:
+                g['metadataURL'] = group.metadataURL
+            return (g, error)
         else:
             return (None, error)
 

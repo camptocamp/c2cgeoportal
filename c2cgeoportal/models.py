@@ -210,6 +210,7 @@ class TreeItem(Base):
     id = Column(types.Integer, primary_key=True)
     name = Column(types.Unicode, label=_(u'Name'))
     order = Column(types.Integer, nullable=False, label=_(u'Order'))
+    metadataURL = Column(types.Unicode, label=_(u'Metadata URL'))
 
     def __init__(self, name=u'', order=0):
         self.name = name
@@ -314,7 +315,6 @@ class Layer(TreeItem):
     legend = Column(types.Boolean, default=True, label=_(u'Display legend')) # on the tree
     legendImage = Column(types.Unicode, label=_(u'Legend Image')) # fixed legend image
     legendRule = Column(types.Unicode, label=_(u'Legend Rule')) # on wms legend only one rule
-    metadataURL = Column(types.Unicode, label=_(u'Metadata URL'))
     minResolution = Column(types.Float, label=_(u'Min resolution')) # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
