@@ -14,8 +14,6 @@ develop = .
         c2cgeoportal 
         c2cgeoportal/tileforge 
         c2cgeoportal/GeoFormAlchemy/GeoFormAlchemy
-        c2cgeoportal/fa.jquery
-        c2cgeoportal/pyramid_formalchemy
 index = http://pypi.camptocamp.net/pypi
 newest = false
 prefer-final = true
