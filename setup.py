@@ -20,7 +20,7 @@ requires = [
     'pyramid_formalchemy>=0.4.2',
     'fa.jquery>=0.9.5',
     'fanstatic>=0.11.3',
-    'GeoFormAlchemy',
+    'GeoFormAlchemy>=0.4',
     'OWSLib',
     'tileforge',
     'JSTools',

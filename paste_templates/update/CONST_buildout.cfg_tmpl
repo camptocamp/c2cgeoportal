@@ -13,7 +13,6 @@ parts = eggs
 develop = . 
         c2cgeoportal 
         c2cgeoportal/tileforge 
-        c2cgeoportal/GeoFormAlchemy/GeoFormAlchemy
 index = http://pypi.camptocamp.net/pypi
 newest = false
 prefer-final = true
