@@ -16,3 +16,6 @@ Content:
 
    server_side
    client_side
+   principles
+
+
