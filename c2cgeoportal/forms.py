@@ -205,13 +205,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         if item in self.layer_group:
             self.layer_group.remove(item)
 
-        result = """
-        <li>
-            <input type="checkbox"></input>
-            <label>%(label)s</label>
-            """ % {
-            'label': item.name
-        }
+        result = "<li>"
+        if self.auto_check:
+            result += '<input type="checkbox"></input>'
+        result += "<label>%(label)s</label>" % {'label': item.name}
         result += self.render_children(item, depth)
         result += '</li>'
         return result
@@ -262,13 +259,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
 
         # add unlinked layers 
         if len(self.layer) >= 0 or len(self.layer_group) > 0:
-            result += """
-            <li>
-                <input type="checkbox"></input>
-                <label>%(name)s</label>
-                """ % {
-                'name': _('Unlinked layers')
-            }
+            result += "<li>"
+            if self.auto_check:
+                result += '<input type="checkbox"></input>'
+            result += "<label>%(name)s</label>" % {'name': _('Unlinked layers')}
             result += "<ul>"
 
             while len(self.layer_group) > 0:
