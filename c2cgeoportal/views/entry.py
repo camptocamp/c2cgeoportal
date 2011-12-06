@@ -344,6 +344,7 @@ class Entry(object):
         user = DBSession.query(User).filter_by(username=login).first()
         if user and user.validate_password(password):
             headers = remember(self.request, login)
+            log.info("User '%s' (%i) logged in."%(user.username, user.id))
 
             cameFrom = self.request.params.get("came_from")
             if cameFrom:
@@ -357,6 +358,7 @@ class Entry(object):
     def logout(self):
         headers = forget(self.request)
         cameFrom = self.request.params.get("came_from")
+        log.info("User '%s' (%i) log out."%(self.username, self.user.id))
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
