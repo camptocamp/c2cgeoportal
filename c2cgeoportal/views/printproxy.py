@@ -2,6 +2,7 @@
 
 import httplib2
 import urllib
+import logging
 
 import simplejson as json
 from simplejson.decoder import JSONDecodeError
@@ -13,6 +14,8 @@ from pyramid.security import authenticated_userid
 
 from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.functionality import get_functionalities
+
+log = logging.getLogger(__name__)
 
 class Printproxy(object):
 
@@ -33,6 +36,7 @@ class Printproxy(object):
 
         # get URL
         _url = self.config['print.url'] + 'info.json' + '?' + query_string
+        log.info("Get print capabilities from %s."%_url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -46,7 +50,9 @@ class Printproxy(object):
         try:
             capabilities = json.loads(content)
         except JSONDecodeError:
-            #raise
+            # log and raise
+            log.error("Unable to parce capabilities.")
+            log.info(content)
             return content
 
         capabilities['layouts'] = list(
@@ -70,6 +76,7 @@ class Printproxy(object):
 
         # get URL
         _url = self.config['print.url'] + 'create.json' + '?' + query_string
+        log.info("Send print query to %s."%_url)
 
         # transform print request body as appropriate
         body = self._transform_body()
@@ -94,6 +101,7 @@ class Printproxy(object):
 
         # get URL
         _url = self.config['print.url'] + id + '.pdf.printout'
+        log.info("Get print document from %s."%_url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
