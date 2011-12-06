@@ -138,7 +138,7 @@
             themes: THEMES,
             outputConfig: {
                 layout: "fit",
-                style: "padding: 3px;"
+                style: "padding: 3px 0 3px 3px;"
             }
         }, 
         </%block>\
