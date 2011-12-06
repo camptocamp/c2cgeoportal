@@ -12,7 +12,6 @@ parts = eggs
         print-war
 develop = . 
         c2cgeoportal 
-        c2cgeoportal/tileforge 
 index = http://pypi.camptocamp.net/pypi
 newest = false
 prefer-final = true
@@ -369,7 +368,6 @@ recipe = z3c.recipe.scripts
 eggs = ${package}
        c2cgeoportal 
        owslib
-       tileforge
 dependent-scripts = true
 interpreter = python
 initialization =
