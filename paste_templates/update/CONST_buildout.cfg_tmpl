@@ -12,10 +12,12 @@ parts = eggs
         print-war
 develop = . 
 index = http://pypi.camptocamp.net/pypi
-find-links = http://pypi.camptocamp.net/c2cgeoportal_distributions/
+find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+    http://pypi.camptocamp.net/internal-pypi/index/tileforge
 newest = false
 prefer-final = true
 extensions = buildout.dumppickedversions
+    lovely.buildouthttp
 versions = versions
 
 # isolate ourself from the System Python
