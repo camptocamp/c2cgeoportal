@@ -65,17 +65,17 @@ To simplify we consider that the used schema is '$${vars:schema}'.
     
 * Create the table:
     CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR);
-    SELECT AddGeometryColumn ('$${vars:schema}', 'tsearch', 'the_geom', ${srid}, 'GEOMETRY', 2);
+    SELECT AddGeometryColumn ('$${vars:schema}', 'tsearch', 'the_geom', [project_srid], 'GEOMETRY', 2);
     CREATE INDEX tsearch_ts_idx ON $${vars:schema}.tsearch USING gin(ts);
     GRANT SELECT ON TABLE $${vars:schema}.tsearch TO "$${vars:dbuser}";
 
 Populate
 --------
-* With one value (adapt sample coordinates to match projection EPSG:${srid}):
-    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', ${srid}), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
+* With one value (adapt sample coordinates to match projection EPSG:[project_srid]):
+    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', [project_srid]), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
 
 * With a sub select:
-    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), ${srid}), 'layer group name', text, to_tsvector('german', text) FROM table;
+    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) SELECT ST_GeomFromText(ST_AsText(geom), [project_srid]), 'layer group name', text, to_tsvector('german', text) FROM table;
   - layer group name should be replaced by the name of the layer group.
   - text can be replaced by any postgres function.
 
@@ -100,7 +100,7 @@ WFS GetFeature (QueryBuilder and BBOX Query layers)
 * All the geometry columns should have the same name, "geom" by default.
 * In the file ${package}/templates/viewer.js update the block fot the QueryBuilder:
     <%block name="viewer_tools_querier_options">\
-        srsName: 'EPSG:${srid}',
+        srsName: 'EPSG:[project_srid]',
         featureType: "Query_layer",
     </%block>\
 
@@ -269,7 +269,7 @@ Update c2cgeoportal
 
 * Apply update template ('IOError: No egg-info directory found (...)' should be ignore)
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
-            ${project} package=${package} srid=${srid}
+            ${project} package=${package}
 
 * Read the CONT_CHANGELOG.txt to see if there is comething to change in the project.
 
