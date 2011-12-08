@@ -33,7 +33,7 @@ tests_require = requires + [
     ]
 
 setup(name='c2cgeoportal',
-      version='0.2',
+      version='0.3',
       description='c2cgeoportal',
       long_description=README,
       classifiers=[
