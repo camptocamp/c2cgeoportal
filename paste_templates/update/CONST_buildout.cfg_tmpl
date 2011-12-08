@@ -11,9 +11,8 @@ parts = eggs
         print-template 
         print-war
 develop = . 
-        c2cgeoportal 
-        c2cgeoportal/tileforge 
 index = http://pypi.camptocamp.net/pypi
+find-links = http://pypi.camptocamp.net/c2cgeoportal_distributions/
 newest = false
 prefer-final = true
 extensions = buildout.dumppickedversions
@@ -367,9 +366,6 @@ external_mapserv_url =
 [eggs]
 recipe = z3c.recipe.scripts
 eggs = ${package}
-       c2cgeoportal 
-       owslib
-       tileforge
 dependent-scripts = true
 interpreter = python
 initialization =
@@ -427,7 +423,6 @@ config-file = $${buildout:directory}/CONST_production.ini
 recipe = z3c.recipe.filetemplate
 source-directory = .
 exclude-directories = buildout
-    c2cgeoportal/paste_templates
 interpreted-options = authtkt_secret
 extends = vars
 
