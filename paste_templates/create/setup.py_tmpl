@@ -31,6 +31,7 @@ setup(
         ],
         'console_scripts': [
             'create_db = ${package}.scripts.create_db:main',
+            'manage_db = ${package}.scripts.CONST_manage_db:main',
         ],
     },
 )
