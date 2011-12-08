@@ -1,13 +1,8 @@
-GeoFormAlchemy/
 c2cgeoportal/static/lib/checkboxtree/
 c2cgeoportal/static/lib/openlayers/
-fa.jquery/
-pyramid_formalchemy/
-tileforge/
 *.pyc
 MANIFEST
 c2cgeoportal.egg-info/
-c2cgeoportal/migration/migrate.cfg
 c2cgeoportal/tests/functional/c2cgeoportal_test.map
 c2cgeoportal/tests/test.ini
 .coverage
