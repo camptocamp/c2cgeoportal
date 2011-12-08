@@ -10,6 +10,11 @@ class TemplateCreate(templates.Template):
     _template_dir = 'create'
     summary = 'Template used to create a c2cgeoportal project'
     vars = vars
+    vars.append(
+        templates.var(
+            'version_table_suffix',
+            'The sqlalchemy-migrate version table name suffix (this table ' \
+                'will be named: "version_${package}${version_table_suffix}")'))
 
 class TemplateUpdate(templates.Template):
     _template_dir = 'update'
