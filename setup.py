@@ -22,7 +22,7 @@ requires = [
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
     'OWSLib',
-    'tileforge',
+    'tileforge>=0.2',
     'JSTools',
     'nose',
     'nosexcover'
