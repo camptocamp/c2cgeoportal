@@ -27,10 +27,6 @@ Install the buildout environment:
         http://pypi.camptocamp.net/ --setup-source \
         http://pypi.camptocamp.net/distribute_setup.py
 
-Build c2cgeoportal (_dev for development build):
-
-  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg 
-
 Install the project:
     
   ./buildout/bin/buildout -c buildout_$$USER.cfg
@@ -236,7 +232,6 @@ From dev to demo
   ssh devserver
   cd /var/www/your_vhost/public/Project
   svn up # update the code
-  ./buildout/bin/buildout -c c2cgeoportal/buildout_build.cfg # build c2cgeoportal
   ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportal
   ### Test on the dev server ###
   cd deploy
