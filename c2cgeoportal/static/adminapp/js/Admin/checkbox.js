@@ -188,6 +188,13 @@
               el.value = '';
         }
     };
+    
+    $.fn.adminapp.syncField = function(el) {
+        var cbl = $.fn.adminapp.checkboxcorrespondance[el.target.id];
+        for (var i = 0, len = cbl.length ; i < len ; i++) {
+            cbl[i].checked = el.target.checked;
+        }
+    };
 
 })(jQuery);
 
@@ -215,5 +222,26 @@ $(document).ready(function(){
         // init state
         $.fn.adminapp.toogleRestrictionAreas(pl[0]);
         $.fn.adminapp.toogleLayerType(lt[0]);
+    }
+
+    /**
+     * When a layer(or group) is display more than one time
+     * this will sync the state on all tree items.
+     */
+
+    // store field correspondance
+    $.fn.adminapp.checkboxcorrespondance = {};
+    var checkboxtrees = $(".checkboxtree");
+    for (var i = 0, leni = checkboxtrees.length ; i < leni ; i++) {
+        var checkboxlist = $("#" + checkboxtrees[i].id + " input");
+        for (var j = 0, lenj = checkboxlist.length ; j < lenj ; j++) {
+            if (checkboxlist[j].id) {
+                var samenamecheckbox = $("input[value=" + checkboxlist[j].value + ']');
+                if (samenamecheckbox.length > 1) {
+                    $.fn.adminapp.checkboxcorrespondance[checkboxlist[j].id] = samenamecheckbox;
+                    $("#" + checkboxlist[j].id).bind('change', $.fn.adminapp.syncField);
+                }
+            }
+        }
     }
 });
