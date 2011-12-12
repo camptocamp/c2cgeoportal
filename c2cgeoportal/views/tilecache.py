@@ -12,8 +12,8 @@ from TileCache.Service import Service, TileCacheException
 from tileforge import generator
 
 
-# default expiration time is set to 1 year
-DEFAULT_EXPIRATION = 3600*24*365
+# default expiration time is set to 1 week
+DEFAULT_EXPIRATION = 3600*24*7
 
 # TileCache Service instance
 _service = None
@@ -36,10 +36,10 @@ def load_tilecache_config(settings):
         print _service.metadata['exception']
         print _service.metadata['traceback']
 
-def createImage (path_info, service):
+def createImage(path_info):
     path = path_info.split('/')
     layername = path[3]
-    layer = service.layers.get(layername)
+    layer = _service.layers.get(layername)
     z = int(path[7])
     row = int(path[8])
     col = int(path[9].split('.')[0])
@@ -47,33 +47,33 @@ def createImage (path_info, service):
                          layer.resolutions[z]))
     tile = (col, row_count - 1 - row, z)
 
-    generator.init(layer, service.cache)
+    generator.init(layer, _service.cache)
     generator.run(tile)
 
-def wsgiHandler (environ, start_response, service):
+def wsgiHandler(environ, start_response):
     from paste.request import parse_formvars
     try:
-        path_info = host = ""
+        path_info = ""
 
         if "PATH_INFO" in environ: 
             path_info = environ["PATH_INFO"]
 
         l = len("/tilecache")
-        image_file = service.config.get("cache", "base") + path_info[l:len(path_info)]
+        image_file = _service.config.get("cache", "base") + path_info[l:len(path_info)]
 
         if not os.access(image_file, os.F_OK):
             # 3 trys to create image
             try:
-                createImage(path_info, service)
+                createImage(path_info)
             except:
                 try:
                     # sleep 0..1 segond
                     time.sleep(random())
-                    createImage(path_info, service)
+                    createImage(path_info)
                 except:
                     # sleep 0..1 segond
                     time.sleep(random())
-                    createImage(path_info, service)
+                    createImage(path_info)
 
         if os.access(image_file, os.R_OK):
             if image_file[len(image_file) - 4:len(image_file)] == '.png':
@@ -98,11 +98,12 @@ def tilecache(environ, start_response):
 
     # custom_start_response adds cache headers to the response
     def custom_start_response(status, headers, exc_info=None):
-        headers.append(('Cache-Control', 'public, max-age=%s'
-            % expiration))
-        headers.append(('Expires', email.Utils.formatdate(
-            time.time() + expiration, False, True)))
+        headers.append(('Cache-Control', 
+                'public, max-age=%s' % expiration))
+        headers.append(('Expires', 
+                email.Utils.formatdate(time.time() + expiration, 
+                False, True)))
         return start_response(status, headers, exc_info)
 
-    return wsgiHandler(environ, custom_start_response, _service)
+    return wsgiHandler(environ, custom_start_response)
 

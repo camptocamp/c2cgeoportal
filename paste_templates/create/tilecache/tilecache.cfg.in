@@ -2,6 +2,8 @@
 module = tileforge.utils.cache.s3disk
 type = S3Disk
 base = /var/sig/tilecache/c2cgeoportal-${vars:instanceid}_tilecache
+# expire in seconds 86400 => 1 day, 14400 => 4 hours
+expire = 14400
 
 [DEFAULT]
 type = WMS
