@@ -21,7 +21,6 @@ Content:
    :maxdepth: 2
 
    install
-   database
    mapfile
    administrate
    infrastructure_notice
