@@ -1,7 +1,7 @@
 .. _administrator_install:
 
-Install and deploy the application
-==================================
+Install the application
+=======================
 
 Boostrap the application
 ------------------------
@@ -22,7 +22,12 @@ of the application::
 
 This step is done only once for installation/instance of the application.
 
-Deploy the application
-----------------------
+Install the application
+-----------------------
 
-**To Be Done**
+**To be complete**.
+
+Install:
+    
+    ./buildout/bin/buildout -c buildout_$user.cfg
+

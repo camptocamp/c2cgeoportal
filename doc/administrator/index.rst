@@ -20,6 +20,9 @@ Content:
 .. toctree::
    :maxdepth: 2
 
-   database
    install
+   database
+   mapfile
    administrate
+   infrastructure_notice
+   deploy

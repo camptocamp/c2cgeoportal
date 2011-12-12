@@ -5,6 +5,15 @@ The dates can be generated with « date -R ».
 
 -------------------------------
 
+Wed, 07 Dec 2011 15:10:57 +0100
+
+Replace the CONST_README.txt by the documentation.
+Add a CONST_TIP.txt to have some usefull commands.
+Than you can do to remove the old CONST_README.txt
+$$ svn rm CONST_README.txt.in
+
+-------------------------------
+
 Mon, 28 Nov 2011 17:43:25 +0100
 
 Added apiloader.js in the project templates directory.
@@ -15,6 +24,7 @@ Mon, 28 Nov 2011 16:13:41 +0100
 
 Added missing encoder in the mapfile. In MAP/WEB/METADATA added:
     "wfs_encoding" "UTF-8"
+
 -------------------------------
 
 Mon, 28 Nov 2011 14:51:37 +0100
@@ -26,6 +36,7 @@ To update your project do:
 $$ svn propdel svn:externals ${package}/static/lib/
 $$ rm -rf /static/lib/cgxp
 $$ svn propset svn:ignore cgxp ${package}/static/lib/
+
 -------------------------------
 
 Mon, 28 Nov 2011 11:42:25 +0100

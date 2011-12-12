@@ -1,7 +1,7 @@
 .. _administrator_database:
 
-Create and prepare the database
-===============================
+The database in c2cgeoportal
+============================
 
 Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
@@ -29,6 +29,14 @@ To create the application-specific schema use::
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
 
+Create and populate the database::
+    
+    sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+
+Set the version::
+
+    sudo -u postgres ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
+
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
 
@@ -40,6 +48,11 @@ can be done with this command::
 
     sudo -u postgres createuser -P <db_user>
 
+Give the rights to the user::
+
+    sudo -u postgres psql -c "GRANT USAGE ON SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
+    sudo -u postgres psql -c "GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
+
 Create the full-text search table
 ---------------------------------
 
@@ -49,14 +62,14 @@ full-text search table is needed in the database. This table must be named
 
 To create the table the following SQL should be used::
 
-    CREATE TABLE <schema_name>.tsearch (
+    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (
       id SERIAL PRIMARY KEY,
       layer_name TEXT,
       label TEXT,
-      ts TSVECTOR);
-    SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
-    CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);
-    GRANT SELECT ON TABLE $${vars:schema}.tsearch TO "<db_user>";
+      ts TSVECTOR);" <db_name>
+    sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
+    sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
+    sudo -u postgres psql -c "GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";" <db_name>
 
 with ``<schema_name>``, ``<srid>``, and ``<db_user>`` substituted as
 appropriate.
@@ -66,8 +79,13 @@ Here's an example of an insertion in the ``tsearch`` table::
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, ts)
     VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 21781, 'Layer name',
-       'text to display', to_tsvector('german', 'text to search'));
+      (ST_GeomFromText('POINT(2660000 1140000)', 21781, 'Layer group',
+       'text to display', to_tsvector('french', 'text to search'));
+
+Where ``Layer group`` is the name of the layer group that should be acctivate,
+``text to display`` is the text thai is display in the results,
+``test ot search`` is the text that we search for,
+``french`` is the use language.
 
 Here's another example where rows from a ``SELECT`` are inserted::
 
@@ -76,3 +94,30 @@ Here's another example where rows from a ``SELECT`` are inserted::
     SELECT
       geom, 21781, 'layer group name', text, to_tsvector('german', text)
     FROM table;
+
+
+Database version management
+---------------------------
+
+Acctually we use sqlalchemy-migrate to manage our database updates.
+http://code.google.com/p/sqlalchemy-migrate/
+
+With our structure the standars scripte don't work than we need to use
+``./buildout/bin/manage_db``.
+
+To get the database version available in the application code::
+
+    ./buildout/bin/manage_db version
+
+The verions of the database::
+
+    ./buildout/bin/manage_db db_version
+
+Upgrade the database::
+
+    ./buildout/bin/manage_db upgrade
+
+More help and commands::
+
+    ./buildout/bin/manage_db help
+
