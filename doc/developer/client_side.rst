@@ -35,4 +35,4 @@ Spec files are referenced using ``<script>`` tags ``SpecRunner.html``.
 Coding style
 ~~~~~~~~~~~~
 
-Lines should exceed 80 characters.
+Lines should not exceed 80 characters.
