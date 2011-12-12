@@ -60,6 +60,7 @@ setup(name='c2cgeoportal',
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
+            'manage_db = c2cgeoportal.scripts.manage_db:main',
         ],
         'paste.paster_create_template': [
             'c2cgeoportal_create = paste_templates:TemplateCreate',
