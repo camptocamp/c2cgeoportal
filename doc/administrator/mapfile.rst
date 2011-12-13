@@ -106,7 +106,7 @@ by SQL code in the mapfile.
 Recommended
 -----------
 
-To have a good print and screen result it's not recommand to use
+To have a good print and screen result it's not recommand to used
 LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be use only 
 when necessary.
 
