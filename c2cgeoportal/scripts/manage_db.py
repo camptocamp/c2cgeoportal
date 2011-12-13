@@ -45,12 +45,6 @@ def main():
         parser.error('You must specify the application name using the flag' \
                 ' -n|--app-name')
 
-    if '#' in app_config:
-        if app_name is None:
-            app_config, app_name = app_config.split('#', 1)
-        else:
-            app_config = app_config.split('#', 1)[0]
-
     config = appconfig('config:' + options.app_config,
             name=app_name,
             relative_to=os.getcwd()).local_conf
