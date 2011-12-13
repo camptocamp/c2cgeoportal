@@ -17,7 +17,7 @@ Content:
    server_side
    client_side
    principles
-   python_package_infrastructure
+   python_packaging
    documentation_infrastructure
 
 
