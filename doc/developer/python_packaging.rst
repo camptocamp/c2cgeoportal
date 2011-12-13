@@ -51,7 +51,7 @@ required to have an appropriate (e.g. ``[internal]``) section in
     [distutils]
     index-servers =
         pypi
-        c2c-internal-pypi
+        c2c-internal
 
     [pypi]
     username:<pypi.python.org_username>
