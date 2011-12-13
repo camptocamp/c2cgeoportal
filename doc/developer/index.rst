@@ -17,5 +17,6 @@ Content:
    server_side
    client_side
    principles
+   documentation_infrastructure
 
 
