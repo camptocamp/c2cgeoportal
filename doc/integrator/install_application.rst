@@ -1,7 +1,10 @@
-.. _administrator_database:
+.. _integrator_install_application:
 
-The database in c2cgeoportal
-============================
+Install an existing application
+===============================
+
+Database
+--------
 
 Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
@@ -17,7 +20,7 @@ separate schemas. This is required for layer access control (*restricted
 layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
 Create the database
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 To create the database you can use::
 
@@ -41,7 +44,7 @@ with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
 
 Create a database user
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 You probably want to create a specific database user for the application. This
 can be done with this command::
@@ -54,7 +57,7 @@ Give the rights to the user::
     sudo -u postgres psql -c "GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
 
 Create the full-text search table
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If *full-text search* is enabled in the application a table dedicated to
 full-text search table is needed in the database. This table must be named
@@ -95,29 +98,33 @@ Here's another example where rows from a ``SELECT`` are inserted::
       geom, 21781, 'layer group name', text, to_tsvector('german', text)
     FROM table;
 
+Application
+-----------
 
-Database version management
----------------------------
+Buildout boostrap 
+~~~~~~~~~~~~~~~~~
 
-Acctually we use sqlalchemy-migrate to manage our database updates.
-http://code.google.com/p/sqlalchemy-migrate/
+c2cgeoportal applications are installed from source. This section, and the rest
+of this chapter, assume that you have local copy on the application source tree
+(a local clone if you use Git).
 
-With our structure the standars scripte don't work than we need to use
-``./buildout/bin/manage_db``.
+The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
+build, install, and deploy c2cgeoportal applications.
 
-To get the database version available in the application code::
+Prior to using Buildout its ``boostrap.py`` script should be run at the root
+of the application::
 
-    ./buildout/bin/manage_db version
+  python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/ --setup-source \
+        http://pypi.camptocamp.net/distribute_setup.py
 
-The verions of the database::
+This step is done only once for installation/instance of the application.
 
-    ./buildout/bin/manage_db db_version
+Install the application
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Upgrade the database::
+**To be complete**.
 
-    ./buildout/bin/manage_db upgrade
-
-More help and commands::
-
-    ./buildout/bin/manage_db help
-
+Install:
+    
+    ./buildout/bin/buildout -c buildout_$user.cfg

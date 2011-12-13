@@ -10,10 +10,11 @@ Content:
    :maxdepth: 2
 
    create_application
-   database
+   install_application
    structure
    extend_data_model
    customize_ui
    print
    internationalization
    update_application
+   deploy

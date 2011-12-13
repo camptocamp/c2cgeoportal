@@ -65,7 +65,7 @@ required to have an appropriate (e.g. ``[internal]``) section in
 Create and upload development distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We want to be able to create and upload *development* distributions.
+We want to be able to create and upload *development distributions*.
 
 To create and upload a development distribution just run the following
 command::

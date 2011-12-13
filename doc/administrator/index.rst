@@ -20,8 +20,5 @@ Content:
 .. toctree::
    :maxdepth: 2
 
-   install
    mapfile
    administrate
-   infrastructure_notice
-   deploy

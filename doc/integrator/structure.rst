@@ -1,5 +1,6 @@
+.. _integrator_structure:
 
-.. _structure:
+**Useless?** **To be removed**
 
 File and Folder structure
 =========================

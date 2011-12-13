@@ -1,7 +1,7 @@
 .. _administrator_administrate:
 
-Administrate the application
-============================
+Administrate a c2cgeoportal application
+=======================================
 
 *To Be Done*
 
