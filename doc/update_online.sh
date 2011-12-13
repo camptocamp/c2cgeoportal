@@ -30,7 +30,7 @@ if [[ ! -d ${BUILDDIR} ]]; then
 fi
 
 # get the latest files
-svn up
+git pull origin master
 
 # create a virtual env if none exists already
 if [[ ! -d env ]]; then

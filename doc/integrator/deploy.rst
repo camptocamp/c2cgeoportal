@@ -1,3 +1,4 @@
+.. _administrator_deploy:
 
 Deploy the application
 ======================

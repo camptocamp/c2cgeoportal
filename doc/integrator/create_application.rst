@@ -1,7 +1,7 @@
 .. _integrator_create_application:
 
-Create an application
-=====================
+Create a new application
+========================
 
 Creating a c2cgeoportal application is done by applying two Paste skeletons
 (a.k.a. templates). These skeletons are provided by the ``c2cgeoportal``
@@ -40,8 +40,8 @@ Note that ``setup_install.py`` is used in place of the usual ``setup.py`` here.
     which is all we need to create an application by applying the
     ``c2cgeoportal`` skeletons.
 
-Create the application
-----------------------
+Create the new application
+--------------------------
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
@@ -116,4 +116,17 @@ created by the application administrator. This is why only background layers
 are covered here in the Integrator Guide. Defining overlays is described in the
 :ref:`administrator_guide`.
 
+Create a WMTS layer (**To Be Changed**)
+
+* Make sure that ``/var/sig/tilecache/`` exists and is writeable by the user ``www-data``.
+* Add the matching layers definitions in the mapfile (``mapserver/c2cgeoportal.map.in``).
+* Add a layer entry in ``tilecache/tilecache.cfg.in``. The ``layers`` attribute 
+  must contain the list of mapserver layers defined above.
+* Update the layers sources list (``viewer_layers`` block) in the 
+  ``<package>/templates/viewer.js`` template. The ``layer`` parameter is the name 
+  of the tilecache layer entry just added in ``tilecache/tilecache.cfg.in``.
+
 **To Be Completed**
+
+After creation and minimal setup the application is ready to be installed.
+See the next section :ref:`integrator_install_application`.
