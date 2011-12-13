@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-import warnings
+import os
 from optparse import OptionParser
 import pkg_resources
 
-from migrate.versioning.shell import main
+from migrate.versioning.shell import main as migrate_main
 from paste.deploy import appconfig
+import c2cgeoportal
 
 def main():
-    # Ignores pyramid deprecation warnings
-    warnings.simplefilter('ignore', DeprecationWarning) 
 
     usage = """%prog COMMAND ...
 
@@ -20,18 +19,43 @@ def main():
     This script passes the path to the c2cgeoportal migrate repository to the
     underlying migrate command.
 
-    It also adds the option: -c|--app-config. This option refers to the paste
-    configuration file of the target WSGI application. The script then parse
-    that config to find out the sqlalchemy.url value.
+    It also adds two options: -c|--app-config and -n|--app-name. These options
+    define the target WSGI application.
+    The --app-config option defaults to CONST_production.ini.
+    The --app-name option is mandatory, unless the value for --app-config is of
+    this form: production.ini#mymapp.
     """
 
     parser = OptionParser(usage=usage)
+    parser.disable_interspersed_args()
     parser.add_option('-c', '--app-config', default='CONST_production.ini',
-                      dest='app_config', help='The application config file')
+            dest='app_config', help='The application .ini config file')
+    parser.add_option('-n', '--app-name', default=None,
+            dest='app_name', help='The application name')
     (options, args) = parser.parse_args()
 
-    config = appconfig('config:' + options.app_config, name='${package}')
+    app_config = options.app_config
+    app_name = options.app_name
 
-    db_url = config.local_conf['sqlalchemy.url']
-    repository = pkg_resources.resource_filename('${package}', 'CONST_migration')
-    main(url=db_url, repository=repository)
+    if not os.path.isfile(app_config):
+        parser.error('Can\'t find config file: %s' % app_config)
+    if app_name is None and '#' in app_config:
+        app_config, app_name = app_config.split('#', 1)
+    if app_name is None:
+        parser.error('You must specify the application name using the flag' \
+                ' -n|--app-name')
+
+    if '#' in app_config:
+        if app_name is None:
+            app_config, app_name = app_config.split('#', 1)
+        else:
+            app_config = app_config.split('#', 1)[0]
+
+    config = appconfig('config:' + options.app_config,
+            name=app_name,
+            relative_to=os.getcwd()).local_conf
+
+    db_url = config['sqlalchemy.url']
+    c2cgeoportal.schema = config['schema']
+    repository = pkg_resources.resource_filename(app_name, 'CONST_migration')
+    migrate_main(argv=args, url=db_url, repository=repository)
