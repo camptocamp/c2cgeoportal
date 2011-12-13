@@ -15,7 +15,7 @@ tables are located in a specific schema of the database.
     Multiple specific schemas are actually used in a parent/child architecture.
 
 If the application has MapServer layers linked to PostGIS tables, these tables
-and the application-specfic tables must be in the same database, preferably in
+and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (*restricted
 layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
@@ -31,14 +31,6 @@ with ``<db_name>`` replaced by the actual database name.
 To create the application-specific schema use::
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-
-Create and populate the database::
-    
-    sudo -u postgres buildout/bin/create_db CONST_production.ini -p
-
-Set the version::
-
-    sudo -u postgres ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
@@ -59,17 +51,17 @@ Give the rights to the user::
 Application
 -----------
 
+c2cgeoportal applications are installed from source. This section assumes
+that you have local copy on the application source tree (a local clone if
+you use Git).
+
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
-
-c2cgeoportal applications are installed from source. This section, and the rest
-of this chapter, assume that you have local copy on the application source tree
-(a local clone if you use Git).
 
 The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
 build, install, and deploy c2cgeoportal applications.
 
-Prior to using Buildout its ``boostrap.py`` script should be run at the root
+Prior to using Buildout, its ``boostrap.py`` script should be run at the root
 of the application::
 
   python bootstrap.py --version 1.5.2 --distribute --download-base \
@@ -84,5 +76,14 @@ Install the application
 **To be complete**.
 
 Install:
-    
+
     ./buildout/bin/buildout -c buildout_$user.cfg
+
+Create and populate the database::
+
+    sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+
+Set the version::
+
+    sudo -u postgres ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
+
