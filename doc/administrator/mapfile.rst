@@ -103,10 +103,10 @@ This should be in a .map.in because it uses template variable that is replaced
 by SQL code in the mapfile.
 
 
-Recommended
------------
+Recommendations
+---------------
 
-To have a good print and screen result it's not recommand to used
+To have a good print and screen result, it's not recommended to use
 LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be use only 
 when necessary.
 
