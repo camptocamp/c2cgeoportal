@@ -51,13 +51,13 @@ required to have an appropriate (e.g. ``[internal]``) section in
     [distutils]
     index-servers =
         pypi
-        internal
+        c2c-internal-pypi
 
     [pypi]
     username:<pypi.python.org_username>
     password:<pypi.python.org_password>
 
-    [internal]
+    [c2c-internal]
     username:<pypi.camptocamp.net/internal-pypi_username>
     password:<pypi.camptocamp.net/internal-pypi_password>
     repository:http://pypi.camptocamp.net/internal-pypi/simple
@@ -70,10 +70,13 @@ We want to be able to create and upload *development* distributions.
 To create and upload a development distribution just run the following
 command::
 
-    $ python setup.py sdist upload
+    $ python setup.py sdist upload -r c2c-internal
 
 As you can see the name of a development distribution includes a ``dev``
 *pre-release* tag and a date *post-release* tag. This is by convention.
+
+``c2c-internal`` in the name of the section you added in ``~/.pypirc`` for the
+Camptocamp internal index.
 
 .. important::
 
@@ -87,7 +90,7 @@ By default ``setup.py sdist`` produces development distributions (see
 the ``[egg_info]`` options in ``setup.cfg``). To create *release
 distributions* specific options are required on the command line::
 
-    $ python setup.py egg_info --no-date --tag-build "" dist upload
+    $ python setup.py egg_info --no-date --tag-build "" dist upload -r c2c-internal
 
 The important note of the previous section applies here too, obviously.
 
