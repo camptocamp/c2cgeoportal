@@ -3,16 +3,16 @@
 Update a c2cgeoportal application
 =================================
 
-Update c2cgeoportal::
+Update your working copy from the repository::
 
-    svn up
+    svn update
 
 Apply update template ('IOError: No egg-info directory found (...)' should be ignore)::
 
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
             ${project} package=${package} srid=${srid}
 
-Read the CONT_CHANGELOG.txt to see if there is comething to change in the project.
+Read the CONST_CHANGELOG.txt to see if there is something to change in the project.
 
 Upgrade the database::
 
