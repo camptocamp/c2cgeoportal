@@ -15,7 +15,7 @@ import transaction
 
 def main():
     parser = OptionParser("Create and populate the database tables.")
-    parser.add_option('-i', '--iniconfig', default='CONST_production.ini', 
+    parser.add_option('-i', '--iniconfig', default='production.ini', 
             help='project .ini config file')
     parser.add_option('-d', '--drop', action="store_true",  default=False, 
             help='drop the table if already exists')
