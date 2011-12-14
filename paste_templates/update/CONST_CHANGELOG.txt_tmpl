@@ -40,6 +40,15 @@ This file should contain the following line:
 (where <login> and <password> are to be replaced by the the Camptocamp internal
 pypi server login/password)
 
+* rename the following files:
+  * mv CONST_frontend.conf.in frontend.conf.in
+  * mv CONST_mapserver.conf.in mapserver.conf.in
+  * mv CONST_README.txt.in README.txt.in
+  * mv CONST_tilecache.conf.in tilecache.conf.in
+  * mv CONST_wsgi.conf.in wsgi.conf.in
+  * mv CONST_development.ini.in_tmpl development.ini.in_tmpl
+  * mv CONST_production.ini.in_tmpl production.ini.in_tmpl
+
 -------------------------------
 
 Wed, 14 Dec 2011 17:17:56 +0100
