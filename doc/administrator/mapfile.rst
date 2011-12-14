@@ -107,6 +107,6 @@ Recommendations
 ---------------
 
 To have a good print and screen result, it's not recommended to use
-LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be use only 
+LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be used only 
 when necessary.
 
