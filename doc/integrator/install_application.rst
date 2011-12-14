@@ -15,7 +15,7 @@ tables are located in a specific schema of the database.
     Multiple specific schemas are actually used in a parent/child architecture.
 
 If the application has MapServer layers linked to PostGIS tables, these tables
-and the application-specfic tables must be in the same database, preferably in
+and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (*restricted
 layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
@@ -31,14 +31,6 @@ with ``<db_name>`` replaced by the actual database name.
 To create the application-specific schema use::
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-
-Create and populate the database::
-    
-    sudo -u postgres buildout/bin/create_db CONST_production.ini -p
-
-Set the version::
-
-    sudo -u postgres ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
@@ -56,62 +48,20 @@ Give the rights to the user::
     sudo -u postgres psql -c "GRANT USAGE ON SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
     sudo -u postgres psql -c "GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
 
-Create the full-text search table
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If *full-text search* is enabled in the application a table dedicated to
-full-text search table is needed in the database. This table must be named
-``tsearch`` (for *text search*) and must be in the application-specific schema.
-
-To create the table the following SQL should be used::
-
-    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (
-      id SERIAL PRIMARY KEY,
-      layer_name TEXT,
-      label TEXT,
-      ts TSVECTOR);" <db_name>
-    sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
-    sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
-    sudo -u postgres psql -c "GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";" <db_name>
-
-with ``<schema_name>``, ``<srid>``, and ``<db_user>`` substituted as
-appropriate.
-
-Here's an example of an insertion in the ``tsearch`` table::
-
-    INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, ts)
-    VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 21781, 'Layer group',
-       'text to display', to_tsvector('french', 'text to search'));
-
-Where ``Layer group`` is the name of the layer group that should be acctivate,
-``text to display`` is the text thai is display in the results,
-``test ot search`` is the text that we search for,
-``french`` is the use language.
-
-Here's another example where rows from a ``SELECT`` are inserted::
-
-    INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, ts)
-    SELECT
-      geom, 21781, 'layer group name', text, to_tsvector('german', text)
-    FROM table;
-
 Application
 -----------
+
+c2cgeoportal applications are installed from source. This section assumes
+that you have local copy on the application source tree (a local clone if
+you use Git).
 
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
 
-c2cgeoportal applications are installed from source. This section, and the rest
-of this chapter, assume that you have local copy on the application source tree
-(a local clone if you use Git).
-
 The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
 build, install, and deploy c2cgeoportal applications.
 
-Prior to using Buildout its ``boostrap.py`` script should be run at the root
+Prior to using Buildout, its ``boostrap.py`` script should be run at the root
 of the application::
 
   python bootstrap.py --version 1.5.2 --distribute --download-base \
@@ -123,8 +73,76 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**To be complete**.
+If not already existing, create an application configuration file to adapt
+the application to your environment and commit::
 
-Install:
-    
-    ./buildout/bin/buildout -c buildout_$user.cfg
+    $ vim buildout_$USER.cfg
+    $ svn add buildout_$USER.cfg
+    $ svn commit buildout_$USER.cfg
+
+**To be done: describe the configuration parameters that have to be set in
+buildout_$USER.cfg**
+
+Then you can build and install the application with the command::
+
+    $ ./buildout/bin/buildout -c buildout_$USER.cfg
+
+This previous command will do many things like:
+
+  * download and install the project dependencies,
+
+  * adapt the application configuration to your environment,
+
+  * build the javascript and css resources into compressed files,
+
+  * compile the translation files.
+
+Once the application is built and installed, you now have to create and
+populate the application tables::
+
+    $ sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+
+A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
+control a database. It relies on a **repository** in source code which contains
+upgrade scripts that are used to keep the database up to date with the
+latest repository version.
+
+After having created the application tables with the previous command,
+the current database version correspond to the latest version available in
+the repository, which can be obtained with::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version
+    <current_version>
+    $
+
+Now that we know the latest version of the repository (= current version of the
+database), we need to actually put the database under version control.
+A dedicated table is used by sqlalchemy-migrate to store the current version
+of the database. This table should be named ``version_<package_name>``.
+
+So let's create this table and set the current version of the database
+(obtained from the previous command)::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version_control <current_version>
+
+The database is now under version control, you can check that the current
+database version is correct with the command::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> db_version
+
+Note that future schema upgrades will only be done via change scripts from the
+repository, and they will automatically increment the ``db_version``.
+
+Your application is now fully set up and the last thing to do is to configure
+apache so that it will serve your WSGI c2cgeoportal application. So you just
+have to include the application apache configuration available in the
+``apache`` directory by using the directive::
+
+    Include /path/to/YourProject/apache/*.conf
+
+Reload apache configuration and you're done::
+
+    $ sudo apache2ctl graceful
+
+Your application should be available under the url:
+``http://hostname/<instanceid>/wsgi``.
