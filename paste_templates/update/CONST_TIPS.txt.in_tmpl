@@ -10,7 +10,7 @@ Create the DataBase tables
     sudo -u postgres createdb $${vars:db} -T template_postgis
     sudo -u postgres psql -c "CREATE SCHEMA $${vars:schema};" $${vars:db}
     sudo -u postgres psql -c "GRANT ALL ON SCHEMA $${vars:schema} TO \"$${vars:dbuser}\";" $${vars:db}
-    sudo -u $${vars:dbuser} buildout/bin/create_db CONST_development.ini -p
+    sudo -u $${vars:dbuser} buildout/bin/create_db development.ini -p
     sudo -u $${vars:dbuser} ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
 
 Create and Populate the FullTextSearch table
