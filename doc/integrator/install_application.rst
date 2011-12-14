@@ -100,7 +100,7 @@ This previous command will do many things like:
 Once the application is built and installed, you now have to create and
 populate the application tables::
 
-    $ sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+    $ sudo -u postgres buildout/bin/create_db production.ini -p
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
@@ -111,7 +111,7 @@ After having created the application tables with the previous command,
 the current database version correspond to the latest version available in
 the repository, which can be obtained with::
 
-    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version
     <current_version>
     $
 
@@ -123,12 +123,12 @@ of the database. This table should be named ``version_<package_name>``.
 So let's create this table and set the current version of the database
 (obtained from the previous command)::
 
-    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version_control <current_version>
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control <current_version>
 
 The database is now under version control, you can check that the current
 database version is correct with the command::
 
-    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> db_version
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> db_version
 
 Note that future schema upgrades will only be done via change scripts from the
 repository, and they will automatically increment the ``db_version``.

@@ -18,7 +18,7 @@ project.
 
 Upgrade the database to the latest repository version::
 
-    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> upgrade
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> upgrade
 
 Rebuild and install the application::
 
