@@ -17,4 +17,5 @@ Content:
    print
    internationalization
    update_application
+   fulltext_search
    deploy

@@ -42,6 +42,14 @@ pypi server login/password)
 
 -------------------------------
 
+Wed, 14 Dec 2011 17:17:56 +0100
+
+The files jsbuild/CONST_app.cfg and jsbuild/app.cfg should be merged together.
+Finally jsbuild/CONST_app.cfg should be removed and all jsbuild configuration
+should sit in jsbuild/app.cfg.
+
+-------------------------------
+
 Wed, 07 Dec 2011 15:10:57 +0100
 
 Replace the CONST_README.txt by the documentation.
