@@ -73,17 +73,80 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**To be complete**.
+Copy the default application configuration file and update it to match you
+environment::
 
-Install:
+    $ cp buildout.cfg buildout_$USER.cfg
+    $ vim buildout_$USER.cfg
 
-    ./buildout/bin/buildout -c buildout_$user.cfg
+**To be done: describe the configuration parameters that have to be changed**
 
-Create and populate the database::
+When you are satisfied with your changes, commit the new
+``buildout_$USER.cfg`` file::
 
-    sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+    $ svn add buildout_$USER.cfg
+    $ svn commit buildout_$USER.cfg
 
-Set the version::
+Then you can build and install the application with the command::
 
-    sudo -u postgres ./buildout/bin/manage_db version_control --VERSION `./buildout/bin/manage_db version`
+    $ ./buildout/bin/buildout -c buildout_$USER.cfg
 
+This previous command will do many things like:
+
+  * download and install the project dependencies,
+
+  * adapt the application configuration to your environment,
+
+  * build the javascript and css resources into compressed files,
+
+  * compile the translation files.
+
+Once the application is built and installed, you now have to create and
+populate the application tables::
+
+    $ sudo -u postgres buildout/bin/create_db CONST_production.ini -p
+
+A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
+control a database. It relies on a **repository** in source code which contains
+upgrade scripts that are used to keep the database up to date with the
+latest repository version.
+
+After having created the application tables with the previous command,
+the current database version correspond to the latest version available in
+the repository, which can be obtained with::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version
+    <current_version>
+    $
+
+Now that we know the latest version of the repository (= current version of the
+database), we need to actually put the database under version control.
+A dedicated table is used by sqlalchemy-migrate to store the current version
+of the database. This table should be named ``version_<package_name>``.
+
+So let's create this table and set the current version of the database
+(obtained from the previous command)::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> version_control <current_version>
+
+The database is now under version control, you can check that the current
+database version is correct with the command::
+
+    $ ./buildout/bin/manage_db -c CONST_production.ini -n <package_name> db_version
+
+Note that future schema upgrades will only be done via change scripts from the
+repository, and they will automatically increment the ``db_version``.
+
+Your application is now fully set up and the last thing to do is to configure
+apache so that it will serve your WSGI c2cgeoportal application. So you just
+have to include the application apache configuration available in the
+``apache`` directory by using the directive::
+
+    Include /path/to/YourProject/apache/*.conf
+
+Reload apache configuration and you're done::
+
+    $ sudo apache2ctl graceful
+
+Your application should be available under the url:
+``http://hostname/<instanceid>/wsgi``.
