@@ -1,24 +1,47 @@
 #
-# This is file is meant to include specificities of the project.
-#
-# For example, if in CONF_app.cfg the include list of [app.js]
-# includes CGXP/plugins/ThemeSelector.js, which you actually
-# don't want in the build you can exclude it by using the
-# following in this file:
-#
-# [app.js]
-# exclude =
-#   CGXP/plugins/ThemeSelector.js
-#
-# Warning: if CONF_app.cfg has exclude's in [app.js] you'll
-# need to repeat these excludes in this file. It would be
-# great to be able to do "exclude +=" but this is not
-# currently supported by JSTools.
-#
+# This is the config file for jsbuild utility
+# Documentation on the syntax of this file is available at:
+# http://pypi.python.org/pypi/JSTools#configuration-format
 #
 
 
 [app.js]
+root =
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/js
+first =
+    Ext/adapter/ext/ext-base.js
+    Ext/ext-all.js
+    GeoExt/Lang.js
+    OpenLayers/SingleFile.js
+    OpenLayers/Console.js
+    OpenLayers/BaseTypes.js
+    OpenLayers/BaseTypes/Class.js
+    OpenLayers/BaseTypes/Pixel.js
+    OpenLayers/BaseTypes/Bounds.js
+    OpenLayers/BaseTypes/LonLat.js
+    OpenLayers/BaseTypes/Element.js
+    OpenLayers/BaseTypes/Size.js
+    OpenLayers/Util.js
+    OpenLayers/Lang.js
+    OpenLayers/Lang/en.js
+    OpenLayers/Lang/de.js
+    OpenLayers/Lang/fr.js
+    proj4js/lib/proj4js.js
+exclude =
+    GeoExt.js
+    GeoExt/SingleFile.js
 include =
     EPSG${srid}.js #proj4js
     Ext/src/locale/ext-lang-en.js
@@ -65,6 +88,42 @@ include =
     plugins/NavigationHistory.js #GXP
 
 [api.js]
+root =
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/js
+first =
+    Ext/adapter/ext/ext-base.js
+    Ext/ext-all.js
+    GeoExt/Lang.js
+    OpenLayers/SingleFile.js
+    OpenLayers/Console.js
+    OpenLayers/BaseTypes.js
+    OpenLayers/BaseTypes/Class.js
+    OpenLayers/BaseTypes/Pixel.js
+    OpenLayers/BaseTypes/Bounds.js
+    OpenLayers/BaseTypes/LonLat.js
+    OpenLayers/BaseTypes/Element.js
+    OpenLayers/BaseTypes/Size.js
+    OpenLayers/Util.js
+    OpenLayers/Lang.js
+    OpenLayers/Lang/en.js
+    OpenLayers/Lang/de.js
+    OpenLayers/Lang/fr.js
+    proj4js/lib/proj4js.js
+exclude =
+    GeoExt.js
+    GeoExt/SingleFile.js
 include =
     EPSG${srid}.js #proj4js
     Ext/src/locale/ext-lang-en.js
@@ -100,7 +159,79 @@ include =
     plugins/NavigationHistory.js #GXP
 
 [lang-en.js]
+root =
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/js
+include =
+    Proj/Lang/en.js
+    Ext/src/locale/ext-lang-en.js
+#    FeatureEditing/resources/lang/en.js
+    Styler/resources/lang/en.js
+#    GeoExt/locale/GeoExt-en.js
+    locale/en.js
+    CGXP/locale/en.js
+exclude =
+    OpenLayers/Lang.js
 
 [lang-fr.js]
+root =
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/js
+include =
+    Proj/Lang/fr.js
+    Ext/src/locale/ext-lang-fr.js
+    FeatureEditing/resources/lang/fr.js
+    Styler/resources/lang/fr.js
+    GeoExt/locale/GeoExt-fr.js
+    locale/fr.js
+    CGXP/locale/fr.js
+exclude =
+    OpenLayers/Lang.js
 
 [lang-de.js]
+root =
+    ${package}/static/lib/cgxp/core/src/script
+    ${package}/static/lib/cgxp/ext
+    ${package}/static/lib/cgxp/geoext/lib
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/gxp/src/script
+    ${package}/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    ${package}/static/lib/cgxp/sandbox
+    ${package}/static/lib/cgxp/styler/lib
+    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/js
+include =
+    Proj/Lang/de.js
+    Ext/src/locale/ext-lang-de.js
+    FeatureEditing/resources/lang/de.js
+    Styler/resources/lang/de.js
+#    GeoExt/locale/GeoExt-fr.js
+#    locale/de.js
+    CGXP/locale/de.js
+exclude =
+    OpenLayers/Lang.js
