@@ -73,19 +73,15 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Copy the default application configuration file and update it to match you
-environment::
+If not already existing, create an application configuration file to adapt
+the application to your environment and commit::
 
-    $ cp buildout.cfg buildout_$USER.cfg
     $ vim buildout_$USER.cfg
-
-**To be done: describe the configuration parameters that have to be changed**
-
-When you are satisfied with your changes, commit the new
-``buildout_$USER.cfg`` file::
-
     $ svn add buildout_$USER.cfg
     $ svn commit buildout_$USER.cfg
+
+**To be done: describe the configuration parameters that have to be set in
+buildout_$USER.cfg**
 
 Then you can build and install the application with the command::
 
