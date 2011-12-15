@@ -26,7 +26,7 @@ Reset a user password.\nThe username is used as password if the password is not 
 provided with the corresponding option.\nuser can be created if it doesnt exist.'
 
     parser = OptionParser(usage)
-    parser.add_option('-i', '--iniconfig', default='CONST_production.ini', 
+    parser.add_option('-i', '--iniconfig', default='production.ini', 
       help='project .ini config file')
     parser.add_option('-p', '--password', help='set password (if not set, username is \
 used as password)')
