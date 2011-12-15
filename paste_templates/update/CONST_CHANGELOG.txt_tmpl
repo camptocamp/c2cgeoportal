@@ -28,6 +28,29 @@ This migrate.cfg file is generated when the 'create' template is applied so
 you have to create it by hand. The version_table parameter value should
 be set to "version_<package_name>".
 
+The content of the migrate.cfg file should look like this:
+
+    [db_settings]
+    # Used to identify which repository this database is versioned under.
+    # You can use the name of your project.
+    repository_id=c2cgeoportal
+
+    # The name of the database table used to track the schema version.
+    # This name shouldn't already be used by your project.
+    # If this is changed once a database is under version control, you'll need to
+    # change the table name in each database too.
+    version_table=version_<package_name>
+
+    # When committing a change script, Migrate will attempt to generate the
+    # sql for all supported databases; normally, if one of them fails - probably
+    # because you don't have that database installed - it is ignored and the
+    # commit continues, perhaps ending successfully.
+    # Databases in this list MUST compile successfully during a commit, or the
+    # entire commit will fail. List the databases your application will actually
+    # be using to ensure your updates to that database work properly.
+    # This must be a list; example: ['postgres','sqlite']
+    required_dbs=[]
+
 * rename the version table to match the name set version_table parameter:
     ALTER TABLE <old_name> RENAME TO version_<package_name>
 
