@@ -17,10 +17,10 @@ Content:
    integrator/index
    developer/index
 
-*Administrator* is the person who configures, deploys, and manages the
-application.  *Integrator* is the person who creates the c2cgeoportal
-application, and does the initial setup of the application.  *Developer* is the
-person who produces code for c2cgeoportal.
+*Administrator* is the person who manages an application built with
+c2cgeoportal. *Integrator* is the person who builds the c2cgeoportal
+application, and does the initial setup. *Developer* is the person who
+produces code for c2cgeoportal itself.
 
 The c2cgeoportal project is composed of two software components: CGXP, a JS
 library based on OpenGeo's `GXP <http://github.com/opengeo/GXP>`_, and
