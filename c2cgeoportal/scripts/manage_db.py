@@ -21,14 +21,14 @@ def main():
 
     It also adds two options: -c|--app-config and -n|--app-name. These options
     define the target WSGI application.
-    The --app-config option defaults to CONST_production.ini.
+    The --app-config option defaults to production.ini.
     The --app-name option is mandatory, unless the value for --app-config is of
     this form: production.ini#mymapp.
     """
 
     parser = OptionParser(usage=usage)
     parser.disable_interspersed_args()
-    parser.add_option('-c', '--app-config', default='CONST_production.ini',
+    parser.add_option('-c', '--app-config', default='production.ini',
             dest='app_config', help='The application .ini config file')
     parser.add_option('-n', '--app-name', default=None,
             dest='app_name', help='The application name')

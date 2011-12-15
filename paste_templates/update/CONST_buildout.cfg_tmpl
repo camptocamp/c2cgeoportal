@@ -172,7 +172,7 @@ output = /srv/tomcat/tomcat1/webapps/print-c2cgeoportal-$${vars:instanceid}.war
 [modwsgi]
 recipe = collective.recipe.modwsgi
 eggs = ${package}
-config-file = $${buildout:directory}/CONST_production.ini
+config-file = $${buildout:directory}/production.ini
 
 [template]
 recipe = z3c.recipe.filetemplate
@@ -186,7 +186,7 @@ recipe = JSTools:buildjs
 resource-dir = $${buildout:directory}/jsbuild
 # the following jsbuild config files must be written on
 # one line, otherwise Paste will throw a syntax error
-config = $${jsbuild:resource-dir}/CONST_app.cfg $${jsbuild:resource-dir}/app.cfg
+config = $${jsbuild:resource-dir}/app.cfg
 output-dir = ${package}/static/build
 # base-dir to be removed, is there because of a regression
 # in JSTools 0.4 and 0.5
