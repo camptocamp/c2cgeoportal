@@ -1,0 +1,3 @@
+[submodule "c2cgeoportal/static/lib/openlayers"]
+	path = c2cgeoportal/static/lib/openlayers
+	url = git@github.com:openlayers/openlayers.git
