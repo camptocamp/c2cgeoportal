@@ -51,8 +51,11 @@ The content of the migrate.cfg file should look like this:
     # This must be a list; example: ['postgres','sqlite']
     required_dbs=[]
 
-* rename the version table to match the name set version_table parameter:
+* rename the version table to match the name set in the version_table
+parameter:
     ALTER TABLE <old_name> RENAME TO version_<package_name>
+with <old_name> replaced by the old name of the version table which is
+certainly the application's db schema name.
 
 * add a .httpauth file in the project directory, which contains the required
 credentials to access to our pypi internal server.
