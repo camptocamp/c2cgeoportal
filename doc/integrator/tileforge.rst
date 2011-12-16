@@ -8,9 +8,9 @@ Configuration
 
 The configuration file is ``tilecache/tilecache.cfg.in``.
 
-The ``[cache]`` describe how the tiles are saved.
+The ``[cache]`` section describes how the tiles are saved.
 
-The ``[DEFAULTS]`` has attributes who is apply on all layers.
+The ``[DEFAULTS]`` section applies defaults to all layers.
 
 The important attributes are:
 
