@@ -1,5 +1,3 @@
-c2cgeoportal/static/lib/checkboxtree/
-c2cgeoportal/static/lib/openlayers/
 *.pyc
 MANIFEST
 c2cgeoportal.egg-info/
