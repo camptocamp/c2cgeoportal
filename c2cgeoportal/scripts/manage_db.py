@@ -37,10 +37,10 @@ def main():
     app_config = options.app_config
     app_name = options.app_name
 
-    if not os.path.isfile(app_config):
-        parser.error('Can\'t find config file: %s' % app_config)
     if app_name is None and '#' in app_config:
         app_config, app_name = app_config.split('#', 1)
+    if not os.path.isfile(app_config):
+        parser.error('Can\'t find config file: %s' % app_config)
     if app_name is None:
         parser.error('You must specify the application name using the flag' \
                 ' -n|--app-name')
