@@ -39,14 +39,17 @@ Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 You probably want to create a specific database user for the application. This
-can be done with this command::
+can be done with this command, by default ``<db_user>`` is ``www-data``::
 
     sudo -u postgres createuser -P <db_user>
 
 Give the rights to the user::
 
-    sudo -u postgres psql -c "GRANT USAGE ON SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
-    sudo -u postgres psql -c "GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
+    $ sudo -u postgres psql <db_name>
+    GRANT USAGE ON SCHEMA <schema_name> TO "<db_user>";
+    GRANT CREATE ON SCHEMA <schema_name> TO "<db_user>";
+    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
+    \q 
 
 Application
 -----------
@@ -74,14 +77,28 @@ Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 If not already existing, create an application configuration file to adapt
-the application to your environment and commit::
+the application to your environment and commit, than create file 
+``buildout_$USER.cfg`` that contains::
 
-    $ vim buildout_$USER.cfg
-    $ svn add buildout_$USER.cfg
-    $ svn commit buildout_$USER.cfg
+    [buildout]
+    extends = buildout.cfg
+    extensions -= buildout.dumppickedversions
 
-**To be done: describe the configuration parameters that have to be set in
-buildout_$USER.cfg**
+    [vars]
+    instanceid = <instanceid>
+
+    [jsbuild]
+    compress = False
+
+    [cssbuild]
+    compress = false
+
+The ``<instanceid>`` should be unique on the server, the username is a good 
+choice or some think like ``<username>-<sub-project>`` in case of parent/children project.
+
+Add it to SVN::
+
+    $ svn add buildout_$USER.cfg: svn commit "add user buildout" buildout_$USER.cfg
 
 Then you can build and install the application with the command::
 
@@ -98,9 +115,11 @@ This previous command will do many things like:
   * compile the translation files.
 
 Once the application is built and installed, you now have to create and
-populate the application tables::
+populate the application tables, and directly set the version (details later)::
 
-    $ sudo -u postgres buildout/bin/create_db production.ini -p
+    $ buildout/bin/create_db production.ini -p
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control \
+    `./buildout/bin/manage_db -c production.ini -n <package_name> version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
