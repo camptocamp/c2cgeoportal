@@ -1,3 +1,5 @@
+This file shouldn't be used in place of reading the documentation !
+
 Installation of the project
 ===========================
   python bootstrap.py --version 1.5.2 --distribute --download-base \
