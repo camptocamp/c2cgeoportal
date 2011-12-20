@@ -94,6 +94,13 @@ distributions* specific options are required on the command line::
 
 The important note of the previous section applies here too, obviously.
 
+.. note::
+
+    Once a release distribution has been uploaded, you should bump the
+    current version of c2cgeoportal in ``setup.py``.
+    Actually, next development version should have a higher version
+    than the current stable one.
+
 Release checklist
 ~~~~~~~~~~~~~~~~~
 
