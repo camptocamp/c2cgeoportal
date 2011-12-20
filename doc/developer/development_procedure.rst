@@ -27,6 +27,9 @@ merge it to the master branch. If an exception is needed because the
 main developer is not present it should serve the project not the
 developers.
 
+To notify that it's merged the main developer will add a message in the pull
+request.
+
 To be clean the main developer delete the branch to escape to have too 
 many branches ``git branch origin :<branch_name>``.
 
