@@ -32,7 +32,7 @@ Update c2cgeoportal
     svn up
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
             ${project} package=${package}
-    ./buildout/bin/manage_db -c production.ini -n project upgrade
+    ./buildout/bin/manage_db -c production.ini -n ${package} upgrade
     ### Read CONT_CHANGELOG.txt ###
     ./buildout/bin/buildout -c buildout_$$USER.cfg
 
