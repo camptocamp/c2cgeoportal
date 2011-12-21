@@ -22,10 +22,15 @@ pull request.
 To permit to every body to do a review it shouldn't be merge 
 (except for trivial bug fix) before 24h after the pull request.
 
-Finally **only the main developer** who has the integration responsibility
-merge it to the master branch. If an exception is needed because the 
-main developer is not present it should serve the project not the
-developers.
+Finally **only the main developer** merge it to the master branch. 
+
+By *main developer* we name the main developer of c2cgeoportal,
+he should have a global view of the integration on all the projects to don't
+brake them and make the transition as easy as possible.
+
+If the main developer is not present and a merge should be done,
+the merge can be done in collaboration the the main developer of the project,
+the merge should serve the project not the developers.
 
 To notify that it's merged the main developer will add a message in the pull
 request.
