@@ -50,4 +50,14 @@ merge it when it's the appropriated time.
 If two people want to work on the same branch let's do it !
 
 It you start a contribution related to an other contribution that she isn't
-merged let's branch from this branch (test in progress).
+merged let's branch from this branch, and when the contribution your 
+based on is merged do::
+
+    git checkout master
+    git pull --rebase
+    git checkout <branch_name>
+    git rebase master
+    git pull origin <branch_name>
+    
+Than your branch and your pull request should be clean.
+
