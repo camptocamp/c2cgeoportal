@@ -16,23 +16,23 @@ github web interface.
 
 An other developer review the contribution.
 
-If it not OK a new commit will automatically be visible in the
+If a new commit is done in the branch he will automatically be visible in the
 pull request.
 
 To permit to every body to do a review it shouldn't be merge 
 (except for trivial bug fix) before 24h after the pull request.
 
-Finally **only the main developer** merge it to the master branch. 
+Finally **only the c2cgeoportal main developer** merge it to the master branch. 
 
-By *main developer* we name the main developer of c2cgeoportal,
+By *c2cgeoportal main developer* we name the main developer of c2cgeoportal,
 he should have a global view of the integration on all the projects to don't
 brake them and make the transition as easy as possible.
 
-If the main developer is not present and a merge should be done,
+If the *c2cgeoportal main developer* is not present and a merge should be done,
 the merge can be done in collaboration the the main developer of the project,
 the merge should serve the project not the developers.
 
-To notify that it's merged the main developer will add a message in the pull
+To notify that it's merged the *c2cgeoportal main developer* will add a message in the pull
 request.
 
 To be clean the main developer delete the branch to escape to have too 
