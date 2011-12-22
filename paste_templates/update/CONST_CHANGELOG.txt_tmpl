@@ -87,6 +87,21 @@ should sit in jsbuild/app.cfg.
 
 -------------------------------
 
+Wed, 14 Dec 2011 17:00:24 +0100
+
+Implements group restriction to acces to the admin interface.
+
+To continue to acces to the admin interface you should, in the file
+'<project>/__init__.py' replaxe the line
+-     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'))
+by:
++     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'),
++            callback=defaultgroupsfinder)
+and add the import:
++ from c2cgeoportal.resources import defaultgroupsfinder.
+
+-------------------------------
+
 Wed, 07 Dec 2011 15:10:57 +0100
 
 Replace the CONST_README.txt by the documentation.
