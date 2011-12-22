@@ -11,3 +11,14 @@ class FAModels(Models):
     __acl__ = [
         (Allow, Authenticated, ALL_PERMISSIONS),
     ]
+
+def defaultgroupsfinder(userid, request):
+    # should be after the application initialisation
+    from c2cgeoportal.models import DBSession, Role, User, AUTHORIZED_ROLE
+
+    role = DBSession.query(Role).join(Role.users).filter(User.username == userid).one()
+    
+    if role and role.name == 'role_admin':
+        return  [AUTHORIZED_ROLE]
+    else:
+        return []

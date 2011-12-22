@@ -11,7 +11,7 @@ from sqlalchemy import ForeignKey, types, Table, Integer
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
 from formalchemy import Column
-from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
+from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import schema, parentschema, srid
@@ -24,6 +24,8 @@ log = logging.getLogger(__name__)
 
 Base = sqlahelper.get_base()
 DBSession = sqlahelper.get_session()
+
+AUTHORIZED_ROLE = 'admin-interface'
 
 if schema is not None:
     _schema = schema
@@ -52,7 +54,7 @@ class Functionality(Base):
     __tablename__ = 'functionality'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     id = Column(types.Integer, primary_key=True)
     name = Column(types.Unicode, nullable=False, label=_(u'Name'))
@@ -93,7 +95,7 @@ class User(Base):
     __tablename__ = 'user'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     itemType = Column('type', types.String(10), nullable=False)
     __mapper_args__ = {
@@ -162,7 +164,7 @@ class Role(Base):
     __tablename__ = 'role'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     id = Column(types.Integer, primary_key=True)
     name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
@@ -249,7 +251,7 @@ class LayerGroup(TreeGroup):
     __tablename__ = 'layergroup'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'group'}
     id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'), 
@@ -272,7 +274,7 @@ class Theme(TreeGroup):
     __tablename__ = 'theme'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'theme'}
     id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'), 
@@ -291,7 +293,7 @@ class Layer(TreeItem):
     __tablename__ = 'layer'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'layer'}
     id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'), 
@@ -352,7 +354,7 @@ class RestrictionArea(Base):
     __tablename__ = 'restrictionarea'
     __table_args__ = {'schema': _schema}
     __acl__ = [
-        (Allow, Authenticated, ALL_PERMISSIONS),
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
     id = Column(types.Integer, primary_key=True)
@@ -385,7 +387,7 @@ if _parentschema is not None and _parentschema != '':
         __tablename__ = 'role'
         __table_args__ = {'schema': _parentschema}
         __acl__ = [
-            (Allow, Authenticated, ('view')),
+            (Allow, AUTHORIZED_ROLE, ('view')),
         ]
         id = Column(types.Integer, primary_key=True)
         name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
