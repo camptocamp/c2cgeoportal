@@ -46,8 +46,7 @@ can be done with this command, by default ``<db_user>`` is ``www-data``::
 Give the rights to the user::
 
     $ sudo -u postgres psql <db_name>
-    GRANT USAGE ON SCHEMA <schema_name> TO "<db_user>";
-    GRANT CREATE ON SCHEMA <schema_name> TO "<db_user>";
+    GRANT ALL ON SCHEMA <schema_name> TO "<db_user>";
     GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
     \q 
 
