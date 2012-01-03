@@ -11,3 +11,9 @@ c2cgeoportal/locale/fr/LC_MESSAGES/c2cgeoportal.mo
 doc/_build/doctrees
 doc/_build/html
 dist
+buildout/bin/
+buildout/develop-eggs/
+buildout/eggs/
+buildout/parts/
+mock-0.8.0rc1-py2.6.egg/
+
