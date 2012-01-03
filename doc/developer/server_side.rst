@@ -21,7 +21,7 @@ Running tests
 
 * Install and build c2cgeoportal::
 
-        $ ./buildout/bin/buildout
+        $ ./buildout/bin/buildout -c buildout_dev.cfg
 
 * Run the tests::
 

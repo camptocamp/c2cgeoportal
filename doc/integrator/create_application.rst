@@ -11,48 +11,43 @@ package. So to be able to create a c2cgeoportal application the
 Install c2cgeoportal
 --------------------
 
-For creating a c2cgeoportal application the ``c2cgeoportal`` package is
-typically installed in a virtual Python environment created with
-``virtualenv``.
+Installing c2cgeoportal is done using Buildout.
 
-Download the ``virtualenv`` script::
+Clone c2cgeoportal::
 
-    $ wget http://www.mapfish.org/downloads/virtualenv-1.4.5.py
+    $ git clone git@github.com:camptocamp/c2cgeoportal.git
 
-Create a virtual env, and activate it::
+Boostrap Buildout::
 
-    $ python virtualenv-1.4.5.py --distribute --no-site-packages env
-    $ source env/bin/activate
+    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+      http://pypi.camptocamp.net/ --setup-source \
+      http://pypi.camptocamp.net/distribute_setup.py
 
-Download ``c2cgeoportal`` and install it the virtual env::
+Install c2cgeoportal::
 
-    (env) $ svn export https://project.camptocamp.com/svn/c2c_mapfish/c2cgeoportal/trunk c2cgeoportal
-    (env) $ cd c2cgeoportal; python setup_install.py develop; cd -
+    $ ./buildout/bin/buildout
 
-Note that ``setup_install.py`` is used in place of the usual ``setup.py`` here.
+The above command downloads the latest *final* ``c2cgeoportal`` package from
+http://pypi.camptocamp.net/internal-pypi/index/.
 
 .. note::
 
-    ``c2cgeoportal`` also includes a ``setup.py`` file, but when running
-    ``python setup.py develop`` (or ``python setup.py install``)
-    ``c2cgeoportal`` and all its dependencies are installed. In contrast
-    ``setup_install.py`` just installs ``c2cgeoportal`` and ``PasteScript``,
-    which is all we need to create an application by applying the
-    ``c2cgeoportal`` skeletons.
+    To install a development package of c2cgeoportal you can edit buildout.cfg
+    and set ``prefer-final`` to ``false``.
 
 Create the new application
 --------------------------
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
-    (env) $ paster create --template=c2cgeoportal_create
+    $ buildout/bin/paster create --template=c2cgeoportal_create
 
 You'll be asked to enter the project name and the SRID for this project. Just
 ignore the ``IOError: No egg-info directory found (...)`` error message.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
-    (env) $ paster create --template=c2cgeoportal_update
+    $ buildout/bin/paster create --template=c2cgeoportal_update
 
 Enter the same projet name and SRID as before. And again, ignore the
 ``IOError: No egg-info directory found (...)`` error message.
