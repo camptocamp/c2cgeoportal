@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = "c2cgeoportal, generic gis protail made by camptocamp"
 
 requires = [
-    'pyramid',
+    'pyramid<=1.2.99',
     'WebError',
     'psycopg2',
     'sqlalchemy',
