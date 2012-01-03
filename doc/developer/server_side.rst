@@ -9,21 +9,23 @@ Tests
 Running tests
 ~~~~~~~~~~~~~
 
-Run the tests: 
+* Check out ``c2cgeoportal`` from GitHub::
 
-* Have the c2cgeoportal as a dev egg in c2cgeoportal directory
+        $ git clone git@github.com:camptocamp/c2cgeoportal.git
 
-* run buildout::
+* Bootstrap Buildout::
 
-    ./buildout/bin/buildout -c buildout_$USER.cfg
+        $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+            http://pypi.camptocamp.net/ --setup-source \
+            http://pypi.camptocamp.net/distribute_setup.py
 
-* run the tests::
+* Install and build c2cgeoportal::
 
-   . buildout/bin/activate
-   cd c2cgeoportal/
-   nosetests
-   cd -
-   deactivate
+        $ ./buildout/bin/buildout
+
+* Run the tests::
+
+        $ ./buildout/bin/python setup.py nosetests
 
 Adding tests
 ~~~~~~~~~~~~
