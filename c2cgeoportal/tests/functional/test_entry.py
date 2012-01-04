@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
+from nose.plugins.attrib import attr
 
 import transaction
 from geoalchemy import WKTSpatialElement
@@ -7,6 +8,7 @@ from pyramid import testing
 
 from c2cgeoportal.tests.functional import tearDownModule, setUpModule
 
+@attr(functional=True)
 class TestEntryView(TestCase):
 
     def setUp(self):
