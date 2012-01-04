@@ -69,6 +69,9 @@ setup(name='c2cgeoportal',
         'fanstatic.libraries': [
             'admin = c2cgeoportal.forms:fanstatic_lib',
         ],
+        'nose.plugins': [
+            'c2cgeoportal = c2cgeoportal.tests.noseplugin:c2cgeoportal'
+        ],
       }
 )
 
