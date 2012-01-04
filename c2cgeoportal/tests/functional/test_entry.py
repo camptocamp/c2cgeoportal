@@ -5,7 +5,7 @@ import transaction
 from geoalchemy import WKTSpatialElement
 from pyramid import testing
 
-from c2cgeoportal.tests import tearDownModule, setUpModule
+from c2cgeoportal.tests.functional import tearDownModule, setUpModule
 
 class TestEntryView(TestCase):
 
