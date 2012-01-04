@@ -43,8 +43,7 @@ You should go out of c2cgeoportal directory at this stage::
 Create the new application
 --------------------------
 
-Be sure you are outside of the c2cgeoportal directory. To create the application 
-first apply the ``c2cgeoportal_create`` skeleton::
+To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
     $ c2cgeoportal/buildout/bin/paster create --template=c2cgeoportal_create
 
