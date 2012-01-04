@@ -36,23 +36,37 @@ http://pypi.camptocamp.net/internal-pypi/index/.
     To install a development package of c2cgeoportal you can edit buildout.cfg
     and set ``prefer-final`` to ``false``.
 
-You should go out of c2cgeoportal directory at this stage::
+For the rest of the procedure activate the Buildout Python environment
+using this::
 
-    $ cd ..
+    $ source buildout/bin/activate
+
+Your shell prompt should have changed to something like this::
+
+    (c2cgeoportal) $
+
+From now on the ``buildout/bin`` directory is in your shell PATH and
+every command from ``buildout/bin`` is directly accessible from your
+shell. Try the following::
+
+    (c2cgeoportal) $ paster create --list-templates
 
 Create the new application
 --------------------------
 
+Keep the Python env activated and change to a directory where you want to
+create the application (``/tmp`` for example).
+
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
-    $ c2cgeoportal/buildout/bin/paster create --template=c2cgeoportal_create
+    (c2cgeoportal) $ paster create --template=c2cgeoportal_create
 
 You'll be asked to enter the project name and the SRID for this project. Just
 ignore the ``IOError: No egg-info directory found (...)`` error message.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
-    $ c2cgeoportal/buildout/bin/paster create --template=c2cgeoportal_update
+    (c2cgeoportal) $ paster create --template=c2cgeoportal_update
 
 Enter the same projet name and SRID as before. And again, ignore the
 ``IOError: No egg-info directory found (...)`` error message.
@@ -64,15 +78,12 @@ Enter the same projet name and SRID as before. And again, ignore the
     ``CONST_``, which means they are *constant* files that should not changed.
     Following this rule is important for easing updates.
 
-At this point you no longer need the virtual env and the ``c2cgeoportal`` tree,
-so you can deactivate the virtual env, and remove the ``c2cgeoportal`` and
-``env`` directories::
+At this point you can deactivate the Python env::
 
-    (env) $ deactivate
-    $ rm -rf env c2cgeoportal
+    (c2cgeoportal) $ deactivate
 
-And remove the ``egg-info`` directory, as it shouldn't be added to the
-source repository::
+Remove the ``egg-info`` directory, as it shouldn't be added to the
+application's source repository::
 
     $ rm -rf <project_name>/*.egg-info
 
