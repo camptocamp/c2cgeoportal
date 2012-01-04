@@ -16,6 +16,7 @@ Installing c2cgeoportal is done using Buildout.
 Clone c2cgeoportal::
 
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
+    $ git submodule update --init
 
 Boostrap Buildout::
 
