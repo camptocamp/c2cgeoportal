@@ -36,19 +36,22 @@ http://pypi.camptocamp.net/internal-pypi/index/.
     To install a development package of c2cgeoportal you can edit buildout.cfg
     and set ``prefer-final`` to ``false``.
 
+You should go out of c2cgeoportail directory at this stage.
+
 Create the new application
 --------------------------
 
-To create the application first apply the ``c2cgeoportal_create`` skeleton::
+Be sure you are outside of the c2cgeoportail directory. To create the application 
+first apply the ``c2cgeoportal_create`` skeleton::
 
-    $ buildout/bin/paster create --template=c2cgeoportal_create
+    $ c2cgeoportal/buildout/bin/paster create --template=c2cgeoportal_create
 
 You'll be asked to enter the project name and the SRID for this project. Just
 ignore the ``IOError: No egg-info directory found (...)`` error message.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
-    $ buildout/bin/paster create --template=c2cgeoportal_update
+    $ c2cgeoportail/buildout/bin/paster create --template=c2cgeoportal_update
 
 Enter the same projet name and SRID as before. And again, ignore the
 ``IOError: No egg-info directory found (...)`` error message.
