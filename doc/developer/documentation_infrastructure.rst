@@ -11,7 +11,7 @@ The ``docs.camptocamp.net`` server has an ``@hourly`` cronjob that runs the
 
 To manually update the online doc you can log onto ``docs.camptocamp.net`` as
 ``sig``, change directory to
-``/var/www/docs.camptocamp.com/private/c2cgeoportal/doc`` and run
+``/var/www/docs.camptocamp.net/private/c2cgeoportal/doc`` and run
 ``update_online.sh`` from there.
 
 Before generating the HTML documentation the ``update_online.sh`` script
