@@ -55,7 +55,7 @@ Create the new application
 --------------------------
 
 Keep the Python env activated and change to a directory where you want to
-create the application (``/tmp`` for example).
+create the application (can be anywhere really, ``/tmp`` for example).
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
