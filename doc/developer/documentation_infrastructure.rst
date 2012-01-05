@@ -17,7 +17,12 @@ To manually update the online doc you can log onto ``docs.camptocamp.net`` as
 Before generating the HTML documentation the ``update_online.sh`` script
 updates the documentation source by pulling from
 http://github.com/camptocamp/c2cgeoportal. For this we use a `GitHub Deploy Key
-<http://help.github.com/deploy-keys/>`_.
+<http://help.github.com/deploy-keys/>`_. In case you need to change the deploy
+key point your browser to http://github.com/camptocamp/c2cgeoportal, and go the
+repository's admin page (``Admin`` button), you should see ``Deploy Keys`` in
+the menu, where the ``docs.camptocamp.net`` deploy key should be available.
+This deploy key should match the SSH key of the ``sig`` user on
+``docs.camptocamp.net``.
 
 .. note::
 
