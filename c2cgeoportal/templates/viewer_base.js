@@ -20,6 +20,7 @@
 
     // Apply same language than on the server side
     OpenLayers.Lang.setCode("${lang}");
+    GeoExt.Lang.set("${lang}");
 
     // Themes definitions
     /* errors (if any): ${themesError | n} */
