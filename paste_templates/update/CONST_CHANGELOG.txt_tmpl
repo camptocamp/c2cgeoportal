@@ -5,6 +5,12 @@ The dates can be generated with « date -R ».
 
 -------------------------------
 
+Thu, 12 Jan 2012 13:35:23 +0100
+
+Due to wrong moving the files in 'print/print' should be moved to 'print'.
+
+-------------------------------
+
 Wed, 14 Dec 2011 17:49:36 +0100
 
 This migration concerns the changes reorganizing the "create" and "update"
