@@ -20,129 +20,129 @@ msgstr ""
 
 #: c2cgeoportal/forms.py:40
 msgid "Duplicate record"
-msgstr ""
+msgstr "Datensatz duplizieren"
 
 #: c2cgeoportal/forms.py:69
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Passworte stimmen nicht überein"
 
 #: c2cgeoportal/forms.py:148
 msgid "Restriction area"
-msgstr ""
+msgstr "geschützter Bereich"
 
 #: c2cgeoportal/forms.py:201
 msgid "Extent"
-msgstr ""
+msgstr "Ausdehnung"
 
 #: c2cgeoportal/models.py:48
 msgid "functionality"
-msgstr ""
+msgstr "Funktionalität"
 
 #: c2cgeoportal/models.py:49
 msgid "functionalitys"
-msgstr ""
+msgstr "Funktionalitäten"
 
 #: c2cgeoportal/models.py:56 c2cgeoportal/models.py:166
 #: c2cgeoportal/models.py:211 c2cgeoportal/models.py:360
 #: c2cgeoportal/models.py:391
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: c2cgeoportal/models.py:57
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: c2cgeoportal/models.py:89
 msgid "user"
-msgstr ""
+msgstr "Benutzer"
 
 #: c2cgeoportal/models.py:90
 msgid "users"
-msgstr ""
+msgstr "Benutzer"
 
 #: c2cgeoportal/models.py:103
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: c2cgeoportal/models.py:105
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: c2cgeoportal/models.py:106
 msgid "E-mail"
-msgstr ""
+msgstr "E-Mail"
 
 #: c2cgeoportal/models.py:158
 msgid "role"
-msgstr ""
+msgstr "Rolle"
 
 #: c2cgeoportal/models.py:159
 msgid "roles"
-msgstr ""
+msgstr "Rollen"
 
 #: c2cgeoportal/models.py:167 c2cgeoportal/models.py:361
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: c2cgeoportal/models.py:212
 msgid "Order"
-msgstr ""
+msgstr "Reihenfolge"
 
 #: c2cgeoportal/models.py:248
 msgid "layergroup"
-msgstr ""
+msgstr "Layer-Gruppe"
 
 #: c2cgeoportal/models.py:249
 msgid "layergroups"
-msgstr ""
+msgstr "Layer-Gruppen"
 
 #: c2cgeoportal/models.py:258
 msgid "Expanded"
-msgstr ""
+msgstr "Erweitert"
 
 #: c2cgeoportal/models.py:259
 msgid "Internal WMS"
-msgstr ""
+msgstr "Interner WMS"
 
 #: c2cgeoportal/models.py:261
 msgid "Group of base layers"
-msgstr ""
+msgstr "Gruppe von Basiskarten"
 
 #: c2cgeoportal/models.py:271
 msgid "theme"
-msgstr ""
+msgstr "Thema"
 
 #: c2cgeoportal/models.py:272
 msgid "themes"
-msgstr ""
+msgstr "Themen"
 
 #: c2cgeoportal/models.py:281 c2cgeoportal/models.py:302
 msgid "Icon"
-msgstr ""
+msgstr "Symbol"
 
 #: c2cgeoportal/models.py:282
 msgid "Display"
-msgstr ""
+msgstr "Anzeige"
 
 #: c2cgeoportal/models.py:290
 msgid "layer"
-msgstr ""
+msgstr "Layer"
 
 #: c2cgeoportal/models.py:291
 msgid "layers"
-msgstr ""
+msgstr "Layer"
 
 #: c2cgeoportal/models.py:301
 msgid "Public"
-msgstr ""
+msgstr "Öffentlich"
 
 #: c2cgeoportal/models.py:305
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: c2cgeoportal/models.py:306
 msgid "Base URL"
-msgstr ""
+msgstr "Basis-URL"
 
 #: c2cgeoportal/models.py:307
 msgid "Server Resolutions"
@@ -150,23 +150,23 @@ msgstr ""
 
 #: c2cgeoportal/models.py:308
 msgid "Max Extent"
-msgstr ""
+msgstr "Maximale Ausdehnung"
 
 #: c2cgeoportal/models.py:310
 msgid "Image type"
-msgstr ""
+msgstr "Bildtyp"
 
 #: c2cgeoportal/models.py:311
 msgid "KML 3D"
-msgstr ""
+msgstr "KML 3D"
 
 #: c2cgeoportal/models.py:312
 msgid "Single tile"
-msgstr ""
+msgstr "Einzelkachel"
 
 #: c2cgeoportal/models.py:313
 msgid "Visible"
-msgstr ""
+msgstr "Sichtbar"
 
 #: c2cgeoportal/models.py:314
 msgid "No 2D"
@@ -174,35 +174,35 @@ msgstr ""
 
 #: c2cgeoportal/models.py:315
 msgid "Display legend"
-msgstr ""
+msgstr "Legende anzeigen"
 
 #: c2cgeoportal/models.py:316
 msgid "Legend Image"
-msgstr ""
+msgstr "Legendenbild"
 
 #: c2cgeoportal/models.py:317
 msgid "Legend Rule"
-msgstr ""
+msgstr "Legendenrolle"
 
 #: c2cgeoportal/models.py:318
 msgid "Metadata URL"
-msgstr ""
+msgstr "Metadaten-URL"
 
 #: c2cgeoportal/models.py:319
 msgid "Min resolution"
-msgstr ""
+msgstr "Min. Auflösung"
 
 #: c2cgeoportal/models.py:320
 msgid "Max resolution"
-msgstr ""
+msgstr "Max. Auflösung"
 
 #: c2cgeoportal/models.py:350
 msgid "restrictionarea"
-msgstr ""
+msgstr "Geschützter Bereich"
 
 #: c2cgeoportal/models.py:351
 msgid "restrictionareas"
-msgstr ""
+msgstr "Geschützte Bereiche"
 
 #: c2cgeoportal/models.py:383
 msgid "parentrole"
@@ -214,19 +214,19 @@ msgstr ""
 
 #: c2cgeoportal/templates/admin.html:27
 msgid "s"
-msgstr ""
+msgstr "s"
 
 #: c2cgeoportal/templates/index.html:58
 msgid "Loading message"
-msgstr "Loading..."
+msgstr "Laden ..."
 
 #: c2cgeoportal/templates/search-tip.html:2
 msgid "search tip message"
-msgstr "Akzeptierte Suchewerte sind: Adressen, Orte, Liegenschaften,\nKoordinaten: swiss projection 600000 200000 ; lon lat: 7.3 46.8."
+msgstr "Akzeptierte Suchwerte sind: Adressen, Orte, Liegenschaften,\nKoordinaten: Schweizer Projektion 600000 200000 ; Geografische Koordinaten: 7.3 46.8."
 
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"
-msgstr "meine übersetzung test"
+msgstr "meine Übersetzung test"
 
 #: c2cgeoportal/views/entry.py:46
 msgid "title i18n"
