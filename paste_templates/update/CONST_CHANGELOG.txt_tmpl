@@ -7,7 +7,9 @@ The dates can be generated with « date -R ».
 
 Thu, 12 Jan 2012 13:35:23 +0100
 
-Due to wrong moving the files in 'print/print' should be moved to 'print'.
+Due to wrong moving the files in 'print/print'. If exists the folder 
+'print/print/WEB-INF/' should be moved to 'print/WEB-INF/' and the 
+folder 'print/print/' should be removed.
 
 -------------------------------
 
