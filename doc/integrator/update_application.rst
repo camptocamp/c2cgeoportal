@@ -71,3 +71,10 @@ to reference the new commit for the cgxp submodule::
 
     $ cd ..
     $ git commit -m "Update cgxp submodule"
+
+.. warning::
+
+    We have a major issue here for applications under SVN. When SVN, as
+    opposed to Git, is used for the application the version of CGXP is
+    not fixed in the application. This means that each installation of
+    an application may work with a different version of CGXP.
