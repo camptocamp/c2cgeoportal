@@ -3,6 +3,38 @@
 Server-side development
 =======================
 
+Create development environment in a project
+-------------------------------------------
+
+* Check out ``c2cgeoportal`` from GitHub::
+
+    $ git clone git@github.com:camptocamp/c2cgeoportal.git
+    $ cd c2cgeoportal; git submodule update --init; cd -
+
+* Edit your ``buildout_$USER.cfg`` to have something like::
+
+    [buildout]
+    extends = buildout.cfg
+    parts -= libs-update
+    develop += c2cgeoportal
+    extensions -= buildout.dumppickedversions
+
+    [vars]
+    instanceid = <instanceid>
+
+    [jsbuild]
+    compress = False
+
+    [cssbuild]
+    compress = false
+
+    [template]
+    exclude-directories += c2cgeoportal/paste_templates
+
+* Build::
+
+    ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
+
 Tests
 -----
 
