@@ -14,7 +14,7 @@ or::
 
     $ git pull origin master
 
-depending on the VCS used for that application.
+depending on the VCS used for the application.
 
 Update c2cgeoportal
 -------------------
@@ -56,12 +56,7 @@ steps:
 Update CGXP
 -----------
 
-If the application code is under SVN the ``[cgxp-install]`` part was certainly
-used for the initial installation of CGXP (under
-``<package_name>/static/lib/cgxp``). This part did ``git clone`` of CGXP, so
-``<package_name>/static/lib/cgxp`` is a clone of
-https://github.com/camptocamp/cgxp.git. So to update CGXP for the application
-you can use the following Git commands::
+To update CGXP in the application use the following::
 
     $ cd <package_name>/static/lib/cgxp
     $ git pull origin master
@@ -71,4 +66,8 @@ you can use the following Git commands::
 If unsure, see the ``name`` argument to the ``setup`` call in the application's
 ``setup.py`` file.
 
-If the application code is under Git ... (TO COMPLETE)
+If the application code is under Git you also need to update the application
+to reference the new commit for the cgxp submodule::
+
+    $ cd ..
+    $ git commit -m "Update cgxp submodule"
