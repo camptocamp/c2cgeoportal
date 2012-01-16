@@ -1,7 +1,7 @@
 [buildout]
 parts = eggs 
         activate 
-        jslibs
+        cgxp-install
         template 
         modwsgi 
         jsbuild 
@@ -129,7 +129,7 @@ initialization =
 [activate]
 recipe = evg.recipe.activate
 
-[jslibs]
+[cgxp-install]
 recipe = collective.recipe.cmd
 on_install = true
 on_update = false
