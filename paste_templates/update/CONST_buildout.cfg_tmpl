@@ -1,8 +1,7 @@
 [buildout]
 parts = eggs 
         activate 
-        libs-install
-        libs-update
+        cgxp-install
         template 
         modwsgi 
         jsbuild 
@@ -130,21 +129,13 @@ initialization =
 [activate]
 recipe = evg.recipe.activate
 
-[libs-install]
+[cgxp-install]
 recipe = collective.recipe.cmd
 on_install = true
 on_update = false
 cmds =
     ( cd ${package}/static/lib && git clone https://github.com/camptocamp/cgxp.git )
     ( cd ${package}/static/lib/cgxp && git submodule update --init )
-
-[libs-update]
-recipe = collective.recipe.cmd
-on_install = false
-on_update = true
-cmds =
-    ( cd ${package}/static/lib/cgxp && git pull --rebase )
-    ( cd ${package}/static/lib/cgxp && git submodule update )
 
 [print-template]
 recipe = collective.recipe.cmd:py
