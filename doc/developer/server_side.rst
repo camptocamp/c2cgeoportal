@@ -41,23 +41,56 @@ Tests
 Running tests
 ~~~~~~~~~~~~~
 
-* Check out ``c2cgeoportal`` from GitHub::
+To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
+code, and a buildout environment for it. So do that first, as described below.
 
-        $ git clone git@github.com:camptocamp/c2cgeoportal.git
+Check out c2cgeoportal from GitHub::
 
-* Bootstrap Buildout::
+    $ git clone git@github.com:camptocamp/c2cgeoportal.git
 
-        $ python bootstrap.py --version 1.5.2 --distribute --download-base \
-            http://pypi.camptocamp.net/ --setup-source \
-            http://pypi.camptocamp.net/distribute_setup.py
+Bootstrap Buildout::
 
-* Install and build c2cgeoportal::
+    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/ --setup-source \
+        http://pypi.camptocamp.net/distribute_setup.py
 
-        $ ./buildout/bin/buildout -c buildout_dev.cfg
+Install and build c2cgeoportal::
 
-* Run the tests::
+    $ ./buildout/bin/buildout -c buildout_dev.cfg
 
-        $ ./buildout/bin/python setup.py nosetests
+c2cgeoportal has two types of tests: unit tests and functional tests. The unit
+tests are self-contained, and do not require any specific setup. The functional
+tests require a PostGIS database and a MapServer installation that can access
+the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
+
+To run the unit tests simply do this::
+
+    $ ./buildout/bin/python setup.py nosetests
+
+For the functional tests you need to have MapServer and PostgreSQL/PostGIS
+installed. Make sure this is the case before proceeding.
+
+You now need to create PostGIS database (named ``c2cgeoportal_test`` for example)
+and a schema named ``main`` into it::
+
+    $ createdb c2cgeoportal_test
+    $ createlang plpgsql c2cgeoportal_test
+    $ psql -d c2cgeoportal_test -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sq
+    $ psql -d c2cgeoportal_test -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
+    $ psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
+
+Now edit ``buildout_dev.cfg`` (or create your own buildout config file
+extenting ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
+``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.  Once done,
+run the ``template`` part to generate
+``c2cgeoportal/tests/functional/test.ini`` and
+``c2cgeoportal/tests/functional/c2cgeoportal_test.map.ini``::
+
+        $ ./buildout/bin/buildout -c buildout_dev.cfg install template
+
+You can now run both the unit and functional tests with this::
+
+    $ ./buildout/bin/python setup.py nosetests -a functional
 
 Adding tests
 ~~~~~~~~~~~~
