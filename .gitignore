@@ -15,3 +15,5 @@ buildout/bin/
 buildout/develop-eggs/
 buildout/eggs/
 buildout/parts/
+coverage.xml
+nosetests.xml
