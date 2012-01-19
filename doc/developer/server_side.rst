@@ -74,11 +74,17 @@ installed. Make sure this is the case before proceeding.
 You now need to create PostGIS database (named ``c2cgeoportal_test`` for example)
 and a schema named ``main`` into it::
 
-    $ createdb c2cgeoportal_test
-    $ createlang plpgsql c2cgeoportal_test
-    $ psql -d c2cgeoportal_test -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sq
-    $ psql -d c2cgeoportal_test -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
-    $ psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
+    $ sudo -u postgres createdb c2cgeoportal_test
+    $ sudo -u postgres createlang plpgsql c2cgeoportal_test
+    $ sudo -u postgres psql -d c2cgeoportal_test \
+           -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
+    $ sudo -u postgres psql -d c2cgeoportal_test \
+           -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
+    $ sudo -u postgres psql -d c2cgeoportal_test \
+           -c 'CREATE SCHEMA main;'
+    $ sudo -u postgres psql -d c2cgeoportal_test \
+           -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+  
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
 extenting ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
