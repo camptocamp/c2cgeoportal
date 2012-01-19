@@ -50,6 +50,7 @@ Check out c2cgeoportal from GitHub::
 
 Bootstrap Buildout::
 
+    $ cd c2cgeoportal
     $ python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/ --setup-source \
         http://pypi.camptocamp.net/distribute_setup.py
@@ -86,7 +87,7 @@ run the ``template`` part to generate
 ``c2cgeoportal/tests/functional/test.ini`` and
 ``c2cgeoportal/tests/functional/c2cgeoportal_test.map.ini``::
 
-        $ ./buildout/bin/buildout -c buildout_dev.cfg install template
+    $ ./buildout/bin/buildout -c buildout_dev.cfg install template
 
 You can now run both the unit and functional tests with this::
 
