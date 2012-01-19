@@ -67,7 +67,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db}_test host=${vars:dbhost}"
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -99,8 +99,8 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db}_test host=${vars:dbhost}"
-        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${vars:mapserver_join_tables} WHERE ST_Contains(${vars:mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${vars:mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             "wms_srs" "epsg:21781"
@@ -110,7 +110,7 @@ MAP
             "gml_geometries" "the_geom"
             "gml_the_geom_type" "point"
 
-            ${mapserver_layer_metadata}
+            ${vars:mapserver_layer_metadata}
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"

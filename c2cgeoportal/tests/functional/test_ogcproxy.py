@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
+from nose.plugins.attrib import attr
 
 from papyrus_ogcproxy.views import ogcproxy
 from pyramid import testing
 
+@attr(functional=True)
 class TestOgcproxyView(TestCase):
 
     def test_nourl(self):
