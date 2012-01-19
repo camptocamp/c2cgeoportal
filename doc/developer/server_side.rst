@@ -44,6 +44,9 @@ Running tests
 To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
 code, and a buildout environment for it. So do that first, as described below.
 
+Install c2cgeportal from source
+...............................
+
 Check out c2cgeoportal from GitHub::
 
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
@@ -64,27 +67,41 @@ tests are self-contained, and do not require any specific setup. The functional
 tests require a PostGIS database and a MapServer installation that can access
 the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
 
+Unit tests
+..........
+
 To run the unit tests simply do this::
 
     $ ./buildout/bin/python setup.py nosetests
+
+Functional tests
+................
 
 For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.
 
 You now need to create PostGIS database (named ``c2cgeoportal_test`` for example)
-and a schema named ``main`` into it::
+and a schema named ``main`` into it.
 
-    $ sudo -u postgres createdb c2cgeoportal_test
+To create the database use the following command if you have a PostGIS database
+template at your disposal::
+
+    $ sudo -u postgres createdb -T template_postgis c2cgeoportal_test
+
+Else use this::
+
     $ sudo -u postgres createlang plpgsql c2cgeoportal_test
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
+
+To create the ``main`` schema::
+
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -c 'CREATE SCHEMA main;'
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -c 'GRANT ALL ON SCHEMA main TO "www-data";'
-  
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
 extenting ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
