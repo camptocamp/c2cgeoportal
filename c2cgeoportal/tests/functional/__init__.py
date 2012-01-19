@@ -20,24 +20,49 @@ if os.path.exists(configfile):
     db_url = cfg.get('test', 'sqlalchemy.url')
     mapserv_url = cfg.get('test', 'mapserv.url')
 
+
 def setUpModule():
     import c2cgeoportal
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
 
+    # if test.in does not exist (because the z3c.recipe.filetemplate
+    # part hasn't been executed) then db_url is None
     if db_url is None:
         return
 
-    import sqlahelper
+    # verify that we have a working database connection before going
+    # forward
     from sqlalchemy import create_engine
-    sqlahelper.add_engine(create_engine(db_url))
+    from sqlalchemy.exc import OperationalError
+    engine = create_engine(db_url)
+    try:
+        engine.connect()
+    except OperationalError:
+        return
+
+    import sqlahelper
+    sqlahelper.add_engine(engine)
 
     from c2cgeoportal.models import Base
     Base.metadata.create_all()
 
+
 def tearDownModule():
 
+    # if test.in does not exist (because the z3c.recipe.filetemplate
+    # part hasn't been executed) then db_url is None
     if db_url is None:
+        return
+
+    # verify that we have a working database connection before going
+    # forward
+    from sqlalchemy import create_engine
+    from sqlalchemy.exc import OperationalError
+    engine = create_engine(db_url)
+    try:
+        engine.connect()
+    except OperationalError:
         return
 
     from c2cgeoportal.models import Base
