@@ -104,7 +104,7 @@ To create the ``main`` schema::
            -c 'GRANT ALL ON SCHEMA main TO "www-data";'
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
-extenting ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
+extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.  Once done,
 run the ``template`` part to generate
 ``c2cgeoportal/tests/functional/test.ini`` and
