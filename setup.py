@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 README = "c2cgeoportal, generic gis protail made by camptocamp"
 
-requires = [
+install_requires = [
     'pyramid<=1.2.99',
     'WebError',
     'psycopg2',
@@ -24,6 +24,17 @@ requires = [
     'OWSLib',
     'tileforge>=0.2',
     'JSTools',
+    ]
+
+# nose plugins with options set in setup.cfg cannot be in
+# tests_require, they need be in setup_requires
+setup_requires = [
+    'nose',
+    'nosexcover',
+    ]
+
+tests_require = [
+    'mock',
     ]
 
 setup(name='c2cgeoportal',
@@ -47,7 +58,9 @@ setup(name='c2cgeoportal',
           ('**.py', 'python', None),
           ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
       zip_safe=False,
-      install_requires=requires,
+      install_requires=install_requires,
+      setup_requires=setup_requires,
+      tests_require=tests_require,
       test_suite="c2cgeoportal",
       entry_points = {
         'console_scripts': [

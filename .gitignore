@@ -17,3 +17,4 @@ buildout/eggs/
 buildout/parts/
 coverage.xml
 nosetests.xml
+/*.egg
