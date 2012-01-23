@@ -15,5 +15,6 @@ buildout/bin/
 buildout/develop-eggs/
 buildout/eggs/
 buildout/parts/
-mock-0.8.0rc1-py2.6.egg/
-
+coverage.xml
+nosetests.xml
+/*.egg
