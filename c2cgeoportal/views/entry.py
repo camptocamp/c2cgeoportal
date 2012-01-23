@@ -358,7 +358,12 @@ class Entry(object):
     def logout(self):
         headers = forget(self.request)
         cameFrom = self.request.params.get("came_from")
-        log.info("User '%s' (%i) log out."%(self.username, self.user.id))
+
+        if self.user:
+            log.info("User '%s' (%i) log out."%(self.username, self.user.id))
+        else:
+            log.warning("Logout without user object, username: '%s'."%(self.username))
+
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
