@@ -33,7 +33,7 @@ setup_requires = [
     'nosexcover',
     ]
 
-tests_require = [
+tests_require = install_requires + [
     'mock',
     ]
 
