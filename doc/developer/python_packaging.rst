@@ -43,19 +43,12 @@ uploading it to http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal.
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 To be able to upload distributions to the Camptocamp internal PyPI it is
-required to have an appropriate (e.g. ``[internal]``) section in
+required to have an appropriate (e.g. ``[c2c-internal]``) section in
 ``~/.pypirc``::
-
-    $ cat ~/.pypirc
 
     [distutils]
     index-servers =
-        pypi
         c2c-internal
-
-    [pypi]
-    username:<pypi.python.org_username>
-    password:<pypi.python.org_password>
 
     [c2c-internal]
     username:<pypi.camptocamp.net/internal-pypi_username>

@@ -8,9 +8,11 @@
 # md5sum with no squares: ef33223235b26c782736c88933b35331
 #
 #
-from unittest import TestCase
+
 import os
 import hashlib
+from unittest import TestCase
+from nose.plugins.attrib import attr
 
 from sqlalchemy import Column, types
 from geoalchemy import GeometryColumn, Point, GeometryDDL, WKTSpatialElement
@@ -18,7 +20,7 @@ import transaction
 from pyramid import testing
 import sqlahelper
 
-from c2cgeoportal.tests import setUpModule, tearDownModule, mapserv_url
+from c2cgeoportal.tests.functional import setUpModule, tearDownModule, mapserv_url
 
 Base = sqlahelper.get_base()
 
@@ -29,6 +31,7 @@ class TestPoint(Base):
     the_geom = GeometryColumn(Point(srid=21781))
 GeometryDDL(TestPoint.__table__)
 
+@attr(functional=True)
 class TestMapserverproxyView(TestCase):
 
 
