@@ -154,7 +154,8 @@ repository, and they will automatically increment the ``db_version``.
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just
 have to include the application apache configuration available in the
-``apache`` directory by using the directive::
+``apache`` directory, in camptocamp managed hosts it'd in the folder 
+``/var/www[/vhost]/<projectname>/conf/`` by using the directive::
 
     Include /path/to/YourProject/apache/*.conf
 
