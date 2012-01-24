@@ -11,7 +11,6 @@ Content:
 
    create_application
    install_application
-   structure
    extend_data_model
    customize_ui
    print
