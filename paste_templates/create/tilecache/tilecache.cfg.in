@@ -26,7 +26,7 @@ yorigin = top
 wmts_gettile = ${wmts_url}
 
 [plan]
-layers = ${encodedLayers_plan}
+layers = plan
 metaTile = true
 metaBuffer = 40
 metaSize = 1,1
@@ -34,13 +34,7 @@ mime_type = image/png
 # get geometries to update
 #metadata_data = "the_geom FROM bfs.adr"
 
-[plan_color]
-layers = ${encodedLayers_plan_color}
-metaTile = true
-metaBuffer = 40
-metaSize = 1,1
-
 [ortho]
-layers = ${encodedLayers_ortho}
+layers = ortho
 extension = jpeg
 mime_type = image/jpeg
