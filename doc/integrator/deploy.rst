@@ -4,7 +4,7 @@ Deploy the application
 ======================
 
 The first tine you want do deploy an application the configuration 
-should be setup in the file ``deploy/deploy.in``.
+should be setup in the file ``deploy/deploy.cfg[.in]``.
 
 The deploy tool has four parts:
 
