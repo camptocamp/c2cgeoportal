@@ -1,15 +1,30 @@
-.. _tileforge:
+.. _administrator_tileforge:
 
 Tileforge
 =========
 
-The tileforge is used to seed the tiles.
+Configuration
+-------------
 
-The configuration is in the file ``tilecache/tilecache.cfg[.in]``.
+The configuration file is ``tilecache/tilecache.cfg.in``.
+
+The ``[cache]`` section describes how the tiles are saved.
+
+The ``[DEFAULTS]`` section applies defaults to all layers.
+
+The important attributes are:
+
+ * ``layers`` the WMS layers or groups.
+ * ``metadata_connection`` connexion to the database.
+ * ``metadata_data`` the SQL request to get the geometries that should be generated. 
+ * ``metadata_image_postproc`` a post process apply on the generated tiles.
+
+Commands
+--------
 
 Usage::
 
-    Usage: ./buildout/bin/tilemanager [OPTIONS] LAYERNAME [ZOOM_START ZOOM_STOP]
+    ./buildout/bin/tilemanager [OPTIONS] LAYERNAME [ZOOM_START ZOOM_STOP]
 
     Options:
       --version             show program's version number and exit
@@ -23,6 +38,17 @@ Usage::
                             retry to generated tiles from RETRY file
       -v, --verbose         make lots of noise
 
+
+Run on a BBOX::
+
+  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=<left>,<bottom>,<right>,<top> <tileforge_layer>
+
+Run on configured diff table::
+
+  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg <tileforge_layer>
+
+Tiles
+-----
 
 The tiles will be stored int the folder
 ``/var/sig/tilecache/c2cgeoportal->instanceid>_tilecache``,
