@@ -5,6 +5,23 @@
 Print config.yaml templating
 ============================
 
+Introduction
+------------
+
+All the files related ti the print in in the ``print/`` folder.
+
+The main file (``print/config.yaml``) used to define your print template written in YAML format.
+
+ * `YAML on Wikipedia <http://en.wikipedia.org/wiki/YAML>`_
+ * `The offitial YAML site <http://www.yaml.org/>`_
+ * `Mapfish print configuration documentation 
+   <http://mapfish.org/doc/print/configuration.html>`_
+ * `YAML validator <http://yaml-online-parser.appspot.com/>`_
+
+
+Mako templating
+---------------
+
 If you intend to have more than one paper format for your PDF
 print output, a templating system is implemented to allow you to use mako
 template so you dont have to duplicate huge quantiy of code in your config.yaml.
