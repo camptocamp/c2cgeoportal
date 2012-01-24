@@ -105,7 +105,6 @@ formalchemy_available_functionalities = default_basemap print_template
 
 anonymous_functionalities = {
         "print_template": ["1 A4 portrait", "2 A3 landscape"],
-        "default_basemap": "plan"
     }
 registered_functionalities = {
     }
