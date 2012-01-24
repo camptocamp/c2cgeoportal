@@ -24,12 +24,12 @@ Mako templating
 
 If you intend to have more than one paper format for your PDF
 print output, a templating system is implemented to allow you to use mako
-template so you dont have to duplicate huge quantiy of code in your config.yaml.
+template so you dont have to duplicate huge quantiy of code in your ``print/config.yaml``.
 
-The system checks if there is a file "print.mako" in a folder "templates" in 
-the "print" folder (print/templates/print.mako).
-If that file exists, it will be used to generate the file "config.yaml" placed 
-in the "print" folder.
+The system checks if there is a file "print.mako" in a folder ``print/templates/`` in 
+the ``print/`` folder (``print/templates/print.mako``).
+If that file exists, it will be used to generate the file ``print/config.yaml`` placed 
+in the ``print/`` folder.
 If the file does not exist, the system does nothing.
 
 It is possible to manually trigger the system by calling the following command::
@@ -47,6 +47,7 @@ A3_landscape.mako where we have some blocks like::
     1 A4 portrait\
     </%def>
 
-And in A3_landscape_inherit.mako and A4_portrait_inherit.mako thoses block will 
+And in ``print/templates/A3_landscape_inherit.mako`` and 
+``print/templates/A4_portrait_inherit.mako`` thoses block will 
 be redefined.
-The print.mako.in has the "header" part and includes the wanted templates.
+The ``print.mako.in`` has the "header" part and includes the wanted templates.
