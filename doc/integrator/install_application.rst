@@ -157,11 +157,11 @@ have to include the application apache configuration available in the
 ``apache`` directory, in camptocamp managed hosts it'd in the folder 
 ``/var/www[/vhost]/<projectname>/conf/`` by using the directive::
 
-    Include /path/to/YourProject/apache/*.conf
+    Include /<path_to_your_project>/apache/*.conf
 
 Reload apache configuration and you're done::
 
     $ sudo apache2ctl graceful
 
 Your application should be available under the url:
-``http://hostname/<instanceid>/wsgi``.
+``http://<hostname>/<instanceid>/wsgi``.
