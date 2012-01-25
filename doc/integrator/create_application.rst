@@ -68,7 +68,7 @@ Now apply the ``c2cgeoportal_update`` skeleton::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_update
 
-Enter the same projet name and SRID as before. And again, ignore the
+Enter the same project name and SRID as before. And again, ignore the
 ``IOError: No egg-info directory found (...)`` error message.
 
 .. note::

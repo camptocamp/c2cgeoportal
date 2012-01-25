@@ -11,7 +11,7 @@ is in the file: ``<package>/templates/index.html``.
 The viewer (map and all related tools) 
 is define in the file: ``<package>/templates/viewer.js``.
 
-The sampe for the API is in the file: 
+The sample for the API is in the file: 
 ``<package>/templates/apiviewer.js``.
 
 The style sheet file is: ``<package>/static/css/proj.css``

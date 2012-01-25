@@ -9,10 +9,10 @@ Internationalization
 Client
 ------
 
-For the client parts you have localisation files at 
+For the client parts you have localization files at 
 ``<package>/static/js/Proj/Lang/<lang>.js`` where <lang> is the 
 `ISO 639-1 code <http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_,
-ex: en, de or fr.
+example: en, de or fr.
 
 ------
 Server
@@ -43,7 +43,7 @@ When you add a new message repeat all steps but replace the step 2. by::
     ./buildout/bin/python setup.py update_catalog
 
 
-Source: http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization
+`Source from pylondhq <http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization>`_
 
 
 

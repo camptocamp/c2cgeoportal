@@ -13,7 +13,7 @@ The deploy tool has four parts:
 * ``[code]`` to deploy the application.
 * ``[apache]`` to build the apache config.
 
-An other importent section is the ``[remote_hosts]`` where we 
+An other important section is the ``[remote_hosts]`` where we 
 configure the demo and production hosts.
 
 

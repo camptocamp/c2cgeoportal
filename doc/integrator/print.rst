@@ -24,7 +24,7 @@ Mako templating
 
 If you intend to have more than one paper format for your PDF
 print output, a templating system is implemented to allow you to use mako
-template so you dont have to duplicate huge quantiy of code in your ``print/config.yaml``.
+template so you don't have to duplicate huge quantity of code in your ``print/config.yaml``.
 
 The system checks if there is a file "print.mako" in a folder ``print/templates/`` in 
 the ``print/`` folder (``print/templates/print.mako``).

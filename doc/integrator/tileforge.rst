@@ -55,11 +55,11 @@ The tiles will be stored int the folder
 in the WMTS format.
 
 To seed only on the tiles that's have changes, you can add in table the
-modified geometries, and in the coniguration file, in the layer definition
+modified geometries, and in the configuration file, in the layer definition
 add ``metadata_connection = ${mapserver_connection}`` used to connect to 
 the database, ``metadata_data = "<geometry> FROM <table>"``  to build
 the select request to get the geometries.
 
-A post prosses command can be set by using the attribute:
-``#metadata_image_postproc``.
+A post proses command can be set by using the attribute:
+``metadata_image_postproc``.
 
