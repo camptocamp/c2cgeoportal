@@ -84,6 +84,7 @@ class TestEntryView(TestCase):
     def test_index_no_auth(self):
         from c2cgeoportal.views.entry import Entry
         from mock import patch, MagicMock
+        from contextlib import nested
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -93,14 +94,26 @@ class TestEntryView(TestCase):
                 }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
-        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
-            response = Entry(request).home()
+
+        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
+        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
+        with nested(patch1, patch2) as (_, mock_urlopen):
+                # the return value of urllib.urlopen should be an
+                # object with a read method that returns an empty
+                # string
+                class A:
+                    def read(self):
+                        return ''
+                mock_urlopen.return_value = A()
+                response = Entry(request).home()
+
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
     def test_index_auth(self):
         from c2cgeoportal.views.entry import Entry
         from mock import patch, MagicMock
+        from contextlib import nested
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -112,14 +125,26 @@ class TestEntryView(TestCase):
         request.route_url = lambda url: '/dummy/route/url'
         entry = Entry(request)
         entry.username = u'__test_user'
-        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
-            response = entry.home()
+
+        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
+        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
+        with nested(patch1, patch2) as (_, mock_urlopen):
+                # the return value of urllib.urlopen should be an
+                # object with a read method that returns an empty
+                # string
+                class A:
+                    def read(self):
+                        return ''
+                mock_urlopen.return_value = A()
+                response = entry.home()
+
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
 
     def test_apiloader_no_auth(self):
         from c2cgeoportal.views.entry import Entry
         from mock import patch, MagicMock
+        from contextlib import nested
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -129,14 +154,26 @@ class TestEntryView(TestCase):
                 }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
-        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
-            response = Entry(request).apiloader()
+
+        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
+        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
+        with nested(patch1, patch2) as (_, mock_urlopen):
+                # the return value of urllib.urlopen should be an
+                # object with a read method that returns an empty
+                # string
+                class A:
+                    def read(self):
+                        return ''
+                mock_urlopen.return_value = A()
+                response = Entry(request).apiloader()
+
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
     def test_apiloader_auth(self):
         from c2cgeoportal.views.entry import Entry
         from mock import patch, MagicMock
+        from contextlib import nested
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -148,8 +185,19 @@ class TestEntryView(TestCase):
         request.route_url = lambda url: '/dummy/route/url'
         entry = Entry(request)
         entry.username = u'__test_user'
-        with patch('c2cgeoportal.views.entry.WebMapService', MagicMock()):
-            response = entry.apiloader()
+
+        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
+        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
+        with nested(patch1, patch2) as (_, mock_urlopen):
+                # the return value of urllib.urlopen should be an
+                # object with a read method that returns an empty
+                # string
+                class A:
+                    def read(self):
+                        return ''
+                mock_urlopen.return_value = A()
+                response = entry.apiloader()
+
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
 
