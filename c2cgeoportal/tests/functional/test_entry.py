@@ -83,7 +83,7 @@ class TestEntryView(TestCase):
 
     def test_index_no_auth(self):
         from c2cgeoportal.views.entry import Entry
-        from mock import patch, MagicMock
+        from mock import patch, Mock, MagicMock
         from contextlib import nested
 
         request = testing.DummyRequest()
@@ -98,13 +98,9 @@ class TestEntryView(TestCase):
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
         with nested(patch1, patch2) as (_, mock_urlopen):
-                # the return value of urllib.urlopen should be an
-                # object with a read method that returns an empty
-                # string
-                class A:
-                    def read(self):
-                        return ''
-                mock_urlopen.return_value = A()
+                m = Mock()
+                m.read.return_value = ''
+                mock_urlopen.return_value = m
                 response = Entry(request).home()
 
         assert '__test_public_layer' in response['themes']
@@ -112,7 +108,7 @@ class TestEntryView(TestCase):
 
     def test_index_auth(self):
         from c2cgeoportal.views.entry import Entry
-        from mock import patch, MagicMock
+        from mock import patch, Mock, MagicMock
         from contextlib import nested
 
         request = testing.DummyRequest()
@@ -129,13 +125,9 @@ class TestEntryView(TestCase):
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
         with nested(patch1, patch2) as (_, mock_urlopen):
-                # the return value of urllib.urlopen should be an
-                # object with a read method that returns an empty
-                # string
-                class A:
-                    def read(self):
-                        return ''
-                mock_urlopen.return_value = A()
+                m = Mock()
+                m.read.return_value = ''
+                mock_urlopen.return_value = m
                 response = entry.home()
 
         assert '__test_public_layer' in response['themes']
@@ -143,7 +135,7 @@ class TestEntryView(TestCase):
 
     def test_apiloader_no_auth(self):
         from c2cgeoportal.views.entry import Entry
-        from mock import patch, MagicMock
+        from mock import patch, Mock, MagicMock
         from contextlib import nested
 
         request = testing.DummyRequest()
@@ -158,13 +150,9 @@ class TestEntryView(TestCase):
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
         with nested(patch1, patch2) as (_, mock_urlopen):
-                # the return value of urllib.urlopen should be an
-                # object with a read method that returns an empty
-                # string
-                class A:
-                    def read(self):
-                        return ''
-                mock_urlopen.return_value = A()
+                m = Mock()
+                m.read.return_value = ''
+                mock_urlopen.return_value = m
                 response = Entry(request).apiloader()
 
         assert '__test_public_layer' in response['themes']
@@ -172,7 +160,7 @@ class TestEntryView(TestCase):
 
     def test_apiloader_auth(self):
         from c2cgeoportal.views.entry import Entry
-        from mock import patch, MagicMock
+        from mock import patch, Mock, MagicMock
         from contextlib import nested
 
         request = testing.DummyRequest()
@@ -189,13 +177,9 @@ class TestEntryView(TestCase):
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
         with nested(patch1, patch2) as (_, mock_urlopen):
-                # the return value of urllib.urlopen should be an
-                # object with a read method that returns an empty
-                # string
-                class A:
-                    def read(self):
-                        return ''
-                mock_urlopen.return_value = A()
+                m = Mock()
+                m.read.return_value = ''
+                mock_urlopen.return_value = m
                 response = entry.apiloader()
 
         assert '__test_public_layer' in response['themes']
