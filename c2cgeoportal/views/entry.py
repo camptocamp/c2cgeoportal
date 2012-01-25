@@ -102,7 +102,7 @@ class Entry(object):
         if layer.icon:
             l['icon'] = self._getIconPath(layer.icon)
         if layer.kml:
-            l['kml'] = layer.kml
+            l['kml'] = self._getIconPath(layer.kml)
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
 
