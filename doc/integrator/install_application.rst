@@ -39,7 +39,8 @@ Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 You probably want to create a specific database user for the application. This
-can be done with this command, by default ``<db_user>`` is ``www-data``::
+can be done with this command, by default ``<db_user>`` is ``www-data``, 
+already exists on camptocamp servers::
 
     sudo -u postgres createuser -P <db_user>
 
