@@ -116,7 +116,7 @@ This previous command will do many things like:
 Once the application is built and installed, you now have to create and
 populate the application tables, and directly set the version (details later)::
 
-    $ buildout/bin/create_db production.ini -p
+    $ buildout/bin/create_db --iniconfig production.ini --populate
     $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control \
     `./buildout/bin/manage_db -c production.ini -n <package_name> version`
 
