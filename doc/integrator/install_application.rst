@@ -78,7 +78,7 @@ Install the application
 
 If not already existing, create an application configuration file to adapt
 the application to your environment and commit, than create file 
-``buildout_$USER.cfg`` that contains::
+``buildout_<user>.cfg`` that contains::
 
     [buildout]
     extends = buildout.cfg
@@ -98,11 +98,11 @@ choice or some think like ``<username>-<sub-project>`` in case of parent/childre
 
 Add it to SVN::
 
-    $ svn add buildout_$USER.cfg: svn commit "add user buildout" buildout_$USER.cfg
+    $ svn add buildout_<user>.cfg: svn commit "add user buildout" buildout_<user>.cfg
 
 Then you can build and install the application with the command::
 
-    $ ./buildout/bin/buildout -c buildout_$USER.cfg
+    $ ./buildout/bin/buildout -c buildout_<user>.cfg
 
 This previous command will do many things like:
 
