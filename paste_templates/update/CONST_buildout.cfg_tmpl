@@ -104,7 +104,7 @@ formalchemy_default_lat = 5860000
 formalchemy_available_functionalities = default_basemap print_template
 
 anonymous_functionalities = {
-        "print_template": ["1 A4 portrait", "2 A3 landscape"],
+        "print_template": ["1 A4 portrait", "2 A3 landscape"]
     }
 registered_functionalities = {
     }
