@@ -14,8 +14,9 @@ development.ini
 production.ini
 mapserver/c2cgeoportal.map
 *.egg-info/
-nyon/static/build/*.js
-nyon/static/build/*.css
+${project}/static/build/*.js
+${project}/static/build/*.css
+${project}/locale/*/LC_MESSAGES/*.mo
 print/config.yaml
 print/templates/print.mako
 tilecache/tilecache.cfg
