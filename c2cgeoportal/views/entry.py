@@ -6,7 +6,8 @@ import logging
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name
 from pyramid.compat import json
-from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPUnauthorized
+from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
+                                    HTTPBadRequest, HTTPUnauthorized)
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -358,7 +359,14 @@ class Entry(object):
     def logout(self):
         headers = forget(self.request)
         cameFrom = self.request.params.get("came_from")
-        log.info("User '%s' (%i) log out."%(self.username, self.user.id))
+
+        # if there's no user to log out, we send a 404 Not Found (which
+        # is the status code that applies best here)
+        if not self.user:
+            return HTTPNotFound()
+
+        log.info("User '%s' (%i) logging out." % (self.username, self.user.id))
+
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
