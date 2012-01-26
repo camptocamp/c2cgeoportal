@@ -5,6 +5,17 @@ The dates can be generated with « date -R ».
 
 -------------------------------
 
+Thu, 26 Jan 2012 13:21:20 +0100
+
+Not required but recommended: you can edit your project's development.ini.in
+and production.ini.in files and remove the [app:c2cgeoportal] section and its
+content (one line). This section was needed for c2cgeoportal's manage_db and
+create_db scripts to know the project package name, but it's not needed
+anymore. For example, the manage_db script now has --app-name and --app-config
+options.
+
+-------------------------------
+
 Thu, 12 Jan 2012 13:35:23 +0100
 
 Due to wrong moving the files in 'print/print'. If exists the folder 
