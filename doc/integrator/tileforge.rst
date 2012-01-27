@@ -54,11 +54,12 @@ The tiles will be stored in the folder
 ``/var/sig/tilecache/c2cgeoportal->instanceid>_tilecache``,
 in the WMTS format.
 
-To regenerate only the tiles that have changed, you can add in a table the
-modified geometries, and in the configuration file, in the layer definition
-add ``metadata_connection = ${mapserver_connection}`` used to connect to 
-the database, ``metadata_data = "<geometry> FROM <table>"``  to build
-the select request to get the geometries.
+To regenerate only the tiles that have changed, you can 
+specify in the layer the attribute ``metadata_data`` how to get the 
+geometries where there some modifications. For example:
+``metadata_data = "<geometry_column> FROM <table>"``.
+We also need the database connexion than we need:
+``metadata_connection = ${mapserver_connection}``.
 
 A post-processing command can be set by using the attribute:
 ``metadata_image_postproc``.
