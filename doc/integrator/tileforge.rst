@@ -56,9 +56,9 @@ in the WMTS format.
 
 To regenerate only the tiles that have changed, you can 
 specify in the layer the attribute ``metadata_data`` how to get the 
-geometries where there some modifications. For example:
+geometries where there are some modifications. For example:
 ``metadata_data = "<geometry_column> FROM <table>"``.
-We also need the database connexion than we need:
+We also need the database connection than we need:
 ``metadata_connection = ${mapserver_connection}``.
 
 A post-processing command can be set by using the attribute:
