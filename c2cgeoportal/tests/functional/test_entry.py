@@ -72,12 +72,23 @@ class TestEntryView(TestCase):
         self.assertEquals(response.status_int, 302) 
         self.assertEquals(response.headers['Location'], "/came_from") 
 
+    def test_logout_no_auth(self):
+        from c2cgeoportal.views.entry import Entry
+
+        request = testing.DummyRequest(path='/')
+        request.params['came_from'] = '/came_from'
+        entry = Entry(request)
+        response = entry.logout()
+        self.assertEquals(response.status_int, 404)
+
     def test_logout(self):
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest(path='/')
         request.params['came_from'] = '/came_from'
-        response = Entry(request).logout()
+        entry = Entry(request)
+        entry.username = u'__test_user'
+        response = entry.logout()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from") 
 
