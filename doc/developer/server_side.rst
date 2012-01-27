@@ -96,6 +96,10 @@ Else use this::
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
 
+If you don't have a ``www-data`` user you need to create one::
+
+    $ sudo -u postgres createuser -P www-data
+
 To create the ``main`` schema::
 
     $ sudo -u postgres psql -d c2cgeoportal_test \
