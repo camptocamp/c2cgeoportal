@@ -76,9 +76,9 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If not already existing, create an application configuration file to adapt
-the application to your environment and commit, than create file 
-``buildout_<user>.cfg`` that contains::
+If not already existing, create a ``buildout_<user>.cfg`` file, 
+that will contain your application special
+configuration::
 
     [buildout]
     extends = buildout.cfg
@@ -94,11 +94,15 @@ the application to your environment and commit, than create file
     compress = false
 
 The ``<instanceid>`` should be unique on the server, the username is a good 
-choice or some think like ``<username>-<sub-project>`` in case of parent/children project.
+choice or something like ``<username>-<sub-project>`` in case of parent/children project.
 
-Add it to SVN::
+Add it to Git::
 
-    $ svn add buildout_<user>.cfg: svn commit "add user buildout" buildout_<user>.cfg
+    $ git add buildout_<user>.cfg; git commit -m "add user buildout"
+
+Or to SVN::
+
+    $ svn add buildout_<user>.cfg; svn commit -m "add user buildout"
 
 Then you can build and install the application with the command::
 
@@ -155,8 +159,8 @@ repository, and they will automatically increment the ``db_version``.
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just
 have to include the application apache configuration available in the
-``apache`` directory, in camptocamp managed hosts it'd in the folder 
-``/var/www[/vhost]/<projectname>/conf/`` by using the directive::
+``apache`` directory. On servers managed by Camptocamp, add a ``.conf`` file in
+``/var/www[/vhost]/<projectname>/conf/`` with the following content::
 
     Include /<path_to_your_project>/apache/*.conf
 
@@ -164,5 +168,5 @@ Reload apache configuration and you're done::
 
     $ sudo apache2ctl graceful
 
-Your application should be available under the url:
+Your application should be available at:
 ``http://<hostname>/<instanceid>/wsgi``.

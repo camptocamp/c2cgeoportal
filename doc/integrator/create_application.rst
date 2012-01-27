@@ -121,7 +121,7 @@ control (Git preferably)::
     git remote add origin git@git.camptocamp.com:/srv/git/<project>
     git push origin master
 
-Define the cgxp submodule
+Define the CGXP submodule
 -------------------------
 
 Add the CGXP submodule::
@@ -138,7 +138,7 @@ Configure the application
 -------------------------
 
 Edit the ``buildout.cfg`` file to configure the application, 
-espessialy the 'to_be_defined' values.
+especially the 'to_be_defined' values.
 
 Create the database and build the application
 ---------------------------------------------

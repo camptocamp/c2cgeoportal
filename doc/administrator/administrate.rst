@@ -3,10 +3,10 @@
 Administrate a c2cgeoportal application
 =======================================
 
-To access to the admin interface use an url link: « http://<server>/<project>/wsgi/admin ».
+The administration interface is located at « http://<server>/<project>/wsgi/admin ».
 
-To be allowed to use the admin interface you should be logged in the main application, 
-and has the role: ``role_admin``.
+Authentication for the administration interface is done through the main application interface. Role ``role_admin`` is
+required.
 
 *To Be Done*
 
