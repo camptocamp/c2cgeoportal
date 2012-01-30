@@ -4,7 +4,7 @@ Deploy the application
 ======================
 
 The first tine you want do deploy an application the configuration 
-should be setup in the file ``deploy/deploy.in``.
+should be setup in the file ``deploy/deploy.cfg[.in]``.
 
 The deploy tool has four parts:
 
@@ -13,7 +13,7 @@ The deploy tool has four parts:
 * ``[code]`` to deploy the application.
 * ``[apache]`` to build the apache config.
 
-An other importent section is the ``[remote_hosts]`` where we 
+An other important section is the ``[remote_hosts]`` where we 
 configure the demo and production hosts.
 
 

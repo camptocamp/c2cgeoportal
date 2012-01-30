@@ -16,7 +16,7 @@ Installing c2cgeoportal is done using Buildout.
 Clone c2cgeoportal::
 
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
-    $ git submodule update --init
+    $ cd c2cgeoportal ; git submodule update --init
 
 Boostrap Buildout::
 
@@ -68,7 +68,7 @@ Now apply the ``c2cgeoportal_update`` skeleton::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_update
 
-Enter the same projet name and SRID as before. And again, ignore the
+Enter the same project name and SRID as before. And again, ignore the
 ``IOError: No egg-info directory found (...)`` error message.
 
 .. note::
@@ -105,8 +105,45 @@ the main Buildout configuration file::
     served by the parent instance. Parent and child instances share
     the same database, but use dedicated schemas within that database.
 
+Add to Git
+----------
+
 Now is a good time to put the application source code under revision
-control (Git preferably).
+control (Git preferably)::
+
+    git init
+    git add <project>/ .gitignore .httpauth CONST_CHANGELOG.txt 
+            CONST_TIPS.txt.in CONST_buildout.cfg apache/ bootstrap.py
+            buildout.cfg buildout/ buildout_sbrunner.cfg deploy/ 
+            development.ini.in jsbuild/ mapserver/ print/
+            production.ini.in setup.cfg setup.py tilecache/
+    git commit -m "initial commit"
+    git remote add origin git@git.camptocamp.com:/srv/git/<project>
+    git push origin master
+
+Define the CGXP submodule
+-------------------------
+
+Add the CGXP submodule::
+
+    git submodule add https://github.com/camptocamp/cgxp.git <project>/static/lib/cgxp
+    git submodule foreach git submodule update --init
+ 
+.. note::
+
+   We use the http URL to allow everybody to clone.
+
+
+Configure the application
+-------------------------
+
+Edit the ``buildout.cfg`` file to configure the application, 
+especially the 'to_be_defined' values.
+
+Create the database and build the application
+---------------------------------------------
+
+:ref:`integrator_install_application`
 
 Minimal setup of the application
 --------------------------------
