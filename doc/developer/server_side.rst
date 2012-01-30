@@ -125,6 +125,45 @@ Adding tests
 
 **To Be Done**
 
+Upgrade depandancies
+--------------------
+
+The operation to upgrade c2cgeoportal dependencies consists to update the
+``[versions]`` part of the ``buildout[_dev].cfg`` files.
+
+* Remove the current contents of the ``[versions]`` part 
+  of the ``buildout[_dev].cfg`` files.
+
+* Run buildout a first time to remove potentially uninstall from ``buildout_dev.cfg``::
+
+   ./buindout/bin/buildout
+
+* Run a second time with asking for newest version of dependencies::
+
+   ./buindout/bin/buildout -n
+
+* Gets the output version and past them in the ``[versions]`` part of 
+  ``buildout.cfg`` file. Remove the ``c2cgeoportal`` version. 
+  And finally do those corrections::
+
+   -Mako = x.y.z
+   +mako = x.y.z
+   -Markdown = x.y.z
+   +markdown = x.y.z
+   -SQLAHelper = x.y.z
+   +sqlahelper = x.y.z
+   -SQLAlchemy = x.y.z
+   +qslalchemy = x.y.z
+   -Tempita = x.y.z
+   +tempita = x.y.z
+
+* Than gets the versions for ``buildout_dev.cfg``::
+
+   ./buindout/bin/buildout -n -c buildout_dev.cfg
+
+* Gets the output version and past them in the ``[versions]`` part of
+  ``buildout_dev.cfg`` file without the ``c2cgeoportal`` version.
+
 Database
 --------
 
