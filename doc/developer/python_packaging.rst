@@ -91,7 +91,7 @@ By default ``setup.py sdist`` produces development distributions (see
 the ``[egg_info]`` options in ``setup.cfg``). To create *release
 distributions* specific options are required on the command line::
 
-    $ buildout/bin/python setup.py egg_info --no-date --tag-build "" dist upload -r c2c-internal
+    $ buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
 
 The important note of the previous section applies here too, obviously.
 
