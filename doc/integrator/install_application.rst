@@ -39,14 +39,17 @@ Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 You probably want to create a specific database user for the application. This
-can be done with this command::
+can be done with this command, by default ``<db_user>`` is ``www-data``, 
+already exists on camptocamp servers::
 
     sudo -u postgres createuser -P <db_user>
 
 Give the rights to the user::
 
-    sudo -u postgres psql -c "GRANT USAGE ON SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
-    sudo -u postgres psql -c "GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO \"<db_user>\";" <db_name>
+    $ sudo -u postgres psql <db_name>
+    GRANT ALL ON SCHEMA <schema_name> TO "<db_user>";
+    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
+    \q 
 
 Application
 -----------
@@ -73,19 +76,37 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If not already existing, create an application configuration file to adapt
-the application to your environment and commit::
+If not already existing, create a ``buildout_<user>.cfg`` file, 
+that will contain your application special
+configuration::
 
-    $ vim buildout_$USER.cfg
-    $ svn add buildout_$USER.cfg
-    $ svn commit buildout_$USER.cfg
+    [buildout]
+    extends = buildout.cfg
+    extensions -= buildout.dumppickedversions
 
-**To be done: describe the configuration parameters that have to be set in
-buildout_$USER.cfg**
+    [vars]
+    instanceid = <instanceid>
+
+    [jsbuild]
+    compress = False
+
+    [cssbuild]
+    compress = false
+
+The ``<instanceid>`` should be unique on the server, the username is a good 
+choice or something like ``<username>-<sub-project>`` in case of parent/children project.
+
+Add it to Git::
+
+    $ git add buildout_<user>.cfg; git commit -m "add user buildout"
+
+Or to SVN::
+
+    $ svn add buildout_<user>.cfg; svn commit -m "add user buildout"
 
 Then you can build and install the application with the command::
 
-    $ ./buildout/bin/buildout -c buildout_$USER.cfg
+    $ ./buildout/bin/buildout -c buildout_<user>.cfg
 
 This previous command will do many things like:
 
@@ -98,9 +119,11 @@ This previous command will do many things like:
   * compile the translation files.
 
 Once the application is built and installed, you now have to create and
-populate the application tables::
+populate the application tables, and directly set the version (details later)::
 
-    $ sudo -u postgres buildout/bin/create_db production.ini -p
+    $ ./buildout/bin/create_db --iniconfig production.ini --populate
+    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control \
+    `./buildout/bin/manage_db -c production.ini -n <package_name> version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
@@ -136,13 +159,14 @@ repository, and they will automatically increment the ``db_version``.
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just
 have to include the application apache configuration available in the
-``apache`` directory by using the directive::
+``apache`` directory. On servers managed by Camptocamp, add a ``.conf`` file in
+``/var/www[/vhost]/<projectname>/conf/`` with the following content::
 
-    Include /path/to/YourProject/apache/*.conf
+    Include /<path_to_your_project>/apache/*.conf
 
 Reload apache configuration and you're done::
 
     $ sudo apache2ctl graceful
 
-Your application should be available under the url:
-``http://hostname/<instanceid>/wsgi``.
+Your application should be available at:
+``http://<hostname>/<instanceid>/wsgi``.

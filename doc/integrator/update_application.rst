@@ -38,6 +38,7 @@ steps:
 
        $ ./buildout/bin/paster create --template=c2cgeoportal_update \
          --output-dir=.. <project_name> package=<package_name>
+
 4. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 5. Update the database using the ``manage_db`` script::
