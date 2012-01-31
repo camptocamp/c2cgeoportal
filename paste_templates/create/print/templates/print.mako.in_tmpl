@@ -36,6 +36,12 @@ hosts:
     host: ${vars:wsgi_host}
     port: ${vars:paster_port}
 
+
+#===========================================================================
+# the output filename
+#===========================================================================
+outputFilename: ${package}
+
 globalParallelFetches: 1
 
 layouts:
