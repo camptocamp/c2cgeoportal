@@ -6,7 +6,7 @@ The dates can be generated with « date -R ».
 -------------------------------
 Tue, 31 Jan 2012 13:59:45 +0100
 
-Becase OpenLayers has been upgraded, one must replace
+Because OpenLayers has been upgraded, one must replace
 OpenLayers/Layer/XYZ.js
 by
 OpenLayers/Layer/OSM.js
