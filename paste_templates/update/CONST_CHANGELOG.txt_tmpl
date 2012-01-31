@@ -4,6 +4,15 @@ In this file all the changes that can affect the different projects should be pr
 The dates can be generated with « date -R ».
 
 -------------------------------
+Tue, 31 Jan 2012 13:59:45 +0100
+
+Becase OpenLayers has been upgraded, one must replace
+OpenLayers/Layer/XYZ.js
+by
+OpenLayers/Layer/OSM.js
+in the [app.js] "include" section of jsbuild/app.cfg.
+
+-------------------------------
 
 Wed, 14 Dec 2011 17:49:36 +0100
 
