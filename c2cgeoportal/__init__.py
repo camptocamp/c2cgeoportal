@@ -78,6 +78,9 @@ def includeme(config):
     # add routes to csv view
     config.add_route('csvecho', '/csv')
 
+    # add routes to the echo service
+    config.add_route('echo', '/echo')
+
     # add routes to the entry view class
     config.add_route('home', '/')
     config.add_route('login', '/login')
