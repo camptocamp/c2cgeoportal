@@ -14,6 +14,13 @@ in the [app.js] "include" section of jsbuild/app.cfg.
 
 -------------------------------
 
+Tue, 31 Jan 2012 14:41:44 +0100
+
+In the <package>/template/viewer.js file, in the block 'viewer_layers'
+remove the last comma for IE, see commit 11d373b.
+
+-------------------------------
+
 Thu, 26 Jan 2012 13:21:20 +0100
 
 Not required but recommended: you can edit your project's development.ini.in

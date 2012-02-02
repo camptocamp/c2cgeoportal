@@ -102,5 +102,5 @@
             layer: 'plan',
             group: 'background'
         }, WMTS_OPTIONS)]
-    }, 
+    } 
 </%block>\
