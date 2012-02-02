@@ -125,7 +125,7 @@ Adding tests
 
 **To Be Done**
 
-Upgrade depandancies
+Upgrade depandencies
 --------------------
 
 Eggs
@@ -139,11 +139,11 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 
 * Run buildout a first time to remove potentially uninstall from ``buildout_dev.cfg``::
 
-   ./buindout/bin/buildout
+   ./buildout/bin/buildout
 
 * Run a second time with asking for newest version of dependencies::
 
-   ./buindout/bin/buildout -n
+   ./buildout/bin/buildout -n
 
 * Gets the output version and past them in the ``[versions]`` part of 
   ``buildout.cfg`` file. Remove the ``c2cgeoportal`` version. 
@@ -160,14 +160,14 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
    -Tempita = x.y.z
    +tempita = x.y.z
 
-* Than gets the versions for ``buildout_dev.cfg``::
+* Then get the versions for ``buildout_dev.cfg``::
 
-   ./buindout/bin/buildout -n -c buildout_dev.cfg
+   ./buildout/bin/buildout -n -c buildout_dev.cfg
 
-* Gets the output version and past them in the ``[versions]`` part of
+* Get the output version and past them in the ``[versions]`` part of
   ``buildout_dev.cfg`` file without the ``c2cgeoportal`` version.
 
-* Than you can commit it::
+* Then you can commit it::
 
     git add buildout.cfg buildout_dev.cfg
     git commit -m "update eggs version"
@@ -180,12 +180,12 @@ Go to the OpenLayers folder::
 
     cd c2cgeoportal/static/lib/openlayers/ 
 
-Gets the new revision of OpenLayers::
+Get the new revision of OpenLayers::
 
     git fetch
     git checkout release-<version>
 
-Than you can commit it::
+Then you can commit it::
 
     cd -
     git add c2cgeoportal/static/lib/openlayers/
