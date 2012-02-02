@@ -71,8 +71,8 @@ press the ``Pull Request`` button.
 Once a pull request is merged it is good practise to add a comment in the pull
 request, for others to get notifications.
 
-Remove remote branches
-~~~~~~~~~~~~~~~~~~~~~~
+Remove branches
+~~~~~~~~~~~~~~~
 
 Once you're done with a topic branch (because its commits are merged
 in the master branch) you can remove it with::
