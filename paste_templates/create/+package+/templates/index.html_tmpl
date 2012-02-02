@@ -39,7 +39,7 @@ jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
 <%block name="page_keywords">${package}, geoportal</%block>
 <%block name="page_description">${package} Geoportal Application.</%block>
 <%block name="shortcut_icon">$${request.static_url('${package}:static/images/favicon.ico')}</%block>
-<%block name="page_link">\ 
+<%block name="page_link">\
 <a href="http://camptocamp.com">
     <div class="linkplaceholder"></div>
 </a>

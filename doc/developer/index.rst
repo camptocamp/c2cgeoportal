@@ -12,12 +12,13 @@ under the *camptocamp* organization.
 Content:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   server_side
-   client_side
-   principles
-   python_packaging
-   documentation_infrastructure
+    development_procedure
+    server_side
+    client_side
+    principles
+    python_packaging
+    documentation_infrastructure
 
 

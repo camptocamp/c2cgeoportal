@@ -95,6 +95,13 @@ distributions* specific options are required on the command line::
 
 The important note of the previous section applies here too, obviously.
 
+Then tag the code that's released::
+
+    $ git tag <c2cgeoportal_version>
+    $ git push origin <c2cgeoportal_version> 
+
+``origin`` or whatever name you have for the github.com/camptocamp/c2cgeoportal remote.
+
 .. note::
 
     Once a release distribution has been uploaded, you should bump the

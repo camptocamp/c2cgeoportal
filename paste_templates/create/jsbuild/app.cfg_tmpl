@@ -79,7 +79,7 @@ include =
     OpenLayers/Control/NavigationHistory.js
     OpenLayers/Layer/WMTS.js
     OpenLayers/Layer/WMS.js
-    OpenLayers/Layer/XYZ.js
+    OpenLayers/Layer/OSM.js
     OpenLayers/Layer/Vector.js
     OpenLayers/Renderer/SVG.js
     OpenLayers/Renderer/VML.js
