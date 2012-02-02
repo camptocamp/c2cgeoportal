@@ -1,63 +1,86 @@
-.. _development_procedure:
-
+.. _developer_development_procedure:
 
 Development procedure
 =====================
 
-When we create a contribution to the project (c2cgeoportal or cgxp) the first 
-thing that the developer do to create  new branch in the repository
-``git checkout master;git checkout -b <branch_name>``.
+Process
+-------
 
-Than the developer can to all he want in his branch.
+Any change to c2cgeoportal and CGXP requires a GitHub pull request.
 
-When the contribution is ready he should pull it the the server 
-``git pull origin <branch_name>`` an do a pull request from the 
-github web interface.
+To give everyone a chance to review changes pull requests should not stay open
+for at least 24 hours.
 
-An other developer review the contribution.
+Any main developers of c2cgeoportal projects can take responsibility for
+merging commits in the main (``master``) branch.
 
-If a new commit is done in the branch he will automatically be visible in the
-pull request.
+Pull requests with significant impacts can and should be reviewed by more than
+one person.
 
-To permit to every body to do a review it shouldn't be merge 
-(except for trivial bug fix) before 24h after the pull request.
+Working with Git and GitHub
+---------------------------
 
-Finally **only the c2cgeoportal main developer** merge it to the master branch. 
+Create a topic branch
+~~~~~~~~~~~~~~~~~~~~~
 
-By *c2cgeoportal main developer* we name the main developer of c2cgeoportal,
-he should have a global view of the integration on all the projects to don't
-brake them and make the transition as easy as possible.
+To create a Git branch from the master branch use::
 
-If the *c2cgeoportal main developer* is not present and a merge should be done,
-the merge can be done in collaboration the the main developer of the project,
-the merge should serve the project not the developers.
+    $ git checkout -b <branch_name> master
 
-To notify that it's merged the *c2cgeoportal main developer* will add a message in the pull
-request.
+You can then add commits to your branch, and push commits to a remote branch
+using::
 
-To be clean the main developer delete the branch to escape to have too 
-many branches ``git branch origin :<branch_name>``.
+    $ git push -u origin <branch_name>
 
-Additional notes
-----------------
+The ``-u`` option adds an upstream (tracking) reference for the branch. This is
+optional, but convenient. Once the branch has an upstream reference you can
+push commits by just using ``git push``.
 
-We are on GIT than let's use it. 
+The "origin" remote can either represent the main repository (that in the
+"camptocamp" organization) or your own fork. Creating branches in the main
+repository can ease collaboration between developers, but isn't required.
 
-It's less critical on GIT than on SVN to have some unmerged code the 
-developer can let the responsibility of the integrator (main developer) to 
-merge it when it's the appropriated time.
+Sync up a topic branch from master
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If two people want to work on the same branch let's do it !
+To update a branch from the master you first need to update your
+local master branch::
 
-It you start a contribution related to an other contribution that she isn't
-merged let's branch from this branch, and when the contribution your 
-based on is merged do::
+    $ git checkout master
+    $ git fetch origin
+    $ git merge origin/master
 
-    git checkout master
-    git pull --rebase
-    git checkout <branch_name>
-    git rebase master
-    git pull origin <branch_name>
-    
-Than your branch and your pull request should be clean.
+.. note::
 
+    You'll use "upstream" instead of "origin" if "origin" references
+    your own fork.
+
+You can now update your branch from master::
+
+    $ git checkout <branch_name>
+    $ git rebase master
+    $ git push origin <branch_name>
+
+Pull requests
+~~~~~~~~~~~~~
+
+Making a pull request is done via the GitHub web interface. Open your branch in
+the browser (e.g. https://github.com/elemoine/c2cgeoportal/tree/buildout) and
+press the ``Pull Request`` button.
+
+Once a pull request is merged it is good practise to add a comment in the pull
+request, for others to get notifications.
+
+Remove remote branches
+~~~~~~~~~~~~~~~~~~~~~~
+
+Once you're done with a topic branch (because its commits are merged
+in the master branch) you can remove it with::
+
+    $ git branch -D <branch_name>
+
+To remove a remote branch use::
+
+    $ git push origin :<branch_name>
+
+This means push nothing to "branch_name" on the origin remote.
