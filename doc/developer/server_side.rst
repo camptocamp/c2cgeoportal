@@ -128,6 +128,9 @@ Adding tests
 Upgrade depandancies
 --------------------
 
+Eggs
+~~~~
+
 The operation to upgrade c2cgeoportal dependencies consists to update the
 ``[versions]`` part of the ``buildout[_dev].cfg`` files.
 
@@ -163,6 +166,31 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 
 * Gets the output version and past them in the ``[versions]`` part of
   ``buildout_dev.cfg`` file without the ``c2cgeoportal`` version.
+
+* Than you can commit it::
+
+    git add buildout.cfg buildout_dev.cfg
+    git commit -m "update eggs version"
+
+
+Submodules
+~~~~~~~~~~
+
+Go to the OpenLayers folder::
+
+    cd c2cgeoportal/static/lib/openlayers/ 
+
+Gets the new revision of OpenLayers::
+
+    git fetch
+    git checkout release-<version>
+
+Than you can commit it::
+
+    cd -
+    git add c2cgeoportal/static/lib/openlayers/
+    git commit -m "update OpenLayers to <version>"
+
 
 Database
 --------
