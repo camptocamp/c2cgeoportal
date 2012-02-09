@@ -61,15 +61,13 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_create
 
-You'll be asked to enter the project name and the SRID for this project. Just
-ignore the ``IOError: No egg-info directory found (...)`` error message.
+You'll be asked to enter the project name and the SRID for this project.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_update
 
-Enter the same project name and SRID as before. And again, ignore the
-``IOError: No egg-info directory found (...)`` error message.
+Enter the same project name and SRID as before.
 
 .. note::
 
