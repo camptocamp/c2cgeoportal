@@ -8,7 +8,7 @@ except ImportError:
     from setuptools import setup, find_packages
 
 setup(
-    name='${package}',
+    name='${project}',
     version='1.0',
     description='${package}, a c2cgeoportal project',
     author='camptocamp',
