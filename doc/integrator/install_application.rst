@@ -63,7 +63,7 @@ on your system:
 * Subversion (or whatever VCS is used for the application)
 * Git
 * Python 2.7 or 2.6 (2.5 is not supported)
-* Oracle Java SE 6 or 7
+* Oracle Java SE Development Kit 6 or 7
 
 Additional notes for Windows users:
 
