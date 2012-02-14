@@ -86,15 +86,15 @@ application's source repository::
     $ rm -rf <project_name>/*.egg-info
 
 If this application is not part of a parent/child architecture, or is
-a ``child`` application, you can just remove the ``buildout_parent.cfg`` file::
+a ``parent`` application, you can just remove the ``buildout_child.cfg`` file::
 
-    $ rm buildout_parent.cfg
+    $ rm buildout_child.cfg
 
-If this application is a ``parent`` application make ``buildout_parent.cfg``
-the main Buildout configuration file::
+If this application is a ``child`` application make ``buildout_child.cfg`` the
+main Buildout configuration file::
 
     $ rm buildout.cfg
-    $ mv buildout_parent.cfg buildout.cfg
+    $ mv buildout_child.cfg buildout.cfg
 
 .. note::
 
