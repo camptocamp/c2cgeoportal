@@ -175,7 +175,11 @@ extends = vars
 
 [jsbuild]
 recipe = JSTools:buildjs
-resource-dir = $${buildout:directory}/jsbuild
+# we used to use an absolute path for resource-dir ($${buildout:directory}/jsbuild),
+# but, because of a bug in JSTools, it doesn't work if $${buildout:directory}
+# includes whitespaces. As a workaround we use a relative path.
+# JSTools bug: https://github.com/camptocamp/jstools/issues/9
+resource-dir = jsbuild
 # the following jsbuild config files must be written on
 # one line, otherwise Paste will throw a syntax error
 config = $${jsbuild:resource-dir}/app.cfg

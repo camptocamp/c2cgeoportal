@@ -24,13 +24,13 @@ Create the database
 
 To create the database you can use::
 
-    sudo -u postgres createdb <db_name> -T template_postgis
+    $ sudo -u postgres createdb <db_name> -T template_postgis
 
 with ``<db_name>`` replaced by the actual database name.
 
 To create the application-specific schema use::
 
-    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
+    $ sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
@@ -42,7 +42,7 @@ You probably want to create a specific database user for the application. This
 can be done with this command, by default ``<db_user>`` is ``www-data``, 
 already exists on camptocamp servers::
 
-    sudo -u postgres createuser -P <db_user>
+    $ sudo -u postgres createuser -P <db_user>
 
 Give the rights to the user::
 
@@ -54,9 +54,42 @@ Give the rights to the user::
 Application
 -----------
 
-c2cgeoportal applications are installed from source. This section assumes
-that you have local copy on the application source tree (a local clone if
-you use Git).
+System requirements
+~~~~~~~~~~~~~~~~~~~
+
+To install a c2cgeoportal application you need to have the following installed
+on your system:
+
+* Subversion (or whatever VCS is used for the application)
+* Git
+* Python 2.7 or 2.6 (2.5 is not supported)
+* Oracle Java SE Development Kit 6 or 7
+
+Additional notes for Windows users:
+
+    For Subversion install `Turtoise SVN <http://turtoisesvn.net>`_.
+
+    For Git look at GitHub's `Set Up Git page
+    <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
+    keys, so you only need to follow the firt section of this page.
+
+    Once Git is installed use Git Bash for all the shell commands provided in
+    this documentation. You'll need to make sure the Turtoise, Python, and Java
+    folders are on the ``PATH``. For example if you have Python installed under
+    ``C:\Python26`` you can use ``export PATH=$PATH:/c/Python26`` to add Python
+    to your ``PATH``.
+
+    You need to install the ``psycopg2`` Python package in the main Python
+    environment (e.g. ``C:\Python26``). Use an installer (``.exe``) from the
+    `Stickpeople Project
+    <http://www.stickpeople.com/projects/python/win-psycopg/>`_.
+
+Get the application source tree
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The application is downloaded using SVN or Git. For example::
+
+    $ svn co https://project.camptocamp.com/svn/my_project/trunk my_project
 
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
@@ -67,7 +100,7 @@ build, install, and deploy c2cgeoportal applications.
 Prior to using Buildout, its ``boostrap.py`` script should be run at the root
 of the application::
 
-  python bootstrap.py --version 1.5.2 --distribute --download-base \
+  $ python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/ --setup-source \
         http://pypi.camptocamp.net/distribute_setup.py
 
