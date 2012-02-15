@@ -18,7 +18,7 @@ def json_base64_encode_chunks(file, chunk_size=65536):
         if not line:
             break
         yield b64encode(line)
-    yield '"}'
+    yield '","success":true}'
 
 
 @view_config(route_name='echo')
