@@ -1,6 +1,4 @@
 from base64 import b64encode
-import os.path
-import re
 
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
