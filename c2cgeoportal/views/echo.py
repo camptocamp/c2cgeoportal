@@ -1,16 +1,17 @@
 from base64 import b64encode
+import json
 
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
 
 
-def json_base64_encode_chunks(file, chunk_size=65536):
+def json_base64_encode_chunks(filename, file, chunk_size=65536):
     """
     Generate a JSON-wrapped base64-encoded string.
     See http://en.wikipedia.org/wiki/Base64
     """
-    yield '{"data":"'
+    yield '{"filename":%s,"data":"' % (json.dumps(filename),)
     while True:
         line = file.read(chunk_size)
         if not line:
@@ -34,6 +35,6 @@ def echo(request):
     except KeyError:
         raise HTTPBadRequest()
     response = Response()
-    response.app_iter = json_base64_encode_chunks(file.file)
+    response.app_iter = json_base64_encode_chunks(file.filename, file.file)
     response.content_type = 'text/html'
     return response
