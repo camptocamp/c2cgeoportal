@@ -23,7 +23,7 @@ install_requires = [
     'GeoFormAlchemy>=0.4',
     'OWSLib',
     'tileforge>=0.2',
-    'JSTools',
+    'JSTools>=0.6',
     ]
 
 # nose plugins with options set in setup.cfg cannot be in
