@@ -4,6 +4,14 @@ In this file all the changes that can affect the different projects should be pr
 The dates can be generated with « date -R ».
 
 -------------------------------
+Mon, 27 Feb 2012 14:15:14 +0100
+
+We have release JSTools 0.6 on pypi.python.org. This version includes bug
+fixes, for Windows in particular. c2cgeoportal 0.5 requires JSTools 0.6, so the
+version of JSTools should be set to 0.6 in the buildout configuration of
+c2cgeoportal projects (section [versions]).
+
+-------------------------------
 Tue, 31 Jan 2012 13:59:45 +0100
 
 Because OpenLayers has been upgraded, one must replace
