@@ -34,11 +34,11 @@ def echo(request):
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload
     """
     if request.method != 'POST':
-        raise HTTPBadRequest()
+        return HTTPBadRequest()
     try:
         file = request.POST['file']
     except KeyError:
-        raise HTTPBadRequest()
+        return HTTPBadRequest()
     response = Response()
     response.app_iter = json_base64_encode_chunks(file.filename, file.file)
     response.content_type = 'text/html'
