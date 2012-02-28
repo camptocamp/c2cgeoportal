@@ -6,12 +6,12 @@ Quick introduction to Git
 Overview
 --------
 
-Git is a `revision control <http://en.wikipedia.org/wiki/Revision_control>`_ 
-like Subversion but he is 
+Git is a `revision control system <http://en.wikipedia.org/wiki/Revision_control>`_ 
+like Subversion but it is 
 `distributed <http://en.wikipedia.org/wiki/Distributed_revision_control>`_.
 
-The following lines will not demonstrate the power of GIT but the 
-minimal commands to know to use it the same as a Subversion repository.
+The following lines will not demonstrate the power of Git but the 
+minimal commands to use as a Subversion repository.
 
 .. attention::
    the following command consider that we work directly on the master
@@ -26,8 +26,8 @@ The Git commands to the code from a remote repository is named ``clone``::
 
     git clone <url_to_the_remote_repository> <local_folder>
 
-Than we need also download the dependencies named as ``submodule``
-(two level in our case)::
+We also have to download the ``submodule`` dependencies
+(two levels in our case)::
 
     git submodule update --init
     git submodule foreach git submodule update --init
@@ -35,8 +35,7 @@ Than we need also download the dependencies named as ``submodule``
 Update the code
 ---------------
 
-When we want to gets the changes from other people who is working on
-the project we need to ``pull`` the new code::
+To get the changes done by other people, we need to ``pull`` the new code::
 
     git pull
 
@@ -50,16 +49,16 @@ And if the submodules where updated::
 Send your modification
 ----------------------
 
-To send your modification you should do tree steps, the first 
+Three steps are required to send a modification. The first one
 is to ``add`` your files to the ``index``::
 
     git add <files>
 
-The second is to ``commit`` the ``index`` to locale repository::
+The second one is to ``commit`` the ``index`` to local repository::
 
     git commit -m "<message_that_describe_your_changes>"
 
-And the third is to send your changes to the remote repository::
+And the third one is to send your changes to the remote repository::
 
     git push
 
