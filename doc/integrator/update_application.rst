@@ -6,15 +6,16 @@ Update a c2cgeoportal application
 Update the application code
 ---------------------------
 
-To update the application use::
+To get the changes done by other people, we need to ``pull`` the new code::
 
-    $ svn update
+    git pull
 
-or::
+And if the submodules where updated::
 
-    $ git pull origin master
-
-depending on the VCS used for the application.
+    git submodule sync
+    git submodule update
+    git submodule foreach git submodule sync
+    git submodule foreach git submodule update
 
 Update c2cgeoportal
 -------------------

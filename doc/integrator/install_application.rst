@@ -87,9 +87,16 @@ Additional notes for Windows users:
 Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The application is downloaded using SVN or Git. For example::
 
-    $ svn co https://project.camptocamp.com/svn/my_project/trunk my_project
+The Git commands to the code from a remote repository is named ``clone``::
+
+    git clone <url_to_the_remote_repository> <local_folder>
+
+We also have to download the ``submodule`` dependencies
+(two levels in our case)::
+
+    git submodule update --init
+    git submodule foreach git submodule update --init
 
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~

@@ -18,33 +18,8 @@ minimal commands to use as a Subversion repository.
    branch, than it shouldn't be used to work on the frameworks
    because we use branches.
 
-
-Get the code
-------------
-
-The Git commands to the code from a remote repository is named ``clone``::
-
-    git clone <url_to_the_remote_repository> <local_folder>
-
-We also have to download the ``submodule`` dependencies
-(two levels in our case)::
-
-    git submodule update --init
-    git submodule foreach git submodule update --init
-
-Update the code
----------------
-
-To get the changes done by other people, we need to ``pull`` the new code::
-
-    git pull
-
-And if the submodules where updated::
-
-    git submodule sync
-    git submodule update
-    git submodule foreach git submodule sync
-    git submodule foreach git submodule update
+Here we just specify the commands used to send your modifications,
+for other commands they will be directly in the documentation.
 
 Send your modification
 ----------------------
@@ -61,7 +36,4 @@ The second one is to ``commit`` the ``index`` to local repository::
 And the third one is to send your changes to the remote repository::
 
     git push
-
-
-That's all :-).
 
