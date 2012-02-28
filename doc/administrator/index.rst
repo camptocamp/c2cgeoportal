@@ -18,7 +18,7 @@ mapfile is a place where the administrator and the integrator collaborate.
 Content:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    mapfile
    administrate

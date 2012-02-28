@@ -12,7 +12,7 @@ under the *camptocamp* organization.
 Content:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     development_procedure
     server_side
