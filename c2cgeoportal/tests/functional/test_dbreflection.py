@@ -13,7 +13,6 @@ class TestReflection(TestCase):
         from geoalchemy import GeometryExtensionColumn, GeometryDDL, Polygon
 
         Base = sqlahelper.get_base()
-        Session = sqlahelper.get_session()
 
         table = Table('table', Base.metadata,
                       Column('id', types.Integer, primary_key=True),
