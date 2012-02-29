@@ -29,12 +29,18 @@ class TestReflection(TestCase):
         self.table.drop()
 
     def test_reflection(self):
-        from sqlalchemy import MetaData
+        from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy import Geometry
         from c2cgeoportal.lib.dbreflection import reflecttable
 
-        table_name = self.table.name
-        table = reflecttable(table_name, self.engine, MetaData())
+        Base = declarative_base(bind=self.engine)
+
+        modelclass = reflecttable(self.table.name, Base)
+
+        self.assertEquals(modelclass.__name__, 'Table')
+        self.assertEquals(modelclass.__table__.name, self.table.name)
+
+        table = modelclass.__table__
 
         self.assertTrue('id' in table.c)
         self.assertTrue('geom' in table.c)

@@ -4,6 +4,8 @@ from sqlalchemy import Table, sql, types
 from sqlalchemy.engine import reflection
 from geoalchemy import Geometry
 
+from papyrus.geo_interface import GeoInterface
+
 SQL_GEOMETRY_COLUMNS = """
     SELECT
       f_table_schema,
@@ -21,26 +23,38 @@ SQL_GEOMETRY_COLUMNS = """
 
 def column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):
+
+        # SQLAlchemy set type to NullType, which means SQLAlchemy does not know
+        # the type advertized by the database. This may be a PostGIS geometry
+        # colum, which we verify by querying the geometry_columns table. If
+        # this is a geometry column we set "type" to an actual Geometry object.
+
         results = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
                                  table_schema='public',
                                  table_name=table.name,
                                  geometry_column=column_info['name']).fetchall()
         if len(results) == 1:
-            result = results[0]
-            column_info['type'] = Geometry(srid=result[3])
+            column_info['type'] = Geometry(srid=results[0][3])
 
-def reflecttable(tablename, engine, metadata):
+def reflecttable(tablename, Base):
     """
-    Create a Table object for the database table "tablename", using reflection.
+    Return a mapped class implementing the geo interface for the database
+    table named "tablename".
     """
-    return Table(
-        tablename,
-        metadata,
-        autoload=True,
-        autoload_with=engine,
-        listeners=[
-            ('column_reflect',
-             functools.partial(column_reflect_listener, engine=engine))
-            ]
+    engine = Base.metadata.bind
+    tableargs = dict(
+            autoload=True,
+            autoload_with=engine,
+            listeners=[
+                ('column_reflect',
+                 functools.partial(column_reflect_listener, engine=engine))
+                ]
+            )
+    return type(
+        tablename.capitalize(),
+        (GeoInterface, Base),
+        dict(
+            __tablename__ =tablename,
+            __table_args__=tableargs
+            )
         )
-
