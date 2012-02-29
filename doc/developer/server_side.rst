@@ -172,6 +172,8 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
    +qslalchemy = x.y.z
    -Tempita = x.y.z
    +tempita = x.y.z
+   -distribute = x.y.z
+   +distribute = 0.6.14
 
 * Then get the versions for ``buildout_dev.cfg``::
 
@@ -182,7 +184,7 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 
 * Then you can commit it::
 
-    git add buildout.cfg buildout_dev.cfg
+    git add buildout.cfg
     git commit -m "update eggs version"
 
 
