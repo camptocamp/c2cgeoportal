@@ -13,6 +13,7 @@ from papyrus.renderers import GeoJSON
 
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
+from c2cgeoportal.lib import dbreflection
 
 # used by (sql|form)alchemy
 srid = None
@@ -56,6 +57,9 @@ def includeme(config):
     engine = sqlalchemy.engine_from_config(config.get_settings(), 'sqlalchemy.')
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
+
+    # initialize the dbreflection module
+    dbreflection.init(engine)
 
     # bind the mako renderer to other file extensions
     config.add_renderer('.html', mako_renderer_factory)

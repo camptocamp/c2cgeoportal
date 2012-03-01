@@ -24,19 +24,17 @@ class TestReflection(TestCase):
         table.create()
 
         self.table = table
-        self.engine = sqlahelper.get_engine()
 
     def tearDown(self):
         self.table.drop()
 
     def test_reflection(self):
-        from sqlalchemy.ext.declarative import declarative_base
+        import sqlahelper
         from geoalchemy import Geometry, SpatialComparator
-        from c2cgeoportal.lib.dbreflection import get_class
+        from c2cgeoportal.lib.dbreflection import init, get_class
 
-        Base = declarative_base(bind=self.engine)
-
-        modelclass = get_class(self.table.name, Base)
+        init(sqlahelper.get_engine())
+        modelclass = get_class(self.table.name)
 
         # test the class
         self.assertEquals(modelclass.__name__, 'Table')
@@ -57,7 +55,7 @@ class TestReflection(TestCase):
         self.assertTrue(isinstance(geom_col_2.type, Geometry))
 
         # the class should now be in the cache
-        _modelclass = get_class(self.table.name, Base)
+        _modelclass = get_class(self.table.name)
         self.assertTrue(_modelclass is modelclass)
 
 

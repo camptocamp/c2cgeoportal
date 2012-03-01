@@ -2,9 +2,15 @@ import functools
 
 from sqlalchemy import Table, sql, types
 from sqlalchemy.engine import reflection
+from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy import Geometry, GeometryColumn
 
 from papyrus.geo_interface import GeoInterface
+
+
+__class_cache = {}
+
+Base = declarative_base()
 
 SQL_GEOMETRY_COLUMNS = """
     SELECT
@@ -21,7 +27,14 @@ SQL_GEOMETRY_COLUMNS = """
       f_geometry_column = :geometry_column
     """
 
-__class_cache = {}
+
+def init(engine):
+    """
+    Initialize the db reflection module. Give the declarative base
+    class an engine, required for the reflection.
+    """
+    Base.metadata.bind = engine
+
 
 def column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):
@@ -31,16 +44,19 @@ def column_reflect_listener(table, column_info, engine):
         # colum, which we verify by querying the geometry_columns table. If
         # this is a geometry column we set "type" to an actual Geometry object.
 
-        results = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
+        query = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
                                  table_schema='public',
                                  table_name=table.name,
-                                 geometry_column=column_info['name']).fetchall()
+                                 geometry_column=column_info['name'])
+        results = query.fetchall()
         if len(results) == 1:
             column_info['type'] = Geometry(srid=results[0][3])
 
-def get_class(tablename, Base):
+
+def get_class(tablename):
     """
-    Get the SQLAlchemy mapped class for "tablename".
+    Get the SQLAlchemy mapped class for "tablename". If no class exists
+    for "tablename" one is created, and added to the cache.
     """
 
     if tablename in __class_cache:
