@@ -21,6 +21,8 @@ SQL_GEOMETRY_COLUMNS = """
       f_geometry_column = :geometry_column
     """
 
+__class_cache = {}
+
 def column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):
 
@@ -40,6 +42,10 @@ def get_class(tablename, Base):
     """
     Get the SQLAlchemy mapped class for "tablename".
     """
+
+    if tablename in __class_cache:
+        return __class_cache[tablename]
+
     engine = Base.metadata.bind
 
     # create table and reflect it
@@ -65,5 +71,8 @@ def get_class(tablename, Base):
     for col in table.columns:
         if isinstance(col.type, Geometry):
             setattr(cls, col.name, GeometryColumn(col.type))
+
+    # add class to cache
+    __class_cache[tablename] = cls
 
     return cls
