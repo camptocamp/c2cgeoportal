@@ -2,7 +2,7 @@ import functools
 
 from sqlalchemy import Table, sql, types
 from sqlalchemy.engine import reflection
-from geoalchemy import Geometry
+from geoalchemy import Geometry, GeometryColumn
 
 from papyrus.geo_interface import GeoInterface
 
@@ -36,25 +36,34 @@ def column_reflect_listener(table, column_info, engine):
         if len(results) == 1:
             column_info['type'] = Geometry(srid=results[0][3])
 
-def reflecttable(tablename, Base):
+def get_class(tablename, Base):
     """
-    Return a mapped class implementing the geo interface for the database
-    table named "tablename".
+    Get the SQLAlchemy mapped class for "tablename".
     """
     engine = Base.metadata.bind
-    tableargs = dict(
-            autoload=True,
-            autoload_with=engine,
-            listeners=[
-                ('column_reflect',
-                 functools.partial(column_reflect_listener, engine=engine))
-                ]
+
+    # create table and reflect it
+    table = Table(tablename, Base.metadata,
+                  autoload=True,
+                  autoload_with=engine,
+                  listeners=[
+                        ('column_reflect',
+                         functools.partial(column_reflect_listener,
+                                           engine=engine)
+                         )
+                    ]
+                  )
+
+    # create the mapped class
+    cls = type(
+            tablename.capitalize(),
+            (GeoInterface, Base),
+            dict(__table__=table)
             )
-    return type(
-        tablename.capitalize(),
-        (GeoInterface, Base),
-        dict(
-            __tablename__ =tablename,
-            __table_args__=tableargs
-            )
-        )
+
+    # override the mapped class' geometry columns
+    for col in table.columns:
+        if isinstance(col.type, Geometry):
+            setattr(cls, col.name, GeometryColumn(col.type))
+
+    return cls
