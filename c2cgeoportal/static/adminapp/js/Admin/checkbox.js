@@ -3,10 +3,10 @@
     $.fn.adminapp = function(){};
     
     /**
-    * find an element in the dom whose id match str and not contained in ignoreList
-    */
+     * find an element in the dom whose id match str and not contained in ignoreList
+     */
     $.fn.adminapp.findList = function(str, fieldList, ignoreList) {
-        ignoreList = (typeof(ignoreList) == "undefined") ? [] : ignoreList
+        ignoreList = (typeof(ignoreList) == "undefined") ? [] : ignoreList;
         var list = [];
         
         // get all el with id attr
@@ -31,11 +31,11 @@
         });
 
         return list;            
-    }
+    };
 
     /**
-    * find an element in the dom whose id match str and not contained in ignoreList
-    */
+     * find an element in the dom whose id match str and not contained in ignoreList
+     */
     $.fn.adminapp.findField = function(str, ignoreList) {
         return this.findList(str, this.fieldList, ignoreList);
     };
@@ -48,8 +48,8 @@
     };
 
     /**
-    * attach toogleAddress event on the secondary address checkbox
-    */
+     * attach toogleAddress event on the secondary address checkbox
+     */
     $.fn.adminapp.bindEventOnAddress = function(el) {
         var chk = $('#' + el.id);
         chk.bind('click', function(event) {
@@ -58,22 +58,22 @@
     };
 
     /**
-    * attach toogle restrictionarea event on the secondary "public" checkbox
-    */
+     * attach toogle restrictionarea event on the secondary "public" checkbox
+     */
     $.fn.adminapp.bindEventOnLayer = function(pl, lt) {
         var chk = $('#' + pl.id);
         chk.bind('click', function(event) {
             $.fn.adminapp.toogleRestrictionAreas(event.target);
         }); 
-        var chk = $('#' + lt.id);
+        chk = $('#' + lt.id);
         chk.bind('change', function(event) {
             $.fn.adminapp.toogleLayerType(event.target);
         });
     };
 
     /**
-    * show / hide secondary address input fields
-    */
+     * show / hide secondary address input fields
+     */
     $.fn.adminapp.toogleAddress = function(el) {
         var els = $.fn.adminapp.findField('b_', [el.id]);        
         /* this code can be used to show/hide block instead of enabling/disabling inputs
@@ -105,8 +105,8 @@
     };
 
     /**
-    * show / hide restrictionArea input fields
-    */
+     * show / hide restrictionArea input fields
+     */
     $.fn.adminapp.toogleRestrictionAreas = function(el) {
         var els = $.fn.adminapp.findField('restrictionareas', [el.id]);        
         var state = el.checked;
@@ -129,7 +129,7 @@
      */
     $.fn.adminapp.toogleLayerType = function(el) {
         var state = el.value;
-        var fields = []
+        var fields = [];
         if (state == "internal WMS") {
             fields = ["legendRule"];
         }
@@ -152,7 +152,7 @@
                 $(e[0]).addClass('disabledinput');
             }
             e[0].readOnly = state;
-        }
+        };
 
         change("url", fields);
         change("serverResolutions", fields);
@@ -163,8 +163,8 @@
     };
 
     /**
-    * get the parent div containing on input field
-    */
+     * get the parent div containing on input field
+     */
     $.fn.adminapp.getParentBLock = function(el) {
         var p = el.parentNode;
         while (p.nodeName.toLowerCase() != 'div') {
@@ -174,15 +174,14 @@
     };
 
     /**
-    * reset input value or state
-    */    
+     * reset input value or state
+     */    
     $.fn.adminapp.resetField = function(el) {
         switch (el.type) {
           case 'checkbox':
               el.checked = false;
               break;
           case 'radio':
-              // do something
               break;
           default:
               el.value = '';
