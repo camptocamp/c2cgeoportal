@@ -183,6 +183,8 @@ class CheckBoxTreeSet(CheckBoxSet):
         return result
 
 class LayerCheckBoxTreeSet(CheckBoxTreeSet):
+    _rendered_id = []
+
     def __init__(self, attribute, dom_id='layer_tree', 
             auto_check=True, only_private=True):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
@@ -235,11 +237,12 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
             <label>%(label)s</label>
             """ % {
             'id': '%s_%i' % (self.name, self.i),
-            'name': self.name,
+            'name': self.name + ("-segond" if item.id in self._rendered_id else ""),
             'value': item.id,
             'add': ' checked="checked"' if self._is_checked(item.id) else "",
             'label': item.name
         }
+        self._rendered_id.append(item.id)
         self.i += 1
         result += self.render_children(item, depth)
         result += '</li>'
