@@ -34,13 +34,13 @@ class TestReflection(TestCase):
     def tearDown(self):
         self.table.drop()
 
-    def test_reflection_nonexisting_table(self):
+    def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
         from c2cgeoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, 'nonexisting')
 
-    def test_reflection(self):
+    def test_get_class(self):
         from geoalchemy import Geometry, SpatialComparator
         from c2cgeoportal.lib.dbreflection import get_class
 
