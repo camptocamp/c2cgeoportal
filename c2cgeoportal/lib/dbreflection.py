@@ -8,7 +8,7 @@ from geoalchemy import Geometry, GeometryColumn
 from papyrus.geo_interface import GeoInterface
 
 
-__class_cache = {}
+_class_cache = {}
 
 Base = declarative_base()
 
@@ -45,7 +45,7 @@ def column_reflect_listener(table, column_info, engine):
         # this is a geometry column we set "type" to an actual Geometry object.
 
         query = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
-                                 table_schema='public',
+                                 table_schema=table.schema,
                                  table_name=table.name,
                                  geometry_column=column_info['name'])
         results = query.fetchall()
@@ -56,18 +56,25 @@ def column_reflect_listener(table, column_info, engine):
 def get_class(tablename):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
-    for "tablename" one is created, and added to the cache. If there's
-    no table identified by tablename in the database a NoSuchTableError
-    SQLAlchemy exception is raised.
+    for "tablename" one is created, and added to the cache. "tablename"
+    must reference a valid string. If there's no table identified by
+    tablename in the database a NoSuchTableError SQLAlchemy exception
+    is raised.
     """
 
-    if tablename in __class_cache:
-        return __class_cache[tablename]
+    if '.' in tablename:
+        schema, tablename = tablename.split('.', 1)
+    else:
+        schema = 'public'
+
+    if (schema, tablename) in _class_cache:
+        return _class_cache[(schema, tablename)]
 
     engine = Base.metadata.bind
 
     # create table and reflect it
     table = Table(tablename, Base.metadata,
+                  schema=schema,
                   autoload=True,
                   autoload_with=engine,
                   listeners=[
@@ -91,6 +98,6 @@ def get_class(tablename):
             setattr(cls, col.name, GeometryColumn(col.type))
 
     # add class to cache
-    __class_cache[tablename] = cls
+    _class_cache[(schema, tablename)] = cls
 
     return cls
