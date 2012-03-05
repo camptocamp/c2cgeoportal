@@ -17,7 +17,6 @@ class TestReflection(TestCase):
         init(engine)
 
     def tearDown(self):
-        import sqlalchemy.orm
         import c2cgeoportal.lib.dbreflection
 
         # drop any table created by the test function with __create_table
