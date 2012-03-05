@@ -10,11 +10,16 @@ class TestReflection(TestCase):
     def setUp(self):
         import sqlahelper
         from sqlalchemy import Table, Column, types
+        from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy import (GeometryExtensionColumn, GeometryDDL,
                                 Point, Polygon)
+        from c2cgeoportal.lib.dbreflection import init
 
-        Base = sqlahelper.get_base()
+        # get a reference to the engine created by the module-level
+        # setUp function
+        engine = sqlahelper.get_engine()
 
+        Base = declarative_base(bind=engine)
         table = Table('table', Base.metadata,
                       Column('id', types.Integer, primary_key=True),
                       GeometryExtensionColumn('geom1', Point),
@@ -24,16 +29,21 @@ class TestReflection(TestCase):
         table.create()
 
         self.table = table
+        init(engine)
 
     def tearDown(self):
         self.table.drop()
 
-    def test_reflection(self):
-        import sqlahelper
-        from geoalchemy import Geometry, SpatialComparator
-        from c2cgeoportal.lib.dbreflection import init, get_class
+    def test_reflection_nonexisting_table(self):
+        from sqlalchemy.exc import NoSuchTableError
+        from c2cgeoportal.lib.dbreflection import get_class
 
-        init(sqlahelper.get_engine())
+        self.assertRaises(NoSuchTableError, get_class, 'nonexisting')
+
+    def test_reflection(self):
+        from geoalchemy import Geometry, SpatialComparator
+        from c2cgeoportal.lib.dbreflection import get_class
+
         modelclass = get_class(self.table.name)
 
         # test the class

@@ -56,7 +56,9 @@ def column_reflect_listener(table, column_info, engine):
 def get_class(tablename):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
-    for "tablename" one is created, and added to the cache.
+    for "tablename" one is created, and added to the cache. If there's
+    no table identified by tablename in the database a NoSuchTableError
+    SQLAlchemy exception is raised.
     """
 
     if tablename in __class_cache:
