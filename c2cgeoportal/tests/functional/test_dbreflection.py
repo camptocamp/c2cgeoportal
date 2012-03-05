@@ -19,14 +19,14 @@ class TestReflection(TestCase):
     def tearDown(self):
         import c2cgeoportal.lib.dbreflection
 
-        # drop any table created by the test function with __create_table
+        # drop any table created by the test function with _create_table
         if self.table is not None:
             self.table.drop()
 
         # clear the dbreflection class cache
         c2cgeoportal.lib.dbreflection._class_cache = {}
 
-    def __create_table(self, tablename):
+    def _create_table(self, tablename):
         """ Test functions use this function to create a table object.
         Each test function should call this function only once. And
         there should not be two test functions that call this function
@@ -63,7 +63,7 @@ class TestReflection(TestCase):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self.__create_table('table_a')
+        self._create_table('table_a')
         modelclass = get_class('table_a')
 
         # test the class
@@ -94,7 +94,7 @@ class TestReflection(TestCase):
     def test_get_class_dotted_notation(self):
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self.__create_table('table_b')
+        self._create_table('table_b')
         modelclass = get_class('public.table_b')
 
         self.assertEquals(modelclass.__name__, 'Table_b')
