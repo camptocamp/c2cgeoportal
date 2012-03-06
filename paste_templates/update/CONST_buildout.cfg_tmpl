@@ -133,8 +133,7 @@ recipe = collective.recipe.cmd
 on_install = true
 on_update = false
 cmds =
-    ( cd ${package}/static/lib && git clone https://github.com/camptocamp/cgxp.git )
-    ( cd ${package}/static/lib/cgxp && git submodule update --init )
+    (cd $${buildout:directory}/${package}/static/lib && git clone https://github.com/camptocamp/cgxp.git && cd cgxp && git submodule update --init)
 
 [print-template]
 recipe = collective.recipe.cmd:py
