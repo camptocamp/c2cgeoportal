@@ -183,11 +183,12 @@ class CheckBoxTreeSet(CheckBoxSet):
         return result
 
 class LayerCheckBoxTreeSet(CheckBoxTreeSet):
-    _rendered_id = []
+    _rendered_id = None
 
     def __init__(self, attribute, dom_id='layer_tree', 
             auto_check=True, only_private=True):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
+        self._rendered_id = []
         self.only_private = only_private
 
     def render_children(self, item, depth):
