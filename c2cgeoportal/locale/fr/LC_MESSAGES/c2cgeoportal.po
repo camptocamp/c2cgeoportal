@@ -146,7 +146,7 @@ msgstr "URL de base"
 
 #: c2cgeoportal/models.py:307
 msgid "Server Resolutions"
-msgstr "Resolution du serveur"
+msgstr "Résolution du serveur"
 
 #: c2cgeoportal/models.py:308
 msgid "Max Extent"
@@ -178,7 +178,7 @@ msgstr "Affiche la légende"
 
 #: c2cgeoportal/models.py:316
 msgid "Legend Image"
-msgstr "Image de légande"
+msgstr "Image de légende"
 
 #: c2cgeoportal/models.py:317
 msgid "Legend Rule"
