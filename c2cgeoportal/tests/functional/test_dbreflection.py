@@ -127,3 +127,23 @@ class TestReflection(TestCase):
         self.assertEquals(modelclass.__name__, 'Table_b')
         self.assertEquals(modelclass.__table__.name, 'table_b')
         self.assertEquals(modelclass.__table__.schema, 'public')
+
+    def test_mixing_get_class_and_queries(self):
+        """ This test shows that we can mix the use of DBSession
+        and the db reflection API. """
+        from c2cgeoportal.lib.dbreflection import get_class
+        from c2cgeoportal.models import DBSession
+        from sqlalchemy import text
+        import transaction
+
+        self._create_table('table_c')
+
+        DBSession.execute(text('SELECT id FROM table_c'))
+
+        modelclass = get_class('table_c')
+        self.assertEquals(modelclass.__name__, 'Table_c')
+
+        # This commits the transaction created by DBSession.execute. This
+        # is required here in the test because tearDown does table.drop,
+        # which will block forever if the transaction is not committed.
+        transaction.commit()
