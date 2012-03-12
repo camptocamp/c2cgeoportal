@@ -20,7 +20,7 @@ parentschema = $${vars:parentschema}
 schema = $${vars:schema}
 
 jsbuild_cfg = $${jsbuild:config}
-jsbuild_root_dir = $${jsbuild:base-dir}
+jsbuild_root_dir = $${buildout:directory}
 
 # Default application language
 available_languages = $${available_languages}
