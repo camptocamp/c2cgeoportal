@@ -13,7 +13,7 @@ install_requires = [
     'sqlalchemy-migrate',
     'sqlahelper',
     'pyramid_tm',
-    'papyrus',
+    'papyrus>=0.8',
     'papyrus_ogcproxy',
     'httplib2',
     'Babel',
