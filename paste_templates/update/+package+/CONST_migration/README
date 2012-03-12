@@ -5,10 +5,10 @@ This is a database migration repository.
     instead, and apply this template on the current project.
 
 Add a new script:
-    ./buildout/bin/manage_db script "Explicite name"
+    ./buildout/bin/manage_db script "Explicit name"
 
 This will generate the migration script in
-myproject/CONST_migration/versions/xxx_Explicite_name.py
+myproject/CONST_migration/versions/xxx_Explicit_name.py
 You should *NOT* commit the script in this directory because this migration
 script should be shared with all c2cgeoportal projects.
 It is the c2cgeoportal "update" template which is responsible for updating
