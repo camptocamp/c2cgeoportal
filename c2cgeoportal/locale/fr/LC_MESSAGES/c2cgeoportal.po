@@ -20,11 +20,11 @@ msgstr ""
 
 #: c2cgeoportal/forms.py:40
 msgid "Duplicate record"
-msgstr "Enregistrement dupliquer"
+msgstr "Enregistrement dupliqué"
 
 #: c2cgeoportal/forms.py:69
 msgid "Passwords do not match"
-msgstr "Les mot de passes ne correspondent pas"
+msgstr "Les mots de passe ne correspondent pas"
 
 #: c2cgeoportal/forms.py:148
 msgid "Restriction area"
@@ -32,7 +32,7 @@ msgstr "Aire de restriction"
 
 #: c2cgeoportal/forms.py:201
 msgid "Extent"
-msgstr "Empreinte"
+msgstr "Emprise"
 
 #: c2cgeoportal/models.py:48
 msgid "functionality"
@@ -90,7 +90,7 @@ msgstr "Ordre"
 
 #: c2cgeoportal/models.py:248
 msgid "layergroup"
-msgstr "Groups de couches"
+msgstr "Groupes de couches"
 
 #: c2cgeoportal/models.py:249
 msgid "layergroups"
@@ -106,7 +106,7 @@ msgstr "WMS interne"
 
 #: c2cgeoportal/models.py:261
 msgid "Group of base layers"
-msgstr "Group de layer de base"
+msgstr "Groupe de couches de base"
 
 #: c2cgeoportal/models.py:271
 msgid "theme"
@@ -118,11 +118,11 @@ msgstr "Thèmes"
 
 #: c2cgeoportal/models.py:281 c2cgeoportal/models.py:302
 msgid "Icon"
-msgstr "Icon"
+msgstr "Îcone"
 
 #: c2cgeoportal/models.py:282
 msgid "Display"
-msgstr "Affiche"
+msgstr "Afficher"
 
 #: c2cgeoportal/models.py:290
 msgid "layer"
