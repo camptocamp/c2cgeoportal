@@ -90,6 +90,7 @@ template at your disposal::
 
 Else use this::
 
+    $ sudo -u postgres createdb c2cgeoportal_test
     $ sudo -u postgres createlang plpgsql c2cgeoportal_test
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
@@ -106,6 +107,8 @@ To create the ``main`` schema::
            -c 'CREATE SCHEMA main;'
     $ sudo -u postgres psql -d c2cgeoportal_test \
            -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    $ sudo -u postgres psql -d c2cgeoportal_test \
+           -c 'GRANT ALL ON geometry_columns TO "www-data";'
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
 extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
