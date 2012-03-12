@@ -3,12 +3,20 @@ import functools
 from sqlalchemy import Table, sql, types
 from sqlalchemy.engine import reflection
 from sqlalchemy.ext.declarative import declarative_base
+
 from geoalchemy import Geometry, GeometryColumn
+from geoalchemy import (Point, LineString, Polygon,
+                        MultiPoint, MultiLineString, MultiPolygon)
 
 from papyrus.geo_interface import GeoInterface
 
 
 _class_cache = {}
+
+_geometry_type_mappings = dict(
+    [(t.name, t) for t in (Point, LineString, Polygon,
+                           MultiPoint, MultiLineString, MultiPolygon)]
+    )
 
 Base = declarative_base()
 
@@ -35,7 +43,6 @@ def init(engine):
     """
     Base.metadata.bind = engine
 
-
 def column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):
 
@@ -45,12 +52,13 @@ def column_reflect_listener(table, column_info, engine):
         # this is a geometry column we set "type" to an actual Geometry object.
 
         query = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
-                                 table_schema=table.schema,
-                                 table_name=table.name,
-                                 geometry_column=column_info['name'])
+                               table_schema=table.schema,
+                               table_name=table.name,
+                               geometry_column=column_info['name'])
         results = query.fetchall()
         if len(results) == 1:
-            column_info['type'] = Geometry(srid=results[0][3])
+            geometry_type = _geometry_type_mappings[results[0][4]]
+            column_info['type'] = geometry_type(srid=results[0][3])
 
 
 def get_class(tablename):
