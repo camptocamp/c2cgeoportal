@@ -204,6 +204,7 @@ class Entry(object):
                        (Role, Role.id == role_ra.c.role_id) \
                      ). \
                      filter(Role.id == role_id). \
+                     filter(or_(RestrictionArea.mode == 'read', RestrictionArea.mode == 'both')). \
                      filter(and_(Layer.public != True,
                                  functions.area(RestrictionArea.area) > 0))
             query = query.union(query2)
