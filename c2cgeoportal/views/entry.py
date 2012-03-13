@@ -96,7 +96,8 @@ class Entry(object):
             'no2D': layer.no2D,
             'legend': layer.legend,
             'isVisible': layer.isVisible,
-            'isChecked': layer.isChecked
+            'isChecked': layer.isChecked,
+            'identifierAttribute': layer.identifierAttributeField
         }
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
