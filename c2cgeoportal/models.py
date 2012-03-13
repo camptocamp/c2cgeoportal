@@ -320,6 +320,7 @@ class Layer(TreeItem):
     minResolution = Column(types.Float, label=_(u'Min resolution')) # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
+    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field')) # data attribute field in which application can find a human identifiable name or number
 
     def __init__(self, name=u'', order=0, public=True, icon=u'', 
             layerType=u'internal WMS'):
