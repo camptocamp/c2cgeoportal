@@ -246,7 +246,3 @@ msgstr "mon test de traduction"
 #: c2cgeoportal/views/entry.py:49
 msgid "title i18n"
 msgstr "Test de l'i18n"
-
-#~ msgid "s"
-#~ msgstr ""
-
