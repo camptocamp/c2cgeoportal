@@ -237,7 +237,9 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
             <label>%(label)s</label>
             """ % {
             'id': '%s_%i' % (self.name, self.i),
-            'name': self.name + ("-segond" if item.id in self._rendered_id else ""),
+            # adds -second to fields (layer) that appears two time to 
+            # don't save them twice (=> integrity error).
+            'name': self.name + ("-second" if item.id in self._rendered_id else ""),
             'value': item.id,
             'add': ' checked="checked"' if self._is_checked(item.id) else "",
             'label': item.name
