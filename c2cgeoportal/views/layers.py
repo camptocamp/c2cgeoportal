@@ -1,7 +1,13 @@
-from geoalchemy import Geometry
+import itertools
+
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
+
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+
+from geoalchemy import Geometry
+
+from geojson.feature import FeatureCollection
 
 from papyrus.renderers import XSD
 from papyrus.protocol import Protocol
@@ -9,11 +15,14 @@ from papyrus.protocol import Protocol
 from c2cgeoportal.lib.dbreflection import get_class
 from c2cgeoportal.models import DBSession, Layer
 
-
-def _get_class_for_request(request):
-    layer_id = int(request.matchdict['layer_id'])
+def _get_class(layer_id):
+    """ Get an SQLAlchemy mapped class for the layer identified
+    by layer_id. """
+    layer_id = int(layer_id)
     try:
-        table_name, = DBSession.query(Layer.geoTable).filter(Layer.id == layer_id).one()
+        table_name, = DBSession.query(Layer.geoTable) \
+                               .filter(Layer.id == layer_id) \
+                               .one()
     except NoResultFound:
         raise HTTPNotFound("Layer not found")
     except MultipleResultsFound: # pragma: no cover
@@ -21,7 +30,15 @@ def _get_class_for_request(request):
     return get_class(str(table_name))
 
 
-def _get_geom_attr_for_mapped_class(mapped_class):
+def _get_classes(request):
+    """ Get SQLAlchemy mapped classes for the request. """
+    str_ = request.matchdict['layer_id'].rstrip(',')
+    layer_ids = map(int, str_.split(','))
+    for layer_id in layer_ids:
+        yield _get_class(layer_id)
+
+
+def _get_geom_attr(mapped_class):
     # This function assumes that the names of geometry attributes
     # in the mapped class are the same as those of geometry columns.
     for column in mapped_class.__table__.columns:
@@ -30,16 +47,24 @@ def _get_geom_attr_for_mapped_class(mapped_class):
     raise HTTPInternalServerError() # pragma: no cover
 
 
+def _get_protocols(request):
+    for cls in _get_classes(request):
+        geom_attr = _get_geom_attr(cls)
+        yield Protocol(DBSession, cls, geom_attr)
+
+
 def _get_protocol(request):
-    mapped_class = _get_class_for_request(request)
-    geom_attr = _get_geom_attr_for_mapped_class(mapped_class)
-    return Protocol(DBSession, mapped_class, geom_attr)
+    protocols = [p for p in _get_protocols(request)]
+    if len(protocols) > 1:
+        raise HTTPInternalServerError() # pragma: no cover
+    return protocols[0]
 
 
 @view_config(route_name='layers_read_many', renderer='geojson')
 def read_many(request):
-    protocol = _get_protocol(request)
-    return protocol.read(request)
+    features = [p.read(request).features for p in _get_protocols(request)]
+    features = list(itertools.chain.from_iterable(features)) # flatten the list
+    return FeatureCollection(features)
 
 
 @view_config(route_name='layers_read_one', renderer='geojson')
@@ -77,5 +102,5 @@ def delete(request):
 
 @view_config(route_name='layers_metadata', renderer='xsd')
 def metadata(request):
-    mapped_class = _get_class_for_request(request)
+    mapped_class = _get_class(request.matchdict['layer_id'])
     return mapped_class.__table__

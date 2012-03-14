@@ -118,13 +118,20 @@ def includeme(config):
     config.add_route('fulltextsearch', '/fulltextsearch')
 
     # add routes for the "layers" web service
-    config.add_route('layers_count', '/layers/{layer_id:\\d+}/count', request_method='GET')
-    config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd', request_method='GET')
-    config.add_route('layers_read_many', '/layers/{layer_id:\\d+}', request_method='GET')
-    config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}', request_method='GET')
-    config.add_route('layers_create', '/layers/{layer_id:\\d+}', request_method='POST')
-    config.add_route('layers_update', '/layers/{layer_id:\\d+}/{feature_id}', request_method='PUT')
-    config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}', request_method='DELETE')
+    config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',
+                     request_method='GET')
+    config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
+                     request_method='GET')
+    config.add_route('layers_read_many', '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
+                     request_method='GET')
+    config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='GET')
+    config.add_route('layers_create', '/layers/{layer_id:\\d+}',
+                     request_method='POST')
+    config.add_route('layers_update', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='PUT')
+    config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='DELETE')
 
     # pyramid_formalchemy's configuration
     config.include('pyramid_formalchemy')

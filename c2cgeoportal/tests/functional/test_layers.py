@@ -12,7 +12,8 @@ class TestLayers(TestCase):
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
-        self.table = None
+        self.tables = []
+        self.layer_ids = []
 
         engine = sqlahelper.get_engine()
         init(engine)
@@ -23,28 +24,30 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-        if self.table is not None:
-            self.table.drop()
+        for t in self.tables:
+            t.drop()
 
-        treeitem = DBSession.query(TreeItem).get(1)
-        DBSession.delete(treeitem)
-
-        layer = DBSession.query(Layer).get(1)
-        DBSession.delete(layer)
+        for i in self.layer_ids:
+            treeitem = DBSession.query(TreeItem).get(i)
+            DBSession.delete(treeitem)
+            layer = DBSession.query(Layer).get(i)
+            DBSession.delete(layer)
 
         transaction.commit()
 
-    def _create_layer(self, tablename):
+    def _create_layer(self, id):
         import transaction
         import sqlahelper
         from sqlalchemy import func
         from sqlalchemy import Column, Table, MetaData, types
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy import GeometryDDL, GeometryExtensionColumn
-        from geoalchemy import Point
+        from geoalchemy import GeometryDDL, GeometryExtensionColumn, Point
+        from c2cgeoportal.models import DBSession, Layer
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)
+
+        tablename = "table_%d" % id
 
         table = Table(tablename, Base.metadata,
                 Column('id', types.Integer, primary_key=True),
@@ -53,7 +56,7 @@ class TestLayers(TestCase):
                 schema='public')
         GeometryDDL(table)
         table.create()
-        self.table = table
+        self.tables.append(table)
 
         ins = table.insert().values(
                 name='foo',
@@ -64,26 +67,26 @@ class TestLayers(TestCase):
                 geom=func.ST_GeomFromText('POINT(6 46)', 4326))
         engine.connect().execute(ins)
 
-        from c2cgeoportal.models import DBSession, Layer
         layer = Layer()
-        layer.id = 1
+        layer.id = id
         layer.geoTable = tablename
         DBSession.add(layer)
+        self.layer_ids.append(id)
 
         transaction.commit()
 
     def _get_request(self, layerid):
         request = testing.DummyRequest()
-        # FIXME there may be a better way
-        request.matchdict = {'layer_id': layerid}
+        request.matchdict = {'layer_id': str(layerid)}
         return request
 
     def test_read_many(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
 
-        self._create_layer('layer_a')
-        request = self._get_request(1)
+        layer_id = 1
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
 
         collection = read_many(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
@@ -93,8 +96,9 @@ class TestLayers(TestCase):
         from geojson.feature import Feature
         from c2cgeoportal.views.layers import read_one
 
-        self._create_layer('layer_b')
-        request = self._get_request(1)
+        layer_id = 2
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 2
 
         feature = read_one(request)
@@ -105,8 +109,9 @@ class TestLayers(TestCase):
     def test_count(self):
         from c2cgeoportal.views.layers import count
 
-        self._create_layer('layer_c')
-        request = self._get_request(1)
+        layer_id = 3
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
 
         response = count(request)
         self.assertEquals(response, 2)
@@ -115,8 +120,9 @@ class TestLayers(TestCase):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import create
 
-        self._create_layer('layer_d')
-        request = self._get_request(1)
+        layer_id = 4
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
         request.method = 'POST'
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}]}'
         collection = create(request)
@@ -126,8 +132,9 @@ class TestLayers(TestCase):
     def test_update(self):
         from c2cgeoportal.views.layers import update
 
-        self._create_layer('layer_e')
-        request = self._get_request(1)
+        layer_id = 5
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}'
@@ -138,8 +145,9 @@ class TestLayers(TestCase):
     def test_delete(self):
         from c2cgeoportal.views.layers import delete
 
-        self._create_layer('layer_f')
-        request = self._get_request(1)
+        layer_id = 6
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'DELETE'
         response = delete(request)
@@ -148,17 +156,33 @@ class TestLayers(TestCase):
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
 
-        self._create_layer('layer_g')
-        request = self._get_request(1)
+        layer_id = 7
+        self._create_layer(layer_id)
+        request = self._get_request(layer_id)
 
         table = metadata(request)
-        self.assertEquals(table.name, 'layer_g')
+        self.assertEquals(table.name, 'table_7')
 
     def test_read_many_layer_not_found(self):
         from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal.views.layers import read_many
 
-        self._create_layer('layer_h')
-        request = self._get_request(2)
+        self._create_layer(8)
+        request = self._get_request(9)
 
         self.assertRaises(HTTPNotFound, read_many, request)
+
+    def test_read_many_multi(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import read_many
+
+        self._create_layer(9)
+        self._create_layer(10)
+        self._create_layer(11)
+
+        self.assertTrue(True)
+        request = self._get_request('9,10,11')
+
+        collection = read_many(request)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 6)
