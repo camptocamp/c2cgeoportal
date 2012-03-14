@@ -374,12 +374,15 @@ class RestrictionArea(Base):
     layers = relationship('Layer', secondary=layer_ra, 
             backref='restrictionareas', cascade='all')
 
-    def __init__(self, name='', description='', layers=[], roles=[], area=None):
+    def __init__(self, name='', description='',
+                       layers=[], roles=[], area=None,
+                       mode='read'):
         self.name = name
         self.description = description
         self.layers = layers
         self.roles = roles
         self.area = area
+        self.mode = mode
 
     def __unicode__ (self):
         return self.name or u''
