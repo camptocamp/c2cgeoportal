@@ -1,5 +1,3 @@
-import itertools
-
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
 
@@ -16,8 +14,8 @@ from c2cgeoportal.lib.dbreflection import get_class
 from c2cgeoportal.models import DBSession, Layer
 
 def _get_class(layer_id):
-    """ Get an SQLAlchemy mapped class for the layer identified
-    by layer_id. """
+    """ Return an SQLAlchemy mapped class for the layer
+    identified by ``layer_id``. """
     layer_id = int(layer_id)
     try:
         table_name, = DBSession.query(Layer.geoTable) \
@@ -31,11 +29,12 @@ def _get_class(layer_id):
 
 
 def _get_classes(request):
-    """ Get SQLAlchemy mapped classes for the request. """
+    """ A generator function that yields ``(layer_id, class)``
+    tuples. """
     str_ = request.matchdict['layer_id'].rstrip(',')
     layer_ids = map(int, str_.split(','))
     for layer_id in layer_ids:
-        yield _get_class(layer_id)
+        yield (layer_id, _get_class(layer_id))
 
 
 def _get_geom_attr(mapped_class):
@@ -48,13 +47,15 @@ def _get_geom_attr(mapped_class):
 
 
 def _get_protocols(request):
-    for cls in _get_classes(request):
+    """ A generator function that yields ``(layer_id, protocol)``
+    tuples. """
+    for layer_id, cls in _get_classes(request):
         geom_attr = _get_geom_attr(cls)
-        yield Protocol(DBSession, cls, geom_attr)
+        yield (layer_id, Protocol(DBSession, cls, geom_attr))
 
 
 def _get_protocol(request):
-    protocols = [p for p in _get_protocols(request)]
+    protocols = [p for _, p in _get_protocols(request)]
     if len(protocols) > 1:
         raise HTTPInternalServerError() # pragma: no cover
     return protocols[0]
@@ -62,8 +63,12 @@ def _get_protocol(request):
 
 @view_config(route_name='layers_read_many', renderer='geojson')
 def read_many(request):
-    features = [p.read(request).features for p in _get_protocols(request)]
-    features = list(itertools.chain.from_iterable(features)) # flatten the list
+    features = []
+    for layer_id, proto in _get_protocols(request):
+        collection = proto.read(request)
+        for feature in collection.features:
+            feature.properties['__layer_id__'] = layer_id
+            features.append(feature)
     return FeatureCollection(features)
 
 
