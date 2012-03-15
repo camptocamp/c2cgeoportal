@@ -128,13 +128,6 @@ Update variable jsbuild_root_dir in production.ini.in and developement.ini.in to
 jsbuild_root_dir = ${buildout:directory}
 
 -------------------------------
-Wed, 29 Feb 2012 10:48:48 +0100
-
-Add a new edior interfance:
-- add ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib in the js build folders,
-- add edit.html and edit.js templates.
-
--------------------------------
 Mon, 27 Feb 2012 17:09:23 +0100
 
 If you wish to use the addkmlfile plugin then you should add
