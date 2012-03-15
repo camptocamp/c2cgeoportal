@@ -132,6 +132,10 @@ def includeme(config):
                      request_method='PUT')
     config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
                      request_method='DELETE')
+    config.add_route('layers_root', '/layers/') # there's no view corresponding to
+                                                # that route, it is to be used from
+                                                # mako templates to get the root of
+                                                # the "layers" web service
 
     # pyramid_formalchemy's configuration
     config.include('pyramid_formalchemy')
