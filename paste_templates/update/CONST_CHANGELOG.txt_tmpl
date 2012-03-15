@@ -3,6 +3,16 @@ In this file all the changes that can affect the different projects should be pr
 
 The dates can be generated with « date -R ».
 
+Thu, 15 Mar 2012 10:22:30 +0100
+-------------------------------
+
+We have released Papyrus 0.8 and 0.8.1 on pypi. Version 0.8 includes an XSD
+renderer. Version 0.8.1 includes changes to the XSD renderer, which are
+required for the editing interface to work properly. c2cgeoportal
+0.6 requires Papyrus 0.8.1, so the version of Papyrus should be set to
+0.8.1 on the buildout configuration of c2cgeoportal projects (section
+  [versions]).
+
 Tue, 13 Mar 2012 13:55:08 +0100
 -------------------------------
 
@@ -110,15 +120,6 @@ work in an existing project several steps are required:
    cp /tmp/${project}/${package}/templates/edit.html ${package}/templates/
    cp /tmp/${project}/${package}/templates/edit.html ${package}/templates/
    rm -rf /tmp/${project}
-
-Mon, 12 Mar 2012 09:53:31 +0100
--------------------------------
-
-We have released Papyrus 0.8 on pypi. This version includes the XSD renderer,
-which we need for editing (not in c2cgeoportal yet). The next version of
-c2cgeoportal (0.6) requires Papyrus 0.8, so the version of Papyrus should be
-set to 0.8 on the buildout configuration of c2cgeoportal projects (section
-[versions]).
 
 -------------------------------
 Wed, 29 Feb 2012 11:29:12 +0100
