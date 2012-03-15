@@ -110,14 +110,17 @@ class Entry(object):
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
-            c = DBSession.query(RestrictionArea) \
-                .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
-                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                .filter(or_(RestrictionArea.mode == 'write',
-                            RestrictionArea.mode == 'both')) \
-                .count()
-            if c > 0:
+            if layer.public:
                 l['editable'] = True
+            elif self.user:
+                c = DBSession.query(RestrictionArea) \
+                    .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
+                    .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                    .filter(or_(RestrictionArea.mode == 'write',
+                                RestrictionArea.mode == 'both')) \
+                    .count()
+                if c > 0:
+                    l['editable'] = True
 
         if layer.layerType == "internal WMS":
             # this is a leaf, ie. a Mapserver layer
