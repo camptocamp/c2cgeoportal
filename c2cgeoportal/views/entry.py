@@ -329,6 +329,15 @@ class Entry(object):
 
         return d
 
+    @view_config(route_name='edit', renderer='edit.html')
+    def edit(self):
+        d = self._getVars()
+
+        d['lang'] = self.lang
+        d['debug'] = self.debug
+
+        return d
+
     @view_config(route_name='apiloader', renderer='apiloader.js')
     def apiloader(self):
         d = self._getVars()

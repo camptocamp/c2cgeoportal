@@ -90,6 +90,7 @@ def includeme(config):
 
     # add routes to the entry view class
     config.add_route('home', '/')
+    config.add_route('edit', '/edit')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('testi18n', '/testi18n.html')
