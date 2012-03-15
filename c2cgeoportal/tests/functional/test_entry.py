@@ -29,7 +29,7 @@ class TestEntryView(TestCase):
         area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
         area = WKTSpatialElement(area, srid=21781)
         ra = RestrictionArea(name=u'__test_ra', description=u'',
-                             layers=[public_layer, private_layer],
+                             layers=[private_layer],
                              roles=[role], area=area)
 
         DBSession.add_all([user, public_layer, private_layer])
