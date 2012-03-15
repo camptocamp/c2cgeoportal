@@ -19,7 +19,16 @@ To be editable a layer should satisfy the following requirements:
    mapfile. See :ref:`administrator_mapfile`.
 2. Its data should be in a PostGIS table, which should be in the
    application database. The PostGIS table can be in a separate
-   schema though, which is actually recommended.
+   schema though, which is even recommended.
+3. The PostGIS table should include a primary key with a sequence
+   associated. Example::
+   
+       db=# \d table;
+                            Table "public.table"
+           Column   |      Type   |                              Modifiers
+       -------------+-------------+----------------------------------------------------------
+        id          | integer     | not null default nextval('public.table_id_seq'::regclass)
+
 
 Adding or making layers editable
 --------------------------------
@@ -32,8 +41,6 @@ name of the PostGIS table containing the layer's geographic data.  It is string
 of this form: ``[<schemaname>.]<tablename>``.  If ``schemaname`` is omitted
 the table is assumed to be in the ``public`` schema.
 
-TODO: add screenshot
-
 Configuring security
 --------------------
 
@@ -45,8 +52,6 @@ is configured in the ``restrictionarea`` table, which is managed by selecting
 For a layer to be actually editable through the editing user interface it
 should have at least one associated *restriction area*, and this restriction
 area's ``mode`` should be either ``write`` or ``both``.
-
-TODO: add screenshot
 
 .. note::
 
