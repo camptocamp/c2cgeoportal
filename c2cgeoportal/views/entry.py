@@ -91,6 +91,7 @@ class Entry(object):
 
     def _layer(self, layer, wms_layers, wms):
         l = { 
+            'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
             'imageType': layer.imageType,
@@ -108,6 +109,15 @@ class Entry(object):
             l['kml'] = self._getIconPath(layer.kml)
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
+        if layer.geoTable:
+            c = DBSession.query(RestrictionArea) \
+                .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
+                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                .filter(or_(RestrictionArea.mode == 'write',
+                            RestrictionArea.mode == 'both')) \
+                .count()
+            if c > 0:
+                l['editable'] = True
 
         if layer.layerType == "internal WMS":
             # this is a leaf, ie. a Mapserver layer
