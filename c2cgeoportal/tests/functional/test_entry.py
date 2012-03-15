@@ -17,27 +17,22 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
                 RestrictionArea, Functionality, Theme
 
-        user = User(u'__test_user', u'__test_user')
-        pt1 = Functionality(name=u'print_template', value=u'1 Wohlen A4 portrait')
-        pt2 = Functionality(name=u'print_template', value=u'2 Wohlen A3 landscape')
-        extent = "POLYGON((663173.125 245090, 663291 245090, 663291 245153.2, 663173.125 245153.2, 663173.125 245090))"
-        extent = WKTSpatialElement(extent, srid=21781)
-        role = Role(name=u'__test_role', extent=extent, functionalities=[pt1, pt2])
-        user.role = role
+        role = Role(name=u'__test_role')
+        user = User(username=u'__test_user', password=u'__test_user', role=role)
 
-        user.email = u'Tarenpion'
-
-        pub_layer = Layer(name=u'u__test_public_layer', order=400, public=True)
-        priv_layer = Layer(name=u'u__test_private_layer', order=400, public=False)
+        public_layer = Layer(name=u'__test_public_layer', order=400, public=True)
+        private_layer = Layer(name=u'__test_private_layer', order=400, public=False)
         
-        theme = Theme(name=u'__test')
-        theme.children = [pub_layer, priv_layer]
+        theme = Theme(name=u'__test_theme')
+        theme.children = [public_layer, private_layer]
 
         area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
         area = WKTSpatialElement(area, srid=21781)
-        restricted_area2 = RestrictionArea(u'__test_ra', u'', [pub_layer, priv_layer], [role], area)
+        ra = RestrictionArea(name=u'__test_ra', description=u'',
+                             layers=[private_layer],
+                             roles=[role], area=area)
 
-        DBSession.add_all([user, pub_layer, priv_layer, theme])
+        DBSession.add_all([user, public_layer, private_layer])
         transaction.commit()
 
     def tearDown(self):
@@ -47,14 +42,10 @@ class TestEntryView(TestCase):
                 RestrictionArea, Functionality, Theme
 
         DBSession.query(User).filter(User.username == '__test_user').delete()
-        for f in DBSession.query(Functionality).filter(Functionality.value == u'1 Wohlen A4 portrait').all():
-            DBSession.delete(f)
-        for f in DBSession.query(Functionality).filter(Functionality.value == u'2 Wohlen A3 landscape').all():
-            DBSession.delete(f)
         DBSession.query(RestrictionArea).filter(
                 RestrictionArea.name == '__test_ra').delete()
         DBSession.query(Role).filter(Role.name == '__test_role').delete()
-        for t in DBSession.query(Theme).filter(Theme.name == '__test').all():
+        for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
