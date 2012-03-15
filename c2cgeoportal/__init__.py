@@ -122,7 +122,7 @@ def includeme(config):
     config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
                      request_method='GET')
     config.add_route('layers_read_many', '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
-                     request_method='GET')
+                     request_method='GET') # supports URLs like /layers/1,2,3
     config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
                      request_method='GET')
     config.add_route('layers_create', '/layers/{layer_id:\\d+}',
