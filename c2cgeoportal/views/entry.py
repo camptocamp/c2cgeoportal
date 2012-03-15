@@ -261,25 +261,6 @@ class Entry(object):
 
         return (exportThemes, error)
 
-    def _edit_layers(self):
-        result = {}
-        if self.user is not None:
-            query = DBSession.query(Layer) \
-                    .join(Layer.restrictionareas) \
-                    .join(RestrictionArea.roles) \
-                    .add_column(RestrictionArea.area) \
-                    .filter(Role.id == self.user.role.id) \
-                    .filter(or_(RestrictionArea.mode == 'write', 
-                            RestrictionArea.mode == 'both')) \
-                    .order_by(Layer.order.asc())
-
-            for row in query.all():
-                result[row[0].name] = {
-                    'id': row[0].id,
-                    'area': wkb.loads(str(row[1].geom_wkb)).wkt,
-                }
-        return result
-
     def _getForLang(self, key):
         try:
             return json.loads(self.settings.get(key).strip("\"'"))[self.lang]
@@ -342,16 +323,6 @@ class Entry(object):
     @view_config(route_name='home', renderer='index.html')
     def home(self):
         d = self._getVars()
-
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        return d
-
-    @view_config(route_name='edit', renderer='edit.html')
-    def edit(self):
-        d = self._getVars()
-        d['editLayers'] = json.dumps(self._edit_layers());
 
         d['lang'] = self.lang
         d['debug'] = self.debug
