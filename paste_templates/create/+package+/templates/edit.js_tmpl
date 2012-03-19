@@ -1,127 +1,77 @@
+(function() {
 
-/*
- * Initialize the application.
- */
-// OpenLayers
+// Ext global settings
+Ext.BLANK_IMAGE_URL = "$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+Ext.QuickTips.init();
+
+// OpenLayers global settings
 OpenLayers.Number.thousandsSeparator = ' ';
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
 OpenLayers.DOTS_PER_INCH = 72;
 OpenLayers.ImgPath = "$${request.static_url('${package}:static/lib/cgxp/core/src/theme/img/ol/')}";
-
-// Ext
-Ext.BLANK_IMAGE_URL = "$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
-Ext.QuickTips.init();
-
-// Apply same language than on the server side
 OpenLayers.Lang.setCode("$${lang}");
+
+// GeoExt global settings
 GeoExt.Lang.set("$${lang}");
 
 % if user:
-var INITIAL_EXTENT = $${user.role.jsextent};
+var initialExtent = $${user.role.jsextent};
 % else:
-var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
+var initialExtent = [420000, 30000, 900000, 350000];
 % endif
-var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
-var WMTS_OPTIONS = {
-% if len(tilecache_url) == 0:
-    url: "$${request.route_url('tilecache', path='')}",
-% else:
-    url: '$${tilecache_url}',
+/* errors (if any): $${themesError | n} */
+var themes = {
+    "local": $${themes | n}
+% if external_themes:
+    , "external": $${external_themes | n}
 % endif
-    displayInLayerSwitcher: false,
-    requestEncoding: 'REST',
-    buffer: 0,
-    style: 'default',
-    dimensions: ['TIME'],
-    params: {
-        'time': '2011'
-    },
-    matrixSet: 'swissgrid',
-    maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
-    projection: new OpenLayers.Projection("EPSG:21781"),
-    units: "m",
-    formatSuffix: 'png',
-    serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05],
-    getMatrix: function() {
-        return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
-    }
 };
 
 app = new gxp.Viewer({
+
+    // viewer config
     portalConfig: {
-        layout: "border",
-        id: "viewer",
-        items: ["app-map"]
+        layout: 'border',
+        items: [
+            'app-map',
+        {
+            id: 'left-panel',
+            region: 'west',
+            width: 300
+        }]
     },
 
-    // configuration of all tool plugins for this application
+    // tools
     tools: [{
         ptype: 'cgxp_editing',
-        outputTarget: 'viewer',
-        outputConfig: { 
-            id: 'editing',
-            region: "west",
-            width: 300,
-            minWidth: 300,
-            split: true,
-            collapseMode: "mini",
-            border: false,
-        },
-        mapserverURL: "$${request.route_url('mapserverproxy')}",
-        metadataURL: "$${request.route_url('layers_metadata', layer_id='layer_id')}",
-        mapfishURL: "$${request.route_url('layers_read_many', layer_id='layer_id')}",
-        layers: $${editLayers | n}
-    },
-    {
-        ptype: "cgxp_mapopacityslider"
-    },
-    {
-        ptype: "gxp_zoomtoextent",
-        actionTarget: "map.tbar",
-        closest: true,
-        extent: INITIAL_EXTENT
+        layerTreeId: 'layertree',
+        layersURL: "$${request.route_url('layers_root')}"
     }, {
-        ptype: "cgxp_zoom",
-        actionTarget: "map.tbar",
-        toggleGroup: "maptools"
-    }, 
-    {
-        ptype: "gxp_navigationhistory",
-        actionTarget: "map.tbar"
-    }, 
-    {
-        ptype: "cgxp_permalink",
-        actionTarget: "map.tbar"
-    }, 
-    {
-        ptype: "cgxp_measure",
-        actionTarget: "map.tbar",
-        toggleGroup: "maptools"
-    }, 
-    {
-        ptype: "cgxp_fulltextsearch",
-        url: "$${request.route_url('fulltextsearch', path='')}",
-        actionTarget: "map.tbar"
-    },
-    {
-        ptype: "cgxp_menushortcut",
-        type: '->'
-    }, 
-    {
-        ptype: "cgxp_legend",
-        id: "legendPanel",
-        toggleGroup: "maptools",
-        actionTarget: "map.tbar"
-    }, 
-    {
-        ptype: "cgxp_menushortcut",
-        type: '-'
-    }, 
-    {
+        ptype: 'cgxp_themeselector',
+        outputTarget: 'left-panel',
+        outputConfig: {
+            layout: 'fit',
+            style: 'padding: 3px 0 3px 3px;'
+        },
+        layerTreeId: 'layertree',
+        themes: themes
+    }, {
+        ptype: "cgxp_layertree",
+        id: "layertree",
+        outputConfig: {
+            header: false,
+            flex: 1,
+            layout: 'fit',
+            autoScroll: true,
+            themes: themes,
+            wmsURL: '$${request.route_url('mapserverproxy')}'
+        },
+        outputTarget: 'left-panel'
+    }, {
         ptype: "cgxp_login",
         actionTarget: "map.tbar",
-        toggleGroup: "maptools",
+        type: '->',
 % if user:
         username: "$${user.username}",
 % endif
@@ -129,22 +79,15 @@ app = new gxp.Viewer({
         logoutURL: "$${request.route_url('logout', path='')}"
     }],
 
-    // layer sources
-    sources: {
-        "olsource": {
-            ptype: "gxp_olsource"
-        }
-    },
-
     // map and layers
     map: {
         id: "app-map", // id needed to reference map in portalConfig above
+        stateId: "map",
         xtype: 'cgxp_mappanel',
         projection: "EPSG:21781",
-        extent: INITIAL_EXTENT,
-        maxExtent: RESTRICTED_EXTENT,
-        restrictedExtent: RESTRICTED_EXTENT,
-        stateId: "map",
+        extent: initialExtent,
+        maxExtent: [420000, 30000, 900000, 350000],
+        restrictedExtent: [420000, 30000, 900000, 350000],
         units: "m",
         resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
         controls: [
@@ -157,73 +100,21 @@ app = new gxp.Viewer({
                 bottomInUnits: false,
                 bottomOutUnits: false
             }),
-            new OpenLayers.Control.MousePosition({numDigits: 0}),
-            new OpenLayers.Control.OverviewMap({
-                size: new OpenLayers.Size(200, 100),
-                minRatio: 64, 
-                maxRatio: 64, 
-                mapOptions: {
-                    theme: null
-                },
-                layers: [new OpenLayers.Layer.OSM("OSM", [
-                        'http://a.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png',
-                        'http://b.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png',
-                        'http://c.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png'
-                    ], {
-                        transitionEffect: 'resize',
-                        attribution: [
-                            "(c) <a href='http://openstreetmap.org/'>OSM</a>",
-                            "<a href='http://creativecommons.org/licenses/by-sa/2.0/'>by-sa</a>"
-                        ].join(' ')
-                    }
-                )]
-            })
+            new OpenLayers.Control.MousePosition({numDigits: 0})
         ],
-        layers: [
-        {
-            source: "olsource",
-            type: "OpenLayers.Layer.WMTS",
-            args: [Ext.applyIf({
-                name: OpenLayers.i18n('ortho'),
-                mapserverLayers: 'ortho',
-                ref: 'ortho',
-                layer: 'ortho',
-                formatSuffix: 'jpeg',
-                opacity: 0
-            }, WMTS_OPTIONS)]
-        }, 
-        {
-            source: "olsource",
-            type: "OpenLayers.Layer.WMTS",
-            group: 'background',
-            args: [Ext.applyIf({
-                name: OpenLayers.i18n('plan'),
-                mapserverLayers: 'plan',
-                ref: 'plan',
-                layer: 'plan',
-                group: 'background'
-            }, WMTS_OPTIONS)]
-        }, 
-        {
-            source: "olsource",
-            type: "OpenLayers.Layer",
-            group: 'background',
-            args: [OpenLayers.i18n('blank'), {
-                displayInLayerSwitcher: false,
-                ref: 'blank',
-                group: 'background'
-            }]
+        layers: [{
+            // base layers go here
         }],
         items: []
     }
 });
 
 app.on('ready', function() {
-    Ext.getCmp('editing').expand();
-
     // remove loading message
     Ext.get('loading').remove();
     Ext.fly('loading-mask').fadeOut({
         remove: true
     });
 }, app);
+
+})();
