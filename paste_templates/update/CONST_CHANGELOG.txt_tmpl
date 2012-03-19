@@ -70,15 +70,9 @@ work in an existing project several steps are required:
        widgets/Viewer.js #GXP
        Proj/Lang/en.js
        CGXP/plugins/Editing.js
-       CGXP/plugins/Zoom.js
-       CGXP/plugins/MapOpacitySlider.js
-       CGXP/plugins/MenuShortcut.js
-       CGXP/plugins/Print.js
-       CGXP/plugins/Legend.js
        CGXP/plugins/Login.js
-       CGXP/plugins/Measure.js
-       CGXP/plugins/FullTextSearch.js
-       CGXP/plugins/Permalink.js
+       CGXP/plugins/ThemeSelector.js
+       CGXP/plugins/LayerTree.js
        CGXP/widgets/MapPanel.js
        OpenLayers/Control/Navigation.js
        OpenLayers/Control/KeyboardDefaults.js
@@ -89,16 +83,9 @@ work in an existing project several steps are required:
        OpenLayers/Control/MousePosition.js
        OpenLayers/Control/OverviewMap.js
        OpenLayers/Control/NavigationHistory.js
-       OpenLayers/Layer/WMTS.js
-       OpenLayers/Layer/OSM.js
        OpenLayers/Layer/Vector.js
        OpenLayers/Renderer/SVG.js
        OpenLayers/Renderer/VML.js
-       plugins/OLSource.js #GXP
-       plugins/ZoomToExtent.js #GXP
-       plugins/NavigationHistory.js #GXP
-       plugins/ZoomToExtent.js #GXP
-       plugins/NavigationHistory.js #GXP
 
 2. Optionally you can add the line
    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib to the "root"
