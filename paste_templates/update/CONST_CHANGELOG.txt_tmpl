@@ -105,7 +105,7 @@ work in an existing project several steps are required:
    ./buildout/bin/paster create --template c2cgeoportal_create \
        --output-dir=/tmp/ ${project} package=${package}
    cp /tmp/${project}/${package}/templates/edit.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/edit.html ${package}/templates/
+   cp /tmp/${project}/${package}/templates/edit.js ${package}/templates/
    rm -rf /tmp/${project}
 
 -------------------------------
