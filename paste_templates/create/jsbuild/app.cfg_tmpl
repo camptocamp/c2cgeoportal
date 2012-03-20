@@ -171,6 +171,7 @@ root =
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
 first =
     Ext/adapter/ext/ext-base.js
@@ -243,6 +244,7 @@ root =
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
 include =
     Proj/Lang/en.js
@@ -270,6 +272,7 @@ root =
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
 include =
     Proj/Lang/fr.js
@@ -297,6 +300,7 @@ root =
     ${package}/static/lib/cgxp/styler/lib
     ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
+    ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
 include =
     Proj/Lang/de.js

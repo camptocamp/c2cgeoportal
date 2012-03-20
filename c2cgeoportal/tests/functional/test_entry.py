@@ -44,6 +44,7 @@ class TestEntryView(TestCase):
                              roles=[role2], area=area, mode="both")
 
         DBSession.add_all([user1, user2, public_layer, private_layer])
+
         transaction.commit()
 
     def tearDown(self):
