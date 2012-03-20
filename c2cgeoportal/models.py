@@ -363,10 +363,7 @@ class RestrictionArea(Base):
     area = GeometryColumn(Polygon(srid=_srid))
     name = Column(types.Unicode, label=_(u'Name'))
     description = Column(types.Unicode, label=_(u'Description'))
-    mode = Column(types.Enum("read", "write", "both",
-            name=_schema+".restrictionmode",
-            native_enum=False),
-            label=_(u'Mode'))
+    readwrite = Column(types.Boolean, label=_(u'Read-write mode'), default=False)
 
     # relationship with Role and Layer
     roles = relationship('Role', secondary=role_ra, 
@@ -374,15 +371,14 @@ class RestrictionArea(Base):
     layers = relationship('Layer', secondary=layer_ra, 
             backref='restrictionareas', cascade='all')
 
-    def __init__(self, name='', description='',
-                       layers=[], roles=[], area=None,
-                       mode='read'):
+    def __init__(self, name='', description='', layers=[], roles=[],
+                 area=None, readwrite=False):
         self.name = name
         self.description = description
         self.layers = layers
         self.roles = roles
         self.area = area
-        self.mode = mode
+        self.readwrite = readwrite
 
     def __unicode__ (self):
         return self.name or u''

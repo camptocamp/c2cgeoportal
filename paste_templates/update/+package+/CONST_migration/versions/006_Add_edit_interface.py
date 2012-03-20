@@ -9,11 +9,7 @@ def upgrade(migrate_engine):
     Column('geoTable', types.Unicode, default=u'').create(layer)
 
     restrictionarea = Table('restrictionarea', meta, schema=schema, autoload=True)
-    mode = types.Enum("read", "write", "both", 
-            name=schema+".restrictionmode", 
-            native_enum=False,
-            metadata=meta)
-    Column('mode', mode, default='read').create(restrictionarea)
+    Column('readwrite', types.Boolean, default=False).create(restrictionarea)
 
 def downgrade(migrate_engine):
     meta = MetaData(bind=migrate_engine)
@@ -22,4 +18,4 @@ def downgrade(migrate_engine):
     layer.c.geoTable.drop()
 
     restrictionarea = Table('restrictionarea', meta, schema=schema, autoload=True)
-    restrictionarea.c.mode.drop()
+    restrictionarea.c.readwrite.drop()

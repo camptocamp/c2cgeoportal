@@ -41,7 +41,7 @@ class TestEntryView(TestCase):
         area = WKTSpatialElement(poly, srid=21781)
         ra = RestrictionArea(name=u'__test_ra2', description=u'',
                              layers=[private_layer],
-                             roles=[role2], area=area, mode="both")
+                             roles=[role2], area=area, readwrite=True)
 
         DBSession.add_all([user1, user2, public_layer, private_layer])
 

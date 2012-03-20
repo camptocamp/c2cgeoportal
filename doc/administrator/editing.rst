@@ -45,21 +45,19 @@ Configuring security
 --------------------
 
 In most cases editable layers are private, i.e. their ``public`` fields are set
-to ``false``. This means that some security configuration is required. Security
-is configured in the ``restrictionarea`` table, which is managed by selecting
-``Restriction Areas`` in the admin interface's menu.
+to ``false``. This means that some security configuration is required. Layer
+security is configured in the ``restrictionarea`` table, which is managed by
+selecting the ``Restriction Areas`` item in the admin interface.
 
-For a layer to be actually editable through the editing user interface it
-should have at least one associated *restriction area*, and this restriction
-area's ``mode`` should be either ``write`` or ``both``.
+For a layer to be actually editable in the editing interface it should have at
+least one associated *restriction area*, and this restriction area should have
+its ``readwrite`` field set to ``true``.
 
-.. note::
+Some notes:
 
-    There are three possible modes for a restriction area: ``read``, ``write``
-    or ``both``. Mode ``read`` means that the restriction area applies to read
-    operations. Mode ``write`` means that the restriction area applies to write
-    operations. Mode ``both`` means that the restriction area applies to both
-    read and write operation.
+* By default a restriction areas has its ``readwrite`` fields set to ``false``.
+* A restriction area whose ``readwrite`` field is ``true`` applies to both
+  ``read`` and ``write`` operations.
 
 Binding restriction areas and layers together can be done from either the
 ``Restriction Area`` objects or the ``Layer`` objects in the admin interface.

@@ -10,7 +10,7 @@ from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
                                     HTTPBadRequest, HTTPUnauthorized)
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
-from sqlalchemy.sql.expression import and_, or_
+from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
@@ -116,8 +116,7 @@ class Entry(object):
                 c = DBSession.query(RestrictionArea) \
                     .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
                     .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                    .filter(or_(RestrictionArea.mode == 'write',
-                                RestrictionArea.mode == 'both')) \
+                    .filter(RestrictionArea.readwrite == True) \
                     .count()
                 if c > 0:
                     l['editable'] = True
@@ -218,7 +217,6 @@ class Entry(object):
                        (Role, Role.id == role_ra.c.role_id) \
                      ). \
                      filter(Role.id == role_id). \
-                     filter(or_(RestrictionArea.mode == 'read', RestrictionArea.mode == 'both')). \
                      filter(and_(Layer.public != True,
                                  functions.area(RestrictionArea.area) > 0))
             query = query.union(query2)
