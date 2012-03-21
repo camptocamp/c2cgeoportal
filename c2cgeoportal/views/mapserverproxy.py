@@ -57,12 +57,12 @@ def proxy(request):
     h.pop("Host", h)
     try:
         resp, content = http.request(_url, method=method, body=body, headers=h)
-    except:
-        return HTTPBadGateway()
+    except: # pragma: no cover
+        return HTTPBadGateway() # pragma: no cover
 
     # check for allowed content types
     if not resp.has_key("content-type"):
-        return HTTPNotAcceptable()
+        return HTTPNotAcceptable() # pragma: no cover
 
     if method == "POST" and is_get_feature(request.body):
         content = limit_featurecollection(content, limit=200)
