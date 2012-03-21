@@ -108,6 +108,9 @@ work in an existing project several steps are required:
    cp /tmp/${project}/${package}/templates/edit.js ${package}/templates/
    rm -rf /tmp/${project}
 
+4. DATA queries should be changed in the mapfile for the editable layers.
+   See the administrator mapfile documentation.
+
 -------------------------------
 Wed, 29 Feb 2012 11:29:12 +0100
 
