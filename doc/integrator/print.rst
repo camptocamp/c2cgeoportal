@@ -51,13 +51,13 @@ And in ``print/templates/A3_landscape_inherit.mako`` and
 be redefined.
 The ``print.mako.in`` has the "header" part and includes the wanted templates.
 
-Using backgroundPDF parameter
+Using backgroundPdf parameter
 ------------------------------
 
 
 In print configuration you can use a PDF as a background image. You should put the 
 PDF file in the print directory and use '<%text>$</%text>{configDir}/template_A4_portrait.pdf' 
-for the valeur of backgroundPDF parameter.
+for the valeur of backgroundPdf parameter.
 
 In your buildout.cfg file you should add this parts:
 
