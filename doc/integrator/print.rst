@@ -1,4 +1,3 @@
-
 .. _print:
 
 ============================
@@ -51,3 +50,19 @@ And in ``print/templates/A3_landscape_inherit.mako`` and
 ``print/templates/A4_portrait_inherit.mako`` thoses block will 
 be redefined.
 The ``print.mako.in`` has the "header" part and includes the wanted templates.
+
+Using BackgroundPDF parameter
+------------------------------
+
+
+In print configuration you can use a PDF as a background image. You should put the 
+PDF file in the print directory and use '<%text>$</%text>{configDir}/tpl_puidoux.pdf' 
+for the valeur of BackgroundPDF parameter.
+
+In your buildout.cfg file you should add this parts:
+
+::
+   
+   [print-war]
+   input += *.pdf
+
