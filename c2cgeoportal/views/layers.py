@@ -1,4 +1,5 @@
-from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
+from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
+                                    HTTPBadRequest)
 from pyramid.view import view_config
 
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
@@ -31,10 +32,13 @@ def _get_class(layer_id):
 def _get_classes(request):
     """ A generator function that yields ``(layer_id, class)``
     tuples. """
-    str_ = request.matchdict['layer_id'].rstrip(',')
-    layer_ids = map(int, str_.split(','))
-    for layer_id in layer_ids:
-        yield (layer_id, _get_class(layer_id))
+    try:
+        layer_ids = (int(layer_id) for layer_id in \
+                         request.matchdict['layer_id'].split(',') if layer_id)
+        for layer_id in layer_ids:
+            yield (layer_id, _get_class(layer_id))
+    except ValueError:
+        raise HTTPBadRequest() # pragma: no cover
 
 
 def _get_geom_attr(mapped_class):
@@ -55,10 +59,10 @@ def _get_protocols(request):
 
 
 def _get_protocol(request):
-    protocols = [p for _, p in _get_protocols(request)]
-    if len(protocols) > 1:
+    try:
+        return next(p for _, p in _get_protocols(request))
+    except StopIteration: # pragma: no cover
         raise HTTPInternalServerError() # pragma: no cover
-    return protocols[0]
 
 
 @view_config(route_name='layers_read_many', renderer='geojson')
