@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 
 from shapely.wkb import loads as wkb_loads
@@ -8,8 +8,27 @@ from geojson import Feature, FeatureCollection
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
+
+_language_dict = {
+    'fr': 'french',
+    'en': 'english',
+    'de': 'german',
+    }
+
+
 @view_config(route_name='fulltextsearch', renderer='geojson')
 def fulltextsearch(request):
+
+    try:
+        lang = request.registry.settings['default_language']
+    except KeyError:
+        return HTTPInternalServerError(
+                detail='default_language not defined in settings')
+    try:
+        lang = _language_dict[lang]
+    except KeyError:
+        return HTTPInternalServerError(
+                detail='%s not defined in _language_dict' % lang)
 
     if 'query' not in request.params:
         return HTTPBadRequest(detail='no query')
@@ -22,10 +41,10 @@ def fulltextsearch(request):
     if limit > 30:
         limit = 30
 
-    terms = '&'.join([w + ':*' for w in 
-            query.split(' ') if w != ''])
-    filter = "%(tsvector)s @@ to_tsquery('german', '%(terms)s')" % \
-        {'tsvector': 'ts', 'terms': terms}
+    terms = '&'.join(w + ':*' for w in
+                         query.split(' ') if w != '')
+    filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
+                {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
     objs = DBSession.query(FullTextSearch).filter(filter) \
                .order_by(FullTextSearch.label).limit(limit).all()
