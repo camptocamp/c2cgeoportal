@@ -78,7 +78,7 @@ class TestFulltextsearchView(TestCase):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
-        request = testing.DummyRequest(params=dict(query='tra sol'))
+        request = testing.DummyRequest(params=dict(query='tra sol', limit=40))
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
