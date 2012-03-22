@@ -80,7 +80,7 @@ def wsgiHandler(environ, start_response):
                 start_response("200 OK", [('Content-Type','image/png')])
             else:
                 start_response("200 OK", [('Content-Type','image/jpeg')])
-            return [open(image_file).read()]
+            return [open(image_file, 'rb').read()]
         else:
             start_response("404 Tile Not Found", [('Content-Type','text/plain')])
             return ["No tile generated"]
