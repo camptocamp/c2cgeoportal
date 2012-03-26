@@ -321,6 +321,7 @@ class Layer(TreeItem):
     maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
     identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field')) # data attribute field in which application can find a human identifiable name or number
+    geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
 
     def __init__(self, name=u'', order=0, public=True, icon=u'', 
             layerType=u'internal WMS'):
@@ -362,6 +363,7 @@ class RestrictionArea(Base):
     area = GeometryColumn(Polygon(srid=_srid))
     name = Column(types.Unicode, label=_(u'Name'))
     description = Column(types.Unicode, label=_(u'Description'))
+    readwrite = Column(types.Boolean, label=_(u'Read-write mode'), default=False)
 
     # relationship with Role and Layer
     roles = relationship('Role', secondary=role_ra, 
@@ -369,12 +371,14 @@ class RestrictionArea(Base):
     layers = relationship('Layer', secondary=layer_ra, 
             backref='restrictionareas', cascade='all')
 
-    def __init__(self, name='', description='', layers=[], roles=[], area=None):
+    def __init__(self, name='', description='', layers=[], roles=[],
+                 area=None, readwrite=False):
         self.name = name
         self.description = description
         self.layers = layers
         self.roles = roles
         self.area = area
+        self.readwrite = readwrite
 
     def __unicode__ (self):
         return self.name or u''

@@ -9,7 +9,7 @@ import pyramid_tm
 import papyrus
 import papyrus_ogcproxy
 
-from papyrus.renderers import GeoJSON
+from papyrus.renderers import GeoJSON, XSD
 
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
@@ -68,6 +68,9 @@ def includeme(config):
     # add the "geojson" renderer
     config.add_renderer('geojson', GeoJSON())
 
+    # add the "xsd" renderer
+    config.add_renderer('xsd', XSD())
+
     # add a TileCache view
     load_tilecache_config(config.get_settings())
     config.add_route('tilecache', '/tilecache{path:.*?}')
@@ -87,6 +90,7 @@ def includeme(config):
 
     # add routes to the entry view class
     config.add_route('home', '/')
+    config.add_route('edit', '/edit')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('testi18n', '/testi18n.html')
@@ -113,8 +117,25 @@ def includeme(config):
     # full text search routes
     config.add_route('fulltextsearch', '/fulltextsearch')
 
-    # add routes for MapFish web services
-    config.include(papyrus.includeme)
+    # add routes for the "layers" web service
+    config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',
+                     request_method='GET')
+    config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
+                     request_method='GET')
+    config.add_route('layers_read_many', '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
+                     request_method='GET') # supports URLs like /layers/1,2,3
+    config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='GET')
+    config.add_route('layers_create', '/layers/{layer_id:\\d+}',
+                     request_method='POST')
+    config.add_route('layers_update', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='PUT')
+    config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
+                     request_method='DELETE')
+    config.add_route('layers_root', '/layers/') # there's no view corresponding to
+                                                # that route, it is to be used from
+                                                # mako templates to get the root of
+                                                # the "layers" web service
 
     # pyramid_formalchemy's configuration
     config.include('pyramid_formalchemy')

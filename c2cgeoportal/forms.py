@@ -184,7 +184,7 @@ class CheckBoxTreeSet(CheckBoxSet):
 
 class LayerCheckBoxTreeSet(CheckBoxTreeSet):
     def __init__(self, attribute, dom_id='layer_tree', 
-            auto_check=True, only_private=True):
+            auto_check=True, only_private=False):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self.only_private = only_private
 
@@ -364,6 +364,7 @@ fieldOrder = [RestrictionArea.name,
               RestrictionArea.description,
               RestrictionArea.layers,
               RestrictionArea.roles,
+              RestrictionArea.readwrite,
               RestrictionArea.area]
 RestrictionArea.configure(include=fieldOrder)
 

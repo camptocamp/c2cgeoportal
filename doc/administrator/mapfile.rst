@@ -77,31 +77,80 @@ The restricted layers work only with postgres data.  All layer defined as
 restricted in the mapfile should be defined as well in the admin interface
 and vice versa.
 
-To define a restricted layer in the mapfile we should define the ``DATA``
-in the ``LAYER`` like (in one line)::
+To define a restricted layer in the mapfile the ``DATA`` property of the
+``LAYER`` should look like this::
 
-    DATA "geometrie FROM (SELECT geo.geom as geom 
-        FROM geodata.table AS geo, ${mapserver_join_tables} 
-        WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) 
-        AND ${mapserver_join_where} 'layer_name') AS foo 
-        USING UNIQUE gid USING srid=-1"
+    DATA "the_geom from
+          (SELECT
+             geo.*
+           FROM
+             <schema>.<table> AS geo
+           WHERE
+             ST_Contains(
+               (${vars:mapfile_data_subselect} '<layername>'),
+               ST_SetSRID(geo.<the_geom>, 21781)
+             )
+          ) as foo using unique id using srid=21781"
 
-And in the METADATA of the layer::
+``<schema>``, ``<table>``, ``<layername>`` and ``<the_geom>`` need to be
+replaced as appropriate. ``<table>`` is the name of the PostGIS table including
+the geographic data for this layer. ``<the_geom>`` is the name of the table's
+geometry column. ``<schema>`` is the name of the schema including the table.
+``layer_name`` is the name of this layer as defined with the ``NAME`` property.
+
+The ``${vars:mapfile_data_subselect}`` variable is defined in the Buildout
+configuration file (``CONST_buildout.cfg``). Its goal is to simplify the
+writing of the mapfile. It is defined as follows::
+
+    SELECT
+      ST_Collect(ra.area)
+    FROM
+      main.restrictionarea AS ra,
+      main.role_restrictionarea AS rra,
+      main.layer_restrictionarea AS lra,
+      main.treeitem AS la
+    WHERE
+      rra.role_id = %role_id%
+    AND
+      rra.restrictionarea_id = ra.id
+    AND
+      lra.restrictionarea_id = ra.id
+    AND
+      lra.layer_id = la.id
+    AND
+      la.name = 
+
+.. note::
+
+
+    Before c2cgeoportal 0.6 the following ``DATA`` query was given
+    in this documentation::
+
+        DATA "geometrie FROM (SELECT geo.geom as geom 
+            FROM geodata.table AS geo, ${mapserver_join_tables} 
+            WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) 
+            AND ${mapserver_join_where} 'layer_name') AS foo 
+            USING UNIQUE gid USING srid=-1"
+
+    In most cases this query should continue to work with 0.6 and
+    higher, but changing to the new query is recommended.
+
+It is required to have the following in the METADATA of the layer::
 
     ${mapserver_layer_metadata}
 
-The important point is to have ``${mapserver_join_tables}`` in the table list,
-have ``ST_Contains(${mapserver_join_area}, geo.geometrie) AND
-${mapserver_join_where} '<layer_name>'`` in the where clause to do the
-restriction. The first part is used to filter on the geometry, the second is to
-do the table joining and select the right layer.
+This variable is defined in the Buildout configuration file as*
+follows::
+
+    mapserver_layer_metadata =
+        "default_role_id" "-1"
+        "role_id_validation_pattern" "^-?[0-9]*$$"
 
 The metadata section is needed because MapServer 6  applies a validation
 with a pattern for all the variable substitution present in the ``DATA``.
 
-This should be in a .map.in because it uses template variable that is replaced
-by SQL code in the mapfile.
-
+The mapfile should be a ``.map.in`` file, for the Buildout variable to be
+substituted at Buildout execution time.
 
 Recommendations
 ---------------
@@ -109,4 +158,3 @@ Recommendations
 To have a good print and screen result, it's not recommended to use
 LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be used only 
 when necessary.
-
