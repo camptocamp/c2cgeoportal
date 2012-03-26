@@ -19,7 +19,14 @@ Tue, 13 Mar 2012 13:55:08 +0100
 c2cgeoportal 0.6 features an editing interface. To make the editing interface
 work in an existing project several steps are required:
 
-1. An [edit.js] section should be added to jsbuild/app.cfg (notice the CHANGE
+1. The editing interface relies on the CGXP Editing plugin. This plugin is
+   available as of commit 4423e4b [1] of CGXP. So CGXP should be updated to, at
+   least, this commit in the application. See [2] to know how to update CGXP.
+
+   [1] <https://github.com/camptocamp/cgxp/commit/4423e4b7f984745ac1341e6c00850bab74fe5a3d>
+   [2] <http://docs.camptocamp.net/c2cgeoportal/integrator/update_application.html#update-cgxp>
+
+2. An [edit.js] section should be added to jsbuild/app.cfg (notice the CHANGE
    ME IF NEEDED comment):
 
    [edit.js]
@@ -87,14 +94,14 @@ work in an existing project several steps are required:
        OpenLayers/Renderer/SVG.js
        OpenLayers/Renderer/VML.js
 
-2. Optionally you can add the line
+3. Optionally you can add the line
    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib to the "root"
    list of every [*.js] section of jsbuild/app.cfg. This is optional because
    only the editing interface (edit.js) should require scripts from this
    directory. But it may be a good idea to have every [*.js] section use the
    same "root" list.
 
-3. You need to add two Mako templates to ${package}/templates, namely edit.html
+4. You need to add two Mako templates to ${package}/templates, namely edit.html
    and edit.js. These files are in the c2cgeoportal_create paster template, so
    they're not automatically added to the application source tree when the
    c2cgeoportal_update template is applied. The easiest way to get them is to
@@ -108,8 +115,9 @@ work in an existing project several steps are required:
    cp /tmp/${project}/${package}/templates/edit.js ${package}/templates/
    rm -rf /tmp/${project}
 
-4. DATA queries should be changed in the mapfile for the editable layers.
-   See the administrator mapfile documentation.
+5. SQL queries in the DATA properties should be changed in the mapfile for the
+   editable layers. They should use the new "mapfile_data_subselect" Buildout
+   variable. See the administrator mapfile documentation.
 
 -------------------------------
 Wed, 29 Feb 2012 11:29:12 +0100
