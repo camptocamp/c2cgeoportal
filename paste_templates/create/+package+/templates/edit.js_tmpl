@@ -69,9 +69,11 @@ app = new gxp.Viewer({
         },
         outputTarget: 'left-panel'
     }, {
+        ptype: "cgxp_menushortcut",
+        type: '->'
+    }, {
         ptype: "cgxp_login",
         actionTarget: "map.tbar",
-        type: '->',
 % if user:
         username: "$${user.username}",
 % endif
