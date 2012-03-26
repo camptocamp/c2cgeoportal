@@ -1,4 +1,4 @@
-.. _administrator_deploy:
+.. _integrator_git:
 
 Quick introduction to Git
 =========================

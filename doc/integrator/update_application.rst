@@ -9,13 +9,13 @@ Update the application code
 To get the changes done by other people, we need to ``pull`` the new code::
 
     git pull
-
-And if the submodules where updated::
-
     git submodule sync
     git submodule update
     git submodule foreach git submodule sync
     git submodule foreach git submodule update
+
+.. note::
+   the submodule command is used to have the right version of CGXP.
 
 Update c2cgeoportal
 -------------------

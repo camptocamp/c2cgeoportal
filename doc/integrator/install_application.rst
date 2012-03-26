@@ -88,7 +88,7 @@ Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-The Git commands to the code from a remote repository is named ``clone``::
+The Git commands to get the code from a remote repository is named ``clone``::
 
     git clone <url_to_the_remote_repository> <local_folder>
 
@@ -97,6 +97,11 @@ We also have to download the ``submodule`` dependencies
 
     git submodule update --init
     git submodule foreach git submodule update --init
+
+.. note::
+   We don't use the ``--recursive`` because we wouldn't have the third level 
+   of submodule who ass son unneeded dependencies and duplicate code 
+   like OpenLayers.
 
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
