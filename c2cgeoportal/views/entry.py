@@ -14,6 +14,7 @@ from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
+from shapely import wkb
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
@@ -90,6 +91,7 @@ class Entry(object):
 
     def _layer(self, layer, wms_layers, wms):
         l = { 
+            'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
             'imageType': layer.imageType,
@@ -107,6 +109,17 @@ class Entry(object):
             l['kml'] = self._getIconPath(layer.kml)
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
+        if layer.geoTable:
+            if layer.public:
+                l['editable'] = True
+            elif self.user:
+                c = DBSession.query(RestrictionArea) \
+                    .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
+                    .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                    .filter(RestrictionArea.readwrite == True) \
+                    .count()
+                if c > 0:
+                    l['editable'] = True
 
         if layer.layerType == "internal WMS":
             # this is a leaf, ie. a Mapserver layer
@@ -310,6 +323,15 @@ class Entry(object):
 
     @view_config(route_name='home', renderer='index.html')
     def home(self):
+        d = self._getVars()
+
+        d['lang'] = self.lang
+        d['debug'] = self.debug
+
+        return d
+
+    @view_config(route_name='edit', renderer='edit.html')
+    def edit(self):
         d = self._getVars()
 
         d['lang'] = self.lang

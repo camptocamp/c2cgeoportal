@@ -127,4 +127,38 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "testpoint_protected_query_with_collect"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp WHERE ST_Contains((${vars:mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.the_geom, 21781))) as foo using unique id using srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+
+            ${vars:mapserver_layer_metadata}
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_protected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END

@@ -17,5 +17,6 @@ Content:
    internationalization
    update_application
    fulltext_search
+   editing
    tileforge
    deploy
