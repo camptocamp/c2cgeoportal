@@ -80,6 +80,7 @@ work in an existing project several steps are required:
        CGXP/plugins/Login.js
        CGXP/plugins/ThemeSelector.js
        CGXP/plugins/LayerTree.js
+       CGXP/plugins/MenuShortcut.js
        CGXP/widgets/MapPanel.js
        OpenLayers/Control/Navigation.js
        OpenLayers/Control/KeyboardDefaults.js
