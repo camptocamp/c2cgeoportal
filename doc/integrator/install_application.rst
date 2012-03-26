@@ -92,6 +92,10 @@ The Git commands to get the code from a remote repository is named ``clone``::
 
     git clone <url_to_the_remote_repository> <local_folder>
 
+If you still use SVN::
+
+    svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
+
 We also have to download the ``submodule`` dependencies
 (two levels in our case)::
 

@@ -15,7 +15,15 @@ To get the changes done by other people, we need to ``pull`` the new code::
     git submodule foreach git submodule update
 
 .. note::
-   the submodule command is used to have the right version of CGXP.
+   The submodule command is used to have the right version of CGXP.
+
+If you still use SVN::
+
+    svn update
+
+.. caution::
+   This command will not updates CGXP, and c2cgeoportal is not able to
+   fix the revision of CGXP.
 
 Update c2cgeoportal
 -------------------
