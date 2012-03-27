@@ -314,19 +314,20 @@ class TestLayers(TestCase):
         response = delete(request)
         self.assertEquals(response.status_int, 204)
 
-    def test_metadata(self):
+    def test_metadata_no_auth(self):
+        from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal.views.layers import metadata
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
-        table = metadata(request)
-        self.assertEquals(table.name, 'table_%d' % layer_id)
+        self.assertRaises(HTTPNotFound, metadata, request)
+
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id)
+        request = self._get_request(layer_id, username=u'__test_user')
 
         table = metadata(request)
         self.assertEquals(table.name, 'table_%d' % layer_id)

@@ -245,5 +245,7 @@ def delete(request):
 
 @view_config(route_name='layers_metadata', renderer='xsd')
 def metadata(request):
-    mapped_class = _get_class_for_request(request)
-    return mapped_class.__table__
+    layer = _get_layer_for_request(request)
+    if not layer.public and request.user is None:
+        raise HTTPNotFound
+    return get_class(str(layer.geoTable)).__table__
