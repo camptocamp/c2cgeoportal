@@ -35,7 +35,7 @@ def _get_geom_col_info(layer):
     mapped_class = get_class(str(layer.geoTable))
     for p in class_mapper(mapped_class).iterate_properties:
         if not isinstance(p, ColumnProperty):
-            continue
+            continue  # pragma: no cover
         col = p.columns[0]
         if isinstance(col.type, Geometry):
             return col.name, col.type.srid
@@ -53,8 +53,8 @@ def _get_layer(layer_id):
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
         raise HTTPInternalServerError()  # pragma: no cover
-    if not geo_table:
-        raise HTTPNotFound("Layer %d has no geo table" % layer_id)
+    if not geo_table:  # pragma: no cover
+        raise HTTPNotFound("Layer %d has no geo table" % layer_id)  # pragma: no cover
     return layer
 
 
@@ -88,13 +88,6 @@ def _get_protocol_for_request(request, **kwargs):
     id found in the ``layer_id`` matchdict. """
     layer = _get_layer_for_request(request)
     return _get_protocol_for_layer(layer, **kwargs)
-
-
-def _get_class_for_request(request):
-    """ Return an SQLAlchemy mapped class for the first layer
-    id found in the ``layer_id`` matchdict. """
-    layer = _get_layer_for_request(request)
-    return get_class(str(layer.geoTable))
 
 
 def _proto_read(layer, request):
@@ -143,8 +136,8 @@ def read_one(request):
     if request.user is None:
         raise HTTPNotFound()
     geom = feature.geometry
-    if not geom or isinstance(geom, geojson.geometry.Default):
-        return feature
+    if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
+        return feature  # pragma: no cover
     shape = asShape(geom)
     srid = _get_geom_col_info(layer)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
