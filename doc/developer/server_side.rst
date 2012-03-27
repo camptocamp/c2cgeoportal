@@ -74,6 +74,11 @@ To run the unit tests simply do this::
 
     $ ./buildout/bin/python setup.py nosetests
 
+To run a specific test use the ``--tests`` switch. For example::
+
+    $ ./buildout/bin/python setup.py nosetests --tests \
+      c2cgeoportal/tests/test_echoview.py:test_json_base64_encode_chunks
+
 Functional tests
 ................
 
@@ -122,6 +127,11 @@ run the ``template`` part to generate
 You can now run both the unit and functional tests with this::
 
     $ ./buildout/bin/python setup.py nosetests -a functional
+
+To run a specific test use the ``--tests`` switch. For example::
+
+    $ ./buildout/bin/python setup.py nosetests -a functional --tests \
+      c2cgeoportal/tests/functional/test_mapserverproxy.py:TestMapserverproxyView.test_GetMap_unprotected_layer_anonymous
 
 Adding tests
 ~~~~~~~~~~~~
