@@ -3,16 +3,20 @@
 Full-text search
 ================
 
-If *full-text search* is enabled in the application, a table dedicated to
-full-text search is needed in the database.
+If *full-text search* is enabled in the application, a PostgreSQL table
+dedicated to full-text search is required.
 
-Create the full-text search table
----------------------------------
+The full-text search table
+--------------------------
 
-This full-text search table must be named ``tsearch`` (for *text search*) and
-must be in the application-specific schema.
+This full-text search table should be named ``tsearch`` (for *text search*) and
+should be in the application-specific schema.
 
-To create the table, the following SQL can be used::
+You don't need to create the table yourself, as it is created by the
+``create_db`` command line (see the section
+:ref:`integrator_install_application`).
+
+If you did want to create the table manually you'd use the following commands::
 
     $ sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (
         id SERIAL PRIMARY KEY,
@@ -21,10 +25,14 @@ To create the table, the following SQL can be used::
         ts TSVECTOR);" <db_name>
     $ sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
     $ sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
+
+with ``<schema_name>``, ``<srid>``, and ``<db_name>``  substituted as appropriate.
+
+Also make sure that the db user can ``SELECT`` in the ``tsearch`` table::
+
     $ sudo -u postgres psql -c "GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";" <db_name>
 
-with ``<schema_name>``, ``<srid>``, and ``<db_user>`` substituted as
-appropriate.
+with ``<db_user>``, and ``<db_name>`` substituded as appropriately.
 
 Populate the full-text search table
 -----------------------------------
@@ -50,4 +58,11 @@ Here's another example where rows from a ``SELECT`` are inserted::
       geom, 21781, 'layer group name', text, to_tsvector('german', text)
     FROM table;
 
+.. note::
 
+    The language string used as the first argument to the ``to_tsvector``
+    function should match that defined in the ``default_language`` variable of
+    the Buildout configuration. For example if you have "french" text in the
+    database the application's ``default_language`` should be ``fr``. In other
+    words c2cgeoportal assumes that the database language and the application's
+    default language match.
