@@ -153,7 +153,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import read_many
 
         self._create_layer()
-        request = self._get_request(10000)
+        request = self._get_request(10000, username=u'__test_user')
 
         self.assertRaises(HTTPNotFound, read_many, request)
 
