@@ -1,4 +1,5 @@
-from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound, HTTPBadRequest)
+from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
+                                    HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 
@@ -69,18 +70,18 @@ def _get_layer_for_request(request):
     return next(_get_layers_for_request(request))
 
 
-def _get_protocol_for_layer(layer):
+def _get_protocol_for_layer(layer, **kwargs):
     """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
     cls = get_class(str(layer.geoTable))
     geom_attr, _ = _get_geom_col_info(cls)
-    return Protocol(DBSession, cls, geom_attr)
+    return Protocol(DBSession, cls, geom_attr, **kwargs)
 
 
-def _get_protocol_for_request(request):
+def _get_protocol_for_request(request, **kwargs):
     """ Returns a papyrus ``Protocol`` for the first layer
     id found in the ``layer_id`` matchdict. """
     layer = _get_layer_for_request(request)
-    return _get_protocol_for_layer(layer)
+    return _get_protocol_for_layer(layer, **kwargs)
 
 
 def _get_class_for_request(request):
@@ -161,7 +162,28 @@ def count(request):
 
 @view_config(route_name='layers_create', renderer='geojson')
 def create(request):
-    protocol = _get_protocol_for_request(request)
+    layer = _get_layer_for_request(request)
+    def cb(r, feature, o):
+        if layer.public:
+            return
+        if request.user is None:
+            raise HTTPForbidden()
+        geom = feature.geometry
+        if geom and not isinstance(geom, geojson.geometry.Default):
+            shape = asShape(geom)
+            srid = _get_geom_col_info(get_class(layer.geoTable))[1]
+            spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+            allowed = DBSession.query(
+               RestrictionArea.area.collect.gcontains(spatial_elt)) \
+                       .join(RestrictionArea.roles) \
+                       .join(RestrictionArea.layers) \
+                       .filter(RestrictionArea.area.area > 0) \
+                       .filter(RestrictionArea.readwrite == True) \
+                       .filter(Role.id == request.user.role.id) \
+                       .filter(Layer.id == layer.id).scalar()
+            if not allowed:
+                raise HTTPForbidden()
+    protocol = _get_protocol_for_layer(layer, before_create=cb)
     return protocol.create(request)
 
 

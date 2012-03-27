@@ -104,6 +104,7 @@ class TestLayers(TestCase):
         ra.name = u'__test_ra'
         ra.layers = [layer]
         ra.roles = [self.role]
+        ra.readwrite = True
         poly = 'POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))'
         ra.area = WKTSpatialElement(poly, srid=21781)
 
@@ -217,14 +218,34 @@ class TestLayers(TestCase):
         response = count(request)
         self.assertEquals(response, 2)
 
-    def test_create(self):
-        from geojson.feature import FeatureCollection
+    def test_create_no_auth(self):
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import create
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}]}'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        self.assertRaises(HTTPForbidden, create, request)
+
+    def test_create_no_perm(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import create
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.method = 'POST'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        self.assertRaises(HTTPForbidden, create, request)
+
+    def test_create(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import create
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.method = 'POST'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
