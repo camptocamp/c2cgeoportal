@@ -261,7 +261,7 @@ class TestLayers(TestCase):
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         self.assertRaises(HTTPForbidden, update, request)
 
-    def test_update_no_perm(self):
+    def test_update_no_perm_dst_geom(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import update
 
@@ -270,6 +270,17 @@ class TestLayers(TestCase):
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'
+        self.assertRaises(HTTPForbidden, update, request)
+
+    def test_update_no_perm_src_geom(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import update
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 2
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 2, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update(self):

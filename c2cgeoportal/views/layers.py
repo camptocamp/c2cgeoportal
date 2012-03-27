@@ -24,9 +24,15 @@ from c2cgeoportal.models import (DBSession, Layer, RestrictionArea,
                                  User, Role)
 
 
-def _get_geom_col_info(mapped_class):
-    # This function assumes that the names of geometry attributes
-    # in the mapped class are the same as those of geometry columns.
+def _get_geom_col_info(layer):
+    """ Return information about the layer's geometry column, namely
+    a ``(name, srid)`` tuple, where ``name`` is the name of the
+    geometry column, and ``srid`` its srid.
+
+    This function assumes that the names of geometry attributes
+    in the mapped class are the same as those of geometry columns.
+    """
+    mapped_class = get_class(str(layer.geoTable))
     for p in class_mapper(mapped_class).iterate_properties:
         if not isinstance(p, ColumnProperty):
             continue
@@ -73,7 +79,7 @@ def _get_layer_for_request(request):
 def _get_protocol_for_layer(layer, **kwargs):
     """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
     cls = get_class(str(layer.geoTable))
-    geom_attr, _ = _get_geom_col_info(cls)
+    geom_attr = _get_geom_col_info(layer)[0]
     return Protocol(DBSession, cls, geom_attr, **kwargs)
 
 
@@ -140,7 +146,7 @@ def read_one(request):
     if not geom or isinstance(geom, geojson.geometry.Default):
         return feature
     shape = asShape(geom)
-    _, srid = _get_geom_col_info(get_class(str(layer.geoTable)))
+    srid = _get_geom_col_info(layer)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
     allowed = DBSession.query(
                RestrictionArea.area.collect.gcontains(spatial_elt)) \
@@ -172,7 +178,7 @@ def create(request):
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = asShape(geom)
-            srid = _get_geom_col_info(get_class(layer.geoTable))[1]
+            srid = _get_geom_col_info(layer)[1]
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
             allowed = DBSession.query(
                RestrictionArea.area.collect.gcontains(spatial_elt)) \
@@ -198,21 +204,27 @@ def update(request):
     if request.user is None:
         raise HTTPForbidden()
     def security_cb(r, feature, o):
+        # we need both the "original" and "new" geometry to be
+        # within the restriction area
+        geom_attr, srid = _get_geom_col_info(layer)
+        geom_attr = getattr(o, geom_attr)
+        and_clauses = [RestrictionArea.area.collect.gcontains(geom_attr)]
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = asShape(geom)
-            srid = _get_geom_col_info(get_class(layer.geoTable))[1]
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-            allowed = DBSession.query(
-               RestrictionArea.area.collect.gcontains(spatial_elt)) \
-                       .join(RestrictionArea.roles) \
-                       .join(RestrictionArea.layers) \
-                       .filter(RestrictionArea.area.area > 0) \
-                       .filter(RestrictionArea.readwrite == True) \
-                       .filter(Role.id == request.user.role.id) \
-                       .filter(Layer.id == layer.id).scalar()
-            if not allowed:
-                raise HTTPForbidden()
+            and_clauses.append(
+                    RestrictionArea.area.collect.gcontains(spatial_elt))
+        allowed = DBSession.query(
+                and_(*and_clauses)) \
+                   .join(RestrictionArea.roles) \
+                   .join(RestrictionArea.layers) \
+                   .filter(RestrictionArea.area.area > 0) \
+                   .filter(RestrictionArea.readwrite == True) \
+                   .filter(Role.id == request.user.role.id) \
+                   .filter(Layer.id == layer.id).scalar()
+        if not allowed:
+            raise HTTPForbidden()
     protocol = _get_protocol_for_layer(layer, before_update=security_cb)
     return protocol.update(request, feature_id)
 
@@ -227,8 +239,7 @@ def delete(request):
     if request.user is None:
         raise HTTPForbidden()
     def security_cb(r, o):
-        geom_attr = _get_geom_col_info(get_class(layer.geoTable))[0]
-        geom_attr = getattr(o, geom_attr)
+        geom_attr = getattr(o, _get_geom_col_info(layer)[0])
         allowed = DBSession.query(
            RestrictionArea.area.collect.gcontains(geom_attr)) \
                    .join(RestrictionArea.roles) \
