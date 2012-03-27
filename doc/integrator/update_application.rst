@@ -25,6 +25,7 @@ steps:
 1. Set a new version for the ``c2cgeoportal`` package. For this edit the
    application's buildout config file and change the version for the
    ``c2cgeoportal`` dependency in the ``[versions]`` section.
+
 2. Execute ``buildout`` to download and install the new version of the
    ``c2cgeoportal`` package::
 
@@ -39,15 +40,21 @@ steps:
        $ ./buildout/bin/paster create --template=c2cgeoportal_update \
          --output-dir=.. <project_name> package=<package_name>
 
+   ``<project_name>`` is the name of the application's root directory,
+   including ``development.ini``, etc.  ``<package_name>`` is the name of the
+   application's root Python module, i.e. the name of the subdir including the
+   application's Python code. If unsure, see the ``name`` argument to the
+   ``setup`` call in the application's ``setup.py`` file.
+
 4. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
+
 5. Update the database using the ``manage_db`` script::
 
         $ ./buildout/bin/manage_db -c production.ini -n <package_name> upgrade
 
-   ``<package_name>`` is to be replaced by the name of your application
-   package. If unsure, see the ``name`` argument to the ``setup`` call in the
-   application's ``setup.py`` file.
+   ``<package_name>`` is to be replaced by the name of the application module.
+   See above for more information.
 
 6. Execute ``buildout`` one more time to rebuild and reinstall the
    application::
