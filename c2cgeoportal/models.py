@@ -8,6 +8,7 @@ except ImportError:
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import ForeignKey, types, Table, Integer
+from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
 from formalchemy import Column
@@ -38,14 +39,26 @@ if srid is not None:
 else:
     raise Exception('srid not specified, you need to add it to your buildout config')
 
+
+class TsVector(types.UserDefinedType):
+    """ A custom type for PostgreSQL's tsvector type. """
+    def get_col_spec(self):
+        return 'TSVECTOR'
+
+
 class FullTextSearch(GeoInterface, Base):
     __tablename__ = 'tsearch'
-    __table_args__ = {'schema': _schema}
+    __table_args__ = (
+            Index('tsearch_ts_idx', 'ts', postgresql_using='gin'),
+            {'schema': _schema}
+            )
     __acl__ = [DENY_ALL]
     id = Column('id', types.Integer, primary_key=True)
     label = Column('label', types.Unicode)
     layer_name = Column('layer_name', types.Unicode)
+    ts = Column('ts', TsVector)
     the_geom = GeometryColumn(Geometry(srid=_srid))
+
 GeometryDDL(FullTextSearch.__table__)
 
 class Functionality(Base):
