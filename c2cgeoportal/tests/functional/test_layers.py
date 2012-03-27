@@ -137,7 +137,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 0)
 
-    def test_read_many_auth(self):
+    def test_read_many(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
 
@@ -175,18 +175,38 @@ class TestLayers(TestCase):
         self.assertEquals(collection.features[1].properties['__layer_id__'], layer_id2)
         self.assertEquals(collection.features[2].properties['__layer_id__'], layer_id3)
 
+    def test_read_one_no_auth(self):
+        from pyramid.httpexceptions import HTTPNotFound
+        from c2cgeoportal.views.layers import read_one
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+
+        self.assertRaises(HTTPNotFound, read_one, request)
+
+    def test_read_one_no_perm(self):
+        from pyramid.httpexceptions import HTTPNotFound
+        from c2cgeoportal.views.layers import read_one
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 2
+
+        self.assertRaises(HTTPNotFound, read_one, request)
+
     def test_read_one(self):
         from geojson.feature import Feature
         from c2cgeoportal.views.layers import read_one
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 2
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
 
         feature = read_one(request)
         self.assertTrue(isinstance(feature, Feature))
-        self.assertEquals(feature.id, 2)
-        self.assertEquals(feature.properties['name'], 'bar')
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.properties['name'], 'foo')
 
     def test_count(self):
         from c2cgeoportal.views.layers import count

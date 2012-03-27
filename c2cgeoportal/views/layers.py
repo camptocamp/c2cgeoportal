@@ -1,14 +1,19 @@
-from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
-                                    HTTPBadRequest)
+from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound, HTTPBadRequest)
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_
+from sqlalchemy.orm.util import class_mapper
+from sqlalchemy.orm.properties import ColumnProperty
 
-from geoalchemy import functions, Geometry, DBSpatialElement
+from geoalchemy import (functions, Geometry,
+                        DBSpatialElement, WKBSpatialElement)
 
-from geojson.feature import FeatureCollection
+import geojson
+from geojson.feature import FeatureCollection, Feature
+
+from shapely.geometry import asShape
 
 from papyrus.renderers import XSD
 from papyrus.protocol import Protocol, create_filter
@@ -18,12 +23,15 @@ from c2cgeoportal.models import (DBSession, Layer, RestrictionArea,
                                  User, Role)
 
 
-def _get_geom_attr(mapped_class):
+def _get_geom_col_info(mapped_class):
     # This function assumes that the names of geometry attributes
     # in the mapped class are the same as those of geometry columns.
-    for column in mapped_class.__table__.columns:
-        if isinstance(column.type, Geometry):
-            return column.name
+    for p in class_mapper(mapped_class).iterate_properties:
+        if not isinstance(p, ColumnProperty):
+            continue
+        col = p.columns[0]
+        if isinstance(col.type, Geometry):
+            return col.name, col.type.srid
     raise HTTPInternalServerError()  # pragma: no cover
 
 
@@ -55,23 +63,30 @@ def _get_layers_for_request(request):
         raise HTTPBadRequest()  # pragma: no cover
 
 
+def _get_layer_for_request(request):
+    """ Return a ``Layer`` object for the first layer id found
+    in the ``layer_id`` matchdict. """
+    return next(_get_layers_for_request(request))
+
+
 def _get_protocol_for_layer(layer):
     """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
     cls = get_class(str(layer.geoTable))
-    return Protocol(DBSession, cls, _get_geom_attr(cls))
+    geom_attr, _ = _get_geom_col_info(cls)
+    return Protocol(DBSession, cls, geom_attr)
 
 
 def _get_protocol_for_request(request):
     """ Returns a papyrus ``Protocol`` for the first layer
-    found in the ``layer_id`` matchdict. """
-    layer = next(_get_layers_for_request(request))
+    id found in the ``layer_id`` matchdict. """
+    layer = _get_layer_for_request(request)
     return _get_protocol_for_layer(layer)
 
 
 def _get_class_for_request(request):
-    """ Return an SQLAlchemy mapped class for the first
-    found in the ``layer_id`` matchdict. """
-    layer = next(_get_layers_for_request(request))
+    """ Return an SQLAlchemy mapped class for the first layer
+    id found in the ``layer_id`` matchdict. """
+    layer = _get_layer_for_request(request)
     return get_class(str(layer.geoTable))
 
 
@@ -84,18 +99,17 @@ def _proto_read(layer, request):
     user = request.user
     proto = _get_protocol_for_layer(layer)
     cls = proto.mapped_class
-    geom_attr = _get_geom_attr(cls)
-    polygon = DBSession.query(
-                           RestrictionArea.area.collect) \
-                       .join(RestrictionArea.roles) \
-                       .join(RestrictionArea.layers) \
-                       .filter(RestrictionArea.area.area > 0) \
-                       .filter(Role.id == user.role.id) \
-                       .filter(Layer.id == layer.id).scalar()
-    polygon = DBSpatialElement(polygon)
+    geom_attr = proto.geom_attr
+    ra = DBSession.query(
+               RestrictionArea.area.collect) \
+                  .join(RestrictionArea.roles) \
+                  .join(RestrictionArea.layers) \
+                  .filter(RestrictionArea.area.area > 0) \
+                  .filter(Role.id == user.role.id) \
+                  .filter(Layer.id == layer.id).scalar()
+    ra = DBSpatialElement(ra)
     filter_ = and_(create_filter(request, cls, geom_attr),
-                   polygon.gcontains(getattr(cls, geom_attr))
-                   )
+                   ra.gcontains(getattr(cls, geom_attr)))
     return proto.read(request, filter=filter_)
 
 
@@ -111,9 +125,32 @@ def read_many(request):
 
 @view_config(route_name='layers_read_one', renderer='geojson')
 def read_one(request):
+    layer = _get_layer_for_request(request)
+    protocol = _get_protocol_for_layer(layer)
     feature_id = request.matchdict.get('feature_id', None)
-    protocol = _get_protocol_for_request(request)
-    return protocol.read(request, id=feature_id)
+    feature = protocol.read(request, id=feature_id)
+    if not isinstance(feature, Feature):
+        return feature
+    if layer.public:
+        return feature
+    if request.user is None:
+        raise HTTPNotFound()
+    geom = feature.geometry
+    if not geom or isinstance(geom, geojson.geometry.Default):
+        return feature
+    shape = asShape(geom)
+    _, srid = _get_geom_col_info(get_class(str(layer.geoTable)))
+    spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+    allowed = DBSession.query(
+               RestrictionArea.area.collect.gcontains(spatial_elt)) \
+                       .join(RestrictionArea.roles) \
+                       .join(RestrictionArea.layers) \
+                       .filter(RestrictionArea.area.area > 0) \
+                       .filter(Role.id == request.user.role.id) \
+                       .filter(Layer.id == layer.id).scalar()
+    if not allowed:
+        raise HTTPNotFound()
+    return feature
 
 
 @view_config(route_name='layers_count', renderer='string')
