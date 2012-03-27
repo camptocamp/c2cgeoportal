@@ -216,10 +216,30 @@ def update(request):
     protocol = _get_protocol_for_layer(layer, before_update=security_cb)
     return protocol.update(request, feature_id)
 
+
 @view_config(route_name='layers_delete')
 def delete(request):
     feature_id = request.matchdict.get('feature_id', None)
-    protocol = _get_protocol_for_request(request)
+    layer = _get_layer_for_request(request)
+    if layer.public:
+        protocol = _get_protocol_for_layer(layer)
+        return protocol.delete(request, feature_id)
+    if request.user is None:
+        raise HTTPForbidden()
+    def security_cb(r, o):
+        geom_attr = _get_geom_col_info(get_class(layer.geoTable))[0]
+        geom_attr = getattr(o, geom_attr)
+        allowed = DBSession.query(
+           RestrictionArea.area.collect.gcontains(geom_attr)) \
+                   .join(RestrictionArea.roles) \
+                   .join(RestrictionArea.layers) \
+                   .filter(RestrictionArea.area.area > 0) \
+                   .filter(RestrictionArea.readwrite == True) \
+                   .filter(Role.id == request.user.role.id) \
+                   .filter(Layer.id == layer.id).scalar()
+        if not allowed:
+            raise HTTPForbidden()
+    protocol = _get_protocol_for_layer(layer, before_delete=security_cb)
     return protocol.delete(request, feature_id)
 
 

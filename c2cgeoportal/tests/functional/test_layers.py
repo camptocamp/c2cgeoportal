@@ -284,16 +284,44 @@ class TestLayers(TestCase):
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
 
-    def test_delete(self):
+    def test_delete_no_auth(self):
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import delete
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 2
+        request.method = 'DELETE'
+        self.assertRaises(HTTPForbidden, delete, request)
+
+    def test_delete_no_perm(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import delete
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 2
+        request.method = 'DELETE'
+        self.assertRaises(HTTPForbidden, delete, request)
+
+    def test_delete(self):
+        from c2cgeoportal.views.layers import delete
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'DELETE'
         response = delete(request)
         self.assertEquals(response.status_int, 204)
 
+    def test_metadata(self):
+        from c2cgeoportal.views.layers import metadata
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id)
+
+        table = metadata(request)
+        self.assertEquals(table.name, 'table_%d' % layer_id)
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
 
