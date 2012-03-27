@@ -163,11 +163,12 @@ def count(request):
 @view_config(route_name='layers_create', renderer='geojson')
 def create(request):
     layer = _get_layer_for_request(request)
-    def cb(r, feature, o):
-        if layer.public:
-            return
-        if request.user is None:
-            raise HTTPForbidden()
+    if layer.public:
+        protocol = _get_protocol_for_layer(layer)
+        return protocol.create(request)
+    if request.user is None:
+        raise HTTPForbidden()
+    def security_cb(r, feature, o):
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = asShape(geom)
@@ -183,16 +184,37 @@ def create(request):
                        .filter(Layer.id == layer.id).scalar()
             if not allowed:
                 raise HTTPForbidden()
-    protocol = _get_protocol_for_layer(layer, before_create=cb)
+    protocol = _get_protocol_for_layer(layer, before_create=security_cb)
     return protocol.create(request)
 
 
 @view_config(route_name='layers_update', renderer='geojson')
 def update(request):
     feature_id = request.matchdict.get('feature_id', None)
-    protocol = _get_protocol_for_request(request)
+    layer = _get_layer_for_request(request)
+    if layer.public:
+        protocol = _get_protocol_for_layer(layer)
+        return protocol.update(request, feature_id)
+    if request.user is None:
+        raise HTTPForbidden()
+    def security_cb(r, feature, o):
+        geom = feature.geometry
+        if geom and not isinstance(geom, geojson.geometry.Default):
+            shape = asShape(geom)
+            srid = _get_geom_col_info(get_class(layer.geoTable))[1]
+            spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+            allowed = DBSession.query(
+               RestrictionArea.area.collect.gcontains(spatial_elt)) \
+                       .join(RestrictionArea.roles) \
+                       .join(RestrictionArea.layers) \
+                       .filter(RestrictionArea.area.area > 0) \
+                       .filter(RestrictionArea.readwrite == True) \
+                       .filter(Role.id == request.user.role.id) \
+                       .filter(Layer.id == layer.id).scalar()
+            if not allowed:
+                raise HTTPForbidden()
+    protocol = _get_protocol_for_layer(layer, before_update=security_cb)
     return protocol.update(request, feature_id)
-
 
 @view_config(route_name='layers_delete')
 def delete(request):

@@ -250,14 +250,36 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
 
-    def test_update(self):
+    def test_update_no_auth(self):
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import update
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
+        self.assertRaises(HTTPForbidden, update, request)
+
+    def test_update_no_perm(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import update
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'
+        self.assertRaises(HTTPForbidden, update, request)
+
+    def test_update(self):
+        from c2cgeoportal.views.layers import update
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         feature = update(request)
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
