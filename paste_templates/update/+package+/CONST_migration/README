@@ -3,21 +3,3 @@ This is a database migration repository.
 /!\ WARNING: the content of this CONST_migration directory should not be
     manually updated. You should update the c2cgeoportal "update" template
     instead, and apply this template on the current project.
-
-Add a new script:
-    ./buildout/bin/manage_db script "Explicit name"
-
-This will generate the migration script in
-myproject/CONST_migration/versions/xxx_Explicit_name.py
-You should *NOT* commit the script in this directory because this migration
-script should be shared with all c2cgeoportal projects.
-It is the c2cgeoportal "update" template which is responsible for updating
-this directory.
-
-So then customize the migration to suit your needs, and move it to the
-c2cgeoportal "update" template, in
-paste_templates/update/+package+/CONST_migration/versions/
-
-More information at
-http://code.google.com/p/sqlalchemy-migrate/
-http://www.karoltomala.com/blog/?p=633

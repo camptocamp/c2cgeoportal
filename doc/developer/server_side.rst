@@ -213,6 +213,43 @@ Object model
 It's not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``) 
 to the ``Role`` of the parent schema.
 
+Migration
+~~~~~~~~~
+
+We use the sqlalchemy-migrate module for database migration. 
+sqlalchemy-migrate works with a so-called *migration
+repository*, which is a simple directory in the application 
+source tree:``<package>/CONST_migration``. As the
+``CONST_`` prefix suggests this repository is part of 
+the ``c2cgeoportal_update`` paster template, it is created or
+updated when this paster template is applied. So developers 
+who modify the c2cgeoportal database schema should add
+migration scripts to the ``c2cgeoportal_update`` 
+template, as opposed to the application.
+
+Add a new script call from the application's root directory::
+
+    ./buildout/bin/manage_db --app-name <package> script "<Explicite name>"
+
+This will generate the migration script in
+``<package>/CONST_migration/versions/xxx_<Explicite_name>.py``
+You should *NOT* commit the script in this directory because this migration
+script should be shared with all c2cgeoportal projects.
+It is the c2cgeoportal ``update`` template which is responsible for updating
+this directory.
+
+Then customize the migration to suit your needs, test it::
+
+    ./buildout/bin/manage_db --app-name <package> test
+
+And move it to the c2cgeoportal ``update`` template, in
+``c2cgeoportal/paste_templates/update/+package+/CONST_migration/versions/``.
+
+
+More information at:
+ * http://code.google.com/p/sqlalchemy-migrate/
+ * http://www.karoltomala.com/blog/?p=633
+
 Code
 ----
 
