@@ -8,6 +8,8 @@ from c2cgeoportal.tests.functional import tearDownModule, setUpModule
 @attr(functional=True)
 class TestLayers(TestCase):
 
+    _table_index = 0
+
     def setUp(self):
         import sqlahelper
         import transaction
@@ -49,11 +51,12 @@ class TestLayers(TestCase):
                 User.username == '__test_user').delete()
         DBSession.query(Role).filter(
                 Role.name == '__test_role').delete()
-        DBSession.query(RestrictionArea).filter(RestrictionArea.name == '__test_ra').delete()
+        DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra').delete()
 
         transaction.commit()
 
-    def _create_layer(self, id):
+    def _create_layer(self):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -65,6 +68,9 @@ class TestLayers(TestCase):
         from geoalchemy import (GeometryDDL, GeometryExtensionColumn,
                                 Point, WKTSpatialElement)
         from c2cgeoportal.models import DBSession, Layer, RestrictionArea
+
+        self.__class__._table_index = self.__class__._table_index + 1
+        id = self.__class__._table_index
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)
@@ -103,9 +109,11 @@ class TestLayers(TestCase):
 
         DBSession.add(ra)
 
-        self.layer_ids.append(id)
+        self.layer_ids.append(self.__class__._table_index)
 
         transaction.commit()
+
+        return id
 
     def _get_request(self, layerid, username=None):
         from c2cgeoportal.models import DBSession, User
@@ -122,8 +130,7 @@ class TestLayers(TestCase):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
 
-        layer_id = 1
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
         collection = read_many(request)
@@ -134,20 +141,45 @@ class TestLayers(TestCase):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
 
-        layer_id = 1
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
 
         collection = read_many(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 1)
 
+    def test_read_many_layer_not_found(self):
+        from pyramid.httpexceptions import HTTPNotFound
+        from c2cgeoportal.views.layers import read_many
+
+        self._create_layer()
+        request = self._get_request(10000)
+
+        self.assertRaises(HTTPNotFound, read_many, request)
+
+    def test_read_many_multi(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import read_many
+
+        layer_id1 = self._create_layer()
+        layer_id2 = self._create_layer()
+        layer_id3 = self._create_layer()
+
+        layer_ids = '%d,%d,%d' % (layer_id1, layer_id2, layer_id3)
+        request = self._get_request(layer_ids, username=u'__test_user')
+
+        collection = read_many(request)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 3)
+        self.assertEquals(collection.features[0].properties['__layer_id__'], layer_id1)
+        self.assertEquals(collection.features[1].properties['__layer_id__'], layer_id2)
+        self.assertEquals(collection.features[2].properties['__layer_id__'], layer_id3)
+
     def test_read_one(self):
         from geojson.feature import Feature
         from c2cgeoportal.views.layers import read_one
 
-        layer_id = 2
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 2
 
@@ -159,8 +191,7 @@ class TestLayers(TestCase):
     def test_count(self):
         from c2cgeoportal.views.layers import count
 
-        layer_id = 3
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
         response = count(request)
@@ -170,8 +201,7 @@ class TestLayers(TestCase):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import create
 
-        layer_id = 4
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = 'POST'
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}, {"type": "Feature", "properties": {"text": "foo"}, "geometry": {"type": "Point", "coordinates": [45, 5]}}]}'
@@ -182,8 +212,7 @@ class TestLayers(TestCase):
     def test_update(self):
         from c2cgeoportal.views.layers import update
 
-        layer_id = 5
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
@@ -195,8 +224,7 @@ class TestLayers(TestCase):
     def test_delete(self):
         from c2cgeoportal.views.layers import delete
 
-        layer_id = 6
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'DELETE'
@@ -206,36 +234,8 @@ class TestLayers(TestCase):
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
 
-        layer_id = 7
-        self._create_layer(layer_id)
+        layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
         table = metadata(request)
-        self.assertEquals(table.name, 'table_7')
-
-    def test_read_many_layer_not_found(self):
-        from pyramid.httpexceptions import HTTPNotFound
-        from c2cgeoportal.views.layers import read_many
-
-        self._create_layer(8)
-        request = self._get_request(9)
-
-        self.assertRaises(HTTPNotFound, read_many, request)
-
-    def test_read_many_multi(self):
-        from geojson.feature import FeatureCollection
-        from c2cgeoportal.views.layers import read_many
-
-        self._create_layer(9)
-        self._create_layer(10)
-        self._create_layer(11)
-
-        self.assertTrue(True)
-        request = self._get_request('9,10,11', username=u'__test_user')
-
-        collection = read_many(request)
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 3)
-        self.assertEquals(collection.features[0].properties['__layer_id__'], 9)
-        self.assertEquals(collection.features[1].properties['__layer_id__'], 10)
-        self.assertEquals(collection.features[2].properties['__layer_id__'], 11)
+        self.assertEquals(table.name, 'table_%d' % layer_id)
