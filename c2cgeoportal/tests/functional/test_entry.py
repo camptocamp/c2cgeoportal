@@ -79,6 +79,7 @@ class TestEntryView(TestCase):
         request.params['login'] = u'__test_user1'
         request.params['password'] = u'__test_user1'
         request.params['came_from'] = "/came_from"
+        request.user = None
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302) 
         self.assertEquals(response.headers['Location'], "/came_from") 
@@ -88,17 +89,20 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest(path='/')
         request.params['came_from'] = '/came_from'
+        request.user = None
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
 
     def test_logout(self):
+        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest(path='/')
         request.params['came_from'] = '/came_from'
+        request.user = DBSession.query(User) \
+                                .filter_by(username=u'__test_user1').one()
         entry = Entry(request)
-        entry.username = u'__test_user1'
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from") 
@@ -107,7 +111,8 @@ class TestEntryView(TestCase):
     # home view tests
     #
 
-    def _create_entry_obj(self):
+    def _create_entry_obj(self, username=None):
+        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest()
@@ -118,6 +123,12 @@ class TestEntryView(TestCase):
                 }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
+
+        if username:
+            request.user = DBSession.query(User) \
+                                    .filter_by(username=username).one()
+        else:
+            request.user = None
 
         return Entry(request)
 
@@ -143,8 +154,7 @@ class TestEntryView(TestCase):
         from mock import patch, Mock, MagicMock
         from contextlib import nested
 
-        entry = self._create_entry_obj()
-        entry.username = u'__test_user1'
+        entry = self._create_entry_obj(username=u'__test_user1')
 
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
@@ -176,8 +186,7 @@ class TestEntryView(TestCase):
         from mock import patch, Mock, MagicMock
         from contextlib import nested
 
-        entry = self._create_entry_obj()
-        entry.username = u'__test_user2'
+        entry = self._create_entry_obj(username=u'__test_user2')
 
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
@@ -208,9 +217,9 @@ class TestEntryView(TestCase):
     #
 
     def test_apiloader_no_auth(self):
-        from c2cgeoportal.views.entry import Entry
         from mock import patch, Mock, MagicMock
         from contextlib import nested
+        from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -220,6 +229,7 @@ class TestEntryView(TestCase):
                 }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
+        request.user = None
 
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
@@ -233,9 +243,10 @@ class TestEntryView(TestCase):
         assert '__test_private_layer' not in response['themes']
 
     def test_apiloader_auth(self):
-        from c2cgeoportal.views.entry import Entry
         from mock import patch, Mock, MagicMock
         from contextlib import nested
+        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest()
         request.registry.settings = {
@@ -245,8 +256,9 @@ class TestEntryView(TestCase):
                 }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
+        request.user = DBSession.query(User) \
+                                .filter_by(username=u'__test_user1').one()
         entry = Entry(request)
-        entry.username = u'__test_user1'
 
         patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
