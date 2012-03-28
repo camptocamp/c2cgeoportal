@@ -9,8 +9,8 @@ Any c2cgeoportal application comes with an editing interface, available at
 ``/edit`` (assuming ``/`` is the application's root URL).
 
 The editing interface requires the editing plugin (``cgxp_editing``), which is
-provided by CGXP as of commit `4423e4b
-<https://github.com/camptocamp/cgxp/commit/4423e4b7f984745ac1341e6c00850bab74fe5a3d>`_.
+provided by CGXP as of commit `58c931d
+<https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032>`_.
 So make sure your application uses an appropriate version (commit) of CGXP.
 
 The editing interface is defined in the application's ``templates/edit.html``
