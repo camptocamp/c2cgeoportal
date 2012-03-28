@@ -77,7 +77,7 @@ To run the unit tests simply do this::
 To run a specific test use the ``--tests`` switch. For example::
 
     $ ./buildout/bin/python setup.py nosetests --tests \
-      c2cgeoportal/tests/test_echoview.py:test_json_base64_encode_chunks
+      c2cgeoportal/tests/test_echoview.py:test_json_base64_encode
 
 Functional tests
 ................
