@@ -1,20 +1,11 @@
+This file includes migration steps for each release of c2cgeoportal.
 
-In this file all the changes that can affect the different projects should be present.
 
-The dates can be generated with « date -R ».
+Version 0.6
+===========
 
-Thu, 15 Mar 2012 10:22:30 +0100
--------------------------------
-
-We have released Papyrus 0.8 and 0.8.1 on pypi. Version 0.8 includes an XSD
-renderer. Version 0.8.1 includes changes to the XSD renderer, which are
-required for the editing interface to work properly. c2cgeoportal
-0.6 requires Papyrus 0.8.1, so the version of Papyrus should be set to
-0.8.1 on the buildout configuration of c2cgeoportal projects (section
-  [versions]).
-
-Tue, 13 Mar 2012 13:55:08 +0100
--------------------------------
+Editing Interface
+-----------------
 
 c2cgeoportal 0.6 features an editing interface. To make the editing interface
 work in an existing project several steps are required:
@@ -120,17 +111,48 @@ work in an existing project several steps are required:
    editable layers. They should use the new "mapfile_data_subselect" Buildout
    variable. See the administrator mapfile documentation.
 
--------------------------------
-Wed, 29 Feb 2012 11:29:12 +0100
+6. Papyrus 0.8.1 is required. See below.
 
-Update variable jsbuild_root_dir in production.ini.in and developement.ini.in to:
-jsbuild_root_dir = $${buildout:directory}
 
--------------------------------
-Mon, 27 Feb 2012 17:09:23 +0100
+Other changes
+-------------
 
-If you wish to use the addkmlfile plugin then you should add
-<packagename>/static/lib/cgxp/ext.ux/base64 before merging.
+1. c2cgeoportal 0.6 requires Papyrus 0.8.1, so the version of Papyrus should be
+   set to 0.8.1 on the buildout configuration of the c2cgeoportal project
+   (section [versions]).
+
+2. In production.ini.in and development.ini.in jsbuild_root_dir should now be
+   set to $${buildout:directory}:
+
+   jsbuild_root_dir = $${buildout:directory}
+
+3. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
+   ${package}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]
+   section of jsbuild/app.cfg. Example:
+
+    [app.js]
+    root =
+        ${package}/static/lib/cgxp/core/src/script
+        ${package}/static/lib/cgxp/ext
+        ${package}/static/lib/cgxp/geoext/lib
+        ${package}/static/lib/cgxp/openlayers/lib
+        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
+        ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        ${package}/static/lib/cgxp/gxp/src/script
+        ${package}/static/lib/cgxp/proj4js
+        ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+        ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+        ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+        ${package}/static/lib/cgxp/sandbox
+        ${package}/static/lib/cgxp/styler/lib
+        ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+        ${package}/static/lib/cgxp/ext.ux/ColorPicker
+        ${package}/static/lib/cgxp/ext.ux/base64
+        ${package}/static/js
+
+
+Version 0.5 (and before)
+========================
 
 -------------------------------
 Mon, 27 Feb 2012 14:15:14 +0100
@@ -150,14 +172,12 @@ OpenLayers/Layer/OSM.js
 in the [app.js] "include" section of jsbuild/app.cfg.
 
 -------------------------------
-
 Tue, 31 Jan 2012 14:41:44 +0100
 
 In the <package>/template/viewer.js file, in the block 'viewer_layers'
 remove the last comma for IE, see commit 11d373b.
 
 -------------------------------
-
 Thu, 26 Jan 2012 13:21:20 +0100
 
 Not required but recommended: you can edit your project's development.ini.in
