@@ -6,7 +6,6 @@ import urllib
 from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
 from pyramid.response import Response
 from pyramid.view import view_config
-from pyramid.security import authenticated_userid
 
 from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.wfsparsing import (is_get_feature,
@@ -15,9 +14,7 @@ from c2cgeoportal.lib.wfsparsing import (is_get_feature,
 @view_config(route_name='mapserverproxy')
 def proxy(request):
 
-    username = authenticated_userid(request)
-    user = None if username is None \
-            else DBSession.query(User).filter_by(username=username).one()
+    user = request.user
     external = bool(request.params.get("EXTERNAL", None))
 
     # params hold the parameters we're going to send to MapServer
