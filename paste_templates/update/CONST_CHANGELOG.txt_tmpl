@@ -113,6 +113,8 @@ work in an existing project several steps are required:
 
 6. Papyrus 0.8.1 is required. See below.
 
+7. GeoAlchemy 0.7 is required. See below.
+
 
 Other changes
 -------------
@@ -120,6 +122,9 @@ Other changes
 1. c2cgeoportal 0.6 requires Papyrus 0.8.1, so the version of Papyrus should be
    set to 0.8.1 on the buildout configuration of the c2cgeoportal project
    (section [versions]).
+
+2. c2cgeoportal 0.6 requires GeoAlchemy 0.7. So GeoAlchemy should be set to
+   0.7 in the project's buildout configuration.
 
 2. In production.ini.in and development.ini.in jsbuild_root_dir should now be
    set to $${buildout:directory}:
