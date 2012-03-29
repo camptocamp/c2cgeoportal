@@ -76,7 +76,8 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "the_geom"
-            "gml_the_geom_type" "polygon"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
