@@ -113,6 +113,8 @@ work in an existing project several steps are required:
 
 6. Papyrus 0.8.1 is required. See below.
 
+7. GeoAlchemy 0.7 is required. See below.
+
 
 Other changes
 -------------
@@ -121,12 +123,15 @@ Other changes
    set to 0.8.1 on the buildout configuration of the c2cgeoportal project
    (section [versions]).
 
-2. In production.ini.in and development.ini.in jsbuild_root_dir should now be
+2. c2cgeoportal 0.6 requires GeoAlchemy 0.7. So GeoAlchemy should be set to
+   0.7 in the project's buildout configuration.
+
+3. In production.ini.in and development.ini.in jsbuild_root_dir should now be
    set to $${buildout:directory}:
 
    jsbuild_root_dir = $${buildout:directory}
 
-3. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
+4. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
    ${package}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]
    section of jsbuild/app.cfg. Example:
 

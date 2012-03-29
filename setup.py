@@ -21,6 +21,7 @@ install_requires = [
     'fa.jquery>=0.9.5',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
+    'GeoAlchemy>=0.7',
     'OWSLib',
     'tileforge>=0.2',
     'JSTools>=0.6',
