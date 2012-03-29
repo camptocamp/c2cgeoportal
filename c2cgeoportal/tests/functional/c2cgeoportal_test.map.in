@@ -46,6 +46,7 @@ MAP
             "wms_enable_request" "*"
             "ows_title" "changeme"
             "ows_enable_request" "*"
+            "ows_encoding" "UTF-8"
         END
     END
 
