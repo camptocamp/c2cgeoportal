@@ -101,8 +101,8 @@ Prior to using Buildout, its ``boostrap.py`` script should be run at the root
 of the application::
 
   $ python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/ --setup-source \
-        http://pypi.camptocamp.net/distribute_setup.py
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
 This step is done only once for installation/instance of the application.
 
