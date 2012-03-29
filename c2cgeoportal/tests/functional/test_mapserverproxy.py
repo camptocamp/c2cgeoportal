@@ -63,8 +63,6 @@ class TestMapserverproxyView(TestCase):
 
 
     def setUp(self):
-        self.config = testing.setUp()
-
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
                 Functionality, DBSession
 
@@ -117,8 +115,6 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
 
     def tearDown(self):
-        testing.tearDown()
-
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
                 Functionality, DBSession
         
@@ -148,23 +144,29 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
-
     def _get_mapfile_path(self):
         curdir = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(curdir, 'c2cgeoportal_test.map')
 
-    def _get_auth_header(self, user):
-        userpass = '%s:%s' % (user, user)
-        return {'Authorization': 'Basic %s' % userpass.encode('base64')}
+    def _create_dummy_request(self, username=None):
+        from c2cgeoportal.models import DBSession, User
+
+        request = testing.DummyRequest()
+        request.registry.settings = {
+                'mapserv.url': mapserv_url,
+                }
+        if username:
+            request.user = DBSession.query(User) \
+                                    .filter_by(username=username).one()
+        else:
+            request.user = None
+        return request
 
     def test_GetMap_unprotected_layer_anonymous(self):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request()
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -179,11 +181,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user1')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user1')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -198,11 +196,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user2')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user2')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_unprotected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -217,10 +211,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request()
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -235,11 +226,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user1')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user1')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -254,11 +241,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user2')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user2')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -273,11 +256,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user1')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user1')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -291,11 +270,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user2')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user2')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
@@ -310,11 +285,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views import mapserverproxy
 
         map = self._get_mapfile_path()
-        self.config.testing_securitypolicy('__test_user3')
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                }
+        request = self._create_dummy_request(username=u'__test_user3')
         request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
                       bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
