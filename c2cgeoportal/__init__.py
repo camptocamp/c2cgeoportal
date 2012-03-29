@@ -3,6 +3,9 @@
 from pyramid.config import Configurator
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.request import Request as PyramidRequest
+from pyramid.decorator import reify
+from pyramid.security import unauthenticated_userid
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
@@ -38,6 +41,18 @@ def locale_negotiator(request):
     return lang
 
 
+class Request(PyramidRequest):
+    """ A c2cgeoportal-specific request factory that adds
+    a reified ``user`` property to request. """
+    @reify
+    def user(self):
+        from c2cgeoportal.models import DBSession, User
+        username = unauthenticated_userid(self)
+        if username is not None:
+            return DBSession.query(User).filter_by(
+                        username=username).one()
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -49,6 +64,11 @@ def includeme(config):
     global formalchemy_default_lon
     global formalchemy_default_lat
     global formalchemy_available_functionalities
+
+    # set a request factory in the configurator. When migrating
+    # to Pyramid 1.3 we should probably use set_request_property.
+    # See <http://docs.pylonsproject.org/projects/pyramid_cookbook/en/latest/authentication.html>
+    config.set_request_factory(Request)
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs('c2cgeoportal:locale/')
