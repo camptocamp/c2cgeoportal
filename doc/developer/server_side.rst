@@ -120,7 +120,7 @@ extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.  Once done,
 run the ``template`` part to generate
 ``c2cgeoportal/tests/functional/test.ini`` and
-``c2cgeoportal/tests/functional/c2cgeoportal_test.map.ini``::
+``c2cgeoportal/tests/functional/c2cgeoportal_test.map``::
 
     $ ./buildout/bin/buildout -c buildout_dev.cfg install template
 
