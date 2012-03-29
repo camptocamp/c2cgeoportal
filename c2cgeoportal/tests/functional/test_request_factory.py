@@ -22,8 +22,6 @@ class TestRequestFactory(TestCase):
         DBSession.add(u)
         transaction.commit()
 
-        self.config.testing_securitypolicy(u'__test_user')
-
     def tearDown(self):
         testing.tearDown()
 
@@ -36,8 +34,16 @@ class TestRequestFactory(TestCase):
         DBSession.query(Role).filter_by(name=u'__test_role').delete()
         transaction.commit()
 
-    def test_request(self):
+    def test_request_no_auth(self):
         from c2cgeoportal import Request
+        request = Request({})
+        # we do the same assertion twice, to verify that
+        # reify works for us
+        self.assertEqual(request.user, None)
+
+    def test_request_auth(self):
+        from c2cgeoportal import Request
+        self.config.testing_securitypolicy(u'__test_user')
         request = Request({})
         # we do the same assertion twice, to verify that
         # reify works for us

@@ -8,7 +8,7 @@ from pyramid.i18n import get_locale_name
 from pyramid.compat import json
 from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
                                     HTTPBadRequest, HTTPUnauthorized)
-from pyramid.security import remember, forget, authenticated_userid
+from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
@@ -32,17 +32,6 @@ class Entry(object):
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
-        self.username = authenticated_userid(request)
-
-    @property
-    def user(self):
-        if self.username is None:
-            return None
-        if self._user == False:
-            self._user = DBSession.query(User).filter_by(
-                    username=self.username).one()
-        return self._user
-
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
@@ -112,9 +101,10 @@ class Entry(object):
         if layer.geoTable:
             if layer.public:
                 l['editable'] = True
-            elif self.user:
+            elif self.request.user:
                 c = DBSession.query(RestrictionArea) \
-                    .filter(RestrictionArea.roles.any(Role.id == self.user.role.id)) \
+                    .filter(RestrictionArea.roles.any(
+                        Role.id == self.request.user.role.id)) \
                     .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
                     .filter(RestrictionArea.readwrite == True) \
                     .count()
@@ -202,8 +192,8 @@ class Entry(object):
 
         if 'role_id' in d and d['role_id'] is not None and d['role_id'] != '':
             role_id = d['role_id']
-        elif self.user is not None:
-            role_id = self.user.role.id
+        elif self.request.user is not None:
+            role_id = self.request.user.role.id
         else:
             role_id = None
 
@@ -291,7 +281,7 @@ class Entry(object):
         (themes, errors) = self._themes(d)
         d['themes'] = json.dumps(themes)
         d['themesError'] = errors
-        d['user'] = self.user
+        d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes());
         d['externalWFSTypes'] = json.dumps(self._WFSTypes(True)) \
                 if hasattr(self.request.registry.settings, 'external_mapserv.url') \
@@ -299,8 +289,9 @@ class Entry(object):
         
         if self.settings.get("external_themes_url") != '':
             ext_url = self.settings.get("external_themes_url")
-            if self.user is not None and hasattr(self.user, 'parent_role'):
-                ext_url += '?role_id=' + str(self.user.parent_role.id)
+            if self.request.user is not None and \
+                    hasattr(self.request.user, 'parent_role'):
+                ext_url += '?role_id=' + str(self.request.user.parent_role.id)
 
             result = json.load(urllib.urlopen(ext_url))
             # TODO: what if external server does not respond?
@@ -385,10 +376,11 @@ class Entry(object):
 
         # if there's no user to log out, we send a 404 Not Found (which
         # is the status code that applies best here)
-        if not self.user:
+        if not self.request.user:
             return HTTPNotFound()
 
-        log.info("User '%s' (%i) logging out." % (self.username, self.user.id))
+        log.info("User '%s' (%i) logging out." % (self.request.user.username,
+                                                  self.request.user.id))
 
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)

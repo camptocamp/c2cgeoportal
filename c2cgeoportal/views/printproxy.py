@@ -10,7 +10,6 @@ from simplejson.decoder import JSONDecodeError
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
-from pyramid.security import authenticated_userid
 
 from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.functionality import get_functionalities
@@ -129,10 +128,7 @@ class Printproxy(object):
 
         body = self._read_request_body()
 
-        username = authenticated_userid(self.request)
-        user = None if username is None \
-                else DBSession.query(User) \
-                        .filter_by(username=username).one()
+        user = request.user
 
         root = json.loads(body)
 
