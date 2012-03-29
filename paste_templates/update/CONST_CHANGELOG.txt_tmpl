@@ -155,6 +155,33 @@ Other changes
         ${package}/static/lib/cgxp/ext.ux/base64
         ${package}/static/js
 
+5. To be able to install c2cgeoportal applications behind proxies with limited
+   access to the outside world we had to patch Distribute and Buildout. See
+   <https://github.com/camptocamp/c2cgeoportal/issues/62> for more details.
+
+   If your application is behind a proxy which can access pypi.camptocamp.net
+   only then it is required to use the patched versions of Distribute and
+   Buildout. If your application is not behind a proxy it is recommended.
+
+   To change to the patched versions of Distribute and Buildout follow these
+   steps:
+
+   - Edit CONST_buildout.cfg and verify that it has an allow-hosts option set
+     to pypi.camptocamp.net.
+
+   - Remove the Distribute and Buildout eggs from the buildout/eggs dir:
+
+     $ rm -rf buildout/eggs/distribute-0.6.14* buildout/eggs/zc.buildout-1.5.2*
+
+   - Run bootstrap.py with specific options to install the patched versions of
+     Buildout and Distribute:
+
+     $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+       http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
+       http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
+
+   - Run the usual buildout/bin/buildout command.
+
 
 Version 0.5 (and before)
 ========================
