@@ -11,10 +11,10 @@ c2cgeoportal 0.6 features an editing interface. To make the editing interface
 work in an existing project several steps are required:
 
 1. The editing interface relies on the CGXP Editing plugin. This plugin is
-   available as of commit 4423e4b [1] of CGXP. So CGXP should be updated to, at
+   available as of commit 58c931d [1] of CGXP. So CGXP should be updated to, at
    least, this commit in the application. See [2] to know how to update CGXP.
 
-   [1] <https://github.com/camptocamp/cgxp/commit/4423e4b7f984745ac1341e6c00850bab74fe5a3d>
+   [1] <https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032>
    [2] <http://docs.camptocamp.net/c2cgeoportal/integrator/update_application.html#update-cgxp>
 
 2. An [edit.js] section should be added to jsbuild/app.cfg (notice the CHANGE
