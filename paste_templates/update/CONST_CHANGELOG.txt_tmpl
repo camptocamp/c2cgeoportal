@@ -171,12 +171,12 @@ Other changes
 
    - Remove the Distribute and Buildout eggs from the buildout/eggs dir:
 
-     $ rm -rf buildout/eggs/distribute-0.6.14* buildout/eggs/zc.buildout-1.5.2*
+     rm -rf buildout/eggs/distribute-0.6.14* buildout/eggs/zc.buildout-1.5.2*
 
    - Run bootstrap.py with specific options to install the patched versions of
      Buildout and Distribute:
 
-     $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+     python bootstrap.py --version 1.5.2 --distribute --download-base \
        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
