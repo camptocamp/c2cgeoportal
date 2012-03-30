@@ -4,22 +4,6 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.6
 ===========
 
-Templates
----------
-
-The base templates are deprecated, to get the new version do 
-(Careful: this will overwrite your changes):
-   cd ${project}
-   ./buildout/bin/paster create --template c2cgeoportal_create \
-       --output-dir=/tmp/ ${project} package=${package}
-   cp /tmp/${project}/${package}/templates/apihelp.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/apiloader.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/apiviewer.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/index.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/viewer.js ${package}/templates/
-   rm -rf /tmp/${project}
-
-
 Editing Interface
 -----------------
 
@@ -205,6 +189,25 @@ Other changes
    (like en.js, fr.js, de.js, ...) to have all identical root:
         ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
         ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
+7. Templates modifications:
+
+   The base templates are deprecated, to get the new version do 
+   (Careful: this will overwrite your changes):
+       cd ${project}
+       ./buildout/bin/paster create --template c2cgeoportal_create \
+           --output-dir=/tmp/ ${project} package=${package}
+       cp /tmp/${project}/${package}/templates/apihelp.html ${package}/templates/
+       cp /tmp/${project}/${package}/templates/apiloader.html ${package}/templates/
+       cp /tmp/${project}/${package}/templates/apiviewer.html ${package}/templates/
+       cp /tmp/${project}/${package}/templates/index.html ${package}/templates/
+       cp /tmp/${project}/${package}/templates/viewer.js ${package}/templates/
+       rm -rf /tmp/${project}
+
+   The  default layout of the viewer.js is modified to easily be 
+   able to add a google earth panel.
+
+   The condition to use the restricted extends of the user is 
+   modified to accept null value.
 
 
 Version 0.5 (and before)
