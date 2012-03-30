@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from optparse import OptionParser
+from optparse import OptionParser, SUPPRESS_HELP
 import pkg_resources
 
 from migrate.versioning.shell import main as migrate_main
@@ -9,30 +9,36 @@ import c2cgeoportal
 
 def main():
 
-    usage = """%prog COMMAND ...
+    usage = "The wrapper adds two options to define the target WSGI application."
 
-    This script is a wrapper to the sqlalchemy-migrate migrate script.
-
-    COMMAND can be any command of sqlalchemy-migrate migrate script. See the
-    sqlalchemy-migrate doc for details on its migrate script.
-
-    This script passes the path to the c2cgeoportal migrate repository to the
-    underlying migrate command.
-
-    It also adds two options: -c|--app-config and -n|--app-name. These options
-    define the target WSGI application.
-    The --app-config option defaults to production.ini.
-    The --app-name option is mandatory, unless the value for --app-config is of
-    this form: production.ini#mymapp.
-    """
-
-    parser = OptionParser(usage=usage)
+    parser = OptionParser(usage=usage, add_help_option=False)
     parser.disable_interspersed_args()
+    parser.add_option('-h', '--help', dest='help', action="store_true", help=SUPPRESS_HELP)
     parser.add_option('-c', '--app-config', default='production.ini',
             dest='app_config', help='The application .ini config file')
     parser.add_option('-n', '--app-name', default=None,
             dest='app_name', help='The application name')
     (options, args) = parser.parse_args()
+    
+    # display help
+    if options.help or \
+            len(args) == 1 and args[0] == 'help' or \
+            len(args) == 0:
+        print """This script is a wrapper to the sqlalchemy-migrate migrate script.
+
+This script passes the path to the c2cgeoportal migrate repository to the
+underlying migrate command.
+"""
+
+        migrate_main(["help"])
+        print
+        parser.print_help()
+        return
+
+    # display sqlalchemy-migrate command help
+    if args[0] == 'help':
+        migrate_main(argv=args)
+        return
 
     app_config = options.app_config
     app_name = options.app_name
