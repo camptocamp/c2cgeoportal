@@ -71,7 +71,16 @@ app = new gxp.Viewer({
             region: "north",
             contentEl: 'header-out'
         },
-        "app-map",
+        {
+            region: 'center',
+            layout: 'border',
+            id: 'center',
+            tbar: [],
+            bbar: [],
+            items: [
+                "app-map"
+            ]
+        },
         {
             id: "featuregrid-container",
             xtype: "panel",
@@ -178,57 +187,61 @@ app = new gxp.Viewer({
     },
     {
         ptype: "gxp_zoomtoextent",
-        actionTarget: "map.tbar",
+        actionTarget: "center.tbar",
         closest: true,
         extent: INITIAL_EXTENT
     }, {
         ptype: "cgxp_zoom",
-        actionTarget: "map.tbar",
+        actionTarget: "center.tbar",
         toggleGroup: "maptools"
     }, {
         ptype: "gxp_navigationhistory",
-        actionTarget: "map.tbar"
+        actionTarget: "center.tbar"
     }, 
     {
         ptype: "cgxp_permalink",
-        actionTarget: "map.tbar"
+        actionTarget: "center.tbar"
     }, 
     {
         ptype: "cgxp_measure",
-        actionTarget: "map.tbar",
+        actionTarget: "center.tbar",
         toggleGroup: "maptools"
     }, 
     {
         ptype: "cgxp_wmsgetfeatureinfo",
         featureManager: "featuremanager",
-        actionTarget: "map.tbar",
+        actionTarget: "center.tbar",
         toggleGroup: "maptools",
         events: EVENTS
     }, 
     {
         ptype: "cgxp_fulltextsearch",
         url: "$${request.route_url('fulltextsearch', path='')}",
-        actionTarget: "map.tbar"
+        actionTarget: "center.tbar"
     },
     {
         ptype: "cgxp_menushortcut",
+        actionTarget: "center.tbar",
         type: '->'
     }, {
         ptype: "cgxp_redlining",
         toggleGroup: "maptools",
-        actionTarget: "map.tbar"
-    }, {
+        actionTarget: "center.tbar"
+    },
+    {
         ptype: "cgxp_legend",
         id: "legendPanel",
         toggleGroup: "maptools",
-        actionTarget: "map.tbar"
-    }, {
+        actionTarget: "center.tbar"
+    },
+    {
         ptype: "cgxp_menushortcut",
+        actionTarget: "center.tbar",
         type: '-'
     }, 
     {
         ptype: "cgxp_login",
-        actionTarget: "map.tbar",
+        actionTarget: "center.tbar",
         toggleGroup: "maptools",
 % if user:
         username: "$${user.username}",
@@ -237,12 +250,13 @@ app = new gxp.Viewer({
         logoutURL: "$${request.route_url('logout', path='')}"
     },{
         ptype: "cgxp_menushortcut",
+        actionTarget: "center.tbar",
         type: '-'
     }, 
     {
         ptype: "cgxp_help",
         url: "#help-url",
-        actionTarget: "map.tbar"
+        actionTarget: "center.tbar"
     }
     ],
 
