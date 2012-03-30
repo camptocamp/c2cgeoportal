@@ -48,11 +48,15 @@ Usage::
 
 Run on a BBOX::
 
-  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=<left>,<bottom>,<right>,<top> <tileforge_layer>
+    sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=<left>,<bottom>,<right>,<top> <tileforge_layer>
 
 Run on configured diff table::
 
-  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg <tileforge_layer>
+    sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg <tileforge_layer>
+
+.. note:
+
+    We run the tile forge with the www-data rights to allows the web server to creates new tiles.
 
 Tiles
 -----
