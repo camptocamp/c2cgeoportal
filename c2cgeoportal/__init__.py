@@ -170,11 +170,11 @@ def includeme(config):
     srid = config.get_settings()['srid']
     schema = config.get_settings()['schema']
     parentschema = config.get_settings()['parentschema']
-    formalchemy_default_zoom =
+    formalchemy_default_zoom = \
             config.get_settings()['formalchemy_default_zoom']
     formalchemy_default_lon = config.get_settings()['formalchemy_default_lon']
     formalchemy_default_lat = config.get_settings()['formalchemy_default_lat']
-    formalchemy_available_functionalities =
+    formalchemy_available_functionalities = \
             config.get_settings()['formalchemy_available_functionalities']
 
     # register an admin UI
