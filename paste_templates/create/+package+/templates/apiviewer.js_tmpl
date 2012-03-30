@@ -84,11 +84,13 @@ app = new gxp.Viewer({
         actionTarget: "map.tbar",
         closest: true,
         extent: INITIAL_EXTENT
-    }, {
+    },
+    {
         ptype: "cgxp_zoom",
         actionTarget: "map.tbar",
         toggleGroup: "maptools"
-    }, {
+    },
+    {
         ptype: "gxp_navigationhistory",
         actionTarget: "map.tbar"
     }, 
@@ -105,16 +107,19 @@ app = new gxp.Viewer({
     {
         ptype: "cgxp_menushortcut",
         type: '->'
-    }, {
+    },
+    {
         ptype: "cgxp_redlining",
         toggleGroup: "maptools",
         actionTarget: "map.tbar"
-    }, {
+    },
+    {
         ptype: "cgxp_legend",
         id: "legendPanel",
         toggleGroup: "maptools",
         actionTarget: "map.tbar"
-    }, {
+    },
+    {
         ptype: "cgxp_menushortcut",
         type: '-'
     }, 
@@ -126,13 +131,7 @@ app = new gxp.Viewer({
         ptype: "cgxp_help",
         url: "#help-url",
         actionTarget: "map.tbar"
-    /*
-    }, {
-        // shared FeatureManager for feature editing, grid and querying
-        ptype: "cgxp_featuremanager",
-        id: "featuremanager"
-*/        }
-    ],
+    }],
 
     // layer sources
     sources: {
@@ -176,7 +175,8 @@ app = new gxp.Viewer({
                 formatSuffix: 'jpeg',
                 opacity: 0
             }, WMTS_OPTIONS)]
-        }, {
+        }, 
+        {
             source: "olsource",
             type: "OpenLayers.Layer.WMTS",
             group: 'background',

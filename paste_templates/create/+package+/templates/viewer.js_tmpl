@@ -91,7 +91,8 @@ app = new gxp.Viewer({
             collapseMode: "mini",
             hidden: true,
             bodyStyle: 'background-color: transparent;'
-        }, {
+        }, 
+        {
             layout: "accordion",
             id: "left-panel",
             region: "west",
@@ -190,11 +191,13 @@ app = new gxp.Viewer({
         actionTarget: "center.tbar",
         closest: true,
         extent: INITIAL_EXTENT
-    }, {
+    },
+    {
         ptype: "cgxp_zoom",
         actionTarget: "center.tbar",
         toggleGroup: "maptools"
-    }, {
+    },
+    {
         ptype: "gxp_navigationhistory",
         actionTarget: "center.tbar"
     }, 
@@ -223,7 +226,8 @@ app = new gxp.Viewer({
         ptype: "cgxp_menushortcut",
         actionTarget: "center.tbar",
         type: '->'
-    }, {
+    },
+    {
         ptype: "cgxp_redlining",
         toggleGroup: "maptools",
         actionTarget: "center.tbar"
@@ -248,7 +252,8 @@ app = new gxp.Viewer({
 % endif
         loginURL: "$${request.route_url('login', path='')}",
         logoutURL: "$${request.route_url('logout', path='')}"
-    },{
+    },
+    {
         ptype: "cgxp_menushortcut",
         actionTarget: "center.tbar",
         type: '-'
@@ -341,7 +346,8 @@ app = new gxp.Viewer({
                 formatSuffix: 'jpeg',
                 opacity: 0
             }, WMTS_OPTIONS)]
-        }, {
+        },
+        {
             source: "olsource",
             type: "OpenLayers.Layer.WMTS",
             group: 'background',
