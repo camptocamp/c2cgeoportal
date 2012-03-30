@@ -16,6 +16,7 @@ from c2cgeoportal.lib.functionality import get_functionalities
 
 log = logging.getLogger(__name__)
 
+
 class Printproxy(object):
 
     def __init__(self, request):
@@ -35,12 +36,12 @@ class Printproxy(object):
 
         # get URL
         _url = self.config['print.url'] + 'info.json' + '?' + query_string
-        log.info("Get print capabilities from %s."%_url)
+        log.info("Get print capabilities from %s." % _url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h) # not sure this is needed TODO
+        h.pop("Host", h)  # not sure this is needed TODO
         try:
             resp, content = http.request(_url, method='GET', headers=h)
         except:
@@ -62,7 +63,7 @@ class Printproxy(object):
         headers["Expires"] = "-1"
         headers["Pragma"] = "no-cache"
         headers["CacheControl"] = "no-cache"
-        return Response(json.dumps(capabilities, separators=(',',':')),
+        return Response(json.dumps(capabilities, separators=(',', ':')),
                         status=resp.status, headers=headers)
 
     @view_config(route_name='printproxy_create')
@@ -75,7 +76,7 @@ class Printproxy(object):
 
         # get URL
         _url = self.config['print.url'] + 'create.json' + '?' + query_string
-        log.info("Send print query to %s."%_url)
+        log.info("Send print query to %s." % _url)
 
         # transform print request body as appropriate
         body = self._transform_body()
@@ -83,7 +84,7 @@ class Printproxy(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h) # not sure this is needed TODO
+        h.pop("Host", h)  # not sure this is needed TODO
         h['Content-Length'] = str(len(body))
         try:
             resp, content = http.request(_url, method='POST', body=body, headers=h)
@@ -95,17 +96,17 @@ class Printproxy(object):
     @view_config(route_name='printproxy_get')
     def get(self):
         """ Get created PDF. """
-        
+
         id = self.request.matchdict.get('id')
 
         # get URL
         _url = self.config['print.url'] + id + '.pdf.printout'
-        log.info("Get print document from %s."%_url)
+        log.info("Get print document from %s." % _url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h) # not sure this is needed TODO
+        h.pop("Host", h)  # not sure this is needed TODO
         try:
             resp, content = http.request(_url, method='GET', headers=h)
         except:

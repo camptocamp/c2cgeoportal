@@ -36,8 +36,8 @@ class Entry(object):
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
         _ = self.request.translate
-        return { 'title': _('title i18n') }
-    
+        return {'title': _('title i18n')}
+
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
         if len(layer.metadataUrls) > 0:
@@ -79,7 +79,7 @@ class Entry(object):
         return icon
 
     def _layer(self, layer, wms_layers, wms):
-        l = { 
+        l = {
             'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
@@ -125,8 +125,8 @@ class Entry(object):
                 if layer.name in wms_layers:
                     resolutions = self._getLayerResolutionHint(wms[layer.name])
                     if resolutions[0] <= resolutions[1]:
-                        l['minResolutionHint'] = float('%0.2f'%resolutions[0])
-                        l['maxResolutionHint'] = float('%0.2f'%resolutions[1])
+                        l['minResolutionHint'] = float('%0.2f' % resolutions[0])
+                        l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
             if layer.legendRule:
                 l['legendRule'] = layer.legendRule
 
@@ -149,7 +149,7 @@ class Entry(object):
         return l
 
     def _group(self, group, layers, wms_layers, wms):
-        children = [] 
+        children = []
         error = ""
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
@@ -178,8 +178,8 @@ class Entry(object):
                 'name': group.name,
                 'children': children,
                 'isExpanded': group.isExpanded,
-                'isInternalWMS' : group.isInternalWMS,
-                'isBaseLayer' : group.isBaseLayer
+                'isInternalWMS': group.isInternalWMS,
+                'isBaseLayer': group.isBaseLayer
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
@@ -215,11 +215,11 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')
-        log.info("WMS GetCapabilities for base url: %s"%wms_url)
+        log.info("WMS GetCapabilities for base url: %s" % wms_url)
         wms = WebMapService(wms_url, version='1.1.1')
         wms_layers = list(wms.contents)
 
-        themes = DBSession.query(Theme).order_by(Theme.order.asc()) 
+        themes = DBSession.query(Theme).order_by(Theme.order.asc())
         exportThemes = []
 
         error = "\n"
@@ -230,7 +230,7 @@ class Entry(object):
                 children = []
 
                 for item in sorted(theme.children, key=lambda item: item.order):
-                    if type(item) == LayerGroup: 
+                    if type(item) == LayerGroup:
                         (c, e) = self._group(item, layers, wms_layers, wms)
                         error += e
                         if c != None:
@@ -247,7 +247,7 @@ class Entry(object):
                     exportThemes.append({
                         'name': theme.name,
                         'icon': icon,
-                        'children': children 
+                        'children': children
                     })
 
         return (exportThemes, error)
@@ -262,9 +262,9 @@ class Entry(object):
         # retrieve layers metadata via GetCapabilities
         wfs_url = self.request.route_url('mapserverproxy')
         wfsgc_url = wfs_url + "?service=WFS&version=1.0.0&request=GetCapabilities"
-        if external: 
+        if external:
             wfsgc_url += '&EXTERNAL=true'
-        log.info("WFS GetCapabilities for base url: %s"%wfsgc_url)
+        log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
         try:
@@ -282,11 +282,11 @@ class Entry(object):
         d['themes'] = json.dumps(themes)
         d['themesError'] = errors
         d['user'] = self.request.user
-        d['WFSTypes'] = json.dumps(self._WFSTypes());
+        d['WFSTypes'] = json.dumps(self._WFSTypes())
         d['externalWFSTypes'] = json.dumps(self._WFSTypes(True)) \
                 if hasattr(self.request.registry.settings, 'external_mapserv.url') \
                 else '[]'
-        
+
         if self.settings.get("external_themes_url") != '':
             ext_url = self.settings.get("external_themes_url")
             if self.request.user is not None and \
@@ -359,7 +359,7 @@ class Entry(object):
         user = DBSession.query(User).filter_by(username=login).first()
         if user and user.validate_password(password):
             headers = remember(self.request, login)
-            log.info("User '%s' (%i) logged in."%(user.username, user.id))
+            log.info("User '%s' (%i) logged in." % (user.username, user.id))
 
             cameFrom = self.request.params.get("came_from")
             if cameFrom:
@@ -385,5 +385,5 @@ class Entry(object):
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
-            return HTTPFound(location = self.request.route_url('home'),
-                    headers = headers)
+            return HTTPFound(location=self.request.route_url('home'),
+                    headers=headers)

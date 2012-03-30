@@ -68,8 +68,8 @@ def proxy(request):
         return HTTPBadGateway("See logs for details") # pragma: no cover
 
     # check for allowed content types
-    if not resp.has_key("content-type"):
-        return HTTPNotAcceptable() # pragma: no cover
+    if "content-type" not in resp:
+        return HTTPNotAcceptable()  # pragma: no cover
 
     if method == "POST" and is_get_feature(request.body):
         content = limit_featurecollection(content, limit=200)

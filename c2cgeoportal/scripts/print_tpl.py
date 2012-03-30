@@ -9,8 +9,8 @@ def main():
     """ This function build the print configuration file config.yaml using
     mako.
     The file is created in the folder print/.
-    If the file print/templates/print.mako doesnt exists, the build is not 
-    executed    
+    If the file print/templates/print.mako doesnt exists, the build is not
+    executed
     """
 
     base_template = 'print/templates/print.mako'
@@ -23,8 +23,8 @@ def main():
 
         #print mytemplate.render()
         print_template = open('print/config.yaml', 'w+')
-        print_template.write(mytemplate.render().encode('UTF-8'))                    
-        print_template.close() 
+        print_template.write(mytemplate.render().encode('UTF-8'))
+        print_template.close()
 
         print "finished building print template"
     else:

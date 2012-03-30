@@ -58,9 +58,12 @@ admin_css = Resource(
 olimgpath_js = None
 # deactive resource checking in fanstatic
 set_resource_file_existence_checking(False)
+
+
 def get_fanstatic_resources(request):
     global olimgpath_js
     olimgpath = request.static_url('c2cgeoportal:static/lib/openlayers/img/')
+
     def olimgpath_renderer(url):
         return '<script>OpenLayers.ImgPath="%s";</script>' % olimgpath
     if olimgpath_js is None:
@@ -73,49 +76,58 @@ def get_fanstatic_resources(request):
     return Group([admin_js, olimgpath_js, admin_css])
 # end of HACK
 
+
 @fa_events.subscriber([models.Functionality, fa_events.IBeforeRenderEvent])
 def before_render_functionnality(context, event):
     get_fanstatic_resources(event.request).need()
+
 
 @fa_events.subscriber([models.Theme, fa_events.IBeforeRenderEvent])
 def before_render_theme(context, event):
     get_fanstatic_resources(event.request).need()
 
+
 @fa_events.subscriber([models.Layer, fa_events.IBeforeRenderEvent])
 def before_render_layer(context, event):
     get_fanstatic_resources(event.request).need()
+
 
 @fa_events.subscriber([models.LayerGroup, fa_events.IBeforeRenderEvent])
 def before_render_layergroup(context, event):
     get_fanstatic_resources(event.request).need()
 
+
 @fa_events.subscriber([models.RestrictionArea, fa_events.IBeforeRenderEvent])
 def before_render_restrictionarea(context, event):
     get_fanstatic_resources(event.request).need()
+
 
 @fa_events.subscriber([models.Role, fa_events.IBeforeRenderEvent])
 def before_render_role(context, event):
     get_fanstatic_resources(event.request).need()
 
+
 @fa_events.subscriber([models.User, fa_events.IBeforeRenderEvent])
 def before_render_user(context, event):
     get_fanstatic_resources(event.request).need()
 
+
 # validator to check uniqueness of unique key in db (prevent duplicate key error)
-def unique_validator(value,f):
+def unique_validator(value, f):
     if f.parent._bound_pk is None and f.query(f.model.__class__).filter_by(
-                                                     **{f.name:f.value} ).first():
+                                                     **{f.name: f.value}).first():
         raise ValidationError(_(u'Duplicate record'))
+
 
 class PyramidGeometryFieldRenderer(GeometryFieldRenderer):
     def __init__(self, field):
         self.__templates = None
         GeometryFieldRenderer.__init__(self, field)
 
-    def get_templates (self):
+    def get_templates(self):
         if self.__templates == None:
             self.__templates = TemplateLookup(
-                [os.path.join(os.path.dirname(__file__), 'templates', 'admin')], 
+                [os.path.join(os.path.dirname(__file__), 'templates', 'admin')],
                 input_encoding='utf-8', output_encoding='utf-8')
         return self.__templates
 
@@ -124,12 +136,14 @@ FieldSet.default_renderers.update(fa_renderers.default_renderers)
 FieldSet.default_renderers[geometry.Geometry] = PyramidGeometryFieldRenderer
 FieldSet.default_renderers[geometry.Polygon] = PyramidGeometryFieldRenderer
 
+
 class DblPasswordField(Field):
     def __init__(self, parent, original):
         self._original = original
-        Field.__init__(self, name = original.name, value = original.value)
+        Field.__init__(self, name=original.name, value=original.value)
         self.parent = parent
         clsname = self.parent.model.__class__.__name__
+
         def passwords_match(value, field):
             value1 = field.renderer.params.getone(field.renderer.name)
             value2 = field.renderer.params.getone(field.renderer.name + '_confirm')
@@ -145,6 +159,7 @@ class DblPasswordField(Field):
     def render(self):
         return (password_field(self.renderer.name, value="")
             + password_field(self.renderer.name + '_confirm', value=""))
+
 
 class CheckBoxTreeSet(CheckBoxSet):
     def __init__(self, attribute, dom_id, auto_check=True, auto_collapsed=True):
@@ -164,11 +179,11 @@ class CheckBoxTreeSet(CheckBoxSet):
             opt += ","
         if not self.auto_check:
             opt += """'onCheck': {
-                'others': false, 
+                'others': false,
                 'descendants': false,
                 'ancestors': false },
             'onUncheck': {
-                'others': false, 
+                'others': false,
                 'descendants': false,
                 'ancestors': false }"""
         result = """<script lang="text/javascript" >
@@ -177,14 +192,15 @@ class CheckBoxTreeSet(CheckBoxSet):
             });
         </script>
         <ul id="%(id)s" class="checkboxtree">
-        """%{'id': self.dom_id, 'opt': opt}
+        """ % {'id': self.dom_id, 'opt': opt}
         result += self.render_tree()
         result += '</ul>'
         return result
 
+
 class LayerCheckBoxTreeSet(CheckBoxTreeSet):
 
-    def __init__(self, attribute, dom_id='layer_tree', 
+    def __init__(self, attribute, dom_id='layer_tree',
             auto_check=True, only_private=False):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self._rendered_id = []
@@ -221,7 +237,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         if isinstance(item, models.Theme) or \
                 self.auto_check and not isinstance(item, models.Layer):
             return self.render_organisational_item(item, depth)
-        
+
         # escape public layer if wanted
         if self.only_private and isinstance(item, models.Layer) and item.public:
             return ""
@@ -237,7 +253,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
             <label>%(label)s</label>
             """ % {
             'id': '%s_%i' % (self.name, self.i),
-            # adds -second to fields (layer) that appears two time to 
+            # adds -second to fields (layer) that appears two time to
             # don't save them twice (=> integrity error).
             'name': self.name + ("-second" if item.id in self._rendered_id else ""),
             'value': item.id,
@@ -262,7 +278,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         for item in themes:
             result += self.render_item(item, 1)
 
-        # add unlinked layers 
+        # add unlinked layers
         if len(self.layer) >= 0 or len(self.layer_group) > 0:
             result += "<li>"
             if self.auto_check:
@@ -279,10 +295,12 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
             result += '</li>'
         return result
 
+
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):
     def __init__(self, attribute):
-        super(TreeItemCheckBoxTreeSet, self).__init__(attribute, 
+        super(TreeItemCheckBoxTreeSet, self).__init__(attribute,
                 auto_check=False, only_private=False)
+
 
 class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
     def __init__(self, attribute):
@@ -311,15 +329,15 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
                 functionality.value)
             i += 1
         result += '</ul></li>'
-        return result 
+        return result
 
-####################################################################################
+##############################################################################
 # FIELDS defs
 #
 # DefaultBasemap, Layer, LayerGroup, Mandant, Printtemplates, RestrictionArea,
 # Role, Title, User
 #
-####################################################################################
+##############################################################################
 
 # Layer
 Layer = FieldSet(models.Layer)
@@ -411,13 +429,13 @@ fieldOrder.extend([User.functionalities.set(renderer=FunctionalityCheckBoxTreeSe
               User.email.with_metadata(mandatory='')])
 User.configure(include=fieldOrder)
 
-####################################################################################
+#############################################################################
 # GRID defs
 #
-# DefaultBasemapGrid, LayerGrid, LayerGroupGrid, MandantGrid, PrinttemplatesGrid,
-# RestrictionAreaGrid, RoleGrid, TitleGrid, UserGrid
+# DefaultBasemapGrid, LayerGrid, LayerGroupGrid, MandantGrid,
+# PrinttemplatesGrid, RestrictionAreaGrid, RoleGrid, TitleGrid, UserGrid
 #
-####################################################################################
+#############################################################################
 
 # LayerGrid
 LayerGrid = Grid(models.Layer)

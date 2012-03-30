@@ -7,6 +7,7 @@ from migrate.versioning.shell import main as migrate_main
 from paste.deploy import appconfig
 import c2cgeoportal
 
+
 def main():
 
     usage = "The wrapper adds two options to define the target WSGI application."
