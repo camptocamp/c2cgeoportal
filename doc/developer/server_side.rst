@@ -31,9 +31,20 @@ Create development environment in a project
     [template]
     exclude-directories += c2cgeoportal/paste_templates
 
+* In the file ``c2cgeoportal/setup.py`` add ``nose`` and
+  ``nosexcover`` in the install_requires packege list.
+
+* Remove the the old egg::
+
+    rm -rf ./buildout/eggs/c2cgeoportal-*
+
+* Remove the version of c2cgeoportal in the setup.py 
+  (``'c2cgeoportal==x.y'`` => ``'c2cgeoportal'``)
+
 * Build::
 
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
+
 
 Tests
 -----
