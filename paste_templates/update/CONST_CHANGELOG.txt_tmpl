@@ -4,6 +4,22 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.6
 ===========
 
+Templates
+---------
+
+The base templates are deprecated, to get the new version do 
+(Careful: this will overwrite your changes):
+   cd ${project}
+   ./buildout/bin/paster create --template c2cgeoportal_create \
+       --output-dir=/tmp/ ${project} package=${package}
+   cp /tmp/${project}/${package}/templates/apihelp.html ${package}/templates/
+   cp /tmp/${project}/${package}/templates/apiloader.html ${package}/templates/
+   cp /tmp/${project}/${package}/templates/apiviewer.html ${package}/templates/
+   cp /tmp/${project}/${package}/templates/index.html ${package}/templates/
+   cp /tmp/${project}/${package}/templates/viewer.js ${package}/templates/
+   rm -rf /tmp/${project}
+
+
 Editing Interface
 -----------------
 
