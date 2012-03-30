@@ -107,6 +107,12 @@ We also have to download the ``submodule`` dependencies
    of submodule who ass son unneeded dependencies and duplicate code 
    like OpenLayers.
 
+.. important::
+   the git command don't respect all the unix rights, than it you checkout 
+   your project in a common folder like ``/var/www/<vhost>/private`` it 
+   will be fully writable only for you. To fix that you can do in your project
+   ``chmod -R g+w .``.
+
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
 
