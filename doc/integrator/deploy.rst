@@ -16,6 +16,43 @@ The deploy tool has four parts:
 An other important section is the ``[remote_hosts]`` where we 
 configure the demo and production hosts.
 
+All the configuration option can be found in ``/etc/deploy/deploy.cfg``.
+
+The command line help ``deploy --help``::
+
+    Usage: deploy -c [OPTIONS]... CONFIG_FILE DIRECTORY
+       or: deploy -x [OPTIONS]... DIRECTORY
+       or: deploy -r [OPTIONS] CONFIG_FILE HOST
+
+    Options:
+      -h, --help            show this help message and exit
+      -v, --verbose         make lots of noise [default]
+      -q, --quiet           be vewwy quiet
+      -e ENV, --env=ENV     additionals environement variables, eg: '-e
+                            target=prod,foo=bar'
+
+      Create an archive:
+        -c, --create        create a new archive
+        --components=COMPONENTS
+                            restrict component to update. [databases,files,code].
+                            default to all
+        --tables=TABLES     only include TABLES. eg: '--tables foo,bar.baz' to
+                            include the database 'foo' and the 'baz' table from
+                            the 'bar' database
+        --symlink           use symlinks for 'files' and 'code'
+        --no-symlink        don't use symlinks for 'files' and 'code' (copy
+                            content) [default]
+
+      Extract an archive:
+        -x, --extract       extract files from an archive
+        -d, --delete        delete the archive after the restoration [default]
+        -k, --keep          don't delete the archive after the restoration
+
+      Create, copy and extract:
+        -r, --remote        create, copy and restore an archive to a remote server
+        --no-time-dir       don't create separated archive directory for each
+                            remote deploy [default false]
+
 
 To deploy from dev to demo
 --------------------------
@@ -39,6 +76,7 @@ Deploy to the demo server::
 
 **Test on the demo server**
 
+
 To deploy from demo to prod
 ---------------------------
 
@@ -52,4 +90,3 @@ Deploy on the prod server::
   sudo -u deploy deploy -r deploy.cfg prod 
 
 **Test on the prod server**
-
