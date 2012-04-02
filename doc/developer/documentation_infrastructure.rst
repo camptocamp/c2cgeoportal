@@ -3,6 +3,9 @@
 Documentation infrastructure
 ============================
 
+c2cgeoportal
+------------
+
 The c2cgeoportal documentation is publicly available at
 http://docs.camptocamp.net/c2cgeoportal/.
 
@@ -28,3 +31,24 @@ This deploy key should match the SSH key of the ``sig`` user on
 
     The initial ``git clone`` of c2cgeoportal, the GitHub deploy key, and the
     cron configuration are managed by puppet.
+
+CGXP
+----
+
+The CGXP documentation is publicly available at
+http://docs.camptocamp.net/cgxp/.
+
+The ``docs.camptocamp.net`` server has an ``@hourly`` cronjob that runs the
+``update_online.sh`` script, which is in the ``core/src/doc`` directory of
+cgxp.
+
+To manually update the online doc you can log onto ``docs.camptocamp.net`` as
+``sig``, change directory to
+``/var/www/docs.camptocamp.net/private/cgxp/core/src/doc`` and run
+``update_online.sh`` from there.
+
+.. note::
+
+    The initial ``git clone`` of cgxp, and the cron configuration are managed
+    by puppet. Contrary to c2cgeoportal there's no need for a GitHub deploy
+    key, as the CGXP repository is public.
