@@ -1,13 +1,17 @@
 import functools
 
 from sqlalchemy import Table, sql, types
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.associationproxy import AssociationProxy, association_proxy
 
 from geoalchemy import Geometry, GeometryColumn
 from geoalchemy import (Point, LineString, Polygon,
                         MultiPoint, MultiLineString, MultiPolygon)
 
 from papyrus.geo_interface import GeoInterface
+from papyrus.xsd import tag
 
 
 _class_cache = {}
@@ -41,6 +45,28 @@ def init(engine):
     class an engine, required for the reflection.
     """
     Base.metadata.bind = engine
+
+
+def xsd_sequence_callback(tb, cls):
+    from c2cgeoportal.models import DBSession
+    for k, p in cls.__dict__.iteritems():
+        if not isinstance(p, AssociationProxy):
+            continue
+        relationship_property = class_mapper(cls) \
+                                    .get_property(p.target_collection)
+        target_cls = relationship_property.argument
+        query = DBSession.query(getattr(target_cls, p.value_attr))
+        attrs = {}
+        attrs['minOccurs'] = str(0)
+        attrs['nillable'] = 'true'
+        attrs['name'] = k
+        with tag(tb, 'xsd:element', attrs) as tb:
+            with tag(tb, 'xsd:simpleType') as tb:
+                with tag(tb, 'xsd:restriction',
+                         {'base': 'xsd:string'}) as tb:
+                    for value, in query:
+                        with tag(tb, 'xsd:enumeration', {'value': value}):
+                            pass
 
 
 def column_reflect_listener(table, column_info, engine):
@@ -94,18 +120,78 @@ def get_class(tablename):
                   )
 
     # create the mapped class
-    cls = type(
-            tablename.capitalize(),
-            (GeoInterface, Base),
-            dict(__table__=table)
-            )
-
-    # override the mapped class' geometry columns
-    for col in table.columns:
-        if isinstance(col.type, Geometry):
-            setattr(cls, col.name, GeometryColumn(col.type))
+    cls = _create_class(table)
 
     # add class to cache
     _class_cache[(schema, tablename)] = cls
 
     return cls
+
+
+def _create_class(table):
+
+    # redefine __update__ and __read__ from GeoInterface to deal
+    # with association proxies in the mapped class
+
+    def __update__(self, feature):
+        GeoInterface.__update__(self, feature)
+        # deal with association proxies
+        for k, p in self.__class__.__dict__.iteritems():
+            if not isinstance(p, AssociationProxy):
+                continue
+            relationship_property = class_mapper(self.__class__) \
+                                        .get_property(p.target_collection)
+            if relationship_property.uselist:  # pragma: no cover
+                raise NotImplementedError
+            setattr(self, k, feature.properties.get(k, None))
+
+    def __read__(self):
+        feature = GeoInterface.__read__(self)
+        # deal with association proxies
+        for k, p in self.__class__.__dict__.iteritems():
+            if not isinstance(p, AssociationProxy):
+                continue
+            relationship_property = class_mapper(self.__class__) \
+                                        .get_property(p.target_collection)
+            if relationship_property.uselist:  # pragma: no cover
+                raise NotImplementedError
+            feature.properties[k] = getattr(self, k)
+        return feature
+
+    class_dict = dict(__table__=table, __update__=__update__,
+                      __read__=__read__)
+
+    cls = type(
+            str(table.name.capitalize()),
+            (GeoInterface, Base),
+            class_dict
+            )
+
+    for col in table.columns:
+        if col.foreign_keys:
+            add_association_proxy(cls, col)
+        elif isinstance(col.type, Geometry):
+            setattr(cls, col.name, GeometryColumn(col.type))
+
+    return cls
+
+
+def add_association_proxy(cls, col):
+    if len(col.foreign_keys) != 1:  # pragma: no cover
+        raise NotImplementedError
+    fk = next(iter(col.foreign_keys))
+    tablename, _ = fk.target_fullname.rsplit('.', 1)
+    child_cls = get_class(tablename)
+    try:
+        proxy = col.name[0:col.name.rindex('_id')]
+    except ValueError:  # pragma: no cover
+        proxy = col.name + '_'
+    rel = proxy + '_'
+    setattr(cls, rel, relationship(child_cls))
+
+    # here we assume that the target table of the relationship
+    # has a column named "name"
+    def creator(value):
+        from c2cgeoportal.models import DBSession
+        return DBSession.query(child_cls).filter_by(name=value).first()
+    setattr(cls, proxy, association_proxy(rel, 'name', creator=creator))

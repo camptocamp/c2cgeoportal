@@ -89,7 +89,8 @@ def includeme(config):
     config.add_renderer('geojson', GeoJSON())
 
     # add the "xsd" renderer
-    config.add_renderer('xsd', XSD())
+    config.add_renderer('xsd', XSD(
+            sequence_callback=dbreflection.xsd_sequence_callback))
 
     # add a TileCache view
     load_tilecache_config(config.get_settings())
