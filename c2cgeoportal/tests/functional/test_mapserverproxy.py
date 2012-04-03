@@ -324,6 +324,8 @@ class TestMapserverproxyView(TestCase):
         request.registry.settings = {
                 'mapserv.url': mapserv_url,
         }
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
 
         request.method = 'POST'
         request.body = (GETFEATURE_REQUEST % {
@@ -363,6 +365,8 @@ class TestMapserverproxyView(TestCase):
         request.registry.settings = {
                 'mapserv.url': mapserv_url,
         }
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
 
         request.method = 'POST'
         request.body = (GETFEATURE_REQUEST % {
@@ -403,6 +407,8 @@ class TestMapserverproxyView(TestCase):
         request.registry.settings = {
                 'mapserv.url': mapserv_url,
         }
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
 
         request.method = 'POST'
         request.body = (GETFEATURE_REQUEST % {
