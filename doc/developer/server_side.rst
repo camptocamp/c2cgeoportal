@@ -34,7 +34,7 @@ Create development environment in a project
 * In the file ``c2cgeoportal/setup.py`` add ``nose`` and
   ``nosexcover`` in the install_requires packege list.
 
-* Remove the the old egg::
+* Remove the old egg::
 
     rm -rf ./buildout/eggs/c2cgeoportal-*
 
