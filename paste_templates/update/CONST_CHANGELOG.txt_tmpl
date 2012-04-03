@@ -119,7 +119,7 @@ work in an existing project several steps are required:
    have the following entry:
         ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
    And add the following entries to api.js, and all language files
-   to have all identical root:
+   (like en.js, fr.js, de.js, ...) to have all identical root:
         ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
         ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
 
