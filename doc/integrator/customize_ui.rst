@@ -25,9 +25,10 @@ And finally the image should be placed in the folder:
 Viewer.js
 ---------
 
-The viewer.js configure all the client application, 
-the main build class is documented there:
-`gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_.
+The ``viewer.js`` template is used to configure the client application, 
+especially using a 
+`gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_ 
+object.
 
-The most important part is the ``tools``, most of them where get from 
+Most of the tools used in the application are 
 `cgxp.plugins <http://docs.camptocamp.net/cgxp/lib/plugins.html>`_.
