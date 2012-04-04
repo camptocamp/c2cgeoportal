@@ -135,7 +135,6 @@ class DblPasswordField(Field):
         self._original = original
         Field.__init__(self, name=original.name, value=original.value)
         self.parent = parent
-        clsname = self.parent.model.__class__.__name__
 
         def passwords_match(value, field):
             value1 = field.renderer.params.getone(field.renderer.name)

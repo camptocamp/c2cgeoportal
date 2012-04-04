@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os.path
-import logging.config
 import warnings
 from optparse import OptionParser
 from ConfigParser import ConfigParser
@@ -45,9 +44,6 @@ used as password)')
     if not os.path.isfile(ini_file):
         raise StandardError('the config file %s can not be found' % ini_file)
 
-    logging.config.fileConfig(ini_file)
-    log = logging.getLogger(__name__)
-
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
 
@@ -63,9 +59,7 @@ used as password)')
     if not config.has_option(section, option):
         raise StandardError('the config file %s has no %s option in %s section ' % \
                             (ini_file, option, section))
-    app = get_app(ini_file, config.get(section, option))
-    settings = app.registry.settings
-    schema = settings['schema']
+    get_app(ini_file, config.get(section, option))
 
     # must be done only once we have loaded the project config
     from c2cgeoportal import models
@@ -76,7 +70,7 @@ used as password)')
     modelList = ['User', 'Role']
     for model in modelList:
         try:
-            usertable = getattr(models, model)
+            getattr(models, model)
         except AttributeError:
             print "models.%s not found" % model
 
