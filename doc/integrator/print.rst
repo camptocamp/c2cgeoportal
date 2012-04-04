@@ -1,6 +1,5 @@
 .. _print:
 
-============================
 Print config.yaml templating
 ============================
 
@@ -49,6 +48,7 @@ A3_landscape.mako where we have some blocks like::
 And in ``print/templates/A3_landscape_inherit.mako`` and 
 ``print/templates/A4_portrait_inherit.mako`` thoses block will 
 be redefined.
+
 The ``print.mako.in`` has the "header" part and includes the wanted templates.
 
 Using backgroundPdf parameter
@@ -59,10 +59,48 @@ In print configuration you can use a PDF as a background image. You should put t
 PDF file in the print directory and use '<%text>$</%text>{configDir}/template_A4_portrait.pdf' 
 for the valeur of backgroundPdf parameter.
 
-In your buildout.cfg file you should add this parts:
-
-::
+In your buildout.cfg file you should add this parts::
    
    [print-war]
    input += *.pdf
 
+The print.mako.in has the "header" part and includes the wanted templates.
+
+Using one printserver in a set of site
+======================================
+
+For memory issue we can use only one print server for a set of site.
+
+For that we need to have only one config.yaml who can easily generated 
+by the templating. Than we should do:
+
+* Remove the print from the ``children`` projects, 
+  remove the ``print`` folder::
+
+    git rm print
+
+* Deactivate the print compilation by adding the following lines 
+  in the ``[buildout]`` section of the ``buildout.cfg`` file::
+
+    parts += print-template
+        print-war
+
+* Point to the parent print server by adding the following lines
+  in the ``[vars]`` section of the ``buildout.cfg`` file::
+
+    parent_instanceid = <parent-instance-id>
+    print_path = /print-c2cgeoportal-${parent_instanceid}/pdf/
+
+* If needed set the print teplates used by anonymous user by
+  adding the following lines in the ``[vars]`` section 
+  of the ``buildout.cfg`` file::
+
+    anonymous_functionalities = {
+            "print_template": ["1 A4 child", "2 A3 child"]
+        }
+
+.. note::
+
+   In the user buildout config file of children project,
+   the ``parent_instanceid`` ``[vars]`` should be overwritten 
+   to make working the pair in the user dev environment.
