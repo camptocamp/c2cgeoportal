@@ -6,7 +6,6 @@ from optparse import OptionParser
 from ConfigParser import ConfigParser
 
 from pyramid.paster import get_app
-from c2cgeoportal import schema
 import transaction
 
 

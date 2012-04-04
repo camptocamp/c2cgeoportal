@@ -8,9 +8,7 @@ from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.models import DBSession, User
-from c2cgeoportal.lib.wfsparsing import (is_get_feature,
-                                         limit_featurecollection)
+from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 
 import logging
 log = logging.getLogger(__name__)

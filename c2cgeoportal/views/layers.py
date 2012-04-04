@@ -1,27 +1,23 @@
 from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
                                     HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
-from pyramid.security import authenticated_userid
 
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
 
-from geoalchemy import (functions, Geometry,
-                        DBSpatialElement, WKBSpatialElement)
+from geoalchemy import Geometry, DBSpatialElement, WKBSpatialElement
 
 import geojson
 from geojson.feature import FeatureCollection, Feature
 
 from shapely.geometry import asShape
 
-from papyrus.renderers import XSD
 from papyrus.protocol import Protocol, create_filter
 
 from c2cgeoportal.lib.dbreflection import get_class
-from c2cgeoportal.models import (DBSession, Layer, RestrictionArea,
-                                 User, Role)
+from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
 
 
 def _get_geom_col_info(layer):

@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.config import Configurator
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
-from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.request import Request as PyramidRequest
 from pyramid.decorator import reify
 from pyramid.security import unauthenticated_userid
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
-import papyrus
 import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON, XSD

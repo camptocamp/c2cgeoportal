@@ -11,7 +11,6 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.functionality import get_functionalities
 
 log = logging.getLogger(__name__)

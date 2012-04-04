@@ -1,7 +1,6 @@
 import functools
 
 from sqlalchemy import Table, sql, types
-from sqlalchemy.engine import reflection
 from sqlalchemy.ext.declarative import declarative_base
 
 from geoalchemy import Geometry, GeometryColumn

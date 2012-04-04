@@ -4,20 +4,13 @@ import os
 
 from fanstatic import Library, Group, Resource
 from fanstatic.core import set_resource_file_existence_checking
-from pyramid.i18n import Localizer
 from pyramid_formalchemy.utils import TemplateEngine
-from sqlalchemy import UniqueConstraint
 from formalchemy import config as fa_config
-from formalchemy import templates
 from formalchemy import fields
-from formalchemy import forms
-from formalchemy import tables
 from formalchemy import FieldSet, Grid
 from formalchemy.fields import Field, CheckBoxSet
 from formalchemy.validators import ValidationError
 from formalchemy.helpers import password_field
-from formalchemy.ext.fsblob import FileFieldRenderer
-from formalchemy.ext.fsblob import ImageFieldRenderer
 from mako.lookup import TemplateLookup
 from fa.jquery import renderers as fa_renderers
 from fa.jquery import fanstatic_resources
@@ -27,9 +20,9 @@ from geoalchemy import geometry
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import models
-from c2cgeoportal import (formalchemy_language, formalchemy_default_zoom,
-                           formalchemy_default_lon, formalchemy_default_lat,
-                           formalchemy_available_functionalities)
+from c2cgeoportal import (formalchemy_default_zoom,
+        formalchemy_default_lon, formalchemy_default_lat,
+        formalchemy_available_functionalities)
 
 __all__ = ['Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
 'RestrictionArea', 'LayerGrid', 'LayerGroupGrid', 'ThemeGrid',

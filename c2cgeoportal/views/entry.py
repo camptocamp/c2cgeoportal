@@ -14,7 +14,6 @@ from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
-from shapely import wkb
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
