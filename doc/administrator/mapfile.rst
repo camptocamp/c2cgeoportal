@@ -25,6 +25,11 @@ This section provides information on how to configure *private layers* (a.k.a
 *restricted layers*), and layers involved in ``point query``, ``box query``,
 ``query builder`` features.
 
+.. note::
+
+   To make the rotation working (used by the print), we needs to specify 
+   the PROJECTION on the MAP and on all the LAYERS.
+
 WFS GetFeature
 --------------
 
