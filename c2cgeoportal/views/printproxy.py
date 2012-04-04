@@ -128,7 +128,7 @@ class Printproxy(object):
 
         body = self._read_request_body()
 
-        user = request.user
+        user = self.request.user
 
         root = json.loads(body)
 
