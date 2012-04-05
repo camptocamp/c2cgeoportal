@@ -105,12 +105,12 @@ class TestLayers(TestCase):
                 child_id=c1_id,
                 name='foo',
                 geom=func.ST_GeomFromText('POINT(5 45)', 21781))
-        engine.connect().execute(ins)
+        f1_id = engine.connect().execute(ins).inserted_primary_key[0]
         ins = table.insert().values(
                 child_id=c2_id,
                 name='bar',
                 geom=func.ST_GeomFromText('POINT(6 46)', 21781))
-        engine.connect().execute(ins)
+        f2_id = engine.connect().execute(ins).inserted_primary_key[0]
 
         layer = Layer()
         layer.id = id

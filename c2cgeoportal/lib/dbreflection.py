@@ -134,6 +134,7 @@ def _create_class(table):
     # with association proxies in the mapped class
 
     def __update__(self, feature):
+        from c2cgeoportal.models import DBSession
         GeoInterface.__update__(self, feature)
         # deal with association proxies
         for k, p in self.__class__.__dict__.iteritems():
@@ -143,7 +144,13 @@ def _create_class(table):
                                         .get_property(p.target_collection)
             if relationship_property.uselist:  # pragma: no cover
                 raise NotImplementedError
-            setattr(self, k, feature.properties.get(k, None))
+            value = feature.properties.get(k)
+            if value is not None:
+                child_cls = relationship_property.argument
+                obj = DBSession.query(child_cls).filter(
+                    getattr(child_cls, p.value_attr) == value).first()
+                if obj is not None:
+                    setattr(self, p.target_collection, obj)
 
     def __read__(self):
         feature = GeoInterface.__read__(self)
@@ -187,11 +194,25 @@ def add_association_proxy(cls, col):
     except ValueError:  # pragma: no cover
         proxy = col.name + '_'
     rel = proxy + '_'
-    setattr(cls, rel, relationship(child_cls))
+    setattr(cls, rel, relationship(child_cls, lazy='immediate'))
 
-    # here we assume that the target table of the relationship
-    # has a column named "name"
+    def getset_factory(collection_type, proxy):
+
+        def getter(obj):
+            if obj is None:
+                return None
+            return getattr(obj, proxy.value_attr)
+
+        def setter(obj, value):
+            # we should never be updating an
+            # existing object
+            assert False
+        return getter, setter
+
     def creator(value):
         from c2cgeoportal.models import DBSession
-        return DBSession.query(child_cls).filter_by(name=value).first()
-    setattr(cls, proxy, association_proxy(rel, 'name', creator=creator))
+        return DBSession.query(child_cls).filter(
+                getattr(child_cls, proxy.value_attr) == value).first()
+
+    setattr(cls, proxy, association_proxy(rel, 'name', creator=creator,
+                                          getset_factory=getset_factory))
