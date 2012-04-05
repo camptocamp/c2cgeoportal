@@ -29,6 +29,15 @@ To be editable a layer should satisfy the following requirements:
        -------------+-------------+----------------------------------------------------------
         id          | integer     | not null default nextval('public.table_id_seq'::regclass)
 
+4. If the PostGIS table has a many-to-one relationship to another table
+   (typically a dictionary table) there are additional requirements:
+
+   * The name of the foreign key column should end with ``_id`` (e.g.
+     ``type_id``). This is not strictly required, but recommended.
+   * The relationship's target table should have two columns, a
+     primary key column and a text column. The text column must
+     be named ``name``.
+
 
 Adding or making layers editable
 --------------------------------
