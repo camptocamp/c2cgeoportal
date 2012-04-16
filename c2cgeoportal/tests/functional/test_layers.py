@@ -2,7 +2,7 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule
+from c2cgeoportal.tests.functional import tearDownModule, setUpModule  # NOQA
 
 
 @attr(functional=True)
@@ -63,7 +63,7 @@ class TestLayers(TestCase):
         import transaction
         import sqlahelper
         from sqlalchemy import func
-        from sqlalchemy import Column, Table, MetaData, types, ForeignKey
+        from sqlalchemy import Column, Table, types, ForeignKey
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy import (GeometryDDL, GeometryExtensionColumn,
                                 Point, WKTSpatialElement)
@@ -105,12 +105,12 @@ class TestLayers(TestCase):
                 child_id=c1_id,
                 name='foo',
                 geom=func.ST_GeomFromText('POINT(5 45)', 21781))
-        f1_id = engine.connect().execute(ins).inserted_primary_key[0]
+        f1_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
         ins = table.insert().values(
                 child_id=c2_id,
                 name='bar',
                 geom=func.ST_GeomFromText('POINT(6 46)', 21781))
-        f2_id = engine.connect().execute(ins).inserted_primary_key[0]
+        f2_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
 
         layer = Layer()
         layer.id = id
@@ -204,9 +204,12 @@ class TestLayers(TestCase):
         collection = read_many(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 3)
-        self.assertEquals(collection.features[0].properties['__layer_id__'], layer_id1)
-        self.assertEquals(collection.features[1].properties['__layer_id__'], layer_id2)
-        self.assertEquals(collection.features[2].properties['__layer_id__'], layer_id3)
+        self.assertEquals(collection.features[0].properties['__layer_id__'],
+                          layer_id1)
+        self.assertEquals(collection.features[1].properties['__layer_id__'],
+                          layer_id2)
+        self.assertEquals(collection.features[2].properties['__layer_id__'],
+                          layer_id3)
 
     def test_read_one_public(self):
         from geojson.feature import Feature
@@ -283,7 +286,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(public=True)
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
@@ -295,7 +298,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         self.assertRaises(HTTPForbidden, create, request)
 
     def test_create_no_perm(self):
@@ -305,7 +308,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         self.assertRaises(HTTPForbidden, create, request)
 
     def test_create(self):
@@ -315,7 +318,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
@@ -327,7 +330,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         feature = update(request)
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
@@ -341,7 +344,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update_no_perm_dst_geom(self):
@@ -352,7 +355,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update_no_perm_src_geom(self):
@@ -363,7 +366,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 2
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update(self):
@@ -373,7 +376,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         feature = update(request)
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
