@@ -98,54 +98,62 @@ class Entry(object):
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
-            if layer.public:
-                l['editable'] = True
-            elif self.request.user:
-                c = DBSession.query(RestrictionArea) \
-                    .filter(RestrictionArea.roles.any(
-                        Role.id == self.request.user.role.id)) \
-                    .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                    .filter(RestrictionArea.readwrite == True) \
-                    .count()
-                if c > 0:
-                    l['editable'] = True
-
+            self._fill_editable(l, layer)
         if layer.layerType == "internal WMS":
-            # this is a leaf, ie. a Mapserver layer
-            # => add the metadata URL if any
-            if layer.name in wms_layers:
-                metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
-                if len(metadataUrls) > 0:
-                    l['metadataUrls'] = metadataUrls
-            if layer.minResolution and layer.maxResolution:
-                l['minResolutionHint'] = layer.minResolution
-                l['maxResolutionHint'] = layer.maxResolution
-            else:
-                if layer.name in wms_layers:
-                    resolutions = self._getLayerResolutionHint(wms[layer.name])
-                    if resolutions[0] <= resolutions[1]:
-                        l['minResolutionHint'] = float('%0.2f' % resolutions[0])
-                        l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
-            if layer.legendRule:
-                l['legendRule'] = layer.legendRule
-
+            self._fill_internal_WMS(l, layer, wms_layers, wms)
         else:
-            if layer.legendImage:
-                l['legendImage'] = layer.legendImage
-            if layer.minResolution and layer.maxResolution:
-                l['minResolutionHint'] = layer.minResolution
-                l['maxResolutionHint'] = layer.maxResolution
-
-            if layer.layerType == "external WMS":
-                l['url'] == layer.url
-                l['isSingleTile'] = layer.isSingleTile
-
-            if layer.layerType == "external WMTS":
-                l['url'] == layer.url
-                l['maxExtent'] == layer.maxExtent
-                l['serverResolutions'] == layer.serverResolutions
+            self._fill_non_internal_WMS(l, layer)
+        if layer.legendImage:
+            l['legendImage'] = layer.legendImage
 
         return l
+
+    def _fill_editable(self, l, layer):
+        if layer.public:
+            l['editable'] = True
+        elif self.request.user:
+            c = DBSession.query(RestrictionArea) \
+                .filter(RestrictionArea.roles.any(
+                    Role.id == self.request.user.role.id)) \
+                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                .filter(RestrictionArea.readwrite == True) \
+                .count()
+            if c > 0:
+                l['editable'] = True
+
+    def _fill_internal_WMS(self, l, layer, wms_layers, wms):
+        # this is a leaf, ie. a Mapserver layer
+        # => add the metadata URL if any
+        if layer.name in wms_layers:
+            metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
+            if len(metadataUrls) > 0:
+                l['metadataUrls'] = metadataUrls
+        if layer.minResolution and layer.maxResolution:
+            l['minResolutionHint'] = layer.minResolution
+            l['maxResolutionHint'] = layer.maxResolution
+        else:
+            if layer.name in wms_layers:
+                resolutions = self._getLayerResolutionHint(wms[layer.name])
+                if resolutions[0] <= resolutions[1]:
+                    l['minResolutionHint'] = float('%0.2f' % resolutions[0])
+                    l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
+        if layer.legendRule:
+            l['legendRule'] = layer.legendRule
+
+    def _fill_non_internal_WMS(self, l, layer):
+        if layer.minResolution and layer.maxResolution:
+            l['minResolutionHint'] = layer.minResolution
+            l['maxResolutionHint'] = layer.maxResolution
+
+        if layer.layerType == "external WMS":
+            l['url'] == layer.url
+            l['isSingleTile'] = layer.isSingleTile
+
+        # TODO: use Capabilities
+        if layer.layerType == "external WMTS":
+            l['url'] == layer.url
+            l['maxExtent'] == layer.maxExtent
+            l['serverResolutions'] == layer.serverResolutions
 
     def _group(self, group, layers, wms_layers, wms):
         children = []
@@ -221,24 +229,11 @@ class Entry(object):
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
         exportThemes = []
 
-        error = "\n"
+        errors = "\n"
 
-        #TODO: optimize following code to avoid parsing layers list many times?
         for theme in themes:
             if theme.display:
-                children = []
-
-                for item in sorted(theme.children, key=lambda item: item.order):
-                    if type(item) == LayerGroup:
-                        (c, e) = self._group(item, layers, wms_layers, wms)
-                        error += e
-                        if c != None:
-                            children.append(c)
-
-                    elif type(item) == Layer:
-                        if (item in layers):
-                            children.append(self._layer(item, wms_layers, wms))
-
+                children = self._getChildren(theme, layers, wms_layers, wms, errors)
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
                            self.request.static_url('c2cgeoportal:static' + \
@@ -249,7 +244,19 @@ class Entry(object):
                         'children': children
                     })
 
-        return (exportThemes, error)
+        return (exportThemes, errors)
+
+    def _getChildren(self, theme, layers, wms_layers, wms, errors):
+        for item in sorted(theme.children, key=lambda item: item.order):
+            if type(item) == LayerGroup:
+                (c, e) = self._group(item, layers, wms_layers, wms)
+                errors += e
+                if c != None:
+                    yield c
+
+            elif type(item) == Layer:
+                if (item in layers):
+                    yield self._layer(item, wms_layers, wms)
 
     def _getForLang(self, key):
         try:
