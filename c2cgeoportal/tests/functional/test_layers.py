@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from nose.plugins.attrib import attr
 from pyramid import testing
 from unittest import TestCase
@@ -86,9 +88,9 @@ class TestLayers(TestCase):
                       )
         table.create()
 
-        ins = table.insert().values(name='c1')
+        ins = table.insert().values(name=u'c1é')
         c1_id = engine.connect().execute(ins).inserted_primary_key[0]
-        ins = table.insert().values(name='c2')
+        ins = table.insert().values(name=u'c2é')
         c2_id = engine.connect().execute(ins).inserted_primary_key[0]
 
         table = Table(tablename, self.metadata,
@@ -155,8 +157,8 @@ class TestLayers(TestCase):
         collection = read_many(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
-        self.assertEquals(collection.features[0].properties['child'], 'c1')
-        self.assertEquals(collection.features[1].properties['child'], 'c2')
+        self.assertEquals(collection.features[0].properties['child'], u'c1é')
+        self.assertEquals(collection.features[1].properties['child'], u'c2é')
 
     def test_read_many_no_auth(self):
         from geojson.feature import FeatureCollection
@@ -179,7 +181,7 @@ class TestLayers(TestCase):
         collection = read_many(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 1)
-        self.assertEquals(collection.features[0].properties['child'], 'c1')
+        self.assertEquals(collection.features[0].properties['child'], u'c1é')
 
     def test_read_many_layer_not_found(self):
         from pyramid.httpexceptions import HTTPNotFound
@@ -223,7 +225,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], 'c1')
+        self.assertEquals(feature.properties['child'], u'c1é')
 
     def test_read_one_public_notfound(self):
         from pyramid.httpexceptions import HTTPNotFound
@@ -268,7 +270,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], 'c1')
+        self.assertEquals(feature.properties['child'], u'c1é')
 
     def test_count(self):
         from c2cgeoportal.views.layers import count
@@ -286,7 +288,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(public=True)
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
@@ -298,7 +300,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         self.assertRaises(HTTPForbidden, create, request)
 
     def test_create_no_perm(self):
@@ -308,7 +310,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         self.assertRaises(HTTPForbidden, create, request)
 
     def test_create(self):
@@ -318,7 +320,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
@@ -330,11 +332,11 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         feature = update(request)
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, 'c2')
+        self.assertEquals(feature.child, u'c2é')
 
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -344,7 +346,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update_no_perm_dst_geom(self):
@@ -355,7 +357,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update_no_perm_src_geom(self):
@@ -366,7 +368,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 2
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         self.assertRaises(HTTPForbidden, update, request)
 
     def test_update(self):
@@ -376,11 +378,11 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
         feature = update(request)
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, 'c2')
+        self.assertEquals(feature.child, u'c2é')
 
     def test_delete_public(self):
         from c2cgeoportal.views.layers import delete
