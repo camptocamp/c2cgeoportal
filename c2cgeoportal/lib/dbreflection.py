@@ -186,13 +186,23 @@ def _create_class(table):
 def add_association_proxy(cls, col):
     if len(col.foreign_keys) != 1:  # pragma: no cover
         raise NotImplementedError
+
     fk = next(iter(col.foreign_keys))
     tablename, _ = fk.target_fullname.rsplit('.', 1)
     child_cls = get_class(tablename)
+
     try:
         proxy = col.name[0:col.name.rindex('_id')]
     except ValueError:  # pragma: no cover
         proxy = col.name + '_'
+
+    # The following is a workaround for a bug in the geojson lib. The
+    # geojson lib indeed treats properties named "type" specifically
+    # (this is a GeoJSON keyword), and produces a UnicodeEncodeError
+    # if the property includes non-ascii characters.
+    if proxy == 'type':
+        proxy = 'type_'
+
     rel = proxy + '_'
     setattr(cls, rel, relationship(child_cls, lazy='immediate'))
 
