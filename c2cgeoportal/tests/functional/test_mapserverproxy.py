@@ -320,10 +320,7 @@ class TestMapserverproxyView(TestCase):
 
     def GetFeature_IsEqualTo(self, value):
         from c2cgeoportal.views import mapserverproxy
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-        }
+        request = self._create_dummy_request()
         map = self._get_mapfile_path()
         request.params = dict(map=map)
 
@@ -361,10 +358,7 @@ class TestMapserverproxyView(TestCase):
 
     def GetFeature_IsNotEqualTo(self, value):
         from c2cgeoportal.views import mapserverproxy
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-        }
+        request = self._create_dummy_request()
         map = self._get_mapfile_path()
         request.params = dict(map=map)
 
@@ -403,10 +397,7 @@ class TestMapserverproxyView(TestCase):
 
     def GetFeature_IsLike(self, value):
         from c2cgeoportal.views import mapserverproxy
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv.url': mapserv_url,
-        }
+        request = self._create_dummy_request()
         map = self._get_mapfile_path()
         request.params = dict(map=map)
 
