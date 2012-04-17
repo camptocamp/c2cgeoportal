@@ -27,7 +27,6 @@ root =
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
-    GeoExt/Lang.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
@@ -38,20 +37,14 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
-    OpenLayers/Lang.js
-    OpenLayers/Lang/en.js
-    OpenLayers/Lang/de.js
-    OpenLayers/Lang/fr.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
     EPSG${srid}.js #proj4js
-    Ext/src/locale/ext-lang-en.js
     util.js #GXP
     widgets/Viewer.js #GXP
-    Proj/Lang/en.js
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/FeatureGrid.js
@@ -113,7 +106,6 @@ root =
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
-    GeoExt/Lang.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
@@ -124,20 +116,14 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
-    OpenLayers/Lang.js
-    OpenLayers/Lang/en.js
-    OpenLayers/Lang/de.js
-    OpenLayers/Lang/fr.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
     EPSG${srid}.js #proj4js
-    Ext/src/locale/ext-lang-en.js
     util.js #GXP
     widgets/Viewer.js #GXP
-    Proj/Lang/en.js
     CGXP/plugins/Editing.js
     CGXP/plugins/Login.js
     CGXP/plugins/ThemeSelector.js
@@ -179,7 +165,6 @@ root =
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
-    GeoExt/Lang.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
@@ -190,20 +175,14 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
-    OpenLayers/Lang.js
-    OpenLayers/Lang/en.js
-    OpenLayers/Lang/de.js
-    OpenLayers/Lang/fr.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
     EPSG${srid}.js #proj4js
-    Ext/src/locale/ext-lang-en.js
     util.js #GXP
     widgets/Viewer.js #GXP
-    Proj/Lang/en.js
     api/Map.js
     CGXP/plugins/Zoom.js
     CGXP/widgets/RedliningColorPicker.js
@@ -254,13 +233,12 @@ root =
 include =
     Proj/Lang/en.js
     Ext/src/locale/ext-lang-en.js
+    OpenLayers/Lang/en.js
+#    GeoExt/locale/GeoExt-en.js
 #    FeatureEditing/resources/lang/en.js
     Styler/resources/lang/en.js
-#    GeoExt/locale/GeoExt-en.js
-    locale/en.js
+    locale/en.js # GXP
     CGXP/locale/en.js
-exclude =
-    OpenLayers/Lang.js
 
 [lang-fr.js]
 root =
@@ -284,13 +262,12 @@ root =
 include =
     Proj/Lang/fr.js
     Ext/src/locale/ext-lang-fr.js
+    OpenLayers/Lang/fr.js
+    GeoExt/locale/GeoExt-fr.js
     FeatureEditing/resources/lang/fr.js
     Styler/resources/lang/fr.js
-    GeoExt/locale/GeoExt-fr.js
-    locale/fr.js
+    locale/fr.js # GXP
     CGXP/locale/fr.js
-exclude =
-    OpenLayers/Lang.js
 
 [lang-de.js]
 root =
@@ -314,10 +291,9 @@ root =
 include =
     Proj/Lang/de.js
     Ext/src/locale/ext-lang-de.js
+    OpenLayers/Lang/de.js
+#    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
     Styler/resources/lang/de.js
-#    GeoExt/locale/GeoExt-fr.js
-#    locale/de.js
+#    locale/de.js # GXP
     CGXP/locale/de.js
-exclude =
-    OpenLayers/Lang.js
