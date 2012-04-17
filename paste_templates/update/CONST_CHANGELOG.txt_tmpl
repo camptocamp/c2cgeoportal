@@ -115,6 +115,14 @@ work in an existing project several steps are required:
 
 7. GeoAlchemy 0.7 is required. See below.
 
+8. In jsbuild/app.cfg, replace GoogleEarthControl by GoogleEarthView to 
+   have the following entry:
+        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+   And add the following entries to api.js, and all language files
+   (like en.js, fr.js, de.js, ...) to have all identical root:
+        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
+
 
 Other changes
 -------------
