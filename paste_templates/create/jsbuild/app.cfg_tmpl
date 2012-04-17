@@ -4,6 +4,16 @@
 # http://pypi.python.org/pypi/JSTools#configuration-format
 #
 
+#
+# Note:
+#
+# Language files are in the lang-*.js builds. Except for one file:
+# OpenLayers/Lang.js. This is tricky. This one is included in the main build,
+# e.g. app.js. The thing is that OpenLayers/Lang.js requires
+# OpenLayers/SingleFile.js, which resets the OpenLayers (root) object.  And we
+# can obviously not reset the OpenLayers object when evaluating lang-*.js.
+#
+
 
 [app.js]
 root =
@@ -37,6 +47,7 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
+    OpenLayers/Lang.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
@@ -239,6 +250,8 @@ include =
     Styler/resources/lang/en.js
     locale/en.js # GXP
     CGXP/locale/en.js
+exclude =
+    OpenLayers/Lang.js
 
 [lang-fr.js]
 root =
@@ -268,6 +281,8 @@ include =
     Styler/resources/lang/fr.js
     locale/fr.js # GXP
     CGXP/locale/fr.js
+exclude =
+    OpenLayers/Lang.js
 
 [lang-de.js]
 root =
@@ -297,3 +312,5 @@ include =
     Styler/resources/lang/de.js
 #    locale/de.js # GXP
     CGXP/locale/de.js
+exclude =
+    OpenLayers/Lang.js
