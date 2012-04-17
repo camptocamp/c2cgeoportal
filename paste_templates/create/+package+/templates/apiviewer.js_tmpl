@@ -27,7 +27,7 @@ var THEMES = {
 };
 
 % if user and user.role.extent:
-var INITIAL_EXTENT = $${user.role.jsextent};
+var INITIAL_EXTENT = $${user.role.json_extent};
 % else:
 var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
 % endif
