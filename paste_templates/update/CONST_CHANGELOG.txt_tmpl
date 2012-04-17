@@ -203,11 +203,10 @@ Other changes
        cp /tmp/${project}/${package}/templates/viewer.js ${package}/templates/
        rm -rf /tmp/${project}
 
-   The  default layout of the viewer.js is modified to easily be 
-   able to add a google earth panel.
+   Notes:
 
-   The condition to use the restricted extends of the user is 
-   modified to accept null value.
+      * The viewer layout has changed to ease the integration of the Google Earth plugin.
+      * A null value for the user's map extent is now permitted. 
 
 
 Version 0.5 (and before)
