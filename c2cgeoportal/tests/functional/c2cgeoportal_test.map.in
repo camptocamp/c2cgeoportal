@@ -46,6 +46,7 @@ MAP
             "wms_enable_request" "*"
             "ows_title" "changeme"
             "ows_enable_request" "*"
+            "ows_encoding" "UTF-8"
         END
     END
 
@@ -76,7 +77,8 @@ MAP
             "gml_include_items" "all"
             "gml_exclude_items" "id"
             "gml_geometries" "the_geom"
-            "gml_the_geom_type" "polygon"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"

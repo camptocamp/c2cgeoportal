@@ -56,11 +56,25 @@ class TestPoint(Base):
     __table_args__ = {'schema': 'main'}
     id = Column(types.Integer, primary_key=True)
     the_geom = GeometryColumn(MultiPoint(srid=21781))
+    name = Column(types.Unicode)
 GeometryDDL(TestPoint.__table__)
+
+GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
+<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<wfs:Query typeName="feature:%(feature)s" srsName="EPSG:21781" xmlns:feature="http://mapserver.gis.umn.edu/mapserver">
+<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+<ogc:PropertyIs%(function)s matchCase="false" %(arguments)s>
+<ogc:PropertyName>%(property)s</ogc:PropertyName>
+<ogc:Literal>%(value)s</ogc:Literal>
+</ogc:PropertyIs%(function)s>
+</ogc:Filter>
+</wfs:Query>
+</wfs:GetFeature>
+"""
+
 
 @attr(functional=True)
 class TestMapserverproxyView(TestCase):
-
 
     def setUp(self):
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
@@ -69,13 +83,13 @@ class TestMapserverproxyView(TestCase):
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         geom = WKTSpatialElement("MULTIPOINT((-90 -45))", srid=21781)
-        p1 = TestPoint(the_geom=geom)
+        p1 = TestPoint(the_geom=geom, name=u'foo')
         geom = WKTSpatialElement("MULTIPOINT((-90 45))", srid=21781)
-        p2 = TestPoint(the_geom=geom)
+        p2 = TestPoint(the_geom=geom, name=u'bar')
         geom = WKTSpatialElement("MULTIPOINT((90 45))", srid=21781)
-        p3 = TestPoint(the_geom=geom)
+        p3 = TestPoint(the_geom=geom, name=u'éàè')
         geom = WKTSpatialElement("MULTIPOINT((90 -45))", srid=21781)
-        p4 = TestPoint(the_geom=geom)
+        p4 = TestPoint(the_geom=geom, name=u'123')
 
         pt1 = Functionality(name=u'print_template', value=u'1 Wohlen A4 portrait')
         pt2 = Functionality(name=u'print_template', value=u'2 Wohlen A3 landscape')
@@ -295,3 +309,127 @@ class TestMapserverproxyView(TestCase):
         # two points
         self.assertEquals(response.status_int, 200)
         assert md5sum == '0a4fac2209d06c6fa36048c125b1679a'
+
+    def _get_mapfile_path(self):
+        curdir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(curdir, 'c2cgeoportal_test.map')
+
+    def _get_auth_header(self, user):
+        userpass = '%s:%s' % (user, user)
+        return {'Authorization': 'Basic %s' % userpass.encode('base64')}
+
+    def GetFeature_IsEqualTo(self, value):
+        from c2cgeoportal.views import mapserverproxy
+        request = self._create_dummy_request()
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
+
+        request.method = 'POST'
+        request.body = (GETFEATURE_REQUEST % {
+            'feature': u'testpoint_unprotected',
+            'function': u'EqualTo',
+            'arguments': u'',
+            'property': u'name',
+            'value': value,
+        }).encode('utf-8')
+        return mapserverproxy.proxy(request)
+
+    def test_GetFeature_IsEqualTo(self):
+        response = self.GetFeature_IsEqualTo(u'foo')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        response = self.GetFeature_IsEqualTo(u'éàè')
+        self.assertEquals(response.status_int, 200) #500
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        response = self.GetFeature_IsEqualTo(u'123')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') > 0
+
+    def GetFeature_IsNotEqualTo(self, value):
+        from c2cgeoportal.views import mapserverproxy
+        request = self._create_dummy_request()
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
+
+        request.method = 'POST'
+        request.body = (GETFEATURE_REQUEST % {
+            'feature': u'testpoint_unprotected',
+            'function': u'NotEqualTo',
+            'arguments': u'',
+            'property': u'name',
+            'value': value,
+        }).encode('utf-8')
+        return mapserverproxy.proxy(request)
+
+    def test_GetFeature_IsNotEqualTo(self):
+
+        response = self.GetFeature_IsNotEqualTo(u'foo')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') > 0
+
+        response = self.GetFeature_IsNotEqualTo(u'éàè')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') > 0
+
+        response = self.GetFeature_IsNotEqualTo(u'123')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+    def GetFeature_IsLike(self, value):
+        from c2cgeoportal.views import mapserverproxy
+        request = self._create_dummy_request()
+        map = self._get_mapfile_path()
+        request.params = dict(map=map)
+
+        request.method = 'POST'
+        request.body = (GETFEATURE_REQUEST % {
+            'feature': u'testpoint_unprotected',
+            'function': u'Like',
+            'arguments': u'wildCard="*" singleChar="." escapeChar="!"',
+            'property': u'name',
+            'value': value,
+        }).encode('utf-8')
+        return mapserverproxy.proxy(request)
+
+    def test_GetFeature_IsLike(self):
+
+        response = self.GetFeature_IsLike(u'*o*')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        response = self.GetFeature_IsLike(u'*à*')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        response = self.GetFeature_IsLike(u'*2*')
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') > 0

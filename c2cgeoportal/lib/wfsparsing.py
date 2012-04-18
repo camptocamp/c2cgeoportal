@@ -73,7 +73,11 @@ def is_get_feature(content):
     _filter = _XMLFilterGetFeature()
     parser.setContentHandler(_filter)
     input_source = InputSource()
-    _input = StringIO(content)
+
+    if isinstance(content, str):
+        content = unicode(content, 'utf-8')
+    _input = BytesIO(content.encode('utf-8'))
+
     input_source.setByteStream(_input)
     parser.parse(input_source)
     _input.close()
