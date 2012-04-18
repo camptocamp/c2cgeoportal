@@ -33,7 +33,7 @@
 
     <%block name="initial_extent">\
 % if user:
-    var INITIAL_EXTENT = ${user.role.jsextent};
+    var INITIAL_EXTENT = ${user.role.json_extent};
 % else:
     <%block name="default_initial_extent">\
     var INITIAL_EXTENT = [420000, 30000, 900000, 350000];

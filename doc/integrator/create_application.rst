@@ -168,8 +168,8 @@ Create a WMTS layer (**To Be Changed**)
 * Add the matching layers definitions in the mapfile (``mapserver/c2cgeoportal.map.in``).
 * Add a layer entry in ``tilecache/tilecache.cfg.in``. The ``layers`` attribute 
   must contain the list of mapserver layers defined above.
-* Update the layers sources list (``viewer_layers`` block) in the 
-  ``<package>/templates/viewer.js`` template. The ``layer`` parameter is the name 
+* Update the layers list in the ``<package>/templates/viewer.js`` template. 
+  The ``layer`` parameter is the name 
   of the tilecache layer entry just added in ``tilecache/tilecache.cfg.in``.
 
 **To Be Completed**

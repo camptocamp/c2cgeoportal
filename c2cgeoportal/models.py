@@ -198,7 +198,7 @@ class Role(Base):
     def __unicode__ (self):
         return self.name or u''
 
-    def _jsExtent(self):
+    def _json_extent(self):
         coords = self.extent.coords(DBSession)
         left = coords[0][0][0]
         right = coords[0][0][0]
@@ -212,7 +212,7 @@ class Role(Base):
                 top = max(top, coord[1])
         return "[%i, %i, %i, %i]"%(left, bottom, right, top)
 
-    jsextent = property(_jsExtent)
+    json_extent = property(_json_extent)
 
 GeometryDDL(Role.__table__)
 
