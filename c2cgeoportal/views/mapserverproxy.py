@@ -2,6 +2,7 @@
 
 import httplib2
 import urllib
+import sys
 
 from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
 from pyramid.response import Response
@@ -10,6 +11,9 @@ from pyramid.view import view_config
 from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.wfsparsing import (is_get_feature,
                                          limit_featurecollection)
+
+import logging
+log = logging.getLogger(__name__)
 
 @view_config(route_name='mapserverproxy')
 def proxy(request):
@@ -39,6 +43,7 @@ def proxy(request):
     _url = request.registry.settings['external_mapserv.url'] if external \
            else request.registry.settings['mapserv.url']
     _url += '?' + query_string
+    log.info("Gets from mapserver proxy ot URL: %s." % _url)
 
     # get method
     method = request.method
@@ -55,7 +60,12 @@ def proxy(request):
     try:
         resp, content = http.request(_url, method=method, body=body, headers=h)
     except: # pragma: no cover
-        return HTTPBadGateway() # pragma: no cover
+        log.error("Error '%s' while getting the URL: %s." % 
+                (sys.exc_info()[0], _url))
+        if method == "POST":
+            log.error("--- With body ---")
+            log.error(body)
+        return HTTPBadGateway("See logs for details") # pragma: no cover
 
     # check for allowed content types
     if not resp.has_key("content-type"):
