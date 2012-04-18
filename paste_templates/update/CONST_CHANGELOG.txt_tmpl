@@ -42,7 +42,6 @@ work in an existing project several steps are required:
    first =
        Ext/adapter/ext/ext-base.js
        Ext/ext-all.js
-       GeoExt/Lang.js
        OpenLayers/SingleFile.js
        OpenLayers/Console.js
        OpenLayers/BaseTypes.js
@@ -54,19 +53,14 @@ work in an existing project several steps are required:
        OpenLayers/BaseTypes/Size.js
        OpenLayers/Util.js
        OpenLayers/Lang.js
-       OpenLayers/Lang/en.js
-       OpenLayers/Lang/de.js
-       OpenLayers/Lang/fr.js
        proj4js/lib/proj4js.js
    exclude =
        GeoExt.js
        GeoExt/SingleFile.js
    include =
        EPSG21781.js #proj4js (CHANGE ME IF NEEDED)
-       Ext/src/locale/ext-lang-en.js
        util.js #GXP
        widgets/Viewer.js #GXP
-       Proj/Lang/en.js
        CGXP/plugins/Editing.js
        CGXP/plugins/Login.js
        CGXP/plugins/ThemeSelector.js
@@ -190,6 +184,17 @@ Other changes
         ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
         ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
 
+7. Other changes to jsbuild/app.cfg are recommended. They are even required if
+   you added an edit.js section as indicated in the "Editing Interface" section
+   above. Your application's jsbuild/app.cfg most probably adds
+   language-related files into app.js and api.js, which it should not. The only
+   language-related file that should be included in app.js, edit.js and api.js
+   is OpenLayers/Lang.js. The other language-related files should go in the
+   lang-*.js builds.  See this diff
+   https://github.com/camptocamp/c2cgeoportal/pull/105/files to see how app.cfg
+   was changed in the create template, that should help you fix your
+   application's app.cfg. The note explaining why OpenLayers/Lang.js should be
+   included in the main build may be of interest.
 
 Version 0.5 (and before)
 ========================
