@@ -127,6 +127,7 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
+    OpenLayers/Lang.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
@@ -186,6 +187,7 @@ first =
     OpenLayers/BaseTypes/Element.js
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
+    OpenLayers/Lang.js
     proj4js/lib/proj4js.js
 exclude =
     GeoExt.js
