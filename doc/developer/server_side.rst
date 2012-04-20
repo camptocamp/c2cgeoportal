@@ -160,7 +160,8 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 ``[versions]`` part of the ``buildout[_dev].cfg`` files.
 
 * Remove the current contents of the ``[versions]`` part 
-  of the ``buildout[_dev].cfg`` files.
+  of the ``buildout[_dev].cfg`` files, but just leave the 
+  ``distribute = 0.6.22`` in the ``buildout.cfg``.
 
 * Run buildout a first time to remove potentially uninstall from ``buildout_dev.cfg``::
 
@@ -194,7 +195,7 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 
 * Then you can commit it::
 
-    git add buildout.cfg buildout_dev.cfg
+    git add buildout.cfg
     git commit -m "update eggs version"
 
 
