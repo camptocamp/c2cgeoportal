@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import os.path
-import logging.config
 import warnings
 from optparse import OptionParser
 from ConfigParser import ConfigParser
 
 from pyramid.paster import get_app
-from c2cgeoportal import schema
 import transaction
+
 
 def main():
     """
@@ -16,7 +15,7 @@ def main():
     ./buildout/bin/manage_users -p foobar toto
     exemple, create user foo with password bar and role admin:
     ./buildout/bin/manage_users -c -r role_admin -p bar foo
-    
+
     to get the options list, do:
     ./buildout/bin/manage_users -h
     """
@@ -26,33 +25,30 @@ Reset a user password.\nThe username is used as password if the password is not 
 provided with the corresponding option.\nuser can be created if it doesnt exist.'
 
     parser = OptionParser(usage)
-    parser.add_option('-i', '--iniconfig', default='production.ini', 
+    parser.add_option('-i', '--iniconfig', default='production.ini',
       help='project .ini config file')
     parser.add_option('-p', '--password', help='set password (if not set, username is \
 used as password)')
-    parser.add_option('-c', '--create', action="store_true",  default=False, 
+    parser.add_option('-c', '--create', action="store_true", default=False,
       help='create user if it doesnt already exist')
-    parser.add_option('-r', '--rolename', default='role_admin', 
+    parser.add_option('-r', '--rolename', default='role_admin',
       help='the role name which must exist in the database')
-    
+
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("you must specify a username")
-    
+
     username = args[0]
     ini_file = options.iniconfig
 
     if not os.path.isfile(ini_file):
-        raise StandardError('the config file %s can not be found' % ini_file) 
+        raise StandardError('the config file %s can not be found' % ini_file)
 
-    logging.config.fileConfig(ini_file)
-    log = logging.getLogger(__name__)    
-
-    # loading schema name from config and setting its value to the 
+    # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
 
     # Ignores pyramid deprecation warnings
-    warnings.simplefilter('ignore', DeprecationWarning) 
+    warnings.simplefilter('ignore', DeprecationWarning)
 
     config = ConfigParser()
     config.read(ini_file)
@@ -62,10 +58,8 @@ used as password)')
         raise StandardError('the config file %s has no %s section' % (ini_file, section))
     if not config.has_option(section, option):
         raise StandardError('the config file %s has no %s option in %s section ' % \
-                            (ini_file, option, section)) 
-    app = get_app(ini_file, config.get(section, option))
-    settings = app.registry.settings
-    schema = settings['schema']
+                            (ini_file, option, section))
+    get_app(ini_file, config.get(section, option))
 
     # must be done only once we have loaded the project config
     from c2cgeoportal import models
@@ -74,11 +68,11 @@ used as password)')
 
     # check that User and Role exist in model
     modelList = ['User', 'Role']
-    for model in modelList:    	
+    for model in modelList:
         try:
-            usertable = getattr(models, model)
+            getattr(models, model)
         except AttributeError:
-            print "models.%s not found" % model    
+            print "models.%s not found" % model
 
     # check that user exists
     sess = models.DBSession()
@@ -93,10 +87,10 @@ used as password)')
             print 'user %s doesnt exists in database, creating' % username
             # if doesnt existe and -c option, create user
 
-            password=get_password(options.password, username)
+            password = get_password(options.password, username)
 
             # get roles
-            query_role = sess.query(models.Role).filter(models.Role.name==u'%s' % \
+            query_role = sess.query(models.Role).filter(models.Role.name == u'%s' % \
                          options.rolename)
 
             if query_role.count() == 0:
@@ -106,7 +100,7 @@ used as password)')
 
             role = query_role.first()
 
-            user = models.User(username=u'%s' % username, 
+            user = models.User(username=u'%s' % username,
                         password=u'%s' % password,
                         email=u'%s' % username,
                         role=role
@@ -115,21 +109,22 @@ used as password)')
             transaction.commit()
 
             print "user %s created with password %s and role %s" % \
-                  (username, password, options.rolename)          
+                  (username, password, options.rolename)
 
     else:
         # if user exists (assuming username are unique)
         user = query.first()
 
-        password=get_password(options.password, username)
+        password = get_password(options.password, username)
 
         print "password set: %s" % password
-            
+
         user.password = u'%s' % password
         sess.add(user)
         transaction.commit()
 
         print "password reseted for user %s" % username
+
 
 def get_password(password, username):
     if password is not None:

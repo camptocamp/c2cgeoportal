@@ -1,7 +1,6 @@
 import functools
 
 from sqlalchemy import Table, sql, types
-from sqlalchemy.engine import reflection
 from sqlalchemy.ext.declarative import declarative_base
 
 from geoalchemy import Geometry, GeometryColumn
@@ -42,6 +41,7 @@ def init(engine):
     class an engine, required for the reflection.
     """
     Base.metadata.bind = engine
+
 
 def column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):

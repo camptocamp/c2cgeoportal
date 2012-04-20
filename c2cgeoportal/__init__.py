@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.config import Configurator
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
-from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.request import Request as PyramidRequest
 from pyramid.decorator import reify
 from pyramid.security import unauthenticated_userid
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
-import papyrus
 import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON, XSD
@@ -28,6 +25,7 @@ formalchemy_default_lon = 740000
 formalchemy_default_lat = 5860000
 formalchemy_available_functionalities = ""
 
+
 def locale_negotiator(request):
     """ Our locale negotiator. Returns a locale name or None.
     """
@@ -35,7 +33,8 @@ def locale_negotiator(request):
     if lang is None:
         lang = request.registry.settings.get("default_language")
         for l in request.accept_language.best_matches():
-            if l in request.registry.settings.get("available_languages").split():
+            if l in request.registry.settings. \
+                    get("available_languages").split():
                 lang = l
                 break
     return lang
@@ -74,7 +73,8 @@ def includeme(config):
     config.add_translation_dirs('c2cgeoportal:locale/')
 
     # initialize database
-    engine = sqlalchemy.engine_from_config(config.get_settings(), 'sqlalchemy.')
+    engine = sqlalchemy.engine_from_config(config.get_settings(),
+            'sqlalchemy.')
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
 
@@ -94,7 +94,8 @@ def includeme(config):
     # add a TileCache view
     load_tilecache_config(config.get_settings())
     config.add_route('tilecache', '/tilecache{path:.*?}')
-    config.add_view(view='c2cgeoportal.views.tilecache:tilecache', route_name='tilecache')
+    config.add_view(view='c2cgeoportal.views.tilecache:tilecache',
+            route_name='tilecache')
 
     # add an OGCProxy view
     config.include(papyrus_ogcproxy.includeme)
@@ -142,8 +143,9 @@ def includeme(config):
                      request_method='GET')
     config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
                      request_method='GET')
-    config.add_route('layers_read_many', '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
-                     request_method='GET') # supports URLs like /layers/1,2,3
+    config.add_route('layers_read_many',
+                     '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
+                     request_method='GET')  # supports URLs like /layers/1,2,3
     config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
                      request_method='GET')
     config.add_route('layers_create', '/layers/{layer_id:\\d+}',
@@ -152,25 +154,27 @@ def includeme(config):
                      request_method='PUT')
     config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
                      request_method='DELETE')
-    config.add_route('layers_root', '/layers/') # there's no view corresponding to
-                                                # that route, it is to be used from
-                                                # mako templates to get the root of
-                                                # the "layers" web service
+    # there's no view corresponding to that route, it is to be used from
+    # mako templates to get the root of the "layers" web service
+    config.add_route('layers_root', '/layers/')
 
     # pyramid_formalchemy's configuration
     config.include('pyramid_formalchemy')
     config.include('fa.jquery')
 
-    # define the srid, schema and parentschema as global variables to be usable in the model
+    # define the srid, schema and parentschema
+    # as global variables to be usable in the model
     srid = config.get_settings()['srid']
     schema = config.get_settings()['schema']
     parentschema = config.get_settings()['parentschema']
-    formalchemy_default_zoom = config.get_settings()['formalchemy_default_zoom']
+    formalchemy_default_zoom = \
+            config.get_settings()['formalchemy_default_zoom']
     formalchemy_default_lon = config.get_settings()['formalchemy_default_lon']
     formalchemy_default_lat = config.get_settings()['formalchemy_default_lat']
-    formalchemy_available_functionalities = config.get_settings()['formalchemy_available_functionalities']
+    formalchemy_available_functionalities = \
+            config.get_settings()['formalchemy_available_functionalities']
 
-    # register an admin UI 
+    # register an admin UI
     config.formalchemy_admin('admin', package='c2cgeoportal',
             view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
@@ -179,4 +183,3 @@ def includeme(config):
 
     # add the static view (for static resources)
     config.add_static_view('static', 'c2cgeoportal:static')
-

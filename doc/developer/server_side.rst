@@ -281,6 +281,10 @@ Coding style
 
 Please read http://www.python.org/dev/peps/pep-0008/.
 
+And run validation::
+
+    ./buildout/bin/buildout -c buildout_dev.cfg install validate-py
+
 Dependencies
 ------------
 
