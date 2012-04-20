@@ -6,15 +6,24 @@ Update a c2cgeoportal application
 Update the application code
 ---------------------------
 
-To update the application use::
+To get the changes done by other people, we need to ``pull`` the new code::
 
-    $ svn update
+    git pull
+    git submodule sync
+    git submodule update
+    git submodule foreach git submodule sync
+    git submodule foreach git submodule update
 
-or::
+.. note::
+   The submodule command is used to have the right version of CGXP.
 
-    $ git pull origin master
+If you still use SVN::
 
-depending on the VCS used for the application.
+    svn update
+
+.. caution::
+   This command will not updates CGXP, and c2cgeoportal is not able to
+   fix the revision of CGXP.
 
 Update c2cgeoportal
 -------------------
