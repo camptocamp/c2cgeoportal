@@ -4,6 +4,7 @@ from xml.sax import make_parser, handler
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 from xml.sax.xmlreader import InputSource
 
+
 class _XMLFilterGetFeature(handler.ContentHandler):
     """
     An XMLFilterBase subclass to determine if the XML doc
@@ -15,6 +16,7 @@ class _XMLFilterGetFeature(handler.ContentHandler):
     def startElement(self, name, attrs):
         if name == "wfs:GetFeature":
             self.result = True
+
 
 class _XMLFilterLimit(XMLFilterBase):
     """
@@ -54,6 +56,7 @@ class _XMLFilterLimit(XMLFilterBase):
         if self._exportContent:
             self._downstream.characters(content)
 
+
 class _StringIO(StringIO):
     """
     A specific io.StringIO implementation that converts the
@@ -62,6 +65,7 @@ class _StringIO(StringIO):
     """
     def write(self, s):
         return StringIO.write(self, unicode(s, 'utf-8'))
+
 
 def is_get_feature(content):
     """
@@ -82,6 +86,7 @@ def is_get_feature(content):
     parser.parse(input_source)
     _input.close()
     return _filter.result
+
 
 def limit_featurecollection(content, limit=200):
     """

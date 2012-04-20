@@ -1,27 +1,23 @@
 from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
                                     HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
-from pyramid.security import authenticated_userid
 
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
 
-from geoalchemy import (functions, Geometry,
-                        DBSpatialElement, WKBSpatialElement)
+from geoalchemy import Geometry, DBSpatialElement, WKBSpatialElement
 
 import geojson
 from geojson.feature import FeatureCollection, Feature
 
 from shapely.geometry import asShape
 
-from papyrus.renderers import XSD
 from papyrus.protocol import Protocol, create_filter
 
 from c2cgeoportal.lib.dbreflection import get_class
-from c2cgeoportal.models import (DBSession, Layer, RestrictionArea,
-                                 User, Role)
+from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
 
 
 def _get_geom_col_info(layer):
@@ -167,6 +163,7 @@ def create(request):
         return protocol.create(request)
     if request.user is None:
         raise HTTPForbidden()
+
     def security_cb(r, feature, o):
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
@@ -183,6 +180,7 @@ def create(request):
                        .filter(Layer.id == layer.id).scalar()
             if not allowed:
                 raise HTTPForbidden()
+
     protocol = _get_protocol_for_layer(layer, before_create=security_cb)
     return protocol.create(request)
 
@@ -196,6 +194,7 @@ def update(request):
         return protocol.update(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
+
     def security_cb(r, feature, o):
         # we need both the "original" and "new" geometry to be
         # within the restriction area
@@ -218,6 +217,7 @@ def update(request):
                    .filter(Layer.id == layer.id).scalar()
         if not allowed:
             raise HTTPForbidden()
+
     protocol = _get_protocol_for_layer(layer, before_update=security_cb)
     return protocol.update(request, feature_id)
 
@@ -231,6 +231,7 @@ def delete(request):
         return protocol.delete(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
+
     def security_cb(r, o):
         geom_attr = getattr(o, _get_geom_col_info(layer)[0])
         allowed = DBSession.query(
@@ -243,6 +244,7 @@ def delete(request):
                    .filter(Layer.id == layer.id).scalar()
         if not allowed:
             raise HTTPForbidden()
+
     protocol = _get_protocol_for_layer(layer, before_delete=security_cb)
     return protocol.delete(request, feature_id)
 

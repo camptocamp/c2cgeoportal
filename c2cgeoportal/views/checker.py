@@ -6,6 +6,7 @@ from pyramid.response import Response
 from httplib2 import Http
 import simplejson
 
+
 class Checker(object):
 
     status_int = 200
@@ -15,14 +16,14 @@ class Checker(object):
 
     def update_status_int(self, code):
         self.status_int = max(self.status_int, int(code))
-    
+
     def make_response(self, msg):
         return Response(body=msg, status_int=self.status_int)
 
     # Method called by the sysadmins to make sure that our app work well.
     # Then this name must not change.
     @view_config(route_name='checker_summary')
-    def summary(self): 
+    def summary(self):
 #               "<p>API loader: %s</p>\n" % (self._apiloader()) + \
         body = "<p>Main page: %s</p>\n" % (self._main()) + \
                "<p>Print capabilities: %s</p>\n" % (self._printcapabilities()) + \
@@ -35,13 +36,13 @@ class Checker(object):
     def testurl(self, url):
         h = Http()
         resp, content = h.request(url)
-        
+
         if resp['status'] != '200':
             self.update_status_int(resp['status'])
             return url + "<br/>" + content
 
         return 'OK'
-       
+
     @view_config(route_name='checker_main')
     def main(self):
         return self.make_response(self._main())
@@ -75,7 +76,7 @@ class Checker(object):
             'comment': 'Foobar',
             'title': 'Bouchon',
             'units': 'm',
-            'srs': "EPSG:%i"%self.request.registry.settings.srid,
+            'srs': "EPSG:%i" % self.request.registry.settings.srid,
             'dpi': 254,
             'layers': [],
             'layout': self.request.registry.settings.check_print_template,
@@ -98,7 +99,7 @@ class Checker(object):
         h = Http()
         headers = {'Content-type': 'application/json;charset=utf-8'}
         resp, content = h.request(_url, 'POST', headers=headers, body=body)
-        
+
         if resp['status'] != '200':
             self.update_status_int(resp['status'])
             return 'Failed creating PDF: ' + content
@@ -131,7 +132,7 @@ class Checker(object):
             return content
 
         result = simplejson.loads(content)
-        
+
         if len(result['features']) == 0:
             self.update_status_int(400)
             return 'No result'

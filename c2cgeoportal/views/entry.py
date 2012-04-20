@@ -14,7 +14,6 @@ from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
-from shapely import wkb
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
@@ -36,8 +35,8 @@ class Entry(object):
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
         _ = self.request.translate
-        return { 'title': _('title i18n') }
-    
+        return {'title': _('title i18n')}
+
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
         if len(layer.metadataUrls) > 0:
@@ -79,7 +78,7 @@ class Entry(object):
         return icon
 
     def _layer(self, layer, wms_layers, wms):
-        l = { 
+        l = {
             'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
@@ -99,57 +98,65 @@ class Entry(object):
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
-            if layer.public:
-                l['editable'] = True
-            elif self.request.user:
-                c = DBSession.query(RestrictionArea) \
-                    .filter(RestrictionArea.roles.any(
-                        Role.id == self.request.user.role.id)) \
-                    .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                    .filter(RestrictionArea.readwrite == True) \
-                    .count()
-                if c > 0:
-                    l['editable'] = True
-
+            self._fill_editable(l, layer)
         if layer.layerType == "internal WMS":
-            # this is a leaf, ie. a Mapserver layer
-            # => add the metadata URL if any
-            if layer.name in wms_layers:
-                metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
-                if len(metadataUrls) > 0:
-                    l['metadataUrls'] = metadataUrls
-            if layer.minResolution and layer.maxResolution:
-                l['minResolutionHint'] = layer.minResolution
-                l['maxResolutionHint'] = layer.maxResolution
-            else:
-                if layer.name in wms_layers:
-                    resolutions = self._getLayerResolutionHint(wms[layer.name])
-                    if resolutions[0] <= resolutions[1]:
-                        l['minResolutionHint'] = float('%0.2f'%resolutions[0])
-                        l['maxResolutionHint'] = float('%0.2f'%resolutions[1])
-            if layer.legendRule:
-                l['legendRule'] = layer.legendRule
-
+            self._fill_internal_WMS(l, layer, wms_layers, wms)
         else:
-            if layer.legendImage:
-                l['legendImage'] = layer.legendImage
-            if layer.minResolution and layer.maxResolution:
-                l['minResolutionHint'] = layer.minResolution
-                l['maxResolutionHint'] = layer.maxResolution
-
-            if layer.layerType == "external WMS":
-                l['url'] == layer.url
-                l['isSingleTile'] = layer.isSingleTile
-
-            if layer.layerType == "external WMTS":
-                l['url'] == layer.url
-                l['maxExtent'] == layer.maxExtent
-                l['serverResolutions'] == layer.serverResolutions
+            self._fill_non_internal_WMS(l, layer)
+        if layer.legendImage:
+            l['legendImage'] = layer.legendImage
 
         return l
 
+    def _fill_editable(self, l, layer):
+        if layer.public:
+            l['editable'] = True
+        elif self.request.user:
+            c = DBSession.query(RestrictionArea) \
+                .filter(RestrictionArea.roles.any(
+                    Role.id == self.request.user.role.id)) \
+                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                .filter(RestrictionArea.readwrite == True) \
+                .count()
+            if c > 0:
+                l['editable'] = True
+
+    def _fill_internal_WMS(self, l, layer, wms_layers, wms):
+        # this is a leaf, ie. a Mapserver layer
+        # => add the metadata URL if any
+        if layer.name in wms_layers:
+            metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
+            if len(metadataUrls) > 0:
+                l['metadataUrls'] = metadataUrls
+        if layer.minResolution and layer.maxResolution:
+            l['minResolutionHint'] = layer.minResolution
+            l['maxResolutionHint'] = layer.maxResolution
+        else:
+            if layer.name in wms_layers:
+                resolutions = self._getLayerResolutionHint(wms[layer.name])
+                if resolutions[0] <= resolutions[1]:
+                    l['minResolutionHint'] = float('%0.2f' % resolutions[0])
+                    l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
+        if layer.legendRule:
+            l['legendRule'] = layer.legendRule
+
+    def _fill_non_internal_WMS(self, l, layer):
+        if layer.minResolution and layer.maxResolution:
+            l['minResolutionHint'] = layer.minResolution
+            l['maxResolutionHint'] = layer.maxResolution
+
+        if layer.layerType == "external WMS":
+            l['url'] == layer.url
+            l['isSingleTile'] = layer.isSingleTile
+
+        # TODO: use Capabilities
+        if layer.layerType == "external WMTS":
+            l['url'] == layer.url
+            l['maxExtent'] == layer.maxExtent
+            l['serverResolutions'] == layer.serverResolutions
+
     def _group(self, group, layers, wms_layers, wms):
-        children = [] 
+        children = []
         error = ""
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
@@ -178,8 +185,8 @@ class Entry(object):
                 'name': group.name,
                 'children': children,
                 'isExpanded': group.isExpanded,
-                'isInternalWMS' : group.isInternalWMS,
-                'isBaseLayer' : group.isBaseLayer
+                'isInternalWMS': group.isInternalWMS,
+                'isBaseLayer': group.isBaseLayer
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
@@ -215,31 +222,18 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')
-        log.info("WMS GetCapabilities for base url: %s"%wms_url)
+        log.info("WMS GetCapabilities for base url: %s" % wms_url)
         wms = WebMapService(wms_url, version='1.1.1')
         wms_layers = list(wms.contents)
 
-        themes = DBSession.query(Theme).order_by(Theme.order.asc()) 
+        themes = DBSession.query(Theme).order_by(Theme.order.asc())
         exportThemes = []
 
-        error = "\n"
+        errors = "\n"
 
-        #TODO: optimize following code to avoid parsing layers list many times?
         for theme in themes:
             if theme.display:
-                children = []
-
-                for item in sorted(theme.children, key=lambda item: item.order):
-                    if type(item) == LayerGroup: 
-                        (c, e) = self._group(item, layers, wms_layers, wms)
-                        error += e
-                        if c != None:
-                            children.append(c)
-
-                    elif type(item) == Layer:
-                        if (item in layers):
-                            children.append(self._layer(item, wms_layers, wms))
-
+                children = self._getChildren(theme, layers, wms_layers, wms, errors)
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
                            self.request.static_url('c2cgeoportal:static' + \
@@ -247,10 +241,22 @@ class Entry(object):
                     exportThemes.append({
                         'name': theme.name,
                         'icon': icon,
-                        'children': children 
+                        'children': children
                     })
 
-        return (exportThemes, error)
+        return (exportThemes, errors)
+
+    def _getChildren(self, theme, layers, wms_layers, wms, errors):
+        for item in sorted(theme.children, key=lambda item: item.order):
+            if type(item) == LayerGroup:
+                (c, e) = self._group(item, layers, wms_layers, wms)
+                errors += e
+                if c != None:
+                    yield c
+
+            elif type(item) == Layer:
+                if (item in layers):
+                    yield self._layer(item, wms_layers, wms)
 
     def _getForLang(self, key):
         try:
@@ -262,9 +268,9 @@ class Entry(object):
         # retrieve layers metadata via GetCapabilities
         wfs_url = self.request.route_url('mapserverproxy')
         wfsgc_url = wfs_url + "?service=WFS&version=1.0.0&request=GetCapabilities"
-        if external: 
+        if external:
             wfsgc_url += '&EXTERNAL=true'
-        log.info("WFS GetCapabilities for base url: %s"%wfsgc_url)
+        log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
         try:
@@ -282,11 +288,11 @@ class Entry(object):
         d['themes'] = json.dumps(themes)
         d['themesError'] = errors
         d['user'] = self.request.user
-        d['WFSTypes'] = json.dumps(self._WFSTypes());
+        d['WFSTypes'] = json.dumps(self._WFSTypes())
         d['externalWFSTypes'] = json.dumps(self._WFSTypes(True)) \
                 if hasattr(self.request.registry.settings, 'external_mapserv.url') \
                 else '[]'
-        
+
         if self.settings.get("external_themes_url") != '':
             ext_url = self.settings.get("external_themes_url")
             if self.request.user is not None and \
@@ -359,7 +365,7 @@ class Entry(object):
         user = DBSession.query(User).filter_by(username=login).first()
         if user and user.validate_password(password):
             headers = remember(self.request, login)
-            log.info("User '%s' (%i) logged in."%(user.username, user.id))
+            log.info("User '%s' (%i) logged in." % (user.username, user.id))
 
             cameFrom = self.request.params.get("came_from")
             if cameFrom:
@@ -385,5 +391,5 @@ class Entry(object):
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
-            return HTTPFound(location = self.request.route_url('home'),
-                    headers = headers)
+            return HTTPFound(location=self.request.route_url('home'),
+                    headers=headers)

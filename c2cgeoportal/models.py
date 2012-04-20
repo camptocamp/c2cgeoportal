@@ -30,7 +30,7 @@ AUTHORIZED_ROLE = 'admin-interface'
 
 if schema is not None:
     _schema = schema
-else:    
+else:
     raise Exception('schema not specified, you need to add it to your buildout config')
 _parentschema = parentschema
 
@@ -61,6 +61,7 @@ class FullTextSearch(GeoInterface, Base):
 
 GeometryDDL(FullTextSearch.__table__)
 
+
 class Functionality(Base):
     __label__ = _(u'functionality')
     __plural__ = _(u'functionalitys')
@@ -79,28 +80,29 @@ class Functionality(Base):
         self.value = value
         self.description = description
 
-    def __unicode__ (self):
+    def __unicode__(self):
         return "%s - %s" % (self.name or u'', self.value or u'')
 
 # association table user <> functionality
 user_functionality = Table('user_functionality', Base.metadata,
-     Column('user_id', Integer, ForeignKey(_schema + '.user.id', 
+     Column('user_id', Integer, ForeignKey(_schema + '.user.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('functionality_id', Integer, 
-            ForeignKey(_schema + '.functionality.id', 
+     Column('functionality_id', Integer,
+            ForeignKey(_schema + '.functionality.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
      schema=_schema
 )
 
 # association table role <> functionality
 role_functionality = Table('role_functionality', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id', 
+     Column('role_id', Integer, ForeignKey(_schema + '.role.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('functionality_id', Integer, 
-            ForeignKey(_schema + '.functionality.id', 
+     Column('functionality_id', Integer,
+            ForeignKey(_schema + '.functionality.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
      schema=_schema
 )
+
 
 class User(Base):
     __label__ = _(u'user')
@@ -116,26 +118,26 @@ class User(Base):
         'polymorphic_identity': 'user',
     }
     id = Column(types.Integer, primary_key=True)
-    username = Column(types.Unicode, unique=True, nullable=False, 
+    username = Column(types.Unicode, unique=True, nullable=False,
             label=_(u'Username'))
     _password = Column('password', types.Unicode, nullable=False,
             label=_(u'Password'))
     email = Column(types.Unicode, nullable=False, label=_(u'E-mail'))
 
     # functionality
-    functionalities = relationship('Functionality', 
+    functionalities = relationship('Functionality',
             secondary=user_functionality, cascade='all')
 
     # role relationship
     role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
     role = relationship("Role", backref=backref('users', enable_typechecks=False))
-    
+
     if _parentschema is not None and _parentschema != '':
         # parent role relationship
         parent_role_id = Column(Integer, ForeignKey(_parentschema + '.role.id'))
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
-    def __init__(self, username=u'', password=u'', email=u'', 
+    def __init__(self, username=u'', password=u'', email=u'',
             functionalities=[], role=None):
         self.username = username
         self.password = password
@@ -168,8 +170,9 @@ class User(Base):
 
     password = property(_get_password, _set_password)
 
-    def __unicode__ (self):
+    def __unicode__(self):
         return self.username or u''
+
 
 class Role(Base):
     __label__ = _(u'role')
@@ -186,7 +189,7 @@ class Role(Base):
     #product = Column(types.Unicode)
 
     # functionality
-    functionalities = relationship('Functionality', 
+    functionalities = relationship('Functionality',
             secondary=role_functionality, cascade='all')
 
     def __init__(self, name=u'', description=u'', functionalities=[], extent=None):
@@ -195,7 +198,7 @@ class Role(Base):
         self.extent = extent
         self.description = description
 
-    def __unicode__ (self):
+    def __unicode__(self):
         return self.name or u''
 
     def _json_extent(self):
@@ -210,11 +213,12 @@ class Role(Base):
                 right = max(right, coord[0])
                 bottom = min(bottom, coord[1])
                 top = max(top, coord[1])
-        return "[%i, %i, %i, %i]"%(left, bottom, right, top)
+        return "[%i, %i, %i, %i]" % (left, bottom, right, top)
 
     json_extent = property(_json_extent)
 
 GeometryDDL(Role.__table__)
+
 
 class TreeItem(Base):
     __tablename__ = 'treeitem'
@@ -231,32 +235,34 @@ class TreeItem(Base):
         self.name = name
         self.order = order
 
-    def __unicode__ (self):
+    def __unicode__(self):
         return self.name or u''
 
 # association table LayerGroup <> TreeItem
 layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
-     Column('treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id', 
+     Column('treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id', 
+     Column('treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
      schema=_schema
 )
+
 
 class TreeGroup(TreeItem):
     __tablename__ = 'treegroup'
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     __mapper_args__ = {'polymorphic_identity': 'treegroup'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'), 
+    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'),
             primary_key=True)
 
     # relationship with Role and Layer
-    children = relationship('TreeItem', backref='parents', 
+    children = relationship('TreeItem', backref='parents',
             secondary=layergroup_treeitem, cascade='all')
 
     def __init__(self, name=u'', order=u''):
-        TreeItem.__init__(self, name=name, order=order) 
+        TreeItem.__init__(self, name=name, order=order)
+
 
 class LayerGroup(TreeGroup):
     __label__ = _(u'layergroup')
@@ -267,19 +273,20 @@ class LayerGroup(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'group'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'), 
+    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'),
             primary_key=True)
     isExpanded = Column(types.Boolean, label=_(u'Expanded'))
     isInternalWMS = Column(types.Boolean, label=_(u'Internal WMS'))
     # children have radio button instance of check box
-    isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers')) 
+    isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
 
-    def __init__(self, name=u'', order=u'', isExpanded=False, 
+    def __init__(self, name=u'', order=u'', isExpanded=False,
             isInternalWMS=True, isBaseLayer=False):
-        TreeGroup.__init__(self, name=name, order=order) 
+        TreeGroup.__init__(self, name=name, order=order)
         self.isExpanded = isExpanded
         self.isInternalWMS = isInternalWMS
         self.isBaseLayer = isBaseLayer
+
 
 class Theme(TreeGroup):
     __label__ = _(u'theme')
@@ -290,15 +297,16 @@ class Theme(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'theme'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'), 
+    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'),
             primary_key=True)
     icon = Column(types.Unicode, label=_(u'Icon'))
-    display = Column(types.Boolean, label=_(u'Display')) # display in theme selector
+    display = Column(types.Boolean, label=_(u'Display'))  # display in theme selector
 
     def __init__(self, name=u'', order=100, icon=u'', display=True):
-        TreeGroup.__init__(self, name=name, order=order) 
+        TreeGroup.__init__(self, name=name, order=order)
         self.icon = icon
         self.display = display
+
 
 class Layer(TreeItem):
     __label__ = _(u'layer')
@@ -309,59 +317,60 @@ class Layer(TreeItem):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'layer'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'), 
+    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'),
             primary_key=True)
 
     public = Column(types.Boolean, default=True, label=_(u'Public'))
-    isVisible = Column(types.Boolean, default=True, label=_(u'Visible')) # by default
-    isChecked = Column(types.Boolean, default=True, label=_(u'Checked')) # by default
-    icon = Column(types.Unicode, label=_(u'Icon')) # on the tree
-    layerType = Column(types.Enum("internal WMS", "external WMS", 
-            "internal WMTS", "external WMTS", "empty", 
-            name=_schema+".layerType"), label=_(u'Type'))
-    url = Column(types.Unicode, label=_(u'Base URL')) # for externals
-    serverResolutions = Column(types.Unicode, label=_(u'Server Resolutions')) # for external WMTS
-    maxExtent = Column(types.Unicode, label=_(u'Max Extent')) # for external WMTS
-    imageType = Column(types.Enum("image/jpeg", "image/png", 
-            name=_schema+".imageType"), label=_(u'Image type'))
-    kml = Column(types.Unicode, label=_(u'KML 3D')) # for kml 3D
-    isSingleTile = Column(types.Boolean, label=_(u'Single tile')) # for extenal WMS
-    no2D = Column(types.Boolean, label=_(u'No 2D')) # only kml 3D
-    legend = Column(types.Boolean, default=True, label=_(u'Display legend')) # on the tree
-    legendImage = Column(types.Unicode, label=_(u'Legend Image')) # fixed legend image
-    legendRule = Column(types.Unicode, label=_(u'Legend Rule')) # on wms legend only one rule
-    minResolution = Column(types.Float, label=_(u'Min resolution')) # for all except internal WMS
-    maxResolution = Column(types.Float, label=_(u'Max resolution')) # for all except internal WMS
+    isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
+    isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
+    icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
+    layerType = Column(types.Enum("internal WMS", "external WMS",
+            "internal WMTS", "external WMTS", "empty",
+            name=_schema + ".layerType"), label=_(u'Type'))
+    url = Column(types.Unicode, label=_(u'Base URL'))  # for externals
+    serverResolutions = Column(types.Unicode, label=_(u'Server Resolutions'))  # for external WMTS
+    maxExtent = Column(types.Unicode, label=_(u'Max Extent'))  # for external WMTS
+    imageType = Column(types.Enum("image/jpeg", "image/png",
+            name=_schema + ".imageType"), label=_(u'Image type'))
+    kml = Column(types.Unicode, label=_(u'KML 3D'))  # for kml 3D
+    isSingleTile = Column(types.Boolean, label=_(u'Single tile'))  # for extenal WMS
+    no2D = Column(types.Boolean, label=_(u'No 2D'))  # only kml 3D
+    legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
+    legendImage = Column(types.Unicode, label=_(u'Legend Image'))  # fixed legend image
+    legendRule = Column(types.Unicode, label=_(u'Legend Rule'))  # on wms legend only one rule
+    minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
+    maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
-    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field')) # data attribute field in which application can find a human identifiable name or number
+    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))  # data attribute field in which application can find a human identifiable name or number
     geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
 
-    def __init__(self, name=u'', order=0, public=True, icon=u'', 
+    def __init__(self, name=u'', order=0, public=True, icon=u'',
             layerType=u'internal WMS'):
-        TreeItem.__init__(self, name=name, order=order) 
+        TreeItem.__init__(self, name=name, order=order)
         self.public = public
         self.icon = icon
         self.layerType = layerType
 
 # association table role <> restriciton area
 role_ra = Table('role_restrictionarea', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id', 
+     Column('role_id', Integer, ForeignKey(_schema + '.role.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('restrictionarea_id', Integer, 
-            ForeignKey(_schema + '.restrictionarea.id', 
+     Column('restrictionarea_id', Integer,
+            ForeignKey(_schema + '.restrictionarea.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
      schema=_schema
 )
 
 # association table layer <> restriciton area
 layer_ra = Table('layer_restrictionarea', Base.metadata,
-     Column('layer_id', Integer, ForeignKey(_schema + '.layer.id', 
+     Column('layer_id', Integer, ForeignKey(_schema + '.layer.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('restrictionarea_id', Integer, 
-            ForeignKey(_schema + '.restrictionarea.id', 
+     Column('restrictionarea_id', Integer,
+            ForeignKey(_schema + '.restrictionarea.id',
             onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
      schema=_schema
 )
+
 
 class RestrictionArea(Base):
     __label__ = _(u'restrictionarea')
@@ -379,9 +388,9 @@ class RestrictionArea(Base):
     readwrite = Column(types.Boolean, label=_(u'Read-write mode'), default=False)
 
     # relationship with Role and Layer
-    roles = relationship('Role', secondary=role_ra, 
+    roles = relationship('Role', secondary=role_ra,
             backref='restrictionareas', cascade='all')
-    layers = relationship('Layer', secondary=layer_ra, 
+    layers = relationship('Layer', secondary=layer_ra,
             backref='restrictionareas', cascade='all')
 
     def __init__(self, name='', description='', layers=[], roles=[],
@@ -393,7 +402,7 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __unicode__ (self):
+    def __unicode__(self):
         return self.name or u''
 
 GeometryDDL(RestrictionArea.__table__)
@@ -413,5 +422,5 @@ if _parentschema is not None and _parentschema != '':
         def __init__(self, name=u''):
             self.name = name
 
-        def __unicode__ (self):
+        def __unicode__(self):
             return self.name or u''
