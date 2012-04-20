@@ -87,9 +87,31 @@ Additional notes for Windows users:
 Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The application is downloaded using SVN or Git. For example::
 
-    $ svn co https://project.camptocamp.com/svn/my_project/trunk my_project
+The Git command to get the code from a remote repository is named ``clone``::
+
+    git clone https://git.camptocamp.com/git/<my_project>/ <my_project>
+
+We also have to download the ``submodule`` dependencies
+(two levels in our case)::
+
+    git submodule update --init
+    git submodule foreach git submodule update --init
+
+.. note::
+   We don't use the ``--recursive`` option because we wouldn't 
+   have the third level of submodule who ass son unneeded 
+   dependencies and duplicate code like OpenLayers.
+
+.. important::
+   the git command don't respect all the unix rights, than it you checkout 
+   your project in a common folder like ``/var/www/<vhost>/private`` it 
+   will be fully writable only for you. To fix that you can do in your project
+   ``chmod -R g+w .``.
+
+If you still use SVN::
+
+    svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
