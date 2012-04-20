@@ -32,14 +32,12 @@ def locale_negotiator(request):
     """ Our locale negotiator. Returns a locale name or None.
     """
     lang = request.params.get('lang')
-    if lang is None:
-        lang = request.registry.settings.get("default_language")
-        for l in request.accept_language.best_matches():
-            if l in request.registry.settings.get("available_languages").split():
-                lang = l
-                break
-    return lang
-
+    available = request.registry.settings.get("available_languages").split()
+    if lang in available:
+        return lang
+    for accept in request.accept_language.best_matches():
+        if accept in available:
+            return accept
 
 class Request(PyramidRequest):
     """ A c2cgeoportal-specific request factory that adds
