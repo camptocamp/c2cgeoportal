@@ -31,9 +31,20 @@ Create development environment in a project
     [template]
     exclude-directories += c2cgeoportal/paste_templates
 
+* In the file ``c2cgeoportal/setup.py`` add ``nose`` and
+  ``nosexcover`` in the install_requires packege list.
+
+* Remove the old egg::
+
+    rm -rf ./buildout/eggs/c2cgeoportal-*
+
+* Remove the version of c2cgeoportal in the setup.py 
+  (``'c2cgeoportal==x.y'`` => ``'c2cgeoportal'``)
+
 * Build::
 
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
+
 
 Tests
 -----
@@ -269,3 +280,18 @@ Coding style
 
 Please read http://www.python.org/dev/peps/pep-0008/.
 
+Dependencies
+------------
+
+Major dependencies docs:
+
+* `SQLAlchemy <http://docs.sqlalchemy.org/en/latest/>`_
+* `GeoAlchemy <http://www.geoalchemy.org/>`_
+* `Formalchemy <http://docs.formalchemy.org/>`_
+* `GeoFormAlchemy <https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst>`_
+* `sqlalchemy-migrate <http://readthedocs.org/docs/sqlalchemy-migrate/en/v0.7.2/>`_
+* `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
+* `Papyrus <http://pypi.python.org/pypi/papyrus>`_
+* `MapFish Print <http://www.mapfish.org/doc/print/index.html>`_
+* `reStructuredText <http://docutils.sourceforge.net/docs/ref/rst/introduction.html>`_
+* `Sphinx <http://sphinx.pocoo.org/>`_
