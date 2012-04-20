@@ -25,6 +25,11 @@ This section provides information on how to configure *private layers* (a.k.a
 *restricted layers*), and layers involved in ``point query``, ``box query``,
 ``query builder`` features.
 
+.. note::
+
+   To make the rotation working (used by the print), we needs to specify 
+   the ``PROJECTION`` on the ``MAP`` and on all the ``LAYERS``.
+
 WFS GetFeature
 --------------
 
@@ -135,7 +140,7 @@ writing of the mapfile. It is defined as follows::
     In most cases this query should continue to work with 0.6 and
     higher, but changing to the new query is recommended.
 
-It is required to have the following in the METADATA of the layer::
+It is required to have the following in the ``METADATA`` of the ``LAYER``::
 
     ${mapserver_layer_metadata}
 
@@ -156,5 +161,6 @@ Recommendations
 ---------------
 
 To have a good print and screen result, it's not recommended to use
-LAYER/SYMBOLSCALEDENOM. LABEL/MINSIZE and LABEL/MAXSIZE should be used only 
+``LAYER``/``SYMBOLSCALEDENOM``. 
+``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE`` should be used only 
 when necessary.
