@@ -20,7 +20,7 @@ def main():
     parser.add_option('-n', '--app-name', default=None,
             dest='app_name', help='The application name')
     (options, args) = parser.parse_args()
-    
+
     # display help
     if options.help or \
             len(args) == 1 and args[0] == 'help' or \

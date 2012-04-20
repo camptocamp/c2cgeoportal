@@ -13,6 +13,7 @@ from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 import logging
 log = logging.getLogger(__name__)
 
+
 @view_config(route_name='mapserverproxy')
 def proxy(request):
 
@@ -57,13 +58,13 @@ def proxy(request):
     h.pop("Host", h)
     try:
         resp, content = http.request(_url, method=method, body=body, headers=h)
-    except: # pragma: no cover
-        log.error("Error '%s' while getting the URL: %s." % 
+    except:  # pragma: no cover
+        log.error("Error '%s' while getting the URL: %s." %
                 (sys.exc_info()[0], _url))
         if method == "POST":
             log.error("--- With body ---")
             log.error(body)
-        return HTTPBadGateway("See logs for details") # pragma: no cover
+        return HTTPBadGateway("See logs for details")  # pragma: no cover
 
     # check for allowed content types
     if "content-type" not in resp:
