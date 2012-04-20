@@ -19,6 +19,13 @@ The important attributes are:
  * ``metadata_data`` the SQL request to get the geometries that should be generated. 
  * ``metadata_image_postproc`` a post process apply on the generated tiles.
 
+
+Than we should be create the destination folder with the good rights, 
+(www-data should be able to write on it)::
+
+    mkdir /var/sig/tilecache
+    chmod o+w /var/sig/tilecache
+
 Commands
 --------
 
@@ -41,11 +48,15 @@ Usage::
 
 Run on a BBOX::
 
-  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=<left>,<bottom>,<right>,<top> <tileforge_layer>
+    sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=<left>,<bottom>,<right>,<top> <tileforge_layer>
 
 Run on configured diff table::
 
-  ./buildout/bin/tilemanager -c tilecache/tilecache.cfg <tileforge_layer>
+    sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg <tileforge_layer>
+
+.. note:
+
+    We run the tile forge with the www-data rights to allows the web server to creates new tiles.
 
 Tiles
 -----
