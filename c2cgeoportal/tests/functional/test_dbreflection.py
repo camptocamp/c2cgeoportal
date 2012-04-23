@@ -170,8 +170,8 @@ class TestXSDSequenceCallback(TestCase):
         from sqlalchemy import Column, types, ForeignKey
         from sqlalchemy.orm import relationship
         from sqlalchemy.ext.declarative import declarative_base
-        from sqlalchemy.ext.associationproxy import association_proxy
         from c2cgeoportal.models import DBSession
+        from c2cgeoportal.lib.dbreflection import _association_proxy
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)
         class Child(Base):
@@ -185,7 +185,7 @@ class TestXSDSequenceCallback(TestCase):
             id = Column(types.Integer, primary_key=True)
             child_id = Column(types.Integer, ForeignKey('child.id'))
             child_ = relationship(Child)
-            child = association_proxy('child_', 'name')
+            child = _association_proxy('child_', 'name')
         Base.metadata.create_all()
         DBSession.add_all([Child('foo'), Child('bar')])
         transaction.commit()

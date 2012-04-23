@@ -4,7 +4,6 @@ from sqlalchemy import Table, sql, types
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.associationproxy import AssociationProxy, association_proxy
 
 from geoalchemy import Geometry, GeometryColumn
 from geoalchemy import (Point, LineString, Polygon,
@@ -47,13 +46,44 @@ def init(engine):
     Base.metadata.bind = engine
 
 
+class _association_proxy(object):
+    # A specific "association proxy" implementation
+
+    def __init__(self, target, value_attr):
+        self.target = target
+        self.value_attr = value_attr
+
+    def __get__(self, obj, type=None):
+        if obj is None:
+            # For "hybrid" descriptors that work both at the instance
+            # and class levels we could return an SQL expression here.
+            # The code of hybrid_property in SQLAlchemy illustrates
+            # how to do that.
+            raise AttributeError
+        return getattr(getattr(obj, self.target), self.value_attr)
+
+    def __set__(self, obj, val):
+        from c2cgeoportal.models import DBSession
+        o = getattr(obj, self.target)
+        # if the obj as no child object or if the child object
+        # does not correspond to the new value then we need to
+        # read a new child object from the database
+        if not o or getattr(o, self.value_attr) != val:
+            relationship_property = class_mapper(obj.__class__) \
+                .get_property(self.target)
+            child_cls = relationship_property.argument
+            o = DBSession.query(child_cls).filter(
+                    getattr(child_cls, self.value_attr) == val).first()
+            setattr(obj, self.target, o)
+
+
 def xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
     for k, p in cls.__dict__.iteritems():
-        if not isinstance(p, AssociationProxy):
+        if not isinstance(p, _association_proxy):
             continue
         relationship_property = class_mapper(cls) \
-                                    .get_property(p.target_collection)
+                                    .get_property(p.target)
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
@@ -130,48 +160,10 @@ def get_class(tablename):
 
 def _create_class(table):
 
-    # redefine __update__ and __read__ from GeoInterface to deal
-    # with association proxies in the mapped class
-
-    def __update__(self, feature):
-        from c2cgeoportal.models import DBSession
-        GeoInterface.__update__(self, feature)
-        # deal with association proxies
-        for k, p in self.__class__.__dict__.iteritems():
-            if not isinstance(p, AssociationProxy):
-                continue
-            relationship_property = class_mapper(self.__class__) \
-                                        .get_property(p.target_collection)
-            if relationship_property.uselist:  # pragma: no cover
-                raise NotImplementedError
-            value = feature.properties.get(k)
-            if value is not None:
-                child_cls = relationship_property.argument
-                obj = DBSession.query(child_cls).filter(
-                    getattr(child_cls, p.value_attr) == value).first()
-                if obj is not None:
-                    setattr(self, p.target_collection, obj)
-
-    def __read__(self):
-        feature = GeoInterface.__read__(self)
-        # deal with association proxies
-        for k, p in self.__class__.__dict__.iteritems():
-            if not isinstance(p, AssociationProxy):
-                continue
-            relationship_property = class_mapper(self.__class__) \
-                                        .get_property(p.target_collection)
-            if relationship_property.uselist:  # pragma: no cover
-                raise NotImplementedError
-            feature.properties[k] = getattr(self, k)
-        return feature
-
-    class_dict = dict(__table__=table, __update__=__update__,
-                      __read__=__read__)
-
     cls = type(
             str(table.name.capitalize()),
             (GeoInterface, Base),
-            class_dict
+            dict(__table__=table)
             )
 
     for col in table.columns:
@@ -206,23 +198,9 @@ def add_association_proxy(cls, col):
     rel = proxy + '_'
     setattr(cls, rel, relationship(child_cls, lazy='immediate'))
 
-    def getset_factory(collection_type, proxy):
+    setattr(cls, proxy, _association_proxy(rel, 'name'))
 
-        def getter(obj):
-            if obj is None:
-                return None
-            return getattr(obj, proxy.value_attr)
-
-        def setter(obj, value):
-            # we should never be updating an
-            # existing object
-            assert False
-        return getter, setter
-
-    def creator(value):
-        from c2cgeoportal.models import DBSession
-        return DBSession.query(child_cls).filter(
-                getattr(child_cls, proxy.value_attr) == value).first()
-
-    setattr(cls, proxy, association_proxy(rel, 'name', creator=creator,
-                                          getset_factory=getset_factory))
+    if cls.__add_properties__ is None:
+        cls.__add_properties__ = [proxy]
+    else:
+        cls.__add_properties__.append(proxy)

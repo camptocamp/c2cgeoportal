@@ -442,4 +442,4 @@ class TestLayers(TestCase):
         cls = metadata(request)
         self.assertEquals(cls.__table__.name, 'table_%d' % layer_id)
         self.assertTrue(hasattr(cls, 'name'))
-        self.assertTrue(hasattr(cls, 'child'))
+        self.assertTrue('child' in cls.__dict__)
