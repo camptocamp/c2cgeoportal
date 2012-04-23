@@ -105,7 +105,7 @@ work in an existing project several steps are required:
    editable layers. They should use the new "mapfile_data_subselect" Buildout
    variable. See the administrator mapfile documentation.
 
-6. Papyrus 0.8.1 is required. See below.
+6. Papyrus 0.9 is required. See below.
 
 7. GeoAlchemy 0.7 is required. See below.
 
@@ -113,8 +113,8 @@ work in an existing project several steps are required:
 Other changes
 -------------
 
-1. c2cgeoportal 0.6 requires Papyrus 0.8.1, so the version of Papyrus should be
-   set to 0.8.1 on the buildout configuration of the c2cgeoportal project
+1. c2cgeoportal 0.6 requires Papyrus 0.9, so the version of Papyrus should be
+   set to 0.9 on the buildout configuration of the c2cgeoportal project
    (section [versions]).
 
 2. c2cgeoportal 0.6 requires GeoAlchemy 0.7. So GeoAlchemy should be set to
