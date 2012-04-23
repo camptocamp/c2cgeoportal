@@ -233,7 +233,9 @@ class Entry(object):
 
         for theme in themes:
             if theme.display:
-                children = self._getChildren(theme, layers, wms_layers, wms, errors)
+                children = list(self._getChildren(
+                        theme, layers, wms_layers, wms, errors))
+                # test if the theme is visible for the current user
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
                            self.request.static_url('c2cgeoportal:static' + \
