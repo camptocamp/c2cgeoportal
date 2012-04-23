@@ -90,7 +90,7 @@ def includeme(config):
 
     # add the "xsd" renderer
     config.add_renderer('xsd', XSD(
-            sequence_callback=dbreflection.xsd_sequence_callback))
+            sequence_callback=dbreflection._xsd_sequence_callback))
 
     # add a TileCache view
     load_tilecache_config(config.get_settings())

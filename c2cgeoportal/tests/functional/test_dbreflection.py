@@ -204,9 +204,9 @@ class TestXSDSequenceCallback(TestCase):
 
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
-        from c2cgeoportal.lib.dbreflection import xsd_sequence_callback
+        from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
         tb = TreeBuilder()
-        xsd_sequence_callback(tb, self.cls)
+        _xsd_sequence_callback(tb, self.cls)
         e = tb.close()
         self.assertEqual(tostring(e),
             '<xsd:element minOccurs="0" name="child" nillable="true">'

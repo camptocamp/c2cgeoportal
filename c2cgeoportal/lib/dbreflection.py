@@ -77,7 +77,7 @@ class _association_proxy(object):
             setattr(obj, self.target, o)
 
 
-def xsd_sequence_callback(tb, cls):
+def _xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
     for k, p in cls.__dict__.iteritems():
         if not isinstance(p, _association_proxy):
@@ -99,7 +99,7 @@ def xsd_sequence_callback(tb, cls):
                             pass
 
 
-def column_reflect_listener(table, column_info, engine):
+def _column_reflect_listener(table, column_info, engine):
     if isinstance(column_info['type'], types.NullType):
 
         # SQLAlchemy set type to NullType, which means SQLAlchemy does not know
@@ -143,7 +143,7 @@ def get_class(tablename):
                   autoload_with=engine,
                   listeners=[
                         ('column_reflect',
-                         functools.partial(column_reflect_listener,
+                         functools.partial(_column_reflect_listener,
                                            engine=engine)
                          )
                     ]
@@ -168,14 +168,14 @@ def _create_class(table):
 
     for col in table.columns:
         if col.foreign_keys:
-            add_association_proxy(cls, col)
+            _add_association_proxy(cls, col)
         elif isinstance(col.type, Geometry):
             setattr(cls, col.name, GeometryColumn(col.type))
 
     return cls
 
 
-def add_association_proxy(cls, col):
+def _add_association_proxy(cls, col):
     if len(col.foreign_keys) != 1:  # pragma: no cover
         raise NotImplementedError
 
