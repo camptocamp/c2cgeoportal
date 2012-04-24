@@ -15,7 +15,6 @@ Create development environment in a project
 
     [buildout]
     extends = buildout.cfg
-    parts -= libs-update
     develop += c2cgeoportal
     extensions -= buildout.dumppickedversions
 
