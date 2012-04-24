@@ -11,7 +11,7 @@ class TestReflection(TestCase):
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
-        self.table = None
+        self.metadata = None
 
         engine = sqlahelper.get_engine()
         init(engine)
@@ -19,9 +19,8 @@ class TestReflection(TestCase):
     def tearDown(self):
         import c2cgeoportal.lib.dbreflection
 
-        # drop any table created by the test function with _create_table
-        if self.table is not None:
-            self.table.drop()
+        if self.metadata is not None:
+            self.metadata.drop_all()
 
         # clear the dbreflection class cache
         c2cgeoportal.lib.dbreflection._class_cache = {}
@@ -30,10 +29,10 @@ class TestReflection(TestCase):
         """ Test functions use this function to create a table object.
         Each test function should call this function only once. And
         there should not be two test functions that call this function
-        with the same tablename value.
+        with the same ptable_name value.
         """
         import sqlahelper
-        from sqlalchemy import Table, Column, types
+        from sqlalchemy import Table, Column, ForeignKey, types
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy import GeometryExtensionColumn, GeometryDDL
         from geoalchemy import (Point, LineString, Polygon,
@@ -41,19 +40,30 @@ class TestReflection(TestCase):
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)
-        table = Table(tablename, Base.metadata,
-                      Column('id', types.Integer, primary_key=True),
-                      GeometryExtensionColumn('point', Point),
-                      GeometryExtensionColumn('linestring', LineString),
-                      GeometryExtensionColumn('polygon', Polygon),
-                      GeometryExtensionColumn('multipoint', MultiPoint),
-                      GeometryExtensionColumn('multilinestring', MultiLineString),
-                      GeometryExtensionColumn('multipolygon', MultiPolygon),
-                      schema='public'
-                      )
-        GeometryDDL(table)
-        table.create()
-        self.table = table
+
+        ctable = Table('%s_child' % tablename, Base.metadata,
+                       Column('id', types.Integer, primary_key=True),
+                       Column('name', types.Unicode),
+                       schema='public'
+                       )
+        ctable.create()
+
+        ptable = Table(tablename, Base.metadata,
+                       Column('id', types.Integer, primary_key=True),
+                       Column('child_id', types.Integer,
+                              ForeignKey('public.%s_child.id' % tablename)),
+                       GeometryExtensionColumn('point', Point),
+                       GeometryExtensionColumn('linestring', LineString),
+                       GeometryExtensionColumn('polygon', Polygon),
+                       GeometryExtensionColumn('multipoint', MultiPoint),
+                       GeometryExtensionColumn('multilinestring', MultiLineString),
+                       GeometryExtensionColumn('multipolygon', MultiPolygon),
+                       schema='public'
+                       )
+        GeometryDDL(ptable)
+        ptable.create()
+
+        self.metadata = Base.metadata
 
     def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
@@ -87,12 +97,15 @@ class TestReflection(TestCase):
         # test the Table object
         table = modelclass.__table__
         self.assertTrue('id' in table.c)
+        self.assertTrue('child_id' in table.c)
         self.assertTrue('point' in table.c)
         self.assertTrue('linestring' in table.c)
         self.assertTrue('polygon' in table.c)
         self.assertTrue('multipoint' in table.c)
         self.assertTrue('multilinestring' in table.c)
         self.assertTrue('multipolygon' in table.c)
+        col_child_id = table.c['child_id']
+        self.assertEqual(col_child_id.name, 'child_id')
         col_point = table.c['point']
         self.assertEqual(col_point.name, 'point')
         self.assertTrue(isinstance(col_point.type, Point))
@@ -113,9 +126,9 @@ class TestReflection(TestCase):
         self.assertTrue(isinstance(col_multipolygon.type, MultiPolygon))
 
         # the class should now be in the cache
-        self.assertTrue(('public', self.table.name) in \
+        self.assertTrue(('public', 'table_a') in \
                             c2cgeoportal.lib.dbreflection._class_cache)
-        _modelclass = get_class(self.table.name)
+        _modelclass = get_class('table_a')
         self.assertTrue(_modelclass is modelclass)
 
     def test_get_class_dotted_notation(self):
@@ -147,3 +160,60 @@ class TestReflection(TestCase):
         # is required here in the test because tearDown does table.drop,
         # which will block forever if the transaction is not committed.
         transaction.commit()
+
+@attr(functional=True)
+class TestXSDSequenceCallback(TestCase):
+
+    def setUp(self):
+        import transaction
+        import sqlahelper
+        from sqlalchemy import Column, types, ForeignKey
+        from sqlalchemy.orm import relationship
+        from sqlalchemy.ext.declarative import declarative_base
+        from c2cgeoportal.models import DBSession
+        from c2cgeoportal.lib.dbreflection import _association_proxy
+        engine = sqlahelper.get_engine()
+        Base = declarative_base(bind=engine)
+        class Child(Base):
+            __tablename__ = 'child'
+            id = Column(types.Integer, primary_key=True)
+            name = Column(types.Unicode)
+            def __init__(self, name):
+                self.name = name
+        class Parent(Base):
+            __tablename__ = 'parent'
+            id = Column(types.Integer, primary_key=True)
+            child_id = Column(types.Integer, ForeignKey('child.id'))
+            child_ = relationship(Child)
+            child = _association_proxy('child_', 'name')
+        Base.metadata.create_all()
+        DBSession.add_all([Child('foo'), Child('bar')])
+        transaction.commit()
+        self.metadata = Base.metadata
+        self.cls = Parent
+
+    def tearDown(self):
+        import transaction
+
+        transaction.commit()
+        self.metadata.drop_all()
+
+    def _make_xpath(self, components):
+        return '/{http://www.w3.org/2001/XMLSchema}' \
+                    .join(components.split())
+
+    def test_xsd_sequence_callback(self):
+        from xml.etree.ElementTree import TreeBuilder, tostring
+        from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
+        tb = TreeBuilder()
+        _xsd_sequence_callback(tb, self.cls)
+        e = tb.close()
+        self.assertEqual(tostring(e),
+            '<xsd:element minOccurs="0" name="child" nillable="true">'
+               '<xsd:simpleType>'
+                 '<xsd:restriction base="xsd:string">'
+                   '<xsd:enumeration value="foo" />'
+                   '<xsd:enumeration value="bar" />'
+                 '</xsd:restriction>'
+               '</xsd:simpleType>'
+            '</xsd:element>')
