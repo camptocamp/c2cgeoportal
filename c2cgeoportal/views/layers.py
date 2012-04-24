@@ -254,4 +254,4 @@ def metadata(request):
     layer = _get_layer_for_request(request)
     if not layer.public and request.user is None:
         raise HTTPNotFound()
-    return get_class(str(layer.geoTable)).__table__
+    return get_class(str(layer.geoTable))
