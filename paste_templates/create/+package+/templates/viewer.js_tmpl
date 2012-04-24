@@ -46,6 +46,7 @@ var WMTS_OPTIONS = {
     displayInLayerSwitcher: false,
     requestEncoding: 'REST',
     buffer: 0,
+    transitionEffect: "resize",
     style: 'default',
     dimensions: ['TIME'],
     params: {
