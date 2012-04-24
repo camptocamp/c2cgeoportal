@@ -15,7 +15,6 @@ Create development environment in a project
 
     [buildout]
     extends = buildout.cfg
-    parts -= libs-update
     develop += c2cgeoportal
     extensions -= buildout.dumppickedversions
 
@@ -32,7 +31,7 @@ Create development environment in a project
     exclude-directories += c2cgeoportal/paste_templates
 
 * In the file ``c2cgeoportal/setup.py`` add ``nose`` and
-  ``nosexcover`` in the install_requires packege list.
+  ``nosexcover`` in the install_requires packages list.
 
 * Remove the old egg::
 
