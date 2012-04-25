@@ -291,16 +291,19 @@ class Entry(object):
         d['themesError'] = errors
         d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes())
-        d['externalWFSTypes'] = json.dumps(self._WFSTypes(True)) \
-                if hasattr(self.request.registry.settings, 'external_mapserv.url') \
-                else '[]'
 
-        if self.settings.get("external_themes_url") != '':
+        if hasattr(self.request.registry.settings, 'external_mapserv.url') and \
+           bool(self.settings.get('external_mapserv.url')):
+            d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
+        else:
+            d['externalWFSTypes'] = '[]'
+
+        if hasattr(self.request.registry.settings, 'external_themes_url') and \
+           bool(self.settings.get("external_themes_url")):
             ext_url = self.settings.get("external_themes_url")
             if self.request.user is not None and \
                     hasattr(self.request.user, 'parent_role'):
                 ext_url += '?role_id=' + str(self.request.user.parent_role.id)
-
             result = json.load(urllib.urlopen(ext_url))
             # TODO: what if external server does not respond?
             d['external_themes'] = json.dumps(result)
