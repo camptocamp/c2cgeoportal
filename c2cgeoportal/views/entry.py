@@ -292,14 +292,14 @@ class Entry(object):
         d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes())
 
-        if hasattr(self.request.registry.settings, 'external_mapserv.url') and \
-           bool(self.settings.get('external_mapserv.url')):
+        if hasattr(self.request.registry.settings, 'external_mapserv.url') \
+           and self.settings.get('external_mapserv.url'):
             d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
         else:
             d['externalWFSTypes'] = '[]'
 
-        if hasattr(self.request.registry.settings, 'external_themes_url') and \
-           bool(self.settings.get("external_themes_url")):
+        if hasattr(self.request.registry.settings, 'external_themes_url') \
+           and self.settings.get("external_themes_url"):
             ext_url = self.settings.get("external_themes_url")
             if self.request.user is not None and \
                     hasattr(self.request.user, 'parent_role'):
