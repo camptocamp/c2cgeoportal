@@ -209,7 +209,8 @@ Other changes
    language-related file that should be included in app.js, edit.js and api.js
    is OpenLayers/Lang.js. The other language-related files should go in the
    lang-*.js builds.  See this diff
-   https://github.com/camptocamp/c2cgeoportal/pull/105/files to see how app.cfg
+   https://github.com/camptocamp/c2cgeoportal/pull/105/files and 
+   https://github.com/camptocamp/c2cgeoportal/pull/166/files to see how app.cfg
    was changed in the create template, that should help you fix your
    application's app.cfg. The note explaining why OpenLayers/Lang.js should be
    included in the main build may be of interest.
