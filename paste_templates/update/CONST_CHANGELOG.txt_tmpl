@@ -183,6 +183,7 @@ Other changes
    (like en.js, fr.js, de.js, ...) to have all identical root:
         ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
         ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
+
 7. Templates modifications:
 
    The base templates are deprecated, to get the new version do 
@@ -201,8 +202,9 @@ Other changes
 
       * The viewer layout has changed to ease the integration of the Google Earth plugin.
       * A null value for the user's map extent is now permitted. 
+      * The jsextent property of role is renamed to json_extent.
 
-7. Other changes to jsbuild/app.cfg are recommended. They are even required if
+8. Other changes to jsbuild/app.cfg are recommended. They are even required if
    you added an edit.js section as indicated in the "Editing Interface" section
    above. Your application's jsbuild/app.cfg most probably adds
    language-related files into app.js and api.js, which it should not. The only
