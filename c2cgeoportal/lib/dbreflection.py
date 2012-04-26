@@ -60,7 +60,8 @@ class _association_proxy(object):
             # The code of hybrid_property in SQLAlchemy illustrates
             # how to do that.
             raise AttributeError
-        return getattr(getattr(obj, self.target), self.value_attr)
+        target = getattr(obj, self.target)
+        return getattr(target, self.value_attr) if target else None
 
     def __set__(self, obj, val):
         from c2cgeoportal.models import DBSession
