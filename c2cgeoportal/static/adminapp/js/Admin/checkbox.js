@@ -85,23 +85,21 @@
             state = true;
         }
 
+        if (state) {
+            $.fn.adminapp.resetField(els);
+            els.addClass('disabledinput');
+        } else {
+            els.removeClass('disabledinput');            
+        }
+        // reset value and set readonly
+        els.attr('readOnly', !state);
+        /*
         for (var i=0; i<els.length; i++) {
-            /*
             var p = $.fn.adminapp.getParentBLock(els[i]);
             p.style.display = d;
-            */
-            if (state) {
-                $(els[i]).addClass('disabledinput');
-            } else {
-                $(els[i]).removeClass('disabledinput');            
-            }
             // can NOT use disabled as FA expect the field to be in request
-            //els[i].disabled = state;
-            // reset value and set readonly
-            $.fn.adminapp.resetField(els[i]);
-            els[i].readOnly = state;
-        }
-        
+            els[i].disabled = state;
+        }*/
     };
 
     /**
@@ -110,18 +108,16 @@
     $.fn.adminapp.toogleRestrictionAreas = function(el) {
         var els = $.fn.adminapp.findField('restrictionareas', [el.id]);        
         var state = el.checked;
-        for (var i=0; i<els.length; i++) {
-            if (state) {
-                // reset value
-                $.fn.adminapp.resetField(els[i]);
+        if (state) {
+            // reset value
+            $.fn.adminapp.resetField(els);
 
-                $(els[i]).addClass('disabledinput');
-            } else {
-                $(els[i]).removeClass('disabledinput');            
-            }
-            // set readonly
-            els[i].readOnly = state;
+            els.addClass('disabledinput');
+        } else {
+            els.removeClass('disabledinput');            
         }
+        // set readonly
+        els.attr('readOnly', state);
     };
 
     /**
@@ -131,34 +127,34 @@
         var state = el.value;
         var fields = [];
         if (state == "internal WMS") {
-            fields = ["legendRule"];
+            fields = ["style", "legendRule", "imageType"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "isSingleTile"];
+            fields = ["url", "style", "legendRule", "isSingleTile", "imageType"];
         }
-        else if (state == "internal WMTS") {
-            fields = ["legendImage"];
-        }
-        else if (state == "external WMTS") {
-            fields = ["url", "serverResolutions", "maxExtent", "legendImage"];
+        else if (state == "WMTS") {
+            fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl", "wmsLayers"];
         }
 
         var change = function(field, fields) {
             var e = $.fn.adminapp.findField(field, [el.id]);
-            if (jQuery.inArray(field, fields) >= 0) {
-                $(e[0]).removeClass('disabledinput');
+            var state = jQuery.inArray(field, fields) >= 0;
+            if (state) {
+                e.removeClass('disabledinput');
             }
             else {
-                $(e[0]).addClass('disabledinput');
+                e.addClass('disabledinput');
             }
-            e[0].readOnly = state;
+            e.attr('readOnly', !state);
         };
 
         change("url", fields);
-        change("serverResolutions", fields);
-        change("maxExtent", fields);
+        change("style", fields);
+        change("dimensions", fields);
+        change("matrixSet", fields);
+        change("wmsUrl", fields);
+        change("wmsLayer", fields);
         change("isSingleTile", fields);
-        change("legendImage", fields);
         change("legendRule", fields);
     };
 
@@ -177,14 +173,16 @@
      * reset input value or state
      */    
     $.fn.adminapp.resetField = function(el) {
-        switch (el.type) {
-          case 'checkbox':
-              el.checked = false;
-              break;
-          case 'radio':
-              break;
-          default:
-              el.value = '';
+        for (var i = 0 ; i < el.length ; i++) {
+            switch (el[i].type) {
+              case 'checkbox':
+                  el[i].checked = false;
+                  break;
+              case 'radio':
+                  break;
+              default:
+                  el[i].value = '';
+            }
         }
     };
     
