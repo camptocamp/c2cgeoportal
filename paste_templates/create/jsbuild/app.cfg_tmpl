@@ -243,10 +243,11 @@ root =
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
+first =
+    OpenLayers/Lang/en.js
 include =
     Proj/Lang/en.js
     Ext/src/locale/ext-lang-en.js
-    OpenLayers/Lang/en.js
 #    GeoExt/locale/GeoExt-en.js
 #    FeatureEditing/resources/lang/en.js
     Styler/resources/lang/en.js
@@ -274,10 +275,11 @@ root =
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
+first =
+    OpenLayers/Lang/fr.js
 include =
     Proj/Lang/fr.js
     Ext/src/locale/ext-lang-fr.js
-    OpenLayers/Lang/fr.js
     GeoExt/locale/GeoExt-fr.js
     FeatureEditing/resources/lang/fr.js
     Styler/resources/lang/fr.js
@@ -305,10 +307,11 @@ root =
     ${package}/static/lib/cgxp/ext.ux/ColorPicker
     ${package}/static/lib/cgxp/ext.ux/base64
     ${package}/static/js
+first =
+    OpenLayers/Lang/de.js
 include =
     Proj/Lang/de.js
     Ext/src/locale/ext-lang-de.js
-    OpenLayers/Lang/de.js
 #    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
     Styler/resources/lang/de.js
