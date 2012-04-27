@@ -178,7 +178,6 @@ app = new gxp.Viewer({
     {
         ptype: "cgxp_featuregrid",
         id: "featureGrid",
-        featureManager: "featuremanager",
         csvURL: "$${request.route_url('csvecho')}",
         maxFeatures: 200,
         outputTarget: "featuregrid-container",
@@ -213,7 +212,6 @@ app = new gxp.Viewer({
     }, 
     {
         ptype: "cgxp_wmsgetfeatureinfo",
-        featureManager: "featuremanager",
         actionTarget: "center.tbar",
         toggleGroup: "maptools",
         events: EVENTS

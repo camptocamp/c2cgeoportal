@@ -204,7 +204,6 @@
         {
             ptype: "cgxp_featuregrid",
             id: "featureGrid",
-            featureManager: "featuremanager",
             csvURL: "${request.route_url('csvecho')}",
             maxFeatures: 200,
             outputTarget: "featuregrid-container",
@@ -246,7 +245,6 @@
         <%block name="viewer_tools_toolbar_getfeatureinfo">\
         {
             ptype: "cgxp_wmsgetfeatureinfo",
-            featureManager: "featuremanager",
             actionTarget: "map.tbar",
             toggleGroup: "maptools",
             events: EVENTS
@@ -296,12 +294,6 @@
             url: "#help-url",
             </%block>\
             actionTarget: "map.tbar"
-        /*
-        }, {
-            // shared FeatureManager for feature editing, grid and querying
-            ptype: "cgxp_featuremanager",
-            id: "featuremanager"
-*/        }
         </%block>\
         </%block>\
         ],
