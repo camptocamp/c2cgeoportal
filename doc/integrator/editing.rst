@@ -8,10 +8,10 @@ Editing
 Any c2cgeoportal application comes with an editing interface, available at
 ``/edit`` (assuming ``/`` is the application's root URL).
 
-The editing interface requires the editing plugin (``cgxp_editing``), which is
-provided by CGXP as of commit `58c931d
+The editing interface requires the editing plugin (``cgxp.plugins.Editing``),
+which is provided by CGXP as of commit `58c931d
 <https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032>`_.
-So make sure your application uses an appropriate version (commit) of CGXP.
+Make sure your application uses an appropriate version (commit) of CGXP.
 
 The editing interface is defined in the application's ``templates/edit.html``
 and ``templates/edit.js`` files.  The integrator can edit
@@ -26,3 +26,7 @@ The integrator will probably need to:
 Other customizations, like adding tools to the toolbar, can be done. If layer
 sources and tools are added you will certainly need to edit ``jsbuild/app.cfg``
 and add scripts in the ``[edit.js]`` sections.
+
+See the `Editing API doc
+<http://docs.camptocamp.net/cgxp/lib/plugins/Editing.html>`_ for the list of
+options the plugin can receive.

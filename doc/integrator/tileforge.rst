@@ -1,7 +1,7 @@
 .. _administrator_tileforge:
 
-Tileforge
-=========
+Work with Tileforge
+===================
 
 Configuration
 -------------
