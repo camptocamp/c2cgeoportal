@@ -169,6 +169,19 @@
         change("wmsLayers", fields);
         change("isSingleTile", fields);
         change("legendRule", fields);
+
+        internalWMS = state == "internal WMS"
+        var e = $.fn.adminapp.findField("public",  [el.id]);
+        if (internalWMS) {
+            e.removeClass('disabledinput');
+        }
+        else {
+            e.addClass('disabledinput');
+            e.attr('checked', true);
+            this.toogleRestrictionAreas(e[0]);
+        }
+        e.attr('readOnly', !internalWMS);
+        e.attr('disabled', !internalWMS);
     };
 
     $.fn.adminapp.toogleBaseLayer = function(wmsi, bl) {
