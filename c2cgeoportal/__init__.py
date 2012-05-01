@@ -30,13 +30,12 @@ def locale_negotiator(request):
     """ Our locale negotiator. Returns a locale name or None.
     """
     lang = request.params.get('lang')
+    available_languages = request.registry.settings. \
+            get("available_languages").split()
     if lang is None:
-        lang = request.registry.settings.get("default_language")
         for l in request.accept_language.best_matches():
-            if l in request.registry.settings. \
-                    get("available_languages").split():
-                lang = l
-                break
+            if l in available_languages:
+                return l
     return lang
 
 
