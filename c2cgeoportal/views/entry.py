@@ -221,17 +221,15 @@ class Entry(object):
 
     def _group(self, group, layers, wms_layers, wms):
         children = []
-        error = ""
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                     group.isInternalWMS == treeItem.isInternalWMS):
-                    c, e = self._group(treeItem, layers, wms_layers, wms)
-                    error += e
+                    c = self._group(treeItem, layers, wms_layers, wms)
                     if c != None:
                         children.append(c)
                 else:
-                    error += "Group %s connot be in group %s " \
+                    self.errors += "Group %s connot be in group %s " \
                              "(wrong isInternalWMS).\n" % \
                              (treeItem.name, group.name)
             elif type(treeItem) == Layer:
@@ -240,7 +238,7 @@ class Entry(object):
                         (treeItem.layerType == 'internal WMS')):
                         children.append(self._layer(treeItem, wms_layers, wms))
                     else:
-                        error += "Layer %s of type %s cannot be " \
+                        self.errors += "Layer %s of type %s cannot be " \
                                  "in the group %s.\n" % \
                                  (treeItem.name, treeItem.layerType, group.name)
 
@@ -254,9 +252,9 @@ class Entry(object):
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
-            return (g, error)
+            return g
         else:
-            return (None, error)
+            return None
 
     def _themes(self, d):
         query = DBSession.query(Layer).filter(Layer.public == True)
@@ -293,12 +291,10 @@ class Entry(object):
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
         exportThemes = []
 
-        errors = "\n"
-
         for theme in themes:
             if theme.display:
                 children = list(self._getChildren(
-                        theme, layers, wms_layers, wms, errors))
+                        theme, layers, wms_layers, wms))
                 # test if the theme is visible for the current user
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
@@ -310,13 +306,12 @@ class Entry(object):
                         'children': children
                     })
 
-        return (exportThemes, errors)
+        return exportThemes
 
-    def _getChildren(self, theme, layers, wms_layers, wms, errors):
+    def _getChildren(self, theme, layers, wms_layers, wms):
         for item in sorted(theme.children, key=lambda item: item.order):
             if type(item) == LayerGroup:
-                (c, e) = self._group(item, layers, wms_layers, wms)
-                errors += e
+                c = self._group(item, layers, wms_layers, wms)
                 if c != None:
                     yield c
 
@@ -350,9 +345,10 @@ class Entry(object):
 
     def _getVars(self):
         d = {}
-        (themes, errors) = self._themes(d)
-        d['themes'] = json.dumps(themes)
-        d['themesError'] = errors
+        self.errors = "\n"
+        d['themes'] = json.dumps(self._themes(d))
+        d['themesError'] = self.errors
+        self.errors = None
         d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes())
 
