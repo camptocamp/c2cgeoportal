@@ -1,6 +1,23 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 0.7
+===========
+
+1.  Display directly the loading panel introduce those needed changes:
+    * In the +package+/templates/viewer.js includes all the code in:
+        Ext.onReady(function() {
+            // all the code
+        });
+    * In the +package+/templates/index.html do this replacement:
+      -        <script type="text/javascript">
+      -            Ext.onReady(function() {
+      -                <%include file="viewer.js" />
+      -            });
+      -        </script>
+      +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
+
+
 Version 0.6
 ===========
 

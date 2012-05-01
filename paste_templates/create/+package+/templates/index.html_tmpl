@@ -93,10 +93,6 @@
         <script type="text/javascript" src="$${request.static_url('${package}:static/build/app.js')}"></script>
         <script type="text/javascript" src="$${request.static_url('${package}:static/build/lang-%s.js' % lang)}"></script>
 % endif
-        <script type="text/javascript">
-            Ext.onReady(function() {
-                <%include file="viewer.js" />
-            });
-        </script>
+        <script type="text/javascript" src="$${request.route_url('viewer')}"></script>
     </body>
 </html>
