@@ -105,8 +105,6 @@ class Entry(object):
             'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
-            'imageType': layer.imageType,
-            'no2D': layer.no2D,
             'legend': layer.legend,
             'isVisible': layer.isVisible,
             'isChecked': layer.isChecked,
@@ -122,12 +120,15 @@ class Entry(object):
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
             self._fill_editable(l, layer)
-        if layer.layerType == "internal WMS":
-            self._fill_internal_WMS(l, layer, wms_layers, wms)
-        else:
-            self._fill_non_internal_WMS(l, layer)
         if layer.legendImage:
             l['legendImage'] = layer.legendImage
+
+        if layer.layerType == "internal WMS":
+            self._fill_internal_WMS(l, layer, wms_layers, wms)
+        elif layer.layerType == "external WMS":
+            self._fill_external_WMS(l, layer)
+        elif layer.layerType == "WMTS":
+            self._fill_WMTS(l, layer)
 
         return l
 
@@ -144,7 +145,27 @@ class Entry(object):
             if c > 0:
                 l['editable'] = True
 
+    def _fill_WMS(self, l, layer):
+        l['url'] = layer.url
+        l['imageType'] = layer.imageType
+        if layer.legendRule:
+            query = (
+                ('SERVICE', 'WMS'),
+                ('VERSION', '1.1.1'),
+                ('REQUEST', 'GetLegendGraphic'),
+                ('LAYER', layer.name),
+                ('FORMAT', 'image/png'),
+                ('TRANSPARENT', 'TRUE'),
+                ('RULE', layer.legendRule),
+            )
+            l['icon'] = self.request.route_url('mapserverproxy') \
+                    + '?' + '&'.join('='.join(p) for p in query)
+        if layer.style:
+            l['style'] = layer.style
+
     def _fill_internal_WMS(self, l, layer, wms_layers, wms):
+        self._fill_WMS(l, layer)
+
         # this is a leaf, ie. a Mapserver layer
         if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
@@ -168,20 +189,35 @@ class Entry(object):
         else:
             log.warning('layer %s not defined in WMS caps doc', layer.name)
 
-    def _fill_non_internal_WMS(self, l, layer):
-        if layer.minResolution and layer.maxResolution:
+    def _fill_external_WMS(self, l, layer):
+        self._fill_WMS(l, layer)
+
+        l['isSingleTile'] = layer.isSingleTile
+
+        if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
+        if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-        if layer.layerType == "external WMS":
-            l['url'] == layer.url
-            l['isSingleTile'] = layer.isSingleTile
+    def _fill_WMTS(self, l, layer):
+        l['url'] = layer.url
+        l['dimensions'] = layer.dimensions
 
-        # TODO: use Capabilities
-        if layer.layerType == "external WMTS":
-            l['url'] == layer.url
-            l['maxExtent'] == layer.maxExtent
-            l['serverResolutions'] == layer.serverResolutions
+        if layer.style:
+            l['style'] = layer.style
+        if layer.matrixSet:
+            l['matrixSet'] = layer.matrixSet
+        if layer.wmsUrl and layer.wmsLayers:
+            l['wmsUrl'] = layer.wmsUrl
+            l['wmsLayers'] = layer.wmsLayers
+        if layer.wmsLayers:
+            l['wmsLayers'] = layer.wmsLayers
+
+        if layer.minResolution:
+            l['minResolutionHint'] = layer.minResolution
+        if layer.minResolution:
+            l['maxResolutionHint'] = layer.maxResolution
+
 
     def _group(self, group, layers, wms_layers, wms):
         children = []

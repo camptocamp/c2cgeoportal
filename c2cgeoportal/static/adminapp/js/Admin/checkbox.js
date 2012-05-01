@@ -72,6 +72,15 @@
     };
 
     /**
+     * attach toogle internal WMS on Base Layer.
+     */
+    $.fn.adminapp.bindEventOnLayerGroup = function(wmsi, bl) {
+        wmsi.bind('change', function(event) {
+            $.fn.adminapp.toogleBaseLayer(wmsi, bl);
+        }); 
+    };
+
+    /**
      * show / hide secondary address input fields
      */
     $.fn.adminapp.toogleAddress = function(el) {
@@ -92,7 +101,9 @@
             els.removeClass('disabledinput');            
         }
         // reset value and set readonly
-        els.attr('readOnly', !state);
+        els.attr('readOnly', state);
+        els.attr('disabled', state);
+
         /*
         for (var i=0; i<els.length; i++) {
             var p = $.fn.adminapp.getParentBLock(els[i]);
@@ -118,6 +129,7 @@
         }
         // set readonly
         els.attr('readOnly', state);
+        els.attr('disabled', state);
     };
 
     /**
@@ -127,10 +139,10 @@
         var state = el.value;
         var fields = [];
         if (state == "internal WMS") {
-            fields = ["style", "legendRule", "imageType"];
+            fields = ["style", "imageType", "legendRule", "imageType"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "style", "legendRule", "isSingleTile", "imageType"];
+            fields = ["url", "style", "imageType", "legendRule", "isSingleTile", "imageType"];
         }
         else if (state == "WMTS") {
             fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl", "wmsLayers"];
@@ -146,16 +158,33 @@
                 e.addClass('disabledinput');
             }
             e.attr('readOnly', !state);
+            e.attr('disabled', !state);
         };
 
         change("url", fields);
+        change("imageType", fields);
         change("style", fields);
         change("dimensions", fields);
         change("matrixSet", fields);
         change("wmsUrl", fields);
-        change("wmsLayer", fields);
+        change("wmsLayers", fields);
         change("isSingleTile", fields);
         change("legendRule", fields);
+    };
+
+    $.fn.adminapp.toogleBaseLayer = function(wmsi, bl) {
+        var state = wmsi[0].checked;
+        if (state) {
+            // reset value
+            $.fn.adminapp.resetField(bl);
+
+            bl.addClass('disabledinput');
+        } else {
+            bl.removeClass('disabledinput');            
+        }
+        // set readonly
+        bl.attr('readOnly', state);
+        bl.attr('disabled', state);
     };
 
     /**
@@ -201,7 +230,7 @@ $(document).ready(function(){
     $.fn.adminapp.fieldList = $("input");
     $.fn.adminapp.selectList = $("select");
 
-    // attach event on User.b_company to show/hide secondare address fields (b_*)
+    // attach event on User.b_company to show/hide secondary address fields (b_*)
     var f = $.fn.adminapp.findField('b_company');
     if (f.length > 0) {        
         $.fn.adminapp.bindEventOnAddress(f[0]);
@@ -214,7 +243,7 @@ $(document).ready(function(){
     var lt = $.fn.adminapp.findSelect('layerType');
     //Select('layerType');
     if (pl.length > 0 && lt.length > 0) {        
-        //restrictionareas
+        // restrictionareas
         $.fn.adminapp.bindEventOnLayer(pl[0], lt[0]);
         // init state
         $.fn.adminapp.toogleRestrictionAreas(pl[0]);
@@ -226,7 +255,7 @@ $(document).ready(function(){
      * this will sync the state on all tree items.
      */
 
-    // store field correspondance
+    // store field correspondence
     $.fn.adminapp.checkboxcorrespondance = {};
     var checkboxtrees = $(".checkboxtree");
     for (var i = 0, leni = checkboxtrees.length ; i < leni ; i++) {
@@ -241,4 +270,13 @@ $(document).ready(function(){
             }
         }
     }
+
+    var wmsi = $.fn.adminapp.findField('isInternalWMS')
+    var bl = $.fn.adminapp.findField('isBaseLayer')
+    if (wmsi.length > 0 && bl.length > 0) {
+        $.fn.adminapp.bindEventOnLayerGroup(wmsi, bl);
+        // init state
+        $.fn.adminapp.toogleBaseLayer(wmsi, bl);
+    }
+
 });
