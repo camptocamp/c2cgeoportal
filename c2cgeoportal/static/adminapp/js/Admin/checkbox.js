@@ -106,15 +106,8 @@
         }
         // reset value and set readonly
         els.attr('readOnly', state);
-        els.attr('disabled', state);
-
-        /*
-        for (var i=0; i<els.length; i++) {
-            var p = $.fn.adminapp.getParentBLock(els[i]);
-            p.style.display = d;
-            // can NOT use disabled as FA expect the field to be in request
-            els[i].disabled = state;
-        }*/
+        // can NOT use disabled as FA expect the field to be in request
+        // els.attr('disabled', state);
     };
 
     /**
@@ -162,7 +155,9 @@
                 e.addClass('disabledinput');
             }
             e.attr('readOnly', !state);
-            e.attr('disabled', !state);
+            if (e[0].tagName != "INPUT") {
+                e.attr('disabled', !state);
+            }
         };
 
         change("url", fields);
