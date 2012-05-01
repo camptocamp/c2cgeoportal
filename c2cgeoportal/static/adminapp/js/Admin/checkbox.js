@@ -181,7 +181,8 @@
             this.toogleRestrictionAreas(e[0]);
         }
         e.attr('readOnly', !internalWMS);
-        e.attr('disabled', !internalWMS);
+        // true should be send ...
+        //e.attr('disabled', !internalWMS);
     };
 
     $.fn.adminapp.toogleBaseLayer = function(wmsi, bl) {
