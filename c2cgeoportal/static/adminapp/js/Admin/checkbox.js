@@ -37,7 +37,11 @@
      * find an element in the dom whose id match str and not contained in ignoreList
      */
     $.fn.adminapp.findField = function(str, ignoreList) {
-        return this.findList(str, this.fieldList, ignoreList);
+        var result = this.findList(str, this.fieldList, ignoreList);
+        if (result.length == 0) {
+            result = this.findList(str, this.selectList, ignoreList);
+        }
+        return result;
     };
     
     /**
