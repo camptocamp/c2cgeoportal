@@ -114,6 +114,7 @@ def includeme(config):
     config.add_route('home', '/')
     config.add_route('viewer', '/viewer.js')
     config.add_route('edit', '/edit')
+    config.add_route('edit.js', '/edit.js')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('testi18n', '/testi18n.html')

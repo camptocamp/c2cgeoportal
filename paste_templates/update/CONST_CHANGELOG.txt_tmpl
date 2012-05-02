@@ -16,6 +16,7 @@ Version 0.7
       -            });
       -        </script>
       +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
+    * Do the same for the edit.js/edit.html
 
 
 Version 0.6
