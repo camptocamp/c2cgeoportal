@@ -325,6 +325,13 @@ class Entry(object):
 
     @view_config(route_name='home', renderer='index.html')
     def home(self):
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+        }
+
+    @view_config(route_name='viewer', renderer='viewer.js')
+    def viewer(self):
         d = self._getVars()
 
         d['lang'] = self.lang
@@ -334,6 +341,13 @@ class Entry(object):
 
     @view_config(route_name='edit', renderer='edit.html')
     def edit(self):
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+        }
+
+    @view_config(route_name='edit.js', renderer='edit.js')
+    def viewer(self):
         d = self._getVars()
 
         d['lang'] = self.lang
