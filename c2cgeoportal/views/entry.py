@@ -108,10 +108,10 @@ class Entry(object):
             'name': layer.name,
             'type': layer.layerType,
             'legend': layer.legend,
-            'isVisible': layer.isVisible,
             'isChecked': layer.isChecked,
-            'identifierAttribute': layer.identifierAttributeField
         }
+        if layer.identifierAttributeField:
+            l['identifierAttribute'] = layer.identifierAttributeField
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
         if layer.icon:
@@ -123,7 +123,7 @@ class Entry(object):
         if layer.geoTable:
             self._fill_editable(l, layer)
         if layer.legendImage:
-            l['legendImage'] = layer.legendImage
+            l['legendImage'] = self._getIconPath(layer.legendImage)
 
         if layer.layerType == "internal WMS":
             self._fill_internal_WMS(l, layer, wms_layers, wms)
@@ -148,7 +148,6 @@ class Entry(object):
                 l['editable'] = True
 
     def _fill_WMS(self, l, layer):
-        l['url'] = layer.url
         l['imageType'] = layer.imageType
         if layer.legendRule:
             query = (
@@ -165,8 +164,23 @@ class Entry(object):
         if layer.style:
             l['style'] = layer.style
 
+    def _fill_legend_rule_query_string(self, l, layer, url):
+        if layer.legendRule and url:
+            query = (
+                ('SERVICE', 'WMS'),
+                ('VERSION', '1.1.1'),
+                ('REQUEST', 'GetLegendGraphic'),
+                ('LAYER', layer.name),
+                ('FORMAT', 'image/png'),
+                ('TRANSPARENT', 'TRUE'),
+                ('RULE', layer.legendRule),
+            )
+            l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
+
     def _fill_internal_WMS(self, l, layer, wms_layers, wms):
         self._fill_WMS(l, layer)
+        self._fill_legend_rule_query_string(l, layer,
+                self.request.route_url('mapserverproxy'))
 
         # this is a leaf, ie. a Mapserver layer
         if layer.minResolution:
@@ -193,7 +207,9 @@ class Entry(object):
 
     def _fill_external_WMS(self, l, layer):
         self._fill_WMS(l, layer)
+        self._fill_legend_rule_query_string(l, layer, layer.url)
 
+        l['url'] = layer.url
         l['isSingleTile'] = layer.isSingleTile
 
         if layer.minResolution:
@@ -220,8 +236,12 @@ class Entry(object):
         if layer.wmsUrl and layer.wmsLayers:
             l['wmsUrl'] = layer.wmsUrl
             l['wmsLayers'] = layer.wmsLayers
-        if layer.wmsLayers:
+        elif layer.wmsLayers:
+            l['wmsUrl'] = self.request.route_url('mapserverproxy') 
             l['wmsLayers'] = layer.wmsLayers
+        elif layer.wmsUrl:
+            l['wmsUrl'] = layer.wmsUrl
+            l['wmsLayers'] = layer.name
 
         if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
