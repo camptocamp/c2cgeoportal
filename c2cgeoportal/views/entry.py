@@ -2,6 +2,8 @@
 
 import urllib
 import logging
+import json
+import sys
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name
@@ -201,7 +203,15 @@ class Entry(object):
 
     def _fill_WMTS(self, l, layer):
         l['url'] = layer.url
-        l['dimensions'] = layer.dimensions
+
+        if layer.dimensions:
+            try:
+                l['dimensions'] = json.loads(layer.dimensions)
+            except:  # pragma: no cover
+                self.errors += (u"Unexpected error: '%s' " + \
+                        "while reading '%s' in layer '%s'\n") % (
+                        sys.exc_info()[0], layer.dimensions,
+                        layer.name)
 
         if layer.style:
             l['style'] = layer.style
