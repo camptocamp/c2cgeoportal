@@ -96,10 +96,10 @@ class Printproxy(object):
     def get(self):
         """ Get created PDF. """
 
-        id = self.request.matchdict.get('id')
+        file = self.request.matchdict.get('file')
 
         # get URL
-        _url = self.config['print.url'] + id + '.pdf.printout'
+        _url = self.config['print.url'] + file + '.printout'
         log.info("Get print document from %s." % _url)
 
         # forward request to target (without Host Header)
