@@ -108,7 +108,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response.headers['Location'], "/came_from") 
 
     #
-    # home view tests
+    # viewer view tests
     #
 
     def _create_entry_obj(self, username=None):
@@ -144,7 +144,7 @@ class TestEntryView(TestCase):
                 m = Mock()
                 m.read.return_value = ''
                 mock_urlopen.return_value = m
-                response = entry.home()
+                response = entry.viewer()
 
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
@@ -162,7 +162,7 @@ class TestEntryView(TestCase):
                 m = Mock()
                 m.read.return_value = ''
                 mock_urlopen.return_value = m
-                response = entry.home()
+                response = entry.viewer()
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -194,7 +194,7 @@ class TestEntryView(TestCase):
                 m = Mock()
                 m.read.return_value = ''
                 mock_urlopen.return_value = m
-                response = entry.home()
+                response = entry.viewer()
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
