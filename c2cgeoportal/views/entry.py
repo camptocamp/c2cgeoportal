@@ -14,6 +14,7 @@ from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
+from math import sqrt
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
@@ -49,8 +50,11 @@ class Entry(object):
         resolutionHintMin = float('inf')
         resolutionHintMax = 0
         if layer.scaleHint:
-            resolutionHintMin = float(layer.scaleHint['min'])
-            resolutionHintMax = float(layer.scaleHint['max'])
+            # scaleHint is based upon a pixel diagonal length whereas we use
+            # resolutions based upon a pixel edge length. There is a sqrt(2)
+            # ratio between edge and diagonal of a square.
+            resolutionHintMin = float(layer.scaleHint['min']) / sqrt(2)
+            resolutionHintMax = float(layer.scaleHint['max']) / sqrt(2)
         for childLayer in layer.layers:
             resolution = self._getLayerResolutionHint(childLayer)
             resolutionHintMin = min(resolutionHintMin, resolution[0])
