@@ -58,7 +58,7 @@ On ``WMTS`` layer we have the following specific attributes:
  *  ``Base URL``: the URL to the WMTS capabilities.
  *  ``Style``: the used style, if not present we use the default style.
  *  ``Dimensions``: a json string that gives the dimensions, 
-    eg: ``{ 'YEAR': '2012' }``, if not provide use default values.
+    eg: ``{ "YEAR": "2012" }``, if not provide use default values.
  *  ``Matrix set``: the used matix set, if there only one matrix set 
     in the capabilities it can be empty.
  *  ``WMS server URL``: optional, URL to a WMS server to do 
