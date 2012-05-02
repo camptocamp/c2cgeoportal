@@ -37,8 +37,8 @@ class Entry(object):
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
-        _ = self.request.translate
-        return {'title': _('title i18n')}
+        _ = self.request.translate  # pragma: no cover
+        return {'title': _('title i18n')}  # pragma: no cover
 
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
@@ -85,7 +85,7 @@ class Entry(object):
 
     def _getIconPath(self, icon):
         if not icon:
-            return None
+            return None  # pragma: no cover
         icon = str(icon)
         # test full URL
         if not icon[0:4] == 'http':
@@ -97,7 +97,7 @@ class Entry(object):
                     icon = self.request.static_url(self.settings['project'] + ':static' + icon)
                 else:
                     icon = self.request.static_url(icon)
-            except ValueError:
+            except ValueError:  # pragma: no cover
                 log.exception('can\'t generate url for icon: %s' % icon)
                 return None
         return icon
