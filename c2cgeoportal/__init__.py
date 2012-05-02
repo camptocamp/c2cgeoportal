@@ -136,7 +136,7 @@ def includeme(config):
     config.add_route('printproxy', '/printproxy')
     config.add_route('printproxy_info', '/printproxy/info.json')
     config.add_route('printproxy_create', '/printproxy/create.json')
-    config.add_route('printproxy_get', '/printproxy/{id}.pdf.printout')
+    config.add_route('printproxy_get', '/printproxy/{file}.printout')
 
     # full text search routes
     config.add_route('fulltextsearch', '/fulltextsearch')
