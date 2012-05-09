@@ -337,10 +337,10 @@ class Entry(object):
     @view_config(route_name='viewer', renderer='viewer.js')
     def viewer(self):
         d = self._getVars()
-
         d['lang'] = self.lang
         d['debug'] = self.debug
 
+        self.request.response.content_type = 'application/javascript'
         return d
 
     @view_config(route_name='edit', renderer='edit.html')
@@ -353,10 +353,10 @@ class Entry(object):
     @view_config(route_name='edit.js', renderer='edit.js')
     def viewer(self):
         d = self._getVars()
-
         d['lang'] = self.lang
         d['debug'] = self.debug
 
+        self.request.response.content_type = 'application/javascript'
         return d
 
     @view_config(route_name='apiloader', renderer='apiloader.js')
