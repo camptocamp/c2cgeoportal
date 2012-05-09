@@ -15,7 +15,7 @@ Version 0.7
       -                <%include file="viewer.js" />
       -            });
       -        </script>
-      +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
+      +        <script type="text/javascript" src="$${request.route_url('viewer')}"></script>
     * Do the same for the edit.js/edit.html
 
 
