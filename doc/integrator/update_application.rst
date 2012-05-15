@@ -1,10 +1,10 @@
 .. _integrator_update_application:
 
 Update a c2cgeoportal application
-=================================
+---------------------------------
 
 Update the application code
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To get the changes done by other people, we need to ``pull`` the new code::
 
@@ -26,7 +26,7 @@ If you still use SVN::
    fix the revision of CGXP.
 
 Update c2cgeoportal
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
@@ -71,7 +71,7 @@ steps:
        $ ./buildout/bin/buildout -c <buildout_config_file>
 
 Update CGXP
------------
+~~~~~~~~~~~
 
 To update CGXP in the application use the following::
 
