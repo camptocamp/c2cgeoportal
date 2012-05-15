@@ -3,14 +3,28 @@
 Full-text search
 ================
 
-If *full-text search* is enabled in the application, a PostgreSQL table
-dedicated to full-text search is required.
+Enabling the *full-text search* feature involves adding a ``FullTextSearch``
+plugin to the viewer, and creating and populating a dedicated table in the
+database.
+
+The FullTextSearch plugin
+-------------------------
+
+The viewer should include a ``FullTextSearch`` plugin for the *text search*
+feature to be available in the user interface.
+
+See the `FullTextSearch API doc
+<http://docs.camptocamp.net/cgxp/lib/plugins/FullTextSearch.html>`_ for the
+list of options the plugin can receive.
+
+*The main viewer includes a FullTextSearch plugin by default.*
 
 The full-text search table
 --------------------------
 
-This full-text search table should be named ``tsearch`` (for *text search*) and
-should be in the application-specific schema.
+The *text search* feature requires a dedicated PostgreSQL table. The full-text
+search table should be named ``tsearch`` (for *text search*) and should be in
+the application-specific schema.
 
 You don't need to create the table yourself, as it is created by the
 ``create_db`` command line (see the section
@@ -66,3 +80,4 @@ Here's another example where rows from a ``SELECT`` are inserted::
     database the application's ``default_language`` should be ``fr``. In other
     words c2cgeoportal assumes that the database language and the application's
     default language match.
+

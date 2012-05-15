@@ -7,16 +7,14 @@ Integrator Guide
 Content:
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    create_application
    install_application
-   extend_data_model
+   features
+   tileforge
    customize_ui
-   print
+   extend_data_model
    internationalization
    update_application
-   fulltext_search
-   editing
-   tileforge
    deploy

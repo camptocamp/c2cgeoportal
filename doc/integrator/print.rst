@@ -1,10 +1,26 @@
-.. _print:
+.. _integrator_print:
 
-Print config.yaml templating
-============================
+Print
+=====
 
-Introduction
-------------
+Adding the *print* feature to a c2cgeoportal project involves adding
+a ``cgxp.plugins.Print`` plugin to the viewer, and configuring the MapFish
+Print.
+
+The Print plugin
+----------------
+
+The viewer should include a ``Print`` plugin for the *print* feature feature to
+be available in the user interface.
+
+See the `Print API doc
+<http://docs.camptocamp.net/cgxp/lib/plugins/Print.html>`_ for the
+list of options the plugin can receive.
+
+*The main viewer includes a Print plugin by default.*
+
+MapFish Print configuration
+---------------------------
 
 All print-related files are located in the ``print/`` folder.
 
@@ -18,7 +34,7 @@ The main file (``print/config.yaml``) used to define your print template written
 
 
 Mako templating
----------------
+~~~~~~~~~~~~~~~
 
 If you intend to have more than one paper format for your PDF
 print output, a templating system is implemented to allow you to use mako
@@ -52,8 +68,7 @@ be redefined.
 The ``print.mako.in`` has the "header" part and includes the wanted templates.
 
 Using backgroundPdf parameter
-------------------------------
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In print configuration you can use a PDF as a background image. You should put the 
 PDF file in the print directory and use '<%text>$</%text>{configDir}/template_A4_portrait.pdf' 
@@ -67,7 +82,7 @@ In your buildout.cfg file you should add this parts::
 The print.mako.in has the "header" part and includes the wanted templates.
 
 Using one printserver in a set of site
-======================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For memory issue we can use only one print server for a set of site.
 

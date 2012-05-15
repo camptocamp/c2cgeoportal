@@ -3,8 +3,8 @@
 Install an existing application
 ===============================
 
-Database
---------
+Set up the database
+-------------------
 
 Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
@@ -51,8 +51,8 @@ Give the rights to the user::
     GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
     \q 
 
-Application
------------
+Install the application
+-----------------------
 
 System requirements
 ~~~~~~~~~~~~~~~~~~~
