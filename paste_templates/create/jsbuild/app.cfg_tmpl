@@ -5,13 +5,18 @@
 #
 
 #
-# Note:
+# Notes:
 #
 # Language files are in the lang-*.js builds. Except for one file:
 # OpenLayers/Lang.js. This is tricky. This one is included in the main build,
 # e.g. app.js. The thing is that OpenLayers/Lang.js requires
 # OpenLayers/SingleFile.js, which resets the OpenLayers (root) object.  And we
 # can obviously not reset the OpenLayers object when evaluating lang-*.js.
+#
+# Warning: when adding a comment whose leading "#" is not on the first
+# column in the file do not add a space between the "#" character and
+# the actual comment. For example, use "#GXP", not "# GXP". Really,
+# this should be fixed in jsbuild.
 #
 
 
@@ -251,7 +256,7 @@ include =
 #    GeoExt/locale/GeoExt-en.js
 #    FeatureEditing/resources/lang/en.js
     Styler/resources/lang/en.js
-    locale/en.js # GXP
+    locale/en.js #GXP
     CGXP/locale/en.js
 exclude =
     OpenLayers/Lang.js
@@ -283,7 +288,7 @@ include =
     GeoExt/locale/GeoExt-fr.js
     FeatureEditing/resources/lang/fr.js
     Styler/resources/lang/fr.js
-    locale/fr.js # GXP
+    locale/fr.js #GXP
     CGXP/locale/fr.js
 exclude =
     OpenLayers/Lang.js
@@ -315,7 +320,7 @@ include =
 #    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
     Styler/resources/lang/de.js
-#    locale/de.js # GXP
+#    locale/de.js #GXP
     CGXP/locale/de.js
 exclude =
     OpenLayers/Lang.js
