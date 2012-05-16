@@ -18,3 +18,4 @@ Content:
    internationalization
    update_application
    deploy
+   authentication
