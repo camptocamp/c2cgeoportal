@@ -36,13 +36,14 @@ def proxy(request):
         params['role_id'] = user.parent_role.id if external else user.role.id
 
     # don't allows direct variable substitution
+    toRemove = []
     for p in params:
-        if p[:3].capitalize == 'S_':
+        if p[:2].capitalize() == 'S_':
             log.warning("Direct Substitution is not allowed (%s=%s)." \
-                        % (p, params[p]));
-            del params[p];
-            log.warning("Direct Substitution is not allowed (%s=%s)." \
-                        % (p, params[p]));
+                        % (p, params[p]))
+            toRemove.append(p)
+    for p in toRemove:
+        del params[p]
 
     mss = get_functionalities('mapserver_substitution', \
             request.registry.settings, request)
@@ -58,8 +59,8 @@ def proxy(request):
                     params[attribute] = value
                 log.warning(params[attribute])
             else:
-                log.warning("The Mapserver Substitution '%s' don't" \
-                        + " respect the pattern: <attribute>=<value>" % s);
+                log.warning(("The Mapserver Substitution '%s' don't" \
+                        + " respect the pattern: <attribute>=<value>") % s);
 
     # get query string
     query_string = urllib.urlencode(params)
