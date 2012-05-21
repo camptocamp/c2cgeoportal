@@ -2,7 +2,8 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule
+from c2cgeoportal.tests.functional import (tearDownModule,  # NOQA
+                                           setUpModule)  # NOQA
 
 
 @attr(functional=True)
@@ -35,17 +36,40 @@ class TestRequestFactory(TestCase):
         transaction.commit()
 
     def test_request_no_auth(self):
-        from c2cgeoportal import Request
-        request = Request({})
+        request = self._create_request()
         # we do the same assertion twice, to verify that
         # reify works for us
         self.assertEqual(request.user, None)
+        self.assertEqual(request.user, None)
 
     def test_request_auth(self):
-        from c2cgeoportal import Request
         self.config.testing_securitypolicy(u'__test_user')
-        request = Request({})
+        request = self._create_request()
         # we do the same assertion twice, to verify that
         # reify works for us
         self.assertEqual(request.user.username, u'__test_user')
         self.assertEqual(request.user.username, u'__test_user')
+
+    def test_request_auth_overwritten_property(self):
+        def setter(request):
+            class User(object):
+                pass
+            u = User()
+            u.username = u'__foo'
+            return u
+
+        self.config.testing_securitypolicy(u'__test_user')
+        request = self._create_request()
+        request.set_property(setter, name='user', reify=True)
+        # we do the same assertion twice, to verify that
+        # reify works for us
+        self.assertEqual(request.user.username, u'__foo')
+        self.assertEqual(request.user.username, u'__foo')
+
+    def _create_request(self):
+        from pyramid.request import Request
+        from c2cgeoportal import get_user_from_request
+        request = Request({})
+        request.set_property(get_user_from_request,
+                             name='user', reify=True)
+        return request
