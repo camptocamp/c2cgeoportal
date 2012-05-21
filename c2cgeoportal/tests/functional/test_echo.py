@@ -37,7 +37,7 @@ Content-Disposition: form-data; name="file"; filename="a file name"
 Content-Type: text/html
 
 some content with non-ASCII chars ç à é
---foobar
+--foobar--
 '''
 
         response = echo.echo(request)
