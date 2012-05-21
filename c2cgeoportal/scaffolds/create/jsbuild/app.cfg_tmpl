@@ -232,8 +232,8 @@ include =
 
 [openlayers-mobile.js]
 root =
-    mobile_test/static/lib/cgxp/openlayers/lib
-    mobile_test/static/lib/cgxp/proj4js
+    ${package}/static/lib/cgxp/openlayers/lib
+    ${package}/static/lib/cgxp/proj4js
 first =
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
