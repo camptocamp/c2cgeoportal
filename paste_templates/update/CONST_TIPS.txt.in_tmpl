@@ -9,31 +9,31 @@ Installation of the project
 
 Create the DataBase tables
 ==========================
-    sudo -u postgres createdb $${vars:db} -T template_postgis
-    sudo -u postgres psql -c "CREATE SCHEMA $${vars:schema};" $${vars:db}
-    sudo -u postgres psql -c "GRANT ALL ON SCHEMA $${vars:schema} TO \"$${vars:dbuser}\";" $${vars:db}
+    sudo -u postgres createdb ${vars:db} -T template_postgis
+    sudo -u postgres psql -c "CREATE SCHEMA ${vars:schema};" ${vars:db}
+    sudo -u postgres psql -c "GRANT ALL ON SCHEMA ${vars:schema} TO \"${vars:dbuser}\";" ${vars:db}
     ./buildout/bin/create_db development.ini -p
-    ./buildout/bin/manage_db -c production.ini -n ${package} version_control \
-    `./buildout/bin/manage_db -c production.ini -n ${package} version`
+    ./buildout/bin/manage_db -c production.ini -n {{package}} version_control \
+    `./buildout/bin/manage_db -c production.ini -n {{package}} version`
 
 Create and Populate the FullTextSearch table
 ============================================
-    sudo -u $${vars:dbuser} psql $${vars:db}
+    sudo -u ${vars:dbuser} psql ${vars:db}
     
-    CREATE TABLE $${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR);
-    SELECT AddGeometryColumn ('$${vars:schema}', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
-    CREATE INDEX tsearch_ts_idx ON $${vars:schema}.tsearch USING gin(ts);
-    GRANT SELECT ON TABLE $${vars:schema}.tsearch TO "$${vars:dbuser}";
+    CREATE TABLE ${vars:schema}.tsearch (id SERIAL PRIMARY KEY, layer_name TEXT, label TEXT, ts TSVECTOR);
+    SELECT AddGeometryColumn ('${vars:schema}', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
+    CREATE INDEX tsearch_ts_idx ON ${vars:schema}.tsearch USING gin(ts);
+    GRANT SELECT ON TABLE ${vars:schema}.tsearch TO "${vars:dbuser}";
 
     % insert example data
-    INSERT INTO $${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', <srid>), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
+    INSERT INTO ${vars:schema}.tsearch (the_geom, layer_name, label, ts) VALUES (ST_GeomFromText('POINT(2660000 1140000)', <srid>), 'Layer name', 'text to display', to_tsvector('german', 'text to search'));
 
 Update c2cgeoportal
 ===================
     svn up
     ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
-            ${project} package=${package}
-    ./buildout/bin/manage_db -c production.ini -n ${package} upgrade
+            {{project}} package={{package}}
+    ./buildout/bin/manage_db -c production.ini -n {{package}} upgrade
     ### Read CONT_CHANGELOG.txt ###
     ./buildout/bin/buildout -c buildout_$$USER.cfg
 

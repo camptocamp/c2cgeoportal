@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
-<html lang="$${lang}">
+<html lang="${lang}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="Content-Language" content="$${lang}" />
-        <meta name="keywords" content="${package}, mapfish, editor, geoportal">
-        <meta name="description" content="${package} Geoportal Editor.">
+        <meta name="Content-Language" content="${lang}" />
+        <meta name="keywords" content="{{package}}, mapfish, editor, geoportal">
+        <meta name="description" content="{{package}} Geoportal Editor.">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-        <title>${package} Geoportal Editor</title>
+        <title>{{package}} Geoportal Editor</title>
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
         <style>
@@ -31,7 +31,7 @@
           z-index: 20001;
         }
         .loading-indicator-static {
-          background: url("$${request.static_url('c2cgeoportal:static/images/loading.gif')}") no-repeat transparent;
+          background: url("${request.static_url('c2cgeoportal:static/images/loading.gif')}") no-repeat transparent;
           font-size: 13px;
           font-family: tahoma,arial,verdana,sans-serif;
           padding: 0 0 3px 20px;
@@ -39,23 +39,23 @@
         }
         </style>
 % if debug:
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/openlayers/theme/default/style.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/geoext/resources/css/gxtheme-gray.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/gxp/src/theme/all.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/lib/cgxp/core/src/theme/all.css')}" />
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/css/proj.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/openlayers/theme/default/style.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/geoext/resources/css/gxtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/sandbox/FeatureEditing/resources/css/feature-editing.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/gxp/src/theme/all.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/all.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj.css')}" />
 % else:
-        <link rel="stylesheet" type="text/css" href="$${request.static_url('${package}:static/build/app.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css')}" />
 % endif
     </head>
 
-    <body class="$${lang}">
+    <body class="${lang}">
         <div id="loading-mask" style=""></div>
         <div id="loading">
-            <div class="loading-indicator-static">$${_('Loading message')}</div>
+            <div class="loading-indicator-static">${_('Loading message')}</div>
         </div>
 
         <noscript><p>JavaScript is required here</p></noscript>
@@ -67,7 +67,7 @@
 
         <div style="display:none">
             <div id="search-tip">
-                <p>$${_('search tip message')}</p>
+                <p>${_('search tip message')}</p>
             </div>
         </div>
 
@@ -80,12 +80,12 @@ jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
 jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
 %>
 % for script in Merger.from_fn(jsbuild_cfg.split(), root_dir=jsbuild_root_dir).list_run(['edit.js', 'lang-%s.js' % lang]):
-        <script type="text/javascript" src="$${request.static_url(script.replace('/', ':', 1))}"></script>
+        <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
 % endfor
 % else:
-        <script type="text/javascript" src="$${request.static_url('${package}:static/build/edit.js')}"></script>
-        <script type="text/javascript" src="$${request.static_url('${package}:static/build/lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/edit.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
 % endif
-        <script type="text/javascript" src="$${request.route_url('edit.js')}"></script>
+        <script type="text/javascript" src="${request.route_url('edit.js')}"></script>
     </body>
 </html>

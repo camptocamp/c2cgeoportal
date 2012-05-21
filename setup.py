@@ -69,7 +69,7 @@ setup(name='c2cgeoportal',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
             'manage_db = c2cgeoportal.scripts.manage_db:main',
         ],
-        'paste.paster_create_template': [
+        'pyramid.scaffold': [
             'c2cgeoportal_create = paste_templates:TemplateCreate',
             'c2cgeoportal_update = paste_templates:TemplateUpdate',
         ],

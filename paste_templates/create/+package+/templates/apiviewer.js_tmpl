@@ -10,24 +10,24 @@ OpenLayers.DOTS_PER_INCH = 72;
 // Ext
 Ext.QuickTips.init();
 
-OpenLayers.ImgPath = "$${request.static_url('${package}:static/lib/cgxp/core/src/theme/img/ol/')}";
-Ext.BLANK_IMAGE_URL = "$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
 
 // Apply same language than on the server side
-OpenLayers.Lang.setCode("$${lang}");
-GeoExt.Lang.set("$${lang}");
+OpenLayers.Lang.setCode("${lang}");
+GeoExt.Lang.set("${lang}");
 
 // Themes definitions
-/* errors (if any): $${themesError | n} */
+/* errors (if any): ${themesError | n} */
 var THEMES = {
-    "local": $${themes | n}
+    "local": ${themes | n}
 % if external_themes:
-    , "external": $${external_themes | n}
+    , "external": ${external_themes | n}
 % endif
 };
 
 % if user and user.role.extent:
-var INITIAL_EXTENT = $${user.role.json_extent};
+var INITIAL_EXTENT = ${user.role.json_extent};
 % else:
 var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
 % endif
@@ -39,9 +39,9 @@ var EVENTS = new Ext.util.Observable();
 
 var WMTS_OPTIONS = {
 % if len(tilecache_url) == 0:
-    url: "$${request.route_url('tilecache', path='')}",
+    url: "${request.route_url('tilecache', path='')}",
 % else:
-    url: '$${tilecache_url}',
+    url: '${tilecache_url}',
 % endif
     displayInLayerSwitcher: false,
     requestEncoding: 'REST',
@@ -101,7 +101,7 @@ app = new gxp.Viewer({
     }, 
     {
         ptype: "cgxp_fulltextsearch",
-        url: "$${request.route_url('fulltextsearch', path='')}",
+        url: "${request.route_url('fulltextsearch', path='')}",
         actionTarget: "map.tbar"
     },
     {

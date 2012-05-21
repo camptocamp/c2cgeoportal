@@ -1,5 +1,5 @@
 [DEFAULT]
-project = ${package} 
+project = {{package}} 
 
 [main]
 hookdir = %(here)s/hooks/

@@ -27,20 +27,20 @@ hosts:
   - !localMatch
     dummy: true
   - !dnsMatch
-    host: $${vars:mapserv_host}
+    host: ${vars:mapserv_host}
     port: 80 
   - !dnsMatch
-    host: $${vars:wsgi_host}
+    host: ${vars:wsgi_host}
     port: 80
   - !dnsMatch
-    host: $${vars:wsgi_host}
-    port: $${vars:paster_port}
+    host: ${vars:wsgi_host}
+    port: ${vars:paster_port}
 
 
 #===========================================================================
 # the output filename
 #===========================================================================
-outputFilename: ${package}
+outputFilename: {{package}}
 
 #===========================================================================
 # supported output formats

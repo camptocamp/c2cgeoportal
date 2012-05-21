@@ -19,7 +19,7 @@
  * @requires CGXP/api/Map.js
  */
 
-Ext.namespace('${package}');
+Ext.namespace('{{package}}');
 
 ${package}.Map = Ext.extend(cgxp.api.Map, {
 

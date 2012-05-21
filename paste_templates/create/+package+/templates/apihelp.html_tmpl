@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="$${lang}">
+<html lang="${lang}">
 <head>
     <meta charset="UTF-8">
     <title>API description</title>
-    <link rel="shortcut icon" type="image/x-icon" href="$${request.static_url('${package}:static/images/favicon.ico')}">
+    <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
     <style type="text/css">
         table.api {
             margin: 10px auto;
@@ -49,7 +49,7 @@
         <td class="doc">
             To use th API you should add the following HTML:
             <pre>
-&lt;script type="text/javascript" src="$${request.route_url('apiloader')}"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="${request.route_url('apiloader')}"&gt;&lt;/script&gt;
 &lt;script&gt;
     window.onload = function() {
         // place to add the commands
@@ -68,7 +68,7 @@
         <td class="doc">
             Code to add:
             <pre class="code">
-map1 = new ${package}.Map({
+map1 = new {{package}}.Map({
     div: 'map1',
     zoom: 12,
     easting: 600000,
@@ -93,7 +93,7 @@ map1 = new ${package}.Map({
         <td class="doc">
             Code to add:
             <pre class="code">
-map2 = new ${package}.Map({
+map2 = new {{package}}.Map({
     div: 'map2',
     zoom: 12,
     easting: 600000,
@@ -120,7 +120,7 @@ map2 = new ${package}.Map({
         <td class="doc">
             Code to add:
             <pre class="code">
-map3 = new ${package}.Map({
+map3 = new {{package}}.Map({
     div: 'map3',
     zoom: 14,
     easting: 663382,
@@ -147,7 +147,7 @@ map3 = new ${package}.Map({
 </table>
 
 
-    <script type="text/javascript" src="$${(request.route_url('apiloader') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
+    <script type="text/javascript" src="${(request.route_url('apiloader') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
     <script type="text/javascript">
         Ext.select('pre.code').each(function(s) {
             eval(s.dom.innerHTML);
@@ -155,6 +155,6 @@ map3 = new ${package}.Map({
     </script>
     <!-- just for code examples coloration -->
     <script type="text/javascript"
-    src="$${request.static_url('c2cgeoportal:static/lib/hijs.js')}"></script>
+    src="${request.static_url('c2cgeoportal:static/lib/hijs.js')}"></script>
 </body>
 </html>

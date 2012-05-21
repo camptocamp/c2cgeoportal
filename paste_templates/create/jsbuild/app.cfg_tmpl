@@ -22,23 +22,23 @@
 
 [app.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
@@ -58,7 +58,7 @@ exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
-    EPSG${srid}.js #proj4js
+    EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
     CGXP/plugins/ThemeSelector.js
@@ -102,23 +102,23 @@ include =
 
 [edit.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
@@ -138,7 +138,7 @@ exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
-    EPSG${srid}.js #proj4js
+    EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
     CGXP/plugins/Editing.js
@@ -162,23 +162,23 @@ include =
 
 [api.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base.js
     Ext/ext-all.js
@@ -198,7 +198,7 @@ exclude =
     GeoExt.js
     GeoExt/SingleFile.js
 include =
-    EPSG${srid}.js #proj4js
+    EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
     api/Map.js
@@ -231,23 +231,23 @@ include =
 
 [lang-en.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     OpenLayers/Lang/en.js
 include =
@@ -263,23 +263,23 @@ exclude =
 
 [lang-fr.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     OpenLayers/Lang/fr.js
 include =
@@ -295,23 +295,23 @@ exclude =
 
 [lang-de.js]
 root =
-    ${package}/static/lib/cgxp/core/src/script
-    ${package}/static/lib/cgxp/ext
-    ${package}/static/lib/cgxp/geoext/lib
-    ${package}/static/lib/cgxp/openlayers/lib
-    ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    ${package}/static/lib/cgxp/gxp/src/script
-    ${package}/static/lib/cgxp/proj4js
-    ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    ${package}/static/lib/cgxp/sandbox
-    ${package}/static/lib/cgxp/styler/lib
-    ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    ${package}/static/lib/cgxp/ext.ux/ColorPicker
-    ${package}/static/lib/cgxp/ext.ux/base64
-    ${package}/static/js
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
 first =
     OpenLayers/Lang/de.js
 include =

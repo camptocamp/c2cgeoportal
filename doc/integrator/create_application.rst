@@ -49,7 +49,7 @@ From now on the ``buildout/bin`` directory is in your shell PATH and
 every command from ``buildout/bin`` is directly accessible from your
 shell. Try the following::
 
-    (c2cgeoportal) $ paster create --list-templates
+    (c2cgeoportal) $ pcreate -l
 
 Create the new application
 --------------------------
@@ -59,15 +59,19 @@ create the application (can be anywhere really, ``/tmp`` for example).
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
-    (c2cgeoportal) $ paster create --template=c2cgeoportal_create
+    (c2cgeoportal) $ pcreate -s c2cgeoportal_create <ProjectName>
 
-You'll be asked to enter the project name and the SRID for this project.
+Replace ``ProjectName`` with a project name of your choice. The camel case
+notation is typically used for the project name.
+
+You'll be asked to enter the SRID for this project.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
-    (c2cgeoportal) $ paster create --template=c2cgeoportal_update
+    (c2cgeoportal) $ pcreate -s c2cgeoportal_update <ProjectName>
 
-Enter the same project name and SRID as before.
+Replace ``ProjectName`` with the project name used previously for
+``c2cgeoportal_create``.
 
 .. note::
 

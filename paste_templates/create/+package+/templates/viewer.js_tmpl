@@ -10,24 +10,24 @@ Ext.onReady(function() {
     // Ext
     Ext.QuickTips.init();
 
-    OpenLayers.ImgPath = "$${request.static_url('${package}:static/lib/cgxp/core/src/theme/img/ol/')}";
-    Ext.BLANK_IMAGE_URL = "$${request.static_url('${package}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
 
     // Apply same language than on the server side
-    OpenLayers.Lang.setCode("$${lang}");
-    GeoExt.Lang.set("$${lang}");
+    OpenLayers.Lang.setCode("${lang}");
+    GeoExt.Lang.set("${lang}");
 
     // Themes definitions
-    /* errors (if any): $${themesError | n} */
+    /* errors (if any): ${themesError | n} */
     var THEMES = {
-        "local": $${themes | n}
+        "local": ${themes | n}
     % if external_themes:
-        , "external": $${external_themes | n}
+        , "external": ${external_themes | n}
     % endif
     };
 
     % if user and user.role.extent:
-    var INITIAL_EXTENT = $${user.role.json_extent};
+    var INITIAL_EXTENT = ${user.role.json_extent};
     % else:
     var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
     % endif
@@ -39,9 +39,9 @@ Ext.onReady(function() {
 
     var WMTS_OPTIONS = {
     % if len(tilecache_url) == 0:
-        url: "$${request.route_url('tilecache', path='')}",
+        url: "${request.route_url('tilecache', path='')}",
     % else:
-        url: '$${tilecache_url}',
+        url: '${tilecache_url}',
     % endif
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
@@ -141,7 +141,7 @@ Ext.onReady(function() {
                 autoScroll: true,
                 themes: THEMES,
                 defaultThemes: ["default theme"],
-                wmsURL: "$${request.route_url('mapserverproxy', path='')}"
+                wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
         }, 
@@ -150,7 +150,7 @@ Ext.onReady(function() {
             ptype: "cgxp_querier",
             outputTarget: "left-panel",
             events: EVENTS,
-            mapserverproxyURL: "$${request.route_url('mapserverproxy', path='')}",
+            mapserverproxyURL: "${request.route_url('mapserverproxy', path='')}",
             // don't work with actual version of mapserver, the proxy will limit to 200
             // it is intended to be reactivated this once mapserver is fixed
             //maxFeatures: 200,
@@ -163,8 +163,8 @@ Ext.onReady(function() {
             legendPanelId: "legendPanel",
             featureGridId: "featureGrid",
             outputTarget: "left-panel",
-            printURL: "$${request.route_url('printproxy', path='')}",
-            mapserverURL: "$${request.route_url('mapserverproxy', path='')}", 
+            printURL: "${request.route_url('printproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}", 
             options: {
                 labelAlign: 'top',
                 defaults: {
@@ -178,7 +178,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_featuregrid",
             id: "featureGrid",
-            csvURL: "$${request.route_url('csvecho')}",
+            csvURL: "${request.route_url('csvecho')}",
             maxFeatures: 200,
             outputTarget: "featuregrid-container",
             events: EVENTS
@@ -218,7 +218,7 @@ Ext.onReady(function() {
         }, 
         {
             ptype: "cgxp_fulltextsearch",
-            url: "$${request.route_url('fulltextsearch', path='')}",
+            url: "${request.route_url('fulltextsearch', path='')}",
             actionTarget: "center.tbar"
         },
         {
@@ -247,10 +247,10 @@ Ext.onReady(function() {
             actionTarget: "center.tbar",
             toggleGroup: "maptools",
     % if user:
-            username: "$${user.username}",
+            username: "${user.username}",
     % endif
-            loginURL: "$${request.route_url('login', path='')}",
-            logoutURL: "$${request.route_url('logout', path='')}"
+            loginURL: "${request.route_url('login', path='')}",
+            logoutURL: "${request.route_url('logout', path='')}"
         },
         {
             ptype: "cgxp_menushortcut",
@@ -303,7 +303,7 @@ Ext.onReady(function() {
                     },
                     layers: [new OpenLayers.Layer.Image(
                         "Overview Map",
-                        "$${request.static_url('${package}:static/images/overviewmap.png')}",
+                        "${request.static_url('{{package}}:static/images/overviewmap.png')}",
                         OpenLayers.Bounds.fromArray([420000, 30000, 900000, 350000]),
                         new OpenLayers.Size([200, 100]),
                         {isBaseLayer: true}
@@ -321,9 +321,9 @@ Ext.onReady(function() {
                     minRatio: 64, 
                     maxRatio: 64, 
                     layers: [new OpenLayers.Layer.OSM("OSM", [
-                            'http://a.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png',
-                            'http://b.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png',
-                            'http://c.tile.openstreetmap.org/$${"$${z}"}/$${"$${x}"}/$${"$${y}"}.png'
+                            'http://a.tile.openstreetmap.org/${"$${z}"}/${"$${x}"}/${"$${y}"}.png',
+                            'http://b.tile.openstreetmap.org/${"$${z}"}/${"$${x}"}/${"$${y}"}.png',
+                            'http://c.tile.openstreetmap.org/${"$${z}"}/${"$${x}"}/${"$${y}"}.png'
                         ], {
                             transitionEffect: 'resize',
                             attribution: [

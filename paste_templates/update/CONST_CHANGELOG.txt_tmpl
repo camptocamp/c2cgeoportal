@@ -15,7 +15,7 @@ Version 0.7
       -                <%include file="viewer.js" />
       -            });
       -        </script>
-      +        <script type="text/javascript" src="$${request.route_url('viewer')}"></script>
+      +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
     * Do the same for the edit.js/edit.html
 
 
@@ -40,23 +40,23 @@ work in an existing project several steps are required:
 
    [edit.js]
    root =
-       ${package}/static/lib/cgxp/core/src/script
-       ${package}/static/lib/cgxp/ext
-       ${package}/static/lib/cgxp/geoext/lib
-       ${package}/static/lib/cgxp/openlayers/lib
-       ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
-       ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-       ${package}/static/lib/cgxp/gxp/src/script
-       ${package}/static/lib/cgxp/proj4js
-       ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-       ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-       ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-       ${package}/static/lib/cgxp/sandbox
-       ${package}/static/lib/cgxp/styler/lib
-       ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-       ${package}/static/lib/cgxp/ext.ux/ColorPicker
-       ${package}/static/lib/cgxp/ext.ux/base64
-       ${package}/static/js
+       {{package}}/static/lib/cgxp/core/src/script
+       {{package}}/static/lib/cgxp/ext
+       {{package}}/static/lib/cgxp/geoext/lib
+       {{package}}/static/lib/cgxp/openlayers/lib
+       {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
+       {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+       {{package}}/static/lib/cgxp/gxp/src/script
+       {{package}}/static/lib/cgxp/proj4js
+       {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+       {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+       {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+       {{package}}/static/lib/cgxp/sandbox
+       {{package}}/static/lib/cgxp/styler/lib
+       {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+       {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+       {{package}}/static/lib/cgxp/ext.ux/base64
+       {{package}}/static/js
    first =
        Ext/adapter/ext/ext-base.js
        Ext/ext-all.js
@@ -99,25 +99,25 @@ work in an existing project several steps are required:
        OpenLayers/Renderer/VML.js
 
 3. Optionally you can add the line
-   ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib to the "root"
+   {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib to the "root"
    list of every [*.js] section of jsbuild/app.cfg. This is optional because
    only the editing interface (edit.js) should require scripts from this
    directory. But it may be a good idea to have every [*.js] section use the
    same "root" list.
 
-4. You need to add two Mako templates to ${package}/templates, namely edit.html
+4. You need to add two Mako templates to {{package}}/templates, namely edit.html
    and edit.js. These files are in the c2cgeoportal_create paster template, so
    they're not automatically added to the application source tree when the
    c2cgeoportal_update template is applied. The easiest way to get them is to
    apply the c2cgeoportal_create directory outside the existing application,
    and copy the files from the newly created directory to the application:
 
-   cd ${project}
+   cd {{project}}
    ./buildout/bin/paster create --template c2cgeoportal_create \
-       --output-dir=/tmp/ ${project} package=${package}
-   cp /tmp/${project}/${package}/templates/edit.html ${package}/templates/
-   cp /tmp/${project}/${package}/templates/edit.js ${package}/templates/
-   rm -rf /tmp/${project}
+       --output-dir=/tmp/ {{project}} package={{package}}
+   cp /tmp/{{project}}/{{package}}/templates/edit.html {{package}}/templates/
+   cp /tmp/{{project}}/{{package}}/templates/edit.js {{package}}/templates/
+   rm -rf /tmp/{{project}}
 
 5. SQL queries in the DATA properties should be changed in the mapfile for the
    editable layers. They should use the new "mapfile_data_subselect" Buildout
@@ -139,33 +139,33 @@ Other changes
    0.7 in the project's buildout configuration.
 
 3. In production.ini.in and development.ini.in jsbuild_root_dir should now be
-   set to $${buildout:directory}:
+   set to ${buildout:directory}:
 
-   jsbuild_root_dir = $${buildout:directory}
+   jsbuild_root_dir = ${buildout:directory}
 
 4. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
-   ${package}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]
+   {{package}}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]
    section of jsbuild/app.cfg. Example:
 
     [app.js]
     root =
-        ${package}/static/lib/cgxp/core/src/script
-        ${package}/static/lib/cgxp/ext
-        ${package}/static/lib/cgxp/geoext/lib
-        ${package}/static/lib/cgxp/openlayers/lib
-        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
-        ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
-        ${package}/static/lib/cgxp/gxp/src/script
-        ${package}/static/lib/cgxp/proj4js
-        ${package}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-        ${package}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-        ${package}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-        ${package}/static/lib/cgxp/sandbox
-        ${package}/static/lib/cgxp/styler/lib
-        ${package}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-        ${package}/static/lib/cgxp/ext.ux/ColorPicker
-        ${package}/static/lib/cgxp/ext.ux/base64
-        ${package}/static/js
+        {{package}}/static/lib/cgxp/core/src/script
+        {{package}}/static/lib/cgxp/ext
+        {{package}}/static/lib/cgxp/geoext/lib
+        {{package}}/static/lib/cgxp/openlayers/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        {{package}}/static/lib/cgxp/gxp/src/script
+        {{package}}/static/lib/cgxp/proj4js
+        {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+        {{package}}/static/lib/cgxp/sandbox
+        {{package}}/static/lib/cgxp/styler/lib
+        {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+        {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+        {{package}}/static/lib/cgxp/ext.ux/base64
+        {{package}}/static/js
 
 5. To be able to install c2cgeoportal applications behind proxies with limited
    access to the outside world we had to patch Distribute and Buildout. See
@@ -196,25 +196,25 @@ Other changes
 
 6. In jsbuild/app.cfg, replace GoogleEarthControl by GoogleEarthView to 
    have the following entry:
-        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
    And add the following entries to api.js, and all language files
    (like en.js, fr.js, de.js, ...) to have all identical root:
-        ${package}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-        ${package}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
 
 7. Templates modifications:
 
    The base templates are deprecated, to get the new version do 
    (Careful: this will overwrite your changes):
-       cd ${project}
+       cd {{project}}
        ./buildout/bin/paster create --template c2cgeoportal_create \
-           --output-dir=/tmp/ ${project} package=${package}
-       cp /tmp/${project}/${package}/templates/apihelp.html ${package}/templates/
-       cp /tmp/${project}/${package}/templates/apiloader.html ${package}/templates/
-       cp /tmp/${project}/${package}/templates/apiviewer.html ${package}/templates/
-       cp /tmp/${project}/${package}/templates/index.html ${package}/templates/
-       cp /tmp/${project}/${package}/templates/viewer.js ${package}/templates/
-       rm -rf /tmp/${project}
+           --output-dir=/tmp/ {{project}} package={{package}}
+       cp /tmp/{{project}}/{{package}}/templates/apihelp.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/apiloader.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/apiviewer.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/index.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/viewer.js {{package}}/templates/
+       rm -rf /tmp/{{project}}
 
    Notes:
 
@@ -449,9 +449,9 @@ CGXP mode from SVN to GIT(hub).
 Now we use a buildout task to do the clone.
 
 To update your project do:
-$$ svn propdel svn:externals ${package}/static/lib/
-$$ rm -rf ${package}/static/lib/cgxp
-$$ svn propset svn:ignore cgxp ${package}/static/lib/
+$$ svn propdel svn:externals {{package}}/static/lib/
+$$ rm -rf {{package}}/static/lib/cgxp
+$$ svn propset svn:ignore cgxp {{package}}/static/lib/
 
 -------------------------------
 
