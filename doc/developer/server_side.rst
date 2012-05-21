@@ -28,7 +28,7 @@ Create development environment in a project
     compress = false
 
     [template]
-    exclude-directories += c2cgeoportal/paste_templates
+    exclude-directories += c2cgeoportal/scaffolds
 
 * In the file ``c2cgeoportal/setup.py`` add ``nose`` and
   ``nosexcover`` in the install_requires packages list.
@@ -265,7 +265,7 @@ Then customize the migration to suit your needs, test it::
     ./buildout/bin/manage_db --app-name <package> test
 
 And move it to the c2cgeoportal ``update`` template, in
-``c2cgeoportal/paste_templates/update/+package+/CONST_migration/versions/``.
+``c2cgeoportal/scaffolds/update/+package+/CONST_migration/versions/``.
 
 
 More information at:
