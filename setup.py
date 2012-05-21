@@ -63,7 +63,7 @@ setup(name='c2cgeoportal',
       setup_requires=setup_requires,
       tests_require=tests_require,
       test_suite="c2cgeoportal",
-      entry_points = {
+      entry_points={
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
@@ -78,4 +78,3 @@ setup(name='c2cgeoportal',
         ],
       }
 )
-
