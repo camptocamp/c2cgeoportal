@@ -1,9 +1,9 @@
-Ext.define("toto.view.Main", {
+Ext.define("${package}.view.Main", {
     extend: 'Ext.Container',
     requires: [
         'Ext.field.Search',
         'Ext.field.Select',
-        'toto.model.Layer',
+        '${package}.model.Layer',
         'Ext.util.Geolocation'
     ],
 
@@ -100,7 +100,7 @@ Ext.define("toto.view.Main", {
 
         // base layer manager
         var baseLayersStore = Ext.create('Ext.data.Store', {
-            model: 'toto.model.Layer'
+            model: '${package}.model.Layer'
         });
         Ext.each(this.getMap().layers, function(layer) {
             if (layer.isBaseLayer) {

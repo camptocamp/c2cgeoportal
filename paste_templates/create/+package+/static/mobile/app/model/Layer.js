@@ -1,4 +1,4 @@
-Ext.define('toto.model.Layer', {
+Ext.define('${package}.model.Layer', {
     extend: 'Ext.data.Model',
 
     config: {

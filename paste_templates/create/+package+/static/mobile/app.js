@@ -1,5 +1,5 @@
 Ext.application({
-    name: 'toto',
+    name: '${package}',
 
     viewport: {
         // hide the address bar
@@ -36,7 +36,7 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('toto.view.Main'));
+        Ext.Viewport.add(Ext.create('${package}.view.Main'));
     },
 
     onUpdated: function() {
