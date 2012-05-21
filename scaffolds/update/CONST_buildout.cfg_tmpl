@@ -92,8 +92,8 @@ print_host = override_me
 print_path = /print-c2cgeoportal-${vars:instanceid}/pdf/
 # print URL
 print_url = http://${vars:print_host}:8080${vars:print_path}
-# port for paster
-paster_port = 5000
+# port for the waitress web server
+waitress_port = 5000
 
 # languages
 available_languages = en fr de

@@ -74,9 +74,9 @@ minified = true
 pipeline = weberror fanstatic {{package}}
 
 [server:main]
-use = egg:Paste#http
+use = egg:waitress#main
 host = 0.0.0.0
-port = ${vars:paster_port}
+port = ${vars:waitress_port}
 
 # Begin logging configuration
 

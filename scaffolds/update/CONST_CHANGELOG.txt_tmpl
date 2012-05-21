@@ -4,7 +4,20 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.7
 ===========
 
-1.  Display directly the loading panel introduce those needed changes:
+1. The "pcreate" command must now be used instead of "paster create" to create
+   or update a c2cgeoportal project. See
+   http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/whatsnew-1.3.html
+   for more details.
+
+2. The "pserve" command must now be used instead of "paster serve". For "pserve"
+   to work a few simple modifications are required in development.ini.in,
+   production.ini.in and print/templates/print.mako.in. In development.ini.in
+   and production.ini.in and replace "use = egg:Paste#http" by
+   "use = egg:waitress#main". In development.ini.in, production.ini.in,
+   and print/templates/print.mako.in replace "${vars:paster_port}"
+   by "${vars:waitress_port}".
+
+3. Display directly the loading panel introduce those needed changes:
     * In the +package+/templates/viewer.js includes all the code in:
         Ext.onReady(function() {
             // all the code
@@ -17,7 +30,6 @@ Version 0.7
       -        </script>
       +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
     * Do the same for the edit.js/edit.html
-
 
 Version 0.6
 ===========

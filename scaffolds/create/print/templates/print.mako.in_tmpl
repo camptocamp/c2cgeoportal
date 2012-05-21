@@ -34,7 +34,7 @@ hosts:
     port: 80
   - !dnsMatch
     host: ${vars:wsgi_host}
-    port: ${vars:paster_port}
+    port: ${vars:waitress_port}
 
 
 #===========================================================================
