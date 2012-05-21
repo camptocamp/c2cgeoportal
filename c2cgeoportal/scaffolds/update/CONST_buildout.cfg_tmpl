@@ -9,7 +9,6 @@ parts = eggs
         po2mo 
         print-template 
         print-war
-        mobile
 develop = . 
 index = http://pypi.camptocamp.net/pypi
 allow-hosts = pypi.camptocamp.net
@@ -190,8 +189,8 @@ recipe = collective.recipe.cmd
 on_install = true
 on_update = true
 cmds =
-    (cp ${buildout:directory}/mobile_test/static/build/openlayers-mobile.js ${buildout:directory}/mobile_test/static/mobile)
-    (cd ${buildout:directory}/mobile_test/static/mobile && compass compile resources/sass)
+    (cp $${buildout:directory}/mobile_test/static/build/openlayers-mobile.js $${buildout:directory}/mobile_test/static/mobile)
+    (cd $${buildout:directory}/mobile_test/static/mobile && compass compile resources/sass)
  
 [cssbuild]
 recipe = c2c.recipe.cssmin
