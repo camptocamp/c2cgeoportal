@@ -25,10 +25,28 @@ This section provides information on how to configure *private layers* (a.k.a
 *restricted layers*), and layers involved in ``point query``, ``box query``,
 ``query builder`` features.
 
-.. note::
+Print
+-----
 
-   To make the rotation working (used by the print), we needs to specify 
-   the ``PROJECTION`` on the ``MAP`` and on all the ``LAYERS``.
+The Print do single tile request on the WMS server than to accept that 
+we should have a relatively big value for the parameter 
+``MAP``/``MAXSIZE``, for example 5000.
+
+It also use the map rotation than we have some requirements: 
+ *  The ``MAP`` and all the ``LAYERS`` should have a 
+    ``PROJECTION`` like::
+        PROJECTION
+            "init=epsg:21781"
+        END
+ *  ``LABEL``/``ANGLE`` have some limitation see: 
+    http://mapserver.org/mapfile/map.html
+
+And finally the Print use a resolution at 254 dpi instance of 72 dpi
+for the web application (screen), than it's not recommended to use
+``LAYER``/``SYMBOLSCALEDENOM``. 
+``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE`` should be used only 
+when necessary. Those element don't respect correctly the different 
+resolutions.
 
 WFS GetFeature
 --------------
@@ -156,11 +174,3 @@ with a pattern for all the variable substitution present in the ``DATA``.
 
 The mapfile should be a ``.map.in`` file, for the Buildout variable to be
 substituted at Buildout execution time.
-
-Recommendations
----------------
-
-To have a good print and screen result, it's not recommended to use
-``LAYER``/``SYMBOLSCALEDENOM``. 
-``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE`` should be used only 
-when necessary.
