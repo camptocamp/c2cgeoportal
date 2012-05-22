@@ -49,11 +49,11 @@ From now on the ``buildout/bin`` directory is in your shell PATH and
 every command from ``buildout/bin`` is directly accessible from your
 shell.
 
-With ``c2cgeoportal`` 0.8 and higher try the following::
+With ``c2cgeoportal`` 0.7 and higher try the following::
 
     (c2cgeoportal) $ pcreate -l
 
-And with ``c2cgeoportal`` 0.7 and lower::
+And with ``c2cgeoportal`` 0.6 and lower::
 
     (c2cgeoportal) $ paster create --list-templates
 
@@ -66,11 +66,11 @@ create the application (can be anywhere really, ``/tmp`` for example).
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton.
 
-With ``c2cgeoportal`` 0.8 and higher use::
+With ``c2cgeoportal`` 0.7 and higher use::
 
     (c2cgeoportal) $ pcreate -s c2cgeoportal_create <project_name>
 
-With ``c2cgeoportal`` 0.7 and lower use::
+With ``c2cgeoportal`` 0.6 and lower use::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_create <project_name>
 
@@ -88,11 +88,11 @@ SRID for this project.
 
 Now apply the ``c2cgeoportal_update`` skeleton. 
 
-With ``c2cgeoportal`` 0.8 and higher use::
+With ``c2cgeoportal`` 0.7 and higher use::
 
     (c2cgeoportal) $ pcreate -s c2cgeoportal_update <project_name>
 
-With ``c2cgeoportal`` 0.7 and lower use::
+With ``c2cgeoportal`` 0.6 and lower use::
 
     (c2cgeoportal) $ paster create --template=c2cgeoportal_update <project_name>
 
