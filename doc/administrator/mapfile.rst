@@ -28,25 +28,27 @@ This section provides information on how to configure *private layers* (a.k.a
 Print
 -----
 
-The Print do single tile request on the WMS server than to accept that 
-we should have a relatively big value for the parameter 
-``MAP``/``MAXSIZE``, for example 5000.
+MapFish Print does single tile requests to the WMS server. For that reason we
+need to use a relatively large value for the ``MAXSIZE`` parameter (of the
+``MAP`` section); 5000 for example.
 
-It also use the map rotation than we have some requirements: 
- *  The ``MAP`` and all the ``LAYERS`` should have a 
-    ``PROJECTION`` like::
-        PROJECTION
-            "init=epsg:21781"
-        END
- *  ``LABEL``/``ANGLE`` have some limitation see: 
-    http://mapserver.org/mapfile/map.html
+MapFish Print also supports map rotations. This implies specific requirements:
 
-And finally the Print use a resolution at 254 dpi instance of 72 dpi
-for the web application (screen), than it's not recommended to use
-``LAYER``/``SYMBOLSCALEDENOM``. 
-``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE`` should be used only 
-when necessary. Those element don't respect correctly the different 
-resolutions.
+* The ``MAP`` and all the ``LAYERS`` should have a ``PROJECTION``. For
+  example::
+
+      PROJECTION
+          "init=epsg:21781"
+      END
+* When rotating the map (with a non-zero value for ``ANGLE``) there are
+  important things to be aware of. Make sure to read the notes for the
+  ``ANGLE`` parameter on http://mapserver.org/mapfile/map.html.
+
+MapFish Print uses a resolution of 254 dpi (instead of 72 dpi as used for the
+web application on the screen). Using ``LAYER``/``SYMBOLSCALEDENOM`` is
+therefore not recommended. ``LABEL``/``MINSIZE`` and ``LABEL``/``MAXSIZE``
+should be used when necessary only, as these parameters do not take the ``MAP``
+resolution into account.
 
 WFS GetFeature
 --------------
