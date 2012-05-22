@@ -70,8 +70,8 @@ setup(name='c2cgeoportal',
             'manage_db = c2cgeoportal.scripts.manage_db:main',
         ],
         'pyramid.scaffold': [
-            'c2cgeoportal_create = scaffolds:TemplateCreate',
-            'c2cgeoportal_update = scaffolds:TemplateUpdate',
+            'c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate',
+            'c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate',
         ],
         'fanstatic.libraries': [
             'admin = c2cgeoportal.forms:fanstatic_lib',
