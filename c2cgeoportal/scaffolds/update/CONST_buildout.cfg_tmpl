@@ -191,6 +191,8 @@ on_update = true
 cmds =
     (cp $${buildout:directory}/${package}/static/build/openlayers-mobile.js $${buildout:directory}/${package}/static/mobile)
     (cd $${buildout:directory}/${package}/static/mobile && compass compile resources/sass)
+    (cd $${buildout:directory}/${package}/static/mobile && sencha app build production)
+    (cd $${buildout:directory}/${package}/static/mobile && cp openlayers-mobile.js build/production)
  
 [cssbuild]
 recipe = c2c.recipe.cssmin
