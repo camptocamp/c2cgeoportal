@@ -22,6 +22,10 @@ class BaseTemplate(Template):
         package logger "root").
         """
 
+        ret = Template.pre(self, command, output_dir, vars)
+
+        self._set_package_in_vars(command, vars)
+
         if vars['package'] == 'site':
             raise ValueError(
                 'Sorry, you may not name your package "site". '
@@ -35,7 +39,17 @@ class BaseTemplate(Template):
             package_logger = 'app'
         vars['package_logger'] = package_logger
 
-        return Template.pre(self, command, output_dir, vars)
+        return ret
+
+    def _set_package_in_vars(self, command, vars):
+        """
+        Set the package into the vars dict.
+        """
+        for arg in command.args:
+            m = re.match('package=(\w+)', arg)
+            if m:
+                vars['package'] = m.group(1)
+                break
 
     def out(self, msg):  # pragma: no cover (replaceable testing hook)
         print(msg)
