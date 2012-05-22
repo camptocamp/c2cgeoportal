@@ -4,18 +4,35 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.7
 ===========
 
-1. The "pcreate" command must now be used instead of "paster create" to create
-   or update a c2cgeoportal project. See
-   http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/whatsnew-1.3.html
-   for more details.
+1. c2cgeoportal 0.7 requires Pyramid 1.3 (Pyramid 1.2 is not supported). Before
+   running buildout the versions of Pyramid and its dependencies should be
+   changed in the project's buildout.cfg file. Here are the new versions:
 
-2. The "pserve" command must now be used instead of "paster serve". For "pserve"
-   to work a few simple modifications are required in development.ini.in,
-   production.ini.in and print/templates/print.mako.in. In development.ini.in
-   and production.ini.in and replace "use = egg:Paste#http" by
-   "use = egg:waitress#main". In development.ini.in, production.ini.in,
-   and print/templates/print.mako.in replace "${vars:paster_port}"
-   by "${vars:waitress_port}".
+       Chameleon=2.8.5
+       Mako=0.7.0
+       MarkupSafe=0.15
+       ordereddict=1.1
+       PasteDeploy=1.5.0
+       pyramid=1.3.2
+       repoze.lru=0.5
+       translationstring=1.1
+       unittest2=0.5.1
+       venusian=1.0a6
+       WebOb=1.2rc1
+       zope.deprecation=4.0.0
+       zope.interface=4.0.0
+
+2. The "pserve" command should now be used instead of "paster serve".
+
+   For "pserve" to work a few simple modifications are required in
+   development.ini.in, production.ini.in and print/templates/print.mako.in.
+   
+   - In development.ini.in and production.ini.in and replace "use
+     = egg:Paste#http" by "use = egg:waitress#main".
+
+   - In development.ini.in, production.ini.in, and
+     print/templates/print.mako.in replace "${vars:paster_port}" by
+     "${vars:waitress_port}".
 
 3. Display directly the loading panel introduce those needed changes:
     * In the +package+/templates/viewer.js includes all the code in:
