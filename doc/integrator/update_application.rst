@@ -43,8 +43,15 @@ steps:
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
 
-3. Apply the ``c2cgeoportal_update`` skeleton (``IOError: No egg-info directory
-   found (...)`` can be ignored)::
+3. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
+   found (...)`` can be ignored).
+
+   For ``c2cgeoportal`` 0.8 and higher::
+    
+       $ ./buildout/bin/pcreate -s c2cgeoportal_update \
+         ../<project_name> package=<package_name>
+
+   For ``c2cgeoportal`` 0.7 and lower::
 
        $ ./buildout/bin/paster create --template=c2cgeoportal_update \
          --output-dir=.. <project_name> package=<package_name>

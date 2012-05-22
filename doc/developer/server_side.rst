@@ -243,11 +243,11 @@ sqlalchemy-migrate works with a so-called *migration
 repository*, which is a simple directory in the application 
 source tree:``<package>/CONST_migration``. As the
 ``CONST_`` prefix suggests this repository is part of 
-the ``c2cgeoportal_update`` paster template, it is created or
-updated when this paster template is applied. So developers 
+the ``c2cgeoportal_update`` scaffold, it is created or
+updated when this scaffold is applied. So developers 
 who modify the c2cgeoportal database schema should add
 migration scripts to the ``c2cgeoportal_update`` 
-template, as opposed to the application.
+scaffold, as opposed to the application.
 
 Add a new script call from the application's root directory::
 
