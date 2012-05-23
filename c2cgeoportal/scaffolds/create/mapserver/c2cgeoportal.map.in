@@ -67,6 +67,7 @@ MAP
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "ows_enable_request" "*"
+            "wfs_enable_request" "!*"
             "wfs_encoding" "UTF-8"
         END
     END
