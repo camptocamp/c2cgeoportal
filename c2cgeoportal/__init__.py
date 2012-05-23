@@ -30,7 +30,7 @@ def locale_negotiator(request):
     lang = request.params.get('lang')
     if lang is None:
         lang = request.registry.settings.get("default_language")
-        for l in request.accept_language.best_matches():
+        for l in list(request.accept_language):
             if l in request.registry.settings. \
                     get("available_languages").split():
                 lang = l
