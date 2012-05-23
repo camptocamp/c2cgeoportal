@@ -7,7 +7,8 @@ Ext.application({
     },
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'Ext.TitleBar' // required at least for the Picker
     ],
 
     views: ['Main'],
