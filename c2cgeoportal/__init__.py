@@ -177,7 +177,7 @@ def includeme(config):
             view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     # scan view decorator for adding routes
-    config.scan()
+    config.scan(ignore='c2cgeoportal.tests')
 
     # add the static view (for static resources)
     config.add_static_view('static', 'c2cgeoportal:static')
