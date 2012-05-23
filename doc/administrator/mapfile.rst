@@ -66,6 +66,7 @@ And it should have the following ``METADATA``::
 
     "gml_include_items" "all"
     "gml_types" "auto"
+    "wfs_enable_request" "*"
 
 .. warning::
 
