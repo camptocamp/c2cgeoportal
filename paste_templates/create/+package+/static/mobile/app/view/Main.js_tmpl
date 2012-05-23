@@ -26,7 +26,6 @@ Ext.define("${package}.view.Main", {
                 xtype: 'button',
                 iconCls: 'settings',
                 action: 'settings',
-                align: 'right',
                 iconMask: true
             }]
         }, {
@@ -51,7 +50,6 @@ Ext.define("${package}.view.Main", {
             xtype: 'button',
             iconCls: 'locate',
             action: 'locate',
-            align: 'right',
             iconMask: true,
             top: 10,
             left: 10
