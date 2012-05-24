@@ -177,3 +177,54 @@ with a pattern for all the variable substitution present in the ``DATA``.
 
 The mapfile should be a ``.map.in`` file, for the Buildout variable to be
 substituted at Buildout execution time.
+
+
+Variable Substitution
+---------------------
+
+We can use the substitution to for example hide some attributes
+for sub role.
+
+To do that you should edit your MapFile in the ``MAP``/``LAYER``/``METADATA``
+section and add::
+
+    "default_s_<variable>" "<default_value>"
+    "s_<variable>_validation_pattern" "<validation_pattern>"
+
+The ``validation_pattern`` is a regular expression to validate the argument,
+for example if you want only lowercase char and coma it can be ``^[a-z,]*$$``
+(the double '$' is needed is we are in a ``.in`` file).
+
+Now in the ``LAYER`` you can use ``%s_<variable>%`` where you want the
+value.
+
+Than in the admin interface you can create a Functionality named
+``mapserver_substitution`` with the value: ``<variable>=<value>``.
+
+Unfortunately we can't use substitution in the ``MATADATA`` values than
+in ours example we can do columns restriction on a ``LAYER``,
+with the variable ``columns``, with the defaut visible column:
+``name``::
+
+    LAYER
+        ...
+        DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=21781"
+        METADATA
+            ...
+            "gml_exclude_items" "type,gid"
+            "gml_include_items" "all"
+            "default_s_columns" "t.name"
+            "s_columns_validation_pattern" "^[a-z,._]*$$"
+        END
+        CLASS
+            EXPRESSION ([type]=1)
+            ...
+        END
+        ...
+    END
+
+In the admin interface we can allow a role to access to the columns name and private
+by liked it to the ``mapserver_substitution`` functionnalities ``columns=t.name``
+and ``columns=t.private``.
+
+`MapServer documentation <http://mapserver.org/cgi/runsub.html>`_

@@ -163,4 +163,40 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "testpoint_substitution"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom FROM (SELECT * FROM main.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeature
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
+
+            "s_name_validation_pattern" "^[a-z]*$$"
+            "default_s_name" "foo"
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_substitution"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END
