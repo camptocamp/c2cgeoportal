@@ -11,14 +11,26 @@ Version 0.7
 2. The "pserve" command should now be used instead of "paster serve".
 
    For "pserve" to work a few simple modifications are required in
-   development.ini.in, production.ini.in and print/templates/print.mako.in.
+   development.ini.in, production.ini.in, print/config.yaml.in and
+   print/templates/print.mako.in.
    
    - In development.ini.in and production.ini.in and replace "use
      = egg:Paste#http" by "use = egg:waitress#main".
 
-   - In development.ini.in, production.ini.in, and
+   - In development.ini.in, production.ini.in, print/config.yaml.in, and
      print/templates/print.mako.in replace "${vars:paster_port}" by
      "${vars:waitress_port}".
+
+   And to be able to use "pserve" you need to add "waitress" to 
+   the "install_requires" list defined in the application's
+   "setup.py" file. For example:
+
+   install_requires=[
+       'c2cgeoportal',
+       'configobj',
+       'pyramid_debugtoolbar',
+       'waitress'
+   ],
 
 3. Display directly the loading panel introduce those needed changes:
     * In the +package+/templates/viewer.js includes all the code in:
