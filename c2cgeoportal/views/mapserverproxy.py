@@ -3,14 +3,15 @@
 import httplib2
 import urllib
 import sys
+import logging
 
 from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
 from pyramid.response import Response
 from pyramid.view import view_config
 
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
+from c2cgeoportal.lib.functionality import get_functionalities
 
-import logging
 log = logging.getLogger(__name__)
 
 
@@ -24,7 +25,6 @@ def proxy(request):
     params = dict(request.params)
 
     if user:
-
         # We have a user logged in. We need to set group_id and
         # possible layer_name in the params. We set layer_name
         # when either QUERY_PARAMS or LAYERS is set in the
@@ -34,6 +34,33 @@ def proxy(request):
         # string for GetLegendGraphic.
 
         params['role_id'] = user.parent_role.id if external else user.role.id
+
+    # don't allows direct variable substitution
+    toRemove = []
+    for p in params:
+        if p[:2].capitalize() == 'S_':
+            log.warning("Direct Substitution is not allowed (%s=%s)." \
+                        % (p, params[p]))
+            toRemove.append(p)
+    for p in toRemove:
+        del params[p]
+
+    mss = get_functionalities('mapserver_substitution', \
+            request.registry.settings, request)
+    if (mss):
+        for s in mss:
+            index = s.find('=');
+            if index > 0:
+                attribute = 's_' + s[:index]
+                value = s[index+1:]
+                if (attribute in params):
+                    params[attribute] += "," + value
+                else:
+                    params[attribute] = value
+                log.warning(params[attribute])
+            else:
+                log.warning(("The Mapserver Substitution '%s' don't" \
+                        + " respect the pattern: <attribute>=<value>") % s);
 
     # get query string
     query_string = urllib.urlencode(params)

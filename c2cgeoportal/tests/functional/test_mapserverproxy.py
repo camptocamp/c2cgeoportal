@@ -69,8 +69,19 @@ GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
 </ogc:PropertyIs%(function)s>
 </ogc:Filter>
 </wfs:Query>
-</wfs:GetFeature>
-"""
+</wfs:GetFeature>"""
+
+SUBSTITUTION_GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
+<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<wfs:Query typeName="feature:testpoint_substitution" srsName="EPSG:21781" xmlns:feature="http://mapserver.gis.umn.edu/mapserver">
+<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+<ogc:PropertyIsNotEqualTo matchCase="false">
+<ogc:PropertyName>name</ogc:PropertyName>
+<ogc:Literal>toto</ogc:Literal>
+</ogc:PropertyIsNotEqualTo>
+</ogc:Filter>
+</wfs:Query>
+</wfs:GetFeature>"""
 
 
 @attr(functional=True)
@@ -168,6 +179,8 @@ class TestMapserverproxyView(TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
                 'mapserv.url': mapserv_url,
+                'registered_functionalities': '{}',
+                'anonymous_functionalities': '{}',
                 }
         if username:
             request.user = DBSession.query(User) \
@@ -433,3 +446,55 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') > 0
+
+
+    def test_substitution(self):
+        from c2cgeoportal.views import mapserverproxy
+        request = self._create_dummy_request()
+        map = self._get_mapfile_path()
+        request.method = 'POST'
+        request.body = SUBSTITUTION_GETFEATURE_REQUEST.encode('utf-8')
+
+        request.params = dict(map=map)
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        request.params = dict(map=map, s_name='bar')
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        request.params = dict(map=map, S_NAME='bar')
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["name=bar"]}'
+        request.params = dict(map=map)
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'123') < 0
+
+        request = self._create_dummy_request()
+        request.method = 'POST'
+        request.body = SUBSTITUTION_GETFEATURE_REQUEST.encode('utf-8')
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["foo_bar"]}'
+        request.params = dict(map=map,
+                      s_test1='to be removed', S_TEST2='to be removed')
+        # just pass in the log messagse
+        response = mapserverproxy.proxy(request)
