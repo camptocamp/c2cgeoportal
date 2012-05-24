@@ -6,10 +6,15 @@ Server-side development
 Create development environment in a project
 -------------------------------------------
 
-* Check out ``c2cgeoportal`` from GitHub::
+c2cgeoportal developers often need to test c2cgeoportal changes in the context
+of an existing c2cgeoportal application. Here's how:
+
+* Change dir to your application's root dir and clone ``c2cgeoportal`` there::
 
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
     $ cd c2cgeoportal; git submodule update --init; cd -
+
+  You can now check out your working branch if necessary.
 
 * Edit your ``buildout_$USER.cfg`` to have something like::
 
@@ -30,8 +35,8 @@ Create development environment in a project
     [template]
     exclude-directories += c2cgeoportal/scaffolds
 
-* In the file ``c2cgeoportal/setup.py`` add ``nose`` and
-  ``nosexcover`` in the install_requires packages list.
+  Note the ``develop += c2cgeoportal`` line. This is so ``c2cgeoportal``
+  is installed as a develop egg.
 
 * Remove the old egg::
 
