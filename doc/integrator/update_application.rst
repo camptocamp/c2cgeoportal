@@ -50,7 +50,7 @@ steps:
             translationstring=1.1
             unittest2=0.5.1
             venusian=1.0a6
-            WebOb=1.2rc1
+            WebOb=1.2
             zope.deprecation=4.0.0
             zope.interface=4.0.0
 
