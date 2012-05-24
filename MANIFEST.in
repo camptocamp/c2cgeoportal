@@ -1,6 +1,6 @@
 include *.txt *.ini *.cfg *.rst
 recursive-include c2cgeoportal *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml *.mo
-recursive-include paste_templates *
+recursive-include c2cgeoportal/scaffolds *
 prune buildout
 exclude buildout.cfg
 exclude bootstrap.py

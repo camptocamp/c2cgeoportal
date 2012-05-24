@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = "c2cgeoportal, generic gis protail made by camptocamp"
 
 install_requires = [
-    'pyramid<=1.2.99',
+    'pyramid<=1.3.99,>=1.3.2',
     'WebError',
     'psycopg2',
     'sqlalchemy',
@@ -63,19 +63,18 @@ setup(name='c2cgeoportal',
       setup_requires=setup_requires,
       tests_require=tests_require,
       test_suite="c2cgeoportal",
-      entry_points = {
+      entry_points={
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
             'manage_db = c2cgeoportal.scripts.manage_db:main',
         ],
-        'paste.paster_create_template': [
-            'c2cgeoportal_create = paste_templates:TemplateCreate',
-            'c2cgeoportal_update = paste_templates:TemplateUpdate',
+        'pyramid.scaffold': [
+            'c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate',
+            'c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate',
         ],
         'fanstatic.libraries': [
             'admin = c2cgeoportal.forms:fanstatic_lib',
         ],
       }
 )
-

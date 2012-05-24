@@ -1,0 +1,326 @@
+#
+# This is the config file for jsbuild utility
+# Documentation on the syntax of this file is available at:
+# http://pypi.python.org/pypi/JSTools#configuration-format
+#
+
+#
+# Notes:
+#
+# Language files are in the lang-*.js builds. Except for one file:
+# OpenLayers/Lang.js. This is tricky. This one is included in the main build,
+# e.g. app.js. The thing is that OpenLayers/Lang.js requires
+# OpenLayers/SingleFile.js, which resets the OpenLayers (root) object.  And we
+# can obviously not reset the OpenLayers object when evaluating lang-*.js.
+#
+# Warning: when adding a comment whose leading "#" is not on the first
+# column in the file do not add a space between the "#" character and
+# the actual comment. For example, use "#GXP", not "# GXP". Really,
+# this should be fixed in jsbuild.
+#
+
+
+[app.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    Ext/adapter/ext/ext-base.js
+    Ext/ext-all.js
+    OpenLayers/SingleFile.js
+    OpenLayers/Console.js
+    OpenLayers/BaseTypes.js
+    OpenLayers/BaseTypes/Class.js
+    OpenLayers/BaseTypes/Pixel.js
+    OpenLayers/BaseTypes/Bounds.js
+    OpenLayers/BaseTypes/LonLat.js
+    OpenLayers/BaseTypes/Element.js
+    OpenLayers/BaseTypes/Size.js
+    OpenLayers/Util.js
+    OpenLayers/Lang.js
+    proj4js/lib/proj4js.js
+exclude =
+    GeoExt.js
+    GeoExt/SingleFile.js
+include =
+    EPSG{{srid}}.js #proj4js
+    util.js #GXP
+    widgets/Viewer.js #GXP
+    CGXP/plugins/ThemeSelector.js
+    CGXP/plugins/LayerTree.js
+    CGXP/plugins/FeatureGrid.js
+    CGXP/plugins/Zoom.js
+    CGXP/plugins/WMSGetFeatureInfo.js
+    CGXP/plugins/MapOpacitySlider.js
+    CGXP/plugins/MenuShortcut.js
+    CGXP/plugins/Print.js
+    CGXP/plugins/Legend.js
+    CGXP/plugins/Help.js
+    CGXP/plugins/QueryBuilder.js
+    CGXP/plugins/Login.js
+    CGXP/plugins/Measure.js
+    CGXP/plugins/FullTextSearch.js
+    CGXP/plugins/Permalink.js
+    CGXP/plugins/Disclaimer.js
+    CGXP/widgets/MapPanel.js
+    CGXP/widgets/RedliningColorPicker.js
+    OpenLayers/Control/Navigation.js
+    OpenLayers/Control/KeyboardDefaults.js
+    OpenLayers/Control/PanZoomBar.js
+    OpenLayers/Control/ArgParser.js
+    OpenLayers/Control/Attribution.js
+    OpenLayers/Control/ScaleLine.js
+    OpenLayers/Control/MousePosition.js
+    OpenLayers/Control/OverviewMap.js
+    OpenLayers/Control/NavigationHistory.js
+    OpenLayers/Layer/WMTS.js
+    OpenLayers/Layer/WMS.js
+    OpenLayers/Layer/OSM.js
+    OpenLayers/Layer/Vector.js
+    OpenLayers/Renderer/SVG.js
+    OpenLayers/Renderer/VML.js
+    plugins/OLSource.js #GXP
+    plugins/ZoomToExtent.js #GXP
+    plugins/NavigationHistory.js #GXP
+    plugins/ZoomToExtent.js #GXP
+    plugins/NavigationHistory.js #GXP
+
+[edit.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    Ext/adapter/ext/ext-base.js
+    Ext/ext-all.js
+    OpenLayers/SingleFile.js
+    OpenLayers/Console.js
+    OpenLayers/BaseTypes.js
+    OpenLayers/BaseTypes/Class.js
+    OpenLayers/BaseTypes/Pixel.js
+    OpenLayers/BaseTypes/Bounds.js
+    OpenLayers/BaseTypes/LonLat.js
+    OpenLayers/BaseTypes/Element.js
+    OpenLayers/BaseTypes/Size.js
+    OpenLayers/Util.js
+    OpenLayers/Lang.js
+    proj4js/lib/proj4js.js
+exclude =
+    GeoExt.js
+    GeoExt/SingleFile.js
+include =
+    EPSG{{srid}}.js #proj4js
+    util.js #GXP
+    widgets/Viewer.js #GXP
+    CGXP/plugins/Editing.js
+    CGXP/plugins/Login.js
+    CGXP/plugins/ThemeSelector.js
+    CGXP/plugins/LayerTree.js
+    CGXP/plugins/MenuShortcut.js
+    CGXP/widgets/MapPanel.js
+    OpenLayers/Control/Navigation.js
+    OpenLayers/Control/KeyboardDefaults.js
+    OpenLayers/Control/PanZoomBar.js
+    OpenLayers/Control/ArgParser.js
+    OpenLayers/Control/Attribution.js
+    OpenLayers/Control/ScaleLine.js
+    OpenLayers/Control/MousePosition.js
+    OpenLayers/Control/OverviewMap.js
+    OpenLayers/Control/NavigationHistory.js
+    OpenLayers/Layer/Vector.js
+    OpenLayers/Renderer/SVG.js
+    OpenLayers/Renderer/VML.js
+
+[api.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    Ext/adapter/ext/ext-base.js
+    Ext/ext-all.js
+    OpenLayers/SingleFile.js
+    OpenLayers/Console.js
+    OpenLayers/BaseTypes.js
+    OpenLayers/BaseTypes/Class.js
+    OpenLayers/BaseTypes/Pixel.js
+    OpenLayers/BaseTypes/Bounds.js
+    OpenLayers/BaseTypes/LonLat.js
+    OpenLayers/BaseTypes/Element.js
+    OpenLayers/BaseTypes/Size.js
+    OpenLayers/Util.js
+    OpenLayers/Lang.js
+    proj4js/lib/proj4js.js
+exclude =
+    GeoExt.js
+    GeoExt/SingleFile.js
+include =
+    EPSG{{srid}}.js #proj4js
+    util.js #GXP
+    widgets/Viewer.js #GXP
+    api/Map.js
+    CGXP/plugins/Zoom.js
+    CGXP/widgets/RedliningColorPicker.js
+    CGXP/plugins/MapOpacitySlider.js
+    CGXP/plugins/MenuShortcut.js
+    CGXP/plugins/Legend.js
+    CGXP/plugins/Help.js
+    CGXP/plugins/Measure.js
+    CGXP/plugins/FullTextSearch.js
+    CGXP/plugins/Disclaimer.js
+    CGXP/widgets/MapPanel.js
+    OpenLayers/Control/Navigation.js
+    OpenLayers/Control/KeyboardDefaults.js
+    OpenLayers/Control/PanZoomBar.js
+    OpenLayers/Control/ArgParser.js
+    OpenLayers/Control/Attribution.js
+    OpenLayers/Control/ScaleLine.js
+    OpenLayers/Control/MousePosition.js
+    OpenLayers/Control/NavigationHistory.js
+    OpenLayers/Layer/WMTS.js
+    OpenLayers/Layer/WMS.js
+    OpenLayers/Layer/Vector.js
+    OpenLayers/Renderer/SVG.js
+    OpenLayers/Renderer/VML.js
+    plugins/OLSource.js #GXP
+    plugins/ZoomToExtent.js #GXP
+    plugins/NavigationHistory.js #GXP
+
+[lang-en.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    OpenLayers/Lang/en.js
+include =
+    Proj/Lang/en.js
+    Ext/src/locale/ext-lang-en.js
+#    GeoExt/locale/GeoExt-en.js
+#    FeatureEditing/resources/lang/en.js
+    Styler/resources/lang/en.js
+    locale/en.js #GXP
+    CGXP/locale/en.js
+exclude =
+    OpenLayers/Lang.js
+
+[lang-fr.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    OpenLayers/Lang/fr.js
+include =
+    Proj/Lang/fr.js
+    Ext/src/locale/ext-lang-fr.js
+    GeoExt/locale/GeoExt-fr.js
+    FeatureEditing/resources/lang/fr.js
+    Styler/resources/lang/fr.js
+    locale/fr.js #GXP
+    CGXP/locale/fr.js
+exclude =
+    OpenLayers/Lang.js
+
+[lang-de.js]
+root =
+    {{package}}/static/lib/cgxp/core/src/script
+    {{package}}/static/lib/cgxp/ext
+    {{package}}/static/lib/cgxp/geoext/lib
+    {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/gxp/src/script
+    {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/sandbox
+    {{package}}/static/lib/cgxp/styler/lib
+    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+    {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/js
+first =
+    OpenLayers/Lang/de.js
+include =
+    Proj/Lang/de.js
+    Ext/src/locale/ext-lang-de.js
+#    GeoExt/locale/GeoExt-de.js
+    FeatureEditing/resources/lang/de.js
+    Styler/resources/lang/de.js
+#    locale/de.js #GXP
+    CGXP/locale/de.js
+exclude =
+    OpenLayers/Lang.js

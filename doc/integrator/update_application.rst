@@ -35,6 +35,34 @@ steps:
    application's buildout config file and change the version for the
    ``c2cgeoportal`` dependency in the ``[versions]`` section.
 
+   .. note::
+
+        If you are migrating from c2cgeoportal 0.6 to 0.7 you also need to
+        change the versions of the ``pyramid`` packages and its dependencies::
+
+            Chameleon=2.8.5
+            Mako=0.7.0
+            MarkupSafe=0.15
+            ordereddict=1.1
+            PasteDeploy=1.5.0
+            pyramid=1.3.2
+            repoze.lru=0.5
+            translationstring=1.1
+            unittest2=0.5.1
+            venusian=1.0a6
+            WebOb=1.2
+            zope.deprecation=4.0.0
+            zope.interface=4.0.0
+
+        Prior to running ``buildout`` (next step) it is recommended to remove
+        from ``buildout/eggs`` the old versions of the packages listed above.
+        For example::
+
+            $ rm -rf buildout/eggs/zope.interface-3.8.0-py2.6-linux-x86_64.egg
+
+        These extra steps are related to c2cgeoportal 0.7 requiring Pyramid
+        1.3.
+
 2. Execute ``buildout`` to download and install the new version of the
    ``c2cgeoportal`` package::
 
@@ -43,8 +71,15 @@ steps:
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
 
-3. Apply the ``c2cgeoportal_update`` skeleton (``IOError: No egg-info directory
-   found (...)`` can be ignored)::
+3. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
+   found (...)`` can be ignored).
+
+   For ``c2cgeoportal`` 0.7 and higher::
+    
+       $ ./buildout/bin/pcreate --overwrite -s c2cgeoportal_update \
+         ../<project_name> package=<package_name>
+
+   For ``c2cgeoportal`` 0.6 and lower::
 
        $ ./buildout/bin/paster create --template=c2cgeoportal_update \
          --output-dir=.. <project_name> package=<package_name>

@@ -28,7 +28,7 @@ Create development environment in a project
     compress = false
 
     [template]
-    exclude-directories += c2cgeoportal/paste_templates
+    exclude-directories += c2cgeoportal/scaffolds
 
 * In the file ``c2cgeoportal/setup.py`` add ``nose`` and
   ``nosexcover`` in the install_requires packages list.
@@ -243,11 +243,11 @@ sqlalchemy-migrate works with a so-called *migration
 repository*, which is a simple directory in the application 
 source tree:``<package>/CONST_migration``. As the
 ``CONST_`` prefix suggests this repository is part of 
-the ``c2cgeoportal_update`` paster template, it is created or
-updated when this paster template is applied. So developers 
+the ``c2cgeoportal_update`` scaffold, it is created or
+updated when this scaffold is applied. So developers 
 who modify the c2cgeoportal database schema should add
 migration scripts to the ``c2cgeoportal_update`` 
-template, as opposed to the application.
+scaffold, as opposed to the application.
 
 Add a new script call from the application's root directory::
 
@@ -265,7 +265,7 @@ Then customize the migration to suit your needs, test it::
     ./buildout/bin/manage_db --app-name <package> test
 
 And move it to the c2cgeoportal ``update`` template, in
-``c2cgeoportal/paste_templates/update/+package+/CONST_migration/versions/``.
+``c2cgeoportal/scaffolds/update/+package+/CONST_migration/versions/``.
 
 
 More information at:
