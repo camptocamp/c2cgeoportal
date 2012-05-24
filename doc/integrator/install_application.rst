@@ -87,27 +87,34 @@ Additional notes for Windows users:
 Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-The Git command to get the code from a remote repository is named ``clone``::
+If Git is used for the application use the following command to get the
+application source tree::
 
     git clone https://git.camptocamp.com/git/<my_project>/ <my_project>
 
-We also have to download the ``submodule`` dependencies
-(two levels in our case)::
+c2cgeoportal applications include a Git submodule for CGXP. The following
+commands should be used to download CGXP and its dependencies::
 
     git submodule update --init
     git submodule foreach git submodule update --init
 
+The ``foreach`` command aims to init and update CGXP's own submodules, for GXP,
+OpenLayers and GeoExt.
+
 .. note::
-   We don't use the ``--recursive`` option because we wouldn't 
-   have the third level of submodule who ass son unneeded 
-   dependencies and duplicate code like OpenLayers.
+
+    We don't just use ``git submodule update --init --recursive`` here because
+    that would also download GXP's submodules. We don't want that because we
+    don't need GXP's submodules. CGXP indeed has its own submodules for
+    OpenLayers and GeoExt.
 
 .. important::
-   the git command don't respect all the unix rights, than it you checkout 
-   your project in a common folder like ``/var/www/<vhost>/private`` it 
-   will be fully writable only for you. To fix that you can do in your project
-   ``chmod -R g+w .``.
+
+    If you want other people than you to be able to run ``buildout`` from an
+    application clone created by you then you need to change the application
+    directory's permissions using ``chmod -R g+w``.  You certainly want to do
+    that if the application has been cloned in a shared directory like
+    ``/var/www/<vhost>/private``.
 
 If you still use SVN::
 
