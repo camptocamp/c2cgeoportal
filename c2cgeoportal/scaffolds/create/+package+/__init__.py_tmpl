@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+
+from pyramid.config import Configurator
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from c2cgeoportal import locale_negotiator
+from c2cgeoportal.resources import FAModels, defaultgroupsfinder
+from {{package}}.resources import Root
+
+def main(global_config, **settings):
+    """ This function returns a Pyramid WSGI application.
+    """
+    authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'),
+           callback=defaultgroupsfinder) 
+    config = Configurator(root_factory=Root, settings=settings,
+            locale_negotiator=locale_negotiator, 
+            authentication_policy=authentication_policy)
+
+    config.add_settings({'srid': {{srid}}})
+    config.add_settings({'check_print_template': '1 A4 portrait'})
+    config.add_settings({'check_FullTextSearch': 'te'})
+
+    config.include('c2cgeoportal')
+
+    config.add_translation_dirs('{{package}}:locale/')
+
+    config.formalchemy_admin('admin', package='{{package}}',
+            view='fa.jquery.pyramid.ModelView', factory=FAModels)
+
+    config.add_route('checker_all', '/checker_all')
+
+    # scan view decorator for adding routes
+    config.scan()
+
+    # add the static view (for static resources)
+    config.add_static_view('proj', '{{package}}:static')
+
+    return config.make_wsgi_app()

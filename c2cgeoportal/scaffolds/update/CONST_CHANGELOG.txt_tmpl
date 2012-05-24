@@ -1,0 +1,524 @@
+This file includes migration steps for each release of c2cgeoportal.
+
+
+Version 0.7
+===========
+
+1. When migrating from 0.6 to 0.7 open
+   http://docs.camptocamp.net/c2cgeoportal/integrator/update_application.html
+   and pay attention to the "migrate to 0.7" specific note.
+
+2. The "pserve" command should now be used instead of "paster serve".
+
+   For "pserve" to work a few simple modifications are required in
+   development.ini.in, production.ini.in, print/config.yaml.in and
+   print/templates/print.mako.in.
+   
+   - In development.ini.in and production.ini.in and replace "use
+     = egg:Paste#http" by "use = egg:waitress#main".
+
+   - In development.ini.in, production.ini.in, print/config.yaml.in, and
+     print/templates/print.mako.in replace "${vars:paster_port}" by
+     "${vars:waitress_port}".
+
+   And to be able to use "pserve" you need to add "waitress" to 
+   the "install_requires" list defined in the application's
+   "setup.py" file. For example:
+
+   install_requires=[
+       'c2cgeoportal',
+       'configobj',
+       'pyramid_debugtoolbar',
+       'waitress'
+   ],
+
+3. Display directly the loading panel introduce those needed changes:
+    * In the +package+/templates/viewer.js includes all the code in:
+        Ext.onReady(function() {
+            // all the code
+        });
+    * In the +package+/templates/index.html do this replacement:
+      -        <script type="text/javascript">
+      -            Ext.onReady(function() {
+      -                <%include file="viewer.js" />
+      -            });
+      -        </script>
+      +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
+    * Do the same for the edit.js/edit.html
+
+Version 0.6
+===========
+
+Editing Interface
+-----------------
+
+c2cgeoportal 0.6 features an editing interface. To make the editing interface
+work in an existing project several steps are required:
+
+1. The editing interface relies on the CGXP Editing plugin. This plugin is
+   available as of commit 58c931d [1] of CGXP. So CGXP should be updated to, at
+   least, this commit in the application. See [2] to know how to update CGXP.
+
+   [1] <https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032>
+   [2] <http://docs.camptocamp.net/c2cgeoportal/integrator/update_application.html#update-cgxp>
+
+2. An [edit.js] section should be added to jsbuild/app.cfg (notice the CHANGE
+   ME IF NEEDED comment):
+
+   [edit.js]
+   root =
+       {{package}}/static/lib/cgxp/core/src/script
+       {{package}}/static/lib/cgxp/ext
+       {{package}}/static/lib/cgxp/geoext/lib
+       {{package}}/static/lib/cgxp/openlayers/lib
+       {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
+       {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+       {{package}}/static/lib/cgxp/gxp/src/script
+       {{package}}/static/lib/cgxp/proj4js
+       {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+       {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+       {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+       {{package}}/static/lib/cgxp/sandbox
+       {{package}}/static/lib/cgxp/styler/lib
+       {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+       {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+       {{package}}/static/lib/cgxp/ext.ux/base64
+       {{package}}/static/js
+   first =
+       Ext/adapter/ext/ext-base.js
+       Ext/ext-all.js
+       OpenLayers/SingleFile.js
+       OpenLayers/Console.js
+       OpenLayers/BaseTypes.js
+       OpenLayers/BaseTypes/Class.js
+       OpenLayers/BaseTypes/Pixel.js
+       OpenLayers/BaseTypes/Bounds.js
+       OpenLayers/BaseTypes/LonLat.js
+       OpenLayers/BaseTypes/Element.js
+       OpenLayers/BaseTypes/Size.js
+       OpenLayers/Util.js
+       OpenLayers/Lang.js
+       proj4js/lib/proj4js.js
+   exclude =
+       GeoExt.js
+       GeoExt/SingleFile.js
+   include =
+       EPSG21781.js #proj4js (CHANGE ME IF NEEDED)
+       util.js #GXP
+       widgets/Viewer.js #GXP
+       CGXP/plugins/Editing.js
+       CGXP/plugins/Login.js
+       CGXP/plugins/ThemeSelector.js
+       CGXP/plugins/LayerTree.js
+       CGXP/plugins/MenuShortcut.js
+       CGXP/widgets/MapPanel.js
+       OpenLayers/Control/Navigation.js
+       OpenLayers/Control/KeyboardDefaults.js
+       OpenLayers/Control/PanZoomBar.js
+       OpenLayers/Control/ArgParser.js
+       OpenLayers/Control/Attribution.js
+       OpenLayers/Control/ScaleLine.js
+       OpenLayers/Control/MousePosition.js
+       OpenLayers/Control/OverviewMap.js
+       OpenLayers/Control/NavigationHistory.js
+       OpenLayers/Layer/Vector.js
+       OpenLayers/Renderer/SVG.js
+       OpenLayers/Renderer/VML.js
+
+3. Optionally you can add the line
+   {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib to the "root"
+   list of every [*.js] section of jsbuild/app.cfg. This is optional because
+   only the editing interface (edit.js) should require scripts from this
+   directory. But it may be a good idea to have every [*.js] section use the
+   same "root" list.
+
+4. You need to add two Mako templates to {{package}}/templates, namely edit.html
+   and edit.js. These files are in the c2cgeoportal_create paster template, so
+   they're not automatically added to the application source tree when the
+   c2cgeoportal_update template is applied. The easiest way to get them is to
+   apply the c2cgeoportal_create directory outside the existing application,
+   and copy the files from the newly created directory to the application:
+
+   cd {{project}}
+   ./buildout/bin/paster create --template c2cgeoportal_create \
+       --output-dir=/tmp/ {{project}} package={{package}}
+   cp /tmp/{{project}}/{{package}}/templates/edit.html {{package}}/templates/
+   cp /tmp/{{project}}/{{package}}/templates/edit.js {{package}}/templates/
+   rm -rf /tmp/{{project}}
+
+5. SQL queries in the DATA properties should be changed in the mapfile for the
+   editable layers. They should use the new "mapfile_data_subselect" Buildout
+   variable. See the administrator mapfile documentation.
+
+6. Papyrus 0.9 is required. See below.
+
+7. GeoAlchemy 0.7 is required. See below.
+
+
+Other changes
+-------------
+
+1. c2cgeoportal 0.6 requires Papyrus 0.9, so the version of Papyrus should be
+   set to 0.9 on the buildout configuration of the c2cgeoportal project
+   (section [versions]).
+
+2. c2cgeoportal 0.6 requires GeoAlchemy 0.7. So GeoAlchemy should be set to
+   0.7 in the project's buildout configuration.
+
+3. In production.ini.in and development.ini.in jsbuild_root_dir should now be
+   set to ${buildout:directory}:
+
+   jsbuild_root_dir = ${buildout:directory}
+
+4. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
+   {{package}}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]
+   section of jsbuild/app.cfg. Example:
+
+    [app.js]
+    root =
+        {{package}}/static/lib/cgxp/core/src/script
+        {{package}}/static/lib/cgxp/ext
+        {{package}}/static/lib/cgxp/geoext/lib
+        {{package}}/static/lib/cgxp/openlayers/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthControl/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        {{package}}/static/lib/cgxp/gxp/src/script
+        {{package}}/static/lib/cgxp/proj4js
+        {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+        {{package}}/static/lib/cgxp/sandbox
+        {{package}}/static/lib/cgxp/styler/lib
+        {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+        {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+        {{package}}/static/lib/cgxp/ext.ux/base64
+        {{package}}/static/js
+
+5. To be able to install c2cgeoportal applications behind proxies with limited
+   access to the outside world we had to patch Distribute and Buildout. See
+   <https://github.com/camptocamp/c2cgeoportal/issues/62> for more details.
+
+   If your application is behind a proxy which can access pypi.camptocamp.net
+   only then it is required to use the patched versions of Distribute and
+   Buildout. If your application is not behind a proxy it is recommended.
+
+   To change to the patched versions of Distribute and Buildout follow these
+   steps:
+
+   - Edit CONST_buildout.cfg and verify that it has an allow-hosts option set
+     to pypi.camptocamp.net.
+
+   - Remove the Distribute and Buildout eggs from the buildout/eggs dir:
+
+     rm -rf buildout/eggs/distribute-0.6.14* buildout/eggs/zc.buildout-1.5.2*
+
+   - Run bootstrap.py with specific options to install the patched versions of
+     Buildout and Distribute:
+
+     python bootstrap.py --version 1.5.2 --distribute --download-base \
+       http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
+       http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
+
+   - Run the usual buildout/bin/buildout command.
+
+6. In jsbuild/app.cfg, replace GoogleEarthControl by GoogleEarthView to 
+   have the following entry:
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+   And add the following entries to api.js, and all language files
+   (like en.js, fr.js, de.js, ...) to have all identical root:
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+
+7. Templates modifications:
+
+   The base templates are deprecated, to get the new version do 
+   (Careful: this will overwrite your changes):
+       cd {{project}}
+       ./buildout/bin/paster create --template c2cgeoportal_create \
+           --output-dir=/tmp/ {{project}} package={{package}}
+       cp /tmp/{{project}}/{{package}}/templates/apihelp.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/apiloader.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/apiviewer.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/index.html {{package}}/templates/
+       cp /tmp/{{project}}/{{package}}/templates/viewer.js {{package}}/templates/
+       rm -rf /tmp/{{project}}
+
+   Notes:
+
+      * The viewer layout has changed to ease the integration of the Google Earth plugin.
+      * A null value for the user's map extent is now permitted. 
+      * The jsextent property of role is renamed to json_extent.
+
+8. Other changes to jsbuild/app.cfg are recommended. They are even required if
+   you added an edit.js section as indicated in the "Editing Interface" section
+   above. Your application's jsbuild/app.cfg most probably adds
+   language-related files into app.js and api.js, which it should not. The only
+   language-related file that should be included in app.js, edit.js and api.js
+   is OpenLayers/Lang.js. The other language-related files should go in the
+   lang-*.js builds.  See this diff
+   https://github.com/camptocamp/c2cgeoportal/pull/105/files and 
+   https://github.com/camptocamp/c2cgeoportal/pull/166/files to see how app.cfg
+   was changed in the create template, that should help you fix your
+   application's app.cfg. The note explaining why OpenLayers/Lang.js should be
+   included in the main build may be of interest.
+
+Version 0.5 (and before)
+========================
+
+-------------------------------
+Mon, 27 Feb 2012 14:15:14 +0100
+
+We have release JSTools 0.6 on pypi.python.org. This version includes bug
+fixes, for Windows in particular. c2cgeoportal 0.5 requires JSTools 0.6, so the
+version of JSTools should be set to 0.6 in the buildout configuration of
+c2cgeoportal projects (section [versions]).
+
+-------------------------------
+Tue, 31 Jan 2012 13:59:45 +0100
+
+Because OpenLayers has been upgraded, one must replace
+OpenLayers/Layer/XYZ.js
+by
+OpenLayers/Layer/OSM.js
+in the [app.js] "include" section of jsbuild/app.cfg.
+
+-------------------------------
+Tue, 31 Jan 2012 14:41:44 +0100
+
+In the <package>/template/viewer.js file, in the block 'viewer_layers'
+remove the last comma for IE, see commit 11d373b.
+
+-------------------------------
+Thu, 26 Jan 2012 13:21:20 +0100
+
+Not required but recommended: you can edit your project's development.ini.in
+and production.ini.in files and remove the [app:c2cgeoportal] section and its
+content (one line). This section was needed for c2cgeoportal's manage_db and
+create_db scripts to know the project package name, but it's not needed
+anymore. For example, the manage_db script now has --app-name and --app-config
+options.
+
+-------------------------------
+
+Thu, 12 Jan 2012 13:35:23 +0100
+
+Due to wrong moving the files in 'print/print'. If exists the folder 
+'print/print/WEB-INF/' should be moved to 'print/WEB-INF/' and the 
+folder 'print/print/' should be removed.
+
+-------------------------------
+
+Wed, 14 Dec 2011 17:49:36 +0100
+
+This migration concerns the changes reorganizing the "create" and "update"
+paste templates.
+
+* update the version of c2cgeoportal requirement in the project setup.py
+so that c2cgeoportal dependency version is == 0.3.2. You should have:
+    install_requires=[
+        'PasteScript',
+        'c2cgeoportal==0.3.2',
+    ],
+Then launch buildout to retrieve this new version of the egg c2cgeoportal.
+
+* apply the 'update' template
+
+* the manage_db script is now handled by c2cgeoportal again (this revert
+the change introduced in c2cgeoportal v0.3.1):
+  * update console_scripts entry points in the project setup.py, you should
+  now have:
+       'console_scripts': [
+           'create_db = <package_name>.scripts.create_db:main',
+       ],
+  * remove the script manage_db from the project:
+    $$ svn rm <package_name>/scripts/CONST_manage_db.py
+
+* rename the following files:
+    $$ svn mv apache/CONST_frontend.conf.in apache/frontend.conf.in
+    $$ svn mv apache/CONST_mapserver.conf.in apache/mapserver.conf.in
+    $$ svn mv apache/CONST_README.txt.in apache/README.txt.in
+    $$ svn mv apache/CONST_tilecache.conf.in apache/tilecache.conf.in
+    $$ svn mv apache/CONST_wsgi.conf.in apache/wsgi.conf.in
+    $$ svn mv CONST_development.ini.in development.ini.in
+    $$ svn mv CONST_production.ini.in production.ini.in
+These files used to be generated by the update template, they're now generated
+by the create template, this is why the CONST_ prefix is removed.
+You can also update the svn:ignore property appropriately.
+
+* add a .httpauth file in the project directory (if not already existing),
+which contains the required credentials to access to our pypi internal server.
+This file is generated when the 'create' template is applied so you have to
+create it by hand.
+This file should contain the following line:
+    "C2C internal pypi server, http://pypi.camptocamp.net/internal-pypi, <login>, <password>"
+(where <login> and <password> are to be replaced by the the Camptocamp internal
+pypi server login/password)
+
+-------------------------------
+
+Wed, 14 Dec 2011 17:17:56 +0100
+
+The files jsbuild/CONST_app.cfg and jsbuild/app.cfg should be merged together.
+Finally jsbuild/CONST_app.cfg should be removed and all jsbuild configuration
+should sit in jsbuild/app.cfg.
+
+-------------------------------
+
+/!\ ATTENTION:
+Note that you cannot upgrade to c2cgeoportal version >= 0.3.2 directly.
+You have to upgrade to v0.3.1 first, see below. 
+
+-------------------------------
+
+VERSION 0.3.1
+
+Thu, 08 Dec 2011 10:00:00 +0100
+
+This migration concerns the changes about distributing c2cgeoportal as an egg.
+
+Once project is up to date (svn update) and the 'update' template has been
+applied, the project should also be updated in the following ways:
+
+* remove svn:externals to c2cgeoportal and rm -rf c2cgeoportal directory
+
+* update console_scripts entry points in the project setup.py so that script
+manage_db now refers to <package_name>.scripts.CONST_manage_db:main. You should
+have:
+       'console_scripts': [
+           'create_db = <package_name>.scripts.create_db:main',
+           'manage_db = <package_name>.scripts.CONST_manage_db:main',
+       ],
+
+* update the version of c2cgeoportal requirement in the project setup.py
+so that c2cgeoportal dependency version is == 0.3.1. You should have:
+    install_requires=[
+        'PasteScript',
+        'c2cgeoportal==0.3.1',
+    ],
+
+* add a migrate.cfg file in
+MyProject/myproject/CONST_migration/migrate.cfg
+This migrate.cfg file is generated when the 'create' template is applied so
+you have to create it by hand. The version_table parameter value should
+be set to "version_<package_name>".
+
+The content of the migrate.cfg file should look like this:
+
+    [db_settings]
+    # Used to identify which repository this database is versioned under.
+    # You can use the name of your project.
+    repository_id=c2cgeoportal
+
+    # The name of the database table used to track the schema version.
+    # This name shouldn't already be used by your project.
+    # If this is changed once a database is under version control, you'll need to
+    # change the table name in each database too.
+    version_table=version_<package_name>
+
+    # When committing a change script, Migrate will attempt to generate the
+    # sql for all supported databases; normally, if one of them fails - probably
+    # because you don't have that database installed - it is ignored and the
+    # commit continues, perhaps ending successfully.
+    # Databases in this list MUST compile successfully during a commit, or the
+    # entire commit will fail. List the databases your application will actually
+    # be using to ensure your updates to that database work properly.
+    # This must be a list; example: ['postgres','sqlite']
+    required_dbs=[]
+
+* rename the version table to match the name set in the version_table
+parameter:
+    ALTER TABLE <old_name> RENAME TO version_<package_name>
+with <old_name> replaced by the old name of the version table which is
+certainly the application's db schema name.
+
+-------------------------------
+
+Wed, 14 Dec 2011 17:00:24 +0100
+
+Implements group restriction to acces to the admin interface.
+
+To continue to acces to the admin interface you should, in the file
+'<project>/__init__.py' replaxe the line
+-     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'))
+by:
++     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'),
++            callback=defaultgroupsfinder)
+and add the import:
++ from c2cgeoportal.resources import defaultgroupsfinder.
+
+-------------------------------
+
+Wed, 07 Dec 2011 15:10:57 +0100
+
+Replace the CONST_README.txt by the documentation.
+Add a CONST_TIP.txt to have some usefull commands.
+Than you can do to remove the old CONST_README.txt
+$$ svn rm CONST_README.txt.in
+
+-------------------------------
+
+Mon, 28 Nov 2011 17:43:25 +0100
+
+Added apiloader.js in the project templates directory.
+
+-------------------------------
+
+Mon, 28 Nov 2011 16:13:41 +0100
+
+Added missing encoder in the mapfile. In MAP/WEB/METADATA added:
+    "wfs_encoding" "UTF-8"
+
+-------------------------------
+
+Mon, 28 Nov 2011 14:51:37 +0100
+
+CGXP mode from SVN to GIT(hub).
+Now we use a buildout task to do the clone.
+
+To update your project do:
+$$ svn propdel svn:externals {{package}}/static/lib/
+$$ rm -rf {{package}}/static/lib/cgxp
+$$ svn propset svn:ignore cgxp {{package}}/static/lib/
+
+-------------------------------
+
+Mon, 28 Nov 2011 11:42:25 +0100
+
+Added WFSGetFeature to query feature in a BBOX but desable by default. 
+-------------------------------
+
+Mon, 21 Nov 2011 12:58:23 +0100
+
+Added a disclaimer cgxp plugin
+
+Added CGXP/plugins/Disclaimer.js to jsbuild/app.cfg so that the Disclaimer
+plugin can be used.
+Note that the database should also be updated for the disclaimer plugin to
+work correctly.
+-------------------------------
+
+Thu, 17 Nov 2011 11:24:25 +0100
+
+Added block tools_additional in viewer_base.js
+-------------------------------
+
+Wed, 16 Nov 2011 16:11:54 +0100
+
+Fixed gettext config in order to take into account translations from the project templates
+-------------------------------
+
+Wed, 09 Nov 2011 17:15:13 +0100
+
+Extended GeoExt.MapPanel to override the getState method
+
+Add CGXP/widgets/MapPanel.js in app.cfg
+-------------------------------
+
+Mon, 07 Nov 2011 10:05:22 +0100
+
+Added a colorpicker to the redlining tool.
+
+In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replaced by
+CGXP/widgets/RedliningColorPicker.js for the new colorpicker or by
+CGXP/widgets/RedliningCombo.js to have the old combobox.
+

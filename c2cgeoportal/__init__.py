@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
-from pyramid.request import Request as PyramidRequest
-from pyramid.decorator import reify
 from pyramid.security import unauthenticated_userid
 import sqlalchemy
 import sqlahelper
@@ -32,7 +30,7 @@ def locale_negotiator(request):
     lang = request.params.get('lang')
     if lang is None:
         lang = request.registry.settings.get("default_language")
-        for l in request.accept_language.best_matches():
+        for l in list(request.accept_language):
             if l in request.registry.settings. \
                     get("available_languages").split():
                 lang = l
@@ -40,16 +38,15 @@ def locale_negotiator(request):
     return lang
 
 
-class Request(PyramidRequest):
-    """ A c2cgeoportal-specific request factory that adds
-    a reified ``user`` property to request. """
-    @reify
-    def user(self):
-        from c2cgeoportal.models import DBSession, User
-        username = unauthenticated_userid(self)
-        if username is not None:
-            return DBSession.query(User).filter_by(
-                        username=username).one()
+def get_user_from_request(request):
+    """ Return the User object for the request. Return
+    ``None`` if user is anonymous.
+    """
+    from c2cgeoportal.models import DBSession, User
+    username = unauthenticated_userid(request)
+    if username is not None:
+        return DBSession.query(User).filter_by(
+                    username=username).one()
 
 
 def includeme(config):
@@ -64,10 +61,8 @@ def includeme(config):
     global formalchemy_default_lat
     global formalchemy_available_functionalities
 
-    # set a request factory in the configurator. When migrating
-    # to Pyramid 1.3 we should probably use set_request_property.
-    # See <http://docs.pylonsproject.org/projects/pyramid_cookbook/en/latest/authentication.html>
-    config.set_request_factory(Request)
+    config.set_request_property(
+        get_user_from_request, name='user', reify=True)
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs('c2cgeoportal:locale/')
@@ -182,7 +177,7 @@ def includeme(config):
             view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     # scan view decorator for adding routes
-    config.scan()
+    config.scan(ignore='c2cgeoportal.tests')
 
     # add the static view (for static resources)
     config.add_static_view('static', 'c2cgeoportal:static')

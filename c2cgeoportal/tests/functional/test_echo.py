@@ -4,6 +4,7 @@ from nose.plugins.attrib import attr
 
 from pyramid import testing
 
+
 @attr(functional=True)
 class TestEchoView(TestCase):
 
@@ -37,10 +38,10 @@ Content-Disposition: form-data; name="file"; filename="a file name"
 Content-Type: text/html
 
 some content with non-ASCII chars ç à é
---foobar
+--foobar--
 '''
 
         response = echo.echo(request)
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.content_type, 'text/html')
-        self.assertEquals(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')
+        self.assertEquals(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # NOQA
