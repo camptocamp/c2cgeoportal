@@ -1,5 +1,6 @@
 Ext.define("{{package}}.view.Main", {
     extend: 'Ext.Container',
+    xtype: 'mainview',
     requires: [
         'Ext.field.Search',
         'Ext.field.Select',
@@ -22,6 +23,11 @@ Ext.define("{{package}}.view.Main", {
                 action: 'search'
             }, {
                 xtype: 'spacer'
+            }, {
+                xtype: 'button',
+                iconCls: 'layers',
+                action: 'layers',
+                iconMask: true
             }, {
                 xtype: 'button',
                 iconCls: 'settings',
@@ -144,14 +150,19 @@ Ext.define("{{package}}.view.Main", {
                 new OpenLayers.Control.ScaleLine()
             ],
             layers: [
-                new OpenLayers.Layer.OSM(),
+                new OpenLayers.Layer.OSM("OpenStreetMap", null, {
+                    transitionEffect: 'resize'
+                }),
                 new OpenLayers.Layer.OSM(
                     "Cycle Map",
                     [
                         "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
                         "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
                         "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
-                    ]
+                    ],
+                    {
+                        transitionEffect: 'resize'
+                    }
                 ),
                 new OpenLayers.Layer.OSM(
                     "Transport Map",
@@ -159,7 +170,11 @@ Ext.define("{{package}}.view.Main", {
                         "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
                         "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
                         "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
-                    ]
+                    ],
+                    {
+                        transitionEffect: 'resize'
+                    }
+
                 ),
                 new OpenLayers.Layer.WMS(
                     "Summits",
