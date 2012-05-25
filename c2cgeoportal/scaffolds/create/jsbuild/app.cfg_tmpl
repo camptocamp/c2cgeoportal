@@ -253,6 +253,7 @@ include =
     OpenLayers/Map.js
     OpenLayers/Kinetic.js
     OpenLayers/Layer/OSM.js
+    OpenLayers/Layer/WMS.js
     OpenLayers/Layer/Vector.js
     OpenLayers/Renderer/Canvas.js
     OpenLayers/Renderer/SVG.js

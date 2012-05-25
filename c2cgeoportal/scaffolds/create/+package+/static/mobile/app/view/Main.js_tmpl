@@ -132,6 +132,7 @@ Ext.define("{{package}}.view.Main", {
     createMap: function() {
         var map = new OpenLayers.Map({
             theme: null,
+            projection: 'EPSG:900913',
             controls: [
                 new OpenLayers.Control.TouchNavigation({
                     dragPanOptions: {
@@ -159,6 +160,19 @@ Ext.define("{{package}}.view.Main", {
                         "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
                         "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
                     ]
+                ),
+                new OpenLayers.Layer.WMS(
+                    "Summits",
+                    "http://www.camptocamp.org/cgi-bin/c2corg_wms",
+                    {
+                        allLayers: ['summits', "huts", "sites", "users"],
+                        layers: ['summits'],
+                        transparent: true
+                    },
+                    {
+                        singleTile: true,
+                        ratio: 1
+                    }
                 )
             ]
         });
