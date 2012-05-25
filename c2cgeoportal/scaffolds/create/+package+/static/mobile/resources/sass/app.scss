@@ -32,6 +32,25 @@ div.olMap {
     z-index: 0;
 }
 
+.olControlScaleLine {
+    display: block;
+    left: 3px;
+    bottom: 3px;
+    font-size: xx-small;
+    padding: 4px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 4px;
+}
+.olControlScaleLineBottom {
+    display: none;
+}
+.olControlScaleLineTop {
+    border: solid 2px black;
+    color: black;
+    border-top: none;
+    text-align: center;
+}
+
 div.olControlZoom {
     position: absolute;
     top: 8px;

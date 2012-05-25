@@ -259,6 +259,7 @@ include =
     OpenLayers/Control/TouchNavigation.js
     OpenLayers/Control/Attribution.js
     OpenLayers/Control/SelectFeature.js
+    OpenLayers/Control/ScaleLine.js
     OpenLayers/Format/GeoJSON.js
     OpenLayers/Request/XMLHttpRequest.js
     OpenLayers/Protocol/HTTP.js

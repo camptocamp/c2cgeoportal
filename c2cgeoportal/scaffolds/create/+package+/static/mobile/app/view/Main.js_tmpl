@@ -74,6 +74,16 @@ Ext.define("{{package}}.view.Main", {
         // create the map
         var map = new OpenLayers.Map({
             theme: null,
+            controls: [
+                new OpenLayers.Control.TouchNavigation({
+                    dragPanOptions: {
+                        interval: 1,
+                        enableKinetic: true
+                    }
+                }),
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.ScaleLine()
+            ],
             layers: [
                 new OpenLayers.Layer.OSM(),
                 new OpenLayers.Layer.OSM(
