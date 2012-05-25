@@ -72,38 +72,7 @@ Ext.define("{{package}}.view.Main", {
         });
 
         // create the map
-        var map = new OpenLayers.Map({
-            theme: null,
-            controls: [
-                new OpenLayers.Control.TouchNavigation({
-                    dragPanOptions: {
-                        interval: 1,
-                        enableKinetic: true
-                    }
-                }),
-                new OpenLayers.Control.Attribution(),
-                new OpenLayers.Control.ScaleLine()
-            ],
-            layers: [
-                new OpenLayers.Layer.OSM(),
-                new OpenLayers.Layer.OSM(
-                    "Cycle Map",
-                    [
-                        "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                        "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                        "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
-                    ]
-                ),
-                new OpenLayers.Layer.OSM(
-                    "Transport Map",
-                    [
-                        "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                        "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                        "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
-                    ]
-                )
-            ]
-        });
+        var map = this.createMap();
         this.setMap(map);
 
         // base layer manager
@@ -158,5 +127,41 @@ Ext.define("{{package}}.view.Main", {
         var map = this.getMap();
         map.render(this.down('#map-container').element.dom);
         map.zoomToMaxExtent();
+    },
+
+    createMap: function() {
+        var map = new OpenLayers.Map({
+            theme: null,
+            controls: [
+                new OpenLayers.Control.TouchNavigation({
+                    dragPanOptions: {
+                        interval: 1,
+                        enableKinetic: true
+                    }
+                }),
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.ScaleLine()
+            ],
+            layers: [
+                new OpenLayers.Layer.OSM(),
+                new OpenLayers.Layer.OSM(
+                    "Cycle Map",
+                    [
+                        "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                        "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                        "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
+                    ]
+                ),
+                new OpenLayers.Layer.OSM(
+                    "Transport Map",
+                    [
+                        "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                        "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                        "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
+                    ]
+                )
+            ]
+        });
+        return map;
     }
 });
