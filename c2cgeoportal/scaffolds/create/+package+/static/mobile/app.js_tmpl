@@ -8,12 +8,14 @@ Ext.application({
 
     requires: [
         'Ext.MessageBox',
+        'Ext.data.Store',
+        'Ext.data.proxy.JsonP',
         'Ext.TitleBar' // required at least for the Picker
     ],
 
-    views: ['Main', 'Layers'],
-    models: ['Layer'],
-    controllers: ["Main"],
+    views: ['Main', 'Layers', 'Search'],
+    models: ['Layer', 'Search'],
+    controllers: ["Main", "Search"],
 
     icon: {
         '57': 'resources/icons/Icon.png',

@@ -1,0 +1,27 @@
+Ext.define("{{package}}.view.Search", {
+    extend: 'Ext.dataview.List',
+    xtype: 'searchview',
+    requires: ['Ext.dataview.List', '{{package}}.model.Search'],
+
+    config: {
+        fullscreen: true,
+        itemTpl: '<div>{name}</div>',
+        selectedCls: '',
+        emptyText: 'No search result',
+        store: 'searchStore',
+        onItemDisclosure: true,
+        pinHeaders: true,
+        ui: 'round',
+        grouped: true,
+        items: [{
+            docked: 'top',
+            xtype: 'toolbar',
+            items: [{
+                xtype: 'button',
+                iconCls: 'home',
+                iconMask: true,
+                action: 'home'
+            }]
+        }]
+    }
+});

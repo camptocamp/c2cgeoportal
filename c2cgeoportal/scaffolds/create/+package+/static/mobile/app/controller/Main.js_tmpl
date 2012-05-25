@@ -1,0 +1,56 @@
+Ext.define('{{package}}.controller.Main', {
+    extend: 'Ext.app.Controller',
+    
+    config: {
+        refs: {
+            mainView: 'mainview',
+            layersView: 'layersview'
+        },
+        control: {
+            'button[action=home]': {
+                tap: function() {
+                    this.redirectTo('home');
+                }
+            },
+            'button[action=layers]': {
+                tap: function() {
+                    this.redirectTo('layers');
+                }
+            }
+        },
+        routes: {
+            '': 'showHome',
+            'home': 'showHome',
+            'layers': 'showLayers'
+        }
+    },
+    
+    //called when the Application is launched, remove if not needed
+    launch: function(app) {
+        
+    },
+
+    showHome: function() {
+        Ext.Viewport.setActiveItem(0);
+    },
+
+    showLayers: function() {
+        var view = this.getLayersView();
+        if (!view) {
+            view = Ext.create('{{package}}.view.Layers');
+            var store = Ext.create('Ext.data.Store', {
+                model: '{{package}}.model.Layer',
+                data: this.getMainView().getMap().layers
+            });
+            view.setStore(store);
+        }
+        Ext.Viewport.setActiveItem(view);
+    },
+
+    recenterMap: function(record) {
+        var f = record.raw;
+        this.getMainView().recenterOnFeature(f);
+        this.redirectTo('home');
+    }
+
+});

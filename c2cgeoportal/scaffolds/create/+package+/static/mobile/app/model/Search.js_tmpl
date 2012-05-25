@@ -1,0 +1,24 @@
+Ext.define('{{package}}.model.Search', {
+    extend: 'Ext.data.Model',
+
+    config: {
+        fields: [
+            {name: 'name', mapping: 'toponymName'}
+        ]
+    }
+});
+
+Ext.create('Ext.data.Store', {
+    storeId: 'searchStore',
+    model: '{{package}}.model.Search',
+    groupField: 'source',
+    proxy: {
+        // FIXME: is JsonP required?
+        type: 'jsonp',
+        url: 'http://ws.geonames.org/searchJSON',
+        reader: {
+            type: 'json',
+            rootProperty: 'geonames'
+        }
+    }
+});

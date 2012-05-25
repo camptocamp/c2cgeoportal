@@ -192,5 +192,16 @@ Ext.define("{{package}}.view.Main", {
             ]
         });
         return map;
+    },
+
+    /**
+     * Method: recenterOnFeature
+     */
+    recenterOnFeature: function(f) {
+        if (f) {
+            var lonlat = new OpenLayers.LonLat(f.lng, f.lat);
+            lonlat.transform('EPSG:4326', this.getMap().getProjection());
+            this.getMap().setCenter(lonlat, 13);
+        }
     }
 });
