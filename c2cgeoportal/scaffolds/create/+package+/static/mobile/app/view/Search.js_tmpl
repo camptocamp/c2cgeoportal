@@ -17,6 +17,8 @@ Ext.define("{{package}}.view.Search", {
             docked: 'top',
             xtype: 'toolbar',
             items: [{
+                xtype: 'spacer'
+            }, {
                 xtype: 'button',
                 iconCls: 'home',
                 iconMask: true,

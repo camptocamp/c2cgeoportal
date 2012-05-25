@@ -8,6 +8,8 @@ Ext.define("{{package}}.view.Layers", {
             docked: 'top',
             xtype: 'toolbar',
             items: [{
+                xtype: 'spacer'
+            }, {
                 xtype: 'button',
                 iconCls: 'home',
                 iconMask: true,
