@@ -83,7 +83,8 @@ At this point you can deactivate the Python env::
 Remove the ``egg-info`` directory, as it shouldn't be added to the
 application's source repository::
 
-    $ rm -rf <project_name>/*.egg-info
+    $ cd <project_name>
+    $ rm -rf *.egg-info
 
 If this application is not part of a parent/child architecture, or is
 a ``parent`` application, you can just remove the ``buildout_child.cfg`` file::
