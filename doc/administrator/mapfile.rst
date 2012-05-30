@@ -122,7 +122,13 @@ To define a restricted layer in the mapfile the ``DATA`` property of the
 replaced as appropriate. ``<table>`` is the name of the PostGIS table including
 the geographic data for this layer. ``<the_geom>`` is the name of the table's
 geometry column. ``<schema>`` is the name of the schema including the table.
-``layer_name`` is the name of this layer as defined with the ``NAME`` property.
+``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
+what's configured in the admin interface for the layer.
+
+.. warning:: In some cases you can have geometries that overlap the restriction 
+	area. Theses features won't be displayed as they are not in the area (ie not 
+	*contained*). *st_intersects* or other operator could be used instead of the 
+	*st_contains* operator.
 
 The ``${vars:mapfile_data_subselect}`` variable is defined in the Buildout
 configuration file (``CONST_buildout.cfg``). Its goal is to simplify the
