@@ -135,3 +135,29 @@ the value of the ``rolename`` environment variable by querying the database.
     The registered by the application overwrites it.
 
 You should be set at this point.
+
+Custom user validation
+----------------------
+
+For logging in ``c2cgeoportal`` validates the user credentials
+(username/password) by reading the user information from the ``user`` database
+table. If a c2cgeoportal application should work with another user information
+source, like LDAP, another *client validation* mechanism should be set up.
+``c2cgeoportal`` provides a specific ``Configurator`` function for that, namely
+``set_user_validator``. Here's an example::
+
+    def user_validator(request, username, password):
+        from pyramid_ldap import get_ldap_connector
+        connector = get_ldap_connector(request)
+        data = connector.authenticate(login, password)
+        if data is not None:
+            return data[0]
+        return None
+
+The validator function is passed three arguments: ``request``, ``username``,
+and ``password``. The function should return the user name if the credentials
+are valid, and ``None`` otherwise.
+
+In this example the `pyramid_ldap package
+<http://docs.pylonsproject.org/projects/pyramid_ldap/en/latest/>`_ is used as
+the user information source.
