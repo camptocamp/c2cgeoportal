@@ -43,10 +43,15 @@ def get_user_from_request(request):
     ``None`` if user is anonymous.
     """
     from c2cgeoportal.models import DBSession, User
+    from sqlalchemy.orm import joinedload
     username = unauthenticated_userid(request)
     if username is not None:
-        return DBSession.query(User).filter_by(
-                    username=username).one()
+        # we know we'll need to role object for the
+        # user so we use earger loading
+        return DBSession.query(User) \
+                        .options(joinedload(User.role)) \
+                        .filter_by(username=username) \
+                        .one()
 
 
 def includeme(config):

@@ -15,13 +15,9 @@ class FAModels(Models):
     ]
 
 
-def defaultgroupsfinder(userid, request):
-    # should be after the application initialisation
-    from c2cgeoportal.models import DBSession, Role, User, AUTHORIZED_ROLE
-
-    role = DBSession.query(Role).join(Role.users).filter(User.username == userid).one()
-
-    if role and role.name == 'role_admin':
-        return  [AUTHORIZED_ROLE]
-    else:
-        return []
+def defaultgroupsfinder(username, request):
+    """ The c2cgeoportal default group finder. To be used as the callback of
+    the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
+    policy. """
+    role = request.user.role
+    return [role.name] if role else []

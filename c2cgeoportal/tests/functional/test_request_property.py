@@ -49,13 +49,20 @@ class TestRequestFactory(TestCase):
         # reify works for us
         self.assertEqual(request.user.username, u'__test_user')
         self.assertEqual(request.user.username, u'__test_user')
+        self.assertEqual(request.user.role.name, u'__test_role')
 
     def test_request_auth_overwritten_property(self):
         def setter(request):
             class User(object):
                 pass
+
+            class Role(object):
+                pass
+
             u = User()
             u.username = u'__foo'
+            u.role = Role()
+            u.role.name = u'__bar'
             return u
 
         self.config.testing_securitypolicy(u'__test_user')
@@ -65,6 +72,7 @@ class TestRequestFactory(TestCase):
         # reify works for us
         self.assertEqual(request.user.username, u'__foo')
         self.assertEqual(request.user.username, u'__foo')
+        self.assertEqual(request.user.role.name, u'__bar')
 
     def _create_request(self):
         from pyramid.request import Request
