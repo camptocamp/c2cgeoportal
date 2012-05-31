@@ -47,6 +47,7 @@ Ext.onReady(function() {
         requestEncoding: 'REST',
         buffer: 0,
         transitionEffect: "resize",
+        visibility: false,
         style: 'default',
         dimensions: ['TIME'],
         params: {
