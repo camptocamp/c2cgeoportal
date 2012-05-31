@@ -136,10 +136,10 @@
         var state = el.value;
         var fields = [];
         if (state == "internal WMS") {
-            fields = ["style", "imageType", "legendRule", "imageType"];
+            fields = ["legendRule"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "style", "imageType", "legendRule", "isSingleTile", "imageType"];
+            fields = ["url", "style", "imageType", "legendRule", "isSingleTile"];
         }
         else if (state == "WMTS") {
             fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl", "wmsLayers"];
