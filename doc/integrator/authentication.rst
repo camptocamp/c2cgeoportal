@@ -43,32 +43,21 @@ main ``__init__.py`` file, and set ``authentication_policy`` to a
     from c2cgeoportal.resources import FAModels, defaultgroupsfinder
     from ${package}.resources import Root
 
-    def auth_policy_callback(username, request):
-        # this function is called when either unauthenticated_userid
-        # or effective_principals is called
-
-        from c2cgeoportal.models import AUTHORIZED_ROLE
-
-        rolename = request.environ.get('rolename')
-        assert rolename is not None
-
-        return [AUTHORIZED_ROLE] if rolename == 'role_admin' else []
-
-
     def main(global_config, **settings):
         """ This function returns a Pyramid WSGI application.
         """
         authentication_policy = RemoteUserAuthenticationPolicy(
-                callback=auth_policy_callback)
+                callback=defaultgroupsfinder)
         config = Configurator(root_factory=Root, settings=settings,
                 locale_negotiator=locale_negotiator,
                 authentication_policy=authentication_policy)
         # ...
 
-The callback (``auth_policy_callback`` here) is required for the admin
-interface. If it was not set admin users would not be able to access the admin
-interface.  The callback defined here assumes that the role name is set in the
-``rolename`` environment variable. We come back to this below.
+``c2cgeoportal`` provides an authentication policy callback, namely
+``defaultgroupsfinder``, that is appropriate in most cases. This callback
+assumes that ``request.user.role`` is a reference to the ``Role`` database
+object (more information below). This callback is required for admin users to
+be able to access to the admin interface.
 
 It is important to note that when using a "remote user" authentication policy
 the authentication process is delegated to an outside system. So calls to
@@ -91,17 +80,16 @@ by relying on the `mod_setenvif
 
 With this ``mod_setenvif`` extracts the role name from the ``sectoken`` header
 and places it in the ``rolename`` environment variable. See the ``mod_setenvif``
-documentation for more detail. You should now be able to better understand
-what the ``auth_policy_callback`` function does.
+documentation for more detail.
 
 The ``c2cgeoportal`` code expects that the user data (user name and role name)
 is available through the ``user`` property in the ``request`` object. More
-specifically it expects ``request.user.role.id`` to contain the role id (id of
-the role record in the database). To provide ``c2cgeoportal`` with what it
-expects the application should redefine the callback function that adds
-a ``user`` property to the request. This is done by calling the
-``set_request_property`` function on the ``Configurator`` object.  For
-example::
+specifically it expects ``request.user.role.id`` to contain the role id, and
+``request.user.role.name`` to contain the role name. To provide
+``c2cgeoportal`` with what it expects the application should redefine the
+callback function that adds a ``user`` property to the request. This is done by
+calling the ``set_request_property`` function on the ``Configurator`` object.
+For example::
 
     from pyramid.security import unauthenticated_userid
 
