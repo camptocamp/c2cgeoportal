@@ -18,7 +18,7 @@ from math import sqrt
 
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
-        RestrictionArea, Role, layer_ra, role_ra, User
+        RestrictionArea, Role, layer_ra, role_ra
 
 log = logging.getLogger(__name__)
 
@@ -385,10 +385,9 @@ class Entry(object):
         if not (login and password):
             return HTTPBadRequest('"login" and "password" should be " \
                     "available in request params')
-        user = DBSession.query(User).filter_by(username=login).first()
-        if user and user.validate_password(password):
+        if self.request.registry.validate_user(self.request, login, password):
             headers = remember(self.request, login)
-            log.info("User '%s' (%i) logged in." % (user.username, user.id))
+            log.info("User '%s' logged in." % login)
 
             cameFrom = self.request.params.get("came_from")
             if cameFrom:
