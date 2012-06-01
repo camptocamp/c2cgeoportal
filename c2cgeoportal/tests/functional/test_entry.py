@@ -72,6 +72,7 @@ class TestEntryView(TestCase):
     #
 
     def test_login(self):
+        from c2cgeoportal import default_user_validator
         from c2cgeoportal.views.entry import Entry
         from pyramid.security import authenticated_userid
 
@@ -79,6 +80,7 @@ class TestEntryView(TestCase):
         request.params['login'] = u'__test_user1'
         request.params['password'] = u'__test_user1'
         request.params['came_from'] = "/came_from"
+        request.registry.validate_user = default_user_validator
         request.user = None
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302) 

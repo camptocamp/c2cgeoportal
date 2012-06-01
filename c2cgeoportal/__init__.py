@@ -54,6 +54,29 @@ def get_user_from_request(request):
                         .one()
 
 
+def set_user_validator(config, user_validator):
+    """ Call this function to register a user validator function.
+
+    The validator function is passed three arguments: ``request``,
+    ``username``, and ``password``. The function should return the
+    user name if the credentials are valid, and ``None`` otherwise.
+
+    The validator should not do the actual authentication operation
+    by calling ``remember``, this is handled by the ``login`` view.
+    """
+    def register():
+        config.registry.validate_user = user_validator
+    config.action('user_validator', register)
+
+
+def default_user_validator(request, username, password):
+    """ Validate the username/password. This is c2cgeoportal's
+    default user validator. """
+    from c2cgeoportal.models import DBSession, User
+    user = DBSession.query(User).filter_by(username=username).first()
+    return username if user and user.validate_password(password) else None
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -91,6 +114,11 @@ def includeme(config):
     # add the "xsd" renderer
     config.add_renderer('xsd', XSD(
             sequence_callback=dbreflection._xsd_sequence_callback))
+
+    # add the set_user_validator directive, and set a default user
+    # validator
+    config.add_directive('set_user_validator', set_user_validator)
+    config.set_user_validator(default_user_validator)
 
     # add a TileCache view
     load_tilecache_config(config.get_settings())
