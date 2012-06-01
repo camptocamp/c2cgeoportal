@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 Base = sqlahelper.get_base()
 DBSession = sqlahelper.get_session()
 
-AUTHORIZED_ROLE = 'admin-interface'
+AUTHORIZED_ROLE = 'role_admin'
 
 if schema is not None:
     _schema = schema
