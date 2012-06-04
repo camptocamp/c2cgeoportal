@@ -1,8 +1,10 @@
 import functools
+import warnings
 
 from sqlalchemy import Table, sql, types
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
+from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.declarative import declarative_base
 
 from geoalchemy import Geometry, GeometryColumn
@@ -138,17 +140,22 @@ def get_class(tablename):
     engine = Base.metadata.bind
 
     # create table and reflect it
-    table = Table(tablename, Base.metadata,
-                  schema=schema,
-                  autoload=True,
-                  autoload_with=engine,
-                  listeners=[
-                        ('column_reflect',
-                         functools.partial(_column_reflect_listener,
-                                           engine=engine)
-                         )
-                    ]
-                  )
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            'ignore',
+            "Did not recognize type 'geometry' of column",
+            SAWarning)
+        table = Table(tablename, Base.metadata,
+                      schema=schema,
+                      autoload=True,
+                      autoload_with=engine,
+                      listeners=[
+                            ('column_reflect',
+                             functools.partial(_column_reflect_listener,
+                                               engine=engine)
+                             )
+                        ]
+                      )
 
     # create the mapped class
     cls = _create_class(table)
