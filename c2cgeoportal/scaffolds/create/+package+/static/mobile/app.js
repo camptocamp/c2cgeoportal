@@ -36,11 +36,75 @@ Ext.application({
     },
 
     launch: function() {
-        // Destroy the #appLoadingIndicator element
+
+        // The application launch function is where the map
+        // and layers are created.
+
+        var map = new OpenLayers.Map({
+            theme: null,
+            projection: 'EPSG:900913',
+            controls: [
+                new OpenLayers.Control.TouchNavigation({
+                    dragPanOptions: {
+                        interval: 1,
+                        enableKinetic: true
+                    }
+                }),
+                new OpenLayers.Control.Attribution(),
+                new OpenLayers.Control.ScaleLine()
+            ],
+            layers: [
+                new OpenLayers.Layer.OSM("OpenStreetMap", null, {
+                    transitionEffect: 'resize'
+                }),
+                new OpenLayers.Layer.OSM(
+                    "Cycle Map",
+                    [
+                        "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                        "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                        "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
+                    ],
+                    {
+                        transitionEffect: 'resize'
+                    }
+                ),
+                new OpenLayers.Layer.OSM(
+                    "Transport Map",
+                    [
+                        "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                        "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                        "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
+                    ],
+                    {
+                        transitionEffect: 'resize'
+                    }
+
+                ),
+                new OpenLayers.Layer.WMS(
+                    "Summits",
+                    "http://www.camptocamp.org/cgi-bin/c2corg_wms",
+                    {
+                        allLayers: ['summits', "huts", "sites", "users"],
+                        layers: ['summits'],
+                        transparent: true
+                    },
+                    {
+                        singleTile: true,
+                        ratio: 1
+                    }
+                )
+            ]
+        });
+
+        // create the main view and set the map into it
+        var mainView = Ext.create('App.view.Main');
+        mainView.setMap(map);
+
+        // destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        // Initialize the main view
-        Ext.Viewport.add(Ext.create('App.view.Main'));
+        // now add the main view to the viewport
+        Ext.Viewport.add(mainView);
     },
 
     onUpdated: function() {

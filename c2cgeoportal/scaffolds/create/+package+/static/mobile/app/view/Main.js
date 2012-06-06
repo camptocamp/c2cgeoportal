@@ -77,47 +77,60 @@ Ext.define("App.view.Main", {
             single: true
         });
 
-        // create the map
-        var map = this.createMap();
-        this.setMap(map);
-
         // base layer manager
-        var baseLayersStore = Ext.create('Ext.data.Store', {
-            model: 'App.model.Layer'
-        });
-        Ext.each(this.getMap().layers, function(layer) {
-            if (layer.isBaseLayer) {
-                baseLayersStore.add(layer);
-            }
-        });
         var baseLayerSwitcher = this.down('#baselayer_switcher');
-        baseLayerSwitcher.setStore(baseLayersStore);
-        baseLayerSwitcher.on(
-            'change',
-            function(select, newValue) {
-                map.setBaseLayer(map.getLayer(newValue));
-            }
-        );
+        baseLayerSwitcher.on({
+            'change': function(select, newValue) {
+                // when applyMap adds layers to the base layer
+                // store "change" is fired by the field, and
+                // we don't have a map at that time yet
+                var map = this.getMap();
+                if (map) {
+                    map.setBaseLayer(map.getLayer(newValue));
+                }
+            },
+            scope: this
+        });
 
         // zoom buttons
-        this.down('[action=zoomin]').on('tap', function() {map.zoomIn();});
-        this.down('[action=zoomout]').on('tap', function() {map.zoomOut();});
+        this.down('[action=zoomin]').on({
+            'tap': function() {
+                this.getMap().zoomIn();
+            }
+        });
+        this.down('[action=zoomout]').on({
+            'tap': function() {
+                this.getMap().zoomOut();
+            }
+        });
 
         var geolocation = Ext.create('Ext.util.Geolocation', {
             autoUpdate: false
         });
-        this.down('[action=locate]').on(
-            'tap',
-            function() {
+        this.down('[action=locate]').on({
+            'tap': function() {
                 geolocation.on('locationupdate', function(geo) {
                     var lonlat = new OpenLayers.LonLat(geo.getLongitude(),
                                                        geo.getLatitude());
                     lonlat.transform('EPSG:4326', map.getProjection());
-                    map.setCenter(lonlat, 10);
-                }, null, {single: true});
+                    this.getMap().setCenter(lonlat, 10);
+                }, this, {single: true});
                 geolocation.updateLocation();
             }
-        );
+        });
+    },
+
+    applyMap: function(map) {
+        var baseLayersStore = Ext.create('Ext.data.Store', {
+            model: 'App.model.Layer'
+        });
+        Ext.each(map.layers, function(layer) {
+            if (layer.isBaseLayer) {
+                baseLayersStore.add(layer);
+            }
+        });
+        this.down('#baselayer_switcher').setStore(baseLayersStore);
+        return map;
     },
 
     destroy: function() {
@@ -133,65 +146,6 @@ Ext.define("App.view.Main", {
         var map = this.getMap();
         map.render(this.down('#map-container').element.dom);
         map.zoomToMaxExtent();
-    },
-
-    createMap: function() {
-        var map = new OpenLayers.Map({
-            theme: null,
-            projection: 'EPSG:900913',
-            controls: [
-                new OpenLayers.Control.TouchNavigation({
-                    dragPanOptions: {
-                        interval: 1,
-                        enableKinetic: true
-                    }
-                }),
-                new OpenLayers.Control.Attribution(),
-                new OpenLayers.Control.ScaleLine()
-            ],
-            layers: [
-                new OpenLayers.Layer.OSM("OpenStreetMap", null, {
-                    transitionEffect: 'resize'
-                }),
-                new OpenLayers.Layer.OSM(
-                    "Cycle Map",
-                    [
-                        "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                        "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                        "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
-                    ],
-                    {
-                        transitionEffect: 'resize'
-                    }
-                ),
-                new OpenLayers.Layer.OSM(
-                    "Transport Map",
-                    [
-                        "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                        "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                        "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
-                    ],
-                    {
-                        transitionEffect: 'resize'
-                    }
-
-                ),
-                new OpenLayers.Layer.WMS(
-                    "Summits",
-                    "http://www.camptocamp.org/cgi-bin/c2corg_wms",
-                    {
-                        allLayers: ['summits', "huts", "sites", "users"],
-                        layers: ['summits'],
-                        transparent: true
-                    },
-                    {
-                        singleTile: true,
-                        ratio: 1
-                    }
-                )
-            ]
-        });
-        return map;
     },
 
     /**
