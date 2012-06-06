@@ -1,7 +1,7 @@
-Ext.define("{{package}}.view.Search", {
+Ext.define("App.view.Search", {
     extend: 'Ext.dataview.List',
     xtype: 'searchview',
-    requires: ['Ext.dataview.List', '{{package}}.model.Search'],
+    requires: ['Ext.dataview.List', 'App.model.Search'],
 
     config: {
         fullscreen: true,

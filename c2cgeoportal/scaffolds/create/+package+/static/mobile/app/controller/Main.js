@@ -1,4 +1,4 @@
-Ext.define('{{package}}.controller.Main', {
+Ext.define('App.controller.Main', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -37,9 +37,9 @@ Ext.define('{{package}}.controller.Main', {
     showLayers: function() {
         var view = this.getLayersView();
         if (!view) {
-            view = Ext.create('{{package}}.view.Layers');
+            view = Ext.create('App.view.Layers');
             var store = Ext.create('Ext.data.Store', {
-                model: '{{package}}.model.Layer',
+                model: 'App.model.Layer',
                 data: this.getMainView().getMap().layers
             });
             view.setStore(store);

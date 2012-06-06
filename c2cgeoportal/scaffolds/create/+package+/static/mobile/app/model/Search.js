@@ -1,4 +1,4 @@
-Ext.define('{{package}}.model.Search', {
+Ext.define('App.model.Search', {
     extend: 'Ext.data.Model',
 
     config: {
@@ -10,7 +10,7 @@ Ext.define('{{package}}.model.Search', {
 
 Ext.create('Ext.data.Store', {
     storeId: 'searchStore',
-    model: '{{package}}.model.Search',
+    model: 'App.model.Search',
     groupField: 'source',
     proxy: {
         // FIXME: is JsonP required?

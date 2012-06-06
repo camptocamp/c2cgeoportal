@@ -1,4 +1,4 @@
-Ext.define("{{package}}.view.Layers", {
+Ext.define("App.view.Layers", {
     extend: 'Ext.form.Panel',
     xtype: 'layersview',
 

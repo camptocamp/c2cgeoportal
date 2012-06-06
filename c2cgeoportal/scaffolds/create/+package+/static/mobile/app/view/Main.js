@@ -1,10 +1,10 @@
-Ext.define("{{package}}.view.Main", {
+Ext.define("App.view.Main", {
     extend: 'Ext.Container',
     xtype: 'mainview',
     requires: [
         'Ext.field.Search',
         'Ext.field.Select',
-        '{{package}}.model.Layer',
+        'App.model.Layer',
         'Ext.util.Geolocation'
     ],
 
@@ -83,7 +83,7 @@ Ext.define("{{package}}.view.Main", {
 
         // base layer manager
         var baseLayersStore = Ext.create('Ext.data.Store', {
-            model: '{{package}}.model.Layer'
+            model: 'App.model.Layer'
         });
         Ext.each(this.getMap().layers, function(layer) {
             if (layer.isBaseLayer) {

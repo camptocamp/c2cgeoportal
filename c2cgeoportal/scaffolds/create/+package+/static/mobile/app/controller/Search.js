@@ -1,4 +1,4 @@
-Ext.define('{{package}}.controller.Search', {
+Ext.define('App.controller.Search', {
     extend: 'Ext.app.Controller',
     
     config: {

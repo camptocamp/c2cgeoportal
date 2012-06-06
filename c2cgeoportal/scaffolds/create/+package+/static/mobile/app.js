@@ -1,5 +1,5 @@
 Ext.application({
-    name: '{{package}}',
+    name: 'App',
 
     viewport: {
         // hide the address bar
@@ -40,7 +40,7 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('{{package}}.view.Main'));
+        Ext.Viewport.add(Ext.create('App.view.Main'));
     },
 
     onUpdated: function() {
