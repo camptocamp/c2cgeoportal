@@ -62,6 +62,23 @@ class Entry(object):
 
         return (resolutionHintMin, resolutionHintMax)
 
+    def _get_child_layers_info(self, layer):
+        """ Return information about sub layers of a layer.
+
+            Arguments:
+
+            * ``layer`` The layer object in the WMS capabilities.
+        """
+        child_layers_info = []
+        for child_layer in layer.layers:
+            resolution = self._getLayerResolutionHint(child_layer)
+            child_layers_info.append({
+                    'name': child_layer.name,
+                    'minResolutionHint': float('%0.2f' % resolution[0]),
+                    'maxResolutionHint': float('%0.2f' % resolution[1])
+                    })
+        return child_layers_info
+
     def _getIconPath(self, icon):
         if not icon:
             return None
@@ -143,6 +160,7 @@ class Entry(object):
                     l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
         if layer.legendRule:
             l['legendRule'] = layer.legendRule
+        l['childLayers'] = self._get_child_layers_info(wms[layer.name])
 
     def _fill_non_internal_WMS(self, l, layer):
         if layer.minResolution and layer.maxResolution:
