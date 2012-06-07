@@ -31,42 +31,22 @@ Update c2cgeoportal
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
-1. Set a new version for the ``c2cgeoportal`` package. For this edit the
-   application's buildout config file and change the version for the
-   ``c2cgeoportal`` dependency in the ``[versions]`` section.
+1. Make your application require the new version of the ``c2cgeoportal``
+   package. For that edit the application's ``setup.py`` file, and change the
+   ``c2cgeoportal`` requirement as appropriate. For example, if you were
+   upgrading to ``c2cgeoportal`` version 0.7, you'd use this::
 
-   .. note::
+       c2cgeoportal>=0.7,<=0.7.99
 
-        If you are migrating from c2cgeoportal 0.6 to 0.7 you also need to
-        change the versions of the ``pyramid`` packages and its dependencies::
+1. Now edit the application's Buildout config (``buildout.cfg``), remove all
+   the lines from the ``[versions]`` section, **except** for ``distribute``.
+   Emptying the ``[versions]`` section is necessary for
+   getting new dependency versions using ``buildout -n`` (see the next step).
 
-            Chameleon=2.8.5
-            Mako=0.7.0
-            MarkupSafe=0.15
-            ordereddict=1.1
-            PasteDeploy=1.5.0
-            pyramid=1.3.2
-            repoze.lru=0.5
-            translationstring=1.1
-            unittest2=0.5.1
-            venusian=1.0a6
-            WebOb=1.2
-            zope.deprecation=4.0.0
-            zope.interface=4.0.0
+2. Execute ``buildout`` with the ``-n`` flag to download and install new
+   versions of dependencies (``c2cgeoportal`` included)::
 
-        Prior to running ``buildout`` (next step) it is recommended to remove
-        from ``buildout/eggs`` the old versions of the packages listed above.
-        For example::
-
-            $ rm -rf buildout/eggs/zope.interface-3.8.0-py2.6-linux-x86_64.egg
-
-        These extra steps are related to c2cgeoportal 0.7 requiring Pyramid
-        1.3.
-
-2. Execute ``buildout`` to download and install the new version of the
-   ``c2cgeoportal`` package::
-
-       $ ./buildout/bin/buildout -c <buildout_config_file>
+       $ ./buildout/bin/buildout -n -c <buildout_config_file>
 
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
