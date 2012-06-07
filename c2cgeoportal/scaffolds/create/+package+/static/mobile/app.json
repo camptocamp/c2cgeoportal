@@ -57,7 +57,7 @@
      */
     "css": [
         {
-            "path": "resources/css/app.css",
+            "path": "../mobile/resources/css/app.css",
             "update": "delta"
         }
     ],
@@ -88,9 +88,9 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "resources/images",
-        "resources/icons",
-        "resources/startup"
+        "../mobile/resources/images",
+        "../mobile/resources/icons",
+        "../mobile/resources/startup"
     ],
 
     /**
