@@ -71,12 +71,14 @@ class Entry(object):
         """
         child_layers_info = []
         for child_layer in layer.layers:
+            child_layer_info = dict(name=child_layer.name)
             resolution = self._getLayerResolutionHint(child_layer)
-            child_layers_info.append({
-                    'name': child_layer.name,
+            if resolution[0] <= resolution[1]:
+                child_layer_info.update({
                     'minResolutionHint': float('%0.2f' % resolution[0]),
                     'maxResolutionHint': float('%0.2f' % resolution[1])
                     })
+            child_layers_info.append(child_layer_info)
         return child_layers_info
 
     def _getIconPath(self, icon):
