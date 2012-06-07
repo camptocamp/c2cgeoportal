@@ -188,29 +188,31 @@ substituted at Buildout execution time.
 Variable Substitution
 ---------------------
 
-We can use the substitution to for example hide some attributes
-for sub role.
+It is possible to adapt some values in the mapfile according to the user's role
+by using variable substitution. For instance to hide some layer objects 
+attributes.
 
-To do that you should edit your MapFile in the ``MAP``/``LAYER``/``METADATA``
-section and add::
+To define variables, edit the matching ``MAP``/``LAYER``/``METADATA``
+section in the mapfile and add::
 
     "default_s_<variable>" "<default_value>"
     "s_<variable>_validation_pattern" "<validation_pattern>"
 
-The ``validation_pattern`` is a regular expression to validate the argument,
-for example if you want only lowercase char and coma it can be ``^[a-z,]*$$``
-(the double '$' is needed is we are in a ``.in`` file).
+The ``validation_pattern`` is a regular expression used to validate the 
+argument. For example if you only want lowercase characters and commas,
+use ``^[a-z,]*$$`` (the double '$' is needed since we are 
+in a ``.in`` file).
 
-Now in the ``LAYER`` you can use ``%s_<variable>%`` where you want the
-value.
+Now in ``LAYER`` place ``%s_<variable>%`` where you want to 
+insert the variable value.
 
-Than in the admin interface you can create a Functionality named
+Then in the administration interface, create a ``functionality`` named
 ``mapserver_substitution`` with the value: ``<variable>=<value>``.
 
-Unfortunately we can't use substitution in the ``MATADATA`` values than
-in ours example we can do columns restriction on a ``LAYER``,
-with the variable ``columns``, with the defaut visible column:
-``name``::
+Please note that we cannot use substitution in the ``MATADATA`` values.
+As a result, if you would like to adapt the list of attributes returned in a
+WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
+listed in the ``DATA`` section. For instance::
 
     LAYER
         ...
@@ -229,8 +231,8 @@ with the variable ``columns``, with the defaut visible column:
         ...
     END
 
-In the admin interface we can allow a role to access to the columns name and private
-by liked it to the ``mapserver_substitution`` functionnalities ``columns=t.name``
-and ``columns=t.private``.
+Then add a ``mapserver_substitution`` functionality in the administration
+interface with for instance the following value for tthee given role:
+``columns=t.private``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
