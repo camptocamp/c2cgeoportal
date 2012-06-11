@@ -165,6 +165,8 @@ class Entry(object):
                 if 'maxResolutionHint' not in l:
                     l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
             l['childLayers'] = self._get_child_layers_info(wms_layer_obj)
+        else:
+            log.warning('layer %s not defined in WMS caps doc', layer.name)
 
     def _fill_non_internal_WMS(self, l, layer):
         if layer.minResolution and layer.maxResolution:
