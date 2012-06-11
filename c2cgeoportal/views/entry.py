@@ -146,23 +146,27 @@ class Entry(object):
 
     def _fill_internal_WMS(self, l, layer, wms_layers, wms):
         # this is a leaf, ie. a Mapserver layer
-        # => add the metadata URL if any
-        if layer.name in wms_layers:
-            metadataUrls = self._getLayerMetadataUrls(wms[layer.name])
-            if len(metadataUrls) > 0:
-                l['metadataUrls'] = metadataUrls
-        if layer.minResolution and layer.maxResolution:
+        if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
+        if layer.maxResolution:
             l['maxResolutionHint'] = layer.maxResolution
-        else:
-            if layer.name in wms_layers:
-                resolutions = self._getLayerResolutionHint(wms[layer.name])
-                if resolutions[0] <= resolutions[1]:
-                    l['minResolutionHint'] = float('%0.2f' % resolutions[0])
-                    l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
         if layer.legendRule:
             l['legendRule'] = layer.legendRule
-        l['childLayers'] = self._get_child_layers_info(wms[layer.name])
+        # now look at what's in the WMS capabilities doc
+        if layer.name in wms_layers:
+            wms_layer_obj = wms[layer.name]
+            metadataUrls = self._getLayerMetadataUrls(wms_layer_obj)
+            if len(metadataUrls) > 0:
+                l['metadataUrls'] = metadataUrls
+            resolutions = self._getLayerResolutionHint(wms_layer_obj)
+            if resolutions[0] <= resolutions[1]:
+                if 'minResolutionHint' not in l:
+                    l['minResolutionHint'] = float('%0.2f' % resolutions[0])
+                if 'maxResolutionHint' not in l:
+                    l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
+            l['childLayers'] = self._get_child_layers_info(wms_layer_obj)
+        else:
+            log.warning('layer %s not defined in WMS caps doc', layer.name)
 
     def _fill_non_internal_WMS(self, l, layer):
         if layer.minResolution and layer.maxResolution:
