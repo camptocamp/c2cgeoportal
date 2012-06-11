@@ -21,7 +21,7 @@
 
 Ext.namespace('{{package}}');
 
-${package}.Map = Ext.extend(cgxp.api.Map, {
+{{package}}.Map = Ext.extend(cgxp.api.Map, {
 
     /**
      * Constructor
