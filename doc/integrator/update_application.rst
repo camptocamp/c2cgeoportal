@@ -38,12 +38,12 @@ steps:
 
        c2cgeoportal>=0.7,<=0.7.99
 
-1. Now edit the application's Buildout config (``buildout.cfg``), remove all
+2. Now edit the application's Buildout config (``buildout.cfg``), remove all
    the lines from the ``[versions]`` section, **except** for ``distribute``.
    Emptying the ``[versions]`` section is necessary for
    getting new dependency versions using ``buildout -n`` (see the next step).
 
-2. Execute ``buildout`` with the ``-n`` flag to download and install new
+3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
 
        $ ./buildout/bin/buildout -n -c <buildout_config_file>
@@ -51,7 +51,7 @@ steps:
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
 
-3. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
+4. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
    found (...)`` can be ignored).
 
    For ``c2cgeoportal`` 0.7 and higher::
@@ -70,17 +70,17 @@ steps:
    application's Python code. If unsure, see the ``name`` argument to the
    ``setup`` call in the application's ``setup.py`` file.
 
-4. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-5. Update the database using the ``manage_db`` script::
+6. Update the database using the ``manage_db`` script::
 
         $ ./buildout/bin/manage_db -c production.ini -n <package_name> upgrade
 
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-6. Execute ``buildout`` one more time to rebuild and reinstall the
+7. Execute ``buildout`` one more time to rebuild and reinstall the
    application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>
