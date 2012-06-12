@@ -4,11 +4,7 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.7
 ===========
 
-1. When migrating from 0.6 to 0.7 open
-   http://docs.camptocamp.net/c2cgeoportal/integrator/update_application.html
-   and pay attention to the "migrate to 0.7" specific note.
-
-2. The "pserve" command should now be used instead of "paster serve".
+1. The "pserve" command should now be used instead of "paster serve".
 
    For "pserve" to work a few simple modifications are required in
    development.ini.in, production.ini.in, print/config.yaml.in and
@@ -32,7 +28,7 @@ Version 0.7
        'waitress'
    ],
 
-3. Display directly the loading panel introduce those needed changes:
+2. Display directly the loading panel introduce those needed changes:
     * In the +package+/templates/viewer.js includes all the code in:
         Ext.onReady(function() {
             // all the code
