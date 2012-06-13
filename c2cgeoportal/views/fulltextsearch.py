@@ -5,6 +5,7 @@ from pyramid.view import view_config
 
 from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
+from sqlalchemy import desc
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
@@ -46,8 +47,12 @@ def fulltextsearch(request):
     filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
                 {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
+    rank = "ts_rank_cd(%(tsvector)s, to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
+           {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+
     objs = DBSession.query(FullTextSearch).filter(filter) \
-               .order_by(FullTextSearch.label).limit(limit).all()
+               .order_by(desc(rank)).order_by(FullTextSearch.label) \
+               .limit(limit).all()
 
     features = []
     for o in objs:
