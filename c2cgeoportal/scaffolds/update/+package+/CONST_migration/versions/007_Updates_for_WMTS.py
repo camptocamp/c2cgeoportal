@@ -50,7 +50,7 @@ def downgrade(migrate_engine):
     layer.c.matrixSet.drop()
     layer.c.wmsUrl.drop()
     layer.c.wmsLayers.drop()
-    Column('no2D', Boolean).create(layer)
+    Column('no2D', types.Boolean).create(layer)
 
 
     Base = declarative_base()

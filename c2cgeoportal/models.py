@@ -324,9 +324,9 @@ class Layer(TreeItem):
     isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
     icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
-    layerType = Column(types.Enum("internal WMS", 
+    layerType = Column(types.Enum("internal WMS",
             "external WMS",
-            "WMTS", 
+            "WMTS",
             "no 2D",
             native_enum=False), label=_(u'Type'))
     url = Column(types.Unicode, label=_(u'Base URL'))  # for externals

@@ -7,7 +7,6 @@ import sys
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name
-from pyramid.compat import json
 from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
                                     HTTPBadRequest, HTTPUnauthorized)
 from pyramid.security import remember, forget
@@ -237,7 +236,7 @@ class Entry(object):
             l['wmsUrl'] = layer.wmsUrl
             l['wmsLayers'] = layer.wmsLayers
         elif layer.wmsLayers:
-            l['wmsUrl'] = self.request.route_url('mapserverproxy') 
+            l['wmsUrl'] = self.request.route_url('mapserverproxy')
             l['wmsLayers'] = layer.wmsLayers
         elif layer.wmsUrl:
             l['wmsUrl'] = layer.wmsUrl
@@ -247,7 +246,6 @@ class Entry(object):
             l['minResolutionHint'] = layer.minResolution
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
-
 
     def _group(self, group, layers, wms_layers, wms):
         children = []
@@ -437,7 +435,7 @@ class Entry(object):
         }
 
     @view_config(route_name='edit.js', renderer='edit.js')
-    def viewer(self):
+    def editjs(self):
         d = self._getVars()
         d['lang'] = self.lang
         d['debug'] = self.debug
