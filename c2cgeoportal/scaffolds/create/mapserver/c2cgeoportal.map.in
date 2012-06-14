@@ -40,6 +40,7 @@ MAP
     OUTPUTFORMAT
         NAME jpeg
         DRIVER "AGG/JPEG"
+        MIMETYPE "image/jpeg"
         IMAGEMODE RGB
         EXTENSION "jpeg"
         FORMATOPTION "QUALITY=75,PROGRESSIVE=TRUE"
