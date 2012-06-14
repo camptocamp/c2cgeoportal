@@ -42,6 +42,10 @@ Version 0.7
       +        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
     * Do the same for the edit.js/edit.html
 
+3. If missing, add a MIME type to the "jpeg" OUTPUTFORMAT section
+   in mapserver/c2cgeoportal.map.in:
+   MIMETYPE "image/jpeg"
+
 Version 0.6
 ===========
 
