@@ -20,19 +20,19 @@ MapFile
 PostGIS layer
 ~~~~~~~~~~~~~
 
-* CLOE_CONNECTION parameter:
+* CLOSE_CONNECTION parameter:
 
-In case of using more than 2 postgis table, you should use::
+  In case of using more than 2 postgis table, you should use::
+	
 	PROCESSING "CLOSE_CONNECTION=DEFER"
-parameter.
 
-This allow MapServer not to close connection to PostGIS database and improve 
-performance.
+  parameter. This allow MapServer not to close connection to PostGIS database and improve 
+  performance.
 
 * SRID and Primary Key:
 
-Always add primary key and SRID in the DATA string, otherwise MapServer do two 
-extra queries to get the informations::
+  Always add primary key and SRID in the DATA string, otherwise MapServer do two 
+  extra queries to get the informations::
 	DATA "the_geom from the_table using unique gid using srid=4326"
 
 Outputformat
@@ -56,8 +56,8 @@ in MapServer configuration file::
 
 The important part is the three QUANTIZE_* parameters in FORMATOPTION.
 
-POSTGIS side
--------------
+POSTGIS
+--------
 
 INDEX et CLUSTER
 ~~~~~~~~~~~~~~~~~
