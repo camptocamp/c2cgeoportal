@@ -19,3 +19,4 @@ Content:
    update_application
    deploy
    authentication
+   optimization
