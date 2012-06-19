@@ -96,12 +96,14 @@ Ext.define("App.view.Main", {
         this.down('[action=zoomin]').on({
             'tap': function() {
                 this.getMap().zoomIn();
-            }
+            },
+            scope: this
         });
         this.down('[action=zoomout]').on({
             'tap': function() {
                 this.getMap().zoomOut();
-            }
+            },
+            scope: this
         });
 
         var geolocation = Ext.create('Ext.util.Geolocation', {
