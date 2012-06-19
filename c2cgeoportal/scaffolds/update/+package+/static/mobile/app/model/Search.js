@@ -11,14 +11,14 @@ Ext.define('App.model.Search', {
 Ext.create('Ext.data.Store', {
     storeId: 'searchStore',
     model: 'App.model.Search',
-    groupField: 'source',
+    groupField: 'layer_name',
     proxy: {
         // FIXME: is JsonP required?
         type: 'jsonp',
-        url: 'http://ws.geonames.org/searchJSON',
+        url: App.searchUrl,
         reader: {
             type: 'json',
-            rootProperty: 'geonames'
+            rootProperty: 'features'
         }
     }
 });

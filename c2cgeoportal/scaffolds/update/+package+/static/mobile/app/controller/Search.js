@@ -52,7 +52,7 @@ Ext.define('App.controller.Search', {
         Ext.Viewport.setActiveItem(view);
         var store = view.getStore();
         store.getProxy().setExtraParams({
-            'q': terms,
+            'query': terms,
             'maxRows': 20
         });
         store.load();

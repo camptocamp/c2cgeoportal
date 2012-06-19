@@ -155,9 +155,8 @@ Ext.define("App.view.Main", {
      */
     recenterOnFeature: function(f) {
         if (f) {
-            var lonlat = new OpenLayers.LonLat(f.lng, f.lat);
-            lonlat.transform('EPSG:4326', this.getMap().getProjection());
-            this.getMap().setCenter(lonlat, 13);
+            var bbox = new OpenLayers.Bounds.fromArray(f.bbox);
+            this.getMap().zoomToExtent(bbox);
         }
     }
 });
