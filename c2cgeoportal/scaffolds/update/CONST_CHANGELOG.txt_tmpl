@@ -46,6 +46,22 @@ Version 0.7
    in mapserver/c2cgeoportal.map.in:
    MIMETYPE "image/jpeg"
 
+4. Mapfile performance tips:
+    * To get lighter PNG outputs, use the following outputformat:
+      OUTPUTFORMAT
+          NAME png
+          DRIVER AGG/PNG
+          MIMETYPE "image/png"
+          IMAGEMODE RGBA
+          EXTENSION "png"
+          FORMATOPTION "INTERLACE=OFF"
+          FORMATOPTION "QUANTIZE_DITHER=OFF"
+          FORMATOPTION "QUANTIZE_FORCE=ON"
+          FORMATOPTION "QUANTIZE_COLORS=256"
+      END
+    * For PostGIS layers, make sure to use:
+      PROCESSING "CLOSE_CONNECTION=DEFER"
+
 Version 0.6
 ===========
 
