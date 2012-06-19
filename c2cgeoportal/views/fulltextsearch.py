@@ -5,6 +5,7 @@ from pyramid.view import view_config
 
 from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
+from sqlalchemy import desc
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
@@ -46,8 +47,21 @@ def fulltextsearch(request):
     filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
                 {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
+    # The numbers used in ts_rank_cd() below indicate a normalization method.
+    # Several normalization methods can be combined using |.
+    # 2 divides the rank by the document length
+    # 8 divides the rank by the number of unique words in document
+    # By combining them, shorter results seem to be preferred over longer ones
+    # with the same ratio of matching words. But this relies only on testing it
+    # and on some assumptions about how it might be calculated
+    # (the normalization is applied two times with the combination of 2 and 8,
+    # so the effect on at least the one-word-results is therefore stronger).
+    rank = "ts_rank_cd(%(tsvector)s, to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
+           {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+
     objs = DBSession.query(FullTextSearch).filter(filter) \
-               .order_by(FullTextSearch.label).limit(limit).all()
+               .order_by(desc(rank)).order_by(FullTextSearch.label) \
+               .limit(limit).all()
 
     features = []
     for o in objs:
