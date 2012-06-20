@@ -17,7 +17,7 @@ install_requires = [
     'papyrus_ogcproxy',
     'httplib2',
     'Babel',
-    'pyramid_formalchemy>=0.4.2',
+    'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
