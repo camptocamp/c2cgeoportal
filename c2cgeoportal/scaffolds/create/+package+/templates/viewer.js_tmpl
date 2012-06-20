@@ -6,6 +6,7 @@ Ext.onReady(function() {
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     OpenLayers.DOTS_PER_INCH = 72;
+    OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
     // Ext
     Ext.QuickTips.init();
