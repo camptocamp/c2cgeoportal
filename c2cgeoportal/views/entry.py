@@ -349,14 +349,27 @@ class Entry(object):
             functionalities[func] = get_functionalities(func, self.settings, self.request)
         d['functionalities'] = json.dumps(functionalities)
 
+        # handle permalink_themes
+        permalink_themes = self.request.params.get('permalink_themes', None)
+        if permalink_themes:
+            d['permalink_themes'] = json.dumps(permalink_themes.split(','))
+
         return d
 
     @view_config(route_name='home', renderer='index.html')
-    def home(self):
-        return {
+    def home(self, templates_params=None):
+        d = {
             'lang': self.lang,
             'debug': self.debug,
+            'extra_params': '?'
         }
+        # general templates_params handling
+        if templates_params is not None:
+            d = dict(d.items() + templates_params.items())
+        # specific permalink_themes handling
+        if d['permalink_themes']:
+            d['extra_params'] = d['extra_params'] + d['permalink_themes']
+        return d
 
     @view_config(route_name='viewer', renderer='viewer.js')
     def viewer(self):
@@ -439,3 +452,12 @@ class Entry(object):
         else:
             return HTTPFound(location=self.request.route_url('home'),
                     headers=headers)
+
+    @view_config(route_name='permalinktheme', renderer='index.html')
+    def permalinktheme (self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = 'permalink_themes=' + ','.join(themes)
+        # call home with extra params
+        return self.home(d)
