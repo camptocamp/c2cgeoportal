@@ -367,7 +367,7 @@ class Entry(object):
         if templates_params is not None:
             d = dict(d.items() + templates_params.items())
         # specific permalink_themes handling
-        if d['permalink_themes']:
+        if 'permalink_themes' in d:
             d['extra_params'] = d['extra_params'] + d['permalink_themes']
         return d
 
