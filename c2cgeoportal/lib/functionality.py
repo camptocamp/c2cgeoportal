@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import simplejson as json
-
 from pyramid.security import authenticated_userid
 
 from c2cgeoportal.models import DBSession, User
-
-
-def _cleanup(value, config):
-    result = config[value]
-    start = result.index('{')
-    end = result.rindex('}')
-    result = result[start:end + 1]
-    return result.replace('\\n', '\n')
+from c2cgeoportal.lib.config import cleanup_json
 
 
 def _get_json_functionalities(value, name, config):
-    obj = json.loads(_cleanup(value, config))
+    obj = cleanup_json(config[value])
     return obj[name] if name in obj else None
 
 
