@@ -141,7 +141,10 @@ Ext.onReady(function() {
                 layout: "fit",
                 autoScroll: true,
                 themes: THEMES,
-                defaultThemes: ["default theme"],
+                % if permalink_themes:
+                  defaultThemes: ${permalink_themes | n},
+                % else:
+                  defaultThemes: ["lieu_interet_thm"],
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
