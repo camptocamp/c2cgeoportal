@@ -149,6 +149,8 @@ def includeme(config):
     config.add_route('apiloader', '/apiloader.js')
     config.add_route('apihelp', '/apihelp.html')
     config.add_route('themes', '/themes')
+    # permalink theme: recover the theme for generating custom viewer.js url
+    config.add_route('permalinktheme', '/theme/*themes')
 
     # checker routes
     config.add_route('checker_summary', '/checker_summary')

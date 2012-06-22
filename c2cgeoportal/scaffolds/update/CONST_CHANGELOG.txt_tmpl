@@ -1,5 +1,30 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 0.8
+===========
+
+1. Theme loading with Friendly Url
+
+   It is now possible to load themes directly from a Friendly Url of the type:
+   http://www.example.com/theme/themename1/themename2[/themenamex]
+
+   The following modifications are needed:
+
+   - In viewer.js in the cgxp_layertree plugin configuration, replace:
+       defaultThemes: ["xyz"],
+     by:
+       % if permalink_themes:
+         defaultThemes: ${permalink_themes | n},
+       % else:
+         defaultThemes: ["xyz"],
+
+   - In index.html, replace:
+       <script type="text/javascript" src="${request.route_url('viewer')}"></script>
+     by:
+       <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}"></script>
+
+   - In wsgi.conf.in, add a new RewriteRule:
+     RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
 Version 0.7
 ===========
