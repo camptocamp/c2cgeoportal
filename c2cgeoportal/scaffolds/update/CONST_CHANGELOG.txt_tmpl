@@ -6,7 +6,7 @@ Version 0.8
 1. Theme loading with Friendly Url
 
    It is now possible to load themes directly from a Friendly Url of the type:
-   http://www.example.com/theme/themename1/themename2/[themenamex/]
+   http://www.example.com/theme/themename1/themename2/[...themenamex...]
 
    The following modifications are needed:
 
