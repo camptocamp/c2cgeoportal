@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import traceback
 import urllib
 import logging
 import json
@@ -33,6 +34,7 @@ class Entry(object):
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
+        self.serverError = []
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
@@ -308,14 +310,24 @@ class Entry(object):
 
         layers = query.filter(Layer.isVisible == True).order_by(Layer.order.asc()).all()
 
+        exportThemes = []
+        errors = "\n"
+
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.route_url('mapserverproxy')
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
-        wms = WebMapService(wms_url, version='1.1.1')
+        try:
+            wms = WebMapService(wms_url, version='1.1.1')
+        except AttributeError as e:
+            errors =  "WARNING!, an error occured while trying to read the mapfile and recover the themes"
+            self.serverError.append(errors)
+            traceback.print_stack()
+            log.exception(errors)
+
+            return (exportThemes, errors)
         wms_layers = list(wms.contents)
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
-        exportThemes = []
 
         for theme in themes:
             if theme.display:
@@ -377,6 +389,7 @@ class Entry(object):
         self.errors = None
         d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes())
+        d['serverError'] = json.dumps(self.serverError)
 
         if hasattr(self.request.registry.settings, 'external_mapserv.url') \
            and self.settings.get('external_mapserv.url'):
