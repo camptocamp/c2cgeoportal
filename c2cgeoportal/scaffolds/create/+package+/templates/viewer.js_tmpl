@@ -389,7 +389,6 @@ Ext.onReady(function() {
         });
 
         if (serverError.length > 0) {
-            //app.openWindow('Error notice', {
             cgxp.tools.openWindow('Error notice', {
                 html: serverError.join('<br />')
             },600, 500);
