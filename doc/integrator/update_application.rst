@@ -56,7 +56,7 @@ steps:
 
    For ``c2cgeoportal`` 0.7 and higher::
     
-       $ ./buildout/bin/pcreate --overwrite -s c2cgeoportal_update \
+       $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
          ../<project_name> package=<package_name>
 
    For ``c2cgeoportal`` 0.6 and lower::

@@ -31,8 +31,8 @@ Create and Populate the FullTextSearch table
 Update c2cgeoportal
 ===================
     svn up
-    ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. \
-            {{project}} package={{package}}
+    ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
+            ../{{project}} package={{package}}
     ./buildout/bin/manage_db -c production.ini -n {{package}} upgrade
     ### Read CONT_CHANGELOG.txt ###
     ./buildout/bin/buildout -c buildout_$$USER.cfg
