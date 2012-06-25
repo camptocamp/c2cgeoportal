@@ -51,6 +51,14 @@ Version 0.8
    become
    <a href="javascript:cgxp.tools.openInfoWindow('http://www.test.com', 'Popup title', 600, 500);">Link text</a>
 
+4. Add new deploy hooks to set the databases rights.
+   cd {{project}}
+   ./buildout/bin/pcreate --overwrite -s c2cgeoportal_create /tmp/{{project}}
+   cp /tmp/{{project}}/deploy/hooks/post-restore-database.in deploy/hooks/
+   chmod +x deploy/hooks/post-restore-database.in
+   rm -rf /tmp/{{project}}
+
+
 Version 0.7
 ===========
 
