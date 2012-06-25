@@ -1,6 +1,5 @@
 // Here integrator can set up the layers
 var App = App || {};
-App.searchUrl = "${request.route_url('fulltextsearch', path='')}";
 
 App.map = new OpenLayers.Map({
     theme: null,
