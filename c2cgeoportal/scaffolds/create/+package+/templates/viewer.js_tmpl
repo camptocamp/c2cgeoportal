@@ -389,7 +389,7 @@ Ext.onReady(function() {
         });
 
         if (serverError.length > 0) {
-            cgxp.tools.openWindow('Error notice', {
+            cgxp.tools.openWindow(OpenLayers.i18n("Error notice"), {
                 html: serverError.join('<br />')
             },600, 500);
         }

@@ -319,7 +319,7 @@ class Entry(object):
         try:
             wms = WebMapService(wms_url, version='1.1.1')
         except AttributeError as e:
-            errors =  "WARNING!, an error occured while trying to read the mapfile and recover the themes"
+            errors =  _("WARNING! an error occured while trying to read the mapfile and recover the themes")
             self.serverError.append(errors)
             traceback.print_stack()
             log.exception(errors)
