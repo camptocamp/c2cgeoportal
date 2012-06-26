@@ -95,7 +95,7 @@ def proxy(request):
 
     if resp.status != 200:
         log.error("\nError\n '%s'\n in response from URL:\n %s\n with query:\n %s" %
-                (resp.reason, _url, body))
+                (resp.reason, _url, body))  # pragma: no cover
         return HTTPInternalServerError("See logs for details")  # pragma: no cover
 
     # check for allowed content types
