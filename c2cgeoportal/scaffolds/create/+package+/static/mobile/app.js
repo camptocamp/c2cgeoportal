@@ -14,9 +14,9 @@ Ext.application({
         'Ext.TitleBar' // required at least for the Picker
     ],
 
-    views: ['Main', 'Layers', 'Search'],
-    models: ['Layer', 'Search'],
-    controllers: ["Main", "Search"],
+    views: ['Main', 'Layers', 'Search', 'Query'],
+    models: ['Layer', 'Search', 'Query'],
+    controllers: ['Main', 'Search', 'Query'],
 
     icon: {
         '57': 'resources/icons/Icon.png',

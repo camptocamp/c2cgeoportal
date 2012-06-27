@@ -264,6 +264,9 @@ include =
     OpenLayers/Format/GeoJSON.js
     OpenLayers/Request/XMLHttpRequest.js
     OpenLayers/Protocol/HTTP.js
+    OpenLayers/Filter/Spatial.js
+    OpenLayers/Protocol/WFS/v1_0_0.js
+    OpenLayers/Format/GML.js
     OpenLayers/Strategy/Fixed.js
 
 [lang-en.js]

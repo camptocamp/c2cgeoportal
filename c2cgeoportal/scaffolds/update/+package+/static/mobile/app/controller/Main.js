@@ -16,6 +16,11 @@ Ext.define('App.controller.Main', {
                 tap: function() {
                     this.redirectTo('layers');
                 }
+            },
+            mainView: {
+                longpress: function(view, bounds, map) {
+                    this.queryMap(view, bounds, map);
+                }
             }
         },
         routes: {
@@ -51,6 +56,28 @@ Ext.define('App.controller.Main', {
         var f = record.raw;
         this.getMainView().recenterOnFeature(f);
         this.redirectTo('home');
-    }
+    },
 
+    queryMap: function(view, bounds, map) {
+        var layers = [];
+        for (var i=0; i<map.layers.length; i++) {
+            var layer = map.layers[i];
+            if (!layer.isBaseLayer && layer.visibility &&
+                layer.CLASS_NAME != 'OpenLayers.Layer.Vector') {
+                var layersParam = layer.params.LAYERS;
+                for (var j=0; j<layersParam.length; j++) {
+                    if (layer.WFSTypes.indexOf(layersParam[j])) {
+                        layers.push(layersParam[j]);
+                    }
+                }
+            }
+        }
+        // launch query only if there are layers to query
+        if (layers.length) {
+            var p = [bounds, layers.join(',')];
+            var joinedParams = p.join('-');
+            joinedParams = encodeURIComponent(joinedParams);
+            this.redirectTo('query/' + joinedParams);
+        }
+    }
 });

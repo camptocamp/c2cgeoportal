@@ -146,8 +146,43 @@ Ext.define("App.view.Main", {
     // initial rendering
     render: function(component) {
         var map = this.getMap();
-        map.render(this.down('#map-container').element.dom);
+        var mapContainer = this.down('#map-container').element;
+        map.render(mapContainer.dom);
         map.zoomToMaxExtent();
+
+        mapContainer.on('longpress', function(event, node) {
+            // FIXME: depends on https://github.com/openlayers/openlayers/pull/294
+            var map = this.getMap();
+            var el = Ext.get(map.div);
+            var pixel = new OpenLayers.Pixel(
+                event.pageX - el.getX(),
+                event.pageY - el.getY()
+            );
+            var bounds = this.pixelToBounds(pixel);
+            this.fireEvent('longpress', this, bounds, map, event);
+        }, this);
+    },
+    
+    /**
+     * Method: pixelToBounds
+     * Takes a pixel as argument and creates bounds after adding the
+     * <clickTolerance>.
+     * 
+     * Parameters:
+     * pixel - {<OpenLayers.Pixel>}
+     */
+    pixelToBounds: function(pixel) {
+        var tolerance = 40;
+        var llPx = pixel.add(-tolerance/2, tolerance/2);
+        var urPx = pixel.add(tolerance/2, -tolerance/2);
+        var ll = this.getMap().getLonLatFromPixel(llPx);
+        var ur = this.getMap().getLonLatFromPixel(urPx);
+        return new OpenLayers.Bounds(
+            parseInt(ll.lon),
+            parseInt(ll.lat),
+            parseInt(ur.lon),
+            parseInt(ur.lat)
+        );
     },
 
     /**

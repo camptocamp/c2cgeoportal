@@ -52,6 +52,7 @@
     <script type="text/javascript">
         var App = App || {};
         App.searchUrl = "${request.route_url('fulltextsearch', path='')}";
+        App.wmsUrl = "${request.route_url('mapserverproxy', path='')}";
     </script>
     <script type="text/javascript" src="openlayers-mobile.js"></script>
     <script type="text/javascript" src="config.js"></script>
