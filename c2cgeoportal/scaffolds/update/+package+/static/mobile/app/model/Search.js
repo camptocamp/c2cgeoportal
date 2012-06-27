@@ -3,7 +3,8 @@ Ext.define('App.model.Search', {
 
     config: {
         fields: [
-            {name: 'name', mapping: 'toponymName'}
+            {name: 'name', mapping: 'properties.label'},
+            {name: 'layer_name', mapping: 'properties.layer_name'}
         ]
     }
 });
