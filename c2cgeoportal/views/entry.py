@@ -479,7 +479,7 @@ class Entry(object):
         password = self.request.params.get('password', None)
         if not (login and password):
             return HTTPBadRequest('"login" and "password" should be " \
-                    "available in request params')
+                    "available in request params')  # pragma nocover
         if self.request.registry.validate_user(self.request, login, password):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
