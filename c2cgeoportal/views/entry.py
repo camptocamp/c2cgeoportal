@@ -186,8 +186,6 @@ class Entry(object):
             l['minResolutionHint'] = layer.minResolution
         if layer.maxResolution:
             l['maxResolutionHint'] = layer.maxResolution
-        if layer.legendRule:
-            l['legendRule'] = layer.legendRule
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]
@@ -481,7 +479,7 @@ class Entry(object):
         password = self.request.params.get('password', None)
         if not (login and password):
             return HTTPBadRequest('"login" and "password" should be " \
-                    "available in request params')
+                    "available in request params')  # pragma nocover
         if self.request.registry.validate_user(self.request, login, password):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
