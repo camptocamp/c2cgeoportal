@@ -171,6 +171,9 @@ def includeme(config):
     # full text search routes
     config.add_route('fulltextsearch', '/fulltextsearch')
 
+    # Access to raster data
+    config.add_route('raster', '/raster')
+
     # add routes for the "layers" web service
     config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',
                      request_method='GET')
