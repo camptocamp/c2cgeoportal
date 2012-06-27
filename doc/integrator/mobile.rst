@@ -11,12 +11,20 @@ Any c2cgeoportal projet created with the ``c2cgeoportal_create`` and
 
 This application includes the following features:
 
-* Map with *zoom* buttons.
+* Map with zoom buttons.
 * Geolocation.
 * Base layer selector.
 * Overlay selector.
 * Text search.
 * Map queries (long-press on the map).
+
+Current limitations:
+
+* The overlays only are queryable.
+* Non-WMS overlays are not supported.
+* For map queries it is assumed that there a 1:1 relationship between WMS
+  layers and WFS feature types, which is not the case if a WMS layer is
+  actually a group in the mapfile.
 
 Adding a mobile app to an existing project
 ------------------------------------------
@@ -82,8 +90,8 @@ Here's an example of setting ``PATH`` and ``SENCHA_SDK_TOOLS_2_0_0_BETA3``::
 Once built the mobile application should be available on ``/mobile_dev/`` and
 ``/mobile/`` in the browser, where ``/`` is the root of the WSGI application.
 
-Configuring the map
--------------------
+Configuring the map and the layers
+----------------------------------
 
 By default the mobile application includes three OSM layers, and
 a camptocamp.org WMS layer. The OSM layers are base layers. The camptocamp.org
@@ -92,6 +100,36 @@ mobile application edit the project's ``static/mobile/config.js`` and modify
 the config object passed to the ``OpenLayers.Map`` constructor. The execution
 of the ``config.js`` script should result in ``App.map`` being set to an
 ``OpenLayers.Map`` instance.
+
+In addition to the regular options for ``OpenLayers.Layer.WMS`` two specific
+options can be defined: ``allLayers`` and ``WFSTypes``. The ``allLayers``
+option is an array of possible WMS layers, this is used by the overlay
+selector. The ``WFSTypes`` option is an array of corresponding feature types,
+it is used by the map querier. If a layer is visible and it has a corresponding
+feature type then it will sent in the (WFS GetFeature) map query.
+
+For example::
+
+    new OpenLayers.Layer.WMS(
+        'overlay',
+        App.wmsUrl,
+        {
+            // layers to display at startup
+            layers: ['npa', 'v_poi_admin'],
+            transparent: true
+        },
+        {
+            singleTile: true,
+            // list of available layers
+            allLayers: ['npa', 'v_poi_admin', 'v_poi_transport', 'v_poi_culture'],
+            // list of queriable layers
+            WFSTypes: ['npa', 'v_poi_admin', 'v_poi_transport', 'v_poi_culture']
+        }
+    )
+
+.. note::
+
+    See above to know about current limitations.
 
 One thing you will certainly need to the change is the build profile for
 OpenLayers. You will need to do that if you use ``OpenLayers.Layer.WMTS``, for
