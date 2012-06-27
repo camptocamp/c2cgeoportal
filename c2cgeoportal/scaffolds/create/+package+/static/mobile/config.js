@@ -3,10 +3,7 @@ var App = App || {};
 
 App.map = new OpenLayers.Map({
     theme: null,
-    maxExtent: new OpenLayers.Bounds(515000, 180000, 580000, 230000),
-    projection: new OpenLayers.Projection("EPSG:21781"),
-    units: "m",
-    resolutions: [250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.125,0.0625],
+    projection: 'EPSG:900913',
     controls: [
         new OpenLayers.Control.TouchNavigation({
             dragPanOptions: {
@@ -18,40 +15,43 @@ App.map = new OpenLayers.Map({
         new OpenLayers.Control.ScaleLine()
     ],
     layers: [
-        new OpenLayers.Layer.TMS(
-            OpenLayers.i18n('Plan de ville'),
-            ['http://tile1-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile2-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile3-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile4-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile5-sitn.ne.ch/tilecache_new/tilecache.cgi/'],
-            {  
-                layername: 'plan_ville_c2c',
-                ref: 'plan',
-                type:'png; mode=24bit',
-                serverResolutions: [250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.125,0.0625],
-                tileOrigin: new OpenLayers.LonLat(420000,30000),
+        new OpenLayers.Layer.OSM("OpenStreetMap", null, {
+            transitionEffect: 'resize'
+        }),
+        new OpenLayers.Layer.OSM(
+            "Cycle Map",
+            [
+                "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+                "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
+            ],
+            {
                 transitionEffect: 'resize'
             }
         ),
-        new OpenLayers.Layer.TMS(
-            OpenLayers.i18n('Plan cadastral'),
-            ['http://tile1-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile2-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile3-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile4-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile5-sitn.ne.ch/tilecache_new/tilecache.cgi/'],
-            {  
-                layername: 'plan_cadastral_c2c',
-                ref: 'plan_cadastral',
-                type:'png; mode=24bit',
-                serverResolutions: [250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.125,0.0625],
-                tileOrigin: new OpenLayers.LonLat(420000,30000),
+        new OpenLayers.Layer.OSM(
+            "Transport Map",
+            [
+                "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+                "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
+            ],
+            {
                 transitionEffect: 'resize'
             }
+
         ),
-        new OpenLayers.Layer.TMS(
-            OpenLayers.i18n('Orthophoto'),
-            ['http://tile1-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile2-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile3-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile4-sitn.ne.ch/tilecache_new/tilecache.cgi/', 'http://tile5-sitn.ne.ch/tilecache_new/tilecache.cgi/'],
-            {  
-                layername: 'ortho2011',
-                ref: 'ortho',
-                type:'png; mode=24bit',
-                serverResolutions: [250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.125,0.0625],
-                tileOrigin: new OpenLayers.LonLat(420000,30000),
-                transitionEffect: 'resize'
+        new OpenLayers.Layer.WMS(
+            "Summits",
+            "http://www.camptocamp.org/cgi-bin/c2corg_wms",
+            {
+                allLayers: ['summits', "huts", "sites", "users"],
+                layers: ['summits'],
+                transparent: true
+            },
+            {
+                singleTile: true,
+                ratio: 1
             }
         )
     ]
