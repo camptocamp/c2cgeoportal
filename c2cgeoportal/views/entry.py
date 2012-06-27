@@ -186,8 +186,6 @@ class Entry(object):
             l['minResolutionHint'] = layer.minResolution
         if layer.maxResolution:
             l['maxResolutionHint'] = layer.maxResolution
-        if layer.legendRule:
-            l['legendRule'] = layer.legendRule
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]
