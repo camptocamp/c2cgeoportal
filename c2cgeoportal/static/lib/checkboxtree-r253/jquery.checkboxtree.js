@@ -67,7 +67,7 @@ $.widget("daredevel.checkboxTree", {
      */
     _create: function() {
 
-        var t = this
+        var t = this;
 
         // setup collapse engine tree
         if (this.options.collapsable) {
@@ -97,7 +97,7 @@ $.widget("daredevel.checkboxTree", {
 
             // bind collapse/expand event
             this.element.find('li span').live("click", function() {
-                li = $(this).parents("li:first");
+                var li = $(this).parents("li:first");
 
                 if (li.hasClass('collapsed')) {
                     t.expand(li);
@@ -177,7 +177,7 @@ $.widget("daredevel.checkboxTree", {
      * @param li node
      */
     _checkAncestors: function(li) {
-        li.parentsUntil(".ui-widget").filter('li').find('input:checkbox:first:not(:checked)').attr('checked', 'checked').change();
+        li.parentsUntil(".ui-widget").filter('li').find('input:checkbox:first:not(:checked)').prop('checked', true).change();
     },
 
     /**
@@ -190,7 +190,7 @@ $.widget("daredevel.checkboxTree", {
      * @param li node
      */
     _checkDescendants: function(li) {
-        li.find('li input:checkbox:not(:checked)').attr('checked', 'checked').change();
+        li.find('li input:checkbox:not(:checked)').prop('checked', true).change();
     },
 
     /**
@@ -209,7 +209,7 @@ $.widget("daredevel.checkboxTree", {
         li.find('li').addClass('exclude');
         $(this.element).find('li').each(function() {
             if (!$(this).hasClass('exclude')) {
-                $(this).find('input:checkbox:first:not(:checked)').attr('checked', 'checked').change();
+                $(this).find('input:checkbox:first:not(:checked)').prop('checked', true).change();
             }
         });
         $(this.element).find('li').removeClass('exclude');
@@ -312,7 +312,7 @@ $.widget("daredevel.checkboxTree", {
      * @param li node
      */
     _uncheckAncestors: function(li) {
-        li.parentsUntil(".ui-widget").filter('li').find('input:checkbox:first:checked').attr('checked', '').change();
+        li.parentsUntil(".ui-widget").filter('li').find('input:checkbox:first:checked').prop('checked', false).change();
     },
 
     /**
@@ -325,7 +325,7 @@ $.widget("daredevel.checkboxTree", {
      * @param li node
      */
     _uncheckDescendants: function(li) {
-        li.find('li input:checkbox:checked').attr('checked', '').change();
+        li.find('li input:checkbox:checked').prop('checked', false).change();
     },
 
     /**
@@ -338,13 +338,12 @@ $.widget("daredevel.checkboxTree", {
      * @param li node
      */
     _uncheckOthers: function(li) {
-        var t = this;
         li.addClass('exclude');
         li.parents('li').addClass('exclude');
         li.find('li').addClass('exclude');
         $(this.element).find('li').each(function() {
             if (!$(this).hasClass('exclude')) {
-                $(this).find('input:checkbox:first:checked').attr('checked', '').change();
+                $(this).find('input:checkbox:first:checked').prop('checked', false).change();
             }
         });
         $(this.element).find('li').removeClass('exclude');
@@ -359,7 +358,7 @@ $.widget("daredevel.checkboxTree", {
      */
     check: function(li) {
 
-        li.find('input:checkbox:first:not(:checked)').attr('checked', 'checked').change();
+        li.find('input:checkbox:first:not(:checked)').prop('checked', true).change();
 
         // handle others
         if (this.options.onCheck.others == 'check') {
@@ -403,7 +402,7 @@ $.widget("daredevel.checkboxTree", {
      * @public
      */
     checkAll: function() {
-        $(this.element).find('input:checkbox:not(:checked)').attr('checked', 'checked').change();
+        $(this.element).find('input:checkbox:not(:checked)').prop('checked', true).change();
     },
 
     /**
@@ -485,7 +484,7 @@ $.widget("daredevel.checkboxTree", {
      */
     uncheck: function(li) {
 
-        li.find('input:checkbox:first:checked').attr('checked', '').change();
+        li.find('input:checkbox:first:checked').prop('checked', false).change();
 
         // handle others
         if (this.options.onUncheck.others == 'check') {
@@ -524,7 +523,7 @@ $.widget("daredevel.checkboxTree", {
      * @public
      */
     uncheckAll: function() {
-        $(this.element).find('input:checkbox:checked').attr('checked', '').change();
+        $(this.element).find('input:checkbox:checked').prop('checked', false).change();
     },
 
     /**

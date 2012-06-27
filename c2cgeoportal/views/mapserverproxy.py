@@ -49,10 +49,10 @@ def proxy(request):
             request.registry.settings, request)
     if (mss):
         for s in mss:
-            index = s.find('=');
+            index = s.find('=')
             if index > 0:
                 attribute = 's_' + s[:index]
-                value = s[index+1:]
+                value = s[index + 1:]
                 if (attribute in params):
                     params[attribute] += "," + value
                 else:
@@ -60,7 +60,7 @@ def proxy(request):
                 log.warning(params[attribute])
             else:
                 log.warning(("The Mapserver Substitution '%s' don't" \
-                        + " respect the pattern: <attribute>=<value>") % s);
+                        + " respect the pattern: <attribute>=<value>") % s)
 
     # get query string
     query_string = urllib.urlencode(params)
