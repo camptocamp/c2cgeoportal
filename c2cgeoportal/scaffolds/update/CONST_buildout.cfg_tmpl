@@ -193,14 +193,20 @@ only = openlayers-mobile.js
 compress = True
 
 [mobile]
-recipe = collective.recipe.cmd
+recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
 cmds =
-    (cp ${buildout:directory}/{{package}}/static/build/openlayers-mobile.js ${buildout:directory}/{{package}}/static/mobile)
-    (cd ${buildout:directory}/{{package}}/static/mobile && compass compile resources/sass)
-    (cd ${buildout:directory}/{{package}}/static/mobile && sencha app build production)
-    (cd ${buildout:directory}/{{package}}/static/mobile && cp openlayers-mobile.js build/production)
+    >>> import os
+    >>> from subprocess import Popen
+    >>> path = os.path.join(buildout.get('directory', '.'), '{{package}}',
+    >>>                     'static', 'mobile')
+    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=path)
+    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=path)
+    >>> from shutil import copy
+    >>> src = os.path.join(path, 'openlayers-mobile.js')
+    >>> dst = os.path.join(path, 'build', 'production')
+    >>> copy(src, dst)
  
 [cssbuild]
 recipe = c2c.recipe.cssmin
