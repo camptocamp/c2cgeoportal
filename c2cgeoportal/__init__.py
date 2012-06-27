@@ -194,10 +194,6 @@ def includeme(config):
     # mako templates to get the root of the "layers" web service
     config.add_route('layers_root', '/layers/')
 
-    # mobile routes
-    config.add_route('mobile', '/proj/mobile/')
-    config.add_route('mobile_production', '/proj/mobile/build/production/')
-
     # pyramid_formalchemy's configuration
     config.include('pyramid_formalchemy')
     config.include('fa.jquery')
