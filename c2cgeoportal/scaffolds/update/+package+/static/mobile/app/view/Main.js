@@ -118,11 +118,12 @@ Ext.define("App.view.Main", {
                 geolocation.on('locationupdate', function(geo) {
                     var lonlat = new OpenLayers.LonLat(geo.getLongitude(),
                                                        geo.getLatitude());
-                    lonlat.transform('EPSG:4326', map.getProjection());
+                    lonlat.transform('EPSG:4326', this.getMap().getProjection());
                     this.getMap().setCenter(lonlat, 10);
                 }, this, {single: true});
                 geolocation.updateLocation();
-            }
+            },
+            scope: this
         });
     },
 
