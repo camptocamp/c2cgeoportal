@@ -184,6 +184,14 @@ config = ${jsbuild:resource-dir}/app.cfg
 output-dir = {{package}}/static/build
 compress = True
 
+[jsbuild-mobile]
+recipe = JSTools:buildjs
+resource-dir = ${buildout:directory}/jsbuild
+config = ${jsbuild:resource-dir}/mobile.cfg
+output-dir = {{package}}/static/mobile
+only = openlayers-mobile.js
+compress = True
+
 [mobile]
 recipe = collective.recipe.cmd
 on_install = true
