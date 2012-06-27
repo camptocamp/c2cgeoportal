@@ -36,6 +36,16 @@ Version 0.8
 
         OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
+Version 0.8
+===========
+
+1. Add the support of WMTS layers the database should be updated by 
+    standard procedure, CGXP also. We also needs the ogcproxy, and to
+    use is we need to add the following line in the file 
+    <project>/templates/viewer.js:
+
+        OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
+
 Version 0.7
 ===========
 

@@ -335,8 +335,7 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
 Layer = FieldSet(models.Layer)
 Layer.order.set(metadata=dict(mandatory='')).required()
 Layer.layerType.set(renderer=fields.SelectFieldRenderer, \
-        options=["internal WMS", "external WMS", "internal WMTS",
-                 "external WMTS", "empty"])
+        options=["internal WMS", "external WMS", "WMTS", "no 2D"])
 Layer.imageType.set(renderer=fields.SelectFieldRenderer, \
         options=["image/jpeg", "image/png"])
 Layer.restrictionareas.set(renderer=fields.CheckBoxSet)

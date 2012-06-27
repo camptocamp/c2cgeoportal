@@ -324,20 +324,24 @@ class Layer(TreeItem):
     isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
     icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
-    layerType = Column(types.Enum("internal WMS", "external WMS",
-            "internal WMTS", "external WMTS", "empty",
-            name=_schema + ".layerType"), label=_(u'Type'))
+    layerType = Column(types.Enum("internal WMS",
+            "external WMS",
+            "WMTS",
+            "no 2D",
+            native_enum=False), label=_(u'Type'))
     url = Column(types.Unicode, label=_(u'Base URL'))  # for externals
-    serverResolutions = Column(types.Unicode, label=_(u'Server Resolutions'))  # for external WMTS
-    maxExtent = Column(types.Unicode, label=_(u'Max Extent'))  # for external WMTS
     imageType = Column(types.Enum("image/jpeg", "image/png",
-            name=_schema + ".imageType"), label=_(u'Image type'))
+            native_enum=False), label=_(u'Image type'))  # for WMS
+    style = Column(types.Unicode, label=_(u'Style'))
+    dimensions = Column(types.Unicode, label=_(u'Dimensions'))  # for WMTS
+    matrixSet = Column(types.Unicode, label=_(u'Matrix set'))  # for WMTS
+    wmsUrl = Column(types.Unicode, label=_(u'WMS server URL'))  # for WMTS
+    wmsLayers = Column(types.Unicode, label=_(u'WMS layers'))  # for WMTS
     kml = Column(types.Unicode, label=_(u'KML 3D'))  # for kml 3D
     isSingleTile = Column(types.Boolean, label=_(u'Single tile'))  # for extenal WMS
-    no2D = Column(types.Boolean, label=_(u'No 2D'))  # only kml 3D
     legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
-    legendImage = Column(types.Unicode, label=_(u'Legend Image'))  # fixed legend image
-    legendRule = Column(types.Unicode, label=_(u'Legend Rule'))  # on wms legend only one rule
+    legendImage = Column(types.Unicode, label=_(u'Legend image'))  # fixed legend image
+    legendRule = Column(types.Unicode, label=_(u'Legend rule'))  # on wms legend only one rule
     minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))

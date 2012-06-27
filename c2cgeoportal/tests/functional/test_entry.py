@@ -273,3 +273,176 @@ class TestEntryView(TestCase):
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
 
+    def test_layer(self):
+        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal.models import Layer, LayerGroup, Theme
+
+        request = testing.DummyRequest()
+        request.static_url = lambda url: '/dummy/static/' + url
+        request.route_url = lambda url: '/dummy/route/' + url
+        request.registry.settings = {
+            'project': 'test_layer',
+        }
+        entry = Entry(request)
+        entry.errors = "";
+
+        self.assertEqual(entry._group(LayerGroup(), [], [], None), None)
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test internal WMS'
+        layer.metadataURL = "http://example.com/tiwms"
+        layer.isChecked = True
+        layer.layerType = "internal WMS"
+        layer.imageType = "image/png"
+        layer.style = "my-style"
+        layer.kml = "tiwms.kml"
+        layer.legend = True
+        layer.legendRule = "rule"
+        layer.legendImage = "legend:static/tiwms-legend.png"
+        layer.minResolution = 10
+        layer.maxResolution = 1000
+        layer.disclaimer = "Camptocamp"
+        layer.identifierAttributeField = "name"
+        layer.geoTable = "tiwms"
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test internal WMS', 
+            'metadataURL': 'http://example.com/tiwms', 
+            'isChecked': True, 
+            'icon': '/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule',
+            'type': u'internal WMS', 
+            'imageType': 'image/png', 
+            'style': 'my-style', 
+            'kml': '/dummy/static/test_layer:static/tiwms.kml', 
+            'legend': True, 
+            'legendImage': '/dummy/static/legend:static/tiwms-legend.png',
+            'minResolutionHint': 10, 
+            'maxResolutionHint': 1000, 
+            'disclaimer': 'Camptocamp',
+            'identifierAttribute': 'name', 
+            'editable': True, 
+        })
+        self.assertEqual(entry.errors, '')
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test external WMS'
+        layer.isChecked = False
+        layer.icon = "tewms.png"
+        layer.layerType = "external WMS"
+        layer.url = "http://example.com"
+        layer.imageType = "image/jpeg"
+        layer.isSingleTile = True
+        layer.legend = False
+        layer.minResolution = 10
+        layer.maxResolution = 1000
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test external WMS', 
+            'icon': '/dummy/static/test_layer:static/tewms.png',
+            'isChecked': False, 
+            'type': u'external WMS', 
+            'url': 'http://example.com',
+            'imageType': 'image/jpeg', 
+            'isSingleTile': True,
+            'legend': False, 
+            'minResolutionHint': 10, 
+            'maxResolutionHint': 1000, 
+        })
+        self.assertEqual(entry.errors, '')
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test WMTS'
+        layer.isChecked = False
+        layer.layerType = "WMTS"
+        layer.url = "http://example.com/WMTS-Capabilities.xml"
+        layer.style = 'wmts-style'
+        layer.dimensions = '{"DATE": "1012"}'
+        layer.matrixSet = "swissgrid"
+        layer.wmsUrl = 'http://example.com/'
+        layer.wmsLayers = 'test'
+        layer.legend = False
+        layer.minResolution = 10
+        layer.maxResolution = 1000
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test WMTS', 
+            'isChecked': False, 
+            'type': 'WMTS', 
+            'url': 'http://example.com/WMTS-Capabilities.xml',
+            'style': 'wmts-style',
+            'dimensions': {u'DATE': u'1012'},
+            'matrixSet': 'swissgrid',
+            'wmsUrl': 'http://example.com/',
+            'wmsLayers': 'test',
+            'legend': False, 
+            'minResolutionHint': 10, 
+            'maxResolutionHint': 1000, 
+        })
+        self.assertEqual(entry.errors, '')
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test WMTS'
+        layer.isChecked = False
+        layer.layerType = "WMTS"
+        layer.url = "http://example.com/WMTS-Capabilities.xml"
+        layer.wmsUrl = 'http://example.com/'
+        layer.legend = False
+        layer.minResolution = 10
+        layer.maxResolution = 1000
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test WMTS', 
+            'isChecked': False, 
+            'type': 'WMTS', 
+            'url': 'http://example.com/WMTS-Capabilities.xml',
+            'wmsUrl': 'http://example.com/',
+            'wmsLayers': 'test WMTS',
+            'legend': False, 
+            'minResolutionHint': 10, 
+            'maxResolutionHint': 1000, 
+        })
+        self.assertEqual(entry.errors, '')
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test WMTS'
+        layer.isChecked = False
+        layer.layerType = "WMTS"
+        layer.url = "http://example.com/WMTS-Capabilities.xml"
+        layer.wmsLayers = 'test'
+        layer.legend = False
+        layer.minResolution = 10
+        layer.maxResolution = 1000
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test WMTS', 
+            'isChecked': False, 
+            'type': 'WMTS', 
+            'url': 'http://example.com/WMTS-Capabilities.xml',
+            'wmsUrl': '/dummy/route/mapserverproxy',
+            'wmsLayers': 'test',
+            'legend': False, 
+            'minResolutionHint': 10, 
+            'maxResolutionHint': 1000, 
+        })
+        self.assertEqual(entry.errors, '')
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test no 2D'
+        layer.isChecked = False
+        layer.layerType = "no 2D"
+        layer.legend = False
+        self.assertEqual(entry._layer(layer, [], None), {
+            'id': 20,
+            'name': 'test no 2D', 
+            'isChecked': False, 
+            'type': u'no 2D', 
+            'legend': False, 
+        })
+        self.assertEqual(entry.errors, '')
+
