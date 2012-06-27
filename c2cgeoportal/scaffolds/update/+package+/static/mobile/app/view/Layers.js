@@ -54,12 +54,12 @@ Ext.define("App.view.Layers", {
         store.each(function(record) {
             var layer = record.raw;
             if (!layer.isBaseLayer) {
-                var allLayersParam = layer.params.ALLLAYERS,
+                var allLayers = layer.allLayers,
                     layersParam = layer.params.LAYERS,
-                    len = allLayersParam.length,
+                    len = allLayers.length,
                     i, l;
                 for (i=0; i<len; i++) {
-                    l = allLayersParam[i];
+                    l = allLayers[i];
                     this.add({
                         label: l,
                         name: 'visibility',
