@@ -5,12 +5,16 @@ Ext.define("App.view.Main", {
         'Ext.field.Search',
         'Ext.field.Select',
         'App.model.Layer',
+        'App.plugin.StatefulMap',
         'Ext.util.Geolocation'
     ],
 
     config: {
         map: null,
         layout: 'fit',
+        plugins: 'statefulmap',
+        center: null,
+        zoom: null,
         items: [{
             xtype: 'toolbar',
             docked: 'top',
@@ -135,6 +139,11 @@ Ext.define("App.view.Main", {
         return map;
     },
 
+    updateMap: function(map) {
+        this.fireEvent('setmap', this, map);
+    },
+
+
     destroy: function() {
         var map = this.getMap();
         if (map) {
@@ -148,7 +157,14 @@ Ext.define("App.view.Main", {
         var map = this.getMap();
         var mapContainer = this.down('#map-container').element;
         map.render(mapContainer.dom);
-        map.zoomToMaxExtent();
+
+        var center = this.getCenter(),
+            zoom = this.getZoom();
+        if (center && zoom) {
+            map.setCenter(center, zoom);
+        } else {
+            map.zoomToMaxExtent();
+        }
 
         mapContainer.on('longpress', function(event, node) {
             // FIXME: depends on https://github.com/openlayers/openlayers/pull/294
