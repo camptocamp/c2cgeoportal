@@ -18,6 +18,9 @@ Ext.onReady(function() {
     OpenLayers.Lang.setCode("${lang}");
     GeoExt.Lang.set("${lang}");
 
+    // Server errors (if any)
+    var serverError = ${serverError | n};
+
     // Themes definitions
     /* errors (if any): ${themesError | n} */
     var THEMES = {
@@ -384,5 +387,12 @@ Ext.onReady(function() {
         Ext.fly('loading-mask').fadeOut({
             remove: true
         });
+
+        if (serverError.length > 0) {
+            cgxp.tools.openWindow(OpenLayers.i18n("Error notice"), {
+                html: serverError.join('<br />')
+            },600, 500);
+        }
+
     }, app);
 });
