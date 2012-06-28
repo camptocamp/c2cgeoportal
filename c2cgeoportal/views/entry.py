@@ -27,14 +27,20 @@ log = logging.getLogger(__name__)
 
 class Entry(object):
 
-    _user = False
-
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
         self.serverError = []
+
+        # detect if HTTPS scheme must be set
+        https_flag = self.settings.get('https_flag_header')
+        if https_flag:
+            https_flag = https_flag.upper()
+            if https_flag in self.request.headers and \
+               self.request.headers[https_flag] == self.settings.get('https_flag_value'):
+                self.request.scheme = 'https'
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
@@ -95,9 +101,8 @@ class Entry(object):
                 if icon.find(':') < 0:
                     if icon[0] is not '/':
                         icon = '/' + icon
-                    icon = self.request.static_url(self.settings['project'] + ':static' + icon)
-                else:
-                    icon = self.request.static_url(icon)
+                    icon = self.settings['project'] + ':static' + icon
+                icon = self.request.static_url(icon)
             except ValueError:  # pragma: no cover
                 log.exception('can\'t generate url for icon: %s' % icon)
                 return None
@@ -314,7 +319,8 @@ class Entry(object):
         errors = "\n"
 
         # retrieve layers metadata via GetCapabilities
-        wms_url = self.request.route_url('mapserverproxy')
+        wms_url = self.request.registry.settings['mapserv.url'] + \
+            (('?role_id=' + str(role_id)) if role_id else '')
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
         try:
             wms = WebMapService(wms_url, version='1.1.1')
@@ -365,10 +371,19 @@ class Entry(object):
 
     def _WFSTypes(self, external=False):
         # retrieve layers metadata via GetCapabilities
-        wfs_url = self.request.route_url('mapserverproxy')
-        wfsgc_url = wfs_url + "?service=WFS&version=1.0.0&request=GetCapabilities"
-        if external:
-            wfsgc_url += '&EXTERNAL=true'
+        role_id = None
+        if self.request.user:
+            role_id = self.request.user.parent_role.id if external \
+                      else self.request.user.role.id
+        params = (
+            ('role_id', str(role_id) if role_id else ''),
+            ('SERVICE', 'WFS'),
+            ('VERSION', '1.0.0'),
+            ('REQUEST', 'GetCapabilities'),
+        )
+        wfs_url = self.request.registry.settings['external_mapserv.url'] if external \
+                    else self.request.registry.settings['mapserv.url']
+        wfsgc_url = wfs_url + "?" + '&'.join(['='.join(p) for p in params])
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
@@ -478,7 +493,10 @@ class Entry(object):
 
     @view_config(route_name='apihelp', renderer='apihelp.html')
     def apihelp(self):
-        return {'lang': self.lang, 'debug': self.debug}
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+        }
 
     @view_config(route_name='themes', renderer='json')
     def themes(self):
