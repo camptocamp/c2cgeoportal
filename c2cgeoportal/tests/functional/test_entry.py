@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
 import transaction
+import os
 from geoalchemy import WKTSpatialElement
 from pyramid import testing
+from owslib.wms import WebMapService
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule
+from c2cgeoportal.tests.functional import tearDownModule, setUpModule, mapserv_url
 
 @attr(functional=True)
 class TestEntryView(TestCase):
@@ -437,12 +440,183 @@ class TestEntryView(TestCase):
         layer.isChecked = False
         layer.layerType = "no 2D"
         layer.legend = False
+        layer.metadataURL = 'http://example.com/wmsfeatures.metadata'
         self.assertEqual(entry._layer(layer, [], None), {
             'id': 20,
-            'name': 'test no 2D', 
+            'name': u'test no 2D', 
             'isChecked': False, 
             'type': u'no 2D', 
             'legend': False, 
+            'metadataURL': u'http://example.com/wmsfeatures.metadata'
         })
+        self.assertEqual(entry.errors, '')
+
+        curdir = os.path.dirname(os.path.abspath(__file__))
+        map = os.path.join(curdir, 'c2cgeoportal_test.map')
+        print "%s?map=%s" % (mapserv_url, map)
+        wms = WebMapService("%s?map=%s" % (mapserv_url, map), version='1.1.1')
+        wms_layers = list(wms.contents)
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test_wmsfeaturesgroup'
+        layer.layerType = "internal WMS"
+        layer.imageType = "image/png"
+        layer.isChecked = False
+        layer.legend = False
+        self.assertEqual(entry._layer(layer, wms_layers, wms), {
+            'id': 20,
+            'name': u'test_wmsfeaturesgroup',
+            'isChecked': False,
+            'type': u'internal WMS',
+            'legend': False,
+            'imageType': u'image/png',
+            'minResolutionHint': 1.76,
+            'maxResolutionHint': 8.8200000000000003,
+            'metadataUrls': [{
+                'url': 'http://example.com/wmsfeatures.metadata',
+                'type': 'TC211',
+                'format': 'text/plain',
+            }],
+            'childLayers': [{
+                'name': u'test_wmsfeatures',
+                'minResolutionHint': 1.76,
+                'maxResolutionHint': 8.8200000000000003,
+            }],
+        })
+        self.assertEqual(entry.errors, '')
+
+        group1 = LayerGroup()
+        group1.name = 'block'
+        group2 = LayerGroup()
+        group2.name = 'node'
+        group2.metadataURL = 'http://example.com/group.metadata'
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test layer in group'
+        layer.isChecked = False 
+        layer.layerType = "internal WMS"
+        layer.imageType = "image/png"
+        layer.legend = False
+        group1.children = [group2]
+        group2.children = [layer]
+        self.assertEqual(entry._group(group1, [layer], [], None), {
+            'isExpanded': False,
+            'isInternalWMS': True,
+            'name': u'block',
+            'isBaseLayer': False,
+            'children': [{
+                'isExpanded': False,
+                'isInternalWMS': True,
+                'name': u'node',
+                'isBaseLayer': False,
+                'metadataURL': 'http://example.com/group.metadata',
+                'children': [{
+                    'name': u'test layer in group',
+                    'id': 20,
+                    'isChecked': False,
+                    'type': u'internal WMS',
+                    'legend': False,
+                    'imageType': u'image/png'
+                }]
+            }]
+        })
+        self.assertEqual(entry.errors, '')
+
+        group1 = LayerGroup()
+        group1.isInternalWMS = True
+        group2 = LayerGroup()
+        group2.isInternalWMS = False
+        group1.children = [group2]
+        entry._group(group1, [], [], None)
+        self.assertNotEqual(entry.errors, '')
+        
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group1 = LayerGroup()
+        group1.isInternalWMS = False
+        group2 = LayerGroup()
+        group2.isInternalWMS = True
+        group1.children = [group2]
+        entry._group(group1, [], [], None)
+        self.assertNotEqual(entry.errors, '')
+
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = True
+        layer = Layer()
+        layer.layerType = 'internal WMS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = True
+        layer = Layer()
+        layer.layerType = 'external WMS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertNotEqual(entry.errors, '')
+
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = True
+        layer = Layer()
+        layer.layerType = 'WMTS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertNotEqual(entry.errors, '')
+
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = True
+        layer = Layer()
+        layer.layerType = 'no 2D'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertNotEqual(entry.errors, '')
+
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = False
+        layer = Layer()
+        layer.layerType = 'internal WMS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertNotEqual(entry.errors, '')
+
+        entry.errors = ''
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = False
+        layer = Layer()
+        layer.layerType = 'external WMS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = False
+        layer = Layer()
+        layer.layerType = 'WMTS'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
+        self.assertEqual(entry.errors, '')
+
+        group = LayerGroup()
+        group.isInternalWMS = False
+        layer = Layer()
+        layer.layerType = 'no 2D'
+        group.children = [layer]
+        entry._group(group, [layer], [], None)
         self.assertEqual(entry.errors, '')
 
