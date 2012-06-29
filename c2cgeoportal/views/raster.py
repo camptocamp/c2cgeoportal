@@ -5,6 +5,7 @@ from math import floor
 from decimal import Decimal
 
 from pyramid.view import view_config
+from pyramid.response import Response
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
 import simplejson as json
@@ -23,7 +24,7 @@ class Raster(object):
         self.request = request
         self.rasters = cleanup_json(self.request.registry.settings['raster'])
 
-    @view_config(route_name='raster', renderer='json')
+    @view_config(route_name='raster')
     def raster(self):
         lon = float(self.request.params['lon'])
         lat = float(self.request.params['lat'])
@@ -50,9 +51,11 @@ class Raster(object):
             raster = self._rasters[ref]
         elif layer['type'] == 'shp_index':
             raster = GeoRaster(layer['file'])
+            self._rasters[ref] = raster
         else:
-            raise HTTPInternalServerError("Bad raster type '%s' for raster layer '%s'" \
-                    % (layer['type'], ref))
+            raise HTTPInternalServerError(
+                    "Bad raster type '%s' for raster layer '%s'" \
+                    % (layer['type'], ref))  # pragma: no cover
 
         result = raster.get_value(lon, lat)
         if 'round' in layer:
