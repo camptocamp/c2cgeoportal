@@ -2,10 +2,12 @@
 
 import logging
 from math import floor
+from decimal import Decimal
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPInternalServerError
+from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
+import simplejson as json
 from c2cgeoportal.lib.raster.georaster import GeoRaster
 from c2cgeoportal.lib.config import cleanup_json
 
@@ -29,7 +31,10 @@ class Raster(object):
             rasters = {}
             layers = self.request.params['layers'].split(',')
             for layer in layers:
-                rasters[layer] = self.rasters[layer]
+                if layer in self.rasters:
+                    rasters[layer] = self.rasters[layer]
+                else:
+                    raise HTTPNotFound("Layer %s not found" % layer)
         else:
             rasters = self.rasters
 
@@ -38,7 +43,7 @@ class Raster(object):
             result[ref] = self._get_raster_value(
                     rasters[ref], ref, lon, lat)
 
-        return result
+        return Response(body=json.dumps(result, use_decimal=True))
 
     def _get_raster_value(self, layer, ref, lon, lat):
         if ref in self._rasters:
@@ -52,17 +57,13 @@ class Raster(object):
         result = raster.get_value(lon, lat)
         if 'round' in layer:
             result = self._round(result, layer['round'])
-        elif result:
-            result = str(result)
+        elif result != None:
+            result = Decimal(str(result))
 
         return result
 
     def _round(self, value, round_to):
         if value != None:
-            value = round(value / round_to) * round_to
-            if (round_to == floor(round_to)):
-                return str(int(value))
-            else:
-                return str(value)
+            return Decimal(str(value)).quantize(Decimal(str(round_to)))
         else:
             return None
