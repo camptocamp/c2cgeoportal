@@ -72,6 +72,13 @@ Version 0.8
        https_flag_header = X_HTTPS
        https_flag_value = on
 
+6. New web services raster and profile that needs some configuration.
+   in production.ini.in and in the developement.ini.in you should add 
+   in the [app:<project>] section:
+        raster = ${raster|path-repr}
+    For the configuration of these web services read the documentation at 
+    'administrator/raster'.
+
 Version 0.7
 ===========
 
