@@ -28,3 +28,5 @@ Example of configuration:
         https_flag_header = X_HTTPS
         https_flag_value = on
 
+In some Mako template, if you need to know what scheme is used, you may test
+the value of ``request.scheme``.
