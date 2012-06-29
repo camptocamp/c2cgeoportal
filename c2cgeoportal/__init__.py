@@ -2,6 +2,7 @@
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
+
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
@@ -173,6 +174,8 @@ def includeme(config):
 
     # Access to raster data
     config.add_route('raster', '/raster')
+    config.add_route('profile.csv', '/profile.csv')
+    config.add_route('profile.json', '/profile.json')
 
     # add routes for the "layers" web service
     config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',
