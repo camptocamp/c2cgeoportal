@@ -199,14 +199,9 @@ on_update = true
 cmds =
     >>> import os
     >>> from subprocess import Popen
-    >>> path = os.path.join(buildout.get('directory', '.'), '{{package}}',
-    >>>                     'static', 'mobile')
-    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=path)
-    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=path)
-    >>> from shutil import copy
-    >>> src = os.path.join(path, 'openlayers-mobile.js')
-    >>> dst = os.path.join(path, 'build', 'production')
-    >>> copy(src, dst)
+    >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
+    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir)
+    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir)
  
 [cssbuild]
 recipe = c2c.recipe.cssmin
