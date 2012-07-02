@@ -26,26 +26,26 @@ Version 0.8
    - In wsgi.conf.in, add a new RewriteRule:
      RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
-2. Add the support of WMTS layers the database should be updated by 
+2. Add the support of WMTS layers the database should be updated by
     standard procedure, CGXP also. We also needs the ogcproxy, and to
-    use is we need to add the following line in the file 
+    use is we need to add the following line in the file
     <project>/templates/viewer.js:
 
         OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
 3. CGXP helper tools
 
-   Some javascript helpers have been added to cgxp, allowing to open internal 
+   Some javascript helpers have been added to cgxp, allowing to open internal
    message or external html into an Ext Windows popup.
 
    The following modification is needed:
 
-   - add "CGXP/tools/tools.js" to the 'include' list in the '[app.js]' section of 
+   - add "CGXP/tools/tools.js" to the 'include' list in the '[app.js]' section of
      the 'jsbuild/app.cfg' file
 
-   If your project already used this Ext Windows popup system but with the 
-   functions called from the viewer.js with the app. namespace, you can remove 
-   the function from that template but you need to replace the "app." by 
+   If your project already used this Ext Windows popup system but with the
+   functions called from the viewer.js with the app. namespace, you can remove
+   the function from that template but you need to replace the "app." by
    "cgxp.tools." in all the javascript calls, ie:
    <a href="javascript:app.openInfoWindow('http://www.test.com', 'Popup title', 600, 500);">Link text</a>
    become
@@ -76,7 +76,7 @@ Version 0.8
    Edit ``production.ini.in`` and ``developement.ini.in`` and add
    in the ``[app:<project>]`` section:
         raster = ${raster|path-repr}
-    For the configuration of these web services read the documentation at 
+    For the configuration of these web services read the documentation at
     'administrator/raster'.
 
 
@@ -88,7 +88,7 @@ Version 0.7
    For "pserve" to work a few simple modifications are required in
    development.ini.in, production.ini.in, print/config.yaml.in and
    print/templates/print.mako.in.
-   
+
    - In development.ini.in and production.ini.in and replace "use
      = egg:Paste#http" by "use = egg:waitress#main".
 
@@ -96,7 +96,7 @@ Version 0.7
      print/templates/print.mako.in replace "${vars:paster_port}" by
      "${vars:waitress_port}".
 
-   And to be able to use "pserve" you need to add "waitress" to 
+   And to be able to use "pserve" you need to add "waitress" to
    the "install_requires" list defined in the application's
    "setup.py" file. For example:
 
@@ -316,7 +316,7 @@ Other changes
 
    - Run the usual buildout/bin/buildout command.
 
-6. In jsbuild/app.cfg, replace GoogleEarthControl by GoogleEarthView to 
+6. In jsbuild/app.cfg, replace GoogleEarthControl by GoogleEarthView to
    have the following entry:
         {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
    And add the following entries to api.js, and all language files
@@ -326,7 +326,7 @@ Other changes
 
 7. Templates modifications:
 
-   The base templates are deprecated, to get the new version do 
+   The base templates are deprecated, to get the new version do
    (Careful: this will overwrite your changes):
        cd {{project}}
        ./buildout/bin/paster create --template c2cgeoportal_create \
@@ -341,7 +341,7 @@ Other changes
    Notes:
 
       * The viewer layout has changed to ease the integration of the Google Earth plugin.
-      * A null value for the user's map extent is now permitted. 
+      * A null value for the user's map extent is now permitted.
       * The jsextent property of role is renamed to json_extent.
 
 8. Other changes to jsbuild/app.cfg are recommended. They are even required if
@@ -351,7 +351,7 @@ Other changes
    language-related file that should be included in app.js, edit.js and api.js
    is OpenLayers/Lang.js. The other language-related files should go in the
    lang-*.js builds.  See this diff
-   https://github.com/camptocamp/c2cgeoportal/pull/105/files and 
+   https://github.com/camptocamp/c2cgeoportal/pull/105/files and
    https://github.com/camptocamp/c2cgeoportal/pull/166/files to see how app.cfg
    was changed in the create template, that should help you fix your
    application's app.cfg. The note explaining why OpenLayers/Lang.js should be
@@ -397,8 +397,8 @@ options.
 
 Thu, 12 Jan 2012 13:35:23 +0100
 
-Due to wrong moving the files in 'print/print'. If exists the folder 
-'print/print/WEB-INF/' should be moved to 'print/WEB-INF/' and the 
+Due to wrong moving the files in 'print/print'. If exists the folder
+'print/print/WEB-INF/' should be moved to 'print/WEB-INF/' and the
 folder 'print/print/' should be removed.
 
 -------------------------------
@@ -461,7 +461,7 @@ should sit in jsbuild/app.cfg.
 
 /!\ ATTENTION:
 Note that you cannot upgrade to c2cgeoportal version >= 0.3.2 directly.
-You have to upgrade to v0.3.1 first, see below. 
+You have to upgrade to v0.3.1 first, see below.
 
 -------------------------------
 
@@ -579,7 +579,7 @@ $$ svn propset svn:ignore cgxp {{package}}/static/lib/
 
 Mon, 28 Nov 2011 11:42:25 +0100
 
-Added WFSGetFeature to query feature in a BBOX but desable by default. 
+Added WFSGetFeature to query feature in a BBOX but desable by default.
 -------------------------------
 
 Mon, 21 Nov 2011 12:58:23 +0100
