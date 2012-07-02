@@ -389,9 +389,9 @@ Ext.onReady(function() {
         });
 
         if (serverError.length > 0) {
-            cgxp.tools.openWindow(OpenLayers.i18n("Error notice"), {
+            cgxp.tools.openWindow({
                 html: serverError.join('<br />')
-            },600, 500);
+            },OpenLayers.i18n("Error notice"),600, 500);
         }
 
     }, app);
