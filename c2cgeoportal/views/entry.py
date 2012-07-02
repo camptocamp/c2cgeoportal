@@ -398,6 +398,7 @@ class Entry(object):
 
     def _getVars(self):
         d = {}
+        d['settings'] = self.settings
         self.errors = "\n"
         d['themes'] = json.dumps(self._themes(d))
         d['themesError'] = self.errors
