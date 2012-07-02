@@ -1,6 +1,6 @@
 Ext.application({
     name: 'App',
-    appFolder: '../mobile/app',
+    appFolder: 'app',
 
     viewport: {
         // hide the address bar
