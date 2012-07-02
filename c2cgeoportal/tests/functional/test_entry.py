@@ -122,6 +122,7 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
+                'mapserv.url': mapserv_url,
                 'external_themes_url': '',
                 'webclient_string_functionalities': '',
                 'webclient_array_functionalities': '',
@@ -228,6 +229,7 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
+                'mapserv.url': mapserv_url,
                 'external_themes_url': '',
                 'webclient_string_functionalities': '',
                 'webclient_array_functionalities': '',
@@ -255,6 +257,7 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
+                'mapserv.url': mapserv_url,
                 'external_themes_url': '',
                 'webclient_string_functionalities': '',
                 'webclient_array_functionalities': '',
