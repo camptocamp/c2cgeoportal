@@ -20,10 +20,7 @@ def _get_config_functionalities(name, registered, config):
 
 
 def _get_db_functionalities(name, request):
-    username = authenticated_userid(request)
-    user = None if username is None \
-            else DBSession.query(User).filter_by(username=username).one()
-
+    user = request.user
     result = []
     if user:
         result = [functionality.value for functionality in user.functionalities if functionality.name == name]
