@@ -2,7 +2,7 @@
 import logging
 try:
     from hashlib import sha1
-except ImportError:
+except ImportError:  # pragma: nocover
     from sha import new as sha1
 
 import sqlahelper
@@ -31,13 +31,13 @@ AUTHORIZED_ROLE = 'role_admin'
 if schema is not None:
     _schema = schema
 else:
-    raise Exception('schema not specified, you need to add it to your buildout config')
+    raise Exception('schema not specified, you need to add it to your buildout config')  # pragma: nocover
 _parentschema = parentschema
 
 if srid is not None:
     _srid = srid
 else:
-    raise Exception('srid not specified, you need to add it to your buildout config')
+    raise Exception('srid not specified, you need to add it to your buildout config')  # pragma: nocover
 
 
 class TsVector(types.UserDefinedType):
@@ -81,7 +81,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return "%s - %s" % (self.name or u'', self.value or u'')
+        return "%s - %s" % (self.name or u'', self.value or u'')  # pragma: nocover
 
 # association table user <> functionality
 user_functionality = Table('user_functionality', Base.metadata,
@@ -171,7 +171,7 @@ class User(Base):
     password = property(_get_password, _set_password)
 
     def __unicode__(self):
-        return self.username or u''
+        return self.username or u''  # pragma: nocover
 
 
 class Role(Base):
@@ -199,7 +199,7 @@ class Role(Base):
         self.description = description
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u''  # pragma: nocover
 
     def _json_extent(self):
         coords = self.extent.coords(DBSession)
@@ -236,7 +236,7 @@ class TreeItem(Base):
         self.order = order
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u''  # pragma: nocover
 
 # association table LayerGroup <> TreeItem
 layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
@@ -407,7 +407,7 @@ class RestrictionArea(Base):
         self.readwrite = readwrite
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u'' # pragma: nocover
 
 GeometryDDL(RestrictionArea.__table__)
 
@@ -427,4 +427,4 @@ if _parentschema is not None and _parentschema != '':
             self.name = name
 
         def __unicode__(self):
-            return self.name or u''
+            return self.name or u''  # pragma: nocover
