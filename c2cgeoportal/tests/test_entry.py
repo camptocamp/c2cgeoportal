@@ -10,6 +10,12 @@ def setUpModule():
 
 class TestEntryView(TestCase):
 
+    def setUp(self):
+        from pyramid import testing
+        self.config = testing.setUp(
+            settings={}   
+            )
+
     def test__get_child_layers_info_with_scalehint(self):
         import math
         from pyramid.testing import DummyRequest
