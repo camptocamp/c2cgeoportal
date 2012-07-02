@@ -169,10 +169,6 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
-    def _get_mapfile_path(self):
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(curdir, 'c2cgeoportal_test.map')
-
     def _create_dummy_request(self, username=None):
         from c2cgeoportal.models import DBSession, User
 
@@ -326,10 +322,6 @@ class TestMapserverproxyView(TestCase):
     def _get_mapfile_path(self):
         curdir = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(curdir, 'c2cgeoportal_test.map')
-
-    def _get_auth_header(self, user):
-        userpass = '%s:%s' % (user, user)
-        return {'Authorization': 'Basic %s' % userpass.encode('base64')}
 
     def GetFeature_IsEqualTo(self, value):
         from c2cgeoportal.views import mapserverproxy
