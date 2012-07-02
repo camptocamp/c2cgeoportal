@@ -58,6 +58,19 @@ Version 0.8
    chmod +x deploy/hooks/post-restore-database.in
    rm -rf /tmp/{{project}}
 
+5. HTTPS detection
+
+   If your application is accessed in HTTPS but is behind some proxies that remove the SSL encryption,
+   you can make sure that all generated URLs (CSS and Javascript files, images, MapServer requests, etc.)
+   use the HTTPS scheme by specifing to c2cgeoportal an HTTP header to test for some value. For instance:
+
+   - In development.ini.in / production.ini.in:
+       https_flag_header = ${https_flag_header}
+       https_flag_value = ${https_flag_value}
+
+   - In buildout.cfg:
+       https_flag_header = X_HTTPS
+       https_flag_value = on
 
 Version 0.7
 ===========

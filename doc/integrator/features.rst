@@ -27,4 +27,5 @@ Features that require additional steps (most of the time):
    fulltext_search
    editing
    print
+   https
 
