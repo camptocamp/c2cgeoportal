@@ -77,7 +77,6 @@ class TestEntryView(TestCase):
     def test_login(self):
         from c2cgeoportal import default_user_validator
         from c2cgeoportal.views.entry import Entry
-        from pyramid.security import authenticated_userid
 
         request = testing.DummyRequest()
         request.params['login'] = u'__test_user1'
