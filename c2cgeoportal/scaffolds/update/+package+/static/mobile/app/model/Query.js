@@ -34,7 +34,7 @@ Ext.define('App.model.Query', {
 });
 
 Ext.create('Ext.data.Store', {
-    storeId: 'searchStore',
+    storeId: 'queryStore',
     model: 'App.model.Query',
     groupField: 'type'
 });
