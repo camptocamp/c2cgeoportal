@@ -9,6 +9,11 @@ Any c2cgeoportal projet created with the ``c2cgeoportal_create`` and
 ``c2cgeoportal_update`` scaffolds comes with a `Sencha Touch
 <http://www.sencha.com/products/touch/>`_ based mobile application.
 
+The mobile application is available at the URLs ``/mobile_dev/`` and
+``/mobile/``. Do not forget the trailing slash! The first URL should be used
+during development, as non-minified resources are used. The second URL is for
+production.
+
 This application includes the following features:
 
 * Map with zoom buttons.
@@ -48,19 +53,19 @@ project, and copying the missing files from there::
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
    $ rm -rf /tmp/<project_name>
 
-The last step involves adding *routes* and *views* specific to the
-mobile application. Edit the project's ``__init__.py`` file and
-add the following configuration::
+The last step involves adding *routes* and *views* specific to the mobile
+application. Edit the project's ``__init__.py`` file and add the following
+lines before the ``main`` function's return statement::
 
     # mobile views and routes
-    config.add_route('mobile_dev', '/mobile_dev')
+    config.add_route('mobile_index_dev', '/mobile_dev/')
     config.add_view(renderer='<package_name>:static/mobile/index.html',
-                    route_name='mobile_dev')
-    config.add_static_view('mobile_dev', '<package_name>:static/mobile')
-    config.add_route('mobile_prod', '/mobile')
-    config.add_view(renderer='<package_name>:static/build/production/index.html',
-                    route_name='mobile_prod')
+                    route_name='mobile_index_dev')
     config.add_static_view('mobile', '<package_name>:static/mobile')
+    config.add_route('mobile_index_prod', '/mobile/')
+    config.add_view(renderer='<package_name>:static/mobile/build/production/index.html',
+                    route_name='mobile_index_prod')
+    config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
 
 Replace ``<package_name>`` with the project's actual package name.
 
