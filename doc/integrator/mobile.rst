@@ -45,6 +45,7 @@ project, and copying the missing files from there::
            /tmp/<project_name> package=<package_name>
    $ rsync -rv /tmp/<project_name>/<package_name>/static/mobile/ \
            <package_name>/static/mobile/
+   $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
    $ rm -rf /tmp/<project_name>
 
 The last step involves adding *routes* and *views* specific to the
@@ -62,6 +63,8 @@ add the following configuration::
     config.add_static_view('mobile', '<package_name>:static/mobile')
 
 Replace ``<package_name>`` with the project's actual package name.
+
+Now switch to the next section.
 
 Building the mobile application
 -------------------------------
