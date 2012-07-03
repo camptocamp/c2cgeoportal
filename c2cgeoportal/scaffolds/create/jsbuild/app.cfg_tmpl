@@ -230,45 +230,6 @@ include =
     plugins/ZoomToExtent.js #GXP
     plugins/NavigationHistory.js #GXP
 
-[openlayers-mobile.js]
-root =
-    {{package}}/static/lib/cgxp/openlayers/lib
-    {{package}}/static/lib/cgxp/proj4js
-first =
-    OpenLayers/SingleFile.js
-    OpenLayers/Console.js
-    OpenLayers/BaseTypes.js
-    OpenLayers/BaseTypes/Class.js
-    OpenLayers/BaseTypes/Pixel.js
-    OpenLayers/BaseTypes/Bounds.js
-    OpenLayers/BaseTypes/LonLat.js
-    OpenLayers/BaseTypes/Element.js
-    OpenLayers/BaseTypes/Size.js
-    OpenLayers/Util.js
-    OpenLayers/Lang.js
-    proj4js/lib/proj4js.js
-exclude =
-include =
-    proj4js/lib/projCode/merc.js #proj4js
-    OpenLayers/Map.js
-    OpenLayers/Kinetic.js
-    OpenLayers/Layer/OSM.js
-    OpenLayers/Layer/WMS.js
-    OpenLayers/Layer/Vector.js
-    OpenLayers/Renderer/Canvas.js
-    OpenLayers/Renderer/SVG.js
-    OpenLayers/Control/TouchNavigation.js
-    OpenLayers/Control/Attribution.js
-    OpenLayers/Control/SelectFeature.js
-    OpenLayers/Control/ScaleLine.js
-    OpenLayers/Format/GeoJSON.js
-    OpenLayers/Request/XMLHttpRequest.js
-    OpenLayers/Protocol/HTTP.js
-    OpenLayers/Filter/Spatial.js
-    OpenLayers/Protocol/WFS/v1_0_0.js
-    OpenLayers/Format/GML.js
-    OpenLayers/Strategy/Fixed.js
-
 [lang-en.js]
 root =
     {{package}}/static/lib/cgxp/core/src/script
