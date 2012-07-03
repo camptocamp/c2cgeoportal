@@ -7,9 +7,9 @@ import json
 import sys
 
 from pyramid.view import view_config
-from pyramid.i18n import get_locale_name
-from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
-                                    HTTPBadRequest, HTTPUnauthorized)
+from pyramid.i18n import get_locale_name, TranslationStringFactory
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
+        HTTPBadRequest, HTTPUnauthorized
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -22,6 +22,8 @@ from c2cgeoportal.lib.functionality import get_functionality, get_functionalitie
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
         RestrictionArea, Role, layer_ra, role_ra
 
+
+_ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
 
 
