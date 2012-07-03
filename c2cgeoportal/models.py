@@ -407,7 +407,7 @@ class RestrictionArea(Base):
         self.readwrite = readwrite
 
     def __unicode__(self):
-        return self.name or u'' # pragma: nocover
+        return self.name or u''  # pragma: nocover
 
 GeometryDDL(RestrictionArea.__table__)
 

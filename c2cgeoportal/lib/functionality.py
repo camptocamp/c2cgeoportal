@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.security import authenticated_userid
-
-from c2cgeoportal.models import DBSession, User
 from c2cgeoportal.lib.config import cleanup_json
 
 
