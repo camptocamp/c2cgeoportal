@@ -168,7 +168,6 @@ Ext.define("App.view.Main", {
         }
 
         mapContainer.on('longpress', function(event, node) {
-            // FIXME: depends on https://github.com/openlayers/openlayers/pull/294
             var map = this.getMap();
             var el = Ext.get(map.div);
             var pixel = new OpenLayers.Pixel(
