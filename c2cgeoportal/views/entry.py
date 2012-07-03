@@ -404,15 +404,15 @@ class Entry(object):
         d['WFSTypes'] = json.dumps(self._WFSTypes())
         d['serverError'] = json.dumps(self.serverError)
 
-        if hasattr(self.request.registry.settings, 'external_mapserv.url') \
-           and self.settings.get('external_mapserv.url'):
+        if 'external_mapserv.url' in self.settings \
+                and self.settings['external_mapserv.url']:
             d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
         else:
             d['externalWFSTypes'] = '[]'
 
-        if hasattr(self.request.registry.settings, 'external_themes_url') \
-           and self.settings.get("external_themes_url"):
-            ext_url = self.settings.get("external_themes_url")
+        if 'external_themes_url' in self.settings \
+                and self.settings['external_themes_url']:
+            ext_url = self.settings['external_themes_url']
             if self.request.user is not None and \
                     hasattr(self.request.user, 'parent_role'):
                 ext_url += '?role_id=' + str(self.request.user.parent_role.id)
