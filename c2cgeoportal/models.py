@@ -280,7 +280,7 @@ class LayerGroup(TreeGroup):
     # children have radio button instance of check box
     isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
 
-    def __init__(self, name=u'', order=u'', isExpanded=False,
+    def __init__(self, name=u'', order=100, isExpanded=False,
             isInternalWMS=True, isBaseLayer=False):
         TreeGroup.__init__(self, name=name, order=order)
         self.isExpanded = isExpanded
