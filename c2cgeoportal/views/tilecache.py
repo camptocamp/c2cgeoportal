@@ -13,10 +13,11 @@ from tileforge import generator
 
 
 # default expiration time is set to 1 week
-DEFAULT_EXPIRATION = 3600*24*7
+DEFAULT_EXPIRATION = 3600 * 24 * 7
 
 # TileCache Service instance
 _service = None
+
 
 def load_tilecache_config(settings):
     """ Load the TileCache config.
@@ -36,6 +37,7 @@ def load_tilecache_config(settings):
         print _service.metadata['exception']
         print _service.metadata['traceback']
 
+
 def createImage(path_info):
     path = path_info.split('/')
     layername = path[3]
@@ -50,16 +52,17 @@ def createImage(path_info):
     generator.init(layer, _service.cache)
     generator.run(tile)
 
+
 def wsgiHandler(environ, start_response):
-    from paste.request import parse_formvars
     try:
         path_info = ""
 
-        if "PATH_INFO" in environ: 
+        if "PATH_INFO" in environ:
             path_info = environ["PATH_INFO"]
 
         l = len("/tilecache")
-        image_file = _service.config.get("cache", "base") + path_info[l:len(path_info)]
+        image_file = _service.config.get("cache", "base") + \
+                     path_info[l:len(path_info)]
 
         if not os.access(image_file, os.F_OK):
             # 3 trys to create image
@@ -77,17 +80,19 @@ def wsgiHandler(environ, start_response):
 
         if os.access(image_file, os.R_OK):
             if image_file[len(image_file) - 4:len(image_file)] == '.png':
-                start_response("200 OK", [('Content-Type','image/png')])
+                start_response("200 OK", [('Content-Type', 'image/png')])
             else:
-                start_response("200 OK", [('Content-Type','image/jpeg')])
+                start_response("200 OK", [('Content-Type', 'image/jpeg')])
             return [open(image_file, 'rb').read()]
         else:
-            start_response("404 Tile Not Found", [('Content-Type','text/plain')])
+            start_response("404 Tile Not Found",
+                           [('Content-Type', 'text/plain')])
             return ["No tile generated"]
 
     except TileCacheException, E:
-        start_response("404 Tile Not Found", [('Content-Type','text/plain')])
+        start_response("404 Tile Not Found", [('Content-Type', 'text/plain')])
         return ["An error occurred: %s" % (str(E))]
+
 
 @wsgiapp
 def tilecache(environ, start_response):
@@ -98,12 +103,11 @@ def tilecache(environ, start_response):
 
     # custom_start_response adds cache headers to the response
     def custom_start_response(status, headers, exc_info=None):
-        headers.append(('Cache-Control', 
+        headers.append(('Cache-Control',
                 'public, max-age=%s' % expiration))
-        headers.append(('Expires', 
-                email.Utils.formatdate(time.time() + expiration, 
+        headers.append(('Expires',
+                email.Utils.formatdate(time.time() + expiration,
                 False, True)))
         return start_response(status, headers, exc_info)
 
     return wsgiHandler(environ, custom_start_response)
-
