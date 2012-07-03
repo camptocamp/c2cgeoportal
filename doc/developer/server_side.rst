@@ -85,9 +85,9 @@ the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
 Unit tests
 ..........
 
-To run the unit tests simply do this::
+To run the unit tests do this::
 
-    $ ./buildout/bin/python setup.py nosetests -a \!functional
+    $ ./buildout/bin/python setup.py nosetests -a '!functional'
 
 Functional tests
 ................
@@ -142,7 +142,7 @@ You can now run the functional tests with this::
 All tests
 .........
 
-To run all the tests simply do this::
+To run all the tests do this::
 
     $ ./buildout/bin/python setup.py nosetests
 
