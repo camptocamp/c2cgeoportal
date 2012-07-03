@@ -379,7 +379,9 @@ class Entry(object):
         )
         wfs_url = self.request.registry.settings['external_mapserv.url'] if external \
                     else self.request.registry.settings['mapserv.url']
-        wfsgc_url = wfs_url + "?" + '&'.join(['='.join(p) for p in params])
+        if wfs_url.find('?') < 0:
+            wfs_url += '?'
+        wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
