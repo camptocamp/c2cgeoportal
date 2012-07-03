@@ -162,6 +162,7 @@ class TestFunctionalities(TestCase):
             }''',
             'webclient_string_functionalities': '__test_s',
             'webclient_array_functionalities': '__test_a',
+            'mapserv.url': mapserv_url,
         }
         request.registry.settings = settings
         request1.registry.settings = settings

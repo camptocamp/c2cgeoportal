@@ -288,11 +288,11 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                'external_themes_url': '',
-                'webclient_string_functionalities': '',
-                'webclient_array_functionalities': '',
-                }
+            'mapserv.url': mapserv_url,
+            'external_themes_url': '',
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
         request.user = DBSession.query(User) \
@@ -323,6 +323,9 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         entry = Entry(request)
+        request.registry.settings = {
+            'mapserv.url': mapserv_url,
+        }
         request.user = None
 
         # unautenticated
@@ -339,7 +342,9 @@ class TestEntryView(TestCase):
 
         # mapfile error
         request.params = {}
-        request.route_url = lambda url: mapserv_url + '?map=toto-tiit'
+        request.registry.settings = {
+            'mapserv.url': mapserv_url + '?map=not_a_mapfile',
+        }
         response = entry._themes({})
         self.assertEquals(response[0], [])
         self.assertNotEquals(response[1].strip(), '')
@@ -349,12 +354,13 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
 
         curdir = os.path.dirname(os.path.abspath(__file__))
         map = os.path.join(curdir, 'c2cgeoportal_test.map')
         ms_url = "%s?map=%s&" % (mapserv_url, map)
-        request.route_url = lambda url: ms_url
         request.registry.settings = {
+            'mapserv.url': ms_url,
             'external_mapserv.url': ms_url,
             'webclient_string_functionalities': '',
             'webclient_array_functionalities': '',
@@ -373,6 +379,7 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         request.registry.settings = {
+            'mapserv.url': mapserv_url,
             'external_mapserv.url': mapserv_url,
             'webclient_string_functionalities': '',
             'webclient_array_functionalities': '',
@@ -392,6 +399,7 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         request.registry.settings = {
+            'mapserv.url': mapserv_url,
             'external_mapserv.url': mapserv_url,
             'webclient_string_functionalities': '',
             'webclient_array_functionalities': '',
@@ -417,8 +425,8 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
         request.registry.settings = {
+            'mapserv.url': mapserv_url,
             'external_mapserv.url': mapserv_url,
             'webclient_string_functionalities': '',
             'webclient_array_functionalities': '',
@@ -427,20 +435,20 @@ class TestEntryView(TestCase):
         request.user = None
 
         request.matchdict = {
-            'themes': ['toto'],
+            'themes': ['theme'],
         }
         result = entry.permalinktheme()
         self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=toto')
-        self.assertEquals(result['permalink_themes'], 'permalink_themes=toto')
+        self.assertEquals(result['extra_params'], '?permalink_themes=theme')
+        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
         request.matchdict = {
-            'themes': ['toto', 'titi'],
+            'themes': ['theme1', 'theme2'],
         }
         result = entry.permalinktheme()
         self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=toto,titi')
-        self.assertEquals(result['permalink_themes'], 'permalink_themes=toto,titi')
+        self.assertEquals(result['extra_params'], '?permalink_themes=theme1,theme2')
+        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):
         from c2cgeoportal.views.entry import Entry
