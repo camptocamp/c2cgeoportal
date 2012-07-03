@@ -365,12 +365,6 @@ class Entry(object):
                 if (item in layers):
                     yield self._layer(item, wms_layers, wms)
 
-    def _getForLang(self, key):
-        try:
-            return json.loads(self.settings.get(key).strip("\"'"))[self.lang]
-        except ValueError:
-            return self.settings.get(key)
-
     def _WFSTypes(self, external=False):
         # retrieve layers metadata via GetCapabilities
         role_id = None
