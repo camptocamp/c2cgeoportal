@@ -130,3 +130,49 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionalities('__test_a', settings, request1), ['r1', 'r2']);
         self.assertEquals(get_functionality('__test_s', settings, request2), 'db');
         self.assertEquals(get_functionalities('__test_a', settings, request2), ['db1', 'db2']);
+
+    def test_web_client_functionalities(self):
+        from pyramid.testing import DummyRequest
+        from pyramid.security import remember
+        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal.tests.functional import mapserv_url
+        from c2cgeoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
+        request.user = None
+        request1 = DummyRequest()
+        request1.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request1.route_url = lambda url: mapserv_url
+        request1.user = DBSession.query(User).filter(User.username == '__test_user1').one()
+        request2 = DummyRequest()
+        request2.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request2.route_url = lambda url: mapserv_url
+        request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
+
+        settings = {
+            'anonymous_functionalities': '''/home/sbrunner/regiogis/regiogis/{
+                "__test_s": "anonymous",
+                "__test_a": ["a1", "a2"]
+            }''',
+            'registered_functionalities': '''/home/sbrunner/regiogis/regiogis/{
+                "__test_s": "registered",
+                "__test_a": ["r1", "r2"]
+            }''',
+            'webclient_string_functionalities': '__test_s',
+            'webclient_array_functionalities': '__test_a',
+        }
+        request.registry.settings = settings
+        request1.registry.settings = settings
+        request2.registry.settings = settings
+
+        annon = Entry(request)._getVars()
+        u1 = Entry(request1)._getVars()
+        u2 = Entry(request2)._getVars()
+        self.assertEquals(annon['functionality'], '{"__test_s": "anonymous"}');
+        self.assertEquals(annon['functionalities'], '{"__test_a": ["a1", "a2"]}');
+        self.assertEquals(u1['functionality'], '{"__test_s": "registered"}');
+        self.assertEquals(u1['functionalities'], '{"__test_a": ["r1", "r2"]}');
+        self.assertEquals(u2['functionality'], '{"__test_s": "db"}');
+        self.assertEquals(u2['functionalities'], '{"__test_a": ["db1", "db2"]}');
