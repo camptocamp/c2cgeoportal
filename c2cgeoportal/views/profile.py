@@ -8,19 +8,17 @@ from pyramid.response import Response
 from pyramid.httpexceptions import HTTPNotFound
 
 import geojson
-import simplejson as json
-from c2cgeoportal.lib.raster.georaster import GeoRaster
 from c2cgeoportal.views.raster import Raster
 
 
 class Profile(Raster):
 
-    @view_config(route_name='profile.json')
+    @view_config(route_name='profile.json', renderer='decimaljson')
     def json(self):
         """answers to /profile.json"""
         layer, points = self._compute_points()
-        return Response(body=json.dumps({'profile': points}, use_decimal=True))
-        
+        return {'profile': points}
+
     @view_config(route_name='profile.csv')
     def csv(self):
         """answers to /profile.csv"""
@@ -30,7 +28,7 @@ class Profile(Raster):
         template = ','.join('%s' for l in layers)
         for point in points:
             r = template % tuple((str(point['values'][l]) for l in layers))
-            result += '\n%s,%s,%d,%d' % (str(point['dist']), r, point['x'], point['y']) 
+            result += '\n%s,%s,%d,%d' % (str(point['dist']), r, point['x'], point['y'])
         return Response(result, headers={
             'Content-Type': 'text/csv; charset=utf-8',
             'Content-Disposition': 'attachment; filename="profil.csv"'
@@ -63,7 +61,7 @@ class Profile(Raster):
             values = {}
             has_one = False
             for ref in rasters.keys():
-                value = self._get_raster_value(self.rasters[ref], 
+                value = self._get_raster_value(self.rasters[ref],
                         ref, coord[0], coord[1])
                 if value != None:
                     values[ref] = value
@@ -108,6 +106,5 @@ class Profile(Raster):
                     result.append([prev_coord[0] + dx * i, prev_coord[1] + dy * i])
             else:
                 result.append([coord[0], coord[1]])
-            prev_coord =coord
+            prev_coord = coord
         return result
-    

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from math import floor
 from decimal import Decimal
 
 from pyramid.view import view_config
-from pyramid.response import Response
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
-import simplejson as json
 from c2cgeoportal.lib.raster.georaster import GeoRaster
 from c2cgeoportal.lib.config import cleanup_json
 
@@ -24,7 +21,7 @@ class Raster(object):
         self.request = request
         self.rasters = cleanup_json(self.request.registry.settings['raster'])
 
-    @view_config(route_name='raster')
+    @view_config(route_name='raster', renderer='decimaljson')
     def raster(self):
         lon = float(self.request.params['lon'])
         lat = float(self.request.params['lat'])
@@ -44,7 +41,7 @@ class Raster(object):
             result[ref] = self._get_raster_value(
                     rasters[ref], ref, lon, lat)
 
-        return Response(body=json.dumps(result, use_decimal=True))
+        return result
 
     def _get_raster_value(self, layer, ref, lon, lat):
         if ref in self._rasters:
