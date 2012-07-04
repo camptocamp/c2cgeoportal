@@ -7,9 +7,9 @@ import json
 import sys
 
 from pyramid.view import view_config
-from pyramid.i18n import get_locale_name
-from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
-                                    HTTPBadRequest, HTTPUnauthorized)
+from pyramid.i18n import get_locale_name, TranslationStringFactory
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
+        HTTPBadRequest, HTTPUnauthorized
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -22,6 +22,8 @@ from c2cgeoportal.lib.functionality import get_functionality, get_functionalitie
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
         RestrictionArea, Role, layer_ra, role_ra
 
+
+_ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
 
 
@@ -324,8 +326,8 @@ class Entry(object):
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
         try:
             wms = WebMapService(wms_url, version='1.1.1')
-        except AttributeError as e:
-            errors =  _("WARNING! an error occured while trying to read the mapfile and recover the themes")
+        except AttributeError:
+            errors = _("WARNING! an error occured while trying to read the mapfile and recover the themes")
             self.serverError.append(errors)
             traceback.print_stack()
             log.exception(errors)
@@ -363,12 +365,6 @@ class Entry(object):
                 if (item in layers):
                     yield self._layer(item, wms_layers, wms)
 
-    def _getForLang(self, key):
-        try:
-            return json.loads(self.settings.get(key).strip("\"'"))[self.lang]
-        except ValueError:
-            return self.settings.get(key)
-
     def _WFSTypes(self, external=False):
         # retrieve layers metadata via GetCapabilities
         role_id = None
@@ -383,7 +379,9 @@ class Entry(object):
         )
         wfs_url = self.request.registry.settings['external_mapserv.url'] if external \
                     else self.request.registry.settings['mapserv.url']
-        wfsgc_url = wfs_url + "?" + '&'.join(['='.join(p) for p in params])
+        if wfs_url.find('?') < 0:
+            wfs_url += '?'
+        wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
@@ -406,15 +404,15 @@ class Entry(object):
         d['WFSTypes'] = json.dumps(self._WFSTypes())
         d['serverError'] = json.dumps(self.serverError)
 
-        if hasattr(self.request.registry.settings, 'external_mapserv.url') \
-           and self.settings.get('external_mapserv.url'):
+        if 'external_mapserv.url' in self.settings \
+                and self.settings['external_mapserv.url']:
             d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
         else:
             d['externalWFSTypes'] = '[]'
 
-        if hasattr(self.request.registry.settings, 'external_themes_url') \
-           and self.settings.get("external_themes_url"):
-            ext_url = self.settings.get("external_themes_url")
+        if 'external_themes_url' in self.settings \
+                and self.settings['external_themes_url']:
+            ext_url = self.settings['external_themes_url']
             if self.request.user is not None and \
                     hasattr(self.request.user, 'parent_role'):
                 ext_url += '?role_id=' + str(self.request.user.parent_role.id)
@@ -543,7 +541,7 @@ class Entry(object):
                     headers=headers)
 
     @view_config(route_name='permalinktheme', renderer='index.html')
-    def permalinktheme (self):
+    def permalinktheme(self):
         # recover themes from url route
         themes = self.request.matchdict['themes']
         d = {}

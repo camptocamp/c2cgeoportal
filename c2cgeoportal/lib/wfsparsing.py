@@ -26,7 +26,7 @@ class _XMLFilterLimit(XMLFilterBase):
     def __init__(self, upstream, downstream, limit=200):
         XMLFilterBase.__init__(self, upstream)
         self._count = 0
-        self._limit = 200
+        self._limit = limit
         self._downstream = downstream
 
     def startDocument(self):
@@ -107,7 +107,7 @@ def limit_featurecollection(content, limit=200):
     output = _StringIO()
     downstream = XMLGenerator(output, 'utf-8')
 
-    _filter = _XMLFilterLimit(parser, downstream)
+    _filter = _XMLFilterLimit(parser, downstream, limit=limit)
     _filter.parse(input_source)
 
     result = output.getvalue()

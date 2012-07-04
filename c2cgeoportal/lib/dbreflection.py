@@ -61,7 +61,7 @@ class _association_proxy(object):
             # and class levels we could return an SQL expression here.
             # The code of hybrid_property in SQLAlchemy illustrates
             # how to do that.
-            raise AttributeError
+            raise AttributeError  # pragma: nocover
         target = getattr(obj, self.target)
         return getattr(target, self.value_attr) if target else None
 
