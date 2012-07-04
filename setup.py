@@ -25,6 +25,7 @@ install_requires = [
     'OWSLib',
     'tileforge>=0.2',
     'JSTools>=0.6',
+    'simplejson',
     ]
 
 # nose plugins with options set in setup.cfg cannot be in

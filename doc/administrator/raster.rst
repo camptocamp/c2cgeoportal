@@ -25,4 +25,4 @@ The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 ``round`` specifies how the result must be rounded. For instance
 '1': round to the unit, '0.01': round to the hundredth, an so on.
 
-Those raster data will be used by the RightClick, the YXZ and the Profile components.
+Those raster data will be used by the RightClick, the YXZ and the Profile CGXP components.

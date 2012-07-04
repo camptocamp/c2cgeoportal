@@ -18,17 +18,17 @@ class Profile(Raster):
     @view_config(route_name='profile.json')
     def json(self):
         """answers to /profile.json"""
-        (layer, points) = self._compute_points()
+        layer, points = self._compute_points()
         return Response(body=json.dumps({'profile': points}, use_decimal=True))
         
     #@view_config(route_name='profile.csv', renderer='profile.csv')
     @view_config(route_name='profile.csv')
     def csv(self):
         """answers to /profile.csv"""
-        (layers, points) = self._compute_points()
+        layers, points = self._compute_points()
 
         result = "distance," + ','.join(layers) + ",x,y"
-        template = ','.join(['%s' for l in layers])
+        template = ','.join('%s' for l in layers)
         for point in points:
             r = template % tuple((str(point['values'][l]) for l in layers))
             result += '\n%s,%s,%d,%d' % (str(point['dist']), r, point['x'], point['y']) 
@@ -76,7 +76,7 @@ class Profile(Raster):
                 points.append({'dist': rounded_dist, 'values': values, 'x': coord[0], 'y': coord[1]})
             prev_coord = coord
 
-        return (rasters.keys(), points)
+        return rasters.keys(), points
 
     def _dist(self, coord1, coord2):
         """Compute the distance between 2 points"""

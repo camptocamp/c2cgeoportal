@@ -74,7 +74,7 @@ Version 0.8
 
 6. New raster and profile web services are now available and require some configuration.
    Edit ``production.ini.in`` and ``developement.ini.in`` and add
-   in the ``[app:<project>]`` section:
+   in the ``[app:<package_name>]`` section:
         raster = ${raster|path-repr}
     For the configuration of these web services read the documentation at
     'administrator/raster'.
