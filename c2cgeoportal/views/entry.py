@@ -324,8 +324,9 @@ class Entry(object):
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
         try:
             wms = WebMapService(wms_url, version='1.1.1')
-        except AttributeError as e:
-            errors =  _("WARNING! an error occured while trying to read the mapfile and recover the themes")
+        except AttributeError:
+            errors = "WARNING! an error occured while trying to read the "\
+                     "mapfile and recover the themes"
             self.serverError.append(errors)
             traceback.print_stack()
             log.exception(errors)
@@ -543,7 +544,7 @@ class Entry(object):
                     headers=headers)
 
     @view_config(route_name='permalinktheme', renderer='index.html')
-    def permalinktheme (self):
+    def permalinktheme(self):
         # recover themes from url route
         themes = self.request.matchdict['themes']
         d = {}

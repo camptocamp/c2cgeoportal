@@ -47,13 +47,13 @@ def proxy(request):
 
     mss = get_functionalities('mapserver_substitution', \
             request.registry.settings, request)
-    if (mss):
+    if mss:
         for s in mss:
             index = s.find('=')
             if index > 0:
                 attribute = 's_' + s[:index]
                 value = s[index + 1:]
-                if (attribute in params):
+                if attribute in params:
                     params[attribute] += "," + value
                 else:
                     params[attribute] = value
