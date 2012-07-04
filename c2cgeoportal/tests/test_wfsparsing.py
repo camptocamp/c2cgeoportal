@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
-class TestEntryView(TestCase):
+class TestWFSParsing(TestCase):
     def test_is_get_feature(self):
         from c2cgeoportal.lib.wfsparsing import is_get_feature
         from c2cgeoportal.tests.xmlstr import getfeature
