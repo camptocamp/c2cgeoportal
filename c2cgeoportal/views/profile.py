@@ -21,7 +21,6 @@ class Profile(Raster):
         layer, points = self._compute_points()
         return Response(body=json.dumps({'profile': points}, use_decimal=True))
         
-    #@view_config(route_name='profile.csv', renderer='profile.csv')
     @view_config(route_name='profile.csv')
     def csv(self):
         """answers to /profile.csv"""
