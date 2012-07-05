@@ -76,9 +76,14 @@ by relying on the `mod_setenvif
 <http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html>`_ Apache module's
 ``SetEnvIf`` directive. For example::
 
-    SetEnvIf sectoken <role>(.*)</role> rolename=$1
+    SetEnvIf isiwebsectoken <role>(.*)</role> rolename=$1
 
-With this ``mod_setenvif`` extracts the role name from the ``sectoken`` header
+or::
+
+    SetEnvIf isiwebsectoken '<field name="roles">([a-zA-Z0-9,\.]*)</field>' rolename=$1
+
+
+With this ``mod_setenvif`` extracts the role name from the ``isiwebsectoken`` header
 and places it in the ``rolename`` environment variable. See the ``mod_setenvif``
 documentation for more detail.
 
@@ -89,7 +94,7 @@ specifically it expects ``request.user.role.id`` to contain the role id, and
 ``c2cgeoportal`` with what it expects the application should redefine the
 callback function that adds a ``user`` property to the request. This is done by
 calling the ``set_request_property`` function on the ``Configurator`` object.
-For example::
+For example add to ``__init__.py``::
 
     from pyramid.security import unauthenticated_userid
 
@@ -100,14 +105,14 @@ For example::
         username = unauthenticated_userid(request)
         if username is not None:
             user = O()
-            rolename = self.environ.get('rolename')
+            rolename = request.environ.get('rolename')
             user.role = DBSession.query(Role).filter_by(
                             name=rolename).one()
             return user
 
 And then, in the application's ``main`` function::
 
-    config.add_request_property(get_user_from_request,
+    config.set_request_property(get_user_from_request,
                                 name='user', reify=True
                                 )
 
