@@ -6,7 +6,7 @@ from pyramid_formalchemy.resources import Models
 
 class Root(object):
     def __init__(self, request):
-        self.request = request
+        self.request = request  # pragma: nocover
 
 
 class FAModels(Models):
