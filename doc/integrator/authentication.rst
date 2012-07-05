@@ -82,7 +82,6 @@ or::
 
     SetEnvIf isiwebsectoken '<field name="roles">([a-zA-Z0-9,\.]*)</field>' rolename=$1
 
-
 With this ``mod_setenvif`` extracts the role name from the ``isiwebsectoken`` header
 and places it in the ``rolename`` environment variable. See the ``mod_setenvif``
 documentation for more detail.
