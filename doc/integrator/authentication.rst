@@ -104,6 +104,7 @@ For example add to ``__init__.py``::
         username = unauthenticated_userid(request)
         if username is not None:
             user = O()
+            user.username = username
             rolename = request.environ.get('rolename')
             user.role = DBSession.query(Role).filter_by(
                             name=rolename).one()
