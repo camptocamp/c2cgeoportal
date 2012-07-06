@@ -3,8 +3,8 @@
 Raster configuration
 =====================
 
-c2cgeoportal applications include web services for getting DEM
-<http://en.wikipedia.org/wiki/Digital_elevation_model>
+c2cgeoportal applications include web services for getting
+`DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_.
 information.
 The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
@@ -18,7 +18,7 @@ For example::
             "mns": { "file": "/var/sig/altimetrie/mns.shp", "round": 1 }
         }
 
-raster is a list of "DEM layers". There are only two entries in this example,
+``raster`` is a list of "DEM layers". There are only two entries in this example,
 but there could be more.
 
 The keys (``mnt`` and ``mns`` in this example) are just strings/names.
