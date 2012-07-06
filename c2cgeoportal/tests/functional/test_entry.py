@@ -322,11 +322,14 @@ class TestEntryView(TestCase):
         request = testing.DummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
-        entry = Entry(request)
+        curdir = os.path.dirname(os.path.abspath(__file__))
+        map = os.path.join(curdir, 'c2cgeoportal_test.map')
+        ms_url = "%s?map=%s&" % (mapserv_url, map)
         request.registry.settings = {
-            'mapserv.url': mapserv_url,
+            'mapserv.url': ms_url,
         }
         request.user = None
+        entry = Entry(request)
 
         # unautenticated
         response = entry.themes()
