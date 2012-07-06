@@ -38,7 +38,7 @@ def main(global_config, **settings):
     config.add_route('mobile_index_dev', '/mobile_dev/')
     config.add_view(renderer='{{package}}:static/mobile/index.html',
                     route_name='mobile_index_dev')
-    config.add_static_view('mobile', '{{package}}:static/mobile')
+    config.add_static_view('mobile_dev', '{{package}}:static/mobile')
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view(renderer='{{package}}:static/mobile/build/production/index.html',
                     route_name='mobile_index_prod')
