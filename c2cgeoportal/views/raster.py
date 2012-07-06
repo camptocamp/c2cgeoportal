@@ -46,7 +46,7 @@ class Raster(object):
     def _get_raster_value(self, layer, ref, lon, lat):
         if ref in self._rasters:
             raster = self._rasters[ref]
-        elif layer['type'] == 'shp_index':
+        elif 'type' not in layer or layer['type'] == 'shp_index':
             raster = GeoRaster(layer['file'])
             self._rasters[ref] = raster
         else:
