@@ -323,8 +323,8 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         curdir = os.path.dirname(os.path.abspath(__file__))
-        map = os.path.join(curdir, 'c2cgeoportal_test.map')
-        ms_url = "%s?map=%s&" % (mapserv_url, map)
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
         request.registry.settings = {
             'mapserv.url': ms_url,
         }
@@ -360,8 +360,8 @@ class TestEntryView(TestCase):
         request.route_url = lambda url: mapserv_url
 
         curdir = os.path.dirname(os.path.abspath(__file__))
-        map = os.path.join(curdir, 'c2cgeoportal_test.map')
-        ms_url = "%s?map=%s&" % (mapserv_url, map)
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
         request.registry.settings = {
             'mapserv.url': ms_url,
             'external_mapserv.url': ms_url,
@@ -629,8 +629,8 @@ class TestEntryView(TestCase):
         self.assertEqual(entry.errors, '')
 
         curdir = os.path.dirname(os.path.abspath(__file__))
-        map = os.path.join(curdir, 'c2cgeoportal_test.map')
-        wms = WebMapService("%s?map=%s" % (mapserv_url, map), version='1.1.1')
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        wms = WebMapService("%s?map=%s" % (mapserv_url, mapfile), version='1.1.1')
         wms_layers = list(wms.contents)
         layer = Layer()
         layer.id = 20
