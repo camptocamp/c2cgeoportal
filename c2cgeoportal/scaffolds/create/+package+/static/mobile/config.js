@@ -45,11 +45,11 @@ App.map = new OpenLayers.Map({
             "Summits",
             "http://www.camptocamp.org/cgi-bin/c2corg_wms",
             {
-                allLayers: ['summits', "huts", "sites", "users"],
                 layers: ['summits'],
                 transparent: true
             },
             {
+                allLayers: ['summits', "huts", "sites", "users"],
                 singleTile: true,
                 ratio: 1
             }
