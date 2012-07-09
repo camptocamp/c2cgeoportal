@@ -34,7 +34,7 @@ Current limitations:
 For map queries (long-press) to work a `specific OpenLayers commit
 <https://github.com/openlayers/openlayers/commit/f5aae88a3141dc94863791e500253b8a89ccd7ce>`_
 is required. Commit `444ba16
-<https://github.com/elemoine/cgxp/commit/444ba161fa67cdb503479da12dda71a82a70f310>`_
+<https://github.com/camptocamp/cgxp/commit/444ba161fa67cdb503479da12dda71a82a70f310>`_
 of CGXP includes this OpenLayers commit. So make sure your c2cgeoportal
 application uses this commit (or better) of CGXP.
 
