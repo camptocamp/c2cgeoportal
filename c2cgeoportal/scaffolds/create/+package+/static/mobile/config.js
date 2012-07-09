@@ -21,9 +21,9 @@ App.map = new OpenLayers.Map({
         new OpenLayers.Layer.OSM(
             "Cycle Map",
             [
-                "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-                "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
+                "http://a.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png",
+                "http://b.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png",
+                "http://c.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png"
             ],
             {
                 transitionEffect: 'resize'
@@ -32,9 +32,9 @@ App.map = new OpenLayers.Map({
         new OpenLayers.Layer.OSM(
             "Transport Map",
             [
-                "http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                "http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-                "http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
+                "http://a.tile2.opencyclemap.org/transport/${'${z}/${x}/${y}'}.png",
+                "http://b.tile2.opencyclemap.org/transport/${'${z}/${x}/${y}'}.png",
+                "http://c.tile2.opencyclemap.org/transport/${'${z}/${x}/${y'}}.png"
             ],
             {
                 transitionEffect: 'resize'
