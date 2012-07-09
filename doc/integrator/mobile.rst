@@ -55,8 +55,8 @@ project, and copying the missing files from there::
    $ cd <project_name>
    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
            /tmp/<project_name> package=<package_name>
-   $ rsync -rv /tmp/<project_name>/<package_name>/static/mobile/ \
-           <package_name>/static/mobile/
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
+        <package_name>/static/mobile/
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
    $ rm -rf /tmp/<project_name>
 
