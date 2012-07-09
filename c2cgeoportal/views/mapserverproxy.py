@@ -57,7 +57,6 @@ def proxy(request):
                     params[attribute] += "," + value
                 else:
                     params[attribute] = value
-                log.warning(params[attribute])
             else:
                 log.warning(("The Mapserver Substitution '%s' don't" \
                         + " respect the pattern: <attribute>=<value>") % s)

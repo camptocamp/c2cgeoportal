@@ -57,6 +57,8 @@ class TestPoint(Base):
     id = Column(types.Integer, primary_key=True)
     the_geom = GeometryColumn(MultiPoint(srid=21781))
     name = Column(types.Unicode)
+    city = Column(types.Unicode)
+    country = Column(types.Unicode)
 GeometryDDL(TestPoint.__table__)
 
 GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
@@ -71,17 +73,21 @@ GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
 </wfs:Query>
 </wfs:GetFeature>"""
 
-SUBSTITUTION_GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
-<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-<wfs:Query typeName="feature:testpoint_substitution" srsName="EPSG:21781" xmlns:feature="http://mapserver.gis.umn.edu/mapserver">
-<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-<ogc:PropertyIsNotEqualTo matchCase="false">
-<ogc:PropertyName>name</ogc:PropertyName>
-<ogc:Literal>toto</ogc:Literal>
-</ogc:PropertyIsNotEqualTo>
-</ogc:Filter>
-</wfs:Query>
-</wfs:GetFeature>"""
+SUBSTITUTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
+    'feature': u'testpoint_substitution',
+    'function': u'NotEqualTo',
+    'arguments': u'',
+    'property': u'name',
+    'value': 'toto',
+}).encode('utf-8')
+
+COLUMN_RESTRICTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
+    'feature': u'testpoint_column_restriction',
+    'function': u'NotEqualTo',
+    'arguments': u'',
+    'property': u'name',
+    'value': 'bar',
+}).encode('utf-8')
 
 
 @attr(functional=True)
@@ -94,13 +100,13 @@ class TestMapserverproxyView(TestCase):
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         geom = WKTSpatialElement("MULTIPOINT((-90 -45))", srid=21781)
-        p1 = TestPoint(the_geom=geom, name=u'foo')
+        p1 = TestPoint(the_geom=geom, name=u'foo', city=u'Lausanne', country=u'Swiss')
         geom = WKTSpatialElement("MULTIPOINT((-90 45))", srid=21781)
-        p2 = TestPoint(the_geom=geom, name=u'bar')
+        p2 = TestPoint(the_geom=geom, name=u'bar', city=u'Chambéry', country=u'France')
         geom = WKTSpatialElement("MULTIPOINT((90 45))", srid=21781)
-        p3 = TestPoint(the_geom=geom, name=u'éàè')
+        p3 = TestPoint(the_geom=geom, name=u'éàè', city="Paris", country=u'France')
         geom = WKTSpatialElement("MULTIPOINT((90 -45))", srid=21781)
-        p4 = TestPoint(the_geom=geom, name=u'123')
+        p4 = TestPoint(the_geom=geom, name=u'123', city='Londre', country=u'UK')
 
         pt1 = Functionality(name=u'print_template', value=u'1 Wohlen A4 portrait')
         pt2 = Functionality(name=u'print_template', value=u'2 Wohlen A3 landscape')
@@ -168,10 +174,6 @@ class TestMapserverproxyView(TestCase):
 
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
-
-    def _get_mapfile_path(self):
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(curdir, 'c2cgeoportal_test.map')
 
     def _create_dummy_request(self, username=None):
         from c2cgeoportal.models import DBSession, User
@@ -327,10 +329,6 @@ class TestMapserverproxyView(TestCase):
         curdir = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(curdir, 'c2cgeoportal_test.map')
 
-    def _get_auth_header(self, user):
-        userpass = '%s:%s' % (user, user)
-        return {'Authorization': 'Basic %s' % userpass.encode('base64')}
-
     def GetFeature_IsEqualTo(self, value):
         from c2cgeoportal.views import mapserverproxy
         request = self._create_dummy_request()
@@ -453,7 +451,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         map = self._get_mapfile_path()
         request.method = 'POST'
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST.encode('utf-8')
+        request.body = SUBSTITUTION_GETFEATURE_REQUEST
 
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
@@ -489,9 +487,38 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
+        request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["cols=name","cols=city","cols=country"]}'
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
+
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["cols=name","cols=city"]}'
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
+        assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
+
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["cols=name","cols=country"]}'
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
+
+        request.registry.settings['anonymous_functionalities'] = \
+                '{"mapserver_substitution":["cols=name"]}'
+        response = mapserverproxy.proxy(request)
+        self.assertEquals(response.status_int, 200) 
+        assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
+        assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
+
         request = self._create_dummy_request()
         request.method = 'POST'
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST.encode('utf-8')
+        request.body = SUBSTITUTION_GETFEATURE_REQUEST
         request.registry.settings['anonymous_functionalities'] = \
                 '{"mapserver_substitution":["foo_bar"]}'
         request.params = dict(map=map,

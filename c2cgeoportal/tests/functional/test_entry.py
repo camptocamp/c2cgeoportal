@@ -18,7 +18,7 @@ class TestEntryView(TestCase):
         self.config = testing.setUp()
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-                RestrictionArea, Theme
+                RestrictionArea, Theme, LayerGroup
 
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
@@ -26,13 +26,17 @@ class TestEntryView(TestCase):
         role2 = Role(name=u'__test_role2')
         user2 = User(username=u'__test_user2', password=u'__test_user2', role=role2)
 
-        public_layer = Layer(name=u'__test_public_layer', order=400, public=True)
+        public_layer = Layer(name=u'__test_public_layer', order=40, public=True)
 
-        private_layer = Layer(name=u'__test_private_layer', order=400, public=False)
+        private_layer = Layer(name=u'__test_private_layer', order=40, public=False)
         private_layer.geoTable = 'a_schema.a_geo_table'
         
+        layer_in_group = Layer(name=u'__test_layer_in_group')
+        layer_group = LayerGroup(name=u'__test_layer_group')
+        layer_group.children = [layer_in_group]
+
         theme = Theme(name=u'__test_theme')
-        theme.children = [public_layer, private_layer]
+        theme.children = [public_layer, private_layer, layer_group]
 
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
@@ -54,7 +58,7 @@ class TestEntryView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-                RestrictionArea, Theme
+                RestrictionArea, Theme, LayerGroup
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
@@ -66,8 +70,10 @@ class TestEntryView(TestCase):
         DBSession.query(Role).filter(Role.name == '__test_role2').delete()
         for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
+        for layergroup in DBSession.query(LayerGroup).all():
+            DBSession.delete(layergroup)  # pragma: nocover
         for layer in DBSession.query(Layer).all():
-            DBSession.delete(layer)
+            DBSession.delete(layer)  # pragma: nocover
         transaction.commit()
 
     #
@@ -77,7 +83,6 @@ class TestEntryView(TestCase):
     def test_login(self):
         from c2cgeoportal import default_user_validator
         from c2cgeoportal.views.entry import Entry
-        from pyramid.security import authenticated_userid
 
         request = testing.DummyRequest()
         request.params['login'] = u'__test_user1'
@@ -88,6 +93,23 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302) 
         self.assertEquals(response.headers['Location'], "/came_from") 
+
+        request = testing.DummyRequest()
+        request.params['login'] = u'__test_user1'
+        request.params['password'] = u'__test_user1'
+        request.registry.validate_user = default_user_validator
+        request.user = None
+        response = Entry(request).login()
+        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.body, 'true') 
+
+        request = testing.DummyRequest()
+        request.params['login'] = u'__test_user1'
+        request.params['password'] = u'bad password'
+        request.registry.validate_user = default_user_validator
+        request.user = None
+        response = Entry(request).login()
+        self.assertEquals(response.status_int, 401) 
 
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
@@ -111,6 +133,15 @@ class TestEntryView(TestCase):
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from") 
+
+        request = testing.DummyRequest(path='/')
+        request.route_url = lambda url: '/dummy/route/url'
+        request.user = DBSession.query(User) \
+                .filter_by(username=u'__test_user1').one()
+        entry = Entry(request)
+        response = entry.logout()
+        self.assertEquals(response.status_int, 302)
+        self.assertEquals(response.headers['Location'], '/dummy/route/url') 
 
     #
     # viewer view tests
@@ -176,7 +207,7 @@ class TestEntryView(TestCase):
         theme = themes[0]
 
         layers = theme['children']
-        self.assertEqual(len(layers), 2)
+        self.assertEqual(len(layers), 3)
 
         layer = layers[0]
         self.assertEqual(layer['name'], '__test_private_layer')
@@ -208,7 +239,7 @@ class TestEntryView(TestCase):
         theme = themes[0]
 
         layers = theme['children']
-        self.assertEqual(len(layers), 2)
+        self.assertEqual(len(layers), 3)
 
         layer = layers[0]
         self.assertEqual(layer['name'], '__test_private_layer')
@@ -257,11 +288,11 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                'external_themes_url': '',
-                'webclient_string_functionalities': '',
-                'webclient_array_functionalities': '',
-                }
+            'mapserv.url': mapserv_url,
+            'external_themes_url': '',
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
         request.user = DBSession.query(User) \
@@ -278,6 +309,149 @@ class TestEntryView(TestCase):
 
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' in response['themes']
+    
+    def _find_layer(self, themes, layer_name):
+        for l in themes['children']:
+            if l['name'] == layer_name:
+                return True
+        return False
+
+    def test_theme(self):
+        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal.views.entry import Entry
+        request = testing.DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
+        curdir = os.path.dirname(os.path.abspath(__file__))
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
+        request.registry.settings = {
+            'mapserv.url': ms_url,
+        }
+        request.user = None
+        entry = Entry(request)
+
+        # unautenticated
+        response = entry.themes()
+        self.assertTrue(self._find_layer(response, '__test_public_layer'))
+        self.assertFalse(self._find_layer(response, '__test_private_layer'))
+
+        # autenticated on parent
+        role_id = DBSession.query(User.role_id).filter_by(username=u'__test_user1').one()
+        request.params = { 'role_id': role_id }
+        response = entry.themes()
+        self.assertTrue(self._find_layer(response, '__test_public_layer'))
+        self.assertTrue(self._find_layer(response, '__test_private_layer'))
+
+        # mapfile error
+        request.params = {}
+        request.registry.settings = {
+            'mapserv.url': mapserv_url + '?map=not_a_mapfile',
+        }
+        response = entry._themes({})
+        self.assertEquals(response[0], [])
+        self.assertNotEquals(response[1].strip(), '')
+
+    def test_WFS_types(self):
+        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal.views.entry import Entry
+        request = testing.DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
+
+        curdir = os.path.dirname(os.path.abspath(__file__))
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
+        request.registry.settings = {
+            'mapserv.url': ms_url,
+            'external_mapserv.url': ms_url,
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
+        entry = Entry(request)
+        request.user = None
+
+        response = entry._getVars()
+        result = '["testpoint_unprotected", "testpoint_protected", "testpoint_protected_query_with_collect", "testpoint_substitution", "testpoint_column_restriction", "test_wmsfeatures"]'
+        self.assertEquals(response['WFSTypes'], result)
+        self.assertEquals(response['externalWFSTypes'], result)
+
+    def test_permalink_themes(self):
+        from c2cgeoportal.views.entry import Entry
+        request = testing.DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
+        request.registry.settings = {
+            'mapserv.url': mapserv_url,
+            'external_mapserv.url': mapserv_url,
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
+        request.params = {
+            'permalink_themes': 'my_themes',
+        }
+        entry = Entry(request)
+        request.user = None
+
+        response = entry._getVars()
+        self.assertEquals(response['permalink_themes'], '["my_themes"]')
+
+    def test_entry_points(self):
+        from c2cgeoportal.views.entry import Entry
+        request = testing.DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url: mapserv_url
+        request.registry.settings = {
+            'mapserv.url': mapserv_url,
+            'external_mapserv.url': mapserv_url,
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
+        entry = Entry(request)
+        request.user = None
+
+        all_params = ['lang', 'functionalities', 'tilecache_url', 'debug', 'serverError', 'themes', 'external_themes', 'functionality', 'WFSTypes', 'themesError', 'externalWFSTypes', 'user']
+        result = entry.home()
+        self.assertEquals(result.keys(), ['lang', 'debug', 'extra_params'])
+        result = entry.viewer()
+        self.assertEquals(result.keys(), all_params)
+        result = entry.edit()
+        self.assertEquals(result.keys(), ['lang', 'debug'])
+        result = entry.editjs()
+        self.assertEquals(result.keys(), all_params)
+        result = entry.apiloader()
+        self.assertEquals(result.keys(), all_params)
+        result = entry.apihelp()
+        self.assertEquals(result.keys(), ['lang', 'debug'])
+
+    def test_permalink_theme(self):
+        from c2cgeoportal.views.entry import Entry
+        request = testing.DummyRequest()
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.registry.settings = {
+            'mapserv.url': mapserv_url,
+            'external_mapserv.url': mapserv_url,
+            'webclient_string_functionalities': '',
+            'webclient_array_functionalities': '',
+        }
+        entry = Entry(request)
+        request.user = None
+
+        request.matchdict = {
+            'themes': ['theme'],
+        }
+        result = entry.permalinktheme()
+        self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
+        self.assertEquals(result['extra_params'], '?permalink_themes=theme')
+        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
+
+        request.matchdict = {
+            'themes': ['theme1', 'theme2'],
+        }
+        result = entry.permalinktheme()
+        self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
+        self.assertEquals(result['extra_params'], '?permalink_themes=theme1,theme2')
+        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):
         from c2cgeoportal.views.entry import Entry
@@ -455,9 +629,8 @@ class TestEntryView(TestCase):
         self.assertEqual(entry.errors, '')
 
         curdir = os.path.dirname(os.path.abspath(__file__))
-        map = os.path.join(curdir, 'c2cgeoportal_test.map')
-        print "%s?map=%s" % (mapserv_url, map)
-        wms = WebMapService("%s?map=%s" % (mapserv_url, map), version='1.1.1')
+        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        wms = WebMapService("%s?map=%s" % (mapserv_url, mapfile), version='1.1.1')
         wms_layers = list(wms.contents)
         layer = Layer()
         layer.id = 20
