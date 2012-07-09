@@ -146,6 +146,9 @@ For example::
 
     See above to know about current limitations.
 
-One thing you will certainly need to the change is the build profile for
-OpenLayers. You will need to do that if you use ``OpenLayers.Layer.WMTS``, for
-example. For that edit the project's ``jsbuild/mobile.cfg`` file.
+One thing you will certainly need to change is the mobile build profile for
+OpenLayers. The file to edit is ``jsbuild/mobile.cfg``. For example you will
+replace ``OpenLayers/Layer/OSM.js`` by ``OpenLayers/Layer/WMTS.js`` if the base
+layers are all WMTS layers. You will also replace
+``proj4js/lib/projCode/merc.js`` by ``EPSG21781.js`` if the map uses the Swiss
+projection.
