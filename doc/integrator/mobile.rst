@@ -152,3 +152,11 @@ replace ``OpenLayers/Layer/OSM.js`` by ``OpenLayers/Layer/WMTS.js`` if the base
 layers are all WMTS layers. You will also replace
 ``proj4js/lib/projCode/merc.js`` by ``EPSG21781.js`` if the map uses the Swiss
 projection.
+
+UI strings translations
+-----------------------
+
+The overlay selector uses the layer names (as defined in the ``allLayers``
+array of overlays) as translation keys. To add your translations edit
+``static/mobile/config.js`` and populate the ``OpenLayers.Lang.<code>`` objects
+as necessary.

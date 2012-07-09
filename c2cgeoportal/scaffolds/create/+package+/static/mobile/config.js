@@ -1,6 +1,27 @@
-// Here integrator can set up the layers
-var App = App || {};
+/*
+ * This file represents the customization point for the application integrator.
+ *
+ * After execution of this script an OpenLayers map filled with layers should
+ * be available in App.map.
+ *
+ * This file also contains translations for the application strings.
+ */
 
+OpenLayers.Lang.en = {
+    "summits": "Summits",
+    "huts": "Huts",
+    "sites": "Sites",
+    "users": "Users"
+};
+OpenLayers.Lang.fr = {
+    "summits": "Sommets",
+    "huts": "Cabanes",
+    "sites": "Sites",
+    "users": "Utilisateurs"
+};
+OpenLayers.Lang.setCode("${lang}");
+
+// define the map and layers
 App.map = new OpenLayers.Map({
     theme: null,
     projection: 'EPSG:900913',
