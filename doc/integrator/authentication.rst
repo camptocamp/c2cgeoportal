@@ -72,7 +72,7 @@ work properly.
 
 So when using an external authentication system this system should also provide
 the c2cgeoportal application with the name of the user's role. This can be done
-by relying on the `mod_setenvif
+in ``apache/wsgi.conf.in`` by relying on the `mod_setenvif
 <http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html>`_ Apache module's
 ``SetEnvIf`` directive. For example::
 
@@ -84,7 +84,22 @@ or::
 
 With this ``mod_setenvif`` extracts the role name from the ``isiwebsectoken`` header
 and places it in the ``rolename`` environment variable. See the ``mod_setenvif``
-documentation for more detail.
+documentation for more details.
+
+The connection between the nevisProxy and the application is established using
+an Apache module called NINAP. The above Apache configuration may also contain
+NINAP directives (see nevisProxy documentation). For instance to indicate what
+field in the ``isiwebsectoken`` header contains the username::
+
+    NINAP_UserPattern '<field name="loginId">([a-zA-Z0-9\._-]*)</field>'
+
+Eventually the following directives activate the access restriction to the
+application::
+
+    <Location /<instance_id>/wsgi>
+      AuthType sectoken
+      Require valid-user
+    </Location>
 
 The ``c2cgeoportal`` code expects that the user data (user name and role name)
 is available through the ``user`` property in the ``request`` object. More
@@ -125,7 +140,7 @@ the value of the ``rolename`` environment variable by querying the database.
 .. note::
 
     ``c2cgeoportal`` registers its own request property callback for ``user``.
-    The registered by the application overwrites it.
+    The one registered by the application overwrites it.
 
 You should be set at this point.
 
