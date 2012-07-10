@@ -123,6 +123,7 @@ For example add to ``__init__.py``::
             rolename = request.environ.get('rolename')
             user.role = DBSession.query(Role).filter_by(
                             name=rolename).one()
+            user.functionalities = []
             return user
 
 And then, in the application's ``main`` function::
