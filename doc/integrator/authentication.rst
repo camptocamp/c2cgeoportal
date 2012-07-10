@@ -101,14 +101,16 @@ application::
       Require valid-user
     </Location>
 
-The ``c2cgeoportal`` code expects that the user data (user name and role name)
-is available through the ``user`` property in the ``request`` object. More
-specifically it expects ``request.user.role.id`` to contain the role id, and
-``request.user.role.name`` to contain the role name. To provide
-``c2cgeoportal`` with what it expects the application should redefine the
-callback function that adds a ``user`` property to the request. This is done by
-calling the ``set_request_property`` function on the ``Configurator`` object.
-For example add to ``__init__.py``::
+The ``c2cgeoportal`` code expects that the user data (user name, role name and
+user functionalities) are available through the ``user`` property in the
+``request`` object. More specifically it expects ``request.user.role.id`` to 
+contain the role id, and ``request.user.role.name`` to contain the role name.
+``request.user.username`` and ``request.user.functionalities`` must be provided
+as well.
+Therefore the application should redefine the callback function that adds 
+a ``user`` property to the request. This is done by calling the 
+``set_request_property`` function on the ``Configurator`` object.
+You may for example add to ``__init__.py``::
 
     from pyramid.security import unauthenticated_userid
 
