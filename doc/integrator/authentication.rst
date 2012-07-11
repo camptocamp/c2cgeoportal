@@ -140,6 +140,25 @@ name is obtained by calling ``unauthenticated_userid``, itself relying on the
 authentication policy set in the application. The role object is obtained from
 the value of the ``rolename`` environment variable by querying the database.
 
+Please note that ``c2cgeoportal`` expects the admin role to be ``role_admin``.
+If for some reason you need to use another name for this role, you may define
+an alias in a project-specific callback and use it instead of the standard
+``defaultgroupsfinder`` as ``AuthenticationPolicy`` argument in ``__init__.py``::
+
+    def mygroupsfinder(username, request):
+        role = request.user.role
+        if role:
+            if role.name == '<your_admin_rolename>':
+                return ['role_admin']
+            return [role.name]
+        return []
+
+    def main(global_config, **settings):
+        ...
+        authentication_policy = RemoteUserAuthenticationPolicy(
+            callback=mygroupsfinder)
+        ...
+
 .. note::
 
     ``c2cgeoportal`` registers its own request property callback for ``user``.
