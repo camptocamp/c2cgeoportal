@@ -72,24 +72,45 @@ work properly.
 
 So when using an external authentication system this system should also provide
 the c2cgeoportal application with the name of the user's role. This can be done
-by relying on the `mod_setenvif
+in ``apache/wsgi.conf.in`` by relying on the `mod_setenvif
 <http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html>`_ Apache module's
 ``SetEnvIf`` directive. For example::
 
-    SetEnvIf sectoken <role>(.*)</role> rolename=$1
+    SetEnvIf isiwebsectoken <role>(.*)</role> rolename=$1
 
-With this ``mod_setenvif`` extracts the role name from the ``sectoken`` header
+or::
+
+    SetEnvIf isiwebsectoken '<field name="roles">([a-zA-Z0-9,\.]*)</field>' rolename=$1
+
+With this ``mod_setenvif`` extracts the role name from the ``isiwebsectoken`` header
 and places it in the ``rolename`` environment variable. See the ``mod_setenvif``
-documentation for more detail.
+documentation for more details.
 
-The ``c2cgeoportal`` code expects that the user data (user name and role name)
-is available through the ``user`` property in the ``request`` object. More
-specifically it expects ``request.user.role.id`` to contain the role id, and
-``request.user.role.name`` to contain the role name. To provide
-``c2cgeoportal`` with what it expects the application should redefine the
-callback function that adds a ``user`` property to the request. This is done by
-calling the ``set_request_property`` function on the ``Configurator`` object.
-For example::
+The connection between the nevisProxy and the application is established using
+an Apache module called NINAP. The above Apache configuration may also contain
+NINAP directives (see nevisProxy documentation). For instance to indicate what
+field in the ``isiwebsectoken`` header contains the username::
+
+    NINAP_UserPattern '<field name="loginId">([a-zA-Z0-9\._-]*)</field>'
+
+Eventually the following directives activate the access restriction to the
+application::
+
+    <Location /<instance_id>/wsgi>
+      AuthType sectoken
+      Require valid-user
+    </Location>
+
+The ``c2cgeoportal`` code expects that the user data (user name, role name and
+user functionalities) are available through the ``user`` property in the
+``request`` object. More specifically it expects ``request.user.role.id`` to 
+contain the role id, and ``request.user.role.name`` to contain the role name.
+``request.user.username`` and ``request.user.functionalities`` must be provided
+as well.
+Therefore the application should redefine the callback function that adds 
+a ``user`` property to the request. This is done by calling the 
+``set_request_property`` function on the ``Configurator`` object.
+You may for example add to ``__init__.py``::
 
     from pyramid.security import unauthenticated_userid
 
@@ -100,14 +121,16 @@ For example::
         username = unauthenticated_userid(request)
         if username is not None:
             user = O()
-            rolename = self.environ.get('rolename')
+            user.username = username
+            rolename = request.environ.get('rolename')
             user.role = DBSession.query(Role).filter_by(
                             name=rolename).one()
+            user.functionalities = []
             return user
 
 And then, in the application's ``main`` function::
 
-    config.add_request_property(get_user_from_request,
+    config.set_request_property(get_user_from_request,
                                 name='user', reify=True
                                 )
 
@@ -120,7 +143,7 @@ the value of the ``rolename`` environment variable by querying the database.
 .. note::
 
     ``c2cgeoportal`` registers its own request property callback for ``user``.
-    The registered by the application overwrites it.
+    The one registered by the application overwrites it.
 
 You should be set at this point.
 
