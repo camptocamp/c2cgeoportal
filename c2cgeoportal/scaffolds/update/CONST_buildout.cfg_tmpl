@@ -183,6 +183,25 @@ resource-dir = ${buildout:directory}/jsbuild
 config = ${jsbuild:resource-dir}/app.cfg
 output-dir = {{package}}/static/build
 compress = True
+
+[jsbuild-mobile]
+recipe = JSTools:buildjs
+resource-dir = ${buildout:directory}/jsbuild
+config = ${jsbuild:resource-dir}/mobile.cfg
+output-dir = {{package}}/static/mobile
+only = openlayers-mobile.js
+compress = True
+
+[mobile]
+recipe = collective.recipe.cmd:py
+on_install = true
+on_update = true
+cmds =
+    >>> import os
+    >>> from subprocess import Popen
+    >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
+    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir)
+    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir)
  
 [cssbuild]
 recipe = c2c.recipe.cssmin
