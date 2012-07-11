@@ -79,6 +79,38 @@ Version 0.8
     For the configuration of these web services read the documentation at
     'administrator/raster'.
 
+7. Mobile application
+
+   Version 0.8 of c2cgeoportal includes a mobile application template/scaffold.
+
+   To add a mobile application to an existing project you need to copy two
+   files from the c2cgeoportal_create scaffold, and add routes and views to the
+   project configuration. See below.
+
+   Copy config.js and mobile.cfg from c2cgeoportal_create:
+
+   $ cd <project_name>
+   $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+           /tmp/<project_name> package=<package_name>
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
+        <package_name>/static/mobile/
+   $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
+   $ rm -rf /tmp/<project_name>
+
+   Add routes and views:
+
+   # mobile views and routes
+   config.add_route('mobile_index_dev', '/mobile_dev/')
+   config.add_view(renderer='<package_name>:static/mobile/index.html',
+                   route_name='mobile_index_dev')
+   config.add_static_view('mobile', '<package_name>:static/mobile')
+   config.add_route('mobile_index_prod', '/mobile/')
+   config.add_view(renderer='<package_name>:static/mobile/build/production/index.html',
+                   route_name='mobile_index_prod')
+   config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
+
+   Now read http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html to
+   know how to build and customize the mobile application.
 
 Version 0.7
 ===========
