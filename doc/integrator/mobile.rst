@@ -66,12 +66,23 @@ lines before the ``main`` function's return statement::
 
     # mobile views and routes
     config.add_route('mobile_index_dev', '/mobile_dev/')
-    config.add_view(renderer='<package_name>:static/mobile/index.html',
+    config.add_view('c2cgeoportal.views.mobile.index',
+                    renderer='<package_name>:static/mobile/index.html',
                     route_name='mobile_index_dev')
-    config.add_static_view('mobile', '<package_name>:static/mobile')
+    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+    config.add_view('c2cgeoportal.views.mobile.config',
+                    renderer='<package_name>:static/mobile/config.js',
+                    route_name='mobile_config_dev')
+    config.add_static_view('mobile_dev', '<package_name>:static/mobile')
+
     config.add_route('mobile_index_prod', '/mobile/')
-    config.add_view(renderer='<package_name>:static/mobile/build/production/index.html',
+    config.add_view('c2cgeoportal.views.mobile.index',
+                    renderer='<package_name>:static/mobile/build/production/index.html',
                     route_name='mobile_index_prod')
+    config.add_route('mobile_config_prod', '/mobile/config.js')
+    config.add_view('c2cgeoportal.views.mobile.config',
+                    renderer='<package_name>:static/mobile/build/production/config.js',
+                    route_name='mobile_config_prod')
     config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
 
 Replace ``<package_name>`` with the project's actual package name.
