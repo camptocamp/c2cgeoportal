@@ -6,6 +6,7 @@ Ext.onReady(function() {
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     OpenLayers.DOTS_PER_INCH = 72;
+    OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
     // Ext
     Ext.QuickTips.init();
@@ -16,6 +17,9 @@ Ext.onReady(function() {
     // Apply same language than on the server side
     OpenLayers.Lang.setCode("${lang}");
     GeoExt.Lang.set("${lang}");
+
+    // Server errors (if any)
+    var serverError = ${serverError | n};
 
     // Themes definitions
     /* errors (if any): ${themesError | n} */
@@ -141,7 +145,10 @@ Ext.onReady(function() {
                 layout: "fit",
                 autoScroll: true,
                 themes: THEMES,
-                defaultThemes: ["default theme"],
+                % if permalink_themes:
+                  defaultThemes: ${permalink_themes | n},
+                % else:
+                  defaultThemes: ["lieu_interet_thm"],
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
@@ -220,7 +227,13 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_fulltextsearch",
             url: "${request.route_url('fulltextsearch', path='')}",
+            layerTreeId: "layertree",
             actionTarget: "center.tbar"
+        },
+        {
+            ptype: "cgxp_contextualdata",
+            actionTarget: "center.tbar",
+            toggleGroup: "maptools"
         },
         {
             ptype: "cgxp_menushortcut",
@@ -379,5 +392,12 @@ Ext.onReady(function() {
         Ext.fly('loading-mask').fadeOut({
             remove: true
         });
+
+        if (serverError.length > 0) {
+            cgxp.tools.openWindow({
+                html: serverError.join('<br />')
+            },OpenLayers.i18n("Error notice"),600, 500);
+        }
+
     }, app);
 });

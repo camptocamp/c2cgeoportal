@@ -199,4 +199,79 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "testpoint_column_restriction"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom FROM (SELECT the_geom, id, %s_cols% FROM main.testpoint) AS test USING UNIQUE id USING srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeature
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
+
+            "s_cols_validation_pattern" "^[a-z,]*$$"
+            "default_s_cols" "name"
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_column_restriction"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "test_wmsfeatures"
+        GROUP "test_wmsfeaturesgroup"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
+            "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
+            "wms_metadataurl_format" "text/plain"
+            "wms_metadataurl_type" "TC211"
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+        MINSCALEDENOM 5000
+        MAXSCALEDENOM 25000
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_unprotected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END

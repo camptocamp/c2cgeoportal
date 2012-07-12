@@ -2,12 +2,14 @@
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
+
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
 import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON, XSD
+import simplejson as json
 
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
@@ -22,6 +24,27 @@ formalchemy_default_zoom = 10
 formalchemy_default_lon = 740000
 formalchemy_default_lat = 5860000
 formalchemy_available_functionalities = ""
+
+class DecimalJSON:
+    def __init__(self, jsonp_param_name='callback'):
+        self.jsonp_param_name = jsonp_param_name
+
+    def __call__(self, info):
+        def _render(value, system):
+            ret = json.dumps(value, use_decimal=True)
+            request = system.get('request')
+            if request is not None:
+                callback = request.params.get(self.jsonp_param_name)
+                if callback is None:
+                    request.response.content_type = 'application/json'
+                else:
+                    request.response.content_type = 'text/javascript'
+                    ret = '%(callback)s(%(json)s);' % {
+                        'callback': callback,
+                        'json': ret
+                    }
+            return ret
+        return _render
 
 
 def locale_negotiator(request):
@@ -111,6 +134,9 @@ def includeme(config):
     # add the "geojson" renderer
     config.add_renderer('geojson', GeoJSON())
 
+    # add decimal json renderer
+    config.add_renderer('decimaljson', DecimalJSON())
+
     # add the "xsd" renderer
     config.add_renderer('xsd', XSD(
             sequence_callback=dbreflection._xsd_sequence_callback))
@@ -149,6 +175,8 @@ def includeme(config):
     config.add_route('apiloader', '/apiloader.js')
     config.add_route('apihelp', '/apihelp.html')
     config.add_route('themes', '/themes')
+    # permalink theme: recover the theme for generating custom viewer.js url
+    config.add_route('permalinktheme', '/theme/*themes')
 
     # checker routes
     config.add_route('checker_summary', '/checker_summary')
@@ -168,6 +196,11 @@ def includeme(config):
 
     # full text search routes
     config.add_route('fulltextsearch', '/fulltextsearch')
+
+    # Access to raster data
+    config.add_route('raster', '/raster')
+    config.add_route('profile.csv', '/profile.csv')
+    config.add_route('profile.json', '/profile.json')
 
     # add routes for the "layers" web service
     config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',

@@ -5,7 +5,7 @@ import urllib
 import sys
 import logging
 
-from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable
+from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable, HTTPInternalServerError
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -49,18 +49,17 @@ def proxy(request):
             request.registry.settings, request)
     if (mss):
         for s in mss:
-            index = s.find('=');
+            index = s.find('=')
             if index > 0:
                 attribute = 's_' + s[:index]
-                value = s[index+1:]
+                value = s[index + 1:]
                 if (attribute in params):
                     params[attribute] += "," + value
                 else:
                     params[attribute] = value
-                log.warning(params[attribute])
             else:
                 log.warning(("The Mapserver Substitution '%s' don't" \
-                        + " respect the pattern: <attribute>=<value>") % s);
+                        + " respect the pattern: <attribute>=<value>") % s)
 
     # get query string
     query_string = urllib.urlencode(params)
@@ -92,6 +91,11 @@ def proxy(request):
             log.error("--- With body ---")
             log.error(body)
         return HTTPBadGateway("See logs for details")  # pragma: no cover
+
+    if resp.status != 200:
+        log.error("\nError\n '%s'\n in response from URL:\n %s\n with query:\n %s" %
+                (resp.reason, _url, body))  # pragma: no cover
+        return HTTPInternalServerError("See logs for details")  # pragma: no cover
 
     # check for allowed content types
     if "content-type" not in resp:

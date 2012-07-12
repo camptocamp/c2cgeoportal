@@ -77,8 +77,10 @@ include =
     CGXP/plugins/FullTextSearch.js
     CGXP/plugins/Permalink.js
     CGXP/plugins/Disclaimer.js
+    CGXP/plugins/ContextualData.js
     CGXP/widgets/MapPanel.js
     CGXP/widgets/RedliningColorPicker.js
+    CGXP/tools/tools.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
     OpenLayers/Control/PanZoomBar.js

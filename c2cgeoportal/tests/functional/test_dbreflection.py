@@ -198,10 +198,6 @@ class TestXSDSequenceCallback(TestCase):
         transaction.commit()
         self.metadata.drop_all()
 
-    def _make_xpath(self, components):
-        return '/{http://www.w3.org/2001/XMLSchema}' \
-                    .join(components.split())
-
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
         from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback

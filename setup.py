@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = "c2cgeoportal, generic gis protail made by camptocamp"
+README = "c2cgeoportal, generic GIS portal made by Camptocamp"
 
 install_requires = [
     'pyramid<=1.3.99,>=1.3.2',
@@ -17,7 +17,7 @@ install_requires = [
     'papyrus_ogcproxy',
     'httplib2',
     'Babel',
-    'pyramid_formalchemy>=0.4.2',
+    'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
@@ -25,6 +25,7 @@ install_requires = [
     'OWSLib',
     'tileforge>=0.2',
     'JSTools>=0.6',
+    'simplejson',
     ]
 
 # nose plugins with options set in setup.cfg cannot be in
@@ -39,7 +40,7 @@ tests_require = install_requires + [
     ]
 
 setup(name='c2cgeoportal',
-      version='0.7',
+      version='0.8',
       description='c2cgeoportal',
       long_description=README,
       classifiers=[

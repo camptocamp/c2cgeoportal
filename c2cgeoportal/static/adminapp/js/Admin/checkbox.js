@@ -37,7 +37,11 @@
      * find an element in the dom whose id match str and not contained in ignoreList
      */
     $.fn.adminapp.findField = function(str, ignoreList) {
-        return this.findList(str, this.fieldList, ignoreList);
+        var result = this.findList(str, this.fieldList, ignoreList);
+        if (result.length == 0) {
+            result = this.findList(str, this.selectList, ignoreList);
+        }
+        return result;
     };
     
     /**
@@ -72,6 +76,15 @@
     };
 
     /**
+     * attach toogle internal WMS on Base Layer.
+     */
+    $.fn.adminapp.bindEventOnLayerGroup = function(wmsi, bl) {
+        wmsi.bind('change', function(event) {
+            $.fn.adminapp.toogleBaseLayer(wmsi, bl);
+        }); 
+    };
+
+    /**
      * show / hide secondary address input fields
      */
     $.fn.adminapp.toogleAddress = function(el) {
@@ -85,23 +98,16 @@
             state = true;
         }
 
-        for (var i=0; i<els.length; i++) {
-            /*
-            var p = $.fn.adminapp.getParentBLock(els[i]);
-            p.style.display = d;
-            */
-            if (state) {
-                $(els[i]).addClass('disabledinput');
-            } else {
-                $(els[i]).removeClass('disabledinput');            
-            }
-            // can NOT use disabled as FA expect the field to be in request
-            //els[i].disabled = state;
-            // reset value and set readonly
-            $.fn.adminapp.resetField(els[i]);
-            els[i].readOnly = state;
+        if (state) {
+            $.fn.adminapp.resetField(els);
+            els.addClass('disabledinput');
+        } else {
+            els.removeClass('disabledinput');            
         }
-        
+        // reset value and set readonly
+        els.attr('readOnly', state);
+        // can NOT use disabled as FA expect the field to be in request
+        // els.attr('disabled', state);
     };
 
     /**
@@ -110,18 +116,17 @@
     $.fn.adminapp.toogleRestrictionAreas = function(el) {
         var els = $.fn.adminapp.findField('restrictionareas', [el.id]);        
         var state = el.checked;
-        for (var i=0; i<els.length; i++) {
-            if (state) {
-                // reset value
-                $.fn.adminapp.resetField(els[i]);
+        if (state) {
+            // reset value
+            $.fn.adminapp.resetField(els);
 
-                $(els[i]).addClass('disabledinput');
-            } else {
-                $(els[i]).removeClass('disabledinput');            
-            }
-            // set readonly
-            els[i].readOnly = state;
+            els.addClass('disabledinput');
+        } else {
+            els.removeClass('disabledinput');            
         }
+        // set readonly
+        els.attr('readOnly', state);
+        els.attr('disabled', state);
     };
 
     /**
@@ -134,32 +139,65 @@
             fields = ["legendRule"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "isSingleTile"];
+            fields = ["url", "style", "imageType", "legendRule", "isSingleTile"];
         }
-        else if (state == "internal WMTS") {
-            fields = ["legendImage"];
-        }
-        else if (state == "external WMTS") {
-            fields = ["url", "serverResolutions", "maxExtent", "legendImage"];
+        else if (state == "WMTS") {
+            fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl", "wmsLayers"];
         }
 
         var change = function(field, fields) {
             var e = $.fn.adminapp.findField(field, [el.id]);
-            if (jQuery.inArray(field, fields) >= 0) {
-                $(e[0]).removeClass('disabledinput');
+            var state = jQuery.inArray(field, fields) >= 0;
+            if (state) {
+                e.removeClass('disabledinput');
             }
             else {
-                $(e[0]).addClass('disabledinput');
+                e.addClass('disabledinput');
             }
-            e[0].readOnly = state;
+            e.attr('readOnly', !state);
+            if (e[0].tagName != "INPUT") {
+                e.attr('disabled', !state);
+            }
         };
 
         change("url", fields);
-        change("serverResolutions", fields);
-        change("maxExtent", fields);
+        change("imageType", fields);
+        change("style", fields);
+        change("dimensions", fields);
+        change("matrixSet", fields);
+        change("wmsUrl", fields);
+        change("wmsLayers", fields);
         change("isSingleTile", fields);
-        change("legendImage", fields);
         change("legendRule", fields);
+
+        internalWMS = state == "internal WMS"
+        var e = $.fn.adminapp.findField("public",  [el.id]);
+        if (internalWMS) {
+            e.removeClass('disabledinput');
+        }
+        else {
+            e.addClass('disabledinput');
+            e.attr('checked', true);
+            this.toogleRestrictionAreas(e[0]);
+        }
+        e.attr('readOnly', !internalWMS);
+        // true should be send ...
+        //e.attr('disabled', !internalWMS);
+    };
+
+    $.fn.adminapp.toogleBaseLayer = function(wmsi, bl) {
+        var state = wmsi[0].checked;
+        if (state) {
+            // reset value
+            $.fn.adminapp.resetField(bl);
+
+            bl.addClass('disabledinput');
+        } else {
+            bl.removeClass('disabledinput');            
+        }
+        // set readonly
+        bl.attr('readOnly', state);
+        bl.attr('disabled', state);
     };
 
     /**
@@ -177,14 +215,16 @@
      * reset input value or state
      */    
     $.fn.adminapp.resetField = function(el) {
-        switch (el.type) {
-          case 'checkbox':
-              el.checked = false;
-              break;
-          case 'radio':
-              break;
-          default:
-              el.value = '';
+        for (var i = 0 ; i < el.length ; i++) {
+            switch (el[i].type) {
+              case 'checkbox':
+                  el[i].checked = false;
+                  break;
+              case 'radio':
+                  break;
+              default:
+                  el[i].value = '';
+            }
         }
     };
     
@@ -203,7 +243,7 @@ $(document).ready(function(){
     $.fn.adminapp.fieldList = $("input");
     $.fn.adminapp.selectList = $("select");
 
-    // attach event on User.b_company to show/hide secondare address fields (b_*)
+    // attach event on User.b_company to show/hide secondary address fields (b_*)
     var f = $.fn.adminapp.findField('b_company');
     if (f.length > 0) {        
         $.fn.adminapp.bindEventOnAddress(f[0]);
@@ -216,7 +256,7 @@ $(document).ready(function(){
     var lt = $.fn.adminapp.findSelect('layerType');
     //Select('layerType');
     if (pl.length > 0 && lt.length > 0) {        
-        //restrictionareas
+        // restrictionareas
         $.fn.adminapp.bindEventOnLayer(pl[0], lt[0]);
         // init state
         $.fn.adminapp.toogleRestrictionAreas(pl[0]);
@@ -228,7 +268,7 @@ $(document).ready(function(){
      * this will sync the state on all tree items.
      */
 
-    // store field correspondance
+    // store field correspondence
     $.fn.adminapp.checkboxcorrespondance = {};
     var checkboxtrees = $(".checkboxtree");
     for (var i = 0, leni = checkboxtrees.length ; i < leni ; i++) {
@@ -243,4 +283,13 @@ $(document).ready(function(){
             }
         }
     }
+
+    var wmsi = $.fn.adminapp.findField('isInternalWMS')
+    var bl = $.fn.adminapp.findField('isBaseLayer')
+    if (wmsi.length > 0 && bl.length > 0) {
+        $.fn.adminapp.bindEventOnLayerGroup(wmsi, bl);
+        // init state
+        $.fn.adminapp.toogleBaseLayer(wmsi, bl);
+    }
+
 });

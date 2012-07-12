@@ -2,7 +2,7 @@
 import logging
 try:
     from hashlib import sha1
-except ImportError:
+except ImportError:  # pragma: nocover
     from sha import new as sha1
 
 import sqlahelper
@@ -31,13 +31,13 @@ AUTHORIZED_ROLE = 'role_admin'
 if schema is not None:
     _schema = schema
 else:
-    raise Exception('schema not specified, you need to add it to your buildout config')
+    raise Exception('schema not specified, you need to add it to your buildout config')  # pragma: nocover
 _parentschema = parentschema
 
 if srid is not None:
     _srid = srid
 else:
-    raise Exception('srid not specified, you need to add it to your buildout config')
+    raise Exception('srid not specified, you need to add it to your buildout config')  # pragma: nocover
 
 
 class TsVector(types.UserDefinedType):
@@ -81,7 +81,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return "%s - %s" % (self.name or u'', self.value or u'')
+        return "%s - %s" % (self.name or u'', self.value or u'')  # pragma: nocover
 
 # association table user <> functionality
 user_functionality = Table('user_functionality', Base.metadata,
@@ -171,7 +171,7 @@ class User(Base):
     password = property(_get_password, _set_password)
 
     def __unicode__(self):
-        return self.username or u''
+        return self.username or u''  # pragma: nocover
 
 
 class Role(Base):
@@ -199,7 +199,7 @@ class Role(Base):
         self.description = description
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u''  # pragma: nocover
 
     def _json_extent(self):
         coords = self.extent.coords(DBSession)
@@ -236,7 +236,7 @@ class TreeItem(Base):
         self.order = order
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u''  # pragma: nocover
 
 # association table LayerGroup <> TreeItem
 layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
@@ -280,7 +280,7 @@ class LayerGroup(TreeGroup):
     # children have radio button instance of check box
     isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
 
-    def __init__(self, name=u'', order=u'', isExpanded=False,
+    def __init__(self, name=u'', order=100, isExpanded=False,
             isInternalWMS=True, isBaseLayer=False):
         TreeGroup.__init__(self, name=name, order=order)
         self.isExpanded = isExpanded
@@ -324,20 +324,24 @@ class Layer(TreeItem):
     isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
     icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
-    layerType = Column(types.Enum("internal WMS", "external WMS",
-            "internal WMTS", "external WMTS", "empty",
-            name=_schema + ".layerType"), label=_(u'Type'))
+    layerType = Column(types.Enum("internal WMS",
+            "external WMS",
+            "WMTS",
+            "no 2D",
+            native_enum=False), label=_(u'Type'))
     url = Column(types.Unicode, label=_(u'Base URL'))  # for externals
-    serverResolutions = Column(types.Unicode, label=_(u'Server Resolutions'))  # for external WMTS
-    maxExtent = Column(types.Unicode, label=_(u'Max Extent'))  # for external WMTS
     imageType = Column(types.Enum("image/jpeg", "image/png",
-            name=_schema + ".imageType"), label=_(u'Image type'))
+            native_enum=False), label=_(u'Image type'))  # for WMS
+    style = Column(types.Unicode, label=_(u'Style'))
+    dimensions = Column(types.Unicode, label=_(u'Dimensions'))  # for WMTS
+    matrixSet = Column(types.Unicode, label=_(u'Matrix set'))  # for WMTS
+    wmsUrl = Column(types.Unicode, label=_(u'WMS server URL'))  # for WMTS
+    wmsLayers = Column(types.Unicode, label=_(u'WMS layers'))  # for WMTS
     kml = Column(types.Unicode, label=_(u'KML 3D'))  # for kml 3D
     isSingleTile = Column(types.Boolean, label=_(u'Single tile'))  # for extenal WMS
-    no2D = Column(types.Boolean, label=_(u'No 2D'))  # only kml 3D
     legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
-    legendImage = Column(types.Unicode, label=_(u'Legend Image'))  # fixed legend image
-    legendRule = Column(types.Unicode, label=_(u'Legend Rule'))  # on wms legend only one rule
+    legendImage = Column(types.Unicode, label=_(u'Legend image'))  # fixed legend image
+    legendRule = Column(types.Unicode, label=_(u'Legend rule'))  # on wms legend only one rule
     minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
@@ -403,7 +407,7 @@ class RestrictionArea(Base):
         self.readwrite = readwrite
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or u''  # pragma: nocover
 
 GeometryDDL(RestrictionArea.__table__)
 
@@ -423,4 +427,4 @@ if _parentschema is not None and _parentschema != '':
             self.name = name
 
         def __unicode__(self):
-            return self.name or u''
+            return self.name or u''  # pragma: nocover

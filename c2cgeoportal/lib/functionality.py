@@ -1,22 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import simplejson as json
-
-from pyramid.security import authenticated_userid
-
-from c2cgeoportal.models import DBSession, User
-
-
-def _cleanup(value, config):
-    result = config[value]
-    start = result.index('{')
-    end = result.rindex('}')
-    result = result[start:end + 1]
-    return result.replace('\\n', '\n')
+from c2cgeoportal.lib.config import cleanup_json
 
 
 def _get_json_functionalities(value, name, config):
-    obj = json.loads(_cleanup(value, config))
+    obj = cleanup_json(config[value])
     return obj[name] if name in obj else None
 
 
@@ -29,10 +17,7 @@ def _get_config_functionalities(name, registered, config):
 
 
 def _get_db_functionalities(name, request):
-    username = authenticated_userid(request)
-    user = None if username is None \
-            else DBSession.query(User).filter_by(username=username).one()
-
+    user = request.user
     result = []
     if user:
         result = [functionality.value for functionality in user.functionalities if functionality.name == name]

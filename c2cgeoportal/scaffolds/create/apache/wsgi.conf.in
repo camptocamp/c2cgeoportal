@@ -21,6 +21,7 @@ WSGIPassAuthorization On
 RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
 RewriteRule ^${vars:apache-entry-point}apihelp.html$ /${vars:instanceid}/wsgi/apihelp.html [PT]
 RewriteRule ^${vars:apache-entry-point}apiloader.js$ /${vars:instanceid}/wsgi/apiloader.js [PT]
+RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
 # define a process group
 WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import traceback
 import urllib
 import logging
+import json
+import sys
 
 from pyramid.view import view_config
-from pyramid.i18n import get_locale_name
-from pyramid.compat import json
-from pyramid.httpexceptions import (HTTPFound, HTTPNotFound,
-                                    HTTPBadRequest, HTTPUnauthorized)
+from pyramid.i18n import get_locale_name, TranslationStringFactory
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
+        HTTPBadRequest, HTTPUnauthorized
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -20,23 +22,32 @@ from c2cgeoportal.lib.functionality import get_functionality, get_functionalitie
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
         RestrictionArea, Role, layer_ra, role_ra
 
+
+_ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
 
 
 class Entry(object):
-
-    _user = False
 
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
+        self.serverError = []
+
+        # detect if HTTPS scheme must be set
+        https_flag = self.settings.get('https_flag_header')
+        if https_flag:
+            https_flag = https_flag.upper()
+            if https_flag in self.request.headers and \
+               self.request.headers[https_flag] == self.settings.get('https_flag_value'):
+                self.request.scheme = 'https'
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):
-        _ = self.request.translate
-        return {'title': _('title i18n')}
+        _ = self.request.translate  # pragma: no cover
+        return {'title': _('title i18n')}  # pragma: no cover
 
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
@@ -83,7 +94,7 @@ class Entry(object):
 
     def _getIconPath(self, icon):
         if not icon:
-            return None
+            return None  # pragma: no cover
         icon = str(icon)
         # test full URL
         if not icon[0:4] == 'http':
@@ -92,10 +103,9 @@ class Entry(object):
                 if icon.find(':') < 0:
                     if icon[0] is not '/':
                         icon = '/' + icon
-                    icon = self.request.static_url(self.settings['project'] + ':static' + icon)
-                else:
-                    icon = self.request.static_url(icon)
-            except ValueError:
+                    icon = self.settings['project'] + ':static' + icon
+                icon = self.request.static_url(icon)
+            except ValueError:  # pragma: no cover
                 log.exception('can\'t generate url for icon: %s' % icon)
                 return None
         return icon
@@ -105,13 +115,11 @@ class Entry(object):
             'id': layer.id,
             'name': layer.name,
             'type': layer.layerType,
-            'imageType': layer.imageType,
-            'no2D': layer.no2D,
             'legend': layer.legend,
-            'isVisible': layer.isVisible,
             'isChecked': layer.isChecked,
-            'identifierAttribute': layer.identifierAttributeField
         }
+        if layer.identifierAttributeField:
+            l['identifierAttribute'] = layer.identifierAttributeField
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
         if layer.icon:
@@ -122,12 +130,15 @@ class Entry(object):
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
             self._fill_editable(l, layer)
+        if layer.legendImage:
+            l['legendImage'] = self._getIconPath(layer.legendImage)
+
         if layer.layerType == "internal WMS":
             self._fill_internal_WMS(l, layer, wms_layers, wms)
-        else:
-            self._fill_non_internal_WMS(l, layer)
-        if layer.legendImage:
-            l['legendImage'] = layer.legendImage
+        elif layer.layerType == "external WMS":
+            self._fill_external_WMS(l, layer)
+        elif layer.layerType == "WMTS":
+            self._fill_WMTS(l, layer)
 
         return l
 
@@ -144,14 +155,46 @@ class Entry(object):
             if c > 0:
                 l['editable'] = True
 
+    def _fill_WMS(self, l, layer):
+        l['imageType'] = layer.imageType
+        if layer.legendRule:
+            query = (
+                ('SERVICE', 'WMS'),
+                ('VERSION', '1.1.1'),
+                ('REQUEST', 'GetLegendGraphic'),
+                ('LAYER', layer.name),
+                ('FORMAT', 'image/png'),
+                ('TRANSPARENT', 'TRUE'),
+                ('RULE', layer.legendRule),
+            )
+            l['icon'] = self.request.route_url('mapserverproxy') \
+                    + '?' + '&'.join('='.join(p) for p in query)
+        if layer.style:
+            l['style'] = layer.style
+
+    def _fill_legend_rule_query_string(self, l, layer, url):
+        if layer.legendRule and url:
+            query = (
+                ('SERVICE', 'WMS'),
+                ('VERSION', '1.1.1'),
+                ('REQUEST', 'GetLegendGraphic'),
+                ('LAYER', layer.name),
+                ('FORMAT', 'image/png'),
+                ('TRANSPARENT', 'TRUE'),
+                ('RULE', layer.legendRule),
+            )
+            l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
+
     def _fill_internal_WMS(self, l, layer, wms_layers, wms):
+        self._fill_WMS(l, layer)
+        self._fill_legend_rule_query_string(l, layer,
+                self.request.route_url('mapserverproxy'))
+
         # this is a leaf, ie. a Mapserver layer
         if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
         if layer.maxResolution:
             l['maxResolutionHint'] = layer.maxResolution
-        if layer.legendRule:
-            l['legendRule'] = layer.legendRule
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]
@@ -168,34 +211,60 @@ class Entry(object):
         else:
             log.warning('layer %s not defined in WMS caps doc', layer.name)
 
-    def _fill_non_internal_WMS(self, l, layer):
-        if layer.minResolution and layer.maxResolution:
+    def _fill_external_WMS(self, l, layer):
+        self._fill_WMS(l, layer)
+        self._fill_legend_rule_query_string(l, layer, layer.url)
+
+        l['url'] = layer.url
+        l['isSingleTile'] = layer.isSingleTile
+
+        if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
+        if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-        if layer.layerType == "external WMS":
-            l['url'] == layer.url
-            l['isSingleTile'] = layer.isSingleTile
+    def _fill_WMTS(self, l, layer):
+        l['url'] = layer.url
 
-        # TODO: use Capabilities
-        if layer.layerType == "external WMTS":
-            l['url'] == layer.url
-            l['maxExtent'] == layer.maxExtent
-            l['serverResolutions'] == layer.serverResolutions
+        if layer.dimensions:
+            try:
+                l['dimensions'] = json.loads(layer.dimensions)
+            except:  # pragma: no cover
+                self.errors += (u"Unexpected error: '%s' " + \
+                        "while reading '%s' in layer '%s'\n") % (
+                        sys.exc_info()[0], layer.dimensions,
+                        layer.name)
+
+        if layer.style:
+            l['style'] = layer.style
+        if layer.matrixSet:
+            l['matrixSet'] = layer.matrixSet
+        if layer.wmsUrl and layer.wmsLayers:
+            l['wmsUrl'] = layer.wmsUrl
+            l['wmsLayers'] = layer.wmsLayers
+        elif layer.wmsLayers:
+            l['wmsUrl'] = self.request.route_url('mapserverproxy')
+            l['wmsLayers'] = layer.wmsLayers
+        elif layer.wmsUrl:
+            l['wmsUrl'] = layer.wmsUrl
+            l['wmsLayers'] = layer.name
+
+        if layer.minResolution:
+            l['minResolutionHint'] = layer.minResolution
+        if layer.minResolution:
+            l['maxResolutionHint'] = layer.maxResolution
 
     def _group(self, group, layers, wms_layers, wms):
         children = []
-        error = ""
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                     group.isInternalWMS == treeItem.isInternalWMS):
-                    c, e = self._group(treeItem, layers, wms_layers, wms)
-                    error += e
+                    c = self._group(treeItem, layers, wms_layers, wms)
                     if c != None:
                         children.append(c)
                 else:
-                    error += "Group %s connot be in group %s " \
+                    self.errors += "Group %s connot be in group %s " \
                              "(wrong isInternalWMS).\n" % \
                              (treeItem.name, group.name)
             elif type(treeItem) == Layer:
@@ -204,7 +273,7 @@ class Entry(object):
                         (treeItem.layerType == 'internal WMS')):
                         children.append(self._layer(treeItem, wms_layers, wms))
                     else:
-                        error += "Layer %s of type %s cannot be " \
+                        self.errors += "Layer %s of type %s cannot be " \
                                  "in the group %s.\n" % \
                                  (treeItem.name, treeItem.layerType, group.name)
 
@@ -218,9 +287,9 @@ class Entry(object):
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
-            return (g, error)
+            return g
         else:
-            return (None, error)
+            return None
 
     def _themes(self, d):
         query = DBSession.query(Layer).filter(Layer.public == True)
@@ -248,21 +317,30 @@ class Entry(object):
 
         layers = query.filter(Layer.isVisible == True).order_by(Layer.order.asc()).all()
 
+        exportThemes = []
+        errors = "\n"
+
         # retrieve layers metadata via GetCapabilities
-        wms_url = self.request.route_url('mapserverproxy')
+        wms_url = self.request.registry.settings['mapserv.url'] + \
+            (('?role_id=' + str(role_id)) if role_id else '')
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
-        wms = WebMapService(wms_url, version='1.1.1')
+        try:
+            wms = WebMapService(wms_url, version='1.1.1')
+        except AttributeError:
+            errors = _("WARNING! an error occured while trying to read the mapfile and recover the themes")
+            self.serverError.append(errors)
+            traceback.print_stack()
+            log.exception(errors)
+
+            return (exportThemes, errors)
         wms_layers = list(wms.contents)
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
-        exportThemes = []
-
-        errors = "\n"
 
         for theme in themes:
             if theme.display:
                 children = list(self._getChildren(
-                        theme, layers, wms_layers, wms, errors))
+                        theme, layers, wms_layers, wms))
                 # test if the theme is visible for the current user
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) if theme.icon else \
@@ -274,13 +352,12 @@ class Entry(object):
                         'children': children
                     })
 
-        return (exportThemes, errors)
+        return exportThemes
 
-    def _getChildren(self, theme, layers, wms_layers, wms, errors):
+    def _getChildren(self, theme, layers, wms_layers, wms):
         for item in sorted(theme.children, key=lambda item: item.order):
             if type(item) == LayerGroup:
-                (c, e) = self._group(item, layers, wms_layers, wms)
-                errors += e
+                c = self._group(item, layers, wms_layers, wms)
                 if c != None:
                     yield c
 
@@ -288,18 +365,23 @@ class Entry(object):
                 if (item in layers):
                     yield self._layer(item, wms_layers, wms)
 
-    def _getForLang(self, key):
-        try:
-            return json.loads(self.settings.get(key).strip("\"'"))[self.lang]
-        except ValueError:
-            return self.settings.get(key)
-
     def _WFSTypes(self, external=False):
         # retrieve layers metadata via GetCapabilities
-        wfs_url = self.request.route_url('mapserverproxy')
-        wfsgc_url = wfs_url + "?service=WFS&version=1.0.0&request=GetCapabilities"
-        if external:
-            wfsgc_url += '&EXTERNAL=true'
+        role_id = None
+        if self.request.user:
+            role_id = self.request.user.parent_role.id if external \
+                      else self.request.user.role.id
+        params = (
+            ('role_id', str(role_id) if role_id else ''),
+            ('SERVICE', 'WFS'),
+            ('VERSION', '1.0.0'),
+            ('REQUEST', 'GetCapabilities'),
+        )
+        wfs_url = self.request.registry.settings['external_mapserv.url'] if external \
+                    else self.request.registry.settings['mapserv.url']
+        if wfs_url.find('?') < 0:
+            wfs_url += '?'
+        wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
@@ -314,21 +396,23 @@ class Entry(object):
 
     def _getVars(self):
         d = {}
-        (themes, errors) = self._themes(d)
-        d['themes'] = json.dumps(themes)
-        d['themesError'] = errors
+        self.errors = "\n"
+        d['themes'] = json.dumps(self._themes(d))
+        d['themesError'] = self.errors
+        self.errors = None
         d['user'] = self.request.user
         d['WFSTypes'] = json.dumps(self._WFSTypes())
+        d['serverError'] = json.dumps(self.serverError)
 
-        if hasattr(self.request.registry.settings, 'external_mapserv.url') \
-           and self.settings.get('external_mapserv.url'):
+        if 'external_mapserv.url' in self.settings \
+                and self.settings['external_mapserv.url']:
             d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
         else:
             d['externalWFSTypes'] = '[]'
 
-        if hasattr(self.request.registry.settings, 'external_themes_url') \
-           and self.settings.get("external_themes_url"):
-            ext_url = self.settings.get("external_themes_url")
+        if 'external_themes_url' in self.settings \
+                and self.settings['external_themes_url']:
+            ext_url = self.settings['external_themes_url']
             if self.request.user is not None and \
                     hasattr(self.request.user, 'parent_role'):
                 ext_url += '?role_id=' + str(self.request.user.parent_role.id)
@@ -349,14 +433,27 @@ class Entry(object):
             functionalities[func] = get_functionalities(func, self.settings, self.request)
         d['functionalities'] = json.dumps(functionalities)
 
+        # handle permalink_themes
+        permalink_themes = self.request.params.get('permalink_themes', None)
+        if permalink_themes:
+            d['permalink_themes'] = json.dumps(permalink_themes.split(','))
+
         return d
 
     @view_config(route_name='home', renderer='index.html')
-    def home(self):
-        return {
+    def home(self, templates_params=None):
+        d = {
             'lang': self.lang,
             'debug': self.debug,
+            'extra_params': '?'
         }
+        # general templates_params handling
+        if templates_params is not None:
+            d = dict(d.items() + templates_params.items())
+        # specific permalink_themes handling
+        if 'permalink_themes' in d:
+            d['extra_params'] = d['extra_params'] + d['permalink_themes']
+        return d
 
     @view_config(route_name='viewer', renderer='viewer.js')
     def viewer(self):
@@ -375,7 +472,7 @@ class Entry(object):
         }
 
     @view_config(route_name='edit.js', renderer='edit.js')
-    def viewer(self):
+    def editjs(self):
         d = self._getVars()
         d['lang'] = self.lang
         d['debug'] = self.debug
@@ -394,7 +491,10 @@ class Entry(object):
 
     @view_config(route_name='apihelp', renderer='apihelp.html')
     def apihelp(self):
-        return {'lang': self.lang, 'debug': self.debug}
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+        }
 
     @view_config(route_name='themes', renderer='json')
     def themes(self):
@@ -408,7 +508,7 @@ class Entry(object):
         password = self.request.params.get('password', None)
         if not (login and password):
             return HTTPBadRequest('"login" and "password" should be " \
-                    "available in request params')
+                    "available in request params')  # pragma nocover
         if self.request.registry.validate_user(self.request, login, password):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
@@ -439,3 +539,12 @@ class Entry(object):
         else:
             return HTTPFound(location=self.request.route_url('home'),
                     headers=headers)
+
+    @view_config(route_name='permalinktheme', renderer='index.html')
+    def permalinktheme(self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = 'permalink_themes=' + ','.join(themes)
+        # call home with extra params
+        return self.home(d)

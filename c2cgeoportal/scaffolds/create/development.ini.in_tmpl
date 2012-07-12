@@ -33,6 +33,9 @@ formalchemy_default_lat = ${formalchemy_default_lat}
 
 formalchemy_available_functionalities = ${formalchemy_available_functionalities}
 
+#Raster
+raster = ${raster|path-repr}
+
 # Functionalities
 # workaround to inline string
 anonymous_functionalities = ${anonymous_functionalities|path-repr}
