@@ -231,6 +231,11 @@ Ext.onReady(function() {
             actionTarget: "center.tbar"
         },
         {
+            ptype: "cgxp_contextualdata",
+            actionTarget: "center.tbar",
+            toggleGroup: "maptools"
+        },
+        {
             ptype: "cgxp_menushortcut",
             actionTarget: "center.tbar",
             type: '->'
