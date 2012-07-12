@@ -36,15 +36,14 @@ Ext.define("App.view.Layers", {
 
     overlayCheckChange: function(field) {
         var record = field.getRecord();
-        var map = record.get('map');
-        var checked = field.getChecked();
         var layer = record.raw;
-        var label = field.getLabel();
         var layersParam = layer.params.LAYERS || [];
+        var name = field.getName();
+        var checked = field.getChecked();
         if (checked) {
-            layersParam.push(label);
+            layersParam.push(name);
         } else {
-            OpenLayers.Util.removeItem(layersParam, label);
+            OpenLayers.Util.removeItem(layersParam, name);
         }
         layer.mergeNewParams({'LAYERS': layersParam});
         layer.setVisibility(layersParam.length);
@@ -61,8 +60,8 @@ Ext.define("App.view.Layers", {
                 for (i=0; i<len; i++) {
                     l = allLayers[i];
                     this.add({
-                        label: l,
-                        name: 'visibility',
+                        label: OpenLayers.i18n(l),
+                        name: l,
                         checked: layersParam.indexOf(l) != -1,
                         listeners: {
                             check: this.overlayCheckChange,

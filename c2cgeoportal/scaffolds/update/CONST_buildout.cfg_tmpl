@@ -202,7 +202,13 @@ cmds =
     >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
     >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir)
     >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir)
- 
+    >>> from shutil import copy
+    >>> dst_dir = os.path.join(src_dir, 'build', 'production')
+    >>> src = os.path.join(src_dir, 'config.js')
+    >>> copy(src, dst_dir)
+    >>> src = os.path.join(src_dir, 'openlayers-mobile.js')
+    >>> copy(src, dst_dir)
+
 [cssbuild]
 recipe = c2c.recipe.cssmin
 input = 
