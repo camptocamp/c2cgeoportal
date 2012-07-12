@@ -112,6 +112,11 @@ Version 0.8
    Now read http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html to
    know how to build and customize the mobile application.
 
+8. GeoExt popup css resource in template for debug mode was missing
+   - add:
+     <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/geoext/resources/css/popup.css')}" />
+     in file <project>/templates/index.html
+
 Version 0.7
 ===========
 
