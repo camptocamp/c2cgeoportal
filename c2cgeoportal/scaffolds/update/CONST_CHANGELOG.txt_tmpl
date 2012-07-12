@@ -144,10 +144,10 @@ Version 0.8
                 labelAlign: 'top',
                 defaults: {
                     anchor:'100%'
-                },
-                outputConfig: {
-                    autoFit: true
                 }
+            },
+            outputConfig: {
+                autoFit: true
             }
         },
 
