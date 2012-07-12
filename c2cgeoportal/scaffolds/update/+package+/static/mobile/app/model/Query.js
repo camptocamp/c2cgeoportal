@@ -36,5 +36,9 @@ Ext.define('App.model.Query', {
 Ext.create('Ext.data.Store', {
     storeId: 'queryStore',
     model: 'App.model.Query',
-    groupField: 'type'
+    grouper: {
+        groupFn: function(record) {
+            return OpenLayers.i18n(record.get('type'));
+        }
+    }
 });
