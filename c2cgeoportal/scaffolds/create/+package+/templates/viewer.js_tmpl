@@ -177,9 +177,7 @@ Ext.onReady(function() {
                 labelAlign: 'top',
                 defaults: {
                     anchor:'100%'
-                }
-            },
-            outputConfig: {
+                },
                 autoFit: true
             }
         }, 

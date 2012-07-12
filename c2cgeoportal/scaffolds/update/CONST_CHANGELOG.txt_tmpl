@@ -128,6 +128,47 @@ Version 0.8
      <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/geoext/resources/css/popup.css')}" />
      in file <project>/templates/index.html
 
+9. In the CGXP print plugin config autoFit: true should be set in the "options"
+   object instead of the "outputConfig" object.
+
+   Change from:
+
+        {
+            ptype: "cgxp_print",
+            legendPanelId: "legendPanel",
+            featureGridId: "featureGrid",
+            outputTarget: "left-panel",
+            printURL: "${request.route_url('printproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            options: {
+                labelAlign: 'top',
+                defaults: {
+                    anchor:'100%'
+                },
+                outputConfig: {
+                    autoFit: true
+                }
+            }
+        },
+
+    to:
+
+        {
+            ptype: "cgxp_print",
+            legendPanelId: "legendPanel",
+            featureGridId: "featureGrid",
+            outputTarget: "left-panel",
+            printURL: "${request.route_url('printproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            options: {
+                labelAlign: 'top',
+                defaults: {
+                    anchor:'100%'
+                },
+                autoFit: true
+            }
+        },
+
 Version 0.7
 ===========
 
