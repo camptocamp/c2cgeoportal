@@ -12,7 +12,11 @@ Ext.define('App.model.Search', {
 Ext.create('Ext.data.Store', {
     storeId: 'searchStore',
     model: 'App.model.Search',
-    groupField: 'layer_name',
+    grouper: {
+        groupFn: function(record) {
+            return OpenLayers.i18n(record.get('layer_name'));
+        }
+    },
     proxy: {
         // FIXME: is JsonP required?
         type: 'jsonp',
