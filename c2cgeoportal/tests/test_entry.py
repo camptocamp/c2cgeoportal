@@ -90,7 +90,6 @@ class TestEntryView(TestCase):
         request.params = { 'lang': 'en' }
         entry = Entry(request)
 
-        print entry
         request.path = '/for_test'
         expected = {
             'lang': 'en',
@@ -102,7 +101,6 @@ class TestEntryView(TestCase):
             'came_from': '/for_a_second_test',
         }
         entry = Entry(request)
-        print entry
         expected = {
             'lang': 'en',
             'came_from': '/for_a_second_test',
