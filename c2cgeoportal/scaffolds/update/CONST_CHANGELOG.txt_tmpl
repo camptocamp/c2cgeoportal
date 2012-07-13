@@ -191,6 +191,9 @@ Version 0.8
 
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
 
+12. The "featureGridId" parameter has been renamed to "featureProvider" in the
+    print config.
+
 Version 0.7
 ===========
 
