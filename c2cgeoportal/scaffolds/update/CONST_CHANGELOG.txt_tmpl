@@ -169,6 +169,9 @@ Version 0.8
             }
         },
 
+10. The "featureGridId" parameter has been renamed to "featureProvider" in the
+    print config.
+
 Version 0.7
 ===========
 
