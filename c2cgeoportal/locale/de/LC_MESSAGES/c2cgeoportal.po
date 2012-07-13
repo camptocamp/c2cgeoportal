@@ -1,15 +1,15 @@
 # German translations for c2cgeoportal.
-# Copyright (C) 2011 ORGANIZATION
+# Copyright (C) 2012 ORGANIZATION
 # This file is distributed under the same license as the c2cgeoportal
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: c2cgeoportal 0.2\n"
+"Project-Id-Version: c2cgeoportal 0.8\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-26 14:51+0200\n"
-"PO-Revision-Date: 2011-08-31 17:17+0200\n"
+"POT-Creation-Date: 2012-07-13 12:07+0200\n"
+"PO-Revision-Date: 2012-07-13 12:06+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -64,11 +64,11 @@ msgstr "Benutzer"
 msgid "users"
 msgstr "Benutzer"
 
-#: c2cgeoportal/models.py:122
+#: c2cgeoportal/models.py:122 c2cgeoportal/templates/login.html:59
 msgid "Username"
 msgstr "Benutzername"
 
-#: c2cgeoportal/models.py:124
+#: c2cgeoportal/models.py:124 c2cgeoportal/templates/login.html:62
 msgid "Password"
 msgstr "Passwort"
 
@@ -199,13 +199,11 @@ msgstr "Legende anzeigen"
 
 #: c2cgeoportal/models.py:343
 #, fuzzy
-#| msgid "Legend Image"
 msgid "Legend image"
 msgstr "Legendenbild"
 
 #: c2cgeoportal/models.py:344
 #, fuzzy
-#| msgid "Legend Rule"
 msgid "Legend rule"
 msgstr "Legendenrolle"
 
@@ -265,10 +263,13 @@ msgstr ""
 msgid "my translation test"
 msgstr "meine Übersetzung test"
 
-#: c2cgeoportal/views/entry.py:38
+#: c2cgeoportal/views/entry.py:50
 msgid "title i18n"
 msgstr "Testen des i18n"
 
-#~ msgid "Matrix Set"
-#~ msgstr ""
+#: c2cgeoportal/views/entry.py:330
+msgid ""
+"WARNING! an error occured while trying to read the mapfile and recover "
+"the themes"
+msgstr ""
 
