@@ -255,6 +255,14 @@ msgstr ""
 "Accepted search values are addresses, placenames, parcels, \n"
 "coordinates: swiss projection: 600000 200000 ; lon lat: 7.3 46.8."
 
+#: c2cgeoportal/templates/login.html:6
+msgid "Login to Geoportal Application"
+msgstr ""
+
+#: c2cgeoportal/templates/login.html:65
+msgid "Login"
+msgstr ""
+
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"
 msgstr "my translation test"

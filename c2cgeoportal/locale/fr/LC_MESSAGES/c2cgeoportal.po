@@ -58,7 +58,7 @@ msgstr "Valeur"
 
 #: c2cgeoportal/models.py:108
 msgid "user"
-msgstr "Utilisateurs"
+msgstr "Utilisateur"
 
 #: c2cgeoportal/models.py:109
 msgid "users"
@@ -178,7 +178,7 @@ msgstr ""
 
 #: c2cgeoportal/models.py:338
 msgid "WMS server URL"
-msgstr ""
+msgstr "URL du serveur WMS"
 
 #: c2cgeoportal/models.py:339
 msgid "WMS layers"
@@ -214,7 +214,7 @@ msgstr "Résolution maximale"
 
 #: c2cgeoportal/models.py:347
 msgid "Disclaimer"
-msgstr ""
+msgstr "Responsabilité"
 
 #: c2cgeoportal/models.py:348
 msgid "Identifier attribute field"
@@ -254,6 +254,14 @@ msgid "search tip message"
 msgstr ""
 "Ici vous pouvez chercher des adresses, des lieux-dits, des parcelles,\n"
 "des coordonnées: swiss projection: 600000 200000 ; lon lat: 7.3 46.8."
+
+#: c2cgeoportal/templates/login.html:6
+msgid "Login to Geoportal Application"
+msgstr "Connection a l'application Geoportal"
+
+#: c2cgeoportal/templates/login.html:65
+msgid "Login"
+msgstr "Connection"
 
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"
