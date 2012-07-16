@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: c2cgeoportal 0.6\n"
+"Project-Id-Version: c2cgeoportal 0.8\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-26 14:51+0200\n"
+"POT-Creation-Date: 2012-07-13 12:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,11 +62,11 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: c2cgeoportal/models.py:122
+#: c2cgeoportal/models.py:122 c2cgeoportal/templates/login.html:59
 msgid "Username"
 msgstr ""
 
-#: c2cgeoportal/models.py:124
+#: c2cgeoportal/models.py:124 c2cgeoportal/templates/login.html:62
 msgid "Password"
 msgstr ""
 
@@ -251,11 +251,25 @@ msgstr ""
 msgid "search tip message"
 msgstr ""
 
+#: c2cgeoportal/templates/login.html:6
+msgid "Login to Geoportal Application"
+msgstr ""
+
+#: c2cgeoportal/templates/login.html:65
+msgid "Login"
+msgstr ""
+
 #: c2cgeoportal/templates/testi18n.html:12
 msgid "my translation test"
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:38
+#: c2cgeoportal/views/entry.py:50
 msgid "title i18n"
+msgstr ""
+
+#: c2cgeoportal/views/entry.py:330
+msgid ""
+"WARNING! an error occured while trying to read the mapfile and recover the "
+"themes"
 msgstr ""
 
