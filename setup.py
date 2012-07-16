@@ -26,6 +26,7 @@ install_requires = [
     'tileforge>=0.2',
     'JSTools>=0.6',
     'simplejson',
+    'PyYAML'
     ]
 
 # nose plugins with options set in setup.cfg cannot be in

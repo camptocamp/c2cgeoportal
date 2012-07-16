@@ -199,8 +199,8 @@ class TestMapserverproxyView(TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
                 'mapserv.url': mapserv_url,
-                'registered_functionalities': '{}',
-                'anonymous_functionalities': '{}',
+                'registered_functionalities': {},
+                'anonymous_functionalities': {},
                 }
         if username:
             request.user = DBSession.query(User) \
@@ -496,7 +496,7 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["name=bar"]}'
+                {"mapserver_substitution":["name=bar"]}
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
@@ -507,28 +507,28 @@ class TestMapserverproxyView(TestCase):
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=city","cols=country"]}'
+                {"mapserver_substitution":["cols=name","cols=city","cols=country"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=city"]}'
+                {"mapserver_substitution":["cols=name","cols=city"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
 
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=country"]}'
+                {"mapserver_substitution":["cols=name","cols=country"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name"]}'
+                {"mapserver_substitution":["cols=name"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
@@ -538,7 +538,7 @@ class TestMapserverproxyView(TestCase):
         request.method = 'POST'
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
         request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["foo_bar"]}'
+                {"mapserver_substitution":["foo_bar"]}
         request.params = dict(map=map,
                       s_test1='to be removed', S_TEST2='to be removed')
         # just pass in the log messagse

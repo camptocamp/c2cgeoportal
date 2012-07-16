@@ -1,0 +1,23 @@
+default_locale_name: fr
+default_language: fr
+available_languages:
+  - en
+  - fr
+  - de
+formalchemy_default_lat: 5860000
+formalchemy_default_lon: 740000
+formalchemy_default_zoom: 10
+formalchemy_available_functionalities:
+- default_basemap
+- print_template
+- mapserver_substitution
+anonymous_functionalities:
+  print_template:
+  - 1 A4 portrait
+  - 2 A3 landscape
+registered_functionalities: {}
+webclient_array_functionalities:
+webclient_string_functionalities: default_basemap
+external_themes_url:
+external_mapserv_url: 
+raster:

@@ -356,7 +356,7 @@ Theme.configure(exclude=[Theme.parents])
 # Functionality
 Functionality = FieldSet(models.Functionality)
 Functionality.name.set(renderer=fields.SelectFieldRenderer,  \
-        options=formalchemy_available_functionalities.split())
+        options=formalchemy_available_functionalities)
 Functionality.value.set(metadata=dict(mandatory='')).required()
 
 # RestrictionArea

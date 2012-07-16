@@ -11,11 +11,13 @@ class TestRasterViews(TestCase):
         renderer = DecimalJSON()(None)
         request = DummyRequest()
         system = {'request': request}
-        request.registry.settings = dict(raster=\
-            '/var/www/vhosts/project/private/project/{\n' \
-            + '"dem1": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 0.1 },\n' \
-            + '"dem2": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 1 },\n' \
-            + '"dem3": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp" }\n}')
+        request.registry.settings = {
+            "raster": {
+                "dem1": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 0.1},
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem3": {"file": "c2cgeoportal/tests/data/dem.shp"}
+            }
+        }
         raster = Raster(request)
 
         request.params['lon'] = '565000'
@@ -48,10 +50,12 @@ class TestRasterViews(TestCase):
         renderer = DecimalJSON()(None)
         request = DummyRequest()
         system = {'request': request}
-        request.registry.settings = dict(raster=\
-            '/var/www/vhosts/project/private/project/{\n' \
-            + '"dem": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 1 },\n' \
-            + '"dem2": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 1 }\n}')
+        request.registry.settings = {
+            "raster": {
+                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1}
+            }
+        }
         profile = Profile(request)
 
         request.params['nbPoints'] = '3'
@@ -88,10 +92,12 @@ class TestRasterViews(TestCase):
         from c2cgeoportal.views.profile import Profile
 
         request = DummyRequest()
-        request.registry.settings = dict(raster=\
-            '/var/www/vhosts/project/private/project/{\n' \
-            + '"dem": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 1 },\n' \
-            + '"dem2": { "type": "shp_index", "file": "c2cgeoportal/tests/data/dem.shp", "round": 1 }\n}')
+        request.registry.settings = {
+            "raster": {
+                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1}
+            }
+        }
         profile = Profile(request)
 
         request.params['nbPoints'] = '3'

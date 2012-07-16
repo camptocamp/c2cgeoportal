@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import yaml
+
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
 
@@ -56,7 +58,7 @@ def locale_negotiator(request):
         lang = request.registry.settings.get("default_language")
         for l in list(request.accept_language):
             if l in request.registry.settings. \
-                    get("available_languages").split():
+                    get("available_languages"):
                 lang = l
                 break
     return lang
@@ -117,6 +119,11 @@ def ogcproxy_route_predicate(info, request):
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
+
+    # update the settings object from the YAML application config file
+    settings = config.get_settings()
+    settings.update(yaml.load(file(settings.get('app.cfg'))))
+
     global srid
     global schema
     global parentschema
