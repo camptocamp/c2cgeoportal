@@ -31,5 +31,5 @@ The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
 
 The application viewer should be configured with one (or more) of the
-``RightClick``, the ``YXZ`` and the ``Profile`` ``CGXP`` plugins for
+``ContextualData`` and the ``Profile`` ``CGXP`` plugins for
 the DEM data to be viewable in the web application.
