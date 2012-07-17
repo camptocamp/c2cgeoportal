@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="${lang}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="Content-Language" content="${lang}" />
+        <title>${_('Login to Geoportal Application')}</title>
+        <style>
+            body {
+                background: #444444;
+                font-family: Helvetica, Arial, sans-serif;
+            }
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            div#content {
+                background: #F5F5EF;
+                padding: 20px 30px;
+                width: 330px;
+                margin: 100px auto auto auto;
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+            }
+            td.field {
+                padding-top: 20px;
+            }
+            td.field p {
+                font-weight: bold;
+                color: #444444;
+                font-size: 80%;
+                margin-bottom: 3px;
+            }
+            td.field input {
+                -webkit-border-radius: 2px;
+                border-radius: 2px;
+                border: solid 1px #444444;
+                padding: 3px 6px;
+                font-size: 110%;
+                width: 250px;
+            }
+            td.buttons {
+                padding-top: 25px;
+                padding-bottom: 20px;
+                text-align: right;
+            }
+            td.buttons input {
+                padding: 1px 6px;
+                font-weight: bold;
+                color: #444444;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <form method="POST" id="loginForm" action="${request.route_url('login', _query=dict(came_from=came_from))}">
+                <table style="margin-left: auto; margin-right: auto;">
+                    <tbody>
+                        <tr>
+                            <td class="field"><p><label for="email">${_('Username')}</label></p><input id="login" name="login" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td class="field"><p><label for="password">${_('Password')}</label></p><input id="password" name="password" type="password"></td>
+                        </tr>
+                        <tr>
+                            <td class="buttons"><input tabindex="4" value="${_('Login')}" type="submit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>

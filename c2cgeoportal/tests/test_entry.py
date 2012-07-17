@@ -75,12 +75,46 @@ class TestEntryView(TestCase):
             'name': 'layer_1',
             'minResolutionHint': 1.0,
             'maxResolutionHint': 2.0
-            }, {
+        }, {
             'name': 'layer_2',
             'minResolutionHint': 3.0,
             'maxResolutionHint': 4.0
-            }]
+        }]
         self.assertEqual(child_layers_info, expected)
+
+    def test_login(self):
+        from pyramid.testing import DummyRequest
+        from c2cgeoportal.views.entry import Entry
+
+        request = DummyRequest()
+        request.params = { 'lang': 'en' }
+        entry = Entry(request)
+
+        request.path = '/for_test'
+        expected = {
+            'lang': 'en',
+            'came_from': '/for_test',
+        }
+        self.assertEqual(entry.loginform403(), expected)
+
+        request.params = { 
+            'came_from': '/for_a_second_test',
+        }
+        entry = Entry(request)
+        expected = {
+            'lang': 'en',
+            'came_from': '/for_a_second_test',
+        }
+        self.assertEqual(entry.loginform(), expected)
+
+        entry = Entry(request)
+        request.params = {}
+        expected = {
+            'lang': 'en',
+            'came_from': '/',
+        }
+        self.assertEqual(entry.loginform(), expected)
+
 
     def test__get_child_layers_info_without_scalehint(self):
         from pyramid.testing import DummyRequest

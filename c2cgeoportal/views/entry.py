@@ -9,8 +9,8 @@ import sys
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
-        HTTPBadRequest, HTTPUnauthorized
-from pyramid.security import remember, forget
+        HTTPBadRequest, HTTPUnauthorized, HTTPForbidden
+from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
 from geoalchemy.functions import functions
@@ -88,7 +88,7 @@ class Entry(object):
                 child_layer_info.update({
                     'minResolutionHint': float('%0.2f' % resolution[0]),
                     'maxResolutionHint': float('%0.2f' % resolution[1])
-                    })
+                })
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
@@ -501,6 +501,22 @@ class Entry(object):
         d = {}
         d['role_id'] = self.request.params.get("role_id", None)
         return self._themes(d)[0]
+
+    @view_config(context=HTTPForbidden, renderer='login.html')
+    def loginform403(self):
+        if authenticated_userid(self.request):
+            return HTTPForbidden()  # pragma: no cover
+        return {
+            'lang': self.lang,
+            'came_from': self.request.path,
+        }
+
+    @view_config(route_name='loginform', renderer='login.html')
+    def loginform(self):
+        return {
+            'lang': self.lang,
+            'came_from': self.request.params.get("came_from") or "/",
+        }
 
     @view_config(route_name='login')
     def login(self):
