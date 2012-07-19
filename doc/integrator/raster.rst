@@ -1,4 +1,4 @@
-.. _administrator_raster:
+.. _integrator_raster:
 
 Raster configuration
 =====================
