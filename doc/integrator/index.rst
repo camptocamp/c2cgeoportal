@@ -20,3 +20,4 @@ Content:
    deploy
    authentication
    mobile
+   raster
