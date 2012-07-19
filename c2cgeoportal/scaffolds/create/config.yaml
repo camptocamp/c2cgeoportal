@@ -19,5 +19,5 @@ registered_functionalities: {}
 webclient_array_functionalities:
 webclient_string_functionalities: default_basemap
 external_themes_url:
-external_mapserv_url: 
+external_mapserv_url:
 raster:
