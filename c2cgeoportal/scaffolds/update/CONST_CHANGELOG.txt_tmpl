@@ -169,7 +169,7 @@ Version 0.8
             }
         },
 
-10. IE9 slider issue don't require a compatible meta anymore.
+10. IE9 slider issue doesn't require a compatible meta anymore.
 
     Remove the following meta from the index.html template:
 
