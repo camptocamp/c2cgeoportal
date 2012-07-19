@@ -106,13 +106,13 @@ by the templating. Than we should do:
     parent_instanceid = <parent-instance-id>
     print_path = /print-c2cgeoportal-${parent_instanceid}/pdf/
 
-* If needed set the print teplates used by anonymous user by
-  adding the following lines in the ``[vars]`` section 
-  of the ``buildout.cfg`` file::
+* If needed set the print templates used by anonymous user by adding the
+  following in the application configuration (``config.yaml``)::
 
-    anonymous_functionalities = {
-            "print_template": ["1 A4 child", "2 A3 child"]
-        }
+    anonymous_functionalities:
+      print_template:
+      - 1 A4 child
+      - 2 A3 child
 
 .. note::
 

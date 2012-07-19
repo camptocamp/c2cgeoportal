@@ -76,8 +76,8 @@ Here's another example where rows from a ``SELECT`` are inserted::
 
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_language`` variable of
-    the Buildout configuration. For example if you have "french" text in the
-    database the application's ``default_language`` should be ``fr``. In other
-    words c2cgeoportal assumes that the database language and the application's
-    default language match.
+    the application configuration (``config.yaml``). For example if you have
+    "french" text in the database the application's ``default_language`` should
+    be ``fr``. In other words c2cgeoportal assumes that the database language
+    and the application's default language match.
 
