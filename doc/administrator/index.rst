@@ -23,4 +23,3 @@ Content:
    mapfile
    administrate
    editing
-   raster
