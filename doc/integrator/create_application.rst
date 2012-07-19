@@ -197,8 +197,24 @@ Commit and push on the main repository::
 Configure the application
 -------------------------
 
-Edit the ``buildout.cfg`` file to configure the application, especially the
-'to_be_defined' values.
+As the integrator you need to edit two files to configure the application:
+``config.yaml`` and ``buildout.cfg``.
+
+``config.yaml`` includes the *static configuration* of the application.  This
+configuration is to be opposed to the *dynamic configuration*, which is in the
+database, and managed by the *administrator*. The static configuration includes
+for example the application's ``default_language``. It also includes the
+configuration for specific parts of the application, like
+:ref:`integrator_raster` web services.
+
+``buildout.cfg`` includes the execution environment configuration. In this
+files are set *environment variables* such as the application instance id
+(``instance_id``), the database name (``db``), and host names. Pay particular
+attention to the ``to_be_defined`` values. ``buildout.cfg`` actually defines
+the *default* environment configuration. The configuration for specific
+installations (specific servers for example) can be written in specific files,
+that extend ``buildout.cfg``.  The :ref:`integrator_install_application`
+section provides more information.
 
 Don't miss to add your changes to git::
 
