@@ -183,6 +183,14 @@ Version 0.8
     - in the include section:
         DragTracker.js #ext.override
 
+11. Add the following line to the root section of the app.js section in jsbuild/app.cfg:
+
+    sitn/static/lib/cgxp/dygraphs
+
+    Also add the following line in the index.html template:
+
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+
 Version 0.7
 ===========
 

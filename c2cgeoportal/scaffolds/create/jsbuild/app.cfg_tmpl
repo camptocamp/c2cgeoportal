@@ -39,6 +39,7 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base.js
