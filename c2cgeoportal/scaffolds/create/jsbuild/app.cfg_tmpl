@@ -38,6 +38,7 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
     {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base.js
@@ -61,6 +62,7 @@ include =
     EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
+    DragTracker.js #ext.overrides
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/FeatureGrid.js

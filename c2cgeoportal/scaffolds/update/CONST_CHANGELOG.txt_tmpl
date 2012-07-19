@@ -169,6 +169,20 @@ Version 0.8
             }
         },
 
+10. IE9 slider issue don't require a compatible meta anymore.
+
+    Remove the following meta from the index.html template:
+
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+
+    And add the following lines to the jsbuild/app.cfg file:
+    
+    - in the root section:
+        sitn/static/lib/cgxp/ext.overrides
+
+    - in the include section:
+        DragTracker.js #ext.override
+
 Version 0.7
 ===========
 
