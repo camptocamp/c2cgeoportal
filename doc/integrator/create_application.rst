@@ -140,6 +140,23 @@ main Buildout configuration file::
     rm buildout.cfg
     mv buildout_child.cfg buildout.cfg
 
+If this application is a ``child`` in the file config.in replace::
+
+    external_themes_url:
+    external_mapserv_url:
+
+by::
+
+    external_themes_url: ${vars:host}/${vars:parent_instanceid}/wsgi/themes
+    external_mapserv_url: ${vars:host}/${vars:parent_instanceid}/mapserv
+
+
+.. note::
+
+    In a parent/child architecture one instance of the application is the
+    parent, the others are children. Child instances display layers
+    served by the parent instance. Parent and child instances share
+    the same database, but use dedicated schemas within that database.
 
 Put the application under revision control
 ------------------------------------------
