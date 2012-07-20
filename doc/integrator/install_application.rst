@@ -156,7 +156,7 @@ apache/mapserver.conf.in
 
        SetHandler cgi-script
 
-#. Example of ScriptAlias::
+#. The path to Mapserver executable must be modified::
 
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
