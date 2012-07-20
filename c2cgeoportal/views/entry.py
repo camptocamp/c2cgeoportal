@@ -425,12 +425,16 @@ class Entry(object):
         d['tilecache_url'] = self.settings.get("tilecache_url")
 
         functionality = dict()
-        for func in self.settings.get("webclient_string_functionalities").split():
-            functionality[func] = get_functionality(func, self.settings, self.request)
+        if 'webclient_string_functionalities' in self.settings:
+            for func in self.settings.get('webclient_string_functionalities'):
+                functionality[func] = get_functionality(func, self.settings,
+                                                        self.request)
         d['functionality'] = json.dumps(functionality)
         functionalities = dict()
-        for func in self.settings.get("webclient_array_functionalities").split():
-            functionalities[func] = get_functionalities(func, self.settings, self.request)
+        if 'webclient_array_functionalities' in self.settings:
+            for func in self.settings.get("webclient_array_functionalities"):
+                functionalities[func] = get_functionalities(func, self.settings,
+                                                            self.request)
         d['functionalities'] = json.dumps(functionalities)
 
         # handle permalink_themes
