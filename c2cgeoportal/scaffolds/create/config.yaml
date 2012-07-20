@@ -10,8 +10,8 @@ available_locale_names:
 - de
 
 # Default values for the admin interface's maps.
-formalchemy_default_lat: 5860000
 formalchemy_default_lon: 740000
+formalchemy_default_lat: 5860000
 formalchemy_default_zoom: 10
 
 # The list of functionalities that can be configured
@@ -33,17 +33,23 @@ anonymous_functionalities:
 # database.
 registered_functionalities: {}
 
-# Currently unused. To be removed.
-webclient_array_functionalities:
+# Single Functionalities that should be available
+# on the web client.
 webclient_string_functionalities:
 - default_basemap
 
+# Same than before but Functionalities of the same
+# name will be arranged as an array.
+webclient_array_functionalities: []
+
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
-# architecture.
+# architecture, with the values:
+# external_themes_url: ${external_base_url}/wsgi/themes
+# external_mapserv_url: ${external_base_url}/mapserv
 external_themes_url:
 external_mapserv_url:
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
-raster:
+raster: {}
