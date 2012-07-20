@@ -129,21 +129,18 @@ c2cgeoportal work on Windows.
 apache/wsgi.conf.in
 ^^^^^^^^^^^^^^^^^^^
 
-#. WSGIDaemonProcess and WSGIProcessGroup are not supported on windows.
+WSGIDaemonProcess and WSGIProcessGroup are not supported on windows.
+  
+(`WSGIDaemonProcess ConfigurationDirective 
+<http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess>`_ 
+"Note that the WSGIDaemonProcess directive and corresponding features are not 
+available on Windows or when running Apache 1.3.")
 
-   (http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess 
-   "Note that the WSGIDaemonProcess directive and corresponding features are not 
-   available on Windows or when running Apache 1.3.")
+The following lines must be commented/removed::
 
-   The following lines must be commented/removed::
-
-       WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
-       ...
-       WSGIProcessGroup c2cgeoportal:${vars:instanceid}
-
-#. Example of WSGIScriptAlias::
-
-    /main/wsgi c:\path\to\project\buildout\parts\modwsgi\wsgi
+    WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
+    ...
+    WSGIProcessGroup c2cgeoportal:${vars:instanceid}
 
 apache/mapserver.conf.in
 ^^^^^^^^^^^^^^^^^^^^^^^^
