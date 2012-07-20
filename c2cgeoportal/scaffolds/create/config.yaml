@@ -8,9 +8,9 @@ default_language: fr
 
 # The set of languages supported by the applications.
 available_languages:
-  - en
-  - fr
-  - de
+- en
+- fr
+- de
 
 # Default values for the admin interface's maps.
 formalchemy_default_lat: 5860000
