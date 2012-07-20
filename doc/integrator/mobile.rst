@@ -38,19 +38,64 @@ is required. Commit `444ba16
 of CGXP includes this OpenLayers commit. So make sure your c2cgeoportal
 application uses this commit (or better) of CGXP.
 
-Adding a mobile app to an existing project
-------------------------------------------
+Infrastructure
+--------------
 
-To add a mobile application to an existing c2cgeoportal project you first need
-to upgrade the project to at least version 0.8 of c2cgeoportal (see the
-:ref:`integrator_update_application` section).
+Creating and building a mobile application requires the `Sencha SDK Tools
+<http://www.sencha.com/products/sdk-tools/>`_ and `Compass
+<http://compass-style.org/>`_ to be installed on the target machine.
+
+The ``sencha`` and ``compass`` commands should be available on the ``PATH``,
+and the ``SENCHA_SDK_TOOLS_*`` environment variable should be set as
+appropriate. On Camptocamp servers this should be all set for you.
+
+Here's an example of setting ``PATH`` and ``SENCHA_SDK_TOOLS_2_0_0_BETA3``::
+
+    export PATH=${HOME}/.gem/ruby/1.8/bin:${PATH}
+    export PATH=/opt/SenchaSDKTools-2.0.0-beta3/:${PATH}
+    export SENCHA_SDK_TOOLS_2_0_0_BETA3=/opt/SenchaSDKTools-2.0.0-beta3/
+
+Adding a mobile app to a project
+--------------------------------
+
+To be able to add a mobile app to a c2cgeoportal project this project should be
+able to version 0.8 of c2cgeoportal or better. See
+:ref:`integrator_update_application` to know how to upgrade a project.
+
+Adding the Sencha Touch SDK
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Any c2cgeoportal 0.8 project includes a ``static/mobile`` directory containing
+a Sencha Touch mobile application. This directory actually misses a major
+component of the Sencha Touch application: the Sencha Touch SDK. So you need to
+manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
+you will (1) download the Sencha Touch SDK (version 2.0.1.1), (2) dearchive it
+at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
+and (4) copy the ``skd`` directory from that temporary Sencha Touch application
+to your project's ``static/mobile`` dir. For example::
+
+    $ cd /tmp/
+    $ wget http://cdn.sencha.io/touch/sencha-touch-2.0.1.1-gpl.zip
+    $ unzip sencha-touch-2.0.1.1-gpl.zip
+    $ sencha generate app TempApp /tmp/TempApp
+    $ cp -r /tmp/Temp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
+
+You can now version-control this ``sdk`` directory.
+
+Adding missing files
+~~~~~~~~~~~~~~~~~~~~
+
+You can skip this section if your project has been created using c2cgeoportal
+0.8 or better. If you project was created using an older c2cgeoportal, and if
+you've just upgraded your project to c2cgeoportal 0.8, then you need to follow
+the below instructions.
 
 Upgrading the project to c2cgeoportal 0.8 will create a ``static/mobile``
 directory in the project. But this directory does not include all the necessary
 files, as some files are provided by the ``c2cgeoportal_create`` scaffold
 (which is not applied for updates). The easiest way to get all the necessary
-files involves creating a temporary project of the same name as the target
-project, and copying the missing files from there::
+files involves creating a temporary c2cgeoportal project of the same name as
+the target project, and copying the missing files from there::
 
    $ cd <project_name>
    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
@@ -59,6 +104,9 @@ project, and copying the missing files from there::
         <package_name>/static/mobile/
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
    $ rm -rf /tmp/<project_name>
+
+Adding mobile routes and views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The last step involves adding *routes* and *views* specific to the mobile
 application. Edit the project's ``__init__.py`` file and add the following
@@ -99,9 +147,8 @@ following line to the ``[buildout]`` section::
 
     parts += jsbuild-mobile mobile
 
-For the ``mobile`` part to work `Sencha SDK Tools
-<http://www.sencha.com/products/sdk-tools/>`_ and `Compass
-<http://compass-style.org/>`_ should be installed.
+For the ``mobile`` part to work Sencha SDK Tools and Compass should be
+installed on the build machine. (See above.)
 
 .. note::
 
@@ -115,16 +162,6 @@ For the ``mobile`` part to work `Sencha SDK Tools
     You would add this in `buildout.cfg`, or any Buildout configuration file
     that extends `buildout.cfg`.
 
-
-The ``sencha`` and ``compass`` commands should be available on the ``PATH``,
-and the ``SENCHA_SDK_TOOLS_*`` environment variable should be set as
-appropriate. On Camptocamp servers this should be all set for you.
-
-Here's an example of setting ``PATH`` and ``SENCHA_SDK_TOOLS_2_0_0_BETA3``::
-
-    export PATH=${HOME}/.gem/ruby/1.8/bin:${PATH}
-    export PATH=/opt/SenchaSDKTools-2.0.0-beta3/:${PATH}
-    export SENCHA_SDK_TOOLS_2_0_0_BETA3=/opt/SenchaSDKTools-2.0.0-beta3/
 
 Once built the mobile application should be available on ``/mobile_dev/`` and
 ``/mobile/`` in the browser, where ``/`` is the root of the WSGI application.
