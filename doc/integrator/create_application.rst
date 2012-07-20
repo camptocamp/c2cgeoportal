@@ -140,7 +140,7 @@ main Buildout configuration file::
     rm buildout.cfg
     mv buildout_child.cfg buildout.cfg
 
-If this application is a ``child`` in the file config.in replace::
+If this application is a ``child`` in the file config.yaml.in replace::
 
     external_themes_url:
     external_mapserv_url:
