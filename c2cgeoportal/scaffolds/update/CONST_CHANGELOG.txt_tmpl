@@ -3,7 +3,112 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.8
 ===========
 
-1. Theme loading with Friendly Url
+1.  We creates a configuration file to separate the application configuration
+    from the integration configuration (database ans server informations).
+
+    To create an initial configuration from your current configurations you
+    should:
+
+    - Rollback the CONST_buildout.cfg:
+        git checkout CONST_buildout.cfg
+
+    - Create a file named 'config.yaml.in.in' that contains:
+
+# ------------------------------------------------------------------------
+# The application's default language. This is the language
+# used if no language is specific by the application user.
+# This also defines the language used for the text search.
+default_locale_name: ${default_language}
+
+# The set of languages supported by the applications.
+TODO fix the array (comma is missing)
+available_locale_names: [${available_languages}]
+
+# Default values for the admin interface's maps.
+formalchemy_default_lon: ${formalchemy_default_lon}
+formalchemy_default_lat: ${formalchemy_default_lat}
+formalchemy_default_zoom: ${formalchemy_default_zoom}
+
+# The list of functionalities that can be configured
+# through the admin interface.
+TODO fix the array (comma is missing)
+formalchemy_available_functionalities: [${formalchemy_available_functionalities}]
+
+# Functionalities that are accessible to anonymous
+# users.
+anonymous_functionalities: ${anonymous_functionalities}
+
+# Functionalities that are accessible to authenticated
+# users with no associated functionalities in the
+# database.
+registered_functionalities: ${registered_functionalities}
+
+# Currently unused. To be removed.
+webclient_string_functionalities: ${webclient_string_functionalities}
+webclient_array_functionalities: ${webclient_array_functionalities}
+# Single Functionalities that should be available
+# on the web client.
+TODO fix the array (comma is missing)
+webclient_string_functionalities: [${webclient_string_functionalities}]
+
+# Same than before but Functionalities of the same
+# name will be arranged as an array.
+TODO fix the array (comma is missing)
+webclient_array_functionalities: [${webclient_array_functionalities}]
+
+# Define URLs to the parent application. Only useful is
+# this application is a child application in a parent/child
+# architecture, with the values:
+# external_themes_url: $${external_base_url}/wsgi/themes
+# external_mapserv_url: $${external_base_url}/mapserv
+external_themes_url:
+external_mapserv_url:
+
+# The "raster web services" configuration. See the "raster"
+# chapter in the integrator documentation.
+raster: ${raster}
+# ------------------------------------------------------------------------
+
+    - Than interpretate it by running:
+        ./buildout/bin/buildout.cfg install template
+
+    - In this file there are some lines that contains « TODO fix the array
+    (comma is missing) » that indicate that there is an array who is
+    not well formated. Than fix the array and remove those lines.
+
+    - Remove the source file:
+        rm config.json.in.in
+
+    - Add the config in the repository
+        git add config.yaml.in
+
+    - Add config.yaml in the .gitignore file
+
+    - Add the following line in the [app:<project>] of the production.ini.in
+            and the developement.ini.in:
+        app.cfg = %(here)s/config.yaml
+
+    - Remove the following attributes from the production.ini.in
+            developement.ini.in, an buildout.cfg files:
+        default_locale_name
+        available_languages
+        default_language
+        formalchemy_default_zoom
+        formalchemy_default_lon
+        formalchemy_default_lat
+        formalchemy_available_functionalities
+        raster
+        anonymous_functionalities
+        registered_functionalities
+        webclient_string_functionalities
+        webclient_array_functionalities
+        external_themes_url
+        external_mapserv_url
+
+    - Re apply the update scaffold to regenerate the CONST_buildout file:
+        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update
+
+2. Theme loading with Friendly Url
 
    It is now possible to load themes directly from a Friendly Url of the type:
    http://www.example.com/theme/themename1/themename2[/themenamex]
@@ -27,14 +132,14 @@ Version 0.8
    - In wsgi.conf.in, add a new RewriteRule:
      RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
-2. To add the support of WMTS layers the database should be updated by
-    standard procedure, CGXP also. We also needs the ogcproxy, and to
-    use is we need to add the following line in the file
-    <project>/templates/viewer.js:
+3. To add the support of WMTS layers the database should be updated by
+   standard procedure, CGXP also. We also needs the ogcproxy, and to
+   use is we need to add the following line in the file
+   <project>/templates/viewer.js:
 
         OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
-3. CGXP helper tools
+4. CGXP helper tools
 
    Some javascript helpers have been added to cgxp, allowing to open internal
    message or external html into an Ext Windows popup.
@@ -52,14 +157,14 @@ Version 0.8
    become
    <a href="javascript:cgxp.tools.openInfoWindow('http://www.test.com', 'Popup title', 600, 500);">Link text</a>
 
-4. Add new deploy hooks to set the databases rights.
+5. Add new deploy hooks to set the databases rights.
    cd {{project}}
    ./buildout/bin/pcreate --overwrite -s c2cgeoportal_create /tmp/{{project}}
    cp /tmp/{{project}}/deploy/hooks/post-restore-database.in deploy/hooks/
    chmod +x deploy/hooks/post-restore-database.in
    rm -rf /tmp/{{project}}
 
-5. HTTPS detection
+6. HTTPS detection
 
    If your application is accessed in HTTPS but is behind some proxies that remove the SSL encryption,
    you can make sure that all generated URLs (CSS and Javascript files, images, MapServer requests, etc.)
@@ -73,14 +178,14 @@ Version 0.8
        https_flag_header = X_HTTPS
        https_flag_value = on
 
-6. New raster and profile web services are now available and require some configuration.
+7. New raster and profile web services are now available and require some configuration.
    Edit ``production.ini.in`` and ``developement.ini.in`` and add
    in the ``[app:<package_name>]`` section:
         raster = ${raster|path-repr}
     For the configuration of these web services read the documentation at
     'administrator/raster'.
 
-7. Mobile application
+8. Mobile application
 
    Version 0.8 of c2cgeoportal includes a mobile application template/scaffold.
 
@@ -124,12 +229,12 @@ Version 0.8
    Now read http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html to
    know how to build and customize the mobile application.
 
-8. GeoExt popup css resource in template for debug mode was missing
+9. GeoExt popup css resource in template for debug mode was missing
    - add:
      <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/geoext/resources/css/popup.css')}" />
      in file <project>/templates/index.html
 
-9. In the CGXP print plugin config autoFit: true should be set in the "options"
+10. In the CGXP print plugin config autoFit: true should be set in the "options"
    object instead of the "outputConfig" object.
 
    Change from:
@@ -170,7 +275,7 @@ Version 0.8
             }
         },
 
-10. IE9 slider issue doesn't require a compatible meta anymore.
+11. IE9 slider issue doesn't require a compatible meta anymore.
 
     Remove the following meta from the index.html template:
 
@@ -184,7 +289,7 @@ Version 0.8
     - in the include section:
         DragTracker.js #ext.override
 
-11. Add the following line to the root section of the app.js section in jsbuild/app.cfg:
+12. Add the following line to the root section of the app.js section in jsbuild/app.cfg:
 
     <package_name>/static/lib/cgxp/dygraphs
 
@@ -192,7 +297,7 @@ Version 0.8
 
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
 
-12. The "featureGridId" parameter has been renamed to "featureProvider" in the
+13. The "featureGridId" parameter has been renamed to "featureProvider" in the
     print config.
 
 13. In case you're using the cgxp_querier plugin, you need to replace the
