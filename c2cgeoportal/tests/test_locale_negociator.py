@@ -19,8 +19,8 @@ def test_lang_is_not_available():
     request = Request.blank('/')
     request.registry = get_current_registry()
     request.registry.settings = {
-            'default_language': 'de',
-            'available_languages': 'de es'
+            'default_locale_name': 'de',
+            'available_locale_names': ['de', 'es']
             }
     request.accept_language = 'en-us,en;q=0.3,fr;q=0.7'
     lang = locale_negotiator(request)
@@ -35,8 +35,8 @@ def test_lang_is_available():
     request = Request.blank('/')
     request.registry = get_current_registry()
     request.registry.settings = {
-            'default_language': 'de',
-            'available_languages': 'de es'
+            'default_locale_name': 'de',
+            'available_locale_names': ['de', 'es']
             }
     request.accept_language = 'en-us,en;q=0.3,es;q=0.7'
     lang = locale_negotiator(request)

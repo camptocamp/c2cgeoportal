@@ -1,13 +1,10 @@
-# The default local name (used by Pyramid)
-default_locale_name: fr
-
 # The application's default language. This is the language
 # used if no language is specific by the application user.
 # This also defines the language used for the text search.
-default_language: fr
+default_locale_name: fr
 
 # The set of languages supported by the applications.
-available_languages:
+available_locale_names:
 - en
 - fr
 - de
