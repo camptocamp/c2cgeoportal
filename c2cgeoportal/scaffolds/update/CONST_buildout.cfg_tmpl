@@ -196,14 +196,16 @@ compress = True
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
+compass_cmd = compass
+sencha_cmd = sencha
 cmds =
     >>> import os
     >>> from subprocess import Popen
     >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
-    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir)
+    >>> Popen([buildout.get('mobile').get('compass_cmd'), 'compile', 'resources/sass'], cwd=src_dir).wait()
     >>> env = os.environ.copy()
     >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
-    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir, env=env)
+    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'production'], cwd=src_dir, env=env).wait()
     >>> from shutil import copy
     >>> dst_dir = os.path.join(src_dir, 'build', 'production')
     >>> src = os.path.join(src_dir, 'config.js')
