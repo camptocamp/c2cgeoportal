@@ -200,10 +200,10 @@ cmds =
     >>> import os
     >>> from subprocess import Popen
     >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
-    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir)
+    >>> Popen(['compass', 'compile', 'resources/sass'], cwd=src_dir).wait()
     >>> env = os.environ.copy()
     >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
-    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir, env=env)
+    >>> Popen(['sencha', 'app', 'build', 'production'], cwd=src_dir, env=env).wait()
     >>> from shutil import copy
     >>> dst_dir = os.path.join(src_dir, 'build', 'production')
     >>> src = os.path.join(src_dir, 'config.js')
