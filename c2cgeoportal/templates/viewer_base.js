@@ -185,7 +185,7 @@
         {
             ptype: "cgxp_print",
             legendPanelId: "legendPanel",
-            featureGridId: "featureGrid",
+            featureProvider: "featureGrid",
             outputTarget: "left-panel",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}", 
