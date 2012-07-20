@@ -118,12 +118,15 @@
 
     /**
      * Build options
+     *
+     * "logger" set to false instead of "no", to fix a known Sencha Touch bug.
+     * See http://www.sencha.com/forum/showthread.php?229399
      */
     "buildOptions": {
         "product": "touch",
         "minVersion": 3,
         "debug": false,
-        "logger": "no"
+        "logger": false
     },
 
     /**
