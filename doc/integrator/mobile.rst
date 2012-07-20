@@ -103,6 +103,19 @@ For the ``mobile`` part to work `Sencha SDK Tools
 <http://www.sencha.com/products/sdk-tools/>`_ and `Compass
 <http://compass-style.org/>`_ should be installed.
 
+.. note::
+
+    On Windows you will need to override the values of the `mobile` part's
+    `compass_cmd` and `sencha_cmd` variables as such::
+
+        [mobile]
+        compass_cmd = compass.bat
+        sencha_cmd = sencha.bat
+
+    You would add this in `buildout.cfg`, or any Buildout configuration file
+    that extends `buildout.cfg`.
+
+
 The ``sencha`` and ``compass`` commands should be available on the ``PATH``,
 and the ``SENCHA_SDK_TOOLS_*`` environment variable should be set as
 appropriate. On Camptocamp servers this should be all set for you.
