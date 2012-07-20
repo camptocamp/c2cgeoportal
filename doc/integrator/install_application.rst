@@ -148,7 +148,7 @@ apache/wsgi.conf.in
 apache/mapserver.conf.in
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Mapserver doesnt seem to work with fast-cgi on windows, so we need to use 
+#. Mapserver doesn't seem to work with fast-cgi on windows, so we need to use 
    normal cgi.
 
    Replace::
