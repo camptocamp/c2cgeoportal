@@ -120,6 +120,49 @@ If you still use SVN::
 
     svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
+Windows Specific Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some changes in the apache wsgi and mapserver configurations are required to make 
+c2cgeoportal work on Windows.
+
+apache/wsgi.conf.in
+^^^^^^^^^^^^^^^^^^^
+
+#. WSGIDaemonProcess and WSGIProcessGroup are not supported on windows.
+
+   (http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess 
+   "Note that the WSGIDaemonProcess directive and corresponding features are not 
+   available on Windows or when running Apache 1.3.")
+
+   The following lines must be commented/removed::
+
+       WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
+       ...
+       WSGIProcessGroup c2cgeoportal:${vars:instanceid}
+
+#. Example of WSGIScriptAlias::
+
+    /main/wsgi c:\path\to\project\buildout\parts\modwsgi\wsgi
+
+apache/mapserver.conf.in
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Mapserver doesnt seem to work with fast-cgi on windows, so we need to use 
+   normal cgi.
+
+   Replace::
+
+       SetHandler fcgid-script
+
+   by::
+
+       SetHandler cgi-script
+
+#. Example of ScriptAlias::
+
+    ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
+
 Buildout boostrap 
 ~~~~~~~~~~~~~~~~~
 
