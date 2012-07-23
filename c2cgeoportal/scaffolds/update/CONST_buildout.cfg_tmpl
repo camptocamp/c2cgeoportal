@@ -59,16 +59,6 @@ db = override_me
 schema = webapp
 # sqlalchemy parent project schema
 parentschema =
-# WSGI host
-wsgi_host = override_me
-# wmts tiles host
-wmts_host = override_me
-# wmts tiles url
-wmts_url = http://${vars:wmts_host}/${vars:instanceid}/tilecache
-# mapserv host
-mapserv_host = override_me
-# mapserv URL
-mapserv_url = http://${vars:mapserv_host}/${vars:instanceid}/mapserv
 # mapserver apache allows for clients (ex: Allow from camptocamp.com)
 mapserv_allow = Allow from ${vars:host}
 # mapserver connexion string
@@ -89,12 +79,8 @@ mapfile_data_subselect = SELECT ST_Collect(ra.area) FROM main.restrictionarea AS
 mapfile_data_noarea_subselect = SELECT rra.role_id FROM ${vars:mapserver_join_tables} WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name =
 # Uncomment to define it if you want to use an external tilecache
 tilecache_url =
-# print host
-print_host = override_me
 # print path
 print_path = /print-c2cgeoportal-${vars:instanceid}/pdf/
-# print URL
-print_url = http://${vars:print_host}:8080${vars:print_path}
 # port for the waitress web server
 waitress_port = 5000
 

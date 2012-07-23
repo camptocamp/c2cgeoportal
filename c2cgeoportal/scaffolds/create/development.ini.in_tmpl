@@ -1,6 +1,5 @@
 [app:app]
 use = egg:{{package}}
-project = {{package}}
 reload_templates = true
 debug_authorization = false
 debug_notfound = false
@@ -8,17 +7,16 @@ debug_routematch = false
 debug_templates = true
 mako.directories = {{package}}:templates
     c2cgeoportal:templates
-authtkt_secret = ${authtkt_secret}
-sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
-tilecache.cfg = %(here)s/tilecache/tilecache.cfg
 app.cfg = %(here)s/config.yaml
-mapserv.url = ${mapserv_url}
-print.url = ${print_url}
-parentschema = ${vars:parentschema}
-schema = ${vars:schema}
-jsbuild_cfg = ${jsbuild:config}
-jsbuild_root_dir = ${buildout:directory}
-tilecache_url = ${tilecache_url}
+# Used to create a secured cookies
+authtkt_secret: ${authtkt_secret}
+# Database informations
+sqlalchemy.url: postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
+schema: ${vars:schema}
+parentschema: ${vars:parent_schema}
+# For debug mode
+jsbuild_cfg: ${jsbuild:config}
+jsbuild_root_dir: ${buildout:directory}
 
 [filter:fanstatic]
 use = egg:fanstatic#fanstatic

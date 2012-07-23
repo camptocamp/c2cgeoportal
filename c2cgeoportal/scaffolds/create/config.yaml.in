@@ -1,3 +1,6 @@
+# The project name
+project: {{package}}
+
 # The application's default language. This is the language
 # used if no language is specific by the application user.
 # This also defines the language used for the text search.
@@ -31,7 +34,7 @@ anonymous_functionalities:
 # Functionalities that are accessible to authenticated
 # users with no associated functionalities in the
 # database.
-registered_functionalities: {}
+registered_functionalities:
 
 # Single Functionalities that should be available
 # on the web client.
@@ -40,16 +43,32 @@ webclient_string_functionalities:
 
 # Same than before but Functionalities of the same
 # name will be arranged as an array.
-webclient_array_functionalities: []
+webclient_array_functionalities:
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
 # architecture, with the values:
-# external_themes_url: ${parent_baseurl}/wsgi/themes
-# external_mapserv_url: ${parent_baseurl}/mapserv
+# external_themes_url: http://${vars:host}/${vars:parentinstanceid}/wsgi/themes
+# external_mapserv_url: http://${vars:host}/${vars:parentinstanceid}/mapserv
 external_themes_url:
 external_mapserv_url:
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
-raster: {}
+raster:
+
+# For tilecache controller
+tilecache.cfg: ${buildout:directory}/tilecache/tilecache.cfg
+
+# For mapserver proxy
+mapserv.url: http://${vars:host}/${vars:instanceid}/mapserv
+
+# For print proxy
+# In child application should be:
+# print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parentinstanceid}/pdf/
+print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+
+# For base layers
+# In child application should be:
+# tilecache_url: http://${vars:host}/${vars:parentinstanceid}
+tilecache_url: 

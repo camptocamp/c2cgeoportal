@@ -23,7 +23,7 @@ yorigin = top
 #metadata_image_postproc = optipng -q -zc9 -zm9 -zs3 -f0 %filename
 
 [metadata]
-wmts_gettile = ${wmts_url}
+wmts_gettile = http://${vars:host}/${vars:instanceid}/tilecache
 
 [plan]
 layers = plan
