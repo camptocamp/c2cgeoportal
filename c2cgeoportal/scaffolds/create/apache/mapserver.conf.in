@@ -7,6 +7,7 @@ ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/mapserv
    Allow from ${vars:mapserv_host}
    ${vars:mapserv_allow}
 
+   # SetHandler must be set to "cgi-script" when running the project on windows
    SetHandler fcgid-script
    # MapServer run in FastCGI mode by default.
    # If mod_fcgid is not available, replace 'fcgid-script' by 'cgi-script' to
