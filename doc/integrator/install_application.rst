@@ -28,18 +28,11 @@ To create the database you can use::
 
 with ``<db_name>`` replaced by the actual database name.
 
-To create the application-specific schema use::
-
-    $ sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-
-with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
-and schema name, respectively.
-
 Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 You probably want to create a specific database user for the application. This
-can be done with this command, by default ``<db_user>`` is ``www-data``, 
+can be done with this command, by default ``<db_user>`` is ``www-data``,
 already exists on camptocamp servers::
 
     $ sudo -u postgres createuser -P <db_user>
@@ -49,7 +42,17 @@ Give the rights to the user::
     $ sudo -u postgres psql <db_name>
     GRANT ALL ON SCHEMA <schema_name> TO "<db_user>";
     GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
-    \q 
+    \q
+
+Create the schema
+~~~~~~~~~~~~~~~~~
+
+To create the application-specific schema use::
+
+    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
+
+with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
+and schema name, respectively.
 
 Install the application
 -----------------------
@@ -71,7 +74,7 @@ Additional notes for Windows users:
 
     For Git look at GitHub's `Set Up Git page
     <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
-    keys, so you only need to follow the firt section of this page.
+    keys, so you only need to follow the first section of this page.
 
     Once Git is installed use Git Bash for all the shell commands provided in
     this documentation. You'll need to make sure the Turtoise, Python, and Java
@@ -160,7 +163,7 @@ apache/mapserver.conf.in
 
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
-Buildout boostrap 
+Buildout boostrap
 ~~~~~~~~~~~~~~~~~
 
 The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
@@ -178,7 +181,7 @@ This step is done only once for installation/instance of the application.
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If not already existing, create a ``buildout_<user>.cfg`` file, 
+If not already existing, create a ``buildout_<user>.cfg`` file,
 that will contain your application special
 configuration::
 
@@ -195,20 +198,22 @@ configuration::
     [cssbuild]
     compress = false
 
-The ``<instanceid>`` should be unique on the server, the username is a good 
+The ``<instanceid>`` should be unique on the server, the username is a good
 choice or something like ``<username>-<sub-project>`` in case of parent/children project.
 
 Add it to Git::
 
-    $ git add buildout_<user>.cfg; git commit -m "add user buildout"
+    git add buildout_<user>.cfg
+    git commit -m "add user buildout"
 
 Or to SVN::
 
-    $ svn add buildout_<user>.cfg; svn commit -m "add user buildout"
+    svn add buildout_<user>.cfg
+    svn commit -m "add user buildout"
 
 Then you can build and install the application with the command::
 
-    $ ./buildout/bin/buildout -c buildout_<user>.cfg
+    ./buildout/bin/buildout -c buildout_<user>.cfg
 
 This previous command will do many things like:
 
@@ -224,8 +229,8 @@ Once the application is built and installed, you now have to create and
 populate the application tables, and directly set the version (details later)::
 
     $ ./buildout/bin/create_db --iniconfig production.ini --populate
-    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control \
-    `./buildout/bin/manage_db -c production.ini -n <package_name> version`
+    $ ./buildout/bin/manage_db -n <package_name> version_control \
+    `./buildout/bin/manage_db -n <package_name> version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
@@ -236,7 +241,7 @@ After having created the application tables with the previous command,
 the current database version correspond to the latest version available in
 the repository, which can be obtained with::
 
-    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version
+    $ ./buildout/bin/manage_db -n <package_name> version
     <current_version>
     $
 
