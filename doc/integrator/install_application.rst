@@ -3,6 +3,58 @@
 Install an existing application
 ===============================
 
+On this page we explain all the procedure to build an application from
+only the code.
+
+For example If you want to use an existing database you should ignore
+all the commands concerning the database.
+
+This guide considers that:
+ - We use a server manages by Camptocamp mean:
+    - all dependencies describe on system dependencies are installed
+    - Postgres have a template_posgis
+    - Apache use the user 'www-data'
+ - We use Git as revision control
+ - We use a version of ``c2cgeoportal`` >= 0.7
+
+For the others system there is some notes to give some help.
+
+System requirements
+-------------------
+
+To install a c2cgeoportal application you need to have the following installed
+on your system:
+
+* Git (or whatever revision control (for example Subversion)
+    is used for the application)
+* Python 2.7 or 2.6 (2.5 or 3.x are not supported)
+* Oracle Java SE Development Kit 6 or 7
+* Tomcat
+* Apache
+* PostgreSQL 9.x/PostGIS 1.6 (PostgreSQL 8.x should work but some commend used
+    on this guide don't work)
+* MapServer 6.0.2 and upper (MapServer 6.0.0 and 6.0.1 have some issue in WFS)
+
+.. note::
+    Additional notes for Windows users:
+
+        For Subversion install `Turtoise SVN <http://turtoisesvn.net>`_.
+
+        For Git look at GitHub's `Set Up Git page
+        <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
+        keys, so you only need to follow the firt section of this page.
+
+        Once Git is installed use Git Bash for all the shell commands provided in
+        this documentation. You'll need to make sure the Turtoise, Python, and Java
+        folders are on the ``PATH``. For example if you have Python installed under
+        ``C:\Python26`` you can use ``export PATH=$PATH:/c/Python26`` to add Python
+        to your ``PATH``.
+
+        You need to install the ``psycopg2`` Python package in the main Python
+        environment (e.g. ``C:\Python26``). Use an installer (``.exe``) from the
+        `Stickpeople Project
+        <http://www.stickpeople.com/projects/python/win-psycopg/>`_.
+
 Set up the database
 -------------------
 
@@ -28,26 +80,45 @@ To create the database you can use::
 
 with ``<db_name>`` replaced by the actual database name.
 
+.. note::
+
+   if you don't have the template_postgis you can use::
+
+       sudo -u postgres createdb -E UTF8 -T template0 <db_name>
+       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
+       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+
+   Note that path of posgis scripts and the template name can deffer on your host.
+
 Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You probably want to create a specific database user for the application. This
-can be done with this command, by default ``<db_user>`` is ``www-data``,
-already exists on camptocamp servers::
+We use a specific user for the application, ``www-data`` by default.
 
-    $ sudo -u postgres createuser -P <db_user>
+.. note::
+
+   It the user don't already exists in your database create it before::
+
+        sudo -u postgres createuser -P <db_user>
 
 Give the rights to the user::
 
     $ sudo -u postgres psql <db_name>
-    GRANT ALL ON SCHEMA <schema_name> TO "<db_user>";
-    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "<db_user>";
+    GRANT ALL ON SCHEMA <schema_name> TO "www-data";
+    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "www-data";
     \q
+
+.. note::
+
+   If you don't use the www-data user for Apache replace it by the right user.
+
+.. _integrator_install_application_create_schema:
 
 Create the schema
 ~~~~~~~~~~~~~~~~~
 
-To create the application-specific schema use::
+Each parent or children needs an application-specific schema,
+than to create it use::
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
 
@@ -56,36 +127,6 @@ and schema name, respectively.
 
 Install the application
 -----------------------
-
-System requirements
-~~~~~~~~~~~~~~~~~~~
-
-To install a c2cgeoportal application you need to have the following installed
-on your system:
-
-* Subversion (or whatever VCS is used for the application)
-* Git
-* Python 2.7 or 2.6 (2.5 is not supported)
-* Oracle Java SE Development Kit 6 or 7
-
-Additional notes for Windows users:
-
-    For Subversion install `Turtoise SVN <http://turtoisesvn.net>`_.
-
-    For Git look at GitHub's `Set Up Git page
-    <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
-    keys, so you only need to follow the first section of this page.
-
-    Once Git is installed use Git Bash for all the shell commands provided in
-    this documentation. You'll need to make sure the Turtoise, Python, and Java
-    folders are on the ``PATH``. For example if you have Python installed under
-    ``C:\Python26`` you can use ``export PATH=$PATH:/c/Python26`` to add Python
-    to your ``PATH``.
-
-    You need to install the ``psycopg2`` Python package in the main Python
-    environment (e.g. ``C:\Python26``). Use an installer (``.exe``) from the
-    `Stickpeople Project
-    <http://www.stickpeople.com/projects/python/win-psycopg/>`_.
 
 Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,10 +219,13 @@ of the application::
 
 This step is done only once for installation/instance of the application.
 
+.. _integrator_install_application_install_application:
+
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If not already existing, create a ``buildout_<user>.cfg`` file,
+If not already existing, create a ``buildout_<user>.cfg`` file
+(where user is for example your username),
 that will contain your application special
 configuration::
 
@@ -199,17 +243,18 @@ configuration::
     compress = false
 
 The ``<instanceid>`` should be unique on the server, the username is a good
-choice or something like ``<username>-<sub-project>`` in case of parent/children project.
+choice or something like ``<user>-<sub-project>`` in case of parent/children project.
 
 Add it to Git::
 
     git add buildout_<user>.cfg
     git commit -m "add user buildout"
 
-Or to SVN::
+.. note::
+    for SVN users::
 
-    svn add buildout_<user>.cfg
-    svn commit -m "add user buildout"
+        svn add buildout_<user>.cfg
+        svn commit -m "add user buildout"
 
 Then you can build and install the application with the command::
 
@@ -267,9 +312,14 @@ Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just
 have to include the application apache configuration available in the
 ``apache`` directory. On servers managed by Camptocamp, add a ``.conf`` file in
-``/var/www[/vhost]/<projectname>/conf/`` with the following content::
+``/var/www[/vhost]/<vhostname>/conf/`` (``[/vhost]`` mean that the vhost folder
+is optional, ``<vhostname>`` is a folder that should already exists (created by
+the system administrator), that corresponds to the virtual host)
+with the following content::
 
-    Include /<path_to_your_project>/apache/*.conf
+    Include /<project_path>/apache/*.conf
+
+where ``<project_path>`` is the path to your project.
 
 Reload apache configuration and you're done::
 
@@ -277,3 +327,6 @@ Reload apache configuration and you're done::
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>/wsgi``.
+
+Where the ``<hostname>`` is directly linked to the virtual host,
+and the ``<instanceid>`` is the value you provide before.
