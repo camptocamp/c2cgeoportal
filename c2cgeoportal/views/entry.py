@@ -425,13 +425,15 @@ class Entry(object):
         d['tilecache_url'] = self.settings.get("tilecache_url")
 
         functionality = dict()
-        if 'webclient_string_functionalities' in self.settings:
+        if 'webclient_string_functionalities' in self.settings and \
+                self.settings.get('webclient_string_functionalities'):
             for func in self.settings.get('webclient_string_functionalities'):
                 functionality[func] = get_functionality(func, self.settings,
                                                         self.request)
         d['functionality'] = json.dumps(functionality)
         functionalities = dict()
-        if 'webclient_array_functionalities' in self.settings:
+        if 'webclient_array_functionalities' in self.settings and \
+                self.settings.get("webclient_array_functionalities"):
             for func in self.settings.get("webclient_array_functionalities"):
                 functionalities[func] = get_functionalities(func, self.settings,
                                                             self.request)
