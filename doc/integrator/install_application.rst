@@ -55,6 +55,13 @@ on your system:
         `Stickpeople Project
         <http://www.stickpeople.com/projects/python/win-psycopg/>`_.
 
+        There also some packages that cannot be install through easy_install (you
+        need to install them in the main Python environment):
+         * `PIL <http://www.pythonware.com/products/pil/>`_
+         * `Python for Windows extensions <http://sourceforge.net/projects/pywin32/>`_
+         * `Shapely <http://pypi.python.org/pypi/Shapely/1.2.13#downloads>`_
+         * `Babel <http://pypi.python.org/pypi/Babel/>`_ (not sure about this one)
+
 Set up the database
 -------------------
 
