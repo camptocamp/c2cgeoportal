@@ -12,7 +12,7 @@ Version 0.8
     - Rollback the CONST_buildout.cfg:
         git checkout CONST_buildout.cfg
 
-    - If you are a child make sure that you have a variable 
+    - If you are a child make sure that you have a variable
         ``parent_instanceid`` defined in the ``[vars]`` section.
 
     - Create a file named 'config.yaml.in.in' that contains, for a parent:
@@ -67,7 +67,7 @@ external_mapserv_url:
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
-raster: ${raster}
+raster:
 
 # For tilecache controller
 tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
@@ -80,7 +80,7 @@ print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:instanceid}/pdf/
 
 # For base layers
 # Nothing => gets the URL using the pyramid routes
-tilecache_url: 
+tilecache_url:
 # ------------------------------------------------------------------------
 
         for a child:
@@ -134,7 +134,7 @@ external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
-raster: ${raster}
+raster:
 
 # For tilecache controller
 tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
@@ -143,7 +143,7 @@ tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
 mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
 
 # For print proxy
-# This value mean that we use the parent print server 
+# This value mean that we use the parent print server
 print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
 
 # For base layers
@@ -256,19 +256,11 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
    If your application is accessed in HTTPS but is behind some proxies that remove the SSL encryption,
    you can make sure that all generated URLs (CSS and Javascript files, images, MapServer requests, etc.)
    use the HTTPS scheme by specifing to c2cgeoportal an HTTP header to test for some value. For instance:
-
-   - In development.ini.in / production.ini.in:
-       https_flag_header = ${https_flag_header}
-       https_flag_value = ${https_flag_value}
-
-   - In buildout.cfg:
+   - In config.yaml.in:
        https_flag_header = X_HTTPS
        https_flag_value = on
 
 7. New raster and profile web services are now available and require some configuration.
-   Edit ``production.ini.in`` and ``developement.ini.in`` and add
-   in the ``[app:<package_name>]`` section:
-        raster = ${raster|path-repr}
     For the configuration of these web services read the documentation at
     'administrator/raster'.
 
@@ -387,13 +379,13 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
 13. The "featureGridId" parameter has been renamed to "featureProvider" in the
     print config.
 
-13. In case you're using the cgxp_querier plugin, you need to replace the
+14. In case you're using the cgxp_querier plugin, you need to replace the
     "featureType" config option by "featureTypes" which is now an array:
 
     - featureType: 'the_layer',
     + featureTypes: ['the_layer'],
 
-14. Update the print. A new file is required. To get it do the following:
+15. Update the print. A new file is required. To get it do the following:
 
     ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/<project_name>
     cp /tmp/<project_name>/print/WEB-INF/classes/spring-application-context.xml \
