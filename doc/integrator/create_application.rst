@@ -10,8 +10,8 @@ package. So to be able to create a c2cgeoportal application the
 
 This guide considers that:
  - We use a server manages by Camptocamp, meaning:
-    - all dependencies described in the 
-      :ref:`system requirements <integrator_install_application_system_requirement>` 
+    - all dependencies described in the
+      :ref:`system requirements <integrator_install_application_system_requirement>`
       section are installed
     - Postgres has a gis template 'template_posgis' and a user 'www-data'
     - Apache use the user 'www-data'
@@ -130,15 +130,17 @@ application's source repository::
     rm -rf *.egg-info
 
 If this application is not part of a parent/child architecture, or is
-a ``parent`` application, you can just remove the ``buildout_child.cfg`` file::
+a ``parent`` application, you can just remove the
+``buildout_child.cfg`` and ``config_child.yaml.in`` files::
 
-    rm buildout_child.cfg
+    rm buildout_child.cfg config_child.yaml.in
 
 If this application is a ``child`` application make ``buildout_child.cfg`` the
-main Buildout configuration file::
+main Buildout configuration file, and ``config_child.yaml.in`` the config file::
 
-    rm buildout.cfg
+    rm buildout.cfg config.yaml.in
     mv buildout_child.cfg buildout.cfg
+    mv config_child.yaml.in config.yaml.in
 
 If this application is a ``child`` in the file config.yaml.in replace::
 

@@ -35,8 +35,6 @@ bin-directory = buildout/bin
 [vars]
 # project instance id
 instanceid = override_me
-# parent project instance id, overide as needed
-parent_instanceid = override_me
 # the Unix user under which the modwsgi daemon processes are executed,
 # can be overriden in development-specific buildout config files
 modwsgi_user = www-data
