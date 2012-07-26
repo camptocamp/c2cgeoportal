@@ -97,7 +97,7 @@ MAP
         DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) AND ${mapserver_join_where} 'layer_name') AS foo USING UNIQUE gid USING srid=-1"
         # Example data for secured layer by role id
         #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE %role_id% IN (${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid=-1"
-        # Example data for public layer
+        # Example data for secured layer by role (without any area)
         #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid=-1"
         METADATA
             "wms_title" "layer_name" # For WMS
