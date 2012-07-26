@@ -12,7 +12,10 @@ Version 0.8
     - Rollback the CONST_buildout.cfg:
         git checkout CONST_buildout.cfg
 
-    - Create a file named 'config.yaml.in.in' that contains:
+    - If you are a child make sure that you have a variable 
+        ``parent_instanceid`` defined in the ``[vars]`` section.
+
+    - Create a file named 'config.yaml.in.in' that contains, for a parent:
 
 # ------------------------------------------------------------------------
 # The project name
@@ -58,9 +61,7 @@ webclient_array_functionalities: [${webclient_array_functionalities}]
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
-# architecture, with the values:
-# external_themes_url: $${vars:host}/$${vars:parent_instanceid}/wsgi/themes
-# external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
+# architecture.
 external_themes_url:
 external_mapserv_url:
 
@@ -75,22 +76,87 @@ tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
 mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
 
 # For print proxy
-# In child application, to use the parent print server it should be:
-# print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
 print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:instanceid}/pdf/
 
 # For base layers
-# In child application, to use the parent tiles it should be:
-# tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
+# Nothing => gets the URL using the pyramid routes
 tilecache_url: 
+# ------------------------------------------------------------------------
+
+        for a child:
+# ------------------------------------------------------------------------
+# The project name
+project: {{package}}
+
+# The application's default language. This is the language
+# used if no language is specific by the application user.
+# This also defines the language used for the text search.
+default_locale_name: ${default_language}
+
+# The set of languages supported by the applications.
+TODO fix the array (comma is missing)
+available_locale_names: [${available_languages}]
+
+# Default values for the admin interface's maps.
+formalchemy_default_lon: ${formalchemy_default_lon}
+formalchemy_default_lat: ${formalchemy_default_lat}
+formalchemy_default_zoom: ${formalchemy_default_zoom}
+
+# The list of functionalities that can be configured
+# through the admin interface.
+TODO fix the array (comma is missing)
+formalchemy_available_functionalities: [${formalchemy_available_functionalities}]
+
+# Functionalities that are accessible to anonymous
+# users.
+anonymous_functionalities: ${anonymous_functionalities}
+
+# Functionalities that are accessible to authenticated
+# users with no associated functionalities in the
+# database.
+registered_functionalities: ${registered_functionalities}
+
+# Single Functionalities that should be available
+# on the web client.
+TODO fix the array (comma is missing)
+webclient_string_functionalities: [${webclient_string_functionalities}]
+
+# Same than before but Functionalities of the same
+# name will be arranged as an array.
+TODO fix the array (comma is missing)
+webclient_array_functionalities: [${webclient_array_functionalities}]
+
+# Define URLs to the parent application. Only useful is
+# this application is a child application in a parent/child
+# architecture:
+external_themes_url: $${vars:host}/$${vars:parent_instanceid}/wsgi/themes
+external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
+
+# The "raster web services" configuration. See the "raster"
+# chapter in the integrator documentation.
+raster: ${raster}
+
+# For tilecache controller
+tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
+
+# For mapserver proxy
+mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
+
+# For print proxy
+# This value mean that we use the parent print server 
+print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
+
+# For base layers
+# This value mean that we use the parent tiles
+tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
 # ------------------------------------------------------------------------
 
     - Than interpretate it by running:
         ./buildout/bin/buildout.cfg install template
 
     - In this file there are some lines that contains « TODO fix the array
-    (comma is missing) » that indicate that there is an array who is
-    not well formated. Than fix the array and remove those lines.
+        (comma is missing) » that indicate that there is an array who is
+        not well formated. Than fix the array and remove those lines.
 
     - Remove the source file:
         rm config.json.in.in
