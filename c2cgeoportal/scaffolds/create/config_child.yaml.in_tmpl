@@ -63,7 +63,7 @@ mapserv.url: http://${vars:host}/${vars:instanceid}/mapserv
 
 # For print proxy
 # This value mean that we use the parent print server 
-print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
 
 # For base layers
 # This value mean that we use the parent tiles

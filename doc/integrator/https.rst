@@ -18,12 +18,7 @@ c2cgeoportal receives.
 
 Example of configuration:
 
-1. Edit ``development.ini.in`` and ``production.ini.in``::
-
-        https_flag_header = ${https_flag_header}
-        https_flag_value = ${https_flag_value}
-
-2. Edit ``buildout.cfg`` (in this example we use the ``X_HTTPS`` flag)::
+Edit ``config.yaml.in`` (in this example we use the ``X_HTTPS`` flag)::
 
         https_flag_header = X_HTTPS
         https_flag_value = on
