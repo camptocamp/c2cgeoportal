@@ -51,16 +51,11 @@ class DecimalJSON:
 
 
 def locale_negotiator(request):
-    """ Our locale negotiator. Returns a locale name or None.
-    """
     lang = request.params.get('lang')
     if lang is None:
-        lang = request.registry.settings.get("default_locale_name")
-        for l in list(request.accept_language):
-            if l in request.registry.settings. \
-                    get("available_locale_names"):
-                lang = l
-                break
+        # if None mean use default local
+        return request.accept_language.best_match(
+                request.registry.settings.get("available_locale_names"))
     return lang
 
 
