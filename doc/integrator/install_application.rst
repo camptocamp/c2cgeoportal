@@ -103,6 +103,18 @@ with ``<db_name>`` replaced by the actual database name.
    Note that the path of the postgis scripts and the template name can
    differ on your host.
 
+.. _integrator_install_application_create_schema:
+Create the schema
+~~~~~~~~~~~~~~~~~
+
+Each parent or children need an application-specific schema,
+then to create it use::
+
+    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
+
+with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
+and schema name, respectively.
+
 Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -125,18 +137,6 @@ Give the rights to the user::
 
    If you don't use the www-data user for Apache replace it by the right user.
 
-.. _integrator_install_application_create_schema:
-
-Create the schema
-~~~~~~~~~~~~~~~~~
-
-Each parent or children need an application-specific schema,
-then to create it use::
-
-    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-
-with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
-and schema name, respectively.
 
 Install the application
 -----------------------
