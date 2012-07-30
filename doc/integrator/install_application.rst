@@ -175,9 +175,11 @@ OpenLayers and GeoExt.
     that if the application has been cloned in a shared directory like
     ``/var/www/<vhost>/private``.
 
-If you still use SVN::
+.. note::
 
-    svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
+    If you still use SVN::
+
+        svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
