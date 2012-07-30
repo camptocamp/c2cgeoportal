@@ -7,8 +7,8 @@
 
 options = {}
 options['zoom'] = 4
-options['map_width'] = 512
-options['map_height'] = 256
+options['map_width'] = 700
+options['map_height'] = 400
 options['openlayers_lib'] = 'http://openlayers.org/dev/OpenLayers.js'
 from pyramid.threadlocal import get_current_request
 options['image_select_feature_on'] = get_current_request().static_url('c2cgeoportal:static/adminapp/images/select_feature_on.png')
@@ -32,6 +32,7 @@ options['image_remove_feature_off'] = get_current_request().static_url('c2cgeopo
 
 .olControlAttribution {
     bottom: 2px;
+    right: 10px;
 }
 
 .olControlEditingToolbar .olControlModifyFeatureItemActive { 

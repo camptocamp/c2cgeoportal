@@ -259,6 +259,12 @@ geoformalchemy.init_map = function (
     }
     
     map = new OpenLayers.Map('map_' + field_name);
+
+    $('#map_' + field_name).resizable({
+        stop: function(event, ui) {
+            map.updateSize();
+        }
+    });
     
     var toolbar = new OpenLayers.Control.Panel({
         displayClass: 'olControlEditingToolbar',
