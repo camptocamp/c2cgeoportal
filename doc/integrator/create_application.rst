@@ -119,7 +119,7 @@ Following this rule is important for easier updates.
 
 .. note::
 
-   If the project provide an additional template it can be apply now::
+   If the project provides an additional template it can be applied now::
 
         ./buildout/bin/pcreate --overwrite -s <project_template> ../$PROJECT
 
