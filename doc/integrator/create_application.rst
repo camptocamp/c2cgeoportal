@@ -175,12 +175,12 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth
-            CONST_CHANGELOG.txt CONST_TIPS.txt.in
-            CONST_buildout.cfg buildout.cfg buildout/
-            bootstrap.py setup.cfg setup.py
-            development.ini.in production.ini.in
-            jsbuild/ print/ apache/
+    git add $PROJECT/ .gitignore .httpauth \
+            CONST_CHANGELOG.txt CONST_TIPS.txt.in \
+            CONST_buildout.cfg buildout.cfg buildout/ \
+            bootstrap.py setup.cfg setup.py \
+            development.ini.in production.ini.in \
+            jsbuild/ print/ apache/ \
             mapserver/ tilecache/ deploy/
     git remote add origin git@git.camptocamp.com:/srv/git/$PROJECT
 
