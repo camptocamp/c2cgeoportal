@@ -217,13 +217,13 @@ apache/mapserver.conf.in
 
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
-Buildout boostrap
+Buildout bootstrap
 ~~~~~~~~~~~~~~~~~
 
 The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
 build, install, and deploy c2cgeoportal applications.
 
-Prior to using Buildout, its ``boostrap.py`` script should be run at the root
+Prior to using Buildout, its ``bootstrap.py`` script should be run at the root
 of the application::
 
   $ python bootstrap.py --version 1.5.2 --distribute --download-base \

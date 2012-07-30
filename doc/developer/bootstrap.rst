@@ -1,6 +1,6 @@
 .. _developper_bootstrap:
 
-Boostrap c2cgeoportal
+Bootstrap c2cgeoportal
 =====================
 
 This chapter explain how is it possible to create a new application
@@ -19,7 +19,7 @@ Clone c2cgeoportal::
     cd c2cgeoportal
     git submodule update --init
 
-Boostrap Buildout::
+Bootstrap Buildout::
 
     python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
