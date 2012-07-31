@@ -63,3 +63,53 @@ print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
 # For base layers
 # Nothing => gets the URL using the pyramid routes
 tilecache_url:
+
+# Checker configuration
+checker:
+    print_template: 1 A4 portrait
+    fulltextsearch: text to search
+
+# Check collecter configuration
+check_collecter:
+    check_type:
+        all:
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_edit
+              display: Edit page
+            - name: checker_edit_js
+              display: Edit script
+            - name: checker_apiloader
+              display: API loader
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_pdf
+              display: Print PDF
+            - name: checker_fts
+              display: FullTextSearch
+            - name: checker_wmscapabilities
+              display: WMS capabilities
+            - name: checker_wfscapabilities
+              display: WFS capabilities
+        main:
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_pdf
+              display: Print PDF
+            - name: checker_apiloader
+              display: API loader
+        default: # for children
+            - name: checker_viewer
+              display: Viewer script
+    hosts: 
+        - display: Parent
+          url: http://${host}/main/wsgi
+          type: main
+#        - display: Child:
+#          url: http://${host}/child/wsgi

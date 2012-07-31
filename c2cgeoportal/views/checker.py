@@ -13,25 +13,13 @@ class Checker(object):
 
     def __init__(self, request):
         self.request = request
+        self.settings = self.request.registry.settings.checker
 
     def update_status_int(self, code):
         self.status_int = max(self.status_int, int(code))
 
     def make_response(self, msg):
         return Response(body=msg, status_int=self.status_int)
-
-    # Method called by the sysadmins to make sure that our app work well.
-    # Then this name must not change.
-    @view_config(route_name='checker_summary')
-    def summary(self):
-#               "<p>API loader: %s</p>\n" % (self._apiloader()) + \
-        body = "<p>Main page: %s</p>\n" % (self._main()) + \
-               "<p>Print capabilities: %s</p>\n" % (self._printcapabilities()) + \
-               "<p>Print PDF: %s</p>\n" % (self._pdf()) + \
-               "<p>FullTextSearch: %s</p>\n" % (self._fts()) + \
-               "<p>WMS capabilities: %s</p>\n" % (self._wmscapabilities()) + \
-               "<p>WFS capabilities: %s</p>" % (self._wfscapabilities())
-        return Response(body=body, status_int=self.status_int)
 
     def testurl(self, url):
         h = Http()
@@ -45,27 +33,33 @@ class Checker(object):
 
     @view_config(route_name='checker_main')
     def main(self):
-        return self.make_response(self._main())
-
-    def _main(self):
         _url = self.request.route_url('home')
-        return self.testurl(_url)
+        return self.make_response(self.testurl(_url))
+
+    @view_config(route_name='checker_viewer')
+    def viewer(self):
+        _url = self.request.route_url('viewer')
+        return self.make_response(self.testurl(_url))
+
+    @view_config(route_name='checker_edit')
+    def edit(self):
+        _url = self.request.route_url('edit')
+        return self.make_response(self.testurl(_url))
+
+    @view_config(route_name='checker_edit_js')
+    def edit_js(self):
+        _url = self.request.route_url('edit.js')
+        return self.make_response(self.testurl(_url))
 
     @view_config(route_name='checker_apiloader')
     def apiloader(self):
-        return self.make_response(self._apiloader())
-
-    def _apiloader(self):
         _url = self.request.route_url('apiloader')
-        return self.testurl(_url)
+        return self.make_response(self.testurl(_url))
 
     @view_config(route_name='checker_printcapabilities')
     def printcapabilities(self):
-        return self.make_response(self._printcapabilities())
-
-    def _printcapabilities(self):
         _url = self.request.route_url('printproxy_info')
-        return self.testurl(_url)
+        return self.make_response(self.testurl(_url))
 
     @view_config(route_name='checker_pdf')
     def pdf(self):
@@ -79,7 +73,7 @@ class Checker(object):
             'srs': "EPSG:%i" % self.request.registry.settings.srid,
             'dpi': 254,
             'layers': [],
-            'layout': self.request.registry.settings.check_print_template,
+            'layout': self.settings['print_template'],
             'pages': [{
                 'center': [663000, 245000],
                 'col0': '',
@@ -119,10 +113,9 @@ class Checker(object):
         return self.make_response(self._fts())
 
     def _fts(self):
-
         _url = '%s?query=%s&limit=1' % (
             self.request.route_url('fulltextsearch'),
-            self.request.registry.settings.check_FullTextSearch
+            self.settings['fulltextsearch']
         )
         h = Http()
         resp, content = h.request(_url)
@@ -141,18 +134,12 @@ class Checker(object):
 
     @view_config(route_name='checker_wmscapabilities')
     def wmscapabilities(self):
-        return self.make_response(self._wmscapabilities())
-
-    def _wmscapabilities(self):
         _url = self.request.route_url('mapserverproxy')
         _url += "?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
-        return self.testurl(_url)
+        return self.make_response(self.testurl(_url))
 
     @view_config(route_name='checker_wfscapabilities')
     def wfscapabilities(self):
-        return self.make_response(self._wfscapabilities())
-
-    def _wfscapabilities(self):
         _url = self.request.route_url('mapserverproxy')
         _url += "?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities"
-        return self.testurl(_url)
+        return self.make_response(self.testurl(_url))

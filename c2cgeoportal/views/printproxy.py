@@ -50,7 +50,7 @@ class Printproxy(object):
             capabilities = json.loads(content)
         except JSONDecodeError:
             # log and raise
-            log.error("Unable to parce capabilities.")
+            log.error("Unable to parse capabilities.")
             log.info(content)
             return content
 

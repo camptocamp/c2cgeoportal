@@ -16,8 +16,6 @@ def main(global_config, **settings):
             authentication_policy=authentication_policy)
 
     config.add_settings({'srid': {{srid}}})
-    config.add_settings({'check_print_template': '1 A4 portrait'})
-    config.add_settings({'check_FullTextSearch': 'te'})
 
     config.include('c2cgeoportal')
 

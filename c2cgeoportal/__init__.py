@@ -198,14 +198,18 @@ def includeme(config):
     config.add_route('permalinktheme', '/theme/*themes')
 
     # checker routes
-    config.add_route('checker_summary', '/checker_summary')
     config.add_route('checker_main', '/checker_main')
+    config.add_route('checker_viewer', '/checker_viewer')
+    config.add_route('checker_edit', '/checker_edit')
+    config.add_route('checker_edit_js', '/checker_edit_js')
     config.add_route('checker_apiloader', '/checker_apiloader')
     config.add_route('checker_printcapabilities', '/checker_printcapabilities')
     config.add_route('checker_pdf', '/checker_pdf')
     config.add_route('checker_fts', '/checker_fts')
     config.add_route('checker_wmscapabilities', '/checker_wmscapabilities')
     config.add_route('checker_wfscapabilities', '/checker_wfscapabilities')
+    # collecter
+    config.add_route('check_collecter', '/check_collecter')
 
     # print proxy routes
     config.add_route('printproxy', '/printproxy')

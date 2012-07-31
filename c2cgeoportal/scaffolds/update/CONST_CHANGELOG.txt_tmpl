@@ -434,6 +434,12 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     {{package}}/static/mobile/build/
     {{package}}/static/mobile/openlayers-mobile.js
 
+21. Improve the checker an add a check collector, see integator/check in the
+    documentation to configure them.
+    Something like this can be removed in the <project>/__init__.py
+    config.add_settings({'check_print_template': '1 A4 portrait'})
+    config.add_settings({'check_FullTextSearch': 'te'})
+
 
 Version 0.7
 ===========

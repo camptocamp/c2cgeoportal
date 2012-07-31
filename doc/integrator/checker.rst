@@ -1,0 +1,110 @@
+.. _integrator_checker:
+
+Automate check
+==============
+
+c2cgeoportal applications include web services for automated check 
+his functionalities.
+
+For that we have two service a checker and a check_collecter.
+
+Those (especially the collector) services are build to use with a monitoring
+system like nagios to check that the application is alive.
+
+The return code are::
+  * 200-299 => OK
+  * 400-499 => Warning
+  * 500-599 => Error
+
+Checker
+-------
+
+Available services::
+
+  * ``checker_summary``: Make a sumarry of all the check.
+  * ``checker_main``: Check the main page.
+  * ``checker_viewer``: Check the viewer.js used by the main page.
+  * ``checker_edit``: Check the edit page.
+  * ``checker_edit_js``: Check the edit.js used by the edit page.
+  * ``checker_apiloader``: Check the API loader.
+  * ``checker_printcapabilities``: Check the print capabilities.
+  * ``checker_pdf``: Check the print (try to print a page). 
+  * ``checker_fts``: Check the FullTextSearch.
+  * ``checker_wmscapabilities``: Check the WMS GetCapabilities. 
+  * ``checker_wfscapabilities``: Check the WFS GetCapabilities.
+
+Configuration::
+
+    checker:
+        print_template: 1 A4 portrait
+        fulltextsearch: text to search
+
+Check collector
+---------------
+
+Used to collect check from deferent instance in the parent/children 
+structure. It is needed to give only one URL to the infrastructure
+team.
+
+A typical configuration::
+ 
+    check_collecter:
+        check_type:
+            all:
+                - name: checker_main
+                  display: Main page
+                - name: checker_viewer
+                  display: Viewer script
+                - name: checker_edit
+                  display: Edit page
+                - name: checker_edit_js
+                  display: Edit script
+                - name: checker_apiloader
+                  display: API loader
+                - name: checker_printcapabilities
+                  display: Print capabilities
+                - name: checker_pdf
+                  display: Print PDF
+                - name: checker_fts
+                  display: FullTextSearch
+                - name: checker_wmscapabilities
+                  display: WMS capabilities
+                - name: checker_wfscapabilities
+                  display: WFS capabilities
+            main:
+                - name: checker_main
+                  display: Main page
+                - name: checker_viewer
+                  display: Viewer script
+                - name: checker_printcapabilities
+                  display: Print capabilities
+                - name: checker_pdf
+                  display: Print PDF
+                - name: checker_apiloader
+                  display: API loader
+            default: # for children
+                - name: checker_viewer
+                  display: Viewer script
+        hosts: 
+            - display: Parent
+              url: http://${host}/main/wsgi
+              type: main
+            - display: Child 1
+              url: http://${host}/child1/wsgi
+            - display: Child 2
+              url: http://${host}/child2/wsgi
+        
+``check_collecter/check_type/<name>`` is the list od definition the 
+checkers that we want to apply on a host,
+``name`` is the name of the checke describe in the 
+Checker section, ``display`` is just a text used in the result page.
+
+``check_collecter/hosts`` is a list of host, ``display`` is just a text 
+used in the result page, url is the WSGI url of the application,
+``type`` is the type of checker list that we want to use on this host
+(default is 'default').
+
+We can use an argument type of the script to to call a specific 
+list of check on all host, for example::
+
+    http://example.com/main/wsgi/check_collecter?type=all    
