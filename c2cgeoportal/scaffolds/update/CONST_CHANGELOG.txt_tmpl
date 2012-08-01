@@ -194,6 +194,12 @@ Version 0.8
 12. The "featureGridId" parameter has been renamed to "featureProvider" in the
     print config.
 
+13. In case you're using the cgxp_querier plugin, you need to replace the
+    "featureType" config option by "featureTypes" which is now an array:
+
+    - featureType: 'the_layer',
+    + featureTypes: ['the_layer'],
+
 Version 0.7
 ===========
 
