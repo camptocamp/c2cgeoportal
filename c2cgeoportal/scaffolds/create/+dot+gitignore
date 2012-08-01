@@ -22,3 +22,7 @@ print/config.yaml
 print/templates/print.mako
 tilecache/tilecache.cfg
 deploy/hooks/post-restore-database
+{{project}}/static/mobile/resources/sass/.sass-cache
+{{project}}/static/mobile/archive/
+{{project}}/static/mobile/build/
+{{project}}/static/mobile/openlayers-mobile.js
