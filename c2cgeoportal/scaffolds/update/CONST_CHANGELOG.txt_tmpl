@@ -17,6 +17,7 @@ Version 0.8
          defaultThemes: ${permalink_themes | n},
        % else:
          defaultThemes: ["xyz"],
+       % endif
 
    - In index.html, replace:
        <script type="text/javascript" src="${request.route_url('viewer')}"></script>
@@ -26,7 +27,7 @@ Version 0.8
    - In wsgi.conf.in, add a new RewriteRule:
      RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
-2. Add the support of WMTS layers the database should be updated by
+2. To add the support of WMTS layers the database should be updated by
     standard procedure, CGXP also. We also needs the ogcproxy, and to
     use is we need to add the following line in the file
     <project>/templates/viewer.js:
@@ -178,14 +179,14 @@ Version 0.8
     And add the following lines to the jsbuild/app.cfg file:
     
     - in the root section:
-        sitn/static/lib/cgxp/ext.overrides
+        <package_name>/static/lib/cgxp/ext.overrides
 
     - in the include section:
         DragTracker.js #ext.override
 
 11. Add the following line to the root section of the app.js section in jsbuild/app.cfg:
 
-    sitn/static/lib/cgxp/dygraphs
+    <package_name>/static/lib/cgxp/dygraphs
 
     Also add the following line in the index.html template:
 
