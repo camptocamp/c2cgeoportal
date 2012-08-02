@@ -125,8 +125,8 @@ We use a specific user for the application, ``www-data`` by default.
    It the user doesn't already exist in your database, create it first::
 
         sudo -u postgres createuser -P <db_user>
-        sudo -u postgres psql -c "GRANT SELECT ON TABLE spatial_ref_sys TO <db_user>' <db_name>
-        sudo -u postgres psql -c "GRANT ALL ON TABLE geometry_columns TO <db_user>' <db_name>
+        sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO <db_user>' <db_name>
+        sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO <db_user>' <db_name>
 
 Give the rights to the user::
 
