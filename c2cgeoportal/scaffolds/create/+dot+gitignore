@@ -1,3 +1,4 @@
+*.pyc
 .installed.cfg
 CONST_TIPS.txt
 apache/README.txt
@@ -20,4 +21,4 @@ mapserver/c2cgeoportal.map
 print/config.yaml
 print/templates/print.mako
 tilecache/tilecache.cfg
-
+deploy/hooks/post-restore-database

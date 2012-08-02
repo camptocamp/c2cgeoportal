@@ -103,6 +103,18 @@ with ``<db_name>`` replaced by the actual database name.
    Note that the path of the postgis scripts and the template name can
    differ on your host.
 
+.. _integrator_install_application_create_schema:
+Create the schema
+~~~~~~~~~~~~~~~~~
+
+Each parent or children need an application-specific schema,
+then to create it use::
+
+    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
+
+with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
+and schema name, respectively.
+
 Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -113,6 +125,8 @@ We use a specific user for the application, ``www-data`` by default.
    It the user doesn't already exist in your database, create it first::
 
         sudo -u postgres createuser -P <db_user>
+        sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO <db_user>' <db_name>
+        sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO <db_user>' <db_name>
 
 Give the rights to the user::
 
@@ -125,18 +139,6 @@ Give the rights to the user::
 
    If you don't use the www-data user for Apache replace it by the right user.
 
-.. _integrator_install_application_create_schema:
-
-Create the schema
-~~~~~~~~~~~~~~~~~
-
-Each parent or children need an application-specific schema,
-then to create it use::
-
-    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
-
-with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
-and schema name, respectively.
 
 Install the application
 -----------------------
@@ -173,9 +175,11 @@ OpenLayers and GeoExt.
     that if the application has been cloned in a shared directory like
     ``/var/www/<vhost>/private``.
 
-If you still use SVN::
+.. note::
 
-    svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
+    If you still use SVN::
+
+        svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

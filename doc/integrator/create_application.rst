@@ -175,12 +175,12 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth
-            CONST_CHANGELOG.txt CONST_TIPS.txt.in
-            CONST_buildout.cfg buildout.cfg buildout/
-            bootstrap.py setup.cfg setup.py
-            development.ini.in production.ini.in
-            jsbuild/ print/ apache/
+    git add $PROJECT/ .gitignore .httpauth \
+            CONST_CHANGELOG.txt CONST_TIPS.txt.in \
+            CONST_buildout.cfg buildout.cfg buildout/ \
+            bootstrap.py setup.cfg setup.py \
+            development.ini.in production.ini.in \
+            jsbuild/ print/ apache/ \
             mapserver/ tilecache/ deploy/
     git remote add origin git@git.camptocamp.com:/srv/git/$PROJECT
 
@@ -214,7 +214,8 @@ Then follow the sections in the install application guide:
 
 .. note::
     If you create the main instance you should do the whole
-    database creation as described in :ref:`integrator_install_application`.
+    database creation as described in :ref:`integrator_install_application`,
+    except the 'Get the application source tree' chapter.
 
 
 .. Minimal setup of the application
