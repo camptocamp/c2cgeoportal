@@ -27,7 +27,7 @@ Version 0.8
    - In wsgi.conf.in, add a new RewriteRule:
      RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
-2. Add the support of WMTS layers the database should be updated by
+2. To add the support of WMTS layers the database should be updated by
     standard procedure, CGXP also. We also needs the ogcproxy, and to
     use is we need to add the following line in the file
     <project>/templates/viewer.js:
