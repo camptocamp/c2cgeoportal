@@ -175,12 +175,12 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth
-            CONST_CHANGELOG.txt CONST_TIPS.txt.in
-            CONST_buildout.cfg buildout.cfg buildout/
-            bootstrap.py setup.cfg setup.py
-            development.ini.in production.ini.in
-            jsbuild/ print/ apache/
+    git add $PROJECT/ .gitignore .httpauth \
+            CONST_CHANGELOG.txt CONST_TIPS.txt.in \
+            CONST_buildout.cfg buildout.cfg buildout/ \
+            bootstrap.py setup.cfg setup.py \
+            development.ini.in production.ini.in \
+            jsbuild/ print/ apache/ \
             mapserver/ tilecache/ deploy/
     git remote add origin git@git.camptocamp.com:/srv/git/$PROJECT
 
@@ -206,6 +206,22 @@ Don't miss to add your changes to git::
     git commit -m "initialise buildout.cfg"
     git push origin master
 
+.. note::
+   Additional notes for Windows users:
+
+   To have a working PNG print you should edit the file 
+   ``print/WEB-INF/classes/spring-application-context.xml``
+   and replace the line::
+
+        <value>/usr/bin/convert</value>
+
+   by this one::
+
+        <value>C:\Program Files (x86)\ImageMagick-6.7.7-Q16\convert</value>
+
+   with the right path to ``convert``.
+
+
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:
 
@@ -214,7 +230,8 @@ Then follow the sections in the install application guide:
 
 .. note::
     If you create the main instance you should do the whole
-    database creation describe in :ref:`integrator_install_application`.
+    database creation as described in :ref:`integrator_install_application`,
+    except the 'Get the application source tree' chapter.
 
 
 .. Minimal setup of the application

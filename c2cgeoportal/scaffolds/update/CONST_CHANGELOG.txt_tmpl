@@ -200,6 +200,14 @@ Version 0.8
     - featureType: 'the_layer',
     + featureTypes: ['the_layer'],
 
+14. Update the print. A new file is required. To get it do the following:
+
+    ./buildout/bin/pcreate -s c2cgeoportal_update /tmp/<project_name>
+    cp /tmp/<project_name>/print/WEB-INF/classes/spring-application-context.xml \
+            /print/WEB-INF/classes
+    git add /print/WEB-INF/classes/spring-application-context.xml
+    rm -rf /tmp/<project_name>
+
 Version 0.7
 ===========
 
