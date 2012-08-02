@@ -214,7 +214,7 @@ Then follow the sections in the install application guide:
 
 .. note::
     If you create the main instance you should do the whole
-    database creation describe in :ref:`integrator_install_application`.
+    database creation as described in :ref:`integrator_install_application`.
 
 
 .. Minimal setup of the application
