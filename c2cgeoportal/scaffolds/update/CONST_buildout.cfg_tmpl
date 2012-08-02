@@ -162,7 +162,16 @@ recipe = c2c.recipe.jarfile
 mode = update
 basewar = print-servlet-1.2-SNAPSHOT.war
 basedir = print/
-input = ${print-war:basewar} WEB-INF/classes/log4j.properties config.yaml *.tif *.bmp *.jpg *.jpeg *.gif *.png
+input = ${print-war:basewar}
+    WEB-INF/classes/log4j.properties
+    WEB-INF/classes/spring-application-context.xml
+    config.yaml
+    *.tif
+    *.bmp
+    *.jpg
+    *.jpeg
+    *.gif
+    *.png
 output = /srv/tomcat/tomcat1/webapps/print-c2cgeoportal-${vars:instanceid}.war
 
 [modwsgi]

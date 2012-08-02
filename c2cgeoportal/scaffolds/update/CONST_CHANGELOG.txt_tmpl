@@ -194,6 +194,14 @@ Version 0.8
 12. The "featureGridId" parameter has been renamed to "featureProvider" in the
     print config.
 
+14. Update the print, he needs a new file, than do to get it:
+        ./buildout/bin/pcreate -s c2cgeoportal_update /tmp/<project_name>
+        cp /tmp/<project_name>/print/WEB-INF/classes/spring-application-context.xml \
+                /print/WEB-INF/classes
+        git add /print/WEB-INF/classes/spring-application-context.xml
+        rm -rf /tmp/<project_name>
+
+
 Version 0.7
 ===========
 
