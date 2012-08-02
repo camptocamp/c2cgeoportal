@@ -206,6 +206,22 @@ Don't miss to add your changes to git::
     git commit -m "initialise buildout.cfg"
     git push origin master
 
+.. note::
+   Additional notes for Windows users:
+
+   To have a working PNG print you should edit the file 
+   ``print/WEB-INF/classes/spring-application-context.xml``
+   and replace the line::
+
+        <value>/usr/bin/convert</value>
+
+   by this one::
+
+        <value>C:\Program Files (x86)\ImageMagick-6.7.7-Q16\convert</value>
+
+   with the right path to ``convert``.
+
+
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:
 

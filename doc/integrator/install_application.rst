@@ -38,6 +38,7 @@ on your system:
 * PostgreSQL 9.x/PostGIS 1.6 (PostgreSQL 8.x should work but some commands used
     in this guide don't work)
 * MapServer 6.0.2 and upper (MapServer 6.0.0 and 6.0.1 have some issue in WFS)
+* ImageMagick
 
 .. note::
     Additional notes for Windows users:
