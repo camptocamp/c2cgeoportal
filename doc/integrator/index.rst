@@ -21,3 +21,4 @@ Content:
    authentication
    mobile
    raster
+   functionalities

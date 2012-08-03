@@ -1,7 +1,7 @@
 .. _integrator_raster:
 
 Raster configuration
-=====================
+====================
 
 c2cgeoportal applications include web services for getting
 `DEM <http://en.wikipedia.org/wiki/Digital_elevation_model>`_.

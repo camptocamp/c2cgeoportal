@@ -420,6 +420,9 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
     the ``--app-name`` switch - "app" is the default. This change is
     recommended, but optional.
 
+17. Add FUNCTIONALITY and FUNCTIONALITY vars in the viewer.js and use them in the map opacity slider.
+    see: https://github.com/camptocamp/c2cgeoportal/commit/a45fd4a1fe153985fd0918e9fceed9622f9b8bf6
+
 
 Version 0.7
 ===========
