@@ -85,21 +85,19 @@ class Functionality(Base):
 
 # association table user <> functionality
 user_functionality = Table('user_functionality', Base.metadata,
-     Column('user_id', Integer, ForeignKey(_schema + '.user.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+     Column('user_id', Integer, ForeignKey(_schema + '.user.id'),
+            primary_key=True),
      Column('functionality_id', Integer,
-            ForeignKey(_schema + '.functionality.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            ForeignKey(_schema + '.functionality.id'), primary_key=True),
      schema=_schema
 )
 
 # association table role <> functionality
 role_functionality = Table('role_functionality', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+     Column('role_id', Integer, ForeignKey(_schema + '.role.id'),
+            primary_key=True),
      Column('functionality_id', Integer,
-            ForeignKey(_schema + '.functionality.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            ForeignKey(_schema + '.functionality.id'), primary_key=True),
      schema=_schema
 )
 
@@ -126,7 +124,7 @@ class User(Base):
 
     # functionality
     functionalities = relationship('Functionality',
-            secondary=user_functionality, cascade='all')
+            secondary=user_functionality, cascade='save-update,merge,refresh-expire')
 
     # role relationship
     role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
@@ -190,7 +188,7 @@ class Role(Base):
 
     # functionality
     functionalities = relationship('Functionality',
-            secondary=role_functionality, cascade='all')
+            secondary=role_functionality, cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name=u'', description=u'', functionalities=[], extent=None):
         self.name = name
@@ -240,10 +238,10 @@ class TreeItem(Base):
 
 # association table LayerGroup <> TreeItem
 layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
-     Column('treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-     Column('treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+     Column('treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id'),
+            primary_key=True),
+     Column('treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id'),
+            primary_key=True),
      schema=_schema
 )
 
@@ -258,7 +256,7 @@ class TreeGroup(TreeItem):
 
     # relationship with Role and Layer
     children = relationship('TreeItem', backref='parents',
-            secondary=layergroup_treeitem, cascade='all')
+            secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name=u'', order=u''):
         TreeItem.__init__(self, name=name, order=order)
@@ -357,21 +355,21 @@ class Layer(TreeItem):
 
 # association table role <> restriciton area
 role_ra = Table('role_restrictionarea', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+     Column('role_id', Integer, ForeignKey(_schema + '.role.id'),
+            primary_key=True),
      Column('restrictionarea_id', Integer,
-            ForeignKey(_schema + '.restrictionarea.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            ForeignKey(_schema + '.restrictionarea.id'),
+            primary_key=True),
      schema=_schema
 )
 
 # association table layer <> restriciton area
 layer_ra = Table('layer_restrictionarea', Base.metadata,
-     Column('layer_id', Integer, ForeignKey(_schema + '.layer.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+     Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'),
+            primary_key=True),
      Column('restrictionarea_id', Integer,
-            ForeignKey(_schema + '.restrictionarea.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            ForeignKey(_schema + '.restrictionarea.id'),
+            primary_key=True),
      schema=_schema
 )
 
@@ -393,9 +391,9 @@ class RestrictionArea(Base):
 
     # relationship with Role and Layer
     roles = relationship('Role', secondary=role_ra,
-            backref='restrictionareas', cascade='all')
+            backref='restrictionareas', cascade='save-update,merge,refresh-expire')
     layers = relationship('Layer', secondary=layer_ra,
-            backref='restrictionareas', cascade='all')
+            backref='restrictionareas', cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name='', description='', layers=[], roles=[],
                  area=None, readwrite=False):
