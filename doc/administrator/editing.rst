@@ -50,6 +50,10 @@ name of the PostGIS table containing the layer's geographic data.  It is string
 of this form: ``[<schemaname>.]<tablename>``.  If ``schemaname`` is omitted
 the table is assumed to be in the ``public`` schema.
 
+.. warning::
+
+    Only layers embedded in a layergroup are detected as editable.
+    
 Configuring security
 --------------------
 
