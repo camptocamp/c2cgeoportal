@@ -403,8 +403,8 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     git add print/WEB-INF/classes/spring-application-context.xml
     rm -rf /tmp/<project_name>
 
-15. The cgxp-install part is now deactivated by default, so if you still use
-    SVN, you should add in your ``buildout.cfg`` file, section ``[buildout]``:
+16. The cgxp-install part is now deactivated by default, so if you still use
+    SVN, you should add in your ``bulidout.cfg`` file, section ``[buildout]``:
 
         parts += cgxp-install
 
@@ -413,16 +413,26 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
         parts -= cgxp-install
 
-16. It is recommended to edit the project's ``development.ini.in`` and
+17. It is recommended to edit the project's ``development.ini.in`` and
     ``production.ini.in`` files and change ``[app:{{package}}]`` to
     ``[app:app]``. In this way the ``manage_db`` and ``manage_users``
     commands can be used without specifying any application name using
     the ``--app-name`` switch - "app" is the default. This change is
     recommended, but optional.
 
-17. Add FUNCTIONALITY and FUNCTIONALITIES vars in the viewer.js and use them in
+18. Add FUNCTIONALITY and FUNCTIONALITIES vars in the viewer.js and use them in
     the map opacity slider.  see:
     https://github.com/camptocamp/c2cgeoportal/commit/de2888a226200cfe997cf3090b53fad06018c7f3
+
+19. The file 'deploy/hooks/post-restore-code' is unneeded than it should be removed.
+
+20. In the file '.gitignore' the following lines should be added:
+    *.pyc
+    deploy/hooks/post-restore-database
+    <project>/static/mobile/resources/sass/.sass-cache
+    <project>/static/mobile/archive/
+    <project>/static/mobile/build/
+    <project>/static/mobile/openlayers-mobile.js
 
 
 Version 0.7
@@ -485,6 +495,7 @@ Version 0.7
       END
     * For PostGIS layers, make sure to use:
       PROCESSING "CLOSE_CONNECTION=DEFER"
+
 
 Version 0.6
 ===========
