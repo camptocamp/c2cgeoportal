@@ -103,14 +103,21 @@ template at your disposal::
 
     $ sudo -u postgres createdb -T template_postgis c2cgeoportal_test
 
-Else use this::
+.. note::
 
-    $ sudo -u postgres createdb c2cgeoportal_test
-    $ sudo -u postgres createlang plpgsql c2cgeoportal_test
-    $ sudo -u postgres psql -d c2cgeoportal_test \
-           -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
-    $ sudo -u postgres psql -d c2cgeoportal_test \
-           -f /usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
+    If you don't have a template named ``template_postgis`` use this::
+
+        $ sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
+        $ sudo -u postgres psql -d c2cgeoportal_test -c \
+               'GRANT SELECT ON spatial_ref_sys TO "www-data";'
+        $ sudo -u postgres createlang plpgsql c2cgeoportal_test
+        $ sudo -u postgres psql -d c2cgeoportal_test \
+               -f /usr/share/postgresql/9.0/contrib/postgis-1.5/postgis.sql
+        $ sudo -u postgres psql -d c2cgeoportal_test \
+               -f /usr/share/postgresql/9.0/contrib/postgis-1.5/spatial_ref_sys.sql
+
+    The ``template0`` is needed on Debian and Ubuntu to create a utf-8
+    database, I don't now how it works on other system.
 
 If you don't have a ``www-data`` user you need to create one::
 
