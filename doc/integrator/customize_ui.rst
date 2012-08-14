@@ -27,12 +27,12 @@ The ``viewer.js`` template is used to configure the client application,
 especially building a
 `gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_
 object (``app = new gxp.Viewer({ ... });``).
-In his configuration we have tree important sections:
+In its configuration we have tree important sections:
 
 ``portalConfig``
 ~~~~~~~~~~~~~~~~
 
-The portal configuration assemble Ext components especially the containers
+The portal configuration assembles Ext components especially the containers,
 to describe the application layout.
 
 ``tools``
@@ -41,10 +41,9 @@ to describe the application layout.
 Most of the tools used in the application are
 `cgxp.plugins <http://docs.camptocamp.net/cgxp/lib/plugins.html>`_.
 
-In most cases we have an example of code we needs to add in
-``viewer.js`` file. But don't miss to add each class you use in the
-``jsbuild/app.cfg`` file, for example to use the Legend panel you should
-have somthing like this in your ``jsbuild/app.cfg`` file ::
+In most cases code examples to add to the ``viewer.js`` file are available.
+Don't forget to add the plugin files in your ``jsbuild/app.cfg`` file.
+For example, to use the Legend panel, add::
 
     [app.js]
     ...
