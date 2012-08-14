@@ -8,7 +8,7 @@ expire = 14400
 [DEFAULT]
 type = WMS
 module = tileforge.utils.layers.wms
-url = ${mapserv_url}
+url = http://${vars:host}/${vars:instanceid}/mapserv
 srs = EPSG:21781
 units = meters
 metadata_dpi = 72
