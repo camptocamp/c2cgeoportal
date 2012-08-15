@@ -45,7 +45,7 @@ webclient_string_functionalities:
 # name will be arranged as an array.
 webclient_array_functionalities:
 
-# Define URLs to the parent application. Only useful is
+# Define URLs to the parent application. Only useful if
 # this application is a child application in a parent/child
 # architecture.
 external_themes_url:

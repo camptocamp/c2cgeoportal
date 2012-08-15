@@ -3,8 +3,8 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.8
 ===========
 
-1.  We creates a configuration file to separate the application configuration
-    from the integration configuration (database ans server informations).
+1.  We create a configuration file to separate the application configuration
+    from the integration configuration (database and server informations).
 
     To create an initial configuration from your current configurations you
     should:
@@ -151,12 +151,12 @@ print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instancei
 tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
 # ------------------------------------------------------------------------
 
-    - Than interpretate it by running:
+    - Then interpretate it by running:
         ./buildout/bin/buildout.cfg install template
 
     - In this file there are some lines that contains « TODO fix the array
         (comma is missing) » that indicate that there is an array who is
-        not well formated. Than fix the array and remove those lines.
+        not well formated. Then fix the array and remove those lines.
 
     - Remove the source file:
         rm config.json.in.in
@@ -232,7 +232,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
      RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 
 3. To add the support of WMTS layers the database should be updated by
-   standard procedure, CGXP also. We also needs the ogcproxy, and to
+   standard procedure, CGXP also. We also need the ogcproxy, and to
    use is we need to add the following line in the file
    <project>/templates/viewer.js:
 
