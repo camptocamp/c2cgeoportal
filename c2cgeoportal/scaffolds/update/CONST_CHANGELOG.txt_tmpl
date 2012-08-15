@@ -424,7 +424,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     the map opacity slider.  see:
     https://github.com/camptocamp/c2cgeoportal/commit/de2888a226200cfe997cf3090b53fad06018c7f3
 
-19. The file 'deploy/hooks/post-restore-code' is unneeded than it should be removed.
+19. The file 'deploy/hooks/post-restore-code' is unneeded, it should be removed.
 
 20. In the file '.gitignore' the following lines should be added:
     *.pyc
