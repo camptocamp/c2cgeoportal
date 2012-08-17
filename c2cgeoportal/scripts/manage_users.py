@@ -25,7 +25,7 @@ Reset a user password.\nThe username is used as password if the password is not 
     parser = OptionParser(usage)
     _help = 'The application .ini config file (optional, '\
             'default is production.ini)'
-    parser.add_option('-c', '--app-config', default='production.ini',
+    parser.add_option('-i', '--app-config', default='production.ini',
                       dest='app_config', help=_help)
     _help = 'The application name (optional, default is "app")'
     parser.add_option('-n', '--app-name', default="app",
