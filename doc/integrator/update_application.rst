@@ -51,8 +51,10 @@ steps:
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
 
-4. Gets the output version and past them in the ``[versions]`` part of
-   ``buildout.cfg`` file. And do those corrections::
+4. Copy the dependency version lines (of the form ``Mako = 0.7.2``)
+   from the ``buildout`` command output and paste them into the ``[versions]``
+   part of ``buildout.cfg``. Then, apply the following corrections
+   (to work around bugs in ``buildout.dumppickedversions``)::
 
     -Mako = x.y.z
     +mako = x.y.z

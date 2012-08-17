@@ -23,16 +23,16 @@ And finally the image should be placed in the folder:
 Viewer.js
 ---------
 
-The ``viewer.js`` template is used to configure the client application,
-especially building a
+The ``viewer.js`` template is used to configure the client application.
+It creates a
 `gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_
-object (``app = new gxp.Viewer({ ... });``).
-In its configuration we have tree important sections:
+object (``app = new gxp.Viewer({ ... });``) defining the application's UI.
+The Viewer config includes three important sections:
 
 ``portalConfig``
 ~~~~~~~~~~~~~~~~
 
-The portal configuration assembles Ext components especially the containers,
+The portal configuration assembles Ext components (containers really),
 to describe the application layout.
 
 ``tools``

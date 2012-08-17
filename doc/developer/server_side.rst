@@ -42,7 +42,7 @@ of an existing c2cgeoportal application. Here's how:
 
     rm -rf ./buildout/eggs/c2cgeoportal-*
 
-* Remove the version of c2cgeoportal in the setup.py 
+* Remove the version of c2cgeoportal in the setup.py
   (``'c2cgeoportal==x.y'`` => ``'c2cgeoportal'``)
 
 * Build::
@@ -184,9 +184,10 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
 
    ./buildout/bin/buildout -n
 
-* Gets the output version and past them in the ``[versions]`` part of 
-  ``buildout.cfg`` file. Remove the ``c2cgeoportal`` version. 
-  And finally do those corrections::
+* Copy the dependency version lines (of the form ``Mako = 0.7.2``)
+  from the ``buildout`` command output and paste them into the ``[versions]`` 
+  part of ``buildout.cfg``. Then, apply the following corrections 
+  (to work around bugs in ``buildout.dumppickedversions``)::
 
    -Mako = x.y.z
    +mako = x.y.z
