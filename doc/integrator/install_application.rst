@@ -105,6 +105,7 @@ with ``<db_name>`` replaced by the actual database name.
    differ on your host.
 
 .. _integrator_install_application_create_schema:
+
 Create the schema
 ~~~~~~~~~~~~~~~~~
 
@@ -223,7 +224,7 @@ apache/mapserver.conf.in
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
 Buildout bootstrap
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
 build, install, and deploy c2cgeoportal applications.

@@ -3,18 +3,16 @@
 Customize the UI
 ================
 
-*To Be Done* 
-
 Organisation
 ------------
 
-The main page where we can redefine the header 
+The main page where we can redefine the header
 is in the file: ``<package>/templates/index.html``.
 
-The viewer (map and all related tools) 
+The viewer (map and all related tools)
 is define in the file: ``<package>/templates/viewer.js``.
 
-The sample for the API is in the file: 
+The sample for the API is in the file:
 ``<package>/templates/apiviewer.js``.
 
 The style sheet file is: ``<package>/static/css/proj.css``
@@ -25,10 +23,37 @@ And finally the image should be placed in the folder:
 Viewer.js
 ---------
 
-The ``viewer.js`` template is used to configure the client application, 
-especially using a 
-`gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_ 
-object.
+The ``viewer.js`` template is used to configure the client application.
+It creates a
+`gxp.Viewer <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_
+object (``app = new gxp.Viewer({ ... });``) defining the application's UI.
+The Viewer config includes three important sections:
 
-Most of the tools used in the application are 
+``portalConfig``
+~~~~~~~~~~~~~~~~
+
+The portal configuration assembles Ext components (containers really),
+to describe the application layout.
+
+``tools``
+~~~~~~~~~
+
+Most of the tools used in the application are
 `cgxp.plugins <http://docs.camptocamp.net/cgxp/lib/plugins.html>`_.
+
+In most cases code examples to add to the ``viewer.js`` file are available.
+Don't forget to add the plugin files in your ``jsbuild/app.cfg`` file.
+For example, to use the Legend panel, add::
+
+    [app.js]
+    ...
+    include =
+        ...
+        CGXP/plugins/Legend.js
+
+``map``
+~~~~~~~
+
+See ``map`` section from
+`gxp.Viewer documentation <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_
+
