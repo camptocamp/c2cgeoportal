@@ -51,11 +51,27 @@ steps:
    At this point you can verify that the ``buildout/eggs`` directory
    includes the new version of the ``c2cgeoportal`` package.
 
-4. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
+4. Copy the dependency version lines (of the form ``Mako = 0.7.2``)
+   from the ``buildout`` command output and paste them into the ``[versions]``
+   part of ``buildout.cfg``. Then, apply the following corrections
+   (to work around bugs in ``buildout.dumppickedversions``)::
+
+    -Mako = x.y.z
+    +mako = x.y.z
+    -Markdown = x.y.z
+    +markdown = x.y.z
+    -SQLAHelper = x.y.z
+    +sqlahelper = x.y.z
+    -SQLAlchemy = x.y.z
+    +qslalchemy = x.y.z
+    -Tempita = x.y.z
+    +tempita = x.y.z
+
+5. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
    found (...)`` can be ignored).
 
    For ``c2cgeoportal`` 0.7 and higher::
-    
+
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
          ../<project_name> package=<package_name>
 
@@ -70,17 +86,17 @@ steps:
    application's Python code. If unsure, see the ``name`` argument to the
    ``setup`` call in the application's ``setup.py`` file.
 
-5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+6. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-6. Update the database using the ``manage_db`` script::
+7. Update the database using the ``manage_db`` script::
 
         $ ./buildout/bin/manage_db -c production.ini -n <package_name> upgrade
 
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-7. Execute ``buildout`` one more time to rebuild and reinstall the
+8. Execute ``buildout`` one more time to rebuild and reinstall the
    application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>

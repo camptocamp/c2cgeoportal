@@ -1,7 +1,7 @@
 .. _developper_bootstrap:
 
 Bootstrap c2cgeoportal
-=====================
+======================
 
 This chapter explain how is it possible to create a new application
 directly from the c2cgeoportal sources, this is used to create the first
