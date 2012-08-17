@@ -1,7 +1,6 @@
 [buildout]
 parts = eggs 
         activate 
-        cgxp-install
         template 
         modwsgi 
         jsbuild 
