@@ -177,7 +177,7 @@ Version 0.8
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 
     And add the following lines to the jsbuild/app.cfg file:
-    
+
     - in the root section:
         <package_name>/static/lib/cgxp/ext.overrides
 
@@ -208,6 +208,17 @@ Version 0.8
             print/WEB-INF/classes
     git add print/WEB-INF/classes/spring-application-context.xml
     rm -rf /tmp/<project_name>
+
+15. The cgxp-install part is now deactivated by default, so if you still use
+    SVN, you should add in your ``bulidout.cfg`` file, section ``[buildout]``:
+
+        parts += cgxp-install
+
+    If you are on Git the this line isn't needed any more in
+    your ``bulidout.cfg`` file, section ``[buildout]``:
+
+        parts -= cgxp-install
+
 
 Version 0.7
 ===========
