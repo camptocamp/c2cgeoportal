@@ -152,15 +152,33 @@ class TestMapserverproxyView(TestCase):
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
         DBSession.query(User).filter(User.username == '__test_user3').delete()
-        DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra1').delete()
-        DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra2').delete()
-        DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra3').delete()
-        DBSession.query(Role).filter(Role.name == '__test_role1').delete()
-        DBSession.query(Role).filter(Role.name == '__test_role2').delete()
-        DBSession.query(Role).filter(Role.name == '__test_role3').delete()
+
+        ra = DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra1').one()
+        ra.roles = []
+        ra.layers = []
+        DBSession.delete(ra)
+        ra = DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra2').one()
+        ra.roles = []
+        ra.layers = []
+        DBSession.delete(ra)
+        ra = DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra3').one()
+        ra.roles = []
+        ra.layers = []
+        DBSession.delete(ra)
+
+        r = DBSession.query(Role).filter(Role.name == '__test_role1').one()
+        r.functionalities = []
+        DBSession.delete(r)
+        r = DBSession.query(Role).filter(Role.name == '__test_role2').one()
+        r.functionalities = []
+        DBSession.delete(r)
+        r = DBSession.query(Role).filter(Role.name == '__test_role3').one()
+        r.functionalities = []
+        DBSession.delete(r)
+
         for f in DBSession.query(Functionality).filter(Functionality.value == u'1 Wohlen A4 portrait').all():
             DBSession.delete(f)
         for f in DBSession.query(Functionality).filter(Functionality.value == u'2 Wohlen A3 landscape').all():

@@ -62,18 +62,26 @@ class TestEntryView(TestCase):
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
-        DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra1').delete()
-        DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra2').delete()
+
+        ra = DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra1').one()
+        ra.roles = []
+        DBSession.delete(ra)
+        ra = DBSession.query(RestrictionArea).filter(
+                RestrictionArea.name == '__test_ra2').one()
+        ra.roles = []
+        DBSession.delete(ra)
+
         DBSession.query(Role).filter(Role.name == '__test_role1').delete()
         DBSession.query(Role).filter(Role.name == '__test_role2').delete()
+
         for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
             DBSession.delete(layergroup)  # pragma: nocover
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)  # pragma: nocover
+
         transaction.commit()
 
     #
