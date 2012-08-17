@@ -266,7 +266,16 @@ scaffold, as opposed to the application.
 
 Add a new script call from the application's root directory::
 
-    ./buildout/bin/manage_db --app-name <package> script "<Explicite name>"
+    ./buildout/bin/manage_db script "<Explicite name>"
+
+.. note::
+
+    With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
+    in the production.ini file, you need to specify the app name on the
+    ``manage_db`` command line. For example, the above command would be as
+    follows::
+
+       $ ./buildout/bin/manage_db -n <package_name> script "<Explicite name>"
 
 This will generate the migration script in
 ``<package>/CONST_migration/versions/xxx_<Explicite_name>.py``

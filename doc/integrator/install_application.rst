@@ -293,8 +293,17 @@ Once the application is built and installed, you now have to create and
 populate the application tables, and directly set the version (details later)::
 
     $ ./buildout/bin/create_db --iniconfig production.ini --populate
-    $ ./buildout/bin/manage_db -n <package_name> version_control \
-    `./buildout/bin/manage_db -n <package_name> version`
+    $ ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
+
+.. note::
+
+    With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
+    in the production.ini file, you need to specify the app name on the
+    ``manage_db`` command line. For example, the above command would be as
+    follows::
+
+        $ ./buildout/bin/manage_db -n <package_name> version_control \
+          `./buildout/bin/manage_db -n <package_name> version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
@@ -305,7 +314,7 @@ After having created the application tables with the previous command,
 the current database version correspond to the latest version available in
 the repository, which can be obtained with::
 
-    $ ./buildout/bin/manage_db -n <package_name> version
+    $ ./buildout/bin/manage_db version
     <current_version>
     $
 
@@ -317,12 +326,12 @@ of the database. This table should be named ``version_<package_name>``.
 So let's create this table and set the current version of the database
 (obtained from the previous command)::
 
-    $ ./buildout/bin/manage_db -c production.ini -n <package_name> version_control <current_version>
+    $ ./buildout/bin/manage_db version_control <current_version>
 
 The database is now under version control, you can check that the current
 database version is correct with the command::
 
-    $ ./buildout/bin/manage_db -c production.ini -n <package_name> db_version
+    $ ./buildout/bin/manage_db db_version
 
 Note that future schema upgrades will only be done via change scripts from the
 repository, and they will automatically increment the ``db_version``.
