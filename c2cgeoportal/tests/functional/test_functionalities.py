@@ -45,14 +45,26 @@ class TestFunctionalities(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter(
-            User.username == '__test_user1').delete()
-        DBSession.query(User).filter(
-            User.username == '__test_user2').delete()
-        DBSession.query(Role).filter(
-            Role.name == '__test_role1').delete()
-        DBSession.query(Role).filter(
-            Role.name == '__test_role2').delete()
+        for o in DBSession.query(User).filter(
+                User.username == '__test_user1').all():
+            o.functionalities = []
+            DBSession.delete(o)
+        for o in DBSession.query(User).filter(
+                User.username == '__test_user2').all():
+            o.functionalities = []
+            DBSession.delete(o)
+        for o in DBSession.query(Role).filter(
+                Role.name == '__test_role1').all():
+            o.functionalities = []
+            DBSession.delete(o)
+        for o in DBSession.query(Role).filter(
+                Role.name == '__test_role2').all():
+            o.functionalities = []
+            DBSession.delete(o)
+        DBSession.query(Functionality).filter(
+            Functionality.name == '__test_s').delete()
+        DBSession.query(Functionality).filter(
+            Functionality.name == '__test_a').delete()
         DBSession.query(Functionality).filter(
             Functionality.name == '__test_s').delete()
         DBSession.query(Functionality).filter(

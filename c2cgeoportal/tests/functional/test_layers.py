@@ -51,8 +51,10 @@ class TestLayers(TestCase):
 
         DBSession.query(User).filter(
                 User.username == '__test_user').delete()
-        DBSession.query(Role).filter(
-                Role.name == '__test_role').delete()
+        r = DBSession.query(Role).filter(
+                Role.name == '__test_role').one()
+        r.restrictionareas = []
+        DBSession.delete(r)
         DBSession.query(RestrictionArea).filter(
                 RestrictionArea.name == '__test_ra').delete()
 
