@@ -117,7 +117,7 @@ template at your disposal::
                -f /usr/share/postgresql/9.0/contrib/postgis-1.5/spatial_ref_sys.sql
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
-    database, I don't now how it works on other system.
+    database.
 
 If you don't have a ``www-data`` user you need to create one::
 
