@@ -1,5 +1,6 @@
 [app:app]
 use = egg:{{package}}
+project = {{package}}
 reload_templates = false
 debug_authorization = false
 debug_notfound = false
@@ -8,12 +9,14 @@ debug_templates = false
 mako.directories = {{package}}:templates
     c2cgeoportal:templates
 app.cfg = %(here)s/config.yaml
-# Used to create a secured cookies
+# Used to create secured cookies
 authtkt_secret: ${authtkt_secret}
 # Database informations
 sqlalchemy.url: postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 schema: ${vars:schema}
 parentschema: ${vars:parent_schema}
+# For tilecache controller
+tilecache.cfg: ${buildout:directory}/tilecache/tilecache.cfg
 # For debug mode
 jsbuild_cfg: ${jsbuild:config}
 jsbuild_root_dir: ${buildout:directory}

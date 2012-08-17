@@ -53,7 +53,8 @@ class DecimalJSON:
 def locale_negotiator(request):
     lang = request.params.get('lang')
     if lang is None:
-        # if None mean use default local
+        # if best_match returns None then Pyramid will use what's defined in
+        # the default_locale_name configuration variable
         return request.accept_language.best_match(
                 request.registry.settings.get("available_locale_names"))
     return lang

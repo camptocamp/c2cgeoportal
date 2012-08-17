@@ -221,8 +221,9 @@ As the integrator you need to edit two files to configure the application:
 
 ``config.yaml`` includes the *static configuration* of the application.  This
 configuration is to be opposed to the *dynamic configuration*, which is in the
-database, and managed by the *administrator*. The static configuration includes
-for example the application's ``default_language``. It also includes the
+database, and managed by the *administrator*. The static configuration
+includes for example the application's default language (specified with
+``default_locale_name``).  It also includes the
 configuration for specific parts of the application, like
 :ref:`integrator_raster` web services.
 
@@ -244,7 +245,7 @@ Don't miss to add your changes to git::
 .. note::
    Additional notes for Windows users:
 
-   To have a working PNG print you should edit the file 
+   To have a working PNG print you should edit the file
    ``print/WEB-INF/classes/spring-application-context.xml``
    and replace the line::
 

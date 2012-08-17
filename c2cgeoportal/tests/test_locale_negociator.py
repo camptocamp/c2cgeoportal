@@ -3,7 +3,7 @@
 from unittest import TestCase
 from pyramid import testing
 
-class TestEntryView(TestCase):
+class TestLocalNegociator(TestCase):
     def test_lang_param(self):
         from c2cgeoportal import locale_negotiator
 

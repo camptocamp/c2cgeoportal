@@ -3,19 +3,21 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 0.8
 ===========
 
-1.  We create a configuration file to separate the application configuration
-    from the integration configuration (database and server informations).
+1. We create a configuration file, config.yaml includes the static
+   configuration of the application. buildout.cfg includes the execution
+   environment configuration, where environment variables are defined.
 
-    To create an initial configuration from your current configurations you
-    should:
+   To create an initial configuration from your current configurations you
+   should:
 
-    - Rollback the CONST_buildout.cfg:
-        git checkout CONST_buildout.cfg
+   - Rollback the CONST_buildout.cfg:
+       git checkout CONST_buildout.cfg
 
-    - If you are a child make sure that you have a variable
-        ``parent_instanceid`` defined in the ``[vars]`` section.
+   - If you are a child make sure that you have a variable
+       ``parent_instanceid`` defined in the ``[vars]`` section
+       of the ``buildout.cfg`` file.
 
-    - Create a file named 'config.yaml.in.in' that contains, for a parent:
+   - Create a file named 'config.yaml.in.in' that contains, for a parent:
 
 # ------------------------------------------------------------------------
 # The project name
@@ -68,9 +70,6 @@ external_mapserv_url:
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
 raster:
-
-# For tilecache controller
-tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
 
 # For mapserver proxy
 mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
@@ -136,9 +135,6 @@ external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
 # chapter in the integrator documentation.
 raster:
 
-# For tilecache controller
-tilecache.cfg: $${buildout:directory}/tilecache/tilecache.cfg
-
 # For mapserver proxy
 mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
 
@@ -152,11 +148,12 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
 # ------------------------------------------------------------------------
 
     - Then interpretate it by running:
-        ./buildout/bin/buildout.cfg install template
+        ./buildout/bin/buildout install template
 
-    - In this file there are some lines that contains « TODO fix the array
-        (comma is missing) » that indicate that there is an array who is
-        not well formated. Then fix the array and remove those lines.
+    - In this file there are some lines that contain « TODO fix the array
+        (comma is missing) ». This indicates that the array is not correctly
+        formatted. Fix the formatting by adding the missing comma and remove
+        the TODO lines.
 
     - Remove the source file:
         rm config.json.in.in
@@ -171,7 +168,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         By:
         url = http://${vars:host}/${vars:instanceid}/mapserv
 
-    - Add the following line in the [app:<project>] of the production.ini.in
+    - Add the following line in the [app:main] of the production.ini.in
             and the developement.ini.in:
         app.cfg = %(here)s/config.yaml
 
@@ -181,7 +178,6 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         default_locale_name
         available_languages
         default_language
-        tilecache.cfg
         mapserv.url
         print.url
         formalchemy_default_zoom

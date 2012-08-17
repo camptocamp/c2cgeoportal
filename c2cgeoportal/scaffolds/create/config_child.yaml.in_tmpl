@@ -1,8 +1,5 @@
-# The project name
-project: {{package}}
-
-# The application's default language. This is the language
-# used if no language is specific by the application user.
+# The application's default language. This is the language used by
+# the application if no specific language is specified in the URLs.
 # This also defines the language used for the text search.
 default_locale_name: fr
 
@@ -55,16 +52,13 @@ external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
 # chapter in the integrator documentation.
 raster:
 
-# For tilecache controller
-tilecache.cfg: ${buildout:directory}/tilecache/tilecache.cfg
-
 # For mapserver proxy
 mapserv.url: http://${vars:host}/${vars:instanceid}/mapserv
 
 # For print proxy
-# This value mean that we use the parent print server 
+# This value mean that we use the parent print server
 print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
 
 # For base layers
 # This value mean that we use the parent tiles
-tilecache_url: http://${vars:host}/${vars:parent_instanceid} 
+tilecache_url: http://${vars:host}/${vars:parent_instanceid}
