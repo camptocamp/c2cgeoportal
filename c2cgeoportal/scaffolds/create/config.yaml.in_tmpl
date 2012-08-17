@@ -9,38 +9,39 @@ available_locale_names:
 - fr
 - de
 
+admin_interface:
 # Default values for the admin interface's maps.
-formalchemy_default_lon: 740000
-formalchemy_default_lat: 5860000
-formalchemy_default_zoom: 10
+    map_x: 740000
+    map_y: 5860000
+    map_zoom: 10
 
 # The list of functionalities that can be configured
 # through the admin interface.
-formalchemy_available_functionalities:
-- default_basemap
-- print_template
-- mapserver_substitution
+    available_functionalities:
+    - default_basemap
+    - print_template
+    - mapserver_substitution
 
+functionalities:
 # Functionalities that are accessible to anonymous
 # users.
-anonymous_functionalities:
-  print_template:
-  - 1 A4 portrait
-  - 2 A3 landscape
+    anonymous:
+        print_template:
+        - 1 A4 portrait
+        - 2 A3 landscape
 
 # Functionalities that are accessible to authenticated
 # users with no associated functionalities in the
 # database.
-registered_functionalities:
+    registered:
 
-# Single Functionalities that should be available
-# on the web client.
-webclient_string_functionalities:
-- default_basemap
+# Functionalities that should be available
+# on the web client as a unique value.
+    webclient_string:
+    - default_basemap
 
-# Same than before but Functionalities of the same
-# name will be arranged as an array.
-webclient_array_functionalities:
+# Same than before arranged as an array.
+    webclient_array:
 
 # Define URLs to the parent application. Only useful if
 # this application is a child application in a parent/child
@@ -53,10 +54,10 @@ external_mapserv_url:
 raster:
 
 # For mapserver proxy
-mapserv.url: http://${vars:host}/${vars:instanceid}/mapserv
+mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
 
 # For print proxy
-print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
 
 # For base layers
 # Nothing => gets the URL using the pyramid routes
