@@ -17,7 +17,7 @@ Version 0.8
        ``parent_instanceid`` defined in the ``[vars]`` section
        of the ``buildout.cfg`` file.
 
-   - Create a file named 'config.yaml.in.in' that contains, for a parent:
+   - Create a file named 'config.yaml.in' that contains, for a parent:
 
 # ------------------------------------------------------------------------
 # The project name
@@ -150,13 +150,13 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
     - Then interpretate it by running:
         ./buildout/bin/buildout install template
 
-    - In this file there are some lines that contain « TODO fix the array
-        (comma is missing) ». This indicates that the array is not correctly
-        formatted. Fix the formatting by adding the missing comma and remove
-        the TODO lines.
+    - Rename the generated file as the source file:
+        mv config.json config.json.in
 
-    - Remove the source file:
-        rm config.json.in.in
+    - In this file (config.json.in) there are some lines that contain
+        « TODO fix the array (comma is missing) ». This indicates that the
+        array is not correctly formatted. Fix the formatting by adding the
+        missing comma and remove the TODO lines.
 
     - Add the config in the repository
         git add config.yaml.in
