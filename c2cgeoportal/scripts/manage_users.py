@@ -2,7 +2,6 @@
 import os.path
 import warnings
 from optparse import OptionParser
-from ConfigParser import ConfigParser
 
 from pyramid.paster import get_app
 import transaction
@@ -21,14 +20,19 @@ def main():
     """
 
     usage = 'usage: %prog [options] USERNAME \n\n\
-Reset a user password.\nThe username is used as password if the password is not \
-provided with the corresponding option.\nuser can be created if it doesnt exist.'
+Reset a user password.\nThe username is used as password if the password is not provided with the corresponding option.\nuser can be created if it doesnt exist.'  # NOQA
 
     parser = OptionParser(usage)
-    parser.add_option('-i', '--iniconfig', default='production.ini',
-      help='project .ini config file')
-    parser.add_option('-p', '--password', help='set password (if not set, username is \
-used as password)')
+    _help = 'The application .ini config file (optional, '\
+            'default is production.ini)'
+    parser.add_option('-i', '--app-config', default='production.ini',
+                      dest='app_config', help=_help)
+    _help = 'The application name (optional, default is "app")'
+    parser.add_option('-n', '--app-name', default="app",
+                      dest='app_name', help=_help)
+    _help = 'set password (if not set, username is ' \
+            'used as password'
+    parser.add_option('-p', '--password', help=_help)
     parser.add_option('-c', '--create', action="store_true", default=False,
       help='create user if it doesnt already exist')
     parser.add_option('-r', '--rolename', default='role_admin',
@@ -39,10 +43,14 @@ used as password)')
         parser.error("you must specify a username")
 
     username = args[0]
-    ini_file = options.iniconfig
 
-    if not os.path.isfile(ini_file):
-        raise StandardError('the config file %s can not be found' % ini_file)
+    app_config = options.app_config
+    app_name = options.app_name
+
+    if app_name is None and '#' in app_config:
+        app_config, app_name = app_config.split('#', 1)
+    if not os.path.isfile(app_config):
+        parser.error('Can\'t find config file: %s' % app_config)
 
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
@@ -50,16 +58,7 @@ used as password)')
     # Ignores pyramid deprecation warnings
     warnings.simplefilter('ignore', DeprecationWarning)
 
-    config = ConfigParser()
-    config.read(ini_file)
-    section = 'app:c2cgeoportal'
-    option = 'project'
-    if not config.has_section(section):
-        raise StandardError('the config file %s has no %s section' % (ini_file, section))
-    if not config.has_option(section, option):
-        raise StandardError('the config file %s has no %s option in %s section ' % \
-                            (ini_file, option, section))
-    get_app(ini_file, config.get(section, option))
+    get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config
     from c2cgeoportal import models
@@ -90,13 +89,14 @@ used as password)')
             password = get_password(options.password, username)
 
             # get roles
-            query_role = sess.query(models.Role).filter(models.Role.name == u'%s' % \
-                         options.rolename)
+            query_role = sess.query(models.Role).filter(
+                             models.Role.name == u'%s' % options.rolename)
 
             if query_role.count() == 0:
                 # role not found in db?
-                raise StandardError('role matching %s doesnt exists in database' % \
-                                    options.rolename)
+                raise StandardError(
+                    'role matching %s doesnt exists in database' % \
+                    options.rolename)
 
             role = query_role.first()
 

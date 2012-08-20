@@ -1,4 +1,4 @@
-[app:{{package}}]
+[app:app]
 use = egg:{{package}}
 project = {{package}}
 reload_templates = false
@@ -74,7 +74,7 @@ bottom = true
 minified = true
 
 [pipeline:main]
-pipeline = weberror fanstatic {{package}}
+pipeline = weberror fanstatic app
 
 [server:main]
 use = egg:waitress#main

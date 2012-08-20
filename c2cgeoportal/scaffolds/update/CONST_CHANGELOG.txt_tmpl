@@ -219,6 +219,13 @@ Version 0.8
 
         parts -= cgxp-install
 
+16. It is recommended to edit the project's ``development.ini.in`` and
+    ``production.ini.in`` files and change ``[app:{{package}}]`` to
+    ``[app:app]``. In this way the ``manage_db`` and ``manage_users``
+    commands can be used without specifying any application name using
+    the ``--app-name`` switch - "app" is the default. This change is
+    recommended, but optional.
+
 
 Version 0.7
 ===========
