@@ -91,7 +91,17 @@ steps:
 
 7. Update the database using the ``manage_db`` script::
 
-        $ ./buildout/bin/manage_db -c production.ini -n <package_name> upgrade
+       $ ./buildout/bin/manage_db upgrade
+
+
+   .. note::
+
+        With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
+        in the production.ini file, you need to specify the app name on the
+        ``manage_db`` command line. For example, the above command would be as
+        follows::
+
+           $ ./buildout/bin/manage_db -n <package_name> upgrade
 
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
