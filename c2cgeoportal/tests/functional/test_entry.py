@@ -162,11 +162,6 @@ class TestEntryView(TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
                 'mapserv_url': mapserv_url,
-                'external_themes_url': '',
-                'functionalities': {
-                    'webclient_string': [],
-                    'webclient_array': [],
-                }
             }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
@@ -271,11 +266,6 @@ class TestEntryView(TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
                 'mapserv_url': mapserv_url,
-                'external_themes_url': '',
-                'functionalities': {
-                    'webclient_string': [],
-                    'webclient_array': [],
-                }
             }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
@@ -301,11 +291,6 @@ class TestEntryView(TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'mapserv_url': mapserv_url,
-            'external_themes_url': '',
-            'functionalities': {
-                'webclient_string': [],
-                'webclient_array': [],
-            }
         }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
@@ -400,10 +385,6 @@ class TestEntryView(TestCase):
         request.registry.settings = {
             'mapserv_url': mapserv_url,
             'external_mapserv_url': mapserv_url,
-            'functionalities': {
-                'webclient_string': [],
-                'webclient_array': [],
-            }
         }
         request.params = {
             'permalink_themes': 'my_themes',
@@ -422,10 +403,6 @@ class TestEntryView(TestCase):
         request.registry.settings = {
             'mapserv_url': mapserv_url,
             'external_mapserv_url': mapserv_url,
-            'functionalities': {
-                'webclient_string': [],
-                'webclient_array': [],
-            }
         }
         entry = Entry(request)
         request.user = None
@@ -451,10 +428,6 @@ class TestEntryView(TestCase):
         request.registry.settings = {
             'mapserv_url': mapserv_url,
             'external_mapserv_url': mapserv_url,
-            'functionalities': {
-                'webclient_string': [],
-                'webclient_array': [],
-            }
         }
         entry = Entry(request)
         request.user = None

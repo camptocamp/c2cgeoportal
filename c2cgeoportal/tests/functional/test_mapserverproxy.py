@@ -201,7 +201,7 @@ class TestMapserverproxyView(TestCase):
                 'mapserv_url': mapserv_url,
                 'functionalities': {
                     'registered': {},
-                    'anonymous': {},
+                    'anonymous': {}
                 }
             }
         if username:
