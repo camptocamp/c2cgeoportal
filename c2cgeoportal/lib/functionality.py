@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
+
 def _get_config_functionalities(name, registered, config):
     functionalities = None
 
     if registered:
         functionalities = config.get('registered_functionalities')
-    if functionalities is None:
+    if functionalities is None or functionalities.get(name) is None:
         functionalities = config.get('anonymous_functionalities')
 
     return functionalities.get(name) if functionalities is not None else None
