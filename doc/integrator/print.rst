@@ -105,15 +105,16 @@ by the templating. Than we should do:
 
     # For print proxy
     # This value mean that we use the parent print server
-    print.url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
+    print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
 
 * If needed set the print templates used by anonymous user by adding the
-  following in the application configuration (``config.yaml``)::
+  following in the application configuration (``config.yaml.in``)::
 
-    anonymous_functionalities:
-      print_template:
-      - 1 A4 child
-      - 2 A3 child
+    functionalities:
+        anonymous:
+            print_template:
+            - 1 A4 child
+            - 2 A3 child
 
 .. note::
 

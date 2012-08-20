@@ -32,34 +32,35 @@ default_locale_name: ${default_language}
 TODO fix the array (comma is missing)
 available_locale_names: [${available_languages}]
 
+admin_interface:
 # Default values for the admin interface's maps.
-formalchemy_default_lon: ${formalchemy_default_lon}
-formalchemy_default_lat: ${formalchemy_default_lat}
-formalchemy_default_zoom: ${formalchemy_default_zoom}
+    map_x: ${formalchemy_default_lon}
+    map_y: ${formalchemy_default_lat}
+    map_zoom: ${formalchemy_default_zoom}
 
 # The list of functionalities that can be configured
 # through the admin interface.
 TODO fix the array (comma is missing)
-formalchemy_available_functionalities: [${formalchemy_available_functionalities}]
+    available_functionalities: [${formalchemy_available_functionalities}]
 
+functionalities:
 # Functionalities that are accessible to anonymous
 # users.
-anonymous_functionalities: ${anonymous_functionalities}
+    anonymous: ${anonymous_functionalities}
 
 # Functionalities that are accessible to authenticated
 # users with no associated functionalities in the
 # database.
-registered_functionalities: ${registered_functionalities}
+    registered: ${registered_functionalities}
 
-# Single Functionalities that should be available
-# on the web client.
+# Functionalities that should be available
+# on the web client as a unique value.
 TODO fix the array (comma is missing)
-webclient_string_functionalities: [${webclient_string_functionalities}]
+    webclient_string: [${webclient_string_functionalities}]
 
-# Same than before but Functionalities of the same
-# name will be arranged as an array.
+# Same than before arranged as an array.
 TODO fix the array (comma is missing)
-webclient_array_functionalities: [${webclient_array_functionalities}]
+    webclient_array: [${webclient_array_functionalities}]
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
@@ -72,10 +73,10 @@ external_mapserv_url:
 raster:
 
 # For mapserver proxy
-mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
+mapserv_url: http://$${vars:host}/$${vars:instanceid}/mapserv
 
 # For print proxy
-print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:instanceid}/pdf/
+print_url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:instanceid}/pdf/
 
 # For base layers
 # Nothing => gets the URL using the pyramid routes
@@ -96,34 +97,35 @@ default_locale_name: ${default_language}
 TODO fix the array (comma is missing)
 available_locale_names: [${available_languages}]
 
+admin_interface:
 # Default values for the admin interface's maps.
-formalchemy_default_lon: ${formalchemy_default_lon}
-formalchemy_default_lat: ${formalchemy_default_lat}
-formalchemy_default_zoom: ${formalchemy_default_zoom}
+    map_x: ${formalchemy_default_lon}
+    map_y: ${formalchemy_default_lat}
+    map_zoom: ${formalchemy_default_zoom}
 
 # The list of functionalities that can be configured
 # through the admin interface.
 TODO fix the array (comma is missing)
-formalchemy_available_functionalities: [${formalchemy_available_functionalities}]
+    available_functionalities: [${formalchemy_available_functionalities}]
 
+functionalities:
 # Functionalities that are accessible to anonymous
 # users.
-anonymous_functionalities: ${anonymous_functionalities}
+    anonymous: ${anonymous_functionalities}
 
 # Functionalities that are accessible to authenticated
 # users with no associated functionalities in the
 # database.
-registered_functionalities: ${registered_functionalities}
+    registered: ${registered_functionalities}
 
-# Single Functionalities that should be available
-# on the web client.
+# Functionalities that should be available
+# on the web client as a unique value.
 TODO fix the array (comma is missing)
-webclient_string_functionalities: [${webclient_string_functionalities}]
+    webclient_string: [${webclient_string_functionalities}]
 
-# Same than before but Functionalities of the same
-# name will be arranged as an array.
+# Same than before arranged as an array.
 TODO fix the array (comma is missing)
-webclient_array_functionalities: [${webclient_array_functionalities}]
+    webclient_array: [${webclient_array_functionalities}]
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
@@ -136,11 +138,11 @@ external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
 raster:
 
 # For mapserver proxy
-mapserv.url: http://$${vars:host}/$${vars:instanceid}/mapserv
+mapserv_url: http://$${vars:host}/$${vars:instanceid}/mapserv
 
 # For print proxy
 # This value mean that we use the parent print server
-print.url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
+print_url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
 
 # For base layers
 # This value mean that we use the parent tiles

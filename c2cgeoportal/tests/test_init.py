@@ -15,8 +15,7 @@ class Test_includeme(TestCase):
                 'parentschema': '',
                 'tilecache.cfg': 'c2cgeoportal/tests/tilecache.cfg',
                 'app.cfg': 'c2cgeoportal/tests/config.yaml'
-                }
-            )
+            })
 
     def test_set_user_validator_directive(self):
         import c2cgeoportal

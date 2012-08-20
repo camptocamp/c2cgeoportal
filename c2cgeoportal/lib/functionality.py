@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from c2cgeoportal import get_setting
 
 def _get_config_functionalities(name, registered, config):
-    functionalities = None
+    result = None
 
     if registered:
-        functionalities = config.get('registered_functionalities')
-    if functionalities is None or functionalities.get(name) is None:
-        functionalities = config.get('anonymous_functionalities')
+        result = get_setting(config,
+                ['functionalities', 'registered', name])
+    if result is None:
+        result = get_setting(config,
+                ['functionalities', 'anonymous', name])
 
-    return functionalities.get(name) if functionalities is not None else None
+    return result
 
 
 def _get_db_functionalities(name, request):
