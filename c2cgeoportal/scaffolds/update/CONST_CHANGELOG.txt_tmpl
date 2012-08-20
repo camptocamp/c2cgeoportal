@@ -168,7 +168,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         By:
         url = http://${vars:host}/${vars:instanceid}/mapserv
 
-    - Add the following line in the [app:main] of the production.ini.in
+    - Add the following line in the [app:app] of the production.ini.in
             and the developement.ini.in:
         app.cfg = %(here)s/config.yaml
 
