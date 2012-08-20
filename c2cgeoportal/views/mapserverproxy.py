@@ -5,7 +5,8 @@ import urllib
 import sys
 import logging
 
-from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable, HTTPInternalServerError
+from pyramid.httpexceptions import (HTTPBadGateway, HTTPNotAcceptable,
+                                    HTTPInternalServerError)
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -93,9 +94,11 @@ def proxy(request):
         return HTTPBadGateway("See logs for details")  # pragma: no cover
 
     if resp.status != 200:
-        log.error("\nError\n '%s'\n in response from URL:\n %s\n with query:\n %s" %
-                (resp.reason, _url, body))  # pragma: no cover
-        return HTTPInternalServerError("See logs for details")  # pragma: no cover
+        log.error("\nError\n '%s'\n in response from URL:\n %s\n " \
+                  "with query:\n %s" %
+                  (resp.reason, _url, body))  # pragma: no cover
+        return HTTPInternalServerError(
+                    "See logs for details")  # pragma: no cover
 
     # check for allowed content types
     if "content-type" not in resp:
