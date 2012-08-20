@@ -25,6 +25,7 @@ formalchemy_default_lon = 740000
 formalchemy_default_lat = 5860000
 formalchemy_available_functionalities = ""
 
+
 class DecimalJSON:
     def __init__(self, jsonp_param_name='callback'):
         self.jsonp_param_name = jsonp_param_name
@@ -100,6 +101,19 @@ def default_user_validator(request, username, password):
     return username if user and user.validate_password(password) else None
 
 
+def ogcproxy_route_predicate(info, request):
+    """ Serve as a custom route predicate function for ogcproxy.
+    We do not want the OGC proxy to be used to reach the app's
+    mapserv script. We just return False if the url includes
+    "mapserv". It is rather drastic, but works for us. """
+    url = request.params.get('url')
+    if url is None:
+        return False
+    if url.find('mapserv') > 0:
+        return False
+    return True
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -153,7 +167,9 @@ def includeme(config):
             route_name='tilecache')
 
     # add an OGCProxy view
-    config.include(papyrus_ogcproxy.includeme)
+    config.add_route('ogcproxy', '/ogcproxy',
+                     custom_predicates=(ogcproxy_route_predicate,))
+    config.add_view(papyrus_ogcproxy.views.ogcproxy, route_name='ogcproxy')
 
     # add routes to the mapserver proxy
     config.add_route('mapserverproxy', '/mapserv_proxy')
