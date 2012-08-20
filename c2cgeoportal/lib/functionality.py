@@ -2,6 +2,7 @@
 
 from c2cgeoportal import get_setting
 
+
 def _get_config_functionalities(name, registered, config):
     result = None
 

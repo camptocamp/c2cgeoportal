@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 def get_setting(settings, path, default=None):
     value = settings
     for p in path:
