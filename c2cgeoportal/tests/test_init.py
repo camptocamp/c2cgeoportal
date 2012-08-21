@@ -13,13 +13,9 @@ class Test_includeme(TestCase):
                 'srid': 900913,
                 'schema': 'main',
                 'parentschema': '',
-                'formalchemy_default_zoom': 0,
-                'formalchemy_default_lon': 0,
-                'formalchemy_default_lat': 0,
-                'formalchemy_available_functionalities': '',
-                'tilecache.cfg': 'c2cgeoportal/tests/tilecache.cfg'
-                }
-            )
+                'tilecache.cfg': 'c2cgeoportal/tests/tilecache.cfg',
+                'app.cfg': 'c2cgeoportal/tests/config.yaml'
+            })
 
     def test_set_user_validator_directive(self):
         import c2cgeoportal

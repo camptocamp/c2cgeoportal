@@ -198,10 +198,12 @@ class TestMapserverproxyView(TestCase):
 
         request = testing.DummyRequest()
         request.registry.settings = {
-                'mapserv.url': mapserv_url,
-                'registered_functionalities': '{}',
-                'anonymous_functionalities': '{}',
+                'mapserv_url': mapserv_url,
+                'functionalities': {
+                    'registered': {},
+                    'anonymous': {}
                 }
+            }
         if username:
             request.user = DBSession.query(User) \
                                     .filter_by(username=username).one()
@@ -495,8 +497,8 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["name=bar"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["name=bar"]}
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
@@ -506,29 +508,29 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=city","cols=country"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["cols=name","cols=city","cols=country"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=city"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["cols=name","cols=city"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
 
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name","cols=country"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["cols=name","cols=country"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["cols=name"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["cols=name"]}
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200) 
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
@@ -537,8 +539,8 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.method = 'POST'
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.registry.settings['anonymous_functionalities'] = \
-                '{"mapserver_substitution":["foo_bar"]}'
+        request.registry.settings['functionalities']['anonymous'] = \
+                {"mapserver_substitution":["foo_bar"]}
         request.params = dict(map=map,
                       s_test1='to be removed', S_TEST2='to be removed')
         # just pass in the log messagse

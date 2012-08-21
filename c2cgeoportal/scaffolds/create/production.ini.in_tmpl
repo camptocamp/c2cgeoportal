@@ -6,49 +6,20 @@ debug_authorization = false
 debug_notfound = false
 debug_routematch = false
 debug_templates = false
-default_locale_name = ${default_language}
 mako.directories = {{package}}:templates
     c2cgeoportal:templates
-authtkt_secret = ${authtkt_secret}
-
-sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
-tilecache.cfg = %(here)s/tilecache/tilecache.cfg
-mapserv.url = ${mapserv_url}
-print.url = ${print_url}
-
-parentschema = ${vars:parentschema}
-schema = ${vars:schema}
-
-jsbuild_cfg = ${jsbuild:config}
-jsbuild_root_dir = ${buildout:directory}
-
-# Default application language
-available_languages = ${available_languages}
-default_language = ${default_language}
-
-# FormAlchemy
-formalchemy_default_zoom = ${formalchemy_default_zoom}
-formalchemy_default_lon = ${formalchemy_default_lon}
-formalchemy_default_lat = ${formalchemy_default_lat}
-
-formalchemy_available_functionalities = ${formalchemy_available_functionalities}
-
-#Raster
-raster = ${raster|path-repr}
-
-# Functionalities
-# workaround to inline string
-anonymous_functionalities = ${anonymous_functionalities|path-repr}
-registered_functionalities = ${registered_functionalities|path-repr}
-webclient_string_functionalities = ${webclient_string_functionalities}
-webclient_array_functionalities = ${webclient_array_functionalities}
-
-# Themes
-external_themes_url = ${external_themes_url}
-
-# Mapserver
-external_mapserv.url = ${external_mapserv_url}
-tilecache_url = ${tilecache_url}
+app.cfg = %(here)s/config.yaml
+# Used to create secured cookies
+authtkt_secret: ${authtkt_secret}
+# Database informations
+sqlalchemy.url: postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
+schema: ${vars:schema}
+parentschema: ${vars:parent_schema}
+# For tilecache controller
+tilecache.cfg: ${buildout:directory}/tilecache/tilecache.cfg
+# For debug mode
+jsbuild_cfg: ${jsbuild:config}
+jsbuild_root_dir: ${buildout:directory}
 
 [filter:weberror]
 use = egg:WebError#error_catcher

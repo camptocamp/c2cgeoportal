@@ -7,7 +7,6 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
 from c2cgeoportal.lib.raster.georaster import GeoRaster
-from c2cgeoportal.lib.config import cleanup_json
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ class Raster(object):
 
     def __init__(self, request):
         self.request = request
-        self.rasters = cleanup_json(self.request.registry.settings['raster'])
+        self.rasters = self.request.registry.settings['raster']
 
     @view_config(route_name='raster', renderer='decimaljson')
     def raster(self):

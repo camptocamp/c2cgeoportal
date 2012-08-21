@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import yaml
+
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
 
@@ -13,7 +15,7 @@ import simplejson as json
 
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.views.tilecache import load_tilecache_config
-from c2cgeoportal.lib import dbreflection
+from c2cgeoportal.lib import dbreflection, get_setting
 
 # used by (sql|form)alchemy
 srid = None
@@ -21,9 +23,9 @@ schema = None
 parentschema = None
 formalchemy_language = None
 formalchemy_default_zoom = 10
-formalchemy_default_lon = 740000
-formalchemy_default_lat = 5860000
-formalchemy_available_functionalities = ""
+formalchemy_default_x = 740000
+formalchemy_default_y = 5860000
+formalchemy_available_functionalities = []
 
 
 class DecimalJSON:
@@ -49,16 +51,12 @@ class DecimalJSON:
 
 
 def locale_negotiator(request):
-    """ Our locale negotiator. Returns a locale name or None.
-    """
     lang = request.params.get('lang')
     if lang is None:
-        lang = request.registry.settings.get("default_language")
-        for l in list(request.accept_language):
-            if l in request.registry.settings. \
-                    get("available_languages").split():
-                lang = l
-                break
+        # if best_match returns None then Pyramid will use what's defined in
+        # the default_locale_name configuration variable
+        return request.accept_language.best_match(
+                request.registry.settings.get("available_locale_names"))
     return lang
 
 
@@ -117,13 +115,18 @@ def ogcproxy_route_predicate(info, request):
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
+
+    # update the settings object from the YAML application config file
+    settings = config.get_settings()
+    settings.update(yaml.load(file(settings.get('app.cfg'))))
+
     global srid
     global schema
     global parentschema
     global formalchemy_language
     global formalchemy_default_zoom
-    global formalchemy_default_lon
-    global formalchemy_default_lat
+    global formalchemy_default_x
+    global formalchemy_default_y
     global formalchemy_available_functionalities
 
     config.set_request_property(
@@ -248,12 +251,16 @@ def includeme(config):
     srid = config.get_settings()['srid']
     schema = config.get_settings()['schema']
     parentschema = config.get_settings()['parentschema']
-    formalchemy_default_zoom = \
-            config.get_settings()['formalchemy_default_zoom']
-    formalchemy_default_lon = config.get_settings()['formalchemy_default_lon']
-    formalchemy_default_lat = config.get_settings()['formalchemy_default_lat']
-    formalchemy_available_functionalities = \
-            config.get_settings()['formalchemy_available_functionalities']
+    settings = config.get_settings()
+    formalchemy_default_zoom = get_setting(settings,
+            ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
+    formalchemy_default_x = get_setting(settings,
+            ('admin_interface', 'map_x'), formalchemy_default_x)
+    formalchemy_default_y = get_setting(settings,
+            ('admin_interface', 'map_y'), formalchemy_default_y)
+    formalchemy_available_functionalities = get_setting(settings,
+            ('admin_interface', 'available_functionalities'),
+            formalchemy_available_functionalities)
 
     # register an admin UI
     config.formalchemy_admin('admin', package='c2cgeoportal',

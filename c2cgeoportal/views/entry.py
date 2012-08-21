@@ -18,6 +18,7 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
+from c2cgeoportal.lib import get_setting
 from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
         RestrictionArea, Role, layer_ra, role_ra
@@ -321,7 +322,7 @@ class Entry(object):
         errors = "\n"
 
         # retrieve layers metadata via GetCapabilities
-        wms_url = self.request.registry.settings['mapserv.url'] + \
+        wms_url = self.request.registry.settings['mapserv_url'] + \
             (('?role_id=' + str(role_id)) if role_id else '')
         log.info("WMS GetCapabilities for base url: %s" % wms_url)
         try:
@@ -377,8 +378,8 @@ class Entry(object):
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
         )
-        wfs_url = self.request.registry.settings['external_mapserv.url'] if external \
-                    else self.request.registry.settings['mapserv.url']
+        wfs_url = self.request.registry.settings['external_mapserv_url'] if external \
+                    else self.request.registry.settings['mapserv_url']
         if wfs_url.find('?') < 0:
             wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
@@ -404,8 +405,8 @@ class Entry(object):
         d['WFSTypes'] = json.dumps(self._WFSTypes())
         d['serverError'] = json.dumps(self.serverError)
 
-        if 'external_mapserv.url' in self.settings \
-                and self.settings['external_mapserv.url']:
+        if 'external_mapserv_url' in self.settings \
+                and self.settings['external_mapserv_url']:
             d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
         else:
             d['externalWFSTypes'] = '[]'
@@ -425,12 +426,17 @@ class Entry(object):
         d['tilecache_url'] = self.settings.get("tilecache_url")
 
         functionality = dict()
-        for func in self.settings.get("webclient_string_functionalities").split():
-            functionality[func] = get_functionality(func, self.settings, self.request)
+        for func in get_setting(self.settings,
+                ('functionalities', 'webclient_string'), []):
+            functionality[func] = get_functionality(func, self.settings,
+                    self.request)
         d['functionality'] = json.dumps(functionality)
+
         functionalities = dict()
-        for func in self.settings.get("webclient_array_functionalities").split():
-            functionalities[func] = get_functionalities(func, self.settings, self.request)
+        for func in get_setting(self.settings,
+                ('functionalities', 'webclient_array'), []):
+            functionalities[func] = get_functionalities(func, self.settings,
+                    self.request)
         d['functionalities'] = json.dumps(functionalities)
 
         # handle permalink_themes

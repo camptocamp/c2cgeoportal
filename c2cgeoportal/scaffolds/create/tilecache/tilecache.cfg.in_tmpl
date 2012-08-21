@@ -8,8 +8,8 @@ expire = 14400
 [DEFAULT]
 type = WMS
 module = tileforge.utils.layers.wms
-url = ${mapserv_url}
-srs = EPSG:21781
+url = http://${vars:host}/${vars:instanceid}/mapserv
+srs = EPSG:{{srid}}
 units = meters
 metadata_dpi = 72
 resolutions = 4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05
@@ -23,7 +23,7 @@ yorigin = top
 #metadata_image_postproc = optipng -q -zc9 -zm9 -zs3 -f0 %filename
 
 [metadata]
-wmts_gettile = ${wmts_url}
+wmts_gettile = http://${vars:host}/${vars:instanceid}/tilecache
 
 [plan]
 layers = plan

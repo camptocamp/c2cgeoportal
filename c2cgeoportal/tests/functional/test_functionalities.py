@@ -87,8 +87,10 @@ class TestFunctionalities(TestCase):
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
         settings = {
-            'anonymous_functionalities': '/var/www/vhosts/project/private/project/{}',
-            'registered_functionalities': '/var/www/vhosts/project/private/project/{}'
+            'functionalities': {
+                'anonymous': {},
+                'registered': {},
+            }
         }
         self.assertEquals(get_functionality('__test_s', settings, request), None);
         self.assertEquals(get_functionalities('__test_a', settings, request), []);
@@ -98,11 +100,13 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionalities('__test_a', settings, request2), ['db1', 'db2']);
 
         settings = {
-            'anonymous_functionalities': '/var/www/vhosts/project/private/project/{}',
-            'registered_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "registered",
-                "__test_a": ["r1", "r2"]
-            }'''
+            'functionalities': {
+                'anonymous': {},
+                'registered': {
+                    "__test_s": "registered",
+                    "__test_a": ["r1", "r2"]
+                }
+            }
         }
         self.assertEquals(get_functionality('__test_s', settings, request), None);
         self.assertEquals(get_functionalities('__test_a', settings, request), []);
@@ -112,11 +116,13 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionalities('__test_a', settings, request2), ['db1', 'db2']);
 
         settings = {
-            'anonymous_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "anonymous",
-                "__test_a": ["a1", "a2"]
-            }''',
-            'registered_functionalities': '/var/www/vhosts/project/private/project/{}'
+            'functionalities': {
+                'anonymous': {
+                    "__test_s": "anonymous",
+                    "__test_a": ["a1", "a2"]
+                },
+                'registered': {}
+            }
         }
         self.assertEquals(get_functionality('__test_s', settings, request), 'anonymous');
         self.assertEquals(get_functionalities('__test_a', settings, request), ['a1', 'a2']);
@@ -127,14 +133,16 @@ class TestFunctionalities(TestCase):
 
 
         settings = {
-            'anonymous_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "anonymous",
-                "__test_a": ["a1", "a2"]
-            }''',
-            'registered_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "registered",
-                "__test_a": ["r1", "r2"]
-            }'''
+            'functionalities': {
+                'anonymous': {
+                    "__test_s": "anonymous",
+                    "__test_a": ["a1", "a2"]
+                },
+                'registered': {
+                    "__test_s": "registered",
+                    "__test_a": ["r1", "r2"]
+                }
+            }
         }
         self.assertEquals(get_functionality('__test_s', settings, request), 'anonymous');
         self.assertEquals(get_functionalities('__test_a', settings, request), ['a1', 'a2']);
@@ -164,17 +172,19 @@ class TestFunctionalities(TestCase):
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
         settings = {
-            'anonymous_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "anonymous",
-                "__test_a": ["a1", "a2"]
-            }''',
-            'registered_functionalities': '''/var/www/vhosts/project/private/project/{
-                "__test_s": "registered",
-                "__test_a": ["r1", "r2"]
-            }''',
-            'webclient_string_functionalities': '__test_s',
-            'webclient_array_functionalities': '__test_a',
-            'mapserv.url': mapserv_url,
+            'functionalities': {
+                'anonymous': {
+                    "__test_s": "anonymous",
+                    "__test_a": ["a1", "a2"]
+                },
+                'registered': {
+                    "__test_s": "registered",
+                    "__test_a": ["r1", "r2"]
+                },
+                'webclient_string': ['__test_s'],
+                'webclient_array': ['__test_a'],
+            },
+            'mapserv_url': mapserv_url,
         }
         request.registry.settings = settings
         request1.registry.settings = settings

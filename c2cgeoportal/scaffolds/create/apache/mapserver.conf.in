@@ -4,7 +4,6 @@ ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/mapserv
    # the following lines:
    Order Deny,Allow
    Deny from all
-   Allow from ${vars:mapserv_host}
    ${vars:mapserv_allow}
 
    # SetHandler must be set to "cgi-script" when running the project on windows

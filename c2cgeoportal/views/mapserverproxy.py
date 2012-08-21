@@ -65,8 +65,8 @@ def proxy(request):
     query_string = urllib.urlencode(params)
 
     # get URL
-    _url = request.registry.settings['external_mapserv.url'] if external \
-           else request.registry.settings['mapserv.url']
+    _url = request.registry.settings['external_mapserv_url'] if external \
+           else request.registry.settings['mapserv_url']
     _url += '?' + query_string
     log.info("Querying mapserver proxy at URL: %s." % _url)
 
