@@ -67,14 +67,15 @@ steps:
     -Tempita = x.y.z
     +tempita = x.y.z
 
-5. Apply the ``c2cgeoportal_update`` scaffold (``IOError: No egg-info directory
-   found (...)`` can be ignored).
-
-   For ``c2cgeoportal`` 0.7 and higher::
+5. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
-         ../<project_name> package=<package_name>
+         ../<project_name>
 
+.. note::
+    Don't add any '/' after the project name
+
+.. note::
    For ``c2cgeoportal`` 0.6 and lower::
 
        $ ./buildout/bin/paster create --template=c2cgeoportal_update \
