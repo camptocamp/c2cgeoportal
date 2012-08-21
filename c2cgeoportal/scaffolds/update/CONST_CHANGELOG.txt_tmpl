@@ -429,10 +429,10 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 20. In the file '.gitignore' the following lines should be added:
     *.pyc
     deploy/hooks/post-restore-database
-    <project>/static/mobile/resources/sass/.sass-cache
-    <project>/static/mobile/archive/
-    <project>/static/mobile/build/
-    <project>/static/mobile/openlayers-mobile.js
+    {{package}}/static/mobile/resources/sass/.sass-cache
+    {{package}}/static/mobile/archive/
+    {{package}}/static/mobile/build/
+    {{package}}/static/mobile/openlayers-mobile.js
 
 
 Version 0.7
