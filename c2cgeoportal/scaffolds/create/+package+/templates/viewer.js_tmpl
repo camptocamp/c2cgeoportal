@@ -38,6 +38,9 @@ Ext.onReady(function() {
 
     var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
+    var FUNCTIONALITY = ${functionality | n};
+    var FUNCTIONALITIES = ${functionalities | n};
+
     // Used to transmit event throw the application
     var EVENTS = new Ext.util.Observable();
 
@@ -190,7 +193,8 @@ Ext.onReady(function() {
             events: EVENTS
         }, 
         {
-            ptype: "cgxp_mapopacityslider"
+            ptype: "cgxp_mapopacityslider",
+            defaultBaseLayerRef: FUNCTIONALITY.default_basemap
         },
         {
             ptype: "gxp_zoomtoextent",
