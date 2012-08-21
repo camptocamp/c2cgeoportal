@@ -117,6 +117,8 @@ then to create it use::
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name, respectively.
 
+.. _integrator_install_application_create_user:
+
 Create a database user
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -222,6 +224,8 @@ apache/mapserver.conf.in
 #. The path to Mapserver executable must be modified::
 
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
+
+.. _integrator_install_application_bootstrap_buildout:
 
 Buildout bootstrap
 ~~~~~~~~~~~~~~~~~~

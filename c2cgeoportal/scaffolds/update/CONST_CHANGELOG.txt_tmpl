@@ -130,8 +130,8 @@ TODO fix the array (comma is missing)
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
 # architecture:
-external_themes_url: $${vars:host}/$${vars:parent_instanceid}/wsgi/themes
-external_mapserv_url: $${vars:host}/$${vars:parent_instanceid}/mapserv
+external_themes_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/themes
+external_mapserv_url: http://$${vars:host}/$${vars:parent_instanceid}/mapserv
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
@@ -146,16 +146,16 @@ print_url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instancei
 
 # For base layers
 # This value mean that we use the parent tiles
-tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
+tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 # ------------------------------------------------------------------------
 
     - Then interpretate it by running:
         ./buildout/bin/buildout install template
 
     - Rename the generated file as the source file:
-        mv config.json config.json.in
+        mv config.yaml config.yaml.in
 
-    - In this file (config.json.in) there are some lines that contain
+    - In this file (config.yaml.in) there are some lines that contain
         « TODO fix the array (comma is missing) ». This indicates that the
         array is not correctly formatted. Fix the formatting by adding the
         missing comma and remove the TODO lines.
@@ -170,7 +170,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         By:
         url = http://${vars:host}/${vars:instanceid}/mapserv
 
-    - Add the following line in the [app:app] of the production.ini.in
+    - Add the following line in the [app:{{package}}] of the production.ini.in
             and the developement.ini.in:
         app.cfg = %(here)s/config.yaml
 
@@ -196,7 +196,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         tilecache_url
 
     - Re apply the update scaffold to regenerate the CONST_buildout file:
-        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update
+        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../{{project}}
 
     - In the file ``print/templates/print.mako.in`` replace
         ``${vars:mapserv_host}`` and ``${vars:wsgi_host}`` by ``${vars:host}``.
