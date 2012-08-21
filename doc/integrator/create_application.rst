@@ -129,7 +129,7 @@ Following this rule is important for easier updates.
 
         ./buildout/bin/pcreate --overwrite -s <project_template> ../$PROJECT
 
-``pcreate`` don't doesn't conserve file permission, so restore it manually::
+``pcreate`` doesn't conserve file permission, so restore it manually::
 
     chmod +x ../$PROJECT/deploy/hooks/post-restore-database.in 
 
