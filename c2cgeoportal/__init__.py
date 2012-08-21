@@ -253,13 +253,13 @@ def includeme(config):
     parentschema = config.get_settings()['parentschema']
     settings = config.get_settings()
     formalchemy_default_zoom = get_setting(settings,
-            ['admin_interface', 'map_zoom'], formalchemy_default_zoom)
+            ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
     formalchemy_default_x = get_setting(settings,
-            ['admin_interface', 'map_x'], formalchemy_default_x)
+            ('admin_interface', 'map_x'), formalchemy_default_x)
     formalchemy_default_y = get_setting(settings,
-            ['admin_interface', 'map_y'], formalchemy_default_y)
+            ('admin_interface', 'map_y'), formalchemy_default_y)
     formalchemy_available_functionalities = get_setting(settings,
-            ['admin_interface', 'available_functionalities'],
+            ('admin_interface', 'available_functionalities'),
             formalchemy_available_functionalities)
 
     # register an admin UI

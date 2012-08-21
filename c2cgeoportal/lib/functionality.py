@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from c2cgeoportal import get_setting
+from c2cgeoportal.lib import get_setting
 
 
 def _get_config_functionalities(name, registered, config):
@@ -8,10 +8,10 @@ def _get_config_functionalities(name, registered, config):
 
     if registered:
         result = get_setting(config,
-                ['functionalities', 'registered', name])
+                ('functionalities', 'registered', name))
     if result is None:
         result = get_setting(config,
-                ['functionalities', 'anonymous', name])
+                ('functionalities', 'anonymous', name))
 
     return result
 

@@ -427,14 +427,14 @@ class Entry(object):
 
         functionality = dict()
         for func in get_setting(self.settings,
-                ['functionalities', 'webclient_string'], []):
+                ('functionalities', 'webclient_string'), []):
             functionality[func] = get_functionality(func, self.settings,
                     self.request)
         d['functionality'] = json.dumps(functionality)
 
         functionalities = dict()
         for func in get_setting(self.settings,
-                ['functionalities', 'webclient_array'], []):
+                ('functionalities', 'webclient_array'), []):
             functionalities[func] = get_functionalities(func, self.settings,
                     self.request)
         d['functionalities'] = json.dumps(functionalities)
