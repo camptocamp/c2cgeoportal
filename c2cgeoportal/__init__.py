@@ -8,7 +8,6 @@ from pyramid.security import unauthenticated_userid
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
-import papyrus_ogcproxy
 
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
@@ -172,7 +171,7 @@ def includeme(config):
     # add an OGCProxy view
     config.add_route('ogcproxy', '/ogcproxy',
                      custom_predicates=(ogcproxy_route_predicate,))
-    config.add_view(papyrus_ogcproxy.views.ogcproxy, route_name='ogcproxy')
+    config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
 
     # add routes to the mapserver proxy
     config.add_route('mapserverproxy', '/mapserv_proxy')
