@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import traceback
 import urllib
 import logging
 import json
@@ -330,7 +329,6 @@ class Entry(object):
         except AttributeError:
             errors = _("WARNING! an error occured while trying to read the mapfile and recover the themes")
             self.serverError.append(errors)
-            traceback.print_stack()
             log.exception(errors)
 
             return (exportThemes, errors)
