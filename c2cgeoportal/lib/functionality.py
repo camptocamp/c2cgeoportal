@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from c2cgeoportal.lib.config import cleanup_json
-
-
-def _get_json_functionalities(value, name, config):
-    obj = cleanup_json(config[value])
-    return obj[name] if name in obj else None
+from c2cgeoportal.lib import get_setting
 
 
 def _get_config_functionalities(name, registered, config):
-    result = _get_json_functionalities('registered_functionalities',
-            name, config)
-    return result if result != None and registered \
-        else _get_json_functionalities('anonymous_functionalities',
-            name, config)
+    result = None
+
+    if registered:
+        result = get_setting(config,
+                ('functionalities', 'registered', name))
+    if result is None:
+        result = get_setting(config,
+                ('functionalities', 'anonymous', name))
+
+    return result
 
 
 def _get_db_functionalities(name, request):

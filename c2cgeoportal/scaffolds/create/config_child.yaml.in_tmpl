@@ -1,0 +1,65 @@
+# The application's default language. This is the language used by
+# the application if no specific language is specified in the URLs.
+# This also defines the language used for the text search.
+default_locale_name: fr
+
+# The set of languages supported by the applications.
+available_locale_names:
+- en
+- fr
+- de
+
+admin_interface:
+# Default values for the admin interface's maps.
+    map_x: 740000
+    map_y: 5860000
+    map_zoom: 10
+
+# The list of functionalities that can be configured
+# through the admin interface.
+    available_functionalities:
+    - default_basemap
+    - print_template
+    - mapserver_substitution
+
+functionalities:
+# Functionalities that are accessible to anonymous
+# users.
+    anonymous:
+        print_template:
+        - 1 A4 portrait
+        - 2 A3 landscape
+
+# Functionalities that are accessible to authenticated
+# users with no associated functionalities in the
+# database.
+    registered:
+
+# Functionalities that should be available
+# on the web client as a unique value.
+    webclient_string:
+    - default_basemap
+
+# Same than before arranged as an array.
+    webclient_array:
+
+# Define URLs to the parent application. Only useful is
+# this application is a child application in a parent/child
+# architecture.
+external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
+external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
+
+# The "raster web services" configuration. See the "raster"
+# chapter in the integrator documentation.
+raster:
+
+# For mapserver proxy
+mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
+
+# For print proxy
+# This value mean that we use the parent print server
+print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
+
+# For base layers
+# This value mean that we use the parent tiles
+tilecache_url: http://${vars:host}/${vars:parent_instanceid}

@@ -34,7 +34,7 @@ class Printproxy(object):
         query_string = urllib.urlencode(params)
 
         # get URL
-        _url = self.config['print.url'] + 'info.json' + '?' + query_string
+        _url = self.config['print_url'] + 'info.json' + '?' + query_string
         log.info("Get print capabilities from %s." % _url)
 
         # forward request to target (without Host Header)
@@ -74,7 +74,7 @@ class Printproxy(object):
         query_string = urllib.urlencode(params)
 
         # get URL
-        _url = self.config['print.url'] + 'create.json' + '?' + query_string
+        _url = self.config['print_url'] + 'create.json' + '?' + query_string
         log.info("Send print query to %s." % _url)
 
         # transform print request body as appropriate
@@ -99,7 +99,7 @@ class Printproxy(object):
         file = self.request.matchdict.get('file')
 
         # get URL
-        _url = self.config['print.url'] + file + '.printout'
+        _url = self.config['print_url'] + file + '.printout'
         log.info("Get print document from %s." % _url)
 
         # forward request to target (without Host Header)

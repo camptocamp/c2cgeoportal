@@ -8,7 +8,7 @@ parts = eggs
         po2mo 
         print-template 
         print-war
-develop = . 
+develop = .
 index = http://pypi.camptocamp.net/pypi
 allow-hosts = pypi.camptocamp.net
 find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
@@ -35,8 +35,8 @@ bin-directory = buildout/bin
 [vars]
 # project instance id
 instanceid = override_me
-# the Unix user under which the modwsgi daemon processes are executed,          
-# can be overriden in development-specific buildout config files                
+# the Unix user under which the modwsgi daemon processes are executed,
+# can be overriden in development-specific buildout config files
 modwsgi_user = www-data
 # url-path where the instance must respond.
 # defaults is '/${vars:instanceid}/wsgi'.
@@ -55,20 +55,8 @@ dbport = 5432
 db = override_me
 # sqlalchemy schema
 schema = webapp
-# sqlalchemy parent project schema
-parentschema = 
-# WSGI host
-wsgi_host = override_me
-# wmts tiles host
-wmts_host = override_me
-# wmts tiles url
-wmts_url = http://${vars:wmts_host}/${vars:instanceid}/tilecache
-# mapserv host
-mapserv_host = override_me
-# mapserv URL
-mapserv_url = http://${vars:mapserv_host}/${vars:instanceid}/mapserv
 # mapserver apache allows for clients (ex: Allow from camptocamp.com)
-mapserv_allow =  
+mapserv_allow = Allow from ${vars:host}
 # mapserver connexion string
 mapserver_connection = user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}
 # mapserver join tables
@@ -76,9 +64,9 @@ mapserver_join_tables = ${vars:schema}.restrictionarea AS ra, ${vars:schema}.rol
 # mapserver visible area
 mapserver_join_area = ra.area
 # mapserver join close
-mapserver_join_where = rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = 
+mapserver_join_where = rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name =
 # mapserver metadata for validation
-mapserver_layer_metadata = 
+mapserver_layer_metadata =
     "default_role_id" "-1"
     "role_id_validation_pattern" "^-?[0-9]*$"
 # mapfile data subselect
@@ -86,39 +74,11 @@ mapfile_data_subselect = SELECT ST_Collect(ra.area) FROM main.restrictionarea AS
 # mapserver filter on role id only
 mapfile_data_noarea_subselect = SELECT rra.role_id FROM ${vars:mapserver_join_tables} WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name =
 # Uncomment to define it if you want to use an external tilecache
-tilecache_url = 
-# print host
-print_host = override_me
+tilecache_url =
 # print path
 print_path = /print-c2cgeoportal-${vars:instanceid}/pdf/
-# print URL
-print_url = http://${vars:print_host}:8080${vars:print_path}
 # port for the waitress web server
 waitress_port = 5000
-
-# languages
-available_languages = en fr de
-default_language = fr
-
-# for formalchemy OpenLayers map
-formalchemy_default_zoom = 10
-formalchemy_default_lon = 740000
-formalchemy_default_lat = 5860000
-
-formalchemy_available_functionalities = default_basemap print_template mapserver_substitution
-
-anonymous_functionalities = {
-        "print_template": ["1 A4 portrait", "2 A3 landscape"]
-    }
-registered_functionalities = {
-    }
-webclient_string_functionalities = default_basemap
-webclient_array_functionalities = 
-
-# optional external (parent) themes provider URL example: http://example.com/main/wsgi/themes
-external_themes_url = 
-# optional external (parent) mapserver url
-external_mapserv_url =
 
 [eggs]
 recipe = z3c.recipe.scripts
@@ -143,7 +103,7 @@ cmds =
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
-cmds = 
+cmds =
     >>> from subprocess import call
     >>> from os.path import join
     >>> cmd = join('buildout', 'bin', 'print_tpl')
@@ -225,7 +185,7 @@ cmds =
 
 [cssbuild]
 recipe = c2c.recipe.cssmin
-input = 
+input =
     {{package}}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
     {{package}}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
     {{package}}/static/lib/cgxp/openlayers/theme/default/style.css
@@ -243,4 +203,3 @@ output = {{package}}/static/build/app.css
 [po2mo]
 recipe = c2c.recipe.msgfmt
 po-directory = {{package}}/locale/
-

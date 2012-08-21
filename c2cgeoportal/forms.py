@@ -21,7 +21,7 @@ from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import models
 from c2cgeoportal import (formalchemy_default_zoom,
-        formalchemy_default_lon, formalchemy_default_lat,
+        formalchemy_default_x, formalchemy_default_y,
         formalchemy_available_functionalities)
 
 __all__ = ['Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
@@ -356,7 +356,7 @@ Theme.configure(exclude=[Theme.parents])
 # Functionality
 Functionality = FieldSet(models.Functionality)
 Functionality.name.set(renderer=fields.SelectFieldRenderer,  \
-        options=formalchemy_available_functionalities.split())
+        options=formalchemy_available_functionalities)
 Functionality.value.set(metadata=dict(mandatory='')).required()
 
 # RestrictionArea
@@ -368,8 +368,8 @@ RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('map_srid', 900913),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
-    ('default_lon', formalchemy_default_lon),
-    ('default_lat', formalchemy_default_lat),
+    ('default_lon', formalchemy_default_x),
+    ('default_lat', formalchemy_default_y),
     # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
     # and we want to use our own build script.
     ('openlayers_lib', 'none')
@@ -392,8 +392,8 @@ Role.extent.set(label=_(u'Extent'), options=[
     ('map_srid', 900913),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
-    ('default_lon', formalchemy_default_lon),
-    ('default_lat', formalchemy_default_lat),
+    ('default_lon', formalchemy_default_x),
+    ('default_lat', formalchemy_default_y),
     # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
     # and we want to use our own build script.
     ('openlayers_lib', 'none')

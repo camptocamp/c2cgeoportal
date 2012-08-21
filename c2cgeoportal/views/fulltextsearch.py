@@ -21,10 +21,10 @@ _language_dict = {
 def fulltextsearch(request):
 
     try:
-        lang = request.registry.settings['default_language']
+        lang = request.registry.settings['default_locale_name']
     except KeyError:
         return HTTPInternalServerError(
-                detail='default_language not defined in settings')
+                detail='default_locale_name not defined in settings')
     try:
         lang = _language_dict[lang]
     except KeyError:

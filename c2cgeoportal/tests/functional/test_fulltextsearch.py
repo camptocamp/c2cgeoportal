@@ -11,7 +11,7 @@ class TestFulltextsearchView(TestCase):
 
     def setUp(self):
         self.config = testing.setUp(
-                settings=dict(default_language='fr')
+                settings=dict(default_locale_name='fr')
                 )
 
         import transaction
@@ -44,7 +44,7 @@ class TestFulltextsearchView(TestCase):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
-        del(self.config.registry.settings['default_language'])
+        del(self.config.registry.settings['default_locale_name'])
         request = testing.DummyRequest()
         response = fulltextsearch(request)
         self.assertTrue(isinstance(response, HTTPInternalServerError))
@@ -53,7 +53,7 @@ class TestFulltextsearchView(TestCase):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
-        self.config.registry.settings['default_language'] = 'it'
+        self.config.registry.settings['default_locale_name'] = 'it'
         request = testing.DummyRequest()
         response = fulltextsearch(request)
         self.assertTrue(isinstance(response, HTTPInternalServerError))

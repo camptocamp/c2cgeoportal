@@ -27,13 +27,10 @@ hosts:
   - !localMatch
     dummy: true
   - !dnsMatch
-    host: ${vars:mapserv_host}
+    host: ${vars:host}
     port: 80 
   - !dnsMatch
-    host: ${vars:wsgi_host}
-    port: 80
-  - !dnsMatch
-    host: ${vars:wsgi_host}
+    host: ${vars:host}
     port: ${vars:waitress_port}
 
 
