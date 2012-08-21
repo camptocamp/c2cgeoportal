@@ -29,6 +29,7 @@ functionalities:
         print_template:
         - 1 A4 portrait
         - 2 A3 landscape
+        default_basemap: plan
 
 # Functionalities that are accessible to authenticated
 # users with no associated functionalities in the
