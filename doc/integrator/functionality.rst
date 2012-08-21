@@ -1,4 +1,4 @@
-.. _integrator_functionalities:
+.. _integrator_functionality:
 
 Functionality
 =============
