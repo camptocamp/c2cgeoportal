@@ -196,7 +196,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         tilecache_url
 
     - Re apply the update scaffold to regenerate the CONST_buildout file:
-        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update
+        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../{{project}}
 
     - In the file ``print/templates/print.mako.in`` replace
         ``${vars:mapserv_host}`` and ``${vars:wsgi_host}`` by ``${vars:host}``.
