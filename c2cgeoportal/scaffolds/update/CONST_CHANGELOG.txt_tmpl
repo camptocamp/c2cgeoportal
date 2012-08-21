@@ -153,9 +153,9 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}
         ./buildout/bin/buildout install template
 
     - Rename the generated file as the source file:
-        mv config.json config.json.in
+        mv config.yaml config.yaml.in
 
-    - In this file (config.json.in) there are some lines that contain
+    - In this file (config.yaml.in) there are some lines that contain
         « TODO fix the array (comma is missing) ». This indicates that the
         array is not correctly formatted. Fix the formatting by adding the
         missing comma and remove the TODO lines.
