@@ -73,7 +73,7 @@ steps:
          ../<project_name>
 
 .. note::
-    Don't add any '/' after the project name
+    Don't add any '/' after the project name.
 
 .. note::
    For ``c2cgeoportal`` 0.6 and lower::
