@@ -61,7 +61,7 @@ The ``config.yaml.in`` file includes variables for managing *functionality*.
     and ``2 A3 landscape`` layouts only. And their default base layer is the
     ``plan`` layer.
 
-``functionalities``/``registered_functionalities``
+``functionalities``/``registered``
     The functionality accessible to all authenticated users. This is a list of
     key/value pairs, of the same form of ``anonymous_functionalities``.
 
