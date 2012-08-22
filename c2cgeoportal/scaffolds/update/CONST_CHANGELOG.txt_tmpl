@@ -418,7 +418,10 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     ``[app:app]``. In this way the ``manage_db`` and ``manage_users``
     commands can be used without specifying any application name using
     the ``--app-name`` switch - "app" is the default. This change is
-    recommended, but optional.
+    recommended, but optional. In case you don't do it, you should add
+    the following configuration in your ``buildout.cfg`` file:
+        [modwsgi]
+        config-file = ${buildout:directory}/production.ini
 
 17. Add FUNCTIONALITY and FUNCTIONALITIES vars in the viewer.js and use them in
     the map opacity slider.  see:
