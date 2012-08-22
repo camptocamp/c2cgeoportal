@@ -269,6 +269,8 @@ $(document).ready(function(){
      */
 
     // store field correspondence
+    // this is used to have two times the same layer in a tree,
+    // than when we check or uncheck one, the other should do the same
     $.fn.adminapp.checkboxcorrespondance = {};
     var checkboxtrees = $(".checkboxtree");
     for (var i = 0, leni = checkboxtrees.length ; i < leni ; i++) {
