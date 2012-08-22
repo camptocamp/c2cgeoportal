@@ -152,6 +152,7 @@ Ext.onReady(function() {
                   defaultThemes: ${permalink_themes | n},
                 % else:
                   defaultThemes: ["lieu_interet_thm"],
+                % endif
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
