@@ -268,7 +268,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
    use the HTTPS scheme by specifing to c2cgeoportal an HTTP header to test for some value. For instance:
    - In config.yaml.in:
        https_flag_header: X_HTTPS
-       https_flag_value: on
+       https_flag_value: 'on'
 
 7. New raster and profile web services are now available and require some configuration.
     For the configuration of these web services read the documentation at
