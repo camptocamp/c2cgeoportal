@@ -134,10 +134,7 @@ We use a specific user for the application, ``www-data`` by default.
 
 Give the rights to the user::
 
-    $ sudo -u postgres psql <db_name>
-    GRANT ALL ON SCHEMA <schema_name> TO "www-data";
-    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "www-data";
-    \q
+    sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name> TO "www-data"' <db_name>
 
 .. note::
 
