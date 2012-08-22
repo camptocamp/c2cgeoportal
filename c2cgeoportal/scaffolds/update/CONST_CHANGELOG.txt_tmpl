@@ -267,8 +267,8 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
    you can make sure that all generated URLs (CSS and Javascript files, images, MapServer requests, etc.)
    use the HTTPS scheme by specifing to c2cgeoportal an HTTP header to test for some value. For instance:
    - In config.yaml.in:
-       https_flag_header = X_HTTPS
-       https_flag_value = on
+       https_flag_header: X_HTTPS
+       https_flag_value: on
 
 7. New raster and profile web services are now available and require some configuration.
     For the configuration of these web services read the documentation at
@@ -404,12 +404,12 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     rm -rf /tmp/<project_name>
 
 15. The cgxp-install part is now deactivated by default, so if you still use
-    SVN, you should add in your ``bulidout.cfg`` file, section ``[buildout]``:
+    SVN, you should add in your ``buildout.cfg`` file, section ``[buildout]``:
 
         parts += cgxp-install
 
     If you are on Git the this line isn't needed any more in
-    your ``bulidout.cfg`` file, section ``[buildout]``:
+    your ``buildout.cfg`` file, section ``[buildout]``:
 
         parts -= cgxp-install
 
