@@ -415,10 +415,15 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
 16. It is recommended to edit the project's ``development.ini.in`` and
     ``production.ini.in`` files and change ``[app:{{package}}]`` to
-    ``[app:app]``. In this way the ``manage_db`` and ``manage_users``
-    commands can be used without specifying any application name using
-    the ``--app-name`` switch - "app" is the default. This change is
-    recommended, but optional.
+    ``[app:app]``, and in the section ``[pipeline:main]`` replace
+    ``pipeline = weberror fanstatic {{package}}`` by
+    ``pipeline = weberror fanstatic app``. In this way the ``manage_db``
+    and ``manage_users`` commands can be used without specifying any
+    application name using the ``--app-name`` switch - "app" is the default.
+    This change is recommended, but optional.
+
+    You should also modify your create_db script like this commit:
+        https://github.com/camptocamp/c2cgeoportal/commit/8ae339c526719de953027beb72f5e1b649a93780
 
 17. Add FUNCTIONALITY and FUNCTIONALITIES vars in the viewer.js and use them in
     the map opacity slider.  see:
