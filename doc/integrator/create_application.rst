@@ -129,9 +129,15 @@ Following this rule is important for easier updates.
 
         ./buildout/bin/pcreate --overwrite -s <project_template> ../$PROJECT
 
+
+Go to your new project::
+
+    cd ../$PROJECT
+
+
 ``pcreate`` doesn't conserve file permission, so restore it manually::
 
-    chmod +x ../$PROJECT/deploy/hooks/post-restore-database.in 
+    chmod +x deploy/hooks/post-restore-database.in 
 
 
 If this application is not part of a parent/child architecture, or is
@@ -171,7 +177,6 @@ Put the application under revision control
 Remove the ``egg-info`` directory, as it shouldn't be added to the
 application's source repository::
 
-    cd ../$PROJECT
     rm -rf *.egg-info
 
 Now is a good time to put the application source code under revision
