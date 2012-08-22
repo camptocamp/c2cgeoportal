@@ -275,7 +275,7 @@ $(document).ready(function(){
         var checkboxlist = $("#" + checkboxtrees[i].id + " input");
         for (var j = 0, lenj = checkboxlist.length ; j < lenj ; j++) {
             if (checkboxlist[j].id) {
-                var samenamecheckbox = $("input[value=" + checkboxlist[j].value + ']');
+                var samenamecheckbox = $("#" + checkboxtrees[i].id + " input[value=" + checkboxlist[j].value + ']');
                 if (samenamecheckbox.length > 1) {
                     $.fn.adminapp.checkboxcorrespondance[checkboxlist[j].id] = samenamecheckbox;
                     $("#" + checkboxlist[j].id).bind('change', $.fn.adminapp.syncField);
