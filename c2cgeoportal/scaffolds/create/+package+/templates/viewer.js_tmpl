@@ -167,7 +167,7 @@ Ext.onReady(function() {
             // it is intended to be reactivated this once mapserver is fixed
             //maxFeatures: 200,
             srsName: 'EPSG:{{srid}}',
-            featureType: "query_layer",
+            featureTypes: ["query_layer"],
         }, 
     % endif
         {
