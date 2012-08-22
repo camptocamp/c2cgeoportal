@@ -136,7 +136,7 @@ output = /srv/tomcat/tomcat1/webapps/print-c2cgeoportal-${vars:instanceid}.war
 [modwsgi]
 recipe = collective.recipe.modwsgi
 eggs = {{package}}
-config-file = ${buildout:directory}/production.ini
+config-file = ${buildout:directory}/production.ini#app
 
 [template]
 recipe = z3c.recipe.filetemplate
