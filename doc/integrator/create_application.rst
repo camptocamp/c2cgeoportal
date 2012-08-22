@@ -153,17 +153,6 @@ main Buildout configuration file, and ``config_child.yaml.in`` the config file::
     mv buildout_child.cfg buildout.cfg
     mv config_child.yaml.in config.yaml.in
 
-If this application is a ``child`` in the file config.yaml.in replace::
-
-    external_themes_url:
-    external_mapserv_url:
-
-by::
-
-    external_themes_url: ${vars:host}/${vars:parent_instanceid}/wsgi/themes
-    external_mapserv_url: ${vars:host}/${vars:parent_instanceid}/mapserv
-
-
 .. note::
 
     In a parent/child architecture one instance of the application is the
