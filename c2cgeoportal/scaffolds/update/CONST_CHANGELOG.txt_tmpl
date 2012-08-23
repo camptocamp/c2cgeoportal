@@ -165,7 +165,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         "wms_onlineresource" "http://${vars:wsgi_host}/${vars:instanceid}/wsgi/mapserv_proxy"
         by
         "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wsgi/mapserv_proxy"
-        
+
     - Add the following line in the [app:{{package}}] of the production.ini.in
             and the developement.ini.in:
         app.cfg = %(here)s/config.yaml
@@ -407,19 +407,19 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     rm -rf /tmp/{{project}}
 
 16. The cgxp-install part is now deactivated by default, so if you still use
-    SVN, you have to add it back in your ``buildout.cfg`` file, section 
+    SVN, you have to add it back in your ``buildout.cfg`` file, section
     ``[buildout]``. Since this part needs to be run before jsbuild and cssbuild,
     you have to override the whole parts list. For instance:
 
-        parts = eggs 
-                activate 
-                template 
-                modwsgi 
+        parts = eggs
+                activate
+                template
+                modwsgi
                 cgxp-install
-                jsbuild 
-                cssbuild 
-                po2mo 
-                print-template 
+                jsbuild
+                cssbuild
+                po2mo
+                print-template
                 print-war
 
     If you are on Git the this line isn't needed any more in
