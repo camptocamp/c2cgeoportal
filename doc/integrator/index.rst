@@ -22,3 +22,4 @@ Content:
    mobile
    raster
    functionality
+   checker

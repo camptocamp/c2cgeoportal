@@ -197,15 +197,21 @@ def includeme(config):
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route('permalinktheme', '/theme/*themes')
 
-    # checker routes
-    config.add_route('checker_summary', '/checker_summary')
+    # checker routes, Checkers are web services to test and assess that 
+    # the application is correctly functioning.
+    # These web services are used by tools like (nagios).
     config.add_route('checker_main', '/checker_main')
+    config.add_route('checker_viewer', '/checker_viewer')
+    config.add_route('checker_edit', '/checker_edit')
+    config.add_route('checker_edit_js', '/checker_edit_js')
     config.add_route('checker_apiloader', '/checker_apiloader')
     config.add_route('checker_printcapabilities', '/checker_printcapabilities')
     config.add_route('checker_pdf', '/checker_pdf')
     config.add_route('checker_fts', '/checker_fts')
     config.add_route('checker_wmscapabilities', '/checker_wmscapabilities')
     config.add_route('checker_wfscapabilities', '/checker_wfscapabilities')
+    # collector
+    config.add_route('check_collector', '/check_collector')
 
     # print proxy routes
     config.add_route('printproxy', '/printproxy')
