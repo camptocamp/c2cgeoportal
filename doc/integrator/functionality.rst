@@ -65,49 +65,26 @@ The ``config.yaml.in`` file includes variables for managing *functionality*.
     The functionality accessible to all authenticated users. This is a list of
     key/value pairs, of the same form of ``anonymous_functionalities``.
 
-``functionalities``/``webclient_string``
-
+``functionalities``/``available_in_templates``
     The functionality that is made available to Mako templates (e.g.
-    ``viewer.js``) through the ``functionality`` template variable as
-    a dictionary whose values are scalars.
+    ``viewer.js``) through the ``functionality`` template variable.
 
     For example::
 
         functionalities:
-            webclient_string:
-            - default_basemap
+            available_in_templates:
+            - functionality_name
 
-    In this case, and if the user can effectively use the
-    ``default_basemap``/``plan`` functionality, then the value of the
-    ``functionality`` template variable will be a dict with one key/value pair:
-    ``"default_basemap"``/``"plan"``.
+    (``functionality_name`` is just a random name.)
 
-    .. note::
-
-        ``viewer.js`` actually creates a js variable named ``FUNCTIONALITY``
-        from the ``functionality`` dict. For example::
-
-            var FUNCTIONALITY = {"default_basemap": "plan"};
-
-``functionalities``/``webclient_array``
-    The functionality that is made available to Mako templates (e.g.
-    ``viewer.js``) through the ``functionalities`` template variable as
-    a dictionary whose values are scalars.
-
-    For example::
-
-        functionalities:
-            webclient_array:
-            - default_basemap
-
-    In this case, and if the user can use both ``default_basemap``/``plan`` and
-    ``default_basemap``/``ortho``, then the value of the ``functionalities``
-    template variable will be a dict with one key/value pair:
-    ``"default_basemap"``/``["plan","ortho"]``.
+    With this, if the user is permitted to use, say,
+    ``functionality_name``/``value1`` and ``functionality_name``/``value2``,
+    then the ``functionality`` template variable will be set to a dict with one
+    key/value pair: ``"functionality_name"``/``["value1","value2"]``.
 
     .. note::
 
-        ``viewer.js`` actually creates a js variable named ``FUNCTIONALITIES``
-        from the ``functionalities`` dict. For example::
+        The ``viewer.js`` Mako template creates a js variable named
+        ``FUNCTIONALITY`` from the ``functionality`` dict. For example::
 
-            var FUNCTIONALITIES = {"default_basemap": ["plan", "ortho"]};
+            var FUNCTIONALITY = {"functionality_name": ["value1", "value2"]};

@@ -11,7 +11,7 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.lib.functionality import get_functionalities
+from c2cgeoportal.lib.functionality import get_functionality
 
 log = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class Printproxy(object):
     def info(self):
         """ Get print capabilities. """
 
-        templates = get_functionalities('print_template', \
+        templates = get_functionality('print_template', \
                 self.config, self.request)
 
         # get query string
@@ -86,7 +86,8 @@ class Printproxy(object):
         h.pop("Host", h)  # not sure this is needed TODO
         h['Content-Length'] = str(len(body))
         try:
-            resp, content = http.request(_url, method='POST', body=body, headers=h)
+            resp, content = http.request(
+                    _url, method='POST', body=body, headers=h)
         except:
             return HTTPBadGateway()
 

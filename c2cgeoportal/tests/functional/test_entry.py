@@ -365,8 +365,7 @@ class TestEntryView(TestCase):
             'mapserv_url': ms_url,
             'external_mapserv_url': ms_url,
             'functionalities': {
-                'webclient_string': [],
-                'webclient_array': [],
+                'available_in_templates': []
             }
         }
         entry = Entry(request)
@@ -407,7 +406,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = ['lang', 'functionalities', 'tilecache_url', 'debug', 'serverError', 'themes', 'external_themes', 'functionality', 'WFSTypes', 'themesError', 'externalWFSTypes', 'user']
+        all_params = ['lang', 'tilecache_url', 'debug', 'serverError', 'themes', 'external_themes', 'functionality', 'WFSTypes', 'themesError', 'externalWFSTypes', 'user']
         result = entry.home()
         self.assertEquals(result.keys(), ['lang', 'debug', 'extra_params'])
         result = entry.viewer()

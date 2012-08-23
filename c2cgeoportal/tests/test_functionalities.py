@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
-from pyramid import testing
+
 
 class TestFunctionalities(TestCase):
-    def test_get_config_functionalities(self):
-        from c2cgeoportal.lib.functionality import _get_config_functionalities
+    def test_get_config_functionality(self):
+        from c2cgeoportal.lib.functionality import _get_config_functionality
 
-        f = _get_config_functionalities('func', True, {
+        f = _get_config_functionality('func', True, {
             'functionalities': {
                 'registered': {
                     'func': 10
@@ -17,9 +17,9 @@ class TestFunctionalities(TestCase):
                 }
             }
         })
-        self.assertEquals(f, 10)
+        self.assertEquals(f, [10])
 
-        f = _get_config_functionalities('func', False, {
+        f = _get_config_functionality('func', False, {
             'functionalities': {
                 'registered': {
                     'func': 10
@@ -29,9 +29,9 @@ class TestFunctionalities(TestCase):
                 }
             }
         })
-        self.assertEquals(f, 20)
+        self.assertEquals(f, [20])
 
-        f = _get_config_functionalities('func', True, {
+        f = _get_config_functionality('func', True, {
             'functionalities': {
                 'registered': {
                     'not_func': 10
@@ -41,9 +41,9 @@ class TestFunctionalities(TestCase):
                 }
             }
         })
-        self.assertEquals(f, 20)
+        self.assertEquals(f, [20])
 
-        f = _get_config_functionalities('func', False, {
+        f = _get_config_functionality('func', False, {
             'functionalities': {
                 'registered': {
                     'func': 10
@@ -53,6 +53,4 @@ class TestFunctionalities(TestCase):
                 }
             }
         })
-        self.assertEquals(f, None)
-
-
+        self.assertEquals(f, [])
