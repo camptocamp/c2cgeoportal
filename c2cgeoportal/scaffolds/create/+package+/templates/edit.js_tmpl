@@ -51,7 +51,7 @@ Ext.onReady(function() {
             outputTarget: 'left-panel',
             outputConfig: {
                 layout: 'fit',
-                style: 'padding: 3px 0 3px 3px;'
+                style: 'padding: 3px;'
             },
             layerTreeId: 'layertree',
             themes: themes

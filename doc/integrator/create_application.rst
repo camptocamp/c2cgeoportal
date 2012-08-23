@@ -129,9 +129,15 @@ Following this rule is important for easier updates.
 
         ./buildout/bin/pcreate --overwrite -s <project_template> ../$PROJECT
 
+
+Go to your new project::
+
+    cd ../$PROJECT
+
+
 ``pcreate`` doesn't conserve file permission, so restore it manually::
 
-    chmod +x ../$PROJECT/deploy/hooks/post-restore-database.in 
+    chmod +x deploy/hooks/post-restore-database.in 
 
 
 If this application is not part of a parent/child architecture, or is
@@ -147,17 +153,6 @@ main Buildout configuration file, and ``config_child.yaml.in`` the config file::
     mv buildout_child.cfg buildout.cfg
     mv config_child.yaml.in config.yaml.in
 
-If this application is a ``child`` in the file config.yaml.in replace::
-
-    external_themes_url:
-    external_mapserv_url:
-
-by::
-
-    external_themes_url: ${vars:host}/${vars:parent_instanceid}/wsgi/themes
-    external_mapserv_url: ${vars:host}/${vars:parent_instanceid}/mapserv
-
-
 .. note::
 
     In a parent/child architecture one instance of the application is the
@@ -171,7 +166,6 @@ Put the application under revision control
 Remove the ``egg-info`` directory, as it shouldn't be added to the
 application's source repository::
 
-    cd ../$PROJECT
     rm -rf *.egg-info
 
 Now is a good time to put the application source code under revision

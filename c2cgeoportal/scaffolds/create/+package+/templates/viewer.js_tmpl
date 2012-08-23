@@ -45,7 +45,7 @@ Ext.onReady(function() {
     var EVENTS = new Ext.util.Observable();
 
     var WMTS_OPTIONS = {
-    % if len(tilecache_url) == 0:
+    % if not tilecache_url or len(tilecache_url) == 0:
         url: "${request.route_url('tilecache', path='')}",
     % else:
         url: '${tilecache_url}',
@@ -152,6 +152,7 @@ Ext.onReady(function() {
                   defaultThemes: ${permalink_themes | n},
                 % else:
                   defaultThemes: ["lieu_interet_thm"],
+                % endif
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
@@ -166,7 +167,7 @@ Ext.onReady(function() {
             // it is intended to be reactivated this once mapserver is fixed
             //maxFeatures: 200,
             srsName: 'EPSG:{{srid}}',
-            featureType: "query_layer",
+            featureTypes: ["query_layer"],
         }, 
     % endif
         {

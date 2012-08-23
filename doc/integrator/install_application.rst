@@ -134,10 +134,7 @@ We use a specific user for the application, ``www-data`` by default.
 
 Give the rights to the user::
 
-    $ sudo -u postgres psql <db_name>
-    GRANT ALL ON SCHEMA <schema_name> TO "www-data";
-    GRANT ALL ON ALL TABLES IN SCHEMA <schema_name> TO "www-data";
-    \q
+    sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name> TO "www-data"' <db_name>
 
 .. note::
 
@@ -296,7 +293,7 @@ This previous command will do many things like:
 Once the application is built and installed, you now have to create and
 populate the application tables, and directly set the version (details later)::
 
-    $ ./buildout/bin/create_db --iniconfig production.ini --populate
+    $ ./buildout/bin/create_db --populate
     $ ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
 
 .. note::

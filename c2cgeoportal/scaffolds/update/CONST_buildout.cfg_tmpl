@@ -1,12 +1,12 @@
 [buildout]
-parts = eggs 
-        activate 
-        template 
-        modwsgi 
-        jsbuild 
-        cssbuild 
-        po2mo 
-        print-template 
+parts = eggs
+        activate
+        template
+        modwsgi
+        jsbuild
+        cssbuild
+        po2mo
+        print-template
         print-war
 develop = .
 index = http://pypi.camptocamp.net/pypi
@@ -55,6 +55,8 @@ dbport = 5432
 db = override_me
 # sqlalchemy schema
 schema = webapp
+# database parent schema
+parentschema =
 # mapserver apache allows for clients (ex: Allow from camptocamp.com)
 mapserv_allow = Allow from ${vars:host}
 # mapserver connexion string
