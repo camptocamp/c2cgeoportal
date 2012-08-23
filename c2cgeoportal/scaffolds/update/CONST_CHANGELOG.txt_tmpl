@@ -20,9 +20,6 @@ Version 0.8
    - Create a file named 'config.yaml.in' that contains, for a parent:
 
 # ------------------------------------------------------------------------
-# The project name
-project: {{package}}
-
 # The application's default language. This is the language
 # used if no language is specific by the application user.
 # This also defines the language used for the text search.
@@ -80,9 +77,6 @@ tilecache_url:
 
         for a child:
 # ------------------------------------------------------------------------
-# The project name
-project: {{package}}
-
 # The application's default language. This is the language
 # used if no language is specific by the application user.
 # This also defines the language used for the text search.
@@ -155,9 +149,16 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     - Add config.yaml in the .gitignore file
 
     - In the file tilecache/tilecache.cfg.in replace:
+
         url = ${mapserv_url}
-        By:
+        by:
         url = http://${vars:host}/${vars:instanceid}/mapserv
+
+        and
+
+        wmts_gettile = ${wmts_url}
+        by
+        wmts_gettile = http://${vars:host}/${vars:instanceid}/tilecache
 
     - Add the following line in the [app:{{package}}] of the production.ini.in
             and the developement.ini.in:
@@ -165,7 +166,6 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
     - Remove the following attributes from the production.ini.in
             developement.ini.in, an buildout.cfg files:
-        project
         default_locale_name
         available_languages
         default_language
@@ -185,7 +185,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         tilecache_url
 
     - Re apply the update scaffold to regenerate the CONST_buildout file:
-        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../{{project}}
+        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../{{project}} package={{package}}
 
     - In the file ``print/templates/print.mako.in`` replace
         ``${vars:mapserv_host}`` and ``${vars:wsgi_host}`` by ``${vars:host}``.
@@ -193,6 +193,14 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     - In the file ``./apache/mapserver.conf.in`` remove the line
         Allow from ${vars:mapserv_host}
         we will use only ${vars:mapserv_allow}
+
+    - Edit ``{{package/templates/viewer.js}}`` and ``{{package/templates/edit.js}}`` and change
+
+          % if len(tilecache_url) == 0
+
+          to
+
+          % if not tilecache or len(tilecache_url) == 0:
 
 2. Theme loading with Friendly Url
 
@@ -245,7 +253,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
 5. Add new deploy hooks to set the databases rights.
    cd {{project}}
-   ./buildout/bin/pcreate --overwrite -s c2cgeoportal_create /tmp/{{project}}
+   ./buildout/bin/pcreate --overwrite -s c2cgeoportal_create /tmp/{{project}} package={{package}}
    cp /tmp/{{project}}/deploy/hooks/post-restore-database.in deploy/hooks/
    chmod +x deploy/hooks/post-restore-database.in
    rm -rf /tmp/{{project}}
@@ -273,36 +281,36 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
    Copy config.js and mobile.cfg from c2cgeoportal_create:
 
-   $ cd <project_name>
+   $ cd {{project}}
    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
-           /tmp/<project_name> package=<package_name>
-   $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
-        <package_name>/static/mobile/
-   $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
-   $ rm -rf /tmp/<project_name>
+           /tmp/{{project}} package={{package}}
+   $ cp /tmp/{{project}}/{{package}}/static/mobile/config.js \
+        {{package}}/static/mobile/
+   $ cp /tmp/{{project}}/jsbuild/mobile.cfg jsbuild/
+   $ rm -rf /tmp/{{project}}
 
    Add routes and views:
 
    # mobile views and routes
    config.add_route('mobile_index_dev', '/mobile_dev/')
    config.add_view('c2cgeoportal.views.mobile.index',
-                   renderer='<package_name>:static/mobile/index.html',
+                   renderer='{{package}}:static/mobile/index.html',
                    route_name='mobile_index_dev')
    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
    config.add_view('c2cgeoportal.views.mobile.config',
-                   renderer='<package_name>:static/mobile/config.js',
+                   renderer='{{package}}:static/mobile/config.js',
                    route_name='mobile_config_dev')
-   config.add_static_view('mobile_dev', '<package_name>:static/mobile')
+   config.add_static_view('mobile_dev', '{{package}}:static/mobile')
 
    config.add_route('mobile_index_prod', '/mobile/')
    config.add_view('c2cgeoportal.views.mobile.index',
-                   renderer='<package_name>:static/mobile/build/production/index.html',
+                   renderer='{{package}}:static/mobile/build/production/index.html',
                    route_name='mobile_index_prod')
    config.add_route('mobile_config_prod', '/mobile/config.js')
    config.add_view('c2cgeoportal.views.mobile.config',
-                   renderer='<package_name>:static/mobile/build/production/config.js',
+                   renderer='{{package}}:static/mobile/build/production/config.js',
                    route_name='mobile_config_prod')
-   config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
+   config.add_static_view('mobile', '{{package}}:static/mobile/build/production')
 
    Now read http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html to
    know how to build and customize the mobile application.
@@ -362,14 +370,14 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     And add the following lines to the jsbuild/app.cfg file:
 
     - in the root section:
-        <package_name>/static/lib/cgxp/ext.overrides
+        {{package}}/static/lib/cgxp/ext.overrides
 
     - in the include section:
         DragTracker.js #ext.override
 
 12. Add the following line to the root section of the app.js section in jsbuild/app.cfg:
 
-    <package_name>/static/lib/cgxp/dygraphs
+    {{package}}/static/lib/cgxp/dygraphs
 
     Also add the following line in the index.html template:
 
@@ -386,11 +394,11 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
 15. Update the print. A new file is required. To get it do the following:
 
-    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/<project_name>
-    cp /tmp/<project_name>/print/WEB-INF/classes/spring-application-context.xml \
+    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+    cp /tmp/{{project}}/print/WEB-INF/classes/spring-application-context.xml \
             print/WEB-INF/classes
     git add print/WEB-INF/classes/spring-application-context.xml
-    rm -rf /tmp/<project_name>
+    rm -rf /tmp/{{project}}
 
 16. The cgxp-install part is now deactivated by default, so if you still use
     SVN, you have to add it back in your ``buildout.cfg`` file, section 
@@ -436,6 +444,16 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
             ptype: "cgxp_mapopacityslider",
             defaultBaseLayerRef: FUNCTIONALITY.default_basemap[0]
         }
+
+    Make sure there's a default_basemap set. default_basemap should probably
+    be set for anonymous users in config.yaml.in:
+
+        functionalities:
+            anonymous:
+                print_template:
+                - 1 A4 portrait
+                - 2 A3 landscape
+                default_basemap: plan
 
 19. The file 'deploy/hooks/post-restore-code' is unneeded, it should be removed.
 
@@ -611,7 +629,7 @@ work in an existing project several steps are required:
 
    cd {{project}}
    ./buildout/bin/paster create --template c2cgeoportal_create \
-       --output-dir=/tmp/ {{project}} package={{package}}
+       --output-dir=/tmp/{{project}} package={{package}}
    cp /tmp/{{project}}/{{package}}/templates/edit.html {{package}}/templates/
    cp /tmp/{{project}}/{{package}}/templates/edit.js {{package}}/templates/
    rm -rf /tmp/{{project}}
@@ -705,7 +723,7 @@ Other changes
    (Careful: this will overwrite your changes):
        cd {{project}}
        ./buildout/bin/paster create --template c2cgeoportal_create \
-           --output-dir=/tmp/ {{project}} package={{package}}
+           --output-dir=/tmp/{{project}} package={{package}}
        cp /tmp/{{project}}/{{package}}/templates/apihelp.html {{package}}/templates/
        cp /tmp/{{project}}/{{package}}/templates/apiloader.html {{package}}/templates/
        cp /tmp/{{project}}/{{package}}/templates/apiviewer.html {{package}}/templates/
