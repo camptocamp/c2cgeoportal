@@ -4,7 +4,7 @@ Automated check
 ===============
 
 c2cgeoportal applications include web services for testing
-and assessing that the application is correctly functioning, 
+and assessing that the application is correctly functioning,
 i.e. its web services are responding as expected.
 
 For that we have two service a *checker* and a *check_collecter*.
@@ -28,9 +28,9 @@ Available services::
   * ``checker_edit_js``: Check the edit.js used by the edit page.
   * ``checker_apiloader``: Check the API loader.
   * ``checker_printcapabilities``: Check the print capabilities.
-  * ``checker_pdf``: Check the print (try to print a page). 
+  * ``checker_pdf``: Check the print (try to print a page).
   * ``checker_fts``: Check the FullTextSearch.
-  * ``checker_wmscapabilities``: Check the WMS GetCapabilities. 
+  * ``checker_wmscapabilities``: Check the WMS GetCapabilities.
   * ``checker_wfscapabilities``: Check the WFS GetCapabilities.
 
 Configuration in ``config.yaml.in``::
@@ -42,12 +42,12 @@ Configuration in ``config.yaml.in``::
 Check collector
 ---------------
 
-Used to collect check from different instance in the parent/children 
+Used to collect check from different instance in the parent/children
 structure. It is needed to give only one URL to the infrastructure
 team.
 
 A typical configuration::
- 
+
     check_collecter:
         check_type:
             all:
@@ -85,7 +85,7 @@ A typical configuration::
             default: # for children
                 - name: checker_viewer
                   display: Viewer script
-        hosts: 
+        hosts:
             - display: Parent
               url: http://${host}/main/wsgi
               type: main
@@ -93,18 +93,18 @@ A typical configuration::
               url: http://${host}/child1/wsgi
             - display: Child 2
               url: http://${host}/child2/wsgi
-        
-``check_collecter/check_type/<name>`` is the list of definition the 
+
+``check_collecter/check_type/<name>`` is the list of definition the
 checkers that we want to apply on a host,
-``name`` is the name of the checker described in the 
+``name`` is the name of the checker described in the
 Checker section, ``display`` is just a text used in the result page.
 
-``check_collecter/hosts`` is a list of hosts, ``display`` is just a text 
+``check_collecter/hosts`` is a list of hosts, ``display`` is just a text
 used in the result page, url is the WSGI ``url`` of the application,
 ``type`` is the type of checker list that we want to use on this host
 (default is 'default').
 
-We can use an argument type of the script to to call a specific 
+We can use an argument type of the script to to call a specific
 list of check on all host, for example::
 
-    http://example.com/main/wsgi/check_collecter?type=all    
+    http://example.com/main/wsgi/check_collecter?type=all
