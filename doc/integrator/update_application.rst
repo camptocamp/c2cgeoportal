@@ -70,7 +70,7 @@ steps:
 5. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
-         ../<project_name>
+         ../<project_name> package=<package>
 
 .. note::
     Don't add any '/' after the project name.
