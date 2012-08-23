@@ -53,14 +53,9 @@ functionalities:
 # database.
     registered: ${registered_functionalities}
 
-# Functionalities that should be available
-# on the web client as a unique value.
+# Functionalities that are made available to Mako templates.
 TODO fix the array (comma is missing)
-    webclient_string: [${webclient_string_functionalities}]
-
-# Same than before arranged as an array.
-TODO fix the array (comma is missing)
-    webclient_array: [${webclient_array_functionalities}]
+    available_in_templates: [${webclient_string_functionalities}, ${webclient_array_functionalities}]
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
@@ -118,14 +113,8 @@ functionalities:
 # database.
     registered: ${registered_functionalities}
 
-# Functionalities that should be available
-# on the web client as a unique value.
 TODO fix the array (comma is missing)
-    webclient_string: [${webclient_string_functionalities}]
-
-# Same than before arranged as an array.
-TODO fix the array (comma is missing)
-    webclient_array: [${webclient_array_functionalities}]
+    available_in_templates: [${webclient_string_functionalities}, ${webclient_array_functionalities}]
 
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
@@ -436,9 +425,17 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
     You should also modify your create_db script like this commit:
         https://github.com/camptocamp/c2cgeoportal/commit/8ae339c526719de953027beb72f5e1b649a93780
 
-18. Add FUNCTIONALITY and FUNCTIONALITIES vars in the viewer.js and use them in
-    the map opacity slider.  see:
-    https://github.com/camptocamp/c2cgeoportal/commit/de2888a226200cfe997cf3090b53fad06018c7f3
+18. Add the FUNCTIONALITY var in viewer.js and use it in the map
+    opacity slider config.
+
+        var FUNCTIONALITY = ${functionality | n};
+
+    and
+
+        {
+            ptype: "cgxp_mapopacityslider",
+            defaultBaseLayerRef: FUNCTIONALITY.default_basemap[0]
+        }
 
 19. The file 'deploy/hooks/post-restore-code' is unneeded, it should be removed.
 

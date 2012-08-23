@@ -18,7 +18,7 @@ from xml.dom.minidom import parseString
 from math import sqrt
 
 from c2cgeoportal.lib import get_setting
-from c2cgeoportal.lib.functionality import get_functionality, get_functionalities
+from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
         RestrictionArea, Role, layer_ra, role_ra
 
@@ -430,17 +430,10 @@ class Entry(object):
 
         functionality = dict()
         for func in get_setting(self.settings,
-                ('functionalities', 'webclient_string'), []):
+                ('functionalities', 'available_in_templates'), []):
             functionality[func] = get_functionality(func, self.settings,
                     self.request)
         d['functionality'] = json.dumps(functionality)
-
-        functionalities = dict()
-        for func in get_setting(self.settings,
-                ('functionalities', 'webclient_array'), []):
-            functionalities[func] = get_functionalities(func, self.settings,
-                    self.request)
-        d['functionalities'] = json.dumps(functionalities)
 
         # handle permalink_themes
         permalink_themes = self.request.params.get('permalink_themes', None)
