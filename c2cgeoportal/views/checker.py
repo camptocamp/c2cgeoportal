@@ -13,7 +13,7 @@ class Checker(object):
 
     def __init__(self, request):
         self.request = request
-        self.settings = self.request.registry.settings.['checker']
+        self.settings = self.request.registry.settings['checker']
 
     def update_status_int(self, code):
         self.status_int = max(self.status_int, int(code))
