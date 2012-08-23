@@ -36,13 +36,9 @@ functionalities:
 # database.
     registered:
 
-# Functionalities that should be available
-# on the web client as a unique value.
-    webclient_string:
+# Functionalities that are made available to Mako templates.
+    available_in_templates
     - default_basemap
-
-# Same than before arranged as an array.
-    webclient_array:
 
 # Define URLs to the parent application. Only useful if
 # this application is a child application in a parent/child

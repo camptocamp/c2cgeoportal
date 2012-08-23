@@ -11,7 +11,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
-from c2cgeoportal.lib.functionality import get_functionalities
+from c2cgeoportal.lib.functionality import get_functionality
 
 log = logging.getLogger(__name__)
 
@@ -43,8 +43,8 @@ def proxy(request):
                         (k, params[k]))
             del params[k]
 
-    mss = get_functionalities('mapserver_substitution',
-                              request.registry.settings, request)
+    mss = get_functionality('mapserver_substitution',
+                            request.registry.settings, request)
     if mss:
         for s in mss:
             index = s.find('=')

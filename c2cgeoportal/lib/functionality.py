@@ -3,7 +3,7 @@
 from c2cgeoportal.lib import get_setting
 
 
-def _get_config_functionalities(name, registered, config):
+def _get_config_functionality(name, registered, config):
     result = None
 
     if registered:
@@ -13,30 +13,29 @@ def _get_config_functionalities(name, registered, config):
         result = get_setting(config,
                 ('functionalities', 'anonymous', name))
 
+    if result is None:
+        result = []
+    elif not isinstance(result, list):
+        result = [result]
+
     return result
 
 
-def _get_db_functionalities(name, request):
-    user = request.user
+def _get_db_functionality(name, user):
+    result = [functionality.value \
+                for functionality in user.functionalities \
+                    if functionality.name == name]
+    if len(result) == 0:
+        result = [functionality.value \
+                    for functionality in user.role.functionalities \
+                        if functionality.name == name]
+    return result
+
+
+def get_functionality(name, config, request):
     result = []
-    if user:
-        result = [functionality.value for functionality in user.functionalities if functionality.name == name]
-        if len(result) == 0:
-            result = [functionality.value for functionality in user.role.functionalities if functionality.name == name]
-    return (result, user != None)
-
-
-def get_functionality(name, config, request, default=None):
-    result, registred = _get_db_functionalities(name, request)
+    if request.user:
+        result = _get_db_functionality(name, request.user)
     if len(result) == 0:
-        return _get_config_functionalities(name, registred, config) or default
-    else:
-        return result[0]
-
-
-def get_functionalities(name, config, request, default=[]):
-    result, registred = _get_db_functionalities(name, request)
-    if len(result) == 0:
-        return _get_config_functionalities(name, registred, config) or default
-    else:
-        return result
+        result = _get_config_functionality(name, request.user != None, config)
+    return result
