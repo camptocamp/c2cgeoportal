@@ -160,6 +160,12 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         by
         wmts_gettile = http://${vars:host}/${vars:instanceid}/tilecache
 
+    - In the file mapserver/c2cgeoportal.map.in replace:
+
+        "wms_onlineresource" "http://${vars:wsgi_host}/${vars:instanceid}/wsgi/mapserv_proxy"
+        by
+        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wsgi/mapserv_proxy"
+        
     - Add the following line in the [app:{{package}}] of the production.ini.in
             and the developement.ini.in:
         app.cfg = %(here)s/config.yaml
