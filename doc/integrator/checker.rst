@@ -1,15 +1,16 @@
 .. _integrator_checker:
 
-Automate check
-==============
+Automated check
+===============
 
-c2cgeoportal applications include web services for automated check 
-his functionalities.
+c2cgeoportal applications include web services for testing
+and assessing that the application is correctly functioning, 
+i.e. its web services are responding as expected.
 
-For that we have two service a checker and a check_collecter.
+For that we have two service a *checker* and a *check_collecter*.
 
-Those (especially the collector) services are build to use with a monitoring
-system like nagios to check that the application is alive.
+Those (especially the collector) services are meant to be used by a
+monitoring system like nagios to check that the application is alive.
 
 The return code are::
   * 200-299 => OK
@@ -21,7 +22,6 @@ Checker
 
 Available services::
 
-  * ``checker_summary``: Make a sumarry of all the check.
   * ``checker_main``: Check the main page.
   * ``checker_viewer``: Check the viewer.js used by the main page.
   * ``checker_edit``: Check the edit page.
@@ -33,7 +33,7 @@ Available services::
   * ``checker_wmscapabilities``: Check the WMS GetCapabilities. 
   * ``checker_wfscapabilities``: Check the WFS GetCapabilities.
 
-Configuration::
+Configuration in ``config.yaml.in``::
 
     checker:
         print_template: 1 A4 portrait
@@ -42,7 +42,7 @@ Configuration::
 Check collector
 ---------------
 
-Used to collect check from deferent instance in the parent/children 
+Used to collect check from different instance in the parent/children 
 structure. It is needed to give only one URL to the infrastructure
 team.
 
@@ -94,13 +94,13 @@ A typical configuration::
             - display: Child 2
               url: http://${host}/child2/wsgi
         
-``check_collecter/check_type/<name>`` is the list od definition the 
+``check_collecter/check_type/<name>`` is the list of definition the 
 checkers that we want to apply on a host,
-``name`` is the name of the checke describe in the 
+``name`` is the name of the checker described in the 
 Checker section, ``display`` is just a text used in the result page.
 
-``check_collecter/hosts`` is a list of host, ``display`` is just a text 
-used in the result page, url is the WSGI url of the application,
+``check_collecter/hosts`` is a list of hosts, ``display`` is just a text 
+used in the result page, url is the WSGI ``url`` of the application,
 ``type`` is the type of checker list that we want to use on this host
 (default is 'default').
 

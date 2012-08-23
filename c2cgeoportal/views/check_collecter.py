@@ -13,7 +13,7 @@ class CheckerCollecter(object):
     def __init__(self, request):
         self.status_int = 200
         self.request = request
-        self.settings = request.registry.settings.check_collecter
+        self.settings = request.registry.settings['check_collecter']
 
     # Method called by the sysadmins to make sure that our app work well.
     # Then this name must not change.
