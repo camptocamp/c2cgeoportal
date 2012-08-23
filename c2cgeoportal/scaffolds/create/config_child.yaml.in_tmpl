@@ -64,3 +64,8 @@ print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}
 # For base layers
 # This value mean that we use the parent tiles
 tilecache_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/tilecache
+
+# Checker configuration
+checker:
+    print_template: 1 A4 portrait
+    fulltextsearch: text to search
