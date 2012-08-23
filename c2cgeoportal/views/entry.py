@@ -369,11 +369,11 @@ class Entry(object):
         role_id = None
         if self.request.user:
             if external:
-                role_id = self.request.user.parent_role.id if \
-                    self.request.user.parent_role else None
+                if self.request.user.parent_role:
+                    role_id = self.request.user.parent_role.id
             else:
-                role_id = self.request.user.role.id if \
-                    self.request.user else None
+                if self.request.user.role:
+                    role_id = self.request.user.role.id
         params = (
             ('role_id', str(role_id) if role_id else ''),
             ('SERVICE', 'WFS'),
