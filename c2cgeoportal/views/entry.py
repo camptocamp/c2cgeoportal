@@ -368,8 +368,12 @@ class Entry(object):
         # retrieve layers metadata via GetCapabilities
         role_id = None
         if self.request.user:
-            role_id = self.request.user.parent_role.id if external \
-                      else self.request.user.role.id
+            if external:
+                if self.request.user.parent_role:
+                    role_id = self.request.user.parent_role.id
+            else:
+                if self.request.user.role:
+                    role_id = self.request.user.role.id
         params = (
             ('role_id', str(role_id) if role_id else ''),
             ('SERVICE', 'WFS'),
@@ -413,7 +417,8 @@ class Entry(object):
                 and self.settings['external_themes_url']:
             ext_url = self.settings['external_themes_url']
             if self.request.user is not None and \
-                    hasattr(self.request.user, 'parent_role'):
+                    hasattr(self.request.user, 'parent_role') and \
+                    self.request.user.parent_role is not None:
                 ext_url += '?role_id=' + str(self.request.user.parent_role.id)
             result = json.load(urllib.urlopen(ext_url))
             # TODO: what if external server does not respond?
