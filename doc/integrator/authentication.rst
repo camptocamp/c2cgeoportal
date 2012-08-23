@@ -191,3 +191,16 @@ are valid, and ``None`` otherwise.
 In this example the `pyramid_ldap package
 <http://docs.pylonsproject.org/projects/pyramid_ldap/en/latest/>`_ is used as
 the user information source.
+
+User validators can obviously be chained. For example, a user validator
+function that queries the ``user`` database table if the user does not exist in
+LDAP would look like this::
+
+    def user_validator(request, username, password):
+        from c2cgeoportal import default_user_validator
+        from pyramid_ldap import get_ldap_connector
+        connector = get_ldap_connector(request)
+        data = connector.authenticate(username, password)
+        if data is not None:
+            return data[0]
+        return default_user_validator(request, username, password)
