@@ -194,7 +194,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         Allow from ${vars:mapserv_host}
         we will use only ${vars:mapserv_allow}
 
-    - Edit ``{{package/templates/viewer.js}}`` and ``{{package/templates/edit.js}}`` and change
+    - Edit ``{{package}}/templates/viewer.js`` and ``{{package}}/templates/edit.js`` and change
 
           % if len(tilecache_url) == 0
 
