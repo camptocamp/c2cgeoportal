@@ -210,8 +210,8 @@ def includeme(config):
     config.add_route('checker_fts', '/checker_fts')
     config.add_route('checker_wmscapabilities', '/checker_wmscapabilities')
     config.add_route('checker_wfscapabilities', '/checker_wfscapabilities')
-    # collecter
-    config.add_route('check_collecter', '/check_collecter')
+    # collector
+    config.add_route('check_collector', '/check_collector')
 
     # print proxy routes
     config.add_route('printproxy', '/printproxy')

@@ -254,8 +254,8 @@ Don't miss to add your changes to git::
     git push origin master
 
 .. note::
-    If you use the check collecter don't miss to add the new child to
-    the parent site check_collecter configuration.
+    If you use the check collector don't miss to add the new child to
+    the parent site check_collector configuration.
 
 .. note::
    Additional notes for Windows users:

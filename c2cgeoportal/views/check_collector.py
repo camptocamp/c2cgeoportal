@@ -8,17 +8,17 @@ from pyramid.response import Response
 from httplib2 import Http
 
 
-class CheckerCollecter(object):
+class CheckerCollector(object):
 
     def __init__(self, request):
         self.status_int = 200
         self.request = request
-        self.settings = request.registry.settings['check_collecter']
+        self.settings = request.registry.settings['check_collector']
 
     # Method called by the sysadmins to make sure that our app work well.
     # Then this name must not change.
-    @view_config(route_name='check_collecter')
-    def check_collecter(self):
+    @view_config(route_name='check_collector')
+    def check_collector(self):
         body = ""
         start0 = time()
         for host in self.settings['hosts']:

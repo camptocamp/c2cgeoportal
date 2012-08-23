@@ -69,8 +69,8 @@ checker:
     print_template: 1 A4 portrait
     fulltextsearch: text to search
 
-# Check collecter configuration
-check_collecter:
+# Check collector configuration
+check_collector:
     check_type:
         all:
             - name: checker_main
