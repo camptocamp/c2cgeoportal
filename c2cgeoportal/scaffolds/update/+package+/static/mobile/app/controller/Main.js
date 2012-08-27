@@ -52,8 +52,7 @@ Ext.define('App.controller.Main', {
         Ext.Viewport.setActiveItem(view);
     },
 
-    recenterMap: function(record) {
-        var f = record.raw;
+    recenterMap: function(f) {
         this.getMainView().recenterOnFeature(f);
         this.redirectTo('home');
     },

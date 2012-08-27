@@ -216,12 +216,10 @@ Ext.define("App.view.Main", {
      */
     recenterOnFeature: function(f) {
         if (f) {
-            f = new OpenLayers.Format.GeoJSON().read(f);
             var layer = this.getHighlightLayer();
             layer.destroyFeatures();
             layer.addFeatures(f);
-
-            this.getMap().zoomToExtent(f[0].geometry.getBounds());
+            this.getMap().zoomToExtent(f.geometry.getBounds());
         }
     }
 });
