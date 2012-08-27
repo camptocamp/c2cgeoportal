@@ -13,6 +13,7 @@ Ext.define("App.view.Main", {
         map: null,
         layout: 'fit',
         plugins: 'statefulmap',
+        highlightLayer: null,
         center: null,
         zoom: null,
         items: [{
@@ -177,6 +178,15 @@ Ext.define("App.view.Main", {
             var bounds = this.pixelToBounds(pixel);
             this.fireEvent('longpress', this, bounds, map, event);
         }, this);
+
+        // highlight layer
+        this.setHighlightLayer(new OpenLayers.Layer.Vector('Highlight', {
+            styleMap: new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
+                strokeWidth: 3,
+                strokeColor: 'red'
+            }, OpenLayers.Feature.Vector.style['default']))
+        }));
+        map.addLayer(this.getHighlightLayer());
     },
     
     /**
@@ -206,8 +216,12 @@ Ext.define("App.view.Main", {
      */
     recenterOnFeature: function(f) {
         if (f) {
-            var bbox = new OpenLayers.Bounds.fromArray(f.bbox);
-            this.getMap().zoomToExtent(bbox);
+            f = new OpenLayers.Format.GeoJSON().read(f);
+            var layer = this.getHighlightLayer();
+            layer.destroyFeatures();
+            layer.addFeatures(f);
+
+            this.getMap().zoomToExtent(f[0].geometry.getBounds());
         }
     }
 });
