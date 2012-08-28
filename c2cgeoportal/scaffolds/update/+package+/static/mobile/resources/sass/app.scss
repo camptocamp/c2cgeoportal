@@ -50,6 +50,23 @@ table.detail td {
     border-radius: 0 0 0.4em 0.4em;
 }
 
+.locate.x-button-pressed {
+  background-image: none;
+  background-color: #1468a2;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #1e93e4), color-stop(3%, #1676b9), color-stop(100%, #11598c));
+  background-image: -webkit-linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
+  background-image: linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
+  border-color: black;
+}
+
+.locate.x-button-pressed .x-button-icon.x-icon-mask {
+  background-image: none;
+  background-color: white;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(3%, #ffffff), color-stop(100%, #e8f4fc));
+  background-image: -webkit-linear-gradient(top, #ffffff, #ffffff 3%, #e8f4fc);
+  background-image: linear-gradient(top, #ffffff, #ffffff 3%, #e8f4fc);
+}
+
 div.olMap {
     z-index: 0;
 }

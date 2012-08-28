@@ -4,6 +4,7 @@ Ext.define("App.view.Main", {
     requires: [
         'Ext.field.Search',
         'Ext.field.Select',
+        'Ext.SegmentedButton',
         'App.model.Layer',
         'App.plugin.StatefulMap',
         'Ext.util.Geolocation'
@@ -58,12 +59,17 @@ Ext.define("App.view.Main", {
             top: 85,
             left: 10
         }, {
-            xtype: 'button',
-            iconCls: 'locate',
-            action: 'locate',
-            iconMask: true,
+            xtype: 'segmentedbutton',
+            allowMultiple: false,
             top: 10,
-            left: 10
+            left: 10,
+            items: [{
+                iconCls: 'locate',
+                cls: 'locate',
+                action: 'locate',
+                pressed: false,
+                iconMask: true
+            }]
         }, {
             xtype: 'selectfield',
             id: 'baselayer_switcher',
@@ -111,18 +117,86 @@ Ext.define("App.view.Main", {
             scope: this
         });
 
-        var geolocation = Ext.create('Ext.util.Geolocation', {
-            autoUpdate: false
+        var geolocateControl = new OpenLayers.Control.Geolocate({
+            bind: false,
+            autoCenter: false,
+            watch: true,
+            geolocationOptions: {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 7000
+            }
         });
-        this.down('[action=locate]').on({
-            'tap': function() {
-                geolocation.on('locationupdate', function(geo) {
-                    var lonlat = new OpenLayers.LonLat(geo.getLongitude(),
-                                                       geo.getLatitude());
-                    lonlat.transform('EPSG:4326', this.getMap().getProjection());
-                    this.getMap().setCenter(lonlat, 10);
-                }, this, {single: true});
-                geolocation.updateLocation();
+        var firstGeolocation;
+        geolocateControl.events.register("locationupdated", this, function(e) {
+            geolocateLayer.removeAllFeatures();
+            var circle = new OpenLayers.Feature.Vector(
+                OpenLayers.Geometry.Polygon.createRegularPolygon(
+                    e.point,
+                    e.position.coords.accuracy/2,
+                    40,
+                    0
+                ),
+                {},
+                {
+                    fillOpacity: 0.1,
+                    fillColor: '#4C7FB2',
+                    strokeColor: '#4C7FB2',
+                    strokeOpacity: 0.6
+                }
+            );
+            geolocateLayer.addFeatures([
+                circle,
+                new OpenLayers.Feature.Vector(
+                    e.point,
+                    {},
+                    OpenLayers.Util.applyDefaults({
+                        externalGraphic: 'resources/images/locate_marker.png',
+                        graphicOpacity: 1,
+                        graphicWidth: 16,
+                        graphicHeight: 16
+                    }, OpenLayers.Feature.Vector.style['default'])
+                )
+            ]);
+            var map = this.getMap();
+            map.events.un({'moveend': cancelAutoUpdate});
+            if (firstGeolocation) {
+                //this.getMap().events.on('moveend', null, cancelAutoUpdate);
+                map.zoomToExtent(geolocateLayer.getDataExtent());
+                firstGeolocation = false;
+            } else if (geolocateControl.autoCenter) {
+                map.setCenter(new OpenLayers.LonLat(e.point.x, e.point.y));
+            }
+            map.events.on({'moveend': cancelAutoUpdate});
+        });
+
+        var geolocateLayer;
+        var locateButton = this.down('[action=locate]');
+        function cancelAutoUpdate() {
+            // control is still active, but map doesn't recenter
+            geolocateControl.autoCenter = false;
+            locateButton.parent.setPressedButtons([]);
+            firstGeolocation = false;
+        }
+        locateButton.on({
+            'tap': function(button) {
+                var map = this.getMap();
+                if (!map.getLayersByName('geolocate').length) {
+                    geolocateLayer = new OpenLayers.Layer.Vector('geolocate');
+                    map.addLayer(geolocateLayer);
+                    map.addControl(geolocateControl);
+                }
+                var parent = button.parent;
+                if (parent.getPressedButtons().indexOf(button) != -1) {
+                    button.parent.setPressedButtons([button]);
+                    geolocateControl.autoCenter = true;
+                    firstGeolocation = true;
+                    // force activation, even if already active
+                    geolocateControl.deactivate();
+                    geolocateControl.activate();
+                } else {
+                    cancelAutoUpdate();
+                }
             },
             scope: this
         });
