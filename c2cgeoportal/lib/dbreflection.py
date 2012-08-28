@@ -188,8 +188,8 @@ def _add_association_proxy(cls, col):
         raise NotImplementedError
 
     fk = next(iter(col.foreign_keys))
-    tablename, _ = fk.target_fullname.rsplit('.', 1)
-    child_cls = get_class(tablename)
+    child_tablename, child_pk = fk.target_fullname.rsplit('.', 1)
+    child_cls = get_class(child_tablename)
 
     try:
         proxy = col.name[0:col.name.rindex('_id')]
@@ -204,7 +204,10 @@ def _add_association_proxy(cls, col):
         proxy = 'type_'
 
     rel = proxy + '_'
-    setattr(cls, rel, relationship(child_cls, lazy='immediate'))
+    primaryjoin = (getattr(cls, col.name) == getattr(child_cls, child_pk))
+    relationship_ = relationship(child_cls, primaryjoin=primaryjoin,
+                                 lazy='immediate')
+    setattr(cls, rel, relationship_)
 
     setattr(cls, proxy, _association_proxy(rel, 'name'))
 
