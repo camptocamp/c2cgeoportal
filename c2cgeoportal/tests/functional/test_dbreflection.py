@@ -50,7 +50,9 @@ class TestReflection(TestCase):
 
         ptable = Table(tablename, Base.metadata,
                        Column('id', types.Integer, primary_key=True),
-                       Column('child_id', types.Integer,
+                       Column('child1_id', types.Integer,
+                              ForeignKey('public.%s_child.id' % tablename)),
+                       Column('child2_id', types.Integer,
                               ForeignKey('public.%s_child.id' % tablename)),
                        GeometryExtensionColumn('point', Point),
                        GeometryExtensionColumn('linestring', LineString),
@@ -97,15 +99,18 @@ class TestReflection(TestCase):
         # test the Table object
         table = modelclass.__table__
         self.assertTrue('id' in table.c)
-        self.assertTrue('child_id' in table.c)
+        self.assertTrue('child1_id' in table.c)
+        self.assertTrue('child2_id' in table.c)
         self.assertTrue('point' in table.c)
         self.assertTrue('linestring' in table.c)
         self.assertTrue('polygon' in table.c)
         self.assertTrue('multipoint' in table.c)
         self.assertTrue('multilinestring' in table.c)
         self.assertTrue('multipolygon' in table.c)
-        col_child_id = table.c['child_id']
-        self.assertEqual(col_child_id.name, 'child_id')
+        col_child1_id = table.c['child1_id']
+        self.assertEqual(col_child1_id.name, 'child1_id')
+        col_child2_id = table.c['child2_id']
+        self.assertEqual(col_child2_id.name, 'child2_id')
         col_point = table.c['point']
         self.assertEqual(col_point.name, 'point')
         self.assertTrue(isinstance(col_point.type, Point))
@@ -183,9 +188,12 @@ class TestXSDSequenceCallback(TestCase):
         class Parent(Base):
             __tablename__ = 'parent'
             id = Column(types.Integer, primary_key=True)
-            child_id = Column(types.Integer, ForeignKey('child.id'))
-            child_ = relationship(Child)
-            child = _association_proxy('child_', 'name')
+            child1_id = Column(types.Integer, ForeignKey('child.id'))
+            child2_id = Column(types.Integer, ForeignKey('child.id'))
+            child1_ = relationship(Child, primaryjoin=(child1_id==Child.id))
+            child1 = _association_proxy('child1_', 'name')
+            child2_ = relationship(Child, primaryjoin=(child2_id==Child.id))
+            child2 = _association_proxy('child2_', 'name')
         Base.metadata.create_all()
         DBSession.add_all([Child('foo'), Child('bar')])
         transaction.commit()
@@ -201,15 +209,27 @@ class TestXSDSequenceCallback(TestCase):
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
         from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
+        from papyrus.xsd import tag
         tb = TreeBuilder()
-        _xsd_sequence_callback(tb, self.cls)
+        with tag(tb, 'xsd:sequence') as tb:
+            _xsd_sequence_callback(tb, self.cls)
         e = tb.close()
         self.assertEqual(tostring(e),
-            '<xsd:element minOccurs="0" name="child" nillable="true">'
-               '<xsd:simpleType>'
-                 '<xsd:restriction base="xsd:string">'
-                   '<xsd:enumeration value="foo" />'
-                   '<xsd:enumeration value="bar" />'
-                 '</xsd:restriction>'
-               '</xsd:simpleType>'
-            '</xsd:element>')
+            '<xsd:sequence>'
+              '<xsd:element minOccurs="0" name="child1" nillable="true">'
+                '<xsd:simpleType>'
+                  '<xsd:restriction base="xsd:string">'
+                    '<xsd:enumeration value="foo" />'
+                    '<xsd:enumeration value="bar" />'
+                  '</xsd:restriction>'
+                '</xsd:simpleType>'
+              '</xsd:element>'
+              '<xsd:element minOccurs="0" name="child2" nillable="true">'
+                '<xsd:simpleType>'
+                  '<xsd:restriction base="xsd:string">'
+                    '<xsd:enumeration value="foo" />'
+                    '<xsd:enumeration value="bar" />'
+                  '</xsd:restriction>'
+                '</xsd:simpleType>'
+              '</xsd:element>'
+            '</xsd:sequence>')
