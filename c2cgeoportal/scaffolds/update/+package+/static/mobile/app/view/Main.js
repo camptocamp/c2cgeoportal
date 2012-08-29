@@ -14,7 +14,7 @@ Ext.define("App.view.Main", {
         map: null,
         layout: 'fit',
         plugins: 'statefulmap',
-        highlightLayer: null,
+        vectorLayer: null,
         center: null,
         zoom: null,
         items: [{
@@ -127,10 +127,14 @@ Ext.define("App.view.Main", {
                 timeout: 7000
             }
         });
-        var firstGeolocation;
+        var firstGeolocation,
+            circle,
+            marker;
         geolocateControl.events.register("locationupdated", this, function(e) {
-            geolocateLayer.removeAllFeatures();
-            var circle = new OpenLayers.Feature.Vector(
+            if (circle && marker) {
+                this.getVectorLayer().removeFeatures([circle, marker]);
+            }
+            circle = new OpenLayers.Feature.Vector(
                 OpenLayers.Geometry.Polygon.createRegularPolygon(
                     e.point,
                     e.position.coords.accuracy/2,
@@ -145,23 +149,24 @@ Ext.define("App.view.Main", {
                     strokeOpacity: 0.6
                 }
             );
-            geolocateLayer.addFeatures([
+            marker = new OpenLayers.Feature.Vector(
+                e.point,
+                {},
+                OpenLayers.Util.applyDefaults({
+                    externalGraphic: 'resources/images/locate_marker.png',
+                    graphicOpacity: 1,
+                    graphicWidth: 16,
+                    graphicHeight: 16
+                }, OpenLayers.Feature.Vector.style['default'])
+            );
+            this.getVectorLayer().addFeatures([
                 circle,
-                new OpenLayers.Feature.Vector(
-                    e.point,
-                    {},
-                    OpenLayers.Util.applyDefaults({
-                        externalGraphic: 'resources/images/locate_marker.png',
-                        graphicOpacity: 1,
-                        graphicWidth: 16,
-                        graphicHeight: 16
-                    }, OpenLayers.Feature.Vector.style['default'])
-                )
+                marker
             ]);
             var map = this.getMap();
             map.events.un({'moveend': cancelAutoUpdate});
             if (firstGeolocation) {
-                map.zoomToExtent(geolocateLayer.getDataExtent());
+                map.zoomToExtent(circle.geometry.getBounds());
                 firstGeolocation = false;
             } else if (geolocateControl.autoCenter) {
                 map.setCenter(new OpenLayers.LonLat(e.point.x, e.point.y));
@@ -169,7 +174,6 @@ Ext.define("App.view.Main", {
             map.events.on({'moveend': cancelAutoUpdate});
         });
 
-        var geolocateLayer;
         var locateButton = this.down('[action=locate]');
         function cancelAutoUpdate() {
             // control is still active, but map doesn't recenter
@@ -180,11 +184,8 @@ Ext.define("App.view.Main", {
         locateButton.on({
             'tap': function(button) {
                 var map = this.getMap();
-                if (!map.getLayersByName('geolocate').length) {
-                    geolocateLayer = new OpenLayers.Layer.Vector('geolocate');
-                    map.addLayer(geolocateLayer);
-                    map.addControl(geolocateControl);
-                }
+                map.addControl(geolocateControl);
+
                 var parent = button.parent;
                 if (parent.getPressedButtons().indexOf(button) != -1) {
                     button.parent.setPressedButtons([button]);
@@ -252,21 +253,21 @@ Ext.define("App.view.Main", {
             this.fireEvent('longpress', this, bounds, map, event);
         }, this);
 
-        // highlight layer
-        this.setHighlightLayer(new OpenLayers.Layer.Vector('Highlight', {
+        // highlight and geolocate layer
+        this.setVectorLayer(new OpenLayers.Layer.Vector('Vector', {
             styleMap: new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
                 strokeWidth: 3,
                 strokeColor: 'red'
             }, OpenLayers.Feature.Vector.style['default']))
         }));
-        map.addLayer(this.getHighlightLayer());
+        map.addLayer(this.getVectorLayer());
     },
-    
+
     /**
      * Method: pixelToBounds
      * Takes a pixel as argument and creates bounds after adding the
      * <clickTolerance>.
-     * 
+     *
      * Parameters:
      * pixel - {<OpenLayers.Pixel>}
      */
@@ -289,7 +290,7 @@ Ext.define("App.view.Main", {
      */
     recenterOnFeature: function(f) {
         if (f) {
-            var layer = this.getHighlightLayer();
+            var layer = this.getVectorLayer();
             layer.destroyFeatures();
             layer.addFeatures(f);
             this.getMap().zoomToExtent(f.geometry.getBounds());
