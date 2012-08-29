@@ -7,10 +7,10 @@ As mentioned on the index page (:ref:`administrator_guide`) the application
 administrator manages the application through the database, and the
 application's MapServer mapfile.
 
-The application's MapServer mapfile is where WMS and WFS layers are defined.
-WMS is used for the map (``WMS GetMap``), and for the ``point query`` feature
-(``WMS GetFeatureInfo``). WFS is used for the ``box query`` and ``query
-builder`` features (``WFS GetFeature``).
+The application's mapfile is where WMS and WFS layers are defined.  WMS is used
+for the map (``WMS GetMap``), and for the ``point query`` feature (``WMS
+GetFeatureInfo``). WFS is used for the ``box query`` and ``query builder``
+features (``WFS GetFeature``).
 
 The application's mapfile is located in the ``mapserver`` directory, it is
 commonly named ``c2cgeoportal.map.in``.
@@ -21,9 +21,8 @@ commonly named ``c2cgeoportal.map.in``.
     These variables are substituted when the ``buildout`` install command is
     executed.
 
-This section provides information on how to configure *private layers* (a.k.a
-*restricted layers*), and layers involved in ``point query``, ``box query``,
-``query builder`` features.
+This section describes how to make layers *printable* and/or *queryable*
+and/or *private* (a.k.a *restricted*).
 
 Print
 -----
@@ -53,10 +52,9 @@ resolution into account.
 WFS GetFeature
 --------------
 
-Layers involved in the ``box query`` and ``query builder`` features must
-support WFS GetFeature.
-
-To support WFS GetFeature a ``LAYER`` should define a template::
+Layers involved in the ``box query`` and ``query builder`` features should
+support WFS GetFeature. To support WFS GetFeature a ``LAYER`` should define
+a template::
 
     TEMPLATE fooOnlyForWFSGetFeature
 
@@ -70,19 +68,22 @@ And it should have the following ``METADATA``::
 
 .. warning::
 
-    The geometry columns of layers involved in ``box query`` should have
-    the same name, ``geom`` by default.
+    The geometry columns of layers involved in ``box query`` should have the
+    same name. By default the WFS GetFeatue CGXP plugin
+    (``cgxp_wfsgetfeature``) assumes the name is ``geom``, but the plugin
+    can be configured to use a different name.
 
-.. note::
-
-    The query builder works with one layer only. The name of the ``LAYER`` in
-    the mapfile and the name passed in the ``featureType`` property to the
-    querier CGXP plugin (``cgxp_querier``) must match.
+In contrast to WMS GetFeatureInfo, WFS GetFeature supports ``point query`` as
+well as ``box query`` (i.e. drawing a box and getting information about the
+features with that box). However, it is to be noted that WFS GetFeature may
+return features that are not visible at the current resolution of the map.
+This is because a limitation in MapServer, where ``MINSCALE``/``MAXSCALE``
+values defined in the layer's classes (``CLASS``) have no effect.
 
 WMS GetFeatureInfo
 ------------------
 
-Layers involved in the ``point query`` feature must support WMS GetFeatureInfo.
+Layers involved in the ``point query`` should must support WMS GetFeatureInfo.
 
 To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
@@ -90,12 +91,39 @@ To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
 As for WFS GetFeature, this is a fake template, but it is required.
 
-And it should have the following ``METADATA``::
+The ``gml_include_items``, ``gml_[name]_type`` and ``gml_geometries``
+*METADATA* variables should also be defined in the ``LAYER``. For
+example::
 
     "gml_include_items" "all"
-    "gml_geom_type" "polygon"
     "gml_geometries" "geom"
- 
+    "gml_geom_type" "polygon"
+
+``gml_include_items``
+
+  This is a comma-delimited list of attribute names, it specifies the list of
+  attributes that should be returned in GetFeatureInfo (GML) responses. ``all``
+  means that all the attributes of the layer should be returned.
+
+``gml_geometries``
+
+  This is a string specifying the name used for geometry elements in
+  GetFeatureInfo (GML) responses. This property, and ``gml_[name]_type``,
+  should be set for the GetFeatureInfo responses to include the features'
+  geometries instead of bboxes.
+
+
+``gml_[name]_type``
+
+  This specifies the type of a geometry column. Specifying this property is
+  necessary if geometries, instead of bboxes should be returned in
+  GetFeatureInfo (GML) responses. ``[name]`` should be replaced the string set
+  with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
+  ``the_geom`` then ``gml_the_geom_type`` should be used.
+
+See the `WMS Server MapFile Documentation
+<http://mapserver.org/ogc/wms_server.html>`_ for more detail.
+
 Restricted layer
 ----------------
 
