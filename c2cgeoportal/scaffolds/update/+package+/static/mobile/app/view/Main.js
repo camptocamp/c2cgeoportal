@@ -161,7 +161,6 @@ Ext.define("App.view.Main", {
             var map = this.getMap();
             map.events.un({'moveend': cancelAutoUpdate});
             if (firstGeolocation) {
-                //this.getMap().events.on('moveend', null, cancelAutoUpdate);
                 map.zoomToExtent(geolocateLayer.getDataExtent());
                 firstGeolocation = false;
             } else if (geolocateControl.autoCenter) {
