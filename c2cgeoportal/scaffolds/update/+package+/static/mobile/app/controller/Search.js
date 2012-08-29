@@ -29,10 +29,12 @@ Ext.define('App.controller.Search', {
             },
             searchView: {
                 select: function(list, record) {
-                    this.getApplication().getController('Main').recenterMap(record);
+                    var f = new OpenLayers.Format.GeoJSON().read(record.raw)[0];
+                    this.getApplication().getController('Main').recenterMap(f);
                 },
                 disclose: function(list, record) {
-                    this.getApplication().getController('Main').recenterMap(record);
+                    var f = new OpenLayers.Format.GeoJSON().read(record.raw)[0];
+                    this.getApplication().getController('Main').recenterMap(f);
                 }
             }
         },

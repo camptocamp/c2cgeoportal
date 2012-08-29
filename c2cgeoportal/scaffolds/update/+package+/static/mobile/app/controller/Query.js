@@ -10,6 +10,16 @@ Ext.define('App.controller.Query', {
                 autoCreate: true
             }
         },
+        control: {
+            queryView: {
+                select: function(list, record) {
+                    this.getApplication().getController('Main').recenterMap(record.raw);
+                },
+                disclose: function(list, record) {
+                    this.getApplication().getController('Main').recenterMap(record.raw);
+                }
+            }
+        },
         routes: {
             'query/:coords': {
                 action: 'showQueryResultView',

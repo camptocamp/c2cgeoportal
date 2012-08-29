@@ -4,6 +4,7 @@ Ext.define("App.view.Main", {
     requires: [
         'Ext.field.Search',
         'Ext.field.Select',
+        'Ext.SegmentedButton',
         'App.model.Layer',
         'App.plugin.StatefulMap',
         'Ext.util.Geolocation'
@@ -13,6 +14,7 @@ Ext.define("App.view.Main", {
         map: null,
         layout: 'fit',
         plugins: 'statefulmap',
+        vectorLayer: null,
         center: null,
         zoom: null,
         items: [{
@@ -57,12 +59,17 @@ Ext.define("App.view.Main", {
             top: 85,
             left: 10
         }, {
-            xtype: 'button',
-            iconCls: 'locate',
-            action: 'locate',
-            iconMask: true,
+            xtype: 'segmentedbutton',
+            allowMultiple: false,
             top: 10,
-            left: 10
+            left: 10,
+            items: [{
+                iconCls: 'locate',
+                cls: 'locate',
+                action: 'locate',
+                pressed: false,
+                iconMask: true
+            }]
         }, {
             xtype: 'selectfield',
             id: 'baselayer_switcher',
@@ -110,18 +117,86 @@ Ext.define("App.view.Main", {
             scope: this
         });
 
-        var geolocation = Ext.create('Ext.util.Geolocation', {
-            autoUpdate: false
+        var geolocateControl = new OpenLayers.Control.Geolocate({
+            bind: false,
+            autoCenter: false,
+            watch: true,
+            geolocationOptions: {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 7000
+            }
         });
-        this.down('[action=locate]').on({
-            'tap': function() {
-                geolocation.on('locationupdate', function(geo) {
-                    var lonlat = new OpenLayers.LonLat(geo.getLongitude(),
-                                                       geo.getLatitude());
-                    lonlat.transform('EPSG:4326', this.getMap().getProjection());
-                    this.getMap().setCenter(lonlat, 10);
-                }, this, {single: true});
-                geolocation.updateLocation();
+        var firstGeolocation,
+            circle,
+            marker;
+        geolocateControl.events.register("locationupdated", this, function(e) {
+            if (circle && marker) {
+                this.getVectorLayer().removeFeatures([circle, marker]);
+            }
+            circle = new OpenLayers.Feature.Vector(
+                OpenLayers.Geometry.Polygon.createRegularPolygon(
+                    e.point,
+                    e.position.coords.accuracy/2,
+                    40,
+                    0
+                ),
+                {},
+                {
+                    fillOpacity: 0.1,
+                    fillColor: '#4C7FB2',
+                    strokeColor: '#4C7FB2',
+                    strokeOpacity: 0.6
+                }
+            );
+            marker = new OpenLayers.Feature.Vector(
+                e.point,
+                {},
+                OpenLayers.Util.applyDefaults({
+                    externalGraphic: 'resources/images/locate_marker.png',
+                    graphicOpacity: 1,
+                    graphicWidth: 16,
+                    graphicHeight: 16
+                }, OpenLayers.Feature.Vector.style['default'])
+            );
+            this.getVectorLayer().addFeatures([
+                circle,
+                marker
+            ]);
+            var map = this.getMap();
+            map.events.un({'moveend': cancelAutoUpdate});
+            if (firstGeolocation) {
+                map.zoomToExtent(circle.geometry.getBounds());
+                firstGeolocation = false;
+            } else if (geolocateControl.autoCenter) {
+                map.setCenter(new OpenLayers.LonLat(e.point.x, e.point.y));
+            }
+            map.events.on({'moveend': cancelAutoUpdate});
+        });
+
+        var locateButton = this.down('[action=locate]');
+        function cancelAutoUpdate() {
+            // control is still active, but map doesn't recenter
+            geolocateControl.autoCenter = false;
+            locateButton.parent.setPressedButtons([]);
+            firstGeolocation = false;
+        }
+        locateButton.on({
+            'tap': function(button) {
+                var map = this.getMap();
+                map.addControl(geolocateControl);
+
+                var parent = button.parent;
+                if (parent.getPressedButtons().indexOf(button) != -1) {
+                    button.parent.setPressedButtons([button]);
+                    geolocateControl.autoCenter = true;
+                    firstGeolocation = true;
+                    // force activation, even if already active
+                    geolocateControl.deactivate();
+                    geolocateControl.activate();
+                } else {
+                    cancelAutoUpdate();
+                }
             },
             scope: this
         });
@@ -177,13 +252,22 @@ Ext.define("App.view.Main", {
             var bounds = this.pixelToBounds(pixel);
             this.fireEvent('longpress', this, bounds, map, event);
         }, this);
+
+        // highlight and geolocate layer
+        this.setVectorLayer(new OpenLayers.Layer.Vector('Vector', {
+            styleMap: new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
+                strokeWidth: 3,
+                strokeColor: 'red'
+            }, OpenLayers.Feature.Vector.style['default']))
+        }));
+        map.addLayer(this.getVectorLayer());
     },
-    
+
     /**
      * Method: pixelToBounds
      * Takes a pixel as argument and creates bounds after adding the
      * <clickTolerance>.
-     * 
+     *
      * Parameters:
      * pixel - {<OpenLayers.Pixel>}
      */
@@ -206,8 +290,10 @@ Ext.define("App.view.Main", {
      */
     recenterOnFeature: function(f) {
         if (f) {
-            var bbox = new OpenLayers.Bounds.fromArray(f.bbox);
-            this.getMap().zoomToExtent(bbox);
+            var layer = this.getVectorLayer();
+            layer.destroyFeatures();
+            layer.addFeatures(f);
+            this.getMap().zoomToExtent(f.geometry.getBounds());
         }
     }
 });

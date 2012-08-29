@@ -1,5 +1,13 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 1.0
+===========
+
+1. Add the following line to the jsbuild/mobile.cfg file in the include section:
+
+    OpenLayers/Control/Geolocate.js
+        
+
 Version 0.8
 ===========
 

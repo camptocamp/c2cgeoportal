@@ -35,6 +35,7 @@ include =
     OpenLayers/Control/Attribution.js
     OpenLayers/Control/SelectFeature.js
     OpenLayers/Control/ScaleLine.js
+    OpenLayers/Control/Geolocate.js
     OpenLayers/Format/GeoJSON.js
     OpenLayers/Request/XMLHttpRequest.js
     OpenLayers/Protocol/HTTP.js
