@@ -1,6 +1,6 @@
 Ext.define('App.controller.Query', {
     extend: 'Ext.app.Controller',
-    
+
     config: {
         protocol: null,
         refs: {
@@ -27,7 +27,7 @@ Ext.define('App.controller.Query', {
             }
         }
     },
-    
+
     //called when the Application is launched, remove if not needed
     launch: function(app) {
         this.protocol = new OpenLayers.Protocol.WFS({
@@ -42,7 +42,7 @@ Ext.define('App.controller.Query', {
     },
 
     showQueryResultView: function(params) {
-        var store = this.getQueryView().getStore();
+        var store = this.getQueryView().down('list').getStore();
         store.removeAll();
 
         params = decodeURIComponent(params);
@@ -66,6 +66,32 @@ Ext.define('App.controller.Query', {
                 }
             }
         });
+
+        var coords = this.getQueryView().down('[pseudo=coordinates]');
+        var x = (bounds.right - bounds.left) /2 + bounds.left;
+        var y = (bounds.top - bounds.bottom) / 2 + bounds.bottom;
+        coords.setData({
+            x: x,
+            y: y
+        });
+        if (App.rasterServiceUrl) {
+            Ext.Ajax.request({
+                url: App.rasterServiceUrl,
+                method: 'GET',
+                params: {
+                    lon: x,
+                    lat: y
+                },
+                success: function(response) {
+                    var data = Ext.JSON.decode(response.responseText);
+                    Ext.apply(data, {
+                        x: x,
+                        y: y
+                    });
+                    coords.setData(data);
+                }
+            });
+        }
 
         Ext.Viewport.setActiveItem(this.getQueryView());
     }
