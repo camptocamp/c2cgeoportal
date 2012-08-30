@@ -83,7 +83,8 @@ values defined in the layer's classes (``CLASS``) have no effect.
 WMS GetFeatureInfo
 ------------------
 
-Layers involved in the ``point query`` should must support WMS GetFeatureInfo.
+Layers involved in the ``point query`` feature should support WMS
+GetFeatureInfo.
 
 To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
