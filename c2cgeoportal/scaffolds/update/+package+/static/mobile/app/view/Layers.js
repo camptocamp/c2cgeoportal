@@ -52,7 +52,7 @@ Ext.define("App.view.Layers", {
     updateStore: function(store) {
         store.each(function(record) {
             var layer = record.raw;
-            if (!layer.isBaseLayer) {
+            if (!layer.isBaseLayer && layer.params) {
                 var allLayers = layer.allLayers,
                     layersParam = layer.params.LAYERS,
                     len = allLayers.length,
