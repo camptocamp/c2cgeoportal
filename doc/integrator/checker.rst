@@ -87,12 +87,12 @@ A typical configuration::
                   display: Viewer script
         hosts:
             - display: Parent
-              url: http://${host}/main/wsgi
+              url: http://${vars:host}/main/wsgi
               type: main
             - display: Child 1
-              url: http://${host}/child1/wsgi
+              url: http://${vars:host}/child1/wsgi
             - display: Child 2
-              url: http://${host}/child2/wsgi
+              url: http://${vars:host}/child2/wsgi
 
 ``check_collector/check_type/<name>`` is the list of definitions of the
 checkers that we want to apply on a host,
