@@ -296,7 +296,10 @@ Ext.define("App.view.Main", {
 
             var map = this.getMap();
             if (f.geometry instanceof OpenLayers.Geometry.Point) {
-                map.setCenter([f.geometry.x, f.geometry.y], 10);
+                map.setCenter(
+                    [f.geometry.x, f.geometry.y],
+                    map.baseLayer.numZoomLevels - 3
+                );
             } else {
                 map.zoomToExtent(f.geometry.getBounds());
             }
