@@ -8,7 +8,7 @@ Version 1.1
     OpenLayers/Control/Geolocate.js
         
 
-Version 0.8
+Version 1.0
 ===========
 
 1. We create a configuration file, config.yaml includes the static
@@ -214,7 +214,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
           to
 
-          % if not tilecache or len(tilecache_url) == 0:
+          % if not tilecache_url or len(tilecache_url) == 0:
 
 2. Theme loading with Friendly Url
 
@@ -287,7 +287,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
 8. Mobile application
 
-   Version 0.8 of c2cgeoportal includes a mobile application template/scaffold.
+   Version 1.0 of c2cgeoportal includes a mobile application template/scaffold.
 
    To add a mobile application to an existing project you need to copy two
    files from the c2cgeoportal_create scaffold, and add routes and views to the
