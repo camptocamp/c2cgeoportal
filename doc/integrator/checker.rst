@@ -5,7 +5,7 @@ Automated check
 
 c2cgeoportal applications include web services for testing
 and assessing that the application is correctly functioning,
-ie. that its web services responds as expected.
+ie. that its web services respond as expected.
 
 For that we have two services: a *checker* and a *check_collector*.
 
