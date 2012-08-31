@@ -77,7 +77,3 @@ App.map = new OpenLayers.Map({
         )
     ]
 });
-
-// uncomment the following line if there's a working raster service to compute
-// elevations
-// App.rasterServiceUrl = "${request.route_url('raster', path='')}";

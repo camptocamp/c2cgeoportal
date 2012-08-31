@@ -18,16 +18,7 @@ Ext.define("App.view.Query", {
                 action: 'home'
             }]
         }, {
-            pseudo: 'coordinates',
-            tpl: [
-                '<div class="coordinates">',
-                    '<p>X : {x} - Y : {y}</p>',
-                    '<tpl if="elevation!=null">',
-                        '<p>Altitude terrain: {mnt} m</p>',
-                        '<p>Altitude surface: {mns} m</p>',
-                    '</tpl>',
-                '</div>'
-            ].join('')
+            pseudo: 'coordinates'
         }, {
             xtype: 'list',
             itemTpl: '<div>{detail}</div>',
