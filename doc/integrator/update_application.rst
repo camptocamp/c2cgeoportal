@@ -90,7 +90,11 @@ steps:
 6. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-7. Update the database using the ``manage_db`` script::
+7. Execute ``buildout`` to rebuild and install the application::
+
+       $ ./buildout/bin/buildout -c <buildout_config_file>
+
+8. Update the database using the ``manage_db`` script::
 
        $ ./buildout/bin/manage_db upgrade
 
@@ -107,10 +111,6 @@ steps:
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-8. Execute ``buildout`` one more time to rebuild and reinstall the
-   application::
-
-       $ ./buildout/bin/buildout -c <buildout_config_file>
 
 Update CGXP
 ~~~~~~~~~~~
