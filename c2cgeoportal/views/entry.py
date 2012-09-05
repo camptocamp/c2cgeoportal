@@ -318,7 +318,6 @@ class Entry(object):
         layers = query.filter(Layer.isVisible == True).order_by(Layer.order.asc()).all()
 
         exportThemes = []
-        errors = "\n"
 
         # retrieve layers metadata via GetCapabilities
         wms_url = self.request.registry.settings['mapserv_url'] + \
@@ -327,11 +326,12 @@ class Entry(object):
         try:
             wms = WebMapService(wms_url, version='1.1.1')
         except AttributeError:
-            errors = _("WARNING! an error occured while trying to read the mapfile and recover the themes")
+            errors = _("WARNING! an error occured while trying to "
+                       "read the mapfile and recover the themes")
             self.serverError.append(errors)
             log.exception(errors)
+            return exportThemes
 
-            return (exportThemes, errors)
         wms_layers = list(wms.contents)
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
@@ -502,7 +502,7 @@ class Entry(object):
     def themes(self):
         d = {}
         d['role_id'] = self.request.params.get("role_id", None)
-        return self._themes(d)[0]
+        return self._themes(d)
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):

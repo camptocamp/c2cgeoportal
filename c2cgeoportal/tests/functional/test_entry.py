@@ -331,25 +331,29 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated
-        response = entry.themes()
-        self.assertTrue(self._find_layer(response, '__test_public_layer'))
-        self.assertFalse(self._find_layer(response, '__test_private_layer'))
+        themes = entry.themes()
+        self.assertEquals(len(entry.serverError), 0)
+        self.assertEquals(len(themes), 1)
+        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
+        self.assertFalse(self._find_layer(themes[0], '__test_private_layer'))
 
         # autenticated on parent
         role_id = DBSession.query(User.role_id).filter_by(username=u'__test_user1').one()
         request.params = { 'role_id': role_id }
-        response = entry.themes()
-        self.assertTrue(self._find_layer(response, '__test_public_layer'))
-        self.assertTrue(self._find_layer(response, '__test_private_layer'))
+        themes = entry.themes()
+        self.assertEquals(len(entry.serverError), 0)
+        self.assertEquals(len(themes), 1)
+        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
+        self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
 
         # mapfile error
         request.params = {}
         request.registry.settings = {
             'mapserv_url': mapserv_url + '?map=not_a_mapfile',
         }
-        response = entry._themes({})
-        self.assertEquals(response[0], [])
-        self.assertNotEquals(response[1].strip(), '')
+        themes = entry._themes({})
+        self.assertEquals(len(themes), 0)
+        self.assertEquals(len(entry.serverError), 1)
 
     def test_WFS_types(self):
         from c2cgeoportal.models import DBSession, User
