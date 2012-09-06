@@ -37,7 +37,7 @@ def proxy(request):
         params['role_id'] = user.parent_role.id if external else user.role.id
 
         # In some application we want to display the features owned by a user
-        # than we needs his id.
+        # than we need his id.
         if not external:
             params['user_id'] = user.id
 
