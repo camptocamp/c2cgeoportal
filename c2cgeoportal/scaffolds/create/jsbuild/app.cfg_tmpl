@@ -33,6 +33,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
@@ -118,6 +119,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
@@ -178,6 +180,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
@@ -247,6 +250,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
@@ -279,6 +283,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
@@ -311,6 +316,7 @@ root =
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
