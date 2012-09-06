@@ -1,4 +1,4 @@
-.. _developper_bootstrap:
+.. _developer_bootstrap:
 
 Bootstrap c2cgeoportal
 ======================

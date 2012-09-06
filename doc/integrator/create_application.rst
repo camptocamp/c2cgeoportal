@@ -6,7 +6,8 @@ Create a new application
 Creating a c2cgeoportal application is done by applying two Paste skeletons
 (a.k.a. templates). These skeletons are provided by the ``c2cgeoportal``
 package. So to be able to create a c2cgeoportal application the
-``c2cgeoportal`` package must be installed.
+``c2cgeoportal`` package must be installed. Please follow the
+:ref:`instructions to bootstrap c2cgeoportal <developer_bootstrap>`. 
 
 This guide considers that:
  - We use a server manages by Camptocamp, meaning:
