@@ -6,6 +6,10 @@ Version 1.1
 1. Add the following line to the jsbuild/mobile.cfg file in the include section:
 
     OpenLayers/Control/Geolocate.js
+
+2. Add the following line to the jsbuild/app.cfg file in the root sections:
+
+    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
         
 
 Version 1.0
