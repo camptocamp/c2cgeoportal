@@ -37,7 +37,7 @@ functionalities:
     registered:
 
 # Functionalities that are made available to Mako templates.
-    available_in_templates
+    available_in_templates:
     - default_basemap
 
 # Define URLs to the parent application. Only useful if
