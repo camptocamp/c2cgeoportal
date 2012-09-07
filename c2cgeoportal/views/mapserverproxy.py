@@ -64,6 +64,15 @@ def proxy(request):
                 log.warning("Mapserver Substitution '%s' does not " \
                             "respect pattern: <attribute>=<value>" % s)
 
+    # get method
+    method = request.method
+    
+    # For GET requests, params are added only if a REQUEST param is available.
+    if method == "GET":
+        keys = [key.lower() for key in params.keys()]
+        if 'request' not in keys:
+            params = {}
+
     # get query string
     query_string = urllib.urlencode(params)
 
@@ -72,9 +81,6 @@ def proxy(request):
            else request.registry.settings['mapserv_url']
     _url += '?' + query_string
     log.info("Querying mapserver proxy at URL: %s." % _url)
-
-    # get method
-    method = request.method
 
     # get body
     body = None
