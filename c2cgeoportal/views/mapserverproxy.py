@@ -67,10 +67,11 @@ def proxy(request):
     # get method
     method = request.method
     
-    # For GET requests, params are added only if a REQUEST param is available.
+    # For GET requests, params are added only if REQUEST and SERVICE params
+    # are not provided.
     if method == "GET":
         keys = [key.lower() for key in params.keys()]
-        if 'request' not in keys:
+        if 'service' not in keys or 'request' not in keys:
             params = {}
 
     # get query string
