@@ -41,47 +41,84 @@ class TestRasterViews(TestCase):
         tile = gr._get_tile(548000, 216000)
         self.assertEquals(tile.filename, '/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt')
 
+
     def test_profile_json(self):
+        from decimal import Decimal
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal.views.profile import Profile
-        from c2cgeoportal import DecimalJSON
 
-        renderer = DecimalJSON()(None)
         request = DummyRequest()
-        system = {'request': request}
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1}
+                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 4},
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 4}
             }
         }
         profile = Profile(request)
 
         request.params['nbPoints'] = '3'
         request.params['geom'] = '{"type":"LineString","coordinates":[[548009.5,215990],[547990,216009.5]]}'
-        self.assertEquals(renderer(profile.json(), system), '{"profile": [' \
-            + '{"y": 215990, "values": {"dem2": 1166, "dem": 1166}, "dist": 0.0, "x": 548009.5}, ' \
-            + '{"y": 215996.5, "values": {"dem2": 1181, "dem": 1181}, "dist": 9.2, "x": 548003.0}, ' \
-            + '{"y": 216003.0, "values": {"dem2": 1181, "dem": 1181}, "dist": 18.4, "x": 547996.5}]}')
+        result = profile.json()
+        self.assertEqual(len(result['profile']), 3)
+        self.assertAlmostEqual(result['profile'][0]['y'], 215990)
+        self.assertAlmostEqual(result['profile'][0]['values']['dem2'], 1166)
+        self.assertAlmostEqual(result['profile'][0]['values']['dem'], 1166)
+        self.assertAlmostEqual(result['profile'][0]['dist'], Decimal('0.0'))
+        self.assertAlmostEqual(result['profile'][0]['x'], 548009.5)
+        self.assertAlmostEqual(result['profile'][1]['y'], 215996.5)
+        self.assertAlmostEqual(result['profile'][1]['values']['dem2'], 1181)
+        self.assertAlmostEqual(result['profile'][1]['values']['dem'], 1181)
+        self.assertAlmostEqual(result['profile'][1]['dist'], Decimal('9.2'))
+        self.assertAlmostEqual(result['profile'][1]['x'], 548003.0)
+        self.assertAlmostEqual(result['profile'][2]['y'], 216003.0)
+        self.assertAlmostEqual(result['profile'][2]['values']['dem'], 1181)
+        self.assertAlmostEqual(result['profile'][2]['values']['dem2'], 1181)
+        self.assertAlmostEqual(result['profile'][2]['dist'], Decimal('18.4'))
+        self.assertAlmostEqual(result['profile'][2]['x'], 547996.5)
+
 
         request.params['layers'] = 'dem'
-        self.assertEquals(renderer(profile.json(), system), '{"profile": [' \
-            + '{"y": 215990, "values": {"dem": 1166}, "dist": 0.0, "x": 548009.5}, ' \
-            + '{"y": 215996.5, "values": {"dem": 1181}, "dist": 9.2, "x": 548003.0}, ' \
-            + '{"y": 216003.0, "values": {"dem": 1181}, "dist": 18.4, "x": 547996.5}]}')
+        result = profile.json()
+        self.assertEqual(len(result['profile']), 3)
+        self.assertAlmostEqual(result['profile'][0]['y'], 215990)
+        self.assertAlmostEqual(result['profile'][0]['values']['dem'], 1166)
+        self.assertAlmostEqual(result['profile'][0]['dist'], Decimal('0.0'))
+        self.assertAlmostEqual(result['profile'][0]['x'], 548009.5)
+        self.assertAlmostEqual(result['profile'][1]['y'], 215996.5)
+        self.assertAlmostEqual(result['profile'][1]['values']['dem'], 1181)
+        self.assertAlmostEqual(result['profile'][1]['dist'], Decimal('9.2'))
+        self.assertAlmostEqual(result['profile'][1]['x'], 548003.0)
+        self.assertAlmostEqual(result['profile'][2]['y'], 216003.0)
+        self.assertAlmostEqual(result['profile'][2]['values']['dem'], 1181)
+        self.assertAlmostEqual(result['profile'][2]['dist'], Decimal('18.4'))
+        self.assertAlmostEqual(result['profile'][2]['x'], 547996.5)
 
         # test length = 0
         request.params['geom'] = '{"type":"LineString","coordinates":[[548000,216000]]}'
-        self.assertEquals(renderer(profile.json(), system), '{"profile": ' \
-            + '[{"y": 216000, "values": {"dem": 1169}, "dist": 0.0, "x": 548000}]}')
+        result = profile.json()
+        self.assertEqual(len(result['profile']), 1)
+        self.assertAlmostEqual(result['profile'][0]['y'], 216000)
+        self.assertAlmostEqual(result['profile'][0]['values']['dem'], 1169)
+        self.assertAlmostEqual(result['profile'][0]['dist'], Decimal('0.0'))
+        self.assertAlmostEqual(result['profile'][0]['x'], 548000)
 
         # test cur_nb_points < 1
         request.params['geom'] = '{"type":"LineString","coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
-        self.assertEquals(renderer(profile.json(), system), '{"profile": [' \
-            + '{"y": 216000, "values": {"dem": 1169}, "dist": 0.0, "x": 548000}, ' \
-            + '{"y": 216003.66666666666, "values": {"dem": 1155}, "dist": 5.2, "x": 548003.66666666663}, ' \
-            + '{"y": 216006.33333333334, "values": {"dem": 1154}, "dist": 9.0, "x": 548006.33333333337}]}')
+        result = profile.json()
+        self.assertEqual(len(result['profile']), 3)
+        self.assertAlmostEqual(result['profile'][0]['y'], 216000)
+        self.assertAlmostEqual(result['profile'][0]['values']['dem'], 1169)
+        self.assertAlmostEqual(result['profile'][0]['dist'], Decimal('0.0'))
+        self.assertAlmostEqual(result['profile'][0]['x'], 548000)
+        self.assertAlmostEqual(result['profile'][1]['y'], 216003.66666666666)
+        self.assertAlmostEqual(result['profile'][1]['values']['dem'], 1155)
+        self.assertAlmostEqual(result['profile'][1]['dist'], Decimal('5.2'))
+        self.assertEqual(result['profile'][1]['x'], 548003.66666666663)
+        self.assertAlmostEqual(result['profile'][2]['y'], 216006.33333333334)
+        self.assertAlmostEqual(result['profile'][2]['values']['dem'], 1154)
+        self.assertAlmostEqual(result['profile'][2]['dist'], Decimal('9.0'))
+        self.assertAlmostEqual(result['profile'][2]['x'], 548006.33333333337)
 
         # test wrong layer name
         request.params['layers'] = 'wrong'
