@@ -3,14 +3,12 @@ from unittest import TestCase
 
 class TestRasterViews(TestCase):
     def test_raster(self):
+        from decimal import Decimal
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPNotFound
-        from c2cgeoportal import DecimalJSON
         from c2cgeoportal.views.raster import Raster
 
-        renderer = DecimalJSON()(None)
         request = DummyRequest()
-        system = {'request': request}
         request.registry.settings = {
             "raster": {
                 "dem1": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 0.1},
@@ -22,14 +20,23 @@ class TestRasterViews(TestCase):
 
         request.params['lon'] = '565000'
         request.params['lat'] = '218000'
-        self.assertEquals(renderer(raster.raster(), system), '{"dem2": null, "dem3": null, "dem1": null}')
+        result = raster.raster()
+        self.assertIsNone(result['dem1'])
+        self.assertIsNone(result['dem2'])
+        self.assertIsNone(result['dem3'])
 
         request.params['lon'] = '548000'
         request.params['lat'] = '216000'
-        self.assertEquals(renderer(raster.raster(), system), '{"dem2": 1169, "dem3": 1168.85998535, "dem1": 1168.9}')
+        result = raster.raster()
+        self.assertAlmostEqual(result['dem1'], Decimal('1168.9'))
+        self.assertAlmostEqual(result['dem2'], Decimal('1169'))
+        self.assertAlmostEqual(result['dem3'], Decimal('1168.85998535'))
 
         request.params['layers'] = 'dem2'
-        self.assertEquals(renderer(raster.raster(), system), '{"dem2": 1169}')
+        result = raster.raster()
+        self.assertNotIn('dem1', result)
+        self.assertNotIn('dem3', result)
+        self.assertAlmostEqual(result['dem2'], Decimal('1169'))
 
         # test wrong layer name
         request.params['layers'] = 'wrong'
