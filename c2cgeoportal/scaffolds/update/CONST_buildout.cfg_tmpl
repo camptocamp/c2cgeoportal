@@ -56,7 +56,7 @@ db = override_me
 # sqlalchemy schema
 schema = webapp
 # database parent schema
-parentschema =
+parent_schema =
 # mapserver apache allows for clients (ex: Allow from camptocamp.com)
 mapserv_allow = Allow from ${vars:host}
 # mapserver connexion string
