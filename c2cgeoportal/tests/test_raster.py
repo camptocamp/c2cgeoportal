@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 
+
 class TestRasterViews(TestCase):
+
     def test_raster(self):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
@@ -11,8 +13,10 @@ class TestRasterViews(TestCase):
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem1": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 0.1},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem1": {"file": "c2cgeoportal/tests/data/dem.shp",
+                         "round": 0.1},
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp",
+                         "round": 1},
                 "dem3": {"file": "c2cgeoportal/tests/data/dem.shp"}
             }
         }
@@ -46,8 +50,9 @@ class TestRasterViews(TestCase):
         from c2cgeoportal.lib.raster.georaster import GeoRaster
         gr = GeoRaster("c2cgeoportal/tests/data/dem_absolute.shp")
         tile = gr._get_tile(548000, 216000)
-        self.assertEquals(tile.filename, '/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt')
-
+        self.assertEquals(tile.filename,
+                          '/home/sbrunner/regiogis/regiogis/c2cgeoportal/'
+                          'c2cgeoportal/tests/data/dem.bt')
 
     def test_profile_json(self):
         from decimal import Decimal
@@ -65,7 +70,9 @@ class TestRasterViews(TestCase):
         profile = Profile(request)
 
         request.params['nbPoints'] = '3'
-        request.params['geom'] = '{"type":"LineString","coordinates":[[548009.5,215990],[547990,216009.5]]}'
+        request.params['geom'] = '{"type":"LineString",' \
+                                  '"coordinates":[[548009.5,215990],' \
+                                                 '[547990,216009.5]]}'
         result = profile.json()
         self.assertEqual(len(result['profile']), 3)
         self.assertAlmostEqual(result['profile'][0]['y'], 215990)
@@ -84,7 +91,6 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result['profile'][2]['dist'], Decimal('18.4'))
         self.assertAlmostEqual(result['profile'][2]['x'], 547996.5)
 
-
         request.params['layers'] = 'dem'
         result = profile.json()
         self.assertEqual(len(result['profile']), 3)
@@ -102,7 +108,8 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result['profile'][2]['x'], 547996.5)
 
         # test length = 0
-        request.params['geom'] = '{"type":"LineString","coordinates":[[548000,216000]]}'
+        request.params['geom'] = '{"type":"LineString",' \
+                                  '"coordinates":[[548000,216000]]}'
         result = profile.json()
         self.assertEqual(len(result['profile']), 1)
         self.assertAlmostEqual(result['profile'][0]['y'], 216000)
@@ -111,7 +118,10 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result['profile'][0]['x'], 548000)
 
         # test cur_nb_points < 1
-        request.params['geom'] = '{"type":"LineString","coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
+        request.params['geom'] = '{"type":"LineString",' \
+                                  '"coordinates":[[548000,216000],' \
+                                                 '[548001,216001],' \
+                                                 '[548009,216009]]}'
         result = profile.json()
         self.assertEqual(len(result['profile']), 3)
         self.assertAlmostEqual(result['profile'][0]['y'], 216000)
@@ -145,7 +155,9 @@ class TestRasterViews(TestCase):
         profile = Profile(request)
 
         request.params['nbPoints'] = '3'
-        request.params['geom'] = '{"type":"LineString","coordinates":[[548009.5,215990],[547990,216009.5]]}'
+        request.params['geom'] = '{"type":"LineString",' \
+                                  '"coordinates":[[548009.5,215990],' \
+                                                 '[547990,216009.5]]}'
         response = profile.csv()
         self.assertEquals(response.body, """distance,dem2,dem,x,y
 0.0,1166,1166,548009,215990
