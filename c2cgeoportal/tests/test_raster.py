@@ -25,9 +25,9 @@ class TestRasterViews(TestCase):
         request.params['lon'] = '565000'
         request.params['lat'] = '218000'
         result = raster.raster()
-        self.assertIsNone(result['dem1'])
-        self.assertIsNone(result['dem2'])
-        self.assertIsNone(result['dem3'])
+        self.assertEqual(result['dem1'], None)
+        self.assertEqual(result['dem2'], None)
+        self.assertEqual(result['dem3'], None)
 
         request.params['lon'] = '548000'
         request.params['lat'] = '216000'
@@ -38,8 +38,8 @@ class TestRasterViews(TestCase):
 
         request.params['layers'] = 'dem2'
         result = raster.raster()
-        self.assertNotIn('dem1', result)
-        self.assertNotIn('dem3', result)
+        self.assertFalse('dem1' in result)
+        self.assertFalse('dem3' in result)
         self.assertAlmostEqual(result['dem2'], Decimal('1169'))
 
         # test wrong layer name
