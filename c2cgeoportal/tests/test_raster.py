@@ -50,9 +50,9 @@ class TestRasterViews(TestCase):
         from c2cgeoportal.lib.raster.georaster import GeoRaster
         gr = GeoRaster("c2cgeoportal/tests/data/dem_absolute.shp")
         tile = gr._get_tile(548000, 216000)
-        self.assertEquals(tile.filename,
-                          '/home/sbrunner/regiogis/regiogis/c2cgeoportal/'
-                          'c2cgeoportal/tests/data/dem.bt')
+        self.assertEqual(tile.filename,
+                         '/home/sbrunner/regiogis/regiogis/c2cgeoportal/'
+                         'c2cgeoportal/tests/data/dem.bt')
 
     def test_profile_json(self):
         from decimal import Decimal
@@ -159,14 +159,14 @@ class TestRasterViews(TestCase):
                                   '"coordinates":[[548009.5,215990],' \
                                                  '[547990,216009.5]]}'
         response = profile.csv()
-        self.assertEquals(response.body, """distance,dem2,dem,x,y
+        self.assertEqual(response.body, """distance,dem2,dem,x,y
 0.0,1166,1166,548009,215990
 9.2,1181,1181,548003,215996
 18.4,1181,1181,547996,216003""")
 
         request.params['layers'] = 'dem'
         response = profile.csv()
-        self.assertEquals(response.body, """distance,dem,x,y
+        self.assertEqual(response.body, """distance,dem,x,y
 0.0,1166,548009,215990
 9.2,1181,548003,215996
 18.4,1181,547996,216003""")
