@@ -67,13 +67,13 @@ Ext.define('App.controller.Query', {
             }
         });
 
-        if (App.useRasterService) {
+        if (App.raster) {
             var coords = this.getQueryView().down('[pseudo=coordinates]');
-            var x = (bounds.right - bounds.left) /2 + bounds.left;
+            var x = (bounds.right - bounds.left) / 2 + bounds.left;
             var y = (bounds.top - bounds.bottom) / 2 + bounds.bottom;
             coords.setTpl(OpenLayers.i18n('rasterTpl'));
             Ext.Ajax.request({
-                url: App.rasterServiceUrl,
+                url: App.rasterUrl,
                 method: 'GET',
                 params: {
                     lon: x,

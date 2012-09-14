@@ -226,16 +226,16 @@ Raster service
 --------------
 
 When querying the map (longpress), the c2cgeoportal ``raster`` service can be
-used to retrieve data from raster file (elevation, slope, etc...) and displayed
-in the ``Query view`` above query results.
+used to retrieve data from raster file (elevation, slope, etc...) and display
+it in the ``Query view`` above query results.
 
 If the raster service is already configured on the server, you can activate it
 in the mobile application by adding the following to the config.js file::
 
-    App.useRasterService = true;
+    App.raster = true;
 
 You'll also need to add a template string to each translation object. It needs
-to be adapted to the data retreived from the server::
+to be adapted to the data retrieved from the server::
 
     OpenLayers.Lang.fr = {
         [...]
