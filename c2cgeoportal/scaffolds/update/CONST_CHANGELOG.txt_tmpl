@@ -12,6 +12,12 @@ Version 1.1
 
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
 
+3. The admin interface relies on the js.jqueryui_selectmenu Python package,
+   which does not work with js.jquery > 1.7.1 (the Jump to... dropdown does not
+   work). c2cgeoportal 1.1 will refuse to work with/be installed alongside
+   js.jquery > 1.7.1. Just make sure js.jquery is not set to a version > 1.7.1
+   in your project's buildout config (buildout.cfg.). If it is then change that
+   to "js.jquery = 1.7.1", and execute buildout again.
 
 Version 1.0
 ===========
