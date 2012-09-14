@@ -19,6 +19,9 @@ install_requires = [
     'Babel',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
+    # fa.jquery uses js.jqueryui_selectmenu, whose released
+    # version (0.1) doesn't work with js.jquery > 1.7.1.
+    'js.jquery==1.7.1',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
     'GeoAlchemy>=0.7',
