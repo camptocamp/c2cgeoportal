@@ -436,6 +436,7 @@ LayerGroupGrid = Grid(models.LayerGroup)
 
 # ThemeGrid
 ThemeGrid = Grid(models.Theme)
+ThemeGrid.configure(exclude=[ThemeGrid.parents])
 
 # FunctionalityGrid
 FunctionalityGrid = Grid(models.Functionality)
