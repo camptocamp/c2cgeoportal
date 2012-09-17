@@ -9,7 +9,8 @@ debug_templates = false
 mako.directories = {{package}}:templates
     c2cgeoportal:templates
 app.cfg = %(here)s/config.yaml
-# Used to create secured cookies
+# Authentication settings
+authtkt_cookie_name = auth_tkt_${instanceid}
 authtkt_secret = ${authtkt_secret}
 # Database informations
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
