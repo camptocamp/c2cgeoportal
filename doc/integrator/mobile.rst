@@ -184,6 +184,12 @@ selector. The ``WFSTypes`` option is an array of corresponding feature types,
 it is used by the map querier. If a layer is visible and it has a corresponding
 feature type then it will be sent in the (WFS GetFeature) map query.
 
+.. note::
+
+    The ``WFSTypes`` config option can be used for the base layers as well.
+    In this case, the given feature types should also correspond to queriable
+    layers in the mapfile.
+
 For example::
 
     new OpenLayers.Layer.WMS(

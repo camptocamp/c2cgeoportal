@@ -59,6 +59,8 @@ Ext.define('App.controller.Main', {
 
     queryMap: function(view, bounds, map) {
         var layers = [];
+
+        // overlay layers
         for (var i=0; i<map.layers.length; i++) {
             var layer = map.layers[i];
             if (!layer.isBaseLayer && layer.visibility &&
@@ -71,6 +73,12 @@ Ext.define('App.controller.Main', {
                 }
             }
         }
+
+        // currently displayed baseLayer
+        if (map.baseLayer.WFSTypes) {
+            layers = layers.concat(map.baseLayer.WFSTypes);
+        }
+
         // launch query only if there are layers to query
         if (layers.length) {
             var p = [bounds, layers.join(',')];
