@@ -63,7 +63,7 @@ steps:
     -SQLAHelper = x.y.z
     +sqlahelper = x.y.z
     -SQLAlchemy = x.y.z
-    +qslalchemy = x.y.z
+    +sqlalchemy = x.y.z
     -Tempita = x.y.z
     +tempita = x.y.z
 
