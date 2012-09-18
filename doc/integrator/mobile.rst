@@ -221,3 +221,33 @@ The overlay selector uses the layer names (as defined in the ``allLayers``
 array of overlays) as translation keys. To add your translations edit
 ``static/mobile/config.js`` and populate the ``OpenLayers.Lang.<code>`` objects
 as necessary.
+
+Raster service
+--------------
+
+When querying the map (longpress), the c2cgeoportal ``raster`` service can be
+used to retrieve data from raster file (elevation, slope, etc...) and display
+it in the ``Query view`` above query results.
+
+If the raster service is already configured on the server, you can activate it
+in the mobile application by adding the following to the config.js file::
+
+    App.raster = true;
+
+You'll also need to add a template string to each translation object. It needs
+to be adapted to the data retrieved from the server::
+
+    OpenLayers.Lang.fr = {
+        [...]
+        'rasterTpl': [
+            '<div class="coordinates">',
+                '<p>X : {x} - Y : {y}</p>',
+                '<p>Altitude terrain : {mnt} m</p>',
+                '<p>Altitude surface : {mns} m</p>',
+            '</div>'
+        ].join(''),
+        [...]
+    };
+
+In the example above ``mns`` and ``mnt`` are the keys used in the server
+config for the ``raster web services``.
