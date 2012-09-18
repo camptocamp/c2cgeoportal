@@ -182,7 +182,7 @@ options can be defined: ``allLayers`` and ``WFSTypes``. The ``allLayers``
 option is an array of possible WMS layers, this is used by the overlay
 selector. The ``WFSTypes`` option is an array of corresponding feature types,
 it is used by the map querier. If a layer is visible and it has a corresponding
-feature type then it will sent in the (WFS GetFeature) map query.
+feature type then it will be sent in the (WFS GetFeature) map query.
 
 For example::
 
