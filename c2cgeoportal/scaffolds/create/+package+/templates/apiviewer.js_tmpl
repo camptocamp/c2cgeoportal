@@ -38,7 +38,7 @@ var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 var EVENTS = new Ext.util.Observable();
 
 var WMTS_OPTIONS = {
-% if len(tilecache_url) == 0:
+% if not tilecache_url:
     url: "${request.route_url('tilecache', path='')}",
 % else:
     url: '${tilecache_url}',
