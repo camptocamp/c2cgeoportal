@@ -303,10 +303,10 @@ Ext.define("App.view.Main", {
             } else {
                 map.zoomToExtent(f.geometry.getBounds());
             }
-            map.events.register('moveend', this, function() {
+            map.events.register('moveend', this, function onmoveend() {
                 layer.removeFeatures(f);
                 // call the event only once
-                map.events.unregister('moveend', this, arguments.callee);
+                map.events.unregister('moveend', this, onmoveend);
             });
         }
     }
