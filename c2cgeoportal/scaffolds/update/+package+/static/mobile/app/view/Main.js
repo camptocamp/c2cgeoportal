@@ -293,7 +293,21 @@ Ext.define("App.view.Main", {
             var layer = this.getVectorLayer();
             layer.destroyFeatures();
             layer.addFeatures(f);
-            this.getMap().zoomToExtent(f.geometry.getBounds());
+
+            var map = this.getMap();
+            if (f.geometry instanceof OpenLayers.Geometry.Point) {
+                map.setCenter(
+                    [f.geometry.x, f.geometry.y],
+                    map.baseLayer.numZoomLevels - 3
+                );
+            } else {
+                map.zoomToExtent(f.geometry.getBounds());
+            }
+            map.events.register('moveend', this, function onmoveend() {
+                layer.removeFeatures(f);
+                // call the event only once
+                map.events.unregister('moveend', this, onmoveend);
+            });
         }
     }
 });
