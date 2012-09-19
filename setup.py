@@ -37,6 +37,8 @@ install_requires = [
 setup_requires = [
     'nose',
     'nosexcover',
+    'nose-progressive',
+    'ipdbplugin',
     ]
 
 tests_require = install_requires + [
