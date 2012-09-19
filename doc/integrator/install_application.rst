@@ -224,6 +224,42 @@ apache/mapserver.conf.in
 
 .. _integrator_install_application_bootstrap_buildout:
 
+RHEL 6 Specific Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Specific settings are required when the c2cgeoportal application is to be run
+on RedHat Enterprise Linux (RHEL) 6.
+
+buildout.cfg
+^^^^^^^^^^^^
+
+By default, ``mod_wsgi`` processes are executed under the ``www-data`` Unix
+user, which is the Apache user. In RHEL 6, there's no user ``www-data``, and
+the Apache user is ``apache``. To accomodate that edit ``buildout.cfg`` and
+set ``modwsgi_user`` to ``apache`` in the ``[vars]`` section::
+
+    [vars]
+    ...
+    modwsgi_user = apache
+
+
+Also, by default, the path to Tomcat's ``webapps`` directory is
+``/srv/tomcat/tomcat1/webapps``. On RHEL 6, Tomcat is located in
+``/var/lib/tomcat6/``. To accomodate that the ``output`` path of the
+``[print-war]`` part should be changed::
+
+    [print-war]
+    output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${vars:instanceid}.war
+
+apache/mapserver.conf.in
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
+``mapserver.conf.in`` Apache config file assumes that ``mapserv`` is located in
+``/usr/lib/cgi-bin/``, and should therefore be changed::
+
+    ScriptAlias /${vars:instanceid}/mapserv /usr/libexec/mapserv
+
 Buildout bootstrap
 ~~~~~~~~~~~~~~~~~~
 
