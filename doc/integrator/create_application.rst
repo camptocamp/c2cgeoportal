@@ -245,7 +245,7 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth \
+    git add $PROJECT/ .gitignore .httpauth config.yaml.in \
             CONST_CHANGELOG.txt CONST_TIPS.txt.in \
             CONST_buildout.cfg buildout.cfg buildout/ \
             bootstrap.py setup.cfg setup.py \
