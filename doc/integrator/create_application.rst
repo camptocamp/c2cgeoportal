@@ -31,6 +31,23 @@ installed on your system:
   for your c2cgeoportal application.
 * Python 2.7 or 2.6. Python 3.x is not yet supported.
 
+Project structure
+-----------------
+
+In the simple case the root directory of the application is the directory
+created by the c2cgeoportal skeletons (the ``c2cgeoportal_create`` and
+``c2cgeoportal_update`` skeletons). Projects following a parent/child
+architecture may use a different structure. Here's an example of a structure
+for a project composed of a main application and sub-applications::
+
+    <root>
+      ├─ <main_project>
+      ├─ <first_sub_project>
+      ├─ <second_sub_project>
+      └─ ...
+
+Here ``<root>`` is the root of the Git (or SVN) tree.
+
 Install c2cgeoportal
 --------------------
 
