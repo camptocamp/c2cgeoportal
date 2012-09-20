@@ -502,6 +502,7 @@ class Entry(object):
     def themes(self):
         d = {}
         d['role_id'] = self.request.params.get("role_id", None)
+        self.errors = "\n"
         return self._themes(d)
 
     @view_config(context=HTTPForbidden, renderer='login.html')
