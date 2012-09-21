@@ -77,8 +77,9 @@ to your project's ``static/mobile`` dir. For example::
     $ cd /tmp/
     $ wget http://cdn.sencha.io/touch/sencha-touch-2.0.1.1-gpl.zip
     $ unzip sencha-touch-2.0.1.1-gpl.zip
+    $ cd sencha
     $ sencha generate app TempApp /tmp/TempApp
-    $ cp -r /tmp/Temp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
+    $ cp -r /tmp/TempApp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
 
 You can now version-control this ``sdk`` directory.
 
