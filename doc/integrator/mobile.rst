@@ -87,7 +87,7 @@ Adding missing files
 ~~~~~~~~~~~~~~~~~~~~
 
 You can skip this section if your project has been created using c2cgeoportal
-0.8 or better. If you project was created using an older c2cgeoportal, and if
+0.8 or better. If your project was created using an older c2cgeoportal, and if
 you've just upgraded your project to c2cgeoportal 0.8, then you need to follow
 the below instructions.
 
