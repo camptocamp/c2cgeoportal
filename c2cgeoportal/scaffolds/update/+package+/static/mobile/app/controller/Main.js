@@ -4,7 +4,12 @@ Ext.define('App.controller.Main', {
     config: {
         refs: {
             mainView: 'mainview',
-            layersView: 'layersview'
+            layersView: 'layersview',
+            settingsView: {
+                selector: 'settingsview',
+                xtype: 'settingsview',
+                autoCreate: true
+            }
         },
         control: {
             'button[action=home]': {
@@ -17,6 +22,11 @@ Ext.define('App.controller.Main', {
                     this.redirectTo('layers');
                 }
             },
+            'button[action=settings]': {
+                tap: function() {
+                    this.redirectTo('settings');
+                }
+            },
             mainView: {
                 longpress: function(view, bounds, map) {
                     this.queryMap(view, bounds, map);
@@ -26,7 +36,8 @@ Ext.define('App.controller.Main', {
         routes: {
             '': 'showHome',
             'home': 'showHome',
-            'layers': 'showLayers'
+            'layers': 'showLayers',
+            'settings': 'showSettings'
         }
     },
     
@@ -49,6 +60,11 @@ Ext.define('App.controller.Main', {
             });
             view.setStore(store);
         }
+        Ext.Viewport.setActiveItem(view);
+    },
+
+    showSettings: function() {
+        var view = this.getSettingsView();
         Ext.Viewport.setActiveItem(view);
     },
 

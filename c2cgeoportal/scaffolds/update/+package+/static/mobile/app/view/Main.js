@@ -34,11 +34,11 @@ Ext.define("App.view.Main", {
                 iconCls: 'layers',
                 action: 'layers',
                 iconMask: true
-            //}, {
-                //xtype: 'button',
-                //iconCls: 'settings',
-                //action: 'settings',
-                //iconMask: true
+            }, {
+                xtype: 'button',
+                iconCls: 'settings',
+                action: 'settings',
+                iconMask: true
             }]
         }, {
             id: 'map-container'
