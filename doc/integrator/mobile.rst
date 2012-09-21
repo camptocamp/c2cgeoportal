@@ -58,9 +58,9 @@ Here's an example of setting ``PATH`` and ``SENCHA_SDK_TOOLS_2_0_0_BETA3``::
 Adding a mobile app to a project
 --------------------------------
 
-To be able to add a mobile app to a c2cgeoportal project this project should be
-able to version 0.8 of c2cgeoportal or better. See
-:ref:`integrator_update_application` to know how to upgrade a project.
+To be able to add a mobile app to a c2cgeoportal project this project should use
+c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know 
+how to upgrade a project.
 
 Adding the Sencha Touch SDK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
