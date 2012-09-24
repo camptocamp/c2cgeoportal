@@ -16,10 +16,13 @@ Ext.define("App.view.Settings", {
             }]
         }, {
             xtype: 'container',
+            cls: 'settings',
             items: [{
+                xtype: 'component',
                 html: 
                     '<h1 class="title">Copyright</h1>' +
-                    '<p>This map\'s data comes from OpenStreetMap and Camptocamp.org</p>'
+                    'Base Layer: Data CC-By-SA by <a href="http://openstreetmap.org/">OpenStreetMap</a><br />' +
+                    'Overlay Layers: Courtesy of <a href="http://camptocamp.org/">Camptocamp.org</a>'
             }]
         }]
     }
