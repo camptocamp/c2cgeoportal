@@ -33,10 +33,12 @@ Reset a user password.\nThe username is used as password if the password is not 
     _help = 'set password (if not set, username is ' \
             'used as password'
     parser.add_option('-p', '--password', help=_help)
-    parser.add_option('-c', '--create', action="store_true", default=False,
-      help='create user if it doesnt already exist')
-    parser.add_option('-r', '--rolename', default='role_admin',
-      help='the role name which must exist in the database')
+    parser.add_option(
+        '-c', '--create', action="store_true", default=False,
+        help='create user if it doesnt already exist')
+    parser.add_option(
+        '-r', '--rolename', default='role_admin',
+        help='the role name which must exist in the database')
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
@@ -90,26 +92,27 @@ Reset a user password.\nThe username is used as password if the password is not 
 
             # get roles
             query_role = sess.query(models.Role).filter(
-                             models.Role.name == u'%s' % options.rolename)
+                models.Role.name == u'%s' % options.rolename)
 
             if query_role.count() == 0:
                 # role not found in db?
                 raise StandardError(
-                    'role matching %s doesnt exists in database' % \
+                    'role matching %s doesnt exists in database' %
                     options.rolename)
 
             role = query_role.first()
 
-            user = models.User(username=u'%s' % username,
-                        password=u'%s' % password,
-                        email=u'%s' % username,
-                        role=role
-                        )
+            user = models.User(
+                username=u'%s' % username,
+                password=u'%s' % password,
+                email=u'%s' % username,
+                role=role
+            )
             sess.add(user)
             transaction.commit()
 
             print "user %s created with password %s and role %s" % \
-                  (username, password, options.rolename)
+                (username, password, options.rolename)
 
     else:
         # if user exists (assuming username are unique)

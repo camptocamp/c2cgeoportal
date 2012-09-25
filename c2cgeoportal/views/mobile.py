@@ -11,7 +11,7 @@ from pyramid.i18n import get_locale_name
 def _common(request):
     _vars = {
         "lang": get_locale_name(request)
-        }
+    }
     return _vars
 
 

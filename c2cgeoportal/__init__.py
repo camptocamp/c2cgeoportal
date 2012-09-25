@@ -55,7 +55,7 @@ def locale_negotiator(request):
         # if best_match returns None then Pyramid will use what's defined in
         # the default_locale_name configuration variable
         return request.accept_language.best_match(
-                request.registry.settings.get("available_locale_names"))
+            request.registry.settings.get("available_locale_names"))
     return lang
 
 
@@ -70,9 +70,9 @@ def get_user_from_request(request):
         # we know we'll need to role object for the
         # user so we use earger loading
         return DBSession.query(User) \
-                        .options(joinedload(User.role)) \
-                        .filter_by(username=username) \
-                        .one()
+            .options(joinedload(User.role)) \
+            .filter_by(username=username) \
+            .one()
 
 
 def set_user_validator(config, user_validator):
@@ -135,8 +135,9 @@ def includeme(config):
     config.add_translation_dirs('c2cgeoportal:locale/')
 
     # initialize database
-    engine = sqlalchemy.engine_from_config(config.get_settings(),
-            'sqlalchemy.')
+    engine = sqlalchemy.engine_from_config(
+        config.get_settings(),
+        'sqlalchemy.')
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
 
@@ -155,7 +156,7 @@ def includeme(config):
 
     # add the "xsd" renderer
     config.add_renderer('xsd', XSD(
-            sequence_callback=dbreflection._xsd_sequence_callback))
+        sequence_callback=dbreflection._xsd_sequence_callback))
 
     # add the set_user_validator directive, and set a default user
     # validator
@@ -165,8 +166,9 @@ def includeme(config):
     # add a TileCache view
     load_tilecache_config(config.get_settings())
     config.add_route('tilecache', '/tilecache{path:.*?}')
-    config.add_view(view='c2cgeoportal.views.tilecache:tilecache',
-            route_name='tilecache')
+    config.add_view(
+        view='c2cgeoportal.views.tilecache:tilecache',
+        route_name='tilecache')
 
     # add an OGCProxy view
     config.add_route('ogcproxy', '/ogcproxy',
@@ -197,7 +199,7 @@ def includeme(config):
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route('permalinktheme', '/theme/*themes')
 
-    # checker routes, Checkers are web services to test and assess that 
+    # checker routes, Checkers are web services to test and assess that
     # the application is correctly functioning.
     # These web services are used by tools like (nagios).
     config.add_route('checker_main', '/checker_main')
@@ -228,21 +230,28 @@ def includeme(config):
     config.add_route('profile.json', '/profile.json')
 
     # add routes for the "layers" web service
-    config.add_route('layers_count', '/layers/{layer_id:\\d+}/count',
-                     request_method='GET')
-    config.add_route('layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
-                     request_method='GET')
-    config.add_route('layers_read_many',
-                     '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
-                     request_method='GET')  # supports URLs like /layers/1,2,3
-    config.add_route('layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
-                     request_method='GET')
-    config.add_route('layers_create', '/layers/{layer_id:\\d+}',
-                     request_method='POST')
-    config.add_route('layers_update', '/layers/{layer_id:\\d+}/{feature_id}',
-                     request_method='PUT')
-    config.add_route('layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
-                     request_method='DELETE')
+    config.add_route(
+        'layers_count', '/layers/{layer_id:\\d+}/count',
+        request_method='GET')
+    config.add_route(
+        'layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
+        request_method='GET')
+    config.add_route(
+        'layers_read_many',
+        '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
+        request_method='GET')  # supports URLs like /layers/1,2,3
+    config.add_route(
+        'layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
+        request_method='GET')
+    config.add_route(
+        'layers_create', '/layers/{layer_id:\\d+}',
+        request_method='POST')
+    config.add_route(
+        'layers_update', '/layers/{layer_id:\\d+}/{feature_id}',
+        request_method='PUT')
+    config.add_route(
+        'layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
+        request_method='DELETE')
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route('layers_root', '/layers/')
@@ -257,19 +266,24 @@ def includeme(config):
     schema = config.get_settings()['schema']
     parentschema = config.get_settings()['parentschema']
     settings = config.get_settings()
-    formalchemy_default_zoom = get_setting(settings,
-            ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
-    formalchemy_default_x = get_setting(settings,
-            ('admin_interface', 'map_x'), formalchemy_default_x)
-    formalchemy_default_y = get_setting(settings,
-            ('admin_interface', 'map_y'), formalchemy_default_y)
-    formalchemy_available_functionalities = get_setting(settings,
-            ('admin_interface', 'available_functionalities'),
-            formalchemy_available_functionalities)
+    formalchemy_default_zoom = get_setting(
+        settings,
+        ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
+    formalchemy_default_x = get_setting(
+        settings,
+        ('admin_interface', 'map_x'), formalchemy_default_x)
+    formalchemy_default_y = get_setting(
+        settings,
+        ('admin_interface', 'map_y'), formalchemy_default_y)
+    formalchemy_available_functionalities = get_setting(
+        settings,
+        ('admin_interface', 'available_functionalities'),
+        formalchemy_available_functionalities)
 
     # register an admin UI
-    config.formalchemy_admin('admin', package='c2cgeoportal',
-            view='fa.jquery.pyramid.ModelView', factory=FAModels)
+    config.formalchemy_admin(
+        'admin', package='c2cgeoportal',
+        view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')

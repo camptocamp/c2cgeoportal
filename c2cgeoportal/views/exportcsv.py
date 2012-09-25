@@ -16,6 +16,6 @@ def echo(request):
     name = request.params.get('name', 'export')
     return Response(csv, headers={
         'Content-Type': 'text/csv; charset=iso-8859-1',
-        'Content-Disposition': 'attachment; filename="%s.csv"' % \
-                                            name.encode('iso-8859-1')
+        'Content-Disposition': 'attachment; filename="%s.csv"' %
+        name.encode('iso-8859-1')
     })

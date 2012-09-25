@@ -38,7 +38,7 @@ class Raster(object):
         result = {}
         for ref in rasters.keys():
             result[ref] = self._get_raster_value(
-                    rasters[ref], ref, lon, lat)
+                rasters[ref], ref, lon, lat)
 
         return result
 
@@ -50,19 +50,19 @@ class Raster(object):
             self._rasters[ref] = raster
         else:
             raise HTTPInternalServerError(
-                    "Bad raster type '%s' for raster layer '%s'" \
-                    % (layer['type'], ref))  # pragma: no cover
+                "Bad raster type '%s' for raster layer '%s'"
+                % (layer['type'], ref))  # pragma: no cover
 
         result = raster.get_value(lon, lat)
         if 'round' in layer:
             result = self._round(result, layer['round'])
-        elif result != None:
+        elif result is not None:
             result = Decimal(str(result))
 
         return result
 
     def _round(self, value, round_to):
-        if value != None:
+        if value is not None:
             return Decimal(str(value)).quantize(Decimal(str(round_to)))
         else:
             return None

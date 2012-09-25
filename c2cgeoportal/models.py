@@ -17,8 +17,9 @@ from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import schema, parentschema, srid
 
-__all__ = ['Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
-'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea']
+__all__ = [
+    'Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
+    'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea']
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
@@ -49,9 +50,9 @@ class TsVector(types.UserDefinedType):
 class FullTextSearch(GeoInterface, Base):
     __tablename__ = 'tsearch'
     __table_args__ = (
-            Index('tsearch_ts_idx', 'ts', postgresql_using='gin'),
-            {'schema': _schema}
-            )
+        Index('tsearch_ts_idx', 'ts', postgresql_using='gin'),
+        {'schema': _schema}
+    )
     __acl__ = [DENY_ALL]
     id = Column('id', types.Integer, primary_key=True)
     label = Column('label', types.Unicode)
@@ -84,22 +85,26 @@ class Functionality(Base):
         return "%s - %s" % (self.name or u'', self.value or u'')  # pragma: nocover
 
 # association table user <> functionality
-user_functionality = Table('user_functionality', Base.metadata,
-     Column('user_id', Integer, ForeignKey(_schema + '.user.id'),
-            primary_key=True),
-     Column('functionality_id', Integer,
-            ForeignKey(_schema + '.functionality.id'), primary_key=True),
-     schema=_schema
-)
+user_functionality = Table(
+    'user_functionality', Base.metadata,
+    Column(
+        'user_id', Integer, ForeignKey(_schema + '.user.id'),
+        primary_key=True),
+    Column(
+        'functionality_id', Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+    schema=_schema)
 
 # association table role <> functionality
-role_functionality = Table('role_functionality', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id'),
-            primary_key=True),
-     Column('functionality_id', Integer,
-            ForeignKey(_schema + '.functionality.id'), primary_key=True),
-     schema=_schema
-)
+role_functionality = Table(
+    'role_functionality', Base.metadata,
+    Column(
+        'role_id', Integer, ForeignKey(_schema + '.role.id'),
+        primary_key=True),
+    Column(
+        'functionality_id', Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+    schema=_schema)
 
 
 class User(Base):
@@ -116,15 +121,18 @@ class User(Base):
         'polymorphic_identity': 'user',
     }
     id = Column(types.Integer, primary_key=True)
-    username = Column(types.Unicode, unique=True, nullable=False,
-            label=_(u'Username'))
-    _password = Column('password', types.Unicode, nullable=False,
-            label=_(u'Password'))
+    username = Column(
+        types.Unicode, unique=True, nullable=False,
+        label=_(u'Username'))
+    _password = Column(
+        'password', types.Unicode, nullable=False,
+        label=_(u'Password'))
     email = Column(types.Unicode, nullable=False, label=_(u'E-mail'))
 
     # functionality
-    functionalities = relationship('Functionality',
-            secondary=user_functionality, cascade='save-update,merge,refresh-expire')
+    functionalities = relationship(
+        'Functionality', secondary=user_functionality,
+        cascade='save-update,merge,refresh-expire')
 
     # role relationship
     role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
@@ -135,7 +143,8 @@ class User(Base):
         parent_role_id = Column(Integer, ForeignKey(_parentschema + '.role.id'))
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
-    def __init__(self, username=u'', password=u'', email=u'',
+    def __init__(
+            self, username=u'', password=u'', email=u'',
             functionalities=[], role=None):
         self.username = username
         self.password = password
@@ -187,8 +196,9 @@ class Role(Base):
     #product = Column(types.Unicode)
 
     # functionality
-    functionalities = relationship('Functionality',
-            secondary=role_functionality, cascade='save-update,merge,refresh-expire')
+    functionalities = relationship(
+        'Functionality', secondary=role_functionality,
+        cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name=u'', description=u'', functionalities=[], extent=None):
         self.name = name
@@ -237,13 +247,15 @@ class TreeItem(Base):
         return self.name or u''  # pragma: nocover
 
 # association table LayerGroup <> TreeItem
-layergroup_treeitem = Table('layergroup_treeitem', Base.metadata,
-     Column('treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id'),
-            primary_key=True),
-     Column('treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id'),
-            primary_key=True),
-     schema=_schema
-)
+layergroup_treeitem = Table(
+    'layergroup_treeitem', Base.metadata,
+    Column(
+        'treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id'),
+        primary_key=True),
+    Column(
+        'treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id'),
+        primary_key=True),
+    schema=_schema)
 
 
 class TreeGroup(TreeItem):
@@ -251,12 +263,14 @@ class TreeGroup(TreeItem):
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     __mapper_args__ = {'polymorphic_identity': 'treegroup'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'),
-            primary_key=True)
+    id = Column(
+        types.Integer, ForeignKey(_schema + '.treeitem.id'),
+        primary_key=True)
 
     # relationship with Role and Layer
-    children = relationship('TreeItem', backref='parents',
-            secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire')
+    children = relationship(
+        'TreeItem', backref='parents',
+        secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name=u'', order=u''):
         TreeItem.__init__(self, name=name, order=order)
@@ -271,14 +285,16 @@ class LayerGroup(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'group'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'),
-            primary_key=True)
+    id = Column(
+        types.Integer, ForeignKey(_schema + '.treegroup.id'),
+        primary_key=True)
     isExpanded = Column(types.Boolean, label=_(u'Expanded'))
     isInternalWMS = Column(types.Boolean, label=_(u'Internal WMS'))
     # children have radio button instance of check box
     isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
 
-    def __init__(self, name=u'', order=100, isExpanded=False,
+    def __init__(
+            self, name=u'', order=100, isExpanded=False,
             isInternalWMS=True, isBaseLayer=False):
         TreeGroup.__init__(self, name=name, order=order)
         self.isExpanded = isExpanded
@@ -295,8 +311,9 @@ class Theme(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'theme'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treegroup.id'),
-            primary_key=True)
+    id = Column(
+        types.Integer, ForeignKey(_schema + '.treegroup.id'),
+        primary_key=True)
     icon = Column(types.Unicode, label=_(u'Icon'))
     display = Column(types.Boolean, label=_(u'Display'))  # display in theme selector
 
@@ -315,21 +332,24 @@ class Layer(TreeItem):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'layer'}
-    id = Column(types.Integer, ForeignKey(_schema + '.treeitem.id'),
-            primary_key=True)
+    id = Column(
+        types.Integer, ForeignKey(_schema + '.treeitem.id'),
+        primary_key=True)
 
     public = Column(types.Boolean, default=True, label=_(u'Public'))
     isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
     icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
-    layerType = Column(types.Enum("internal WMS",
-            "external WMS",
-            "WMTS",
-            "no 2D",
-            native_enum=False), label=_(u'Type'))
+    layerType = Column(
+        types.Enum("internal WMS",
+        "external WMS",
+        "WMTS",
+        "no 2D",
+        native_enum=False), label=_(u'Type'))
     url = Column(types.Unicode, label=_(u'Base URL'))  # for externals
-    imageType = Column(types.Enum("image/jpeg", "image/png",
-            native_enum=False), label=_(u'Image type'))  # for WMS
+    imageType = Column(
+        types.Enum("image/jpeg", "image/png",
+        native_enum=False), label=_(u'Image type'))  # for WMS
     style = Column(types.Unicode, label=_(u'Style'))
     dimensions = Column(types.Unicode, label=_(u'Dimensions'))  # for WMTS
     matrixSet = Column(types.Unicode, label=_(u'Matrix set'))  # for WMTS
@@ -346,7 +366,8 @@ class Layer(TreeItem):
     identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))  # data attribute field in which application can find a human identifiable name or number
     geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
 
-    def __init__(self, name=u'', order=0, public=True, icon=u'',
+    def __init__(
+            self, name=u'', order=0, public=True, icon=u'',
             layerType=u'internal WMS'):
         TreeItem.__init__(self, name=name, order=order)
         self.public = public
@@ -354,24 +375,28 @@ class Layer(TreeItem):
         self.layerType = layerType
 
 # association table role <> restriciton area
-role_ra = Table('role_restrictionarea', Base.metadata,
-     Column('role_id', Integer, ForeignKey(_schema + '.role.id'),
-            primary_key=True),
-     Column('restrictionarea_id', Integer,
-            ForeignKey(_schema + '.restrictionarea.id'),
-            primary_key=True),
-     schema=_schema
-)
+role_ra = Table(
+    'role_restrictionarea', Base.metadata,
+    Column(
+        'role_id', Integer, ForeignKey(_schema + '.role.id'),
+        primary_key=True),
+    Column(
+        'restrictionarea_id', Integer,
+        ForeignKey(_schema + '.restrictionarea.id'),
+        primary_key=True),
+    schema=_schema)
 
 # association table layer <> restriciton area
-layer_ra = Table('layer_restrictionarea', Base.metadata,
-     Column('layer_id', Integer, ForeignKey(_schema + '.layer.id'),
-            primary_key=True),
-     Column('restrictionarea_id', Integer,
-            ForeignKey(_schema + '.restrictionarea.id'),
-            primary_key=True),
-     schema=_schema
-)
+layer_ra = Table(
+    'layer_restrictionarea', Base.metadata,
+    Column(
+        'layer_id', Integer, ForeignKey(_schema + '.layer.id'),
+        primary_key=True),
+    Column(
+        'restrictionarea_id', Integer,
+        ForeignKey(_schema + '.restrictionarea.id'),
+        primary_key=True),
+    schema=_schema)
 
 
 class RestrictionArea(Base):
@@ -390,10 +415,12 @@ class RestrictionArea(Base):
     readwrite = Column(types.Boolean, label=_(u'Read-write mode'), default=False)
 
     # relationship with Role and Layer
-    roles = relationship('Role', secondary=role_ra,
-            backref='restrictionareas', cascade='save-update,merge,refresh-expire')
-    layers = relationship('Layer', secondary=layer_ra,
-            backref='restrictionareas', cascade='save-update,merge,refresh-expire')
+    roles = relationship(
+        'Role', secondary=role_ra,
+        backref='restrictionareas', cascade='save-update,merge,refresh-expire')
+    layers = relationship(
+        'Layer', secondary=layer_ra,
+        backref='restrictionareas', cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name='', description='', layers=[], roles=[],
                  area=None, readwrite=False):

@@ -55,15 +55,16 @@ class Profile(Raster):
         prev_coord = None
         coords = self._create_points(geom.coordinates, int(self.request.params['nbPoints']))
         for coord in coords:
-            if prev_coord != None:
+            if prev_coord is not None:
                 dist += self._dist(prev_coord, coord)
 
             values = {}
             has_one = False
             for ref in rasters.keys():
-                value = self._get_raster_value(self.rasters[ref],
-                        ref, coord[0], coord[1])
-                if value != None:
+                value = self._get_raster_value(
+                    self.rasters[ref],
+                    ref, coord[0], coord[1])
+                if value is not None:
                     values[ref] = value
                     has_one = True
 
@@ -85,7 +86,7 @@ class Profile(Raster):
         totalLength = 0
         prev_coord = None
         for coord in coords:
-            if prev_coord != None:
+            if prev_coord is not None:
                 totalLength += self._dist(prev_coord, coord)
             prev_coord = coord
 
@@ -95,7 +96,7 @@ class Profile(Raster):
         result = []
         prev_coord = None
         for coord in coords:
-            if prev_coord != None:
+            if prev_coord is not None:
                 cur_length = self._dist(prev_coord, coord)
                 cur_nb_points = int(nbPoints * cur_length / totalLength + 0.5)
                 if cur_nb_points < 1:

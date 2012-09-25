@@ -20,13 +20,15 @@ from geoalchemy import geometry
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import models
-from c2cgeoportal import (formalchemy_default_zoom,
-        formalchemy_default_x, formalchemy_default_y,
-        formalchemy_available_functionalities)
+from c2cgeoportal import (
+    formalchemy_default_zoom,
+    formalchemy_default_x, formalchemy_default_y,
+    formalchemy_available_functionalities)
 
-__all__ = ['Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
-'RestrictionArea', 'LayerGrid', 'LayerGroupGrid', 'ThemeGrid',
-'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid']
+__all__ = [
+    'Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
+    'RestrictionArea', 'LayerGrid', 'LayerGroupGrid', 'ThemeGrid',
+    'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid']
 
 
 log = logging.getLogger(__name__)
@@ -37,13 +39,13 @@ fa_config.engine = TemplateEngine()
 
 fanstatic_lib = Library('admin', 'static')
 admin_js = Resource(
-        fanstatic_lib,
-        'build/admin/admin.js',
-        depends=[fanstatic_resources.jqueryui])
+    fanstatic_lib,
+    'build/admin/admin.js',
+    depends=[fanstatic_resources.jqueryui])
 admin_css = Resource(
-        fanstatic_lib,
-        'build/admin/admin.css',
-        depends=[fanstatic_resources.fa_uiadmin_css])
+    fanstatic_lib,
+    'build/admin/admin.css',
+    depends=[fanstatic_resources.fa_uiadmin_css])
 
 # HACK to invoke fanstatic to inject a script which content is dynamic:
 # the content of the script sets OpenLayers.ImgPath to an url that is
@@ -61,10 +63,10 @@ def get_fanstatic_resources(request):
         return '<script>OpenLayers.ImgPath="%s";</script>' % olimgpath
     if olimgpath_js is None:
         olimgpath_js = Resource(
-                fanstatic_lib,
-                'whatever.js',
-                renderer=olimgpath_renderer,
-                depends=[admin_js])
+            fanstatic_lib,
+            'whatever.js',
+            renderer=olimgpath_renderer,
+            depends=[admin_js])
 
     return Group([admin_js, olimgpath_js, admin_css])
 # end of HACK
@@ -107,8 +109,9 @@ def before_render_user(context, event):
 
 # validator to check uniqueness of unique key in db (prevent duplicate key error)
 def unique_validator(value, f):
-    if f.parent._bound_pk is None and f.query(f.model.__class__).filter_by(
-                                                     **{f.name: f.value}).first():
+    query = f.query(f.model.__class__)
+    query = query.filter_by(**{f.name: f.value})
+    if f.parent._bound_pk is None and query.first():
         raise ValidationError(_(u'Duplicate record'))
 
 
@@ -118,7 +121,7 @@ class PyramidGeometryFieldRenderer(GeometryFieldRenderer):
         GeometryFieldRenderer.__init__(self, field)
 
     def get_templates(self):
-        if self.__templates == None:
+        if self.__templates is None:
             self.__templates = TemplateLookup(
                 [os.path.join(os.path.dirname(__file__), 'templates', 'admin')],
                 input_encoding='utf-8', output_encoding='utf-8')
@@ -149,8 +152,9 @@ class DblPasswordField(Field):
             setattr(self.model, self.name, value)
 
     def render(self):
-        return (password_field(self.renderer.name, value="")
-            + password_field(self.renderer.name + '_confirm', value=""))
+        return (
+            password_field(self.renderer.name, value="") +
+            password_field(self.renderer.name + '_confirm', value=""))
 
 
 class CheckBoxTreeSet(CheckBoxSet):
@@ -192,7 +196,8 @@ class CheckBoxTreeSet(CheckBoxSet):
 
 class LayerCheckBoxTreeSet(CheckBoxTreeSet):
 
-    def __init__(self, attribute, dom_id='layer_tree',
+    def __init__(
+            self, attribute, dom_id='layer_tree',
             auto_check=True, only_private=False):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self._rendered_id = []
@@ -260,11 +265,11 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
 
     def render_tree(self):
         self.layer = models.DBSession.query(models.Layer). \
-                order_by(models.Layer.order).all()
+            order_by(models.Layer.order).all()
         self.layer_group = models.DBSession.query(models.LayerGroup). \
-                order_by(models.LayerGroup.order).all()
+            order_by(models.LayerGroup.order).all()
         themes = models.DBSession.query(models.Theme). \
-                order_by(models.Theme.order).all()
+            order_by(models.Theme.order).all()
         self.i = 0
         result = ""
         for item in themes:
@@ -290,8 +295,9 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
 
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):
     def __init__(self, attribute):
-        super(TreeItemCheckBoxTreeSet, self).__init__(attribute,
-                auto_check=False, only_private=False)
+        super(TreeItemCheckBoxTreeSet, self).__init__(
+            attribute,
+            auto_check=False, only_private=False)
 
 
 class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
@@ -300,9 +306,10 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
             attribute, dom_id='tree_func', auto_collapsed=False)
 
     def render_tree(self):
-        functionalities = models.DBSession.query(models.Functionality). \
-                order_by(models.Functionality.name). \
-                order_by(models.Functionality.value).all()
+        query = models.DBSession.query(models.Functionality)
+        query = query.order_by(models.Functionality.name)
+        query = query.order_by(models.Functionality.value)
+        functionalities = query.all()
         i = 0
         prev_name = u''
         result = u""
@@ -311,14 +318,17 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
                 if prev_name != u'':
                     result += '</ul></li>\n'
                 prev_name = functionality.name
-                result += '<li><input type="checkbox" style="display:none"></input><label>%s</label><ul>\n' \
-                          % (functionality.name)
-            result += '<li><input type="checkbox" id="%s" name="%s" value="%i"%s></input><label>%s</label></li>\n' % \
-                ('%s_%i' % (self.name, i),
-                self.name,
-                functionality.id,
-                ' checked="checked"' if self._is_checked(functionality.id) else "",
-                functionality.value)
+                result += \
+                    '<li><input type="checkbox" style="display:none"></input><label>%s</label><ul>\n' \
+                    % (functionality.name)
+            result += \
+                '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
+                '</input><label>%s</label></li>\n' % (
+                    '%s_%i' % (self.name, i),
+                    self.name,
+                    functionality.id,
+                    ' checked="checked"' if self._is_checked(functionality.id) else "",
+                    functionality.value)
             i += 1
         result += '</ul></li>'
         return result
@@ -334,10 +344,12 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
 # Layer
 Layer = FieldSet(models.Layer)
 Layer.order.set(metadata=dict(mandatory='')).required()
-Layer.layerType.set(renderer=fields.SelectFieldRenderer, \
-        options=["internal WMS", "external WMS", "WMTS", "no 2D"])
-Layer.imageType.set(renderer=fields.SelectFieldRenderer, \
-        options=["image/jpeg", "image/png"])
+Layer.layerType.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["internal WMS", "external WMS", "WMTS", "no 2D"])
+Layer.imageType.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["image/jpeg", "image/png"])
 Layer.restrictionareas.set(renderer=fields.CheckBoxSet)
 Layer.parents.set(readonly=True)
 
@@ -355,8 +367,9 @@ Theme.configure(exclude=[Theme.parents])
 
 # Functionality
 Functionality = FieldSet(models.Functionality)
-Functionality.name.set(renderer=fields.SelectFieldRenderer,  \
-        options=formalchemy_available_functionalities)
+Functionality.name.set(
+    renderer=fields.SelectFieldRenderer,
+    options=formalchemy_available_functionalities)
 Functionality.value.set(metadata=dict(mandatory='')).required()
 
 # RestrictionArea
@@ -373,7 +386,7 @@ RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
     # and we want to use our own build script.
     ('openlayers_lib', 'none')
-    ])
+])
 fieldOrder = [RestrictionArea.name,
               RestrictionArea.description,
               RestrictionArea.layers,
@@ -397,7 +410,7 @@ Role.extent.set(label=_(u'Extent'), options=[
     # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
     # and we want to use our own build script.
     ('openlayers_lib', 'none')
-    ])
+])
 fieldOrder = [Role.name,
               Role.description,
               Role.functionalities,
@@ -410,14 +423,15 @@ Role.configure(include=fieldOrder)
 User = FieldSet(models.User)
 password = DblPasswordField(User, User._password)
 User.append(password)
-fieldOrder = [User.username.validate(unique_validator)
-                               .with_metadata(mandatory=''),
-              password,
-              User.role]
+fieldOrder = [
+    User.username.validate(unique_validator).with_metadata(mandatory=''),
+    password,
+    User.role]
 if hasattr(User, 'parent_role'):
     fieldOrder.append(User.parent_role)
-fieldOrder.extend([User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
-              User.email.with_metadata(mandatory='')])
+fieldOrder.extend(
+    [User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
+    User.email.with_metadata(mandatory='')])
 User.configure(include=fieldOrder)
 
 #############################################################################
