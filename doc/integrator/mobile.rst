@@ -105,12 +105,12 @@ the target project, and copying the missing files from there::
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
    $ rm -rf /tmp/<project_name>
 
-Adding missing files (Upgrading from version below 1.1)
+Adding missing files (Upgrading from version below 1.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can skip this section if your project has been created using c2cgeoportal
-1.1 or better. If your project was created using an older c2cgeoportal, and if
-you've just upgraded your project to c2cgeoportal 1.1, then you need to follow
+1.2 or better. If your project was created using an older c2cgeoportal, and if
+you've just upgraded your project to c2cgeoportal 1.2, then you need to follow
 the below instructions.
 
 New files and directories are provided by the ``c2cgeoportal_create`` and need
