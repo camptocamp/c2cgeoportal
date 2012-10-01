@@ -280,3 +280,13 @@ to be adapted to the data retrieved from the server::
 
 In the example above ``mns`` and ``mnt`` are the keys used in the server
 config for the ``raster web services``.
+
+Settings view
+-------------
+
+The ``Settings`` view can be customized to suit the project needs. It will not
+be overwritten by any automatic c2cgeoportail update.
+One can add their own text or components in this view.
+
+If style customization is also required for components in this view, use the
+``custom.scss`` file.
