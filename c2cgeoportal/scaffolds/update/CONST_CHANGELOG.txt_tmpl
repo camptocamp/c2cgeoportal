@@ -43,6 +43,12 @@ Version 1.1
                 callback=defaultgroupsfinder,
                 cookie_name=settings.get('authtkt_cookie_name'))
 
+5. A new ``Settings`` view has been added to the mobile application as well as a
+   ``custom.scss`` stylesheet file. Both are intended to be customized by the
+   integrator.
+   Check out documentation to find information about how to upgrade an existing
+   c2cgeoportail project.
+
 Version 1.0
 ===========
 

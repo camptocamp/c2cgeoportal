@@ -82,11 +82,11 @@ to your project's ``static/mobile`` dir. For example::
 
 You can now version-control this ``sdk`` directory.
 
-Adding missing files
-~~~~~~~~~~~~~~~~~~~~
+Adding missing files (Upgrading from version below 0.8)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can skip this section if your project has been created using c2cgeoportal
-0.8 or better. If you project was created using an older c2cgeoportal, and if
+0.8 or better. If your project was created using an older c2cgeoportal, and if
 you've just upgraded your project to c2cgeoportal 0.8, then you need to follow
 the below instructions.
 
@@ -103,6 +103,29 @@ the target project, and copying the missing files from there::
    $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
         <package_name>/static/mobile/
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
+   $ rm -rf /tmp/<project_name>
+
+Adding missing files (Upgrading from version below 1.1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can skip this section if your project has been created using c2cgeoportal
+1.1 or better. If your project was created using an older c2cgeoportal, and if
+you've just upgraded your project to c2cgeoportal 1.1, then you need to follow
+the below instructions.
+
+New files and directories are provided by the ``c2cgeoportal_create`` and need
+to be added manually to the ``static/mobile`` directory.
+The easiest way to get all the necessary files involves creating a temporary
+c2cgeoportal project of the same name as the target project, and copying the
+missing files from there::
+
+   $ cd <project_name>
+   $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+           /tmp/<project_name> package=<package_name>
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/app/view/Settings.js \
+        <package_name>/static/mobile/app/view/
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/custom.scss \
+        <package_name>/static/mobile/
    $ rm -rf /tmp/<project_name>
 
 Adding mobile routes and views
