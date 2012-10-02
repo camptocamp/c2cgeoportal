@@ -169,14 +169,14 @@ application's source repository::
     rm -rf *.egg-info
 
 Now is a good time to put the application source code under revision
-control (Git preferably).
+control (Git preferably). See instructions below.
 
 .. note::
 
    We use the http URL to allow everybody to clone.
 
-To add a new child in an existing repository
-............................................
+To add a new child project in an existing repository
+....................................................
 
 Add the project::
 
@@ -204,6 +204,7 @@ Add the project::
             CONST_buildout.cfg buildout.cfg buildout/ \
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
+            config.yaml.in tiles.yaml.in \
             jsbuild/ print/ apache/ \
             mapserver/ tilecache/ deploy/
     git remote add origin git@git.camptocamp.com:/srv/git/$PROJECT
