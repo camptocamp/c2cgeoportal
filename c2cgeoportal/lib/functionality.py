@@ -7,11 +7,11 @@ def _get_config_functionality(name, registered, config):
     result = None
 
     if registered:
-        result = get_setting(config,
-                ('functionalities', 'registered', name))
+        result = get_setting(
+            config, ('functionalities', 'registered', name))
     if result is None:
-        result = get_setting(config,
-                ('functionalities', 'anonymous', name))
+        result = get_setting(
+            config, ('functionalities', 'anonymous', name))
 
     if result is None:
         result = []
@@ -22,13 +22,15 @@ def _get_config_functionality(name, registered, config):
 
 
 def _get_db_functionality(name, user):
-    result = [functionality.value \
-                for functionality in user.functionalities \
-                    if functionality.name == name]
+    result = [
+        functionality.value for
+        functionality in user.functionalities
+        if functionality.name == name]
     if len(result) == 0:
-        result = [functionality.value \
-                    for functionality in user.role.functionalities \
-                        if functionality.name == name]
+        result = [
+            functionality.value for
+            functionality in user.role.functionalities
+            if functionality.name == name]
     return result
 
 
@@ -37,5 +39,5 @@ def get_functionality(name, config, request):
     if request.user:
         result = _get_db_functionality(name, request.user)
     if len(result) == 0:
-        result = _get_config_functionality(name, request.user != None, config)
+        result = _get_config_functionality(name, request.user is not None, config)
     return result

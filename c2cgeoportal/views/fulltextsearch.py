@@ -14,7 +14,7 @@ _language_dict = {
     'fr': 'french',
     'en': 'english',
     'de': 'german',
-    }
+}
 
 
 @view_config(route_name='fulltextsearch', renderer='geojson')
@@ -24,12 +24,12 @@ def fulltextsearch(request):
         lang = request.registry.settings['default_locale_name']
     except KeyError:
         return HTTPInternalServerError(
-                detail='default_locale_name not defined in settings')
+            detail='default_locale_name not defined in settings')
     try:
         lang = _language_dict[lang]
     except KeyError:
         return HTTPInternalServerError(
-                detail='%s not defined in _language_dict' % lang)
+            detail='%s not defined in _language_dict' % lang)
 
     if 'query' not in request.params:
         return HTTPBadRequest(detail='no query')
@@ -45,7 +45,7 @@ def fulltextsearch(request):
     terms = '&'.join(w + ':*' for w in
                          query.split(' ') if w != '')
     filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
-                {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+        {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
     # The numbers used in ts_rank_cd() below indicate a normalization method.
     # Several normalization methods can be combined using |.
@@ -57,11 +57,14 @@ def fulltextsearch(request):
     # (the normalization is applied two times with the combination of 2 and 8,
     # so the effect on at least the one-word-results is therefore stronger).
     rank = "ts_rank_cd(%(tsvector)s, to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
-           {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+        {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
-    objs = DBSession.query(FullTextSearch).filter(filter) \
-               .order_by(desc(rank)).order_by(FullTextSearch.label) \
-               .limit(limit).all()
+    query = DBSession.query(FullTextSearch)
+    query = query.filter(filter)
+    query = query.order_by(desc(rank))
+    query = query.order_by(FullTextSearch.label)
+    query = query.limit(limit)
+    objs = query.all()
 
     features = []
     for o in objs:

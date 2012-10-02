@@ -26,8 +26,8 @@ class Printproxy(object):
     def info(self):
         """ Get print capabilities. """
 
-        templates = get_functionality('print_template', \
-                self.config, self.request)
+        templates = get_functionality(
+            'print_template', self.config, self.request)
 
         # get query string
         params = dict(self.request.params)
@@ -55,8 +55,8 @@ class Printproxy(object):
             return content
 
         capabilities['layouts'] = list(
-                layout for layout in capabilities['layouts'] if
-                layout['name'] in templates)
+            layout for layout in capabilities['layouts'] if
+            layout['name'] in templates)
 
         headers = dict(resp)
         headers["Expires"] = "-1"
@@ -87,7 +87,7 @@ class Printproxy(object):
         h['Content-Length'] = str(len(body))
         try:
             resp, content = http.request(
-                    _url, method='POST', body=body, headers=h)
+                _url, method='POST', body=body, headers=h)
         except:
             return HTTPBadGateway()
 

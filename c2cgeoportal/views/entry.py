@@ -8,7 +8,7 @@ import sys
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
-        HTTPBadRequest, HTTPUnauthorized, HTTPForbidden
+    HTTPBadRequest, HTTPUnauthorized, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -20,7 +20,7 @@ from math import sqrt
 from c2cgeoportal.lib import get_setting
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
-        RestrictionArea, Role, layer_ra, role_ra
+    RestrictionArea, Role, layer_ra, role_ra
 
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -41,7 +41,7 @@ class Entry(object):
         if https_flag:
             https_flag = https_flag.upper()
             if https_flag in self.request.headers and \
-               self.request.headers[https_flag] == self.settings.get('https_flag_value'):
+                    self.request.headers[https_flag] == self.settings.get('https_flag_value'):
                 self.request.scheme = 'https'
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
@@ -167,8 +167,8 @@ class Entry(object):
                 ('TRANSPARENT', 'TRUE'),
                 ('RULE', layer.legendRule),
             )
-            l['icon'] = self.request.route_url('mapserverproxy') \
-                    + '?' + '&'.join('='.join(p) for p in query)
+            l['icon'] = self.request.route_url('mapserverproxy') + \
+                '?' + '&'.join('='.join(p) for p in query)
         if layer.style:
             l['style'] = layer.style
 
@@ -187,8 +187,9 @@ class Entry(object):
 
     def _fill_internal_WMS(self, l, layer, wms_layers, wms):
         self._fill_WMS(l, layer)
-        self._fill_legend_rule_query_string(l, layer,
-                self.request.route_url('mapserverproxy'))
+        self._fill_legend_rule_query_string(
+            l, layer,
+            self.request.route_url('mapserverproxy'))
 
         # this is a leaf, ie. a Mapserver layer
         if layer.minResolution:
@@ -230,8 +231,8 @@ class Entry(object):
             try:
                 l['dimensions'] = json.loads(layer.dimensions)
             except:  # pragma: no cover
-                self.errors += (u"Unexpected error: '%s' " + \
-                        "while reading '%s' in layer '%s'\n") % (
+                self.errors += u"Unexpected error: '%s' " \
+                    "while reading '%s' in layer '%s'\n" % (
                         sys.exc_info()[0], layer.dimensions,
                         layer.name)
 
@@ -259,23 +260,23 @@ class Entry(object):
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
-                    group.isInternalWMS == treeItem.isInternalWMS):
+                        group.isInternalWMS == treeItem.isInternalWMS):
                     c = self._group(treeItem, layers, wms_layers, wms)
-                    if c != None:
+                    if c is not None:
                         children.append(c)
                 else:
                     self.errors += "Group %s connot be in group %s " \
-                             "(wrong isInternalWMS).\n" % \
-                             (treeItem.name, group.name)
+                        "(wrong isInternalWMS).\n" % \
+                        (treeItem.name, group.name)
             elif type(treeItem) == Layer:
                 if (treeItem in layers):
                     if (group.isInternalWMS ==
-                        (treeItem.layerType == 'internal WMS')):
+                            (treeItem.layerType == 'internal WMS')):
                         children.append(self._layer(treeItem, wms_layers, wms))
                     else:
                         self.errors += "Layer %s of type %s cannot be " \
-                                 "in the group %s.\n" % \
-                                 (treeItem.name, treeItem.layerType, group.name)
+                            "in the group %s.\n" % \
+                            (treeItem.name, treeItem.layerType, group.name)
 
         if len(children) > 0:
             g = {
@@ -302,20 +303,22 @@ class Entry(object):
             role_id = None
 
         if role_id is not None:
-            query2 = DBSession.query(Layer).join( \
-                       (layer_ra, Layer.id == layer_ra.c.layer_id), \
-                       (RestrictionArea, RestrictionArea.id ==
-                                         layer_ra.c.restrictionarea_id), \
-                       (role_ra, role_ra.c.restrictionarea_id ==
-                                         RestrictionArea.id), \
-                       (Role, Role.id == role_ra.c.role_id) \
-                     ). \
-                     filter(Role.id == role_id). \
-                     filter(and_(Layer.public != True,
-                                 functions.area(RestrictionArea.area) > 0))
+            query2 = DBSession.query(Layer)
+            query2 = query2.join(
+                (layer_ra, Layer.id == layer_ra.c.layer_id),
+                (RestrictionArea,
+                    RestrictionArea.id == layer_ra.c.restrictionarea_id),
+                (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
+                (Role, Role.id == role_ra.c.role_id))
+            query2 = query2.filter(Role.id == role_id)
+            query2 = query2.filter(and_(
+                Layer.public != True,
+                functions.area(RestrictionArea.area) > 0))
             query = query.union(query2)
 
-        layers = query.filter(Layer.isVisible == True).order_by(Layer.order.asc()).all()
+        query = query.filter(Layer.isVisible == True)
+        query = query.order_by(Layer.order.asc())
+        layers = query.all()
 
         exportThemes = []
 
@@ -339,12 +342,13 @@ class Entry(object):
         for theme in themes:
             if theme.display:
                 children = list(self._getChildren(
-                        theme, layers, wms_layers, wms))
+                    theme, layers, wms_layers, wms))
                 # test if the theme is visible for the current user
                 if len(children) > 0:
-                    icon = self._getIconPath(theme.icon) if theme.icon else \
-                           self.request.static_url('c2cgeoportal:static' + \
-                                                   '/images/blank.gif')
+                    icon = self._getIconPath(theme.icon) \
+                        if theme.icon \
+                        else self.request.static_url(
+                            'c2cgeoportal:static/images/blank.gif')
                     exportThemes.append({
                         'name': theme.name,
                         'icon': icon,
@@ -357,7 +361,7 @@ class Entry(object):
         for item in sorted(theme.children, key=lambda item: item.order):
             if type(item) == LayerGroup:
                 c = self._group(item, layers, wms_layers, wms)
-                if c != None:
+                if c is not None:
                     yield c
 
             elif type(item) == Layer:
@@ -380,8 +384,9 @@ class Entry(object):
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
         )
-        wfs_url = self.request.registry.settings['external_mapserv_url'] if external \
-                    else self.request.registry.settings['mapserv_url']
+        wfs_url = self.request.registry.settings['external_mapserv_url'] \
+            if external \
+            else self.request.registry.settings['mapserv_url']
         if wfs_url.find('?') < 0:
             wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
@@ -429,10 +434,11 @@ class Entry(object):
         d['tilecache_url'] = self.settings.get("tilecache_url")
 
         functionality = dict()
-        for func in get_setting(self.settings,
-                ('functionalities', 'available_in_templates'), []):
-            functionality[func] = get_functionality(func, self.settings,
-                    self.request)
+        for func in get_setting(
+            self.settings, (
+                'functionalities', 'available_in_templates'), []):
+            functionality[func] = get_functionality(
+                func, self.settings, self.request)
         d['functionality'] = json.dumps(functionality)
 
         # handle permalink_themes
@@ -556,8 +562,9 @@ class Entry(object):
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
         else:
-            return HTTPFound(location=self.request.route_url('home'),
-                    headers=headers)
+            return HTTPFound(
+                location=self.request.route_url('home'),
+                headers=headers)
 
     @view_config(route_name='permalinktheme', renderer='index.html')
     def permalinktheme(self):

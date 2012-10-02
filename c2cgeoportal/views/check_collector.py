@@ -24,7 +24,7 @@ class CheckerCollector(object):
         for host in self.settings['hosts']:
             params = self.request.params
             check_type = params['type'] if 'type' in params else \
-                    host['type'] if 'type' in host else 'default'
+                host['type'] if 'type' in host else 'default'
             checks = self.settings['check_type'][check_type]
             body += "<h2>%s</h2>" % host['display']
 
@@ -33,7 +33,7 @@ class CheckerCollector(object):
                 start2 = time()
                 res = self._testurl("%s/%s" % (host['url'], check['name']))
                 body += "<p>%s: %s (%0.4fs)</p>" % \
-                        (check['display'], res, time() - start2)
+                    (check['display'], res, time() - start2)
             body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
         body += "<p>Elapsed all: %0.4f</p>" % (time() - start0)
         return Response(body=body, status_int=self.status_int)
