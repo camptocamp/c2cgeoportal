@@ -9,7 +9,7 @@ package. So to be able to create a c2cgeoportal application the
 ``c2cgeoportal`` package must be installed.
 
 This guide considers that:
- - We use a server manages by Camptocamp, meaning:
+ - We use a server managed by Camptocamp, meaning:
     - all dependencies described in the
       :ref:`system requirements <integrator_install_application_system_requirement>`
       section are installed
