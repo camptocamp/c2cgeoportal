@@ -16,6 +16,8 @@
 @include sencha-form;
 //@include sencha-msgbox;
 
+@import '../../../../custom';
+
 // Your custom code goes here...
 
 @include pictos-iconmask('add');

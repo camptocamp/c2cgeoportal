@@ -1,5 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 1.2
+===========
+
+1. A new ``Settings`` view has been added to the mobile application as well as a
+   ``custom.scss`` stylesheet file. Both are intended to be customized by the
+   integrator.
+   Check out documentation to find information about how to upgrade an existing
+   c2cgeoportail project or how the settings view can be customized.
+
 Version 1.1
 ===========
 
