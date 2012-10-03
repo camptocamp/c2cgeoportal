@@ -21,7 +21,6 @@ of an existing c2cgeoportal application. Here's how:
     [buildout]
     extends = buildout.cfg
     develop += c2cgeoportal
-    extensions -= buildout.dumppickedversions
 
     [vars]
     instanceid = <instanceid>
@@ -33,7 +32,7 @@ of an existing c2cgeoportal application. Here's how:
     compress = false
 
     [template]
-    exclude-directories += c2cgeoportal/scaffolds
+    exclude-directories += c2cgeoportal
 
   Note the ``develop += c2cgeoportal`` line. This is so ``c2cgeoportal``
   is installed as a develop egg.
