@@ -70,7 +70,7 @@
         </div>
         <noscript><p>JavaScript is required here</p></noscript>
         <form method="POST" id="loginForm" style="display: none">
-            <input id="login" name="login" type="text" autocomplete="on"/>                                                                                                                                                                                                                                          
+            <input id="login" name="login" type="text" autocomplete="on"/>
             <input id="password" name="password" type="password" autocomplete="on"/>
         </form>
         <div style="display:none">
