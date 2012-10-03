@@ -15,7 +15,6 @@ Content:
     :maxdepth: 1
 
     development_procedure
-    bootstrap
     server_side
     client_side
     principles
