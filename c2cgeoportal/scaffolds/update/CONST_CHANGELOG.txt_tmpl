@@ -1,5 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+Version 1.2
+===========
+
+1. A new ``Settings`` view has been added to the mobile application as well as a
+   ``custom.scss`` stylesheet file. Both are intended to be customized by the
+   integrator.
+   Check out documentation to find information about how to upgrade an existing
+   c2cgeoportail project or how the settings view can be customized.
+
 Version 1.1
 ===========
 
@@ -18,6 +27,30 @@ Version 1.1
    js.jquery > 1.7.1. Just make sure js.jquery is not set to a version > 1.7.1
    in your project's buildout config (buildout.cfg.). If it is then change that
    to "js.jquery = 1.7.1", and execute buildout again.
+
+4. Currently there are authentication-related issues when multiple instances of
+   a c2cgeoportal application are running on the same machine. Indeed, loging
+   into one instance would log you out of from the instance you're currently
+   loged into. See <https://github.com/camptocamp/c2cgeoportal/issues/196>.
+
+   Fixing the issue requires manual changes to development.ini.in,
+   production.ini.in, and {{package}}/__init__.py.
+
+   Edit development.ini.in and production.ini.in and add the following
+   variable definition to the [app:app] section:
+
+       authtkt_cookie_name = auth_tkt_${instanceid}
+
+   (It is probably a good idea to group the definitions of authtkt_secret and
+   authtkt_cookie_name together, as they're both related to authentication.)
+
+   Now edit {{package}}/__init__.py to pass a `cookie_name` to the
+   `AuthTktAuthenticationPolicy` constructor:
+
+        authentication_policy = AuthTktAuthenticationPolicy(
+                settings.get('authtkt_secret'),
+                callback=defaultgroupsfinder,
+                cookie_name=settings.get('authtkt_cookie_name'))
 
 Version 1.0
 ===========

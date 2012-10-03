@@ -16,6 +16,8 @@
 @include sencha-form;
 //@include sencha-msgbox;
 
+@import '../../../../custom';
+
 // Your custom code goes here...
 
 @include pictos-iconmask('add');
@@ -37,6 +39,11 @@ table.detail th {
 table.detail th,
 table.detail td {
     padding: 4px;
+}
+
+.coordinates {
+    padding: 13px;
+    font-size: 80%;
 }
 
 .x-tab .x-button-icon.layers, .x-button .x-button-icon.x-icon-mask.layers {

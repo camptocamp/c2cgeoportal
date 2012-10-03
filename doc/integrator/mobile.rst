@@ -58,9 +58,9 @@ Here's an example of setting ``PATH`` and ``SENCHA_SDK_TOOLS_2_0_0_BETA3``::
 Adding a mobile app to a project
 --------------------------------
 
-To be able to add a mobile app to a c2cgeoportal project this project should be
-able to version 0.8 of c2cgeoportal or better. See
-:ref:`integrator_update_application` to know how to upgrade a project.
+To be able to add a mobile app to a c2cgeoportal project this project should use
+c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know 
+how to upgrade a project.
 
 Adding the Sencha Touch SDK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,16 +77,17 @@ to your project's ``static/mobile`` dir. For example::
     $ cd /tmp/
     $ wget http://cdn.sencha.io/touch/sencha-touch-2.0.1.1-gpl.zip
     $ unzip sencha-touch-2.0.1.1-gpl.zip
+    $ cd sencha-touch-2.0.1.1
     $ sencha generate app TempApp /tmp/TempApp
-    $ cp -r /tmp/Temp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
+    $ cp -r /tmp/TempApp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
 
 You can now version-control this ``sdk`` directory.
 
-Adding missing files
-~~~~~~~~~~~~~~~~~~~~
+Adding missing files (Upgrading from version below 0.8)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can skip this section if your project has been created using c2cgeoportal
-0.8 or better. If you project was created using an older c2cgeoportal, and if
+0.8 or better. If your project was created using an older c2cgeoportal, and if
 you've just upgraded your project to c2cgeoportal 0.8, then you need to follow
 the below instructions.
 
@@ -103,6 +104,29 @@ the target project, and copying the missing files from there::
    $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
         <package_name>/static/mobile/
    $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
+   $ rm -rf /tmp/<project_name>
+
+Adding missing files (Upgrading from version below 1.2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can skip this section if your project has been created using c2cgeoportal
+1.2 or better. If your project was created using an older c2cgeoportal, and if
+you've just upgraded your project to c2cgeoportal 1.2, then you need to follow
+the below instructions.
+
+New files and directories are provided by the ``c2cgeoportal_create`` and need
+to be added manually to the ``static/mobile`` directory.
+The easiest way to get all the necessary files involves creating a temporary
+c2cgeoportal project of the same name as the target project, and copying the
+missing files from there::
+
+   $ cd <project_name>
+   $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+           /tmp/<project_name> package=<package_name>
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/app/view/Settings.js \
+        <package_name>/static/mobile/app/view/
+   $ cp /tmp/<project_name>/<package_name>/static/mobile/custom.scss \
+        <package_name>/static/mobile/
    $ rm -rf /tmp/<project_name>
 
 Adding mobile routes and views
@@ -182,7 +206,13 @@ options can be defined: ``allLayers`` and ``WFSTypes``. The ``allLayers``
 option is an array of possible WMS layers, this is used by the overlay
 selector. The ``WFSTypes`` option is an array of corresponding feature types,
 it is used by the map querier. If a layer is visible and it has a corresponding
-feature type then it will sent in the (WFS GetFeature) map query.
+feature type then it will be sent in the (WFS GetFeature) map query.
+
+.. note::
+
+    The ``WFSTypes`` config option can be used for the base layers as well.
+    In this case, the given feature types should also correspond to queriable
+    layers in the mapfile.
 
 For example::
 
@@ -221,3 +251,43 @@ The overlay selector uses the layer names (as defined in the ``allLayers``
 array of overlays) as translation keys. To add your translations edit
 ``static/mobile/config.js`` and populate the ``OpenLayers.Lang.<code>`` objects
 as necessary.
+
+Raster service
+--------------
+
+When querying the map (longpress), the c2cgeoportal ``raster`` service can be
+used to retrieve data from raster file (elevation, slope, etc...) and display
+it in the ``Query view`` above query results.
+
+If the raster service is already configured on the server, you can activate it
+in the mobile application by adding the following to the config.js file::
+
+    App.raster = true;
+
+You'll also need to add a template string to each translation object. It needs
+to be adapted to the data retrieved from the server::
+
+    OpenLayers.Lang.fr = {
+        [...]
+        'rasterTpl': [
+            '<div class="coordinates">',
+                '<p>X : {x} - Y : {y}</p>',
+                '<p>Altitude terrain : {mnt} m</p>',
+                '<p>Altitude surface : {mns} m</p>',
+            '</div>'
+        ].join(''),
+        [...]
+    };
+
+In the example above ``mns`` and ``mnt`` are the keys used in the server
+config for the ``raster web services``.
+
+Settings view
+-------------
+
+The ``Settings`` view can be customized to suit the project needs. It will not
+be overwritten by any automatic c2cgeoportail update.
+One can add their own text or components in this view.
+
+If style customization is also required for components in this view, use the
+``custom.scss`` file.

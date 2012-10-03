@@ -39,8 +39,8 @@ instanceid = override_me
 # can be overriden in development-specific buildout config files
 modwsgi_user = www-data
 # url-path where the instance must respond.
-# defaults is '/${vars:instanceid}/wsgi'.
-apache-entry-point = /${vars:instanceid}/wsgi
+# default is '/${vars:instanceid}/wsgi/'.
+apache-entry-point = /${vars:instanceid}/wsgi/
 # cookie session secret
 authtkt_secret = __import__('uuid').uuid4().hex
 # database user

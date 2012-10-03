@@ -35,8 +35,10 @@ install_requires = [
 # nose plugins with options set in setup.cfg cannot be in
 # tests_require, they need be in setup_requires
 setup_requires = [
-    'nose',
+    'nose==1.1.2',
     'nosexcover',
+    'nose-progressive',
+    'ipdbplugin',
     ]
 
 tests_require = install_requires + [

@@ -4,7 +4,12 @@ Ext.define('App.controller.Main', {
     config: {
         refs: {
             mainView: 'mainview',
-            layersView: 'layersview'
+            layersView: 'layersview',
+            settingsView: {
+                selector: 'settingsview',
+                xtype: 'settingsview',
+                autoCreate: true
+            }
         },
         control: {
             'button[action=home]': {
@@ -17,6 +22,11 @@ Ext.define('App.controller.Main', {
                     this.redirectTo('layers');
                 }
             },
+            'button[action=settings]': {
+                tap: function() {
+                    this.redirectTo('settings');
+                }
+            },
             mainView: {
                 longpress: function(view, bounds, map) {
                     this.queryMap(view, bounds, map);
@@ -26,7 +36,8 @@ Ext.define('App.controller.Main', {
         routes: {
             '': 'showHome',
             'home': 'showHome',
-            'layers': 'showLayers'
+            'layers': 'showLayers',
+            'settings': 'showSettings'
         }
     },
     
@@ -52,6 +63,11 @@ Ext.define('App.controller.Main', {
         Ext.Viewport.setActiveItem(view);
     },
 
+    showSettings: function() {
+        var view = this.getSettingsView();
+        Ext.Viewport.setActiveItem(view);
+    },
+
     recenterMap: function(f) {
         this.getMainView().recenterOnFeature(f);
         this.redirectTo('home');
@@ -59,6 +75,8 @@ Ext.define('App.controller.Main', {
 
     queryMap: function(view, bounds, map) {
         var layers = [];
+
+        // overlay layers
         for (var i=0; i<map.layers.length; i++) {
             var layer = map.layers[i];
             if (!layer.isBaseLayer && layer.visibility &&
@@ -71,6 +89,12 @@ Ext.define('App.controller.Main', {
                 }
             }
         }
+
+        // currently displayed baseLayer
+        if (map.baseLayer.WFSTypes) {
+            layers = layers.concat(map.baseLayer.WFSTypes);
+        }
+
         // launch query only if there are layers to query
         if (layers.length) {
             var p = [bounds, layers.join(',')];
