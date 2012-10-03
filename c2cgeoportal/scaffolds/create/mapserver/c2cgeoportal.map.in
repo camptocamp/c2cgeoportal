@@ -103,7 +103,8 @@ MAP
             "wms_title" "layer_name" # For WMS
             "wms_srs" "epsg:21781" # For WMS
 
-            "gml_include_items" "all"  # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)
+            "wfs_enable_request" "*" # Enable WFS for this layer
+            "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)
             "ows_geom_type" "polygon" # For returning geometries in GetFeatureInfo
             "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
 
