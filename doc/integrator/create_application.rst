@@ -3,31 +3,42 @@
 Create a new application
 ========================
 
-Creating a c2cgeoportal application is done by applying two Paste skeletons
-(a.k.a. templates). These skeletons are provided by the ``c2cgeoportal``
-package. So to be able to create a c2cgeoportal application the
-``c2cgeoportal`` package must be installed.
+Creating a new c2cgeoportal application is done by applying two Paste skeletons
+(a.k.a. templates and scaffolds). These skeletons are provided by the
+``c2cgeoportal`` package. So to be able to create a c2cgeoportal application
+the ``c2cgeoportal`` package must be installed.
 
-This guide considers that:
- - We use a server managed by Camptocamp, meaning:
-    - all dependencies described in the
-      :ref:`system requirements <integrator_install_application_system_requirement>`
-      section are installed
-    - Postgres has a gis template 'template_posgis' and a user 'www-data'
-    - Apache use the user 'www-data'
- - We use Git as revision control
- - We use a version of ``c2cgeoportal`` >= 0.7
+If you already have a c2cgeoportal application installed, and if that
+application uses a version of c2cgeoportal that fits you, then you don't need
+to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
+that is already alongside the existing c2cgeoportal application (in the
+``buildout/eggs`` directory).
 
-For the others systems there are some inline notes to help with the process.
+.. note::
 
-Another thing you should have is a working main application,
-see: :ref:`integrator_install_application`
+    Some c2cgeoportal applications provide their own skeletons. For example
+    a *parent* application may provide a skeleton for creating *child*
+    applications. In that case, the c2cgeoportal skeletons, as well as the
+    application skeletons, should be applied.
 
-Organisation of a project
--------------------------
+Requirements
+------------
 
-This is a proposition to organise a project with sub-projects in the
-revision control::
+To be able to create a c2cgeoportal application you need to have the following
+installed on your system:
+
+* Git. In most cases you will want to use Git as the revision control system
+  for your c2cgeoportal application.
+* Python 2.7 or 2.6. Python 3.x is not yet supported.
+
+Project structure
+-----------------
+
+In the simple case the root directory of the application is the directory
+created by the c2cgeoportal skeletons (the ``c2cgeoportal_create`` and
+``c2cgeoportal_update`` skeletons). Projects following a parent/child
+architecture may use a different structure. Here's an example of a structure
+for a project composed of a main application and sub-applications::
 
     <root>
       ├─ <main_project>
@@ -35,32 +46,62 @@ revision control::
       ├─ <second_sub_project>
       └─ ...
 
-where ``<root>`` is root folder of the revision control.
+Here ``<root>`` is the root of the Git (or SVN) tree.
+
+Install c2cgeoportal
+--------------------
+
+This step is required if you cannot, or do not want, to create the c2cgeoportal
+application from an existing one. For example, if you are creating a child
+application from an existing parent application, it means you already have
+``c2cgeoportal`` installed, so you can just skip this section, and directly go
+to the next.
+
+Also, installing ``c2cgeoportal``, as described in this section, requires
+access to the c2cgeoportal GitHub repository. If you can't view the
+https://github.com/camptocamp/c2cgeoportal page in your browser that means you
+do not have the required permissions. Please contact Camptocamp in that case.
+
+To install ``c2cgeoportal`` you first need to clone the c2cgeoportal repository
+from GitHub::
+
+    git clone git@github.com:camptocamp/c2cgeoportal.git
+    cd c2cgeoportal
+    git submodule update --init
+
+Now run the ``bootstrap.py`` script to boostrap the Buildout environment::
+
+    python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
+
+Install c2cgeoportal::
+
+    ./buildout/bin/buildout
 
 .. note::
 
-    In a parent/child architecture one instance of the application is the
-    parent, the others are children. Child instances display layers
-    served by the parent instance. Parent and child instances share
-    the same database, but use dedicated schemas within that database.
+    The above command downloads the latest *final* ``c2cgeoportal`` package from
+    http://pypi.camptocamp.net/internal-pypi/index/.
 
-.. note::
+    To install a development package of c2cgeoportal from
+    http://pypi.camptocamp.net/internal-pypi/index/ you can edit buildout.cfg
+    and set ``prefer-final`` to ``false``.
 
-    If you don't plan to have more than one subproject you can directly
-    add it at the root directory of the revision control.
+    And if you want to install a development package from the c2cgeoportal
+    source you just cloned use::
 
-List existing templates
+        ./buildout/bin/buildout -c buildout_dev.cfg
+
+List existing skeletons
 -----------------------
 
-To list the available template you can use the following command
-from the ``main_project`` folder::
+To list the available skeletons/templates use the following command, either
+from the root directory of c2cgeoportal (if you've followed the instructions
+from the previous section), or from the root directory of the existing
+c2cgeoportal application you want to create the new application from::
 
     ./buildout/bin/pcreate -l
-
-You should have at least the following templates:
-
-* c2cgeoportal_create
-* c2cgeoportal_update
 
 .. note::
 
@@ -68,19 +109,21 @@ You should have at least the following templates:
 
         ./buildout/bin/paster create --list-templates
 
+You should at least see the c2cgeoportal skeletons:
+
+* c2cgeoportal_create
+* c2cgeoportal_update
+
 Create the new application
 --------------------------
 
-To simplify the rest of the tutorial we set the new project name in a
-bash variable::
+To simplify the rest of the procedure we set the new project name in a shell
+variable::
 
     PROJECT=<project_name>
 
 Replace ``<project_name>`` with a project name of your choice.
 The project name can be CamelCase but lower case is recommended.
-
-Create the application skeleton
-...............................
 
 To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
@@ -88,8 +131,6 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton::
 
 .. note::
     Don't add any '/' after the project name.
-
-You'll be asked to enter the SRID for this project.
 
 .. note::
 
@@ -102,8 +143,13 @@ You'll be asked to enter the SRID for this project.
     If you need a specific name for the Python package defined by the project
     you can use::
 
-        pcreate -s c2cgeoportal_create <project_name> package=<package_name>
+        pcreate -s c2cgeoportal_create ../$PROJECT package=<package_name>
 
+You'll be asked to enter the SRID for this project.
+
+This will create a directory named ``<project_name>`` that will be next to the
+``c2cgeoportal`` directory, or to the directory of the application you're
+creating this application from.
 
 Now apply the ``c2cgeoportal_update`` skeleton::
 
@@ -111,11 +157,6 @@ Now apply the ``c2cgeoportal_update`` skeleton::
 
 .. note::
     Don't add any '/' after the project name.
-
-The ``c2cgeoportal_update`` scaffold is also used to update the
-application. The files generated by this skeleton are prefixed with
-``CONST_``, which means they are *constant* files that should not be changed.
-Following this rule is important for easier updates.
 
 .. note::
 
@@ -128,6 +169,11 @@ Following this rule is important for easier updates.
    If the project provides an additional template it can be applied now::
 
         ./buildout/bin/pcreate --overwrite -s <project_template> ../$PROJECT
+
+The ``c2cgeoportal_update`` scaffold is also used to update the
+application. The files generated by this skeleton are prefixed with
+``CONST_``, which means they are *constant* files that should not be changed.
+Following this rule is important for easier updates.
 
 
 Go to your new project::
@@ -199,7 +245,7 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth \
+    git add $PROJECT/ .gitignore .httpauth config.yaml.in \
             CONST_CHANGELOG.txt CONST_TIPS.txt.in \
             CONST_buildout.cfg buildout.cfg buildout/ \
             bootstrap.py setup.cfg setup.py \
