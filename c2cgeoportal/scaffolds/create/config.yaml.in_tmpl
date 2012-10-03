@@ -126,8 +126,8 @@ check_collector:
             - name: checker_viewer
               display: Viewer script
     hosts: 
-        - display: Parent
-          url: http://${host}/main/wsgi
+        - display: {{project}}
+          url: http://${host}/${vars:instanceid}/wsgi
           type: main
 #        - display: Child:
 #          url: http://${host}/child/wsgi
