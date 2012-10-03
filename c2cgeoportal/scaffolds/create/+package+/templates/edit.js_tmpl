@@ -13,7 +13,7 @@ Ext.onReady(function() {
     // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
-    % if user:
+    % if user and user.role.extent:
     var initialExtent = ${user.role.json_extent};
     % else:
     var initialExtent = [420000, 30000, 900000, 350000];
