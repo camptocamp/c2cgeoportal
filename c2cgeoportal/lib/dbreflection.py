@@ -19,8 +19,7 @@ _class_cache = {}
 
 _geometry_type_mappings = dict(
     [(t.name, t) for t in (Point, LineString, Polygon,
-                           MultiPoint, MultiLineString, MultiPolygon)]
-    )
+                           MultiPoint, MultiLineString, MultiPolygon)])
 
 Base = declarative_base()
 
@@ -76,7 +75,7 @@ class _association_proxy(object):
                 .get_property(self.target)
             child_cls = relationship_property.argument
             o = DBSession.query(child_cls).filter(
-                    getattr(child_cls, self.value_attr) == val).first()
+                getattr(child_cls, self.value_attr) == val).first()
             setattr(obj, self.target, o)
 
 
@@ -86,7 +85,7 @@ def _xsd_sequence_callback(tb, cls):
         if not isinstance(p, _association_proxy):
             continue
         relationship_property = class_mapper(cls) \
-                                    .get_property(p.target)
+            .get_property(p.target)
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
@@ -145,17 +144,18 @@ def get_class(tablename):
             'ignore',
             "Did not recognize type 'geometry' of column",
             SAWarning)
-        table = Table(tablename, Base.metadata,
-                      schema=schema,
-                      autoload=True,
-                      autoload_with=engine,
-                      listeners=[
-                            ('column_reflect',
-                             functools.partial(_column_reflect_listener,
-                                               engine=engine)
-                             )
-                        ]
-                      )
+        table = Table(
+            tablename, Base.metadata,
+            schema=schema,
+            autoload=True,
+            autoload_with=engine,
+            listeners=[(
+                'column_reflect',
+                functools.partial(
+                    _column_reflect_listener,
+                    engine=engine))
+            ]
+        )
 
     # create the mapped class
     cls = _create_class(table)
@@ -169,10 +169,10 @@ def get_class(tablename):
 def _create_class(table):
 
     cls = type(
-            str(table.name.capitalize()),
-            (GeoInterface, Base),
-            dict(__table__=table)
-            )
+        str(table.name.capitalize()),
+        (GeoInterface, Base),
+        dict(__table__=table)
+    )
 
     for col in table.columns:
         if col.foreign_keys:

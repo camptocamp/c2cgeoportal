@@ -32,7 +32,7 @@ def load_shapefile(file_name):
     fp.seek(100)
     while True:
         shp_record = create_record(fp)
-        if shp_record == False:
+        if not shp_record:
             break
         records.append(shp_record)
 
@@ -203,8 +203,9 @@ def get_true_centers(records, projected=False):
             #now get the true centroid
         tempPoint = {'x': 0, 'y': 0}
         if biggest[points][0] != biggest[points][len(biggest[points]) - 1]:
-            print "mug", biggest[points][0], biggest[points][len(biggest[points]
-                    ) - 1]
+            print  \
+                "mug", biggest[points][0], \
+                biggest[points][len(biggest[points]) - 1]
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
             tempPoint['x'] -= (biggest[points][i]['x'] + biggest[points][j]['x']) * ((biggest[points][i]['x'] * biggest[points][j]['y']) - (biggest[points][j]['x'] * biggest[points][i]['y']))
@@ -270,8 +271,8 @@ def projectShapefile(records, whatProjection, lonCenter=0, latCenter=0):
         for part in feature['shp_data']['parts']:
             part['projectedPoints'] = []
             for point in part['points']:
-                tempPoint = project_point(point, whatProjection, lonCenter,
-                                         latCenter)
+                tempPoint = project_point(
+                    point, whatProjection, lonCenter, latCenter)
                 part['projectedPoints'].append(tempPoint)
 
 
@@ -288,7 +289,7 @@ def project_point(fromPoint, whatProjection, lonCenter, latCenter):
     if whatProjection == "MERCATOR":
         newPoint['x'] = (180 / math.pi) * (lonRadians - lonCenter)
         newPoint['y'] = (180 / math.pi) * math.log(
-                math.tan(latRadians) + (1 / math.cos(latRadians)))
+            math.tan(latRadians) + (1 / math.cos(latRadians)))
         if newPoint['y'] > 200:
             newPoint['y'] = 200
         if newPoint['y'] < -200:

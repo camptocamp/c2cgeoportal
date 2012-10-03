@@ -42,9 +42,9 @@ def _get_layer(layer_id):
     """ Return a ``Layer`` object for ``layer_id``. """
     layer_id = int(layer_id)
     try:
-        layer, geo_table = DBSession.query(Layer, Layer.geoTable) \
-                                    .filter(Layer.id == layer_id) \
-                                    .one()
+        query = DBSession.query(Layer, Layer.geoTable)
+        query = query.filter(Layer.id == layer_id)
+        layer, geo_table = query.one()
     except NoResultFound:
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
@@ -58,8 +58,9 @@ def _get_layers_for_request(request):
     """ A generator function that yields ``Layer`` objects based
     on the layer ids found in the ``layer_id`` matchdict. """
     try:
-        layer_ids = (int(layer_id) for layer_id in \
-                         request.matchdict['layer_id'].split(',') if layer_id)
+        layer_ids = (
+            int(layer_id) for layer_id in
+            request.matchdict['layer_id'].split(',') if layer_id)
         for layer_id in layer_ids:
             yield _get_layer(layer_id)
     except ValueError:
@@ -96,13 +97,12 @@ def _proto_read(layer, request):
     proto = _get_protocol_for_layer(layer)
     cls = proto.mapped_class
     geom_attr = proto.geom_attr
-    ra = DBSession.query(
-               RestrictionArea.area.collect) \
-                  .join(RestrictionArea.roles) \
-                  .join(RestrictionArea.layers) \
-                  .filter(RestrictionArea.area.area > 0) \
-                  .filter(Role.id == user.role.id) \
-                  .filter(Layer.id == layer.id).scalar()
+    ra = DBSession.query(RestrictionArea.area.collect)
+    ra = ra.join(RestrictionArea.roles)
+    ra = ra.join(RestrictionArea.layers)
+    ra = ra.filter(RestrictionArea.area.area > 0)
+    ra = ra.filter(Role.id == user.role.id)
+    ra = ra.filter(Layer.id == layer.id).scalar()
     ra = DBSpatialElement(ra)
     filter_ = and_(create_filter(request, cls, geom_attr),
                    ra.gcontains(getattr(cls, geom_attr)))
@@ -137,13 +137,12 @@ def read_one(request):
     shape = asShape(geom)
     srid = _get_geom_col_info(layer)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-    allowed = DBSession.query(
-               RestrictionArea.area.collect.gcontains(spatial_elt)) \
-                       .join(RestrictionArea.roles) \
-                       .join(RestrictionArea.layers) \
-                       .filter(RestrictionArea.area.area > 0) \
-                       .filter(Role.id == request.user.role.id) \
-                       .filter(Layer.id == layer.id).scalar()
+    allowed = DBSession.query(RestrictionArea.area.collect.gcontains(spatial_elt))
+    allowed = allowed.join(RestrictionArea.roles)
+    allowed = allowed.join(RestrictionArea.layers)
+    allowed = allowed.filter(RestrictionArea.area.area > 0)
+    allowed = allowed.filter(Role.id == request.user.role.id)
+    allowed = allowed.filter(Layer.id == layer.id).scalar()
     if not allowed:
         raise HTTPNotFound()
     return feature
@@ -171,13 +170,13 @@ def create(request):
             srid = _get_geom_col_info(layer)[1]
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
             allowed = DBSession.query(
-               RestrictionArea.area.collect.gcontains(spatial_elt)) \
-                       .join(RestrictionArea.roles) \
-                       .join(RestrictionArea.layers) \
-                       .filter(RestrictionArea.area.area > 0) \
-                       .filter(RestrictionArea.readwrite == True) \
-                       .filter(Role.id == request.user.role.id) \
-                       .filter(Layer.id == layer.id).scalar()
+                RestrictionArea.area.collect.gcontains(spatial_elt))
+            allowed = allowed.join(RestrictionArea.roles)
+            allowed = allowed.join(RestrictionArea.layers)
+            allowed = allowed.filter(RestrictionArea.area.area > 0)
+            allowed = allowed.filter(RestrictionArea.readwrite == True)
+            allowed = allowed.filter(Role.id == request.user.role.id)
+            allowed = allowed.filter(Layer.id == layer.id).scalar()
             if not allowed:
                 raise HTTPForbidden()
 
@@ -206,15 +205,14 @@ def update(request):
             shape = asShape(geom)
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
             and_clauses.append(
-                    RestrictionArea.area.collect.gcontains(spatial_elt))
-        allowed = DBSession.query(
-                and_(*and_clauses)) \
-                   .join(RestrictionArea.roles) \
-                   .join(RestrictionArea.layers) \
-                   .filter(RestrictionArea.area.area > 0) \
-                   .filter(RestrictionArea.readwrite == True) \
-                   .filter(Role.id == request.user.role.id) \
-                   .filter(Layer.id == layer.id).scalar()
+                RestrictionArea.area.collect.gcontains(spatial_elt))
+        allowed = DBSession.query(and_(*and_clauses))
+        allowed = allowed.join(RestrictionArea.roles)
+        allowed = allowed.join(RestrictionArea.layers)
+        allowed = allowed.filter(RestrictionArea.area.area > 0)
+        allowed = allowed.filter(RestrictionArea.readwrite == True)
+        allowed = allowed.filter(Role.id == request.user.role.id)
+        allowed = allowed.filter(Layer.id == layer.id).scalar()
         if not allowed:
             raise HTTPForbidden()
 
@@ -235,13 +233,13 @@ def delete(request):
     def security_cb(r, o):
         geom_attr = getattr(o, _get_geom_col_info(layer)[0])
         allowed = DBSession.query(
-           RestrictionArea.area.collect.gcontains(geom_attr)) \
-                   .join(RestrictionArea.roles) \
-                   .join(RestrictionArea.layers) \
-                   .filter(RestrictionArea.area.area > 0) \
-                   .filter(RestrictionArea.readwrite == True) \
-                   .filter(Role.id == request.user.role.id) \
-                   .filter(Layer.id == layer.id).scalar()
+            RestrictionArea.area.collect.gcontains(geom_attr))
+        allowed = allowed.join(RestrictionArea.roles)
+        allowed = allowed.join(RestrictionArea.layers)
+        allowed = allowed.filter(RestrictionArea.area.area > 0)
+        allowed = allowed.filter(RestrictionArea.readwrite == True)
+        allowed = allowed.filter(Role.id == request.user.role.id)
+        allowed = allowed.filter(Layer.id == layer.id).scalar()
         if not allowed:
             raise HTTPForbidden()
 

@@ -55,14 +55,14 @@ underlying migrate command.
     if not os.path.isfile(app_config):
         parser.error('Can\'t find config file: %s' % app_config)
 
-    config = appconfig('config:' + options.app_config,
-            name=app_name,
-            relative_to=os.getcwd()).local_conf
+    config = appconfig(
+        'config:' + options.app_config,
+        name=app_name, relative_to=os.getcwd()).local_conf
 
     db_url = config['sqlalchemy.url']
     package_name = config['project']
     c2cgeoportal.schema = config['schema']
 
     repository = pkg_resources.resource_filename(
-                    package_name, 'CONST_migration')
+        package_name, 'CONST_migration')
     migrate_main(argv=args, url=db_url, repository=repository)

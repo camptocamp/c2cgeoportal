@@ -61,12 +61,12 @@ def proxy(request):
                 else:
                     params[attribute] = value
             else:
-                log.warning("Mapserver Substitution '%s' does not " \
+                log.warning("Mapserver Substitution '%s' does not "
                             "respect pattern: <attribute>=<value>" % s)
 
     # get method
     method = request.method
-    
+
     # For GET requests, params are added only if REQUEST and SERVICE params
     # are actually provided.
     if method == "GET":
@@ -78,8 +78,9 @@ def proxy(request):
     query_string = urllib.urlencode(params)
 
     # get URL
-    _url = request.registry.settings['external_mapserv_url'] if external \
-           else request.registry.settings['mapserv_url']
+    _url = request.registry.settings['external_mapserv_url'] \
+        if external \
+        else request.registry.settings['mapserv_url']
     _url += '?' + query_string
     log.info("Querying mapserver proxy at URL: %s." % _url)
 
@@ -95,19 +96,20 @@ def proxy(request):
     try:
         resp, content = http.request(_url, method=method, body=body, headers=h)
     except:  # pragma: no cover
-        log.error("Error '%s' while getting the URL: %s." %
-                (sys.exc_info()[0], _url))
+        log.error(
+            "Error '%s' while getting the URL: %s." %
+            (sys.exc_info()[0], _url))
         if method == "POST":
             log.error("--- With body ---")
             log.error(body)
         return HTTPBadGateway("See logs for details")  # pragma: no cover
 
     if resp.status != 200:
-        log.error("\nError\n '%s'\n in response from URL:\n %s\n " \
+        log.error("\nError\n '%s'\n in response from URL:\n %s\n "
                   "with query:\n %s" %
                   (resp.reason, _url, body))  # pragma: no cover
         return HTTPInternalServerError(
-                    "See logs for details")  # pragma: no cover
+            "See logs for details")  # pragma: no cover
 
     # check for allowed content types
     if "content-type" not in resp:
@@ -116,5 +118,6 @@ def proxy(request):
     if method == "POST" and is_get_feature(request.body):
         content = limit_featurecollection(content, limit=200)
 
-    return Response(content, status=resp.status,
-            headers={"Content-Type": resp["content-type"]})
+    return Response(
+        content, status=resp.status,
+        headers={"Content-Type": resp["content-type"]})
