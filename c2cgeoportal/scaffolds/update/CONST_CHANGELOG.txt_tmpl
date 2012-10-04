@@ -9,6 +9,12 @@ Version 1.2
    Check out documentation to find information about how to upgrade an existing
    c2cgeoportail project or how the settings view can be customized.
 
+2. CGXP plugin WFSGetFeature now requires that the themes are explicitly passed
+   in its configuration in {{package}}/templates/viewer.js using the following
+   parameter:
+
+    themes: THEMES
+
 Version 1.1
 ===========
 
