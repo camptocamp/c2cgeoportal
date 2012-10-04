@@ -1,25 +1,26 @@
 Ext.onReady(function() {
-    /*
-     * Initialize the application.
-     */
-    // OpenLayers
+    // Ext global settings
+    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    Ext.QuickTips.init();
+
+    // OpenLayers global settings
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     OpenLayers.DOTS_PER_INCH = 72;
     OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
-
-    // Ext
-    Ext.QuickTips.init();
-
     OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
-    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
-
-    // Apply same language than on the server side
     OpenLayers.Lang.setCode("${lang}");
+
+    // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
-    // Server errors (if any)
-    var serverError = ${serverError | n};
+    <% json_extent = user.role.json_extent if user else None %>
+    % if json_extent:
+    var INITIAL_EXTENT = ${json_extent};
+    % else:
+    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
+    % endif
+    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
     // Themes definitions
     var THEMES = {
@@ -29,14 +30,8 @@ Ext.onReady(function() {
     % endif
     };
 
-    <% json_extent = user.role.json_extent if user else None %>
-    % if json_extent:
-    var INITIAL_EXTENT = ${json_extent};
-    % else:
-    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
-    % endif
-
-    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
+    // Server errors (if any)
+    var serverError = ${serverError | n};
 
     var FUNCTIONALITY = ${functionality | n};
 
@@ -397,6 +392,5 @@ Ext.onReady(function() {
                 html: serverError.join('<br />')
             },OpenLayers.i18n("Error notice"),600, 500);
         }
-
     }, app);
 });
