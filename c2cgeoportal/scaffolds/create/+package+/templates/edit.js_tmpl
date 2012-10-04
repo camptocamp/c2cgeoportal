@@ -16,12 +16,12 @@ Ext.onReady(function() {
 
     <% json_extent = user.role.json_extent if user else None %>
     % if json_extent:
-    var initialExtent = ${json_extent};
+    var INITIAL_EXTENT = ${json_extent};
     % else:
-    var initialExtent = [420000, 30000, 900000, 350000];
+    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
     % endif
 
-    var themes = {
+    var THEMES = {
         "local": ${themes | n}
     % if external_themes:
         , "external": ${external_themes | n}
@@ -55,7 +55,7 @@ Ext.onReady(function() {
                 style: 'padding: 3px;'
             },
             layerTreeId: 'layertree',
-            themes: themes
+            themes: THEMES
         }, {
             ptype: "cgxp_layertree",
             id: "layertree",
@@ -64,7 +64,7 @@ Ext.onReady(function() {
                 flex: 1,
                 layout: 'fit',
                 autoScroll: true,
-                themes: themes,
+                themes: THEMES,
                 wmsURL: '${request.route_url('mapserverproxy')}'
             },
             outputTarget: 'left-panel'
@@ -87,7 +87,7 @@ Ext.onReady(function() {
             stateId: "map",
             xtype: 'cgxp_mappanel',
             projection: "EPSG:21781",
-            extent: initialExtent,
+            extent: INITIAL_EXTENT,
             maxExtent: [420000, 30000, 900000, 350000],
             restrictedExtent: [420000, 30000, 900000, 350000],
             units: "m",
