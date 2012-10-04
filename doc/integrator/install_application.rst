@@ -67,6 +67,7 @@ on your system:
          * `Python for Windows extensions <http://sourceforge.net/projects/pywin32/>`_
          * `Shapely <http://pypi.python.org/pypi/Shapely/1.2.13#downloads>`_
          * `Babel <http://pypi.python.org/pypi/Babel/>`_ (to be unconfirmed)
+         * `pyreadline <http://pypi.python.org/pypi/pyreadline>`_
 
 Set up the database
 -------------------
