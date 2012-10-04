@@ -291,7 +291,6 @@ Ext.onReady(function() {
         map: {
             id: "app-map", // id needed to reference map in portalConfig above
             xtype: 'cgxp_mappanel',
-            projection: "EPSG:{{srid}}",
             extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
             restrictedExtent: RESTRICTED_EXTENT,
@@ -312,19 +311,17 @@ Ext.onReady(function() {
                 new OpenLayers.Control.MousePosition({numDigits: 0}),
                 // Static image version
                 /*
-                return new OpenLayers.Control.OverviewMap({
+                new OpenLayers.Control.OverviewMap({
                     size: new OpenLayers.Size(200, 100),
-                    mapOptions: {
-                        theme: null
-                    },
                     layers: [new OpenLayers.Layer.Image(
                         "Overview Map",
                         "${request.static_url('{{package}}:static/images/overviewmap.png')}",
                         OpenLayers.Bounds.fromArray([420000, 30000, 900000, 350000]),
-                        new OpenLayers.Size([200, 100]),
+                        new OpenLayers.Size(200, 100),
                         {isBaseLayer: true}
                     )],
                     mapOptions: {
+                        theme: null,
                         numZoomLevels: 1
                     }
                 })*/
