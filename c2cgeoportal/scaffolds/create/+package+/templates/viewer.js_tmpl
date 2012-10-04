@@ -29,8 +29,9 @@ Ext.onReady(function() {
     % endif
     };
 
-    % if user and user.role.extent:
-    var INITIAL_EXTENT = ${user.role.json_extent};
+    <% json_extent = user.role.json_extent if user else None %>
+    % if json_extent:
+    var INITIAL_EXTENT = ${json_extent};
     % else:
     var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
     % endif
