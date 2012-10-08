@@ -56,7 +56,7 @@ Here's an example of an insertion in the ``tsearch`` table::
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, ts)
     VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 21781, 'Layer group',
+      (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
        'text to display', to_tsvector('french', 'text to search'));
 
 Where ``Layer group`` is the name of the layer group that should be activated,
@@ -69,7 +69,7 @@ Here's another example where rows from a ``SELECT`` are inserted::
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, ts)
     SELECT
-      geom, 21781, 'layer group name', text, to_tsvector('german', text)
+      geom, 'layer group name', text, to_tsvector('german', text)
     FROM table;
 
 .. note::
