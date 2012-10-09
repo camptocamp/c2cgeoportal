@@ -20,7 +20,7 @@ The important attributes are:
  * ``metadata_image_postproc`` a post process apply on the generated tiles.
 
 
-Than we should be create the destination folder with the good rights, 
+The destination folder needs to be created with the good rights, 
 (www-data should be able to write on it)::
 
     mkdir /var/sig/tilecache
