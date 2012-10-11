@@ -17,7 +17,7 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
-from c2cgeoportal.lib import get_setting
+from c2cgeoportal.lib import get_setting, caching
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
     RestrictionArea, Role, layer_ra, role_ra
@@ -25,6 +25,7 @@ from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
+cache_region = caching.get_region()
 
 
 class Entry(object):
@@ -291,15 +292,9 @@ class Entry(object):
         else:
             return None
 
-    def _themes(self, d):
+    @cache_region.cache_on_arguments()
+    def _themes(self, role_id):
         query = DBSession.query(Layer).filter(Layer.public == True)
-
-        if 'role_id' in d and d['role_id'] is not None and d['role_id'] != '':
-            role_id = d['role_id']
-        elif self.request.user is not None:
-            role_id = self.request.user.role.id
-        else:
-            role_id = None
 
         if role_id is not None:
             query2 = DBSession.query(Layer)
@@ -367,25 +362,27 @@ class Entry(object):
                 if (item in layers):
                     yield self._layer(item, wms_layers, wms)
 
-    def _WFSTypes(self, external=False):
+    @cache_region.cache_on_arguments()
+    def _internalWFSTypes(self, role_id):
+        return self._WFSTypes(
+                role_id, self.request.registry.settings['mapserv_url'])
+
+    def _externalWFSTypes(self):
+        parent_role_id = None
+        if self.request.user and self.request.user.parent_role:
+            parent_role_id = self.request.user.parent_role.id
+        return self._WFSTypes(
+                parent_role_id,
+                self.request.registry.settings['external_mapserv_url'])
+
+    def _WFSTypes(self, role_id, wfs_url):
         # retrieve layers metadata via GetCapabilities
-        role_id = None
-        if self.request.user:
-            if external:
-                if self.request.user.parent_role:
-                    role_id = self.request.user.parent_role.id
-            else:
-                if self.request.user.role:
-                    role_id = self.request.user.role.id
         params = (
             ('role_id', str(role_id) if role_id else ''),
             ('SERVICE', 'WFS'),
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
         )
-        wfs_url = self.request.registry.settings['external_mapserv_url'] \
-            if external \
-            else self.request.registry.settings['mapserv_url']
         if wfs_url.find('?') < 0:
             wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
@@ -407,18 +404,21 @@ class Entry(object):
             return getCapabilities_xml
 
     def _getVars(self):
+        role_id = None if self.request.user is None else \
+                self.request.user.role.id
+
         d = {}
         self.errors = "\n"
-        d['themes'] = json.dumps(self._themes(d))
+        d['themes'] = json.dumps(self._themes(role_id))
         d['themesError'] = self.errors
         self.errors = None
         d['user'] = self.request.user
-        d['WFSTypes'] = json.dumps(self._WFSTypes())
+        d['WFSTypes'] = json.dumps(self._internalWFSTypes(role_id))
         d['serverError'] = json.dumps(self.serverError)
 
         if 'external_mapserv_url' in self.settings \
                 and self.settings['external_mapserv_url']:
-            d['externalWFSTypes'] = json.dumps(self._WFSTypes(True))
+            d['externalWFSTypes'] = json.dumps(self._externalWFSTypes())
         else:
             d['externalWFSTypes'] = '[]'
 
@@ -510,10 +510,12 @@ class Entry(object):
 
     @view_config(route_name='themes', renderer='json')
     def themes(self):
-        d = {}
-        d['role_id'] = self.request.params.get("role_id", None)
+        role_id = self.request.params.get("role_id") or None
+        if not role_id and self.request.user is not None:
+            role_id = self.request.user.role.id
+
         self.errors = "\n"
-        return self._themes(d)
+        return self._themes(role_id)
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
