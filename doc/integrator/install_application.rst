@@ -230,6 +230,20 @@ RHEL 6 Specific Configuration
 Specific settings are required when the c2cgeoportal application is to be run
 on RedHat Enterprise Linux (RHEL) 6.
 
+.. note::
+
+    First of all, note that, with RHEL, you cannot install the c2cgeoportal
+    application in your homedir. If you do so, you will get the following error
+    in the Apache logs::
+
+        (13)Permission denied: access to /~elemoine/ denied
+
+    So always install the application in an Apache-accessible directory. On
+    Camptocamp *puppetized* servers you will typically install the application
+    in ``/var/www/vhosts/<vhost>/private/dev/<username>/``, where ``<vhost>``
+    is the name of the Apache virtual host, and ``<username>`` is your Unix
+    login name.
+
 buildout.cfg
 ^^^^^^^^^^^^
 
