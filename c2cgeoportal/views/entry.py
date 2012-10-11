@@ -368,6 +368,9 @@ class Entry(object):
                 role_id, self.request.registry.settings['mapserv_url'])
 
     def _externalWFSTypes(self):
+        if not ('external_mapserv_url' in self.settings
+                and self.settings['external_mapserv_url']):
+            return []
         parent_role_id = None
         if self.request.user and self.request.user.parent_role:
             parent_role_id = self.request.user.parent_role.id
@@ -403,50 +406,45 @@ class Entry(object):
         except:
             return getCapabilities_xml
 
+    def _external_themes(self):
+        if not ('external_themes_url' in self.settings
+                and self.settings['external_themes_url']):
+            return None
+        ext_url = self.settings['external_themes_url']
+        if self.request.user is not None and \
+                hasattr(self.request.user, 'parent_role') and \
+                self.request.user.parent_role is not None:
+            ext_url += '?role_id=' + str(self.request.user.parent_role.id)
+        # TODO: what if external server does not respond?
+        return urllib.urlopen(ext_url).read()
+
+    def _functionality(self):
+        functionality = {}
+        for func in get_setting(self.settings,
+                ('functionalities', 'available_in_templates'), []):
+            functionality[func] = get_functionality(
+                    func, self.settings, self.request)
+        return functionality
+
     def _getVars(self):
         role_id = None if self.request.user is None else \
                 self.request.user.role.id
 
-        d = {}
         self.errors = "\n"
-        d['themes'] = json.dumps(self._themes(role_id))
-        d['themesError'] = self.errors
-        self.errors = None
-        d['user'] = self.request.user
-        d['WFSTypes'] = json.dumps(self._internalWFSTypes(role_id))
-        d['serverError'] = json.dumps(self.serverError)
-
-        if 'external_mapserv_url' in self.settings \
-                and self.settings['external_mapserv_url']:
-            d['externalWFSTypes'] = json.dumps(self._externalWFSTypes())
-        else:
-            d['externalWFSTypes'] = '[]'
-
-        if 'external_themes_url' in self.settings \
-                and self.settings['external_themes_url']:
-            ext_url = self.settings['external_themes_url']
-            if self.request.user is not None and \
-                    hasattr(self.request.user, 'parent_role') and \
-                    self.request.user.parent_role is not None:
-                ext_url += '?role_id=' + str(self.request.user.parent_role.id)
-            result = json.load(urllib.urlopen(ext_url))
-            # TODO: what if external server does not respond?
-            d['external_themes'] = json.dumps(result)
-        else:
-            d['external_themes'] = None
-
-        d['tilecache_url'] = self.settings.get("tilecache_url")
-
-        functionality = dict()
-        for func in get_setting(
-            self.settings, (
-                'functionalities', 'available_in_templates'), []):
-            functionality[func] = get_functionality(
-                func, self.settings, self.request)
-        d['functionality'] = json.dumps(functionality)
+        d = {
+                'themes': json.dumps(self._themes(role_id)),
+                'themesError': self.errors,
+                'user': self.request.user,
+                'WFSTypes': json.dumps(self._internalWFSTypes(role_id)),
+                'serverError': json.dumps(self.serverError),
+                'externalWFSTypes': json.dumps(self._externalWFSTypes()),
+                'external_themes': self._external_themes(),
+                'tilecache_url': self.settings.get("tilecache_url"),
+                'functionality': json.dumps(self._functionality()),
+                }
 
         # handle permalink_themes
-        permalink_themes = self.request.params.get('permalink_themes', None)
+        permalink_themes = self.request.params.get('permalink_themes')
         if permalink_themes:
             d['permalink_themes'] = json.dumps(permalink_themes.split(','))
 
