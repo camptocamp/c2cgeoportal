@@ -104,7 +104,6 @@ include =
     plugins/ZoomToExtent.js #GXP
     plugins/NavigationHistory.js #GXP
     plugins/ZoomToExtent.js #GXP
-    plugins/NavigationHistory.js #GXP
 
 [edit.js]
 root =
