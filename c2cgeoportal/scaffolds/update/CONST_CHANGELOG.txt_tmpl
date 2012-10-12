@@ -15,6 +15,15 @@ Version 1.2
 
     themes: THEMES
 
+3. In the mobile application, the buttons' text in the picker for the layer
+   switcher (on phones) can now be translated.
+
+   Add the following in the OpenLayers.Lang.xx section of your `config.js` file:
+
+    // picker
+    'cancel': 'Annuler',
+    'done': 'OK'
+
 Version 1.1
 ===========
 
