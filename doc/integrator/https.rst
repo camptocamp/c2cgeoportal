@@ -36,9 +36,9 @@ value of ``request.scheme``. For example::
 
     var WMTS_OPTIONS = {
     % if request.scheme == 'https':
-        url: ${request.registry.settings.get('tiles_https_urls') | n},
+        url: 'https://my.wmts.server/'
     % else:
-        url: ${request.registry.settings.get('tiles_http_urls') | n},
+        url: 'http://my.wmts.server/'
     % endif
     /* ... */
     };
