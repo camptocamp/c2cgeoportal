@@ -14,8 +14,8 @@ OpenLayers.Lang.en = {
     "users": "Users",
 
     // base layer switcher picker (you shouldn't remove this)
-    'cancel': 'Cancel',
-    'done': 'Done'
+    'layer_switcher.cancel': 'Cancel',
+    'layer_switcher.done': 'Done'
 };
 OpenLayers.Lang.fr = {
     "summits": "Sommets",
@@ -24,8 +24,8 @@ OpenLayers.Lang.fr = {
     "users": "Utilisateurs",
 
     // base layer switcher picker (you shouldn't remove this)
-    'cancel': 'Annuler',
-    'done': 'OK'
+    'layer_switcher.cancel': 'Annuler',
+    'layer_switcher.done': 'OK'
 };
 OpenLayers.Lang.setCode("${lang}");
 
