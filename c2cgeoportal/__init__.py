@@ -146,6 +146,7 @@ def includeme(config):
 
     # dogpile.cache configuration
     caching.init_region(settings['cache'])
+    caching.invalidate_region()
 
     # bind the mako renderer to other file extensions
     config.add_renderer('.html', mako_renderer_factory)

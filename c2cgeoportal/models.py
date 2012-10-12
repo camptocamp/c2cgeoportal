@@ -7,7 +7,7 @@ except ImportError:  # pragma: nocover
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
-from sqlalchemy import ForeignKey, types, Table, Integer
+from sqlalchemy import ForeignKey, types, Table, Integer, event
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
@@ -16,6 +16,7 @@ from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import schema, parentschema, srid
+from c2cgeoportal.lib import caching
 
 __all__ = [
     'Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
@@ -39,6 +40,10 @@ if srid is not None:
     _srid = srid
 else:
     raise Exception('srid not specified, you need to add it to your buildout config')  # pragma: nocover
+
+
+def cache_invalidate_cb(*args):
+    caching.invalidate_region()
 
 
 class TsVector(types.UserDefinedType):
@@ -246,6 +251,10 @@ class TreeItem(Base):
     def __unicode__(self):
         return self.name or u''  # pragma: nocover
 
+event.listen(TreeItem, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(TreeItem, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
+
 # association table LayerGroup <> TreeItem
 layergroup_treeitem = Table(
     'layergroup_treeitem', Base.metadata,
@@ -433,6 +442,10 @@ class RestrictionArea(Base):
 
     def __unicode__(self):
         return self.name or u''  # pragma: nocover
+
+event.listen(RestrictionArea, 'after_insert', cache_invalidate_cb)
+event.listen(RestrictionArea, 'after_update', cache_invalidate_cb)
+event.listen(RestrictionArea, 'after_delete', cache_invalidate_cb)
 
 GeometryDDL(RestrictionArea.__table__)
 
