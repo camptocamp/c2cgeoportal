@@ -402,7 +402,7 @@ class Entry(object):
                 if name:
                     featuretypes.append(name.childNodes[0].data)
                 else:
-                    log.warn("We have one feature without name in feature: %s" % featureType.toxml())
+                    log.warn("Feature type without name: %s" % featureType.toxml())
             return featuretypes
         except:
             return getCapabilities_xml
