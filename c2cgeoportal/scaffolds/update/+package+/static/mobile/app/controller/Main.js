@@ -83,7 +83,7 @@ Ext.define('App.controller.Main', {
                 layer.CLASS_NAME != 'OpenLayers.Layer.Vector') {
                 var layersParam = layer.params.LAYERS;
                 for (var j=0; j<layersParam.length; j++) {
-                    if (layer.WFSTypes.indexOf(layersParam[j])) {
+                    if (layer.WFSTypes.indexOf(layersParam[j]) != -1) {
                         layers.push(layersParam[j]);
                     }
                 }
