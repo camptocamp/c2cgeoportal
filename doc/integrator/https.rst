@@ -21,12 +21,15 @@ proxy:
   received you will use the following configuration in ``config.yaml.in``::
 
       https_flag_header: X-Https
-      https_flag_value: on
+      https_flag_value: 'on'
 
   ``https_flag_header`` specifies the header name, and ``https_flag_value``
   specifies the header value. When c2cgeoportal receives requests with this
   header all the URLs it will generate for the content of the corresponding
   response will use the HTTPS scheme.
+
+  (Note that ``on`` is quoted here. This is important because the YAML parser
+  would interpret it as ``True`` otherwise.)
 
 In Mako templates, if you need to know what scheme is used, you may test the
 value of ``request.scheme``. For example::
