@@ -397,7 +397,12 @@ class Entry(object):
             getCapabilities_dom = parseString(getCapabilities_xml)
             featuretypes = []
             for featureType in getCapabilities_dom.getElementsByTagName("FeatureType"):
-                featuretypes.append(featureType.getElementsByTagName("Name").item(0).childNodes[0].data)
+                # don't includes FeatureType without name
+                name = featureType.getElementsByTagName("Name").item(0)
+                if name:
+                    featuretypes.append(name.childNodes[0].data)
+                else:
+                    log.warn("We have one feature without name in feature: %s" % featureType.toxml())
             return featuretypes
         except:
             return getCapabilities_xml
