@@ -22,7 +22,6 @@ Ext.onReady(function() {
     var serverError = ${serverError | n};
 
     // Themes definitions
-    /* errors (if any): ${themesError | n} */
     var THEMES = {
         "local": ${themes | n}
     % if external_themes:

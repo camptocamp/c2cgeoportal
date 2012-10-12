@@ -413,7 +413,9 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = ['lang', 'tilecache_url', 'debug', 'serverError', 'themes', 'external_themes', 'functionality', 'WFSTypes', 'themesError', 'externalWFSTypes', 'user']
+        all_params = ['lang', 'tilecache_url', 'debug', 'serverError',
+                'themes', 'external_themes', 'functionality', 'WFSTypes',
+                'externalWFSTypes', 'user']
         result = entry.home()
         self.assertEquals(result.keys(), ['lang', 'debug', 'extra_params'])
         result = entry.viewer()

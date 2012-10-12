@@ -19,7 +19,6 @@ Ext.onReady(function() {
     var initialExtent = [420000, 30000, 900000, 350000];
     % endif
 
-    /* errors (if any): ${themesError | n} */
     var themes = {
         "local": ${themes | n}
     % if external_themes:

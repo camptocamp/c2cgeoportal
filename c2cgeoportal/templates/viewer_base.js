@@ -23,7 +23,6 @@
     GeoExt.Lang.set("${lang}");
 
     // Themes definitions
-    /* errors (if any): ${themesError | n} */
     var THEMES = {
         "local": ${themes | n}
     % if external_themes:
