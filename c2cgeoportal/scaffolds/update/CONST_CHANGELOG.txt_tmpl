@@ -21,8 +21,8 @@ Version 1.2
    Add the following in the OpenLayers.Lang.xx section of your `config.js` file:
 
     // picker
-    'cancel': 'Annuler',
-    'done': 'OK'
+    'layer_switcher.cancel': 'Annuler',
+    'layer_switcher.done': 'OK'
 
 Version 1.1
 ===========
