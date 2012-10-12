@@ -11,13 +11,21 @@ OpenLayers.Lang.en = {
     "summits": "Summits",
     "huts": "Huts",
     "sites": "Sites",
-    "users": "Users"
+    "users": "Users",
+
+    // base layer switcher picker (you shouldn't remove this)
+    'cancel': 'Cancel',
+    'done': 'Done'
 };
 OpenLayers.Lang.fr = {
     "summits": "Sommets",
     "huts": "Cabanes",
     "sites": "Sites",
-    "users": "Utilisateurs"
+    "users": "Utilisateurs",
+
+    // base layer switcher picker (you shouldn't remove this)
+    'cancel': 'Annuler',
+    'done': 'OK'
 };
 OpenLayers.Lang.setCode("${lang}");
 

@@ -77,7 +77,11 @@ Ext.define("App.view.Main", {
             top: 10,
             right: 10,
             displayField: 'name',
-            valueField: 'id'
+            valueField: 'id',
+            defaultPhonePickerConfig: {
+                cancelButton: OpenLayers.i18n('cancel'),
+                doneButton: OpenLayers.i18n('done')
+            }
         }]
     },
 
