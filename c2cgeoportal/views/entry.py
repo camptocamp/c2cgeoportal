@@ -39,7 +39,6 @@ class Entry(object):
         # detect if HTTPS scheme must be set
         https_flag = self.settings.get('https_flag_header')
         if https_flag:
-            https_flag = https_flag.upper()
             if https_flag in self.request.headers and \
                     self.request.headers[https_flag] == self.settings.get('https_flag_value'):
                 self.request.scheme = 'https'
