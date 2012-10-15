@@ -24,6 +24,28 @@ Version 1.2
     'layer_switcher.cancel': 'Annuler',
     'layer_switcher.done': 'OK'
 
+4. A new caching system has been introduced and it has to be configured in the
+   config.yaml file. So you have to edit ``config.yaml.in`` and
+   ``config_child.yaml.in`` files to add the following configuration:
+
+    # The dogpile.cache configuration.
+    cache:
+      # http://dogpilecache.readthedocs.org/en/latest/api.html#module-dogpile.cache.backends.memory
+      backend: dogpile.cache.memory
+      # expiration_time: <value> # the expiration time passed to the Dogpile lock
+      # arguments:
+        # <key>: <value> # arguments options are used directly by the backend:
+                         # see related backend documentation to know which
+                         # options to pass
+
+   The caching system also refactored the way errors are handled: all errors
+   are now stored in ``serverError``, while ``themesError`` is not used
+   anymore.  So you have to edit all template files (``templates/viewer.js``,
+   ``templates/edit.js``, ``templates/apiviewer.js``) to remove the following
+   line:
+
+    /* errors (if any): ${themesError | n} */
+
 Version 1.1
 ===========
 
