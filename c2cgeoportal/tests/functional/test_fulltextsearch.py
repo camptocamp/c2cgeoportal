@@ -4,8 +4,8 @@ from nose.plugins.attrib import attr
 
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import (tearDownCommon as tearDownModule,
-                                           setUpCommon as setUpModule)
+from c2cgeoportal.tests.functional import (  # NOQA
+        tearDownCommon as tearDownModule, setUpCommon as setUpModule)
 
 
 @attr(functional=True)
@@ -77,7 +77,6 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
     def test_match(self):
-        from pyramid.httpexceptions import HTTPBadRequest
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
@@ -89,7 +88,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(resp.features[0].properties['layer_name'], 'layer')
 
     def test_nomatch(self):
-        from pyramid.httpexceptions import HTTPBadRequest
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
