@@ -1,4 +1,5 @@
 # A minimal application config file.
 #
 # This is required for test_init.py.
-{}
+cache:
+  backend: dogpile.cache.memory
