@@ -75,7 +75,10 @@ def proxy(request):
             params = {}
 
     # get query string
-    query_string = urllib.urlencode(params)
+    params_encoded = {}
+    for k, v in params.iteritems():
+        params_encoded[k] = unicode(v).encode('utf-8')
+    query_string = urllib.urlencode(params_encoded)
 
     # get URL
     _url = request.registry.settings['external_mapserv_url'] \
