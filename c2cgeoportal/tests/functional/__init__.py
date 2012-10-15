@@ -6,8 +6,6 @@
 import os
 from ConfigParser import ConfigParser
 
-from paste.deploy import appconfig
-
 mapserv_url = None
 db_url = None
 
