@@ -335,7 +335,6 @@ class TestEntryView(TestCase):
 
         # unautenticated
         themes = entry.themes()
-        self.assertEquals(len(entry.serverError), 0)
         self.assertEquals(len(themes), 1)
         self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
         self.assertFalse(self._find_layer(themes[0], '__test_private_layer'))
@@ -344,7 +343,6 @@ class TestEntryView(TestCase):
         role_id = DBSession.query(User.role_id).filter_by(username=u'__test_user1').one()
         request.params = { 'role_id': role_id }
         themes = entry.themes()
-        self.assertEquals(len(entry.serverError), 0)
         self.assertEquals(len(themes), 1)
         self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
         self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
@@ -354,9 +352,11 @@ class TestEntryView(TestCase):
         request.registry.settings = {
             'mapserv_url': mapserv_url + '?map=not_a_mapfile',
         }
-        themes = entry._themes({})
+        from c2cgeoportal import caching
+        caching.invalidate_region()
+        themes, errors = entry._themes(None)
         self.assertEquals(len(themes), 0)
-        self.assertEquals(len(entry.serverError), 1)
+        self.assertEquals(len(errors), 1)
 
     def test_WFS_types(self):
         from c2cgeoportal.models import DBSession, User
@@ -413,21 +413,22 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = ['lang', 'tilecache_url', 'debug', 'serverError',
+        all_params = set(['lang', 'tilecache_url', 'debug', 'serverError',
                 'themes', 'external_themes', 'functionality', 'WFSTypes',
-                'externalWFSTypes', 'user']
+                'externalWFSTypes', 'user'])
         result = entry.home()
-        self.assertEquals(result.keys(), ['lang', 'debug', 'extra_params'])
+        self.assertEquals(
+                set(result.keys()), set(['lang', 'debug', 'extra_params']))
         result = entry.viewer()
-        self.assertEquals(result.keys(), all_params)
+        self.assertEquals(set(result.keys()), all_params)
         result = entry.edit()
-        self.assertEquals(result.keys(), ['lang', 'debug'])
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.editjs()
-        self.assertEquals(result.keys(), all_params)
+        self.assertEquals(set(result.keys()), all_params)
         result = entry.apiloader()
-        self.assertEquals(result.keys(), all_params)
+        self.assertEquals(set(result.keys()), all_params)
         result = entry.apihelp()
-        self.assertEquals(result.keys(), ['lang', 'debug'])
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
@@ -467,9 +468,8 @@ class TestEntryView(TestCase):
             'project': 'test_layer',
         }
         entry = Entry(request)
-        entry.errors = "";
 
-        self.assertEqual(entry._group(LayerGroup(), [], [], None), None)
+        self.assertEqual(entry._group(LayerGroup(), [], [], None), (None, []))
 
         layer = Layer()
         layer.id = 20
@@ -488,7 +488,7 @@ class TestEntryView(TestCase):
         layer.disclaimer = "Camptocamp"
         layer.identifierAttributeField = "name"
         layer.geoTable = "tiwms"
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test internal WMS', 
             'metadataURL': 'http://example.com/tiwms', 
@@ -505,8 +505,7 @@ class TestEntryView(TestCase):
             'disclaimer': 'Camptocamp',
             'identifierAttribute': 'name', 
             'editable': True, 
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         layer = Layer()
         layer.id = 20
@@ -520,7 +519,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test external WMS', 
             'icon': '/dummy/static/test_layer:static/tewms.png',
@@ -532,8 +531,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         layer = Layer()
         layer.id = 20
@@ -549,7 +547,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
             'isChecked': False, 
@@ -563,8 +561,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         layer = Layer()
         layer.id = 20
@@ -576,7 +573,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
             'isChecked': False, 
@@ -587,8 +584,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         layer = Layer()
         layer.id = 20
@@ -600,7 +596,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
             'isChecked': False, 
@@ -611,8 +607,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         layer = Layer()
         layer.id = 20
@@ -621,15 +616,14 @@ class TestEntryView(TestCase):
         layer.layerType = "no 2D"
         layer.legend = False
         layer.metadataURL = 'http://example.com/wmsfeatures.metadata'
-        self.assertEqual(entry._layer(layer, [], None), {
+        self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': u'test no 2D', 
             'isChecked': False, 
             'type': u'no 2D', 
             'legend': False, 
             'metadataURL': u'http://example.com/wmsfeatures.metadata'
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         curdir = os.path.dirname(os.path.abspath(__file__))
         mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
@@ -642,7 +636,7 @@ class TestEntryView(TestCase):
         layer.imageType = "image/png"
         layer.isChecked = False
         layer.legend = False
-        self.assertEqual(entry._layer(layer, wms_layers, wms), {
+        self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
             'name': u'test_wmsfeaturesgroup',
             'isChecked': False,
@@ -661,8 +655,7 @@ class TestEntryView(TestCase):
                 'minResolutionHint': 1.76,
                 'maxResolutionHint': 8.8200000000000003,
             }],
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         group1 = LayerGroup()
         group1.name = 'block'
@@ -678,7 +671,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         group1.children = [group2]
         group2.children = [layer]
-        self.assertEqual(entry._group(group1, [layer], [], None), {
+        self.assertEqual(entry._group(group1, [layer], [], None), ({
             'isExpanded': False,
             'isInternalWMS': True,
             'name': u'block',
@@ -698,104 +691,84 @@ class TestEntryView(TestCase):
                     'imageType': u'image/png'
                 }]
             }]
-        })
-        self.assertEqual(entry.errors, '')
+        }, []))
 
         group1 = LayerGroup()
         group1.isInternalWMS = True
         group2 = LayerGroup()
         group2.isInternalWMS = False
         group1.children = [group2]
-        entry._group(group1, [], [], None)
-        self.assertNotEqual(entry.errors, '')
-        
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group1, [], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group1 = LayerGroup()
         group1.isInternalWMS = False
         group2 = LayerGroup()
         group2.isInternalWMS = True
         group1.children = [group2]
-        entry._group(group1, [], [], None)
-        self.assertNotEqual(entry.errors, '')
-
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group1, [], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'internal WMS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertEqual(len(errors), 0)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'external WMS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertNotEqual(entry.errors, '')
-
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'WMTS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertNotEqual(entry.errors, '')
-
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'no 2D'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertNotEqual(entry.errors, '')
-
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'internal WMS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertNotEqual(entry.errors, '')
-
-        entry.errors = ''
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertTrue(len(errors) > 0)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'external WMS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertEqual(len(errors), 0)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'WMTS'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertEqual(entry.errors, '')
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertEqual(len(errors), 0)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'no 2D'
         group.children = [layer]
-        entry._group(group, [layer], [], None)
-        self.assertEqual(entry.errors, '')
-
+        _, errors = entry._group(group, [layer], [], None)
+        self.assertEqual(len(errors), 0)
