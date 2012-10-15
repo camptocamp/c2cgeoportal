@@ -47,7 +47,10 @@ import transaction
 from pyramid import testing
 import sqlahelper
 
-from c2cgeoportal.tests.functional import setUpModule, tearDownModule, mapserv_url
+from c2cgeoportal.tests.functional import (  # NOQA
+        tearDownCommon as tearDownModule,
+        setUpCommon as setUpModule,
+        mapserv_url)
 
 Base = sqlahelper.get_base()
 

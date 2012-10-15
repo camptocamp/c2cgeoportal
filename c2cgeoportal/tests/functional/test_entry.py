@@ -9,7 +9,10 @@ from geoalchemy import WKTSpatialElement
 from pyramid import testing
 from owslib.wms import WebMapService
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule, mapserv_url
+from c2cgeoportal.tests.functional import (  # NOQA
+        tearDownCommon as tearDownModule,
+        setUpCommon as setUpModule,
+        mapserv_url)
 
 @attr(functional=True)
 class TestEntryView(TestCase):

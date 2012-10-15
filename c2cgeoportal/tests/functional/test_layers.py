@@ -4,7 +4,9 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule  # NOQA
+from c2cgeoportal.tests.functional import (  # NOQA
+        tearDownCommon as tearDownModule,
+        setUpCommon as setUpModule)
 
 
 @attr(functional=True)

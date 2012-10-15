@@ -4,7 +4,9 @@ from nose.plugins.attrib import attr
 
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import tearDownModule, setUpModule
+from c2cgeoportal.tests.functional import (tearDownCommon as tearDownModule,
+                                           setUpCommon as setUpModule)
+
 
 @attr(functional=True)
 class TestFulltextsearchView(TestCase):
