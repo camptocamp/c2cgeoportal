@@ -6,8 +6,6 @@
 import os
 from ConfigParser import ConfigParser
 
-from paste.deploy import appconfig
-
 mapserv_url = None
 db_url = None
 
@@ -21,7 +19,7 @@ if os.path.exists(configfile):
     mapserv_url = cfg.get('test', 'mapserv.url')
 
 
-def setUpModule():
+def setUpCommon():
     import c2cgeoportal
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
@@ -48,7 +46,7 @@ def setUpModule():
     Base.metadata.create_all()
 
 
-def tearDownModule():
+def tearDownCommon():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
