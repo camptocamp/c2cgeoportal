@@ -38,10 +38,18 @@ steps:
 
        c2cgeoportal>=0.7,<=0.7.99
 
-2. Now edit the application's Buildout config (``buildout.cfg``), remove all
-   the lines from the ``[versions]`` section, **except** for ``distribute``.
-   Emptying the ``[versions]`` section is necessary for
-   getting new dependency versions using ``buildout -n`` (see the next step).
+   You may also need to edit the application's Buildout config
+   (``buildout.cfg``) and change the version of ``c2cgeoportal`` in the
+   ``[versions]`` section. Make sure the version specifications in ``setup.py``
+   and ``buildout.cfg`` do not conflict.
+
+2. Now, if you want or need to update the application's other dependencies,
+   edit the application's Buildout config (``buildout.cfg``), and remove all
+   the lines from the ``[versions]`` section, **except** for ``distribute`` and
+   ``zc.buildout`` . (We currently rely on specific, patched versions of
+   distribute 0.6.22 and zc.buildout 1.5.2). Emptying the ``[versions]``
+   section is necessary for getting new dependency versions using ``buildout
+   -n`` (see the next step).
 
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
