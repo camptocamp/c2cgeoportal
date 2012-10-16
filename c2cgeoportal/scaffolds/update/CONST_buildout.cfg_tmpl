@@ -14,7 +14,6 @@ develop = .
 index = http://pypi.camptocamp.net/pypi
 allow-hosts = pypi.camptocamp.net
 find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
-    http://pypi.camptocamp.net/internal-pypi/index/tileforge
 newest = false
 prefer-final = true
 extensions = buildout.dumppickedversions

@@ -29,7 +29,6 @@ install_requires = [
     'GeoFormAlchemy>=0.4',
     'GeoAlchemy>=0.7',
     'OWSLib>=0.6.0',
-    'tileforge>=0.2',
     'JSTools>=0.6',
     'simplejson',
     'PyYAML',
