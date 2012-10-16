@@ -28,6 +28,21 @@ log = logging.getLogger(__name__)
 cache_region = caching.get_region()
 
 
+@cache_region.cache_on_arguments()
+def _wms_getcap(url):
+    errors = []
+    wms = None
+    log.info("WMS GetCapabilities for base url: %s" % url)
+    try:
+        wms = WebMapService(url, version='1.1.1')
+    except AttributeError:
+        error = _("WARNING! an error occured while trying to "
+                    "read the mapfile and recover the themes")
+        errors.append(error)
+        log.exception(error)
+    return wms, errors
+
+
 class Entry(object):
 
     def __init__(self, request):
@@ -318,17 +333,10 @@ class Entry(object):
         layers = query.all()
 
         # retrieve layers metadata via GetCapabilities
-        wms_url = self.request.registry.settings['mapserv_url'] + \
-            (('?role_id=' + str(role_id)) if role_id else '')
-        log.info("WMS GetCapabilities for base url: %s" % wms_url)
-        try:
-            wms = WebMapService(wms_url, version='1.1.1')
-        except AttributeError:
-            error = _("WARNING! an error occured while trying to "
-                       "read the mapfile and recover the themes")
-            errors.append(error)
-            log.exception(error)
-            return [], errors
+        wms, wms_errors = _wms_getcap(
+                self.request.registry.settings['mapserv_url'])
+        if len(wms_errors) > 0:
+            return [], wms_errors
 
         wms_layers = list(wms.contents)
 
@@ -372,25 +380,19 @@ class Entry(object):
         return children, errors
 
     @cache_region.cache_on_arguments()
-    def _internalWFSTypes(self, role_id):
-        return self._WFSTypes(
-                role_id, self.request.registry.settings['mapserv_url'])
+    def _internalWFSTypes(self):
+        return self._WFSTypes(self.request.registry.settings['mapserv_url'])
 
     def _externalWFSTypes(self):
         if not ('external_mapserv_url' in self.settings
                 and self.settings['external_mapserv_url']):
             return []
-        parent_role_id = None
-        if self.request.user and self.request.user.parent_role:
-            parent_role_id = self.request.user.parent_role.id
         return self._WFSTypes(
-                parent_role_id,
                 self.request.registry.settings['external_mapserv_url'])
 
-    def _WFSTypes(self, role_id, wfs_url):
+    def _WFSTypes(self, wfs_url):
         # retrieve layers metadata via GetCapabilities
         params = (
-            ('role_id', str(role_id) if role_id else ''),
             ('SERVICE', 'WFS'),
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
@@ -444,7 +446,7 @@ class Entry(object):
         d = {
                 'themes': json.dumps(themes),
                 'user': self.request.user,
-                'WFSTypes': json.dumps(self._internalWFSTypes(role_id)),
+                'WFSTypes': json.dumps(self._internalWFSTypes()),
                 'externalWFSTypes': json.dumps(self._externalWFSTypes()),
                 'external_themes': self._external_themes(),
                 'tilecache_url': self.settings.get("tilecache_url"),
