@@ -13,6 +13,7 @@ from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
 from c2cgeoportal.views.tilecache import load_tilecache_config
+from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching
 
 # used by (sql|form)alchemy
@@ -165,13 +166,6 @@ def includeme(config):
     # validator
     config.add_directive('set_user_validator', set_user_validator)
     config.set_user_validator(default_user_validator)
-
-    # add a TileCache view
-    load_tilecache_config(config.get_settings())
-    config.add_route('tilecache', '/tilecache{path:.*?}')
-    config.add_view(
-        view='c2cgeoportal.views.tilecache:tilecache',
-        route_name='tilecache')
 
     # add an OGCProxy view
     config.add_route('ogcproxy', '/ogcproxy',
