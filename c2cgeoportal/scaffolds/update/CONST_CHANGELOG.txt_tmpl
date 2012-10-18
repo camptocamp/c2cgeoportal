@@ -29,14 +29,26 @@ Version 1.2
    ``config_child.yaml.in`` files to add the following configuration:
 
     # The dogpile.cache configuration.
+    #
+    # Do not touch if unsure.
+    #
+    # The cache section below takes three properties:
+    #
+    # - backend: the name of the cache backend (ex: dogpile.cache.memory,
+    #   dogpile.cache.memcached, etc.). Mandatory.
+    # - expiration_time: the cache expiration time. Optional (infinite if not
+    #   specified).
+    # - arguments: backend-specific arguments. Optional.
+    #
+    # Here is a dogpile.cache configuration example for the memcached backend
+    # (equivalent of http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.backends.memcached.MemcachedBackend)
+    # cache:
+    #   backend: dogpile.cache.memcached
+    #   expiration_time: 3600
+    #   arguments:
+    #     url: 127.0.0.1:11211
     cache:
-      # http://dogpilecache.readthedocs.org/en/latest/api.html#module-dogpile.cache.backends.memory
       backend: dogpile.cache.memory
-      # expiration_time: <value> # the expiration time passed to the Dogpile lock
-      # arguments:
-        # <key>: <value> # arguments options are used directly by the backend:
-                         # see related backend documentation to know which
-                         # options to pass
 
    The caching system also refactored the way errors are handled: all errors
    are now stored in ``serverError``, while ``themesError`` is not used
