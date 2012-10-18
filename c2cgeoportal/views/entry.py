@@ -520,7 +520,7 @@ class Entry(object):
     @view_config(route_name='themes', renderer='json')
     def themes(self):
         role_id = self.request.params.get("role_id") or None
-        if not role_id and self.request.user is not None:
+        if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
 
         return self._themes(role_id)[0]
