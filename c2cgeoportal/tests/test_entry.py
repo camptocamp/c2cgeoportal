@@ -6,15 +6,14 @@ def setUpModule():
     import c2cgeoportal
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
+    c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
 
 
 class TestEntryView(TestCase):
 
     def setUp(self):
         from pyramid import testing
-        self.config = testing.setUp(
-            settings={}   
-            )
+        self.config = testing.setUp(settings={})
 
     def test_decimal_JSON(self):
         from decimal import Decimal

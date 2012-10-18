@@ -24,6 +24,13 @@ commonly named ``c2cgeoportal.map.in``.
 This section describes how to make layers *printable* and/or *queryable*
 and/or *private* (a.k.a *restricted*).
 
+.. warning::
+
+    Please note that, because of c2cgeoportal's caching system, each time you
+    update the mapfile configuration, you have to reload apache.
+
+    (on debian system, you can do: ``sudo apache2ctl graceful``).
+
 Print
 -----
 
