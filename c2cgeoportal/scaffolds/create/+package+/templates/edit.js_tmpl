@@ -7,24 +7,32 @@ Ext.onReady(function() {
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     OpenLayers.DOTS_PER_INCH = 72;
+    OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
     OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
     OpenLayers.Lang.setCode("${lang}");
 
     // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
-    % if user:
-    var initialExtent = ${user.role.json_extent};
+    <% json_extent = user.role.json_extent if user else None %>
+    % if json_extent:
+    var INITIAL_EXTENT = ${json_extent};
     % else:
-    var initialExtent = [420000, 30000, 900000, 350000];
+    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
     % endif
+    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
-    var themes = {
+    var THEMES = {
         "local": ${themes | n}
     % if external_themes:
         , "external": ${external_themes | n}
     % endif
     };
+
+    // Server errors (if any)
+    var serverError = ${serverError | n};
+
+    var FUNCTIONALITY = ${functionality | n};
 
     app = new gxp.Viewer({
 
@@ -45,7 +53,8 @@ Ext.onReady(function() {
             ptype: 'cgxp_editing',
             layerTreeId: 'layertree',
             layersURL: "${request.route_url('layers_root')}"
-        }, {
+        },
+        {
             ptype: 'cgxp_themeselector',
             outputTarget: 'left-panel',
             outputConfig: {
@@ -53,8 +62,9 @@ Ext.onReady(function() {
                 style: 'padding: 3px;'
             },
             layerTreeId: 'layertree',
-            themes: themes
-        }, {
+            themes: THEMES
+        },
+        {
             ptype: "cgxp_layertree",
             id: "layertree",
             outputConfig: {
@@ -62,14 +72,16 @@ Ext.onReady(function() {
                 flex: 1,
                 layout: 'fit',
                 autoScroll: true,
-                themes: themes,
+                themes: THEMES,
                 wmsURL: '${request.route_url('mapserverproxy')}'
             },
             outputTarget: 'left-panel'
-        }, {
+        },
+        {
             ptype: "cgxp_menushortcut",
             type: '->'
-        }, {
+        },
+        {
             ptype: "cgxp_login",
             actionTarget: "map.tbar",
     % if user:
@@ -85,9 +97,9 @@ Ext.onReady(function() {
             stateId: "map",
             xtype: 'cgxp_mappanel',
             projection: "EPSG:21781",
-            extent: initialExtent,
-            maxExtent: [420000, 30000, 900000, 350000],
-            restrictedExtent: [420000, 30000, 900000, 350000],
+            extent: INITIAL_EXTENT,
+            maxExtent: RESTRICTED_EXTENT,
+            restrictedExtent: RESTRICTED_EXTENT,
             units: "m",
             resolutions: [4000,2000,1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
@@ -115,5 +127,11 @@ Ext.onReady(function() {
         Ext.fly('loading-mask').fadeOut({
             remove: true
         });
+
+        if (serverError.length > 0) {
+            cgxp.tools.openWindow({
+                html: serverError.join('<br />')
+            },OpenLayers.i18n("Error notice"),600, 500);
+        }
     }, app);
 });
