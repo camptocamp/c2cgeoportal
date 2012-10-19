@@ -1,8 +1,0 @@
-# Uncomment the following lines to acces to local stored tiles.
-#
-#Alias /${vars:instanceid/tiles/ /var/sig/tilecache/
-#<Location /${vars:instanceid}/tiles>
-#    ExpiresActive on
-#    ExpiresDefault "now plus 4 hours"
-#    Header set Cache-Control "public, max-age=28800"
-#</Location>

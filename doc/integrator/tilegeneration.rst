@@ -32,7 +32,7 @@ Initialisation and Configuration
 
  * Add configuration to GIT::
 
-   git add tilegeneration
+   git add tilegeneration buildout_tilegeneration.cfg
 
 Tile Generation and management
 ------------------------------
@@ -51,6 +51,39 @@ using the command::
 
     ./buildout/bin/generate_tiles
 
+Integration in c2cgeoportal
+---------------------------
+
+In the ``viewer.js``, ``apiviewer.js`` and ``edit.js``:
+
+ * Be sure that ``OpenLayers.IMAGE_RELOAD_ATTEMPTS`` is not defined.
+ * In ``WMTS_OPTION`` url should be ${tilecache_url}.
+
+In the ``config.yaml.in`` define ``tilecache_url`` to something like, for S3 usage::
+
+    tilecache_url:
+    - http://wmts0.<host>
+    - http://wmts1.<host>
+    - http://wmts2.<host>
+    - http://wmts3.<host>
+    - http://wmts4.<host>
+
+And for tiles on local file system::
+
+    tilecache_url:
+    - http://${vars:host}/${vars:instanceid}/tiles
+
+If your tiles is on local file system you should also create a way to access to
+your tiles than create the file ``apache/tiles.conf.in`` with the content::
+
+    Alias /${vars:instanceid/tiles/ /var/sig/tilecache/
+    <Location /${vars:instanceid}/tiles>
+        ExpiresActive on
+        ExpiresDefault "now plus 4 hours"
+        Header set Cache-Control "public, max-age=28800"
+    </Location>
+
+
 MapCache
 ========
 
@@ -61,6 +94,7 @@ and have a short time (some hours) cache for the last zoom levels.
 
 See: http://mapserver.org/trunk/mapcache/config.html
 
+
 SwitchableWMTSSource
 ====================
 
@@ -68,8 +102,29 @@ Useful tool to switch from TileCloud to MapCache.
 
 See: http://docs.camptocamp.net/cgxp/lib/plugins/SwitchableWMTSSource.html
 
+
 Tileforge
 =========
+
+Integration in c2cgeoportal
+---------------------------
+
+In ``buildout.cfg`` section ``[buildout]`` add::
+
+    find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge
+
+In ``<package>/__init__.py`` function ``main`` add::
+
+    from c2cgeoportal.views.tilecache import load_tilecache_config
+
+    # add a TileCache view
+    load_tilecache_config(config.get_settings())
+    config.add_route('tilecache', '/tilecache{path:.*?}')
+    config.add_view(
+        view='c2cgeoportal.views.tilecache:tilecache',
+        route_name='tilecache')
+
+In ``setup.py`` attribute ``install_requires`` add ``'tileforge',``.
 
 Configuration
 -------------
