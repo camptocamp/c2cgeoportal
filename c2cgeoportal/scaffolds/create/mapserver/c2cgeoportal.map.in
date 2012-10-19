@@ -16,7 +16,7 @@
 MAP
     NAME "geoportal"
 
-    EXTENT 620000 218000 690000 278000 ##
+    EXTENT 420000 30000 900000 350000 ##
     UNITS METERS
 
     # RESOLUTION and DEFRESOLUTION default to 72. If you
@@ -94,16 +94,17 @@ MAP
         PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
         CONNECTION "${mapserver_connection}"
         # Example data for secured layer by restriction area
-        DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) AND ${mapserver_join_where} 'layer_name') AS foo USING UNIQUE gid USING srid=-1"
+        DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) AND ${mapserver_join_where} 'layer_name') AS foo USING UNIQUE gid USING srid=21781"
         # Example data for secured layer by role (without any area)
-        #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE %role_id% IN (${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid=-1"
+        #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo WHERE %role_id% IN (${mapfile_data_noarea_subselect} 'layer_name')) as foo USING UNIQUE gid USING srid=21781"
         # Example data for public layer
-        #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid=-1"
+        #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid=21781"
         METADATA
             "wms_title" "layer_name" # For WMS
             "wms_srs" "epsg:21781" # For WMS
 
-            "gml_include_items" "all"  # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)
+            "wfs_enable_request" "*" # Enable WFS for this layer
+            "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)
             "ows_geom_type" "polygon" # For returning geometries in GetFeatureInfo
             "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
 

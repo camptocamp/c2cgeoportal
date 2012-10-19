@@ -13,7 +13,7 @@ buildout/parts/
 deploy/deploy.cfg
 development.ini
 production.ini
-config.cfg
+config.yaml
 mapserver/c2cgeoportal.map
 *.egg-info/
 {{package}}/static/build/*.js

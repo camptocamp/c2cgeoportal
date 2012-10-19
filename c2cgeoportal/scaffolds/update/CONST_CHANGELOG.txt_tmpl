@@ -58,6 +58,11 @@ Version 1.2
 
     /* errors (if any): ${themesError | n} */
 
+5. Some updates will be do in the `edit.js` and in the `viewer.js`, the actual code
+   will still work, it your interested in have a look at:
+   https://github.com/camptocamp/c2cgeoportal/pull/354
+
+
 Version 1.1
 ===========
 

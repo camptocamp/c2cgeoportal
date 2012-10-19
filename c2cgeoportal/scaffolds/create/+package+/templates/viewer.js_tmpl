@@ -1,25 +1,26 @@
 Ext.onReady(function() {
-    /*
-     * Initialize the application.
-     */
-    // OpenLayers
+    // Ext global settings
+    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    Ext.QuickTips.init();
+
+    // OpenLayers global settings
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
     OpenLayers.DOTS_PER_INCH = 72;
     OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
-
-    // Ext
-    Ext.QuickTips.init();
-
     OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
-    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
-
-    // Apply same language than on the server side
     OpenLayers.Lang.setCode("${lang}");
+
+    // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
-    // Server errors (if any)
-    var serverError = ${serverError | n};
+    <% json_extent = user.role.json_extent if user else None %>
+    % if json_extent:
+    var INITIAL_EXTENT = ${json_extent};
+    % else:
+    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
+    % endif
+    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
     // Themes definitions
     var THEMES = {
@@ -29,13 +30,8 @@ Ext.onReady(function() {
     % endif
     };
 
-    % if user and user.role.extent:
-    var INITIAL_EXTENT = ${user.role.json_extent};
-    % else:
-    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
-    % endif
-
-    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
+    // Server errors (if any)
+    var serverError = ${serverError | n};
 
     var FUNCTIONALITY = ${functionality | n};
 
@@ -98,7 +94,7 @@ Ext.onReady(function() {
                 collapseMode: "mini",
                 hidden: true,
                 bodyStyle: 'background-color: transparent;'
-            }, 
+            },
             {
                 layout: "accordion",
                 id: "left-panel",
@@ -136,7 +132,7 @@ Ext.onReady(function() {
                 layout: "fit",
                 style: "padding: 3px 0 3px 3px;"
             }
-        }, 
+        },
         {
             ptype: "cgxp_layertree",
             id: "layertree",
@@ -154,7 +150,7 @@ Ext.onReady(function() {
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
-        }, 
+        },
     % if user:
         {
             ptype: "cgxp_querier",
@@ -166,7 +162,7 @@ Ext.onReady(function() {
             //maxFeatures: 200,
             srsName: 'EPSG:{{srid}}',
             featureTypes: ["query_layer"],
-        }, 
+        },
     % endif
         {
             ptype: "cgxp_print",
@@ -174,7 +170,7 @@ Ext.onReady(function() {
             featureProvider: "featureGrid",
             outputTarget: "left-panel",
             printURL: "${request.route_url('printproxy', path='')}",
-            mapserverURL: "${request.route_url('mapserverproxy', path='')}", 
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
             options: {
                 labelAlign: 'top',
                 defaults: {
@@ -182,7 +178,7 @@ Ext.onReady(function() {
                 },
                 autoFit: true
             }
-        }, 
+        },
         {
             ptype: "cgxp_featuregrid",
             id: "featureGrid",
@@ -190,7 +186,7 @@ Ext.onReady(function() {
             maxFeatures: 200,
             outputTarget: "featuregrid-container",
             events: EVENTS
-        }, 
+        },
         {
             ptype: "cgxp_mapopacityslider",
             defaultBaseLayerRef: FUNCTIONALITY.default_basemap[0]
@@ -209,22 +205,22 @@ Ext.onReady(function() {
         {
             ptype: "gxp_navigationhistory",
             actionTarget: "center.tbar"
-        }, 
+        },
         {
             ptype: "cgxp_permalink",
             actionTarget: "center.tbar"
-        }, 
+        },
         {
             ptype: "cgxp_measure",
             actionTarget: "center.tbar",
             toggleGroup: "maptools"
-        }, 
+        },
         {
             ptype: "cgxp_wmsgetfeatureinfo",
             actionTarget: "center.tbar",
             toggleGroup: "maptools",
             events: EVENTS
-        }, 
+        },
         {
             ptype: "cgxp_fulltextsearch",
             url: "${request.route_url('fulltextsearch', path='')}",
@@ -256,7 +252,7 @@ Ext.onReady(function() {
             ptype: "cgxp_menushortcut",
             actionTarget: "center.tbar",
             type: '-'
-        }, 
+        },
         {
             ptype: "cgxp_login",
             actionTarget: "center.tbar",
@@ -271,7 +267,7 @@ Ext.onReady(function() {
             ptype: "cgxp_menushortcut",
             actionTarget: "center.tbar",
             type: '-'
-        }, 
+        },
         {
             ptype: "cgxp_help",
             url: "#help-url",
@@ -330,8 +326,8 @@ Ext.onReady(function() {
                     mapOptions: {
                         theme: null
                     },
-                    minRatio: 64, 
-                    maxRatio: 64, 
+                    minRatio: 64,
+                    maxRatio: 64,
                     layers: [new OpenLayers.Layer.OSM("OSM", [
                             'http://a.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
                             'http://b.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
@@ -369,7 +365,7 @@ Ext.onReady(function() {
                     layer: 'plan',
                     group: 'background'
                 }, WMTS_OPTIONS)]
-            }, 
+            },
             {
                 source: "olsource",
                 type: "OpenLayers.Layer",
@@ -396,6 +392,5 @@ Ext.onReady(function() {
                 html: serverError.join('<br />')
             },OpenLayers.i18n("Error notice"),600, 500);
         }
-
     }, app);
 });
