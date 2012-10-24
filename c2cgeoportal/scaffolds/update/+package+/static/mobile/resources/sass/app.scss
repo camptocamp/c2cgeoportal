@@ -32,6 +32,10 @@ table.detail {
     width: 100%;
 }
 
+table.detail a {
+    word-break: break-all;
+}
+
 table.detail th {
     font-weight: bold;
     width: 30%;
