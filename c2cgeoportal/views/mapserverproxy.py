@@ -67,12 +67,24 @@ def proxy(request):
     # get method
     method = request.method
 
-    # For GET requests, params are added only if REQUEST and SERVICE params
-    # are actually provided.
+    # we want the browser to cache GetLegendGraphic requests, so
+    # we need to know if the current request is a GetLegendGraphic
+    # request
+    is_glg = False
+
     if method == "GET":
-        keys = [key.lower() for key in params.keys()]
-        if 'service' not in keys or 'request' not in keys:
+        _params = dict(
+            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+            )
+
+        # For GET requests, params are added only if REQUEST and
+        # SERVICE params are actually provided.
+        if 'service' not in _params or 'request' not in _params:
             params = {}
+        else:
+            # WMS GetLegendGraphic request?
+            is_glg = _params['service'] == u'wms' and \
+                     _params['request'] == u'getlegendgraphic'
 
     # get query string
     params_encoded = {}
@@ -97,7 +109,8 @@ def proxy(request):
     h = dict(request.headers)
     h.pop("Host", h)
     try:
-        resp, content = http.request(_url, method=method, body=body, headers=h)
+        resp, content = http.request(_url, method=method,
+                                     body=body, headers=h)
     except:  # pragma: no cover
         log.error(
             "Error '%s' while getting the URL: %s." %
@@ -121,6 +134,9 @@ def proxy(request):
     if method == "POST" and is_get_feature(request.body):
         content = limit_featurecollection(content, limit=200)
 
-    return Response(
-        content, status=resp.status,
-        headers={"Content-Type": resp["content-type"]})
+    headers = {"Content-Type": resp["content-type"]}
+    if is_glg:
+        # 30mn expiration for GetLegendGraphic
+        headers.update({"Cache-Control": "public, max-age=1800"})
+
+    return Response(content, status=resp.status, headers=headers)
