@@ -15,10 +15,10 @@ Ext.define('App.controller.Query', {
         },
         control: {
             queryViewList: {
-                select: function(list, record) {
-                    this.getApplication().getController('Main').recenterMap(record.raw);
-                },
-                disclose: function(list, record) {
+                itemtap: function(list, index, target, record, e, eOpts) {
+                    if (e.target.tagName.toLowerCase() == "a") {
+                        return;
+                    }
                     this.getApplication().getController('Main').recenterMap(record.raw);
                 }
             }
