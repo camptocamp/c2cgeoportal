@@ -214,6 +214,22 @@ class TestMapserverproxyView(TestCase):
             request.user = None
         return request
 
+    def test_GetLegendGraphic(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.params = dict(map=map, service='wms', version='1.1.1',
+                              request='getlegendgraphic',
+                              layer='testpoint_unprotected',
+                              srs='EPSG:21781',
+                              format='image/png',
+                              extraparam=u'with spéciàl chârs')
+        response = mapserverproxy.proxy(request)
+        self.assertTrue('Cache-Control' in response.headers)
+        self.assertTrue(response.cache_control.public)
+        self.assertEqual(response.cache_control.max_age, 1800)
+
     def test_GetMap_unprotected_layer_anonymous(self):
         from c2cgeoportal.views import mapserverproxy
 
@@ -227,6 +243,7 @@ class TestMapserverproxyView(TestCase):
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 points
         self.assertEquals(response.status_int, 200) 
+        self.assertFalse('Cache-Control' in response.headers)
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_unprotected_layer_user1(self):
