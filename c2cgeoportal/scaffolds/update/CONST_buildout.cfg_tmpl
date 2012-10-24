@@ -9,8 +9,9 @@ parts = eggs
         print-template
         print-war
 develop = .
-index = http://pypi.camptocamp.net/pypi
+index = http://c2c:Ilovepython@pypi.camptocamp.net/pypi
 allow-hosts = pypi.camptocamp.net
+    c2c:Ilovepython@pypi.camptocamp.net
 find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
     http://pypi.camptocamp.net/internal-pypi/index/tileforge
 newest = false
