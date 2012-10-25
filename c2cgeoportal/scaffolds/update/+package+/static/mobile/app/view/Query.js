@@ -25,6 +25,7 @@ Ext.define("App.view.Query", {
             selectedCls: '',
             emptyText: 'No query result',
             store: 'queryStore',
+            onItemDisclosure: true,
             pinHeaders: true,
             ui: 'round',
             grouped: true,
