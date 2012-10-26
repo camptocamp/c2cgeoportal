@@ -53,7 +53,7 @@ by selecting the *Layers* item in the admin interface's menu.
 
 For a *layer* to be editable its ``geoTable`` field should be set. This field
 is the name of the PostGIS table containing the layer's geographic data.  It is
-string of this form: ``[<schemaname>.]<tablename>``.  If ``schemaname`` is
+string of the form ``[<schemaname>.]<tablename>``.  If ``schemaname`` is
 omitted the table is assumed to be in the ``public`` schema.  The label
 corresponding to this field is *Related Postgres table* in the admin interface.
 
