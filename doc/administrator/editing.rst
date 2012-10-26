@@ -30,9 +30,11 @@ To be editable a layer should satisfy the following requirements:
         id          | integer     | not null default nextval('public.table_id_seq'::regclass)
 
 4. The PostGIS table's geometry column should be declared in PostGIS'
-   ``geometry_columns`` table. c2cgeoportal indeed queries the
-   ``geometry_columns`` to get the information it needs about the
-   geometry columns.
+   ``geometry_columns`` table, which is typically done using PostGIS'
+   `AddGeometryColumn function
+   <http://postgis.refractions.net/docs/AddGeometryColumn.html>`_. c2cgeoportal
+   indeed queries the ``geometry_columns`` to get the information it needs
+   about the geometry columns.
 5. If the PostGIS table has a many-to-one relationship to another table
    (typically a dictionary table) there are additional requirements:
 
