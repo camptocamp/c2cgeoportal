@@ -29,7 +29,13 @@ To be editable a layer should satisfy the following requirements:
        -------------+-------------+----------------------------------------------------------
         id          | integer     | not null default nextval('public.table_id_seq'::regclass)
 
-4. If the PostGIS table has a many-to-one relationship to another table
+4. The PostGIS table's geometry column should be declared in PostGIS'
+   ``geometry_columns`` table, which is typically done using PostGIS'
+   `AddGeometryColumn function
+   <http://postgis.refractions.net/docs/AddGeometryColumn.html>`_. c2cgeoportal
+   indeed queries the ``geometry_columns`` to get the information it needs
+   about the geometry columns.
+5. If the PostGIS table has a many-to-one relationship to another table
    (typically a dictionary table) there are additional requirements:
 
    * The name of the foreign key column should end with ``_id`` (e.g.
@@ -45,10 +51,11 @@ Adding or making layers editable
 The application's layers are defined in the ``layer`` table, which is managed
 by selecting the *Layers* item in the admin interface's menu.
 
-For a *layer* to editable its ``geoTable`` field should be set. This field is the
-name of the PostGIS table containing the layer's geographic data.  It is string
-of this form: ``[<schemaname>.]<tablename>``.  If ``schemaname`` is omitted
-the table is assumed to be in the ``public`` schema.
+For a *layer* to be editable its ``geoTable`` field should be set. This field
+is the name of the PostGIS table containing the layer's geographic data.  It is
+string of the form ``[<schemaname>.]<tablename>``.  If ``schemaname`` is
+omitted the table is assumed to be in the ``public`` schema.  The label
+corresponding to this field is *Related Postgres table* in the admin interface.
 
 .. warning::
 
