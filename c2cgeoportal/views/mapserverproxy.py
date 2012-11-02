@@ -77,9 +77,9 @@ def proxy(request):
             (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
             )
 
-        # For GET requests, params are added only if REQUEST and
-        # SERVICE params are actually provided.
-        if 'service' not in _params or 'request' not in _params:
+        # For GET requests, params are added only if the REQUEST
+        # parameter is actually provided.
+        if 'request' not in _params:
             params = {}
         else:
             # WMS GetLegendGraphic request?
