@@ -62,6 +62,18 @@ Version 1.2
    will still work, it your interested in have a look at:
    https://github.com/camptocamp/c2cgeoportal/pull/354
 
+6. CGXP now uses the GeOrchestra styler, which includes its own en, fr,
+   and de translations. Edit jsbuild/app.cfg, and in the [lang-en.js],
+   [lang-fr.js], and [lang-de.js] sections replace
+
+   - Styler/resources/lang/en.js by Styler/lang/en.js
+   - Styler/resources/lang/fr.js by Styler/lang/fr.js
+   - Styler/resources/lang/de.js by Styler/lang/de.js
+
+   The Styler/resources/lang/en.js, Styler/resources/lang/fr.js, and
+   Styler/resources/lang/de.js files no longer exist, so you will get
+   an error during the execution of the jsbuild part if you do not
+   do these replacements.
 
 Version 1.1
 ===========
