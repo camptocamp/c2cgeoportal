@@ -82,6 +82,10 @@ def proxy(request):
         if 'request' not in _params:
             params = {}
         else:
+            # The SERVICE parameter is sometimes omitted. Use WMS as default:
+            if 'service' not in _params:
+                _params['service'] = u'wms'
+
             # WMS GetLegendGraphic request?
             is_glg = _params['service'] == u'wms' and \
                      _params['request'] == u'getlegendgraphic'
