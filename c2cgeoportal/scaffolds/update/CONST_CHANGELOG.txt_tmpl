@@ -80,8 +80,8 @@ Version 1.2
 
    a. Edit the main() function in {{package}}/__init__.py and use
 
-       settings = config.get_settings()
-       if settings.get('enable_admin_interface') == 'On':
+       from pyramid.settings import asbool
+       if asbool(config.get_settings().get('enable_admin_interface')):
            config.formalchemy_admin('admin', package='{{package}}',
                    view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
@@ -97,7 +97,7 @@ Version 1.2
 
    c. Add the following parameter in the ``[vars]`` section of buildout.cfg:
 
-       enable_admin_interface = On
+       enable_admin_interface = true
 
    d. Adapt the latter parameter value in the buildout_*.cfg files.
 
