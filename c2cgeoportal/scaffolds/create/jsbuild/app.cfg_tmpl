@@ -263,7 +263,7 @@ include =
     Ext/src/locale/ext-lang-en.js
 #    GeoExt/locale/GeoExt-en.js
 #    FeatureEditing/resources/lang/en.js
-    Styler/resources/lang/en.js
+    Styler/lang/en.js
     locale/en.js #GXP
     CGXP/locale/en.js
 exclude =
@@ -296,7 +296,7 @@ include =
     Ext/src/locale/ext-lang-fr.js
     GeoExt/locale/GeoExt-fr.js
     FeatureEditing/resources/lang/fr.js
-    Styler/resources/lang/fr.js
+    Styler/lang/fr.js
     locale/fr.js #GXP
     CGXP/locale/fr.js
 exclude =
@@ -329,7 +329,7 @@ include =
     Ext/src/locale/ext-lang-de.js
 #    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
-    Styler/resources/lang/de.js
+    Styler/lang/de.js
 #    locale/de.js #GXP
     CGXP/locale/de.js
 exclude =
