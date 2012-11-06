@@ -83,7 +83,7 @@ def proxy(request):
             params = {}
         else:
             # WMS GetLegendGraphic request?
-            is_glg = _params['service'] == u'wms' and \
+            is_glg = ('service' not in _params or _params['service'] == u'wms') and \
                      _params['request'] == u'getlegendgraphic'
 
     # get query string
