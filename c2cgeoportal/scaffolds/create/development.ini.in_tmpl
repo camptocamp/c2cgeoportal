@@ -22,6 +22,9 @@ tilecache.cfg = ${buildout:directory}/tilecache/tilecache.cfg
 jsbuild_cfg = ${jsbuild:config}
 jsbuild_root_dir = ${buildout:directory}
 
+# Admin interface
+enable_admin_interface = ${vars:enable_admin_interface}
+
 [filter:fanstatic]
 use = egg:fanstatic#fanstatic
 publisher_signature = fanstatic

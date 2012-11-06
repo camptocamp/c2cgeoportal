@@ -23,8 +23,10 @@ def main(global_config, **settings):
 
     config.add_translation_dirs('{{package}}:locale/')
 
-    config.formalchemy_admin('admin', package='{{package}}',
-            view='fa.jquery.pyramid.ModelView', factory=FAModels)
+    settings = config.get_settings()
+    if settings.get('enable_admin_interface') == 'On':
+        config.formalchemy_admin('admin', package='{{package}}',
+                view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     config.add_route('checker_all', '/checker_all')
 

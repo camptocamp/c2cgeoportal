@@ -75,6 +75,32 @@ Version 1.2
    an error during the execution of the jsbuild part if you do not
    do these replacements.
 
+7. It is now possible to disable the administration interface, for example on
+   productive instances of the application. To do so:
+
+   a. Edit the main() function in {{package}}/__init__.py and use
+
+       settings = config.get_settings()
+       if settings.get('enable_admin_interface') == 'On':
+           config.formalchemy_admin('admin', package='{{package}}',
+                   view='fa.jquery.pyramid.ModelView', factory=FAModels)
+
+      instead of
+
+       config.formalchemy_admin('admin', package='{{package}}',
+               view='fa.jquery.pyramid.ModelView', factory=FAModels)
+
+   b. Add the following parameter in the ``[app:app]`` section of 
+      production.ini.in/developement.ini.in:
+
+       enable_admin_interface = ${vars:enable_admin_interface}
+
+   c. Add the following parameter in the ``[vars]`` section of buildout.cfg:
+
+       enable_admin_interface = On
+
+   d. Adapt the latter parameter value in the buildout_*.cfg files.
+
 Version 1.1
 ===========
 
