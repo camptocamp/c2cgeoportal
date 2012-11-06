@@ -10,9 +10,9 @@ To get the changes done by other people, we need to ``pull`` the new code::
 
     git pull
     git submodule sync
-    git submodule update
+    git submodule update --init
     git submodule foreach git submodule sync
-    git submodule foreach git submodule update
+    git submodule foreach git submodule update --init
 
 .. note::
    The submodule command is used to have the right version of CGXP.
