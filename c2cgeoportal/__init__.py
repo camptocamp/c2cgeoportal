@@ -284,11 +284,6 @@ def includeme(config):
         ('admin_interface', 'available_functionalities'),
         formalchemy_available_functionalities)
 
-    # register an admin UI
-    config.formalchemy_admin(
-        'admin', package='c2cgeoportal',
-        view='fa.jquery.pyramid.ModelView', factory=FAModels)
-
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')
 
