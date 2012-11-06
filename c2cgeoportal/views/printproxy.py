@@ -59,6 +59,7 @@ class Printproxy(object):
             layout['name'] in templates)
 
         headers = dict(resp)
+        del headers['content-length']
         headers["Expires"] = "-1"
         headers["Pragma"] = "no-cache"
         headers["CacheControl"] = "no-cache"
