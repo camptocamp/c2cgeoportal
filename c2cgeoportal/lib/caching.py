@@ -32,7 +32,7 @@ def keygen_function(namespace, fn):
         if has_self:
             self_ = args[0]
             if hasattr(self_, 'request'):
-                parts.append(self_.request.host_url)
+                parts.append(self_.request.application_url)
             args = args[1:]
         parts.append(" ".join(map(compat.text_type, args)))
         return "|".join(parts)
