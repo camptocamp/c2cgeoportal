@@ -2,6 +2,7 @@
 
 from pyramid.config import Configurator
 from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.settings import asbool
 from c2cgeoportal import locale_negotiator
 from c2cgeoportal.resources import FAModels, defaultgroupsfinder
 from {{package}}.resources import Root
@@ -23,8 +24,9 @@ def main(global_config, **settings):
 
     config.add_translation_dirs('{{package}}:locale/')
 
-    config.formalchemy_admin('admin', package='{{package}}',
-            view='fa.jquery.pyramid.ModelView', factory=FAModels)
+    if asbool(config.get_settings().get('enable_admin_interface')):
+        config.formalchemy_admin('admin', package='{{package}}',
+                view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
     config.add_route('checker_all', '/checker_all')
 
