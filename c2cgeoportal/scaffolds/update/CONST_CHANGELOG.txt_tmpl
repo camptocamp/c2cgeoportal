@@ -154,6 +154,100 @@ Version 1.2
             print_scale: 10000
             fulltextsearch: text to search
 
+12. c2cgeoportal applications created with the c2cgeoportal 1.2 scaffolds
+    include two JavaScript APIs : Simple API and Extended API. This has
+    a few implications on existing applications, whether you want your
+    applications to expose the JavaScript APIs or not.
+
+    Project Lang Files ({{package}}/static/js/Lang)
+
+        You need to split each lang file into two files. For example,
+        {{package}}/static/js/Lang/fr.js should be splitted into
+        {{package}}/static/js/Lang/fr.js and
+        {{package}}/static/js/Lang/GeoExt-fr.js. The former should include
+        OpenLayers-based translations only, and the latter should include
+        GeoExt-based translations only. If your application does not have
+        GeoExt-based translations (which is a good thing), you will need to
+        create an empty {{package}}/static/js/Lang/GeoExt-fr.js file. And you
+        obviously need to repeat this GeoExt-en.js and GeoExt-de.js.
+
+    JavaScript Build Config (jsbuild/app.cfg)
+
+        The {{package}}/static/js/Lang/GeoExt-<code>.js files should now be
+        listed in the ``include`` list of ``[lang-<code>.js]`` sections. For
+        example:
+
+            [lang-fr.js]
+            root =
+                ...
+            first =
+                OpenLayers/Lang/fr.js
+            include =
+                Ext/src/locale/ext-lang-fr.js
+                GeoExt/locale/GeoExt-fr.js
+            # FeatureEditing/resources/lang/en.js
+                FeatureEditing/resources/lang/fr.js
+                Styler/lang/fr.js
+                locale/fr.js
+                CGXP/locale/fr.js
+                Proj/Lang/fr.js
+                Proj/Lang/GeoExt-fr.js
+            exclude =
+                OpenLayers/Lang.js
+
+        And if you do want your application to expose the APIs you need to edit
+        jsbuild/app.cfg, remove the previous ``[api.js]`` section and add new
+        sections ``[api.js]``, ``[api-lang-en.js]``, ``[api-lang-fr.js]``,
+        ``[api-lang-de.js]``, and ``[xapi.js]``. See
+        https://github.com/camptocamp/c2cgeoportal/blob/master/c2cgeoportal/scaffolds/create/jsbuild/app.cfg_tmpl
+        for the actual content of these new sections.
+
+    Application-level CSS
+
+        The {{package}}/static/css/proj.css include the application-level CSS.
+        This file should be splitted into three files:
+
+        - {{package}}/static/css/proj.css
+        - {{package}}/static/css/proj-map.css
+        - {{package}}/static/css/proj-widgets.css
+
+        proj-map.css is used by the main application viewers (viewer.js and
+        edit.js), the Simple API, and the Extended API. It shouldn't include
+        any Ext-related CSS.
+
+        proj-widgets.css is used by the main application viewers and the Extended
+        API. It should include CSS that for the CGXP plugins.
+
+        proj.css is used by the main application viewers only. It should there
+        include CSS that is relative to the application layout.
+
+        If you don't care about the APIs and do not want to split your proj.css
+        file into three files as explained above you will still need to create
+        empty files for proj-map.css and proj-widgets.css, otherwise the cssmin
+        buildout part will fail, and your application pages will cause 404s
+        in debug mode.
+
+    Adding the APIs to your application
+
+        The easiest is to apply the ``c2cgeoportal_create`` template to
+        create a temporary project and copy the API files from this
+        temporary project to yours::
+
+        $ cd {{project}}
+        $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+                /tmp/{{project}} package={{package}}
+        $ mkdir {{package}}/templates/api
+        $ cp /tmp/{{project}}/{{package}}/templates/api/mapconfig.js \
+             {{package}}/templates/api/
+        $ cp /tmp/{{project}}/{{package}}/templates/api/viewer.js \
+             {{package}}/templates/api/
+        $ cp /tmp/{{project}}/{{package}}/templates/api/api.js \
+             {{package}}/templates/api/
+        $ cp /tmp/{{project}}/{{package}}/templates/api/xapi.js \
+             {{package}}/templates/api/
+        $ rm -rf /tmp/{{project}}
+
+
 Version 1.1
 ===========
 

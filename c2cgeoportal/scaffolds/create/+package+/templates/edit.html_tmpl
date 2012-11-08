@@ -47,6 +47,8 @@
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/gxp/src/theme/all.css')}" />
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/all.css')}" />
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-map.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-widgets.css')}" />
 % else:
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css')}" />
 % endif
