@@ -123,6 +123,7 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
@@ -184,6 +185,7 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
@@ -254,6 +256,7 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
@@ -287,6 +290,7 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
@@ -320,6 +324,7 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
