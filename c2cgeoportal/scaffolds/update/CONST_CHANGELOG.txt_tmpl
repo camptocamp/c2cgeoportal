@@ -90,7 +90,7 @@ Version 1.2
        config.formalchemy_admin('admin', package='{{package}}',
                view='fa.jquery.pyramid.ModelView', factory=FAModels)
 
-   b. Add the following parameter in the ``[app:app]`` section of 
+   b. Add the following parameter in the ``[app:app]`` section of
       production.ini.in/developement.ini.in:
 
        enable_admin_interface = ${vars:enable_admin_interface}
@@ -100,6 +100,20 @@ Version 1.2
        enable_admin_interface = true
 
    d. Adapt the latter parameter value in the buildout_*.cfg files.
+
+8. CGXP's FullTextSearch's plugin now allows to group results by their
+   corresponding type.
+
+   a. We recommend you add the following to the root list in the app.js section
+      of ``app.cfg``:
+
+       {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
+
+   b. If you want the results to be grouped, add a ``grouping`` option to the
+      FullTextSearch plugin in ``viewer.js`` as well as the following line in
+      the include list in the app.js section of ``app.cfg``:
+
+       Ext/ux/form/GroupComboBox.js
 
 Version 1.1
 ===========
