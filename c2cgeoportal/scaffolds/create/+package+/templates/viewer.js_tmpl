@@ -33,8 +33,6 @@ Ext.onReady(function() {
     // Server errors (if any)
     var serverError = ${serverError | n};
 
-    var FUNCTIONALITY = ${functionality | n};
-
     // Used to transmit event throw the application
     var EVENTS = new Ext.util.Observable();
 
@@ -189,7 +187,7 @@ Ext.onReady(function() {
         },
         {
             ptype: "cgxp_mapopacityslider",
-            defaultBaseLayerRef: FUNCTIONALITY.default_basemap[0]
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
         },
         {
             ptype: "gxp_zoomtoextent",
