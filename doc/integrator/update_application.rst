@@ -64,8 +64,10 @@ steps:
    part of ``buildout.cfg``. Then, apply the following corrections
    (to work around bugs in ``buildout.dumppickedversions``)::
 
-    -Mako = x.y.z
-    +mako = x.y.z
+    -Jinja2 = x.y.z
+    +jinja2 = x.y.z
+    -Pillow = x.y.z
+    +pillow = x.y.z
     -Markdown = x.y.z
     +markdown = x.y.z
     -SQLAHelper = x.y.z
