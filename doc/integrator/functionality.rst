@@ -81,10 +81,3 @@ The ``config.yaml.in`` file includes variables for managing *functionality*.
     ``functionality_name``/``value1`` and ``functionality_name``/``value2``,
     then the ``functionality`` template variable will be set to a dict with one
     key/value pair: ``"functionality_name"``/``["value1","value2"]``.
-
-    .. note::
-
-        The ``viewer.js`` Mako template creates a js variable named
-        ``FUNCTIONALITY`` from the ``functionality`` dict. For example::
-
-            var FUNCTIONALITY = {"functionality_name": ["value1", "value2"]};

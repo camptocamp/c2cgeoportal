@@ -32,8 +32,6 @@ Ext.onReady(function() {
     // Server errors (if any)
     var serverError = ${serverError | n};
 
-    var FUNCTIONALITY = ${functionality | n};
-
     app = new gxp.Viewer({
 
         // viewer config
