@@ -190,6 +190,6 @@ class TestFunctionalities(TestCase):
         annon = Entry(request)._getVars()
         u1 = Entry(request1)._getVars()
         u2 = Entry(request2)._getVars()
-        self.assertEquals(annon['functionality'], '{"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]}');
-        self.assertEquals(u1['functionality'], '{"__test_s": ["registered"], "__test_a": ["r1", "r2"]}');
-        self.assertEquals(u2['functionality'], '{"__test_s": ["db"], "__test_a": ["db1", "db2"]}');
+        self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]});
+        self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]});
+        self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]});
