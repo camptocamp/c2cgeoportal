@@ -72,6 +72,11 @@ def proxy(request):
     # request
     is_glg = False
 
+    # name of the JSON callback (value for the "callback" query string param
+    # in the request). None if request has no "callback" param in the query
+    # string
+    callback = None
+
     if method == "GET":
         _params = dict(
             (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
@@ -86,9 +91,13 @@ def proxy(request):
             is_glg = ('service' not in _params or _params['service'] == u'wms') and \
                      _params['request'] == u'getlegendgraphic'
 
+        callback = params.get('callback')
+
     # get query string
     params_encoded = {}
     for k, v in params.iteritems():
+        if k == 'callback':
+            continue
         params_encoded[k] = unicode(v).encode('utf-8')
     query_string = urllib.urlencode(params_encoded)
 
@@ -134,7 +143,17 @@ def proxy(request):
     if method == "POST" and is_get_feature(request.body):
         content = limit_featurecollection(content, limit=200)
 
-    headers = {"Content-Type": resp["content-type"]}
+    content_type = None
+    if callback:
+        content_type = "application/javascript"
+        # escape single quotes in the JavaScript string
+        content = content.replace("'", r"\'")
+        content = "%s('%s');" % (callback, ' '.join(content.splitlines()))
+    else:
+        content_type = resp["content-type"]
+
+    headers = {"Content-Type": content_type}
+
     if is_glg:
         # 30mn expiration for GetLegendGraphic
         headers.update({"Cache-Control": "public, max-age=1800"})

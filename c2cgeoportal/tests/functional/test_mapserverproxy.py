@@ -230,6 +230,104 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.cache_control.public)
         self.assertEqual(response.cache_control.max_age, 1800)
 
+    def test_GetFeatureInfo(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.params = dict(map=map, service='wms', version='1.1.1',
+                      request='getfeatureinfo', bbox='-90,-45,90,0',
+                      layers='testpoint_unprotected',
+                      query_layers='testpoint_unprotected',
+                      srs='EPSG:21781', format='image/png',
+                      info_format='application/vnd.ogc.gml',
+                      width='600', height='400', x='0', y='400')
+        response = mapserverproxy.proxy(request)
+
+        expected_response = """
+        <?xmlversion="1.0"encoding="UTF-8"?>
+        <msGMLOutput
+         xmlns:gml="http://www.opengis.net/gml"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <testpoint_unprotected_layer>
+        <gml:name>countries</gml:name>
+                <testpoint_unprotected_feature>
+                        <gml:boundedBy>
+                                <gml:Box srsName="EPSG:21781">
+                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                </gml:Box>
+                        </gml:boundedBy>
+                        <the_geom>
+                        <gml:Point srsName="EPSG:21781">
+                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                        </gml:Point>
+                        </the_geom>
+                        <name>foo</name>
+                        <city>Lausanne</city>
+                        <country>Swiss</country>
+                </testpoint_unprotected_feature>
+        </testpoint_unprotected_layer>
+        </msGMLOutput>
+        """
+        import re
+        pattern = re.compile(r'\s+')
+        expected_response = ''.join(re.sub(pattern, '', l) for l in
+                                        expected_response.splitlines())
+        response = ''.join(re.sub(pattern, '', l) for l in
+                                        response.body.splitlines())
+        self.assertEqual(response, expected_response)
+
+    def test_GetFeatureInfo_JSONP(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.params = dict(map=map, service='wms', version='1.1.1',
+                      request='getfeatureinfo', bbox='-90,-45,90,0',
+                      layers='testpoint_unprotected',
+                      query_layers='testpoint_unprotected',
+                      srs='EPSG:21781', format='image/png',
+                      info_format='application/vnd.ogc.gml',
+                      width='600', height='400', x='0', y='400',
+                      callback='cb')
+        response = mapserverproxy.proxy(request)
+
+        expected_response = """
+        <?xmlversion="1.0"encoding="UTF-8"?>
+        <msGMLOutput
+         xmlns:gml="http://www.opengis.net/gml"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <testpoint_unprotected_layer>
+        <gml:name>countries</gml:name>
+                <testpoint_unprotected_feature>
+                        <gml:boundedBy>
+                                <gml:Box srsName="EPSG:21781">
+                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                </gml:Box>
+                        </gml:boundedBy>
+                        <the_geom>
+                        <gml:Point srsName="EPSG:21781">
+                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                        </gml:Point>
+                        </the_geom>
+                        <name>foo</name>
+                        <city>Lausanne</city>
+                        <country>Swiss</country>
+                </testpoint_unprotected_feature>
+        </testpoint_unprotected_layer>
+        </msGMLOutput>
+        """
+        import re
+        pattern = re.compile(r'\s+')
+        expected_response = ''.join(re.sub(pattern, '', l) for l in
+                                        expected_response.splitlines())
+        expected_response = '%s(\'%s\');' % ('cb', expected_response)
+        response = ''.join(re.sub(pattern, '', l) for l in
+                                        response.body.splitlines())
+        self.assertEqual(response, expected_response)
+
     def test_GetMap_unprotected_layer_anonymous(self):
         from c2cgeoportal.views import mapserverproxy
 
