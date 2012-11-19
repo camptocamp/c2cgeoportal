@@ -146,6 +146,11 @@ class TestMapserverproxyView(TestCase):
 
         DBSession.add_all([p1, p2, p3, p4, user1, user2, user3,
                          restricted_area1, restricted_area2, restricted_area3])
+        DBSession.flush()
+
+        self.id_lausanne = p1.id
+        self.id_paris = p3.id
+
         transaction.commit()
 
     def tearDown(self):
@@ -583,6 +588,45 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') > 0
 
+    def test_GetFeature_FeatureId_GET(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
+                    {'typename': 'testpoint_unprotected',
+                     'fid1': self.id_lausanne,
+                     'fid2': self.id_paris}
+        request.params = dict(map=map, service='wfs', version='1.0.0',
+                      request='getfeature', typename='testpoint_unprotected',
+                      featureid=featureid)
+        response = mapserverproxy.proxy(request)
+        self.assertTrue('Lausanne' in response.body)
+        self.assertTrue('Paris' in response.body)
+        self.assertFalse('Londre' in response.body)
+        self.assertFalse('Chambéry' in response.body)
+        self.assertEqual(response.content_type, 'text/xml')
+
+    def test_GetFeature_FeatureId_GET_JSONP(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
+                    {'typename': 'testpoint_unprotected',
+                     'fid1': self.id_lausanne,
+                     'fid2': self.id_paris}
+        request.params = dict(map=map, service='wfs', version='1.0.0',
+                      request='getfeature', typename='testpoint_unprotected',
+                      featureid=featureid, callback='cb')
+        response = mapserverproxy.proxy(request)
+        self.assertTrue('Lausanne' in response.body)
+        self.assertTrue('Paris' in response.body)
+        self.assertFalse('Londre' in response.body)
+        self.assertFalse('Chambéry' in response.body)
+        self.assertEqual(response.content_type, 'application/javascript')
 
     def test_substitution(self):
         from c2cgeoportal.views import mapserverproxy
