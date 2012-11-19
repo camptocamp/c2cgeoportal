@@ -537,8 +537,15 @@ class Entry(object):
         self.request.response.content_type = 'application/javascript'
         return d
 
-    @view_config(route_name='apihelp', renderer='apihelp.html')
+    @view_config(route_name='apihelp', renderer='api/apihelp.html')
     def apihelp(self):
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+        }
+
+    @view_config(route_name='xapihelp', renderer='api/xapihelp.html')
+    def xapihelp(self):
         return {
             'lang': self.lang,
             'debug': self.debug,

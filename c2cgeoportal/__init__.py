@@ -199,7 +199,8 @@ def includeme(config):
     config.add_route('testi18n', '/testi18n.html')
     config.add_route('apijs', '/api.js')
     config.add_route('xapijs', '/xapi.js')
-    config.add_route('apihelp', '/apihelp.html')  # FIXME
+    config.add_route('apihelp', '/apihelp.html')
+    config.add_route('xapihelp', '/xapihelp.html')
     config.add_route('themes', '/themes')
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route('permalinktheme', '/theme/*themes')

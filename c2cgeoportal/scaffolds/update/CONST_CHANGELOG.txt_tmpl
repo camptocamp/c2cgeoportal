@@ -236,15 +236,8 @@ Version 1.2
         $ cd {{project}}
         $ ./buildout/bin/pcreate -s c2cgeoportal_create \
                 /tmp/{{project}} package={{package}}
-        $ mkdir {{package}}/templates/api
-        $ cp /tmp/{{project}}/{{package}}/templates/api/mapconfig.js \
-             {{package}}/templates/api/
-        $ cp /tmp/{{project}}/{{package}}/templates/api/viewer.js \
-             {{package}}/templates/api/
-        $ cp /tmp/{{project}}/{{package}}/templates/api/api.js \
-             {{package}}/templates/api/
-        $ cp /tmp/{{project}}/{{package}}/templates/api/xapi.js \
-             {{package}}/templates/api/
+        $ cp -r /tmp/{{project}}/{{package}}/templates/api {{package}}/templates/
+        $ cp -r /tmp/{{project}}/{{package}}/static/apihelp {{package}}/static/
         $ rm -rf /tmp/{{project}}
 
 
