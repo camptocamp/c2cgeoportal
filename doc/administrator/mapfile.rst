@@ -67,11 +67,34 @@ a template::
 
 This is a fake template, but this is required.
 
-And it should have the following ``METADATA``::
+The ``LAYER`` should also define metadata, with a ``METADATA`` section. For
+example::
 
     "gml_include_items" "all"
     "gml_types" "auto"
+    "gml_featureid" "id"
     "wfs_enable_request" "*"
+
+``gml_include_items``
+
+  This is a comma-delimited list of attribute names, it specifies the list of
+  attributes that should be returned in GML responses. ``all`` means that all
+  the attributes of the layer should be returned.
+
+``gml_types``
+
+  Always set this to ``auto``. This means that the layer's field type
+  information is obtained from the input feature driver (OGC).
+
+``gml_feature``
+
+  References the name of layer's primary key column. Setting this is mandatory
+  for ``GetFeature`` request including ``ogc:FeatureId`` filters. Always set
+  it. (This is required for the :ref:`integrator_api`.)
+
+``wfs_enable_request``
+
+  Space separated list of requests to enable. Use ``*``.
 
 .. warning::
 
@@ -109,9 +132,7 @@ example::
 
 ``gml_include_items``
 
-  This is a comma-delimited list of attribute names, it specifies the list of
-  attributes that should be returned in GetFeatureInfo (GML) responses. ``all``
-  means that all the attributes of the layer should be returned.
+  See above.
 
 ``gml_geometries``
 
