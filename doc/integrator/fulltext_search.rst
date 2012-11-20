@@ -36,6 +36,8 @@ If you did want to create the table manually you'd use the following commands::
         id SERIAL PRIMARY KEY,
         layer_name TEXT,
         label TEXT,
+        public BOOLEAN DEFAULT 't',
+        role_id INTEGER REFERENCES <schema_name>.role,
         ts TSVECTOR);" <db_name>
     $ sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
     $ sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
@@ -54,10 +56,10 @@ Populate the full-text search table
 Here's an example of an insertion in the ``tsearch`` table::
 
     INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, ts)
+      (the_geom, layer_name, label, public, role_id, ts)
     VALUES
       (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
-       'text to display', to_tsvector('french', 'text to search'));
+       'text to display', 't', NULL, to_tsvector('french', 'text to search'));
 
 Where ``Layer group`` is the name of the layer group that should be activated,
 ``text to display`` is the text that is displayed in the results,
@@ -67,9 +69,9 @@ Where ``Layer group`` is the name of the layer group that should be activated,
 Here's another example where rows from a ``SELECT`` are inserted::
 
     INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, ts)
+      (the_geom, layer_name, label, public, role_id, ts)
     SELECT
-      geom, 'layer group name', text, to_tsvector('german', text)
+      geom, 'layer group name', text, 't', NULL, to_tsvector('german', text)
     FROM table;
 
 .. note::
@@ -81,3 +83,13 @@ Here's another example where rows from a ``SELECT`` are inserted::
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
 
+Security
+--------
+
+The ``tsearch`` table includes two security-related columns, namely ``public``
+and ``role_id``. If ``public`` is ``true`` then the row is available to any
+user, including anonymous users. And in that case, the ``role_id`` column is
+ignored by ``c2cgeoportal``. If ``public`` is ``false`` then the row isn't
+available to anonymous users. If ``role_id`` is ``NULL``, the row is available
+to any authenticated user. If ``role_id`` is not ``NULL``, the row is only
+available to users of the corresponding role.
