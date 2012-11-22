@@ -93,3 +93,22 @@ ignored by ``c2cgeoportal``. If ``public`` is ``false`` then the row isn't
 available to anonymous users. If ``role_id`` is ``NULL``, the row is available
 to any authenticated user. If ``role_id`` is not ``NULL``, the row is only
 available to users of the corresponding role.
+
+.. note::
+
+    If you want to restrict some data to specific roles, then you will need to
+    insert that data multiple times. For example, if you want to make the data
+    of a table *text-searchable*, and restrict that data to the roles whose ids
+    are ``1`` and ``2`` you will use two SQL ``INSERT`` statements::
+
+        INSERT INTO app_schema.tsearch
+           (the_geom, layer_name, label, public, role_id, ts)
+        SELECT
+           geom, 'layer group name', text, 'f', 1, to_tsvector('german', text)
+        FROM table;
+
+        INSERT INTO app_schema.tsearch
+           (the_geom, layer_name, label, public, role_id, ts)
+        SELECT
+           geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
+        FROM table;
