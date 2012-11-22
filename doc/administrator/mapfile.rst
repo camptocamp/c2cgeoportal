@@ -226,7 +226,8 @@ Variable Substitution
 
 It is possible to adapt some values in the mapfile according to the user's role
 by using variable substitution. For instance to hide some layer objects 
-attributes.
+attributes. The list of parameters that support variable substitution is
+available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
 To define variables, edit the matching ``MAP``/``LAYER``/``METADATA``
 section in the mapfile and add::
