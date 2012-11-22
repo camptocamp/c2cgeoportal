@@ -362,6 +362,41 @@ ${self.block_text_misc()}
             - !text
               text: ' '
 
+    lastPage:
+      pageSize: A4
+      items:
+        - !columns
+          condition: legends
+          absoluteX: 51
+          absoluteY: 700
+          width: 511
+          backgroundColor: #FF0000
+          items:
+            - !text
+              align:left
+              text: 'Legend'
+              spacingAfter: 10
+        - !columns
+          condition: legends
+          absoluteX: 51
+          absoluteY: 680
+          width: 400
+          backgroundColor: #FF0000
+          items:
+            - !legends
+              inline: false
+              defaultScale: 0.5
+              maxHeight: 550
+              maxWidth: 50
+              scale: 0.8
+              maxIconHeight: 0
+              maxIconWidth: 0
+              columnMargin: 5
+              classIndentation: 3
+              classSpace: 5
+              layerSpace: 5
+              backgroundColor: white
+
 ## end of global template code
 ## start of block specific code
 
