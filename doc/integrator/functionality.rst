@@ -4,7 +4,7 @@ Customizing the Application using Functionalities
 =================================================
 
 c2cgeoportal provides the concept of *functionality* that can be used to customize
-elements of the user interface according to the user's permissions.
+the application according to the user's permissions.
 
 A functionality may be associated to users through different ways:
 
