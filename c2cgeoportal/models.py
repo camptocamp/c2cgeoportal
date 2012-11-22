@@ -62,6 +62,10 @@ class FullTextSearch(GeoInterface, Base):
     id = Column('id', types.Integer, primary_key=True)
     label = Column('label', types.Unicode)
     layer_name = Column('layer_name', types.Unicode)
+    role_id = Column('role_id', types.Integer,
+                     ForeignKey(_schema + '.role.id'), nullable=True)
+    role = relationship("Role")
+    public = Column('public', types.Boolean, server_default='true')
     ts = Column('ts', TsVector)
     the_geom = GeometryColumn(Geometry(srid=_srid))
 
