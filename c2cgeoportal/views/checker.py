@@ -70,15 +70,15 @@ class Checker(object):
             'comment': 'Foobar',
             'title': 'Bouchon',
             'units': 'm',
-            'srs': "EPSG:%i" % self.request.registry.settings.srid,
+            'srs': "EPSG:%i" % self.request.registry.settings['srid'],
             'dpi': 254,
             'layers': [],
             'layout': self.settings['print_template'],
             'pages': [{
-                'center': [663000, 245000],
+                'center': [self.settings['print_center_lon'], self.settings['print_center_lat']],
                 'col0': '',
                 'rotation': 0,
-                'scale': 10000,
+                'scale': self.settings['print_scale'],
                 'table': {
                     'columns': ["col0"],
                     'data': [{

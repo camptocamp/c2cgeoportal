@@ -117,7 +117,7 @@ Version 1.2
 
 9. A new parameter, layerManagerUrl, has been added to the cgxp_redlining plugin,
    to fix a problem with the base url used to access various resources used in
-   the related layerManager widget :
+   the related layerManager widget:
 
         {
             ptype: "cgxp_redlining",
@@ -144,6 +144,15 @@ Version 1.2
     Also, if you used ``c2cgeoportal.lib.functionality.get_functionality``
     in your templates you no longer need to, use ``functionality`` directly.
 
+11. checker_pdf requires that the central coordinates and scale of the map to
+    print when checking the printing service are provided in ``config.yaml.in``:
+
+        checker:
+            print_template: 1 A4 portrait
+            print_center_lon: to be defined
+            print_center_lat: to be defined
+            print_scale: 10000
+            fulltextsearch: text to search
 
 Version 1.1
 ===========
