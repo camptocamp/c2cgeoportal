@@ -5,7 +5,7 @@ from pyramid.view import view_config
 
 from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
-from sqlalchemy import desc
+from sqlalchemy import desc, or_, and_
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
@@ -44,8 +44,15 @@ def fulltextsearch(request):
 
     terms = '&'.join(w + ':*' for w in
                          query.split(' ') if w != '')
-    filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
+    ts_filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
         {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+
+    if request.user is None:
+        user_filter = FullTextSearch.public == True
+    else:
+        user_filter = or_(FullTextSearch.public == True,
+                          FullTextSearch.role_id == None,
+                          FullTextSearch.role_id == request.user.role.id)
 
     # The numbers used in ts_rank_cd() below indicate a normalization method.
     # Several normalization methods can be combined using |.
@@ -60,7 +67,7 @@ def fulltextsearch(request):
         {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
     query = DBSession.query(FullTextSearch)
-    query = query.filter(filter)
+    query = query.filter(and_(ts_filter, user_filter))
     query = query.order_by(desc(rank))
     query = query.order_by(FullTextSearch.label)
     query = query.limit(limit)
