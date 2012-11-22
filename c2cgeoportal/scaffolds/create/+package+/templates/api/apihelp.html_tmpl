@@ -98,19 +98,21 @@ map.addMarker();</script>
     zoom: 8,
     center: [544500, 210100]
 });
-var markers = [
-    [544410, 210100, 14, 14, '${request.static_path('{{package}}:static/apihelp/images/info.png')}'],
-    [544450, 210000, 18, 18, '${request.static_path('{{package}}:static/apihelp/images/essence.png')}'],
-    [544310, 210200, 14, 14, '${request.static_path('{{package}}:static/apihelp/images/parking.png')}']
-];
-for (var i = 0; i < markers.length; i++) {
-    var m = markers[i];
-    map.addMarker({
-        position: [m[0], m[1]],
-        size: [m[2], m[3]],
-        icon: m[4]
-    });
-}</script>
+map.addMarker({
+    position: [544410, 210100],
+    size: [14, 14],
+    icon: '${request.static_path('{{package}}:static/apihelp/images/info.png')}'
+});
+map.addMarker({
+    position: [544450, 210000],
+    size: [18, 18],
+    icon: '${request.static_path('{{package}}:static/apihelp/images/essence.png')}'
+});
+map.addMarker({
+    position: [544310, 210200],
+    size: [14, 14],
+    icon: '${request.static_path('{{package}}:static/apihelp/images/parking.png')}'
+});</script>
 </div>
 
 <div class="api">
