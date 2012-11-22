@@ -78,7 +78,7 @@ class Checker(object):
                 'center': [self.settings['print_center_lon'], self.settings['print_center_lat']],
                 'col0': '',
                 'rotation': 0,
-                'scale': 10000,
+                'scale': self.settings['print_scale'],
                 'table': {
                     'columns': ["col0"],
                     'data': [{
