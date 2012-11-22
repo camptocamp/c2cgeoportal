@@ -201,6 +201,7 @@ input =
     {{package}}/static/lib/cgxp/gxp/src/theme/all.css
     {{package}}/static/lib/cgxp/core/src/theme/all.css
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker/ressources/colorpicker.css
+    {{package}}/static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css
     {{package}}/static/css/proj.css
     {{package}}/static/css/proj-map.css
     {{package}}/static/css/proj-widgets.css
