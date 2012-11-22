@@ -38,6 +38,9 @@ Configuration in ``config.yaml.in``::
 
     checker:
         print_template: 1 A4 portrait
+        print_center_lon: to be defined
+        print_center_lat: to be defined
+        print_scale: 10000
         fulltextsearch: text to search
 
 Check collector
