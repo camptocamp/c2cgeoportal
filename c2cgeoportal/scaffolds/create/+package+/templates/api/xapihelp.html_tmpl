@@ -48,6 +48,16 @@
 </head>
 <body>
 <div id="wrapper">
+<h1>Extended API Help</h1>
+<p>
+This page describes how to use the <em>Extended API</em>. The Extended API
+provides a JavaScript API for inserting maps with rich functionality to
+web pages.
+</p>
+<p>
+See the Simple API Help <a href="${request.route_url('apihelp')}">page</a>
+for help on the <em>Simple API</em>.
+</p>
 <h2>Basis</h2>
 <p>To use the API you should add the following HTML:</p>
 <pre><code data-language="html">&lt;script src="${request.route_url('xapijs')}"&gt;&lt;/script&gt;
