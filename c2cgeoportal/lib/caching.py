@@ -27,7 +27,7 @@ def keygen_function(namespace, fn):
     def generate_key(*args, **kw):
         if kw:
             raise ValueError(
-                    "key creation function does not accept keyword arguments.")
+                "key creation function does not accept keyword arguments.")
         parts = [namespace]
         if has_self:
             self_ = args[0]
@@ -44,8 +44,9 @@ def init_region(conf, region=None):
     Initialize the caching module.
     """
     cache_region = make_region(function_key_generator=keygen_function)
-    kwargs = dict((k, conf[k])
-            for k in ('arguments', 'expiration_time') if k in conf)
+    kwargs = dict(
+        (k, conf[k]) for k in
+        ('arguments', 'expiration_time') if k in conf)
     cache_region.configure(conf['backend'], **kwargs)
     _regions[region] = cache_region
     return cache_region
@@ -58,8 +59,9 @@ def get_region(region=None):
     try:
         return _regions[region]
     except KeyError:
-        raise Exception("No such caching region. A region must be"
-                "initialized before it can be used")
+        raise Exception(
+            "No such caching region. A region must be"
+            "initialized before it can be used")
 
 
 def invalidate_region(region=None):
