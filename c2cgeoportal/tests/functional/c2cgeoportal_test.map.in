@@ -79,6 +79,7 @@ MAP
             "gml_geometries" "the_geom"
             "gml_the_geom_type" "point"
             "gml_types" "auto"
+            "gml_featureid" "id"
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
