@@ -5,6 +5,8 @@ parts = eggs
         modwsgi
         jsbuild
         cssbuild
+        cssbuild-api
+        cssbuild-xapi
         po2mo
         print-template
         print-war
@@ -200,7 +202,30 @@ input =
     {{package}}/static/lib/cgxp/core/src/theme/all.css
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker/ressources/colorpicker.css
     {{package}}/static/css/proj.css
+    {{package}}/static/css/proj-map.css
+    {{package}}/static/css/proj-widgets.css
 output = {{package}}/static/build/app.css
+
+[cssbuild-api]
+recipe = c2c.recipe.cssmin
+input =
+    {{package}}/static/lib/cgxp/openlayers/theme/default/style.css
+    {{package}}/static/css/proj-map.css
+output = {{package}}/static/build/api.css
+
+[cssbuild-xapi]
+recipe = c2c.recipe.cssmin
+input =
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
+    {{package}}/static/lib/cgxp/openlayers/theme/default/style.css
+    {{package}}/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css
+    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/resources/css/measure.css
+    {{package}}/static/lib/cgxp/gxp/src/theme/all.css
+    {{package}}/static/lib/cgxp/core/src/theme/all.css
+    {{package}}/static/css/proj-map.css
+    {{package}}/static/css/proj-widgets.css
+output = {{package}}/static/build/xapi.css
 
 [po2mo]
 recipe = c2c.recipe.msgfmt
