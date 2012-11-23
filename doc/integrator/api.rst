@@ -33,6 +33,12 @@ Both expose the same programming interface.
 
         <script src="http://example.com/path-to-wsgi-app/xapi.js"></script>
 
+.. note::
+
+    CGXP commit `5c0628d
+    <https://github.com/camptocamp/cgxp/commit/5c0628d05f4239ebf45419b19140badda9046c8b>`_
+    or better is required in the project for the APIs.
+
 Updating an existing project
 ----------------------------
 
@@ -79,7 +85,8 @@ APIs:
     
     (This shouldn't be a manual operation. It is a manual operation right now
     because the ``OWSLib`` library doesn't read the ``queryable`` attribute
-    from the WMS GetCapabilities document.)
+    from the WMS GetCapabilities document. See
+    https://github.com/geopython/OWSLib/pull/41.)
 
 Gotchas, limitations and hints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
