@@ -33,6 +33,26 @@ Both expose the same programming interface.
 
         <script src="http://example.com/path-to-wsgi-app/xapi.js"></script>
 
+Updating an existing project
+----------------------------
+
+You can skip this section if your project has been created using c2cgeoportal
+1.2 or better. If your project was created using an older c2cgeoportal, and if
+you've just upgraded your project to c2cgeoportal 1.2, then you need to follow
+the below instructions.
+
+New directories and files are provided by the ``c2cgeoportal_create`` and need
+to be added manually to the project. The easiest way to get all the necessary
+files involves creating a temporary c2cgeoportal project of the same name as
+the target project, and copying the missing files from there::
+
+    $ cd <project_name>
+    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+            /tmp/<project_name> package=<package_name>
+    $ cp -r /tmp/<project_name>/<package_name>/templates/api <project_name>/templates/
+    $ cp -r /tmp/<project_name>/<package_name>/static/apihelp <project_name>/static/
+    $ rm -rf /tmp/<project_name>
+
 Configuring the API
 -------------------
 
