@@ -370,9 +370,13 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
-        result = entry.apiloader()
-        self.assertEquals(set(result.keys()), all_params)
+        result = entry.apijs()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        result = entry.xapijs()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.apihelp()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
     def test_permalink_theme(self):
