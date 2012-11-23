@@ -80,7 +80,7 @@ def proxy(request):
     if method == "GET":
         _params = dict(
             (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
-            )
+        )
 
         # For GET requests, params are added only if the REQUEST
         # parameter is actually provided.
@@ -89,7 +89,7 @@ def proxy(request):
         else:
             # WMS GetLegendGraphic request?
             is_glg = ('service' not in _params or _params['service'] == u'wms') and \
-                     _params['request'] == u'getlegendgraphic'
+                _params['request'] == u'getlegendgraphic'
 
         callback = params.get('callback')
 
@@ -155,7 +155,7 @@ def proxy(request):
     headers = {"Content-Type": content_type}
 
     if is_glg:
-        # 30mn expiration for GetLegendGraphic
+        # 30min expiration for GetLegendGraphic
         headers.update({"Cache-Control": "public, max-age=1800"})
 
     return Response(content, status=resp.status, headers=headers)
