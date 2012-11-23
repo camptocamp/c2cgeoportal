@@ -97,14 +97,14 @@ enabled using the ``functionalities:available_in_templates`` parameter in the
 
 Functionalities may be used in templates for various purposes. The examples
 below explain how to set the default basemap and how to limit access to some
-plugins according to the users permissions.
+plugins according to the user's permissions.
 
 Example of the default_basemap Functionality
 ............................................
 
 Using functionalities, it is easy to set the default basemap that will be
-displayed when a user loads the application depending on if he/she is
-anonymous, authenticated or has some special role.
+displayed when a user loads the application depending on whether he/she is
+anonymous, authenticated or has some specific role.
 
 First make sure that ``default_basemap`` is made available in the templates
 using the ``functionalities:available_in_templates`` parameter in the
@@ -130,7 +130,7 @@ Optionally you may also indicate what basemap to use for authenticated users
         registered:
             default_basemap: <some_other_basemap>
 
-Eventually you may link ``default_basemap`` functionalities to some roles or
+Finally you may link ``default_basemap`` functionalities to some roles or
 users in the administration interface.
 
 So that the ``default_basemap`` is actually provided to the
@@ -146,7 +146,7 @@ Limiting Access to some CGXP Plugins using Functionalities
 ..........................................................
 
 Functionalities may also be used to enable some CGXP plugins only for users
-with special roles.
+with specific roles.
 
 To do so, add ``authorized_plugins`` to the list of functionalities that must be
 available in the administration interface and to the list of functionalities
