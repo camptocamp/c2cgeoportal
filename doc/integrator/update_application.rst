@@ -64,8 +64,10 @@ steps:
    part of ``buildout.cfg``. Then, apply the following corrections
    (to work around bugs in ``buildout.dumppickedversions``)::
 
-    -Mako = x.y.z
-    +mako = x.y.z
+    -Jinja2 = x.y.z
+    +jinja2 = x.y.z
+    -Pillow = x.y.z
+    +pillow = x.y.z
     -Markdown = x.y.z
     +markdown = x.y.z
     -SQLAHelper = x.y.z
@@ -127,7 +129,7 @@ To update CGXP in the application use the following::
 
     $ cd <package_name>/static/lib/cgxp
     $ git pull origin master
-    $ git submodule update
+    $ git submodule update --init
 
 ``<package_name>`` is to be replaced by the name of your application package.
 If unsure, see the ``name`` argument to the ``setup`` call in the application's
