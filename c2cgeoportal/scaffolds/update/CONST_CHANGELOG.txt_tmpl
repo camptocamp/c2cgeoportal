@@ -248,8 +248,8 @@ Version 1.2
         $ rm -f {{package}}/templates/apiloader.js
         $ rm -f {{package}}/templates/apiviewer.js
 
-13. We add some short access URL, that to add them you should add the
-    following lines in the file `apache/wsgi.conf.in`:
+13. Add the following lines in `apache/wsgi.conf.in` to enable short URLs
+    for the editing, mobile and admin pages:
 
     RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit/ [PT]
     RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
