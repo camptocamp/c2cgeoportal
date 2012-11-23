@@ -270,15 +270,26 @@ class Entry(object):
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-    def _group(self, group, layers, wms_layers, wms):
+    def _group(self, group, layers, wms_layers, wms, depth = 1):
         children = []
         errors = []
+        
+        # escape loop
+        if depth > 10:
+            return None, errors, True
+        depth += 1
+        
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                         group.isInternalWMS == treeItem.isInternalWMS):
-                    gp, gp_errors = self._group(treeItem, layers, wms_layers, wms)
+                    gp, gp_errors, stop = self._group(treeItem, layers, 
+                                                      wms_layers, wms, depth)
                     errors += gp_errors
+                    if stop:
+                        errors.append("Too many recursions with group \"%s\""
+                                % group.name)
+                        return None, errors, True 
                     if gp is not None:
                         children.append(gp)
                 else:
@@ -307,9 +318,9 @@ class Entry(object):
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
-            return g, errors
+            return g, errors, False
         else:
-            return None, errors
+            return None, errors, False
 
     @cache_region.cache_on_arguments()
     def _themes(self, role_id):
@@ -348,9 +359,11 @@ class Entry(object):
 
         for theme in themes:
             if theme.display:
-                children, children_errors = self._getChildren(
+                children, children_errors, stop = self._getChildren(
                     theme, layers, wms_layers, wms)
                 errors += children_errors
+                if stop:
+                    break
                 # test if the theme is visible for the current user
                 if len(children) > 0:
                     icon = self._getIconPath(theme.icon) \
@@ -370,8 +383,12 @@ class Entry(object):
         errors = []
         for item in sorted(theme.children, key=lambda item: item.order):
             if type(item) == LayerGroup:
-                gp, gp_errors = self._group(item, layers, wms_layers, wms)
+                gp, gp_errors, stop = self._group(item, layers, wms_layers, wms)
                 errors += gp_errors
+                if stop:
+                    errors.append("Themes listing interrupted because of an error"
+                            " with theme \"%s\"" % theme.name)
+                    return children, errors, True
                 if gp is not None:
                     children.append(gp)
             elif type(item) == Layer:
@@ -379,7 +396,7 @@ class Entry(object):
                     l, l_errors = self._layer(item, wms_layers, wms)
                     errors += l_errors
                     children.append(l)
-        return children, errors
+        return children, errors, False
 
     @cache_region.cache_on_arguments()
     def _internalWFSTypes(self):
