@@ -240,6 +240,14 @@ Version 1.2
         $ cp -r /tmp/{{project}}/{{package}}/static/apihelp {{package}}/static/
         $ rm -rf /tmp/{{project}}
 
+    Clean up (remove old API-related files)
+
+        $ cd {{project}}
+        $ rm -f {{package}}/static/js/api/Map.js
+        $ rm -f {{package}}/templates/apihelp.html
+        $ rm -f {{package}}/templates/apiloader.js
+        $ rm -f {{package}}/templates/apiviewer.js
+
 
 Version 1.1
 ===========
