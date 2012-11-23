@@ -28,4 +28,5 @@ Features that require additional steps (most of the time):
    editing
    print
    https
+   api
 

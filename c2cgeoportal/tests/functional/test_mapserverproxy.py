@@ -146,6 +146,11 @@ class TestMapserverproxyView(TestCase):
 
         DBSession.add_all([p1, p2, p3, p4, user1, user2, user3,
                          restricted_area1, restricted_area2, restricted_area3])
+        DBSession.flush()
+
+        self.id_lausanne = p1.id
+        self.id_paris = p3.id
+
         transaction.commit()
 
     def tearDown(self):
@@ -229,6 +234,104 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue('Cache-Control' in response.headers)
         self.assertTrue(response.cache_control.public)
         self.assertEqual(response.cache_control.max_age, 1800)
+
+    def test_GetFeatureInfo(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.params = dict(map=map, service='wms', version='1.1.1',
+                      request='getfeatureinfo', bbox='-90,-45,90,0',
+                      layers='testpoint_unprotected',
+                      query_layers='testpoint_unprotected',
+                      srs='EPSG:21781', format='image/png',
+                      info_format='application/vnd.ogc.gml',
+                      width='600', height='400', x='0', y='400')
+        response = mapserverproxy.proxy(request)
+
+        expected_response = """
+        <?xmlversion="1.0"encoding="UTF-8"?>
+        <msGMLOutput
+         xmlns:gml="http://www.opengis.net/gml"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <testpoint_unprotected_layer>
+        <gml:name>countries</gml:name>
+                <testpoint_unprotected_feature>
+                        <gml:boundedBy>
+                                <gml:Box srsName="EPSG:21781">
+                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                </gml:Box>
+                        </gml:boundedBy>
+                        <the_geom>
+                        <gml:Point srsName="EPSG:21781">
+                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                        </gml:Point>
+                        </the_geom>
+                        <name>foo</name>
+                        <city>Lausanne</city>
+                        <country>Swiss</country>
+                </testpoint_unprotected_feature>
+        </testpoint_unprotected_layer>
+        </msGMLOutput>
+        """
+        import re
+        pattern = re.compile(r'\s+')
+        expected_response = ''.join(re.sub(pattern, '', l) for l in
+                                        expected_response.splitlines())
+        response = ''.join(re.sub(pattern, '', l) for l in
+                                        response.body.splitlines())
+        self.assertEqual(response, expected_response)
+
+    def test_GetFeatureInfo_JSONP(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.params = dict(map=map, service='wms', version='1.1.1',
+                      request='getfeatureinfo', bbox='-90,-45,90,0',
+                      layers='testpoint_unprotected',
+                      query_layers='testpoint_unprotected',
+                      srs='EPSG:21781', format='image/png',
+                      info_format='application/vnd.ogc.gml',
+                      width='600', height='400', x='0', y='400',
+                      callback='cb')
+        response = mapserverproxy.proxy(request)
+
+        expected_response = """
+        <?xmlversion="1.0"encoding="UTF-8"?>
+        <msGMLOutput
+         xmlns:gml="http://www.opengis.net/gml"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <testpoint_unprotected_layer>
+        <gml:name>countries</gml:name>
+                <testpoint_unprotected_feature>
+                        <gml:boundedBy>
+                                <gml:Box srsName="EPSG:21781">
+                                        <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
+                                </gml:Box>
+                        </gml:boundedBy>
+                        <the_geom>
+                        <gml:Point srsName="EPSG:21781">
+                          <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
+                        </gml:Point>
+                        </the_geom>
+                        <name>foo</name>
+                        <city>Lausanne</city>
+                        <country>Swiss</country>
+                </testpoint_unprotected_feature>
+        </testpoint_unprotected_layer>
+        </msGMLOutput>
+        """
+        import re
+        pattern = re.compile(r'\s+')
+        expected_response = ''.join(re.sub(pattern, '', l) for l in
+                                        expected_response.splitlines())
+        expected_response = '%s(\'%s\');' % ('cb', expected_response)
+        response = ''.join(re.sub(pattern, '', l) for l in
+                                        response.body.splitlines())
+        self.assertEqual(response, expected_response)
 
     def test_GetMap_unprotected_layer_anonymous(self):
         from c2cgeoportal.views import mapserverproxy
@@ -485,6 +588,45 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') > 0
 
+    def test_GetFeature_FeatureId_GET(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
+                    {'typename': 'testpoint_unprotected',
+                     'fid1': self.id_lausanne,
+                     'fid2': self.id_paris}
+        request.params = dict(map=map, service='wfs', version='1.0.0',
+                      request='getfeature', typename='testpoint_unprotected',
+                      featureid=featureid)
+        response = mapserverproxy.proxy(request)
+        self.assertTrue('Lausanne' in response.body)
+        self.assertTrue('Paris' in response.body)
+        self.assertFalse('Londre' in response.body)
+        self.assertFalse('Chambéry' in response.body)
+        self.assertEqual(response.content_type, 'text/xml')
+
+    def test_GetFeature_FeatureId_GET_JSONP(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
+                    {'typename': 'testpoint_unprotected',
+                     'fid1': self.id_lausanne,
+                     'fid2': self.id_paris}
+        request.params = dict(map=map, service='wfs', version='1.0.0',
+                      request='getfeature', typename='testpoint_unprotected',
+                      featureid=featureid, callback='cb')
+        response = mapserverproxy.proxy(request)
+        self.assertTrue('Lausanne' in response.body)
+        self.assertTrue('Paris' in response.body)
+        self.assertFalse('Londre' in response.body)
+        self.assertFalse('Chambéry' in response.body)
+        self.assertEqual(response.content_type, 'application/javascript')
 
     def test_substitution(self):
         from c2cgeoportal.views import mapserverproxy
