@@ -257,61 +257,6 @@ class TestEntryView(TestCase):
         self.assertEqual(layer['name'], '__test_public_layer')
         self.assertFalse('editable' in layer)
 
-    #
-    # apiloader view tests
-    #
-
-    def test_apiloader_no_auth(self):
-        from mock import patch, Mock, MagicMock
-        from contextlib import nested
-        from c2cgeoportal.views.entry import Entry
-
-        request = testing.DummyRequest()
-        request.registry.settings = {
-                'mapserv_url': mapserv_url,
-            }
-        request.static_url = lambda url: '/dummy/static/url'
-        request.route_url = lambda url: '/dummy/route/url'
-        request.user = None
-
-        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
-        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
-        with nested(patch1, patch2) as (_, mock_urlopen):
-                m = Mock()
-                m.read.return_value = ''
-                mock_urlopen.return_value = m
-                response = Entry(request).apiloader()
-
-        assert '__test_public_layer' in response['themes']
-        assert '__test_private_layer' not in response['themes']
-
-    def test_apiloader_auth(self):
-        from mock import patch, Mock, MagicMock
-        from contextlib import nested
-        from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
-
-        request = testing.DummyRequest()
-        request.registry.settings = {
-            'mapserv_url': mapserv_url,
-        }
-        request.static_url = lambda url: '/dummy/static/url'
-        request.route_url = lambda url: '/dummy/route/url'
-        request.user = DBSession.query(User) \
-                                .filter_by(username=u'__test_user1').one()
-        entry = Entry(request)
-
-        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
-        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
-        with nested(patch1, patch2) as (_, mock_urlopen):
-                m = Mock()
-                m.read.return_value = ''
-                mock_urlopen.return_value = m
-                response = entry.apiloader()
-
-        assert '__test_public_layer' in response['themes']
-        assert '__test_private_layer' in response['themes']
-    
     def _find_layer(self, themes, layer_name):
         for l in themes['children']:
             if l['name'] == layer_name:
@@ -425,9 +370,13 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
-        result = entry.apiloader()
-        self.assertEquals(set(result.keys()), all_params)
+        result = entry.apijs()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        result = entry.xapijs()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.apihelp()
+        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
     def test_permalink_theme(self):
