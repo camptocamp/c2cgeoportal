@@ -270,26 +270,26 @@ class Entry(object):
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-    def _group(self, group, layers, wms_layers, wms, depth = 1):
+    def _group(self, group, layers, wms_layers, wms, depth=1):
         children = []
         errors = []
-        
+
         # escape loop
         if depth > 10:
             return None, errors, True
         depth += 1
-        
+
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                         group.isInternalWMS == treeItem.isInternalWMS):
-                    gp, gp_errors, stop = self._group(treeItem, layers, 
+                    gp, gp_errors, stop = self._group(treeItem, layers,
                                                       wms_layers, wms, depth)
                     errors += gp_errors
                     if stop:
                         errors.append("Too many recursions with group \"%s\""
-                                % group.name)
-                        return None, errors, True 
+                                      % group.name)
+                        return None, errors, True
                     if gp is not None:
                         children.append(gp)
                 else:
@@ -387,7 +387,7 @@ class Entry(object):
                 errors += gp_errors
                 if stop:
                     errors.append("Themes listing interrupted because of an error"
-                            " with theme \"%s\"" % theme.name)
+                                  " with theme \"%s\"" % theme.name)
                     return children, errors, True
                 if gp is not None:
                     children.append(gp)
