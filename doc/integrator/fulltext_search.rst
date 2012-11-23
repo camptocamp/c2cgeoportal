@@ -112,3 +112,13 @@ available to users of the corresponding role.
         SELECT
            geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
         FROM table;
+
+Configuration
+-------------
+
+In the configuration file ``config.yaml.in`` you can add the
+following variable:
+
+ *  ``fulltextsearch_defaultlimit`` the default limit on the results,
+    default to 30.
+ *  ``fulltextsearch_maxlimit`` the max possible limit, default to 200.
