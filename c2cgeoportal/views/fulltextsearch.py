@@ -39,7 +39,6 @@ def fulltextsearch(request):
         limit = int(request.params.get(
             'limit',
             request.registry.settings.get('fulltextsearch_defaultlimit', 30)))
-        lang = request.registry.settings['default_locale_name']
     except ValueError:
         return HTTPBadRequest(detail='limit value is incorrect')
     maxlimit = request.registry.settings.get('fulltextsearch_maxlimit', 200)

@@ -117,7 +117,7 @@ Configuration
 -------------
 
 In the configuration file ``config.yaml.in`` you can add the
-following variable:
+following variables:
 
  *  ``fulltextsearch_defaultlimit`` the default limit on the results,
     default to 30.
