@@ -2,6 +2,7 @@
 import logging
 try:
     from hashlib import sha1
+    sha1  # suppress pyflakes warning
 except ImportError:  # pragma: nocover
     from sha import new as sha1
 
