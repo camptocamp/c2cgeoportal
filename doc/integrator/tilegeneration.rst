@@ -1,20 +1,77 @@
 .. _administrator_tilegeneration:
 
-TileCloud
-=========
+TileGeneration
+==============
 
-For the old project that use Tileforge see below.
+Introduction
+------------
 
-With TileCloud and TileCloud-chain, we can generate tiles from WMS or Mapnik
-to the local storage or S3 using a WMTS layout.
+With this solution we solve the following issue::
 
-In the future he will be able to use Amazon services to generates the tiles
-(AWS, ESB, SQS, SNS, CloudFront).
+ * It difficult to manage millions of files on the files system.
+ * We should be able to update all the generated tiles.
+ * We shouldn't have thousand of expired files.
+
+For this we need a tool to be able to generate the tiles,
+To update on a geometry, to delete empty tiles.
+
+The tile generation on the fly introduce some issue like
+having a number of tile that growing and become unmanageable,
+for example it the data will be updated it not possible to
+know with tiles should be update.
+
+For the high usage website we want to put the tiles on s3
+with the same tool.
+
+One issue we have if we want to generate all the tiles, the generation
+time can grow to more than one month, especially if we have
+a high resolution (low if in m/px) on the last zoom level.
+Than for the last zoom level we should generate the tiles on the fly
+with a low expiry (4 hours for example).
+We should use metatiles to don't have too may request to postgres.
+And the tiles should be delete after the expiry time.
+
+The choosed solution is a combination of two tools::
+
+ * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
+ * `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
+
+MapCache
+--------
+
+MapCache is a tool of the MapServer Suite.
+
+He should be configured to use `Memcached <http://memcached.org/>`_ as
+hes Cache, that the only cache that able to delete the expired tiles.
+
+With a configured TileCloud-Chain you can add this configuration::
+
+    mapcache:
+        mapserver_url: <the url to mapserver, default is ``http://${vars:host}/${vars:instanceid}/mapserv``>
+        config_file: <the generated file, default is ``apache/mapcache.xml.in``>
+        resolutions: [<list of resolutions, the first on should be the same as TileCloud one>]
+        memcache_host: <default is localhost>
+        memcache_port: <default is 11211>
+        layers: [<list of layers that should be served with MapCache>]
+
+Than you should be able to generate the configuration::
+
+   ./buildout/bin/generate_controller --mapcache
+
+TileCloud-chain
+---------------
+
+TileCloud-chain is a tool based on TileCloud with offer build chain that
+can generate tiles from WMS or Mapnik to the local storage or S3
+using a WMTS layout.
+
+He is able to use the following AWS services to generate the tiles:
+EC2, SQS, SNS.
 
 See: http://pypi.python.org/pypi/tilecloud-chain.
 
 Initialisation and Configuration
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  * Add ``tilecoud-chain`` to the dependencies in the ``setup.py``.
 
@@ -35,7 +92,7 @@ Initialisation and Configuration
    git add tilegeneration buildout_tilegeneration.cfg
 
 Tile Generation and management
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This package offer two commands line be free to see the help::
 
@@ -52,7 +109,7 @@ using the command::
     ./buildout/bin/generate_tiles
 
 Integration in c2cgeoportal
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the ``viewer.js``, ``apiviewer.js`` and ``edit.js``:
 
@@ -84,19 +141,8 @@ your tiles than create the file ``apache/tiles.conf.in`` with the content::
     </Location>
 
 
-MapCache
-========
-
-Map cache can be a good solution to cash the tiles of the last zoom levels.
-
-The idea is to generate the tiles with TileCloud got the first zoom levels
-and have a short time (some hours) cache for the last zoom levels.
-
-See: http://mapserver.org/trunk/mapcache/config.html
-
-
 SwitchableWMTSSource
-====================
+--------------------
 
 Useful tool to switch from TileCloud to MapCache.
 
@@ -104,10 +150,12 @@ See: http://docs.camptocamp.net/cgxp/lib/plugins/SwitchableWMTSSource.html
 
 
 Tileforge
-=========
+---------
+
+If you steel want to use Tileforge follows the following instruction.
 
 Integration in c2cgeoportal
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In ``buildout.cfg`` section ``[buildout]`` add::
 
@@ -127,7 +175,7 @@ In ``<package>/__init__.py`` function ``main`` add::
 In ``setup.py`` attribute ``install_requires`` add ``'tileforge',``.
 
 Configuration
--------------
+~~~~~~~~~~~~~
 
 The configuration file is ``tilecache/tilecache.cfg.in``.
 
@@ -150,7 +198,7 @@ The destination folder needs to be created with the good rights,
     chmod o+w /var/sig/tilecache
 
 Commands
---------
+~~~~~~~~
 
 Usage::
 
@@ -182,7 +230,7 @@ Run on configured diff table::
     We run the tile forge with the www-data rights to allows the web server to creates new tiles.
 
 Tiles
------
+~~~~~
 
 The tiles will be stored in the folder
 ``/var/sig/tilecache/c2cgeoportal->instanceid>_tilecache``,
@@ -197,4 +245,3 @@ We also need the database connection than we need:
 
 A post-processing command can be set by using the attribute:
 ``metadata_image_postproc``.
-
