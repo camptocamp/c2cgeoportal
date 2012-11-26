@@ -120,5 +120,5 @@ In the configuration file ``config.yaml.in`` you can add the
 following variables:
 
  *  ``fulltextsearch_defaultlimit`` the default limit on the results,
-    default to 30.
- *  ``fulltextsearch_maxlimit`` the max possible limit, default to 200.
+    default is 30.
+ *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
