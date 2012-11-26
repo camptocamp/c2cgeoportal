@@ -449,10 +449,8 @@ first =
     proj4js/lib/proj4js.js
 include =
     EPSG21781.js #proj4js
-    Ext/src/locale/ext-lang-en.js
     util.js #GXP
     widgets/Viewer.js #GXP
-    Proj/Lang/en.js
     CGXP/api/Map.js
     CGXP/plugins/Zoom.js
     CGXP/plugins/Redlining.js
