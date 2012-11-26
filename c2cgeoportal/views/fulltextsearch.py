@@ -36,11 +36,14 @@ def fulltextsearch(request):
     query = request.params.get('query')
 
     try:
-        limit = int(request.params.get('limit', '30'))
+        limit = int(request.params.get(
+            'limit',
+            request.registry.settings.get('fulltextsearch_defaultlimit', 30)))
     except ValueError:
         return HTTPBadRequest(detail='limit value is incorrect')
-    if limit > 30:
-        limit = 30
+    maxlimit = request.registry.settings.get('fulltextsearch_maxlimit', 200)
+    if limit > maxlimit:
+        limit = maxlimit
 
     terms = '&'.join(w + ':*' for w in
                          query.split(' ') if w != '')
