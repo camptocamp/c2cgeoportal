@@ -28,6 +28,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -114,6 +115,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -176,6 +178,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -211,6 +214,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -246,6 +250,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -279,6 +284,9 @@ root =
     {{package}}/static/lib/cgxp/ext
     {{package}}/static/lib/cgxp/geoext/lib
     {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -324,6 +332,9 @@ root =
     {{package}}/static/lib/cgxp/ext
     {{package}}/static/lib/cgxp/geoext/lib
     {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -349,6 +360,9 @@ root =
     {{package}}/static/lib/cgxp/ext
     {{package}}/static/lib/cgxp/geoext/lib
     {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -374,6 +388,9 @@ root =
     {{package}}/static/lib/cgxp/ext
     {{package}}/static/lib/cgxp/geoext/lib
     {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
@@ -399,6 +416,9 @@ root =
     {{package}}/static/lib/cgxp/ext
     {{package}}/static/lib/cgxp/geoext/lib
     {{package}}/static/lib/cgxp/openlayers/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib

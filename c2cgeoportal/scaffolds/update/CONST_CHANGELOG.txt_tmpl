@@ -1,5 +1,6 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
 Version 1.2
 ===========
 
@@ -255,6 +256,12 @@ Version 1.2
     RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
     RewriteRule ^${vars:apache-entry-point}admin/?$ /${vars:instanceid}/wsgi/admin/ [PT]
 
+14. Redlining is now supported in CGXP's Permalink.
+    The following path should be added in all root sections
+    of `jsbuild/app.cfg`:
+
+    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
+
 
 Version 1.1
 ===========
@@ -298,6 +305,7 @@ Version 1.1
                 settings.get('authtkt_secret'),
                 callback=defaultgroupsfinder,
                 cookie_name=settings.get('authtkt_cookie_name'))
+
 
 Version 1.0
 ===========
@@ -1054,6 +1062,7 @@ Other changes
    was changed in the create template, that should help you fix your
    application's app.cfg. The note explaining why OpenLayers/Lang.js should be
    included in the main build may be of interest.
+
 
 Version 0.5 (and before)
 ========================
