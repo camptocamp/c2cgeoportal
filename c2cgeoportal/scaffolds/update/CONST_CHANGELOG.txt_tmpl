@@ -165,18 +165,18 @@ Version 1.2
     Project Lang Files ({{package}}/static/js/Lang)
 
         You need to split each lang file into two files. For example,
-        {{package}}/static/js/Lang/fr.js should be splitted into
-        {{package}}/static/js/Lang/fr.js and
-        {{package}}/static/js/Lang/GeoExt-fr.js. The former should include
+        {{package}}/static/js/Proj/Lang/fr.js should be splitted into
+        {{package}}/static/js/Proj/Lang/fr.js and
+        {{package}}/static/js/Proj/Lang/GeoExt-fr.js. The former should include
         OpenLayers-based translations only, and the latter should include
         GeoExt-based translations only. If your application does not have
         GeoExt-based translations (which is a good thing), you will need to
-        create an empty {{package}}/static/js/Lang/GeoExt-fr.js file. And you
+        create an empty {{package}}/static/js/Proj/Lang/GeoExt-fr.js file. And you
         obviously need to repeat this GeoExt-en.js and GeoExt-de.js.
 
     JavaScript Build Config (jsbuild/app.cfg)
 
-        The {{package}}/static/js/Lang/GeoExt-<code>.js files should now be
+        The {{package}}/static/js/Proj/Lang/GeoExt-<code>.js files should now be
         listed in the ``include`` list of ``[lang-<code>.js]`` sections. For
         example:
 
