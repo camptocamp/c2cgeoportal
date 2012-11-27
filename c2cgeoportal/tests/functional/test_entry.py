@@ -640,84 +640,94 @@ class TestEntryView(TestCase):
                     'imageType': u'image/png'
                 }]
             }]
-        }, []))
+        }, [], False))
 
         group1 = LayerGroup()
         group1.isInternalWMS = True
         group2 = LayerGroup()
         group2.isInternalWMS = False
         group1.children = [group2]
-        _, errors = entry._group(group1, [], [], None)
+        _, errors, stop = entry._group(group1, [], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group1 = LayerGroup()
         group1.isInternalWMS = False
         group2 = LayerGroup()
         group2.isInternalWMS = True
         group1.children = [group2]
-        _, errors = entry._group(group1, [], [], None)
+        _, errors, stop = entry._group(group1, [], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'internal WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertEqual(len(errors), 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'external WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'WMTS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = True
         layer = Layer()
         layer.layerType = 'no 2D'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'internal WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertTrue(len(errors) > 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'external WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertEqual(len(errors), 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'WMTS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertEqual(len(errors), 0)
+        self.assertFalse(stop)
 
         group = LayerGroup()
         group.isInternalWMS = False
         layer = Layer()
         layer.layerType = 'no 2D'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], [], None)
+        _, errors, stop = entry._group(group, [layer], [], None)
         self.assertEqual(len(errors), 0)
+        self.assertFalse(stop)
