@@ -5,7 +5,7 @@ from pyramid.view import view_config
 
 from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
-from sqlalchemy import desc, or_, and_
+from sqlalchemy import func, desc, or_, and_
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
@@ -35,27 +35,37 @@ def fulltextsearch(request):
         return HTTPBadRequest(detail='no query')
     query = request.params.get('query')
 
+    maxlimit = request.registry.settings.get('fulltextsearch_maxlimit', 200)
+
     try:
         limit = int(request.params.get(
             'limit',
             request.registry.settings.get('fulltextsearch_defaultlimit', 30)))
     except ValueError:
         return HTTPBadRequest(detail='limit value is incorrect')
-    maxlimit = request.registry.settings.get('fulltextsearch_maxlimit', 200)
     if limit > maxlimit:
         limit = maxlimit
 
-    terms = '&'.join(w + ':*' for w in
-                         query.split(' ') if w != '')
-    ts_filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
+    try:
+        partitionlimit = int(request.params.get('partitionlimit', 0))
+    except ValueError:
+        return HTTPBadRequest(detail='partitionlimit value is incorrect')
+    if partitionlimit > maxlimit:
+        partitionlimit = maxlimit
+
+    terms = '&'.join(w + ':*' for w in query.split(' ') if w != '')
+    _filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
         {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
+    # flake8 does not like `== True`
     if request.user is None:
-        user_filter = FullTextSearch.public == True
+        _filter = and_(_filter, FullTextSearch.public == True)  # NOQA
     else:
-        user_filter = or_(FullTextSearch.public == True,
-                          FullTextSearch.role_id == None,
-                          FullTextSearch.role_id == request.user.role.id)
+        _filter = and_(
+                _filter,
+               or_(FullTextSearch.public == True,
+                   FullTextSearch.role_id == None,
+                   FullTextSearch.role_id == request.user.role.id))  # NOQA
 
     # The numbers used in ts_rank_cd() below indicate a normalization method.
     # Several normalization methods can be combined using |.
@@ -66,13 +76,27 @@ def fulltextsearch(request):
     # and on some assumptions about how it might be calculated
     # (the normalization is applied two times with the combination of 2 and 8,
     # so the effect on at least the one-word-results is therefore stronger).
-    rank = "ts_rank_cd(%(tsvector)s, to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
-        {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+    rank = "ts_rank_cd(%(tsvector)s, " \
+           "to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
+               {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
-    query = DBSession.query(FullTextSearch)
-    query = query.filter(and_(ts_filter, user_filter))
-    query = query.order_by(desc(rank))
-    query = query.order_by(FullTextSearch.label)
+    if partitionlimit:
+        # Here we want to partition the search results based on
+        # layer_name and limit each partition.
+        row_number = func.row_number() \
+                         .over(partition_by=FullTextSearch.layer_name,
+                               order_by=(desc(rank), FullTextSearch.label)) \
+                         .label('row_number')
+        subq = DBSession.query(FullTextSearch) \
+                        .add_columns(row_number).filter(_filter).subquery()
+        query = DBSession.query(subq.c.id, subq.c.label,
+                                subq.c.layer_name, subq.c.the_geom) \
+                         .filter(subq.c.row_number <= partitionlimit)
+    else:
+        query = DBSession.query(FullTextSearch).filter(_filter)
+        query = query.order_by(desc(rank))
+        query = query.order_by(FullTextSearch.label)
+
     query = query.limit(limit)
     objs = query.all()
 
