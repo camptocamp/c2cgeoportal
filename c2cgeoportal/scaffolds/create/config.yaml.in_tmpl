@@ -102,8 +102,10 @@ check_collector:
               display: Edit page
             - name: checker_edit_js
               display: Edit script
-            - name: checker_apiloader
-              display: API loader
+            - name: checker_api
+              display: API
+            - name: checker_xapi
+              display: Extended API
             - name: checker_printcapabilities
               display: Print capabilities
             - name: checker_pdf

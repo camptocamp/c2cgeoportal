@@ -289,6 +289,10 @@ Version 1.2
 
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css')}" />
 
+16. Update the checker for the new api, in the section `check_collector` the
+    `checker_apiloader` doesn't exists anymore,
+    it's replaced by `checker_api`, and `checker_xapi`.
+
 Version 1.1
 ===========
 
