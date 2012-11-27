@@ -85,7 +85,7 @@ include =
     CGXP/plugins/Disclaimer.js
     CGXP/plugins/ContextualData.js
     CGXP/widgets/MapPanel.js
-    CGXP/widgets/RedliningColorPicker.js
+    CGXP/plugins/Redlining.js
     CGXP/tools/tools.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
@@ -455,7 +455,7 @@ include =
     Proj/Lang/en.js
     CGXP/api/Map.js
     CGXP/plugins/Zoom.js
-    CGXP/widgets/RedliningColorPicker.js
+    CGXP/plugins/Redlining.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Legend.js

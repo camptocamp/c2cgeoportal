@@ -262,6 +262,22 @@ Version 1.2
 
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
 
+15. CGXP's Redlining plugin (drawing tools) has been enhanced. It requires the
+    following updates:
+
+    - In ``app.cfg`` you need to replace the lines with:
+
+        CGXP/widgets/RedliningColorPicker.js
+
+    by:
+
+        CGXP/plugins/Redlining.js
+
+    - In the ``index.html`` template, in the section where the css files are
+      loaded in debug mode, you'll have to add the following code right above
+      the one for ``proj.css``:
+
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css')}" />
 
 Version 1.1
 ===========
