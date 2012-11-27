@@ -418,7 +418,7 @@ class TestEntryView(TestCase):
         }
         entry = Entry(request)
 
-        self.assertEqual(entry._group(LayerGroup(), [], [], None), (None, []))
+        self.assertEqual(entry._group(LayerGroup(), [], [], None), (None, [], False))
 
         layer = Layer()
         layer.id = 20
