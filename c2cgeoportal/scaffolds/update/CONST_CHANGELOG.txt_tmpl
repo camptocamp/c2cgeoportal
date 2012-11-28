@@ -146,8 +146,10 @@ Version 1.2
     in your templates you no longer need to, use ``functionality`` directly.
 
 11. checker_pdf requires that the central coordinates and scale of the map to
-    print when checking the printing service are provided in ``config.yaml.in``:
+    print when checking the printing service are provided in ``config.yaml.in``.
+    Add the following after the ``tilecache_url``:
 
+        # Checker configuration
         checker:
             print_template: 1 A4 portrait
             print_center_lon: to be defined
