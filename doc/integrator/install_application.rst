@@ -150,10 +150,6 @@ Get the application source tree
 If Git is used for the application use the following command to get the
 application source tree::
 
-    git clone https://github.com/camptocamp/<my_project>.git <my_project>
-
-or using the git protocol::
-
     git clone git@github.com:camptocamp/<my_project>.git <my_project>
 
 c2cgeoportal applications include a Git submodule for CGXP. The following
