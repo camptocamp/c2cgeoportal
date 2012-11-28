@@ -154,7 +154,7 @@ application source tree::
 
 or using the git protocol::
 
-    git clone git@github.com:camptocamp/<my_project>.git
+    git clone git@github.com:camptocamp/<my_project>.git <my_project>
 
 c2cgeoportal applications include a Git submodule for CGXP. The following
 commands should be used to download CGXP and its dependencies::
