@@ -159,6 +159,7 @@ or using the git protocol::
 c2cgeoportal applications include a Git submodule for CGXP. The following
 commands should be used to download CGXP and its dependencies::
 
+    cd <my_project>
     git submodule update --init
     git submodule foreach git submodule update --init
 
