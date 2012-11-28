@@ -63,9 +63,9 @@ def fulltextsearch(request):
     else:
         _filter = and_(
                 _filter,
-               or_(FullTextSearch.public == True,
-                   FullTextSearch.role_id == None,
-                   FullTextSearch.role_id == request.user.role.id))  # NOQA
+                or_(FullTextSearch.public == True,
+                    FullTextSearch.role_id == None,
+                    FullTextSearch.role_id == request.user.role.id))  # NOQA
 
     # The numbers used in ts_rank_cd() below indicate a normalization method.
     # Several normalization methods can be combined using |.
