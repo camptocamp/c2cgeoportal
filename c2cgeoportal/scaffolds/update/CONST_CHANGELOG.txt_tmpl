@@ -279,7 +279,7 @@ Version 1.2
       loaded in debug mode, you'll have to add the following code right above
       the one for ``proj.css``:
 
-        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css')}" />
 
 Version 1.1
 ===========
