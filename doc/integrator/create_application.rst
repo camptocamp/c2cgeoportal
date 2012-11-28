@@ -252,7 +252,7 @@ Add the project::
             development.ini.in production.ini.in \
             jsbuild/ print/ apache/ \
             mapserver/ tilecache/ deploy/
-    git remote add origin git@git.camptocamp.com:/srv/git/$PROJECT
+    git remote add origin git@github.com:camptocamp/$PROJECT.git
 
 Add the CGXP submodule::
 
