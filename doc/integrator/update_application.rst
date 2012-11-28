@@ -22,7 +22,7 @@ If you still use SVN::
     svn update
 
 .. caution::
-   This command will not updates CGXP, and c2cgeoportal is not able to
+   This command will not update CGXP, and c2cgeoportal is not able to
    fix the revision of CGXP.
 
 Update c2cgeoportal
