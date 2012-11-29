@@ -238,6 +238,16 @@ Version 1.2
         buildout part will fail, and your application pages will cause 404s
         in debug mode.
 
+    Make index.html and edit.html load the new CSS files in debug mode.
+
+        You need to edit index.html and edit.html to make these pages load
+        the new proj-map.css and proj-widgets.css files when in debug mode.
+        This is done by adding the following <link> tags below that for
+        proj.css:
+
+            <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-map.css')}" />
+            <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-widgets.css')}" />
+
     Adding the APIs to your application
 
         The easiest is to apply the ``c2cgeoportal_create`` template to
@@ -258,6 +268,22 @@ Version 1.2
         $ rm -f {{package}}/templates/apihelp.html
         $ rm -f {{package}}/templates/apiloader.js
         $ rm -f {{package}}/templates/apiviewer.js
+
+    Add RewriteRule's to Apache config
+
+        The apache/wsgi.conf.in file defines RewriteRule's for shorter
+        URLs to the application's entry points.
+
+        Add the following API-related RewriteRule's:
+
+        RewriteRule ^${vars:apache-entry-point}api.js$ /${vars:instanceid}/wsgi/api.js [PT]
+        RewriteRule ^${vars:apache-entry-point}xapi.js$ /${vars:instanceid}/wsgi/xapi.js [PT]
+        RewriteRule ^${vars:apache-entry-point}xapihelp.html$ /${vars:instanceid}/wsgi/xapihelp.html [PT]
+
+        And remove this one:
+
+        RewriteRule ^${vars:apache-entry-point}apiloader.js$ /${vars:instanceid}/wsgi/apiloader.js [PT]
+
 
 13. Add the following lines in `apache/wsgi.conf.in` to enable short URLs
     for the editing, mobile and admin pages:
