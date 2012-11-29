@@ -10,6 +10,14 @@ Version 1.2
    Check out documentation to find information about how to upgrade an existing
    c2cgeoportail project or how the settings view can be customized.
 
+   As minimal you should get the new files:
+
+        ./buildout/bin/pcreate -s c2cgeoportal_create \
+                /tmp/{{project}} package={{package}}
+        cp -r /tmp/{{project}}/{{package}}/static/mobile/custom.scss {{package}}/static/mobile/
+        cp -r /tmp/{{project}}/{{package}}/static/mobile/app/ {{package}}/static/mobile/
+        rm -rf /tmp/{{project}}
+
 2. CGXP plugin WFSGetFeature now requires that the themes are explicitly passed
    in its configuration in {{package}}/templates/viewer.js using the following
    parameter:
@@ -165,18 +173,18 @@ Version 1.2
     Project Lang Files ({{package}}/static/js/Lang)
 
         You need to split each lang file into two files. For example,
-        {{package}}/static/js/Lang/fr.js should be splitted into
-        {{package}}/static/js/Lang/fr.js and
-        {{package}}/static/js/Lang/GeoExt-fr.js. The former should include
+        {{package}}/static/js/Proj/Lang/fr.js should be splitted into
+        {{package}}/static/js/Proj/Lang/fr.js and
+        {{package}}/static/js/Proj/Lang/GeoExt-fr.js. The former should include
         OpenLayers-based translations only, and the latter should include
         GeoExt-based translations only. If your application does not have
         GeoExt-based translations (which is a good thing), you will need to
-        create an empty {{package}}/static/js/Lang/GeoExt-fr.js file. And you
+        create an empty {{package}}/static/js/Proj/Lang/GeoExt-fr.js file. And you
         obviously need to repeat this GeoExt-en.js and GeoExt-de.js.
 
     JavaScript Build Config (jsbuild/app.cfg)
 
-        The {{package}}/static/js/Lang/GeoExt-<code>.js files should now be
+        The {{package}}/static/js/Proj/Lang/GeoExt-<code>.js files should now be
         listed in the ``include`` list of ``[lang-<code>.js]`` sections. For
         example:
 
@@ -280,6 +288,10 @@ Version 1.2
       the one for ``proj.css``:
 
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css')}" />
+
+16. Update the checker for the new api, in the section `check_collector` the
+    `checker_apiloader` doesn't exists anymore,
+    it's replaced by `checker_api`, and `checker_xapi`.
 
 Version 1.1
 ===========

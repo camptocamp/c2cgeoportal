@@ -18,10 +18,8 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 % else:
 document.write('<scr' + 'ipt type="text/javascript" src="'
         + "${request.static_url('{{package}}:static/build/api.js')}" + '"></scr' + 'ipt>');
-    % if lang != 'en':
 document.write('<scr' + 'ipt type="text/javascript" src="'
         + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang)}" + '"></scr' + 'ipt>');
-    % endif
 document.write('<link rel="stylesheet" type="text/css" href="'
         + "${request.static_url('{{package}}:static/build/api.css')}" + '" />');
 % endif
