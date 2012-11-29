@@ -52,7 +52,14 @@ class TestFulltextsearchView(TestCase):
         entry3.public = False
         entry3.role = role2
 
-        DBSession.add_all([user1, user2, entry1, entry2, entry3])
+        entry4 = FullTextSearch()
+        entry4.label = 'label4'
+        entry4.layer_name = 'layer1'
+        entry4.ts = func.to_tsvector('french', 'soleil travail')
+        entry4.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry4.public = True
+
+        DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4])
         transaction.commit()
 
     def tearDown(self):
@@ -71,6 +78,8 @@ class TestFulltextsearchView(TestCase):
                 .filter(FullTextSearch.label == 'label2').delete()
         DBSession.query(FullTextSearch) \
                 .filter(FullTextSearch.label == 'label3').delete()
+        DBSession.query(FullTextSearch) \
+                .filter(FullTextSearch.label == 'label4').delete()
 
         DBSession.query(Role).filter(Role.name == '__test_role1').delete()
         DBSession.query(Role).filter(Role.name == '__test_role2').delete()
@@ -131,9 +140,11 @@ class TestFulltextsearchView(TestCase):
                 params=dict(query='tra sol', limit=40))
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
-        self.assertEqual(len(resp.features), 1)
+        self.assertEqual(len(resp.features), 2)
         self.assertEqual(resp.features[0].properties['label'], 'label1')
         self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
+        self.assertEqual(resp.features[1].properties['label'], 'label4')
+        self.assertEqual(resp.features[1].properties['layer_name'], 'layer1')
 
     def test_nomatch(self):
         from geojson.feature import FeatureCollection
@@ -190,3 +201,15 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(len(resp.features), 1)
         self.assertEqual(resp.features[0].properties['label'], 'label3')
         self.assertEqual(resp.features[0].properties['layer_name'], 'layer3')
+
+    def test_match_partitionlimit(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='tra sol', limit=40, partitionlimit=1))
+        resp = fulltextsearch(request)
+        self.assertTrue(isinstance(resp, FeatureCollection))
+        self.assertEqual(len(resp.features), 1)
+        self.assertEqual(resp.features[0].properties['label'], 'label1')
+        self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
