@@ -127,7 +127,8 @@ To update CGXP in the application use the following::
 
     $ cd <package_name>/static/lib/cgxp
     $ git pull origin master
-    $ git submodule update
+    $ git submodule sync
+    $ git submodule update --init
 
 ``<package_name>`` is to be replaced by the name of your application package.
 If unsure, see the ``name`` argument to the ``setup`` call in the application's

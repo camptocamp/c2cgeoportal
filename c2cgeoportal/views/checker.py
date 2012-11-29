@@ -51,9 +51,14 @@ class Checker(object):
         _url = self.request.route_url('edit.js')
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_apiloader')
-    def apiloader(self):
-        _url = self.request.route_url('apiloader')
+    @view_config(route_name='checker_api')
+    def api_js(self):
+        _url = self.request.route_url('apijs')
+        return self.make_response(self.testurl(_url))
+
+    @view_config(route_name='checker_xapi')
+    def xapi_js(self):
+        _url = self.request.route_url('xapijs')
         return self.make_response(self.testurl(_url))
 
     @view_config(route_name='checker_printcapabilities')

@@ -2,7 +2,7 @@
 <html lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title>API description</title>
+    <title>XAPI description</title>
     <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
     <style type="text/css">
         body {

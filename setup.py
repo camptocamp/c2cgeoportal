@@ -22,6 +22,9 @@ install_requires = [
     # fa.jquery uses js.jqueryui_selectmenu, whose released
     # version (0.1) doesn't work with js.jquery > 1.7.1.
     'js.jquery==1.7.1',
+    # The latest js.jqgrid lib (4.4.1) needs a DOCTYPE for IE8
+    # See: https://github.com/camptocamp/c2cgeoportal/issues/411
+    'js.jqgrid==4.3.1-1',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
     'GeoAlchemy>=0.7',
