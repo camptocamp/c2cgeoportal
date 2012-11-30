@@ -199,7 +199,6 @@ include =
     Styler/lang/en.js
     locale/en.js #GXP
     Proj/Lang/en.js
-    Proj/Lang/GeoExt-en.js
 exclude =
     OpenLayers/Lang.js
 
