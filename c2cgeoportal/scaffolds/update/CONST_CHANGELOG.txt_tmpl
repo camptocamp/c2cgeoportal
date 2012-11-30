@@ -319,7 +319,7 @@ Version 1.2
     `checker_apiloader` doesn't exists anymore,
     it's replaced by `checker_api`, and `checker_xapi`.
 
-16. The fulltextsearch web service supports a new parameter in the query
+17. The fulltextsearch web service supports a new parameter in the query
     string, "partitionlimit". If "partitionlimit" is set to a positive number
     the fulltextsearch web service limits the search results by layer
     (layer_name field in the tsearch table). For example, if "partitionlimit"
@@ -328,6 +328,19 @@ Version 1.2
     in the viewer CGXP commit [*] or more recent should be used.
 
     [*] https://github.com/camptocamp/cgxp/commit/b620dd154b55c6f14eee8fdc09abb5583615d78b
+    
+18. In the file `jsbuild/app.cfg`, for file `[lang-en.js]`, in section `include`:
+    remove the line `CGXP/locale/en.js`, and add the localisation in the files:
+
+    `{{package}}/static/js/Proj/Lang/en.js`:
+    "layertree": "Themes"
+
+    `{{package}}/static/js/Proj/Lang/fr.js`:
+    "layertree": "Thèmes"
+
+    `{{package}}/static/js/Proj/Lang/de.js`:
+    "layertree": "Themen"
+
 
 Version 1.1
 ===========

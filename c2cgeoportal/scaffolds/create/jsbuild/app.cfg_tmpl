@@ -196,13 +196,9 @@ first =
     OpenLayers/Lang/en.js
 include =
     Ext/src/locale/ext-lang-en.js
-#    GeoExt/locale/GeoExt-en.js
-#    FeatureEditing/resources/lang/en.js
     Styler/lang/en.js
     locale/en.js #GXP
-    CGXP/locale/en.js
     Proj/Lang/en.js
-#    Proj/Lang/GeoExt-en.js
 exclude =
     OpenLayers/Lang.js
 
