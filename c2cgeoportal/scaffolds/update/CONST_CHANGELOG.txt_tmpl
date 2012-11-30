@@ -330,7 +330,16 @@ Version 1.2
     [*] https://github.com/camptocamp/cgxp/commit/b620dd154b55c6f14eee8fdc09abb5583615d78b
     
 18. In the file `jsbuild/app.cfg`, for file `[lang-en.js]`, in section `include`:
-    remove the line `CGXP/locale/en.js`.
+    remove the line `CGXP/locale/en.js`, and add the localisation in the files:
+
+    `{{package}}/static/js/Proj/Lang/en.js`:
+    "layertree": "Themes"
+
+    `{{package}}/static/js/Proj/Lang/fr.js`:
+    "layertree": "Thèmes"
+
+    `{{package}}/static/js/Proj/Lang/de.js`:
+    "layertree": "Themen"
 
 
 Version 1.1
