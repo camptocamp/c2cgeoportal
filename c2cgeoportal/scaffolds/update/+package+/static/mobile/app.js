@@ -11,10 +11,11 @@ Ext.application({
         'Ext.MessageBox',
         'Ext.data.Store',
         'Ext.data.proxy.JsonP',
-        'Ext.TitleBar' // required at least for the Picker
+        'Ext.TitleBar', // required at least for the Picker
+        'Ext.JSON'
     ],
 
-    views: ['Main', 'Layers', 'Search', 'Query', 'Settings'],
+    views: ['Main', 'Layers', 'Search', 'Query', 'Settings', 'LoginForm'],
     models: ['Layer', 'Search', 'Query'],
     controllers: ['Main', 'Search', 'Query'],
 
@@ -37,6 +38,11 @@ Ext.application({
     },
 
     launch: function() {
+
+        // decode the information received from the server
+        if (App.info) {
+            App.info = Ext.JSON.decode(App.info, true);
+        }
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');
