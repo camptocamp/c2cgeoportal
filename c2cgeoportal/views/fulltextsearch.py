@@ -77,21 +77,25 @@ def fulltextsearch(request):
     # (the normalization is applied two times with the combination of 2 and 8,
     # so the effect on at least the one-word-results is therefore stronger).
     rank = "ts_rank_cd(%(tsvector)s, " \
-           "to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % \
-               {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+        "to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % {
+            'tsvector': 'ts',
+            'lang': lang,
+            'terms': terms
+        }
 
     if partitionlimit:
         # Here we want to partition the search results based on
         # layer_name and limit each partition.
         row_number = func.row_number() \
-                         .over(partition_by=FullTextSearch.layer_name,
-                               order_by=(desc(rank), FullTextSearch.label)) \
-                         .label('row_number')
+            .over(
+                partition_by=FullTextSearch.layer_name,
+                order_by=(desc(rank), FullTextSearch.label)) \
+            .label('row_number')
         subq = DBSession.query(FullTextSearch) \
-                        .add_columns(row_number).filter(_filter).subquery()
+            .add_columns(row_number).filter(_filter).subquery()
         query = DBSession.query(subq.c.id, subq.c.label,
-                                subq.c.layer_name, subq.c.the_geom) \
-                         .filter(subq.c.row_number <= partitionlimit)
+                                subq.c.layer_name, subq.c.the_geom)
+        query = query.filter(subq.c.row_number <= partitionlimit)
     else:
         query = DBSession.query(FullTextSearch).filter(_filter)
         query = query.order_by(desc(rank))
