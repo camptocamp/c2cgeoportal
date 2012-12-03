@@ -50,7 +50,7 @@ tests_require = install_requires + [
     ]
 
 setup(name='c2cgeoportal',
-      version='1.2',
+      version='1.3',
       description='c2cgeoportal',
       long_description=README,
       classifiers=[
