@@ -316,6 +316,9 @@ Ext.onReady(function() {
                     )],
                     mapOptions: {
                         theme: null,
+                        projection: new OpenLayers.Projection("EPSG:{{srid}}"),
+                        restrictedExtent: OpenLayers.Bounds.fromArray([420000, 30000, 900000, 350000]),
+                        units: "m",
                         numZoomLevels: 1
                     }
                 })*/
