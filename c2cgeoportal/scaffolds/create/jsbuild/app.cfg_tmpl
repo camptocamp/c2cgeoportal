@@ -60,6 +60,7 @@ first =
     OpenLayers/Util.js
     OpenLayers/Lang.js
     proj4js/lib/proj4js.js
+    proj4js/lib/projCode/merc.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
@@ -146,6 +147,7 @@ first =
     OpenLayers/Util.js
     OpenLayers/Lang.js
     proj4js/lib/proj4js.js
+    proj4js/lib/projCode/merc.js
 exclude =
     GeoExt.js
     GeoExt/SingleFile.js
@@ -314,6 +316,7 @@ first =
     OpenLayers/Util.js
     OpenLayers/Lang.js
     proj4js/lib/proj4js.js
+    proj4js/lib/projCode/merc.js
 include =
     EPSG21781.js #proj4js
     OpenLayers/Control/Navigation.js
@@ -453,6 +456,7 @@ first =
     OpenLayers/Util.js
     OpenLayers/Lang.js
     proj4js/lib/proj4js.js
+    proj4js/lib/projCode/merc.js
 include =
     EPSG21781.js #proj4js
     util.js #GXP
