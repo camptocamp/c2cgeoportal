@@ -9,6 +9,11 @@ Version 1.3
 
         {{package}}/static/lib/cgxp/geoext.ux/ux/StreetViewPanel
 
+2. Adding the following entry at the end of the ``first`` sections
+   of all files (except the language ones) in ``jsbuild/app.cfg`` is recommended:
+
+        proj4js/lib/projCode/merc.js
+
 
 Version 1.2
 ===========
