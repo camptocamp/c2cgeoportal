@@ -516,7 +516,6 @@ class Entry(object):
         except:
             d['mobile_url'] = None
 
-        # recover themes from url route
         d['no_redirect'] = self.request.params.get('no_redirect') is not None
 
         return d
