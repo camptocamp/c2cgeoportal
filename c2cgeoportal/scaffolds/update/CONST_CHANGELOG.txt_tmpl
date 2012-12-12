@@ -64,7 +64,7 @@ Version 1.3
     application in ``config.js``:
 
             // redirect to standard application
-            'redirect_msg': "Vous naviguez dans l'application mobile. Vous pouvez aussi" +
+            'redirect_msg': "Vous utilisez la version mobile. Vous pouvez aussi" +
                 " consulter la <a href='${'${url}'}'>version standard</a>.",
             'close': "Fermer"
 

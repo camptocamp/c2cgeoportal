@@ -27,7 +27,7 @@ OpenLayers.Lang.en = {
     'loginCancelButtonText': 'Cancel',
 
     // redirect to standard application
-    'redirect_msg': "You're browsing the mobile application. Check out the" +
+    'redirect_msg': "You're using the mobile version. Check out the" +
         " <a href='${'${url}'}'>standard version</a>.",
     'close': "Close"
 };
@@ -51,7 +51,7 @@ OpenLayers.Lang.fr = {
     'loginCancelButtonText': 'Annuler',
 
     // redirect to standard application
-    'redirect_msg': "Vous naviguez dans l'application mobile. Vous pouvez aussi" +
+    'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
         " consulter la <a href='${'${url}'}'>version standard</a>.",
     'close': "Fermer"
 };
