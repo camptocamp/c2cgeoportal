@@ -104,6 +104,8 @@ class Entry(object):
                     'minResolutionHint': float('%0.2f' % resolution[0]),
                     'maxResolutionHint': float('%0.2f' % resolution[1])
                 })
+            if hasattr(child_layer, 'queryable'):
+                child_layer_info['queryable'] = child_layer.queryable
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
@@ -225,6 +227,8 @@ class Entry(object):
                 if 'maxResolutionHint' not in l:
                     l['maxResolutionHint'] = float('%0.2f' % resolutions[1])
             l['childLayers'] = self._get_child_layers_info(wms_layer_obj)
+            if hasattr(wms_layer_obj, 'queryable'):
+                l['queryable'] = wms_layer_obj.queryable
         else:
             log.warning('layer %s not defined in WMS caps doc', layer.name)
 
