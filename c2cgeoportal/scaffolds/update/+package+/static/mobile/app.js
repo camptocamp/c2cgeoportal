@@ -57,7 +57,15 @@ Ext.application({
         // now add the main view to the viewport
         Ext.Viewport.add(mainView);
 
-        if (Ext.is.Tablet) {
+        this.handleTablet();
+    },
+
+    onUpdated: function() {
+        window.location.reload();
+    },
+
+    handleTablet: function() {
+        if (Ext.os.is.Tablet) {
             var msg = OpenLayers.String.format(
                 OpenLayers.i18n('redirect_msg'),
                 {
@@ -85,9 +93,5 @@ Ext.application({
                 }
             });
         }
-    },
-
-    onUpdated: function() {
-        window.location.reload();
     }
 });
