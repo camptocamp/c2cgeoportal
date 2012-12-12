@@ -69,6 +69,7 @@
         App.rasterUrl = "${request.route_url('raster', path='')}";
         App.loginUrl = "${request.route_url('login', _query={'came_from': came_from})}";
         App.logoutUrl = "${request.route_url('logout', _query={'came_from': came_from})}";
+        App.desktopAppUrl = "${request.route_url('home', path='', _query={'no_redirect':''})}";
     </script>
     <script type="text/javascript" src="openlayers-mobile.js"></script>
     <script type="text/javascript" src="config.js?${query_string}"></script>

@@ -24,7 +24,12 @@ OpenLayers.Lang.en = {
     'loginLabel': 'Login',
     'passwordLabel': 'Password',
     'loginSubmitButtonText': 'Submit',
-    'loginCancelButtonText': 'Cancel'
+    'loginCancelButtonText': 'Cancel',
+
+    // redirect to standard application
+    'redirect_msg': "You're browsing the mobile application. Check out the" +
+        " <a href='${'${url}'}'>standard version</a>.",
+    'close': "Close"
 };
 OpenLayers.Lang.fr = {
     "summits": "Sommets",
@@ -43,7 +48,12 @@ OpenLayers.Lang.fr = {
     'loginLabel': 'Nom',
     'passwordLabel': 'Mot de passe',
     'loginSubmitButtonText': 'Me connecter',
-    'loginCancelButtonText': 'Annuler'
+    'loginCancelButtonText': 'Annuler',
+
+    // redirect to standard application
+    'redirect_msg': "Vous naviguez dans l'application mobile. Vous pouvez aussi" +
+        " consulter la <a href='${'${url}'}'>version standard</a>.",
+    'close': "Fermer"
 };
 OpenLayers.Lang.setCode("${lang}");
 
