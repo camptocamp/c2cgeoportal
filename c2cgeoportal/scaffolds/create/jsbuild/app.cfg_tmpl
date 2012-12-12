@@ -31,6 +31,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -121,6 +122,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -187,6 +189,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -221,6 +224,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -241,6 +245,7 @@ include =
     GeoExt/locale/GeoExt-fr.js
     FeatureEditing/resources/lang/fr.js
     Styler/lang/fr.js
+    WMSBrowser/resources/lang/fr.js
     locale/fr.js #GXP
     CGXP/locale/fr.js
     Proj/Lang/fr.js
@@ -259,6 +264,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -279,6 +285,7 @@ include =
 #    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
     Styler/lang/de.js
+    WMSBrowser/resources/lang/de.js
 #    locale/de.js #GXP
     CGXP/locale/de.js
     Proj/Lang/de.js
@@ -297,6 +304,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -348,6 +356,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -378,6 +387,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -408,6 +418,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
@@ -438,6 +449,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/lib/cgxp/geoext.ux/ux
     {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
     {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
