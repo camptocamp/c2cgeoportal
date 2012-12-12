@@ -68,6 +68,14 @@ Version 1.3
                 " consulter la <a href='${'${url}'}'>version standard</a>.",
             'close': "Fermer"
 
+    Once redirected to the mobile version, tablet users can go back to standard
+    application. In order for them to navigate in the map comfortably, it's
+    recommended to add the support for pinch zoom. You'll need to add the
+    following to the [app.js] section of ``jsbuild/app.cfg`` right below the
+    include for ``Navigation.js``:
+
+        OpenLayers/Control/PinchZoom.js
+
 Version 1.2
 ===========
 
