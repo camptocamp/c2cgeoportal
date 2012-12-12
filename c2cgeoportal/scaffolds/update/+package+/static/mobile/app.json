@@ -30,6 +30,14 @@
      *                                      //  - "full" means full update will be made when this file changes
      *
      *      }
+     *
+     * Warning (Camptocamp):
+     *
+     * By default Sencha sets "update" to "delta". But we have experienced
+     * issues with Sencha Touch 2.0.1.1 because of the deltas, where a js
+     * error occurs at application loading time. This was reported in
+     * https://github.com/camptocamp/c2cgeoportal/issues/433. We may
+     * want to revisit when upgrading to a new version of Sencha Touch.
      */
     "js": [
         {
@@ -38,7 +46,7 @@
         {
             "path": "app.js",
             "bundle": true,  /* Indicates that all class dependencies are concatenated into this file when build */
-            "update": "delta"
+            "update": "full"
         }
     ],
 
@@ -58,7 +66,7 @@
     "css": [
         {
             "path": "resources/css/app.css",
-            "update": "delta"
+            "update": "full"
         }
     ],
 
