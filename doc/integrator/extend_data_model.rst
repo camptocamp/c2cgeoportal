@@ -90,3 +90,29 @@ And in the file ``<package>/forms.py``::
     if hasattr(UserGrid, 'parent_role'):
         fieldOrder.append(UserDetail.parent_role)
     UserGrid.configure(include=fieldOrder)
+
+We can change the renderer of a field, for example change the
+Role renderer::
+
+    Role.name.set(renderer=AnOtherRenderer, ...)
+
+And if we need an other resource (javascript or stylesheet)::
+
+    from fa.jquery import fanstatic_resources
+    from fanstatic import Resource, Group, Library
+    from pyramid_formalchemy import events as fa_events
+
+    fanstatic_lib = Library('<package>_admin', 'static')
+    new_js = Resource(fanstatic_lib, '<path_to_javascript.js>',
+        depends=[fanstatic_resources.<depends_on>])
+    new_css = Resource(fanstatic_lib, '<path_to_stylesheet.css>')
+
+    @fa_events.subscriber([models.Role, fa_events.IBeforeRenderEvent])
+    def before_render_role(context, event):
+        Group([new_js, new_css]).need()
+
+And in the ``setup.py`` we need to add in the ``entry_points``::
+
+    'fanstatic.libraries': [
+        '<package>_admin = <package>.forms:fanstatic_lib',
+    ],
