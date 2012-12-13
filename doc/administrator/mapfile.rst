@@ -182,7 +182,7 @@ geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
 what's configured in the admin interface for the layer.
 
-.. note:: The DATA example above is developped on several lines to make it
+.. note:: The DATA example above is developed on several lines to make it
     easily readable in this documentation. However please note that Mapserver
     requires that this directive is contained on a single line.
 
