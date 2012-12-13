@@ -182,6 +182,10 @@ geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
 what's configured in the admin interface for the layer.
 
+.. note:: The DATA example above is developped on several lines to make it
+    easily readable in this documentation. However please note that Mapserver
+    requires that this directive is contained on a single line.
+
 .. warning:: In some cases you can have geometries that overlap the restriction 
 	area. Theses features won't be displayed as they are not in the area (ie not 
 	*contained*). *st_intersects* or other operator could be used instead of the 
