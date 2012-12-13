@@ -22,6 +22,10 @@ Ext.define("App.view.Layers", {
         }
     },
 
+    toArray: function(value) {
+        return Ext.isArray(value) ? value : value.split(',');
+    },
+
     checkChange: function() {
         this.getFieldsAsArray().forEach(function(field) {
             var record = field.getRecord();
@@ -37,7 +41,8 @@ Ext.define("App.view.Layers", {
     overlayCheckChange: function(field) {
         var record = field.getRecord();
         var layer = record.raw;
-        var layersParam = layer.params.LAYERS || [];
+        var layersParam = layer.params.LAYERS ?
+            this.toArray(layer.params.LAYERS) : [];
         var name = field.getName();
         var checked = field.getChecked();
         if (checked) {
@@ -54,8 +59,9 @@ Ext.define("App.view.Layers", {
             var layer = record.raw;
             if (!layer.isBaseLayer &&
                 layer instanceof OpenLayers.Layer.WMS) {
-                var allLayers = layer.allLayers,
-                    layersParam = layer.params.LAYERS,
+                var allLayers = this.toArray(layer.allLayers),
+                    layersParam = layer.params.LAYERS ?
+                        this.toArray(layer.params.LAYERS) : [],
                     len = allLayers.length,
                     i, l;
                 for (i=0; i<len; i++) {

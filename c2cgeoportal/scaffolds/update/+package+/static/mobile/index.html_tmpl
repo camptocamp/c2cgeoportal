@@ -49,14 +49,29 @@
             }
         }
     </style>
+<%
+    import urllib
+    query_params = dict(request.params)
+    query_string = urllib.urlencode(query_params)
+    came_from = request.current_route_url(_query=query_params)
+%>
+<%doc>
+    Be careful, the Sencha Touch build tool will fail if the script tag
+    includes text that is not JavaScript. For example you cannot include
+    Mako control structures (%if %endif etc.), nor can you do things like
+    App.foo = ${bar} (without quotes around ${bar}). The script tag
+    must include parseable JavaScript code. Period.
+</%doc>
     <script type="text/javascript">
         var App = {};
         App.searchUrl = "${request.route_url('fulltextsearch', path='')}";
         App.wmsUrl = "${request.route_url('mapserverproxy', path='')}";
         App.rasterUrl = "${request.route_url('raster', path='')}";
+        App.loginUrl = "${request.route_url('login', _query={'came_from': came_from})}";
+        App.logoutUrl = "${request.route_url('logout', _query={'came_from': came_from})}";
     </script>
     <script type="text/javascript" src="openlayers-mobile.js"></script>
-    <script type="text/javascript" src="config.js?lang=${lang}"></script>
+    <script type="text/javascript" src="config.js?${query_string}"></script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" type="text/javascript" src="sdk/microloader/development.js"></script>
 </head>

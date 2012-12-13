@@ -1,6 +1,9 @@
 Ext.define("App.view.Settings", {
     extend: 'Ext.Container',
     xtype: 'settingsview',
+    requires: [
+        'App.view.Login'
+    ],
 
     config: {
         items: [{
@@ -18,6 +21,8 @@ Ext.define("App.view.Settings", {
             xtype: 'container',
             cls: 'settings',
             items: [{
+                xtype: 'login'
+            }, {
                 xtype: 'component',
                 html: 
                     '<h1 class="title">Copyright</h1>' +

@@ -15,7 +15,16 @@ OpenLayers.Lang.en = {
 
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Cancel',
-    'layer_switcher.done': 'Done'
+    'layer_switcher.done': 'Done',
+
+    // login/logout
+    'loginButtonText': 'Log in',
+    'welcomeText': '<p>You are {username}.</p>',
+    'logoutButtonText': 'Log out',
+    'loginLabel': 'Login',
+    'passwordLabel': 'Password',
+    'loginSubmitButtonText': 'Submit',
+    'loginCancelButtonText': 'Cancel'
 };
 OpenLayers.Lang.fr = {
     "summits": "Sommets",
@@ -25,9 +34,22 @@ OpenLayers.Lang.fr = {
 
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Annuler',
-    'layer_switcher.done': 'OK'
+    'layer_switcher.done': 'OK',
+
+    // login/logout
+    'loginButtonText': 'Me connecter',
+    'welcomeText': '<p>Vous êtes {username}.</p>',
+    'logoutButtonText': 'Me déconnecter',
+    'loginLabel': 'Nom',
+    'passwordLabel': 'Mot de passe',
+    'loginSubmitButtonText': 'Me connecter',
+    'loginCancelButtonText': 'Annuler'
 };
 OpenLayers.Lang.setCode("${lang}");
+
+// App.info includes information that is needed by internal
+// components, such as the Login view component.
+App.info = '${info | n}';
 
 // define the map and layers
 App.map = new OpenLayers.Map({

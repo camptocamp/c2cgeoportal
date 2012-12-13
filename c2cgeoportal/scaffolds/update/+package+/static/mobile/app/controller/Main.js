@@ -9,6 +9,11 @@ Ext.define('App.controller.Main', {
                 selector: 'settingsview',
                 xtype: 'settingsview',
                 autoCreate: true
+            },
+            loginFormView: {
+                selector: 'loginformview',
+                xtype: 'loginformview',
+                autoCreate: true
             }
         },
         control: {
@@ -27,6 +32,21 @@ Ext.define('App.controller.Main', {
                     this.redirectTo('settings');
                 }
             },
+            'button[action=loginform]': {
+                tap: function() {
+                    this.redirectTo('loginform');
+                }
+            },
+            'button[action=login]': {
+                tap: function() {
+                    this.login();
+                }
+            },
+            'button[action=logout]': {
+                tap: function() {
+                    this.logout();
+                }
+            },
             mainView: {
                 longpress: function(view, bounds, map) {
                     this.queryMap(view, bounds, map);
@@ -37,7 +57,8 @@ Ext.define('App.controller.Main', {
             '': 'showHome',
             'home': 'showHome',
             'layers': 'showLayers',
-            'settings': 'showSettings'
+            'settings': 'showSettings',
+            'loginform': 'showLoginForm'
         }
     },
     
@@ -63,14 +84,31 @@ Ext.define('App.controller.Main', {
         Ext.Viewport.setActiveItem(view);
     },
 
+    showLoginForm: function() {
+        var view = this.getLoginFormView();
+        Ext.Viewport.setActiveItem(view);
+    },
+
     showSettings: function() {
         var view = this.getSettingsView();
         Ext.Viewport.setActiveItem(view);
     },
 
+    login: function() {
+        this.getLoginFormView().submit();
+    },
+
+    logout: function() {
+        window.location = App.logoutUrl;
+    },
+
     recenterMap: function(f) {
         this.getMainView().recenterOnFeature(f);
         this.redirectTo('home');
+    },
+
+    toArray: function(value) {
+        return Ext.isArray(value) ? value : value.split(',');
     },
 
     queryMap: function(view, bounds, map) {
@@ -81,9 +119,10 @@ Ext.define('App.controller.Main', {
             var layer = map.layers[i];
             if (!layer.isBaseLayer && layer.visibility &&
                 layer.CLASS_NAME != 'OpenLayers.Layer.Vector') {
-                var layersParam = layer.params.LAYERS;
+                var layersParam = this.toArray(layer.params.LAYERS),
+                    WFSTypes = this.toArray(layer.WFSTypes);
                 for (var j=0; j<layersParam.length; j++) {
-                    if (layer.WFSTypes.indexOf(layersParam[j]) != -1) {
+                    if (WFSTypes.indexOf(layersParam[j]) != -1) {
                         layers.push(layersParam[j]);
                     }
                 }
@@ -92,7 +131,7 @@ Ext.define('App.controller.Main', {
 
         // currently displayed baseLayer
         if (map.baseLayer.WFSTypes) {
-            layers = layers.concat(map.baseLayer.WFSTypes);
+            layers = layers.concat(this.toArray(map.baseLayer.WFSTypes));
         }
 
         // launch query only if there are layers to query
