@@ -1,12 +1,37 @@
 Ext.define('App.view.Login', {
-    extend: 'Ext.Component',
+    extend: 'Ext.Container',
     xtype: 'login',
+    config: {
+        layout: {
+            type: 'vbox',
+            align: 'left'
+        }
+    },
     initialize: function() {
-        var tpl = App.info.username ? 'authenticatedTpl' : 'unauthenticatedTpl';
-        this.setTpl(OpenLayers.i18n(tpl));
-        this.setData({
-            username: App.info.username,
-            logoutUrl: App.logoutUrl
-        });
+        if (App.info) {
+            var items;
+            if (!App.info.username) {
+                items = [{
+                    xtype: 'button',
+                    text: OpenLayers.i18n('loginButtonText'),
+                    iconCls: 'lock_closed',
+                    iconMask: true,
+                    action: 'loginform'
+                }];
+            } else {
+                items = [{
+                    xtype: 'component',
+                    tpl: OpenLayers.i18n('welcomeText'),
+                    data: {username: App.info.username}
+                }, {
+                    xtype: 'button',
+                    text: OpenLayers.i18n('logoutButtonText'),
+                    iconCls: 'lock_open',
+                    iconMask: true,
+                    action: 'logout'
+                }];
+            }
+            this.setItems(items);
+        }
     }
 });

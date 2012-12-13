@@ -32,9 +32,19 @@ Ext.define('App.controller.Main', {
                     this.redirectTo('settings');
                 }
             },
+            'button[action=loginform]': {
+                tap: function() {
+                    this.redirectTo('loginform');
+                }
+            },
             'button[action=login]': {
                 tap: function() {
-                    this.submitLoginForm();
+                    this.login();
+                }
+            },
+            'button[action=logout]': {
+                tap: function() {
+                    this.logout();
                 }
             },
             mainView: {
@@ -84,8 +94,12 @@ Ext.define('App.controller.Main', {
         Ext.Viewport.setActiveItem(view);
     },
 
-    submitLoginForm: function() {
+    login: function() {
         this.getLoginFormView().submit();
+    },
+
+    logout: function() {
+        window.location = App.logoutUrl;
     },
 
     recenterMap: function(f) {

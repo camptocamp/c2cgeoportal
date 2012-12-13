@@ -393,9 +393,9 @@ Login/logout
 The mobile application includes a ``Login`` view component that the
 ``Settings`` view can include as one of its items. This component enables login
 and logout. If the user is not authenticated the ``Login`` component adds
-a "log in" link, that, when clicked, redirects the user to a login form view.
+a "log in" button, that, when clicked, redirects the user to a login form view.
 If the user is authenticated the ``Login`` component adds a welcome message,
-and a "log out" link.
+and a "log out" button.
 
 Here's an example of a ``Settings`` view that includes a ``Login`` view
 component::
@@ -435,25 +435,24 @@ component::
         }
     });
 
-The HTML rendered by the ``Login`` component can be customized through the
-``authenticatedTpl``, ``unauthenticatedTpl``, ``loginLabel``,
-``passwordLabel``, and ``loginSubmitButtonText`` i18n keys. The last three
-keys pertain to the login form, they should be self-explanatory.
-``authenticatedTpl`` and ``unauthenticatedTpl`` are templates determining
-the HTML rendered by the ``Login`` component when the user is authenticated and
-unauthenticated, respectively. By default, ``config.js`` includes the following
-english translations::
+The i18n keys relative to the login/logout functionality are: ``welcomeText``,
+``loginLabel``, ``passwordLabel``, ``loginSubmitButtonText``, and
+``loginCancelButtonText``. The last four pertain to the login form, they should
+be self-explanatory. ``welcomeText`` is the text displayed above the "log out"
+button when the user is authenticated, it typically includes the variable
+``{username}``, which is changed to the actual username at render time. By
+default, ``config.js`` includes the following english translations::
 
     OpenLayers.Lang.en = {
         ...
         // login/logout
-        'authenticatedTpl':
-            '<p>You are {username}. <a href="{logoutUrl}">Log out.</a></p>',
-        'unauthenticatedTpl':
-            '<p><a class="login" href="#loginform">Log in.</a></p>',
+        'loginButtonText': 'Log in',
+        'welcomeText': '<p>You are {username}.</p>',
+        'logoutButtonText': 'Log out',
         'loginLabel': 'Login',
         'passwordLabel': 'Password',
-        'loginSubmitButtonText': 'Submit'
+        'loginSubmitButtonText': 'Submit',
+        'loginCancelButtonText': 'Cancel'
     };
 
 For the ``Login`` component to work the ``App.info`` JavaScript variable should

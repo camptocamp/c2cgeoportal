@@ -18,13 +18,13 @@ OpenLayers.Lang.en = {
     'layer_switcher.done': 'Done',
 
     // login/logout
-    'authenticatedTpl':
-        '<p>You are {username}. <a href="{logoutUrl}">Log out.</a></p>',
-    'unauthenticatedTpl':
-        '<p><a class="login" href="#loginform">Log in.</a></p>',
+    'loginButtonText': 'Log in',
+    'welcomeText': '<p>You are {username}.</p>',
+    'logoutButtonText': 'Log out',
     'loginLabel': 'Login',
     'passwordLabel': 'Password',
-    'loginSubmitButtonText': 'Submit'
+    'loginSubmitButtonText': 'Submit',
+    'loginCancelButtonText': 'Cancel'
 };
 OpenLayers.Lang.fr = {
     "summits": "Sommets",
@@ -37,13 +37,13 @@ OpenLayers.Lang.fr = {
     'layer_switcher.done': 'OK',
 
     // login/logout
-    'authenticatedTpl':
-        '<p>Vous êtes {username}. <a href="{logoutUrl}">Déconnexion.</a></p>',
-    'unauthenticatedTpl':
-        '<p><a class="login" href="#loginform">.</a>Connexion.</p>',
-    'loginLabel': 'Login',
+    'loginButtonText': 'Me connecter',
+    'welcomeText': '<p>Vous êtes {username}.</p>',
+    'logoutButtonText': 'Me déconnecter',
+    'loginLabel': 'Nom',
     'passwordLabel': 'Mot de passe',
-    'loginSubmitButtonText': 'Envoyer'
+    'loginSubmitButtonText': 'Me connecter',
+    'loginCancelButtonText': 'Annuler'
 };
 OpenLayers.Lang.setCode("${lang}");
 

@@ -5,6 +5,7 @@ Ext.define('App.view.LoginForm', {
         'Ext.form.FieldSet',
         'Ext.field.Text',
         'Ext.field.Password',
+        'Ext.Container',
         'Ext.Button'
     ],
     fullscreen: true,
@@ -29,10 +30,24 @@ Ext.define('App.view.LoginForm', {
                 label: OpenLayers.i18n('passwordLabel')
             }]
         }, {
-            xtype: 'button',
-            text: OpenLayers.i18n('loginSubmitButtonText'),
-            ui: 'confirm',
-            action: 'login'
+            xtype: 'container',
+            layout: {
+                type: 'hbox',
+                align: 'start',
+                pack: 'center'
+            },
+            items: [{
+                xtype: 'button',
+                text: OpenLayers.i18n('loginCancelButtonText'),
+                action: 'home',
+                margin: 2
+            }, {
+                xtype: 'button',
+                text: OpenLayers.i18n('loginSubmitButtonText'),
+                ui: 'confirm',
+                action: 'login',
+                margin: 2
+            }]
         }]
     }
 });
