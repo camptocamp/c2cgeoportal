@@ -19,8 +19,8 @@ from math import sqrt
 
 from c2cgeoportal.lib import get_setting, caching
 from c2cgeoportal.lib.functionality import get_functionality
-from c2cgeoportal.models import DBSession, Layer, LayerGroup, Theme, \
-    RestrictionArea, Role, layer_ra, role_ra
+from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
+    Theme, RestrictionArea, Role, layer_ra, role_ra
 
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -42,6 +42,27 @@ def _wms_getcap(url):
         errors.append(error)
         log.exception(error)
     return wms, errors
+
+
+def _create_layer_query(role_id):
+    """ Create an SQLAlchemy query for Layer and for the role
+        identified to by ``role_id``.
+    """
+    q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
+    if role_id:
+        q2 = DBSession.query(Layer)
+        q2 = q2.join(
+            (layer_ra, Layer.id == layer_ra.c.layer_id),
+            (RestrictionArea,
+                RestrictionArea.id == layer_ra.c.restrictionarea_id),
+            (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
+            (Role, Role.id == role_ra.c.role_id))
+        q2 = q2.filter(Role.id == role_id)
+        q2 = q2.filter(and_(
+            Layer.public != True,
+            functions.area(RestrictionArea.area) > 0))  # NOQA
+        q = q.union(q2)
+    return q
 
 
 class Entry(object):
@@ -135,6 +156,7 @@ class Entry(object):
             'type': layer.layerType,
             'legend': layer.legend,
             'isChecked': layer.isChecked,
+            'public': layer.public,
         }
         if layer.identifierAttributeField:
             l['identifierAttribute'] = layer.identifierAttributeField
@@ -328,23 +350,12 @@ class Entry(object):
 
     @cache_region.cache_on_arguments()
     def _themes(self, role_id):
+        """
+        This function returns theme information for the role identified
+        to by ``role_id``.
+        """
         errors = []
-        query = DBSession.query(Layer).filter(Layer.public == True)
-
-        if role_id is not None:
-            query2 = DBSession.query(Layer)
-            query2 = query2.join(
-                (layer_ra, Layer.id == layer_ra.c.layer_id),
-                (RestrictionArea,
-                    RestrictionArea.id == layer_ra.c.restrictionarea_id),
-                (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
-                (Role, Role.id == role_ra.c.role_id))
-            query2 = query2.filter(Role.id == role_id)
-            query2 = query2.filter(and_(
-                Layer.public != True,
-                functions.area(RestrictionArea.area) > 0))
-            query = query.union(query2)
-
+        query = _create_layer_query(role_id)
         query = query.filter(Layer.isVisible == True)
         query = query.order_by(Layer.order.asc())
         layers = query.all()
@@ -360,25 +371,24 @@ class Entry(object):
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
 
         exportThemes = []
-
         for theme in themes:
-            if theme.display:
-                children, children_errors, stop = self._getChildren(
-                    theme, layers, wms_layers, wms)
-                errors += children_errors
-                if stop:
-                    break
-                # test if the theme is visible for the current user
-                if len(children) > 0:
-                    icon = self._getIconPath(theme.icon) \
-                        if theme.icon \
-                        else self.request.static_url(
-                            'c2cgeoportal:static/images/blank.gif')
-                    exportThemes.append({
-                        'name': theme.name,
-                        'icon': icon,
-                        'children': children
-                    })
+            children, children_errors, stop = self._getChildren(
+                theme, layers, wms_layers, wms)
+            errors += children_errors
+            if stop:
+                break
+            # test if the theme is visible for the current user
+            if len(children) > 0:
+                icon = self._getIconPath(theme.icon) \
+                    if theme.icon \
+                    else self.request.static_url(
+                        'c2cgeoportal:static/images/blank.gif')
+                exportThemes.append({
+                    'display': theme.display,
+                    'name': theme.name,
+                    'icon': icon,
+                    'children': children
+                })
 
         return exportThemes, errors
 
@@ -466,6 +476,7 @@ class Entry(object):
             self.request.user.role.id
 
         themes, errors = self._themes(role_id)
+        themes = filter(lambda theme: theme['display'], themes)
 
         d = {
             'themes': json.dumps(themes),
@@ -525,6 +536,79 @@ class Entry(object):
         self.request.response.content_type = 'application/javascript'
         return d
 
+    def mobile(self):
+        """
+        View callable for the mobile application's index.html file.
+        """
+        return {'lang': self.lang}
+
+    def mobileconfig(self):
+        """
+        View callable for the mobile application's config.js file.
+        """
+        errors = []
+        layer_info = []
+        public_only = True
+
+        theme_name = self.request.params.get('theme')
+        user = self.request.user
+
+        if theme_name:
+            role_id = None if user is None else user.role.id
+
+            themes, errors = self._themes(role_id)
+            themes = filter(lambda theme: theme['name'] == theme_name, themes)
+            theme = themes[0] if len(themes) > 0 else None
+
+            if theme is None:
+                raise HTTPNotFound('Theme %s does not exist' % theme_name)
+
+            def process(node, layer_info, public_only=True):
+                if 'children' in node:
+                    for child_node in node['children']:
+                        public_only = process(
+                            child_node, layer_info, public_only)
+                else:
+                    layer_info.append(node)
+                    public_only = public_only and node['public'] is True
+                return public_only
+
+            public_only = process(theme, layer_info)
+
+        # we only support WMS layers right now
+        layer_info = filter(lambda li: li['type'] == 'internal WMS', layer_info)
+
+        # comma-separated string including the names of layers of the
+        # requested theme
+        layers = ','.join([li['name'] for li in layer_info])
+
+        # comma-separated string including the names of layers that
+        # should visible by default in the map
+        visible_layers = filter(lambda li: li['isChecked'] is True, layer_info)
+        visible_layers = ','.join(li['name'] for li in visible_layers)
+
+        # comma-separated string including the feature types supported
+        # by WFS service
+        wfs_types = ','.join(self._internalWFSTypes())
+
+        # info includes various information that is not used by config.js,
+        # but by other - private to the integrator - parts of the mobile
+        # application.
+        info = {
+            'username': user.username if user else '',
+            'publicLayersOnly': public_only
+        }
+
+        self.request.response.content_type = 'application/javascript'
+        return {
+            'lang': self.lang,
+            'layers': layers,
+            'visible_layers': visible_layers,
+            'wfs_types': wfs_types,
+            'server_error': json.dumps(errors),
+            'info': json.dumps(info)
+        }
+
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
         # OWSLib 0.5 does not read layer attributs from WMS Capabilities, so
@@ -580,8 +664,8 @@ class Entry(object):
         role_id = self.request.params.get("role_id") or None
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
-
-        return self._themes(role_id)[0]
+        themes = self._themes(role_id)[0]
+        return filter(lambda theme: theme['display'], themes)
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):

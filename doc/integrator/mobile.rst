@@ -138,26 +138,57 @@ lines before the ``main`` function's return statement::
 
     # mobile views and routes
     config.add_route('mobile_index_dev', '/mobile_dev/')
-    config.add_view('c2cgeoportal.views.mobile.index',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobile',
                     renderer='<package_name>:static/mobile/index.html',
                     route_name='mobile_index_dev')
     config.add_route('mobile_config_dev', '/mobile_dev/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobileconfig',
                     renderer='<package_name>:static/mobile/config.js',
                     route_name='mobile_config_dev')
     config.add_static_view('mobile_dev', '<package_name>:static/mobile')
 
     config.add_route('mobile_index_prod', '/mobile/')
-    config.add_view('c2cgeoportal.views.mobile.index',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobile',
                     renderer='<package_name>:static/mobile/build/production/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobileconfig',
                     renderer='<package_name>:static/mobile/build/production/config.js',
                     route_name='mobile_config_prod')
     config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
 
 Replace ``<package_name>`` with the project's actual package name.
+
+.. note::
+
+    With c2cgeoportal 1.2 and lower the definitions of views is
+    different::
+
+        # mobile views and routes
+        config.add_route('mobile_index_dev', '/mobile_dev/')
+        config.add_view('c2cgeoportal.views.mobile.index',
+                        renderer='<package_name>:static/mobile/index.html',
+                        route_name='mobile_index_dev')
+        config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+        config.add_view('c2cgeoportal.views.mobile.config',
+                        attr='mobileconfig',
+                        renderer='<package_name>:static/mobile/config.js',
+                        route_name='mobile_config_dev')
+        config.add_static_view('mobile_dev', '<package_name>:static/mobile')
+
+        config.add_route('mobile_index_prod', '/mobile/')
+        config.add_view('c2cgeoportal.views.mobile.index',
+                        renderer='<package_name>:static/mobile/build/production/index.html',
+                        route_name='mobile_index_prod')
+        config.add_route('mobile_config_prod', '/mobile/config.js')
+        config.add_view('c2cgeoportal.views.mobile.config',
+                        renderer='<package_name>:static/mobile/build/production/config.js',
+                        route_name='mobile_config_prod')
+        config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
 
 Now switch to the next section.
 
@@ -195,26 +226,42 @@ Configuring the map and the layers
 
 By default the mobile application includes three OSM layers, and
 a camptocamp.org WMS layer. The OSM layers are base layers. The camptocamp.org
-WMS layer is an overlay. To change the map configuration and the layers for the
-mobile application edit the project's ``static/mobile/config.js`` and modify
-the config object passed to the ``OpenLayers.Map`` constructor. The execution
-of the ``config.js`` script should result in ``App.map`` being set to an
-``OpenLayers.Map`` instance.
+WMS layer is an overlay.
+
+To change the map configuration and the layers for the mobile application edit
+the project's ``static/mobile/config.js`` and modify the config object passed
+to the ``OpenLayers.Map`` constructor. The execution of the ``config.js``
+script should result in ``App.map`` being set to an ``OpenLayers.Map``
+instance.
 
 In addition to the regular options for ``OpenLayers.Layer.WMS`` two specific
-options can be defined: ``allLayers`` and ``WFSTypes``. The ``allLayers``
-option is an array of possible WMS layers, this is used by the overlay
-selector. The ``WFSTypes`` option is an array of corresponding feature types,
-it is used by the map querier. If a layer is visible and it has a corresponding
-feature type then it will be sent in the (WFS GetFeature) map query.
+options can be defined: ``allLayers`` and ``WFSTypes``.
 
-.. note::
+``allLayers``
 
-    The ``WFSTypes`` config option can be used for the base layers as well.
-    In this case, the given feature types should also correspond to queriable
+    It references the list of WMS layers that can be displayed in the map. It
+    is used by the overlay selector when the user selects/unselects overlays.
+
+    Note that the value of the ``layers`` WMS parameter (in the third argument
+    passed to ``OpenLayers.Layer.WMS``), which defines the WMS layers displayed
+    by default, should be a subset of ``allLayers``.
+
+    Note also that, if the ``layers`` WMS parameter is not set, then the
+    ``visibility`` property should be set to ``false`` in the options (4th
+    arguments) passed to ``OpenLayers.Layer.WMS``.
+
+``WFSTypes``
+
+    It references the list of feature types supported by the WFS. It is used by
+    the map querier when the user queries the map with long-press. Only layers
+    that are referenced in both ``allLayers`` and ``WFSTypes`` are effectively
+    queried.
+
+    The ``WFSTypes`` config option can be used for the base layers as well. In
+    this case, the provided feature types should have corresponding queryable
     layers in the mapfile.
 
-For example::
+Here is an example of a statically-defined WMS layer::
 
     new OpenLayers.Layer.WMS(
         'overlay',
@@ -243,6 +290,52 @@ replace ``OpenLayers/Layer/OSM.js`` by ``OpenLayers/Layer/WMTS.js`` if the base
 layers are all WMTS layers. You will also replace
 ``proj4js/lib/projCode/merc.js`` by ``EPSG21781.js`` if the map uses the Swiss
 projection.
+
+Theme
+~~~~~
+
+If a specific theme is requested (e.g. ``/mobile/?theme=water``) then
+the ``config.js`` Mako template receives the following template
+variables:
+
+``layers``
+
+    Comma-separated string providing the list of layers associated to the
+    requested theme. The list depends on the user credentials. This value is to
+    be used for the ``allLayers`` property of the ``OpenLayers.Layer.WMS``
+    object. See example below.
+
+``wfs_types``
+
+    Comma-separated string providing the list of feature types exposed by the
+    WFS. This value is to be used for the ``WFSTypes`` property of the
+    ``OpenLayers.Layer.WMS`` object.
+
+``visible_layers``
+
+    Comma-separated string providing the list of layers associated to the
+    requested theme and that are configured as visible (``isChecked`` is
+    ``TRUE``) in the ``layer`` database table. This value is to be used for the
+    ``layers`` WMS parameter of the ``OpenLayers.Layer.WMS`` object.
+
+Here is an example of a dynamically-defined WMS layer::
+
+    new OpenLayers.Layer.WMS(
+        'overlay',
+        App.wmsUrl,
+        {
+            // layers to display at startup
+            layers: "${visible_layers}",
+            transparent: true
+        },
+        {
+            singleTile: true,
+            // list of available layers
+            allLayers: "${layers}",
+            // list of queriable layers
+            WFSTypes: "${wfs_types}"
+        }
+    )
 
 UI strings translations
 -----------------------
@@ -285,9 +378,87 @@ config for the ``raster web services``.
 Settings view
 -------------
 
-The ``Settings`` view can be customized to suit the project needs. It will not
-be overwritten by any automatic c2cgeoportail update.
-One can add their own text or components in this view.
+The ``Settings`` view, located in ``app/view/Settings.js``, can be customized
+to suit the project needs. The ``Settings.js`` file is part of c2cgeoportal's
+``c2cgeoportal_create`` scaffold, it will therefore not be overwritten when
+applying the ``c2cgeoportal_update`` scaffold during an update of c2cgeoportal.
+
 
 If style customization is also required for components in this view, use the
 ``custom.scss`` file.
+
+Login/logout
+~~~~~~~~~~~~
+
+The mobile application includes a ``Login`` view component that the
+``Settings`` view can include as one of its items. This component enables login
+and logout. If the user is not authenticated the ``Login`` component adds
+a "log in" button, that, when clicked, redirects the user to a login form view.
+If the user is authenticated the ``Login`` component adds a welcome message,
+and a "log out" button.
+
+Here's an example of a ``Settings`` view that includes a ``Login`` view
+component::
+
+    Ext.define("App.view.Settings", {
+        extend: 'Ext.Container',
+        xtype: 'settingsview',
+        requires: [
+            // Do not forget this requirement, or Sencha Touch
+            // will complain that "widget.login" is an
+            // unrecognized alias.
+            'App.view.Login'
+        ],
+        config: {
+            items: [{
+                xtype: 'toolbar',
+                docked: 'top',
+                items: [{
+                    xtype: 'spacer'
+                }, {
+                    xtype: 'button',
+                    iconCls: 'home',
+                    iconMask: true,
+                    action: 'home'
+                }]
+            }, {
+                xtype: 'container',
+                cls: 'settings',
+                items: [{
+                    xtype: 'component':
+                    html: '<p>Some text</p>'
+                }, {
+                    // This is the login view component.
+                    xtype: 'login'
+                }]
+            }]
+        }
+    });
+
+The i18n keys relative to the login/logout functionality are: ``welcomeText``,
+``loginLabel``, ``passwordLabel``, ``loginSubmitButtonText``, and
+``loginCancelButtonText``. The last four pertain to the login form, they should
+be self-explanatory. ``welcomeText`` is the text displayed above the "log out"
+button when the user is authenticated, it typically includes the variable
+``{username}``, which is changed to the actual username at render time. By
+default, ``config.js`` includes the following english translations::
+
+    OpenLayers.Lang.en = {
+        ...
+        // login/logout
+        'loginButtonText': 'Log in',
+        'welcomeText': '<p>You are {username}.</p>',
+        'logoutButtonText': 'Log out',
+        'loginLabel': 'Login',
+        'passwordLabel': 'Password',
+        'loginSubmitButtonText': 'Submit',
+        'loginCancelButtonText': 'Cancel'
+    };
+
+For the ``Login`` component to work the ``App.info`` JavaScript variable should
+be set. The setting of this variable should be done anywhere in the
+``config.js`` file, with this::
+
+    App.info = '${info | n}';
+
+By default ``config.js`` includes it.

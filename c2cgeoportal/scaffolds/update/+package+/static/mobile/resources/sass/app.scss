@@ -22,6 +22,8 @@
 
 @include pictos-iconmask('add');
 @include pictos-iconmask('minus1');
+@include pictos-iconmask('lock_closed');
+@include pictos-iconmask('lock_open');
 
 /* smaller font-size */
 .x-list .x-list-item {

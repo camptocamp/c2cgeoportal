@@ -30,6 +30,7 @@ class TestEntryView(TestCase):
         user2 = User(username=u'__test_user2', password=u'__test_user2', role=role2)
 
         public_layer = Layer(name=u'__test_public_layer', order=40, public=True)
+        public_layer.isChecked = False
 
         private_layer = Layer(name=u'__test_private_layer', order=40, public=False)
         private_layer.geoTable = 'a_schema.a_geo_table'
@@ -158,7 +159,7 @@ class TestEntryView(TestCase):
     # viewer view tests
     #
 
-    def _create_entry_obj(self, username=None):
+    def _create_entry_obj(self, username=None, params={}):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
@@ -168,6 +169,7 @@ class TestEntryView(TestCase):
             }
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url: '/dummy/route/url'
+        request.params = params
 
         if username:
             request.user = DBSession.query(User) \
@@ -177,37 +179,31 @@ class TestEntryView(TestCase):
 
         return Entry(request)
 
-    def test_index_no_auth(self):
+    def _call_with_wms_mocked(self, fn):
         from mock import patch, Mock, MagicMock
         from contextlib import nested
 
-        entry = self._create_entry_obj()
-
-        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
+        patch1 = patch(
+            'c2cgeoportal.views.entry.WebMapService', MagicMock())
         patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
         with nested(patch1, patch2) as (_, mock_urlopen):
                 m = Mock()
                 m.read.return_value = ''
                 mock_urlopen.return_value = m
-                response = entry.viewer()
+                response = fn()
+        return response
 
+    def test_index_no_auth(self):
+        entry = self._create_entry_obj()
+        response = self._call_with_wms_mocked(entry.viewer)
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
     def test_index_auth_no_edit_permission(self):
         import json
-        from mock import patch, Mock, MagicMock
-        from contextlib import nested
 
         entry = self._create_entry_obj(username=u'__test_user1')
-
-        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
-        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
-        with nested(patch1, patch2) as (_, mock_urlopen):
-                m = Mock()
-                m.read.return_value = ''
-                mock_urlopen.return_value = m
-                response = entry.viewer()
+        response = self._call_with_wms_mocked(entry.viewer)
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -228,18 +224,9 @@ class TestEntryView(TestCase):
 
     def test_index_auth_edit_permission(self):
         import json
-        from mock import patch, Mock, MagicMock
-        from contextlib import nested
 
         entry = self._create_entry_obj(username=u'__test_user2')
-
-        patch1 = patch('c2cgeoportal.views.entry.WebMapService', MagicMock())
-        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
-        with nested(patch1, patch2) as (_, mock_urlopen):
-                m = Mock()
-                m.read.return_value = ''
-                mock_urlopen.return_value = m
-                response = entry.viewer()
+        response = self._call_with_wms_mocked(entry.viewer)
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -256,6 +243,53 @@ class TestEntryView(TestCase):
         layer = layers[1]
         self.assertEqual(layer['name'], '__test_public_layer')
         self.assertFalse('editable' in layer)
+
+    def test_mobileconfig_no_auth_no_theme(self):
+        entry = self._create_entry_obj()
+        response = self._call_with_wms_mocked(entry.mobileconfig)
+
+        layers = response['layers']
+        self.assertEqual(layers, '')
+
+    def test_mobileconfig_no_auth_theme(self):
+        entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        response = self._call_with_wms_mocked(entry.mobileconfig)
+
+        layers = response['layers'].split(',')
+        self.assertEqual(len(layers), 2)
+        layer = layers[0]
+        self.assertEqual(layer, u'__test_public_layer')
+        layer = layers[1]
+        self.assertEqual(layer, u'__test_layer_in_group')
+
+        visible_layers = response['visible_layers']
+        self.assertEqual(visible_layers, '__test_layer_in_group')
+
+        info = response['info']
+        self.assertEqual(info,
+                '{"username": "", "publicLayersOnly": true}')
+
+    def test_mobileconfig_auth_theme(self):
+        entry = self._create_entry_obj(
+            params={'theme': u'__test_theme'}, username=u'__test_user1')
+        response = self._call_with_wms_mocked(entry.mobileconfig)
+
+        layers = response['layers'].split(',')
+        self.assertEqual(len(layers), 3)
+        layer = layers[0]
+        self.assertEqual(layer, u'__test_private_layer')
+        layer = layers[1]
+        self.assertEqual(layer, u'__test_public_layer')
+        layer = layers[2]
+        self.assertEqual(layer, u'__test_layer_in_group')
+
+        visible_layers = response['visible_layers']
+        self.assertEqual(visible_layers,
+            '__test_private_layer,__test_layer_in_group')
+
+        info = response['info']
+        self.assertEqual(info,
+                '{"username": "__test_user1", "publicLayersOnly": false}')
 
     def _find_layer(self, themes, layer_name):
         for l in themes['children']:
@@ -370,6 +404,8 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
+        result = entry.mobile()
+        self.assertEquals(set(result.keys()), set(['lang']))
         result = entry.apijs()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.xapijs()
@@ -437,6 +473,7 @@ class TestEntryView(TestCase):
         layer.disclaimer = "Camptocamp"
         layer.identifierAttributeField = "name"
         layer.geoTable = "tiwms"
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test internal WMS', 
@@ -454,6 +491,7 @@ class TestEntryView(TestCase):
             'disclaimer': 'Camptocamp',
             'identifierAttribute': 'name', 
             'editable': True, 
+            'public': True,
         }, []))
 
         layer = Layer()
@@ -468,6 +506,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test external WMS', 
@@ -480,6 +519,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
+            'public': True,
         }, []))
 
         layer = Layer()
@@ -496,6 +536,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
@@ -510,6 +551,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
+            'public': True,
         }, []))
 
         layer = Layer()
@@ -522,6 +564,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
@@ -533,6 +576,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
+            'public': True,
         }, []))
 
         layer = Layer()
@@ -545,6 +589,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.minResolution = 10
         layer.maxResolution = 1000
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': 'test WMTS', 
@@ -556,6 +601,7 @@ class TestEntryView(TestCase):
             'legend': False, 
             'minResolutionHint': 10, 
             'maxResolutionHint': 1000, 
+            'public': True,
         }, []))
 
         layer = Layer()
@@ -565,13 +611,15 @@ class TestEntryView(TestCase):
         layer.layerType = "no 2D"
         layer.legend = False
         layer.metadataURL = 'http://example.com/wmsfeatures.metadata'
+        layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
             'name': u'test no 2D', 
             'isChecked': False, 
             'type': u'no 2D', 
             'legend': False, 
-            'metadataURL': u'http://example.com/wmsfeatures.metadata'
+            'metadataURL': u'http://example.com/wmsfeatures.metadata',
+            'public': True,
         }, []))
 
         curdir = os.path.dirname(os.path.abspath(__file__))
@@ -585,6 +633,7 @@ class TestEntryView(TestCase):
         layer.imageType = "image/png"
         layer.isChecked = False
         layer.legend = False
+        layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
             'name': u'test_wmsfeaturesgroup',
@@ -604,6 +653,7 @@ class TestEntryView(TestCase):
                 'minResolutionHint': 1.76,
                 'maxResolutionHint': 8.8200000000000003,
             }],
+            'public': True,
         }, []))
 
         group1 = LayerGroup()
@@ -618,6 +668,7 @@ class TestEntryView(TestCase):
         layer.layerType = "internal WMS"
         layer.imageType = "image/png"
         layer.legend = False
+        layer.public = True
         group1.children = [group2]
         group2.children = [layer]
         self.assertEqual(entry._group(group1, [layer], [], None), ({
@@ -637,7 +688,8 @@ class TestEntryView(TestCase):
                     'isChecked': False,
                     'type': u'internal WMS',
                     'legend': False,
-                    'imageType': u'image/png'
+                    'imageType': u'image/png',
+                    'public': True,
                 }]
             }]
         }, [], False))
