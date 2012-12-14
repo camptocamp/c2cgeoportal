@@ -509,6 +509,15 @@ class Entry(object):
         # specific permalink_themes handling
         if 'permalink_themes' in d:
             d['extra_params'] = d['extra_params'] + d['permalink_themes']
+
+        # check if route to mobile app exists
+        try:
+            d['mobile_url'] = self.request.route_url('mobile_index_prod')
+        except:
+            d['mobile_url'] = None
+
+        d['no_redirect'] = self.request.params.get('no_redirect') is not None
+
         return d
 
     @view_config(route_name='viewer', renderer='viewer.js')
