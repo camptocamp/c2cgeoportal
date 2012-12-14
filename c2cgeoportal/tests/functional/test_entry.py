@@ -397,7 +397,9 @@ class TestEntryView(TestCase):
                 'externalWFSTypes', 'user'])
         result = entry.home()
         self.assertEquals(
-                set(result.keys()), set(['lang', 'debug', 'extra_params']))
+                set(result.keys()),
+                set(['lang', 'debug', 'extra_params',
+                     'mobile_url', 'no_redirect']))
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.edit()
@@ -430,7 +432,9 @@ class TestEntryView(TestCase):
             'themes': ['theme'],
         }
         result = entry.permalinktheme()
-        self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
+        self.assertEquals(result.keys(),
+                ['lang', 'mobile_url', 'permalink_themes',
+                 'no_redirect', 'extra_params', 'debug'])
         self.assertEquals(result['extra_params'], '?permalink_themes=theme')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
@@ -438,7 +442,9 @@ class TestEntryView(TestCase):
             'themes': ['theme1', 'theme2'],
         }
         result = entry.permalinktheme()
-        self.assertEquals(result.keys(), ['lang', 'debug', 'permalink_themes', 'extra_params'])
+        self.assertEquals(result.keys(),
+                ['lang', 'mobile_url', 'permalink_themes',
+                 'no_redirect', 'extra_params', 'debug'])
         self.assertEquals(result['extra_params'], '?permalink_themes=theme1,theme2')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
