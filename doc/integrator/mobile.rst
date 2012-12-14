@@ -59,7 +59,7 @@ Adding a mobile app to a project
 --------------------------------
 
 To be able to add a mobile app to a c2cgeoportal project this project should use
-c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know 
+c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know
 how to upgrade a project.
 
 Adding the Sencha Touch SDK
@@ -462,3 +462,72 @@ be set. The setting of this variable should be done anywhere in the
     App.info = '${info | n}';
 
 By default ``config.js`` includes it.
+
+Multiple mobile applications
+----------------------------
+
+This section discusses the possibility of having multiple mobile applications
+within a c2cgeoportal application.
+
+As you will find out by reading the rest of this section creating multiple
+mobile applications is a clear violation of the "don't repeat yourself"
+principle. It is therefore discouraged; creating multiple *profiles* of the
+mobile application should be done through multiple themes. However you may need
+multiple mobile applications if you want, for example, different base layers,
+and/or a high degree of customization, for each application.
+
+Any c2cgeoportal application includes a mobile application in the
+``<package_name>/static/mobile/`` directory.  The mobile application is created
+by the ``c2cgeoportal_create`` and ``c2cgeoportal_update`` scaffolds. To create
+another mobile application, the easiest is to copy the existing ``mobile``
+directory into a new directory. For example::
+
+    $ cd <package_name>/static
+    $ cp -r mobile mobile2
+
+.. warning::
+
+    It is important to note that the ``c2cgeoportal_update`` scaffold, which is
+    used when updating a c2cgeoportal application to a new c2cgeoportal
+    version, will update the ``mobile`` directory only. This further means that
+    any other mobile application will need to be manually updated (by copying
+    files).
+
+Other things need to be duplicated:
+
+* The ``jsbuild`` mobile config file should be duplicated.
+
+  For this copy
+  ``jsbuild/mobile.cfg`` into ``jsbuild/mobile2.cfg``, for example. You may
+  want to adapt the new config file, based on your needs.
+
+* The ``jsbuild-mobile`` and ``mobile`` Buildout parts should be duplicated.
+
+  For this copy the ``[jsbuild-mobile]`` and ``[mobile]`` sections of
+  ``CONST_buildout.cfg``, them into the application's ``buildout.cfg`` file,
+  rename them (to ``[jsbuild-mobile2]`` and ``[mobile2]``), and adapt their
+  contents so they reference the new mobile directory (``static/mobile2``), and
+  the new ``jsbuild`` mobile config file (``jsbuild/mobile2.cfg``).
+
+  You also need to add ``jsbuild-mobile2`` and ``mobile2`` to the list
+  of parts that are run by Buildout by default::
+
+      [buildout]
+      extends = CONST_buildout.cfg
+      parts += jsbuild-mobile mobile jsbuild-mobile2 mobile2
+
+  At this point you should be able to successfully run Buildout again.
+
+* The mobile routes and views should be duplicated.
+
+  For that edit the application's main ``__init__.py`` file and copy the entire
+  ``# mobile views and routes`` block, and paste it right below the original.
+  Now change the route names, for example from ``mobile_index_dev`` to
+  ``mobile_index_dev2``. Change the route URLs, for example from
+  ``/mobile_dev/`` to ``/mobile_dev2/``. Change the paths to the templates
+  files, for example from
+  ``renderer='<package_name>:static/mobile/index.html'`` to
+  ``renderer='<package_name>:static/mobile2/index.html'``.  Do this for every
+  route and view.
+
+  You should be done.
