@@ -232,11 +232,22 @@ Ext.define("App.view.Main", {
         this.callParent();
     },
 
+    setCenterZoomFromQueryParams: function() {
+        var queryParams = OpenLayers.Util.getParameters();
+        if (queryParams.x && queryParams.y && queryParams.zoom) {
+            this.setCenter(
+                new OpenLayers.LonLat(queryParams.x, queryParams.y));
+            this.setZoom(queryParams.zoom);
+        }
+    },
+
     // initial rendering
     render: function(component) {
         var map = this.getMap();
         var mapContainer = this.down('#map-container').element;
         map.render(mapContainer.dom);
+
+        this.setCenterZoomFromQueryParams();
 
         var center = this.getCenter(),
             zoom = this.getZoom();
