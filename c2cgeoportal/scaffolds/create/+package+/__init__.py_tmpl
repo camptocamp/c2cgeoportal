@@ -38,21 +38,25 @@ def main(global_config, **settings):
 
     # mobile views and routes
     config.add_route('mobile_index_dev', '/mobile_dev/')
-    config.add_view('c2cgeoportal.views.mobile.index',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobile',
                     renderer='{{package}}:static/mobile/index.html',
                     route_name='mobile_index_dev')
     config.add_route('mobile_config_dev', '/mobile_dev/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobileconfig',
                     renderer='{{package}}:static/mobile/config.js',
                     route_name='mobile_config_dev')
     config.add_static_view('mobile_dev', '{{package}}:static/mobile')
 
     config.add_route('mobile_index_prod', '/mobile/')
-    config.add_view('c2cgeoportal.views.mobile.index',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobile',
                     renderer='{{package}}:static/mobile/build/production/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
+    config.add_view('c2cgeoportal.views.entry.Entry',
+                    attr='mobileconfig',
                     renderer='{{package}}:static/mobile/build/production/config.js',
                     route_name='mobile_config_prod')
     config.add_static_view('mobile', '{{package}}:static/mobile/build/production')
