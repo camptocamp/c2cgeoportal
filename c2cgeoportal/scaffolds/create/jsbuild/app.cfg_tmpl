@@ -280,7 +280,7 @@ include =
 #    GeoExt/locale/GeoExt-de.js
     FeatureEditing/resources/lang/de.js
     Styler/lang/de.js
-    WMSBrowser/resources/lang/de.js
+    GeoExt.ux/locale/WMSBrowser-de.js
 #    locale/de.js #GXP
     CGXP/locale/de.js
     Proj/Lang/de.js
