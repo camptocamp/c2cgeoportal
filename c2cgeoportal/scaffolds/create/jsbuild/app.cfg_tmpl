@@ -110,7 +110,6 @@ include =
     plugins/OLSource.js #GXP
     plugins/ZoomToExtent.js #GXP
     plugins/NavigationHistory.js #GXP
-    plugins/ZoomToExtent.js #GXP
 
 [edit.js]
 root =
