@@ -9,10 +9,37 @@ Internationalization
 Client
 ------
 
-For the client parts you have localization files at 
-``<package>/static/js/Proj/Lang/<lang>.js`` where <lang> is the 
-`ISO 639-1 code <http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_,
-example: en, de or fr.
+Translations of the client interface are contained in two kinds of Javascript
+files stored in ``<package>/static/js/Proj/Lang/``:
+
+* ``<lang>.js`` is used to translate data-related strings such as layernames or
+  attributenames (in interrogation results). It is based upon the OpenLayers
+  translation syntax. For instance::
+
+      OpenLayers.Util.extend(OpenLayers.Lang.<lang>, {
+          "layertree": "Themes"
+      });
+
+* ``GeoExt-<lang>.js`` is used to adapt the translations of existing plugins/widgets
+  or to add translations of project-specific plugins. It is based upon the GeoExt
+  translation syntax. Key-value translation pairs are encapsulated by class.
+  For instance::
+
+      GeoExt.Lang.add("<lang>", {
+          "cgxp.tree.LayerTree.prototype": {
+              moveupText: "Move up"
+          }
+      });
+
+.. note::
+    
+    <lang> is the `ISO 639-1 code <http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_.
+    For example: en, de or fr.
+
+.. note::
+
+    Standard translations for CGXP plugins/widgets strings are available on
+    `Github <https://github.com/camptocamp/cgxp/tree/master/core/src/script/CGXP/locale>`_.
 
 ------
 Server
