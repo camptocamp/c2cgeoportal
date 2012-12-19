@@ -1,29 +1,5 @@
 This file includes migration steps for each release of c2cgeoportal.
 
-Version 1.3
-===========
-
-1. The c2cgeoportal mobile application now supports authentication, and dynamic
-   theme/layer configuration based on the database configuration. This requires
-   a few changes to existing applications.
-
-   The c2cgeoportal mobile functions to be configured as view callables in the
-   application are now part of the c2cgeoportal entry.py view module. This
-   change requires changing the way mobile views should be defined in the
-   application. Edit {{package}}/__init__.py and replace the entire "# mobile
-   views and routes" block by the one provided in the "mobile" chapter of the
-   integrator doc [*]. Do not forget to replace "<package_name>" by
-   "{{package}}" in the new route and view definitions.
-
-   [*] <http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html#adding-mobile-routes-and-views>
-
-   To use the "Login" view component as documented in the mobile chapter of the
-   documentation you need to have the following line in
-   {{package}}/static/mobile/config.js:
-
-   App.info = '${info | n}';
-
-   You should add this line even if you don't use the "Login" component.
 
 Version 1.3
 ===========
@@ -74,6 +50,29 @@ Version 1.3
     include for ``Navigation.js``:
 
         OpenLayers/Control/PinchZoom.js
+
+4. The c2cgeoportal mobile application now supports authentication, and dynamic
+   theme/layer configuration based on the database configuration. This requires
+   a few changes to existing applications.
+
+   The c2cgeoportal mobile functions to be configured as view callables in the
+   application are now part of the c2cgeoportal entry.py view module. This
+   change requires changing the way mobile views should be defined in the
+   application. Edit {{package}}/__init__.py and replace the entire "# mobile
+   views and routes" block by the one provided in the "mobile" chapter of the
+   integrator doc [*]. Do not forget to replace "<package_name>" by
+   "{{package}}" in the new route and view definitions.
+
+   [*] <http://docs.camptocamp.net/c2cgeoportal/integrator/mobile.html#adding-mobile-routes-and-views>
+
+   To use the "Login" view component as documented in the mobile chapter of the
+   documentation you need to have the following line in
+   {{package}}/static/mobile/config.js:
+
+   App.info = '${info | n}';
+
+   You should add this line even if you don't use the "Login" component.
+
 
 Version 1.2
 ===========
