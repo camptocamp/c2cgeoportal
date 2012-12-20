@@ -9,8 +9,9 @@ Internationalization
 Client
 ------
 
-Translations of the client interface are contained in two kinds of Javascript
-files stored in ``<package>/static/js/Proj/Lang/``:
+Translations of the browser interfaces (main viewer, edit interfaces and APIs)
+are included in two kinds of Javascript files stored in 
+``<package>/static/js/Proj/Lang/``:
 
 * ``<lang>.js`` is used to translate data-related strings such as layernames or
   attributenames (in interrogation results). It is based upon the OpenLayers
