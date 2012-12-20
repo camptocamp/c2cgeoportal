@@ -55,6 +55,7 @@ Extended APIs.
                 new OpenLayers.Control.ArgParser(),
                 new OpenLayers.Control.Attribution(),
                 new OpenLayers.Control.ScaleLine({
+                    geodesic: true,
                     bottomInUnits: false,
                     bottomOutUnits: false
                 }),
