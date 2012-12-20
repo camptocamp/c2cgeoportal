@@ -138,6 +138,7 @@ If the application code is under Git you also need to update the application
 to reference the new commit for the cgxp submodule::
 
     $ cd ..
+    $ git add cgxp
     $ git commit -m "Update cgxp submodule"
 
 .. warning::
