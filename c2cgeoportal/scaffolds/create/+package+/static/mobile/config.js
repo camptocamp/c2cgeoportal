@@ -73,7 +73,7 @@ App.map = new OpenLayers.Map({
             }
         }),
         new OpenLayers.Control.Attribution(),
-        new OpenLayers.Control.ScaleLine()
+        new OpenLayers.Control.ScaleLine({geodesic: true})
     ],
     layers: [
         new OpenLayers.Layer.OSM("OpenStreetMap", null, {
