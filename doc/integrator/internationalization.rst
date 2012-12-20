@@ -42,6 +42,11 @@ are included in two kinds of Javascript files stored in
     Standard translations for CGXP plugins/widgets strings are available on
     `Github <https://github.com/camptocamp/cgxp/tree/master/core/src/script/CGXP/locale>`_.
 
+.. note::
+
+    Translations from both OpenLayers- and GeoExt-based systems are stored in
+    separated files because of API constraints. Read more at :ref:`integrator_api_i18n`.
+
 ------
 Server
 ------

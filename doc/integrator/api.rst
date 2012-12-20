@@ -145,6 +145,8 @@ that these files have appropriate contents.
     This file should include CSS for CGXP plugins/components used by the
     Extended API. This file is not used by the Simple API.
 
+.. _integrator_api_i18n:
+
 Internationalization
 --------------------
 
