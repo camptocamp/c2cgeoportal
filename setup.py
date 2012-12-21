@@ -14,7 +14,7 @@ install_requires = [
     'sqlahelper',
     'pyramid_tm',
     'papyrus>=0.9',
-    'papyrus_ogcproxy',
+    'papyrus_ogcproxy>=0.2dev1',
     'httplib2',
     'Babel',
     'pyramid_formalchemy>=0.4.3',
