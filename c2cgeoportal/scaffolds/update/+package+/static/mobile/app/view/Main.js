@@ -7,7 +7,7 @@ Ext.define("App.view.Main", {
         'Ext.SegmentedButton',
         'App.model.Layer',
         'App.plugin.StatefulMap',
-        'App.view.Geolocate'
+        'App.view.GeolocateControl'
     ],
 
     config: {
@@ -153,7 +153,7 @@ Ext.define("App.view.Main", {
 
         map.addControls([
             new OpenLayers.Control.Zoom(),
-            new App.view.Geolocate()
+            new App.view.GeolocateControl()
         ]);
     },
 
