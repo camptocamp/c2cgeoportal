@@ -32,6 +32,7 @@ include =
     OpenLayers/Renderer/Canvas.js
     OpenLayers/Renderer/SVG.js
     OpenLayers/Control/TouchNavigation.js
+    OpenLayers/Control/Zoom.js
     OpenLayers/Control/Attribution.js
     OpenLayers/Control/SelectFeature.js
     OpenLayers/Control/ScaleLine.js
