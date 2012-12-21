@@ -77,11 +77,12 @@ Version 1.3
    using that kind of control) might solve incorrect scalelines with mercator
    projections.
 
-6. The geolocate functionality of the mobile application has been refactored.
+7. The geolocate functionality of the mobile application has been refactored.
    It is required to add the following line to the list of includes in
    ``jsbuild/mobile.cfg``:
 
         OpenLayers/Control/Zoom.js
+
 
 Version 1.2
 ===========
