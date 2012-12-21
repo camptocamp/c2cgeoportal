@@ -55,6 +55,30 @@ OpenLayers.Lang.fr = {
         " consulter la <a href='${'${url}'}'>version standard</a>.",
     'close': "Fermer"
 };
+OpenLayers.Lang.de = {
+    "summits": "Gipfel",
+    "huts": "Hütten",
+    "sites": "Sehenswürdigkeiten",
+    "users": "Benutzer",
+
+    // base layer switcher picker (you shouldn't remove this)
+    'layer_switcher.cancel': 'Abbrechen',
+    'layer_switcher.done': 'OK',
+
+    // login/logout
+    'loginButtonText': 'Log in',
+    'welcomeText': '<p>Sie sind {username}.</p>',
+    'logoutButtonText': 'Log out',
+    'loginLabel': 'Login',
+    'passwordLabel': 'Passwort',
+    'loginSubmitButtonText': 'OK',
+    'loginCancelButtonText': 'Abbrechen',
+
+    // redirect to standard application
+    'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
+        " die <a href='${'${url}'}'>Standardversion</a> benutzen.",
+    'close': "Schliessen"
+};
 OpenLayers.Lang.setCode("${lang}");
 
 // App.info includes information that is needed by internal
