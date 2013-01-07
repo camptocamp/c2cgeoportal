@@ -15,7 +15,8 @@ import pyramid_tm
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
-from c2cgeoportal.lib import dbreflection, get_setting, caching
+from c2cgeoportal.lib import dbreflection, get_setting, caching, \
+        MultiDommainPregenerator
 
 # used by (sql|form)alchemy
 srid = None
@@ -169,12 +170,15 @@ def includeme(config):
     config.set_user_validator(default_user_validator)
 
     # add an OGCProxy view
-    config.add_route('ogcproxy', '/ogcproxy',
-                     custom_predicates=(ogcproxy_route_predicate,))
+    config.add_route(
+        'ogcproxy', '/ogcproxy',
+        custom_predicates=(ogcproxy_route_predicate,))
     config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
 
     # add routes to the mapserver proxy
-    config.add_route('mapserverproxy', '/mapserv_proxy')
+    config.add_route(
+        'mapserverproxy', '/mapserv_proxy',
+        pregenerator=MultiDommainPregenerator())
 
     # add routes to csv view
     config.add_route('csvecho', '/csv')
