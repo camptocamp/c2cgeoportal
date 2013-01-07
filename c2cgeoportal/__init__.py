@@ -7,6 +7,7 @@ import yaml
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
+from pyramid.interfaces import IStaticURLInfo
 
 import sqlalchemy
 import sqlahelper
@@ -16,7 +17,7 @@ from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
-        MultiDommainPregenerator
+        MultiDommainPregenerator, MultiDommainStaticURLInfo
 
 # used by (sql|form)alchemy
 srid = None
@@ -288,5 +289,8 @@ def includeme(config):
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')
 
+    config.registry.registerUtility(
+        MultiDommainStaticURLInfo(), IStaticURLInfo)
     # add the static view (for static resources)
-    config.add_static_view('static', 'c2cgeoportal:static')
+    config.add_static_view(
+        'static', 'c2cgeoportal:static')
