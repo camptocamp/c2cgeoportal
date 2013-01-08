@@ -75,15 +75,15 @@ class Entry(object):
 
         # detect if HTTPS scheme must be set
         https_flag = self.settings.get('https_flag_header')
-        if https_flag:
+        if https_flag:  # pragma: no cover
             if https_flag in self.request.headers and \
                     self.request.headers[https_flag] == self.settings.get('https_flag_value'):
                 self.request.scheme = 'https'
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
-    def testi18n(self):
-        _ = self.request.translate  # pragma: no cover
-        return {'title': _('title i18n')}  # pragma: no cover
+    def testi18n(self):  # pragma: no cover
+        _ = self.request.translate
+        return {'title': _('title i18n')}
 
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
@@ -444,13 +444,13 @@ class Entry(object):
                 name = featureType.getElementsByTagName("Name").item(0)
                 if name:
                     featuretypes.append(name.childNodes[0].data)
-                else:
+                else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
             return featuretypes
         except:
             return getCapabilities_xml
 
-    def _external_themes(self):
+    def _external_themes(self):  # pragma nocover
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
             return None
@@ -569,7 +569,7 @@ class Entry(object):
             themes = filter(lambda theme: theme['name'] == theme_name, themes)
             theme = themes[0] if len(themes) > 0 else None
 
-            if theme is None:
+            if theme is None:  # pragma nocover
                 raise HTTPNotFound('Theme %s does not exist' % theme_name)
 
             def process(node, layer_info, public_only=True):

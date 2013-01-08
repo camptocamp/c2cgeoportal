@@ -326,6 +326,14 @@ class TestEntryView(TestCase):
         self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
         self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
 
+        # autenticated
+        request.params = {}
+        request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
+        themes = entry.themes()
+        self.assertEquals(len(themes), 1)
+        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
+        self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
+
         # mapfile error
         request.params = {}
         request.registry.settings = {
@@ -643,12 +651,14 @@ class TestEntryView(TestCase):
         self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
             'name': u'test_wmsfeaturesgroup',
-            'isChecked': False,
             'type': u'internal WMS',
+            'isChecked': False,
             'legend': False,
             'imageType': u'image/png',
             'minResolutionHint': 1.76,
             'maxResolutionHint': 8.8200000000000003,
+            'public': True,
+            'queryable': 0,
             'metadataUrls': [{
                 'url': 'http://example.com/wmsfeatures.metadata',
                 'type': 'TC211',
@@ -658,8 +668,8 @@ class TestEntryView(TestCase):
                 'name': u'test_wmsfeatures',
                 'minResolutionHint': 1.76,
                 'maxResolutionHint': 8.8200000000000003,
+                'queryable': 1,
             }],
-            'public': True,
         }, []))
 
         group1 = LayerGroup()
