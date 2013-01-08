@@ -27,7 +27,7 @@ def setUpCommon():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
-    if db_url is None:
+    if db_url is None:  # pragma: nocover
         return
 
     # verify that we have a working database connection before going
@@ -37,7 +37,7 @@ def setUpCommon():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:
+    except OperationalError:  # pragma: nocover
         return
 
     import sqlahelper
@@ -51,7 +51,7 @@ def tearDownCommon():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
-    if db_url is None:
+    if db_url is None:  # pragma: nocover
         return
 
     # verify that we have a working database connection before going
@@ -61,7 +61,7 @@ def tearDownCommon():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:
+    except OperationalError:  # pragma: nocover
         return
 
     from c2cgeoportal.models import Base
