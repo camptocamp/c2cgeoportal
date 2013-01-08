@@ -85,7 +85,7 @@ def proxy(request):
         # For GET requests, params are added only if the REQUEST
         # parameter is actually provided.
         if 'request' not in _params:
-            params = {}
+            params = {}  # pragma: no cover
         else:
             # WMS GetLegendGraphic request?
             is_glg = ('service' not in _params or _params['service'] == u'wms') and \
