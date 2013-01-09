@@ -31,8 +31,10 @@ parts-directory = buildout/parts
 bin-directory = buildout/bin
 
 [versions]
-# list of the dependencies versions
-# (to be copied from the dumppickedversions output)
+# We currently rely on specific, patched versions of distribute 0.6.22 and
+# zc.buildout 1.5.2 and don't want them to be upgraded.
+distribute = 0.6.22
+zc.buildout = 1.5.2
 
 [vars]
 # project instance id

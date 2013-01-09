@@ -45,9 +45,7 @@ steps:
 
 2. Now, if you want or need to update the application's other dependencies,
    edit the application's Buildout config (``buildout.cfg``), and remove all
-   the lines from the ``[versions]`` section, **except** for ``distribute`` and
-   ``zc.buildout`` . (We currently rely on specific, patched versions of
-   distribute 0.6.22 and zc.buildout 1.5.2). Emptying the ``[versions]``
+   the lines from the ``[versions]`` section. Emptying the ``[versions]``
    section is necessary for getting new dependency versions using ``buildout
    -n`` (see the next step).
 
