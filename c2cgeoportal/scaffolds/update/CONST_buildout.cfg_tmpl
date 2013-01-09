@@ -36,9 +36,6 @@ bin-directory = buildout/bin
 distribute = 0.6.22
 zc.buildout = 1.5.2
 
-# list of the dependencies versions
-# (to be copied from the dumppickedversions output)
-
 [vars]
 # project instance id
 instanceid = override_me
