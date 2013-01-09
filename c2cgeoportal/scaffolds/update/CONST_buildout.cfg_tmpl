@@ -33,6 +33,8 @@ bin-directory = buildout/bin
 [versions]
 # list of the dependencies versions
 # (to be copied from the dumppickedversions output)
+distribute = 0.6.22
+zc.buildout = 1.5.2
 
 [vars]
 # project instance id
