@@ -42,14 +42,14 @@ MapCache
 MapCache is a tool of the MapServer Suite.
 
 He should be configured to use `Memcached <http://memcached.org/>`_ as
-hes Cache, that the only cache that able to delete the expired tiles.
+used Cache, that the only cache that able to delete the expired tiles.
 
 With a configured TileCloud-Chain you can add this configuration::
 
     mapcache:
         mapserver_url: <the url to mapserver, default is ``http://${vars:host}/${vars:instanceid}/mapserv``>
         config_file: <the generated file, default is ``apache/mapcache.xml.in``>
-        resolutions: [<list of resolutions, the first on should be the same as TileCloud one>]
+        resolutions: [<list of resolutions distributed by MapCache, the first on should be the same as TileCloud one>]
         memcache_host: <default is localhost>
         memcache_port: <default is 11211>
         layers: [<list of layers that should be served with MapCache>]
@@ -70,8 +70,8 @@ EC2, SQS, SNS.
 
 See: http://pypi.python.org/pypi/tilecloud-chain.
 
-Initialisation and Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Initialisation
+~~~~~~~~~~~~~~
 
  * Add ``tilecoud-chain`` to the dependencies in the ``setup.py``.
 
@@ -83,21 +83,62 @@ Initialisation and Configuration
 
    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
 
- * Edit the configuration file ``tilegeneration/config.yaml``,
-   actually he is self documented, original file:
-   https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml
-
  * Add configuration to GIT::
 
    git add tilegeneration buildout_tilegeneration.cfg
 
+Configuration
+~~~~~~~~~~~~~
+
+The configuration file is ``tilegeneration/config.yaml``,
+he is self documented, original file:
+https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl
+
+The main thing to do is to:
+
+ * Set the resolutions we want to generate in the ``grids``.
+   If we want to generate different resolution per layers we should create
+   deferent grid.
+   Sub-level of ``grids`` is the grid name.
+
+ * Configure the ``caches`` and set the ``generation``/``default_cache``.
+   Sub-level of ``caches`` is the cache name.
+
+ * Configure de ``layer_default``, the ``layers``, and the
+   ``generation``/``default_layers``.
+   Sub-level of ``layers`` is the layer name.
+
+ * We can drop the empty tiles with an hash comparison,
+   tilecloud-chain has a tool to help us::
+
+       ./buildout/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+
+   We consider that the first tile of the max zoom is empty.
+   Than copy past the result in the layer config.
+
+ * If you need it you can generate the WMTS capabilities file::
+
+     ./buildout/bin/generate_controller --generate_wmts_capabilities
+
+ * And an OpenLayers test page::
+
+     ./buildout/bin/generate_controller --openlayers-test
+
+If you generate the tiles locally you don't needs all the configuration
+variable, because many of them in the ``generation`` part are for
+AWS generation.
+
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package offer two commands line be free to see the help::
+This package offer two commands line, one to generate the tiles locally,
+see help::
+
+    ./buildout/bin/generate_tiles --help
+
+one to generate the tiles using AWS, see help::
 
     ./buildout/bin/generate_controller --help
-    ./buildout/bin/generate_tiles --help
 
 Before start a tile generation on S3 measure the cost::
 
@@ -111,43 +152,27 @@ using the command::
 Integration in c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the ``viewer.js``, ``apiviewer.js`` and ``edit.js``:
+In the ``viewer.js``, ``api/viewer.js`` and ``edit.js``:
 
  * Be sure that ``OpenLayers.IMAGE_RELOAD_ATTEMPTS`` is not defined.
- * In ``WMTS_OPTION`` url should be ${tilecache_url}.
+ * In ``WMTS_OPTION`` url should be ${tiles_url}.
 
-In the ``config.yaml.in`` define ``tilecache_url`` to something like, for S3 usage::
+In the ``config.yaml.in`` define ``tiles_url`` to something like, for S3 usage::
 
-    tilecache_url:
-    - http://wmts0.<host>
-    - http://wmts1.<host>
-    - http://wmts2.<host>
-    - http://wmts3.<host>
-    - http://wmts4.<host>
+    tiles_url:
+    - http://a.tiles.${vars:host}/
+    - http://b.tiles.${vars:host}/
+    - http://c.tiles.${vars:host}/
+    - http://d.tiles.${vars:host}/
 
-And for tiles on local file system::
+The configuration of the ``tiles`` vhost will be done by the sysadmins.
 
-    tilecache_url:
-    - http://${vars:host}/${vars:instanceid}/tiles
-
-If your tiles is on local file system you should also create a way to access to
-your tiles than create the file ``apache/tiles.conf.in`` with the content::
-
-    Alias /${vars:instanceid/tiles/ /var/sig/tilecache/
-    <Location /${vars:instanceid}/tiles>
-        ExpiresActive on
-        ExpiresDefault "now plus 4 hours"
-        Header set Cache-Control "public, max-age=28800"
-    </Location>
-
-
-SwitchableWMTSSource
---------------------
+SwitchableWMTS
+--------------
 
 Useful tool to switch from TileCloud to MapCache.
 
-See: http://docs.camptocamp.net/cgxp/lib/plugins/SwitchableWMTSSource.html
-
+See: https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js
 
 Tileforge
 ---------
@@ -156,6 +181,12 @@ If you steel want to use Tileforge follows the following instruction.
 
 Integration in c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the ``production.ini.in`` and ``development.ini.in``,
+in section ``[app:app]`` add::
+
+    # For tilecache controller
+    tilecache.cfg = ${buildout:directory}/tilecache/tilecache.cfg
 
 In ``buildout.cfg`` section ``[buildout]`` add::
 
