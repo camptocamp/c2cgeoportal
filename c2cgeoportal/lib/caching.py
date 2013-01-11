@@ -18,14 +18,14 @@ def keygen_function(namespace, fn):
 
     if namespace is None:
         namespace = '%s:%s' % (fn.__module__, fn.__name__)
-    else:
+    else:  # pragma: nocover
         namespace = '%s:%s|%s' % (fn.__module__, fn.__name__, namespace)
 
     args = inspect.getargspec(fn)
     has_self = args[0] and args[0][0] in ('self', 'cls')
 
     def generate_key(*args, **kw):
-        if kw:
+        if kw:  # pragma: nocover
             raise ValueError(
                 "key creation function does not accept keyword arguments.")
         parts = [namespace]
@@ -58,7 +58,7 @@ def get_region(region=None):
     """
     try:
         return _regions[region]
-    except KeyError:
+    except KeyError:  # pragma: nocover
         raise Exception(
             "No such caching region. A region must be"
             "initialized before it can be used")

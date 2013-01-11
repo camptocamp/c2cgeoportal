@@ -132,6 +132,58 @@ class TestFulltextsearchView(TestCase):
         response = fulltextsearch(request)
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
+    def test_badrequest_partitionlimit(self):
+        from pyramid.httpexceptions import HTTPBadRequest
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='text', partitionlimit='bad'))
+        response = fulltextsearch(request)
+        self.assertTrue(isinstance(response, HTTPBadRequest))
+
+    def test_limit(self):
+        from geojson.feature import FeatureCollection
+        from pyramid.httpexceptions import HTTPBadRequest
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='tra sol', limit=1))
+        resp = fulltextsearch(request)
+        self.assertTrue(isinstance(resp, FeatureCollection))
+        self.assertEqual(len(resp.features), 1)
+        self.assertEqual(resp.features[0].properties['label'], 'label1')
+        self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
+
+    def test_toobig_limit(self):
+        from geojson.feature import FeatureCollection
+        from pyramid.httpexceptions import HTTPBadRequest
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='tra sol', limit=2000))
+        resp = fulltextsearch(request)
+        self.assertTrue(isinstance(resp, FeatureCollection))
+        self.assertEqual(len(resp.features), 2)
+        self.assertEqual(resp.features[0].properties['label'], 'label1')
+        self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
+        self.assertEqual(resp.features[1].properties['label'], 'label4')
+        self.assertEqual(resp.features[1].properties['layer_name'], 'layer1')
+
+    def test_toobig_partitionlimit(self):
+        from geojson.feature import FeatureCollection
+        from pyramid.httpexceptions import HTTPBadRequest
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='tra sol', partitionlimit=2000))
+        resp = fulltextsearch(request)
+        self.assertTrue(isinstance(resp, FeatureCollection))
+        self.assertEqual(len(resp.features), 2)
+        self.assertEqual(resp.features[0].properties['label'], 'label1')
+        self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
+        self.assertEqual(resp.features[1].properties['label'], 'label4')
+        self.assertEqual(resp.features[1].properties['layer_name'], 'layer1')
+
     def test_match(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import fulltextsearch

@@ -201,7 +201,7 @@ def _add_association_proxy(cls, col):
     # (this is a GeoJSON keyword), and produces a UnicodeEncodeError
     # if the property includes non-ascii characters.
     if proxy == 'type':
-        proxy = 'type_'
+        proxy = 'type_'  # pragma: no cover
 
     rel = proxy + '_'
     primaryjoin = (getattr(cls, col.name) == getattr(child_cls, child_pk))
