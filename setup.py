@@ -28,7 +28,7 @@ install_requires = [
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
     'GeoAlchemy>=0.7',
-    'OWSLib',
+    'OWSLib>=0.6.0',
     'tileforge>=0.2',
     'JSTools>=0.6',
     'simplejson',
