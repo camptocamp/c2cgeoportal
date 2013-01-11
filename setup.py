@@ -38,16 +38,20 @@ install_requires = [
 
 # nose plugins with options set in setup.cfg cannot be in
 # tests_require, they need be in setup_requires
+# nose has version fixed because we have regression with
+# command line options.
+# Others are fixed because the versions are mot listed
+# by buildout.dumppickedversions.
 setup_requires = [
     'nose==1.1.2',
-    'nosexcover',
-    'nose-progressive',
-    'ipdbplugin',
+    'nosexcover==1.0.7',
+    'nose-progressive==1.3',
+    'ipdbplugin==1.2',
     ]
 
 tests_require = install_requires + [
-    'mock',
-    'testegg'
+    'mock==1.0.1',
+    'testegg==1.0',
     ]
 
 setup(name='c2cgeoportal',
