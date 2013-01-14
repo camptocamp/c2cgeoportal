@@ -24,7 +24,7 @@ RewriteRule ^${vars:apache-entry-point}xapi.js$ /${vars:instanceid}/wsgi/xapi.js
 RewriteRule ^${vars:apache-entry-point}apihelp.html$ /${vars:instanceid}/wsgi/apihelp.html [PT]
 RewriteRule ^${vars:apache-entry-point}xapihelp.html$ /${vars:instanceid}/wsgi/xapihelp.html [PT]
 RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
-RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit/ [PT]
+RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit [PT]
 RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
 RewriteRule ^${vars:apache-entry-point}admin/?$ /${vars:instanceid}/wsgi/admin/ [PT]
 
