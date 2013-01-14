@@ -42,17 +42,12 @@ underlying migrate command.
         parser.print_help()
         return
 
-    # display sqlalchemy-migrate command help
-    if args[0] == 'help':
-        migrate_main(argv=args)
-        return
-
     app_config = options.app_config
     app_name = options.app_name
 
-    if app_name is None and '#' in app_config:
+    if app_name is None and '#' in app_config:  # pragma: nocover
         app_config, app_name = app_config.split('#', 1)
-    if not os.path.isfile(app_config):
+    if not os.path.isfile(app_config):  # pragma: nocover
         parser.error('Can\'t find config file: %s' % app_config)
 
     config = appconfig(

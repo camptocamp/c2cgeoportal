@@ -47,6 +47,7 @@ setup_requires = [
 
 tests_require = install_requires + [
     'mock',
+    'testegg'
     ]
 
 setup(name='c2cgeoportal',

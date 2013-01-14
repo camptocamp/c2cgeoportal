@@ -192,7 +192,7 @@ class TestMapserverproxyView(TestCase):
         for f in DBSession.query(Functionality).filter(Functionality.value == u'2 Wohlen A3 landscape').all():
             DBSession.delete(f)
         for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_unprotected').all():
-            DBSession.delete(layer)
+            DBSession.delete(layer)  # pragma: nocover
         for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_protected').all():
             DBSession.delete(layer)
         for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_protected_query_with_collect').all():
