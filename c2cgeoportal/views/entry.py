@@ -501,8 +501,9 @@ class Entry(object):
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?'
+            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
+
         # general templates_params handling
         if templates_params is not None:
             d = dict(d.items() + templates_params.items())
@@ -534,6 +535,7 @@ class Entry(object):
         return {
             'lang': self.lang,
             'debug': self.debug,
+            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
 
     @view_config(route_name='edit.js', renderer='edit.js')
