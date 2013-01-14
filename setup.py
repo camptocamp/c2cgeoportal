@@ -38,8 +38,12 @@ install_requires = [
 
 # nose plugins with options set in setup.cfg cannot be in
 # tests_require, they need be in setup_requires
+#
 # nose has version fixed because we have regression with
 # command line options.
+# This also forces us to stick with nose-progressive 1.3.
+# See https://github.com/camptocamp/c2cgeoportal/pull/333
+#
 # Others are fixed because the versions are mot listed
 # by buildout.dumppickedversions.
 setup_requires = [
