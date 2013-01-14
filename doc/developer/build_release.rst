@@ -6,9 +6,12 @@ Build a new release
 Vocabulary
 ----------
 
-On this page I use the word ``version`` for a foll new version of Mapfish
+On this page I use the word ``version`` for a major version of MapFish
 Geoportal (1.3), and the word ``release`` for each step in this version
 (1.3rc1, 1.3.0, 1.3.1, ...).
+
+``MapFish Geoportal`` is the pack that include CGXP and c2cgeoportal,
+from start of 2014 both projects will synchronize their major versions.
 
 CGXP
 ----
@@ -21,7 +24,7 @@ Build a new CGXP release::
     git push origin <release_name>
 
 
-The ``<release_name>`` can be ``1.3rc1`` fir the direst release candidate
+The ``<release_name>`` can be ``1.3rc1`` for the first release candidate
 of the version ``1.3``, ``1.3.0`` for the final release, ``1.3.1`` for
 the first bug fix release.
 
