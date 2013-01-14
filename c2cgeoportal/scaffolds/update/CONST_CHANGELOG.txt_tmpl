@@ -55,6 +55,16 @@ Version 1.4
        # will be passed to the config.js template.
        mobile_default_theme:
 
+3. Add sub domain support for pyramid views.
+   Than you need to add the following configuration to the `config.yaml.in`:
+
+    # The base URL used to generate the sub domain URL
+    # %(sub)s will be replaced by the sub domain value.
+    base_url: http://%(sub)s.${vars:host}
+    # The used sub domain for the static resources
+    sub_url: [s1, s2, s3, s4]
+
+
 Version 1.3
 ===========
 

@@ -92,6 +92,12 @@ tiles_url:
 - http://c.tiles.${vars:host}/${vars:instanceid}/tiles
 - http://d.tiles.${vars:host}/${vars:instanceid}/tiles
 
+# The base URL used to generate the sub domain URL
+# %(sub)s will be replaced by the sub domain value.
+base_url: http://%(sub)s.${vars:host}
+# The used sub domain for the static resources
+sub_url: [s1, s2, s3, s4]
+
 # Checker configuration
 checker:
     print_template: 1 A4 portrait

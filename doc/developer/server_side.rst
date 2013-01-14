@@ -295,6 +295,23 @@ More information at:
  * http://code.google.com/p/sqlalchemy-migrate/
  * http://www.karoltomala.com/blog/?p=633
 
+Sub domain
+----------
+
+All the static resources used sub domains by using the configurations variables:
+``base_url`` and ``sub_url``.
+
+To be able to use sub domain in a view we should configure the route as this::
+
+    from c2cgeoportal.lib import MultiDommainPregenerator
+    config.add_route(
+        '<name>', '<path>',
+        pregenerator=MultiDommainPregenerator())
+
+And use the ``route_url`` with an additional argument ``subdomain``::
+
+    request.route_url('<name>', path='', subdomain='<subdomain>')}",
+
 Code
 ----
 
