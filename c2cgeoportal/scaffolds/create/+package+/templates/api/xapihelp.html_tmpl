@@ -43,8 +43,6 @@
     </style>
     <link href="${request.static_url('{{package}}:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
     <script type="text/javascript" src="${(request.route_url('xapijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
-    <!-- just for code examples coloration -->
-    <script type="text/javascript" src="${request.static_url('{{package}}:static/apihelp/rainbow-custom.min.js')}"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -73,28 +71,30 @@ certain <em>id</em> where you want your map to be:
 <div class="api">
     <h2>A map</h2>
     <div id='map1' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map1', // id of the div element to put the map in
     zoom: 8,
     center: [544500, 210100]
-});</script>
+});</pre>
 </div>
 </div>
 
     <script type="text/javascript">
-        var apis = document.getElementsByClassName('api');
+        var apis = document.getElementsByTagName('pre');
         for (var i = 0; i < apis.length; i++) {
-            var source = apis[i].getElementsByTagName('script')[0];
-            if (source) {
-                var pre = document.createElement('pre');
-                var code = document.createElement('code');
-                code.innerHTML = source.innerHTML;
-                code.setAttribute('data-language', 'javascript');
-                pre.appendChild(code);
-                source.parentNode.insertBefore(pre, source);
+            var language = apis[i].attributes.getNamedItem('data-language');
+            if (language && language.nodeValue == 'javascript') {
+                eval(apis[i].innerHTML)
             }
         }
-        Rainbow.color();
+        if (navigator.appName != 'Microsoft Internet Explorer' ||
+                parseFloat(
+                    navigator.appVersion.match(/MSIE ([\d.]+)/)[1]
+                ) >= 9.0) {
+            // just for code examples coloration
+            document.write('<scri' + 'pt type="text/javascript" ' +
+                'src="${request.static_url('regiogis:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
+        }
     </script>
 </body>
 </html>

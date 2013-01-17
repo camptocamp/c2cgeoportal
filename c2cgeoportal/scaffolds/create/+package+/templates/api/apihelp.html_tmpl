@@ -43,8 +43,6 @@
     </style>
     <link href="${request.static_url('{{package}}:static/apihelp/github.css')}" rel="stylesheet" type="text/css" media="screen">
     <script type="text/javascript" src="${(request.route_url('apijs') + '?lang=%s%s') % (lang, '&debug' if debug else '')}"></script>
-    <!-- just for code examples coloration -->
-    <script type="text/javascript" src="${request.static_url('{{package}}:static/apihelp/rainbow-custom.min.js')}"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -72,28 +70,28 @@ certain <em>id</em> where you want your map to be:
 <div class="api">
     <h2>A map</h2>
     <div id='map1' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map1', // id of the div element to put the map in
     zoom: 8,
     center: [544500, 210100]
-});</script>
+});</pre>
 </div>
 
 <div class="api">
     <h2>A map with a marker on its center</h2>
     <div id='map2' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map2',
     zoom: 8,
     center: [544500, 210100]
 });
-map.addMarker();</script>
+map.addMarker();</pre>
 </div>
 
 <div class="api">
     <h2>A map with several custom markers</h2>
     <div id='map3' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map3',
     zoom: 8,
     center: [544500, 210100]
@@ -112,24 +110,24 @@ map.addMarker({
     position: [544310, 210200],
     size: [14, 14],
     icon: '${request.static_path('{{package}}:static/apihelp/images/parking.png')}'
-});</script>
+});</pre>
 </div>
 
 <div class="api">
     <h2>A map with a subset of overlays</h2>
     <div id='map4' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map4',
     zoom: 8,
     center: [544500, 210100],
     layers: ['parcelles', 'batiments_ofs']
-});</script>
+});</pre>
 </div>
 
 <div class="api">
     <h2>A map with some additional controls</h2>
     <div id='map5' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map5',
     zoom: 8,
     center: [544500, 210100],
@@ -139,7 +137,8 @@ map.addMarker({
     addMiniMap: true,
     miniMapExpanded: true,
     showCoords: true
-});</script>
+});
+</pre>
 </div>
 
 <div class="api">
@@ -148,7 +147,7 @@ map.addMarker({
     <button id="button2">Click me!</button>
     <br />
     <div id='map6' class="map"></div>
-    <script type="text/javascript">var map_ = new {{package}}.Map({
+    <pre data-language="javascript">var map_ = new {{package}}.Map({
     div: 'map6',
     addMiniMap: true,
     miniMapExpanded: true
@@ -161,13 +160,13 @@ var button2 = document.getElementById('button2');
 button2.onclick = function() {
     map_.recenter([564500, 216100], 9);
 }
-</script>
+</pre>
 </div>
 
 <div class="api">
     <h2>Recenter the map on objects</h2>
     <div id='map7' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map7',
     layers: ['batiments_ofs']
 });
@@ -179,17 +178,17 @@ map.recenterOnObjects(
     /* whether to highlight the objects or not */
     true
 );
-</script>
+</pre>
 </div>
 
 <div class="api">
     <h2>Load data from a GPX file</h2>
     <div id='map8' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map8'
 });
 map.addCustomLayer('gpx', 'My GPX layer', '${request.static_path('{{package}}:static/apihelp/track0.gpx')}');
-</script>
+</pre>
 </div>
 
 <div class="api">
@@ -197,28 +196,30 @@ map.addCustomLayer('gpx', 'My GPX layer', '${request.static_path('{{package}}:st
     See <a href="${request.static_path('{{package}}:static/apihelp/MonFichier.txt')}" target="_blank">MonFichier.txt</a>.
     <br />
     <div id='map9' class="map"></div>
-    <script type="text/javascript">var map = new {{package}}.Map({
+    <pre data-language="javascript">var map = new {{package}}.Map({
     div: 'map9'
 });
 map.addCustomLayer('text', 'My custom txt layer', '${request.static_path('{{package}}:static/apihelp/MonFichier.txt')}');
-</script>
+</pre>
 </div>
 
 </div>
     <script type="text/javascript">
-        var apis = document.getElementsByClassName('api');
+        var apis = document.getElementsByTagName('pre');
         for (var i = 0; i < apis.length; i++) {
-            var source = apis[i].getElementsByTagName('script')[0];
-            if (source) {
-                var pre = document.createElement('pre');
-                var code = document.createElement('code');
-                code.innerHTML = source.innerHTML;
-                code.setAttribute('data-language', 'javascript');
-                pre.appendChild(code);
-                source.parentNode.insertBefore(pre, source);
+            var language = apis[i].attributes.getNamedItem('data-language');
+            if (language && language.nodeValue == 'javascript') {
+                eval(apis[i].innerHTML)
             }
         }
-        Rainbow.color();
+        if (navigator.appName != 'Microsoft Internet Explorer' ||
+                parseFloat(
+                    navigator.appVersion.match(/MSIE ([\d.]+)/)[1]
+                ) >= 9.0) {
+            // just for code examples coloration
+            document.write('<scri' + 'pt type="text/javascript" ' +
+                'src="${request.static_url('regiogis:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
+        }
     </script>
 </body>
 </html>
