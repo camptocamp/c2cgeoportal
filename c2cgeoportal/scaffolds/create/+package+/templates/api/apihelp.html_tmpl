@@ -140,6 +140,7 @@ map.addMarker({
     miniMapExpanded: true,
     showCoords: true
 });</script>
+</div>
 
 <div class="api">
     <h2>Recenter the map to given coordinates</h2>
