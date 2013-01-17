@@ -342,6 +342,28 @@ class TestLayers(TestCase):
         self.assertEquals(feature.name, 'foobar')
         self.assertEquals(feature.child, u'c2é')
 
+    def test_update_and_read_public(self):
+        import transaction
+        from c2cgeoportal.views.layers import update, read_one
+
+        layer_id = self._create_layer(public=True)
+
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        feature = update(request)
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.name, 'foobar')
+        self.assertEquals(feature.child, u'c1é')
+
+        transaction.commit()
+
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+        feature = read_one(request)
+        self.assertEquals(feature.properties['child'], u'c1é')
+
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import update
