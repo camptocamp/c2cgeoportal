@@ -17,8 +17,7 @@ Content:
     development_procedure
     server_side
     client_side
+    build_release
     principles
     python_packaging
     documentation_infrastructure
-
-
