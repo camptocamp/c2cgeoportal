@@ -83,7 +83,7 @@ Ext.onReady(function() {
                 ]
             },
             {
-                id: "featuregrid-container",
+                id: "featuresgrid-container",
                 xtype: "panel",
                 layout: "fit",
                 region: "south",
@@ -165,7 +165,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_print",
             legendPanelId: "legendPanel",
-            featureProvider: "featureGrid",
+            featureProvider: "featuresGrid",
             outputTarget: "left-panel",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
@@ -178,11 +178,12 @@ Ext.onReady(function() {
             }
         },
         {
-            ptype: "cgxp_featuregrid",
-            id: "featureGrid",
+            ptype: "cgxp_featuresgrid",
+            id: "featuresGrid",
             csvURL: "${request.route_url('csvecho')}",
             maxFeatures: 200,
-            outputTarget: "featuregrid-container",
+            outputTarget: "featuresgrid-container",
+            themes: THEMES,
             events: EVENTS
         },
         {
