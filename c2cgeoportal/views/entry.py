@@ -501,8 +501,9 @@ class Entry(object):
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?'
+            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
+
         # general templates_params handling
         if templates_params is not None:
             d = dict(d.items() + templates_params.items())
@@ -534,6 +535,7 @@ class Entry(object):
         return {
             'lang': self.lang,
             'debug': self.debug,
+            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
 
     @view_config(route_name='edit.js', renderer='edit.js')
@@ -620,37 +622,31 @@ class Entry(object):
 
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
-        # OWSLib 0.5 does not read layer attributs from WMS Capabilities, so
-        # we can't determine if a WMS layer is queryable with GetFeatureInfo.
-        # Once https://github.com/geopython/OWSLib/pull/41 is merged the
-        # following code will add a queryable_layers template variable.
-        #wms, wms_errors = _wms_getcap(
-                #self.request.registry.settings['mapserv_url'])
-        #queryable_layers = [
-            #name for name in list(wms.contents) \
-                    #if wms[name].queryable == 1]
-        #d = {'lang': self.lang, 'debug': self.debug,
-             #'queryable_layers': json.dumps(queryable_layers)}
-
-        d = {'lang': self.lang, 'debug': self.debug}
+        wms, wms_errors = _wms_getcap(
+            self.request.registry.settings['mapserv_url'])
+        queryable_layers = [
+            name for name in list(wms.contents) \
+                if wms[name].queryable == 1]
+        d = {
+            'lang': self.lang, 
+            'debug': self.debug,
+            'queryable_layers': json.dumps(queryable_layers)
+        }
         self.request.response.content_type = 'application/javascript'
         return d
 
     @view_config(route_name='xapijs', renderer='api/xapi.js')
     def xapijs(self):
-        # OWSLib 0.5 does not read layer attributs from WMS Capabilities, so
-        # we can't determine if a WMS layer is queryable with GetFeatureInfo.
-        # Once https://github.com/geopython/OWSLib/pull/41 is merged the
-        # following code will add a queryable_layers template variable.
-        #wms, wms_errors = _wms_getcap(
-                #self.request.registry.settings['mapserv_url'])
-        #queryable_layers = [
-            #name for name in list(wms.contents) \
-                    #if wms[name].queryable == 1]
-        #d = {'lang': self.lang, 'debug': self.debug,
-             #'queryable_layers': json.dumps(queryable_layers)}
-
-        d = {'lang': self.lang, 'debug': self.debug}
+        wms, wms_errors = _wms_getcap(
+            self.request.registry.settings['mapserv_url'])
+        queryable_layers = [
+            name for name in list(wms.contents) \
+                if wms[name].queryable == 1]
+        d = {
+            'lang': self.lang,
+            'debug': self.debug,
+            'queryable_layers': json.dumps(queryable_layers)
+        }
         self.request.response.content_type = 'application/javascript'
         return d
 

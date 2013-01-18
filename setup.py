@@ -13,7 +13,7 @@ install_requires = [
     'sqlalchemy-migrate',
     'sqlahelper',
     'pyramid_tm',
-    'papyrus>=0.9',
+    'papyrus>=0.10dev1',
     'papyrus_ogcproxy>=0.2dev1',
     'httplib2',
     'Babel',
@@ -59,7 +59,7 @@ tests_require = install_requires + [
     ]
 
 setup(name='c2cgeoportal',
-      version='1.3',
+      version='1.4',
       description='c2cgeoportal',
       long_description=README,
       classifiers=[

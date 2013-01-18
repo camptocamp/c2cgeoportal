@@ -390,12 +390,19 @@ class TestEntryView(TestCase):
 
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), 
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s" % (mapserv_url, mapfile)
+
         request = testing.DummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
+        request.route_url = lambda url: mapserv
         request.registry.settings = {
-            'mapserv_url': mapserv_url,
-            'external_mapserv_url': mapserv_url,
+            'mapserv_url': mapserv,
+            'external_mapserv_url': mapserv,
         }
         entry = Entry(request)
         request.user = None
@@ -411,15 +418,15 @@ class TestEntryView(TestCase):
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.edit()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'extra_params']))
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.mobile()
         self.assertEquals(set(result.keys()), set(['lang']))
         result = entry.apijs()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'queryable_layers']))
         result = entry.xapijs()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'queryable_layers']))
         result = entry.apihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.xapihelp()
@@ -443,7 +450,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result.keys(),
                 ['lang', 'mobile_url', 'permalink_themes',
                  'no_redirect', 'extra_params', 'debug'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=theme')
+        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
         request.matchdict = {
@@ -453,7 +460,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result.keys(),
                 ['lang', 'mobile_url', 'permalink_themes',
                  'no_redirect', 'extra_params', 'debug'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=theme1,theme2')
+        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme1,theme2')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):

@@ -52,6 +52,6 @@ document.write('<link rel="stylesheet" type="text/css" href="'
     }
 
     this.wmsURL = "${request.route_url('mapserverproxy')}";
-    this.queryableLayers = [];
+    this.queryableLayers = ${queryable_layers|n};
     return cgxp.api.Map.call(this, config);
 };

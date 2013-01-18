@@ -89,6 +89,32 @@ Version 1.3
 -RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit/ [PT]
 +RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit [PT]
 
+9. On the API help we have some issue with IE7 and IE8, to fix them you
+   should apply the same modification as in the following commit:
+   https://github.com/camptocamp/c2cgeoportal/commit/3a8f0e4d87ab4199d474c0e8ed6cc33038e2e795
+   or regenerate the API help:
+
+        ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+        cp -r /tmp/{{project}}/{{package}}/templates/api/apihelp.html {{package}}/templates/api
+        cp -r /tmp/{{project}}/{{package}}/templates/api/xapihelp.html {{package}}/templates/api
+        rm -rf /tmp/{{project}}
+
+10. c2cgeoportal 1.3 requires papyrus 0.10dev1. If papyrus is set to 0.9 or
+    lower in the [versions] section of buildout.cfg, change it to 0.10dev1.
+
+11. In the file `{{package}}/templates/edit.html` you should add
+    the `${extra_params}` value:
+
+-        <script type="text/javascript" src="${request.route_url('edit.js')}"></script>
++        <script type="text/javascript" src="${request.route_url('edit.js')}${extra_params}"></script>
+
+12. Don't need anymore to specify the queryableLayers in th API.
+    Than you should do on your `{{package}}/templates/api/api.js`
+    and in `{{package}}/templates/api/xapi.js` do this replacement:
+
+-    this.queryableLayers = [<...>];
++    this.queryableLayers = ${queryable_layers|n};
+
 
 Version 1.2
 ===========
@@ -372,7 +398,6 @@ Version 1.2
         And remove this one:
 
         RewriteRule ^${vars:apache-entry-point}apiloader.js$ /${vars:instanceid}/wsgi/apiloader.js [PT]
-
 
 13. Add the following lines in `apache/wsgi.conf.in` to enable short URLs
     for the editing, mobile and admin pages:
