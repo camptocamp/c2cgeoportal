@@ -390,12 +390,19 @@ class TestEntryView(TestCase):
 
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), 
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s" % (mapserv_url, mapfile)
+
         request = testing.DummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
+        request.route_url = lambda url: mapserv
         request.registry.settings = {
-            'mapserv_url': mapserv_url,
-            'external_mapserv_url': mapserv_url,
+            'mapserv_url': mapserv,
+            'external_mapserv_url': mapserv,
         }
         entry = Entry(request)
         request.user = None
