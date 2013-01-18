@@ -88,6 +88,6 @@ jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/edit.js')}"></script>
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
 % endif
-        <script type="text/javascript" src="${request.route_url('edit.js')}"></script>
+        <script type="text/javascript" src="${request.route_url('edit.js')}${extra_params}"></script>
     </body>
 </html>

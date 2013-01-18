@@ -102,6 +102,13 @@ Version 1.3
 10. c2cgeoportal 1.3 requires papyrus 0.10dev1. If papyrus is set to 0.9 or
     lower in the [versions] section of buildout.cfg, change it to 0.10dev1.
 
+11. In the file `{{package}}/templates/edit.html` you should add
+    the `${extra_params}` value:
+
+-        <script type="text/javascript" src="${request.route_url('edit.js')}"></script>
++        <script type="text/javascript" src="${request.route_url('edit.js')}${extra_params}"></script>
+
+
 Version 1.2
 ===========
 
