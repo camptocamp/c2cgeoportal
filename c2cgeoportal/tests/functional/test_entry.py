@@ -411,7 +411,7 @@ class TestEntryView(TestCase):
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.edit()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'extra_params']))
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.mobile()
@@ -443,7 +443,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result.keys(),
                 ['lang', 'mobile_url', 'permalink_themes',
                  'no_redirect', 'extra_params', 'debug'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=theme')
+        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
         request.matchdict = {
@@ -453,7 +453,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result.keys(),
                 ['lang', 'mobile_url', 'permalink_themes',
                  'no_redirect', 'extra_params', 'debug'])
-        self.assertEquals(result['extra_params'], '?permalink_themes=theme1,theme2')
+        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme1,theme2')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):
