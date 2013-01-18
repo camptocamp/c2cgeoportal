@@ -108,6 +108,13 @@ Version 1.3
 -        <script type="text/javascript" src="${request.route_url('edit.js')}"></script>
 +        <script type="text/javascript" src="${request.route_url('edit.js')}${extra_params}"></script>
 
+12. Don't need anymore to specify the queryableLayers in th API.
+    Than you should do on your `{{package}}/templates/api/api.js`
+    and in `{{package}}/templates/api/xapi.js` do this replacement:
+
+-    this.queryableLayers = [<...>];
++    this.queryableLayers = ${queryable_layers|n};
+
 
 Version 1.2
 ===========

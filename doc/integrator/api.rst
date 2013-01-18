@@ -75,19 +75,6 @@ APIs:
     Contains the GXP/CGXP viewer and plugins configuration. Used for the
     Extended API only.
 
-``<package>/templates/api/api.js`` and ``<package>/templates/api/xapi.js``
-
-    Include the loaders for the Simple API and the Extended API, respectively.
-    For the map to be queryable (on click) you need to list the names of
-    queryables WMS layers in the ``queryableLayers`` array. For example::
-
-        this.queryableLayers = ['bike_tracks', 'interstates'];
-    
-    (This shouldn't be a manual operation. It is a manual operation right now
-    because the ``OWSLib`` library doesn't read the ``queryable`` attribute
-    from the WMS GetCapabilities document. See
-    https://github.com/geopython/OWSLib/pull/41.)
-
 Gotchas, limitations and hints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
