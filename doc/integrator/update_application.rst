@@ -147,3 +147,6 @@ to reference the new commit for the cgxp submodule::
     opposed to Git, is used for the application the version of CGXP is
     not fixed in the application. This means that each installation of
     an application may work with a different version of CGXP.
+
+Do manual migration steps based on what's in the
+`CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
