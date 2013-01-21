@@ -16,8 +16,6 @@ authtkt_secret = ${authtkt_secret}
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 schema = ${vars:schema}
 parentschema = ${vars:parent_schema}
-# For tilecache controller
-tilecache.cfg = ${buildout:directory}/tilecache/tilecache.cfg
 # For debug mode
 jsbuild_cfg = ${jsbuild:config}
 jsbuild_root_dir = ${buildout:directory}

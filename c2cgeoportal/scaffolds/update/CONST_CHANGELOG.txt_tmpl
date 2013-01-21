@@ -1,5 +1,40 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
+Version 1.4
+===========
+
+1. Tileforge has been removed from c2cgeoportal and replaced by a combination
+   of TileCloud and MapCache.
+
+   The main documentation is available at:
+   http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
+
+   The first things you should do are::
+   * In the `viewer.js`, `api/mapconfig.js`, `edit.js` replace
+     `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
+   * In the `config.yaml.in` transform tilecache_url in an array,
+     and name it `tiles_url`.
+   * Remove `apache/tilecache.conf.in`.
+   * Remove the parameter `tilecache.cfg` in the `production.ini.in` and
+     in the `devlopment.ini.in`.
+   * In the `buildout.cfg` section `[buildout]` remove the line:
+     find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge
+   * In the file `<package>/__init__.py` remove the following code::
+
+        from c2cgeoportal.views.tilecache import load_tilecache_config
+
+        # add a TileCache view
+        load_tilecache_config(config.get_settings())
+        config.add_route('tilecache', '/tilecache{path:.*?}')
+        config.add_view(
+            view='c2cgeoportal.views.tilecache:tilecache',
+            route_name='tilecache')
+
+   * When the new configuration is done you can remove the ``tilecache``
+     folder.
+
+
 Version 1.3
 ===========
 

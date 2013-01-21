@@ -183,7 +183,7 @@ Go to your new project::
 
 ``pcreate`` doesn't conserve file permission, so restore it manually::
 
-    chmod +x deploy/hooks/post-restore-database.in 
+    chmod +x deploy/hooks/post-restore-database.in
 
 
 If this application is not part of a parent/child architecture, or is
@@ -231,8 +231,11 @@ Add the project::
 
 Add the CGXP submodule::
 
-    git submodule add https://github.com/camptocamp/cgxp.git $PROJECT/$PROJECT/static/lib/cgxp
+    git submodule add https://github.com/camptocamp/cgxp.git $PROJECT/$PROJECT/static/lib/cgxp -b <version>
     git submodule foreach git submodule update --init
+
+``-b <version>`` forces to use the CGXP branch ``<version>``.
+Branches are available starting at version ``1.3``.
 
 Commit and push on the main repository::
 
@@ -251,13 +254,16 @@ Add the project::
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
             jsbuild/ print/ apache/ \
-            mapserver/ tilecache/ deploy/
+            mapserver/ deploy/
     git remote add origin git@github.com:camptocamp/$PROJECT.git
 
 Add the CGXP submodule::
 
-    git submodule add https://github.com/camptocamp/cgxp.git $PROJECT/static/lib/cgxp
+    git submodule add https://github.com/camptocamp/cgxp.git $PROJECT/static/lib/cgxp -b <version>
     git submodule foreach git submodule update --init
+
+``-b <version>`` forces to use the CGXP branch ``<version>``.
+Branches are available starting at version ``1.3``.
 
 Commit and push on the main repository::
 
