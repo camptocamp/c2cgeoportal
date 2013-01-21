@@ -4,10 +4,10 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.4
 ===========
 
-1. The Tileforge is removed from c2cgeoportal to be replace by a association
+1. Tileforge has been removed from c2cgeoportal and replaced by a combination
    of TileCloud and MapCache.
 
-   At first read:
+   The main documentation is available at:
    http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
 
    The first things you should do are::

@@ -8,17 +8,16 @@ Introduction
 
 With this solution we solve the following issue::
 
- * It difficult to manage millions of files on the files system.
+ * Managing millions of files on the file system is difficult.
  * We should be able to update all the generated tiles.
- * We shouldn't have thousand of expired files.
+ * We shouldn't have thousands of expired files.
 
-For this we need a tool to be able to generate the tiles,
-To update on a geometry, to delete empty tiles.
+To do so we need need a tool that can generate the tiles,
+update some of them contained in given geometries and delete empty tiles.
 
-The tile generation on the fly introduce some issue like
-having a number of tile that growing and become unmanageable,
-for example it the data will be updated it not possible to
-know with tiles should be update.
+On-the-fly tiles generation introduces some issues such as having a growing
+number of tiles that may become unmanageable. For example when updating the
+data, it is not possible to figure out what tiles should be updated.
 
 For the high usage website we want to put the tiles on s3
 with the same tool.
@@ -31,7 +30,7 @@ with a low expiry (4 hours for example).
 We should use metatiles to don't have too may request to postgres.
 And the tiles should be delete after the expiry time.
 
-The choosed solution is a combination of two tools::
+The chosen solution is a combination of two tools::
 
  * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
  * `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
@@ -41,7 +40,7 @@ MapCache
 
 MapCache is a tool of the MapServer Suite.
 
-He should be configured to use `Memcached <http://memcached.org/>`_ as
+It should be configured to use `Memcached <http://memcached.org/>`_ as
 used Cache, that the only cache that able to delete the expired tiles.
 
 With a configured TileCloud-Chain you can add this configuration::
@@ -61,11 +60,13 @@ Than you should be able to generate the configuration::
 TileCloud-chain
 ---------------
 
-TileCloud-chain is a tool based on TileCloud with offer build chain that
-can generate tiles from WMS or Mapnik to the local storage or S3
-using a WMTS layout.
 
-He is able to use the following AWS services to generate the tiles:
+
+TileCloud-chain is a TileCloud-based tool that offers a build chain for
+generating tiles from WMS of Mapnik on a local storage or S3 using a
+WMTS layout.
+
+It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
 See: http://pypi.python.org/pypi/tilecloud-chain.
@@ -90,8 +91,8 @@ Initialisation
 Configuration
 ~~~~~~~~~~~~~
 
-The configuration file is ``tilegeneration/config.yaml``,
-he is self documented, original file:
+The configuration is done in the self-documented file
+``tilegeneration/config.yaml``. The original file is available at:
 https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl
 
 The main thing to do is to:
@@ -104,7 +105,7 @@ The main thing to do is to:
  * Configure the ``caches`` and set the ``generation``/``default_cache``.
    Sub-level of ``caches`` is the cache name.
 
- * Configure de ``layer_default``, the ``layers``, and the
+ * Configure the ``layer_default``, the ``layers``, and the
    ``generation``/``default_layers``.
    Sub-level of ``layers`` is the layer name.
 
@@ -124,14 +125,14 @@ The main thing to do is to:
 
      ./buildout/bin/generate_controller --openlayers-test
 
-If you generate the tiles locally you don't needs all the configuration
-variable, because many of them in the ``generation`` part are for
+If you generate the tiles locally you don't need all the configuration
+variables, because many of them in the ``generation`` part are for
 AWS generation.
 
 Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This package offer two commands line, one to generate the tiles locally,
+This package offers two commands lines, one to generate the tiles locally,
 see help::
 
     ./buildout/bin/generate_tiles --help
@@ -144,7 +145,7 @@ Before start a tile generation on S3 measure the cost::
 
     ./buildout/bin/generate_tiles --cost
 
-If you setup all the default options you can generates the tiles by
+If you setup all the default options you can generate the tiles by
 using the command::
 
     ./buildout/bin/generate_tiles
@@ -177,7 +178,7 @@ See: https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/Switchable
 Tileforge
 ---------
 
-If you steel want to use Tileforge follows the following instruction.
+If you still want to use Tileforge, follow the instructions below.
 
 Integration in c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,7 +213,7 @@ The configuration file is ``tilecache/tilecache.cfg.in``.
 
 The ``[cache]`` section describes how the tiles are saved.
 
-The ``[DEFAULTS]`` section applies defaults values to all layers.
+The ``[DEFAULTS]`` section applies default values to all layers.
 
 The important attributes are:
 
