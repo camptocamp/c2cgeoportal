@@ -84,6 +84,10 @@ Install c2cgeoportal::
     The above command downloads the latest *final* ``c2cgeoportal`` package from
     http://pypi.camptocamp.net/internal-pypi/index/.
 
+    To install a release candidate or a specific developement version you
+    should add in the section ``[versions]`` of ``buildout.cfg`` the version
+    of c2cgeoportal you want to install, ie ``c2cgeoportal = 1.3rc2``.
+
     To install a development package of c2cgeoportal from
     http://pypi.camptocamp.net/internal-pypi/index/ you can edit buildout.cfg
     and set ``prefer-final`` to ``false``.
