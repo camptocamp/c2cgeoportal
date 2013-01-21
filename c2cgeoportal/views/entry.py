@@ -627,10 +627,10 @@ class Entry(object):
         wms, wms_errors = _wms_getcap(
             self.request.registry.settings['mapserv_url'])
         queryable_layers = [
-            name for name in list(wms.contents) \
-                if wms[name].queryable == 1]
+            name for name in list(wms.contents)
+            if wms[name].queryable == 1]
         d = {
-            'lang': self.lang, 
+            'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers)
         }
@@ -642,8 +642,8 @@ class Entry(object):
         wms, wms_errors = _wms_getcap(
             self.request.registry.settings['mapserv_url'])
         queryable_layers = [
-            name for name in list(wms.contents) \
-                if wms[name].queryable == 1]
+            name for name in list(wms.contents)
+            if wms[name].queryable == 1]
         d = {
             'lang': self.lang,
             'debug': self.debug,
