@@ -12,7 +12,6 @@ import pyramid_tm
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
-from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching
 
 # used by (sql|form)alchemy

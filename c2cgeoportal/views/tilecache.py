@@ -9,9 +9,6 @@ from math import ceil
 from random import random
 
 from pyramid.wsgi import wsgiapp
-from TileCache.Service import Service, TileCacheException
-from tileforge import generator
-
 
 # default expiration time is set to 1 week
 DEFAULT_EXPIRATION = 3600*24*7
@@ -30,6 +27,7 @@ def load_tilecache_config(settings):
     * ``settings``: a dict with a ``tilecache.cfg`` key whose
       value provides the path to TileCache configuratio file.
     """
+    from TileCache.Service import Service
     global _service
     _service = Service.load(settings.get('tilecache.cfg'))
     if 'traceback' in _service.metadata:
@@ -38,6 +36,8 @@ def load_tilecache_config(settings):
         print _service.metadata['traceback']
 
 def createImage(path_info):
+    from tileforge import generator
+
     path = path_info.split('/')
     layername = path[3]
     layer = _service.layers.get(layername)
@@ -53,6 +53,7 @@ def createImage(path_info):
 
 def wsgiHandler(environ, start_response):
     from paste.request import parse_formvars
+    from TileCache.Service import TileCacheException
     try:
         path_info = ""
 
