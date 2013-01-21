@@ -79,8 +79,11 @@ mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
 print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
 
 # For base layers
-# Nothing => gets the URL using the pyramid routes
-tilecache_url:
+tiles_url: 
+- http://a.tiles.${vars:host}/${vars:instanceid}/tiles
+- http://b.tiles.${vars:host}/${vars:instanceid}/tiles
+- http://c.tiles.${vars:host}/${vars:instanceid}/tiles
+- http://d.tiles.${vars:host}/${vars:instanceid}/tiles
 
 # Checker configuration
 checker:

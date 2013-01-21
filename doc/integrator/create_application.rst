@@ -254,7 +254,7 @@ Add the project::
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
             jsbuild/ print/ apache/ \
-            mapserver/ tilecache/ deploy/
+            mapserver/ deploy/
     git remote add origin git@github.com:camptocamp/$PROJECT.git
 
 Add the CGXP submodule::

@@ -4,7 +4,6 @@ CONST_TIPS.txt
 apache/README.txt
 apache/frontend.conf
 apache/mapserver.conf
-apache/tilecache.conf
 apache/wsgi.conf
 buildout/bin/
 buildout/develop-eggs/
@@ -21,7 +20,6 @@ mapserver/c2cgeoportal.map
 {{package}}/locale/*/LC_MESSAGES/*.mo
 print/config.yaml
 print/templates/print.mako
-tilecache/tilecache.cfg
 deploy/hooks/post-restore-database
 {{package}}/static/mobile/resources/sass/.sass-cache
 {{package}}/static/mobile/archive/
