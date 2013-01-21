@@ -12,7 +12,7 @@ Content:
    create_application
    install_application
    features
-   tileforge
+   tilegeneration
    customize_ui
    extend_data_model
    internationalization

@@ -484,7 +484,9 @@ class Entry(object):
             'WFSTypes': json.dumps(self._internalWFSTypes()),
             'externalWFSTypes': json.dumps(self._externalWFSTypes()),
             'external_themes': self._external_themes(),
-            'tilecache_url': self.settings.get("tilecache_url"),
+            # for backward compatilility
+            'tilecache_url': json.dumps(self.settings.get("tilecache_url")),
+            'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
             'serverError': json.dumps(errors),
         }
