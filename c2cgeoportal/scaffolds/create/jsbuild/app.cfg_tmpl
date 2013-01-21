@@ -72,7 +72,7 @@ include =
     DragTracker.js #ext.overrides
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
-    CGXP/plugins/FeatureGrid.js
+    CGXP/plugins/FeaturesGrid.js
     CGXP/plugins/Zoom.js
     CGXP/plugins/WMSGetFeatureInfo.js
     CGXP/plugins/MapOpacitySlider.js
