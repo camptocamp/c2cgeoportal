@@ -21,7 +21,7 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 @implementer(IRoutePregenerator)
-class MultiDommainPregenerator:
+class MultiDomainPregenerator:
     def __call__(self, request, elements, kw):
         base_url = request.registry.settings['base_url']
         if base_url and 'subdomain' in kw:
@@ -31,7 +31,7 @@ class MultiDommainPregenerator:
         return elements, kw
 
 @implementer(IStaticURLInfo)
-class MultiDommainStaticURLInfo(StaticURLInfo):
+class MultiDomainStaticURLInfo(StaticURLInfo):
     def generate(self, path, request, **kw):
         registry = request.registry
         for (url, spec, route_name) in self._get_registrations(registry):
@@ -56,6 +56,6 @@ class MultiDommainStaticURLInfo(StaticURLInfo):
 
     def add(self, config, name, spec, **extra):
         if 'pregenerator' not in extra:
-            extra['pregenerator'] = MultiDommainPregenerator()
-        return super(MultiDommainStaticURLInfo, self) \
+            extra['pregenerator'] = MultiDomainPregenerator()
+        return super(MultiDomainStaticURLInfo, self) \
             .add(config, name, spec, **extra)

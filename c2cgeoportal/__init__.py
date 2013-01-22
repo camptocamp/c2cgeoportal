@@ -17,7 +17,7 @@ from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
-        MultiDommainPregenerator, MultiDommainStaticURLInfo
+        MultiDomainPregenerator, MultiDomainStaticURLInfo
 
 # used by (sql|form)alchemy
 srid = None
@@ -179,7 +179,7 @@ def includeme(config):
     # add routes to the mapserver proxy
     config.add_route(
         'mapserverproxy', '/mapserv_proxy',
-        pregenerator=MultiDommainPregenerator())
+        pregenerator=MultiDomainPregenerator())
 
     # add routes to csv view
     config.add_route('csvecho', '/csv')
@@ -290,7 +290,7 @@ def includeme(config):
     config.scan(ignore='c2cgeoportal.tests')
 
     config.registry.registerUtility(
-        MultiDommainStaticURLInfo(), IStaticURLInfo)
+        MultiDomainStaticURLInfo(), IStaticURLInfo)
     # add the static view (for static resources)
     config.add_static_view(
         'static', 'c2cgeoportal:static')
