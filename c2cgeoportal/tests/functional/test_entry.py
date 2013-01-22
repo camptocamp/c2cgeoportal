@@ -34,7 +34,7 @@ class TestEntryView(TestCase):
 
         private_layer = Layer(name=u'__test_private_layer', order=40, public=False)
         private_layer.geoTable = 'a_schema.a_geo_table'
-        
+
         layer_in_group = Layer(name=u'__test_layer_in_group')
         layer_group = LayerGroup(name=u'__test_layer_group')
         layer_group.children = [layer_in_group]
@@ -103,8 +103,8 @@ class TestEntryView(TestCase):
         request.registry.validate_user = default_user_validator
         request.user = None
         response = Entry(request).login()
-        self.assertEquals(response.status_int, 302) 
-        self.assertEquals(response.headers['Location'], "/came_from") 
+        self.assertEquals(response.status_int, 302)
+        self.assertEquals(response.headers['Location'], "/came_from")
 
         request = testing.DummyRequest()
         request.params['login'] = u'__test_user1'
@@ -112,8 +112,8 @@ class TestEntryView(TestCase):
         request.registry.validate_user = default_user_validator
         request.user = None
         response = Entry(request).login()
-        self.assertEquals(response.status_int, 200) 
-        self.assertEquals(response.body, 'true') 
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.body, 'true')
 
         request = testing.DummyRequest()
         request.params['login'] = u'__test_user1'
@@ -121,7 +121,7 @@ class TestEntryView(TestCase):
         request.registry.validate_user = default_user_validator
         request.user = None
         response = Entry(request).login()
-        self.assertEquals(response.status_int, 401) 
+        self.assertEquals(response.status_int, 401)
 
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
@@ -144,7 +144,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
-        self.assertEquals(response.headers['Location'], "/came_from") 
+        self.assertEquals(response.headers['Location'], "/came_from")
 
         request = testing.DummyRequest(path='/')
         request.route_url = lambda url: '/dummy/route/url'
@@ -153,7 +153,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
-        self.assertEquals(response.headers['Location'], '/dummy/route/url') 
+        self.assertEquals(response.headers['Location'], '/dummy/route/url')
 
     #
     # viewer view tests
@@ -392,7 +392,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), 
+            os.path.dirname(os.path.abspath(__file__)),
             'c2cgeoportal_test.map'
         )
         mapserv = "%s?map=%s" % (mapserv_url, mapfile)
@@ -407,9 +407,9 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = set(['lang', 'tilecache_url', 'debug', 'serverError',
-                'themes', 'external_themes', 'functionality', 'WFSTypes',
-                'externalWFSTypes', 'user'])
+        all_params = set(['lang', 'tilecache_url', 'tiles_url', 'debug',
+                'serverError', 'themes', 'external_themes', 'functionality',
+                'WFSTypes', 'externalWFSTypes', 'user'])
         result = entry.home()
         self.assertEquals(
                 set(result.keys()),
@@ -497,21 +497,21 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': 'test internal WMS', 
-            'metadataURL': 'http://example.com/tiwms', 
-            'isChecked': True, 
+            'name': 'test internal WMS',
+            'metadataURL': 'http://example.com/tiwms',
+            'isChecked': True,
             'icon': '/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule',
-            'type': u'internal WMS', 
-            'imageType': 'image/png', 
-            'style': 'my-style', 
-            'kml': '/dummy/static/test_layer:static/tiwms.kml', 
-            'legend': True, 
+            'type': u'internal WMS',
+            'imageType': 'image/png',
+            'style': 'my-style',
+            'kml': '/dummy/static/test_layer:static/tiwms.kml',
+            'legend': True,
             'legendImage': '/dummy/static/legend:static/tiwms-legend.png',
-            'minResolutionHint': 10, 
-            'maxResolutionHint': 1000, 
+            'minResolutionHint': 10,
+            'maxResolutionHint': 1000,
             'disclaimer': 'Camptocamp',
-            'identifierAttribute': 'name', 
-            'editable': True, 
+            'identifierAttribute': 'name',
+            'editable': True,
             'public': True,
         }, []))
 
@@ -530,16 +530,16 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': 'test external WMS', 
+            'name': 'test external WMS',
             'icon': '/dummy/static/test_layer:static/tewms.png',
-            'isChecked': False, 
-            'type': u'external WMS', 
+            'isChecked': False,
+            'type': u'external WMS',
             'url': 'http://example.com',
-            'imageType': 'image/jpeg', 
+            'imageType': 'image/jpeg',
             'isSingleTile': True,
-            'legend': False, 
-            'minResolutionHint': 10, 
-            'maxResolutionHint': 1000, 
+            'legend': False,
+            'minResolutionHint': 10,
+            'maxResolutionHint': 1000,
             'public': True,
         }, []))
 
@@ -560,18 +560,18 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': 'test WMTS', 
-            'isChecked': False, 
-            'type': 'WMTS', 
+            'name': 'test WMTS',
+            'isChecked': False,
+            'type': 'WMTS',
             'url': 'http://example.com/WMTS-Capabilities.xml',
             'style': 'wmts-style',
             'dimensions': {u'DATE': u'1012'},
             'matrixSet': 'swissgrid',
             'wmsUrl': 'http://example.com/',
             'wmsLayers': 'test',
-            'legend': False, 
-            'minResolutionHint': 10, 
-            'maxResolutionHint': 1000, 
+            'legend': False,
+            'minResolutionHint': 10,
+            'maxResolutionHint': 1000,
             'public': True,
         }, []))
 
@@ -588,15 +588,15 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': 'test WMTS', 
-            'isChecked': False, 
-            'type': 'WMTS', 
+            'name': 'test WMTS',
+            'isChecked': False,
+            'type': 'WMTS',
             'url': 'http://example.com/WMTS-Capabilities.xml',
             'wmsUrl': 'http://example.com/',
             'wmsLayers': 'test WMTS',
-            'legend': False, 
-            'minResolutionHint': 10, 
-            'maxResolutionHint': 1000, 
+            'legend': False,
+            'minResolutionHint': 10,
+            'maxResolutionHint': 1000,
             'public': True,
         }, []))
 
@@ -613,15 +613,15 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': 'test WMTS', 
-            'isChecked': False, 
-            'type': 'WMTS', 
+            'name': 'test WMTS',
+            'isChecked': False,
+            'type': 'WMTS',
             'url': 'http://example.com/WMTS-Capabilities.xml',
             'wmsUrl': '/dummy/route/mapserverproxy',
             'wmsLayers': 'test',
-            'legend': False, 
-            'minResolutionHint': 10, 
-            'maxResolutionHint': 1000, 
+            'legend': False,
+            'minResolutionHint': 10,
+            'maxResolutionHint': 1000,
             'public': True,
         }, []))
 
@@ -635,10 +635,10 @@ class TestEntryView(TestCase):
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
             'id': 20,
-            'name': u'test no 2D', 
-            'isChecked': False, 
-            'type': u'no 2D', 
-            'legend': False, 
+            'name': u'test no 2D',
+            'isChecked': False,
+            'type': u'no 2D',
+            'legend': False,
             'metadataURL': u'http://example.com/wmsfeatures.metadata',
             'public': True,
         }, []))
@@ -687,7 +687,7 @@ class TestEntryView(TestCase):
         layer = Layer()
         layer.id = 20
         layer.name = 'test layer in group'
-        layer.isChecked = False 
+        layer.isChecked = False
         layer.layerType = "internal WMS"
         layer.imageType = "image/png"
         layer.legend = False
