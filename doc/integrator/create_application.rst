@@ -69,6 +69,13 @@ from GitHub::
     cd c2cgeoportal
     git submodule update --init
 
+.. note::
+
+   To install c2cgeoportal version ``1.3`` and previous you should get the
+   branch ``1.3``::
+
+        git checkout 1.3
+
 Now run the ``bootstrap.py`` script to boostrap the Buildout environment::
 
     python bootstrap.py --version 1.5.2 --distribute --download-base \
