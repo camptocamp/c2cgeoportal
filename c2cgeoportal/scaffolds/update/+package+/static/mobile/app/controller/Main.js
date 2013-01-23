@@ -1,6 +1,6 @@
 Ext.define('App.controller.Main', {
     extend: 'Ext.app.Controller',
-    
+
     config: {
         refs: {
             mainView: 'mainview',
@@ -61,10 +61,10 @@ Ext.define('App.controller.Main', {
             'loginform': 'showLoginForm'
         }
     },
-    
+
     //called when the Application is launched, remove if not needed
     launch: function(app) {
-        
+
     },
 
     showHome: function() {

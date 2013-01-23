@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 from unittest import TestCase
 
 
@@ -96,7 +100,7 @@ class TestEntryView(TestCase):
         }
         self.assertEqual(entry.loginform403(), expected)
 
-        request.params = { 
+        request.params = {
             'came_from': '/for_a_second_test',
         }
         entry = Entry(request)
