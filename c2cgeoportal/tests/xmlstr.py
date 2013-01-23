@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
 
 getfeature = """
 <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012-2013 by Camptocamp SA
+ **
+
 // define a adminapp namespace in jQuery and all related methodes
 (function($){
     $.fn.adminapp = function(){};

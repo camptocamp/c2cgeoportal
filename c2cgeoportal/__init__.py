@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 import yaml
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory

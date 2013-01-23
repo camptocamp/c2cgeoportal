@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 import os
 from optparse import OptionParser, SUPPRESS_HELP
 import pkg_resources

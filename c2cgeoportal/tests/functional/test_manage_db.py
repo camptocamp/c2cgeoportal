@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 from unittest import TestCase
 import logging
 from nose.plugins.attrib import attr
