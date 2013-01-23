@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Table 
+from sqlalchemy import MetaData, Table
 
 from c2cgeoportal import schema
 

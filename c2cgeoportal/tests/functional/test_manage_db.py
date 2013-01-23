@@ -19,7 +19,7 @@ class TestCreateDB(TestCase):
         from c2cgeoportal.scripts.manage_db import main as manage_db
 
         try:
-            sys.argv = ['manage_db', 
+            sys.argv = ['manage_db',
                 '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
                 'drop_version_control']
             manage_db()  # pragma: nocover
@@ -80,7 +80,7 @@ Usage: manage_db COMMAND ...
         version_control              - mark a database as under this repository's version control
 
     Enter "manage_db help COMMAND" for information on a particular command.
-    
+
 
 Options:
   -h, --help            show this help message and exit
@@ -97,19 +97,19 @@ Options:
   -n APP_NAME, --app-name=APP_NAME
                         The application name (optional, default is "app")""")
 
-        sys.argv = ['manage_db', 
+        sys.argv = ['manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
             'version_control', '0']
         manage_db()
 
         sys.stdout = sys.stderr = myout = StringIO()
-        sys.argv = ['manage_db', 
+        sys.argv = ['manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
             'db_version']
         manage_db()
         self.assertEquals(myout.getvalue().strip(), "0")
 
-        sys.argv = ['manage_db', 
+        sys.argv = ['manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
             'drop_version_control']
         manage_db()

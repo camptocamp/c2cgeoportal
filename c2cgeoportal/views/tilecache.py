@@ -61,7 +61,7 @@ def wsgiHandler(environ, start_response):
     try:
         path_info = ""
 
-        if "PATH_INFO" in environ: 
+        if "PATH_INFO" in environ:
             path_info = environ["PATH_INFO"]
 
         l = len("/tilecache")
@@ -104,10 +104,10 @@ def tilecache(environ, start_response):
 
     # custom_start_response adds cache headers to the response
     def custom_start_response(status, headers, exc_info=None):
-        headers.append(('Cache-Control', 
+        headers.append(('Cache-Control',
                 'public, max-age=%s' % expiration))
-        headers.append(('Expires', 
-                email.Utils.formatdate(time.time() + expiration, 
+        headers.append(('Expires',
+                email.Utils.formatdate(time.time() + expiration,
                 False, True)))
         return start_response(status, headers, exc_info)
 

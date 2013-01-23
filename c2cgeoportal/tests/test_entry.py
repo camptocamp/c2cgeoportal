@@ -100,7 +100,7 @@ class TestEntryView(TestCase):
         }
         self.assertEqual(entry.loginform403(), expected)
 
-        request.params = { 
+        request.params = {
             'came_from': '/for_a_second_test',
         }
         entry = Entry(request)
