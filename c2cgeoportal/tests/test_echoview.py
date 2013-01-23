@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 def test_json_base64_encode():
     import StringIO
     from c2cgeoportal.views.echo import json_base64_encode

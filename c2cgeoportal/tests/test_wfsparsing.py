@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 from unittest import TestCase
 
 class TestWFSParsing(TestCase):
@@ -18,7 +22,7 @@ class TestWFSParsing(TestCase):
         content = limit_featurecollection(featurecollection_outlimit)
         collection = fromstring(content.encode('utf-8'))
         features = collection.findall(
-                '{http://www.opengis.net/gml}featureMember') 
+                '{http://www.opengis.net/gml}featureMember')
         self.assertEquals(len(features), 200)
 
         from xml.etree.ElementTree import fromstring
@@ -27,7 +31,7 @@ class TestWFSParsing(TestCase):
         content = limit_featurecollection(featurecollection_outlimit, limit=2)
         collection = fromstring(content.encode('utf-8'))
         features = collection.findall(
-                '{http://www.opengis.net/gml}featureMember') 
+                '{http://www.opengis.net/gml}featureMember')
         self.assertEquals(len(features), 2)
 
     def test_limit_featurecollection_inlimit(self):
@@ -37,5 +41,5 @@ class TestWFSParsing(TestCase):
         content = limit_featurecollection(featurecollection_inlimit)
         collection = fromstring(content.encode('utf-8'))
         features = collection.findall(
-                '{http://www.opengis.net/gml}featureMember') 
+                '{http://www.opengis.net/gml}featureMember')
         self.assertEquals(len(features), 199)

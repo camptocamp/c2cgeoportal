@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
 from pyramid_formalchemy.resources import Models
 

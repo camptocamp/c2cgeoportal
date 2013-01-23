@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2012-2013 by Camptocamp SA
+
 
 def test_no_url():
     from c2cgeoportal import ogcproxy_route_predicate

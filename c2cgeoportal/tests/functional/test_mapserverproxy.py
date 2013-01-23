@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 #
-# 
+#
 #                                       ^
 #                                       |
 #                                       |
@@ -156,7 +160,7 @@ class TestMapserverproxyView(TestCase):
     def tearDown(self):
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
                 Functionality, DBSession
-        
+
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
         DBSession.query(User).filter(User.username == '__test_user3').delete()
@@ -345,7 +349,7 @@ class TestMapserverproxyView(TestCase):
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 points
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         self.assertFalse('Cache-Control' in response.headers)
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
@@ -361,7 +365,7 @@ class TestMapserverproxyView(TestCase):
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 points
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_unprotected_layer_user2(self):
@@ -376,7 +380,7 @@ class TestMapserverproxyView(TestCase):
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # 4 points
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == '61cbb0a6d18b72e4a28c1087019de245'
 
     def test_GetMap_protected_layer_anonymous(self):
@@ -391,7 +395,7 @@ class TestMapserverproxyView(TestCase):
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # empty
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == 'ef33223235b26c782736c88933b35331'
 
     def test_GetMap_protected_layer_user1(self):
@@ -403,10 +407,10 @@ class TestMapserverproxyView(TestCase):
                       bbox='-180,-90,180,90', layers='testpoint_protected',
                       width='600', height='400', srs='EPSG:21781', format='image/png')
         response = mapserverproxy.proxy(request)
-        
+
         md5sum = hashlib.md5(response.body).hexdigest()
         # two points
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == '0a4fac2209d06c6fa36048c125b1679a'
 
     def test_GetMap_protected_layer_user2(self):
@@ -421,7 +425,7 @@ class TestMapserverproxyView(TestCase):
 
         md5sum = hashlib.md5(response.body).hexdigest()
         # empty
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == 'ef33223235b26c782736c88933b35331'
 
     def test_GetMap_protected_layer_collect_query_user1(self):
@@ -435,7 +439,7 @@ class TestMapserverproxyView(TestCase):
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert md5sum == '0a4fac2209d06c6fa36048c125b1679a'
 
     def test_GetMap_protected_layer_collect_query_user2(self):
@@ -490,7 +494,7 @@ class TestMapserverproxyView(TestCase):
 
     def test_GetFeature_IsEqualTo(self):
         response = self.GetFeature_IsEqualTo(u'foo')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -504,7 +508,7 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         response = self.GetFeature_IsEqualTo(u'123')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -529,21 +533,21 @@ class TestMapserverproxyView(TestCase):
     def test_GetFeature_IsNotEqualTo(self):
 
         response = self.GetFeature_IsNotEqualTo(u'foo')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
         assert unicode(response.body.decode('utf-8')).find(u'123') > 0
 
         response = self.GetFeature_IsNotEqualTo(u'éàè')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') > 0
 
         response = self.GetFeature_IsNotEqualTo(u'123')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
@@ -568,21 +572,21 @@ class TestMapserverproxyView(TestCase):
     def test_GetFeature_IsLike(self):
 
         response = self.GetFeature_IsLike(u'*o*')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         response = self.GetFeature_IsLike(u'*à*')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         response = self.GetFeature_IsLike(u'*2*')
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -637,7 +641,7 @@ class TestMapserverproxyView(TestCase):
 
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -645,7 +649,7 @@ class TestMapserverproxyView(TestCase):
 
         request.params = dict(map=map, s_name='bar')
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -653,7 +657,7 @@ class TestMapserverproxyView(TestCase):
 
         request.params = dict(map=map, S_NAME='bar')
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') > 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -663,7 +667,7 @@ class TestMapserverproxyView(TestCase):
                 {"mapserver_substitution":["name=bar"]}
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') > 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
@@ -673,28 +677,28 @@ class TestMapserverproxyView(TestCase):
         request.registry.settings['functionalities']['anonymous'] = \
                 {"mapserver_substitution":["cols=name","cols=city","cols=country"]}
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
         request.registry.settings['functionalities']['anonymous'] = \
                 {"mapserver_substitution":["cols=name","cols=city"]}
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
 
         request.registry.settings['functionalities']['anonymous'] = \
                 {"mapserver_substitution":["cols=name","cols=country"]}
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
         request.registry.settings['functionalities']['anonymous'] = \
                 {"mapserver_substitution":["cols=name"]}
         response = mapserverproxy.proxy(request)
-        self.assertEquals(response.status_int, 200) 
+        self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
 

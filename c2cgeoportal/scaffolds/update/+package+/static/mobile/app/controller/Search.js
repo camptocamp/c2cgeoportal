@@ -1,6 +1,6 @@
 Ext.define('App.controller.Search', {
     extend: 'Ext.app.Controller',
-    
+
     config: {
         refs: {
             searchField: 'searchfield[action=search]',
@@ -42,10 +42,10 @@ Ext.define('App.controller.Search', {
             'search/:terms': 'showSearchResultView'
         }
     },
-    
+
     //called when the Application is launched, remove if not needed
     launch: function(app) {
-        
+
     },
 
     showSearchResultView: function(terms) {

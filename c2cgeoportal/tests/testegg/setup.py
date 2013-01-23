@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (c) 2012-2013 by Camptocamp SA
+
+
 try:
     from setuptools import setup, find_packages
 except ImportError:
