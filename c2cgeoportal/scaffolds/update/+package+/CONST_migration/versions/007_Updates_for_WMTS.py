@@ -11,7 +11,7 @@ def upgrade(migrate_engine):
     layer = Table('layer', meta, schema=schema, autoload=True)
     layer.c.layerType.alter(type=types.Enum("internal WMS",
             "WMTS", "no 2D", native_enum=False))
-    types.Enum("internal WMS", "external WMS", 
+    types.Enum("internal WMS", "external WMS",
             "internal WMTS", "external WMTS", "empty",
             name=schema + ".layerType", metadata=meta).drop()
     layer.c.serverResolutions.drop()
