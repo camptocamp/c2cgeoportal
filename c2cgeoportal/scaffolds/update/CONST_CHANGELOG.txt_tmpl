@@ -34,6 +34,26 @@ Version 1.4
    * When the new configuration is done you can remove the ``tilecache``
      folder.
 
+2. One can now define a "default mobile theme" in the config.yaml configuration
+   file. The default theme is the theme loaded when no theme is specified in
+   the query string of the mobile app URL (/mobile). For example:
+
+       mobile_default_theme: my_main_mobile_theme
+
+   Not setting the mobile_default_theme in config.yaml is perfectly valid. In
+   that case there's no "default mobile theme", and no theme information will
+   be passed to the config.js template.
+
+   Even if you don't need a "default mobile theme" it is recommended to set
+   mobile_default_theme to "None" in config.yaml, with an appropriate text
+   describing the role of this setting. For example:
+
+       # The name of the theme to use as the default theme for the
+       # mobile app. The default theme is the theme loaded when no
+       # theme name is specified in the mobile app URL. If unset
+       # then there's no default theme, and no theme information
+       # will be passed to the config.js template.
+       mobile_default_theme:
 
 Version 1.3
 ===========

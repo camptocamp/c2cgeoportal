@@ -566,7 +566,8 @@ class Entry(object):
         layer_info = []
         public_only = True
 
-        theme_name = self.request.params.get('theme')
+        theme_name = self.request.params.get(
+            'theme', self.settings.get('mobile_default_theme'))
         user = self.request.user
 
         if theme_name:
