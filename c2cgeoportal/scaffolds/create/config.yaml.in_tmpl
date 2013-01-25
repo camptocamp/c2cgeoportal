@@ -68,6 +68,13 @@ functionalities:
 external_themes_url:
 external_mapserv_url:
 
+# The name of the theme to use as the default theme for the
+# mobile app. The default theme is the theme loaded when no
+# theme name is specified in the mobile app URL. If unset
+# then there's no default theme, and no theme information
+# will be passed to the config.js template.
+mobile_default_theme:
+
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
 raster:

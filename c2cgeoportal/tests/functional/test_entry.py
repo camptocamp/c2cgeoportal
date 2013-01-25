@@ -269,6 +269,14 @@ class TestEntryView(TestCase):
         self.assertEqual(info,
                 '{"username": "", "publicLayersOnly": true}')
 
+    def test_mobileconfig_no_auth_default_theme(self):
+        entry = self._create_entry_obj()
+        entry.request.registry.settings['mobile_default_theme'] = u'__test_theme'
+        response = self._call_with_wms_mocked(entry.mobileconfig)
+
+        layers = response['layers'].split(',')
+        self.assertEqual(len(layers), 2)
+
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={'theme': u'__test_theme'}, username=u'__test_user1')
