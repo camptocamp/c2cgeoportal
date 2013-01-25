@@ -218,7 +218,7 @@ map.addCustomLayer('text', 'My custom txt layer', '${request.static_path('{{pack
                 ) >= 9.0) {
             // just for code examples coloration
             document.write('<scri' + 'pt type="text/javascript" ' +
-                'src="${request.static_url('regiogis:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
+                'src="${request.static_url('{{package}}:static/apihelp/rainbow-custom.min.js')}"></sc' + 'ript>');
         }
     </script>
 </body>
