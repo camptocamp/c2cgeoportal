@@ -121,18 +121,26 @@ steps:
 Update CGXP
 ~~~~~~~~~~~
 
-To update CGXP in the application use the following::
+To update CGXP to a release tag (like 1.3.0) use the following::
 
-    cd <package_name>/static/lib/cgxp
+    cd <package>/static/lib/cgxp
     git fetch
     git checkout <tag>
     git submodule sync
     git submodule update --init
 
-``<package_name>`` is to be replaced by the name of your application package,
-``<tag>`` is the name of the version.
-If unsure, see the ``name`` argument to the ``setup`` call in the application's
-``setup.py`` file.
+To update CGXP to a version branch (like 1.3) use the following::
+
+    cd <package>/static/lib/cgxp
+    git fetch
+    git checkout <branch>
+    git pull origin <branch>
+    git submodule sync
+    git submodule update --init
+
+``<package>`` is to be replaced by the name of your application package name,
+``<tag>`` is the name of the release (in Git we use a tag),
+``<branch>`` is the name of the version (in Git we use a branch).
 
 If the application code is under Git you also need to update the application
 to reference the new commit for the cgxp submodule::
