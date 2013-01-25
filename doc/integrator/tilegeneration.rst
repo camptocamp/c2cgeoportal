@@ -60,8 +60,6 @@ Than you should be able to generate the configuration::
 TileCloud-chain
 ---------------
 
-
-
 TileCloud-chain is a TileCloud-based tool that offers a build chain for
 generating tiles from WMS of Mapnik on a local storage or S3 using a
 WMTS layout.
@@ -174,6 +172,29 @@ SwitchableWMTS
 Useful tool to switch from TileCloud to MapCache.
 
 See: https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js
+
+Internal service
+----------------
+
+If you use an internal service to access to the tiles you can use sub domaine
+to access to them by using that in ``WMTS_OPTION``::
+
+    url: [
+        '${request.route_url('<view>', path='', subdomain='s1')}',
+        '${request.route_url('<view>', path='', subdomain='s2')}',
+        '${request.route_url('<view>', path='', subdomain='s3')}',
+        '${request.route_url('<view>', path='', subdomain='s4')}'
+    ]
+
+With ``<view>`` the name of the view that serve the tiles.
+The sub domain should obviously be define in the DNS and in the Apache
+vhost. If the application is served on deferent URL and you want to use
+the sub domain on only one of them you can define in the ``config.yaml.in``
+the following::
+
+    # The URL template used to generate the sub domain URL
+    # %(sub)s will be replaced by the sub domain value.
+    subdomain_url_template: http://%(sub)s.${vars:host}
 
 Tileforge
 ---------

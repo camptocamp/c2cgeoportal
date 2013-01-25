@@ -56,13 +56,17 @@ Version 1.4
        mobile_default_theme:
 
 3. Add sub domain support for pyramid views.
-   Than you need to add the following configuration to the `config.yaml.in`:
+   You can add the following configuration to the `config.yaml.in`:
 
-    # The base URL used to generate the sub domain URL
-    # %(sub)s will be replaced by the sub domain value.
-    base_url: http://%(sub)s.${vars:host}
-    # The used sub domain for the static resources
-    sub_url: [s1, s2, s3, s4]
+   # The URL template used to generate the sub domain URL
+   # %(sub)s will be replaced by the sub domain value.
+   #subdomain_url_template: http://%(sub)s.${vars:host}
+   # The used sub domain for the static resources
+   #subdomains: [s1, s2, s3, s4]
+
+   For the documentation see:
+   http://docs.camptocamp.net/c2cgeoportal/integrator/customize_ui.html#sub-domain
+   http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html#internal-service
 
 
 Version 1.3

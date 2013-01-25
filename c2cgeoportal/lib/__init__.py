@@ -23,10 +23,16 @@ def get_setting(settings, path, default=None):
 @implementer(IRoutePregenerator)
 class MultiDomainPregenerator:
     def __call__(self, request, elements, kw):
-        base_url = request.registry.settings['base_url']
-        if base_url and 'subdomain' in kw:
-            kw['_app_url'] = base_url % {
-                'sub': kw['subdomain']
+        if 'subdomain' in kw:
+            if 'subdomain_url_template' in request.registry.settings:
+                subdomain_url_template = request.registry. \
+                        settings['subdomain_url_template']
+            else:
+                subdomain_url_template = 'http://%(sub)s.%(host)s'
+
+            kw['_app_url'] = subdomain_url_template % {
+                'sub': kw['subdomain'],
+                'host': request.host,
             } + request.script_name
         return elements, kw
 
@@ -41,8 +47,8 @@ class MultiDomainStaticURLInfo(StaticURLInfo):
                     subpath = subpath.replace('\\', '/') # windows
                 if url is None:
                     kw['subpath'] = subpath
-                    sub_url = request.registry.settings['sub_url']
-                    if isinstance(sub_url, list):
+                    if 'subdomains' in request.registry.settings:
+                        subdomains = request.registry.settings['subdomains']
                         return request.route_url(
                             route_name,
                             subdomain=sub_url[hash(subpath) % len(sub_url)],

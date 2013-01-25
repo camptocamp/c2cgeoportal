@@ -299,7 +299,7 @@ Sub domain
 ----------
 
 All the static resources used sub domains by using the configurations variables:
-``base_url`` and ``sub_url``.
+``subdomain_url_template`` and ``subdomains``.
 
 To be able to use sub domain in a view we should configure the route as this::
 
