@@ -68,6 +68,128 @@ Version 1.4
    http://docs.camptocamp.net/c2cgeoportal/integrator/customize_ui.html#sub-domain
    http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html#internal-service
 
+4. We don't anymore reset all default CSS attributes in the XAPI.
+   Than the XAPI should not anymore brake the CSS of the page.
+
+   For that you should:
+
+   Add in the file `{{package}}/templates/api/viewer.js`,
+   in the `portalConfig`:
+
+                ctCls: 'x-map',
+
+   In the file `{{package}}/templates/api/xapi.js`, replace:
+
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" + '" />');
+
+   By:
+
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/reset.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/editor.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/menu.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/panel.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/grid.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/debug.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/qtips.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dd.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/form.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/resizable.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/toolbar.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/slider.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/combo.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/layout.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dialog.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/core.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/button.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/progress.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tabs.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/box.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/borders.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/date-picker.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tree.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/window.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/list-view.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/editor.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/pivotgrid.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/menu.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/grid.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/debug.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/qtips.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dd.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/form.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/resizable.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/toolbar.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel-reset.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/slider.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/combo.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/layout.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dialog.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/core.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/button.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/progress.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tabs.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/box.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/borders.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/date-picker.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tree.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/window.css')}" + '" />');
+document.write('<link rel="stylesheet" type="text/css" href="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
+
 
 Version 1.3
 ===========
