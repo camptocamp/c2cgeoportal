@@ -32,13 +32,7 @@ Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
 1. Make your application require the new version of the ``c2cgeoportal``
-   package. For that edit the application's ``setup.py`` file, and change the
-   ``c2cgeoportal`` requirement as appropriate. For example, if you were
-   upgrading to ``c2cgeoportal`` version 0.7, you'd use this::
-
-       c2cgeoportal>=0.7,<=0.7.99
-
-   You may also need to edit the application's Buildout config
+   package. To do so, simply edit the application's Buildout config
    (``buildout.cfg``) and change the version of ``c2cgeoportal`` in the
    ``[versions]`` section. Make sure the version specifications in ``setup.py``
    and ``buildout.cfg`` do not conflict.
