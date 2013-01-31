@@ -3,15 +3,17 @@
 # Copyright (c) 2012-2013 by Camptocamp SA
 
 
-import urllib
+import httplib2
 import logging
 import json
 import sys
 
+from urlparse import urlparse
+
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
-    HTTPBadRequest, HTTPUnauthorized, HTTPForbidden
+    HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
@@ -29,43 +31,6 @@ from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
 cache_region = caching.get_region()
-
-
-@cache_region.cache_on_arguments()
-def _wms_getcap(url):
-    errors = []
-    wms = None
-    log.info("WMS GetCapabilities for base url: %s" % url)
-    try:
-        wms = WebMapService(url, version='1.1.1')
-    except AttributeError:
-        error = _(
-            "WARNING! an error occured while trying to "
-            "read the mapfile and recover the themes")
-        errors.append(error)
-        log.exception(error)
-    return wms, errors
-
-
-def _create_layer_query(role_id):
-    """ Create an SQLAlchemy query for Layer and for the role
-        identified to by ``role_id``.
-    """
-    q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
-    if role_id:
-        q2 = DBSession.query(Layer)
-        q2 = q2.join(
-            (layer_ra, Layer.id == layer_ra.c.layer_id),
-            (RestrictionArea,
-                RestrictionArea.id == layer_ra.c.restrictionarea_id),
-            (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
-            (Role, Role.id == role_ra.c.role_id))
-        q2 = q2.filter(Role.id == role_id)
-        q2 = q2.filter(and_(
-            Layer.public != True,
-            functions.area(RestrictionArea.area) > 0))  # NOQA
-        q = q.union(q2)
-    return q
 
 
 class Entry(object):
@@ -87,6 +52,72 @@ class Entry(object):
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
         return {'title': _('title i18n')}
+
+    @cache_region.cache_on_arguments()
+    def _wms_getcap(self, url):
+        errors = []
+        wms = None
+
+        params = (
+            ('SERVICE', 'WMS'),
+            ('VERSION', '1.1.1'),
+            ('REQUEST', 'GetCapabilities'),
+        )
+        if url.find('?') < 0:
+            url += '?'
+        url = url + '&'.join(['='.join(p) for p in params])
+
+        log.info("WMS GetCapabilities for base url: %s" % url)
+
+        # forward request to target (without Host Header)
+        http = httplib2.Http()
+        h = dict(self.request.headers)
+        if urlparse(url).hostname != 'localhost':
+            h.pop('Host')
+        try:
+            resp, content = http.request(url, method='GET', headers=h)
+        except:
+            errors.append("Unable to GetCapabilities from url %s" % url)
+            return None, errors
+
+        if resp.status < 200 or resp.status >= 300:
+            errors.append(
+                "GetCapabilities from url %s return the error: %i %s" %
+                (url, resp.status, resp.reason)
+            )
+            return None, errors
+
+        try:
+            log.info(content)
+            wms = WebMapService(None, xml=content)
+        except AttributeError:
+            error = _(
+                "WARNING! an error occured while trying to "
+                "read the mapfile and recover the themes"
+            )
+            errors.append("%s\nurl: %s\nxml:\n%s" %(error, url, content))
+            log.exception(error)
+        return wms, errors
+
+    def _create_layer_query(self, role_id):
+        """ Create an SQLAlchemy query for Layer and for the role
+            identified to by ``role_id``.
+        """
+        q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
+        if role_id:
+            q2 = DBSession.query(Layer)
+            q2 = q2.join(
+                (layer_ra, Layer.id == layer_ra.c.layer_id),
+                (RestrictionArea,
+                    RestrictionArea.id == layer_ra.c.restrictionarea_id),
+                (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
+                (Role, Role.id == role_ra.c.role_id))
+            q2 = q2.filter(Role.id == role_id)
+            q2 = q2.filter(and_(
+                Layer.public != True,
+                functions.area(RestrictionArea.area) > 0))  # NOQA
+            q = q.union(q2)
+        return q
 
     def _getLayerMetadataUrls(self, layer):
         metadataUrls = []
@@ -358,13 +389,13 @@ class Entry(object):
         to by ``role_id``.
         """
         errors = []
-        query = _create_layer_query(role_id)
+        query = self._create_layer_query(role_id)
         query = query.filter(Layer.isVisible == True)
         query = query.order_by(Layer.order.asc())
         layers = query.all()
 
         # retrieve layers metadata via GetCapabilities
-        wms, wms_errors = _wms_getcap(
+        wms, wms_errors = self._wms_getcap(
             self.request.registry.settings['mapserv_url'])
         if len(wms_errors) > 0:
             return [], wms_errors
@@ -415,18 +446,21 @@ class Entry(object):
                     children.append(l)
         return children, errors, False
 
-    @cache_region.cache_on_arguments()
-    def _internalWFSTypes(self):
-        return self._WFSTypes(self.request.registry.settings['mapserv_url'])
+    def _internal_wfs_types(self):
+        return self._wfs_types(self.request.registry.settings['mapserv_url'])
 
-    def _externalWFSTypes(self):
+    def _external_wfs_types(self):
         if not ('external_mapserv_url' in self.settings
                 and self.settings['external_mapserv_url']):
-            return []
-        return self._WFSTypes(
-            self.request.registry.settings['external_mapserv_url'])
+            return [], []
+        return self._wfs_types(
+            self.request.registry.settings['external_mapserv_url']
+        )
 
-    def _WFSTypes(self, wfs_url):
+    @cache_region.cache_on_arguments()
+    def _wfs_types(self, wfs_url):
+        errors = []
+
         # retrieve layers metadata via GetCapabilities
         params = (
             ('SERVICE', 'WFS'),
@@ -438,7 +472,24 @@ class Entry(object):
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
-        getCapabilities_xml = urllib.urlopen(wfsgc_url).read()
+        # forward request to target (without Host Header)
+        http = httplib2.Http()
+        h = dict(self.request.headers)
+        if urlparse(wfsgc_url).hostname != 'localhost':
+            h.pop('Host')
+        try:
+            resp, getCapabilities_xml = http.request(wfsgc_url, method='GET', headers=h)
+        except:
+            errors.append("Unable to GetCapabilities from url %s" % wfsgc_url)
+            return None, errors
+
+        if resp.status < 200 or resp.status >= 300:
+            errors.append(
+                "GetCapabilities from url %s return the error: %i %s" %
+                (wfsgc_url, resp.status, resp.reason)
+            )
+            return None, errors
+
         try:
             getCapabilities_dom = parseString(getCapabilities_xml)
             featuretypes = []
@@ -449,21 +500,44 @@ class Entry(object):
                     featuretypes.append(name.childNodes[0].data)
                 else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
-            return featuretypes
+            return featuretypes, errors
         except:
-            return getCapabilities_xml
+            return getCapabilities_xml, errors
 
+    @cache_region.cache_on_arguments()
     def _external_themes(self):  # pragma nocover
+        errors = []
+
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
-            return None
+            return None, errors
         ext_url = self.settings['external_themes_url']
         if self.request.user is not None and \
                 hasattr(self.request.user, 'parent_role') and \
                 self.request.user.parent_role is not None:
             ext_url += '?role_id=' + str(self.request.user.parent_role.id)
-        # TODO: what if external server does not respond?
-        return urllib.urlopen(ext_url).read()
+
+        # forward request to target (without Host Header)
+        http = httplib2.Http()
+        h = dict(self.request.headers)
+        if urlparse(ext_url).hostname != 'localhost':
+            h.pop('Host')
+        try:
+            resp, content = http.request(ext_url, method='GET', headers=h)
+        except:
+            errors.append(
+                "Unable to get external themes from url %s" % ext_url
+            )
+            return None, errors
+
+        if resp.status < 200 or resp.status >= 300:
+            errors.append(
+                "Get external themes from url %s return the error: %i %s" %
+                (ext_url, resp.status, resp.reason)
+            )
+            return None, errors
+
+        return content, errors
 
     def _functionality(self):
         functionality = {}
@@ -480,13 +554,19 @@ class Entry(object):
 
         themes, errors = self._themes(role_id)
         themes = filter(lambda theme: theme['display'], themes)
+        wfs_types, add_errors = self._internal_wfs_types()
+        errors.extend(add_errors)
+        external_wfs_types, add_errors = self._external_wfs_types()
+        errors.extend(add_errors)
+        external_themes, add_errors = self._external_themes()
+        errors.extend(add_errors)
 
         d = {
             'themes': json.dumps(themes),
             'user': self.request.user,
-            'WFSTypes': json.dumps(self._internalWFSTypes()),
-            'externalWFSTypes': json.dumps(self._externalWFSTypes()),
-            'external_themes': self._external_themes(),
+            'WFSTypes': json.dumps(wfs_types),
+            'externalWFSTypes': json.dumps(external_wfs_types),
+            'external_themes': external_themes,
             # for backward compatilility
             'tilecache_url': json.dumps(self.settings.get("tilecache_url")),
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
@@ -606,7 +686,10 @@ class Entry(object):
 
         # comma-separated string including the feature types supported
         # by WFS service
-        wfs_types = ','.join(self._internalWFSTypes())
+        wfs_types, errors = self._internal_wfs_types()
+        if len(errors) > 0:
+            raise HTTPBadGateway('\n'.join(errors))
+        wfs_types = ','.join(wfs_types)
 
         # info includes various information that is not used by config.js,
         # but by other - private to the integrator - parts of the mobile
@@ -628,8 +711,10 @@ class Entry(object):
 
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
-        wms, wms_errors = _wms_getcap(
+        wms, wms_errors = self._wms_getcap(
             self.request.registry.settings['mapserv_url'])
+        if len(wms_errors) > 0:
+            raise HTTPBadGateway('\n'.join(wms_errors))
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
@@ -643,7 +728,7 @@ class Entry(object):
 
     @view_config(route_name='xapijs', renderer='api/xapi.js')
     def xapijs(self):
-        wms, wms_errors = _wms_getcap(
+        wms, wms_errors = self._wms_getcap(
             self.request.registry.settings['mapserv_url'])
         queryable_layers = [
             name for name in list(wms.contents)

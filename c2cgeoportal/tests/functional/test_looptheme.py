@@ -13,7 +13,7 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # NOQA
         tearDownCommon as tearDownModule,
         setUpCommon as setUpModule,
-        mapserv_url)
+        mapserv_url, host)
 
 @attr(functional=True)
 class TestLoopTheme(TestCase):
@@ -56,6 +56,7 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal.views.entry import Entry, cache_region
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         curdir = os.path.dirname(os.path.abspath(__file__))

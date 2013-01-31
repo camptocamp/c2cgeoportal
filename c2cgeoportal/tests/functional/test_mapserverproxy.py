@@ -54,7 +54,7 @@ import sqlahelper
 from c2cgeoportal.tests.functional import (  # NOQA
         tearDownCommon as tearDownModule,
         setUpCommon as setUpModule,
-        mapserv_url)
+        mapserv_url, host)
 
 Base = sqlahelper.get_base()
 
@@ -209,6 +209,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.registry.settings = {
                 'mapserv_url': mapserv_url,
                 'functionalities': {

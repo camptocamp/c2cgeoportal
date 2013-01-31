@@ -7,6 +7,7 @@ import httplib2
 import urllib
 import logging
 
+from urlparse import urlparse
 import simplejson as json
 from simplejson.decoder import JSONDecodeError
 
@@ -43,7 +44,8 @@ class Printproxy(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h)  # not sure this is needed TODO
+        if urlparse(_url).hostname != 'localhost':
+            h.pop('Host')
         try:
             resp, content = http.request(_url, method='GET', headers=h)
         except:
@@ -87,11 +89,13 @@ class Printproxy(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h)  # not sure this is needed TODO
+        if urlparse(_url).hostname != 'localhost':
+            h.pop('Host')
         h['Content-Length'] = str(len(body))
         try:
             resp, content = http.request(
-                _url, method='POST', body=body, headers=h)
+                _url, method='POST', body=body, headers=h
+            )
         except:
             return HTTPBadGateway()
 
@@ -110,7 +114,8 @@ class Printproxy(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        h.pop("Host", h)  # not sure this is needed TODO
+        if urlparse(_url).hostname != 'localhost':
+            h.pop('Host')
         try:
             resp, content = http.request(_url, method='GET', headers=h)
         except:

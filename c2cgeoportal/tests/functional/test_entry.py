@@ -15,7 +15,7 @@ from owslib.wms import WebMapService
 from c2cgeoportal.tests.functional import (  # NOQA
         tearDownCommon as tearDownModule,
         setUpCommon as setUpModule,
-        mapserv_url)
+        mapserv_url, host)
 
 @attr(functional=True)
 class TestEntryView(TestCase):
@@ -100,6 +100,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.params['login'] = u'__test_user1'
         request.params['password'] = u'__test_user1'
         request.params['came_from'] = "/came_from"
@@ -110,6 +111,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response.headers['Location'], "/came_from")
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.params['login'] = u'__test_user1'
         request.params['password'] = u'__test_user1'
         request.registry.validate_user = default_user_validator
@@ -119,6 +121,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response.body, 'true')
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.params['login'] = u'__test_user1'
         request.params['password'] = u'bad password'
         request.registry.validate_user = default_user_validator
@@ -130,6 +133,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest(path='/')
+        request.headers['Host'] = host
         request.params['came_from'] = '/came_from'
         request.user = None
         entry = Entry(request)
@@ -141,6 +145,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = testing.DummyRequest(path='/')
+        request.headers['Host'] = host
         request.params['came_from'] = '/came_from'
         request.user = DBSession.query(User) \
                                 .filter_by(username=u'__test_user1').one()
@@ -150,6 +155,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response.headers['Location'], "/came_from")
 
         request = testing.DummyRequest(path='/')
+        request.headers['Host'] = host
         request.route_url = lambda url: '/dummy/route/url'
         request.user = DBSession.query(User) \
                 .filter_by(username=u'__test_user1').one()
@@ -166,12 +172,19 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.registry.settings = {
-                'mapserv_url': mapserv_url,
-            }
+            'mapserv_url': mapserv,
+        }
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
         request.static_url = lambda url: '/dummy/static/url'
-        request.route_url = lambda url: '/dummy/route/url'
+        request.route_url = lambda url: mapserv
         request.params = params
 
         if username:
@@ -182,23 +195,9 @@ class TestEntryView(TestCase):
 
         return Entry(request)
 
-    def _call_with_wms_mocked(self, fn):
-        from mock import patch, Mock, MagicMock
-        from contextlib import nested
-
-        patch1 = patch(
-            'c2cgeoportal.views.entry.WebMapService', MagicMock())
-        patch2 = patch('c2cgeoportal.views.entry.urllib.urlopen')
-        with nested(patch1, patch2) as (_, mock_urlopen):
-                m = Mock()
-                m.read.return_value = ''
-                mock_urlopen.return_value = m
-                response = fn()
-        return response
-
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
-        response = self._call_with_wms_mocked(entry.viewer)
+        response = entry.viewer()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
@@ -206,7 +205,7 @@ class TestEntryView(TestCase):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user1')
-        response = self._call_with_wms_mocked(entry.viewer)
+        response = entry.viewer()
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -229,7 +228,9 @@ class TestEntryView(TestCase):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user2')
-        response = self._call_with_wms_mocked(entry.viewer)
+        response = entry.viewer()
+
+        self.assertEqual(response['serverError'], '[]')
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -249,14 +250,14 @@ class TestEntryView(TestCase):
 
     def test_mobileconfig_no_auth_no_theme(self):
         entry = self._create_entry_obj()
-        response = self._call_with_wms_mocked(entry.mobileconfig)
+        response = entry.mobileconfig()
 
         layers = response['layers']
         self.assertEqual(layers, '')
 
     def test_mobileconfig_no_auth_theme(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
-        response = self._call_with_wms_mocked(entry.mobileconfig)
+        response = entry.mobileconfig()
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 2)
@@ -275,7 +276,7 @@ class TestEntryView(TestCase):
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
         entry.request.registry.settings['mobile_default_theme'] = u'__test_theme'
-        response = self._call_with_wms_mocked(entry.mobileconfig)
+        response = entry.mobileconfig()
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 2)
@@ -283,7 +284,7 @@ class TestEntryView(TestCase):
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={'theme': u'__test_theme'}, username=u'__test_user1')
-        response = self._call_with_wms_mocked(entry.mobileconfig)
+        response = entry.mobileconfig()
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 3)
@@ -312,6 +313,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         curdir = os.path.dirname(os.path.abspath(__file__))
@@ -360,6 +362,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
 
@@ -377,6 +380,8 @@ class TestEntryView(TestCase):
         request.user = None
 
         response = entry._getVars()
+        self.assertEquals(response['serverError'], '[]')
+
         result = '["testpoint_unprotected", "testpoint_protected", "testpoint_protected_query_with_collect", "testpoint_substitution", "testpoint_column_restriction", "test_wmsfeatures"]'
         self.assertEquals(response['WFSTypes'], result)
         self.assertEquals(response['externalWFSTypes'], result)
@@ -384,6 +389,7 @@ class TestEntryView(TestCase):
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
         request.registry.settings = {
@@ -406,9 +412,11 @@ class TestEntryView(TestCase):
             os.path.dirname(os.path.abspath(__file__)),
             'c2cgeoportal_test.map'
         )
-        mapserv = "%s?map=%s" % (mapserv_url, mapfile)
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
+
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv
         request.registry.settings = {
@@ -446,6 +454,7 @@ class TestEntryView(TestCase):
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.registry.settings = {
             'mapserv_url': mapserv_url,
@@ -475,10 +484,12 @@ class TestEntryView(TestCase):
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):
+        import httplib2
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import Layer, LayerGroup, Theme
 
         request = testing.DummyRequest()
+        request.headers['Host'] = host
         request.static_url = lambda url: '/dummy/static/' + url
         request.route_url = lambda url: '/dummy/route/' + url
         request.registry.settings = {
@@ -656,7 +667,24 @@ class TestEntryView(TestCase):
 
         curdir = os.path.dirname(os.path.abspath(__file__))
         mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
-        wms = WebMapService("%s?map=%s" % (mapserv_url, mapfile), version='1.1.1')
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'c2cgeoportal_test.map'
+        )
+        params = (
+            ('map', mapfile),
+            ('SERVICE', 'WMS'),
+            ('VERSION', '1.1.1'),
+            ('REQUEST', 'GetCapabilities'),
+        )
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+        url = mapserv + '&'.join(['='.join(p) for p in params])
+        http = httplib2.Http()
+        h = {'Host': host}
+        resp, xml =http.request(url, method='GET', headers=h)
+
+        wms = WebMapService(None, xml=xml)
         wms_layers = list(wms.contents)
         layer = Layer()
         layer.id = 20
