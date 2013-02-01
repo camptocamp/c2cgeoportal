@@ -41,7 +41,14 @@ steps:
    edit the application's Buildout config (``buildout.cfg``), and remove all
    the lines from the ``[versions]`` section. Emptying the ``[versions]``
    section is necessary for getting new dependency versions using ``buildout
-   -n`` (see the next step).
+   -n`` (see the next step). Because of incompatibilities with the very last
+   versions of some dependencies, it is necessary to force the versions of
+   those dependencies. You should then have::
+
+       [versions]
+       c2cgeoportal = <version to install>
+       pyramid = 1.3.4
+       requests = 0.14.2
 
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
