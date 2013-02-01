@@ -7,6 +7,7 @@ import yaml
 
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from pyramid.security import unauthenticated_userid
+from pyramid.interfaces import IStaticURLInfo
 
 import sqlalchemy
 import sqlahelper
@@ -15,7 +16,8 @@ import pyramid_tm
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 
-from c2cgeoportal.lib import dbreflection, get_setting, caching
+from c2cgeoportal.lib import dbreflection, get_setting, caching, \
+        MultiDomainPregenerator, MultiDomainStaticURLInfo
 
 # used by (sql|form)alchemy
 srid = None
@@ -169,12 +171,15 @@ def includeme(config):
     config.set_user_validator(default_user_validator)
 
     # add an OGCProxy view
-    config.add_route('ogcproxy', '/ogcproxy',
-                     custom_predicates=(ogcproxy_route_predicate,))
+    config.add_route(
+        'ogcproxy', '/ogcproxy',
+        custom_predicates=(ogcproxy_route_predicate,))
     config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
 
     # add routes to the mapserver proxy
-    config.add_route('mapserverproxy', '/mapserv_proxy')
+    config.add_route(
+        'mapserverproxy', '/mapserv_proxy',
+        pregenerator=MultiDomainPregenerator())
 
     # add routes to csv view
     config.add_route('csvecho', '/csv')
@@ -284,5 +289,8 @@ def includeme(config):
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')
 
+    config.registry.registerUtility(
+        MultiDomainStaticURLInfo(), IStaticURLInfo)
     # add the static view (for static resources)
-    config.add_static_view('static', 'c2cgeoportal:static')
+    config.add_static_view(
+        'static', 'c2cgeoportal:static')
