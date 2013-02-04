@@ -216,7 +216,58 @@ output = {{package}}/static/build/api.css
 [cssbuild-xapi]
 recipe = c2c.recipe.cssmin
 input =
-    {{package}}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
+    {{package}}/static/lib/cgxp/core/src/theme/reset.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/editor.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/menu.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/panel.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/grid.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/debug.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/qtips.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/dd.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/form.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/resizable.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/toolbar.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/slider.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/combo.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/layout.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/dialog.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/core.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/button.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/progress.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/tabs.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/box.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/borders.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/date-picker.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/tree.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/window.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/visual/list-view.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/editor.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/pivotgrid.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/menu.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/panel.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/grid.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/debug.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/qtips.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/dd.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/form.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/resizable.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/toolbar.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/panel-reset.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/slider.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/combo.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/layout.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/dialog.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/core.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/button.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/progress.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/tabs.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/box.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/borders.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/date-picker.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/tree.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/window.css
+    {{package}}/static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css
     {{package}}/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css
     {{package}}/static/lib/cgxp/openlayers/theme/default/style.css
     {{package}}/static/lib/cgxp/geoext/resources/css/gxtheme-gray.css

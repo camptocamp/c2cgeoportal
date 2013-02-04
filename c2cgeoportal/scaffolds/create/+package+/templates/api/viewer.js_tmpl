@@ -4,6 +4,7 @@ This file defines the GXP viewer and its plugins for the Extended API.
         var viewer = new gxp.Viewer({
             portalConfig: {
                 renderTo: config.div,
+                ctCls: 'x-map',
                 height: Ext.get(config.div).getHeight(),
                 layout: "fit",
                 items: [config.id]
