@@ -67,14 +67,26 @@ from GitHub::
 
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
+
+Than you should checkout the branch or tag of the version you want to install::
+
+    git checkout <branch|tag>
     git submodule update --init
+
+``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
+``1.4.0`` for the first stable 1.4 version.
 
 .. note::
 
-   To install c2cgeoportal version ``1.3`` and previous you should get the
-   branch ``1.3``::
+    To install c2cgeoportal version ``1.3`` and previous you should get the
+    branch ``1.3``::
 
         git checkout 1.3
+        git submodule update --init
+
+    To install a release candidate or a specific development version you
+    should add in the section ``[versions]`` of ``buildout.cfg`` the version
+    of c2cgeoportal you want to install, eg. ``c2cgeoportal = 1.3rc2``.
 
 Now run the ``bootstrap.py`` script to boostrap the Buildout environment::
 
@@ -82,27 +94,9 @@ Now run the ``bootstrap.py`` script to boostrap the Buildout environment::
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
-Install c2cgeoportal::
+Build c2cgeoportal::
 
     ./buildout/bin/buildout
-
-.. note::
-
-    The above command downloads the latest *final* ``c2cgeoportal`` package from
-    http://pypi.camptocamp.net/internal-pypi/index/.
-
-    To install a release candidate or a specific development version you
-    should add in the section ``[versions]`` of ``buildout.cfg`` the version
-    of c2cgeoportal you want to install, eg. ``c2cgeoportal = 1.3rc2``.
-
-    To install a development package of c2cgeoportal from
-    http://pypi.camptocamp.net/internal-pypi/index/ you can edit buildout.cfg
-    and set ``prefer-final`` to ``false``.
-
-    And if you want to install a development package from the c2cgeoportal
-    source you just cloned use::
-
-        ./buildout/bin/buildout -c buildout_dev.cfg
 
 List existing skeletons
 -----------------------
@@ -196,6 +190,12 @@ Go to your new project::
 
     chmod +x deploy/hooks/post-restore-database.in
 
+In ``buildout.cfg`` section ``[versions]`` add the line::
+
+    c2cgeoportal = <version>
+
+With ``<version>`` the egg version you want to use, normally it should be the same
+number as the ``tag`` you use to checkout ``c2cgeoportal``.
 
 If this application is not part of a parent/child architecture, or is
 a ``parent`` application, you can just remove the
