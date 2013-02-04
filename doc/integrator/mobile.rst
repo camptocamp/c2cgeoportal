@@ -425,7 +425,7 @@ component::
                 xtype: 'container',
                 cls: 'settings',
                 items: [{
-                    xtype: 'component':
+                    xtype: 'component',
                     html: '<p>Some text</p>'
                 }, {
                     // This is the login view component.
