@@ -8,6 +8,8 @@ import urllib
 import sys
 import logging
 
+from urlparse import urlparse
+
 from pyramid.httpexceptions import (HTTPBadGateway, HTTPNotAcceptable,
                                     HTTPInternalServerError)
 from pyramid.response import Response
@@ -119,7 +121,8 @@ def proxy(request):
     # forward request to target (without Host Header)
     http = httplib2.Http()
     h = dict(request.headers)
-    h.pop("Host", h)
+    if urlparse(_url).hostname != 'localhost':
+        h.pop('Host')
     try:
         resp, content = http.request(_url, method=method,
                                      body=body, headers=h)

@@ -65,8 +65,8 @@ functionalities:
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
 # architecture.
-external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
-external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
+external_themes_url: http://localhost/${vars:parent_instanceid}/wsgi/themes
+external_mapserv_url: http://localhost/${vars:parent_instanceid}/mapserv
 
 # The name of the theme to use as the default theme for the
 # mobile app. The default theme is the theme loaded when no

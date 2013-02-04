@@ -8,6 +8,7 @@
 
 import os
 from ConfigParser import ConfigParser
+from urlparse import urlparse, urljoin
 
 mapserv_url = None
 db_url = None
@@ -19,8 +20,9 @@ if os.path.exists(configfile):
     cfg = ConfigParser()
     cfg.read(configfile)
     db_url = cfg.get('test', 'sqlalchemy.url')
-    mapserv_url = cfg.get('test', 'mapserv.url')
-
+    mapserv_url = urlparse(cfg.get('test', 'mapserv.url'))
+    host = mapserv_url.hostname
+    mapserv_url = urljoin('http://localhost/', mapserv_url.path)
 
 def setUpCommon():
     import c2cgeoportal

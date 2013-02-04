@@ -80,10 +80,10 @@ mobile_default_theme:
 raster:
 
 # For mapserver proxy
-mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
+mapserv_url: http://localhost/${vars:instanceid}/mapserv
 
 # For print proxy
-print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
 
 # For base layers
 tiles_url: 
