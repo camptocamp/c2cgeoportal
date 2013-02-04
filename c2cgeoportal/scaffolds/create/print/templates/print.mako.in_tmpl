@@ -33,6 +33,10 @@ hosts:
     host: ${vars:host}
     port: ${vars:waitress_port}
 
+localHostForward:
+    from:
+        - ${vars:host}
+    https2http: True 
 
 #===========================================================================
 # the output filename

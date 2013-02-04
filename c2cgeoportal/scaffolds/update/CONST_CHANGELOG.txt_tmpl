@@ -190,6 +190,26 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 document.write('<link rel="stylesheet" type="text/css" href="'
         + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
 
+5. In this version we call mapserver and the MapFish print directly on localhost
+   with the given Host header.
+
+   In `comfig.yaml.in` set `mapserver_url` and `print_url` using localhost
+   as follows:
+
+# For mapserver proxy
+mapserv_url: http://localhost/${vars:instanceid}/mapserv
+
+# For print proxy
+print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+
+    And in the print config template `print/templates/print.mako.in`
+    you should add the following config:
+
+localHostForward:
+    from:
+        - ${vars:host}
+    https2http: True
+
 
 Version 1.3
 ===========
