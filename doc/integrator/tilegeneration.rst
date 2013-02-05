@@ -6,10 +6,12 @@ TileGeneration
 Introduction
 ------------
 
-With this solution we solve the following issue::
+With this solution we solve the following issue:
 
  * Managing millions of files on the file system is difficult.
+ 
  * We should be able to update all the generated tiles.
+ 
  * We shouldn't have thousands of expired files.
 
 To do so we need need a tool that can generate the tiles,
@@ -19,7 +21,7 @@ On-the-fly tiles generation introduces some issues such as having a growing
 number of tiles that may become unmanageable. For example when updating the
 data, it is not possible to figure out what tiles should be updated.
 
-For the high usage website we want to put the tiles on s3
+For the high usage website we want to put the tiles on S3
 with the same tool.
 
 One issue we have if we want to generate all the tiles, the generation
@@ -30,9 +32,10 @@ with a low expiry (4 hours for example).
 We should use metatiles to don't have too may request to postgres.
 And the tiles should be delete after the expiry time.
 
-The chosen solution is a combination of two tools::
+The chosen solution is a combination of two tools:
 
  * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
+
  * `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
 
 MapCache
@@ -69,7 +72,7 @@ EC2, SQS, SNS.
 
 See: http://pypi.python.org/pypi/tilecloud-chain.
 
-Initialisation
+Initialization
 ~~~~~~~~~~~~~~
 
  * Add ``tilecoud-chain`` to the dependencies in the ``setup.py``.
@@ -141,7 +144,7 @@ one to generate the tiles using AWS, see help::
 
 Before start a tile generation on S3 measure the cost::
 
-    ./buildout/bin/generate_tiles --cost
+    ./buildout/bin/generate_controller --cost
 
 If you setup all the default options you can generate the tiles by
 using the command::
