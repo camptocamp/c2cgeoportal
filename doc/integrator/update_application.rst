@@ -48,7 +48,6 @@ steps:
        [versions]
        c2cgeoportal = <version to install>
        pyramid = 1.3.4
-       requests = 0.14.2
 
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
