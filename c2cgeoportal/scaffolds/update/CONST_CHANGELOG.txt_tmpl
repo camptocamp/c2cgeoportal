@@ -34,28 +34,7 @@ Version 1.4
    * When the new configuration is done you can remove the ``tilecache``
      folder.
 
-2. One can now define a "default mobile theme" in the config.yaml configuration
-   file. The default theme is the theme loaded when no theme is specified in
-   the query string of the mobile app URL (/mobile). For example:
-
-       mobile_default_theme: my_main_mobile_theme
-
-   Not setting the mobile_default_theme in config.yaml is perfectly valid. In
-   that case there's no "default mobile theme", and no theme information will
-   be passed to the config.js template.
-
-   Even if you don't need a "default mobile theme" it is recommended to set
-   mobile_default_theme to "None" in config.yaml, with an appropriate text
-   describing the role of this setting. For example:
-
-       # The name of the theme to use as the default theme for the
-       # mobile app. The default theme is the theme loaded when no
-       # theme name is specified in the mobile app URL. If unset
-       # then there's no default theme, and no theme information
-       # will be passed to the config.js template.
-       mobile_default_theme:
-
-3. Add sub domain support for pyramid views.
+2. Add sub domain support for pyramid views.
    You can add the following configuration to the `config.yaml.in`:
 
    # The URL template used to generate the sub domain URL
@@ -68,7 +47,7 @@ Version 1.4
    http://docs.camptocamp.net/c2cgeoportal/integrator/customize_ui.html#sub-domain
    http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html#internal-service
 
-4. We don't anymore reset all default CSS attributes in the XAPI.
+3. We don't anymore reset all default CSS attributes in the XAPI.
    Than the XAPI should not anymore brake the CSS of the page.
 
    For that you should:
@@ -190,7 +169,7 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 document.write('<link rel="stylesheet" type="text/css" href="'
         + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
 
-5. In this version we call mapserver and the MapFish print directly on localhost
+4. In this version we call mapserver and the MapFish print directly on localhost
    with the given Host header.
 
    In `comfig.yaml.in` set `mapserver_url` and `print_url` using localhost
@@ -209,6 +188,31 @@ localHostForward:
     from:
         - ${vars:host}
     https2http: True
+
+
+Version 1.3.1
+=============
+
+1. One can now define a "default mobile theme" in the config.yaml configuration
+   file. The default theme is the theme loaded when no theme is specified in
+   the query string of the mobile app URL (/mobile). For example:
+
+       mobile_default_theme: my_main_mobile_theme
+
+   Not setting the mobile_default_theme in config.yaml is perfectly valid. In
+   that case there's no "default mobile theme", and no theme information will
+   be passed to the config.js template.
+
+   Even if you don't need a "default mobile theme" it is recommended to set
+   mobile_default_theme to "None" in config.yaml, with an appropriate text
+   describing the role of this setting. For example:
+
+       # The name of the theme to use as the default theme for the
+       # mobile app. The default theme is the theme loaded when no
+       # theme name is specified in the mobile app URL. If unset
+       # then there's no default theme, and no theme information
+       # will be passed to the config.js template.
+       mobile_default_theme:
 
 
 Version 1.3
