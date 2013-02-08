@@ -26,18 +26,6 @@ Ext.define("App.view.Layers", {
         return Ext.isArray(value) ? value : value.split(',');
     },
 
-    checkChange: function() {
-        this.getFieldsAsArray().forEach(function(field) {
-            var record = field.getRecord();
-            var map = record.get('map');
-            var checked = field.getChecked();
-            if (record.raw.isBaseLayer && checked) {
-                map.setBaseLayer(record.raw);
-            }
-            record.raw.setVisibility(checked);
-        });
-    },
-
     overlayCheckChange: function(field) {
         var record = field.getRecord();
         var layer = record.raw;
@@ -50,8 +38,8 @@ Ext.define("App.view.Layers", {
         } else {
             OpenLayers.Util.removeItem(layersParam, name);
         }
+        layer.setVisibility(layersParam.length !== 0);
         layer.mergeNewParams({'LAYERS': layersParam});
-        layer.setVisibility(layersParam.length);
     },
 
     updateStore: function(store) {
