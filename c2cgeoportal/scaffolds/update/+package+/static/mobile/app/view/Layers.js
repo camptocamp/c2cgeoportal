@@ -38,8 +38,8 @@ Ext.define("App.view.Layers", {
         } else {
             OpenLayers.Util.removeItem(layersParam, name);
         }
+        layer.setVisibility(layersParam.length !== 0);
         layer.mergeNewParams({'LAYERS': layersParam});
-        layer.setVisibility(layersParam.length);
     },
 
     updateStore: function(store) {
