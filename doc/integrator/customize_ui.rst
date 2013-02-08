@@ -57,6 +57,79 @@ For example, to use the Legend panel, add::
 See ``map`` section from
 `gxp.Viewer documentation <http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html>`_
 
+``layers``
+~~~~~~~~~~
+
+In the ``layers`` section we configure the background layers like this:
+
+.. code-block:: javascript
+
+            {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                group: 'background',
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('plan'),
+                    mapserverLayers: 'plan',
+                    queryLayers: [{
+                        name: 'query_plan',
+                        identifierAttribute: 'name',
+                        minScaleDenominator: 100,
+                        maxScaleDenominator: 1000
+                    }],
+                    mapserverParams: {'EXTERNAL': true},
+                    ref: 'plan',
+                    layer: 'plan',
+                    group: 'background'
+                }, WMTS_OPTIONS)]
+            },
+
+with ``WMTS_OPTIONS`` defined like this:
+
+.. code-block:: javascript
+
+    var WMTS_OPTIONS = {
+        url: '${tile_url}',
+        displayInLayerSwitcher: false,
+        transitionEffect: 'resize',
+        visibility: false,
+        requestEncoding: 'REST',
+        buffer: 0,
+        style: 'default',
+        dimensions: ['TIME'],
+        params: {
+            'time': '2011'
+        },
+        matrixSet: 'swissgrid',
+        maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
+        projection: new OpenLayers.Projection("EPSG:21781"),
+        units: "m",
+        formatSuffix: 'png',
+        serverResolutions: [250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1]
+    };
+
+The important points are:
+
+* Booth ``group: 'background'`` are requires by
+  `GXP <http://gxp.opengeo.org>`_ (first), and by the
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/lib/plugins/MapOpacitySlider.html>`_
+  (in ``args``).
+* ``mapserverLayers`` is used to know the layers to
+  `print <http://docs.camptocamp.net/cgxp/lib/plugins/Print.html>`_.
+  if it's not present the tiles are used.
+* ``queryLayers`` provide information to the
+  `GetFeature <http://docs.camptocamp.net/cgxp/lib/plugins/GetFeature.html>`_
+  plugin on the background layers. It can also be a coma separated string.
+  If it's not present the ``mapserverLayers`` is used.
+* ``ref`` is used by the
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/lib/plugins/MapOpacitySlider.html>`_.
+* ``visibility`` should be set to ``false`` to don't download unneeded tiles, the
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/lib/plugins/MapOpacitySlider.html>`_
+  will manage it.
+* ``transitionEffect``, ``buffer`` provides good value for performance
+  and user experience.
+
+
 Sub domain
 ----------
 
