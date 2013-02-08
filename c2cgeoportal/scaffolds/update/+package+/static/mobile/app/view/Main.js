@@ -115,12 +115,29 @@ Ext.define("App.view.Main", {
         }
     },
 
+    setOverlaysVisibility: function() {
+        var map = this.getMap(),
+            layers = map.layers,
+            numLayers = layers.length,
+            layer,
+            i;
+        for (i=0; i<numLayers; ++i) {
+            layer = layers[i];
+            if (layer.params && layer.params.hasOwnProperty('LAYERS') &&
+                layer.params.LAYERS.length === 0) {
+                layer.setVisibility(false);
+            }
+        }
+    },
+
     // initial rendering
     render: function(component) {
         var map = this.getMap();
         var mapContainer = this.down('#map-container').element;
+
         map.render(mapContainer.dom);
 
+        this.setOverlaysVisibility();
         this.setCenterZoomFromQueryParams();
 
         var center = this.getCenter(),
