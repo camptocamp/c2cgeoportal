@@ -45,20 +45,25 @@ Creating and building a mobile application requires the `Sencha SDK Tools
 <http://www.sencha.com/products/sdk-tools/>`_ and `Compass
 <http://compass-style.org/>`_ to be installed on the target machine.
 
-The ``sencha`` and ``compass`` commands should be available on the ``PATH``.
-On Camptocamp servers this should be all set for you.
-
-Here's an example of setting environment variable::
-
-    export PATH=${HOME}/.gem/ruby/1.8/bin:${PATH}
-    export PATH=/opt/SenchaSDKTools-2.0.0-beta3/:${PATH}
-    export SENCHA_SDK_TOOLS_2_0_0_BETA3=/opt/SenchaSDKTools-2.0.0-beta3/
+On Camptocamp server we just need the Debian package ``sencha-sdk-tools``
+and ``libcompass-ruby1.8``.
 
 .. note::
 
-   With our ``sencha`` package we create we add a script ``/usr/bin/sencha``
-   witch sets up the required environment.
+    If you need to install them yourself, the ``sencha`` and ``compass``
+    commands should be available on the ``PATH``, and the
+    ``SENCHA_SDK_TOOLS_<version>`` environment variable should be set as
+    appropriate.
 
+    Here's an example of setting environment variable::
+
+        export PATH=${HOME}/.gem/ruby/1.8/bin:${PATH}
+        export PATH=/opt/SenchaSDKTools-2.0.0-beta3/:${PATH}
+        export SENCHA_SDK_TOOLS_2_0_0_BETA3=/opt/SenchaSDKTools-2.0.0-beta3/
+
+    On Camptocamp servers the Debian package ``sencha-sdk-tools`` adds the
+    script ``/usr/bin/sencha`` which sets the required environment
+    variables for you.
 
 Adding a mobile app to a project
 --------------------------------
