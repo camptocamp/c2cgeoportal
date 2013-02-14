@@ -11,7 +11,6 @@ OpenLayers.Lang.en = {
     "summits": "Summits",
     "huts": "Huts",
     "sites": "Sites",
-    "users": "Users",
 
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Cancel',
@@ -35,7 +34,6 @@ OpenLayers.Lang.fr = {
     "summits": "Sommets",
     "huts": "Cabanes",
     "sites": "Sites",
-    "users": "Utilisateurs",
 
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Annuler',
@@ -59,7 +57,6 @@ OpenLayers.Lang.de = {
     "summits": "Gipfel",
     "huts": "Hütten",
     "sites": "Sehenswürdigkeiten",
-    "users": "Benutzer",
 
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Abbrechen',
@@ -134,7 +131,7 @@ App.map = new OpenLayers.Map({
                 transparent: true
             },
             {
-                allLayers: ['summits', "huts", "sites", "users"],
+                allLayers: ['summits', "huts", "sites"],
                 singleTile: true,
                 ratio: 1
             }
