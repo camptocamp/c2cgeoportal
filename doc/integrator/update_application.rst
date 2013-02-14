@@ -73,6 +73,16 @@ steps:
     -Tempita = x.y.z
     +tempita = x.y.z
 
+.. note::
+
+    If you have ``tilecloud_chain`` installed, please make the
+    following changes as well::
+
+        -Jinja2 = x.y.z
+        +jinja2 = x.y.z
+        -Pillow = x.y.z
+        +pillow = x.y.z
+
 5. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
