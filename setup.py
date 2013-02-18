@@ -57,6 +57,8 @@ install_requires = [
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
     'GeoAlchemy>=0.7,<=0.7.99',
+    # With Formalchemy 1.4.3 the Layer types 'WMTS' and 'no 2D' are not visible.
+    'FormAlchemy<=1.4.2',
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
     'JSTools>=0.6',
