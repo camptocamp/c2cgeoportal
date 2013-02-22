@@ -677,12 +677,12 @@ class Entry(object):
 
         # comma-separated string including the names of layers of the
         # requested theme
-        layers = ','.join([li['name'] for li in layer_info])
+        layers = ','.join(reversed([li['name'] for li in layer_info]))
 
         # comma-separated string including the names of layers that
         # should visible by default in the map
         visible_layers = filter(lambda li: li['isChecked'] is True, layer_info)
-        visible_layers = ','.join(li['name'] for li in visible_layers)
+        visible_layers = ','.join(reversed([li['name'] for li in visible_layers]))
 
         # comma-separated string including the feature types supported
         # by WFS service
