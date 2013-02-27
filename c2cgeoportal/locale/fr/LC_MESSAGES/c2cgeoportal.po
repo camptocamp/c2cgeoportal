@@ -86,7 +86,7 @@ msgstr "Rôles"
 
 #: c2cgeoportal/models.py:187 c2cgeoportal/models.py:391
 msgid "Description"
-msgstr "Déscription"
+msgstr "Description"
 
 #: c2cgeoportal/models.py:231
 msgid "Order"
