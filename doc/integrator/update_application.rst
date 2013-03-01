@@ -49,6 +49,15 @@ steps:
        c2cgeoportal = <version to install>
        pyramid = 1.3.4
 
+.. note::
+
+   I you update from a version lower than `1.3` you should also keep::
+
+       [versions]
+       ...
+       distribute = 0.6.22
+       zc.buildout = 1.5.2
+
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
 
