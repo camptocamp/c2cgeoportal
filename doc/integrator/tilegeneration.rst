@@ -155,7 +155,7 @@ using the command::
        export AWS_ACCESS_KEY_ID=XXXXX
        export AWS_SECRET_ACCESS_KEY=YYYY
 
-   If you forget it you will get this message: ``unknown cache type: s3``
+   If you forget it you will get an explicit message.
 
 Integration in c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
