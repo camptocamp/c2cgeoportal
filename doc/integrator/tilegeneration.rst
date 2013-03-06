@@ -153,7 +153,7 @@ using the command::
 
 .. notes:: Take care to export this two variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::
        export AWS_ACCESS_KEY_ID=XXXXX
-	   export AWS_SECRET_ACCESS_KEY=YYYY
+       export AWS_SECRET_ACCESS_KEY=YYYY
 
    If you forget it you will get this message: ``unknown cache type: s3``
 
