@@ -126,7 +126,7 @@ basewar = print-servlet-1.2-SNAPSHOT.war
 basedir = print/
 input = ${print-war:basewar}
     WEB-INF/classes/log4j.properties
-    WEB-INF/classes/spring-application-context.xml
+    WEB-INF/classes/mapfish-spring-application-context.xml
     config.yaml
     *.tif
     *.bmp
