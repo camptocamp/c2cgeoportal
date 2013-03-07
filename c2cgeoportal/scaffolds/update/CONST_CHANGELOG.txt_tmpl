@@ -189,6 +189,10 @@ localHostForward:
         - ${vars:host}
     https2http: True
 
+5. Rename one print config file (required for the new print version):
+
+    git mv print/WEB-INF/classes/{,mapfish-}spring-application-context.xml
+
 
 Version 1.3.1
 =============
