@@ -32,6 +32,8 @@ One of the primary goals of the c2cgeoportal project is sharing as much as
 functionality and code as possible between applications. *Do not repeat
 ourselves!*
 
+:ref:`releasenotes`.
+
 .. toctree::
    :hidden:
 
