@@ -9,24 +9,24 @@ Release notes
 New Features
 ~~~~~~~~~~~~
 
-* WMSBrowser: the user can know if a lacer is compatible with the map and if he is queryable.
+* WMSBrowser: indicates if a layer is compatible with the map and is queryable.
 * Menu: Add a menu plugin
 * Query: Merge the interrogation tools, point and box (CTRL drag) interrogation without activating a tool. Query the layers added by the WMSBrowser.
-* Mobile: Better redirect on the mobile for pads.
+* Mobile: Better redirection to the mobile application for tablet.
 * Print: Add ability to put it on the top right corner.
-* Redligning: Add ability to resize and move the rectangle ans circles, new attributes.
+* Redligning: Add ability to resize and to move the rectangles and circles, new attributes.
 * Mobile: Add x, y and zoom in the URL.
 * Mobile: Authentication to mobile application.
-* Redligning: Add object in the permalink.
+* Redligning: Add support of the drawn objects to the permalink.
 
-Bugfix and other
-~~~~~~~~~~~~~~~~
+Bugfixs and other
+~~~~~~~~~~~~~~~~~
 
-* Mobile: Removes delta (issue with some devices).
+* Mobile: Remove delta (issue with some devices).
 * Mobile: Howto to create a second application.
 * Get the toolbar mouse coordinate plugin.
 * ScaleChoser: Add ability to round the scales.
-* FullTextSearch: Add ability to configure the limites.
+* FullTextSearch: Add ability to configure the limits.
 * GoogleEarth: Add KML layers in the GoogleEarth plugin.
 * ScaleLine: Use geodesic measure.
 
