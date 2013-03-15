@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html lang="${lang}">
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="Content-Language" content="${lang}" />
+        <meta name="keywords" content="{{package}}, geoportal">
+        <meta name="description" content="{{package}} Geoportal Application.">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
 % if not no_redirect and mobile_url is not None:
         <script>
             if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
@@ -8,11 +13,6 @@
             }
         </script>
 % endif
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="Content-Language" content="${lang}" />
-        <meta name="keywords" content="{{package}}, geoportal">
-        <meta name="description" content="{{package}} Geoportal Application.">
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
         <title>{{package}} Geoportal Application</title>
         <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 
