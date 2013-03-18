@@ -87,6 +87,7 @@ App.info = '${info | n}';
 
 // define the map and layers
 App.map = new OpenLayers.Map({
+    fallThrough: true, // required for longpress queries
     theme: null,
     projection: 'EPSG:900913',
     controls: [
