@@ -78,34 +78,77 @@ APIs:
 Gotchas, limitations and hints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Below are a few things that should be known and taken into account.
+Below are a few things that c2cgeoportal integrators should know and take into
+account when setting up their projects' APIs.
 
-Any ``displayLayerSwitcher`` option set in the ``args`` property of the base
-layers defined in the map config is ignored. The API itself is responsible for
-setting this option. The Simple API sets ``displayLayerSwitcher`` to ``true``,
-while the Extended API sets ``displayLayerSwitcher`` to ``false``.
+Background/base layers
 
-To control the display of base layers when the Extend API is used the
-``MapOpacitySlider`` plugin should be set in the viewer. The OpenLayers
-``LayerSwitcher`` control will indeed not include base layers in the case of
-the Extended API.
+    Several notes about background/base layers.
 
-Using the ``LayerTree`` plugin in the API viewer is highly discouraged.  The
-API user (application developer) is responsible for declaring the layers he
-wants in his map. Adding a ``LayerTree`` plugin would conflict with that
-behavior, as the ``LayerTree`` plugin adds layers to the map based on the
-``THEMES`` configuration.
+    As mentioned already the background/base layers are defined in the map
+    configuration, in ``<package>/templates/api/mapconfig.js``.
 
-Here's the list of CGXP plugins that are known to currently work with
-the Extended API:
+    Any ``displayLayerSwitcher`` option set in the ``args`` property of the
+    base layers defined in the map config is ignored. The API itself is
+    responsible for setting this option. The Simple API sets
+    ``displayLayerSwitcher`` to ``true``, while the Extended API sets it to
+    ``false``.
 
-* ``FullTextSearch``
-* ``Legend``
-* ``MapOpacitySlider``
-* ``Measure``
-* ``MenuShortcut``
-* ``Zoom``
-* ``ZoomToExtent``
+    To control the display of base layers through the UI when the Extended API
+    is used the ``MapOpacitySlider`` plugin should be set in the viewer. The
+    OpenLayers ``LayerSwitcher`` control will indeed not include base layers
+    (and radio buttons) in the case of the Extended API.
+
+    The API user can also have some control on his map's base layers, through
+    the ``backgroundLayers`` option, which is optional.
+
+    The ``backgroundLayers`` option references an array of layer
+    names/references, which should correspond to the ``ref`` values in the map
+    config.
+
+    The ``backgroundLayers`` option determines the set of layers to add to the
+    map. It also determines the order of layers in the map, but the behavior is
+    different in API and XAPI.
+
+    For the Simple API every layer in the map config is an OpenLayers base
+    layer. By setting ``backgroundLayers`` the API user specifies the base
+    layers the map will work with, and the order of the base layers in the
+    map's layers array.  The first layer in the ``backgroundLayers`` option is
+    the base layer that will be displayed by default.
+
+    For the Extended API, if the viewer includes a map opacity slider plugin
+    (``cgxp_mapopacityslider``), the backgroundLayers option has no effect on
+    the layer order, and the background layer that is displayed by default.
+    When the viewer includes a map opacity slider plugin the "background layer
+    behavior" is indeed entirely determined by the plugin, and the user that
+    controls the plugin through the UI.
+
+    When the viewer does not include a map opacity slider plugin the
+    ``backgroundLayers`` option determines the order of layers in the map/layer
+    store. But the layers marked as background layers in the map config are
+    always before the other layers (non-background layers) in the map/layer
+    store.
+
+Layer tree
+
+    Using the ``LayerTree`` plugin in the API viewer is highly discouraged.
+    The API user (application developer) is responsible for declaring the
+    layers he wants in his map. Adding a ``LayerTree`` plugin would conflict
+    with that behavior, as the ``LayerTree`` plugin adds layers to the map
+    based on the ``THEMES`` configuration.
+
+Plugins compatible with the API
+
+    Here's the list of CGXP plugins that are known to currently work with the
+    Extended API:
+
+    * ``FullTextSearch``
+    * ``Legend``
+    * ``MapOpacitySlider``
+    * ``Measure``
+    * ``MenuShortcut``
+    * ``Zoom``
+    * ``ZoomToExtent``
 
 CSS
 ---
