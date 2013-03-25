@@ -9,9 +9,9 @@ Introduction
 With this solution we solve the following issue:
 
  * Managing millions of files on the file system is difficult.
- 
+
  * We should be able to update all the generated tiles.
- 
+
  * We shouldn't have thousands of expired files.
 
 To do so we need need a tool that can generate the tiles,
@@ -43,22 +43,14 @@ MapCache
 
 MapCache is a tool of the MapServer Suite.
 
-It should be configured to use `Memcached <http://memcached.org/>`_ as
-used Cache, that the only cache that able to delete the expired tiles.
+It is recommended to use `Memcached <http://memcached.org/>`_ as cache,
+since it is the only system that offers automatic deletion of the expired tiles.
 
-With a configured TileCloud-Chain you can add this configuration::
+To use it you should have MapCache and Memcached installed on your computer.
+And Memcached should listen on port 11211.
 
-    mapcache:
-        mapserver_url: <the url to mapserver, default is ``http://${vars:host}/${vars:instanceid}/mapserv``>
-        config_file: <the generated file, default is ``apache/mapcache.xml.in``>
-        resolutions: [<list of resolutions distributed by MapCache, the first on should be the same as TileCloud one>]
-        memcache_host: <default is localhost>
-        memcache_port: <default is 11211>
-        layers: [<list of layers that should be served with MapCache>]
-
-Than you should be able to generate the configuration::
-
-   ./buildout/bin/generate_controller --mapcache
+Than see the `TileCloud-chain documentation
+<https://github.com/sbrunner/tilecloud-chain#configure-mapcache>`_
 
 TileCloud-chain
 ---------------
@@ -70,7 +62,7 @@ WMTS layout.
 It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
-See: http://pypi.python.org/pypi/tilecloud-chain.
+`See readme <http://pypi.python.org/pypi/tilecloud-chain>`_.
 
 Initialization
 ~~~~~~~~~~~~~~
@@ -85,7 +77,7 @@ Initialization
 
    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
 
- * Add configuration to GIT::
+ * Add configuration to Git::
 
    git add tilegeneration buildout_tilegeneration.cfg
 
