@@ -6,13 +6,13 @@ Optimization
 Introduction
 --------------
 
-Optimization is important in all application. It depends strongly from 
+Optimization is important in all application. It depends strongly on 
 the data and some others best practices. This document aims to present 
 some of them.
 
-Best practices is as important in Mapserver side as in data base side. Your 
-data should be designed to improve performance, don't store unusufuel column, 
-add column which can help for classify data in MapServer, etc.
+Best practices are as important in Mapserver side as in data base side. Your 
+data should be designed to improve performance, don't store unrequired column, 
+add column which can help for data classification in MapServer, etc.
 
 MapFile
 --------
@@ -22,25 +22,25 @@ PostGIS layer
 
 * CLOSE_CONNECTION parameter:
 
-  In case of using more than 2 postgis table, you should use::
+  In case you are using more than 2 postgis table, you should use::
 	
 	PROCESSING "CLOSE_CONNECTION=DEFER"
 
-  parameter. This allow MapServer not to close connection to PostGIS database and improve 
+  parameter. This allows MapServer to keep connections to PostGIS database and improve 
   performance.
 
 * SRID and Primary Key:
 
   Always add primary key and SRID in the DATA string, otherwise MapServer do two 
-  extra queries to get the informations::
+  extra queries to get the information::
 	DATA "the_geom from the_table using unique gid using srid=4326"
 
 Outputformat
 ~~~~~~~~~~~~~
 
 Outputformat is really important as it can allow MapServer to decrease picture 
-size from 500kb to 130kb. For some date, one can decrease colors number to 256 
-without loss quality in the final image. Here is an outputformat example to use 
+size from 500kb to 130kb. For some data, one can decrease number of colors to 256 
+without quality loss in the final image. Here is an outputformat example to use 
 in MapServer configuration file::
 	OUTPUTFORMAT
 	    NAME png
@@ -62,8 +62,8 @@ POSTGIS
 INDEX et CLUSTER
 ~~~~~~~~~~~~~~~~~
 
-Indexes increase performance but you can improve even more your application ordering 
-feature by a colunm. In geospatial application, the column should be the geometry 
+Indexes increase performance but you can improve it even more in your application by 
+adding an index on a column. In geospatial applications, the column should be the geometry 
 column::
 	CREATE INDEX myTable_geom_idx ON mySchema.myTable USING gist(geom);
 	CLUSTER myTable_geom_idx ON mySchema.myTable;
