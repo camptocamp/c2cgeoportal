@@ -19,18 +19,18 @@ update some of them contained in given geometries and delete empty tiles.
 
 On-the-fly tiles generation introduces some issues such as having a growing
 number of tiles that may become unmanageable. For example when updating the
-data, it is not possible to figure out what tiles should be updated.
+data, it is not possible to figure out which tiles should be updated.
 
-For the high usage website we want to put the tiles on S3
+For a high usage website, we want to put the tiles on S3
 with the same tool.
 
-One issue we have if we want to generate all the tiles, the generation
+One issue we have, if we want to generate all the tiles, the generation
 time can grow to more than one month, especially if we have
 a high resolution (low if in m/px) on the last zoom level.
-Than for the last zoom level we should generate the tiles on the fly
-with a low expiry (4 hours for example).
-We should use metatiles to don't have too may request to postgres.
-And the tiles should be delete after the expiry time.
+Then for the last zoom level we should generate the tiles on the fly
+with a low expiry time (4 hours for example).
+We should use metatiles to order to not send too many requests to postgres.
+The tiles should be deleted after the expiry time.
 
 The chosen solution is a combination of two tools:
 
@@ -44,7 +44,7 @@ MapCache
 MapCache is a tool of the MapServer Suite.
 
 It should be configured to use `Memcached <http://memcached.org/>`_ as
-used Cache, that the only cache that able to delete the expired tiles.
+used Cache, this is the only cache which is able to delete the expired tiles.
 
 With a configured TileCloud-Chain you can add this configuration::
 
@@ -79,15 +79,15 @@ Initialization
 
  * Build the project::
 
-   ./buildout/bin/buildout -c buildout_<user>.cfg
+    ./buildout/bin/buildout -c buildout_<user>.cfg
 
  * Install the base template template::
 
-   ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
+    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
 
  * Add configuration to GIT::
 
-   git add tilegeneration buildout_tilegeneration.cfg
+    git add tilegeneration buildout_tilegeneration.cfg
 
 Configuration
 ~~~~~~~~~~~~~
@@ -151,9 +151,10 @@ using the command::
 
     ./buildout/bin/generate_tiles
 
-.. notes:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::
-       export AWS_ACCESS_KEY_ID=XXXXX
-       export AWS_SECRET_ACCESS_KEY=YYYY
+.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+   ::
+        export AWS_ACCESS_KEY_ID=XXXXX
+        export AWS_SECRET_ACCESS_KEY=YYYY
 
    If you forget it you will get an explicit message.
 
