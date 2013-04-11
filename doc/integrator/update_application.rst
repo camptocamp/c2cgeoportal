@@ -47,16 +47,22 @@ steps:
 
        [versions]
        c2cgeoportal = <version to install>
-       pyramid = 1.3.4
 
 .. note::
 
-   I you update from a version lower than `1.3` you should also keep::
+   If the ``CONST_buildout.cfg`` file does not already have::
+   
+       distribute = 0.6.22
+       zc.buildout = 1.5.2
+
+   in its ``[versions]`` section (c2cgeoportal < 1.3), add them to the
+   ``[versions]`` section of the ``buildout.cfg`` file.
+   
+   If you upgrade from c2cgeoportal < 1.3.2, you should also keep/add::
 
        [versions]
        ...
-       distribute = 0.6.22
-       zc.buildout = 1.5.2
+       zc.recipe.egg = 1.3.2
 
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
