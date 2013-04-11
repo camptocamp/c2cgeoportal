@@ -53,7 +53,6 @@ steps:
 
        [versions]
        c2cgeoportal = <version to install>
-       pyramid = 1.3.4
 
 .. note::
 
