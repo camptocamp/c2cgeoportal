@@ -47,7 +47,26 @@ steps:
    edit the application's Buildout config (``buildout.cfg``), and remove all
    the lines from the ``[versions]`` section. Emptying the ``[versions]``
    section is necessary for getting new dependency versions using ``buildout
-   -n`` (see the next step).
+   -n`` (see the next step). Keep only the new version of c2cgeoportal to use::
+
+       [versions]
+       c2cgeoportal = <version to install>
+
+.. note::
+
+   If the ``CONST_buildout.cfg`` file does not already have::
+   
+       distribute = 0.6.22
+       zc.buildout = 1.5.2
+
+   in its ``[versions]`` section (c2cgeoportal < 1.3), add them to the
+   ``[versions]`` section of the ``buildout.cfg`` file.
+   
+   If you upgrade from c2cgeoportal < 1.3.2, you should also keep/add::
+
+       [versions]
+       ...
+       zc.recipe.egg = 1.3.2
 
 3. Execute ``buildout`` with the ``-n`` flag to download and install new
    versions of dependencies (``c2cgeoportal`` included)::
