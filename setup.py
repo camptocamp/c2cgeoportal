@@ -36,8 +36,10 @@ install_requires = [
     'pyramid<=1.3.99,>=1.3.2',
     'WebError',
     'psycopg2',
-    'sqlalchemy',
-    'sqlalchemy-migrate',
+    # sqlalchemy-migrate 0.7.2 and GeoAlchemy 0.7.1
+    # don't work with SQLAlchemy 0.8.
+    'sqlalchemy<=0.7.9',
+    'sqlalchemy-migrate<=0.7.99',
     'sqlahelper',
     'pyramid_tm',
     'papyrus>=0.10dev1',
@@ -54,7 +56,7 @@ install_requires = [
     'js.jqgrid==4.3.1-1',
     'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
-    'GeoAlchemy>=0.7',
+    'GeoAlchemy>=0.7,<=0.7.99',
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
     'JSTools>=0.6',

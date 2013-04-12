@@ -178,8 +178,9 @@ def proxy(request):
     if callback:
         content_type = "application/javascript"
         # escape single quotes in the JavaScript string
-        content = content.replace("'", r"\'")
-        content = "%s('%s');" % (callback, ' '.join(content.splitlines()))
+        content = unicode(content.decode('utf8'))
+        content = content.replace(u"'", ur"\'")
+        content = u"%s('%s');" % (callback, u' '.join(content.splitlines()))
     else:
         content_type = resp["content-type"]
 

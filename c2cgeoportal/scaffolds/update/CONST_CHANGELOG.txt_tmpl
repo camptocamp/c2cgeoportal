@@ -218,6 +218,32 @@ Version 1.3.1
        # will be passed to the config.js template.
        mobile_default_theme:
 
+2. To make the `X-UA-Compatible` work again in the
+   `<project>/template/index.html` file the following block should be moved
+   below all the <meta> tags:
+
+        % if not no_redirect and mobile_url is not None:
+                <script>
+                    if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+                        window.location = "${mobile_url}";
+                    }
+                </script>
+        % endif
+
+3. The default value for `fallThrough` changed in OpenLayers. This has caused
+   a major regression in the mobile app, where longpress queries no longer
+   work.
+
+   To fix it edit {{package}}/static/mobile/config.js and add `fallThrough: true`
+   to the map config, before `theme: null` for example:
+
+
+        App.map = new OpenLayers.Map({
+            fallThrough: true, // required for longpress queries
+            theme: null,
+            ...
+        });
+
 
 Version 1.3
 ===========
