@@ -49,7 +49,11 @@ since it is the only system that offers automatic deletion of the expired tiles.
 To use it you should have MapCache and Memcached installed on your computer.
 And Memcached should listen on port 11211.
 
-Than see the `TileCloud-chain documentation
+To clear/flush Memcached cache, use the following command:
+
+     echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
+
+See the `TileCloud-chain documentation for more details
 <https://github.com/sbrunner/tilecloud-chain#configure-mapcache>`_
 
 TileCloud-chain
