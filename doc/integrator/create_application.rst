@@ -374,3 +374,283 @@ Then follow the sections in the install application guide:
 ..   of the tilecache layer entry just added in ``tilecache/tilecache.cfg.in``.
 
 .. **To Be Completed**
+
+Create a multi instance project
+-------------------------------
+
+In some case we want to create some projects based on the same code.
+
+To be compatible with that already done in c2cgeoportal we use the there
+`project` for all the project and `instance` for only one configuration.
+
+
+This procedure will going to have:
+
+* One folder per instance ``mapfile/<instance>``.
+* One configuration file for all the project ``config.yaml.in``.
+* One configuration file for each instance ``config_<instance>.yaml.in``.
+* One buildout file for all the project ``buildout.cfg``.
+* One buildout file for each instance ``buildout_<instane>.cfg``.
+* One buildout generator for each devleopper and server ``buildout_<user>.cfg.jinja``.
+* One additinnal css file for each instance ``<project>/static/css/proj_<instance>.css``.
+
+~~~~~~~~~~~~~~~~~~
+Create the project
+~~~~~~~~~~~~~~~~~~
+
+1. In the ``setup.py`` add the following dependencies:
+
+.. code:: python
+
+   'bottle',
+   'jinja2',
+
+2. In the ``setup.py`` add the following ``console_scripts``:
+
+.. code:: python
+
+   'gen_project_files = <project>.scripts.gen_project_files:main'
+
+3. Create the generate project files from template
+   ``<project>/scripts/gen_project_files.py`` script:
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   import yaml
+   import glob
+   import os
+   from bottle import jinja2_template
+
+   def main():
+       config = yaml.load(open('config.yaml', 'r'))
+       for template in glob.glob('*.jinja'):
+           for instance in config['instances']:
+               file_parts = template.split('.')
+               file_name = "%s_%s.%s" % (file_parts[0], instance, '.'.join(file_parts[1:-1]))
+               result = jinja2_template(
+                   template,
+                   instance=instance,
+                   config=config,
+               )
+               file_open = open(file_name, 'w')
+               file_open.write(result)
+               file_open.close()
+
+4. In the ``buildout.cfg`` add a task to generate the buildout files:
+
+.. code::
+
+   [jinja-template]
+   recipe = collective.recipe.cmd:py
+   on_install = true
+   on_update = true
+   cmds =
+       >>> from subprocess import call
+       >>> from os.path import join
+       >>> cmd = join('buildout', 'bin', 'gen_project_files')
+       >>> call([cmd])
+
+5. Define the devloper templates as following (``buildout_<user>.cfg.jinja``):
+
+.. code::
+
+   [buildout]
+   extends = buildout_{{instance}}.cfg
+
+   [vars]
+   instanceid = <user>-{{instance}}
+   host = <host>
+
+   [jsbuild]
+   compress = False
+
+   [cssbuild]
+   compress = false
+
+6. Define the host templates as following (``buildout_main.cfg.jinja``,
+   ``buildout_demo.cfg.jinja``, ``buildout_prod.cfg.jinja``):
+
+.. code::
+
+   [buildout]
+   extends = buildout_{{instance}}.cfg
+
+   [vars]
+   instanceid = ${vars:instance}
+   apache-entry-point = /${vars:instanceid}/
+   host = <host>
+
+7. Create the ``config_<instance>.yaml.in`` with:
+
+.. code::
+
+   page_title: <title>
+
+   viewer:
+        initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
+        restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
+        default_themes:
+        - <theme>
+        feature_types:
+        - <feature>
+
+   functionalities:
+        anonymous:
+            print_template:
+            - <template>
+
+8. In the ``<project>/__init__.py`` use the new yaml file:
+
+.. code:: python
+
+    def update(d, u):
+        for k, v in u.iteritems():
+            if isinstance(v, collections.Mapping):
+                r = update(d.get(k, {}), v)
+                d[k] = r
+            else:
+                d[k] = u[k]
+        return d
+
+
+    def main(global_config, **settings): # already defined
+        ...
+        settings = config.get_settings() # already defined
+        project_settings = yaml.load(file(settings.get('app2.cfg')))
+        if project_settings:
+            update(settings, project_settings)
+
+9. Define the instance build ut file ``buildout_<instance>.cfg`` as following:
+
+.. code::
+
+   [buildout]
+   extends = buildout.cfg
+
+   [vars]
+   instance = <instance>
+
+10. In the `` buildout.cfg`` define the vars a following:
+
+.. code::
+
+   [vars]
+   instance = to_be_overridden
+   schema = ${vars:instance}
+   instanceid = to_be_overridden
+   parent_instanceid = to_be_defined
+   host = to_be_overridden
+
+11. In the `` buildout.cfg`` add the additional css:
+
+.. code::
+
+   [cssbuild]
+   input +=
+       <project>/static/css/proj_${vars:instance}.css
+
+12. In the ``<project>/templates/index.html`` file do the following changes:
+
+.. code:: diff
+
+   -        <meta name="keywords" content="<project>, geoportal">
+   -        <meta name="description" content="<project> Geoportal Application.">
+   +        <meta name="keywords" content="${request.registry.settings['instance']}, geoportal">
+   +        <meta name="description" content="${request.registry.settings['page_title']}.">
+
+   -        <title><project> Geoportal Application</title>
+   +        <title>${request.registry.settings['page_title']}</title>
+
+            <link rel="stylesheet" type="text/css" href="${request.static_url('<project>:static/css/proj-widgets.css')}" />
+   +        <link rel="stylesheet" type="text/css" href="${request.static_url('<project>:static/css/proj_%s.css' % request.registry.settings['instance'])}" />
+
+13. Create the  instance css file ``<project>/static/css/proj_<instance>.css``:
+
+.. code:: css
+
+   #header-in {
+       background: url('../images/<instance>_banner_left.png') top left no-repeat;
+       height: <height>px;
+   }
+   header-out {
+       background: url('../images/<instance>_banner_right.png') top right no-repeat;
+       background-color: #<color>;
+       height: <height>px;
+   }
+
+14. In the ``config.yaml.in`` define the following attribute:
+
+.. code:: yaml
+
+   external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
+   external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
+   tilecache_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/tilecache
+
+15. In the files ``<project>/templates/api/mapconfig.js``,
+    ``<project>/templates/viewer.js`` and ``<project>/templates/edit.js``
+    define the ``WMTS_OPTIONS`` url as following:
+
+.. code:: javascript
+
+   var WMTS_OPTIONS = {
+       url: '${tilecache_url}',
+       ...
+    }
+
+16. In the ``apache/mapserver.conf.in`` file do the following change:
+
+.. code:: diff
+
+   -   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
+   +   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/${vars:instance}/c2cgeoportal.map
+
+17. Edit the ``deploy/deploy.cfg.in`` as following:
+
+.. code:: diff
+
+    [DEFAULT]
+   -project = ${vars:project}
+   +project = ${vars:instance}
+
+    [code]
+   -dir = /var/www/vhosts/<project>/private/<project>
+   +dir = /var/www/vhosts/<project>/private/${vars:instance}
+
+    [apache]
+   -dest = /var/www/vhosts/<project>/conf/<project>.conf
+   -content = Include /var/www/vhosts/<project>/private/<project>/apache/*.conf
+   +dest = /var/www/vhosts/<project>/conf/${vars:instance}.conf
+   +content = Include /var/www/vhosts/<project>/private/${vars:instance}/apache/*.conf
+
+18. In the ``production.ini.in`` and in the ``developement.ini.in``
+    add the following value:
+
+.. code::
+
+   [app:app]
+   app2.cfg = %(here)s/config_${instance}.yaml
+
+19. In the ``.gitignore`` add the following lines:
+
+.. code::
+
+   config_*.yaml
+   buildout_*_*.cfg
+   mapserver/*/*.map
+   mapserver/*/*/*.map
+
+
+~~~~~~
+Result
+~~~~~~
+
+Now you can configure the application at instance application at the following points:
+
+* ``mapserver/<instance>``
+* ``buildout_<instance>.cfg``
+* ``mandant/static/images/<instance>_banner_right.png``
+* ``mandant/static/images/<instance>_banner_left.png``
+* ``mandant/static/css/proj_<instance>.css``
+* ``config_<instance>.yaml.in``
