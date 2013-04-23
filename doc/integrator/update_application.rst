@@ -28,6 +28,11 @@ If you still use SVN::
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
 
+.. note::
+
+   if you do a minor update (e.g. ``1.3.0`` -> ``1.3.1``) you don't need to
+   do the steps 2. to 4.
+
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
@@ -36,6 +41,15 @@ steps:
    (``buildout.cfg``) and change the version of ``c2cgeoportal`` in the
    ``[versions]`` section. Make sure the version specifications in ``setup.py``
    and ``buildout.cfg`` do not conflict.
+
+.. note::
+
+   If you do a minor update you should build the application to get the
+   new ``c2cgeoportal`` egg by calling
+   ``./buildout/bin/buildout -c <buildout_config_file>``.
+   If you get a dependencies error have a look at the
+   `changelog <https://github.com/camptocamp/c2cgeoportal/blob/master/c2cgeoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl>`_
+   to see if there a note about it.
 
 2. Now, if you want or need to update the application's other dependencies,
    edit the application's Buildout config (``buildout.cfg``), and remove all
@@ -49,13 +63,13 @@ steps:
 .. note::
 
    If the ``CONST_buildout.cfg`` file does not already have::
-   
+
        distribute = 0.6.22
        zc.buildout = 1.5.2
 
    in its ``[versions]`` section (c2cgeoportal < 1.3), add them to the
    ``[versions]`` section of the ``buildout.cfg`` file.
-   
+
    If you upgrade from c2cgeoportal < 1.3.2, you should also keep/add::
 
        [versions]
