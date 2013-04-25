@@ -14,7 +14,7 @@ This guide considers that:
     - all dependencies described in the
       :ref:`system requirements <integrator_install_application_system_requirement>`
       section are installed
-    - Postgres has a gis template 'template_posgis' and a user 'www-data'
+    - Postgres has a gis template 'template_postgis' and a user 'www-data'
     - Apache use the user 'www-data'
  - We use Git as revision control
  - We use a version of ``c2cgeoportal`` >= 0.7
