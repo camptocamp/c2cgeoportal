@@ -378,40 +378,39 @@ Then follow the sections in the install application guide:
 Create a multi instance project
 -------------------------------
 
-In some case we want to create some projects based on the same code.
+In some cases we want to create applications based on very similar code and settings.
 
-To be compatible with that already done in c2cgeoportal we use the there
-`project` for all the project and `instance` for only one configuration.
+To be consistent with c2cgeoportal terminology we will use the words `project`
+to refer to the whole project and `instance` for a dedicated configuration of
+the project.
 
-
-This procedure will going to have:
+This procedure will deal with:
 
 * One folder per instance ``mapfile/<instance>``.
 * One configuration file for all the project ``config.yaml.in``.
 * One configuration file for each instance ``config_<instance>.yaml.in``.
 * One buildout file for all the project ``buildout.cfg``.
 * One buildout file for each instance ``buildout_<instane>.cfg``.
-* One buildout generator for each devleopper and server ``buildout_<user>.cfg.jinja``.
-* One additinnal css file for each instance ``<project>/static/css/proj_<instance>.css``.
+* One buildout generator for each developer and server ``buildout_<user>.cfg.jinja``.
+* One additional CSS file for each instance ``<project>/static/css/proj_<instance>.css``.
 
-~~~~~~~~~~~~~~~~~~
 Create the project
-~~~~~~~~~~~~~~~~~~
+..................
 
-1. In the ``setup.py`` add the following dependencies:
+1. In ``setup.py`` add the following dependencies:
 
 .. code:: python
 
    'bottle',
    'jinja2',
 
-2. In the ``setup.py`` add the following ``console_scripts``:
+2. In ``setup.py`` add the following ``console_scripts``:
 
 .. code:: python
 
    'gen_project_files = <project>.scripts.gen_project_files:main'
 
-3. Create the generate project files from template
+3. Create the generated project files from templates
    ``<project>/scripts/gen_project_files.py`` script:
 
 .. code:: python
@@ -438,7 +437,7 @@ Create the project
                file_open.write(result)
                file_open.close()
 
-4. In the ``buildout.cfg`` add a task to generate the buildout files:
+4. In ``buildout.cfg`` add a task to generate the buildout files:
 
 .. code::
 
@@ -452,7 +451,7 @@ Create the project
        >>> cmd = join('buildout', 'bin', 'gen_project_files')
        >>> call([cmd])
 
-5. Define the devloper templates as following (``buildout_<user>.cfg.jinja``):
+5. Define the developer templates as follows (``buildout_<user>.cfg.jinja``):
 
 .. code::
 
@@ -469,7 +468,7 @@ Create the project
    [cssbuild]
    compress = false
 
-6. Define the host templates as following (``buildout_main.cfg.jinja``,
+6. Define the host templates as follows (``buildout_main.cfg.jinja``,
    ``buildout_demo.cfg.jinja``, ``buildout_prod.cfg.jinja``):
 
 .. code::
@@ -482,7 +481,7 @@ Create the project
    apache-entry-point = /${vars:instanceid}/
    host = <host>
 
-7. Create the ``config_<instance>.yaml.in`` with:
+7. Create a ``config_<instance>.yaml.in`` file with:
 
 .. code::
 
@@ -501,7 +500,7 @@ Create the project
             print_template:
             - <template>
 
-8. In the ``<project>/__init__.py`` use the new yaml file:
+8. In ``<project>/__init__.py`` use the previous YAML file:
 
 .. code:: python
 
@@ -522,7 +521,7 @@ Create the project
         if project_settings:
             update(settings, project_settings)
 
-9. Define the instance build ut file ``buildout_<instance>.cfg`` as following:
+9. Define the instance buildout file ``buildout_<instance>.cfg`` as follows:
 
 .. code::
 
@@ -532,7 +531,7 @@ Create the project
    [vars]
    instance = <instance>
 
-10. In the `` buildout.cfg`` define the vars a following:
+10. In `` buildout.cfg`` define the vars as follows:
 
 .. code::
 
@@ -543,7 +542,7 @@ Create the project
    parent_instanceid = to_be_defined
    host = to_be_overridden
 
-11. In the `` buildout.cfg`` add the additional css:
+11. In the `` buildout.cfg`` add the additional CSS:
 
 .. code::
 
@@ -566,7 +565,7 @@ Create the project
             <link rel="stylesheet" type="text/css" href="${request.static_url('<project>:static/css/proj-widgets.css')}" />
    +        <link rel="stylesheet" type="text/css" href="${request.static_url('<project>:static/css/proj_%s.css' % request.registry.settings['instance'])}" />
 
-13. Create the  instance css file ``<project>/static/css/proj_<instance>.css``:
+13. Create the instance CSS file ``<project>/static/css/proj_<instance>.css``:
 
 .. code:: css
 
@@ -580,7 +579,7 @@ Create the project
        height: <height>px;
    }
 
-14. In the ``config.yaml.in`` define the following attribute:
+14. In ``config.yaml.in`` define the following attributes:
 
 .. code:: yaml
 
@@ -590,7 +589,7 @@ Create the project
 
 15. In the files ``<project>/templates/api/mapconfig.js``,
     ``<project>/templates/viewer.js`` and ``<project>/templates/edit.js``
-    define the ``WMTS_OPTIONS`` url as following:
+    define the ``WMTS_OPTIONS`` url as follows:
 
 .. code:: javascript
 
@@ -599,14 +598,14 @@ Create the project
        ...
     }
 
-16. In the ``apache/mapserver.conf.in`` file do the following change:
+16. In ``apache/mapserver.conf.in`` file do the following change:
 
 .. code:: diff
 
    -   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
    +   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/${vars:instance}/c2cgeoportal.map
 
-17. Edit the ``deploy/deploy.cfg.in`` as following:
+17. Edit ``deploy/deploy.cfg.in`` as follows:
 
 .. code:: diff
 
@@ -624,7 +623,7 @@ Create the project
    +dest = /var/www/vhosts/<project>/conf/${vars:instance}.conf
    +content = Include /var/www/vhosts/<project>/private/${vars:instance}/apache/*.conf
 
-18. In the ``production.ini.in`` and in the ``developement.ini.in``
+18. In ``production.ini.in`` and ``developement.ini.in``
     add the following value:
 
 .. code::
@@ -632,7 +631,7 @@ Create the project
    [app:app]
    app2.cfg = %(here)s/config_${instance}.yaml
 
-19. In the ``.gitignore`` add the following lines:
+19. In ``.gitignore`` add the following lines:
 
 .. code::
 
@@ -642,11 +641,10 @@ Create the project
    mapserver/*/*/*.map
 
 
-~~~~~~
 Result
-~~~~~~
+......
 
-Now you can configure the application at instance application at the following points:
+Now you can configure the application at instance level in the following places:
 
 * ``mapserver/<instance>``
 * ``buildout_<instance>.cfg``
