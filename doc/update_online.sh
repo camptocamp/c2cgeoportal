@@ -38,7 +38,7 @@ if [[ ! -d env ]]; then
 fi
 
 # install or update Sphinx
-./env/bin/pip install 'Sphinx==1.1.2'
+./env/bin/pip install 'Sphinx==1.1.3' --insecure
 
 make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
 
