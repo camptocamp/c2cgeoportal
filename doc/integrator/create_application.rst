@@ -531,7 +531,7 @@ Create the project
    [vars]
    instance = <instance>
 
-10. In `` buildout.cfg`` define the vars as follows:
+10. In ``buildout.cfg`` define the vars as follows:
 
 .. code::
 
@@ -542,7 +542,7 @@ Create the project
    parent_instanceid = to_be_defined
    host = to_be_overridden
 
-11. In the `` buildout.cfg`` add the additional CSS:
+11. In the ``buildout.cfg`` add the additional CSS:
 
 .. code::
 
