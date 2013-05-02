@@ -193,6 +193,14 @@ localHostForward:
 
     git mv print/WEB-INF/classes/{,mapfish-}spring-application-context.xml
 
+6. Replace the CONST_TIPS by a README:
+
+        git rm CONST_TIPS.txt
+        ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+        cp /tmp/{{project}}/README.rst .
+        rm -rf /tmp/{{project}}
+        git add README.rst
+
 
 Version 1.3.1
 =============
