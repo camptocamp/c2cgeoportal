@@ -711,6 +711,7 @@ class TestEntryView(TestCase):
 
         wms = WebMapService(None, xml=xml)
         wms_layers = list(wms.contents)
+
         layer = Layer()
         layer.id = 20
         layer.name = 'test_wmsfeaturesgroup'
@@ -741,6 +742,32 @@ class TestEntryView(TestCase):
                 'maxResolutionHint': 8.8200000000000003,
                 'queryable': 1,
             }],
+        }, []))
+
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test WMTS'
+        layer.isChecked = False
+        layer.layerType = "WMTS"
+        layer.url = "http://example.com/WMTS-Capabilities.xml"
+        layer.wmsLayers = 'test_wmsfeatures'
+        layer.legend = False
+        layer.public = True
+        self.assertEqual(entry._layer(layer, wms_layers, wms), ({
+            'id': 20,
+            'name': 'test WMTS',
+            'isChecked': False,
+            'type': 'WMTS',
+            'url': 'http://example.com/WMTS-Capabilities.xml',
+            'wmsUrl': '/dummy/route/mapserverproxy',
+            'wmsLayers': 'test_wmsfeatures',
+            'queryLayers': [{
+                'name': 'test_wmsfeatures',
+                'minResolutionHint': 1.76,
+                'maxResolutionHint': 8.8200000000000003
+            }],
+            'legend': False,
+            'public': True,
         }, []))
 
         group1 = LayerGroup()
