@@ -237,7 +237,7 @@ class Entry(object):
         elif layer.layerType == "external WMS":
             self._fill_external_WMS(l, layer)
         elif layer.layerType == "WMTS":
-            self._fill_WMTS(l, layer, errors)
+            self._fill_WMTS(l, layer, wms_layers, wms, errors)
 
         return l, errors
 
@@ -325,7 +325,7 @@ class Entry(object):
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-    def _fill_WMTS(self, l, layer, errors):
+    def _fill_WMTS(self, l, layer, wms_layers, wms, errors):
         l['url'] = layer.url
 
         if layer.dimensions:
@@ -354,6 +354,36 @@ class Entry(object):
             l['minResolutionHint'] = layer.minResolution
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
+
+        # if we have associated WMS layers look at what's in the WMS capabilities,
+        # and add a queryLayers array with "resolution hint" information.
+        if 'wmsLayers' in l:
+
+            for wms_layer in l['wmsLayers'].split(','):
+                if wms_layer not in wms_layers:
+                    continue
+                wms_layer_obj = wms[wms_layer]
+
+                query_layer = {'name': wms_layer}
+                resolutions = self._getLayerResolutionHint(wms_layer_obj)
+
+                if resolutions[0] <= resolutions[1]:
+                    query_layer['minResolutionHint'] = float(
+                        '%0.2f' % resolutions[0])
+                    query_layer['maxResolutionHint'] = float(
+                        '%0.2f' % resolutions[1])
+
+                if 'minResolutionHint' in query_layer or \
+                   'maxResolutionHint' in query_layer:
+
+                    if 'queryLayers' not in l:
+                        l['queryLayers'] = []
+
+                    l['queryLayers'].append(query_layer)
+
+                # FIXME we do not support WMTS layers associated to
+                # MapServer layer groups for now.
+
 
     def _group(self, group, layers, wms_layers, wms, depth=1):
         children = []
