@@ -18,7 +18,7 @@ Ext.define('App.model.Query', {
                                 OpenLayers.i18n(k),
                                 '</th>',
                                 '<td>',
-                                attributes[k],
+                                OpenLayers.String.format(attributes[k], App),
                                 '</td>',
                                 '</tr>'
                             ]);
