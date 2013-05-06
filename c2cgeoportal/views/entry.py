@@ -355,9 +355,10 @@ class Entry(object):
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-        # if we have associated WMS layers look at what's in the WMS capabilities,
-        # and add a queryLayers array with "resolution hint" information.
-        if 'wmsLayers' in l:
+        # if we have associated local WMS layers look at what's in the WMS
+        # capabilities, and add a queryLayers array with "resolution hint"
+        # information.
+        if 'wmsUrl' in l and l['wmsUrl'] == self.request.route_url('mapserverproxy'):
 
             for wms_layer in l['wmsLayers'].split(','):
                 if wms_layer not in wms_layers:
