@@ -77,9 +77,11 @@ Initialization
 
    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
 
- * Add configuration to Git::
+ * Add configuration to Git:
 
-   git add tilegeneration buildout_tilegeneration.cfg
+   .. code:: bash
+
+   	git add tilegeneration buildout_tilegeneration.cfg
 
 Configuration
 ~~~~~~~~~~~~~
@@ -143,7 +145,7 @@ using the command::
 
     ./buildout/bin/generate_tiles
 
-.. notes:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::
+.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::
        export AWS_ACCESS_KEY_ID=XXXXX
        export AWS_SECRET_ACCESS_KEY=YYYY
 
