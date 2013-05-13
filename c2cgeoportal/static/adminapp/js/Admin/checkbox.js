@@ -173,7 +173,8 @@ either expressed or implied, of the FreeBSD Project.
             fields = ["url", "style", "imageType", "legendRule", "isSingleTile"];
         }
         else if (state == "WMTS") {
-            fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl", "wmsLayers"];
+            fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl",
+                      "wmsLayers", "queryLayers"];
         }
 
         var change = function(field, fields) {
@@ -198,6 +199,7 @@ either expressed or implied, of the FreeBSD Project.
         change("matrixSet", fields);
         change("wmsUrl", fields);
         change("wmsLayers", fields);
+        change("queryLayers", fields);
         change("isSingleTile", fields);
         change("legendRule", fields);
 
