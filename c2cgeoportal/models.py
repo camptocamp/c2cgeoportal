@@ -401,6 +401,7 @@ class Layer(TreeItem):
     matrixSet = Column(types.Unicode, label=_(u'Matrix set'))  # for WMTS
     wmsUrl = Column(types.Unicode, label=_(u'WMS server URL'))  # for WMTS
     wmsLayers = Column(types.Unicode, label=_(u'WMS layers'))  # for WMTS
+    queryLayers = Column(types.Unicode, label=_(u'Query layers'))  # for WMTS
     kml = Column(types.Unicode, label=_(u'KML 3D'))  # for kml 3D
     isSingleTile = Column(types.Boolean, label=_(u'Single tile'))  # for extenal WMS
     legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
