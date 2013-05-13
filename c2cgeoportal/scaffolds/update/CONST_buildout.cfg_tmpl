@@ -61,8 +61,8 @@ db = override_me
 schema = webapp
 # database parent schema
 parent_schema =
-# mapserver apache allows for clients (ex: Allow from camptocamp.com)
-mapserv_allow = Allow from localhost
+# apache/mapserver.conf "Allow" statement
+mapserv_allow = Allow from 127.0.0.1
 # mapserver connexion string
 mapserver_connection = user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}
 # mapserver join tables
