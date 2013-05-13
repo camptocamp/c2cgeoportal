@@ -770,6 +770,33 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
+        layer = Layer()
+        layer.id = 20
+        layer.name = 'test WMTS'
+        layer.isChecked = False
+        layer.layerType = "WMTS"
+        layer.url = "http://example.com/WMTS-Capabilities.xml"
+        layer.wmsLayers = 'foo'
+        layer.queryLayers = 'test_wmsfeatures'
+        layer.legend = False
+        layer.public = True
+        self.assertEqual(entry._layer(layer, wms_layers, wms), ({
+            'id': 20,
+            'name': 'test WMTS',
+            'isChecked': False,
+            'type': 'WMTS',
+            'url': 'http://example.com/WMTS-Capabilities.xml',
+            'wmsUrl': '/dummy/route/mapserverproxy',
+            'wmsLayers': 'foo',
+            'queryLayers': [{
+                'name': 'test_wmsfeatures',
+                'minResolutionHint': 1.76,
+                'maxResolutionHint': 8.8200000000000003
+            }],
+            'legend': False,
+            'public': True,
+        }, []))
+
         group1 = LayerGroup()
         group1.name = 'block'
         group2 = LayerGroup()
