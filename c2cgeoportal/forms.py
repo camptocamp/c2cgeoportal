@@ -473,6 +473,14 @@ User.configure(include=fieldOrder)
 
 # LayerGrid
 LayerGrid = Grid(models.Layer)
+fieldOrder = [Layer.name,
+              Layer.public,
+              Layer.isVisible,
+              Layer.isChecked,
+              Layer.icon,
+              Layer.legend,
+              Layer.identifierAttributeField]
+LayerGrid.configure(include=fieldOrder)
 
 # LayerGroupGrid
 LayerGroupGrid = Grid(models.LayerGroup)
