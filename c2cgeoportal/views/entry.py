@@ -336,18 +336,20 @@ class Entry(object):
                     u"Unexpected error: '%s' while reading '%s' in layer '%s'" %
                     (sys.exc_info()[0], layer.dimensions, layer.name))
 
+        mapserverproxy_url = self.request.route_url('mapserverproxy')
+
         if layer.style:
             l['style'] = layer.style
         if layer.matrixSet:
             l['matrixSet'] = layer.matrixSet
-        if layer.wmsUrl and layer.wmsLayers:
+
+        if layer.wmsUrl:
             l['wmsUrl'] = layer.wmsUrl
-            l['wmsLayers'] = layer.wmsLayers
-        elif layer.wmsLayers:
-            l['wmsUrl'] = self.request.route_url('mapserverproxy')
+        elif layer.wmsLayers or layer.queryLayers:
+            l['wmsUrl'] = mapserverproxy_url
+        if layer.wmsLayers:
             l['wmsLayers'] = layer.wmsLayers
         elif layer.wmsUrl:
-            l['wmsUrl'] = layer.wmsUrl
             l['wmsLayers'] = layer.name
 
         if layer.minResolution:
@@ -355,32 +357,35 @@ class Entry(object):
         if layer.minResolution:
             l['maxResolutionHint'] = layer.maxResolution
 
-        # if we have associated local WMS layers look at what's in the WMS
-        # capabilities, and add a queryLayers array with "resolution hint"
-        # information.
-        if 'wmsUrl' in l and l['wmsUrl'] == self.request.route_url('mapserverproxy'):
+        # if we have associated local WMS layers then look at what's in the
+        # WMS capabilities, and add a queryLayers array with the "resolution
+        # hint" information.
+        if 'wmsUrl' in l and l['wmsUrl'] == mapserverproxy_url:
 
-            for wms_layer in l['wmsLayers'].split(','):
-                if wms_layer not in wms_layers:
+            query_layers = layer.queryLayers \
+                if layer.queryLayers else l['wmsLayers']
+
+            for query_layer in query_layers.split(','):
+                if query_layer not in wms_layers:
                     continue
-                wms_layer_obj = wms[wms_layer]
+                query_layer_obj = wms[query_layer]
 
-                query_layer = {'name': wms_layer}
-                resolutions = self._getLayerResolutionHint(wms_layer_obj)
+                ql = {'name': query_layer}
+                resolutions = self._getLayerResolutionHint(query_layer_obj)
 
                 if resolutions[0] <= resolutions[1]:
-                    query_layer['minResolutionHint'] = float(
+                    ql['minResolutionHint'] = float(
                         '%0.2f' % resolutions[0])
-                    query_layer['maxResolutionHint'] = float(
+                    ql['maxResolutionHint'] = float(
                         '%0.2f' % resolutions[1])
 
-                if 'minResolutionHint' in query_layer or \
-                   'maxResolutionHint' in query_layer:
+                if 'minResolutionHint' in ql or \
+                   'maxResolutionHint' in ql:
 
                     if 'queryLayers' not in l:
                         l['queryLayers'] = []
 
-                    l['queryLayers'].append(query_layer)
+                    l['queryLayers'].append(ql)
 
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.

@@ -61,10 +61,15 @@ On ``WMTS`` layer we have the following specific attributes:
     eg: ``{ "YEAR": "2012" }``, if not provide use default values.
  *  ``Matrix set``: the used matix set, if there only one matrix set 
     in the capabilities it can be empty.
- *  ``WMS server URL``: optional, URL to a WMS server to do 
-    the interrogation and the print.
- *  ``WMS layers``: optional, a coma separated list of layers used foforr
-    the interrogation and the print.
+ *  ``WMS server URL``: optional, URL to a WMS server to use for printing
+    and querying. The URL to the internal WMS is used if this field is not
+    specified.
+ *  ``Query layers``: optional, a comma-separated list of WMS layers
+    used for querying.
+ *  ``WMS layers``: optional, a comma-separated list of layers used for
+    printing, and for querying if ``Query layers`` is not set. You can
+    use both ``WMS layers`` and ``Query layers`` if you want that
+    different sets of WMS layers be used for printing and querying.
 
 LayerGroup
 ----------
