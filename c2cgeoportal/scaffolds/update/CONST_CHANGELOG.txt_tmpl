@@ -193,6 +193,43 @@ localHostForward:
 
     git mv print/WEB-INF/classes/{,mapfish-}spring-application-context.xml
 
+6. In debug mode you may also want to load debug javascript files for ExtJS
+   stuff. You would then have to apply the following changes:
+
+   For both {{package}}/templates/api/api.js and
+   {{package}}/templates/api/xapi.js files you should add the following lines
+   just after the ``% if debug:`` statement (the one for javascript resources):
+
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base-debug.js')}" + '"></script>');
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all-debug.js')}" + '"></script>');
+
+   and after the corresponding ``% else:`` statement:
+
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base.js')}" + '"></script>');
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all.js')}" + '"></script>');
+
+
+   For both {{package}}/templates/edit.html and
+   {{package}}/templates/index.html files you should add the following lines
+   just after the ``% if debug:`` statement:
+
+<script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base-debug.js')}"></script>
+<script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all-debug.js')}"></script>
+
+   and after the corresponding ``% else:`` statement:
+
+<script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base.js')}"></script>
+<script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all.js')}"></script>
+
+   Then in jsbuild/app.cfg you need to remove the following lines:
+
+Ext/adapter/ext/ext-base.js
+Ext/ext-all.js
+
 
 Version 1.3.1
 =============

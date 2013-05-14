@@ -1,4 +1,8 @@
 % if debug:
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base-debug.js')}" + '"></script>');
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all-debug.js')}" + '"></script>');
     <%!
     from jstools.merge import Merger
     %>
@@ -16,6 +20,10 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 document.write('<link rel="stylesheet" type="text/css" href="'
         + "${request.static_url('{{package}}:static/css/proj-map.css')}" + '" />');
 % else:
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base.js')}" + '"></script>');
+document.write('<script type="text/javascript" src="'
+        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all.js')}" + '"></script>');
 document.write('<scr' + 'ipt type="text/javascript" src="'
         + "${request.static_url('{{package}}:static/build/api.js')}" + '"></scr' + 'ipt>');
 document.write('<scr' + 'ipt type="text/javascript" src="'

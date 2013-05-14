@@ -74,6 +74,8 @@
         </div>
 
 % if debug:
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base-debug.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all-debug.js')}"></script>
 <%!
 from jstools.merge import Merger
 %>
@@ -85,6 +87,8 @@ jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
         <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
 % endfor
 % else:
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/adapter/ext/ext-base.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/ext-all.js')}"></script>
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/edit.js')}"></script>
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
 % endif
