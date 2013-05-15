@@ -144,7 +144,7 @@ Ext.define("App.view.Main", {
             zoom = this.getZoom();
         if (center && zoom) {
             map.setCenter(center, zoom);
-        } else {
+        } else if (!map.getCenter()) {
             map.zoomToMaxExtent();
         }
 
