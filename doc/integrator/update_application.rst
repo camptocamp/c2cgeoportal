@@ -89,7 +89,7 @@ steps:
    part of ``buildout.cfg``. Then, apply the following corrections
    (to work around bugs in ``buildout.dumppickedversions``)::
 
-    -Mako = x.y.z
+     Mako = x.y.z
     +mako = x.y.z
     -Markdown = x.y.z
     +markdown = x.y.z
@@ -99,6 +99,11 @@ steps:
     +sqlalchemy = x.y.z
     -Tempita = x.y.z
     +tempita = x.y.z
+
+.. note::
+
+    Mako version has to be specified using both ``Mako`` and ``mako`` because
+    of some bug in the version selection of this package.
 
 .. note::
 
