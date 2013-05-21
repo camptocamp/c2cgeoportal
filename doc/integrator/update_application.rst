@@ -169,7 +169,7 @@ To update CGXP to a release tag (like 1.3.0) use the following::
     git fetch
     git checkout <tag>
     git submodule sync
-    git submodule update --init
+    git submodule update --init --recursive
 
 To update CGXP to a version branch (like 1.3) use the following::
 
@@ -178,7 +178,7 @@ To update CGXP to a version branch (like 1.3) use the following::
     git checkout <branch>
     git pull origin <branch>
     git submodule sync
-    git submodule update --init
+    git submodule update --init --recursive
 
 ``<package>`` is to be replaced by the name of your application package name,
 ``<tag>`` is the name of the release (in Git we use a tag),
