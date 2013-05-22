@@ -181,7 +181,6 @@ msgid "WMS server URL"
 msgstr ""
 
 #: c2cgeoportal/models.py:339
-#, fuzzy
 msgid "WMS layers"
 msgstr "WMS Layer"
 
@@ -198,12 +197,10 @@ msgid "Display legend"
 msgstr "Legende anzeigen"
 
 #: c2cgeoportal/models.py:343
-#, fuzzy
 msgid "Legend image"
 msgstr "Legendenbild"
 
 #: c2cgeoportal/models.py:344
-#, fuzzy
 msgid "Legend rule"
 msgstr "Legenden-Regel"
 
