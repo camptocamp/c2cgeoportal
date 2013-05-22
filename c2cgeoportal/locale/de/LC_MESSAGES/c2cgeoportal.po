@@ -28,7 +28,7 @@ msgstr "Passworte stimmen nicht überein"
 
 #: c2cgeoportal/forms.py:278
 msgid "Unlinked layers"
-msgstr ""
+msgstr "Unverknüpfte Layer"
 
 #: c2cgeoportal/forms.py:367
 msgid "Restriction area"
@@ -181,9 +181,8 @@ msgid "WMS server URL"
 msgstr ""
 
 #: c2cgeoportal/models.py:339
-#, fuzzy
 msgid "WMS layers"
-msgstr "Layer"
+msgstr "WMS Layer"
 
 #: c2cgeoportal/models.py:340
 msgid "KML 3D"
@@ -198,14 +197,12 @@ msgid "Display legend"
 msgstr "Legende anzeigen"
 
 #: c2cgeoportal/models.py:343
-#, fuzzy
 msgid "Legend image"
 msgstr "Legendenbild"
 
 #: c2cgeoportal/models.py:344
-#, fuzzy
 msgid "Legend rule"
-msgstr "Legendenrolle"
+msgstr "Legenden-Regel"
 
 #: c2cgeoportal/models.py:345
 msgid "Min resolution"
@@ -221,7 +218,7 @@ msgstr ""
 
 #: c2cgeoportal/models.py:348
 msgid "Identifier attribute field"
-msgstr "Kennung Attributfeld (ex. name)"
+msgstr "Kennung Attributfeld (z.B. name)"
 
 #: c2cgeoportal/models.py:349
 msgid "Related Postgres table"
@@ -249,7 +246,7 @@ msgstr ""
 
 #: c2cgeoportal/templates/index_base.html:61
 msgid "Loading message"
-msgstr "Laden ..."
+msgstr "Laden..."
 
 #: c2cgeoportal/templates/index_base.html:88
 #: c2cgeoportal/templates/search-tip.html:2
@@ -261,7 +258,7 @@ msgstr ""
 
 #: c2cgeoportal/templates/login.html:6
 msgid "Login to Geoportal Application"
-msgstr ""
+msgstr "Login Geoportal"
 
 #: c2cgeoportal/templates/login.html:65
 msgid "Login"
