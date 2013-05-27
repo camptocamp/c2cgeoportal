@@ -1,5 +1,6 @@
 [buildout]
 parts = eggs
+        fix-perm
         activate
         template
         modwsgi
@@ -92,6 +93,15 @@ interpreter = python
 initialization =
     import paste.script.command
     for egg in ['PasteScript', 'Pyramid', 'c2cgeoportal']: paste.script.command.system_plugins.append(egg)
+
+[fix-perm]
+recipe = collective.recipe.cmd:py
+on_install = true
+on_update = true
+cmds =
+    >>> if sys.platform.startswith('linux'):
+    >>>    from subprocess import call
+    >>>    call(['chmod', '-R', 'g+rw', '.'])
 
 [activate]
 recipe = evg.recipe.activate
