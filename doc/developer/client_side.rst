@@ -44,6 +44,6 @@ Major dependencies docs:
 
 * `CGXP <http://docs.camptocamp.net/cgxp/>`_
 * `GXP <http://gxp.opengeo.org/master/doc/>`_
-* `GeoExt <http://dev.geoext.org/docs/lib/>`_
+* `GeoExt <http://dev.geoext.org/geoext/docs/lib/>`_
 * `OpenLayers <http://dev.openlayers.org/apidocs/files/OpenLayers-js.html>`_
 * `Ext JS <http://docs.sencha.com/ext-js/3-4/>`_
