@@ -202,6 +202,17 @@ localHostForward:
         git add README.rst
 
 
+Version 1.3.2
+=============
+
+1. Correct the mobile apache rewrite rules, in the 'apache/wsgi.conf.in' file
+   do the following changes:
+
+-RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
++RewriteRule ^${vars:apache-entry-point}mobile$ ${vars:apache-entry-point}mobile/ [R]
++RewriteRule ^${vars:apache-entry-point}mobile/(.*)$ /${vars:instanceid}/wsgi/mobile/$1 [PT]
+
+
 Version 1.3.1
 =============
 

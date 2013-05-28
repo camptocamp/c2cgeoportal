@@ -25,7 +25,8 @@ RewriteRule ^${vars:apache-entry-point}apihelp.html$ /${vars:instanceid}/wsgi/ap
 RewriteRule ^${vars:apache-entry-point}xapihelp.html$ /${vars:instanceid}/wsgi/xapihelp.html [PT]
 RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
 RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit [PT]
-RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
+RewriteRule ^${vars:apache-entry-point}mobile$ ${vars:apache-entry-point}mobile/ [R]
+RewriteRule ^${vars:apache-entry-point}mobile/(.*)$ /${vars:instanceid}/wsgi/mobile/$1 [PT]
 RewriteRule ^${vars:apache-entry-point}admin/?$ /${vars:instanceid}/wsgi/admin/ [PT]
 
 # define a process group
