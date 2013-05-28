@@ -185,9 +185,8 @@ msgid "WMS layers"
 msgstr "WMS Layer"
 
 #: c2cgeoportal/models.py:404
-#, fuzzy
 msgid "Query layers"
-msgstr "Layer"
+msgstr "Abfrage Layer"
 
 #: c2cgeoportal/models.py:405
 msgid "KML 3D"
