@@ -28,11 +28,6 @@ If you still use SVN::
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
 
-.. note::
-
-   if you do a minor update (e.g. ``1.3.0`` -> ``1.3.1``) you don't need to
-   do the steps 2. to 4.
-
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
@@ -42,80 +37,16 @@ steps:
    ``[versions]`` section. Make sure the version specifications in ``setup.py``
    and ``buildout.cfg`` do not conflict.
 
-.. note::
+2. Now, to update the application's other dependencies,
+   for that just get the new ``version.cfg`` file, for the master version::
 
-   If you do a minor update you should build the application to get the
-   new ``c2cgeoportal`` egg by calling
-   ``./buildout/bin/buildout -c <buildout_config_file>``.
-   If you get a dependencies error have a look at the
-   `changelog <https://github.com/camptocamp/c2cgeoportal/blob/master/c2cgeoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl>`_
-   to see if there a note about it.
+       wget https://raw.github.com/camptocamp/c2cgeoportal/master/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-2. Now, if you want or need to update the application's other dependencies,
-   edit the application's Buildout config (``buildout.cfg``), and remove all
-   the lines from the ``[versions]`` section. Emptying the ``[versions]``
-   section is necessary for getting new dependency versions using ``buildout
-   -n`` (see the next step). Keep only the new version of c2cgeoportal to use::
+   for the 1.4 release (when it's release)::
 
-       [versions]
-       c2cgeoportal = <version to install>
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-.. note::
-
-   If the ``CONST_buildout.cfg`` file does not already have::
-
-       distribute = 0.6.22
-       zc.buildout = 1.5.2
-
-   in its ``[versions]`` section (c2cgeoportal < 1.3), add them to the
-   ``[versions]`` section of the ``buildout.cfg`` file.
-
-   If you upgrade from c2cgeoportal < 1.3.2, you should also keep/add::
-
-       [versions]
-       ...
-       zc.recipe.egg = 1.3.2
-
-3. Execute ``buildout`` with the ``-n`` flag to download and install new
-   versions of dependencies (``c2cgeoportal`` included)::
-
-       $ ./buildout/bin/buildout -n -c <buildout_config_file>
-
-   At this point you can verify that the ``buildout/eggs`` directory
-   includes the new version of the ``c2cgeoportal`` package.
-
-4. Copy the dependency version lines (of the form ``Mako = 0.7.2``)
-   from the ``buildout`` command output and paste them into the ``[versions]``
-   part of ``buildout.cfg``. Then, apply the following corrections
-   (to work around bugs in ``buildout.dumppickedversions``)::
-
-     Mako = x.y.z
-    +mako = x.y.z
-    -Markdown = x.y.z
-    +markdown = x.y.z
-    -SQLAHelper = x.y.z
-    +sqlahelper = x.y.z
-    -SQLAlchemy = x.y.z
-    +sqlalchemy = x.y.z
-    -Tempita = x.y.z
-    +tempita = x.y.z
-
-.. note::
-
-    Mako version has to be specified using both ``Mako`` and ``mako`` because
-    of some bug in the version selection of this package.
-
-.. note::
-
-    If you have ``tilecloud_chain`` installed, please make the
-    following changes as well::
-
-        -Jinja2 = x.y.z
-        +jinja2 = x.y.z
-        -Pillow = x.y.z
-        +pillow = x.y.z
-
-5. Apply the ``c2cgeoportal_update`` scaffold::
+3. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
          ../<project_name> package=<package_name>
@@ -135,14 +66,14 @@ steps:
    application's Python code. If unsure, see the ``name`` argument to the
    ``setup`` call in the application's ``setup.py`` file.
 
-6. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+4. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-7. Execute ``buildout`` to rebuild and install the application::
+5. Execute ``buildout`` to rebuild and install the application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>
 
-8. Update the database using the ``manage_db`` script::
+6. Update the database using the ``manage_db`` script::
 
        $ ./buildout/bin/manage_db upgrade
 

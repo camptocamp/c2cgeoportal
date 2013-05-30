@@ -201,6 +201,18 @@ localHostForward:
         rm -rf /tmp/{{project}}
         git add README.rst
 
+7. Gets the new `version.cfg` file for the dependencies for the master version:
+
+       wget https://raw.github.com/camptocamp/c2cgeoportal/master/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+
+   for the 1.4 release:
+
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+
+   Then add it to Git:
+
+       git add versions.cfg
+
 
 Version 1.3.2
 =============
