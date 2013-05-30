@@ -4,13 +4,13 @@
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met: 
+# modification, are permitted provided that the following conditions are met:
 
 # 1. Redistributions of source code must retain the above copyright notice, this
-#    list of conditions and the following disclaimer. 
+#    list of conditions and the following disclaimer.
 # 2. Redistributions in binary form must reproduce the above copyright notice,
 #    this list of conditions and the following disclaimer in the documentation
-#    and/or other materials provided with the distribution. 
+#    and/or other materials provided with the distribution.
 
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -24,14 +24,16 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # The views and conclusions contained in the software and documentation are those
-# of the authors and should not be interpreted as representing official policies, 
+# of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+
+from urlparse import urljoin
+from urllib import quote
 
 from pyramid.interfaces import IRoutePregenerator, \
     IStaticURLInfo
 from zope.interface import implementer
-from random import randint
 from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo
 
@@ -45,13 +47,14 @@ def get_setting(settings, path, default=None):
             return default
     return value if value else default
 
+
 @implementer(IRoutePregenerator)
 class MultiDomainPregenerator:
     def __call__(self, request, elements, kw):
         if 'subdomain' in kw:
             if 'subdomain_url_template' in request.registry.settings:
-                subdomain_url_template = request.registry. \
-                        settings['subdomain_url_template']
+                subdomain_url_template = \
+                    request.registry.settings['subdomain_url_template']
             else:
                 subdomain_url_template = 'http://%(sub)s.%(host)s'
 
@@ -61,6 +64,7 @@ class MultiDomainPregenerator:
             } + request.script_name
         return elements, kw
 
+
 @implementer(IStaticURLInfo)
 class MultiDomainStaticURLInfo(StaticURLInfo):
     def generate(self, path, request, **kw):
@@ -69,19 +73,19 @@ class MultiDomainStaticURLInfo(StaticURLInfo):
             if path.startswith(spec):
                 subpath = path[len(spec):]
                 if WIN:
-                    subpath = subpath.replace('\\', '/') # windows
+                    subpath = subpath.replace('\\', '/')  # windows
                 if url is None:
                     kw['subpath'] = subpath
                     if 'subdomains' in request.registry.settings:
                         subdomains = request.registry.settings['subdomains']
                         return request.route_url(
                             route_name,
-                            subdomain=sub_url[hash(subpath) % len(sub_url)],
+                            subdomain=subdomains[hash(subpath) % len(subdomains)],
                             **kw)
                     else:
                         return request.route_url(route_name, **kw)
                 else:
-                    subpath = url_quote(subpath)
+                    subpath = quote(subpath)
                     return urljoin(url, subpath)
         raise ValueError('No static URL definition matching %s' % path)
 
