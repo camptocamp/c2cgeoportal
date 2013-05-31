@@ -11,6 +11,11 @@ Version 1.3.2
 +RewriteRule ^${vars:apache-entry-point}mobile$ ${vars:apache-entry-point}mobile/ [R]
 +RewriteRule ^${vars:apache-entry-point}mobile/(.*)$ /${vars:instanceid}/wsgi/mobile/$1 [PT]
 
+2. Camptocamp pypi repository is now public. As a result the `.httpauth` file
+   may be removed:
+
+    git rm .httpauth
+
 
 Version 1.3.1
 =============
