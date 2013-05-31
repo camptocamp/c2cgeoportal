@@ -25,6 +25,7 @@ If you still use SVN::
    This command will not update CGXP, and c2cgeoportal is not able to
    fix the revision of CGXP.
 
+
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
 
@@ -38,13 +39,11 @@ steps:
    and ``buildout.cfg`` do not conflict.
 
 2. Now, to update the application's other dependencies,
-   for that just get the new ``version.cfg`` file, for the master version::
+   for that just get the new ``version.cfg`` file::
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/master/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/<release>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-   for the 1.4 release (when it's release)::
-
-       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+   Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
 
 3. Apply the ``c2cgeoportal_update`` scaffold::
 

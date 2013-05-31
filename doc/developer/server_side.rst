@@ -49,6 +49,45 @@ of an existing c2cgeoportal application. Here's how:
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
 
 
+Update the Dependencies
+-----------------------
+
+When we start a new version of c2cgeoportal or just before a new development
+phase it a good idea to update the dependencies.
+
+All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
+the ``c2cgeoportal/scaffolds/create/versions.cfg`` file.
+
+To update them you should remove all the version resent after the
+line ``# Package version that can be easily update``.
+
+Then run::
+
+    ./buildout/bin/buildout -n -c <buildout_config_file>
+
+Copy the dependency version lines (of the form ``Mako = 0.7.2``)
+from the ``buildout`` command output and paste them where you previously
+remove the versions.
+
+And apply the following corrections (to work around bugs in
+``buildout.dumppickedversions``)::
+
+     Mako = x.y.z
+    +mako = x.y.z
+     Markdown = x.y.z
+    +markdown = x.y.z
+     MarkupSafe = x.y.z
+    +markupsafe = x.y.z
+     SQLAHelper = x.y.z
+    +sqlahelper = x.y.z
+     Tempita = x.y.z
+    +tempita = x.y.z
+     Jinja2 = x.y.z
+    +jinja2 = x.y.z
+     Pillow = x.y.z
+    +pillow = x.y.z
+
+
 Tests
 -----
 
@@ -171,8 +210,8 @@ Eggs
 The operation to upgrade c2cgeoportal dependencies consists to update the
 ``[versions]`` part of the ``buildout[_dev].cfg`` files.
 
-* Remove the current contents of the ``[versions]`` part 
-  of the ``buildout[_dev].cfg`` files, but just leave the 
+* Remove the current contents of the ``[versions]`` part
+  of the ``buildout[_dev].cfg`` files, but just leave the
   ``distribute = 0.6.22`` in the ``buildout.cfg``.
 
 * Run buildout a first time to remove potentially uninstall from ``buildout_dev.cfg``::
@@ -184,8 +223,8 @@ The operation to upgrade c2cgeoportal dependencies consists to update the
    ./buildout/bin/buildout -n
 
 * Copy the dependency version lines (of the form ``Mako = 0.7.2``)
-  from the ``buildout`` command output and paste them into the ``[versions]`` 
-  part of ``buildout.cfg``. Then, apply the following corrections 
+  from the ``buildout`` command output and paste them into the ``[versions]``
+  part of ``buildout.cfg``. Then, apply the following corrections
   (to work around bugs in ``buildout.dumppickedversions``)::
 
    -Mako = x.y.z
@@ -217,7 +256,7 @@ Submodules
 
 Go to the OpenLayers folder::
 
-    cd c2cgeoportal/static/lib/openlayers/ 
+    cd c2cgeoportal/static/lib/openlayers/
 
 Get the new revision of OpenLayers::
 
@@ -246,21 +285,21 @@ Object model
 
 ``FullTextSearch`` references a first level ``LayerGroup`` but without any constrains.
 
-It's not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``) 
+It's not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
 to the ``Role`` of the parent schema.
 
 Migration
 ~~~~~~~~~
 
-We use the sqlalchemy-migrate module for database migration. 
+We use the sqlalchemy-migrate module for database migration.
 sqlalchemy-migrate works with a so-called *migration
-repository*, which is a simple directory in the application 
+repository*, which is a simple directory in the application
 source tree:``<package>/CONST_migration``. As the
-``CONST_`` prefix suggests this repository is part of 
+``CONST_`` prefix suggests this repository is part of
 the ``c2cgeoportal_update`` scaffold, it is created or
-updated when this scaffold is applied. So developers 
+updated when this scaffold is applied. So developers
 who modify the c2cgeoportal database schema should add
-migration scripts to the ``c2cgeoportal_update`` 
+migration scripts to the ``c2cgeoportal_update``
 scaffold, as opposed to the application.
 
 Add a new script call from the application's root directory::
