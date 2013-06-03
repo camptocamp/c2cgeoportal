@@ -173,6 +173,34 @@ In the ``config.yaml.in`` define ``tiles_url`` to something like, for S3 usage::
 
 The configuration of the ``tiles`` vhost will be done by the sysadmins.
 
+To get your tiles URL in the ``viewer.js`` do:
+
+..code:: javascript
+
+    <%
+    from json import dumps
+    %>
+    var WMTS_OPTIONS = {
+        url: ${dumps(request.registry.settings['tiles_url'])| n},
+        ...
+    }
+
+And in the ``mobile/config.js`` do:
+
+..code:: javascript
+
+    var dummy = "<% from json import dumps %>";
+    jsonFormat = new OpenLayers.Format.JSON();
+    try {
+        App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
+    catch (e) {
+        App.tilesURL = "";
+    }
+    var WMTS_OPTIONS = {
+        url: App.tilesURL,
+        ...
+    }
+
 SwitchableWMTS
 --------------
 
