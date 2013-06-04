@@ -16,6 +16,13 @@ Version 1.3.2
 
     git rm .httpauth
 
+3. Remove all the `[versions]` section from your `buildout.cfg` file,
+   from now it's managed in the `versions.cfg` file.
+
+   Add the new `versions.cfg`file to Git:
+
+        git add versions.cfg
+
 
 Version 1.3.1
 =============
