@@ -78,8 +78,8 @@ class Printproxy(object):
         _url = self.config['print_url'] + 'create.json' + '?' + query_string
         log.info("Send print query to %s." % _url)
 
-        # transform print request body as appropriate
-        body = self._transform_body()
+        content_length = int(self.request.environ['CONTENT_LENGTH'])
+        body = self.request.environ['wsgi.input'].read(content_length)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -121,26 +121,3 @@ class Printproxy(object):
         #del response.headers['Pragma']
         #del response.headers['Cache-Control']
         return Response(content, status=resp.status, headers=headers)
-
-    def _read_request_body(self):
-        content_length = int(self.request.environ['CONTENT_LENGTH'])
-        return self.request.environ['wsgi.input'].read(content_length)
-
-    def _transform_body(self):
-
-        body = self._read_request_body()
-
-        user = self.request.user
-
-        root = json.loads(body)
-
-        for layer in root['layers']:
-            layer['customParams'] = dict(map_resolution=root['dpi'])
-
-        if user:
-            role_id = user.role.id
-
-            for layer in root['layers']:
-                layer['customParams']['role_id'] = role_id
-
-        return json.dumps(root)
