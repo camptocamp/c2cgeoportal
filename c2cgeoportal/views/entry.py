@@ -113,7 +113,6 @@ class Entry(object):
             return None, errors
 
         try:
-            log.info(content)
             wms = WebMapService(None, xml=content)
         except AttributeError:
             error = _(
