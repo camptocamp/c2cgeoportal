@@ -36,6 +36,9 @@ For each version we create a new branch (at the latest at the final release)::
 c2cgeoportal
 ------------
 
+Edit the ``c2cgeoportal/scaffolds/create/versions.cfg`` to set the c2cgeoportal
+release version.
+
 Build a new c2cgeopotal release::
 
     git checkout master
