@@ -29,10 +29,6 @@ and ``find-links`` to reference these Package Index::
                  http://pypi.camptocamp.net/internal-pypi/index/tileforge
     ...
 
-And they use the `lovely.buildouthttp
-<http://pypi.python.org/pypi/lovely.buildouthttp>`_ buildout extension for the
-HTTP Authentication.
-
 c2cgeoportal releases
 ---------------------
 

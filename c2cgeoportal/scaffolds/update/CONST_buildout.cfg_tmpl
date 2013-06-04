@@ -18,7 +18,6 @@ find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
 newest = false
 prefer-final = true
 extensions = buildout.dumppickedversions
-    lovely.buildouthttp
 versions = versions
 
 # isolate ourself from the System Python
