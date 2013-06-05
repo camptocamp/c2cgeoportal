@@ -55,6 +55,11 @@ def proxy(request):
     # params hold the parameters we're going to send to MapServer
     params = dict(request.params)
 
+    # reset possible value of role_id and user_id
+    if 'role_id' in params:
+        del params['role_id']
+    if 'user_id' in params:
+        del params['user_id']
     if user:
         # We have a user logged in. We need to set group_id and
         # possible layer_name in the params. We set layer_name
