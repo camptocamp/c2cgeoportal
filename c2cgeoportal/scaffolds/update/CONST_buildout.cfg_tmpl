@@ -126,7 +126,7 @@ uninstall_cmds =
 [print-war]
 recipe = c2c.recipe.jarfile
 mode = update
-basewar = print-servlet-1.2-SNAPSHOT.war
+basewar = print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
 basedir = print/
 input = ${print-war:basewar}
     WEB-INF/classes/log4j.properties
