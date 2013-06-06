@@ -67,9 +67,13 @@ On ``WMTS`` layer we have the following specific attributes:
  *  ``Query layers``: optional, a comma-separated list of WMS layers
     used for querying.
  *  ``WMS layers``: optional, a comma-separated list of layers used for
-    printing, and for querying if ``Query layers`` is not set. You can
-    use both ``WMS layers`` and ``Query layers`` if you want that
+    printing, and for querying if ``Query layers`` is not set.
+    
+.. note::
+    You can use both ``WMS layers`` and ``Query layers`` if you want that
     different sets of WMS layers be used for printing and querying.
+    If you want to define ``WMS layers`` but no ``Query layers``,
+    set it to ``[]``.
 
 LayerGroup
 ----------
