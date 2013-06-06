@@ -27,9 +27,9 @@ The layers in the admin interface has the following attributes:
  *  ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
  *  ``Display legend``: it checked the legend is display on the layer tree.
  *  ``Legend image``: URL to overwrite the default legend image.
- *  ``Min/Max resolution``: resolution where the layers has some data,
-    used to zoom to visible scale, with WMS if it's empty we gets the values
-    from the capabilities.
+ *  ``Min/Max resolution``: resolutions between which data are displayed by
+    the given layer, used to zoom to visible scale, with WMS if it's empty
+    we get the values from the capabilities.
  *  ``Disclaimer``: optional, copyright of the layer, used by
     `Disclaimer <http://docs.camptocamp.net/cgxp/lib/plugins/Disclaimer.html>`_.
  *  ``Identifier attribute field``: field used to identify a feature from the
@@ -58,7 +58,7 @@ On ``WMTS`` layer we have the following specific attributes:
  *  ``Base URL``: the URL to the WMTS capabilities.
  *  ``Style``: the used style, if not present we use the default style.
  *  ``Dimensions``: a JSON string that gives the dimensions,
-    e.g.: ``{ "YEAR": "2012" }``, if not provide default values are used.
+    e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
  *  ``Matrix set``: the used matrix set, if there only one matrix set
     in the capabilities it can be empty.
  *  ``WMS server URL``: optional, URL to a WMS server to use for printing
@@ -71,7 +71,7 @@ On ``WMTS`` layer we have the following specific attributes:
 
 .. note::
     You can use both ``WMS layers`` and ``Query layers`` if you want that
-    different sets of WMS layers be used for printing and querying.
+    different sets of WMS layers are used for printing and querying.
     If you want to define ``WMS layers`` but no ``Query layers``,
     set it to ``[]``.
 
