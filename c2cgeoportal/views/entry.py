@@ -350,6 +350,9 @@ class Entry(object):
             l['wmsLayers'] = layer.wmsLayers
         elif layer.wmsUrl:
             l['wmsLayers'] = layer.name
+        # needed for external WMTS
+        if layer.queryLayers == '[]':
+            l['queryLayers'] = []
 
         if layer.minResolution:
             l['minResolutionHint'] = layer.minResolution
@@ -361,8 +364,9 @@ class Entry(object):
         # hint" information.
         if 'wmsUrl' in l and l['wmsUrl'] == mapserverproxy_url:
 
-            query_layers = layer.queryLayers \
+            query_layers = layer.queryLayers.strip('[]') \
                 if layer.queryLayers else l['wmsLayers']
+            l['queryLayers'] = []
 
             for query_layer in query_layers.split(','):
                 if query_layer not in wms_layers:
@@ -380,10 +384,6 @@ class Entry(object):
 
                 if 'minResolutionHint' in ql or \
                    'maxResolutionHint' in ql:
-
-                    if 'queryLayers' not in l:
-                        l['queryLayers'] = []
-
                     l['queryLayers'].append(ql)
 
                 # FIXME we do not support WMTS layers associated to
