@@ -666,6 +666,7 @@ class TestEntryView(TestCase):
             'url': 'http://example.com/WMTS-Capabilities.xml',
             'wmsUrl': '/dummy/route/mapserverproxy',
             'wmsLayers': 'test',
+            'queryLayers': [],
             'legend': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
