@@ -716,9 +716,6 @@ class Entry(object):
             themes = filter(lambda theme: theme['name'] == theme_name, themes)
             theme = themes[0] if len(themes) > 0 else None
 
-            if theme is None:  # pragma nocover
-                raise HTTPNotFound('Theme %s does not exist' % theme_name)
-
             def process(node, layer_info, public_only=True):
                 if 'children' in node:
                     for child_node in node['children']:
@@ -729,7 +726,8 @@ class Entry(object):
                     public_only = public_only and node['public'] is True
                 return public_only
 
-            public_only = process(theme, layer_info)
+            if theme is not None:
+                public_only = process(theme, layer_info)
 
         # we only support WMS layers right now
         layer_info = filter(lambda li: li['type'] == 'internal WMS', layer_info)
