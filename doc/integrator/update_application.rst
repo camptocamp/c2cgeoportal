@@ -45,7 +45,11 @@ steps:
 
    Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
 
-3. Apply the ``c2cgeoportal_update`` scaffold::
+3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version::
+
+       $ ./buildout/bin/buildout install eggs
+
+4. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
          ../<project_name> package=<package_name>
@@ -65,14 +69,14 @@ steps:
    application's Python code. If unsure, see the ``name`` argument to the
    ``setup`` call in the application's ``setup.py`` file.
 
-4. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-5. Execute ``buildout`` to rebuild and install the application::
+6. Execute ``buildout`` to rebuild and install the application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>
 
-6. Update the database using the ``manage_db`` script::
+7. Update the database using the ``manage_db`` script::
 
        $ ./buildout/bin/manage_db upgrade
 
