@@ -705,11 +705,15 @@ class Entry(object):
         layer_info = []
         public_only = True
 
-        theme_name = get_functionality(
+        mobile_default_themes = get_functionality(
             'mobile_default_theme',
             self.settings,
             self.request
-        )[0]
+        )
+        theme_name = self.request.params.get(
+            'theme',
+            mobile_default_themes[0] if len(mobile_default_themes) > 0 else None
+        )
         user = self.request.user
 
         if theme_name:
