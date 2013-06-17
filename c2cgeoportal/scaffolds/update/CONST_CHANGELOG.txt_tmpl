@@ -215,6 +215,15 @@ localHostForward:
     mv print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war.new print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
     git add print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
 
+9. Move the `mobile_default_theme` to the functionalities int the
+   `config.yaml.in` file:
+
+     functionalities:
+        anonymous:
+    +        mobile_default_theme:
+
+    -mobile_default_theme:
+
 
 Version 1.3.2
 =============
