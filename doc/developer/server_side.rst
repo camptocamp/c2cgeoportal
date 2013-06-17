@@ -49,45 +49,6 @@ of an existing c2cgeoportal application. Here's how:
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
 
 
-Update the Dependencies
------------------------
-
-When we start a new version of c2cgeoportal or just before a new development
-phase it a good idea to update the dependencies.
-
-All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
-the ``c2cgeoportal/scaffolds/create/versions.cfg`` file.
-
-To update them you should remove all the version resent after the
-line ``# Package version that can be easily update``.
-
-Then run::
-
-    ./buildout/bin/buildout -n -c <buildout_config_file>
-
-Copy the dependency version lines (of the form ``Mako = 0.7.2``)
-from the ``buildout`` command output and paste them where you previously
-remove the versions.
-
-And apply the following corrections (to work around bugs in
-``buildout.dumppickedversions``)::
-
-     Mako = x.y.z
-    +mako = x.y.z
-     Markdown = x.y.z
-    +markdown = x.y.z
-     MarkupSafe = x.y.z
-    +markupsafe = x.y.z
-     SQLAHelper = x.y.z
-    +sqlahelper = x.y.z
-     Tempita = x.y.z
-    +tempita = x.y.z
-     Jinja2 = x.y.z
-    +jinja2 = x.y.z
-     Pillow = x.y.z
-    +pillow = x.y.z
-
-
 Tests
 -----
 
@@ -204,52 +165,43 @@ Adding tests
 Upgrade depandencies
 --------------------
 
+When we start a new version of c2cgeoportal or just before a new development
+phase it's a good idea to update the dependencies.
+
 Eggs
 ~~~~
 
-The operation to upgrade c2cgeoportal dependencies consists to update the
-``[versions]`` part of the ``buildout[_dev].cfg`` files.
+All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
+the ``c2cgeoportal/scaffolds/create/versions.cfg`` file.
 
-* Remove the current contents of the ``[versions]`` part
-  of the ``buildout[_dev].cfg`` files, but just leave the
-  ``distribute = 0.6.22`` in the ``buildout.cfg``.
+To update them you should remove all the version listed after the
+line ``# Package version that can be easily update``.
 
-* Run buildout a first time to remove potentially uninstall from ``buildout_dev.cfg``::
+Then run::
 
-   ./buildout/bin/buildout
+    ./buildout/bin/buildout -n -c <buildout_config_file>
 
-* Run a second time with asking for newest version of dependencies::
+Copy the dependency version lines (of the form ``Mako = 0.7.2``)
+from the ``buildout`` command output and paste them where you have previously
+removed the versions.
 
-   ./buildout/bin/buildout -n
+And apply the following corrections (to work around bugs in
+``buildout.dumppickedversions``)::
 
-* Copy the dependency version lines (of the form ``Mako = 0.7.2``)
-  from the ``buildout`` command output and paste them into the ``[versions]``
-  part of ``buildout.cfg``. Then, apply the following corrections
-  (to work around bugs in ``buildout.dumppickedversions``)::
-
-   -Mako = x.y.z
-   +mako = x.y.z
-   -Markdown = x.y.z
-   +markdown = x.y.z
-   -SQLAHelper = x.y.z
-   +sqlahelper = x.y.z
-   -SQLAlchemy = x.y.z
-   +qslalchemy = x.y.z
-   -Tempita = x.y.z
-   +tempita = x.y.z
-
-* Then get the versions for ``buildout_dev.cfg``::
-
-   ./buildout/bin/buildout -n -c buildout_dev.cfg
-
-* Get the output version and past them in the ``[versions]`` part of
-  ``buildout_dev.cfg`` file without the ``c2cgeoportal`` version.
-
-* Then you can commit it::
-
-    git add buildout.cfg
-    git commit -m "update eggs version"
-
+     Mako = x.y.z
+    +mako = x.y.z
+     Markdown = x.y.z
+    +markdown = x.y.z
+     MarkupSafe = x.y.z
+    +markupsafe = x.y.z
+     SQLAHelper = x.y.z
+    +sqlahelper = x.y.z
+     Tempita = x.y.z
+    +tempita = x.y.z
+     Jinja2 = x.y.z
+    +jinja2 = x.y.z
+     Pillow = x.y.z
+    +pillow = x.y.z
 
 Submodules
 ~~~~~~~~~~
