@@ -300,7 +300,11 @@ class TestEntryView(TestCase):
 
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
-        entry.request.registry.settings['mobile_default_theme'] = u'__test_theme'
+        entry.request.registry.settings['functionalities'] = {
+            'anonymous': {
+                'mobile_default_theme': u'__test_theme'
+            }
+        }
         response = entry.mobileconfig()
 
         layers = response['layers'].split(',')
