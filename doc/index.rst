@@ -37,6 +37,7 @@ ourselves!*
 .. toctree::
    :hidden:
 
+   releasenotes
    builddoc
 
 See the :ref:`build_doc` section to know how to build this doc.
