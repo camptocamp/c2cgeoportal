@@ -93,7 +93,10 @@ on_install = true
 on_update = true
 cmds =
     >>> if sys.platform.startswith('linux'):
-    >>>    from subprocess import call
+    >>>    from subprocess import call, Popen, PIPE
+    >>>    dirs = Popen(['find', '-type', 'd'], stdout=PIPE).communicate()[0]
+    >>>    for d in [d for d in dirs.split('\n') if len(d) > 0]:
+    >>>        call(['chmod', 'g+s', d])
     >>>    call(['chmod', '-R', 'g+rw', '.'])
 
 [activate]
