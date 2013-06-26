@@ -47,8 +47,8 @@ root =
     {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
-    Ext/adapter/ext/ext-base.js
-    Ext/ext-all.js
+    Ext/adapter/ext/ext-base-debug.js
+    Ext/ext-all-debug.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
@@ -135,8 +135,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
 first =
-    Ext/adapter/ext/ext-base.js
-    Ext/ext-all.js
+    Ext/adapter/ext/ext-base-debug.js
+    Ext/ext-all-debug.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
     OpenLayers/BaseTypes.js
@@ -453,8 +453,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/base64
     {{package}}/static/js
 first =
-    Ext/adapter/ext/ext-base.js
-    Ext/ext-all.js
+    Ext/adapter/ext/ext-base-debug.js
+    Ext/ext-all-debug.js
     GeoExt/Lang.js
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
