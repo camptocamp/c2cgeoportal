@@ -25,8 +25,7 @@ before_script:
 
 script: 
 - ./travis-doc.sh
-# only for master branch
-#- find c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views -name \*.py | xargs ./buildout/bin/flake8 --ignore=E501,E712 --max-complexity=25
+- find c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views -name \*.py | xargs ./buildout/bin/flake8 --ignore=E501,E712 --max-complexity=25
 - ./buildout/bin/python setup.py nosetests
 
 after_success:
