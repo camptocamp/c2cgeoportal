@@ -32,14 +32,14 @@ Update c2cgeoportal
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
-1. Make your application require the new version of the ``c2cgeoportal``
-   package. To do so, simply edit the application's Buildout config
-   (``buildout.cfg``) and change the version of ``c2cgeoportal`` in the
-   ``[versions]`` section. Make sure the version specifications in ``setup.py``
-   and ``buildout.cfg`` do not conflict.
+1. If you are upgrading from version 1.3.1 or older, make your application 
+   require the new version of the ``c2cgeoportal`` package by editing the 
+   application's Buildout config (``buildout.cfg``) and change the version of 
+   ``c2cgeoportal`` in the ``[versions]`` section. Make sure the version 
+   specifications in ``setup.py`` and ``buildout.cfg`` do not conflict.
 
 2. Now, to update the application's other dependencies,
-   for that just get the new ``version.cfg`` file::
+   get the new ``version.cfg`` file::
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/<release>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
@@ -72,11 +72,14 @@ steps:
 5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-6. Execute ``buildout`` to rebuild and install the application::
+6. If it still exists, you can now entirely remove the ``[versions]`` section in your 
+   ``buildout.cfg`` file.
+
+7. Execute ``buildout`` to rebuild and install the application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>
 
-7. Update the database using the ``manage_db`` script::
+8. Update the database using the ``manage_db`` script::
 
        $ ./buildout/bin/manage_db upgrade
 
