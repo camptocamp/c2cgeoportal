@@ -229,7 +229,7 @@ ${self.block_logo()}
               - padding: 8
           items:
 ${self.block_text_misc()}
-        # Border arround north
+        # Border around north
         - !columns
           condition: showNorth
           absoluteX: 168
