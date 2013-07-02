@@ -32,6 +32,44 @@ The main file (``print/config.yaml``) used to define your print template written
    <http://mapfish.org/doc/print/configuration.html>`_
  * `YAML validator <http://yaml-online-parser.appspot.com/>`_
 
+Spec attributes
+~~~~~~~~~~~~~~~
+
+With CGXP we have the following spec attributes:
+
+On each page:
+
+ * ``center`` Center (standard).
+ * ``rotation`` Map rotation (standard).
+ * ``scale`` Scale (standard).
+ * ``showMap`` Used to show the map.
+ * ``showMapframe`` Used to show the border on the map page. [#map]_
+ * ``showNorth`` Used to show the arrow on the map page. [#map]_
+ * ``showScale`` Used to show the scale bar on the map page. [#map]_
+ * ``showScaleValue``  Used to show the scale on the map page. [#map]_
+ * ``showAttr`` Used to show the table on the query result pages. [#query]_
+ * ``showMapQueryResult`` Not used, true for the query result pages. [#query]_
+ * ``col0`` - ``coln``: Column tiles for the query result pages.
+ * ``table``: Query result table.
+
+.. [#map] is ``true`` on the map page and ``false`` on query result pages
+.. [#query] is ``true`` on the query result pages and ``false`` on map page
+
+Global:
+
+ * ``dpi`` The DPI (standard).
+ * ``layout`` The used layout (standard).
+ * ``srs`` The EPSG code (standard).
+ * ``unit`` The unit (standard).
+ * ``legend`` The legend (standard).
+ * ``title`` The document title.
+ * ``comment`` The document description.
+
+.. note::
+
+   If you use Mako templates for generating the print configuration,
+   to prevent character '$' from being incorrectly interpreted, use
+   ``<%text>$</%text>{attribute}`` in place of ``${attribute}``.
 
 Mako templating
 ~~~~~~~~~~~~~~~
