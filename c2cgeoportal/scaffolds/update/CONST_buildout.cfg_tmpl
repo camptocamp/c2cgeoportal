@@ -96,8 +96,8 @@ cmds =
     >>>    from subprocess import call, Popen, PIPE
     >>>    dirs = Popen(['find', '-type', 'd'], stdout=PIPE).communicate()[0]
     >>>    for d in [d for d in dirs.split('\n') if len(d) > 0]:
-    >>>        call(['chmod', 'g+s', d])
-    >>>    call(['chmod', '-R', 'g+rw', '.'])
+    >>>        call(['chmod', '--quiet', 'g+s', d])
+    >>>    call(['chmod', '--quiet', '-R', 'g+rw', '.'])
 
 [activate]
 recipe = evg.recipe.activate
