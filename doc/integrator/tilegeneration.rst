@@ -51,6 +51,8 @@ And Memcached should listen on port 11211.
 
 To clear/flush Memcached cache, use the following command:
 
+   .. code:: bash
+     
      echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 
 See the `TileCloud-chain documentation for more details
