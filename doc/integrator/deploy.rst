@@ -3,8 +3,11 @@
 Deploy the application
 ======================
 
-The first tine you want do deploy an application the configuration 
-should be setup in the file ``deploy/deploy.cfg[.in]``.
+Deploy configuration
+--------------------
+
+The first time you want do deploy an application the configuration 
+should be set up in file ``deploy/deploy.cfg[.in]``.
 
 The deploy tool has four parts:
 
@@ -52,6 +55,24 @@ The command line help ``deploy --help``::
         -r, --remote        create, copy and restore an archive to a remote server
         --no-time-dir       don't create separated archive directory for each
                             remote deploy [default false]
+
+Buildout configuration
+----------------------
+
+To use specific parameter values on the ``$TARGET`` server (for instance for 
+``host``), create dedicated ``buildout_$TARGET.cfg`` files that will contain
+those values. The deploy tool will then automatically detect those files and
+use them when running the buildout command on the ``$TARGET`` server.
+
+For instance a buildout configuration file for the ``prod`` server would be
+named ``buildout_prod.cfg`` and look like::
+
+     [buildout]
+     extends = buildout.cfg
+
+     [vars]
+     host = <prod hostname>
+     apache-entry-point = /
 
 
 To deploy from dev to demo
