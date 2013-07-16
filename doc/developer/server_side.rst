@@ -276,9 +276,16 @@ this directory.
 
 Then customize the migration to suit your needs, test it::
 
-    ./buildout/bin/manage_db --app-name <package> test
+    ./buildout/bin/manage_db test
 
-And move it to the c2cgeoportal ``update`` template, in
+If your script fails during upgrade, it is possible the version number has been 
+incremented anyway, so you need to explicitly reset the version to its 
+correct value using:
+
+    ./buildout/bin/manage_db drop_version_control
+    ./buildout/bin/manage_db version_control <the_correct_version_number>
+
+Once you have tested it, move it to the c2cgeoportal ``update`` template, in
 ``c2cgeoportal/scaffolds/update/+package+/CONST_migration/versions/``.
 
 

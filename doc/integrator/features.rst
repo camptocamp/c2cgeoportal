@@ -1,7 +1,7 @@
 .. _integrator_features:
 
-Add features to a c2cgeoportal application
-==========================================
+Additional features
+===================
 
 This section describes how to add features to a c2cgeoportal project,
 and configure them.
@@ -29,4 +29,6 @@ Features that require additional steps (most of the time):
    print
    https
    api
+   password_replication
+
 
