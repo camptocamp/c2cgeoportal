@@ -4,6 +4,7 @@ python:
 - 2.7
 
 before_install:
+- sudo apt-get update
 - sudo apt-get install -y -q10 postgresql-9.1-postgis apache2 cgi-mapserver
 - sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
 - sudo -u postgres psql -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
