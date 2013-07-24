@@ -41,10 +41,10 @@ architecture may use a different structure. Here's an example of a structure
 for a project composed of a main application and sub-applications::
 
     <root>
-      ├─ <main_project>
-      ├─ <first_sub_project>
-      ├─ <second_sub_project>
-      └─ ...
+      +- <main_project>
+      +- <first_sub_project>
+      +- <second_sub_project>
+      +- ...
 
 Here ``<root>`` is the root of the Git (or SVN) tree.
 
@@ -68,7 +68,7 @@ from GitHub::
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
 
-Than you should checkout the branch or tag of the version you want to install::
+Then you should checkout the branch or tag of the version you want to install::
 
     git checkout <branch|tag>
     git submodule update --init
@@ -504,6 +504,9 @@ Create the project
 
 .. code:: python
 
+    import collections
+    import yaml
+
     def update(d, u):
         for k, v in u.iteritems():
             if isinstance(v, collections.Mapping):
@@ -541,6 +544,8 @@ Create the project
    instanceid = to_be_overridden
    parent_instanceid = to_be_defined
    host = to_be_overridden
+
+These are placeholder variables which must be defined
 
 11. In the ``buildout.cfg`` add the additional CSS:
 
@@ -583,8 +588,17 @@ Create the project
 
 .. code:: yaml
 
+   # list of instance(s) for the project
+   instances:
+       - <instance>
+       - <another_instance>
+       - <as_many_instance_as_wanted>
+
+   instance: ${vars:instance}
+
    external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
    external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
+
    tilecache_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/tilecache
 
 15. In the files ``<project>/templates/api/mapconfig.js``,
@@ -652,3 +666,15 @@ Now you can configure the application at instance level in the following places:
 * ``mandant/static/images/<instance>_banner_left.png``
 * ``mandant/static/css/proj_<instance>.css``
 * ``config_<instance>.yaml.in``
+
+To generate the configuration files, run the following command:
+
+.. code::
+
+   ./buildout/bin/buildout install eggs template jinja-template
+
+then run the buildout command with the .cfg file for the instance you want to setup:
+
+.. code::
+
+   ./buildout/bin/buildout -c buildout_<user>_<instance>.cfg
