@@ -231,6 +231,59 @@ localHostForward:
     +    Ext/adapter/ext/ext-base-debug.js
     +    Ext/ext-all-debug.js
 
+11. Password modification UI has been implemented.
+
+     It is now possible to allow the user to change his password, and optionally to remind him to change it.
+     
+     a) You need to add some configuration parameters in the cgxp_login plugin:
+
+      {
+          ptype: "cgxp_login",
+          actionTarget: "center.tbar",
+          toggleGroup: "maptools",
+      % if user:
+          username: "${user.username}",
+          isPasswordChanged: ${"true" if user.is_password_changed else "false"},
+      % endif
+          loginURL: "${request.route_url('login', path='')}",
+          loginChangeURL: "${request.route_url('loginchange', path='')}",
+          logoutURL: "${request.route_url('logout', path='')}",
+          enablePasswordChange: true,
+          forcePasswordChange: true,
+          permalinkId: "permalink"
+      },
+
+     ``enablePasswordChange`` enable the password modification UI,
+     ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
+     to remind the user he should change his password.
+
+     b) The form in <project>/templates/index.html must be updated:
+
+              <form method="POST" id="loginForm" style="display: none">
+                  <input id="login" name="login" type="text" autocomplete="on"/>
+                  <input id="password" name="password" type="password" autocomplete="on"/>
+     +            <input id="newPassword" name="newPassword" type="password" />
+     +            <input id="confirmNewPassword" name="confirmNewPassword" type="password" />
+              </form> 
+
+     c) The database must also be upgraded to version 10.
+
+     d) You must add the folling line in your production.ini.in and 
+     development.ini.in in the [app:app] section:
+     
+     auth_replication_enabled = ${vars:enable_auth_replication}
+     sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}
+
+     e) Then you can enable the replication by specifying the following configuration in your buildout_<user>.cfg:
+
+     enable_auth_replication = true
+     dbhost_replication: <target database hostname>
+     dbport_replication: <target database port>
+     db_replication: <target database name>
+     dbuser_replication: <target database username>
+     dbpassword_replication: <target database password>
+
+     The target database is the database where the changes are replicated.
 
 Version 1.3.2
 =============

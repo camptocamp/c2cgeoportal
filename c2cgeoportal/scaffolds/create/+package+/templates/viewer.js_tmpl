@@ -202,6 +202,7 @@ Ext.onReady(function() {
         },
         {
             ptype: "cgxp_permalink",
+            id: "permalink",
             actionTarget: "center.tbar"
         },
         {
@@ -254,9 +255,14 @@ Ext.onReady(function() {
             toggleGroup: "maptools",
     % if user:
             username: "${user.username}",
+            isPasswordChanged: ${"true" if user.is_password_changed else "false"},
     % endif
             loginURL: "${request.route_url('login', path='')}",
-            logoutURL: "${request.route_url('logout', path='')}"
+            loginChangeURL: "${request.route_url('loginchange', path='')}",
+            logoutURL: "${request.route_url('logout', path='')}",
+            enablePasswordChange: true,
+            forcePasswordChange: true,
+            permalinkId: "permalink"
         },
         {
             ptype: "cgxp_menushortcut",
