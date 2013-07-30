@@ -167,6 +167,7 @@ class User(Base):
         'password', types.Unicode, nullable=False,
         label=_(u'Password'))
     email = Column(types.Unicode, nullable=False, label=_(u'E-mail'))
+    is_password_changed = Column(types.Boolean, default=False, label=_(u'PasswordChanged'))
 
     # functionality
     functionalities = relationship(
@@ -183,11 +184,12 @@ class User(Base):
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
     def __init__(
-            self, username=u'', password=u'', email=u'',
+            self, username=u'', password=u'', email=u'', is_password_changed=False,
             functionalities=[], role=None):
         self.username = username
         self.password = password
         self.email = email
+        self.is_password_changed = is_password_changed
         self.functionalities = functionalities
         self.role = role
 

@@ -42,6 +42,9 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
 from sqlalchemy.sql.expression import and_
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import engine_from_config
+import sqlahelper
 from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
@@ -50,8 +53,7 @@ from math import sqrt
 from c2cgeoportal.lib import get_setting, caching
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
-    Theme, RestrictionArea, Role, layer_ra, role_ra
-
+    Theme, RestrictionArea, Role, layer_ra, role_ra, User
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
@@ -881,6 +883,60 @@ class Entry(object):
             return HTTPFound(
                 location=self.request.route_url('home'),
                 headers=headers)
+
+    @view_config(route_name='loginchange')
+    def loginchange(self):
+        new_password = self.request.params.get('newPassword', None)
+        new_password_confirm = self.request.params.get('confirmNewPassword', None)
+        if not (new_password and new_password_confirm):
+            return HTTPBadRequest('"newPassword" and "confirmNewPassword" should be \
+                   available in request params')  # pragma nocover
+
+        # check if loggedin
+        if not self.request.user:
+            return HTTPUnauthorized('bad credentials')  # pragma nocover
+        if new_password != new_password_confirm:
+            return HTTPBadRequest("the new password and the new password \
+                   confirmation don't match")  # pragma nocover
+
+        u = self.request.user
+        u._set_password(new_password)
+        u.is_password_changed = True
+        DBSession.flush()
+        log.info("password changed for user: %s" % self.request.user.username)
+
+        # handle replication
+        if 'auth_replication_enabled' in self.request.registry.settings and \
+                bool(self.request.registry.settings['auth_replication_enabled']) == True:
+            try:
+                log.debug("trying to find if engine set for replication exists")
+                engine = sqlahelper.get_engine('replication')
+            except RuntimeError:
+                log.debug("engine for replication doesn't exist yet, trying \
+                          to create")
+                engine = engine_from_config(
+                    self.request.registry.settings,
+                    'sqlalchemy_replication.')
+                sqlahelper.add_engine(engine, 'replication')
+
+            DBSession2 = scoped_session(sessionmaker(bind=engine))
+
+            dbuser_r = DBSession2.query(User).filter(User.id == self.request.user.id)
+            result = dbuser_r.all()
+            if len(result) == 0:
+                msg = 'user not found in replication target database: %s' \
+                    % self.request.user.username
+                log.exception(msg)
+                return HTTPBadRequest(msg)  # pragma nocover
+            else:
+                u_r = dbuser_r.all()[0]
+                u_r._set_password(new_password)
+                u_r.is_password_changed = True
+                DBSession2.commit()
+                log.info("password changed in replication target database \
+                    for user: %s" % self.request.user.username)
+
+        return Response('true')
 
     @view_config(route_name='permalinktheme', renderer='index.html')
     def permalinktheme(self):

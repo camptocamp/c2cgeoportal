@@ -14,6 +14,8 @@ authtkt_cookie_name = auth_tkt_${instanceid}
 authtkt_secret = ${authtkt_secret}
 # Database informations
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
+auth_replication_enabled = ${vars:enable_auth_replication}
+sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}
 schema = ${vars:schema}
 parentschema = ${vars:parent_schema}
 # For debug mode
