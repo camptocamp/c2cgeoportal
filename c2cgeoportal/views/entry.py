@@ -217,6 +217,7 @@ class Entry(object):
             'legend': layer.legend,
             'isChecked': layer.isChecked,
             'public': layer.public,
+            'isLegendExpanded': layer.isLegendExpanded,
         }
         if layer.identifierAttributeField:
             l['identifierAttribute'] = layer.identifierAttributeField

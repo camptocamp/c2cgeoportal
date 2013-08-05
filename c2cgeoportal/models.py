@@ -409,6 +409,7 @@ class Layer(TreeItem):
     legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
     legendImage = Column(types.Unicode, label=_(u'Legend image'))  # fixed legend image
     legendRule = Column(types.Unicode, label=_(u'Legend rule'))  # on wms legend only one rule
+    isLegendExpanded = Column(types.Boolean, default=False, label=_(u'Legend expanded'))
     minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
