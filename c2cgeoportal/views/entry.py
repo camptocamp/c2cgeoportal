@@ -907,7 +907,7 @@ class Entry(object):
 
         # handle replication
         if 'auth_replication_enabled' in self.request.registry.settings and \
-                bool(self.request.registry.settings['auth_replication_enabled']) == True:
+                self.request.registry.settings['auth_replication_enabled'] == 'true':
             try:
                 log.debug("trying to find if engine set for replication exists")
                 engine = sqlahelper.get_engine('replication')
