@@ -5,12 +5,12 @@ python:
 
 before_install:
 - sudo apt-get update
-- sudo apt-get install -y -q10 postgresql-9.1-postgis apache2 cgi-mapserver
+- sudo apt-get install -y postgresql-9.1-postgis apache2 cgi-mapserver
 - sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-- sudo -u postgres psql -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-- sudo -u postgres psql -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+- sudo -u postgres psql -q -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
+- sudo -u postgres psql -q -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
-- sudo -u postgres psql -d c2cgeoportal_test -f travis-db.sql
+- sudo -u postgres psql -q -d c2cgeoportal_test -f travis-db.sql
 - sudo apache2ctl graceful
 
 install:
