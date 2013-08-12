@@ -257,7 +257,7 @@ localHostForward:
      ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
      to remind the user he should change his password.
 
-     b) The form in <project>/templates/index.html must be updated:
+     b) The form in <project>/templates/index.html and <project>/templates/edit.html must be updated:
 
               <form method="POST" id="loginForm" style="display: none">
                   <input id="login" name="login" type="text" autocomplete="on"/>
