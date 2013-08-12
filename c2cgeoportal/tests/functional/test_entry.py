@@ -540,6 +540,7 @@ class TestEntryView(TestCase):
         layer.legend = True
         layer.legendRule = "rule"
         layer.legendImage = "legend:static/tiwms-legend.png"
+        layer.isLegendExpanded = False
         layer.minResolution = 10
         layer.maxResolution = 1000
         layer.disclaimer = "Camptocamp"
@@ -558,6 +559,7 @@ class TestEntryView(TestCase):
             'kml': '/dummy/static/test_layer:static/tiwms.kml',
             'legend': True,
             'legendImage': '/dummy/static/legend:static/tiwms-legend.png',
+            'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
             'disclaimer': 'Camptocamp',
@@ -576,6 +578,7 @@ class TestEntryView(TestCase):
         layer.imageType = "image/jpeg"
         layer.isSingleTile = True
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.minResolution = 10
         layer.maxResolution = 1000
         layer.public = True
@@ -589,6 +592,7 @@ class TestEntryView(TestCase):
             'imageType': 'image/jpeg',
             'isSingleTile': True,
             'legend': False,
+            'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
             'public': True,
@@ -606,6 +610,7 @@ class TestEntryView(TestCase):
         layer.wmsUrl = 'http://example.com/'
         layer.wmsLayers = 'test'
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.minResolution = 10
         layer.maxResolution = 1000
         layer.public = True
@@ -621,6 +626,7 @@ class TestEntryView(TestCase):
             'wmsUrl': 'http://example.com/',
             'wmsLayers': 'test',
             'legend': False,
+            'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
             'public': True,
@@ -634,6 +640,7 @@ class TestEntryView(TestCase):
         layer.url = "http://example.com/WMTS-Capabilities.xml"
         layer.wmsUrl = 'http://example.com/'
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.minResolution = 10
         layer.maxResolution = 1000
         layer.public = True
@@ -646,6 +653,7 @@ class TestEntryView(TestCase):
             'wmsUrl': 'http://example.com/',
             'wmsLayers': 'test WMTS',
             'legend': False,
+            'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
             'public': True,
@@ -659,6 +667,7 @@ class TestEntryView(TestCase):
         layer.url = "http://example.com/WMTS-Capabilities.xml"
         layer.wmsLayers = 'test'
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.minResolution = 10
         layer.maxResolution = 1000
         layer.public = True
@@ -672,6 +681,7 @@ class TestEntryView(TestCase):
             'wmsLayers': 'test',
             'queryLayers': [],
             'legend': False,
+            'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
             'public': True,
@@ -683,6 +693,7 @@ class TestEntryView(TestCase):
         layer.isChecked = False
         layer.layerType = "no 2D"
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.metadataURL = 'http://example.com/wmsfeatures.metadata'
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None), ({
@@ -691,6 +702,7 @@ class TestEntryView(TestCase):
             'isChecked': False,
             'type': u'no 2D',
             'legend': False,
+            'isLegendExpanded': False,
             'metadataURL': u'http://example.com/wmsfeatures.metadata',
             'public': True,
         }, []))
@@ -724,6 +736,7 @@ class TestEntryView(TestCase):
         layer.imageType = "image/png"
         layer.isChecked = False
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
@@ -731,6 +744,7 @@ class TestEntryView(TestCase):
             'type': u'internal WMS',
             'isChecked': False,
             'legend': False,
+            'isLegendExpanded': False,
             'imageType': u'image/png',
             'minResolutionHint': 1.76,
             'maxResolutionHint': 8.8200000000000003,
@@ -757,6 +771,7 @@ class TestEntryView(TestCase):
         layer.url = "http://example.com/WMTS-Capabilities.xml"
         layer.wmsLayers = 'test_wmsfeatures'
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
@@ -772,6 +787,7 @@ class TestEntryView(TestCase):
                 'maxResolutionHint': 8.8200000000000003
             }],
             'legend': False,
+            'isLegendExpanded': False,
             'public': True,
         }, []))
 
@@ -784,6 +800,7 @@ class TestEntryView(TestCase):
         layer.wmsLayers = 'foo'
         layer.queryLayers = 'test_wmsfeatures'
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms), ({
             'id': 20,
@@ -799,6 +816,7 @@ class TestEntryView(TestCase):
                 'maxResolutionHint': 8.8200000000000003
             }],
             'legend': False,
+            'isLegendExpanded': False,
             'public': True,
         }, []))
 
@@ -814,6 +832,7 @@ class TestEntryView(TestCase):
         layer.layerType = "internal WMS"
         layer.imageType = "image/png"
         layer.legend = False
+        layer.isLegendExpanded = False
         layer.public = True
         group1.children = [group2]
         group2.children = [layer]
@@ -834,6 +853,7 @@ class TestEntryView(TestCase):
                     'isChecked': False,
                     'type': u'internal WMS',
                     'legend': False,
+                    'isLegendExpanded': False,
                     'imageType': u'image/png',
                     'public': True,
                 }]
