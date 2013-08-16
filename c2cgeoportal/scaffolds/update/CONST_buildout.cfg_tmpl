@@ -77,6 +77,14 @@ mapfile_data_noarea_subselect = SELECT rra.role_id FROM ${vars:mapserver_join_ta
 print_path = /print-c2cgeoportal-${vars:instanceid}/pdf/
 # port for the waitress web server
 waitress_port = 5000
+# password change replication activation
+enable_auth_replication = false
+# database connection for auth replication
+dbhost_replication = to_be_defined
+dbport_replication = to_be_defined
+db_replication = to_be_defined
+dbuser_replication = to_be_defined
+dbpassword_replication = to_be_defined
 
 [eggs]
 recipe = z3c.recipe.scripts
