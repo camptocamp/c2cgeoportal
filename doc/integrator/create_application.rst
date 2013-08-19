@@ -317,15 +317,25 @@ Don't miss to add your changes to git::
 .. note::
    Additional notes for Windows users:
 
-   To have a working PNG print you should edit the file
-   ``print/WEB-INF/classes/spring-application-context.xml``
-   and replace the line::
+   To have a working PNG print you should get and edit the file
+   ``print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml``,
+   get it::
 
-        <value>/usr/bin/convert</value>
+        wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml
+        mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/
+        git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml
 
-   by this one::
+   and replace the lines::
 
-        <value>C:\Program Files (x86)\ImageMagick-6.7.7-Q16\convert</value>
+		<!-- <property name="cmd">
+			<value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
+		</property> -->
+
+   by those ones::
+
+		<property name="cmd">
+			<value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
+		</property>
 
    with the right path to ``convert``.
 

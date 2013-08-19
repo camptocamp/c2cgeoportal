@@ -189,9 +189,11 @@ localHostForward:
         - ${vars:host}
     https2http: True
 
-5. Rename one print config file (required for the new print version):
+5. Remove print config file (changed and required only for Windows):
 
-    git mv print/WEB-INF/classes/{,mapfish-}spring-application-context.xml
+        git rm print/WEB-INF/classes/spring-application-context.xml
+
+    For Windows user redo the change done in http://docs.camptocamp.net/c2cgeoportal/integrator/create_application.html?highlight=windows#configure-the-application
 
 6. Replace the CONST_TIPS by a README:
 

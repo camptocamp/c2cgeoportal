@@ -141,7 +141,7 @@ basewar = print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
 basedir = print/
 input = ${print-war:basewar}
     WEB-INF/classes/log4j.properties
-    WEB-INF/classes/mapfish-spring-application-context.xml
+    WEB-INF/classes/*.xml
     config.yaml
     *.tif
     *.bmp
