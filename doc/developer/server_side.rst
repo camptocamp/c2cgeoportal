@@ -179,7 +179,8 @@ line ``# Package version that can be easily update``.
 
 Then run::
 
-    ./buildout/bin/buildout -n -c <buildout_config_file>
+    rm -rf *.egg
+    ./buildout/bin/buildout -n
 
 Copy the dependency version lines (of the form ``Mako = 0.7.2``)
 from the ``buildout`` command output and paste them where you have previously
@@ -188,20 +189,32 @@ removed the versions.
 And apply the following corrections (to work around bugs in
 ``buildout.dumppickedversions``)::
 
+     Jinja2 = x.y.z
+    +jinja2 = x.y.z
      Mako = x.y.z
     +mako = x.y.z
      Markdown = x.y.z
     +markdown = x.y.z
      MarkupSafe = x.y.z
     +markupsafe = x.y.z
+     Pillow = x.y.z
+    +pillow = x.y.z
      SQLAHelper = x.y.z
     +sqlahelper = x.y.z
      Tempita = x.y.z
     +tempita = x.y.z
-     Jinja2 = x.y.z
-    +jinja2 = x.y.z
-     Pillow = x.y.z
-    +pillow = x.y.z
+
+Development eggs
+~~~~~~~~~~~~~~~~
+
+Empty the ``[versions]`` section of the ``buildout_dev.cfg`` file.
+
+Then run::
+
+    ./buildout/bin/buildout -n -c buildout_dev.cfg
+
+Copy the dependency version lines from the ``buildout`` command output and
+paste them where you have previously removed the versions.
 
 Submodules
 ~~~~~~~~~~
@@ -278,8 +291,8 @@ Then customize the migration to suit your needs, test it::
 
     ./buildout/bin/manage_db test
 
-If your script fails during upgrade, it is possible the version number has been 
-incremented anyway, so you need to explicitly reset the version to its 
+If your script fails during upgrade, it is possible the version number has been
+incremented anyway, so you need to explicitly reset the version to its
 correct value using:
 
     ./buildout/bin/manage_db drop_version_control
