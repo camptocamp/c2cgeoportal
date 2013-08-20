@@ -65,6 +65,19 @@ install_requires = [
     'simplejson',
     'PyYAML',
     'dogpile.cache',
+    'PasteScript',
+    # Used in the CONST_buildout.cfg
+    # Needs to be here to correctly generate version.cfg
+    'c2c.recipe.cssmin',
+    'c2c.recipe.facts',
+    'c2c.recipe.jarfile',
+    'c2c.recipe.msgfmt',
+    'collective.recipe.cmd',
+    'collective.recipe.modwsgi',
+    'JSTools',
+    'z3c.recipe.filetemplate',
+    # Needed by the production.ini
+    'waitress',
     ]
 
 # nose plugins with options set in setup.cfg cannot be in
