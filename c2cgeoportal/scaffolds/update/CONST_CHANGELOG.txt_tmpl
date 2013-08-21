@@ -10,6 +10,14 @@ Version 1.6
         ${mapserver_layer_validation}
     END
 
+2. For non Apt/Dpkg based OS, disable the package checking:
+    In the ``buildout.cfg`` section ``[buildout]`` add:
+
+        parts -=
+            test-packages
+            test-packages-mobile
+            test-packages-tilecloud-chain
+
 
 Version 1.5
 ===========

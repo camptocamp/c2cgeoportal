@@ -144,6 +144,18 @@ OpenLayers and GeoExt.
     that if the application has been cloned in a shared directory like
     ``/var/www/<vhost>/private``.
 
+Non Apt/Dpkg based OS Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Disable the package checking:
+
+In the ``buildout.cfg`` section ``[buildout]`` add::
+
+    parts -=
+        test-packages
+        test-packages-mobile
+        test-packages-tilecloud-chain
+
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
