@@ -455,12 +455,14 @@ User.append(password)
 fieldOrder = [
     User.username.validate(unique_validator).with_metadata(mandatory=''),
     password,
-    User.role]
+    User.role
+]
 if hasattr(User, 'parent_role'):
     fieldOrder.append(User.parent_role)
-fieldOrder.extend(
-    [User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
-    User.email.with_metadata(mandatory='')])
+fieldOrder.extend([
+    User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
+    User.email.with_metadata(mandatory='')
+])
 User.configure(include=fieldOrder)
 
 #############################################################################

@@ -15,8 +15,7 @@ setup(
     author_email='info@camptocamp.com',
     url='http://www.camptocamp.com/geospatial-solutions',
     install_requires=[
-        'PasteScript',
-        'c2cgeoportal>=0.6',
+        'c2cgeoportal',
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
