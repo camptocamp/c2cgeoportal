@@ -193,7 +193,7 @@ class Entry(object):
     def _getIconPath(self, icon):
         if not icon:
             return None  # pragma: no cover
-        icon = str(icon)
+        icon = unicode(icon)
         # test full URL
         if not icon[0:4] == 'http':
             try:
