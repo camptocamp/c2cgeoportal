@@ -1,4 +1,4 @@
-.. _administrator_deploy:
+.. _integrator_deploy:
 
 Deploy the application
 ======================

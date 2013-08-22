@@ -30,7 +30,7 @@
 
 from unittest import TestCase
 
-class TestEntryView(TestCase):
+class TestExportCSVView(TestCase):
 
     def test_echo(self):
         from pyramid.testing import DummyRequest
