@@ -37,7 +37,7 @@ except ImportError:  # pragma: nocover
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
-from sqlalchemy import ForeignKey, types, Table, Integer, event
+from sqlalchemy import ForeignKey, types, Table, event
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
@@ -127,10 +127,10 @@ class Functionality(Base):
 user_functionality = Table(
     'user_functionality', Base.metadata,
     Column(
-        'user_id', Integer, ForeignKey(_schema + '.user.id'),
+        'user_id', types.Integer, ForeignKey(_schema + '.user.id'),
         primary_key=True),
     Column(
-        'functionality_id', Integer,
+        'functionality_id', types.Integer,
         ForeignKey(_schema + '.functionality.id'), primary_key=True),
     schema=_schema)
 
@@ -138,10 +138,10 @@ user_functionality = Table(
 role_functionality = Table(
     'role_functionality', Base.metadata,
     Column(
-        'role_id', Integer, ForeignKey(_schema + '.role.id'),
+        'role_id', types.Integer, ForeignKey(_schema + '.role.id'),
         primary_key=True),
     Column(
-        'functionality_id', Integer,
+        'functionality_id', types.Integer,
         ForeignKey(_schema + '.functionality.id'), primary_key=True),
     schema=_schema)
 
@@ -175,12 +175,12 @@ class User(Base):
         cascade='save-update,merge,refresh-expire')
 
     # role relationship
-    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
+    role_id = Column(types.Integer, ForeignKey(_schema + '.role.id'), nullable=False)
     role = relationship("Role", backref=backref('users', enable_typechecks=False))
 
     if _parentschema is not None and _parentschema != '':
         # parent role relationship
-        parent_role_id = Column(Integer, ForeignKey(_parentschema + '.role.id'))
+        parent_role_id = Column(types.Integer, ForeignKey(_parentschema + '.role.id'))
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
     def __init__(
@@ -298,10 +298,10 @@ event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 layergroup_treeitem = Table(
     'layergroup_treeitem', Base.metadata,
     Column(
-        'treegroup_id', Integer, ForeignKey(_schema + '.treegroup.id'),
+        'treegroup_id', types.Integer, ForeignKey(_schema + '.treegroup.id'),
         primary_key=True),
     Column(
-        'treeitem_id', Integer, ForeignKey(_schema + '.treeitem.id'),
+        'treeitem_id', types.Integer, ForeignKey(_schema + '.treeitem.id'),
         primary_key=True),
     schema=_schema)
 
@@ -429,10 +429,10 @@ class Layer(TreeItem):
 role_ra = Table(
     'role_restrictionarea', Base.metadata,
     Column(
-        'role_id', Integer, ForeignKey(_schema + '.role.id'),
+        'role_id', types.Integer, ForeignKey(_schema + '.role.id'),
         primary_key=True),
     Column(
-        'restrictionarea_id', Integer,
+        'restrictionarea_id', types.Integer,
         ForeignKey(_schema + '.restrictionarea.id'),
         primary_key=True),
     schema=_schema)
@@ -441,10 +441,10 @@ role_ra = Table(
 layer_ra = Table(
     'layer_restrictionarea', Base.metadata,
     Column(
-        'layer_id', Integer, ForeignKey(_schema + '.layer.id'),
+        'layer_id', types.Integer, ForeignKey(_schema + '.layer.id'),
         primary_key=True),
     Column(
-        'restrictionarea_id', Integer,
+        'restrictionarea_id', types.Integer,
         ForeignKey(_schema + '.restrictionarea.id'),
         primary_key=True),
     schema=_schema)
