@@ -508,3 +508,16 @@ if _parentschema is not None and _parentschema != '':
 
         def __unicode__(self):
             return self.name or u''  # pragma: nocover
+
+
+class Shorturl(Base):
+    __tablename__ = 'shorturl'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [DENY_ALL]
+    id = Column(types.Integer, primary_key=True)
+    url = Column(types.Unicode(1000))
+    ref = Column(types.String(20), index=True, unique=True)
+    creator_email = Column(types.Unicode(200))
+    creation = Column(types.DateTime)
+    last_hit = Column(types.DateTime)
+    nb_hits = Column(types.Integer)
