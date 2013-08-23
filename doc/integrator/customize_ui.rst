@@ -148,3 +148,40 @@ the following::
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
     subdomain_url_template: http://%(sub)s.${vars:host}
+
+
+Advanced configuration examples
+-------------------------------
+
+We can use the ``functionalities`` or the ``config.yaml.in`` to configure the
+interface. For instance:
+
+Activate CGXP plugin using an ``authorized_plugins`` functionality::
+
+   % if 'my_plugin' in functionality['authorized_plugins']:
+   {
+       // plugin configuration
+   },
+   % endif
+
+
+Configure the ``querier`` layer using the ``config.yaml.in``,
+Add in ``config.yaml.in``::
+
+    viewer:
+        feature_types:
+        - layer_1
+        - layer_2
+
+And in ``viewer.js``::
+
+    <%
+    from json import dumps
+    %>
+    % if len(request.registry.settings['viewer']['feature_types']) > 0:
+    {
+        ptype: "cgxp_querier",
+        // plugin configuration
+        featureTypes: ${dumps(request.registry.settings['viewer']['feature_types']) | n}
+    },
+    % endif
