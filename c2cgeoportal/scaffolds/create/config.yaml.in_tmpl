@@ -79,8 +79,11 @@ external_mapserv_url:
 # chapter in the integrator documentation.
 raster:
 
-# For mapserver proxy
+# URL to internal MapServer instance
 mapserv_url: http://localhost/${vars:instanceid}/mapserv
+
+# Define whether the MapServer proxy should hide the OGC capabilities.
+hide_capabilities: false
 
 # For print proxy
 print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/

@@ -139,6 +139,19 @@ def ogcproxy_route_predicate(info, request):
     return True
 
 
+def mapserverproxy_route_predicate(info, request):
+    """ Serve as a custom route predicate function for mapserverproxy.
+    If the hide_capabilities setting is set and is true then we want to
+    return 404s on GetCapabilities requests."""
+    hide_capabilities = request.registry.settings.get('hide_capabilities')
+    if not hide_capabilities:
+        return True
+    params = dict(
+        (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
+    )
+    return 'request' not in params or params['request'] != u'getcapabilities'
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -204,6 +217,7 @@ def includeme(config):
     # add routes to the mapserver proxy
     config.add_route(
         'mapserverproxy', '/mapserv_proxy',
+        custom_predicates=(mapserverproxy_route_predicate,),
         pregenerator=MultiDomainPregenerator())
 
     # add routes to csv view
