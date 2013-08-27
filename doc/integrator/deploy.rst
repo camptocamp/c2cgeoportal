@@ -74,6 +74,11 @@ named ``buildout_prod.cfg`` and look like::
      host = <prod hostname>
      apache-entry-point = /
 
+If you have more than one instance on a domain name you can define
+``apache-entry-point`` with something like ``/a_name/``. The end ``/``
+is required in the ``apache-entry-point`` but not in the URL, than
+`http://host/a_name` will work.
+
 
 To deploy from dev to demo
 --------------------------
