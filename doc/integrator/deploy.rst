@@ -75,7 +75,7 @@ named ``buildout_prod.cfg`` and look like::
      apache-entry-point = /
 
 If you have more than one instance on a domain name you can define
-``apache-entry-point`` with something like ``/a_name/``. The end ``/``
+``apache-entry-point`` with something like ``/a_name/``. The trailing ``/``
 is required in the ``apache-entry-point`` but not in the URL, than
 `http://host/a_name` will work.
 
