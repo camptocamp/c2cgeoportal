@@ -1,7 +1,7 @@
 import functools
 import warnings
 
-from sqlalchemy import Table, sql, types
+from sqlalchemy import Table, sql, types, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
@@ -119,7 +119,42 @@ def _column_reflect_listener(table, column_info, engine):
             column_info['type'] = geometry_type(srid=results[0][3])
 
 
-def get_class(tablename):
+def get_table(tablename, DBSession=None):
+    # TODO: factorize with get_class
+    if '.' in tablename:
+        schema, tablename = tablename.split('.', 1)
+    else:
+        schema = 'public'
+
+    if DBSession is not None:
+        engine = DBSession.bind.engine
+        metadata = MetaData(bind=engine)
+    else:
+        engine = Base.metadata.bind
+        metadata = Base.metadata
+
+    # create table and reflect it
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            'ignore',
+            "Did not recognize type 'geometry' of column",
+            SAWarning)
+        table = Table(
+            tablename, metadata,
+            schema=schema,
+            autoload=True,
+            autoload_with=engine,
+            listeners=[(
+                'column_reflect',
+                functools.partial(
+                    _column_reflect_listener,
+                    engine=engine))
+            ]
+        )
+    return table
+
+
+def get_class(tablename, DBSession=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -136,7 +171,12 @@ def get_class(tablename):
     if (schema, tablename) in _class_cache:
         return _class_cache[(schema, tablename)]
 
-    engine = Base.metadata.bind
+    if DBSession is not None:
+        engine = DBSession.bind.engine
+        metadata = MetaData(bind=engine)
+    else:
+        engine = Base.metadata.bind
+        metadata = Base.metadata
 
     # create table and reflect it
     with warnings.catch_warnings():
@@ -145,7 +185,7 @@ def get_class(tablename):
             "Did not recognize type 'geometry' of column",
             SAWarning)
         table = Table(
-            tablename, Base.metadata,
+            tablename, metadata,
             schema=schema,
             autoload=True,
             autoload_with=engine,
