@@ -18,7 +18,7 @@ RewriteEngine on
 # http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
 WSGIPassAuthorization On
 
-RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
+RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
 RewriteRule ^${vars:apache-entry-point}api.js$ /${vars:instanceid}/wsgi/api.js [PT]
 RewriteRule ^${vars:apache-entry-point}xapi.js$ /${vars:instanceid}/wsgi/xapi.js [PT]
 RewriteRule ^${vars:apache-entry-point}apihelp.html$ /${vars:instanceid}/wsgi/apihelp.html [PT]
