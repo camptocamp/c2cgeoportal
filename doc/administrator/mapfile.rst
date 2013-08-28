@@ -224,9 +224,9 @@ writing of the mapfile. It is defined as follows::
     Before c2cgeoportal 0.6 the following ``DATA`` query was given
     in this documentation::
 
-        DATA "geometrie FROM (SELECT geo.geom as geom
+        DATA "geometry FROM (SELECT geo.geom as geom
             FROM geodata.table AS geo, ${mapserver_join_tables}
-            WHERE ST_Contains(${mapserver_join_area}, geo.geometrie)
+            WHERE ST_Contains(${mapserver_join_area}, geo.geometry)
             AND ${mapserver_join_where} 'layer_name') AS foo
             USING UNIQUE gid USING srid=-1"
 
