@@ -122,7 +122,7 @@ To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
 As for WFS GetFeature, this is a fake template, but it is required.
 
-The ``gml_include_items``, ``gml_[name]_type`` and ``gml_geometries``
+The ``gml_include_items``, ``gml_[geometry name]_type`` and ``gml_geometries``
 *METADATA* variables should also be defined in the ``LAYER``. For
 example::
 
@@ -142,13 +142,18 @@ example::
   geometries instead of bboxes.
 
 
-``gml_[name]_type``
+``gml_[geometry name]_type``
 
   This specifies the type of a geometry column. Specifying this property is
   necessary if geometries, instead of bboxes should be returned in
-  GetFeatureInfo (GML) responses. ``[name]`` should be replaced the string set
+  GetFeatureInfo (GML) responses. ``[geometry name]`` should be replaced the string set
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
   ``the_geom`` then ``gml_the_geom_type`` should be used.
+  The possible values are ``point``, ``multipoint``, ``line``, ``multiline``,
+  ``polygon``, ``multipolygon``, if you don't set the right type
+  for multi geometries only the first will be visible on the map.
+  See also `gml_[geometry name]_type
+  <http://mapserver.org/ogc/wms_server.html#index-71>`_.
 
 See the `WMS Server MapFile Documentation
 <http://mapserver.org/ogc/wms_server.html>`_ for more detail.
@@ -186,9 +191,9 @@ what's configured in the admin interface for the layer.
     easily readable in this documentation. However please note that Mapserver
     requires that this directive is contained on a single line.
 
-.. warning:: In some cases you can have geometries that overlap the restriction 
-	area. Theses features won't be displayed as they are not in the area (ie not 
-	*contained*). *st_intersects* or other operator could be used instead of the 
+.. warning:: In some cases you can have geometries that overlap the restriction
+	area. Theses features won't be displayed as they are not in the area (ie not
+	*contained*). *st_intersects* or other operator could be used instead of the
 	*st_contains* operator.
 
 The ``${vars:mapfile_data_subselect}`` variable is defined in the Buildout
@@ -211,7 +216,7 @@ writing of the mapfile. It is defined as follows::
     AND
       lra.layer_id = la.id
     AND
-      la.name = 
+      la.name =
 
 .. note::
 
@@ -219,10 +224,10 @@ writing of the mapfile. It is defined as follows::
     Before c2cgeoportal 0.6 the following ``DATA`` query was given
     in this documentation::
 
-        DATA "geometrie FROM (SELECT geo.geom as geom 
-            FROM geodata.table AS geo, ${mapserver_join_tables} 
-            WHERE ST_Contains(${mapserver_join_area}, geo.geometrie) 
-            AND ${mapserver_join_where} 'layer_name') AS foo 
+        DATA "geometry FROM (SELECT geo.geom as geom
+            FROM geodata.table AS geo, ${mapserver_join_tables}
+            WHERE ST_Contains(${mapserver_join_area}, geo.geometry)
+            AND ${mapserver_join_where} 'layer_name') AS foo
             USING UNIQUE gid USING srid=-1"
 
     In most cases this query should continue to work with 0.6 and
@@ -250,7 +255,7 @@ Variable Substitution
 ---------------------
 
 It is possible to adapt some values in the mapfile according to the user's role
-by using variable substitution. For instance to hide some layer objects 
+by using variable substitution. For instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
@@ -260,12 +265,12 @@ section in the mapfile and add::
     "default_s_<variable>" "<default_value>"
     "s_<variable>_validation_pattern" "<validation_pattern>"
 
-The ``validation_pattern`` is a regular expression used to validate the 
+The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
-use ``^[a-z,]*$$`` (the double '$' is needed since we are 
+use ``^[a-z,]*$$`` (the double '$' is needed since we are
 in a ``.in`` file).
 
-Now in ``LAYER`` place ``%s_<variable>%`` where you want to 
+Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value.
 
 Then in the administration interface, create a ``functionality`` named
