@@ -122,7 +122,7 @@ To support WMS GetFeatureInfo a ``LAYER`` should define a template::
 
 As for WFS GetFeature, this is a fake template, but it is required.
 
-The ``gml_include_items``, ``gml_[name]_type`` and ``gml_geometries``
+The ``gml_include_items``, ``gml_[geometry name]_type`` and ``gml_geometries``
 *METADATA* variables should also be defined in the ``LAYER``. For
 example::
 
@@ -142,13 +142,18 @@ example::
   geometries instead of bboxes.
 
 
-``gml_[name]_type``
+``gml_[geometry name]_type``
 
   This specifies the type of a geometry column. Specifying this property is
   necessary if geometries, instead of bboxes should be returned in
-  GetFeatureInfo (GML) responses. ``[name]`` should be replaced the string set
+  GetFeatureInfo (GML) responses. ``[geometry name]`` should be replaced the string set
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
   ``the_geom`` then ``gml_the_geom_type`` should be used.
+  The possible values are ``point``, ``multipoint``, ``line``, ``multiline``,
+  ``polygon``, ``multipolygon``, if you don't set the right type
+  for multi geometries only the first will be visible on the map.
+  See also `gml_[geometry name]_type
+  <http://mapserver.org/ogc/wms_server.html#index-71>`_.
 
 See the `WMS Server MapFile Documentation
 <http://mapserver.org/ogc/wms_server.html>`_ for more detail.
