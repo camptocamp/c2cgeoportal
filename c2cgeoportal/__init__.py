@@ -275,6 +275,10 @@ def includeme(config):
     config.add_route('profile.csv', '/profile.csv')
     config.add_route('profile.json', '/profile.json')
 
+    # shortener
+    config.add_route('shortener_create', '/short/create')
+    config.add_route('shortener_get', '/short/{ref}')
+
     # add routes for the "layers" web service
     config.add_route(
         'layers_count', '/layers/{layer_id:\\d+}/count',
