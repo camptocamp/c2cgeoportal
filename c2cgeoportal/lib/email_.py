@@ -28,30 +28,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from unittest import TestCase
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.Utils import formatdate
 
-class TestExportCSVView(TestCase):
 
-    def test_echo(self):
-        from pyramid.testing import DummyRequest
-        from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.exportcsv import echo
-
-        request = DummyRequest()
-
-        responce = echo(request)
-        request.params = {
-            'csv': '12,34'
-        }
-        self.assertEqual(type(responce), HTTPBadRequest)
-
-        request.method = 'POST'
-        request.params = {}
-        responce = echo(request)
-        self.assertEqual(type(responce), HTTPBadRequest)
-
-        request.params = {
-            'csv': 'éà,èç'
-        }
-        responce = echo(request)
-        self.assertEqual(responce.body, 'éà,èç')
+def send_email(from_addr, to_addrs, body, subject, smtp_server):  # pragma: no cover
+    msg = MIMEMultipart()
+    msg['From'] = from_addr
+    msg['To'] = ', '.join(to_addrs)
+    msg['Date'] = formatdate(localtime=True)
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain', 'utf-8'))
+    smtp = smtplib.SMTP(smtp_server)
+    smtp.sendmail(from_addr, to_addrs, msg.as_string())
+    smtp.close()

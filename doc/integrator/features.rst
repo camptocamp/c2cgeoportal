@@ -30,5 +30,4 @@ Features that require additional steps (most of the time):
    https
    api
    password_replication
-
-
+   shortener
