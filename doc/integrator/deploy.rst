@@ -12,7 +12,7 @@ should be set up in file ``deploy/deploy.cfg[.in]``.
 The deploy tool has four parts:
 
 * ``[files]`` to deploy the GeoTIFF, ShapeFiles and so on.
-* ``[database]`` to deploy the database.
+* ``[databases]`` to deploy the database.
 * ``[code]`` to deploy the application.
 * ``[apache]`` to build the apache config.
 
