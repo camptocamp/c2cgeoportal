@@ -11,7 +11,7 @@ should be set up in file ``deploy/deploy.cfg[.in]``.
 
 The deploy tool has four parts:
 
-* ``[file]`` to deploy the GeoTIFF, ShapeFiles and so on.
+* ``[files]`` to deploy the GeoTIFF, ShapeFiles and so on.
 * ``[database]`` to deploy the database.
 * ``[code]`` to deploy the application.
 * ``[apache]`` to build the apache config.
