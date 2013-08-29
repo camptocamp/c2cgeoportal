@@ -153,6 +153,9 @@ def proxy(request):
     h = dict(request.headers)
     if urlparse(_url).hostname != 'localhost':
         h.pop('Host')
+    # mapserver don't need the cookie, and sometimes it failed with it.
+    if 'Cookie' in h:
+        h.pop('Cookie')
     try:
         resp, content = http.request(_url, method=method,
                                      body=body, headers=h)
