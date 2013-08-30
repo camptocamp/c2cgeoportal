@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html manifest="" lang="en-US">
+<html lang="${lang}">
 <head>
     <meta charset="UTF-8">
     <title>{{package}} Mobile Application</title>
