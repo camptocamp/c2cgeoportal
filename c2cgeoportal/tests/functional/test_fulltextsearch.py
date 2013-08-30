@@ -88,7 +88,15 @@ class TestFulltextsearchView(TestCase):
         entry4.the_geom = WKTSpatialElement("POINT(-90 -45)")
         entry4.public = True
 
-        DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4])
+        entry5 = FullTextSearch()
+        entry5.label = 'label5'
+        entry5.layer_name = 'layer1'
+        entry5.ts = func.to_tsvector('french', 'params')
+        entry5.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry5.public = True
+        entry5.params = { 'floor': 5 }
+
+        DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4, entry5])
         transaction.commit()
 
     def tearDown(self):
@@ -101,14 +109,16 @@ class TestFulltextsearchView(TestCase):
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
 
-        DBSession.query(FullTextSearch) \
-                .filter(FullTextSearch.label == 'label1').delete()
-        DBSession.query(FullTextSearch) \
-                .filter(FullTextSearch.label == 'label2').delete()
-        DBSession.query(FullTextSearch) \
-                .filter(FullTextSearch.label == 'label3').delete()
-        DBSession.query(FullTextSearch) \
-                .filter(FullTextSearch.label == 'label4').delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == 'label1').delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == 'label2').delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == 'label3').delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == 'label4').delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == 'label5').delete()
 
         DBSession.query(Role).filter(Role.name == '__test_role1').delete()
         DBSession.query(Role).filter(Role.name == '__test_role2').delete()
@@ -294,3 +304,15 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(len(resp.features), 1)
         self.assertEqual(resp.features[0].properties['label'], 'label1')
         self.assertEqual(resp.features[0].properties['layer_name'], 'layer1')
+
+    def test_params(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.fulltextsearch import fulltextsearch
+
+        request = self._create_dummy_request(
+                params=dict(query='params', limit=10))
+        resp = fulltextsearch(request)
+        self.assertTrue(isinstance(resp, FeatureCollection))
+        self.assertEqual(len(resp.features), 1)
+        self.assertEqual(resp.features[0].properties['label'], 'label5')
+        self.assertEqual(resp.features[0].properties['params'], { 'floor': 5 })

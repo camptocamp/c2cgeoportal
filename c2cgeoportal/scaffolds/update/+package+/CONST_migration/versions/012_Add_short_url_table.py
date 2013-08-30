@@ -4,9 +4,9 @@ from c2cgeoportal import schema
 
 
 def upgrade(migrate_engine):
-    metadata = MetaData()
+    meta = MetaData(bind=migrate_engine)
     short_url = Table(
-        'shorturl', metadata,
+        'shorturl', meta,
         Column('id', types.Integer, primary_key=True),
         Column('url', types.Unicode(1000)),
         Column('ref', types.String(20), index=True, unique=True),
@@ -16,7 +16,7 @@ def upgrade(migrate_engine):
         Column('nb_hits', types.Integer),
         schema=schema,
     )
-    short_url.create(bind=migrate_engine)
+    short_url.create()
 
 
 def downgrade(migrate_engine):
