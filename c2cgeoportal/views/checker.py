@@ -35,7 +35,7 @@ from httplib2 import Http
 import simplejson
 
 
-class Checker(object):
+class Checker(object):  # pragma: no cover
 
     status_int = 200
 
