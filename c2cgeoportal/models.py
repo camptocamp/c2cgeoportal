@@ -251,7 +251,7 @@ class Role(Base):
         return self.name or u''  # pragma: nocover
 
     def _json_extent(self):
-        if not self.extent:
+        if self.extent is None:
             return None
 
         coords = self.extent.coords(DBSession)

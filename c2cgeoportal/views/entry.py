@@ -889,16 +889,16 @@ class Entry(object):
     def loginchange(self):
         new_password = self.request.params.get('newPassword', None)
         new_password_confirm = self.request.params.get('confirmNewPassword', None)
-        if not (new_password and new_password_confirm):
-            return HTTPBadRequest('"newPassword" and "confirmNewPassword" should be \
-                   available in request params')  # pragma nocover
+        if new_password is None or new_password_confirm is None:
+            raise HTTPBadRequest('"newPassword" and "confirmNewPassword" should be \
+                   available in request params')
 
         # check if loggedin
         if not self.request.user:
-            return HTTPUnauthorized('bad credentials')  # pragma nocover
+            raise HTTPUnauthorized('bad credentials')
         if new_password != new_password_confirm:
-            return HTTPBadRequest("the new password and the new password \
-                   confirmation don't match")  # pragma nocover
+            raise HTTPBadRequest("the new password and the new password \
+                   confirmation don't match")
 
         u = self.request.user
         u._set_password(new_password)

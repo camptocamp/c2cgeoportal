@@ -42,6 +42,7 @@ from c2cgeoportal.tests.functional import (  # NOQA
         setUpCommon as setUpModule,
         mapserv_url, host)
 
+
 @attr(functional=True)
 class TestEntryView(TestCase):
 
@@ -54,7 +55,9 @@ class TestEntryView(TestCase):
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
 
-        role2 = Role(name=u'__test_role2')
+        role2 = Role(name=u'__test_role2', extent=WKTSpatialElement(
+            "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
+        ))
         user2 = User(username=u'__test_user2', password=u'__test_user2', role=role2)
 
         public_layer = Layer(name=u'__test_public_layer', order=40, public=True)
@@ -73,12 +76,12 @@ class TestEntryView(TestCase):
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
         area = WKTSpatialElement(poly, srid=21781)
-        ra = RestrictionArea(name=u'__test_ra1', description=u'',
+        RestrictionArea(name=u'__test_ra1', description=u'',
                              layers=[private_layer],
                              roles=[role1], area=area)
 
         area = WKTSpatialElement(poly, srid=21781)
-        ra = RestrictionArea(name=u'__test_ra2', description=u'',
+        RestrictionArea(name=u'__test_ra2', description=u'',
                              layers=[private_layer],
                              roles=[role2], area=area, readwrite=True)
 
@@ -248,7 +251,6 @@ class TestEntryView(TestCase):
         self.assertEqual(layer['name'], '__test_public_layer')
         self.assertFalse('editable' in layer)
 
-
     def test_index_auth_edit_permission(self):
         import json
 
@@ -362,7 +364,7 @@ class TestEntryView(TestCase):
 
         # autenticated on parent
         role_id = DBSession.query(User.role_id).filter_by(username=u'__test_user1').one()
-        request.params = { 'role_id': role_id }
+        request.params = {'role_id': role_id}
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
         self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
@@ -388,7 +390,6 @@ class TestEntryView(TestCase):
         self.assertEquals(len(errors), 1)
 
     def test_WFS_types(self):
-        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()
         request.headers['Host'] = host
@@ -411,7 +412,10 @@ class TestEntryView(TestCase):
         response = entry._getVars()
         self.assertEquals(response['serverError'], '[]')
 
-        result = '["testpoint_unprotected", "testpoint_protected", "testpoint_protected_query_with_collect", "testpoint_substitution", "testpoint_column_restriction", "test_wmsfeatures"]'
+        result = '["testpoint_unprotected", "testpoint_protected", ' \
+            '"testpoint_protected_query_with_collect", ' \
+            '"testpoint_substitution", "testpoint_column_restriction", ' \
+            '"test_wmsfeatures"]'
         self.assertEquals(response['WFSTypes'], result)
         self.assertEquals(response['externalWFSTypes'], result)
 
@@ -515,7 +519,7 @@ class TestEntryView(TestCase):
     def test_layer(self):
         import httplib2
         from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import Layer, LayerGroup, Theme
+        from c2cgeoportal.models import Layer, LayerGroup
 
         request = testing.DummyRequest()
         request.headers['Host'] = host
@@ -552,7 +556,8 @@ class TestEntryView(TestCase):
             'name': 'test internal WMS',
             'metadataURL': 'http://example.com/tiwms',
             'isChecked': True,
-            'icon': '/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule',
+            'icon': '/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&'
+            'REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule',
             'type': u'internal WMS',
             'imageType': 'image/png',
             'style': 'my-style',
@@ -724,7 +729,7 @@ class TestEntryView(TestCase):
         url = mapserv + '&'.join(['='.join(p) for p in params])
         http = httplib2.Http()
         h = {'Host': host}
-        resp, xml =http.request(url, method='GET', headers=h)
+        resp, xml = http.request(url, method='GET', headers=h)
 
         wms = WebMapService(None, xml=xml)
         wms_layers = list(wms.contents)
@@ -949,3 +954,46 @@ class TestEntryView(TestCase):
         _, errors, stop = entry._group(group, [layer], [], None)
         self.assertEqual(len(errors), 0)
         self.assertFalse(stop)
+
+    @attr(test=True)
+    def test_loginchange(self):
+        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal.models import User
+        from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
+        try:
+            from hashlib import sha1
+            sha1  # suppress pyflakes warning
+        except ImportError:  # pragma: nocover
+            from sha import new as sha1
+
+        request = testing.DummyRequest()
+        request.user = None
+        entry = Entry(request)
+        self.assertRaises(HTTPBadRequest, entry.loginchange)
+
+        request.params = {
+            'lang': 'en',
+            'newPassword': '1234',
+            'confirmNewPassword': '12345',
+        }
+        self.assertRaises(HTTPUnauthorized, entry.loginchange)
+
+        request.user = User()
+        self.assertEquals(request.user.is_password_changed, False)
+        self.assertEquals(request.user._password, unicode(sha1('').hexdigest()))
+        self.assertRaises(HTTPBadRequest, entry.loginchange)
+
+        request.params['confirmNewPassword'] = '1234'
+        self.assertNotEqual(entry.loginchange(), None)
+        self.assertEqual(request.user.is_password_changed, True)
+        self.assertEqual(request.user._password, unicode(sha1('1234').hexdigest()))
+
+    @attr(test=True)
+    def test_json_extent(self):
+        from c2cgeoportal.models import DBSession, Role
+
+        role = DBSession.query(Role).filter(Role.name == '__test_role1').one()
+        self.assertEqual(role.json_extent, None)
+
+        role = DBSession.query(Role).filter(Role.name == '__test_role2').one()
+        self.assertEqual(role.json_extent, '[1, 2, 3, 4]')
