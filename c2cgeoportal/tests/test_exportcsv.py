@@ -29,6 +29,7 @@
 
 
 from unittest import TestCase
+import codecs
 
 class TestExportCSVView(TestCase):
 
@@ -51,7 +52,7 @@ class TestExportCSVView(TestCase):
         self.assertEqual(type(responce), HTTPBadRequest)
 
         request.params = {
-            'csv': 'éà,èç'
+            'csv': u'éà,èç'
         }
         responce = echo(request)
-        self.assertEqual(responce.body, 'éà,èç')
+        self.assertEqual(responce.body, codecs.BOM_UTF8 + u'éà,èç'.encode('UTF-8'))
