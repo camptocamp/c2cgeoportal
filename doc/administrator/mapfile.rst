@@ -86,7 +86,7 @@ example::
   Always set this to ``auto``. This means that the layer's field type
   information is obtained from the input feature driver (OGC).
 
-``gml_feature``
+``gml_featureid``
 
   References the name of layer's primary key column. Setting this is mandatory
   for ``GetFeature`` request including ``ogc:FeatureId`` filters. Always set
