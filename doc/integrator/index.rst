@@ -24,3 +24,4 @@ Content:
    raster
    functionality
    checker
+   wmstime

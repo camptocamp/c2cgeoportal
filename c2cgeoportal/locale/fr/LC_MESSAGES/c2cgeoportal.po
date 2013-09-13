@@ -30,11 +30,11 @@ msgstr "Les mots de passe ne correspondent pas."
 msgid "Unlinked layers"
 msgstr "Couches non liées"
 
-#: c2cgeoportal/forms.py:409
+#: c2cgeoportal/forms.py:412
 msgid "Restriction area"
 msgstr "Aire de restriction"
 
-#: c2cgeoportal/forms.py:433
+#: c2cgeoportal/forms.py:436
 msgid "Extent"
 msgstr "Emprise"
 
@@ -236,6 +236,10 @@ msgstr "Nom du champ identifiant"
 msgid "Related Postgres table"
 msgstr "Table Postgres correspondante"
 
+#: c2cgeoportal/models.py:427
+msgid "Time mode"
+msgstr "Mode temps"
+
 #: c2cgeoportal/models.py:457
 msgid "restrictionarea"
 msgstr "Aire de restriction"
@@ -287,4 +291,3 @@ msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover "
 "the themes"
 msgstr ""
-

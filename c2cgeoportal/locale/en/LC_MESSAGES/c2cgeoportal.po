@@ -30,11 +30,11 @@ msgstr ""
 msgid "Unlinked layers"
 msgstr ""
 
-#: c2cgeoportal/forms.py:409
+#: c2cgeoportal/forms.py:412
 msgid "Restriction area"
 msgstr ""
 
-#: c2cgeoportal/forms.py:433
+#: c2cgeoportal/forms.py:436
 msgid "Extent"
 msgstr ""
 
@@ -234,6 +234,10 @@ msgstr ""
 
 #: c2cgeoportal/models.py:421
 msgid "Related Postgres table"
+msgstr ""
+
+#: c2cgeoportal/models.py:427
+msgid "Time mode"
 msgstr ""
 
 #: c2cgeoportal/models.py:457

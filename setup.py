@@ -78,6 +78,8 @@ install_requires = [
     'z3c.recipe.filetemplate',
     # Needed by the production.ini
     'waitress',
+    # WMST support
+    'isodate',
 ]
 
 # nose plugins with options set in setup.cfg cannot be in

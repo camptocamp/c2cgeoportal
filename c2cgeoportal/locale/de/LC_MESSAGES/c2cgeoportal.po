@@ -30,11 +30,11 @@ msgstr "Passworte stimmen nicht überein."
 msgid "Unlinked layers"
 msgstr "Unverknüpfte Layer"
 
-#: c2cgeoportal/forms.py:409
+#: c2cgeoportal/forms.py:412
 msgid "Restriction area"
 msgstr "geschützter Bereich"
 
-#: c2cgeoportal/forms.py:433
+#: c2cgeoportal/forms.py:436
 msgid "Extent"
 msgstr "Ausdehnung"
 
@@ -234,6 +234,10 @@ msgstr "Kennung Attributfeld (z.B. name)"
 
 #: c2cgeoportal/models.py:421
 msgid "Related Postgres table"
+msgstr ""
+
+#: c2cgeoportal/models.py:427
+msgid "Time mode"
 msgstr ""
 
 #: c2cgeoportal/models.py:457

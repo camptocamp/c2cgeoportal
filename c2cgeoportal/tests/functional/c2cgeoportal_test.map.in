@@ -275,4 +275,64 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "test_wmstime"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_title" "time"
+            "wms_srs" "epsg:21781"
+            "wms_timeextent" "2000/2010/P1Y"
+            "wms_timeitem" "date"
+            "wms_timedefault" "2000"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        MINSCALEDENOM 5000
+        MAXSCALEDENOM 25000
+        CLASS
+            NAME "testpoint_unprotected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "test_wmstime2"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_title" "time"
+            "wms_srs" "epsg:21781"
+            "wms_timeextent" "2015/2020/P1Y"
+            "wms_timeitem" "date"
+            "wms_timedefault" "2015"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        MINSCALEDENOM 5000
+        MAXSCALEDENOM 25000
+        CLASS
+            NAME "testpoint_unprotected"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END
