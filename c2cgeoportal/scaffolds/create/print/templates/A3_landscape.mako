@@ -385,12 +385,13 @@ ${self.block_text_misc()}
           items:
             - !legends
               inline: false
+              horizontalAlignment: left
               defaultScale: 0.5
               maxHeight: 550
               maxWidth: 50
               scale: 0.8
-              maxIconHeight: 0
-              maxIconWidth: 0
+              iconMaxHeight: 0
+              iconMaxWidth: 0
               columnMargin: 5
               classIndentation: 3
               classSpace: 5
