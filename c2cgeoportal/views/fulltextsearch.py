@@ -121,7 +121,7 @@ def fulltextsearch(request):
             .label('row_number')
         subq = DBSession.query(FullTextSearch) \
             .add_columns(row_number).filter(_filter).subquery()
-        query = DBSession.query(subq.c.id, subq.c.label,
+        query = DBSession.query(subq.c.id, subq.c.label, subq.c.params,
                                 subq.c.layer_name, subq.c.the_geom)
         query = query.filter(subq.c.row_number <= partitionlimit)
     else:
@@ -135,7 +135,11 @@ def fulltextsearch(request):
     features = []
     for o in objs:
         if o.the_geom is not None:
-            properties = {"label": o.label, "layer_name": o.layer_name}
+            properties = {
+                "label": o.label,
+                "layer_name": o.layer_name,
+                "params": o.params,
+            }
             geom = wkb_loads(str(o.the_geom.geom_wkb))
             feature = Feature(id=o.id, geometry=geom,
                               properties=properties, bbox=geom.bounds)
