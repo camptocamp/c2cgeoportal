@@ -170,8 +170,15 @@ compass_cmd = compass
 sencha_cmd = sencha
 cmds =
     >>> import os
+    >>> import shutil
     >>> from subprocess import Popen
     >>> src_dir = os.path.join(buildout.get('directory', '.'), '{{package}}', 'static', 'mobile')
+    >>> build_dir = os.path.join(src_dir, 'build')
+    >>> if os.path.exists(build_dir):
+    >>>     shutil.rmtree(build_dir)
+    >>> archive_dir = os.path.join(src_dir, 'archive')
+    >>> if os.path.exists(archive_dir):
+    >>>     shutil.rmtree(archive_dir)
     >>> Popen([buildout.get('mobile').get('compass_cmd'), 'compile', 'resources/sass'], cwd=src_dir).wait()
     >>> env = os.environ.copy()
     >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
