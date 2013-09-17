@@ -292,6 +292,14 @@ localHostForward:
    -RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
    +RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
 
+13. With Mapfish-Print 2.0 some legend parameters have been added or renamed.
+    In the printing configuration, change the ``legends`` blocks as follows:
+
+   -maxIconHeight: 0
+   +iconMaxHeight: 0
+   -maxIconWidth: 0
+   +iconMaxWidth: 0
+   +horizontalAlignment: left
 
 Version 1.3.2
 =============
