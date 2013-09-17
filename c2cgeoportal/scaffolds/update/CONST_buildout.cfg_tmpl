@@ -197,8 +197,14 @@ cmds =
     >>> from shutil import copy
     >>> dst_dir = os.path.join(src_dir, 'build', 'production')
     >>> src = os.path.join(src_dir, 'config.js')
+    >>> dst_file = os.path.join(dst_dir, 'config.js')
+    >>> if os.path.exists(dst_file):
+    >>>     os.remove(dst_file)
     >>> copy(src, dst_dir)
     >>> src = os.path.join(src_dir, 'openlayers-mobile.js')
+    >>> dst_file = os.path.join(dst_dir, 'openlayers-mobile.js')
+    >>> if os.path.exists(dst_file):
+    >>>     os.remove(dst_file)
     >>> copy(src, dst_dir)
 
 [cssbuild]
