@@ -178,7 +178,7 @@ class User(Base):
     role_id = Column(types.Integer, ForeignKey(_schema + '.role.id'), nullable=False)
     role = relationship("Role", backref=backref('users', enable_typechecks=False))
 
-    if _parentschema is not None and _parentschema != '':
+    if _parentschema is not None and _parentschema != '':  # pragma: no cover
         # parent role relationship
         parent_role_id = Column(types.Integer, ForeignKey(_parentschema + '.role.id'))
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
@@ -251,7 +251,7 @@ class Role(Base):
         return self.name or u''  # pragma: nocover
 
     def _json_extent(self):
-        if not self.extent:
+        if self.extent is None:
             return None
 
         coords = self.extent.coords(DBSession)
@@ -414,7 +414,8 @@ class Layer(TreeItem):
     minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
     maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
     disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
-    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))  # data attribute field in which application can find a human identifiable name or number
+    # data attribute field in which application can find a human identifiable name or number
+    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))
     geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
 
     def __init__(
@@ -491,7 +492,7 @@ event.listen(RestrictionArea, 'after_delete', cache_invalidate_cb)
 
 GeometryDDL(RestrictionArea.__table__)
 
-if _parentschema is not None and _parentschema != '':
+if _parentschema is not None and _parentschema != '':  # pragma: no cover
     class ParentRole(Base):
         __label__ = _(u'parentrole')
         __plural__ = _(u'parentroles')

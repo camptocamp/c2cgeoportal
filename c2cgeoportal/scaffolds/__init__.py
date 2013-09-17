@@ -34,7 +34,7 @@ from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
 
 
-class BaseTemplate(Template):
+class BaseTemplate(Template):  # pragma: no cover
     """
     A class that can be used as a base class for c2cgeoportal scaffolding
     templates.
@@ -83,7 +83,7 @@ class BaseTemplate(Template):
         print(msg)
 
 
-class TemplateCreate(BaseTemplate):
+class TemplateCreate(BaseTemplate):  # pragma: no cover
     _template_dir = 'create'
     summary = 'Template used to create a c2cgeoportal project'
 

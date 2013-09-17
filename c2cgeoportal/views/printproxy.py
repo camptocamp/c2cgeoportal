@@ -45,7 +45,7 @@ from c2cgeoportal.lib.functionality import get_functionality
 log = logging.getLogger(__name__)
 
 
-class Printproxy(object):
+class Printproxy(object):  # pragma: no cover
 
     def __init__(self, request):
         self.request = request
