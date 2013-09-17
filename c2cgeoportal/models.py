@@ -47,6 +47,7 @@ from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import schema, parentschema, srid
 from c2cgeoportal.lib import caching
+from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
 __all__ = [
     'Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
@@ -98,6 +99,7 @@ class FullTextSearch(GeoInterface, Base):
     public = Column('public', types.Boolean, server_default='true')
     ts = Column('ts', TsVector)
     the_geom = GeometryColumn(Geometry(srid=_srid))
+    params = Column('params', JSONEncodedDict, nullable=True)
 
 GeometryDDL(FullTextSearch.__table__)
 
