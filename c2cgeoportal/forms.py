@@ -84,7 +84,7 @@ olimgpath_js = None
 set_resource_file_existence_checking(False)
 
 
-def get_fanstatic_resources(request):
+def get_fanstatic_resources(request):  # pragma: no cover
     global olimgpath_js
     olimgpath = request.static_url('c2cgeoportal:static/lib/openlayers/img/')
 
@@ -102,49 +102,49 @@ def get_fanstatic_resources(request):
 
 
 @fa_events.subscriber([models.Functionality, fa_events.IBeforeRenderEvent])
-def before_render_functionnality(context, event):
+def before_render_functionnality(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.Theme, fa_events.IBeforeRenderEvent])
-def before_render_theme(context, event):
+def before_render_theme(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.Layer, fa_events.IBeforeRenderEvent])
-def before_render_layer(context, event):
+def before_render_layer(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.LayerGroup, fa_events.IBeforeRenderEvent])
-def before_render_layergroup(context, event):
+def before_render_layergroup(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.RestrictionArea, fa_events.IBeforeRenderEvent])
-def before_render_restrictionarea(context, event):
+def before_render_restrictionarea(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.Role, fa_events.IBeforeRenderEvent])
-def before_render_role(context, event):
+def before_render_role(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 @fa_events.subscriber([models.User, fa_events.IBeforeRenderEvent])
-def before_render_user(context, event):
+def before_render_user(context, event):  # pragma: no cover
     get_fanstatic_resources(event.request).need()
 
 
 # validator to check uniqueness of unique key in db (prevent duplicate key error)
-def unique_validator(value, f):
+def unique_validator(value, f):  # pragma: no cover
     query = f.query(f.model.__class__)
     query = query.filter_by(**{f.name: f.value})
     if f.parent._bound_pk is None and query.first():
         raise ValidationError(_(u'Duplicate record'))
 
 
-class PyramidGeometryFieldRenderer(GeometryFieldRenderer):
+class PyramidGeometryFieldRenderer(GeometryFieldRenderer):  # pragma: no cover
     def __init__(self, field):
         self.__templates = None
         GeometryFieldRenderer.__init__(self, field)
@@ -162,7 +162,7 @@ FieldSet.default_renderers[geometry.Geometry] = PyramidGeometryFieldRenderer
 FieldSet.default_renderers[geometry.Polygon] = PyramidGeometryFieldRenderer
 
 
-class DblPasswordField(Field):
+class DblPasswordField(Field):  # pragma: no cover
     def __init__(self, parent, original):
         self._original = original
         Field.__init__(self, name=original.name, value=original.value)
@@ -186,7 +186,7 @@ class DblPasswordField(Field):
             password_field(self.renderer.name + '_confirm', value=""))
 
 
-class CheckBoxTreeSet(CheckBoxSet):
+class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
     def __init__(self, attribute, dom_id, auto_check=True, auto_collapsed=True):
         super(CheckBoxTreeSet, self).__init__(attribute)
         self.dom_id = dom_id
@@ -223,7 +223,7 @@ class CheckBoxTreeSet(CheckBoxSet):
         return result
 
 
-class LayerCheckBoxTreeSet(CheckBoxTreeSet):
+class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
     def __init__(
             self, attribute, dom_id='layer_tree',
@@ -322,14 +322,14 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):
         return result
 
 
-class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):
+class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
         super(TreeItemCheckBoxTreeSet, self).__init__(
             attribute,
             auto_check=False, only_private=False)
 
 
-class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):
+class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
         super(FunctionalityCheckBoxTreeSet, self).__init__(
             attribute, dom_id='tree_func', auto_collapsed=False)
@@ -457,7 +457,7 @@ fieldOrder = [
     password,
     User.role
 ]
-if hasattr(User, 'parent_role'):
+if hasattr(User, 'parent_role'):  # pragma: no cover
     fieldOrder.append(User.parent_role)
 fieldOrder.extend([
     User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
@@ -513,6 +513,6 @@ RoleGrid.configure(include=fieldOrder)
 # UserGrid
 UserGrid = Grid(models.User)
 fieldOrder = [User.username, User.functionalities, User.role]
-if hasattr(UserGrid, 'parent_role'):
+if hasattr(UserGrid, 'parent_role'):  # pragma: no cover
     fieldOrder.append(User.parent_role)
 UserGrid.configure(include=fieldOrder)

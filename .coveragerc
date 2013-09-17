@@ -1,3 +1,5 @@
 [run]
 source = c2cgeoportal
-omit = */tests/*
+omit = 
+    */tests/*
+    c2cgeoportal/lib/raster/*

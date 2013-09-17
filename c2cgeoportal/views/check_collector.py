@@ -36,7 +36,7 @@ from pyramid.response import Response
 from httplib2 import Http
 
 
-class CheckerCollector(object):
+class CheckerCollector(object):  # pragma: no cover
 
     def __init__(self, request):
         self.status_int = 200

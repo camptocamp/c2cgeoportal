@@ -56,9 +56,9 @@ def proxy(request):
     params = dict(request.params)
 
     # reset possible value of role_id and user_id
-    if 'role_id' in params:
+    if 'role_id' in params:  # pragma: no cover
         del params['role_id']
-    if 'user_id' in params:
+    if 'user_id' in params:  # pragma: no cover
         del params['user_id']
     if user:
         # We have a user logged in. We need to set group_id and
@@ -151,10 +151,10 @@ def proxy(request):
     # forward request to target (without Host Header)
     http = httplib2.Http()
     h = dict(request.headers)
-    if urlparse(_url).hostname != 'localhost':
+    if urlparse(_url).hostname != 'localhost':  # pragma: no cover
         h.pop('Host')
     # mapserver don't need the cookie, and sometimes it failed with it.
-    if 'Cookie' in h:
+    if 'Cookie' in h:  # pragma: no cover
         h.pop('Cookie')
     try:
         resp, content = http.request(_url, method=method,

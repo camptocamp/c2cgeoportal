@@ -33,7 +33,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 
 
-def main():
+def main():  # pragma: no cover
     """ This function build the print configuration file config.yaml using
     mako.
     The file is created in the folder print/.

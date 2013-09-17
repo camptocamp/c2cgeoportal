@@ -99,15 +99,15 @@ class Entry(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        if urlparse(url).hostname != 'localhost':
+        if urlparse(url).hostname != 'localhost':  # pragma: no cover
             h.pop('Host')
         try:
             resp, content = http.request(url, method='GET', headers=h)
-        except:
+        except:  # pragma: no cover
             errors.append("Unable to GetCapabilities from url %s" % url)
             return None, errors
 
-        if resp.status < 200 or resp.status >= 300:
+        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
             errors.append(
                 "GetCapabilities from url %s return the error: %i %s" %
                 (url, resp.status, resp.reason)
@@ -354,7 +354,7 @@ class Entry(object):
         elif layer.wmsUrl:
             l['wmsLayers'] = layer.name
         # needed for external WMTS
-        if layer.queryLayers == '[]':
+        if layer.queryLayers == '[]':  # pragma: no cover
             l['queryLayers'] = []
 
         if layer.minResolution:
@@ -537,15 +537,15 @@ class Entry(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        if urlparse(wfsgc_url).hostname != 'localhost':
+        if urlparse(wfsgc_url).hostname != 'localhost':  # pragma: no cover
             h.pop('Host')
         try:
             resp, getCapabilities_xml = http.request(wfsgc_url, method='GET', headers=h)
-        except:
+        except:  # pragma: no cover
             errors.append("Unable to GetCapabilities from url %s" % wfsgc_url)
             return None, errors
 
-        if resp.status < 200 or resp.status >= 300:
+        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
             errors.append(
                 "GetCapabilities from url %s return the error: %i %s" %
                 (wfsgc_url, resp.status, resp.reason)
@@ -563,7 +563,7 @@ class Entry(object):
                 else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
             return featuretypes, errors
-        except:
+        except:  # pragma: no cover
             return getCapabilities_xml, errors
 
     @cache_region.cache_on_arguments()
@@ -754,7 +754,7 @@ class Entry(object):
         # comma-separated string including the feature types supported
         # by WFS service
         wfs_types, errors = self._internal_wfs_types()
-        if len(errors) > 0:
+        if len(errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(errors))
         wfs_types = ','.join(wfs_types)
 
@@ -780,7 +780,7 @@ class Entry(object):
     def apijs(self):
         wms, wms_errors = self._wms_getcap(
             self.request.registry.settings['mapserv_url'])
-        if len(wms_errors) > 0:
+        if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(wms_errors))
         queryable_layers = [
             name for name in list(wms.contents)
@@ -889,16 +889,16 @@ class Entry(object):
     def loginchange(self):
         new_password = self.request.params.get('newPassword', None)
         new_password_confirm = self.request.params.get('confirmNewPassword', None)
-        if not (new_password and new_password_confirm):
-            return HTTPBadRequest('"newPassword" and "confirmNewPassword" should be \
-                   available in request params')  # pragma nocover
+        if new_password is None or new_password_confirm is None:
+            raise HTTPBadRequest('"newPassword" and "confirmNewPassword" should be \
+                   available in request params')
 
         # check if loggedin
         if not self.request.user:
-            return HTTPUnauthorized('bad credentials')  # pragma nocover
+            raise HTTPUnauthorized('bad credentials')
         if new_password != new_password_confirm:
-            return HTTPBadRequest("the new password and the new password \
-                   confirmation don't match")  # pragma nocover
+            raise HTTPBadRequest("the new password and the new password \
+                   confirmation don't match")
 
         u = self.request.user
         u._set_password(new_password)
@@ -908,7 +908,8 @@ class Entry(object):
 
         # handle replication
         if 'auth_replication_enabled' in self.request.registry.settings and \
-                self.request.registry.settings['auth_replication_enabled'] == 'true':
+                self.request.registry.settings['auth_replication_enabled'] == \
+                'true':  # pragma: no cover
             try:
                 log.debug("trying to find if engine set for replication exists")
                 engine = sqlahelper.get_engine('replication')

@@ -49,7 +49,7 @@ def get_setting(settings, path, default=None):
 
 
 @implementer(IRoutePregenerator)
-class MultiDomainPregenerator:
+class MultiDomainPregenerator:  # pragma: no cover
     def __call__(self, request, elements, kw):
         if 'subdomain' in kw:
             if 'subdomain_url_template' in request.registry.settings:
@@ -66,7 +66,7 @@ class MultiDomainPregenerator:
 
 
 @implementer(IStaticURLInfo)
-class MultiDomainStaticURLInfo(StaticURLInfo):
+class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
     def generate(self, path, request, **kw):
         registry = request.registry
         for (url, spec, route_name) in self._get_registrations(registry):

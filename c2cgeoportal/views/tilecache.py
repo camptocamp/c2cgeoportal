@@ -45,7 +45,7 @@ DEFAULT_EXPIRATION = 3600*24*7
 # TileCache Service instance
 _service = None
 
-def load_tilecache_config(settings):
+def load_tilecache_config(settings):  # pragma: no cover
     """ Load the TileCache config.
 
     This function calls ``TileCache.Service.Service.load`` and
@@ -64,7 +64,7 @@ def load_tilecache_config(settings):
         print _service.metadata['exception']
         print _service.metadata['traceback']
 
-def createImage(path_info):
+def createImage(path_info):  # pragma: no cover
     from tileforge import generator
 
     path = path_info.split('/')
@@ -80,7 +80,7 @@ def createImage(path_info):
     generator.init(layer, _service.cache)
     generator.run(tile)
 
-def wsgiHandler(environ, start_response):
+def wsgiHandler(environ, start_response):  # pragma: no cover
     from paste.request import parse_formvars
     from TileCache.Service import TileCacheException
     try:
@@ -121,7 +121,7 @@ def wsgiHandler(environ, start_response):
         return ["An error occurred: %s" % (str(E))]
 
 @wsgiapp
-def tilecache(environ, start_response):
+def tilecache(environ, start_response):  # pragma: no cover
     try:
         expiration = _service.config.getint('cache', 'expire')
     except ConfigParser.NoOptionError:
