@@ -31,6 +31,11 @@
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
+import codecs
+
+default_csv_extension = 'csv'
+
+default_csv_encoding = 'UTF-8'
 
 
 @view_config(route_name='csvecho')
@@ -41,9 +46,18 @@ def echo(request):
     csv = request.params.get('csv', None)
     if csv is None:
         return HTTPBadRequest('csv parameter is required')
+    csv_extension = request.params.get('csv_extension', default_csv_extension)
+    csv_encoding = request.params.get('csv_encoding', default_csv_encoding)
     name = request.params.get('name', 'export')
-    return Response(csv, headers={
-        'Content-Type': 'text/csv; charset=iso-8859-1',
-        'Content-Disposition': 'attachment; filename="%s.csv"' %
-        name.encode('iso-8859-1')
-    })
+
+    res = Response()
+    content = ''
+    if csv_encoding == default_csv_encoding:
+        content += codecs.BOM_UTF8
+    content += csv.encode(csv_encoding)
+    res.body = content
+    res.headerlist = [('Content-type', 'text/csv')]
+    res.charset = csv_encoding.encode(csv_encoding)
+    res.content_disposition = 'attachment; filename=%s.%s' % \
+        (name.replace(' ', '_'), csv_extension)
+    return res
