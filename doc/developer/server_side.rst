@@ -14,13 +14,16 @@ of an existing c2cgeoportal application. Here's how:
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
     $ cd c2cgeoportal; git submodule update --init; cd -
 
-  You can now check out your working branch if necessary.
+  You can now check out your development branch if necessary.
 
-* Edit your ``buildout_$USER.cfg`` to have something like::
+* Edit your ``buildout_$USER.cfg`` to have something like this::
 
     [buildout]
     extends = buildout.cfg
     develop += c2cgeoportal
+
+    [versions]
+    c2cgeoportal =
 
     [vars]
     instanceid = <instanceid>
@@ -40,17 +43,14 @@ of an existing c2cgeoportal application. Here's how:
     [versions]
     c2cgeoportal =
 
-  Note the ``develop += c2cgeoportal`` line. This is so ``c2cgeoportal``
-  is installed as a develop egg.
+  Note the ``develop += c2cgeoportal`` and ``c2cgeoportal =`` lines. This is to
+  install ``c2cgeoportal`` as a develop egg.
 
-* Remove the old egg::
+* Remove the regular c2cgeoportal egg from the Buildout environment::
 
     rm -rf ./buildout/eggs/c2cgeoportal-*
 
-* Remove the version of c2cgeoportal in the setup.py
-  (``'c2cgeoportal==x.y'`` => ``'c2cgeoportal'``)
-
-* Build::
+* Build c2cgeoportal and rebuild the c2cgeoportal application::
 
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
     ./buildout/bin/buildout -c buildout_$USER.cfg
