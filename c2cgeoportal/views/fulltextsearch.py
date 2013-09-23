@@ -87,7 +87,7 @@ def fulltextsearch(request):
 
     # flake8 does not like `== True`
     if request.user is None:
-        _filter = and_(_filter, FullTextSearch.public == True)  # NOQA
+        _filter = and_(_filter, FullTextSearch.public == True)
     else:
         _filter = and_(
             _filter,
