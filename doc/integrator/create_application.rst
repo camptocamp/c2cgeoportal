@@ -190,7 +190,7 @@ Go to your new project::
 
     chmod +x deploy/hooks/post-restore-database.in
 
-In ``buildout.cfg`` section ``[versions]`` add the line::
+In ``versions.cfg`` make sure that c2cgeoportal version is set::
 
     c2cgeoportal = <version>
 
@@ -259,8 +259,8 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth config.yaml.in \
-            CONST_CHANGELOG.txt CONST_TIPS.txt.in \
+    git add $PROJECT/ .gitignore config.yaml.in \
+            versions.cfg README.rst CONST_CHANGELOG.txt \
             CONST_buildout.cfg buildout.cfg buildout/ \
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
@@ -285,9 +285,9 @@ Configure the application
 -------------------------
 
 As the integrator you need to edit two files to configure the application:
-``config.yaml`` and ``buildout.cfg``.
+``config.yaml.in`` and ``buildout.cfg``.
 
-``config.yaml`` includes the *static configuration* of the application.  This
+``config.yaml.in`` includes the *static configuration* of the application.  This
 configuration is to be opposed to the *dynamic configuration*, which is in the
 database, and managed by the *administrator*. The static configuration
 includes for example the application's default language (specified with
