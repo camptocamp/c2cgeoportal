@@ -259,8 +259,8 @@ To add a project in a new repository
 Add the project::
 
     git init
-    git add $PROJECT/ .gitignore .httpauth config.yaml.in \
-            CONST_CHANGELOG.txt CONST_TIPS.txt.in \
+    git add $PROJECT/ .gitignore config.yaml.in \
+            versions.cfg README.rst CONST_CHANGELOG.txt \
             CONST_buildout.cfg buildout.cfg buildout/ \
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
