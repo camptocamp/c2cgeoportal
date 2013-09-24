@@ -190,7 +190,7 @@ Go to your new project::
 
     chmod +x deploy/hooks/post-restore-database.in
 
-In ``buildout.cfg`` section ``[versions]`` add the line::
+In ``versions.cfg`` make sure that c2cgeoportal version is set::
 
     c2cgeoportal = <version>
 
