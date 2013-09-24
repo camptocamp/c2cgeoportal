@@ -87,13 +87,13 @@ def fulltextsearch(request):
 
     # flake8 does not like `== True`
     if request.user is None:
-        _filter = and_(_filter, FullTextSearch.public == True)  # NOQA
+        _filter = and_(_filter, FullTextSearch.public == True)
     else:
         _filter = and_(
-                _filter,
-                or_(FullTextSearch.public == True,
-                    FullTextSearch.role_id == None,
-                    FullTextSearch.role_id == request.user.role.id))  # NOQA
+            _filter,
+            or_(FullTextSearch.public == True,
+                FullTextSearch.role_id == None,
+                FullTextSearch.role_id == request.user.role.id))
 
     # The numbers used in ts_rank_cd() below indicate a normalization method.
     # Several normalization methods can be combined using |.
