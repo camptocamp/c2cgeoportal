@@ -285,9 +285,9 @@ Configure the application
 -------------------------
 
 As the integrator you need to edit two files to configure the application:
-``config.yaml`` and ``buildout.cfg``.
+``config.yaml.in`` and ``buildout.cfg``.
 
-``config.yaml`` includes the *static configuration* of the application.  This
+``config.yaml.in`` includes the *static configuration* of the application.  This
 configuration is to be opposed to the *dynamic configuration*, which is in the
 database, and managed by the *administrator*. The static configuration
 includes for example the application's default language (specified with
