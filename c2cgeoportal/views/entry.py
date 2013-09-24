@@ -129,7 +129,7 @@ class Entry(object):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
-        q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
+        q = DBSession.query(Layer).filter(Layer.public == True)
         if role_id:
             q2 = DBSession.query(Layer)
             q2 = q2.join(
@@ -141,7 +141,7 @@ class Entry(object):
             q2 = q2.filter(Role.id == role_id)
             q2 = q2.filter(and_(
                 Layer.public != True,
-                functions.area(RestrictionArea.area) > 0))  # NOQA
+                functions.area(RestrictionArea.area) > 0))
             q = q.union(q2)
         return q
 
