@@ -36,7 +36,7 @@ Ext.onReady(function() {
     var EVENTS = new Ext.util.Observable();
 
     var WMTS_OPTIONS = {
-        url: ${tiles_url},
+        url: ${tiles_url | n},
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
         buffer: 0,
