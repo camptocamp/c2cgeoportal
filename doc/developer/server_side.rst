@@ -162,7 +162,7 @@ Adding tests
 
 **To Be Done**
 
-Upgrade depandencies
+Upgrade dependencies
 --------------------
 
 When we start a new version of c2cgeoportal or just before a new development
