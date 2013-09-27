@@ -73,7 +73,7 @@ EC2, SQS, SNS.
 Initialization
 ~~~~~~~~~~~~~~
 
- * Add ``tilecoud-chain`` to the dependencies in the ``setup.py``.
+ * Add ``tilecloud-chain`` to the dependencies in the ``setup.py``.
 
  * Build the project::
 
