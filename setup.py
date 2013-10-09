@@ -78,7 +78,7 @@ install_requires = [
     'z3c.recipe.filetemplate',
     # Needed by the production.ini
     'waitress',
-    ]
+]
 
 # nose plugins with options set in setup.cfg cannot be in
 # tests_require, they need be in setup_requires
@@ -95,39 +95,40 @@ setup_requires = [
     'nosexcover==1.0.8',
     'nose-progressive==1.5',
     'ipdbplugin==1.2',
-    ]
+]
 
 tests_require = install_requires + [
     'mock==1.0.1',
     'testegg==1.0',
-    ]
+]
 
-setup(name='c2cgeoportal',
-      version='1.4',
-      description='c2cgeoportal',
-      long_description=README,
-      classifiers=[
+setup(
+    name='c2cgeoportal',
+    version='1.4',
+    description='c2cgeoportal',
+    long_description=README,
+    classifiers=[
         "Programming Language :: Python",
         "Framework :: Pylons",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
-      author='camptocamp',
-      author_email='info@camptocamp.com',
-      url='http://www.camptocamp.com/geospatial-solutions',
-      keywords='web gis geoportail c2cgeoportal geocommune pyramid',
-      packages=find_packages(),
-      include_package_data=True,
-      message_extractors={'c2cgeoportal': [
-          ('static/**', 'ignore', None),
-          ('**.py', 'python', None),
-          ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
-      zip_safe=False,
-      install_requires=install_requires,
-      setup_requires=setup_requires,
-      tests_require=tests_require,
-      test_suite="c2cgeoportal",
-      entry_points={
+    ],
+    author='camptocamp',
+    author_email='info@camptocamp.com',
+    url='http://www.camptocamp.com/geospatial-solutions',
+    keywords='web gis geoportail c2cgeoportal geocommune pyramid',
+    packages=find_packages(),
+    include_package_data=True,
+    message_extractors={'c2cgeoportal': [
+        ('static/**', 'ignore', None),
+        ('**.py', 'python', None),
+        ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
+    zip_safe=False,
+    install_requires=install_requires,
+    setup_requires=setup_requires,
+    tests_require=tests_require,
+    test_suite="c2cgeoportal",
+    entry_points={
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
@@ -140,5 +141,5 @@ setup(name='c2cgeoportal',
         'fanstatic.libraries': [
             'admin = c2cgeoportal.forms:fanstatic_lib',
         ],
-      }
+    }
 )
