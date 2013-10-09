@@ -38,9 +38,9 @@ install_requires = [
     'psycopg2',
     # sqlalchemy-migrate 0.7.2 and GeoAlchemy 0.7.1
     # don't work with SQLAlchemy 0.8.
-    'sqlalchemy<=0.7.9',
+    'SQLAlchemy<=0.7.9',
     'sqlalchemy-migrate<=0.7.99',
-    'sqlahelper',
+    'SQLAHelper',
     'pyramid_tm',
     'papyrus>=0.10dev1',
     'papyrus_ogcproxy>=0.2dev1',
