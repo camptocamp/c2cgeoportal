@@ -28,11 +28,17 @@ of an existing c2cgeoportal application. Here's how:
     [jsbuild]
     compress = False
 
+    [jsbuild-mobile]
+    compress = False
+
     [cssbuild]
     compress = false
 
     [template]
     exclude-directories += c2cgeoportal
+
+    [versions]
+    c2cgeoportal =
 
   Note the ``develop += c2cgeoportal`` line. This is so ``c2cgeoportal``
   is installed as a develop egg.
@@ -47,6 +53,7 @@ of an existing c2cgeoportal application. Here's how:
 * Build::
 
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
+    ./buildout/bin/buildout -c buildout_$USER.cfg
 
 
 Tests
