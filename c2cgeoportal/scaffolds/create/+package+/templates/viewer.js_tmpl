@@ -5,7 +5,7 @@ Ext.onReady(function() {
 
     // OpenLayers global settings
     OpenLayers.Number.thousandsSeparator = ' ';
-    OpenLayers.DOTS_PER_INCH = 72;
+    OpenLayers.DOTS_PER_INCH = 96;
     OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
     OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
     OpenLayers.Lang.setCode("${lang}");
