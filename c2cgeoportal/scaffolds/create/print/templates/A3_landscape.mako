@@ -403,7 +403,7 @@ ${self.block_text_misc()}
 
 ## the backslash tell mako To Not write a new line at the end
 <%def name="title()">\
-2 A3 landscape\
+3 A3 landscape\
 </%def>
 
 <%def name="block_logo()">
