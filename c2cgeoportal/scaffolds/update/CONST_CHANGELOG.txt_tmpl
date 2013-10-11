@@ -618,6 +618,10 @@ localHostForward:
 
     isodate=0.4.9
 
+    Note: The default time value specified in the map file ("wms_timedefault") is
+    not currently taken into account due to a limitation in the OWSLib, see:
+    https://github.com/geopython/OWSLib/pull/92
+
 Version 1.3.2
 =============
 

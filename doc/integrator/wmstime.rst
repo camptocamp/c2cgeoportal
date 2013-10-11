@@ -93,3 +93,10 @@ Some of those limitations apply to the mapfile:
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same time mode (``single``,
 ``range`` or ``disabled``).
+
+Know issues
+-----------
+
+The default time value (``wms_timedefault`` in the mapfile metadata) is
+currently ignored because it is not supported by the OWSLib version used. A `PR
+has been submitted. <https://github.com/geopython/OWSLib/pull/92>`_

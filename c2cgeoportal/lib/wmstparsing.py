@@ -124,6 +124,7 @@ def parse_extent(extent):
     * ['date1', 'date2', ..., 'date N']
     """
     # TODO handle default value when supported by OWSLib
+    # see https://github.com/geopython/OWSLib/pull/92
     if len(extent) > 0:
         if extent[0].count("/") > 0:
             # case "start/end/interval"
