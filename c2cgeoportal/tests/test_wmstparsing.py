@@ -38,12 +38,12 @@ class TestExtent(TestCase):
     def test_parse_values(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentValue
         extent = parse_extent(["2005", "2006"])
-        self.assertIsInstance(extent, TimeExtentValue)
+        self.assertTrue(isinstance(extent, TimeExtentValue))
 
     def test_parse_interval(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
         extent = parse_extent(["2000/2005/P1Y"])
-        self.assertIsInstance(extent, TimeExtentInterval)
+        self.assertTrue(isinstance(extent, TimeExtentInterval))
 
     def test_unsupported_format(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent
@@ -53,8 +53,8 @@ class TestExtent(TestCase):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentValue
         e1 = parse_extent(["2000", "2005"])
         e2 = parse_extent(["2001", "2003"])
-        self.assertIsInstance(e1, TimeExtentValue)
-        self.assertIsInstance(e2, TimeExtentValue)
+        self.assertTrue(isinstance(e1, TimeExtentValue))
+        self.assertTrue(isinstance(e2, TimeExtentValue))
         e1.merge(e2)
         d = e1.to_dict()
         self.assertEqual(d, {
@@ -73,8 +73,8 @@ class TestExtent(TestCase):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
         e1 = parse_extent(["2000/2005/P1Y"])
         e2 = parse_extent(["2006/2010/P1Y"])
-        self.assertIsInstance(e1, TimeExtentInterval)
-        self.assertIsInstance(e2, TimeExtentInterval)
+        self.assertTrue(isinstance(e1, TimeExtentInterval))
+        self.assertTrue(isinstance(e2, TimeExtentInterval))
         e1.merge(e2)
         d = e1.to_dict()
         self.assertEqual(d, {
