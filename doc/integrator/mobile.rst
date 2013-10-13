@@ -443,10 +443,10 @@ by the ``c2cgeoportal_create`` and ``c2cgeoportal_update`` scaffolds. To create
 another mobile application, the easiest is to copy the existing ``mobile``
 directory into a new directory. For example:
 
-.. code::
+.. prompt:: bash
 
-    $ cd <package_name>/static
-    $ cp -r mobile mobile2
+    cd <package_name>/static
+    cp -r mobile mobile2
 
 .. warning::
 

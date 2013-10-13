@@ -50,14 +50,16 @@ the below instructions.
 New directories and files are provided by the ``c2cgeoportal_create`` and need
 to be added manually to the project. The easiest way to get all the necessary
 files involves creating a temporary c2cgeoportal project of the same name as
-the target project, and copying the missing files from there::
+the target project, and copying the missing files from there:
 
-    $ cd <project_name>
-    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
+.. prompt:: bash
+
+    cd <project_name>
+    ./buildout/bin/pcreate -s c2cgeoportal_create \
             /tmp/<project_name> package=<package_name>
-    $ cp -r /tmp/<project_name>/<package_name>/templates/api <project_name>/templates/
-    $ cp -r /tmp/<project_name>/<package_name>/static/apihelp <project_name>/static/
-    $ rm -rf /tmp/<project_name>
+    cp -r /tmp/<project_name>/<package_name>/templates/api <project_name>/templates/
+    cp -r /tmp/<project_name>/<package_name>/static/apihelp <project_name>/static/
+    rm -rf /tmp/<project_name>
 
 Configuring the API
 -------------------

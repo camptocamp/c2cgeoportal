@@ -8,11 +8,11 @@ Introduction
 
 With this solution we solve the following issue:
 
- * Managing millions of files on the file system is difficult.
+* Managing millions of files on the file system is difficult.
 
- * We should be able to update all the generated tiles.
+* We should be able to update all the generated tiles.
 
- * We shouldn't have thousands of expired files.
+* We shouldn't have thousands of expired files.
 
 To do so we need need a tool that can generate the tiles,
 update some of them contained in given geometries and delete empty tiles.
@@ -34,9 +34,9 @@ And the tiles should be delete after the expiry time.
 
 The chosen solution is a combination of two tools:
 
- * `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
+* `MapCache <http://mapserver.org/trunk/mapcache/>`_ for the last zoom level.
 
- * `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
+* `TileCloud-Chain <https://github.com/sbrunner/tilecloud-chain>`_ for the tile generation.
 
 MapCache
 --------
@@ -51,9 +51,9 @@ And Memcached should listen on port 11211.
 
 To clear/flush Memcached cache, use the following command:
 
-   .. code:: bash
-     
-     echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
+.. prompt:: bash
+
+    echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211
 
 See the `TileCloud-chain documentation for more details
 <https://github.com/sbrunner/tilecloud-chain#configure-mapcache>`_
@@ -73,19 +73,23 @@ EC2, SQS, SNS.
 Initialization
 ~~~~~~~~~~~~~~
 
- * Add ``tilecloud-chain`` to the dependencies in the ``setup.py``.
+* Add ``tilecloud-chain`` to the dependencies in the ``setup.py``.
 
- * Build the project::
+* Build the project:
 
-   ./buildout/bin/buildout -c buildout_<user>.cfg
+  .. prompt:: bash
 
- * Install the base template template::
+    ./buildout/bin/buildout -c buildout_<user>.cfg
 
-   ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
+* Install the base template template:
 
- * Add configuration to Git:
+  .. prompt:: bash
 
-   .. code:: bash
+    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
+
+* Add configuration to Git:
+
+  .. prompt:: bash
 
    	git add tilegeneration buildout_tilegeneration.cfg
 
@@ -98,31 +102,37 @@ https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffold
 
 The main thing to do is to:
 
- * Set the resolutions we want to generate in the ``grids``.
-   If we want to generate different resolution per layers we should create
-   deferent grid.
-   Sub-level of ``grids`` is the grid name.
+* Set the resolutions we want to generate in the ``grids``.
+  If we want to generate different resolution per layers we should create
+  deferent grid.
+  Sub-level of ``grids`` is the grid name.
 
- * Configure the ``caches`` and set the ``generation``/``default_cache``.
-   Sub-level of ``caches`` is the cache name.
+* Configure the ``caches`` and set the ``generation``/``default_cache``.
+  Sub-level of ``caches`` is the cache name.
 
- * Configure the ``layer_default``, the ``layers``, and the
-   ``generation``/``default_layers``.
-   Sub-level of ``layers`` is the layer name.
+* Configure the ``layer_default``, the ``layers``, and the
+  ``generation``/``default_layers``.
+  Sub-level of ``layers`` is the layer name.
 
- * We can drop the empty tiles with an hash comparison,
-   tilecloud-chain has a tool to help us::
+* We can drop the empty tiles with an hash comparison,
+  tilecloud-chain has a tool to help us:
 
-       ./buildout/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+  .. prompt:: bash
 
-   We consider that the first tile of the max zoom is empty.
-   Than copy past the result in the layer config.
+     ./buildout/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
 
- * If you need it you can generate the WMTS capabilities file::
+  We consider that the first tile of the max zoom is empty.
+  Than copy past the result in the layer config.
+
+* If you need it you can generate the WMTS capabilities file:
+
+  .. prompt:: bash
 
      ./buildout/bin/generate_controller --generate_wmts_capabilities
 
- * And an OpenLayers test page::
+* And an OpenLayers test page:
+
+  .. prompt:: bash
 
      ./buildout/bin/generate_controller --openlayers-test
 
@@ -134,24 +144,35 @@ Tile Generation and management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This package offers two commands lines, one to generate the tiles locally,
-see help::
+see help:
+
+.. prompt:: bash
 
     ./buildout/bin/generate_tiles --help
 
-one to generate the tiles using AWS, see help::
+one to generate the tiles using AWS, see help:
+
+.. prompt:: bash
 
     ./buildout/bin/generate_controller --help
 
-Before start a tile generation on S3 measure the cost::
+Before start a tile generation on S3 measure the cost:
+
+.. prompt:: bash
 
     ./buildout/bin/generate_controller --cost
 
 If you setup all the default options you can generate the tiles by
-using the command::
+using the command:
+
+.. prompt:: bash
 
     ./buildout/bin/generate_tiles
 
-.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::
+.. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+
+   .. prompt:: bash
+
        export AWS_ACCESS_KEY_ID=XXXXX
        export AWS_SECRET_ACCESS_KEY=YYYY
 
@@ -165,7 +186,9 @@ In the ``viewer.js``, ``api/viewer.js`` and ``edit.js``:
  * Be sure that ``OpenLayers.IMAGE_RELOAD_ATTEMPTS`` is not defined.
  * In ``WMTS_OPTION`` url should be ${tiles_url}.
 
-In the ``config.yaml.in`` define ``tiles_url`` to something like, for S3 usage::
+In the ``config.yaml.in`` define ``tiles_url`` to something like, for S3 usage:
+
+.. code:: yaml
 
     tiles_url:
     - http://a.tiles.${vars:host}/
@@ -215,7 +238,9 @@ Internal service
 ----------------
 
 If you use an internal service to access to the tiles you can use sub domaine
-to access to them by using that in ``WMTS_OPTION``::
+to access to them by using that in ``WMTS_OPTION``:
+
+.. code:: javascript
 
     url: [
         '${request.route_url('<view>', path='', subdomain='s1')}',

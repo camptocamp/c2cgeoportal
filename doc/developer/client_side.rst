@@ -11,7 +11,9 @@ Running tests
 -------------
 
 To run the CGXP tests start by cloning the repository, and updating its
-submodules (for GXP, OpenLayers, etc.)::
+submodules (for GXP, OpenLayers, etc.):
+
+.. prompt:: bash
 
     git clone https://github.com/camptocamp/cgxp
     cd cgxp

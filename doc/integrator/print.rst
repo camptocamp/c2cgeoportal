@@ -26,11 +26,11 @@ All print-related files are located in the ``print/`` folder.
 
 The main file (``print/config.yaml``) used to define your print template written in YAML format.
 
- * `YAML on Wikipedia <http://en.wikipedia.org/wiki/YAML>`_
- * `The official YAML site <http://www.yaml.org/>`_
- * `Mapfish print configuration documentation
-   <http://mapfish.org/doc/print/configuration.html>`_
- * `YAML validator <http://yaml-online-parser.appspot.com/>`_
+* `YAML on Wikipedia <http://en.wikipedia.org/wiki/YAML>`_
+* `The official YAML site <http://www.yaml.org/>`_
+* `Mapfish print configuration documentation
+  <http://mapfish.org/doc/print/configuration.html>`_
+* `YAML validator <http://yaml-online-parser.appspot.com/>`_
 
 Spec attributes
 ~~~~~~~~~~~~~~~
@@ -39,31 +39,31 @@ With CGXP we have the following spec attributes:
 
 On each page:
 
- * ``center`` Center (standard).
- * ``rotation`` Map rotation (standard).
- * ``scale`` Scale (standard).
- * ``showMap`` Used to show the map.
- * ``showMapframe`` Used to show the border on the map page. [#map]_
- * ``showNorth`` Used to show the arrow on the map page. [#map]_
- * ``showScale`` Used to show the scale bar on the map page. [#map]_
- * ``showScaleValue``  Used to show the scale on the map page. [#map]_
- * ``showAttr`` Used to show the table on the query result pages. [#query]_
- * ``showMapQueryResult`` Not used, true for the query result pages. [#query]_
- * ``col0`` - ``coln``: Column tiles for the query result pages.
- * ``table``: Query result table.
+* ``center`` Center (standard).
+* ``rotation`` Map rotation (standard).
+* ``scale`` Scale (standard).
+* ``showMap`` Used to show the map.
+* ``showMapframe`` Used to show the border on the map page. [#map]_
+* ``showNorth`` Used to show the arrow on the map page. [#map]_
+* ``showScale`` Used to show the scale bar on the map page. [#map]_
+* ``showScaleValue``  Used to show the scale on the map page. [#map]_
+* ``showAttr`` Used to show the table on the query result pages. [#query]_
+* ``showMapQueryResult`` Not used, true for the query result pages. [#query]_
+* ``col0`` - ``coln``: Column tiles for the query result pages.
+* ``table``: Query result table.
 
 .. [#map] is ``true`` on the map page and ``false`` on query result pages
 .. [#query] is ``true`` on the query result pages and ``false`` on map page
 
 Global:
 
- * ``dpi`` The DPI (standard).
- * ``layout`` The used layout (standard).
- * ``srs`` The EPSG code (standard).
- * ``unit`` The unit (standard).
- * ``legend`` The legend (standard).
- * ``title`` The document title.
- * ``comment`` The document description.
+* ``dpi`` The DPI (standard).
+* ``layout`` The used layout (standard).
+* ``srs`` The EPSG code (standard).
+* ``unit`` The unit (standard).
+* ``legend`` The legend (standard).
+* ``title`` The document title.
+* ``comment`` The document description.
 
 .. note::
 
@@ -84,7 +84,9 @@ If that file exists, it will be used to generate the file ``print/config.yaml`` 
 in the ``print/`` folder.
 If the file does not exist, the system does nothing.
 
-It is possible to manually trigger the system by calling the following command::
+It is possible to manually trigger the system by calling the following command:
+
+.. prompt:: bash
 
     ./buildout/bin/print_tpl
 
@@ -146,7 +148,9 @@ by the templating. Than we should do:
     print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
 
 * If needed set the print templates used by anonymous user by adding the
-  following in the application configuration (``config.yaml.in``)::
+  following in the application configuration (``config.yaml.in``):
+
+  .. code:: yaml
 
     functionalities:
         anonymous:

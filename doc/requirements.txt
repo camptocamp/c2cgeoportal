@@ -1,1 +1,2 @@
 Sphinx==1.1.3
+sphinx-prompt==0.2.2

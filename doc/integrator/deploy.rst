@@ -131,7 +131,9 @@ is required in the ``apache-entry-point`` but not in the URL, than
 To deploy from dev to demo
 --------------------------
 
-Build on the dev server::
+Build on the dev server:
+
+.. prompt:: bash
 
   ssh -A <dev_server> # SSH agent forward is needed
   cd /var/www/<your_vhost>/public/<your_project>
@@ -141,7 +143,9 @@ Build on the dev server::
 
 **Test on the dev server**
     
-Deploy to the demo server::
+Deploy to the demo server:
+
+.. prompt:: bash
 
   rm -rf buildout/parts/modwsgi # to prevent rights error
   cd deploy
@@ -156,7 +160,9 @@ To deploy from demo to prod
 
 **Test on the demo server**
 
-Deploy on the prod server::
+Deploy on the prod server:
+
+.. prompt:: bash
 
   ssh -A <demo_server> # SSH agent forward is needed
   cd /var/www/<your_vhost>/public/<your_project>

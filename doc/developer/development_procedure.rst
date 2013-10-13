@@ -23,14 +23,18 @@ Working with Git and GitHub
 Create a topic branch
 ~~~~~~~~~~~~~~~~~~~~~
 
-To create a Git branch from the master branch use::
+To create a Git branch from the master branch use:
 
-    $ git checkout -b <branch_name> master
+.. prompt:: bash
+
+    git checkout -b <branch_name> master
 
 You can then add commits to your branch, and push commits to a remote branch
-using::
+using:
 
-    $ git push -u origin <branch_name>
+.. prompt:: bash
+
+    git push -u origin <branch_name>
 
 The ``-u`` option adds an upstream (tracking) reference for the branch. This is
 optional, but convenient. Once the branch has an upstream reference you can
@@ -44,22 +48,26 @@ Sync up a topic branch from master
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To update a branch from the master you first need to update your
-local master branch::
+local master branch:
 
-    $ git checkout master
-    $ git fetch origin
-    $ git merge origin/master
+.. prompt:: bash
+
+    git checkout master
+    git fetch origin
+    git merge origin/master
 
 .. note::
 
     You'll use "upstream" instead of "origin" if "origin" references
     your own fork.
 
-You can now update your branch from master::
+You can now update your branch from master:
 
-    $ git checkout <branch_name>
-    $ git rebase master
-    $ git push origin <branch_name>
+.. prompt:: bash
+
+    git checkout <branch_name>
+    git rebase master
+    git push origin <branch_name>
 
 Pull requests
 ~~~~~~~~~~~~~
@@ -75,12 +83,16 @@ Remove branches
 ~~~~~~~~~~~~~~~
 
 Once you're done with a topic branch (because its commits are merged
-in the master branch) you can remove it with::
+in the master branch) you can remove it with:
 
-    $ git branch -D <branch_name>
+.. prompt:: bash
 
-To remove a remote branch use::
+    git branch -D <branch_name>
 
-    $ git push origin :<branch_name>
+To remove a remote branch use:
+
+.. prompt:: bash
+
+    git push origin :<branch_name>
 
 This means push nothing to "branch_name" on the origin remote.

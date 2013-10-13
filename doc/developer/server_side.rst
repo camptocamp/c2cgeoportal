@@ -9,10 +9,12 @@ Create development environment in a project
 c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here's how:
 
-* Change dir to your application's root dir and clone ``c2cgeoportal`` there::
+* Change dir to your application's root dir and clone ``c2cgeoportal`` there:
 
-    $ git clone git@github.com:camptocamp/c2cgeoportal.git
-    $ cd c2cgeoportal; git submodule update --init; cd -
+  .. prompt:: bash
+
+    git clone git@github.com:camptocamp/c2cgeoportal.git
+    cd c2cgeoportal; git submodule update --init; cd -
 
   You can now check out your development branch if necessary.
 
@@ -49,11 +51,15 @@ of an existing c2cgeoportal application. Here's how:
     ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
     time whereas it is not needed in a personal environment.
 
-* Remove the regular c2cgeoportal egg from the Buildout environment::
+* Remove the regular c2cgeoportal egg from the Buildout environment:
+
+  .. prompt:: bash
 
     rm -rf ./buildout/eggs/c2cgeoportal-*
 
-* Build c2cgeoportal and rebuild the c2cgeoportal application::
+* Build c2cgeoportal and rebuild the c2cgeoportal application:
+
+  .. prompt:: bash
 
     ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
     ./buildout/bin/buildout -c buildout_$USER.cfg
@@ -71,24 +77,32 @@ code, and a buildout environment for it. So do that first, as described below.
 Install c2cgeportal from source
 ...............................
 
-Check out c2cgeoportal from GitHub::
+Check out c2cgeoportal from GitHub:
 
-    $ git clone git@github.com:camptocamp/c2cgeoportal.git
+.. prompt:: bash
 
-Change into the ``c2cgeoportal`` directory and initialize the submodules::
+    git clone git@github.com:camptocamp/c2cgeoportal.git
 
-    $ cd c2cgeoportal
-    $ git submodule update --init
+Change into the ``c2cgeoportal`` directory and initialize the submodules:
 
-Bootstrap Buildout::
+.. prompt:: bash
 
-    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+    cd c2cgeoportal
+    git submodule update --init
+
+Bootstrap Buildout:
+
+.. prompt:: bash
+
+    python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
-Install and build c2cgeoportal::
+Install and build c2cgeoportal:
 
-    $ ./buildout/bin/buildout -c buildout_dev.cfg
+.. prompt:: bash
+
+    ./buildout/bin/buildout -c buildout_dev.cfg
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
@@ -98,9 +112,11 @@ the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
 Unit tests
 ..........
 
-To run the unit tests do this::
+To run the unit tests do this:
 
-    $ ./buildout/bin/python setup.py nosetests -a '!functional'
+.. prompt:: bash
+
+    ./buildout/bin/python setup.py nosetests -a '!functional'
 
 Functional tests
 ................
@@ -112,33 +128,41 @@ You now need to create PostGIS database (named ``c2cgeoportal_test`` for example
 and a schema named ``main`` into it.
 
 To create the database use the following command if you have a PostGIS database
-template at your disposal::
+template at your disposal:
 
-    $ sudo -u postgres createdb -T template_postgis c2cgeoportal_test
+.. prompt:: bash
+
+    sudo -u postgres createdb -T template_postgis c2cgeoportal_test
 
 .. note::
 
-    If you don't have a template named ``template_postgis`` use this::
+    If you don't have a template named ``template_postgis`` use this:
 
-        $ sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-        $ sudo -u postgres createlang plpgsql c2cgeoportal_test
-        $ sudo -u postgres psql -d c2cgeoportal_test \
+    .. prompt:: bash
+
+        sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
+        sudo -u postgres createlang plpgsql c2cgeoportal_test
+        sudo -u postgres psql -d c2cgeoportal_test \
                -f /usr/share/postgresql/9.0/contrib/postgis-1.5/postgis.sql
-        $ sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d c2cgeoportal_test \
                -f /usr/share/postgresql/9.0/contrib/postgis-1.5/spatial_ref_sys.sql
-        $ sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d c2cgeoportal_test \
                -c 'GRANT ALL ON geometry_columns TO "www-data";'
-        $ sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d c2cgeoportal_test \
                -c 'GRANT SELECT ON spatial_ref_sys TO "www-data";'
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
     database.
 
-If you don't have a ``www-data`` user you need to create one::
+If you don't have a ``www-data`` user you need to create one:
 
-    $ sudo -u postgres createuser -P www-data
+.. prompt:: bash
 
-To create the ``main`` schema::
+    sudo -u postgres createuser -P www-data
+
+To create the ``main`` and ``main_static`` schema:
+
+.. prompt:: bash
 
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
@@ -175,9 +199,11 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
 Once done with the editing of ``buildout_dev.cfg``, run the ``template`` part
 to generate ``c2cgeoportal/tests/functional/test.ini`` and
-``c2cgeoportal/tests/functional/c2cgeoportal_test.map``::
+``c2cgeoportal/tests/functional/c2cgeoportal_test.map``:
 
-    $ ./buildout/bin/buildout -c buildout_dev.cfg install template
+.. prompt:: bash
+
+    ./buildout/bin/buildout -c buildout_dev.cfg install template
 
 .. warning::
 
@@ -188,20 +214,26 @@ to generate ``c2cgeoportal/tests/functional/test.ini`` and
     ``z3c.recipe.filetemplate`` recipe. See
     https://github.com/camptocamp/c2cgeoportal/issues/145.
 
-You can now run the functional tests with this::
+You can now run the functional tests with this:
 
-    $ ./buildout/bin/python setup.py nosetests -a functional
+.. prompt:: bash
+
+    ./buildout/bin/python setup.py nosetests -a functional
 
 All tests
 .........
 
-To run all the tests do this::
+To run all the tests do this:
 
-    $ ./buildout/bin/python setup.py nosetests
+.. prompt:: bash
 
-To run a specific test use the ``--tests`` switch. For example::
+    ./buildout/bin/python setup.py nosetests
 
-    $ ./buildout/bin/python setup.py nosetests --tests \
+To run a specific test use the ``--tests`` switch. For example:
+
+.. prompt:: bash
+
+    ./buildout/bin/python setup.py nosetests --tests \
             c2cgeoportal/tests/test_echoview.py:test_json_base64_encode
 
 Adding tests
@@ -224,7 +256,9 @@ the ``c2cgeoportal/scaffolds/create/versions.cfg`` file.
 To update them you should remove all the version listed after the
 line ``# Package version that can be easily update``.
 
-Then run::
+Then run:
+
+.. prompt:: bash
 
     rm -rf *.egg
     ./buildout/bin/buildout -n
@@ -254,7 +288,9 @@ Development eggs
 
 Empty the ``[versions]`` section of the ``buildout_dev.cfg`` file.
 
-Then run::
+Then run:
+
+.. prompt:: bash
 
     ./buildout/bin/buildout -n -c buildout_dev.cfg
 
@@ -264,16 +300,22 @@ paste them where you have previously removed the versions.
 Submodules
 ~~~~~~~~~~
 
-Go to the OpenLayers folder::
+Go to the OpenLayers folder:
+
+.. prompt:: bash
 
     cd c2cgeoportal/static/lib/openlayers/
 
-Get the new revision of OpenLayers::
+Get the new revision of OpenLayers:
+
+.. prompt:: bash
 
     git fetch
     git checkout release-<version>
 
-Then you can commit it::
+Then you can commit it:
+
+.. prompt:: bash
 
     cd -
     git add c2cgeoportal/static/lib/openlayers/
@@ -312,7 +354,9 @@ who modify the c2cgeoportal database schema should add
 migration scripts to the ``c2cgeoportal_update``
 scaffold, as opposed to the application.
 
-Add a new script call from the application's root directory::
+Add a new script call from the application's root directory:
+
+.. prompt:: bash
 
     ./buildout/bin/manage_db script "<Explicite name>"
 
@@ -321,9 +365,11 @@ Add a new script call from the application's root directory::
     With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
     in the production.ini file, you need to specify the app name on the
     ``manage_db`` command line. For example, the above command would be as
-    follows::
+    follows:
 
-       $ ./buildout/bin/manage_db -n <package_name> script "<Explicite name>"
+    .. prompt:: bash
+
+       ./buildout/bin/manage_db -n <package_name> script "<Explicite name>"
 
 This will generate the migration script in
 ``<package>/CONST_migration/versions/xxx_<Explicite_name>.py``
@@ -332,13 +378,17 @@ script should be shared with all c2cgeoportal projects.
 It is the c2cgeoportal ``update`` template which is responsible for updating
 this directory.
 
-Then customize the migration to suit your needs, test it::
+Then customize the migration to suit your needs, test it:
+
+.. prompt:: bash
 
     ./buildout/bin/manage_db test
 
 If your script fails during upgrade, it is possible the version number has been
 incremented anyway, so you need to explicitly reset the version to its
-correct value using::
+correct value using:
+
+.. prompt:: bash
 
     ./buildout/bin/manage_db drop_version_control
     ./buildout/bin/manage_db version_control <the_correct_version_number>
@@ -376,7 +426,9 @@ Coding style
 
 Please read http://www.python.org/dev/peps/pep-0008/.
 
-And run validation::
+And run validation:
+
+.. prompt:: bash
 
     ./buildout/bin/buildout -c buildout_dev.cfg install validate-py
 

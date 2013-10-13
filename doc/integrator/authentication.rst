@@ -35,23 +35,25 @@ should be used instead.
 
 To use a "remote user" authentication policy edit the application's
 main ``__init__.py`` file, and set ``authentication_policy`` to a
-``RemoteUserAuthenticationPolicy`` instance::
+``RemoteUserAuthenticationPolicy`` instance:
 
-    from pyramid.config import Configurator
-    from pyramid.authentication import RemoteUserAuthenticationPolicy
-    from c2cgeoportal import locale_negotiator
-    from c2cgeoportal.resources import FAModels, defaultgroupsfinder
-    from ${package}.resources import Root
+.. code:: python
 
-    def main(global_config, **settings):
-        """ This function returns a Pyramid WSGI application.
-        """
-        authentication_policy = RemoteUserAuthenticationPolicy(
-                callback=defaultgroupsfinder)
-        config = Configurator(root_factory=Root, settings=settings,
-                locale_negotiator=locale_negotiator,
-                authentication_policy=authentication_policy)
-        # ...
+   from pyramid.config import Configurator
+   from pyramid.authentication import RemoteUserAuthenticationPolicy
+   from c2cgeoportal import locale_negotiator
+   from c2cgeoportal.resources import FAModels, defaultgroupsfinder
+   from ${package}.resources import Root
+
+   def main(global_config, **settings):
+       """ This function returns a Pyramid WSGI application.
+       """
+       authentication_policy = RemoteUserAuthenticationPolicy(
+               callback=defaultgroupsfinder)
+       config = Configurator(root_factory=Root, settings=settings,
+               locale_negotiator=locale_negotiator,
+               authentication_policy=authentication_policy)
+       # ...
 
 ``c2cgeoportal`` provides an authentication policy callback, namely
 ``defaultgroupsfinder``, that is appropriate in most cases. This callback
@@ -110,7 +112,9 @@ as well.
 Therefore the application should redefine the callback function that adds 
 a ``user`` property to the request. This is done by calling the 
 ``set_request_property`` function on the ``Configurator`` object.
-You may for example add to ``__init__.py``::
+You may for example add to ``__init__.py``:
+ 
+.. code:: python
 
     from pyramid.security import unauthenticated_userid
 
@@ -128,7 +132,9 @@ You may for example add to ``__init__.py``::
             user.functionalities = []
             return user
 
-And then, in the application's ``main`` function::
+And then, in the application's ``main`` function:
+
+.. code:: python
 
     config.set_request_property(get_user_from_request,
                                 name='user', reify=True
