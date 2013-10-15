@@ -184,9 +184,6 @@ def count(request):
 @view_config(route_name='layers_create', renderer='geojson')
 def create(request):
     layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.create(request)
     if request.user is None:
         raise HTTPForbidden()
 
@@ -215,9 +212,6 @@ def create(request):
 def update(request):
     feature_id = request.matchdict.get('feature_id', None)
     layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.update(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
 
@@ -251,9 +245,6 @@ def update(request):
 def delete(request):
     feature_id = request.matchdict.get('feature_id', None)
     layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.delete(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
 
