@@ -62,7 +62,7 @@ def _get_geom_col_info(layer):
         col = p.columns[0]
         if isinstance(col.type, Geometry):
             return col.name, col.type.srid
-    raise HTTPInternalServerError()  # pragma: no cover
+    raise HTTPInternalServerError('Failed getting geometry column info')  # pragma: no cover
 
 
 def _get_layer(layer_id):
@@ -75,7 +75,7 @@ def _get_layer(layer_id):
     except NoResultFound:
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
-        raise HTTPInternalServerError()  # pragma: no cover
+        raise HTTPInternalServerError('Too many layers found')  # pragma: no cover
     if not geo_table:  # pragma: no cover
         raise HTTPNotFound("Layer %d has no geo table" % layer_id)  # pragma: no cover
     return layer
