@@ -61,6 +61,12 @@ layouts:
 ## A4 portrait inherit example, inherit from A4_portrait.mako
 <%include file="/A4_portrait_inherit.mako" />
 
+## A4 landscape default
+<%include file="/A4_landscape.mako" />
+
+## A4 landscape inherit example, inherit from A4_landscape.mako
+<%include file="/A4_landscape_inherit.mako" />
+
 ## A3 landscape default
 <%include file="/A3_landscape.mako" />
 
