@@ -206,8 +206,6 @@ And apply the following corrections (to work around bugs in
     +markupsafe = x.y.z
      Pillow = x.y.z
     +pillow = x.y.z
-     SQLAHelper = x.y.z
-    +sqlahelper = x.y.z
      Tempita = x.y.z
     +tempita = x.y.z
 
