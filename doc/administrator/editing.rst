@@ -77,10 +77,10 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 Configuring security
 --------------------
 
-In most cases editable layers are private, i.e. their ``public`` fields are set
-to ``false``. This means that some security configuration is required. Layer
-security is configured in the ``restrictionarea`` table, which is managed by
-selecting the ``Restriction Areas`` item in the admin interface.
+For a layer to be editable it must be private, i.e. its ``public`` field must
+be set to ``false``. This means that some security configuration is required.
+Layer security is configured in the ``restrictionarea`` table, which is managed
+by selecting the ``Restriction Areas`` item in the admin interface.
 
 For a layer to be actually editable in the editing interface it should have at
 least one associated *restriction area*, and this restriction area should have
