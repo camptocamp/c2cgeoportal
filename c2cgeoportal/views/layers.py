@@ -183,9 +183,9 @@ def count(request):
 
 @view_config(route_name='layers_create', renderer='geojson')
 def create(request):
-    layer = _get_layer_for_request(request)
     if request.user is None:
         raise HTTPForbidden()
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, feature, o):
         geom = feature.geometry
@@ -210,10 +210,10 @@ def create(request):
 
 @view_config(route_name='layers_update', renderer='geojson')
 def update(request):
-    feature_id = request.matchdict.get('feature_id', None)
-    layer = _get_layer_for_request(request)
     if request.user is None:
         raise HTTPForbidden()
+    feature_id = request.matchdict.get('feature_id', None)
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, feature, o):
         # we need both the "original" and "new" geometry to be
@@ -243,10 +243,10 @@ def update(request):
 
 @view_config(route_name='layers_delete')
 def delete(request):
-    feature_id = request.matchdict.get('feature_id', None)
-    layer = _get_layer_for_request(request)
     if request.user is None:
         raise HTTPForbidden()
+    feature_id = request.matchdict.get('feature_id', None)
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, o):
         geom_attr = getattr(o, _get_geom_col_info(layer)[0])
