@@ -301,6 +301,10 @@ localHostForward:
    +iconMaxWidth: 0
    +horizontalAlignment: left
 
+14. In jsbuild/app.cfg add the following line to the "root" sections:
+
+    {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
+
 Version 1.3.2
 =============
 
