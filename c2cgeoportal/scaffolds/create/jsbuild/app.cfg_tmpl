@@ -166,6 +166,7 @@ include =
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/MenuShortcut.js
+    CGXP/plugins/MapOpacitySlider.js
     CGXP/widgets/MapPanel.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js

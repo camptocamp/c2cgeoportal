@@ -31,6 +31,29 @@ Ext.onReady(function() {
     // Server errors (if any)
     var serverError = ${serverError | n};
 
+    var WMTS_OPTIONS = {
+        url: ${tiles_url | n},
+        displayInLayerSwitcher: false,
+        requestEncoding: 'REST',
+        buffer: 0,
+        transitionEffect: "resize",
+        visibility: false,
+        style: 'default',
+        dimensions: ['TIME'],
+        params: {
+            'time': '2011'
+        },
+        matrixSet: 'swissgrid',
+        maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
+        projection: new OpenLayers.Projection("EPSG:{{srid}}"),
+        units: "m",
+        formatSuffix: 'png',
+        serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05],
+        getMatrix: function() {
+            return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
+        }
+    };
+
     app = new gxp.Viewer({
 
         // viewer config
@@ -86,6 +109,10 @@ Ext.onReady(function() {
     % endif
             loginURL: "${request.route_url('login', path='')}",
             logoutURL: "${request.route_url('logout', path='')}"
+        },
+        {
+            ptype: "cgxp_mapopacityslider",
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}" //FUNCTIONALITY.default_basemap[0]
         }],
 
         // map and layers
@@ -113,7 +140,38 @@ Ext.onReady(function() {
                 new OpenLayers.Control.MousePosition({numDigits: 0})
             ],
             layers: [{
-                // base layers go here
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('ortho'),
+                    mapserverLayers: 'ortho',
+                    ref: 'ortho',
+                    layer: 'ortho',
+                    formatSuffix: 'jpeg',
+                    opacity: 0
+                }, WMTS_OPTIONS)]
+            },
+            {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                group: 'background',
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('plan'),
+                    mapserverLayers: 'plan',
+                    ref: 'plan',
+                    layer: 'plan',
+                    group: 'background'
+                }, WMTS_OPTIONS)]
+            },
+            {
+                source: "olsource",
+                type: "OpenLayers.Layer",
+                group: 'background',
+                args: [OpenLayers.i18n('blank'), {
+                    displayInLayerSwitcher: false,
+                    ref: 'blank',
+                    group: 'background'
+                }]
             }],
             items: []
         }
