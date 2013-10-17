@@ -694,6 +694,23 @@ class Entry(object):
         self.request.response.content_type = 'application/javascript'
         return d
 
+    @view_config(route_name='routing', renderer='routing.html')
+    def routing(self):
+        return {
+            'lang': self.lang,
+            'debug': self.debug,
+            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
+        }
+
+    @view_config(route_name='routing.js', renderer='routing.js')
+    def routingjs(self):
+        d = self._getVars()
+        d['lang'] = self.lang
+        d['debug'] = self.debug
+
+        self.request.response.content_type = 'application/javascript'
+        return d
+
     def mobile(self):
         """
         View callable for the mobile application's index.html file.

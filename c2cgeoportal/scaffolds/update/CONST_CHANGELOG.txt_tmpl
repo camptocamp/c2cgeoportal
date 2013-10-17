@@ -305,6 +305,19 @@ localHostForward:
 
     {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
 
+15. Add routing panel files:
+
+        ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+        cp /tmp/{{project}}/ .
+        rm -rf /tmp/{{project}}/{{package}}/template/routing.{js,html} {{package}}/template/
+        git add {{package}}/template/routing.{js,html}
+
+    Adding the following entries to all the ``root`` lists in
+    ``jsbuild/app.cfg`` is recommended:
+
+        {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
+
+
 Version 1.3.2
 =============
 
