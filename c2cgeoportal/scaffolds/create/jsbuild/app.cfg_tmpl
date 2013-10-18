@@ -75,7 +75,7 @@ include =
     CGXP/plugins/LayerTree.js
     CGXP/plugins/FeaturesGrid.js
     CGXP/plugins/Zoom.js
-    CGXP/plugins/WMSGetFeatureInfo.js
+    CGXP/plugins/GetFeature.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/Print.js

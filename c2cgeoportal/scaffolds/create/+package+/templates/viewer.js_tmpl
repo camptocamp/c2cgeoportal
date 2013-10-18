@@ -211,10 +211,14 @@ Ext.onReady(function() {
             toggleGroup: "maptools"
         },
         {
-            ptype: "cgxp_wmsgetfeatureinfo",
+            ptype: "cgxp_getfeature",
             actionTarget: "center.tbar",
             toggleGroup: "maptools",
-            events: EVENTS
+            events: EVENTS,
+            themes: THEMES,
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            WFSTypes: ${WFSTypes | n},
+            enableWMTSLayers: false
         },
         {
             ptype: "cgxp_fulltextsearch",
