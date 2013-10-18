@@ -17,7 +17,7 @@ Ext.application({
         'Ext.TitleBar' // required at least for the Picker
     ],
 
-    views: ['Main', 'Layers', 'Search', 'Query', 'Settings', 'LoginForm'],
+    views: ['Main', 'Layers', 'Themes', 'Search', 'Query', 'Settings', 'LoginForm'],
     models: ['Layer', 'Search', 'Query'],
     controllers: ['Main', 'Search', 'Query'],
 

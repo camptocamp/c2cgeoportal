@@ -14,6 +14,11 @@ Ext.define('App.controller.Main', {
                 selector: 'loginformview',
                 xtype: 'loginformview',
                 autoCreate: true
+            },
+            themesView: {
+                selector: 'themesview',
+                xtype: 'themesview',
+                autoCreate: true
             }
         },
         control: {
@@ -51,6 +56,35 @@ Ext.define('App.controller.Main', {
                 longpress: function(view, bounds, map) {
                     this.queryMap(view, bounds, map);
                 }
+            },
+            '#baselayer_switcher': {
+                painted: function(cmp) {
+                    var baseLayersStore = Ext.create('Ext.data.Store', {
+                        model: 'App.model.Layer'
+                    });
+                    Ext.each(App.map.layers, function(layer) {
+                        if (layer.isBaseLayer) {
+                            baseLayersStore.add(layer);
+                        }
+                    });
+                    cmp.setStore(baseLayersStore);
+
+                    // listen to change event only once the store is set
+                    cmp.on({
+                        'change': function(select, newValue) {
+                            App.map.setBaseLayer(App.map.getLayer(newValue));
+                            this.redirectTo('');
+                        }
+                    });
+                }
+            },
+            '#theme_switcher': {
+                tap: function() {
+                    this.redirectTo('themes');
+                }
+            },
+            themesView: {
+                itemtap: 'onThemeChange'
             }
         },
         routes: {
@@ -58,6 +92,7 @@ Ext.define('App.controller.Main', {
             'home': 'showHome',
             'layers': 'showLayers',
             'settings': 'showSettings',
+            'themes': 'showThemes',
             'loginform': 'showLoginForm'
         }
     },
@@ -91,6 +126,11 @@ Ext.define('App.controller.Main', {
 
     showSettings: function() {
         var view = this.getSettingsView();
+        Ext.Viewport.setActiveItem(view);
+    },
+
+    showThemes: function() {
+        var view = this.getThemesView();
         Ext.Viewport.setActiveItem(view);
     },
 
@@ -157,5 +197,9 @@ Ext.define('App.controller.Main', {
             joinedParams = encodeURIComponent(joinedParams);
             this.redirectTo('query/' + joinedParams);
         }
+    },
+
+    onThemeChange: function(list, index, target, record) {
+        window.location = '?theme=' + record.get('id');
     }
 });

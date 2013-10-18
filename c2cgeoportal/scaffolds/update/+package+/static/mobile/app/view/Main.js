@@ -43,18 +43,6 @@ Ext.define("App.view.Main", {
             }]
         }, {
             id: 'map-container'
-        }, {
-            xtype: 'selectfield',
-            id: 'baselayer_switcher',
-            width: 170,
-            top: 10,
-            right: 10,
-            displayField: 'name',
-            valueField: 'id',
-            defaultPhonePickerConfig: {
-                cancelButton: OpenLayers.i18n('layer_switcher.cancel'),
-                doneButton: OpenLayers.i18n('layer_switcher.done')
-            }
         }]
     },
 
@@ -64,34 +52,6 @@ Ext.define("App.view.Main", {
         this.on('painted', this.render, this, {
             single: true
         });
-
-        // base layer manager
-        var baseLayerSwitcher = this.down('#baselayer_switcher');
-        baseLayerSwitcher.on({
-            'change': function(select, newValue) {
-                // when applyMap adds layers to the base layer
-                // store "change" is fired by the field, and
-                // we don't have a map at that time yet
-                var map = this.getMap();
-                if (map) {
-                    map.setBaseLayer(map.getLayer(newValue));
-                }
-            },
-            scope: this
-        });
-    },
-
-    applyMap: function(map) {
-        var baseLayersStore = Ext.create('Ext.data.Store', {
-            model: 'App.model.Layer'
-        });
-        Ext.each(map.layers, function(layer) {
-            if (layer.isBaseLayer) {
-                baseLayersStore.add(layer);
-            }
-        });
-        this.down('#baselayer_switcher').setStore(baseLayersStore);
-        return map;
     },
 
     updateMap: function(map) {
