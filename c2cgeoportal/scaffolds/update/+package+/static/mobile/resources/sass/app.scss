@@ -86,7 +86,11 @@ table.detail td {
 div.olMap {
     z-index: 0;
 }
-
+// Avoid tiles flickering on webkit
+.olMapViewport * {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
 .olControlScaleLine {
     display: block;
     left: 3px;
