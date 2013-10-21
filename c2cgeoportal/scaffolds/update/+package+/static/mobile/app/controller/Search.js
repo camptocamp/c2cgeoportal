@@ -31,10 +31,12 @@ Ext.define('App.controller.Search', {
                 select: function(list, record) {
                     var f = new OpenLayers.Format.GeoJSON().read(record.raw)[0];
                     this.getApplication().getController('Main').recenterMap(f);
+                    this.getApplication().getController('Main').setParams(f.attributes.params);
                 },
                 disclose: function(list, record) {
                     var f = new OpenLayers.Format.GeoJSON().read(record.raw)[0];
                     this.getApplication().getController('Main').recenterMap(f);
+                    this.getApplication().getController('Main').setParams(f.attributes.params);
                 }
             }
         },
