@@ -72,9 +72,13 @@ Check out c2cgeoportal from GitHub::
 
     $ git clone git@github.com:camptocamp/c2cgeoportal.git
 
-Bootstrap Buildout::
+Change into the ``c2cgeoportal`` directory and initialize the submodules::
 
     $ cd c2cgeoportal
+    $ git submodule update --init
+
+Bootstrap Buildout::
+
     $ python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
@@ -140,13 +144,46 @@ To create the ``main`` schema::
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
 extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
-``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate,
-``mapserv_url`` should just point on a mapserver running on localhost.
-Once done, run the ``template`` part to generate
-``c2cgeoportal/tests/functional/test.ini`` and
+``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
+
+``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
+i.e. on the machine you run the tests on. For example, if you use your desktop
+machine it may be ``http://locahost/cgi-bin/mapserv``.
+
+.. note::
+
+    On Camptocamp servers ``mapserv`` is usually not available on the
+    ``localhost`` virtual host. One option involves creating a specific script
+    alias for ``mapserv``, for example by adding something like the following
+    to your ``/var/www/<virtual_host_name>/conf/<your_login>.conf`` file::
+
+        ScriptAlias /elemoine-mapserv /usr/lib/cgi-bin/mapserv
+        <Location /elemoine-mapserv>
+            SetHandler fcgid-script
+        </Location>
+
+    To know what domain name to use look at the ``ServerAlias``'es
+    configured for the virtual host in
+    ``/etc/apache2/sites-enabled/<virtual_host_name>``.
+
+    Here's an example of a possible ``mapserv_url``:
+    ``http://mapfish-geoportal-demo/elemoine-mapserv``.
+
+
+Once done with the editing of ``buildout_dev.cfg``, run the ``template`` part
+to generate ``c2cgeoportal/tests/functional/test.ini`` and
 ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``::
 
     $ ./buildout/bin/buildout -c buildout_dev.cfg install template
+
+.. warning::
+
+    If you change the configuration in ``buildout_dev.cfg`` you may need to
+    manually remove ``c2cgeoportal/tests/functional/test.ini`` and
+    ``c2cgeoportal/tests/functional/c2cgeoportal_test.map`` before running the
+    ``template`` part again. This is due to an unknown issue with the
+    ``z3c.recipe.filetemplate`` recipe. See
+    https://github.com/camptocamp/c2cgeoportal/issues/145.
 
 You can now run the functional tests with this::
 
