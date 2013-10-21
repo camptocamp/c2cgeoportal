@@ -227,10 +227,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
     def __init__(
             self, attribute, dom_id='layer_tree',
-            auto_check=True, only_private=False):
+            auto_check=True, only_internal_wms=True):
         super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self._rendered_id = []
-        self.only_private = only_private
+        self.only_internal_wms = only_internal_wms
 
     def render_children(self, item, depth):
         # escape loop
@@ -265,7 +265,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             return self.render_organisational_item(item, depth)
 
         # escape public layer if wanted
-        if self.only_private and isinstance(item, models.Layer) and item.public:
+        if self.only_internal_wms and isinstance(item, models.Layer) and item.layerType != "internal WMS":
             return ""
 
         if item in self.layer_group:
@@ -326,7 +326,7 @@ class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
         super(TreeItemCheckBoxTreeSet, self).__init__(
             attribute,
-            auto_check=False, only_private=False)
+            auto_check=False, only_internal_wms=False)
 
 
 class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
