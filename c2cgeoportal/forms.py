@@ -477,7 +477,8 @@ User.configure(include=fieldOrder)
 LayerGrid = Grid(models.Layer)
 fieldOrder = [Layer.name,
               Layer.public,
-              Layer.isVisible,
+              Layer.inDesktopViewer,
+              Layer.inMobileViewer,
               Layer.isChecked,
               Layer.icon,
               Layer.legend,
