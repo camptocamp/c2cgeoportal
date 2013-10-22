@@ -785,7 +785,7 @@ class Entry(object):
         self.request.response.content_type = 'application/javascript'
         return {
             'lang': self.lang,
-            'themes': themes_,
+            'themes': json.dumps(themes_),
             'layers': layers,
             'visible_layers': visible_layers,
             'wfs_types': wfs_types,
