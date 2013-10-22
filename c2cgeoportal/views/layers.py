@@ -75,9 +75,9 @@ def _get_layer(layer_id):
     except NoResultFound:
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
-        raise HTTPInternalServerError('Too many layers found')  # pragma: no cover
+        raise HTTPInternalServerError('Too many layers found')
     if not geo_table:  # pragma: no cover
-        raise HTTPNotFound("Layer %d has no geo table" % layer_id)  # pragma: no cover
+        raise HTTPNotFound("Layer %d has no geo table" % layer_id)
     return layer
 
 
@@ -160,7 +160,7 @@ def read_one(request):
         raise HTTPForbidden()
     geom = feature.geometry
     if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
-        return feature  # pragma: no cover
+        return feature
     shape = asShape(geom)
     srid = _get_geom_col_info(layer)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
