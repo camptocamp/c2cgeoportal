@@ -157,7 +157,7 @@ def read_one(request):
     if layer.public:
         return feature
     if request.user is None:
-        raise HTTPNotFound()
+        raise HTTPForbidden()
     geom = feature.geometry
     if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
         return feature  # pragma: no cover
@@ -171,7 +171,7 @@ def read_one(request):
     allowed = allowed.filter(Role.id == request.user.role.id)
     allowed = allowed.filter(Layer.id == layer.id).scalar()
     if not allowed:
-        raise HTTPNotFound()
+        raise HTTPForbidden()
     return feature
 
 
@@ -269,5 +269,5 @@ def delete(request):
 def metadata(request):
     layer = _get_layer_for_request(request)
     if not layer.public and request.user is None:
-        raise HTTPNotFound()
+        raise HTTPForbidden()
     return get_class(str(layer.geoTable))

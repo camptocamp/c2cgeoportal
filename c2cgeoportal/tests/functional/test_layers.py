@@ -195,13 +195,12 @@ class TestLayers(TestCase):
     def test_read_many_no_auth(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
+        from pyramid.httpexceptions import HTTPForbidden
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
-        collection = read_many(request)
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 0)
+        self.assertRaises(HTTPForbidden, read_many, request)
 
     def test_read_many(self):
         from geojson.feature import FeatureCollection
@@ -271,24 +270,24 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(feature, HTTPNotFound))
 
     def test_read_one_no_auth(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import read_one
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
 
-        self.assertRaises(HTTPNotFound, read_one, request)
+        self.assertRaises(HTTPForbidden, read_one, request)
 
     def test_read_one_no_perm(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import read_one
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 2
 
-        self.assertRaises(HTTPNotFound, read_one, request)
+        self.assertRaises(HTTPForbidden, read_one, request)
 
     def test_read_one(self):
         from geojson.feature import Feature
@@ -422,13 +421,13 @@ class TestLayers(TestCase):
         self.assertEquals(response.status_int, 204)
 
     def test_metadata_no_auth(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import metadata
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
-        self.assertRaises(HTTPNotFound, metadata, request)
+        self.assertRaises(HTTPForbidden, metadata, request)
 
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
