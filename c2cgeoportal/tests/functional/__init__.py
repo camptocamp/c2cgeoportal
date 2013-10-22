@@ -36,6 +36,8 @@ from ConfigParser import ConfigParser
 from urlparse import urlparse, urljoin
 
 import c2cgeoportal
+
+
 mapserv_url = None
 db_url = None
 
@@ -101,5 +103,4 @@ def tearDownCommon():
     import sqlahelper
     sqlahelper.reset()
 
-    from c2cgeoportal import caching
-    caching.invalidate_region()
+    c2cgeoportal.caching.invalidate_region()
