@@ -91,7 +91,7 @@ OpenLayers.Lang.setCode("${lang}");
 // components, such as the Login view component.
 App.info = '${info | n}';
 
-App.themes = [];
+App.themes = '${themes | n}';
 
 // define the map and layers
 App.map = new OpenLayers.Map({

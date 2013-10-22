@@ -45,6 +45,9 @@ Ext.application({
         if (App.info) {
             App.info = Ext.JSON.decode(App.info, true);
         }
+        if (App.themes) {
+            App.themes = Ext.JSON.decode(App.themes, true);
+        }
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');

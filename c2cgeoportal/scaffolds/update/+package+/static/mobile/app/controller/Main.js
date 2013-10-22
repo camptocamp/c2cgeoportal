@@ -200,6 +200,6 @@ Ext.define('App.controller.Main', {
     },
 
     onThemeChange: function(list, index, target, record) {
-        window.location = '?theme=' + record.get('id');
+        window.location = '?theme=' + record.get('name');
     }
 });

@@ -63,13 +63,13 @@ Ext.define("App.view.Layers", {
         themesStore.add(App.themes);
 
         var queryParams = OpenLayers.Util.getParameters();
-        var currentTheme = themesStore.find('id', queryParams.theme);
+        var currentTheme = themesStore.find('name', queryParams.theme);
         if (currentTheme == -1) {
             currentTheme = 0;
         }
         this.down('#theme_switcher').setText(
             OpenLayers.i18n('theme_switcher.prefix') +
-            themesStore.getAt(currentTheme).get('name')
+            OpenLayers.i18n(themesStore.getAt(currentTheme).get('name'))
         );
     },
 
