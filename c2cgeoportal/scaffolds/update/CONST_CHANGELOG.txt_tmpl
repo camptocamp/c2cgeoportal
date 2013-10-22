@@ -424,7 +424,13 @@ localHostForward:
     });
     OpenLayers.Lang.setCode("${lang}");
 
+17. The mobile application now has a built-in theme chooser.
+    Add the following line in the ``static/mobile/config.js`` file:
 
+    App.themes = '${themes | n}';
+
+    Both themes and layers can now be configured to be visible on desktop or
+    mobile, both or none.
 
 Version 1.3.2
 =============
