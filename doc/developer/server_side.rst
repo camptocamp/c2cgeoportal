@@ -335,7 +335,7 @@ Then customize the migration to suit your needs, test it::
 
 If your script fails during upgrade, it is possible the version number has been
 incremented anyway, so you need to explicitly reset the version to its
-correct value using:
+correct value using::
 
     ./buildout/bin/manage_db drop_version_control
     ./buildout/bin/manage_db version_control <the_correct_version_number>
