@@ -231,6 +231,8 @@ def includeme(config):
     config.add_route('viewer', '/viewer.js')
     config.add_route('edit', '/edit')
     config.add_route('edit.js', '/edit.js')
+    config.add_route('routing', '/routing')
+    config.add_route('routing.js', '/routing.js')
     config.add_route('loginform', '/login.html')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')

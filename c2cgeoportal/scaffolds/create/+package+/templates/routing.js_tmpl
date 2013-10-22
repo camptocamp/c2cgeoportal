@@ -49,9 +49,6 @@ Ext.onReady(function() {
         units: "m",
         formatSuffix: 'png',
         serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05],
-        getMatrix: function() {
-            return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
-        }
     };
 
     app = new gxp.Viewer({
@@ -64,56 +61,49 @@ Ext.onReady(function() {
             {
                 id: 'left-panel',
                 region: 'west',
-                width: 300
+                layout: 'fit',
+                width: 370
             }]
         },
 
         // tools
-        tools: [{
-            ptype: 'cgxp_editing',
-            layerTreeId: 'layertree',
-            layersURL: "${request.route_url('layers_root')}"
-        },
+        tools: [
         {
-            ptype: 'cgxp_themeselector',
-            outputTarget: 'left-panel',
-            outputConfig: {
-                layout: 'fit',
-                style: 'padding: 3px;'
+            ptype: 'cgxp_routing',
+            routingService: { 
+                engine_car: {
+                    type: 'OSRM', 
+                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/car',
+                    dynamic: true
+                },
+                engine_bicycle: {
+                    type: 'OSRM', 
+                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/bicycle',
+                    dynamic: true
+                },
+                foot: {
+                    type: 'OSRM', 
+                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/foot',
+                    dynamic: true
+                }
             },
-            layerTreeId: 'layertree',
-            themes: THEMES
-        },
-        {
-            ptype: "cgxp_layertree",
-            id: "layertree",
-            outputConfig: {
-                header: false,
-                flex: 1,
-                layout: 'fit',
-                autoScroll: true,
-                themes: THEMES,
-                wmsURL: '${request.route_url('mapserverproxy')}'
-            },
+            searchOptions: {
+                url: "${request.route_url('fulltextsearch', path='')}",
+            }, 
             outputTarget: 'left-panel'
-        },
-        {
-            ptype: "cgxp_menushortcut",
-            type: '->'
-        },
-        {
-            ptype: "cgxp_login",
-            actionTarget: "map.tbar",
-    % if user:
-            username: "${user.username}",
-    % endif
-            loginURL: "${request.route_url('login', path='')}",
-            logoutURL: "${request.route_url('logout', path='')}"
         },
         {
             ptype: "cgxp_mapopacityslider",
             defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}" //FUNCTIONALITY.default_basemap[0]
-        }],
+        }
+        ],
+
+        // layer sources
+        sources: {
+            "olsource": {
+                ptype: "gxp_olsource"
+            }
+        },
 
         // map and layers
         map: {
@@ -187,7 +177,7 @@ Ext.onReady(function() {
         if (serverError.length > 0) {
             cgxp.tools.openWindow({
                 html: serverError.join('<br />')
-            },OpenLayers.i18n("Error notice"),600, 500);
+            }, OpenLayers.i18n("Error notice"), 600, 500);
         }
     }, app);
 });
