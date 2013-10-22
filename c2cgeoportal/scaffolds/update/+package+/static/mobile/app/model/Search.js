@@ -4,7 +4,8 @@ Ext.define('App.model.Search', {
     config: {
         fields: [
             {name: 'name', mapping: 'properties.label'},
-            {name: 'layer_name', mapping: 'properties.layer_name'}
+            {name: 'layer_name', mapping: 'properties.layer_name'},
+            {name: 'params', mapping: 'properties.params'}
         ]
     }
 });

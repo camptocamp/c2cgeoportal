@@ -107,6 +107,22 @@ Ext.define('App.controller.Main', {
         this.redirectTo('home');
     },
 
+    setParams: function(params) {
+        this.getMainView().getMap().layers.map(this.setLayerParams(params));
+        this.getMainView().getMap().events.triggerEvent("changeparams", params);
+    },
+
+    setLayerParams: function(params) {
+        return function(layer) {
+            if (layer.setParams) {
+                layer.setParams(params);
+            }
+            else if (layer.mergeNewParams) { // WMS or WMTS 
+                layer.mergeNewParams(params); 
+            }
+        }
+    },
+
     toArray: function(value) {
         return Ext.isArray(value) ? value : value.split(',');
     },
