@@ -117,7 +117,6 @@ class TestMobileDesktop(TestCase):
 
         return Entry(request)
 
-    @attr(pierre=True)
     def test_mobile_themes(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
 
@@ -126,7 +125,6 @@ class TestMobileDesktop(TestCase):
 
         self.assertEqual(len(response['themes']), 2)
 
-    @attr(pierre=True)
     def test_mobile_private_theme(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
 
@@ -142,7 +140,6 @@ class TestMobileDesktop(TestCase):
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 1)
 
-    @attr(pierre=True)
     def test_desktop_themes(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
 
@@ -151,7 +148,6 @@ class TestMobileDesktop(TestCase):
 
         self.assertEqual(len(response['themes']), 2)
 
-    @attr(pierre=True)
     def test_mobile_layers(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
 
@@ -166,7 +162,6 @@ class TestMobileDesktop(TestCase):
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 2)
 
-    @attr(pierre=True)
     def test_desktop_layers(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
 
