@@ -8,7 +8,7 @@ def upgrade(migrate_engine):
     conn = migrate_engine.connect()
 
     theme = Table('theme', meta, schema=schema, autoload=True)
-    Column('inMobileViewer', types.Boolean, default=True).create(theme)
+    Column('inMobileViewer', types.Boolean, default=False).create(theme)
     Column('inDesktopViewer', types.Boolean, default=True).create(theme)
     conn.execute(theme.update().values(inDesktopViewer=theme.c.display))
     theme.c.display.drop()
