@@ -18,8 +18,6 @@ def upgrade(migrate_engine):
     Column('inDesktopViewer', types.Boolean, default=True).create(layer)
     conn.execute(layer.update().values(inDesktopViewer=layer.c.isVisible))
     layer.c.isVisible.drop()
-    pass
-
 
 def downgrade(migrate_engine):
     meta = MetaData(bind=migrate_engine)
@@ -36,4 +34,3 @@ def downgrade(migrate_engine):
     conn.execute(layer.update().values(isVisible=layer.c.inDesktopViewer))
     layer.c.inMobileViewer.drop()
     layer.c.inDesktopViewer.drop()
-    pass
