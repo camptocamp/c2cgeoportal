@@ -1,3 +1,4 @@
 OpenLayers.Util.extend(OpenLayers.Lang.de, {
-    "layertree": "Themen"
+    "layertree": "Themen",
+    "blank": "Leer"
 });
