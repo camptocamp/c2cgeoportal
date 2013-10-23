@@ -781,7 +781,6 @@ class Entry(object):
                     'icon': theme['icon']
                 })
 
-
         self.request.response.content_type = 'application/javascript'
         return {
             'lang': self.lang,
