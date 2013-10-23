@@ -65,7 +65,7 @@ Server
 
 #. Run buildout to compile all the .po files to .mo::
 
-    ./buildout/bin/buildout -c buildout_$USER.cfg
+    ./buildout/bin/buildout -c buildout_$USER.cfg install po2mo
 
 #. Finally don't forget to restart apache::
 
