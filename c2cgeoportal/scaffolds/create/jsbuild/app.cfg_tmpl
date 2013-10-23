@@ -357,7 +357,7 @@ include =
     FeatureEditing/resources/lang/de.js
     Styler/lang/de.js
     GeoExt.ux/locale/WMSBrowser-de.js
-#    locale/de.js #GXP
+    locale/de.js #GXP
     CGXP/locale/de.js
     Proj/Lang/de.js
     Proj/Lang/GeoExt-de.js
