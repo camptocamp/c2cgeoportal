@@ -10,7 +10,7 @@ class Test_includeme(TestCase):
             # of settings
             settings={
                 'sqlalchemy.url': 'postgresql://u:p@h/d',
-                'srid': 900913,
+                'srid': 3857,
                 'schema': 'main',
                 'parentschema': '',
                 'tilecache.cfg': 'c2cgeoportal/tests/tilecache.cfg',

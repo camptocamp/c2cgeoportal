@@ -407,7 +407,7 @@ RestrictionArea.name.set(metadata=dict(mandatory='')).required()
 RestrictionArea.layers.set(renderer=LayerCheckBoxTreeSet)
 RestrictionArea.roles.set(renderer=fields.CheckBoxSet)
 RestrictionArea.area.set(label=_(u'Restriction area'), options=[
-    ('map_srid', 900913),
+    ('map_srid', 3857),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
     ('default_lon', formalchemy_default_x),
@@ -431,7 +431,7 @@ Role.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Role.restrictionareas.set(renderer=fields.CheckBoxSet)
 Role.users.set(readonly=True)
 Role.extent.set(label=_(u'Extent'), options=[
-    ('map_srid', 900913),
+    ('map_srid', 3857),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
     ('default_lon', formalchemy_default_x),
