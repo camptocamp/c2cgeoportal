@@ -21,6 +21,8 @@ Ext.onReady(function() {
     % endif
     var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
+    // Themes definitions
+    var THEMES = {
     var THEMES = {
         "local": ${themes | n}
     % if external_themes:
@@ -41,17 +43,14 @@ Ext.onReady(function() {
         style: 'default',
         dimensions: ['TIME'],
         params: {
-            'time': '2011'
+            'time': '2014'
         },
         matrixSet: 'swissgrid',
         maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
         projection: new OpenLayers.Projection("EPSG:{{srid}}"),
         units: "m",
         formatSuffix: 'png',
-        serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05],
-        getMatrix: function() {
-            return { identifier: OpenLayers.Util.indexOf(this.serverResolutions, this.map.getResolution()) };
-        }
+        serverResolutions: [1000,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05]
     };
 
     app = new gxp.Viewer({
@@ -112,7 +111,7 @@ Ext.onReady(function() {
         },
         {
             ptype: "cgxp_mapopacityslider",
-            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}" //FUNCTIONALITY.default_basemap[0]
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
         }],
 
         // map and layers

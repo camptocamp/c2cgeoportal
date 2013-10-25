@@ -502,6 +502,8 @@ localHostForward:
 
 18. Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
 
+19. In the `{{project}}/templates/*.js` files remove the `getMatrix` method from the `WMTS_OPTIONS`.
+
 
 Version 1.3.2
 =============
