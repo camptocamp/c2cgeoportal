@@ -235,7 +235,7 @@ class Entry(object):
             l['legendImage'] = self._getIconPath(layer.legendImage)
 
         if layer.layerType == "internal WMS":
-            self._fill_internal_WMS(l, layer, wms_layers, wms)
+            self._fill_internal_WMS(l, layer, wms_layers, wms, errors)
         elif layer.layerType == "external WMS":
             self._fill_external_WMS(l, layer)
         elif layer.layerType == "WMTS":
@@ -286,7 +286,7 @@ class Entry(object):
             )
             l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
 
-    def _fill_internal_WMS(self, l, layer, wms_layers, wms):
+    def _fill_internal_WMS(self, l, layer, wms_layers, wms, errors):
         self._fill_WMS(l, layer)
         self._fill_legend_rule_query_string(
             l, layer,
@@ -313,7 +313,9 @@ class Entry(object):
             if hasattr(wms_layer_obj, 'queryable'):
                 l['queryable'] = wms_layer_obj.queryable
         else:
-            log.warning('layer %s not defined in WMS caps doc', layer.name)
+            errors.append(
+                'The layer %s is not defined in WMS capabilities' % layer.name
+            )
 
     def _fill_external_WMS(self, l, layer):
         self._fill_WMS(l, layer)

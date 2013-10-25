@@ -257,7 +257,12 @@ class TestEntryView(TestCase):
         entry = self._create_entry_obj(username=u'__test_user2')
         response = entry.viewer()
 
-        self.assertEqual(response['serverError'], '[]')
+        self.assertEqual(
+            response['serverError'],
+            '["The layer __test_private_layer is not defined in WMS capabilities", ' \
+            '"The layer __test_public_layer is not defined in WMS capabilities", ' \
+            '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
+        )
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -410,7 +415,11 @@ class TestEntryView(TestCase):
         request.user = None
 
         response = entry._getVars()
-        self.assertEquals(response['serverError'], '[]')
+        self.assertEquals(
+            response['serverError'], 
+            '["The layer __test_public_layer is not defined in WMS capabilities", ' \
+            '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
+        )
 
         result = '["testpoint_unprotected", "testpoint_protected", ' \
             '"testpoint_protected_query_with_collect", ' \
@@ -575,7 +584,7 @@ class TestEntryView(TestCase):
             'identifierAttribute': 'name',
             'editable': True,
             'public': True,
-        }, []))
+        }, ['The layer test internal WMS is not defined in WMS capabilities']))
 
         layer = Layer()
         layer.id = 20
@@ -867,7 +876,7 @@ class TestEntryView(TestCase):
                     'public': True,
                 }]
             }]
-        }, [], False))
+        }, ['The layer test layer in group is not defined in WMS capabilities'], False))
 
         group1 = LayerGroup()
         group1.isInternalWMS = True
@@ -893,7 +902,8 @@ class TestEntryView(TestCase):
         layer.layerType = 'internal WMS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None)
-        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0], "The layer  is not defined in WMS capabilities")
         self.assertFalse(stop)
 
         group = LayerGroup()
