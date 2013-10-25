@@ -97,7 +97,7 @@ App.themes = '${themes | n}';
 App.map = new OpenLayers.Map({
     fallThrough: true, // required for longpress queries
     theme: null,
-    projection: 'EPSG:900913',
+    projection: 'EPSG:3857',
     controls: [
         new OpenLayers.Control.TouchNavigation({
             dragPanOptions: {
