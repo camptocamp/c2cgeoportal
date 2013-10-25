@@ -996,6 +996,26 @@ class TestEntryView(TestCase):
 
         layer = Layer()
         layer.id = 20
+        layer.name = 'test_wmstimegroup'
+        layer.layerType = "internal WMS"
+        layer.imageType = "image/png"
+        layer.isChecked = False
+        layer.legend = False
+        layer.isLegendExpanded = False
+        layer.public = True
+        layer.timeMode = 'single'
+        time = TimeInformation()
+        entry._layer(layer, wms_layers, wms, time)
+        self.assertEqual(time.to_dict(), {
+            'resolution': 'year',
+            'interval': (1, 0, 0, 0),
+            'maxValue': '2020-01-01T00:00:00Z',
+            'minValue': '2000-01-01T00:00:00Z',
+            'mode': 'single',
+        })
+
+        layer = Layer()
+        layer.id = 20
         layer.name = 'test WMTS'
         layer.isChecked = False
         layer.layerType = "WMTS"

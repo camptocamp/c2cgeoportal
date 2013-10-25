@@ -261,7 +261,7 @@ class Entry(object):
                         time.merge_extent(extent)
                         # The time mode comes from the layer group
                         time.merge_mode(layer.timeMode)
-        except:
+        except:  # pragma no cover
             errors.append("Error while handling time for layer '%s' : '%s'"
                           % (layer.name, sys.exc_info()[1]))
 
@@ -535,14 +535,14 @@ class Entry(object):
 
                 if gp is not None:
                     if time.has_time():
-                        gp.update({"time": time.to_dict()})
+                        gp.update({"time": time.to_dict()})  # pragma nocover
                     children.append(gp)
             elif type(item) == Layer:
                 if item in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(item, wms_layers, wms, time)
                     if time.has_time():
-                        l.update({"time": time.to_dict()})
+                        l.update({"time": time.to_dict()})  # pragma nocover
                     errors += l_errors
                     children.append(l)
         return children, errors, False

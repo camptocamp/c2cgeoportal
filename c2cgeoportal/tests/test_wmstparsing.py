@@ -48,6 +48,7 @@ class TestExtent(TestCase):
     def test_unsupported_format(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent
         self.assertRaises(ValueError, parse_extent, ["2000/2010"])
+        self.assertRaises(ValueError, parse_extent, [])
 
     def test_merge_values(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentValue
@@ -190,3 +191,21 @@ class TestParseDuration(TestCase):
         from c2cgeoportal.lib.wmstparsing import _parse_duration
         from isodate import ISO8601Error
         self.assertRaises(ISO8601Error, _parse_duration, '10S')
+
+
+class TestTimeInformation(TestCase):
+    def test_merge_modes(self):
+        from c2cgeoportal.lib.wmstparsing import TimeInformation
+        ti = TimeInformation()
+        self.assertFalse(ti.has_time())
+        self.assertTrue(ti.to_dict() is None)
+        ti.merge_mode('single')
+        self.assertEqual(ti.mode, 'single')
+        ti.merge_mode('single')
+        self.assertEqual(ti.mode, 'single')
+
+    def test_merge_different_modes(self):
+        from c2cgeoportal.lib.wmstparsing import TimeInformation
+        ti = TimeInformation()
+        ti.merge_mode('single')
+        self.assertRaises(ValueError, ti.merge_mode, 'range')

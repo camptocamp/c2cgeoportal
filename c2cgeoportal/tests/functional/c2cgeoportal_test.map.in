@@ -283,6 +283,7 @@ MAP
         CONNECTIONTYPE postgis
         CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
+        GROUP "test_wmstimegroup"
         METADATA
             "wms_title" "time"
             "wms_srs" "epsg:21781"
@@ -313,6 +314,7 @@ MAP
         CONNECTIONTYPE postgis
         CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
+        GROUP "test_wmstimegroup"
         METADATA
             "wms_title" "time"
             "wms_srs" "epsg:21781"
