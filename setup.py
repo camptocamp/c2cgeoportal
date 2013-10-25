@@ -122,7 +122,8 @@ setup(
     message_extractors={'c2cgeoportal': [
         ('static/**', 'ignore', None),
         ('**.py', 'python', None),
-        ('templates/**', 'mako', {'input_encoding': 'utf-8'})]},
+        ('templates/**', 'mako', {'input_encoding': 'utf-8'}),
+        ('scaffolds/create/+package+/templates/**', 'mako', {'input_encoding': 'utf-8'})]},
     zip_safe=False,
     install_requires=install_requires,
     setup_requires=setup_requires,
