@@ -317,6 +317,114 @@ localHostForward:
 
         {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
 
+16. Manage all translations in one place. Translations for the mobile
+    application (layer names for example) are managed in the same place as for
+    the desktop application.
+    The following modifications are required.
+    Change the `jsbuild/mobile.cfg` file as follows:
+
+    @@ -8,6 +8,7 @@
+     root =
+         {{package}}/static/lib/cgxp/openlayers/lib
+         {{package}}/static/lib/cgxp/proj4js
+    +    {{package}}/static/js
+     first =
+         OpenLayers/SingleFile.js
+         OpenLayers/Console.js
+    @@ -20,6 +21,9 @@ first =
+         OpenLayers/BaseTypes/Size.js
+         OpenLayers/Util.js
+         OpenLayers/Lang.js
+    +    OpenLayers/Lang/fr.js
+    +    OpenLayers/Lang/en.js
+    +    OpenLayers/Lang/de.js
+         proj4js/lib/proj4js.js
+     exclude =
+     include =
+    @@ -45,3 +49,6 @@ include =
+         OpenLayers/Format/GML.js
+         OpenLayers/Strategy/Fixed.js
+         OpenLayers/Control/Zoom.js
+    +    Proj/Lang/fr.js
+    +    Proj/Lang/en.js
+    +    Proj/Lang/de.js
+
+
+    Also remove any lines for translations in `static/mobile/config.js`, and
+    replace them by the following lines:
+
+    OpenLayers.Util.extend(OpenLayers.Lang.en, {
+        "summits": "Summits",
+        "huts": "Huts",
+        "sites": "Sites",
+
+        // base layer switcher picker (you shouldn't remove this)
+        'layer_switcher.cancel': 'Cancel',
+        'layer_switcher.done': 'Done',
+
+        // login/logout
+        'loginButtonText': 'Log in',
+        'welcomeText': '<p>You are {username}.</p>',
+        'logoutButtonText': 'Log out',
+        'loginLabel': 'Login',
+        'passwordLabel': 'Password',
+        'loginSubmitButtonText': 'Submit',
+        'loginCancelButtonText': 'Cancel',
+
+        // redirect to standard application
+        'redirect_msg': "You're using the mobile version. Check out the" +
+            " <a href='${'${url}'}'>standard version</a>.",
+        'close': "Close"
+    });
+    OpenLayers.Util.extend(OpenLayers.Lang.fr, {
+        "summits": "Sommets",
+        "huts": "Cabanes",
+        "sites": "Sites",
+
+        // base layer switcher picker (you shouldn't remove this)
+        'layer_switcher.cancel': 'Annuler',
+        'layer_switcher.done': 'OK',
+
+        // login/logout
+        'loginButtonText': 'Me connecter',
+        'welcomeText': '<p>Vous êtes {username}.</p>',
+        'logoutButtonText': 'Me déconnecter',
+        'loginLabel': 'Nom',
+        'passwordLabel': 'Mot de passe',
+        'loginSubmitButtonText': 'Me connecter',
+        'loginCancelButtonText': 'Annuler',
+
+        // redirect to standard application
+        'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
+            " consulter la <a href='${'${url}'}'>version standard</a>.",
+        'close': "Fermer"
+    });
+    OpenLayers.Util.extend(OpenLayers.Lang.de, {
+        "summits": "Gipfel",
+        "huts": "Hütten",
+        "sites": "Sehenswürdigkeiten",
+
+        // base layer switcher picker (you shouldn't remove this)
+        'layer_switcher.cancel': 'Abbrechen',
+        'layer_switcher.done': 'OK',
+
+        // login/logout
+        'loginButtonText': 'Log in',
+        'welcomeText': '<p>Sie sind {username}.</p>',
+        'logoutButtonText': 'Log out',
+        'loginLabel': 'Login',
+        'passwordLabel': 'Passwort',
+        'loginSubmitButtonText': 'OK',
+        'loginCancelButtonText': 'Abbrechen',
+
+        // redirect to standard application
+        'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
+            " die <a href='${'${url}'}'>Standardversion</a> benutzen.",
+        'close': "Schliessen"
+    });
+    OpenLayers.Lang.setCode("${lang}");
+
+
 
 Version 1.3.2
 =============

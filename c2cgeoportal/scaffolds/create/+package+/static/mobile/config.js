@@ -7,7 +7,7 @@
  * This file also contains translations for the application strings.
  */
 
-OpenLayers.Lang.en = {
+OpenLayers.Util.extend(OpenLayers.Lang.en, {
     "summits": "Summits",
     "huts": "Huts",
     "sites": "Sites",
@@ -29,8 +29,8 @@ OpenLayers.Lang.en = {
     'redirect_msg': "You're using the mobile version. Check out the" +
         " <a href='${'${url}'}'>standard version</a>.",
     'close': "Close"
-};
-OpenLayers.Lang.fr = {
+});
+OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     "summits": "Sommets",
     "huts": "Cabanes",
     "sites": "Sites",
@@ -52,8 +52,8 @@ OpenLayers.Lang.fr = {
     'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
         " consulter la <a href='${'${url}'}'>version standard</a>.",
     'close': "Fermer"
-};
-OpenLayers.Lang.de = {
+});
+OpenLayers.Util.extend(OpenLayers.Lang.de, {
     "summits": "Gipfel",
     "huts": "Hütten",
     "sites": "Sehenswürdigkeiten",
@@ -75,7 +75,7 @@ OpenLayers.Lang.de = {
     'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
         " die <a href='${'${url}'}'>Standardversion</a> benutzen.",
     'close': "Schliessen"
-};
+});
 OpenLayers.Lang.setCode("${lang}");
 
 // App.info includes information that is needed by internal

@@ -8,6 +8,7 @@
 root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/proj4js
+    {{package}}/static/js
 first =
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
@@ -20,6 +21,9 @@ first =
     OpenLayers/BaseTypes/Size.js
     OpenLayers/Util.js
     OpenLayers/Lang.js
+    OpenLayers/Lang/fr.js
+    OpenLayers/Lang/en.js
+    OpenLayers/Lang/de.js
     proj4js/lib/proj4js.js
 exclude =
 include =
@@ -44,3 +48,6 @@ include =
     OpenLayers/Protocol/WFS/v1_0_0.js
     OpenLayers/Format/GML.js
     OpenLayers/Strategy/Fixed.js
+    Proj/Lang/fr.js
+    Proj/Lang/en.js
+    Proj/Lang/de.js
