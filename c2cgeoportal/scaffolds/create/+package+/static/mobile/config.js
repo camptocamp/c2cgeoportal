@@ -16,6 +16,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     'layer_switcher.cancel': 'Cancel',
     'layer_switcher.done': 'Done',
 
+    // themes
+    'theme_switcher.prefix': 'Theme: ',
+
     // login/logout
     'loginButtonText': 'Log in',
     'welcomeText': '<p>You are {username}.</p>',
@@ -38,6 +41,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Annuler',
     'layer_switcher.done': 'OK',
+
+    // themes
+    'theme_switcher.prefix': 'Thème : ',
 
     // login/logout
     'loginButtonText': 'Me connecter',
@@ -62,6 +68,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'layer_switcher.cancel': 'Abbrechen',
     'layer_switcher.done': 'OK',
 
+    // themes
+    'theme_switcher.prefix': 'Thema : ',
+
     // login/logout
     'loginButtonText': 'Log in',
     'welcomeText': '<p>Sie sind {username}.</p>',
@@ -81,6 +90,8 @@ OpenLayers.Lang.setCode("${lang}");
 // App.info includes information that is needed by internal
 // components, such as the Login view component.
 App.info = '${info | n}';
+
+App.themes = '${themes | n}';
 
 // define the map and layers
 App.map = new OpenLayers.Map({

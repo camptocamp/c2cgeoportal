@@ -17,7 +17,7 @@ Ext.application({
         'Ext.TitleBar' // required at least for the Picker
     ],
 
-    views: ['Main', 'Layers', 'Search', 'Query', 'Settings', 'LoginForm'],
+    views: ['Main', 'Layers', 'Themes', 'Search', 'Query', 'Settings', 'LoginForm'],
     models: ['Layer', 'Search', 'Query'],
     controllers: ['Main', 'Search', 'Query'],
 
@@ -44,6 +44,9 @@ Ext.application({
         // decode the information received from the server
         if (App.info) {
             App.info = Ext.JSON.decode(App.info, true);
+        }
+        if (App.themes) {
+            App.themes = Ext.JSON.decode(App.themes, true);
         }
 
         // create the main view and set the map into it

@@ -22,10 +22,26 @@
 
 @include pictos-iconmask('lock_closed');
 @include pictos-iconmask('lock_open');
+@include pictos-iconmask('code3');
+
+body.x-ios.x-phone {
+  font-size: 100%; // This accommodates the iPhone, at 163ppi
+}
+body.x-android.x-phone {
+  font-size: 114%; // This accommodates most Android phones, at 180ppi.
+}
 
 /* smaller font-size */
 .x-list .x-list-item {
     font-size: 0.8em;
+}
+
+// forms
+.x-form-fieldset {
+    margin-bottom: 1em;
+}
+.x-form-fieldset-title {
+    margin-top: 0;
 }
 
 table.detail {
@@ -43,6 +59,18 @@ table.detail th {
 table.detail th,
 table.detail td {
     padding: 4px;
+}
+
+.theme {
+    clear: left;
+    height: 50px;
+    line-height: 50px;
+}
+.theme img {
+    float: left;
+    border-radius: 5px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 .x-sheet-action-redirect {

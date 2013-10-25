@@ -2,6 +2,10 @@ Ext.define("App.view.Layers", {
     extend: 'Ext.form.Panel',
     xtype: 'layersview',
 
+    requires: [
+        'Ext.form.FieldSet'
+    ],
+
     config: {
         store: null,
         items: [{
@@ -15,11 +19,58 @@ Ext.define("App.view.Layers", {
                 iconMask: true,
                 action: 'home'
             }]
-        }],
-        defaults: {
-            xtype: 'checkboxfield',
-            labelWidth: '80%'
+        }, {
+            xtype: 'fieldset',
+            title: 'Fond',
+            items: [{
+                xtype: 'selectfield',
+                id: 'baselayer_switcher',
+                displayField: 'name',
+                valueField: 'id',
+                defaultPhonePickerConfig: {
+                    cancelButton: OpenLayers.i18n('layer_switcher.cancel'),
+                    doneButton: OpenLayers.i18n('layer_switcher.done')
+                }
+            }]
+        }, {
+            xtype: 'fieldset',
+            title: 'Couches de données',
+            id: 'overlays',
+            items: [{
+                xtype: 'button',
+                id: 'theme_switcher',
+                text: ' ',
+                iconCls: "code3",
+                iconMask: true,
+                iconAlign: "right"
+            }],
+            defaults: {
+                xtype: 'checkboxfield',
+                labelWidth: '80%',
+                labelWrap: true
+            }
+        }]
+    },
+
+    initialize: function() {
+        this.callParent(arguments);
+
+        var themesStore = Ext.create('Ext.data.Store', {
+            model: 'App.model.Theme',
+            id: 'themesStore'
+        });
+        this.setStore(themesStore);
+        themesStore.add(App.themes);
+
+        var queryParams = OpenLayers.Util.getParameters();
+        var currentTheme = themesStore.find('name', queryParams.theme);
+        if (currentTheme == -1) {
+            currentTheme = 0;
         }
+        this.down('#theme_switcher').setText(
+            OpenLayers.i18n('theme_switcher.prefix') +
+            OpenLayers.i18n(themesStore.getAt(currentTheme).get('name'))
+        );
     },
 
     toArray: function(value) {
@@ -43,6 +94,7 @@ Ext.define("App.view.Layers", {
     },
 
     updateStore: function(store) {
+        var overlaysContainer = this.down('#overlays');
         store.each(function(record) {
             var layer = record.raw;
             if (!layer.isBaseLayer &&
@@ -53,7 +105,7 @@ Ext.define("App.view.Layers", {
                     i, l;
                 for (i = allLayers.length - 1; i >= 0; --i) {
                     l = allLayers[i];
-                    var checkbox = this.add({
+                    var checkbox = overlaysContainer.add({
                         label: OpenLayers.i18n(l),
                         name: l,
                         checked: layersParam.indexOf(l) != -1,
