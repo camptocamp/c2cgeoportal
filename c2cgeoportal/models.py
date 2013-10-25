@@ -365,7 +365,8 @@ class Theme(TreeGroup):
         types.Integer, ForeignKey(_schema + '.treegroup.id'),
         primary_key=True)
     icon = Column(types.Unicode, label=_(u'Icon'))
-    display = Column(types.Boolean, label=_(u'Display'))  # display in theme selector
+    inMobileViewer = Column(types.Boolean, default=False, label=_(u'Display in mobile'))
+    inDesktopViewer = Column(types.Boolean, default=True, label=_(u'Display in desktop'))
 
     def __init__(self, name=u'', order=100, icon=u'', display=True):
         TreeGroup.__init__(self, name=name, order=order)
@@ -387,7 +388,8 @@ class Layer(TreeItem):
         primary_key=True)
 
     public = Column(types.Boolean, default=True, label=_(u'Public'))
-    isVisible = Column(types.Boolean, default=True, label=_(u'Visible'))  # by default
+    inMobileViewer = Column(types.Boolean, default=True, label=_(u'Display in mobile'))
+    inDesktopViewer = Column(types.Boolean, default=True, label=_(u'Display in desktop'))
     isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
     icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
     layerType = Column(types.Enum(

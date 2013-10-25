@@ -35,6 +35,9 @@ import os
 from ConfigParser import ConfigParser
 from urlparse import urlparse, urljoin
 
+import c2cgeoportal
+
+
 mapserv_url = None
 db_url = None
 
@@ -49,11 +52,11 @@ if os.path.exists(configfile):
     host = mapserv_url.hostname
     mapserv_url = urljoin('http://localhost/', mapserv_url.path)
 
+c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
+
 def setUpCommon():
-    import c2cgeoportal
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
-    c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
@@ -100,6 +103,4 @@ def tearDownCommon():
     import sqlahelper
     sqlahelper.reset()
 
-    from c2cgeoportal import caching
-    caching.invalidate_region()
-    del caching._regions[None]
+    c2cgeoportal.caching.invalidate_region()

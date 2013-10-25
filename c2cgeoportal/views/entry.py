@@ -445,14 +445,17 @@ class Entry(object):
             return None, errors, False
 
     @cache_region.cache_on_arguments()
-    def _themes(self, role_id):
+    def _themes(self, role_id, mobile=False):
         """
         This function returns theme information for the role identified
         to by ``role_id``.
+        ``mobile`` tells whether to retrieve mobile or desktop layers
         """
         errors = []
         query = self._create_layer_query(role_id)
-        query = query.filter(Layer.isVisible == True)
+        filter = Layer.inDesktopViewer == True if not mobile else \
+            Layer.inMobileViewer == True
+        query = query.filter(filter)
         query = query.order_by(Layer.order.asc())
         layers = query.all()
 
@@ -479,8 +482,10 @@ class Entry(object):
                     if theme.icon \
                     else self.request.static_url(
                         'c2cgeoportal:static/images/blank.gif')
+
                 exportThemes.append({
-                    'display': theme.display,
+                    'inDesktopViewer': theme.inDesktopViewer,
+                    'inMobileViewer': theme.inMobileViewer,
                     'name': theme.name,
                     'icon': icon,
                     'children': children
@@ -615,7 +620,7 @@ class Entry(object):
             self.request.user.role.id
 
         themes, errors = self._themes(role_id)
-        themes = filter(lambda theme: theme['display'], themes)
+        themes = filter(lambda theme: theme['inDesktopViewer'], themes)
         wfs_types, add_errors = self._internal_wfs_types()
         errors.extend(add_errors)
         external_wfs_types, add_errors = self._external_wfs_types()
@@ -736,10 +741,10 @@ class Entry(object):
         )
         user = self.request.user
 
+        role_id = None if user is None else user.role.id
+        themes, errors = self._themes(role_id, True)
         if theme_name:
-            role_id = None if user is None else user.role.id
 
-            themes, errors = self._themes(role_id)
             themes = filter(lambda theme: theme['name'] == theme_name, themes)
             theme = themes[0] if len(themes) > 0 else None
 
@@ -783,9 +788,20 @@ class Entry(object):
             'publicLayersOnly': public_only
         }
 
+        # get the list of themes available for mobile
+        themes_ = []
+        themes, errors = self._themes(role_id, True)
+        for theme in themes:
+            if theme['inMobileViewer']:
+                themes_.append({
+                    'name': theme['name'],
+                    'icon': theme['icon']
+                })
+
         self.request.response.content_type = 'application/javascript'
         return {
             'lang': self.lang,
+            'themes': json.dumps(themes_),
             'layers': layers,
             'visible_layers': visible_layers,
             'wfs_types': wfs_types,
@@ -845,7 +861,7 @@ class Entry(object):
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
         themes = self._themes(role_id)[0]
-        return filter(lambda theme: theme['display'], themes)
+        return filter(lambda theme: theme['inDesktopViewer'], themes)
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
