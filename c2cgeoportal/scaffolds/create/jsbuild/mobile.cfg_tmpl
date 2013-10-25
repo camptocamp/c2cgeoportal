@@ -8,7 +8,7 @@
 root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/proj4js
-    {{package}}/static/js/Proj/Lang
+    {{package}}/static/js
 first =
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
@@ -48,6 +48,6 @@ include =
     OpenLayers/Protocol/WFS/v1_0_0.js
     OpenLayers/Format/GML.js
     OpenLayers/Strategy/Fixed.js
-    fr.js
-    en.js
-    de.js
+    Proj/Lang/fr.js
+    Proj/Lang/en.js
+    Proj/Lang/de.js

@@ -327,7 +327,7 @@ localHostForward:
      root =
          {{package}}/static/lib/cgxp/openlayers/lib
          {{package}}/static/lib/cgxp/proj4js
-    +    {{package}}/static/js/Proj/Lang
+    +    {{package}}/static/js
      first =
          OpenLayers/SingleFile.js
          OpenLayers/Console.js
@@ -345,9 +345,9 @@ localHostForward:
          OpenLayers/Format/GML.js
          OpenLayers/Strategy/Fixed.js
          OpenLayers/Control/Zoom.js
-    +    fr.js
-    +    en.js
-    +    de.js
+    +    Proj/Lang/fr.js
+    +    Proj/Lang/en.js
+    +    Proj/Lang/de.js
 
 
     Also remove any lines for translations in `static/mobile/config.js`, and
