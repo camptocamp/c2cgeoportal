@@ -29,17 +29,20 @@ from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
                                     HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
 
+from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sqlalchemy.sql import and_
+from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
 
-from geoalchemy import Geometry, DBSpatialElement, WKBSpatialElement
+from geoalchemy import Geometry, WKBSpatialElement, functions
 
 import geojson
 from geojson.feature import FeatureCollection, Feature
 
+from shapely import wkb
 from shapely.geometry import asShape
+from shapely.ops import cascaded_union
 
 from papyrus.protocol import Protocol, create_filter
 
@@ -75,9 +78,9 @@ def _get_layer(layer_id):
     except NoResultFound:
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
-        raise HTTPInternalServerError('Too many layers found')  # pragma: no cover
+        raise HTTPInternalServerError('Too many layers found')
     if not geo_table:  # pragma: no cover
-        raise HTTPNotFound("Layer %d has no geo table" % layer_id)  # pragma: no cover
+        raise HTTPNotFound("Layer %d has no geo table" % layer_id)
     return layer
 
 
@@ -116,23 +119,39 @@ def _get_protocol_for_request(request, **kwargs):
 
 def _proto_read(layer, request):
     """ Read features for the layer based on the request. """
-    if layer.public:
-        return _get_protocol_for_layer(layer).read(request)
-    if request.user is None:
-        return FeatureCollection([])
-    user = request.user
     proto = _get_protocol_for_layer(layer)
+    if layer.public:
+        return proto.read(request)
+    user = request.user
+    if user is None:
+        raise HTTPForbidden()
     cls = proto.mapped_class
     geom_attr = proto.geom_attr
-    ra = DBSession.query(RestrictionArea.area.collect)
-    ra = ra.join(RestrictionArea.roles)
-    ra = ra.join(RestrictionArea.layers)
-    ra = ra.filter(RestrictionArea.area.area > 0)
-    ra = ra.filter(Role.id == user.role.id)
-    ra = ra.filter(Layer.id == layer.id).scalar()
-    ra = DBSpatialElement(ra)
-    filter_ = and_(create_filter(request, cls, geom_attr),
-                   ra.gcontains(getattr(cls, geom_attr)))
+    ras = DBSession.query(RestrictionArea.area, functions.srid(RestrictionArea.area))
+    ras = ras.join(RestrictionArea.roles)
+    ras = ras.join(RestrictionArea.layers)
+    ras = ras.filter(Role.id == user.role.id)
+    ras = ras.filter(Layer.id == layer.id)
+    collect_ra = []
+    use_srid = -1
+    for ra, srid in ras.all():
+        if ra is None:
+            return proto.read(request)
+        else:
+            use_srid = srid
+            collect_ra.append(wkb.loads(str(ra.geom_wkb)))
+    if len(collect_ra) == 0:  # pragma: no cover
+        raise HTTPForbidden()
+
+    ra = cascaded_union(collect_ra)
+    filter_ = and_(
+        create_filter(request, cls, geom_attr),
+        functions.gcontains(
+            func.st_geomfromtext(ra.wkt, use_srid),
+            getattr(cls, geom_attr)
+        )
+    )
+
     return proto.read(request, filter=filter_)
 
 
@@ -157,21 +176,25 @@ def read_one(request):
     if layer.public:
         return feature
     if request.user is None:
-        raise HTTPNotFound()
+        raise HTTPForbidden()
     geom = feature.geometry
     if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
-        return feature  # pragma: no cover
+        return feature
     shape = asShape(geom)
     srid = _get_geom_col_info(layer)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-    allowed = DBSession.query(RestrictionArea.area.collect.gcontains(spatial_elt))
+    none = None  # the only way I found to remove the pep8 warning
+    allowed = DBSession.query(func.count(RestrictionArea.id))
     allowed = allowed.join(RestrictionArea.roles)
     allowed = allowed.join(RestrictionArea.layers)
-    allowed = allowed.filter(RestrictionArea.area.area > 0)
     allowed = allowed.filter(Role.id == request.user.role.id)
-    allowed = allowed.filter(Layer.id == layer.id).scalar()
-    if not allowed:
-        raise HTTPNotFound()
+    allowed = allowed.filter(Layer.id == layer.id)
+    allowed = allowed.filter(or_(
+        RestrictionArea.area == none,
+        RestrictionArea.area.gcontains(spatial_elt)
+    ))
+    if allowed.scalar() == 0:
+        raise HTTPForbidden()
     return feature
 
 
@@ -183,12 +206,9 @@ def count(request):
 
 @view_config(route_name='layers_create', renderer='geojson')
 def create(request):
-    layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.create(request)
     if request.user is None:
         raise HTTPForbidden()
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, feature, o):
         geom = feature.geometry
@@ -196,15 +216,18 @@ def create(request):
             shape = asShape(geom)
             srid = _get_geom_col_info(layer)[1]
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-            allowed = DBSession.query(
-                RestrictionArea.area.collect.gcontains(spatial_elt))
+            none = None  # the only way I found to remove the pep8 warning
+            allowed = DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
-            allowed = allowed.filter(RestrictionArea.area.area > 0)
             allowed = allowed.filter(RestrictionArea.readwrite == True)
             allowed = allowed.filter(Role.id == request.user.role.id)
-            allowed = allowed.filter(Layer.id == layer.id).scalar()
-            if not allowed:
+            allowed = allowed.filter(Layer.id == layer.id)
+            allowed = allowed.filter(or_(
+                RestrictionArea.area == none,
+                RestrictionArea.area.gcontains(spatial_elt)
+            ))
+            if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
     protocol = _get_protocol_for_layer(layer, before_create=security_cb)
@@ -213,34 +236,36 @@ def create(request):
 
 @view_config(route_name='layers_update', renderer='geojson')
 def update(request):
-    feature_id = request.matchdict.get('feature_id', None)
-    layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.update(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
+    feature_id = request.matchdict.get('feature_id', None)
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, feature, o):
         # we need both the "original" and "new" geometry to be
         # within the restriction area
         geom_attr, srid = _get_geom_col_info(layer)
         geom_attr = getattr(o, geom_attr)
-        and_clauses = [RestrictionArea.area.collect.gcontains(geom_attr)]
         geom = feature.geometry
+        allowed = DBSession.query(func.count(RestrictionArea.id))
+        allowed = allowed.join(RestrictionArea.roles)
+        allowed = allowed.join(RestrictionArea.layers)
+        allowed = allowed.filter(RestrictionArea.readwrite == True)
+        allowed = allowed.filter(Role.id == request.user.role.id)
+        allowed = allowed.filter(Layer.id == layer.id)
+        none = None  # the only way I found to remove the pep8 warning
+        allowed = allowed.filter(or_(
+            RestrictionArea.area == none,
+            RestrictionArea.area.gcontains(geom_attr)
+        ))
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = asShape(geom)
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-            and_clauses.append(
-                RestrictionArea.area.collect.gcontains(spatial_elt))
-        allowed = DBSession.query(and_(*and_clauses))
-        allowed = allowed.join(RestrictionArea.roles)
-        allowed = allowed.join(RestrictionArea.layers)
-        allowed = allowed.filter(RestrictionArea.area.area > 0)
-        allowed = allowed.filter(RestrictionArea.readwrite == True)
-        allowed = allowed.filter(Role.id == request.user.role.id)
-        allowed = allowed.filter(Layer.id == layer.id).scalar()
-        if not allowed:
+            allowed = allowed.filter(or_(
+                RestrictionArea.area == none,
+                RestrictionArea.area.gcontains(spatial_elt)
+            ))
+        if allowed.scalar() == 0:
             raise HTTPForbidden()
 
     protocol = _get_protocol_for_layer(layer, before_update=security_cb)
@@ -249,25 +274,25 @@ def update(request):
 
 @view_config(route_name='layers_delete')
 def delete(request):
-    feature_id = request.matchdict.get('feature_id', None)
-    layer = _get_layer_for_request(request)
-    if layer.public:
-        protocol = _get_protocol_for_layer(layer)
-        return protocol.delete(request, feature_id)
     if request.user is None:
         raise HTTPForbidden()
+    feature_id = request.matchdict.get('feature_id', None)
+    layer = _get_layer_for_request(request)
 
     def security_cb(r, o):
         geom_attr = getattr(o, _get_geom_col_info(layer)[0])
-        allowed = DBSession.query(
-            RestrictionArea.area.collect.gcontains(geom_attr))
+        none = None  # the only way I found to remove the pep8 warning
+        allowed = DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
-        allowed = allowed.filter(RestrictionArea.area.area > 0)
         allowed = allowed.filter(RestrictionArea.readwrite == True)
         allowed = allowed.filter(Role.id == request.user.role.id)
-        allowed = allowed.filter(Layer.id == layer.id).scalar()
-        if not allowed:
+        allowed = allowed.filter(Layer.id == layer.id)
+        allowed = allowed.filter(or_(
+            RestrictionArea.area == none,
+            RestrictionArea.area.gcontains(geom_attr)
+        ))
+        if allowed.scalar() == 0:
             raise HTTPForbidden()
 
     protocol = _get_protocol_for_layer(layer, before_delete=security_cb)
@@ -278,5 +303,5 @@ def delete(request):
 def metadata(request):
     layer = _get_layer_for_request(request)
     if not layer.public and request.user is None:
-        raise HTTPNotFound()
+        raise HTTPForbidden()
     return get_class(str(layer.geoTable))

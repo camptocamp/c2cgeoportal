@@ -3,13 +3,13 @@ Copyright (c) 2013, Camptocamp SA
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met: 
+modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer. 
+   list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution. 
+   and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
-of the authors and should not be interpreted as representing official policies, 
+of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
 
@@ -35,7 +35,7 @@ either expressed or implied, of the FreeBSD Project.
     /**
      * find an element in the dom whose id match str and not contained in ignoreList
      */
-     
+
     $.fn.adminapp.findList = function(str, fieldList, ignoreList) {
         ignoreList = (typeof(ignoreList) == "undefined") ? [] : ignoreList;
         var list = [];
@@ -95,12 +95,8 @@ either expressed or implied, of the FreeBSD Project.
     /**
      * attach toogle restrictionarea event on the secondary "public" checkbox
      */
-    $.fn.adminapp.bindEventOnLayer = function(pl, lt) {
-        var chk = $('#' + pl.id);
-        chk.bind('click', function(event) {
-            $.fn.adminapp.toogleRestrictionAreas(event.target);
-        });
-        chk = $('#' + lt.id);
+    $.fn.adminapp.bindEventOnLayer = function(lt) {
+        var chk = $('#' + lt.id);
         chk.bind('change', function(event) {
             $.fn.adminapp.toogleLayerType(event.target);
         });
@@ -146,18 +142,18 @@ either expressed or implied, of the FreeBSD Project.
      */
     $.fn.adminapp.toogleRestrictionAreas = function(el) {
         var els = $.fn.adminapp.findField('restrictionareas', [el.id]);
-        var state = el.checked;
+        var state = el.value == "internal WMS";
         if (state) {
+            els.removeClass('disabledinput');
+        } else {
             // reset value
             $.fn.adminapp.resetField(els);
 
             els.addClass('disabledinput');
-        } else {
-            els.removeClass('disabledinput');
         }
         // set readonly
-        els.attr('readOnly', state);
-        els.attr('disabled', state);
+        els.attr('readOnly', !state);
+        els.attr('disabled', !state);
     };
 
     /**
@@ -211,9 +207,8 @@ either expressed or implied, of the FreeBSD Project.
         else {
             e.addClass('disabledinput');
             e.attr('checked', true);
-            this.toogleRestrictionAreas(e[0]);
         }
-        e.attr('readOnly', !internalWMS);
+        this.toogleRestrictionAreas(el);
         // true should be send ...
         //e.attr('disabled', !internalWMS);
     };
@@ -285,14 +280,13 @@ $(document).ready(function(){
     }
 
     // attach event on Layer.public to show/hide restrictionareas
-    var pl = $.fn.adminapp.findField('public');
     var lt = $.fn.adminapp.findSelect('layerType');
     //Select('layerType');
-    if (pl.length > 0 && lt.length > 0) {
+    if (lt.length > 0) {
         // restrictionareas
-        $.fn.adminapp.bindEventOnLayer(pl[0], lt[0]);
+        $.fn.adminapp.bindEventOnLayer(lt[0]);
         // init state
-        $.fn.adminapp.toogleRestrictionAreas(pl[0]);
+        $.fn.adminapp.toogleRestrictionAreas(lt[0]);
         $.fn.adminapp.toogleLayerType(lt[0]);
     }
 

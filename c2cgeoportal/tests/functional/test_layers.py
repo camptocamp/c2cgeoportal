@@ -90,7 +90,7 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-    def _create_layer(self, public=False):
+    def _create_layer(self, public=False, none_area=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -158,8 +158,9 @@ class TestLayers(TestCase):
             ra.layers = [layer]
             ra.roles = [self.role]
             ra.readwrite = True
-            poly = 'POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))'
-            ra.area = WKTSpatialElement(poly, srid=21781)
+            if not none_area:
+                poly = 'POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))'
+                ra.area = WKTSpatialElement(poly, srid=21781)
             DBSession.add(ra)
 
         self.layer_ids.append(self.__class__._table_index)
@@ -195,13 +196,12 @@ class TestLayers(TestCase):
     def test_read_many_no_auth(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
+        from pyramid.httpexceptions import HTTPForbidden
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
-        collection = read_many(request)
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 0)
+        self.assertRaises(HTTPForbidden, read_many, request)
 
     def test_read_many(self):
         from geojson.feature import FeatureCollection
@@ -271,24 +271,24 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(feature, HTTPNotFound))
 
     def test_read_one_no_auth(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import read_one
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
 
-        self.assertRaises(HTTPNotFound, read_one, request)
+        self.assertRaises(HTTPForbidden, read_one, request)
 
     def test_read_one_no_perm(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import read_one
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 2
 
-        self.assertRaises(HTTPNotFound, read_one, request)
+        self.assertRaises(HTTPForbidden, read_one, request)
 
     def test_read_one(self):
         from geojson.feature import Feature
@@ -312,18 +312,6 @@ class TestLayers(TestCase):
 
         response = count(request)
         self.assertEquals(response, 2)
-
-    def test_create_public(self):
-        from geojson.feature import FeatureCollection
-        from c2cgeoportal.views.layers import create
-
-        layer_id = self._create_layer(public=True)
-        request = self._get_request(layer_id)
-        request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
-        collection = create(request)
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 2)
 
     def test_create_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -356,41 +344,6 @@ class TestLayers(TestCase):
         collection = create(request)
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
-
-    def test_update_public(self):
-        from c2cgeoportal.views.layers import update
-
-        layer_id = self._create_layer(public=True)
-        request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
-        feature = update(request)
-        self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, u'c2é')
-
-    def test_update_and_read_public(self):
-        import transaction
-        from c2cgeoportal.views.layers import update, read_one
-
-        layer_id = self._create_layer(public=True)
-
-        request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
-        feature = update(request)
-        self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, u'c1é')
-
-        transaction.commit()
-
-        request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        feature = read_one(request)
-        self.assertEquals(feature.properties['child'], u'c1é')
 
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -438,16 +391,6 @@ class TestLayers(TestCase):
         self.assertEquals(feature.name, 'foobar')
         self.assertEquals(feature.child, u'c2é')
 
-    def test_delete_public(self):
-        from c2cgeoportal.views.layers import delete
-
-        layer_id = self._create_layer(public=True)
-        request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        request.method = 'DELETE'
-        response = delete(request)
-        self.assertEquals(response.status_int, 204)
-
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import delete
@@ -479,13 +422,13 @@ class TestLayers(TestCase):
         self.assertEquals(response.status_int, 204)
 
     def test_metadata_no_auth(self):
-        from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import metadata
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
 
-        self.assertRaises(HTTPNotFound, metadata, request)
+        self.assertRaises(HTTPForbidden, metadata, request)
 
     def test_metadata(self):
         from c2cgeoportal.views.layers import metadata
@@ -497,3 +440,153 @@ class TestLayers(TestCase):
         self.assertEquals(cls.__table__.name, 'table_%d' % layer_id)
         self.assertTrue(hasattr(cls, 'name'))
         self.assertTrue('child' in cls.__dict__)
+
+    ### With None area ###
+    def test_read_public_none_area(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import read_many
+
+        layer_id = self._create_layer(public=True, none_area=True)
+        request = self._get_request(layer_id)
+
+        collection = read_many(request)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
+        self.assertEquals(collection.features[0].properties['child'], u'c1é')
+        self.assertEquals(collection.features[1].properties['child'], u'c2é')
+
+    def test_read_many_no_auth_none_area(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import read_many
+        from pyramid.httpexceptions import HTTPForbidden
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+
+        self.assertRaises(HTTPForbidden, read_many, request)
+
+    def test_read_many_none_area(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import read_many
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+
+        collection = read_many(request)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
+        self.assertEquals(collection.features[0].properties['child'], u'c1é')
+        self.assertEquals(collection.features[1].properties['child'], u'c2é')
+
+    def test_read_one_public_none_area(self):
+        from geojson.feature import Feature
+        from c2cgeoportal.views.layers import read_one
+
+        layer_id = self._create_layer(public=True, none_area=True)
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+
+        feature = read_one(request)
+        self.assertTrue(isinstance(feature, Feature))
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.properties['name'], 'foo')
+        self.assertEquals(feature.properties['child'], u'c1é')
+
+    def test_read_one_no_auth_none_area(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import read_one
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+
+        self.assertRaises(HTTPForbidden, read_one, request)
+
+    def test_read_one_none_area(self):
+        from geojson.feature import Feature
+        from c2cgeoportal.views.layers import read_one
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+
+        feature = read_one(request)
+        self.assertTrue(isinstance(feature, Feature))
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.properties['name'], 'foo')
+        self.assertEquals(feature.properties['child'], u'c1é')
+
+    def test_count_none_area(self):
+        from c2cgeoportal.views.layers import count
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+
+        response = count(request)
+        self.assertEquals(response, 2)
+
+    def test_create_no_auth_none_area(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import create
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+        request.method = 'POST'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        self.assertRaises(HTTPForbidden, create, request)
+
+    def test_create_none_area(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import create
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.method = 'POST'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        collection = create(request)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
+
+    def test_update_no_auth_none_area(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import update
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        self.assertRaises(HTTPForbidden, update, request)
+
+    def test_update_none_area(self):
+        from c2cgeoportal.views.layers import update
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        feature = update(request)
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.name, 'foobar')
+        self.assertEquals(feature.child, u'c2é')
+
+    def test_delete_no_auth_none_area(self):
+        from pyramid.httpexceptions import HTTPForbidden
+        from c2cgeoportal.views.layers import delete
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id)
+        request.matchdict['feature_id'] = 2
+        request.method = 'DELETE'
+        self.assertRaises(HTTPForbidden, delete, request)
+
+    def test_delete_none_area(self):
+        from c2cgeoportal.views.layers import delete
+
+        layer_id = self._create_layer(none_area=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'DELETE'
+        response = delete(request)
+        self.assertEquals(response.status_int, 204)

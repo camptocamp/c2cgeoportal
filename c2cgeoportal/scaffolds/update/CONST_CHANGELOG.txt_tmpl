@@ -500,6 +500,9 @@ localHostForward:
     Both themes and layers can now be configured to be visible on desktop or
     mobile, both or none.
 
+18. Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
+
+
 Version 1.3.2
 =============
 
