@@ -317,7 +317,7 @@ localHostForward:
 
         {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
 
-    And add a new routing section:
+    And add a new routing section (replace <<srid>> by the right value):
 
         [routing.js]
         root =
@@ -364,7 +364,7 @@ localHostForward:
             GeoExt.js
             GeoExt/SingleFile.js
         include =
-            EPSG{{srid}}.js #proj4js
+            EPSG<<srid>>.js #proj4js
             util.js #GXP
             widgets/Viewer.js #GXP
             plugins/OLSource.js #GXP
