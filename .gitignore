@@ -3,6 +3,7 @@ MANIFEST
 c2cgeoportal.egg-info/
 c2cgeoportal/tests/functional/c2cgeoportal_test.map
 c2cgeoportal/tests/functional/test.ini
+c2cgeoportal/tests/testegg/production.ini
 .coverage
 .installed.cfg
 c2cgeoportal/locale/de/LC_MESSAGES/c2cgeoportal.mo
