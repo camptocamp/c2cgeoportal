@@ -309,9 +309,9 @@ localHostForward:
 15. Add routing panel files:
 
         ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
-        cp /tmp/{{project}}/ .
-        rm -rf /tmp/{{project}}/{{package}}/template/routing.{js,html} {{package}}/template/
-        git add {{package}}/template/routing.{js,html}
+        cp /tmp/{{project}}/{{package}}/templates/routing.{js,html} {{package}}/templates/
+        rm -rf /tmp/{{project}}/
+        git add {{package}}/templates/routing.{js,html}
 
     Adding the following entries to all the ``root`` lists in
     ``jsbuild/app.cfg`` is recommended:
