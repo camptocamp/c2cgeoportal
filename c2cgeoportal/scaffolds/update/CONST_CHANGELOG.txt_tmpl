@@ -523,6 +523,11 @@ localHostForward:
     % endif
     defaultThemes: ["to_be_defined"],
 
+21. Add the new configuration to the ``cgxp_querier`` plugin in the
+    ``{{project}}/templates/viewer.js`` file:
+
+        attributeURLs: ${queryer_attribute_urls | n}
+
 
 Version 1.3.2
 =============
