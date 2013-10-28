@@ -11,7 +11,8 @@ Version 1.4
    http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
 
    The first things you should do are::
-   * In the `viewer.js`, `api/mapconfig.js`, `edit.js` replace
+   * In the `{{package}}/templates/viewer.js`, `{{package}}/templates/api/mapconfig.js`,
+     `{{package}}/templates/edit.js` replace
      `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
    * In the `config.yaml.in` transform tilecache_url in an array,
      and name it `tiles_url`.
@@ -259,7 +260,7 @@ localHostForward:
      ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
      to remind the user he should change his password.
 
-     b) The form in <project>/templates/index.html and <project>/templates/edit.html must be updated:
+     b) The form in {{package}}/templates/index.html and {{package}}/templates/edit.html must be updated:
 
               <form method="POST" id="loginForm" style="display: none">
                   <input id="login" name="login" type="text" autocomplete="on"/>
@@ -418,7 +419,7 @@ localHostForward:
     +    Proj/Lang/de.js
 
 
-    Also remove any lines for translations in `static/mobile/config.js`, and
+    Also remove any lines for translations in `{{package}}/static/mobile/config.js`, and
     replace them by the following lines:
 
     OpenLayers.Util.extend(OpenLayers.Lang.en, {
@@ -493,7 +494,7 @@ localHostForward:
     OpenLayers.Lang.setCode("${lang}");
 
 17. The mobile application now has a built-in theme chooser.
-    Add the following line in the ``static/mobile/config.js`` file:
+    Add the following line in the ``{{package}}/static/mobile/config.js`` file:
 
     App.themes = '${themes | n}';
 
