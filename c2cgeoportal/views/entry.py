@@ -630,16 +630,31 @@ class Entry(object):
         external_themes, add_errors = self._external_themes()
         errors.extend(add_errors)
 
+        layers_enum = {}
+        if 'layers_enum' in self.request.registry.settings:
+            for layer_name, layer in \
+                    self.request.registry.settings['layers_enum'].items():
+                layer_enum = {}
+                layers_enum[layer_name] = layer_enum
+                for attribute in layer['attributes'].keys():
+                    layer_enum[attribute] = self.request.route_url(
+                        'layers_enumerate_attribute_values',
+                        layer_name=layer_name,
+                        field_name=attribute,
+                        path=''
+                    )
+
         d = {
             'themes': json.dumps(themes),
             'user': self.request.user,
             'WFSTypes': json.dumps(wfs_types),
             'externalWFSTypes': json.dumps(external_wfs_types),
             'external_themes': external_themes,
-            # for backward compatilility
+            # for backward compatibility
             'tilecache_url': json.dumps(self.settings.get("tilecache_url")),
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
+            'queryer_attribute_urls': json.dumps(layers_enum),
             'serverError': json.dumps(errors),
         }
 
