@@ -207,7 +207,7 @@ localHostForward:
 7. Remove all the `[versions]` section from your `buildout.cfg` file,
    from now it's managed in the `versions.cfg` file.
 
-   Add the new `versions.cfg`file to Git:
+   Add the new `versions.cfg` file to Git:
 
        git add versions.cfg
 
@@ -271,7 +271,7 @@ localHostForward:
 
      c) The database must also be upgraded to version 10.
 
-     d) You must add the folling line in your production.ini.in and
+     d) You must add the following line in your production.ini.in and
      development.ini.in in the [app:app] section:
 
      auth_replication_enabled = ${vars:enable_auth_replication}
