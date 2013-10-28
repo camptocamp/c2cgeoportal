@@ -460,10 +460,17 @@ class TestEntryView(TestCase):
         request.headers['Host'] = host
 
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv
+        request.route_url = lambda url, **kwargs: mapserv
         request.registry.settings = {
             'mapserv_url': mapserv,
             'external_mapserv_url': mapserv,
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
         }
         entry = Entry(request)
         request.user = None
@@ -480,6 +487,10 @@ class TestEntryView(TestCase):
                      'mobile_url', 'no_redirect']))
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
+        self.assertEquals(
+            result['queryer_attribute_urls'],
+            '{"layer_test": {"label": "%s"}}' % mapserv
+        )
         result = entry.edit()
         self.assertEquals(set(result.keys()), set(['lang', 'debug', 'extra_params']))
         result = entry.editjs()

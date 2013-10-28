@@ -318,23 +318,23 @@ def metadata(request):
 @view_config(route_name='layers_enumerate_attribute_values', renderer='json')
 def enumerate_attribute_values(request):
     config = request.registry.settings.get('layers_enum', None)
-    if config is None:
+    if config is None:  # pragma: no cover
         raise HTTPInternalServerError('Missing configuration')
     general_dbsession_name = config.get('dbsession', 'dbsession')
     layername = request.matchdict['layer_name']
     fieldname = request.matchdict['field_name']
     # TODO check if layer is public or not
 
-    if layername not in config:
+    if layername not in config:  # pragma: no cover
         raise HTTPBadRequest('Unknown layer: %s' % layername)
 
     layerinfos = config[layername]
-    if fieldname not in layerinfos['attributes']:
+    if fieldname not in layerinfos['attributes']:  # pragma: no cover
         raise HTTPBadRequest('Unknown attribute: %s' % fieldname)
     dbsession = DBSessions.get(
         layerinfos.get('dbsession', general_dbsession_name), None
     )
-    if dbsession is None:
+    if dbsession is None:  # pragma: no cover
         raise HTTPInternalServerError(
             'No dbsession found for layer "%s"' % layername
         )
@@ -344,7 +344,7 @@ def enumerate_attribute_values(request):
     attrinfos = {} if attrinfos is None else attrinfos
 
     table = attrinfos.get('table', layer_table)
-    if table is None:
+    if table is None:  # pragma: no cover
         raise HTTPInternalServerError(
             'No config table found for layer "%s"' % layername
         )
