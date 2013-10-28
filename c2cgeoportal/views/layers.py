@@ -350,7 +350,11 @@ def enumerate_attribute_values(request):
         )
     layertable = get_table(table, DBSession=dbsession)
 
-    values = dbsession.query(distinct(getattr(layertable.columns, fieldname))).all()
+    column = attrinfos['column_name'] \
+        if 'column_name' in attrinfos else fieldname
+    values = dbsession.query(distinct(getattr(
+        layertable.columns, column
+    ))).all()
     enum = {
         'items': [{'label': value[0], 'value': value[0]} for value in values]
     }
