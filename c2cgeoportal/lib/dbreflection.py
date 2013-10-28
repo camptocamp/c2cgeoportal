@@ -119,12 +119,18 @@ def _column_reflect_listener(table, column_info, engine):
             column_info['type'] = geometry_type(srid=results[0][3])
 
 
-def get_table(tablename, DBSession=None):
-    # TODO: factorize with get_class
+def _get_schema(tablename):
     if '.' in tablename:
         schema, tablename = tablename.split('.', 1)
     else:
         schema = 'public'
+
+    return tablename, schema
+
+
+def get_table(tablename, schema=None, DBSession=None):
+    if schema is None:
+        tablename, schema = _get_schema(tablename)
 
     if DBSession is not None:
         engine = DBSession.bind.engine
@@ -162,40 +168,12 @@ def get_class(tablename, DBSession=None):
     tablename in the database a NoSuchTableError SQLAlchemy exception
     is raised.
     """
-
-    if '.' in tablename:
-        schema, tablename = tablename.split('.', 1)
-    else:
-        schema = 'public'
+    tablename, schema = _get_schema(tablename)
 
     if (schema, tablename) in _class_cache:
         return _class_cache[(schema, tablename)]
 
-    if DBSession is not None:
-        engine = DBSession.bind.engine
-        metadata = MetaData(bind=engine)
-    else:
-        engine = Base.metadata.bind
-        metadata = Base.metadata
-
-    # create table and reflect it
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            'ignore',
-            "Did not recognize type 'geometry' of column",
-            SAWarning)
-        table = Table(
-            tablename, metadata,
-            schema=schema,
-            autoload=True,
-            autoload_with=engine,
-            listeners=[(
-                'column_reflect',
-                functools.partial(
-                    _column_reflect_listener,
-                    engine=engine))
-            ]
-        )
+    table = get_table(tablename, schema, DBSession)
 
     # create the mapped class
     cls = _create_class(table)
