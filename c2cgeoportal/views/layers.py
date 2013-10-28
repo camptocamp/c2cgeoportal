@@ -320,6 +320,7 @@ def enumerate_attribute_values(request):
     config = request.registry.settings.get('layers_enum', None)
     if config is None:
         raise HTTPInternalServerError('Missing configuration')
+    general_dbsession_name = config.get('dbsession', 'dbsession')
     layername = request.matchdict['layer_name']
     fieldname = request.matchdict['field_name']
     # TODO check if layer is public or not
@@ -330,9 +331,24 @@ def enumerate_attribute_values(request):
     layerinfos = config[layername]
     if fieldname not in layerinfos['attributes']:
         raise HTTPBadRequest('Unknown attribute: %s' % fieldname)
-    dbsession = DBSessions[layerinfos['dbsession']]
+    dbsession = DBSessions.get(
+        layerinfos.get('dbsession', general_dbsession_name), None
+    )
+    if dbsession is None:
+        raise HTTPInternalServerError(
+            'No dbsession found for layer "%s"' % layername
+        )
+
+    layer_table = layerinfos.get('table', None)
     attrinfos = layerinfos['attributes'][fieldname]
-    layertable = get_table(attrinfos['table'], dbsession)
+    attrinfos = {} if attrinfos is None else attrinfos
+
+    table = attrinfos.get('table', layer_table)
+    if table is None:
+        raise HTTPInternalServerError(
+            'No config table found for layer "%s"' % layername
+        )
+    layertable = get_table(table, DBSession=dbsession)
 
     values = dbsession.query(distinct(getattr(layertable.columns, fieldname))).all()
     enum = {
