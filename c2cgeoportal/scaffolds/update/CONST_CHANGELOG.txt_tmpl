@@ -504,6 +504,24 @@ localHostForward:
 
 19. In the `{{project}}/templates/*.js` files remove the `getMatrix` method from the `WMTS_OPTIONS`.
 
+20. The LayerTree defaultThemes parameter has been separated in two to allow to handle separately 
+    the default theme and the themes loaded from url.
+
+    replace:
+
+    % if permalink_themes:
+      defaultThemes: ${permalink_themes | n},
+    % else:
+      defaultThemes: ["lieu_interet_thm"],
+    % endif
+
+    by:
+
+    % if permalink_themes:
+        permalinkThemes: ${permalink_themes | n},
+    % endif
+    defaultThemes: ["to_be_defined"],
+
 
 Version 1.3.2
 =============
