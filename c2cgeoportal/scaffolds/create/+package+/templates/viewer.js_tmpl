@@ -133,10 +133,9 @@ Ext.onReady(function() {
                 autoScroll: true,
                 themes: THEMES,
                 % if permalink_themes:
-                  defaultThemes: ${permalink_themes | n},
-                % else:
-                  defaultThemes: ["lieu_interet_thm"],
+                    permalinkThemes: ${permalink_themes | n},
                 % endif
+                defaultThemes: ["to_be_defined"],
                 wmsURL: "${request.route_url('mapserverproxy', path='')}"
             },
             outputTarget: "layerpanel"
