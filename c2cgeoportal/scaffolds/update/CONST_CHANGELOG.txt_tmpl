@@ -11,7 +11,8 @@ Version 1.4
    http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
 
    The first things you should do are::
-   * In the `viewer.js`, `api/mapconfig.js`, `edit.js` replace
+   * In `{{package}}/templates/viewer.js`, `{{package}}/templates/api/mapconfig.js`,
+     `{{package}}/templates/edit.js` replace
      `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
    * In the `config.yaml.in` transform tilecache_url in an array,
      and name it `tiles_url`.
@@ -206,7 +207,7 @@ localHostForward:
 7. Remove all the `[versions]` section from your `buildout.cfg` file,
    from now it's managed in the `versions.cfg` file.
 
-   Add the new `versions.cfg`file to Git:
+   Add the new `versions.cfg` file to Git:
 
        git add versions.cfg
 
@@ -259,7 +260,7 @@ localHostForward:
      ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
      to remind the user he should change his password.
 
-     b) The form in <project>/templates/index.html and <project>/templates/edit.html must be updated:
+     b) The form in {{package}}/templates/index.html and {{package}}/templates/edit.html must be updated:
 
               <form method="POST" id="loginForm" style="display: none">
                   <input id="login" name="login" type="text" autocomplete="on"/>
@@ -270,7 +271,7 @@ localHostForward:
 
      c) The database must also be upgraded to version 10.
 
-     d) You must add the folling line in your production.ini.in and
+     d) You must add the following line in your production.ini.in and
      development.ini.in in the [app:app] section:
 
      auth_replication_enabled = ${vars:enable_auth_replication}
@@ -308,9 +309,9 @@ localHostForward:
 15. Add routing panel files:
 
         ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
-        cp /tmp/{{project}}/ .
-        rm -rf /tmp/{{project}}/{{package}}/template/routing.{js,html} {{package}}/template/
-        git add {{package}}/template/routing.{js,html}
+        cp /tmp/{{project}}/{{package}}/templates/routing.{js,html} {{package}}/templates/
+        rm -rf /tmp/{{project}}/
+        git add {{package}}/templates/routing.{js,html}
 
     Adding the following entries to all the ``root`` lists in
     ``jsbuild/app.cfg`` is recommended:
@@ -418,7 +419,7 @@ localHostForward:
     +    Proj/Lang/de.js
 
 
-    Also remove any lines for translations in `static/mobile/config.js`, and
+    Also remove any lines for translations in `{{package}}/static/mobile/config.js`, and
     replace them by the following lines:
 
     OpenLayers.Util.extend(OpenLayers.Lang.en, {
@@ -493,7 +494,7 @@ localHostForward:
     OpenLayers.Lang.setCode("${lang}");
 
 17. The mobile application now has a built-in theme chooser.
-    Add the following line in the ``static/mobile/config.js`` file:
+    Add the following line in the ``{{package}}/static/mobile/config.js`` file:
 
     App.themes = '${themes | n}';
 
