@@ -36,9 +36,10 @@ import os
 from pyramid import testing
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule,
-        mapserv_url, host)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule,
+    mapserv_url, host)
+
 
 @attr(functional=True)
 class TestMobileDesktop(TestCase):
@@ -77,15 +78,17 @@ class TestMobileDesktop(TestCase):
         mobile_private_theme.inDesktopViewer = False
         mobile_private_theme.inMobileViewer = False
 
-        DBSession.add_all([layer, mobile_only_layer, desktop_only_layer, theme,
-            mobile_only_theme, desktop_only_theme, mobile_private_theme])
+        DBSession.add_all([
+            layer, mobile_only_layer, desktop_only_layer, theme,
+            mobile_only_theme, desktop_only_theme, mobile_private_theme
+        ])
         transaction.commit()
 
     def tearDown(self):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-                Theme, LayerGroup, Role
+            Theme, LayerGroup
 
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
@@ -97,7 +100,6 @@ class TestMobileDesktop(TestCase):
         transaction.commit()
 
     def _create_entry_obj(self, username=None, params={}):
-        from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
         mapfile = os.path.join(
@@ -120,8 +122,6 @@ class TestMobileDesktop(TestCase):
         return Entry(request)
 
     def test_mobile_themes(self):
-        from c2cgeoportal.models import DBSession, Layer, Theme
-
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
@@ -140,8 +140,6 @@ class TestMobileDesktop(TestCase):
         )
 
     def test_mobile_private_theme(self):
-        from c2cgeoportal.models import DBSession, Layer, Theme
-
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
         entry.request.registry.settings['functionalities'] = {
@@ -156,8 +154,6 @@ class TestMobileDesktop(TestCase):
         self.assertEqual(layers[0], '__test_layer')
 
     def test_desktop_themes(self):
-        from c2cgeoportal.models import DBSession, Layer, Theme
-
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
@@ -176,8 +172,6 @@ class TestMobileDesktop(TestCase):
         )
 
     def test_mobile_layers(self):
-        from c2cgeoportal.models import DBSession, Layer, Theme
-
         entry = self._create_entry_obj()
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
@@ -190,8 +184,6 @@ class TestMobileDesktop(TestCase):
         self.assertEqual(len(layers), 2)
 
     def test_desktop_layers(self):
-        from c2cgeoportal.models import DBSession, Layer, Theme
-
         entry = self._create_entry_obj()
         response = entry.viewer()
 

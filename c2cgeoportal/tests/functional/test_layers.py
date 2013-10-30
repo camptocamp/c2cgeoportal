@@ -33,8 +33,8 @@ from pyramid import testing
 from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule)
 
 
 @attr(functional=True)
@@ -52,10 +52,11 @@ class TestLayers(TestCase):
         self.layer_ids = []
 
         self.role = Role(name=u'__test_role')
-        self.user = User(username=u'__test_user',
-                         password=u'__test_user',
-                         role=self.role
-                    )
+        self.user = User(
+            username=u'__test_user',
+            password=u'__test_user',
+            role=self.role
+        )
 
         DBSession.add(self.user)
         transaction.commit()
@@ -80,13 +81,16 @@ class TestLayers(TestCase):
             DBSession.delete(layer)
 
         DBSession.query(User).filter(
-                User.username == '__test_user').delete()
+            User.username == '__test_user'
+        ).delete()
         r = DBSession.query(Role).filter(
-                Role.name == '__test_role').one()
+            Role.name == '__test_role'
+        ).one()
         r.restrictionareas = []
         DBSession.delete(r)
         DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra').delete()
+            RestrictionArea.name == '__test_ra'
+        ).delete()
 
         transaction.commit()
 
@@ -125,25 +129,29 @@ class TestLayers(TestCase):
         ins = table.insert().values(name=u'c2é')
         c2_id = engine.connect().execute(ins).inserted_primary_key[0]
 
-        table = Table(tablename, self.metadata,
-                Column('id', types.Integer, primary_key=True),
-                Column('child_id', types.Integer,
-                       ForeignKey('public.%s_child.id' % tablename)),
-                Column('name', types.Unicode),
-                GeometryExtensionColumn('geom', Point(srid=21781)),
-                schema='public')
+        table = Table(
+            tablename, self.metadata,
+            Column('id', types.Integer, primary_key=True),
+            Column('child_id', types.Integer,
+                   ForeignKey('public.%s_child.id' % tablename)),
+            Column('name', types.Unicode),
+            GeometryExtensionColumn('geom', Point(srid=21781)),
+            schema='public'
+        )
         GeometryDDL(table)
         table.create()
 
         ins = table.insert().values(
-                child_id=c1_id,
-                name='foo',
-                geom=func.ST_GeomFromText('POINT(5 45)', 21781))
+            child_id=c1_id,
+            name='foo',
+            geom=func.ST_GeomFromText('POINT(5 45)', 21781)
+        )
         f1_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
         ins = table.insert().values(
-                child_id=c2_id,
-                name='bar',
-                geom=func.ST_GeomFromText('POINT(6 46)', 21781))
+            child_id=c2_id,
+            name='bar',
+            geom=func.ST_GeomFromText('POINT(6 46)', 21781)
+        )
         f2_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
 
         layer = Layer()
@@ -175,7 +183,8 @@ class TestLayers(TestCase):
         request.matchdict = {'layer_id': str(layerid)}
         if username is not None:
             request.user = DBSession.query(User).filter_by(
-                                username=username).one()
+                username=username
+            ).one()
         else:
             request.user = None
         return request
@@ -194,7 +203,6 @@ class TestLayers(TestCase):
         self.assertEquals(collection.features[1].properties['child'], u'c2é')
 
     def test_read_many_no_auth(self):
-        from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
         from pyramid.httpexceptions import HTTPForbidden
 
@@ -456,7 +464,6 @@ class TestLayers(TestCase):
         self.assertEquals(collection.features[1].properties['child'], u'c2é')
 
     def test_read_many_no_auth_none_area(self):
-        from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import read_many
         from pyramid.httpexceptions import HTTPForbidden
 

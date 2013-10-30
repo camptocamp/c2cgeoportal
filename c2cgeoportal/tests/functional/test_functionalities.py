@@ -32,8 +32,8 @@ from nose.plugins.attrib import attr
 from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule)
 
 
 @attr(functional=True)
@@ -46,12 +46,14 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal.lib.dbreflection import init
 
         role1 = Role(name=u'__test_role1')
-        user1 = User(username=u'__test_user1',
+        user1 = User(
+            username=u'__test_user1',
             password=u'__test_user1',
             role=role1
         )
         role2 = Role(name=u'__test_role2')
-        user2 = User(username=u'__test_user2',
+        user2 = User(
+            username=u'__test_user2',
             password=u'__test_user2',
             role=role2
         )
@@ -119,12 +121,12 @@ class TestFunctionalities(TestCase):
                 'registered': {},
             }
         }
-        self.assertEquals(get_functionality('__test_s', settings, request), []);
-        self.assertEquals(get_functionality('__test_a', settings, request), []);
-        self.assertEquals(get_functionality('__test_s', settings, request1), []);
-        self.assertEquals(get_functionality('__test_a', settings, request1), []);
-        self.assertEquals(get_functionality('__test_s', settings, request2), ['db']);
-        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2']);
+        self.assertEquals(get_functionality('__test_s', settings, request), [])
+        self.assertEquals(get_functionality('__test_a', settings, request), [])
+        self.assertEquals(get_functionality('__test_s', settings, request1), [])
+        self.assertEquals(get_functionality('__test_a', settings, request1), [])
+        self.assertEquals(get_functionality('__test_s', settings, request2), ['db'])
+        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
         settings = {
             'functionalities': {
@@ -135,12 +137,12 @@ class TestFunctionalities(TestCase):
                 }
             }
         }
-        self.assertEquals(get_functionality('__test_s', settings, request), []);
-        self.assertEquals(get_functionality('__test_a', settings, request), []);
-        self.assertEquals(get_functionality('__test_s', settings, request1), ['registered']);
-        self.assertEquals(get_functionality('__test_a', settings, request1), ['r1', 'r2']);
-        self.assertEquals(get_functionality('__test_s', settings, request2), ['db']);
-        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2']);
+        self.assertEquals(get_functionality('__test_s', settings, request), [])
+        self.assertEquals(get_functionality('__test_a', settings, request), [])
+        self.assertEquals(get_functionality('__test_s', settings, request1), ['registered'])
+        self.assertEquals(get_functionality('__test_a', settings, request1), ['r1', 'r2'])
+        self.assertEquals(get_functionality('__test_s', settings, request2), ['db'])
+        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
         settings = {
             'functionalities': {
@@ -151,13 +153,12 @@ class TestFunctionalities(TestCase):
                 'registered': {}
             }
         }
-        self.assertEquals(get_functionality('__test_s', settings, request), ['anonymous']);
-        self.assertEquals(get_functionality('__test_a', settings, request), ['a1', 'a2']);
-        self.assertEquals(get_functionality('__test_s', settings, request1), ['anonymous']);
-        self.assertEquals(get_functionality('__test_a', settings, request1), ['a1', 'a2']);
-        self.assertEquals(get_functionality('__test_s', settings, request2), ['db']);
-        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2']);
-
+        self.assertEquals(get_functionality('__test_s', settings, request), ['anonymous'])
+        self.assertEquals(get_functionality('__test_a', settings, request), ['a1', 'a2'])
+        self.assertEquals(get_functionality('__test_s', settings, request1), ['anonymous'])
+        self.assertEquals(get_functionality('__test_a', settings, request1), ['a1', 'a2'])
+        self.assertEquals(get_functionality('__test_s', settings, request2), ['db'])
+        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
         settings = {
             'functionalities': {
@@ -171,12 +172,12 @@ class TestFunctionalities(TestCase):
                 }
             }
         }
-        self.assertEquals(get_functionality('__test_s', settings, request), ['anonymous']);
-        self.assertEquals(get_functionality('__test_a', settings, request), ['a1', 'a2']);
-        self.assertEquals(get_functionality('__test_s', settings, request1), ['registered']);
-        self.assertEquals(get_functionality('__test_a', settings, request1), ['r1', 'r2']);
-        self.assertEquals(get_functionality('__test_s', settings, request2), ['db']);
-        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2']);
+        self.assertEquals(get_functionality('__test_s', settings, request), ['anonymous'])
+        self.assertEquals(get_functionality('__test_a', settings, request), ['a1', 'a2'])
+        self.assertEquals(get_functionality('__test_s', settings, request1), ['registered'])
+        self.assertEquals(get_functionality('__test_a', settings, request1), ['r1', 'r2'])
+        self.assertEquals(get_functionality('__test_s', settings, request2), ['db'])
+        self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
     def test_web_client_functionalities(self):
         from pyramid.testing import DummyRequest
@@ -218,6 +219,6 @@ class TestFunctionalities(TestCase):
         annon = Entry(request)._getVars()
         u1 = Entry(request1)._getVars()
         u2 = Entry(request2)._getVars()
-        self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]});
-        self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]});
-        self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]});
+        self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
+        self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
+        self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

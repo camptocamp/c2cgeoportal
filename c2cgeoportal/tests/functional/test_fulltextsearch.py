@@ -34,7 +34,7 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule, setUpCommon as setUpModule)
+    tearDownCommon as tearDownModule, setUpCommon as setUpModule)
 
 
 @attr(functional=True)
@@ -42,8 +42,8 @@ class TestFulltextsearchView(TestCase):
 
     def setUp(self):
         self.config = testing.setUp(
-                settings=dict(default_locale_name='fr')
-                )
+            settings=dict(default_locale_name='fr')
+        )
 
         import transaction
         from sqlalchemy import func
@@ -94,7 +94,7 @@ class TestFulltextsearchView(TestCase):
         entry5.ts = func.to_tsvector('french', 'params')
         entry5.the_geom = WKTSpatialElement("POINT(-90 -45)")
         entry5.public = True
-        entry5.params = { 'floor': 5 }
+        entry5.params = {'floor': 5}
 
         DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4, entry5])
         transaction.commit()
@@ -167,7 +167,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='text', limit='bad'))
+            params=dict(query='text', limit='bad')
+        )
         response = fulltextsearch(request)
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
@@ -176,17 +177,18 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='text', partitionlimit='bad'))
+            params=dict(query='text', partitionlimit='bad')
+        )
         response = fulltextsearch(request)
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
     def test_limit(self):
         from geojson.feature import FeatureCollection
-        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='tra sol', limit=1))
+            params=dict(query='tra sol', limit=1)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
@@ -195,11 +197,11 @@ class TestFulltextsearchView(TestCase):
 
     def test_toobig_limit(self):
         from geojson.feature import FeatureCollection
-        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='tra sol', limit=2000))
+            params=dict(query='tra sol', limit=2000)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 2)
@@ -210,11 +212,11 @@ class TestFulltextsearchView(TestCase):
 
     def test_toobig_partitionlimit(self):
         from geojson.feature import FeatureCollection
-        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='tra sol', partitionlimit=2000))
+            params=dict(query='tra sol', partitionlimit=2000)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 2)
@@ -228,7 +230,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='tra sol', limit=40))
+            params=dict(query='tra sol', limit=40)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 2)
@@ -251,7 +254,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='pl sem', limit=40))
+            params=dict(query='pl sem', limit=40)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 0)
@@ -261,8 +265,9 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='pl sem', limit=40),
-                username=u'__test_user1')
+            params=dict(query='pl sem', limit=40),
+            username=u'__test_user1'
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
@@ -274,8 +279,9 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='ven nei', limit=40),
-                username=u'__test_user1')
+            params=dict(query='ven nei', limit=40),
+            username=u'__test_user1'
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 0)
@@ -285,8 +291,9 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='ven nei', limit=40),
-                username=u'__test_user2')
+            params=dict(query='ven nei', limit=40),
+            username=u'__test_user2'
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
@@ -298,7 +305,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='tra sol', limit=40, partitionlimit=1))
+            params=dict(query='tra sol', limit=40, partitionlimit=1)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
@@ -310,9 +318,10 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import fulltextsearch
 
         request = self._create_dummy_request(
-                params=dict(query='params', limit=10))
+            params=dict(query='params', limit=10)
+        )
         resp = fulltextsearch(request)
         self.assertTrue(isinstance(resp, FeatureCollection))
         self.assertEqual(len(resp.features), 1)
         self.assertEqual(resp.features[0].properties['label'], 'label5')
-        self.assertEqual(resp.features[0].properties['params'], { 'floor': 5 })
+        self.assertEqual(resp.features[0].properties['params'], {'floor': 5})

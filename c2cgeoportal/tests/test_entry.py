@@ -52,19 +52,25 @@ class TestEntryView(TestCase):
         request = DummyRequest()
         system = {'request': request}
 
-        self.assertEquals(renderer({'a': Decimal('3.3')}, system),
-                '{"a": 3.3}')
+        self.assertEquals(
+            renderer({'a': Decimal('3.3')}, system),
+            '{"a": 3.3}'
+        )
         self.assertEquals(request.response.content_type, 'application/json')
 
         request.params = {'callback': 'abc'}
-        self.assertEquals(renderer({'a': Decimal('3.3')}, system),
-                'abc({"a": 3.3});')
+        self.assertEquals(
+            renderer({'a': Decimal('3.3')}, system),
+            'abc({"a": 3.3});'
+        )
         self.assertEquals(request.response.content_type, 'text/javascript')
 
         renderer = DecimalJSON(jsonp_param_name='cb')(None)
         request.params = {'cb': 'def'}
-        self.assertEquals(renderer({'a': Decimal('3.3')}, system),
-                'def({"a": 3.3});')
+        self.assertEquals(
+            renderer({'a': Decimal('3.3')}, system),
+            'def({"a": 3.3});'
+        )
         self.assertEquals(request.response.content_type, 'text/javascript')
 
     def test__get_child_layers_info_with_scalehint(self):
@@ -81,17 +87,17 @@ class TestEntryView(TestCase):
         child_layer_1 = Layer()
         child_layer_1.name = 'layer_1'
         child_layer_1.scaleHint = {
-                'min': 1 * math.sqrt(2),
-                'max': 2 * math.sqrt(2)
-                }
+            'min': 1 * math.sqrt(2),
+            'max': 2 * math.sqrt(2)
+        }
         child_layer_1.layers = []
 
         child_layer_2 = Layer()
         child_layer_2.name = 'layer_2'
         child_layer_2.scaleHint = {
-                'min': 3 * math.sqrt(2),
-                'max': 4 * math.sqrt(2)
-                }
+            'min': 3 * math.sqrt(2),
+            'max': 4 * math.sqrt(2)
+        }
         child_layer_2.layers = []
 
         layer = Layer()
@@ -170,7 +176,7 @@ class TestEntryView(TestCase):
 
         expected = [{
             'name': 'layer_1'
-            }, {
+        }, {
             'name': 'layer_2',
-            }]
+        }]
         self.assertEqual(child_layers_info, expected)

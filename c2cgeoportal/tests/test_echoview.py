@@ -40,4 +40,5 @@ def test_json_base64_encode():
     a = [s for s in json_base64_encode('a file name', sio)]
     s = ''.join(a)
 
-    assert s == '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}'
+    assert s == '{"filename":"a file name","data":\
+"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}'

@@ -34,7 +34,7 @@ def test_no_url():
 
     request = Request.blank('/test')
     ret = ogcproxy_route_predicate(None, request)
-    assert ret == False
+    assert not ret
 
 
 def test_mapserv_url():
@@ -43,7 +43,7 @@ def test_mapserv_url():
 
     request = Request.blank('/test?url=http://foo.com/mapserv')
     ret = ogcproxy_route_predicate(None, request)
-    assert ret == False
+    assert not ret
 
 
 def test_non_mapserv_url():
@@ -52,4 +52,4 @@ def test_non_mapserv_url():
 
     request = Request.blank('/test?url=http://foo.com/wmts')
     ret = ogcproxy_route_predicate(None, request)
-    assert ret == True
+    assert ret

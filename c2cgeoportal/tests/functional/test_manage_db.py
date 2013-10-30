@@ -28,11 +28,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import sys
 from unittest import TestCase
 import logging
 from nose.plugins.attrib import attr
-
-from pyramid import testing
 
 log = logging.getLogger(__name__)
 
@@ -44,9 +43,11 @@ class TestCreateDB(TestCase):
         from c2cgeoportal.scripts.manage_db import main as manage_db
 
         try:
-            sys.argv = ['manage_db',
+            sys.argv = [
+                'manage_db',
                 '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
-                'drop_version_control']
+                'drop_version_control'
+            ]
             manage_db()  # pragma: nocover
         except:
             pass
@@ -58,7 +59,7 @@ class TestCreateDB(TestCase):
             if test[0] != 'PASS...':
                 try:
                     self.assertEquals(test[0].strip(), test[1].strip())
-                except AssertionError as e: # pragma: no cover
+                except AssertionError as e:  # pragma: no cover
                     for i in range(max(0, n - 5), min(len(content), n + 6)):
                         if i == n:
                             log.info("> %i %s" % (i, content[i]))
@@ -122,21 +123,27 @@ Options:
   -n APP_NAME, --app-name=APP_NAME
                         The application name (optional, default is "app")""")
 
-        sys.argv = ['manage_db',
+        sys.argv = [
+            'manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
-            'version_control', '0']
+            'version_control', '0'
+        ]
         manage_db()
 
         sys.stdout = sys.stderr = myout = StringIO()
-        sys.argv = ['manage_db',
+        sys.argv = [
+            'manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
-            'db_version']
+            'db_version'
+        ]
         manage_db()
         self.assertEquals(myout.getvalue().strip(), "0")
 
-        sys.argv = ['manage_db',
+        sys.argv = [
+            'manage_db',
             '--app-config', 'c2cgeoportal/tests/testegg/production.ini',
-            'drop_version_control']
+            'drop_version_control'
+        ]
         manage_db()
 
         sys.stdout = old_stdout

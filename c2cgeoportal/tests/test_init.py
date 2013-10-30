@@ -21,8 +21,9 @@ class Test_includeme(TestCase):
         import c2cgeoportal
         self.config.include(c2cgeoportal.includeme)
         self.failUnless(
-                self.config.set_user_validator.im_func.__docobj__ is
-                        c2cgeoportal.set_user_validator)
+            self.config.set_user_validator.im_func.__docobj__ is
+            c2cgeoportal.set_user_validator
+        )
 
     def test_default_user_validator(self):
         import c2cgeoportal

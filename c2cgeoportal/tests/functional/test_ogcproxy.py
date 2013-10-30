@@ -34,6 +34,7 @@ from nose.plugins.attrib import attr
 from papyrus_ogcproxy.views import ogcproxy
 from pyramid import testing
 
+
 @attr(functional=True)
 class TestOgcproxyView(TestCase):
 
@@ -53,4 +54,3 @@ class TestOgcproxyView(TestCase):
         request.params['url'] = 'ftp://toto'
         response = ogcproxy(request)
         self.assertEqual(response.status_int, 400)
-

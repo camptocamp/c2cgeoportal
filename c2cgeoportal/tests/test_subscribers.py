@@ -21,6 +21,7 @@ class Test_subscribers(TestCase):
         from c2cgeoportal.subscribers import add_localizer
 
         request = testing.DummyRequest()
+
         class Event:
             request = None
         event = Event()

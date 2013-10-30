@@ -36,9 +36,10 @@ import os
 from pyramid import testing
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule,
-        mapserv_url, host)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule,
+    mapserv_url, host)
+
 
 @attr(functional=True)
 class TestLoopTheme(TestCase):
@@ -47,7 +48,7 @@ class TestLoopTheme(TestCase):
         self.config = testing.setUp()
 
         from c2cgeoportal.models import DBSession, Layer, \
-                Theme, LayerGroup
+            Theme, LayerGroup
 
         layer = Layer(name=u'__test_layer', public=True)
         layer_group = LayerGroup(name=u'__test_layer_group')
@@ -59,13 +60,11 @@ class TestLoopTheme(TestCase):
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
 
-
-
     def tearDown(self):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-                Theme, LayerGroup, Role
+            Theme, LayerGroup
 
         for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
@@ -77,7 +76,6 @@ class TestLoopTheme(TestCase):
         transaction.commit()
 
     def test_theme(self):
-        from c2cgeoportal.models import DBSession, Theme
         from c2cgeoportal.views.entry import Entry, cache_region
 
         request = testing.DummyRequest()
