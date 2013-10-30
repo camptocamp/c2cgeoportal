@@ -151,6 +151,7 @@ Ext.onReady(function() {
             //maxFeatures: 200,
             srsName: 'EPSG:{{srid}}',
             featureTypes: ["query_layer"],
+            attributeURLs: ${queryer_attribute_urls | n}
         },
     % endif
         {

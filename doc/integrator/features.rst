@@ -25,6 +25,7 @@ Features that require additional steps (most of the time):
    :maxdepth: 1
 
    fulltext_search
+   querier
    editing
    print
    https

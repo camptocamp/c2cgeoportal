@@ -304,6 +304,10 @@ def includeme(config):
     config.add_route(
         'layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
         request_method='DELETE')
+    config.add_route(
+        'layers_enumerate_attribute_values',
+        '/layers/{layer_name}/values/{field_name}',
+        request_method='GET')
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route('layers_root', '/layers/')

@@ -29,7 +29,7 @@ from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
                                     HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
 
-from sqlalchemy import func
+from sqlalchemy import func, distinct
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
@@ -46,8 +46,8 @@ from shapely.ops import cascaded_union
 
 from papyrus.protocol import Protocol, create_filter
 
-from c2cgeoportal.lib.dbreflection import get_class
-from c2cgeoportal.models import DBSession, Layer, RestrictionArea, Role
+from c2cgeoportal.lib.dbreflection import get_class, get_table
+from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
 
 def _get_geom_col_info(layer):
@@ -65,7 +65,10 @@ def _get_geom_col_info(layer):
         col = p.columns[0]
         if isinstance(col.type, Geometry):
             return col.name, col.type.srid
-    raise HTTPInternalServerError('Failed getting geometry column info')  # pragma: no cover
+    raise HTTPInternalServerError(
+        'Failed getting geometry column info for table "%s".' %
+        str(layer.geoTable)
+    )  # pragma: no cover
 
 
 def _get_layer(layer_id):
@@ -78,7 +81,9 @@ def _get_layer(layer_id):
     except NoResultFound:
         raise HTTPNotFound("Layer %d not found" % layer_id)
     except MultipleResultsFound:  # pragma: no cover
-        raise HTTPInternalServerError('Too many layers found')
+        raise HTTPInternalServerError(
+            'Too many layers found with id %i' % layer_id
+        )
     if not geo_table:  # pragma: no cover
         raise HTTPNotFound("Layer %d has no geo table" % layer_id)
     return layer
@@ -94,7 +99,10 @@ def _get_layers_for_request(request):
         for layer_id in layer_ids:
             yield _get_layer(layer_id)
     except ValueError:
-        raise HTTPBadRequest()  # pragma: no cover
+        raise HTTPBadRequest(
+            'A Layer id in "%s" is not an integer' %
+            request.matchdict['layer_id']
+        )  # pragma: no cover
 
 
 def _get_layer_for_request(request):
@@ -305,3 +313,49 @@ def metadata(request):
     if not layer.public and request.user is None:
         raise HTTPForbidden()
     return get_class(str(layer.geoTable))
+
+
+@view_config(route_name='layers_enumerate_attribute_values', renderer='json')
+def enumerate_attribute_values(request):
+    config = request.registry.settings.get('layers_enum', None)
+    if config is None:  # pragma: no cover
+        raise HTTPInternalServerError('Missing configuration')
+    general_dbsession_name = config.get('dbsession', 'dbsession')
+    layername = request.matchdict['layer_name']
+    fieldname = request.matchdict['field_name']
+    # TODO check if layer is public or not
+
+    if layername not in config:  # pragma: no cover
+        raise HTTPBadRequest('Unknown layer: %s' % layername)
+
+    layerinfos = config[layername]
+    if fieldname not in layerinfos['attributes']:  # pragma: no cover
+        raise HTTPBadRequest('Unknown attribute: %s' % fieldname)
+    dbsession = DBSessions.get(
+        layerinfos.get('dbsession', general_dbsession_name), None
+    )
+    if dbsession is None:  # pragma: no cover
+        raise HTTPInternalServerError(
+            'No dbsession found for layer "%s"' % layername
+        )
+
+    layer_table = layerinfos.get('table', None)
+    attrinfos = layerinfos['attributes'][fieldname]
+    attrinfos = {} if attrinfos is None else attrinfos
+
+    table = attrinfos.get('table', layer_table)
+    if table is None:  # pragma: no cover
+        raise HTTPInternalServerError(
+            'No config table found for layer "%s"' % layername
+        )
+    layertable = get_table(table, DBSession=dbsession)
+
+    column = attrinfos['column_name'] \
+        if 'column_name' in attrinfos else fieldname
+    values = dbsession.query(distinct(getattr(
+        layertable.columns, column
+    ))).all()
+    enum = {
+        'items': [{'label': value[0], 'value': value[0]} for value in values]
+    }
+    return enum

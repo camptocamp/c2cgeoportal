@@ -58,10 +58,12 @@ class TestMobileDesktop(TestCase):
 
         theme = Theme(name=u'__test_theme')
         theme.children = [layer, mobile_only_layer, desktop_only_layer]
+        theme.inMobileViewer = True
 
         mobile_only_theme = Theme(name=u'__test_mobile_only_theme')
         mobile_only_theme.children = [layer]
         mobile_only_theme.inDesktopViewer = False
+        mobile_only_theme.inMobileViewer = True
 
         desktop_only_theme = Theme(name=u'__test_desktop_only_theme')
         desktop_only_theme.children = [layer]
@@ -123,7 +125,19 @@ class TestMobileDesktop(TestCase):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 2)
+        import json
+        themes = json.loads(response['themes'])
+        self.assertEqual(len(themes), 2)
+        self.assertEqual(
+            themes,
+            [{
+                "name": "__test_theme",
+                "icon": "/dummy/static/url"
+            }, {
+                "name": "__test_mobile_only_theme",
+                "icon": "/dummy/static/url"
+            }]
+        )
 
     def test_mobile_private_theme(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
@@ -139,6 +153,7 @@ class TestMobileDesktop(TestCase):
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 1)
+        self.assertEqual(layers[0], '__test_layer')
 
     def test_desktop_themes(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
@@ -146,7 +161,19 @@ class TestMobileDesktop(TestCase):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 2)
+        import json
+        themes = json.loads(response['themes'])
+        self.assertEqual(len(themes), 2)
+        self.assertEqual(
+            themes,
+            [{
+                "name": "__test_theme",
+                "icon": "/dummy/static/url"
+            }, {
+                "name": "__test_mobile_only_theme",
+                "icon": "/dummy/static/url"
+            }]
+        )
 
     def test_mobile_layers(self):
         from c2cgeoportal.models import DBSession, Layer, Theme
@@ -174,3 +201,25 @@ class TestMobileDesktop(TestCase):
 
         layers = theme['children']
         self.assertEqual(len(layers), 2)
+        self.assertEqual(
+            layers,
+            [{
+                u'name': u'__test_layer',
+                u'isLegendExpanded': False,
+                u'legend': True,
+                u'public': True,
+                u'isChecked': True,
+                u'type': u'internal WMS',
+                u'id': 1,
+                u'imageType': None
+            }, {
+                u'name': u'__test_desktop_only_layer',
+                u'isLegendExpanded': False,
+                u'legend': True,
+                u'public': True,
+                u'isChecked': True,
+                u'type': u'internal WMS',
+                u'id': 4,
+                u'imageType': None
+            }]
+        )

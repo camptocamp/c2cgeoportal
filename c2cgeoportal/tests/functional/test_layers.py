@@ -590,3 +590,36 @@ class TestLayers(TestCase):
         request.method = 'DELETE'
         response = delete(request)
         self.assertEquals(response.status_int, 204)
+
+    def test_enumerate_attribute_values(self):
+        from c2cgeoportal.views.layers import enumerate_attribute_values
+
+        layer_id = self._create_layer(public=True)
+        tablename = "table_%d" % layer_id
+        settings = {
+            'layers_enum': {
+                'layer_test': {
+                    'table': tablename,
+                    'attributes': {
+                        'label': {
+                            'column_name': 'name'
+                        }
+                    }
+                }
+            }
+        }
+
+        request = self._get_request(layer_id)
+        request.registry.settings = settings
+        request.matchdict['layer_name'] = 'layer_test'
+        request.matchdict['field_name'] = 'label'
+        response = enumerate_attribute_values(request)
+        self.assertEquals(response, {
+            'items': [{
+                'label': 'foo',
+                'value': 'foo'
+            }, {
+                'label': 'bar',
+                'value': 'bar'
+            }]
+        })
