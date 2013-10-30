@@ -508,7 +508,7 @@ localHostForward:
 20. The LayerTree defaultThemes parameter has been separated in two to allow to handle separately 
     the default theme and the themes loaded from url.
 
-    replace:
+    In ``viewer.js`` replace:
 
     % if permalink_themes:
       defaultThemes: ${permalink_themes | n},
