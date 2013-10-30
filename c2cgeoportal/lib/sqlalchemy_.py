@@ -31,7 +31,8 @@ from sqlalchemy.types import TypeDecorator, VARCHAR
 import json
 
 
-# get from http://docs.sqlalchemy.org/en/latest/orm/extensions/mutable.html#establishing-mutability-on-scalar-column-values
+# get from http://docs.sqlalchemy.org/en/latest/orm/extensions/
+# mutable.html#establishing-mutability-on-scalar-column-values
 class JSONEncodedDict(TypeDecorator):
     "Represents an immutable structure as a json-encoded string."
 

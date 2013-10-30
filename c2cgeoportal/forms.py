@@ -265,7 +265,8 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             return self.render_organisational_item(item, depth)
 
         # escape public layer if wanted
-        if self.only_internal_wms and isinstance(item, models.Layer) and item.layerType != "internal WMS":
+        if self.only_internal_wms and isinstance(item, models.Layer) \
+                and item.layerType != "internal WMS":
             return ""
 
         if item in self.layer_group:
@@ -348,8 +349,8 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
                     result += '</ul></li>\n'
                 prev_name = functionality.name
                 result += \
-                    '<li><input type="checkbox" style="display:none"></input><label>%s</label><ul>\n' \
-                    % (functionality.name)
+                    '<li><input type="checkbox" style="display:none"></input>' \
+                    '<label>%s</label><ul>\n' % (functionality.name)
             result += \
                 '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
                 '</input><label>%s</label></li>\n' % (

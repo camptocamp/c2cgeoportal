@@ -25,7 +25,8 @@ class BTTile(Tile):
         file = open(self.filename, 'rb')
         if not hasattr(self, 'cols'):
             file.seek(10)
-            (self.cols, self.rows, self.dataSize, self.floatingPoint) = unpack('<LLhh', file.read(12))
+            (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
+                unpack('<LLhh', file.read(12))
             self.resolutionX = (self.maxX - self.minX) / self.cols
             self.resolutionY = (self.maxY - self.minY) / self.rows
 
