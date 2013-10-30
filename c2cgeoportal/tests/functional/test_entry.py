@@ -324,12 +324,7 @@ class TestEntryView(TestCase):
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 3)
-        layer = layers[0]
-        self.assertEqual(layer, u'__test_layer_in_group')
-        layer = layers[1]
-        self.assertEqual(layer, u'__test_public_layer')
-        layer = layers[2]
-        self.assertEqual(layer, u'__test_private_layer')
+        self.assertEqual(layers, [u'__test_layer_in_group', u'__test_public_layer', u'__test_private_layer']
 
         visible_layers = response['visible_layers']
         self.assertEqual(visible_layers,
