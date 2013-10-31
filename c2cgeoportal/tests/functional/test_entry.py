@@ -521,6 +521,89 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
+    def test_entry_points_wfs(self):
+        from c2cgeoportal.views.entry import Entry
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+
+        request = testing.DummyRequest()
+        request.headers['Host'] = host
+
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url, **kwargs: mapserv
+        request.registry.settings = {
+            'mapserv_url': mapserv,
+            'external_mapserv_url': mapserv,
+            'mapserv_wfs_url': mapserv,
+            'external_mapserv_wfs_url': mapserv,
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
+        }
+
+        entry = Entry(request)
+        request.user = None
+
+        result = entry.home()
+        self.assertEquals(
+            set(result.keys()),
+            set(
+                [
+                    'lang', 'debug', 'extra_params',
+                    'mobile_url', 'no_redirect'
+                ]
+            )
+        )
+        result = entry.viewer()
+
+    def test_entry_points_noexternal(self):
+        from c2cgeoportal.views.entry import Entry
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+
+        request = testing.DummyRequest()
+        request.headers['Host'] = host
+
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url, **kwargs: mapserv
+        request.registry.settings = {
+            'mapserv_url': mapserv,
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
+        }
+
+        entry = Entry(request)
+        request.user = None
+
+        result = entry.home()
+        self.assertEquals(
+            set(result.keys()),
+            set(
+                [
+                    'lang', 'debug', 'extra_params',
+                    'mobile_url', 'no_redirect'
+                ]
+            )
+        )
+        result = entry.viewer()
+
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
         request = testing.DummyRequest()

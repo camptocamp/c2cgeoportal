@@ -62,6 +62,8 @@ cache_region = caching.get_region()
 
 class Entry(object):
 
+    WFS_NS = "http://www.opengis.net/wfs"
+
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
@@ -515,16 +517,29 @@ class Entry(object):
                     children.append(l)
         return children, errors, False
 
+    def _get_wfs_url(self):
+        if 'mapserv_wfs_url' in self.request.registry.settings and \
+                self.request.registry.settings['mapserv_wfs_url']:
+            return self.request.registry.settings['mapserv_wfs_url']
+        return self.request.registry.settings['mapserv_url']
+
     def _internal_wfs_types(self):
-        return self._wfs_types(self.request.registry.settings['mapserv_url'])
+        return self._wfs_types(self._get_wfs_url())
+
+    def _get_external_wfs_url(self):
+        if 'external_mapserv_wfs_url' in self.request.registry.settings and \
+                self.request.registry.settings['external_mapserv_wfs_url']:
+            return self.request.registry.settings['external_mapserv_wfs_url']
+        if 'external_mapserv_url' in self.request.registry.settings and \
+                self.request.registry.settings['external_mapserv_url']:
+            return self.request.registry.settings['external_mapserv_url']
+        return None
 
     def _external_wfs_types(self):
-        if not ('external_mapserv_url' in self.settings
-                and self.settings['external_mapserv_url']):
+        url = self._get_external_wfs_url()
+        if not url:
             return [], []
-        return self._wfs_types(
-            self.request.registry.settings['external_mapserv_url']
-        )
+        return self._wfs_types(url)
 
     @cache_region.cache_on_arguments()
     def _wfs_types(self, wfs_url):
@@ -562,11 +577,16 @@ class Entry(object):
         try:
             getCapabilities_dom = parseString(getCapabilities_xml)
             featuretypes = []
-            for featureType in getCapabilities_dom.getElementsByTagName("FeatureType"):
+            for featureType in getCapabilities_dom.getElementsByTagNameNS(self.WFS_NS,
+                                                                          "FeatureType"):
                 # don't includes FeatureType without name
-                name = featureType.getElementsByTagName("Name").item(0)
+                name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
-                    featuretypes.append(name.childNodes[0].data)
+                    nameValue = name.childNodes[0].data
+                    # ignore namespace
+                    if nameValue.find(':') >= 0:
+                        nameValue = nameValue.split(':')[1]  # pragma nocover
+                    featuretypes.append(nameValue)
                 else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
             return featuretypes, errors

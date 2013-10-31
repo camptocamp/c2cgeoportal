@@ -72,6 +72,7 @@ include =
     util.js #GXP
     widgets/Viewer.js #GXP
     DragTracker.js #ext.overrides
+    CGXP/cgxp.js
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/FeaturesGrid.js
@@ -161,6 +162,7 @@ include =
     EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
+    CGXP/cgxp.js
     CGXP/plugins/Editing.js
     CGXP/plugins/Login.js
     CGXP/plugins/ThemeSelector.js
@@ -230,6 +232,7 @@ include =
     util.js #GXP
     widgets/Viewer.js #GXP
     plugins/OLSource.js #GXP
+    CGXP/cgxp.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/plugins/Routing.js
     CGXP/data/OSRM.js
@@ -560,6 +563,7 @@ include =
     EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
+    CGXP/cgxp.js
     CGXP/api/Map.js
     CGXP/plugins/Zoom.js
     CGXP/plugins/Redlining.js
