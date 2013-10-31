@@ -99,12 +99,12 @@ Ext.define("App.view.Layers", {
             var layer = record.raw;
             if (!layer.isBaseLayer &&
                 layer instanceof OpenLayers.Layer.WMS) {
-                var allLayers = this.toArray(layer.allLayers),
+                var allLayers = layer.allLayers,
                     layersParam = layer.params.LAYERS ?
                         this.toArray(layer.params.LAYERS) : [],
                     i, l;
                 for (i = allLayers.length - 1; i >= 0; --i) {
-                    l = allLayers[i];
+                    l = allLayers[i].name;
                     var checkbox = overlaysContainer.add({
                         label: OpenLayers.i18n(l),
                         name: l,

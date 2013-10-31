@@ -149,9 +149,10 @@ class TestMobileDesktop(TestCase):
         }
         response = entry.mobileconfig()
 
-        layers = response['layers'].split(',')
+        import json
+        layers = json.loads(response['layers'])
         self.assertEqual(len(layers), 1)
-        self.assertEqual(layers[0], '__test_layer')
+        self.assertEqual(layers[0]['name'], u'__test_layer')
 
     def test_desktop_themes(self):
         entry = self._create_entry_obj()

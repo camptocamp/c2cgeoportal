@@ -167,6 +167,26 @@ Ext.define('App.controller.Main', {
         return Ext.isArray(value) ? value : value.split(',');
     },
 
+    // get the list of queriable layers given a list of displayed WMS layers
+    getChildLayers: function(ollayer, params) {
+        var result = [],
+            allLayers = ollayer.allLayers;
+        Ext.each(params, function(p) {
+            Ext.each(allLayers, function(layer) {
+                if (layer.name == p) {
+                    if (layer.childLayers) {
+                        Ext.each(layer.childLayers, function(item) {
+                            result.push(item.name);
+                        });
+                    } else {
+                        result.push(layer.name);
+                    }
+                }
+            });
+        });
+        return result;
+    },
+
     queryMap: function(view, bounds, map) {
         var layers = [];
 
@@ -176,6 +196,8 @@ Ext.define('App.controller.Main', {
             if (!layer.isBaseLayer && layer.visibility &&
                 layer.CLASS_NAME != 'OpenLayers.Layer.Vector') {
                 var layersParam = this.toArray(layer.params.LAYERS),
+                    // Ensure that we query the child layers in case of groups
+                    layersParam = this.getChildLayers(layer, layersParam),
                     WFSTypes = this.toArray(layer.WFSTypes);
                 for (var j=0; j<layersParam.length; j++) {
                     if (WFSTypes.indexOf(layersParam[j]) != -1) {

@@ -797,9 +797,22 @@ class Entry(object):
         # we only support WMS layers right now
         layer_info = filter(lambda li: li['type'] == 'internal WMS', layer_info)
 
-        # comma-separated string including the names of layers of the
-        # requested theme
-        layers = ','.join(reversed([li['name'] for li in layer_info]))
+        # list of dicts representing the layers of the selected theme
+        layers = []
+        for li in layer_info:
+
+            def process(l, layers):
+                layer = {'name': l['name']}
+                if 'childLayers' in l and len(l['childLayers']) > 0:
+                    layer['childLayers'] = []
+                    for child in l['childLayers']:
+                        process(child, layer['childLayers'])
+                return layers.append(layer)
+
+            process(li, layers)
+
+        # reverse
+        layers = layers[::-1]
 
         # comma-separated string including the names of layers that
         # should visible by default in the map
@@ -835,7 +848,7 @@ class Entry(object):
         return {
             'lang': self.lang,
             'themes': json.dumps(themes_),
-            'layers': layers,
+            'layers': json.dumps(layers),
             'visible_layers': visible_layers,
             'wfs_types': wfs_types,
             'server_error': json.dumps(errors),
