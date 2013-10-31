@@ -54,6 +54,7 @@ if os.path.exists(configfile):
 
 c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
 
+
 def setUpCommon():
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781

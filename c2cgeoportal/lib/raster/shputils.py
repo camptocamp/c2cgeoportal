@@ -115,11 +115,13 @@ def read_record_poly_line(fp):
     points_initial_index = fp.tell()
     points_read = 0
     for part_index in range(0, data['numparts']):
-        # if(!isset(data['parts'][part_index]['points']) or !is_array(data['parts'][part_index]['points'])):
+        # if(!isset(data['parts'][part_index]['points']) or
+        # !is_array(data['parts'][part_index]['points'])):
         data['parts'][part_index] = {}
         data['parts'][part_index]['points'] = []
 
-        # while( ! in_array( points_read, data['parts']) and points_read < data['numpoints'] and !feof(fp)):
+        # while( ! in_array( points_read, data['parts']) and
+        # points_read < data['numpoints'] and !feof(fp)):
         checkPoint = []
         while (points_read < data['numpoints']):
             currPoint = read_record_point(fp)
@@ -179,8 +181,10 @@ def get_centroids(records, projected=False):
 
 def get_bound_centers(records):
     for feature in records:
-        cx = .5 * (feature['shp_data']['xmax'] - feature['shp_data']['xmin']) + feature['shp_data']['xmin']
-        cy = .5 * (feature['shp_data']['ymax'] - feature['shp_data']['ymin']) + feature['shp_data']['ymin']
+        cx = .5 * (feature['shp_data']['xmax'] - feature['shp_data']['xmin']) + \
+            feature['shp_data']['xmin']
+        cy = .5 * (feature['shp_data']['ymax'] - feature['shp_data']['ymin']) + \
+            feature['shp_data']['ymin']
         feature['shp_data']['boundCenter'] = {'x': cx, 'y': cy}
 
 
@@ -208,8 +212,12 @@ def get_true_centers(records, projected=False):
                 biggest[points][len(biggest[points]) - 1]
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
-            tempPoint['x'] -= (biggest[points][i]['x'] + biggest[points][j]['x']) * ((biggest[points][i]['x'] * biggest[points][j]['y']) - (biggest[points][j]['x'] * biggest[points][i]['y']))
-            tempPoint['y'] -= (biggest[points][i]['y'] + biggest[points][j]['y']) * ((biggest[points][i]['x'] * biggest[points][j]['y']) - (biggest[points][j]['x'] * biggest[points][i]['y']))
+            tempPoint['x'] -= (biggest[points][i]['x'] + biggest[points][j]['x']) * \
+                ((biggest[points][i]['x'] * biggest[points][j]['y']) -
+                (biggest[points][j]['x'] * biggest[points][i]['y']))
+            tempPoint['y'] -= (biggest[points][i]['y'] + biggest[points][j]['y']) * \
+                ((biggest[points][i]['x'] * biggest[points][j]['y']) -
+                (biggest[points][j]['x'] * biggest[points][i]['y']))
 
         tempPoint['x'] = tempPoint['x'] / ((6) * maxarea)
         tempPoint['y'] = tempPoint['y'] / ((6) * maxarea)
@@ -241,7 +249,8 @@ def get_neighbors(records):
             numcommon = 0
             #first check to see if the bounding boxes overlap
             if overlap(records[i], records[j]):
-            #if so, check every single point in this feature to see if it matches a point in the other feature
+            #if so, check every single point in this feature
+            #to see if it matches a point in the other feature
 
             #for each part:
                 for part in records[i]['shp_data']['parts']:
@@ -302,7 +311,10 @@ def project_point(fromPoint, whatProjection, lonCenter, latCenter):
 
 
 def overlap(feature1, feature2):
-    if (feature1['shp_data']['xmax'] > feature2['shp_data']['xmin'] and feature1['shp_data']['ymax'] > feature2['shp_data']['ymin'] and feature1['shp_data']['xmin'] < feature2['shp_data']['xmax'] and feature1['shp_data']['ymin'] < feature2['shp_data']['ymax']):
+    if (feature1['shp_data']['xmax'] > feature2['shp_data']['xmin'] and
+            feature1['shp_data']['ymax'] > feature2['shp_data']['ymin'] and
+            feature1['shp_data']['xmin'] < feature2['shp_data']['xmax'] and
+            feature1['shp_data']['ymin'] < feature2['shp_data']['ymax']):
         return True
     else:
         return False

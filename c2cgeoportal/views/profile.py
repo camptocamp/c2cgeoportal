@@ -99,7 +99,12 @@ class Profile(Raster):
             if has_one:
                 # 10cm accuracy is enough for distances
                 rounded_dist = Decimal(str(dist)).quantize(Decimal('0.1'))
-                points.append({'dist': rounded_dist, 'values': values, 'x': coord[0], 'y': coord[1]})
+                points.append({
+                    'dist': rounded_dist,
+                    'values': values,
+                    'x': coord[0],
+                    'y': coord[1]
+                })
             prev_coord = coord
 
         return rasters.keys(), points

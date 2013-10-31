@@ -77,11 +77,12 @@ from pyramid import testing
 import sqlahelper
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule,
-        mapserv_url, host)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule,
+    mapserv_url, host)
 
 Base = sqlahelper.get_base()
+
 
 class TestPoint(Base):
     __tablename__ = 'testpoint'
@@ -127,7 +128,7 @@ class TestMapserverproxyView(TestCase):
 
     def setUp(self):
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
-                Functionality, DBSession
+            Functionality, DBSession
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
@@ -157,7 +158,6 @@ class TestMapserverproxyView(TestCase):
         user3.role = role3
         user3.email = u'Tarenpion'
 
-        layer1 = Layer(u'testpoint_unprotected', 300, public=True)
         layer2 = Layer(u'testpoint_protected', 400, public=False)
         layer3 = Layer(u'testpoint_protected_query_with_collect', public=False)
 
@@ -173,8 +173,10 @@ class TestMapserverproxyView(TestCase):
         area = WKTSpatialElement(area, srid=21781)
         restricted_area3 = RestrictionArea(u'__test_ra3', u'', [layer3], [role3], area, readwrite=True)
 
-        DBSession.add_all([p1, p2, p3, p4, user1, user2, user3,
-                         restricted_area1, restricted_area2, restricted_area3])
+        DBSession.add_all([
+            p1, p2, p3, p4, user1, user2, user3,
+            restricted_area1, restricted_area2, restricted_area3
+        ])
         DBSession.flush()
 
         self.id_lausanne = p1.id
@@ -184,24 +186,27 @@ class TestMapserverproxyView(TestCase):
 
     def tearDown(self):
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
-                Functionality, DBSession
+            Functionality, DBSession
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
         DBSession.query(User).filter(User.username == '__test_user3').delete()
 
         ra = DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra1').one()
+            RestrictionArea.name == '__test_ra1'
+        ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
         ra = DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra2').one()
+            RestrictionArea.name == '__test_ra2'
+        ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
         ra = DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra3').one()
+            RestrictionArea.name == '__test_ra3'
+        ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
@@ -236,12 +241,12 @@ class TestMapserverproxyView(TestCase):
         request = testing.DummyRequest()
         request.headers['Host'] = host
         request.registry.settings = {
-                'mapserv_url': mapserv_url,
-                'functionalities': {
-                    'registered': {},
-                    'anonymous': {}
-                }
+            'mapserv_url': mapserv_url,
+            'functionalities': {
+                'registered': {},
+                'anonymous': {}
             }
+        }
         if username:
             request.user = DBSession.query(User) \
                                     .filter_by(username=username).one()
@@ -270,13 +275,15 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
-        request.params = dict(map=map, service='wms', version='1.1.1',
-                      request='getfeatureinfo', bbox='-90,-45,90,0',
-                      layers='testpoint_unprotected',
-                      query_layers='testpoint_unprotected',
-                      srs='EPSG:21781', format='image/png',
-                      info_format='application/vnd.ogc.gml',
-                      width='600', height='400', x='0', y='400')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1',
+            request='getfeatureinfo', bbox='-90,-45,90,0',
+            layers='testpoint_unprotected',
+            query_layers='testpoint_unprotected',
+            srs='EPSG:21781', format='image/png',
+            info_format='application/vnd.ogc.gml',
+            width='600', height='400', x='0', y='400'
+        )
         response = mapserverproxy.proxy(request)
 
         expected_response = """
@@ -307,10 +314,12 @@ class TestMapserverproxyView(TestCase):
         """
         import re
         pattern = re.compile(r'\s+')
-        expected_response = ''.join(re.sub(pattern, '', l) for l in
-                                        expected_response.splitlines())
-        response = ''.join(re.sub(pattern, '', l) for l in
-                                        response.body.splitlines())
+        expected_response = ''.join(
+            re.sub(pattern, '', l) for l in expected_response.splitlines()
+        )
+        response = ''.join(
+            re.sub(pattern, '', l) for l in response.body.splitlines()
+        )
         self.assertEqual(response, expected_response)
 
     def test_GetFeatureInfo_JSONP(self):
@@ -318,14 +327,16 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
-        request.params = dict(map=map, service='wms', version='1.1.1',
-                      request='getfeatureinfo', bbox='-90,-45,90,0',
-                      layers='testpoint_unprotected',
-                      query_layers='testpoint_unprotected',
-                      srs='EPSG:21781', format='image/png',
-                      info_format='application/vnd.ogc.gml',
-                      width='600', height='400', x='0', y='400',
-                      callback='cb')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1',
+            request='getfeatureinfo', bbox='-90,-45,90,0',
+            layers='testpoint_unprotected',
+            query_layers='testpoint_unprotected',
+            srs='EPSG:21781', format='image/png',
+            info_format='application/vnd.ogc.gml',
+            width='600', height='400', x='0', y='400',
+            callback='cb'
+        )
         response = mapserverproxy.proxy(request)
 
         expected_response = """
@@ -356,11 +367,13 @@ class TestMapserverproxyView(TestCase):
         """
         import re
         pattern = re.compile(r'\s+')
-        expected_response = ''.join(re.sub(pattern, '', l) for l in
-                                        expected_response.splitlines())
+        expected_response = ''.join(
+            re.sub(pattern, '', l) for l in expected_response.splitlines()
+        )
         expected_response = '%s(\'%s\');' % ('cb', expected_response)
-        response = ''.join(re.sub(pattern, '', l) for l in
-                                        response.body.splitlines())
+        response = ''.join(
+            re.sub(pattern, '', l) for l in response.body.splitlines()
+        )
         self.assertEqual(response, expected_response)
 
     def test_GetMap_unprotected_layer_anonymous(self):
@@ -368,9 +381,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_unprotected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_unprotected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -384,9 +399,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user1')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_unprotected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_unprotected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -399,9 +416,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user2')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_unprotected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_unprotected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -414,9 +433,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -429,9 +450,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user1')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -444,9 +467,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user2')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -459,9 +484,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user1')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -473,9 +500,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user2')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -488,9 +517,11 @@ class TestMapserverproxyView(TestCase):
 
         map = self._get_mapfile_path()
         request = self._create_dummy_request(username=u'__test_user3')
-        request.params = dict(map=map, service='wms', version='1.1.1', request='getmap',
-                      bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
-                      width='600', height='400', srs='EPSG:21781', format='image/png')
+        request.params = dict(
+            map=map, service='wms', version='1.1.1', request='getmap',
+            bbox='-180,-90,180,90', layers='testpoint_protected_query_with_collect',
+            width='600', height='400', srs='EPSG:21781', format='image/png'
+        )
         response = mapserverproxy.proxy(request)
 
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -527,7 +558,7 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         response = self.GetFeature_IsEqualTo(u'éàè')
-        self.assertEquals(response.status_int, 200) #500
+        self.assertEquals(response.status_int, 200)  # 500
         assert unicode(response.body.decode('utf-8')).find(u'foo') < 0
         assert unicode(response.body.decode('utf-8')).find(u'bar') < 0
         assert unicode(response.body.decode('utf-8')).find(u'éàè') > 0
@@ -624,13 +655,16 @@ class TestMapserverproxyView(TestCase):
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
 
-        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
-                    {'typename': 'testpoint_unprotected',
-                     'fid1': self.id_lausanne,
-                     'fid2': self.id_paris}
-        request.params = dict(map=map, service='wfs', version='1.0.0',
-                      request='getfeature', typename='testpoint_unprotected',
-                      featureid=featureid)
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % {
+            'typename': 'testpoint_unprotected',
+            'fid1': self.id_lausanne,
+            'fid2': self.id_paris
+        }
+        request.params = dict(
+            map=map, service='wfs', version='1.0.0',
+            request='getfeature', typename='testpoint_unprotected',
+            featureid=featureid
+        )
         response = mapserverproxy.proxy(request)
         self.assertTrue('Lausanne' in response.body)
         self.assertTrue('Paris' in response.body)
@@ -644,13 +678,16 @@ class TestMapserverproxyView(TestCase):
         map = self._get_mapfile_path()
         request = self._create_dummy_request()
 
-        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % \
-                    {'typename': 'testpoint_unprotected',
-                     'fid1': self.id_lausanne,
-                     'fid2': self.id_paris}
-        request.params = dict(map=map, service='wfs', version='1.0.0',
-                      request='getfeature', typename='testpoint_unprotected',
-                      featureid=featureid, callback='cb')
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % {
+            'typename': 'testpoint_unprotected',
+            'fid1': self.id_lausanne,
+            'fid2': self.id_paris
+        }
+        request.params = dict(
+            map=map, service='wfs', version='1.0.0',
+            request='getfeature', typename='testpoint_unprotected',
+            featureid=featureid, callback='cb'
+        )
         response = mapserverproxy.proxy(request)
         self.assertTrue('Lausanne' in response.body)
         self.assertTrue('Paris' in response.body)
@@ -689,8 +726,9 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'éàè') < 0
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["name=bar"]}
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["name=bar"]
+        }
         request.params = dict(map=map)
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200)
@@ -700,29 +738,33 @@ class TestMapserverproxyView(TestCase):
         assert unicode(response.body.decode('utf-8')).find(u'123') < 0
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["cols=name","cols=city","cols=country"]}
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["cols=name", "cols=city", "cols=country"]
+        }
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["cols=name","cols=city"]}
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["cols=name", "cols=city"]
+        }
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') > 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') < 0
 
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["cols=name","cols=country"]}
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["cols=name", "cols=country"]
+        }
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
         assert unicode(response.body.decode('utf-8')).find(u'Swiss') > 0
 
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["cols=name"]}
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["cols=name"]
+        }
         response = mapserverproxy.proxy(request)
         self.assertEquals(response.status_int, 200)
         assert unicode(response.body.decode('utf-8')).find(u'Lausanne') < 0
@@ -731,9 +773,12 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.method = 'POST'
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.registry.settings['functionalities']['anonymous'] = \
-                {"mapserver_substitution":["foo_bar"]}
-        request.params = dict(map=map,
-                      s_test1='to be removed', S_TEST2='to be removed')
+        request.registry.settings['functionalities']['anonymous'] = {
+            "mapserver_substitution": ["foo_bar"]
+        }
+        request.params = dict(
+            map=map,
+            s_test1='to be removed', S_TEST2='to be removed'
+        )
         # just pass in the log messagse
         response = mapserverproxy.proxy(request)

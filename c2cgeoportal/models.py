@@ -68,13 +68,17 @@ AUTHORIZED_ROLE = 'role_admin'
 if schema is not None:
     _schema = schema
 else:
-    raise Exception('schema not specified, you need to add it to your buildout config')  # pragma: nocover
+    raise Exception(
+        'schema not specified, you need to add it to your buildout config'
+    )  # pragma: nocover
 _parentschema = parentschema
 
 if srid is not None:
     _srid = srid
 else:
-    raise Exception('srid not specified, you need to add it to your buildout config')  # pragma: nocover
+    raise Exception(
+        'srid not specified, you need to add it to your buildout config'
+    )  # pragma: nocover
 
 
 def cache_invalidate_cb(*args):

@@ -31,6 +31,7 @@
 from unittest import TestCase
 import codecs
 
+
 class TestExportCSVView(TestCase):
 
     def test_echo(self):

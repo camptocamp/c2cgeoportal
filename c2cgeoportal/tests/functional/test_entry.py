@@ -38,9 +38,9 @@ from pyramid import testing
 from owslib.wms import WebMapService
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule,
-        mapserv_url, host)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule,
+    mapserv_url, host)
 
 
 @attr(functional=True)
@@ -50,7 +50,7 @@ class TestEntryView(TestCase):
         self.config = testing.setUp()
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-                RestrictionArea, Theme, LayerGroup
+            RestrictionArea, Theme, LayerGroup
 
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
@@ -81,9 +81,11 @@ class TestEntryView(TestCase):
                              roles=[role1], area=area)
 
         area = WKTSpatialElement(poly, srid=21781)
-        RestrictionArea(name=u'__test_ra2', description=u'',
-                             layers=[private_layer],
-                             roles=[role2], area=area, readwrite=True)
+        RestrictionArea(
+            name=u'__test_ra2', description=u'',
+            layers=[private_layer],
+            roles=[role2], area=area, readwrite=True
+        )
 
         DBSession.add_all([user1, user2, public_layer, private_layer])
 
@@ -93,17 +95,19 @@ class TestEntryView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-                RestrictionArea, Theme, LayerGroup
+            RestrictionArea, Theme, LayerGroup
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
 
         ra = DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra1').one()
+            RestrictionArea.name == '__test_ra1'
+        ).one()
         ra.roles = []
         DBSession.delete(ra)
         ra = DBSession.query(RestrictionArea).filter(
-                RestrictionArea.name == '__test_ra2').one()
+            RestrictionArea.name == '__test_ra2'
+        ).one()
         ra.roles = []
         DBSession.delete(ra)
 
@@ -185,8 +189,9 @@ class TestEntryView(TestCase):
         request = testing.DummyRequest(path='/')
         request.headers['Host'] = host
         request.route_url = lambda url: '/dummy/route/url'
-        request.user = DBSession.query(User) \
-                .filter_by(username=u'__test_user1').one()
+        request.user = DBSession.query(User).filter_by(
+            username=u'__test_user1'
+        ).one()
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
@@ -259,8 +264,8 @@ class TestEntryView(TestCase):
 
         self.assertEqual(
             response['serverError'],
-            '["The layer __test_private_layer is not defined in WMS capabilities", ' \
-            '"The layer __test_public_layer is not defined in WMS capabilities", ' \
+            '["The layer __test_private_layer is not defined in WMS capabilities", '
+            '"The layer __test_public_layer is not defined in WMS capabilities", '
             '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
         )
 
@@ -302,8 +307,10 @@ class TestEntryView(TestCase):
         self.assertEqual(visible_layers, '__test_layer_in_group')
 
         info = response['info']
-        self.assertEqual(info,
-                '{"username": "", "publicLayersOnly": true}')
+        self.assertEqual(
+            info,
+            '{"username": "", "publicLayersOnly": true}'
+        )
 
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
@@ -324,20 +331,19 @@ class TestEntryView(TestCase):
 
         layers = response['layers'].split(',')
         self.assertEqual(len(layers), 3)
-        layer = layers[0]
-        self.assertEqual(layer, u'__test_layer_in_group')
-        layer = layers[1]
-        self.assertEqual(layer, u'__test_public_layer')
-        layer = layers[2]
-        self.assertEqual(layer, u'__test_private_layer')
+        self.assertEqual(layers, [u'__test_layer_in_group', u'__test_public_layer', u'__test_private_layer'])
 
         visible_layers = response['visible_layers']
-        self.assertEqual(visible_layers,
-            '__test_layer_in_group,__test_private_layer')
+        self.assertEqual(
+            visible_layers.split(','),
+            ['__test_layer_in_group', '__test_private_layer']
+        )
 
         info = response['info']
-        self.assertEqual(info,
-                '{"username": "__test_user1", "publicLayersOnly": false}')
+        self.assertEqual(
+            info,
+            '{"username": "__test_user1", "publicLayersOnly": false}'
+        )
 
     def _find_layer(self, themes, layer_name):
         for l in themes['children']:
@@ -416,8 +422,8 @@ class TestEntryView(TestCase):
 
         response = entry._getVars()
         self.assertEquals(
-            response['serverError'], 
-            '["The layer __test_public_layer is not defined in WMS capabilities", ' \
+            response['serverError'],
+            '["The layer __test_public_layer is not defined in WMS capabilities", '
             '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
         )
 
@@ -482,9 +488,14 @@ class TestEntryView(TestCase):
         ])
         result = entry.home()
         self.assertEquals(
-                set(result.keys()),
-                set(['lang', 'debug', 'extra_params',
-                     'mobile_url', 'no_redirect']))
+            set(result.keys()),
+            set(
+                [
+                    'lang', 'debug', 'extra_params',
+                    'mobile_url', 'no_redirect'
+                ]
+            )
+        )
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
         self.assertEquals(
@@ -526,9 +537,13 @@ class TestEntryView(TestCase):
             'themes': ['theme'],
         }
         result = entry.permalinktheme()
-        self.assertEquals(result.keys(),
-                ['lang', 'mobile_url', 'permalink_themes',
-                 'no_redirect', 'extra_params', 'debug'])
+        self.assertEquals(
+            result.keys(),
+            [
+                'lang', 'mobile_url', 'permalink_themes',
+                'no_redirect', 'extra_params', 'debug'
+            ]
+        )
         self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
@@ -536,9 +551,13 @@ class TestEntryView(TestCase):
             'themes': ['theme1', 'theme2'],
         }
         result = entry.permalinktheme()
-        self.assertEquals(result.keys(),
-                ['lang', 'mobile_url', 'permalink_themes',
-                 'no_redirect', 'extra_params', 'debug'])
+        self.assertEquals(
+            result.keys(),
+            [
+                'lang', 'mobile_url', 'permalink_themes',
+                'no_redirect', 'extra_params', 'debug'
+            ]
+        )
         self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme1,theme2')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
@@ -991,7 +1010,7 @@ class TestEntryView(TestCase):
             from hashlib import sha1
             sha1  # suppress pyflakes warning
         except ImportError:  # pragma: nocover
-            from sha import new as sha1
+            from sha import new as sha1  # flake8: noqa
 
         request = testing.DummyRequest()
         request.user = None

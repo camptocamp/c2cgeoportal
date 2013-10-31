@@ -27,8 +27,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from pyramid.config import Configurator
+
 
 def main(global_config, **settings):
+    config = Configurator(settings=settings)
+
     config.include('c2cgeoportal')
 
     # scan view decorator for adding routes

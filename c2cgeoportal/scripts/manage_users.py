@@ -48,8 +48,9 @@ def main():  # pragma: no cover
     ./buildout/bin/manage_users -h
     """
 
-    usage = 'usage: %prog [options] USERNAME \n\n\
-Reset a user password.\nThe username is used as password if the password is not provided with the corresponding option.\nuser can be created if it doesnt exist.'  # NOQA
+    usage = 'usage: %prog [options] USERNAME\n\n\
+Reset a user password.\nThe username is used as password if the password is not provided \
+with the corresponding option.\nuser can be created if it doesnt exist.'
 
     parser = OptionParser(usage)
     _help = 'The application .ini config file (optional, '\

@@ -32,8 +32,8 @@ from unittest import TestCase
 from nose.plugins.attrib import attr
 
 from c2cgeoportal.tests.functional import (  # NOQA
-        tearDownCommon as tearDownModule,
-        setUpCommon as setUpModule)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule)
 
 
 @attr(functional=True)
@@ -163,8 +163,10 @@ class TestReflection(TestCase):
         self.assertTrue(isinstance(col_multipolygon.type, MultiPolygon))
 
         # the class should now be in the cache
-        self.assertTrue(('public', 'table_a') in \
-                            c2cgeoportal.lib.dbreflection._class_cache)
+        self.assertTrue(
+            ('public', 'table_a') in
+            c2cgeoportal.lib.dbreflection._class_cache
+        )
         _modelclass = get_class('table_a')
         self.assertTrue(_modelclass is modelclass)
 
@@ -198,6 +200,7 @@ class TestReflection(TestCase):
         # which will block forever if the transaction is not committed.
         transaction.commit()
 
+
 @attr(functional=True)
 class TestXSDSequenceCallback(TestCase):
 
@@ -211,20 +214,23 @@ class TestXSDSequenceCallback(TestCase):
         from c2cgeoportal.lib.dbreflection import _association_proxy
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)
+
         class Child(Base):
             __tablename__ = 'child'
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
+
             def __init__(self, name):
                 self.name = name
+
         class Parent(Base):
             __tablename__ = 'parent'
             id = Column(types.Integer, primary_key=True)
             child1_id = Column(types.Integer, ForeignKey('child.id'))
             child2_id = Column(types.Integer, ForeignKey('child.id'))
-            child1_ = relationship(Child, primaryjoin=(child1_id==Child.id))
+            child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
             child1 = _association_proxy('child1_', 'name')
-            child2_ = relationship(Child, primaryjoin=(child2_id==Child.id))
+            child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
             child2 = _association_proxy('child2_', 'name')
         Base.metadata.create_all()
         DBSession.add_all([Child('foo'), Child('bar')])
@@ -246,22 +252,23 @@ class TestXSDSequenceCallback(TestCase):
         with tag(tb, 'xsd:sequence') as tb:
             _xsd_sequence_callback(tb, self.cls)
         e = tb.close()
-        self.assertEqual(tostring(e),
+        self.assertEqual(
+            tostring(e),
             '<xsd:sequence>'
-              '<xsd:element minOccurs="0" name="child1" nillable="true">'
-                '<xsd:simpleType>'
-                  '<xsd:restriction base="xsd:string">'
-                    '<xsd:enumeration value="foo" />'
-                    '<xsd:enumeration value="bar" />'
-                  '</xsd:restriction>'
-                '</xsd:simpleType>'
-              '</xsd:element>'
-              '<xsd:element minOccurs="0" name="child2" nillable="true">'
-                '<xsd:simpleType>'
-                  '<xsd:restriction base="xsd:string">'
-                    '<xsd:enumeration value="foo" />'
-                    '<xsd:enumeration value="bar" />'
-                  '</xsd:restriction>'
-                '</xsd:simpleType>'
-              '</xsd:element>'
+            '<xsd:element minOccurs="0" name="child1" nillable="true">'
+            '<xsd:simpleType>'
+            '<xsd:restriction base="xsd:string">'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="bar" />'
+            '</xsd:restriction>'
+            '</xsd:simpleType>'
+            '</xsd:element>'
+            '<xsd:element minOccurs="0" name="child2" nillable="true">'
+            '<xsd:simpleType>'
+            '<xsd:restriction base="xsd:string">'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="bar" />'
+            '</xsd:restriction>'
+            '</xsd:simpleType>'
+            '</xsd:element>'
             '</xsd:sequence>')

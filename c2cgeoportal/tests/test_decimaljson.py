@@ -15,7 +15,7 @@ class Test_DecimalJSON(TestCase):
             'str': 'an str',
             'int': 1,
             'dec': decimal.Decimal('1.2')
-            }
+        }
         request = testing.DummyRequest()
         result = renderer(value, {'request': request})
         self.assertEqual(
@@ -29,7 +29,7 @@ class Test_DecimalJSON(TestCase):
             'str': 'an str',
             'int': 1,
             'dec': decimal.Decimal('1.2')
-            }
+        }
         request = testing.DummyRequest()
         request.params['callback'] = 'jsonp_cb'
         result = renderer(value, {'request': request})

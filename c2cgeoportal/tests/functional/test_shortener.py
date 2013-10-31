@@ -33,8 +33,9 @@ from nose.plugins.attrib import attr
 
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import \
-        tearDownCommon as tearDownModule, setUpCommon as setUpModule  # NOQA
+from c2cgeoportal.tests.functional import (  # NOQA
+    tearDownCommon as tearDownModule, setUpCommon as setUpModule
+)
 
 
 @attr(functional=True)
