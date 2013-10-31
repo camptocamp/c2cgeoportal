@@ -528,6 +528,13 @@ localHostForward:
 
         attributeURLs: ${queryer_attribute_urls | n}
 
+22. Generic backend adapations
+
+    In ``viewer.js`` add in the beginning:
+
+    Ext.namespace("cgxp");
+    // WFS namespace, depend of the backend used, default is for Mapserver
+    cgxp.WFS_FEATURE_NS = "http://mapserver.gis.umn.edu/mapserver";
 
 Version 1.3.2
 =============

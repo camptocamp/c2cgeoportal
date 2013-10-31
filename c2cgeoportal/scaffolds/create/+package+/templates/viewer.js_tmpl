@@ -13,6 +13,10 @@ Ext.onReady(function() {
     // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
+    Ext.namespace("cgxp");
+    // WFS namespace, depend of the backend used, default is for Mapserver
+    cgxp.WFS_FEATURE_NS = "http://mapserver.gis.umn.edu/mapserver";
+
     <% json_extent = user.role.json_extent if user else None %>
     % if json_extent:
     var INITIAL_EXTENT = ${json_extent};
