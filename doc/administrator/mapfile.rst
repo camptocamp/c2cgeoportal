@@ -303,3 +303,15 @@ interface with for instance the following value for tthee given role:
 ``columns=t.private``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
+
+Note about ECW
+--------------
+
+In general using ECW is not recommended, as MapServer often generates broken
+images and has memory leaks with ECW. See this
+`MapServer ticket <http://trac.osgeo.org/mapserver/ticket/3245>`_
+for example.
+
+If you still want to use it then replace ``SetHandler fcgid-script``
+by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.in``
+file. But note that this affects performance.
