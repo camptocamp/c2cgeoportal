@@ -75,6 +75,9 @@ functionalities:
 # architecture.
 external_themes_url: http://localhost/${vars:parent_instanceid}/wsgi/themes
 external_mapserv_url: http://localhost/${vars:parent_instanceid}/mapserv
+# If the WFS service is different from the WMS service, uncomment and set the
+# external_mapserv_wfs_url parameter
+#external_mapserv_wfs_url:
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
@@ -82,6 +85,9 @@ raster:
 
 # URL to internal MapServer instance
 mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
+# If the WFS service is different from the WMS service, uncomment and set the
+# mapserv_wfs_url parameter
+#mapserv_wfs_url:
 
 # Define whether the MapServer proxy should hide the OGC capabilities.
 hide_capabilities: false

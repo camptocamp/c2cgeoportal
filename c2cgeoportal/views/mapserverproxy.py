@@ -46,6 +46,23 @@ from c2cgeoportal.lib.functionality import get_functionality
 log = logging.getLogger(__name__)
 
 
+def _get_wfs_url(request):
+    if 'mapserv_wfs_url' in request.registry.settings and \
+            request.registry.settings['mapserv_wfs_url']:
+        return request.registry.settings['mapserv_wfs_url']
+    return request.registry.settings['mapserv_url']
+
+
+def _get_external_wfs_url(request):
+    if 'external_mapserv_wfs_url' in request.registry.settings and \
+            request.registry.settings['external_mapserv_wfs_url']:
+        return request.registry.settings['external_mapserv_wfs_url']
+    if 'external_mapserv_url' in request.registry.settings and \
+            request.registry.settings['external_mapserv_url']:
+        return request.registry.settings['external_mapserv_url']
+    return None
+
+
 @view_config(route_name='mapserverproxy')
 def proxy(request):
 
@@ -126,7 +143,17 @@ def proxy(request):
             is_glg = ('service' not in _params or _params['service'] == u'wms') and \
                 _params['request'] == u'getlegendgraphic'
 
+        if 'wfs' in _params:
+            _url = _get_external_wfs_url(request) if external else _get_wfs_url(request)
+        else:
+            _url = request.registry.settings['external_mapserv_url'] \
+                if external \
+                else request.registry.settings['mapserv_url']
+
         callback = params.get('callback')
+    else:
+        # POST means WFS
+        _url = _get_external_wfs_url(request) if external else _get_wfs_url(request)
 
     # get query string
     params_encoded = {}
@@ -136,10 +163,6 @@ def proxy(request):
         params_encoded[k] = unicode(v).encode('utf-8')
     query_string = urllib.urlencode(params_encoded)
 
-    # get URL
-    _url = request.registry.settings['external_mapserv_url'] \
-        if external \
-        else request.registry.settings['mapserv_url']
     _url += '?' + query_string
     log.info("Querying mapserver proxy at URL: %s." % _url)
 

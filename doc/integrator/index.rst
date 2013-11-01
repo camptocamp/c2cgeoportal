@@ -12,6 +12,7 @@ Content:
    create_application
    install_application
    features
+   backend
    tilegeneration
    customize_ui
    extend_data_model
