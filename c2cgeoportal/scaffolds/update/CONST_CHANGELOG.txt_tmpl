@@ -503,7 +503,7 @@ localHostForward:
 
 18. Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
 
-19. In the `{{project}}/templates/*.js` files remove the `getMatrix` method from the `WMTS_OPTIONS`.
+19. In the `{{package}}/templates/*.js` files remove the `getMatrix` method from the `WMTS_OPTIONS`.
 
 20. The LayerTree defaultThemes parameter has been separated in two to allow to handle separately 
     the default theme and the themes loaded from url.
