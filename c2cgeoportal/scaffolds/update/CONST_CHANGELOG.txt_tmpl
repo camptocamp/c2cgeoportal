@@ -550,6 +550,11 @@ localHostForward:
         CGXP/plugins/ThemeSelector.js
         ...
 
+24. Add the following line in the ``apache/wsgi.conf.in``:
+
+    RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
+
+
 Version 1.3.2
 =============
 
