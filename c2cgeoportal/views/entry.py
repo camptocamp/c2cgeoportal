@@ -585,7 +585,7 @@ class Entry(object):
                     nameValue = name.childNodes[0].data
                     # ignore namespace
                     if nameValue.find(':') >= 0:
-                        nameValue = nameValue.split(':')[1]
+                        nameValue = nameValue.split(':')[1] # pragma nocover
                     featuretypes.append(nameValue)
                 else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
