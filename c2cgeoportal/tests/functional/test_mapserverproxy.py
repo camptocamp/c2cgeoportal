@@ -695,6 +695,90 @@ class TestMapserverproxyView(TestCase):
         self.assertFalse('Chambéry' in response.body)
         self.assertEqual(response.content_type, 'application/javascript')
 
+    def test_GetFeature_wfs_url(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.registry.settings = {
+            'mapserv_url': mapserv_url,
+            'mapserv_wfs_url': mapserv_url,
+            'functionalities': {
+                'registered': {},
+                'anonymous': {}
+            }
+        }
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % {
+            'typename': 'testpoint_unprotected',
+            'fid1': self.id_lausanne,
+            'fid2': self.id_paris
+        }
+        request.params = dict(
+            map=map, service='wfs', version='1.0.0',
+            request='getfeature', typename='testpoint_unprotected',
+            featureid=featureid, callback='cb'
+        )
+        response = mapserverproxy.proxy(request)
+
+        self.assertTrue(response.body != '')
+
+    def test_GetFeature_external_url(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.registry.settings = {
+            'mapserv_url': mapserv_url,
+            'external_mapserv_url': mapserv_url,
+            'functionalities': {
+                'registered': {},
+                'anonymous': {}
+            }
+        }
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % {
+            'typename': 'testpoint_unprotected',
+            'fid1': self.id_lausanne,
+            'fid2': self.id_paris
+        }
+        request.params = dict(
+            map=map, service='wfs', version='1.0.0',
+            request='getfeature', typename='testpoint_unprotected',
+            featureid=featureid, callback='cb', EXTERNAL=1
+        )
+        response = mapserverproxy.proxy(request)
+
+        self.assertTrue(response.body != '')
+
+    def test_GetFeature_external_wfs_url(self):
+        from c2cgeoportal.views import mapserverproxy
+
+        map = self._get_mapfile_path()
+        request = self._create_dummy_request()
+        request.registry.settings = {
+            'mapserv_url': mapserv_url,
+            'external_mapserv_wfs_url': mapserv_url,
+            'functionalities': {
+                'registered': {},
+                'anonymous': {}
+            }
+        }
+
+        featureid = '%(typename)s.%(fid1)s,%(typename)s.%(fid2)s' % {
+            'typename': 'testpoint_unprotected',
+            'fid1': self.id_lausanne,
+            'fid2': self.id_paris
+        }
+        request.params = dict(
+            map=map, service='wfs', version='1.0.0',
+            request='getfeature', typename='testpoint_unprotected',
+            featureid=featureid, callback='cb', EXTERNAL=1
+        )
+        response = mapserverproxy.proxy(request)
+
+        self.assertTrue(response.body != '')
+
     def test_substitution(self):
         from c2cgeoportal.views import mapserverproxy
         request = self._create_dummy_request()

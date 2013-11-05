@@ -60,7 +60,6 @@ def _get_external_wfs_url(request):
     if 'external_mapserv_url' in request.registry.settings and \
             request.registry.settings['external_mapserv_url']:
         return request.registry.settings['external_mapserv_url']
-    return None
 
 
 @view_config(route_name='mapserverproxy')
@@ -143,7 +142,7 @@ def proxy(request):
             is_glg = ('service' not in _params or _params['service'] == u'wms') and \
                 _params['request'] == u'getlegendgraphic'
 
-        if 'wfs' in _params:
+        if 'service' in _params and _params['service'] == u'wfs':
             _url = _get_external_wfs_url(request) if external else _get_wfs_url(request)
         else:
             _url = request.registry.settings['external_mapserv_url'] \
