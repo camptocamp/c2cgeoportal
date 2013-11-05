@@ -22,6 +22,7 @@ print/config.yaml
 print/templates/print.mako
 deploy/hooks/post-restore-database
 {{package}}/static/mobile/resources/sass/.sass-cache
+{{package}}/static/mobile/resources/css/app.css
 {{package}}/static/mobile/archive/
 {{package}}/static/mobile/build/
 {{package}}/static/mobile/openlayers-mobile.js
