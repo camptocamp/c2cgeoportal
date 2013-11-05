@@ -533,6 +533,22 @@ localHostForward:
 
     git rm -f {{package}}/static/mobile/resources/css/app.css
 
+23. Adaptations for generic backend usage necessitate the following change.
+
+    In the ``jsbuild/app.cfg`` file, add ``CGXP/cgxp.js`` in ``[app.js]``, 
+    ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` in the ``include =`` block, 
+    before any other CGXP/* entries.
+
+    for example:
+
+    include =
+        EPSG21781.js #proj4js
+        util.js #GXP
+        widgets/Viewer.js #GXP
+        DragTracker.js #ext.overrides
+        CGXP/cgxp.js
+        CGXP/plugins/ThemeSelector.js
+        ...
 
 Version 1.3.2
 =============
