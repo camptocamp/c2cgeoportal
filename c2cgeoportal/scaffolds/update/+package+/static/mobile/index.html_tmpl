@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>{{package}} Mobile Application</title>
     <style type="text/css">
-         /**
-         * Example of an initial loading indicator.
+        /**
+         * This file is managed by the update scaffold then
+         * the project CSS should be in the `custom.scss` file.
+         *
          * It is recommended to keep this as minimal as possible to provide instant feedback
          * while other resources are still being loaded for the first time
          */
