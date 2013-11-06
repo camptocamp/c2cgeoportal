@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="Content-Language" content="${lang}" />
-        <meta name="keywords" content="{{package}}, mapfish, editor, geoportal">
+        <meta name="keywords" content="{{package}}, mapfish, routing, geoportal">
         <meta name="description" content="{{package}} Geoportal Editor.">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
         <title>{{package}} Rounting</title>
