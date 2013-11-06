@@ -296,12 +296,9 @@ class TestEntryView(TestCase):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
         response = entry.mobileconfig()
 
-        layers = response['layers'].split(',')
+        layers = set(response['layers'].split(','))
         self.assertEqual(len(layers), 2)
-        layer = layers[0]
-        self.assertEqual(layer, u'__test_layer_in_group')
-        layer = layers[1]
-        self.assertEqual(layer, u'__test_public_layer')
+        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer']))
 
         visible_layers = response['visible_layers']
         self.assertEqual(visible_layers, '__test_layer_in_group')
@@ -321,22 +318,23 @@ class TestEntryView(TestCase):
         }
         response = entry.mobileconfig()
 
-        layers = response['layers'].split(',')
+        layers = set(response['layers'].split(','))
         self.assertEqual(len(layers), 2)
+        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer']))
 
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={'theme': u'__test_theme'}, username=u'__test_user1')
         response = entry.mobileconfig()
 
-        layers = response['layers'].split(',')
+        layers = set(response['layers'].split(','))
         self.assertEqual(len(layers), 3)
-        self.assertEqual(layers, [u'__test_layer_in_group', u'__test_public_layer', u'__test_private_layer'])
+        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer', u'__test_private_layer']))
 
-        visible_layers = response['visible_layers']
+        visible_layers = set(response['visible_layers'].split(','))
         self.assertEqual(
-            visible_layers.split(','),
-            ['__test_layer_in_group', '__test_private_layer']
+            visible_layers,
+            set([u'__test_layer_in_group', u'__test_private_layer'])
         )
 
         info = response['info']
