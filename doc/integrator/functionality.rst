@@ -21,7 +21,7 @@ A functionality may be associated to users through different ways:
 
 Each level overrides the previous ones in the same order as indicated above.
 For example, if the user is authenticated and has associated functionalities in
-the ``user`` database table, then the ``functionalities:anonymous`` and 
+the ``user`` database table, then the ``functionalities:anonymous`` and
 ``functionalities:registered`` configuration variables, as well as any
 functionality associated with his/her role, will be ignored.
 
@@ -167,7 +167,7 @@ anonymous users. In ``config.yaml.in``::
             # ...
             default_basemap: <some_basemap>
             authorized_plugins: []
-        
+
         available_in_templates: [default_basemap, authorized_plugins]
 
 Then you may test in your project's ``viewer.js`` template if the current user
@@ -186,7 +186,39 @@ has been granted access to some protected plugins::
         % endif
         {
             //...
-        
         }]
     });
 
+Using Functionalities list to configure the layers in the QueryBuilder
+......................................................................
+
+Add the new ``querybuilder_layer`` functionality to the list of
+``available_functionalities`` in your ``config.yaml.in`` file:
+
+.. code: yaml
+
+    admin_interface:
+        available_functionalities:
+            ...
+            - querybuilder_layer
+
+Make sure that the ``dumps`` function is imported in
+``<package>/templates/viewer.js`` using:
+
+.. code: python
+
+   <%
+   from json import dumps
+   %>
+
+And configure your plugin like that:
+
+.. code: javascript
+
+    {
+        ptype: "cgxp_querier",
+        featureTypes: ${dumps(functionality['querybuilder_layer']) | n},
+        ...
+    }
+
+This way you may assign more than one layer per role using functionalities.
