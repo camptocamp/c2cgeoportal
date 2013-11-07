@@ -129,6 +129,50 @@ The important points are:
 * ``transitionEffect``, ``buffer`` provides good value for performance
   and user experience.
 
+``linked base layers``
+......................
+
+It is possible to link a base layer with one or more *detached* base layers.
+
+A *detached* base layer is a base layer that is not listed in the ``MapOpacitySlider``
+dropdown list. But this layer can be linked with a normal base layer and will be
+displayed or hidden at the same time.
+
+To do so:
+
+* in the normal base layer, add the parameter ``linkedLayers`` with the list of 
+  *detached* base layers ``ref`` names.
+* add the *detached* base layer like any other normal base layer, but with 
+  ``visibility: false`` and no ``group`` in ``args``
+
+Example:
+
+.. code-block:: javascript
+
+            {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                group: 'background',
+                args: [Ext.applyIf({
+                  name: 'detached_base_layer_nice_name', 
+                  ref: 'detached_base_layer',
+                  layer: 'detached_base_layer_source_name',
+                  transitionEffect: "resize",
+                  visibility: false
+                }, WMTS_OPTIONS)]
+            },
+            {
+                source: "olsource",
+                type: "OpenLayers.Layer.WMTS",
+                group: 'background',
+                args: [Ext.applyIf({
+                    name: OpenLayers.i18n('normal_base_layer'),
+                    ref: 'normal_base_layer',
+                    layer: 'normal_base_layer_source_name',
+                    group: 'background',
+                    linkedLayers: ['detached_base_layer']
+                }, WMTS_OPTIONS)]
+            },
 
 Sub domain
 ----------
