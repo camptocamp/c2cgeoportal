@@ -580,10 +580,27 @@ localHostForward:
     - <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     + <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 
-    in `{package}/templates/edit.js`:
+    in `{{package}}/templates/edit.js`:
 
     - var THEMES = {
       var THEMES = {
+
+26. in the `{{package}}/templates/api/api.js`` and
+    `{{package}}/templates/api/xapi.js`` files you should remove the line:
+
+    -        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 2;
+
+    in the `{{package}}/templates/api/mapconfig.js`` file you should remove the lines:
+
+    +            ...
+    -            ..., # just remove the comma
+    -            getMatrix: function() {
+    -                return {
+    -                    identifier: OpenLayers.Util.indexOf(
+    -                                    this.serverResolutions,
+    -                                    this.map.getResolution())
+    -                };
+    -            }
 
 
 Version 1.3.2
