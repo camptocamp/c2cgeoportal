@@ -17,7 +17,7 @@ This file defines the GXP viewer and its plugins for the Extended API.
                 ptype: "gxp_zoomtoextent",
                 actionTarget: "map.tbar",
                 closest: true,
-                extent: [515000, 180000, 580000, 230000]
+                extent: [420000, 30000, 900000, 350000]
             },
             {
                 ptype: "cgxp_zoom",

@@ -69,7 +69,7 @@ APIs:
 
     Includes the map configuration, i.e. the resolutions, the base layers, the
     controls, etc. Used for both the Simple and the Extended APIs.
-    
+
 ``<package>/templates/api/viewer.js``
 
     Contains the GXP/CGXP viewer and plugins configuration. Used for the
@@ -122,6 +122,11 @@ Background/base layers
     When the viewer includes a map opacity slider plugin the "background layer
     behavior" is indeed entirely determined by the plugin, and the user that
     controls the plugin through the UI.
+
+    If the map opacity slider plugin (``cgxp_mapopacityslider``) is enabled,
+    the layer visibility is managed by the plugin. Else the  layer
+    ``visibility`` must be set  to ``true`` in
+    ``<package>/templates/api/mapconfig.js``.
 
     When the viewer does not include a map opacity slider plugin the
     ``backgroundLayers`` option determines the order of layers in the map/layer

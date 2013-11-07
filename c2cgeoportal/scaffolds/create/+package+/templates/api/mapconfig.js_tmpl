@@ -13,27 +13,18 @@ Extended APIs.
             style: 'default',
             dimensions: ['TIME'],
             params: {
-                'time': '2011'
+                'time': '2014'
             },
             matrixSet: 'swissgrid',
             maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
             projection: new OpenLayers.Projection("EPSG:{{srid}}"),
             units: "m",
             formatSuffix: 'png',
-            serverResolutions: [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,
-                                1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,
-                                2,1.5,1,0.5,0.25,0.1,0.05],
-            getMatrix: function() {
-                return {
-                    identifier: OpenLayers.Util.indexOf(
-                                    this.serverResolutions,
-                                    this.map.getResolution())
-                };
-            }
+            serverResolutions: [1000,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05]
         };
 
-        var INITIAL_EXTENT = [515000, 180000, 580000, 230000];
-        var RESTRICTED_EXTENT = [515000, 180000, 580000, 230000];
+        var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
+        var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
         var mapConfig = {
             xtype: 'cgxp_mappanel',
@@ -43,8 +34,7 @@ Extended APIs.
             stateId: "map",
             projection: new OpenLayers.Projection("EPSG:{{srid}}"),
             units: "m",
-            resolutions: [4000,2000,1000,500,250,100,50,20,10,5,
-                          2.5,1,0.5,0.25,0.1,0.05],
+            resolutions: [1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
                 new OpenLayers.Control.Navigation(),
                 new OpenLayers.Control.PanZoomBar({panIcons: false}),
