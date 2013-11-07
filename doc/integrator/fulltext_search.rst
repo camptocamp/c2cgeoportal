@@ -122,3 +122,57 @@ following variables:
  *  ``fulltextsearch_defaultlimit`` the default limit on the results,
     default is 30.
  *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
+
+Using the unaccent extension
+----------------------------
+
+By the default the full text search is accent-sensitive.
+To make it accent-insensitive Postgres's
+`unaccent extension <http://www.postgresql.org/docs/9.0/static/unaccent.html>`_
+can be used.
+
+First connect to the database:
+
+.. code:: bash
+
+    sudo -u postgres psql -d <database>
+
+For that we need the Postgres unaccent extension and dictionary:
+
+.. code:: sql
+
+    CREATE EXTENSION unaccent;
+
+Insert the unaccent dictionary into a text search configuration
+(`Documentation <http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html>`_):
+
+.. code:: sql
+
+    CREATE TEXT SEARCH CONFIGURATION fr (COPY = french);
+    ALTER TEXT SEARCH CONFIGURATION fr
+        ALTER MAPPING FOR hword, hword_part, word
+        WITH unaccent, french_stem;
+
+When populating the ``tsearch`` table use the text configuration 'fr'
+instead of 'french'. For example:
+
+.. code:: sql
+
+    INSERT INTO <schema>.tsearch
+      (the_geom, layer_name, label, public, role_id, ts)
+    VALUES
+      (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
+       'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
+
+And define the configuration in the ``config.yaml.in`` file:
+
+.. code:: yaml
+
+    fulltextsearch:
+        languages:
+            fr: fr
+
+``fr: fr`` is a link between the pyramid language and
+the text search configuration, by default the it's
+``fr: french`` because the default french text search
+configuration is named 'french'.
