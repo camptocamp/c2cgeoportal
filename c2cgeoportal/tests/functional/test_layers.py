@@ -94,7 +94,7 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-    def _create_layer(self, public=False, none_area=False):
+    def _create_layer(self, public=False, none_area=False, attr_list=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -146,13 +146,20 @@ class TestLayers(TestCase):
             name='foo',
             geom=func.ST_GeomFromText('POINT(5 45)', 21781)
         )
-        f1_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
+        engine.connect().execute(ins).inserted_primary_key[0]
         ins = table.insert().values(
             child_id=c2_id,
             name='bar',
             geom=func.ST_GeomFromText('POINT(6 46)', 21781)
         )
-        f2_id = engine.connect().execute(ins).inserted_primary_key[0]  # NOQA
+        engine.connect().execute(ins).inserted_primary_key[0]
+        if attr_list:
+            ins = table.insert().values(
+                child_id=c2_id,
+                name='aaa,bbb,foo',
+                geom=func.ST_GeomFromText('POINT(6 46)', 21781)
+            )
+            engine.connect().execute(ins).inserted_primary_key[0]
 
         layer = Layer()
         layer.id = id
@@ -623,10 +630,50 @@ class TestLayers(TestCase):
         response = enumerate_attribute_values(request)
         self.assertEquals(response, {
             'items': [{
-                'label': 'foo',
-                'value': 'foo'
-            }, {
                 'label': 'bar',
                 'value': 'bar'
+            }, {
+                'label': 'foo',
+                'value': 'foo'
+            }]
+        })
+
+    def test_enumerate_attribute_values_list(self):
+        from c2cgeoportal.views.layers import enumerate_attribute_values
+
+        layer_id = self._create_layer(public=True, attr_list=True)
+        tablename = "table_%d" % layer_id
+        settings = {
+            'layers_enum': {
+                'layer_test': {
+                    'table': tablename,
+                    'attributes': {
+                        'label': {
+                            'column_name': 'name',
+                            'separator': ','
+                        }
+                    }
+                }
+            }
+        }
+
+        request = self._get_request(layer_id)
+        request.registry.settings = settings
+        request.matchdict['layer_name'] = 'layer_test'
+        request.matchdict['field_name'] = 'label'
+        response = enumerate_attribute_values(request)
+        self.assertEquals(response, {
+            'items': [{
+                'label': u'aaa',
+                'value': u'aaa'
+            }, {
+                'label': u'bar',
+                'value': u'bar'
+            }, {
+                'label': u'bbb',
+                'value': u'bbb'
+            }, {
+                'label': u'foo',
+                'value': u'foo'
             }]
         })
