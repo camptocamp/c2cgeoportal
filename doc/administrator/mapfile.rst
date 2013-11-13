@@ -165,10 +165,13 @@ The restricted layers work only with postgres data.  All layer defined as
 restricted in the mapfile should be defined as well in the admin interface
 and vice versa.
 
+With a RestrictionArea area
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 To define a restricted layer in the mapfile the ``DATA`` property of the
 ``LAYER`` should look like this::
 
-    DATA "the_geom from
+    DATA "the_geom FROM
           (SELECT
              geo.*
            FROM
@@ -220,7 +223,6 @@ writing of the mapfile. It is defined as follows::
 
 .. note::
 
-
     Before c2cgeoportal 0.6 the following ``DATA`` query was given
     in this documentation::
 
@@ -232,6 +234,47 @@ writing of the mapfile. It is defined as follows::
 
     In most cases this query should continue to work with 0.6 and
     higher, but changing to the new query is recommended.
+
+Without restriction on the RestrictionArea area
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If we don't need to restrict on an area we can use the following
+``DATA`` property of the ``LAYER``::
+
+    DATA "the_geom FROM (
+        SELECT
+            geo.*
+        FROM
+            <schema>.<table> AS geo
+        WHERE (
+            %role_id% IN (
+                ${mapfile_data_noarea_subselect} '<layername>'
+            )
+        )
+    ) AS foo USING UNIQUE id USING srid=21781"
+
+Then you don't need to define an area in the admin interface.
+
+The ``${vars:mapfile_data_noarea_subselect}`` is defined as follows::
+
+    SELECT
+        rra.role_id
+    FROM
+        main.restrictionarea AS ra,
+        main.role_restrictionarea AS rra,
+        main.layer_restrictionarea AS lra,
+        main.treeitem AS la
+    WHERE
+        rra.restrictionarea_id = ra.id
+    AND
+        lra.restrictionarea_id = ra.id
+    AND
+        lra.layer_id = la.id
+    AND
+        la.name =
+
+Metadata and filename
+~~~~~~~~~~~~~~~~~~~~~
 
 It is required to have the following in the ``METADATA`` of the ``LAYER``::
 
