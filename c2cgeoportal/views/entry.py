@@ -41,11 +41,9 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
-from sqlalchemy.sql.expression import and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import engine_from_config
 import sqlahelper
-from geoalchemy.functions import functions
 from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
@@ -141,9 +139,7 @@ class Entry(object):
                 (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
                 (Role, Role.id == role_ra.c.role_id))
             q2 = q2.filter(Role.id == role_id)
-            q2 = q2.filter(and_(
-                Layer.public != True,
-                functions.area(RestrictionArea.area) > 0))
+            q2 = q2.filter(Layer.public != True)
             q = q.union(q2)
         return q
 
