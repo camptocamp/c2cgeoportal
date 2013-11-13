@@ -352,9 +352,15 @@ def enumerate_attribute_values(request):
 
     column = attrinfos['column_name'] \
         if 'column_name' in attrinfos else fieldname
-    values = dbsession.query(distinct(getattr(
-        layertable.columns, column
-    ))).all()
+    attribute = getattr(layertable.columns, column)
+    # For instance if `separator` is a ',' we consider that the column contains a
+    # comma separate list of values e.g.: "value1,value2".
+    if 'separator' in attrinfos:
+        separator = attrinfos['separator']
+        attribute = func.unnest(func.string_to_array(
+            func.string_agg(attribute, separator), separator
+        ))
+    values = dbsession.query(distinct(attribute)).order_by(attribute).all()
     enum = {
         'items': [{'label': value[0], 'value': value[0]} for value in values]
     }

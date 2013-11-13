@@ -10,7 +10,7 @@ web service that does a ``SELECT dinstinct(<column>) FROM <table>``.
 
 The web service configuration is done in the ``config.yaml.in`` file:
 
-.. code: yaml
+.. code:: yaml
 
     layers_enum:
         dbsession: "<session name>"
@@ -21,6 +21,7 @@ The web service configuration is done in the ``config.yaml.in`` file:
                 "<attribute name>":
                     table: "<[schema.]table name>"
                     column_name: "<column name>"
+                    separator: ","
 
 The ``dbsession: "<session name>"`` in the ``layers_enum`` is just a shortcut
 if almost of the session are similar in the layers. If the dbsession isn't
@@ -32,9 +33,11 @@ Each attributes requires a table.
 
 If the ``column_name`` isn't defined we use the attribute name.
 
+If the ``separator`` is defined we consider the column as a list of values.
+
 Simple example:
 
-.. code: yaml
+.. code:: yaml
 
     layers_enum:
         mapserver_layer:
