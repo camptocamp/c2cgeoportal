@@ -801,15 +801,15 @@ class Entry(object):
         layers = []
         for li in layer_info:
 
-            def process(l, layers):
+            def process_layers(l, layers):
                 layer = {'name': l['name']}
                 if 'childLayers' in l and len(l['childLayers']) > 0:
                     layer['childLayers'] = []
                     for child in l['childLayers']:
-                        process(child, layer['childLayers'])
+                        process_layers(child, layer['childLayers'])
                 return layers.append(layer)
 
-            process(li, layers)
+            process_layers(li, layers)
 
         # reverse
         layers = layers[::-1]
