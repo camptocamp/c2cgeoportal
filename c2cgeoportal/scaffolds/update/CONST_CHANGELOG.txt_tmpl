@@ -555,12 +555,12 @@ localHostForward:
     RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
 
 25. Change the `X-UA-Compatible` meta in the HTML templates, and other little
-    things to do: in `{package}/templates/index.html`:
+    things to do: in `{{package}}/templates/index.html`:
 
     - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
     + <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
 
-    in `{package}/templates/edit.html`:
+    in `{{package}}/templates/edit.html`:
 
     - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     + <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
@@ -568,7 +568,7 @@ localHostForward:
     - <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     + <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 
-    in `{package}/templates/routing.html`:
+    in `{{package}}/templates/routing.html`:
 
     - <meta name="keywords" content="{{package}}, mapfish, editor, geoportal">
     - <meta name="description" content="{{package}} Geoportal Editor.">
