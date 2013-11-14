@@ -48,6 +48,10 @@ Ext.application({
         if (App.themes) {
             App.themes = Ext.JSON.decode(App.themes, true);
         }
+        var overlay = App.map.getLayersByName('overlay')[0];
+        if (overlay.allLayers) {
+            overlay.allLayers = Ext.JSON.decode(overlay.allLayers, true);
+        }
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');
