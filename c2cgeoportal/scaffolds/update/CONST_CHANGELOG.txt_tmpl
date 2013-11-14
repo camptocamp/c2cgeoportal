@@ -602,6 +602,11 @@ localHostForward:
     -                };
     -            }
 
+27. In the mobile application, modify `config.js` as follows:
+
+    -allLayers: "${layers}",
+    +allLayers: '${layers | n}',
+
 
 Version 1.3.2
 =============

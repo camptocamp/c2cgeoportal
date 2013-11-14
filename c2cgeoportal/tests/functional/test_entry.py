@@ -70,8 +70,12 @@ class TestEntryView(TestCase):
         layer_group = LayerGroup(name=u'__test_layer_group')
         layer_group.children = [layer_in_group]
 
+        layer_wmsgroup = Layer(name=u'test_wmsfeaturesgroup')
+        layer_wmsgroup.isChecked = False
+
         theme = Theme(name=u'__test_theme')
-        theme.children = [public_layer, private_layer, layer_group]
+        theme.children = [public_layer, private_layer, layer_group,
+                layer_wmsgroup]
 
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
@@ -246,13 +250,17 @@ class TestEntryView(TestCase):
         theme = themes[0]
 
         layers = theme['children']
-        self.assertEqual(len(layers), 3)
+        self.assertEqual(len(layers), 4)
 
         layer = layers[0]
-        self.assertEqual(layer['name'], '__test_private_layer')
+        self.assertEqual(layer['name'], 'test_wmsfeaturesgroup')
         self.assertFalse('editable' in layer)
 
         layer = layers[1]
+        self.assertEqual(layer['name'], '__test_private_layer')
+        self.assertFalse('editable' in layer)
+
+        layer = layers[2]
         self.assertEqual(layer['name'], '__test_public_layer')
         self.assertFalse('editable' in layer)
 
@@ -275,13 +283,17 @@ class TestEntryView(TestCase):
         theme = themes[0]
 
         layers = theme['children']
-        self.assertEqual(len(layers), 3)
+        self.assertEqual(len(layers), 4)
 
         layer = layers[0]
+        self.assertEqual(layer['name'], 'test_wmsfeaturesgroup')
+        self.assertFalse('editable' in layer)
+
+        layer = layers[1]
         self.assertEqual(layer['name'], '__test_private_layer')
         self.assertTrue('editable' in layer)
 
-        layer = layers[1]
+        layer = layers[2]
         self.assertEqual(layer['name'], '__test_public_layer')
         self.assertFalse('editable' in layer)
 
@@ -289,16 +301,21 @@ class TestEntryView(TestCase):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
-        layers = response['layers']
-        self.assertEqual(layers, '')
+        import json
+        layers = json.loads(response['layers'])
+        self.assertEqual(layers, [])
 
     def test_mobileconfig_no_auth_theme(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
         response = entry.mobileconfig()
 
-        layers = set(response['layers'].split(','))
-        self.assertEqual(len(layers), 2)
-        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer']))
+        import json
+        layers = json.loads(response['layers'])
+        self.assertEqual(len(layers), 3)
+        layer = layers[0]
+        self.assertEqual(layer['name'], u'__test_layer_in_group')
+        layer = layers[1]
+        self.assertEqual(layer['name'], u'__test_public_layer')
 
         visible_layers = response['visible_layers']
         self.assertEqual(visible_layers, '__test_layer_in_group')
@@ -318,18 +335,47 @@ class TestEntryView(TestCase):
         }
         response = entry.mobileconfig()
 
-        layers = set(response['layers'].split(','))
-        self.assertEqual(len(layers), 2)
-        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer']))
+        import json
+        layers = json.loads(response['layers'])
+        self.assertEqual(len(layers), 3)
+
+    def test_mobileconfig_wmsgroup(self):
+        entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        response = entry.mobileconfig()
+
+        import json
+        layers = json.loads(response['layers'])
+        self.assertEqual(
+            layers,
+            [{
+                u"name": u"__test_layer_in_group"
+            }, {
+                u"name": u"__test_public_layer"
+            }, {
+                u"name": u"test_wmsfeaturesgroup",
+                u'childLayers': [{
+                    u'name': u'test_wmsfeatures'
+                }]
+            }]
+        )
 
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={'theme': u'__test_theme'}, username=u'__test_user1')
         response = entry.mobileconfig()
 
-        layers = set(response['layers'].split(','))
-        self.assertEqual(len(layers), 3)
-        self.assertEqual(layers, set([u'__test_layer_in_group', u'__test_public_layer', u'__test_private_layer']))
+        import json
+        layers = json.loads(response['layers'])
+        self.assertEqual(len(layers), 4)
+
+        layer = layers[0]
+        self.assertEqual(layer['name'], u'__test_layer_in_group')
+        layer = layers[1]
+        self.assertEqual(layer['name'], u'__test_public_layer')
+        layer = layers[2]
+        self.assertEqual(layer['name'], u'__test_private_layer')
+        layer = layers[3]
+        self.assertEqual(layer['name'], u'test_wmsfeaturesgroup')
 
         visible_layers = set(response['visible_layers'].split(','))
         self.assertEqual(
