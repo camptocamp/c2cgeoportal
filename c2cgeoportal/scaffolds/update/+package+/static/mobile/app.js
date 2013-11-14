@@ -18,7 +18,7 @@ Ext.application({
     ],
 
     views: ['Main', 'Layers', 'Themes', 'Search', 'Query', 'Settings', 'LoginForm'],
-    models: ['Layer', 'Search', 'Query'],
+    models: ['Layer', 'Search', 'Query', 'Theme'],
     controllers: ['Main', 'Search', 'Query'],
 
     icon: {
