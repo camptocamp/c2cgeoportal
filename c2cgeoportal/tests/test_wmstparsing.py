@@ -29,7 +29,6 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 import datetime
 import isodate
 
@@ -93,7 +92,7 @@ class TestExtent(TestCase):
         self.assertRaises(ValueError, tei.merge, tev)
 
     def test_merge_different_intervals(self):
-        from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
+        from c2cgeoportal.lib.wmstparsing import parse_extent
         e1 = parse_extent(["2000/2005/P1Y"])
         e2 = parse_extent(["2006/2010/P1M"])
         self.assertRaises(ValueError, e1.merge, e2)
