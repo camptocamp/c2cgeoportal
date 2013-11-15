@@ -22,7 +22,7 @@ Ext.define("App.view.Main", {
             xtype: 'toolbar',
             docked: 'top',
             items: [{
-                xtype: 'searchfield',
+                xtype: 'mysearchfieldnestedinaform',
                 flex: 4,
                 locales: {
                     placeHolder: 'views.map.search'
@@ -182,5 +182,20 @@ Ext.define("App.view.Main", {
                 map.events.unregister('moveend', this, onmoveend);
             });
         }
+    }
+});
+
+// see http://www.sencha.com/forum/showthread.php?151529-searchfield-not-showing-quot-Search-quot-button-on-iOS-keyboard.-Bug&p=945810&viewfull=1#post945810
+Ext.define('MySearchFieldNestedInAForm', {
+    extend: 'Ext.field.Search',
+    xtype: 'mysearchfieldnestedinaform',
+
+    getElementConfig: function() {
+        var tpl = this.callParent();
+
+        tpl.tag = 'form';
+        tpl.onsubmit = 'return false;';
+
+        return tpl;
     }
 });
