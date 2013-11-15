@@ -6,6 +6,7 @@ Ext.define("App.view.Settings", {
     ],
 
     config: {
+        scrollable: 'vertical',
         items: [{
             docked: 'top',
             xtype: 'toolbar',

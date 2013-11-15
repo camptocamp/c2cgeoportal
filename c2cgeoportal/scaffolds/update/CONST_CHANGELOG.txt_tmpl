@@ -607,6 +607,10 @@ localHostForward:
     -allLayers: "${layers}",
     +allLayers: '${layers | n}',
 
+28. Currently the `Settings` view in the mobile application is not scrollable.
+    Add the following in `app/view/Settings.js` in the config object:
+
+    scrollable: 'vertical',
 
 Version 1.3.2
 =============
