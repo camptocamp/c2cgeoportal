@@ -115,7 +115,7 @@ div.olMap {
     z-index: 0;
 }
 // Avoid tiles flickering on webkit
-.olMapViewport * {
+.olBackBuffer, .olBackBuffer *, .olLayerGrid, .olLayerGrid * {
     -webkit-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
 }
