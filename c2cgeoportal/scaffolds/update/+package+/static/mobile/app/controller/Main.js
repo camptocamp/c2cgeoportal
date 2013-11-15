@@ -74,7 +74,8 @@ Ext.define('App.controller.Main', {
                         'change': function(select, newValue) {
                             App.map.setBaseLayer(App.map.getLayer(newValue));
                             this.redirectTo('');
-                        }
+                        },
+                        scope: this
                     });
                 }
             },
