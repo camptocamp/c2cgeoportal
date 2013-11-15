@@ -380,6 +380,9 @@ Layer.layerType.set(
 Layer.imageType.set(
     renderer=fields.SelectFieldRenderer,
     options=["image/jpeg", "image/png"])
+Layer.timeMode.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["disabled", "value", "range"])
 Layer.restrictionareas.set(renderer=fields.CheckBoxSet)
 Layer.parents.set(readonly=True)
 

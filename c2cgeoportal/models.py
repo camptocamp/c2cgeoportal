@@ -429,6 +429,12 @@ class Layer(TreeItem):
     # data attribute field in which application can find a human identifiable name or number
     identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))
     geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
+    timeMode = Column(types.Enum(
+        "disabled",
+        "single",
+        "range",
+        native_enum=False), default="disabled", nullable=False,
+        label=_(u'Time mode'))
 
     def __init__(
             self, name=u'', order=0, public=True, icon=u'',

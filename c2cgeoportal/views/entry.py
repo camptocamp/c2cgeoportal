@@ -52,6 +52,8 @@ from c2cgeoportal.lib import get_setting, caching
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
     Theme, RestrictionArea, Role, layer_ra, role_ra, User
+from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
+
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
@@ -206,7 +208,7 @@ class Entry(object):
                 return None
         return icon
 
-    def _layer(self, layer, wms_layers, wms):
+    def _layer(self, layer, wms_layers, wms, time):
         errors = []
         l = {
             'id': layer.id,
@@ -234,12 +236,36 @@ class Entry(object):
 
         if layer.layerType == "internal WMS":
             self._fill_internal_WMS(l, layer, wms_layers, wms, errors)
+            errors += self._merge_time(time, layer, wms_layers, wms)
         elif layer.layerType == "external WMS":
             self._fill_external_WMS(l, layer)
         elif layer.layerType == "WMTS":
             self._fill_WMTS(l, layer, wms_layers, wms, errors)
 
         return l, errors
+
+    def _merge_time(self, time, layer, wms_layers, wms):
+        errors = []
+        try:
+            if layer.name in wms_layers:
+                wms_layer_obj = wms[layer.name]
+
+                if wms_layer_obj.timepositions:
+                    extent = parse_extent(wms_layer_obj.timepositions)
+                    time.merge_extent(extent)
+                    time.merge_mode(layer.timeMode)
+
+                for child_layer in wms_layer_obj.layers:
+                    if child_layer.timepositions:
+                        extent = parse_extent(child_layer.timepositions)
+                        time.merge_extent(extent)
+                        # The time mode comes from the layer group
+                        time.merge_mode(layer.timeMode)
+        except:  # pragma no cover
+            errors.append("Error while handling time for layer '%s' : '%s'"
+                          % (layer.name, sys.exc_info()[1]))
+
+        return errors
 
     def _fill_editable(self, l, layer):
         if layer.public:
@@ -392,7 +418,7 @@ class Entry(object):
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
 
-    def _group(self, group, layers, wms_layers, wms, depth=1):
+    def _group(self, group, layers, wms_layers, wms, time, depth=1):
         children = []
         errors = []
 
@@ -406,7 +432,7 @@ class Entry(object):
                 if (type(group) == Theme or
                         group.isInternalWMS == treeItem.isInternalWMS):
                     gp, gp_errors, stop = self._group(treeItem, layers,
-                                                      wms_layers, wms, depth)
+                                                      wms_layers, wms, time, depth)
                     errors += gp_errors
                     if stop:
                         errors.append("Too many recursions with group \"%s\""
@@ -422,7 +448,7 @@ class Entry(object):
                 if (treeItem in layers):
                     if (group.isInternalWMS ==
                             (treeItem.layerType == 'internal WMS')):
-                        l, l_errors = self._layer(treeItem, wms_layers, wms)
+                        l, l_errors = self._layer(treeItem, wms_layers, wms, time)
                         errors += l_errors
                         children.append(l)
                     else:
@@ -440,6 +466,7 @@ class Entry(object):
             }
             if group.metadataURL:
                 g['metadataURL'] = group.metadataURL
+
             return g, errors, False
         else:
             return None, errors, False
@@ -498,17 +525,24 @@ class Entry(object):
         errors = []
         for item in sorted(theme.children, key=lambda item: item.order):
             if type(item) == LayerGroup:
-                gp, gp_errors, stop = self._group(item, layers, wms_layers, wms)
+                time = TimeInformation()
+                gp, gp_errors, stop = self._group(item, layers, wms_layers, wms, time)
                 errors += gp_errors
                 if stop:
                     errors.append("Themes listing interrupted because of an error"
                                   " with theme \"%s\"" % theme.name)
                     return children, errors, True
+
                 if gp is not None:
+                    if time.has_time():
+                        gp.update({"time": time.to_dict()})  # pragma nocover
                     children.append(gp)
             elif type(item) == Layer:
                 if item in layers:
-                    l, l_errors = self._layer(item, wms_layers, wms)
+                    time = TimeInformation()
+                    l, l_errors = self._layer(item, wms_layers, wms, time)
+                    if time.has_time():
+                        l.update({"time": time.to_dict()})  # pragma nocover
                     errors += l_errors
                     children.append(l)
         return children, errors, False
