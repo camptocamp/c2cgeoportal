@@ -602,13 +602,15 @@ localHostForward:
     -                };
     -            }
 
-27. In the mobile application, modify `config.js` as follows:
+27. In the mobile application, modify `{{package}}/static/mobile/config.js` as follows:
 
     -allLayers: "${layers}",
     +allLayers: '${layers | n}',
 
+    And the Overlay (`Openlayers.Layer.WMS`) layer should be named as 'overlay'.
+
 28. Currently the `Settings` view in the mobile application is not scrollable.
-    Add the following in `app/view/Settings.js` in the config object:
+    Add the following in `{{package}}/static/mobile/app/view/Settings.js` in the config object:
 
     scrollable: 'vertical',
 
@@ -621,6 +623,7 @@ localHostForward:
     Note: The default time value specified in the map file ("wms_timedefault") is
     not currently taken into account due to a limitation in the OWSLib, see:
     https://github.com/geopython/OWSLib/pull/92
+
 
 Version 1.3.2
 =============
