@@ -368,14 +368,12 @@ class TestEntryView(TestCase):
         layers = json.loads(response['layers'])
         self.assertEqual(len(layers), 4)
 
-        layer = layers[0]
-        self.assertEqual(layer['name'], u'__test_layer_in_group')
-        layer = layers[1]
-        self.assertEqual(layer['name'], u'__test_public_layer')
-        layer = layers[2]
-        self.assertEqual(layer['name'], u'__test_private_layer')
-        layer = layers[3]
-        self.assertEqual(layer['name'], u'test_wmsfeaturesgroup')
+        self.assertEqual(set([
+            layer['name'] for layer in layers
+        ]), set([
+            u'__test_layer_in_group', u'__test_public_layer',
+            u'__test_private_layer', u'test_wmsfeaturesgroup'
+        ]))
 
         visible_layers = set(response['visible_layers'].split(','))
         self.assertEqual(
