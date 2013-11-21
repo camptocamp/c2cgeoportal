@@ -71,7 +71,6 @@ include =
     EPSG{{srid}}.js #proj4js
     util.js #GXP
     widgets/Viewer.js #GXP
-    DragTracker.js #ext.overrides
     CGXP/cgxp.js
     CGXP/plugins/ThemeSelector.js
     CGXP/plugins/LayerTree.js
@@ -138,6 +137,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base-debug.js
@@ -192,6 +193,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
     {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
     {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
+    {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
     {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
     {{package}}/static/lib/cgxp/gxp/src/script
     {{package}}/static/lib/cgxp/proj4js
@@ -207,6 +209,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base-debug.js
@@ -275,6 +279,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/en.js
@@ -311,6 +317,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/fr.js
@@ -352,6 +360,8 @@ root =
     {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/de.js
@@ -390,8 +400,11 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/SingleFile.js
@@ -443,8 +456,11 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/en.js
@@ -475,8 +491,11 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/fr.js
@@ -507,8 +526,11 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     OpenLayers/Lang/de.js
@@ -539,8 +561,11 @@ root =
     {{package}}/static/lib/cgxp/sandbox
     {{package}}/static/lib/cgxp/styler/lib
     {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
     {{package}}/static/lib/cgxp/ext.ux/ColorPicker
     {{package}}/static/lib/cgxp/ext.ux/base64
+    {{package}}/static/lib/cgxp/ext.overrides
+    {{package}}/static/lib/cgxp/dygraphs
     {{package}}/static/js
 first =
     Ext/adapter/ext/ext-base-debug.js
