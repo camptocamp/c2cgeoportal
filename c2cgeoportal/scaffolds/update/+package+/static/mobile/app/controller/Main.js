@@ -213,8 +213,8 @@ Ext.define('App.controller.Main', {
             layers = layers.concat(this.toArray(map.baseLayer.WFSTypes));
         }
 
-        // launch query only if there are layers to query
-        if (layers.length) {
+        // launch query only if there are layers or raster to query
+        if (layers.length || App.raster) {
             var p = [bounds, layers.join(',')];
             var joinedParams = p.join('-');
             joinedParams = encodeURIComponent(joinedParams);
