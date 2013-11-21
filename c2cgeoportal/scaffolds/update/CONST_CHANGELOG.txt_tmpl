@@ -624,6 +624,15 @@ localHostForward:
     not currently taken into account due to a limitation in the OWSLib, see:
     https://github.com/geopython/OWSLib/pull/92
 
+30. If the FullTextSearch has a configuration in the ``config.yaml.in`` file,
+    do the following changes::
+
+    - fulltextsearch_maxlimit: 200
+    - fulltextsearch_defaultlimit: 30
+    + fulltextsearch:
+    +     maxlimit: 200
+    +     defaultlimit: 30
+
 
 Version 1.3.2
 =============
