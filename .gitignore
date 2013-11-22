@@ -19,3 +19,4 @@ buildout/parts/
 coverage.xml
 nosetests.xml
 /*.egg
+c2cgeoportal/scaffolds/update/+package+/static/mobile/resources/sass/app.scss
