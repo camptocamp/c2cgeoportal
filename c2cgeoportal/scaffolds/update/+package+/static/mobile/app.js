@@ -41,6 +41,10 @@ Ext.application({
 
     launch: function() {
 
+        // store current theme
+        var queryParams = Ext.Object.fromQueryString(window.location.search);
+        App.theme = queryParams.theme;
+
         // decode the information received from the server
         if (App.info) {
             App.info = Ext.JSON.decode(App.info, true);
@@ -48,10 +52,7 @@ Ext.application({
         if (App.themes) {
             App.themes = Ext.JSON.decode(App.themes, true);
         }
-        var overlay = App.map.getLayersByName('overlay')[0];
-        if (overlay.allLayers) {
-            overlay.allLayers = Ext.JSON.decode(overlay.allLayers, true);
-        }
+        this.getController('Main').loadTheme(App.theme);
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');

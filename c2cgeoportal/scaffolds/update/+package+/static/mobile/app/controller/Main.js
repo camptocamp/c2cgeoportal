@@ -111,11 +111,7 @@ Ext.define('App.controller.Main', {
         var view = this.getLayersView();
         if (!view) {
             view = Ext.create('App.view.Layers');
-            var store = Ext.create('Ext.data.Store', {
-                model: 'App.model.Layer',
-                data: this.getMainView().getMap().layers
-            });
-            view.setStore(store);
+            view.getStore().setData(this.getMainView().getMap().layers);
         }
         Ext.Viewport.setActiveItem(view);
     },
@@ -223,6 +219,43 @@ Ext.define('App.controller.Main', {
     },
 
     onThemeChange: function(list, index, target, record) {
-        window.location = '?theme=' + record.get('name');
+        var map = this.getMainView().getMap(),
+            theme = record.get('name'),
+            layer = map.getLayersByName('overlay')[0];
+        if (layer) {
+            map.removeLayer(layer);
+        }
+        this.loadTheme(theme);
+        this.getLayersView().getStore().setData(map.layers);
+
+        this.redirectTo('layers');
+    },
+
+    loadTheme: function(theme) {
+        if (!theme) {
+            App.theme = theme = App.themes[0].name;
+        }
+        Ext.each(App.themes, function(t) {
+            if (t.name == theme) {
+                var overlay = new OpenLayers.Layer.WMS(
+                    'overlay',
+                    App.wmsUrl,
+                    {
+                        // layers to display at startup
+                        layers: t.layers,
+                        transparent: true
+                    },{
+                        singleTile: true,
+                        // list of available layers
+                        allLayers: t.allLayers,
+                        // list of queriable layers
+                        WFSTypes: App.WFSTypes
+                    }
+                );
+                App.map.addLayer(overlay);
+                App.theme = theme;
+                return false;
+            }
+        });
     }
 });
