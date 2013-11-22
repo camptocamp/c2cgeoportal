@@ -789,44 +789,26 @@ class Entry(object):
         """
         return {'lang': self.lang}
 
-    def mobileconfig(self):
+    def flatten_layers(self, theme):
         """
-        View callable for the mobile application's config.js file.
+        Flatten the children property into allLayers for mobile application
         """
-        errors = []
-        layer_info = []
+        print "flattening %s" % theme['children']
+
         public_only = True
+        layer_info = []
 
-        mobile_default_themes = get_functionality(
-            'mobile_default_theme',
-            self.settings,
-            self.request
-        )
-        theme_name = self.request.params.get(
-            'theme',
-            mobile_default_themes[0] if len(mobile_default_themes) > 0 else None
-        )
-        user = self.request.user
+        def process(node, layer_info, public_only=True):
+            if 'children' in node:
+                for child_node in node['children']:
+                    public_only = process(
+                        child_node, layer_info, public_only)
+            else:
+                layer_info.append(node)
+                public_only = public_only and node['public'] is True
+            return public_only
 
-        role_id = None if user is None else user.role.id
-        themes, errors = self._themes(role_id, True)
-        if theme_name:
-
-            themes = filter(lambda theme: theme['name'] == theme_name, themes)
-            theme = themes[0] if len(themes) > 0 else None
-
-            def process(node, layer_info, public_only=True):
-                if 'children' in node:
-                    for child_node in node['children']:
-                        public_only = process(
-                            child_node, layer_info, public_only)
-                else:
-                    layer_info.append(node)
-                    public_only = public_only and node['public'] is True
-                return public_only
-
-            if theme is not None:
-                public_only = process(theme, layer_info)
+        public_only = process(theme, layer_info)
 
         # we only support WMS layers right now
         layer_info = filter(lambda li: li['type'] == 'internal WMS', layer_info)
@@ -846,12 +828,35 @@ class Entry(object):
             process_layers(li, layers)
 
         # reverse
-        layers = layers[::-1]
+        theme['allLayers'] = layers[::-1]
 
         # comma-separated string including the names of layers that
         # should visible by default in the map
         visible_layers = filter(lambda li: li['isChecked'] is True, layer_info)
-        visible_layers = ','.join(reversed([li['name'] for li in visible_layers]))
+        theme['layers'] = ','.join(reversed([li['name'] for li in visible_layers]))
+
+    def mobileconfig(self):
+        """
+        View callable for the mobile application's config.js file.
+        """
+        errors = []
+
+        mobile_default_themes = get_functionality(
+            'mobile_default_theme',
+            self.settings,
+            self.request
+        )
+        theme_name = self.request.params.get(
+            'theme',
+            mobile_default_themes[0] if len(mobile_default_themes) > 0 else None
+        )
+        user = self.request.user
+
+        role_id = None if user is None else user.role.id
+        themes, errors = self._themes(role_id, True)
+
+        for t in themes:
+            self.flatten_layers(t)
 
         # comma-separated string including the feature types supported
         # by WFS service
@@ -865,25 +870,26 @@ class Entry(object):
         # application.
         info = {
             'username': user.username if user else '',
-            'publicLayersOnly': public_only
+            #'publicLayersOnly': public_only
         }
 
         # get the list of themes available for mobile
         themes_ = []
         themes, errors = self._themes(role_id, True)
         for theme in themes:
-            if theme['inMobileViewer']:
+            # mobile theme or hidden theme explicitely loaded
+            if theme['inMobileViewer'] or theme['name'] == theme_name:
                 themes_.append({
                     'name': theme['name'],
-                    'icon': theme['icon']
+                    'icon': theme['icon'],
+                    'allLayers': theme['allLayers'],
+                    'layers': theme['layers']
                 })
 
         self.request.response.content_type = 'application/javascript'
         return {
             'lang': self.lang,
             'themes': json.dumps(themes_),
-            'layers': json.dumps(layers),
-            'visible_layers': visible_layers,
             'wfs_types': wfs_types,
             'server_error': json.dumps(errors),
             'info': json.dumps(info)

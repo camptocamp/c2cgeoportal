@@ -131,11 +131,20 @@ class TestMobileDesktop(TestCase):
         self.assertEqual(
             themes,
             [{
-                "name": "__test_theme",
-                "icon": "/dummy/static/url"
+                u"name": u"__test_theme",
+                u"icon": u"/dummy/static/url",
+                u"layers": u"__test_mobile_only_layer,__test_layer",
+                u"allLayers": [
+                    {u"name": u"__test_mobile_only_layer"},
+                    {u"name": u"__test_layer"}
+                ]
             }, {
-                "name": "__test_mobile_only_theme",
-                "icon": "/dummy/static/url"
+                u"name": u"__test_mobile_only_theme",
+                u"icon": u"/dummy/static/url",
+                u"layers": u"__test_layer",
+                u"allLayers": [
+                    {u"name": u"__test_layer"}
+                ]
             }]
         )
 
@@ -150,21 +159,34 @@ class TestMobileDesktop(TestCase):
         response = entry.mobileconfig()
 
         import json
-        layers = json.loads(response['layers'])
-        self.assertEqual(len(layers), 1)
-        self.assertEqual(layers[0]['name'], u'__test_layer')
-
-    def test_mobile_layers(self):
-        entry = self._create_entry_obj()
-        entry.request.registry.settings['functionalities'] = {
-            'anonymous': {
-                'mobile_default_theme': u'__test_theme'
-            }
-        }
-        response = entry.mobileconfig()
-
-        layers = response['layers'].split(',')
-        self.assertEqual(len(layers), 2)
+        themes = json.loads(response['themes'])
+        self.assertEqual(len(themes), 3)
+        self.assertEqual(
+            themes,
+            [{
+                u"name": u"__test_theme",
+                u"icon": u"/dummy/static/url",
+                u"layers": u"__test_mobile_only_layer,__test_layer",
+                u"allLayers": [
+                    {u"name": u"__test_mobile_only_layer"},
+                    {u"name": u"__test_layer"}
+                ]
+            }, {
+                u"name": u"__test_mobile_only_theme",
+                u"icon": u"/dummy/static/url",
+                u"layers": u"__test_layer",
+                u"allLayers": [
+                    {u"name": u"__test_layer"}
+                ]
+            }, {
+                u"name": u"__test_mobile_private_theme",
+                u"icon": u"/dummy/static/url",
+                u"layers": u"__test_layer",
+                u"allLayers": [
+                    {u"name": u"__test_layer"}
+                ]
+            }]
+        )
 
     def test_desktop_layers(self):
         entry = self._create_entry_obj()
