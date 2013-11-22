@@ -43,7 +43,7 @@ class FullTextSearchView(object):
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get('fulltextsearch', {})
-        if 'languages' in self.settings:
+        if 'languages' in self.settings:  # pragma: nocover
             self.languages = self.config['fulltextsearch']['languages']
         else:
             self.languages = {
