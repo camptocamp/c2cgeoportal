@@ -154,24 +154,6 @@ class TestMobileDesktop(TestCase):
         self.assertEqual(len(layers), 1)
         self.assertEqual(layers[0]['name'], u'__test_layer')
 
-    def test_desktop_themes(self):
-        entry = self._create_entry_obj()
-        response = entry.mobileconfig()
-
-        import json
-        themes = json.loads(response['themes'])
-        self.assertEqual(len(themes), 2)
-        self.assertEqual(
-            themes,
-            [{
-                "name": "__test_theme",
-                "icon": "/dummy/static/url"
-            }, {
-                "name": "__test_mobile_only_theme",
-                "icon": "/dummy/static/url"
-            }]
-        )
-
     def test_mobile_layers(self):
         entry = self._create_entry_obj()
         entry.request.registry.settings['functionalities'] = {
