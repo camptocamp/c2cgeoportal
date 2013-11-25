@@ -793,7 +793,6 @@ class Entry(object):
         """
         Flatten the children property into allLayers for mobile application
         """
-        print "flattening %s" % theme['children']
 
         public_only = True
         layer_info = []
