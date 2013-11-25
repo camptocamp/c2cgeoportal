@@ -365,7 +365,6 @@ class TestEntryView(TestCase):
             }]
         )
 
-    @attr(pierre=True)
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={'theme': u'__test_theme'}, username=u'__test_user1')
