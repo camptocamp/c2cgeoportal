@@ -383,12 +383,12 @@ class TestEntryView(TestCase):
             u'__test_private_layer', u'test_wmsfeaturesgroup'
         ]))
 
-        visible_layers = theme['layers']
+        visible_layers = set(theme['layers'].split(','))
         self.assertEqual(
             visible_layers,
-            u'__test_layer_in_group,__test_private_layer'
-        )
+            set([u'__test_layer_in_group', u'__test_private_layer'])
 
+        )
         info = response['info']
         self.assertEqual(
             info,
