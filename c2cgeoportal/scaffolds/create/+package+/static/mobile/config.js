@@ -93,6 +93,8 @@ App.info = '${info | n}';
 
 App.themes = '${themes | n}';
 
+App.WFSTypes = '${wfs_types | n}';
+
 // define the map and layers
 App.map = new OpenLayers.Map({
     fallThrough: true, // required for longpress queries
