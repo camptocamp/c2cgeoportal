@@ -235,21 +235,11 @@ Once built the mobile application should be available on ``/mobile_dev/`` and
 Configuring the map and the layers
 ----------------------------------
 
-By default the mobile application includes three OSM layers. The OSM layers are
-base layers.
-
 To change the map configuration and the layers for the mobile application edit
 the project's ``static/mobile/config.js`` and modify the config object passed
 to the ``OpenLayers.Map`` constructor. The execution of the ``config.js``
 script should result in ``App.map`` being set to an ``OpenLayers.Map``
 instance.
-
-One thing you will certainly need to change is the mobile build profile for
-OpenLayers. The file to edit is ``jsbuild/mobile.cfg``. For example you will
-replace ``OpenLayers/Layer/OSM.js`` by ``OpenLayers/Layer/WMTS.js`` if the base
-layers are all WMTS layers. You will also replace
-``proj4js/lib/projCode/merc.js`` by ``EPSG21781.js`` if the map uses the Swiss
-projection.
 
 Theme
 ~~~~~

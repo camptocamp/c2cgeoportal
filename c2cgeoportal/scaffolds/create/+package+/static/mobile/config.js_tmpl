@@ -8,10 +8,6 @@
  */
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
-    "summits": "Summits",
-    "huts": "Huts",
-    "sites": "Sites",
-
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Cancel',
     'layer_switcher.done': 'Done',
@@ -34,10 +30,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     'close': "Close"
 });
 OpenLayers.Util.extend(OpenLayers.Lang.fr, {
-    "summits": "Sommets",
-    "huts": "Cabanes",
-    "sites": "Sites",
-
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Annuler',
     'layer_switcher.done': 'OK',
@@ -60,10 +52,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     'close': "Fermer"
 });
 OpenLayers.Util.extend(OpenLayers.Lang.de, {
-    "summits": "Gipfel",
-    "huts": "Hütten",
-    "sites": "Sehenswürdigkeiten",
-
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Abbrechen',
     'layer_switcher.done': 'OK',
@@ -95,11 +83,45 @@ App.themes = '${themes | n}';
 
 App.WFSTypes = '${wfs_types | n}';
 
+var dummy = "<% from json import dumps %>";
+jsonFormat = new OpenLayers.Format.JSON();
+try {
+    App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
+}
+catch (e) {
+    // For the Sencha build ...
+    App.tilesURL = "";
+}
+var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
+var WMTS_OPTIONS = {
+    url: App.tilesURL,
+    displayInLayerSwitcher: false,
+    requestEncoding: 'REST',
+    buffer: 0,
+    transitionEffect: "resize",
+    visibility: false,
+    style: 'default',
+    dimensions: ['TIME'],
+    params: {
+        'time': '2014'
+    },
+    matrixSet: 'swissgrid',
+    maxExtent: new OpenLayers.Bounds(420000, 30000, 900000, 350000),
+    projection: new OpenLayers.Projection("EPSG:{{srid}}"),
+    units: "m",
+    formatSuffix: 'png',
+    serverResolutions: [1000,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25,0.1,0.05]
+};
+
 // define the map and layers
 App.map = new OpenLayers.Map({
     fallThrough: true, // required for longpress queries
     theme: null,
-    projection: 'EPSG:3857',
+    projection: 'EPSG:{{srid}}',
+    resolutions: [1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
+    maxExtent: RESTRICTED_EXTENT,
+    restrictedExtent: RESTRICTED_EXTENT,
+
     controls: [
         new OpenLayers.Control.TouchNavigation({
             dragPanOptions: {
@@ -111,31 +133,17 @@ App.map = new OpenLayers.Map({
         new OpenLayers.Control.ScaleLine({geodesic: true})
     ],
     layers: [
-        new OpenLayers.Layer.OSM("OpenStreetMap", null, {
-            transitionEffect: 'resize'
-        }),
-        new OpenLayers.Layer.OSM(
-            "Cycle Map",
-            [
-                "http://a.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png",
-                "http://b.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png",
-                "http://c.tile.opencyclemap.org/cycle/${'${z}/${x}/${y}'}.png"
-            ],
-            {
-                transitionEffect: 'resize'
-            }
-        ),
-        new OpenLayers.Layer.OSM(
-            "Transport Map",
-            [
-                "http://a.tile2.opencyclemap.org/transport/${'${z}/${x}/${y}'}.png",
-                "http://b.tile2.opencyclemap.org/transport/${'${z}/${x}/${y}'}.png",
-                "http://c.tile2.opencyclemap.org/transport/${'${z}/${x}/${y'}}.png"
-            ],
-            {
-                transitionEffect: 'resize'
-            }
-
+        new OpenLayers.Layer.WMTS(OpenLayers.Util.applyDefaults({
+            name: OpenLayers.i18n('plan'),
+            layer: 'plan'
+        }, WMTS_OPTIONS),
+        new OpenLayers.Layer.WMTS(OpenLayers.Util.applyDefaults({
+            name: OpenLayers.i18n('ortho'),
+            layer: 'ortho',
+            formatSuffix: 'jpeg'
+        }, WMTS_OPTIONS),
+        new OpenLayers.Layer(
+            OpenLayers.i18n('blank')
         )
     ]
 });

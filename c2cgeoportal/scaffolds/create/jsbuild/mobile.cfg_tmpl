@@ -27,11 +27,11 @@ first =
     proj4js/lib/proj4js.js
 exclude =
 include =
-    proj4js/lib/projCode/merc.js #proj4js
+    EPSG{{srid}}.js #proj4js
     OpenLayers/Map.js
     OpenLayers/Kinetic.js
-    OpenLayers/Layer/OSM.js
     OpenLayers/Layer/WMS.js
+    OpenLayers/Layer/WMTS.js
     OpenLayers/Layer/Vector.js
     OpenLayers/Renderer/Canvas.js
     OpenLayers/Renderer/SVG.js
