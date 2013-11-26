@@ -16,6 +16,8 @@
  */
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
+    'back': 'Back',
+
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Cancel',
     'layer_switcher.done': 'Done',
@@ -24,6 +26,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // themes
     'theme_switcher.prefix': 'Theme: ',
+    'theme_view.title': 'Theme',
 
     // login/logout
     'loginButtonText': 'Log in',

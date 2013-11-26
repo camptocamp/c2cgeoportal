@@ -16,6 +16,8 @@
  */
 
 OpenLayers.Util.extend(OpenLayers.Lang.fr, {
+    'back': 'Retour',
+
     // base layer switcher picker (you shouldn't remove this)
     'layer_switcher.cancel': 'Annuler',
     'layer_switcher.done': 'OK',
@@ -24,6 +26,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
 
     // themes
     'theme_switcher.prefix': 'Thème : ',
+    'theme_view.title': 'Thème',
 
     // login/logout
     'loginButtonText': 'Me connecter',
@@ -37,5 +40,17 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     // redirect to standard application
     'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
         " consulter la <a href='${'${url}'}'>version standard</a>.",
-    'close': "Fermer"
+    'close': "Fermer",
+
+    // measure
+    'Move the map to locate starting point': 'Deplacer la carte sur le point de départ',
+    'Set starting point': 'Définir le point de départ',
+    'Move the map to measure distance': "Deplacer la carte sur le point d'arrivée",
+    'Finish': 'Terminer',
+
+    // query
+    'No query result': 'Pas de résultats',
+
+    // search
+    'No search result': 'Pas de résultats'
 });

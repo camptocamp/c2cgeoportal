@@ -24,10 +24,10 @@ Ext.define("App.view.Themes", {
             {
                 docked: 'top',
                 xtype: 'toolbar',
-                title: 'Thèmes',
+                title: OpenLayers.i18n('theme_view.title'),
                 items: [{
                     ui: 'back',
-                    text: 'back',
+                    text: OpenLayers.i18n('back'),
                     listeners: {
                         tap: function() {
                             history.back();

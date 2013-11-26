@@ -38,7 +38,7 @@ Ext.define("App.view.Layers", {
             }]
         }, {
             xtype: 'fieldset',
-            title: 'Fond',
+            title: OpenLayers.i18n('layer_switcher.background'),
             items: [{
                 xtype: 'selectfield',
                 id: 'baselayer_switcher',
@@ -51,7 +51,7 @@ Ext.define("App.view.Layers", {
             }]
         }, {
             xtype: 'fieldset',
-            title: 'Couches de données',
+            title: OpenLayers.i18n('layer_switcher.data_layers'),
             id: 'overlays',
             items: [{
                 xtype: 'button',

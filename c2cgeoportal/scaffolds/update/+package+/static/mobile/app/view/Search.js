@@ -24,7 +24,7 @@ Ext.define("App.view.Search", {
         fullscreen: true,
         itemTpl: '<div>{name}</div>',
         selectedCls: '',
-        emptyText: 'No search result',
+        emptyText: OpenLayers.i18n('No search result'),
         store: 'searchStore',
         onItemDisclosure: true,
         pinHeaders: true,

@@ -40,7 +40,7 @@ Ext.define("App.view.Query", {
             xtype: 'list',
             itemTpl: '<div>{detail}</div>',
             selectedCls: '',
-            emptyText: 'No query result',
+            emptyText: OpenLayers.i18n('No query result'),
             store: 'queryStore',
             onItemDisclosure: true,
             pinHeaders: true,
