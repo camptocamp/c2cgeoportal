@@ -59,18 +59,22 @@ Ext.define("App.view.Layers", {
             model: 'App.model.Theme',
             id: 'themesStore'
         });
-        this.setStore(themesStore);
         themesStore.add(App.themes);
 
-        var queryParams = OpenLayers.Util.getParameters();
-        var currentTheme = themesStore.find('name', queryParams.theme);
+        var store = Ext.create('Ext.data.Store', {
+            model: 'App.model.Layer',
+            listeners: {
+                refresh: this.dataChanged,
+                scope: this
+            }
+        });
+        this.setStore(store);
+
+        var currentTheme = themesStore.find('name', App.theme);
         if (currentTheme == -1) {
             currentTheme = 0;
         }
-        this.down('#theme_switcher').setText(
-            OpenLayers.i18n('theme_switcher.prefix') +
-            OpenLayers.i18n(themesStore.getAt(currentTheme).get('name'))
-        );
+        this.setButtonText(App.theme);
     },
 
     toArray: function(value) {
@@ -93,8 +97,21 @@ Ext.define("App.view.Layers", {
         layer.mergeNewParams({'LAYERS': layersParam});
     },
 
-    updateStore: function(store) {
+    setButtonText: function(theme) {
+        this.down('#theme_switcher').setText(
+            OpenLayers.i18n('theme_switcher.prefix') +
+            OpenLayers.i18n(theme)
+        );
+    },
+
+    dataChanged: function(store) {
+        // set theme switcher name
+        this.setButtonText(App.theme);
         var overlaysContainer = this.down('#overlays');
+        // remove previous layers from list
+        while (overlaysContainer.getAt(1)) {
+            overlaysContainer.removeAt(1);
+        }
         store.each(function(record) {
             var layer = record.raw;
             if (!layer.isBaseLayer &&

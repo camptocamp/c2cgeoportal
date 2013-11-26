@@ -235,65 +235,14 @@ Once built the mobile application should be available on ``/mobile_dev/`` and
 Configuring the map and the layers
 ----------------------------------
 
-By default the mobile application includes three OSM layers, and
-a camptocamp.org WMS layer. The OSM layers are base layers. The camptocamp.org
-WMS layer is an overlay.
+By default the mobile application includes three OSM layers. The OSM layers are
+base layers.
 
 To change the map configuration and the layers for the mobile application edit
 the project's ``static/mobile/config.js`` and modify the config object passed
 to the ``OpenLayers.Map`` constructor. The execution of the ``config.js``
 script should result in ``App.map`` being set to an ``OpenLayers.Map``
 instance.
-
-In addition to the regular options for ``OpenLayers.Layer.WMS`` two specific
-options can be defined: ``allLayers`` and ``WFSTypes``.
-
-``allLayers``
-
-    It references the list of WMS layers that can be displayed in the map. It
-    is used by the overlay selector when the user selects/unselects overlays.
-
-    Note that the value of the ``layers`` WMS parameter (in the third argument
-    passed to ``OpenLayers.Layer.WMS``), which defines the WMS layers displayed
-    by default, should be a subset of ``allLayers``.
-
-    Note also that, if the ``layers`` WMS parameter is not set, then the
-    ``visibility`` property should be set to ``false`` in the options (4th
-    arguments) passed to ``OpenLayers.Layer.WMS``.
-
-``WFSTypes``
-
-    It references the list of feature types supported by the WFS. It is used by
-    the map querier when the user queries the map with long-press. Only layers
-    that are referenced in both ``allLayers`` and ``WFSTypes`` are effectively
-    queried.
-
-    The ``WFSTypes`` config option can be used for the base layers as well. In
-    this case, the provided feature types should have corresponding queryable
-    layers in the mapfile.
-
-Here is an example of a statically-defined WMS layer::
-
-    new OpenLayers.Layer.WMS(
-        'overlay',
-        App.wmsUrl,
-        {
-            // layers to display at startup
-            layers: ['npa', 'v_poi_admin'],
-            transparent: true
-        },
-        {
-            singleTile: true,
-            // list of available layers
-            allLayers: ['npa', 'v_poi_admin', 'v_poi_transport', 'v_poi_culture'],
-            // list of queriable layers
-            WFSTypes: ['npa', 'v_poi_admin', 'v_poi_transport', 'v_poi_culture']
-        }
-    )
-
-.. note::
-
-    See above to know about current limitations.
 
 One thing you will certainly need to change is the mobile build profile for
 OpenLayers. The file to edit is ``jsbuild/mobile.cfg``. For example you will
@@ -305,48 +254,8 @@ projection.
 Theme
 ~~~~~
 
-If a specific theme is requested (e.g. ``/mobile/?theme=water``) then
-the ``config.js`` Mako template receives the following template
-variables:
-
-``layers``
-
-    Comma-separated string providing the list of layers associated to the
-    requested theme. The list depends on the user credentials. This value is to
-    be used for the ``allLayers`` property of the ``OpenLayers.Layer.WMS``
-    object. See example below.
-
-``wfs_types``
-
-    Comma-separated string providing the list of feature types exposed by the
-    WFS. This value is to be used for the ``WFSTypes`` property of the
-    ``OpenLayers.Layer.WMS`` object.
-
-``visible_layers``
-
-    Comma-separated string providing the list of layers associated to the
-    requested theme and that are configured as visible (``isChecked`` is
-    ``TRUE``) in the ``layer`` database table. This value is to be used for the
-    ``layers`` WMS parameter of the ``OpenLayers.Layer.WMS`` object.
-
-Here is an example of a dynamically-defined WMS layer::
-
-    new OpenLayers.Layer.WMS(
-        'overlay',
-        App.wmsUrl,
-        {
-            // layers to display at startup
-            layers: "${visible_layers}",
-            transparent: true
-        },
-        {
-            singleTile: true,
-            // list of available layers
-            allLayers: "${layers}",
-            // list of queriable layers
-            WFSTypes: "${wfs_types}"
-        }
-    )
+The list of themes and layers shown in the mobile application is dynamically
+generated. See :ref:`administrator_guide`.
 
 UI strings translations
 -----------------------

@@ -93,6 +93,8 @@ App.info = '${info | n}';
 
 App.themes = '${themes | n}';
 
+App.WFSTypes = '${wfs_types | n}';
+
 // define the map and layers
 App.map = new OpenLayers.Map({
     fallThrough: true, // required for longpress queries
@@ -134,19 +136,6 @@ App.map = new OpenLayers.Map({
                 transitionEffect: 'resize'
             }
 
-        ),
-        new OpenLayers.Layer.WMS(
-            "Summits",
-            "http://www.camptocamp.org/cgi-bin/c2corg_wms",
-            {
-                layers: ['summits'],
-                transparent: true
-            },
-            {
-                allLayers: ['summits', "huts", "sites"],
-                singleTile: true,
-                ratio: 1
-            }
         )
     ]
 });
