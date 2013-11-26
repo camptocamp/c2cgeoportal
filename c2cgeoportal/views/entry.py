@@ -794,20 +794,16 @@ class Entry(object):
         Flatten the children property into allLayers for mobile application
         """
 
-        public_only = True
         layer_info = []
 
-        def process(node, layer_info, public_only=True):
+        def process(node, layer_info):
             if 'children' in node:
                 for child_node in node['children']:
-                    public_only = process(
-                        child_node, layer_info, public_only)
+                    process(child_node, layer_info)
             else:
                 layer_info.append(node)
-                public_only = public_only and node['public'] is True
-            return public_only
 
-        public_only = process(theme, layer_info)
+        process(theme, layer_info)
 
         # we only support WMS layers right now
         layer_info = filter(lambda li: li['type'] == 'internal WMS', layer_info)
@@ -868,8 +864,7 @@ class Entry(object):
         # but by other - private to the integrator - parts of the mobile
         # application.
         info = {
-            'username': user.username if user else '',
-            #'publicLayersOnly': public_only
+            'username': user.username if user else ''
         }
 
         # get the list of themes available for mobile
