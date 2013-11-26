@@ -1,5 +1,5 @@
-    extend: 'Ext.app.Controller',
 Ext.define('App.controller.Main', {
+    extend: 'Ext.app.Controller',
 
     config: {
         overlay: null,
@@ -69,6 +69,9 @@ Ext.define('App.controller.Main', {
                         }
                     });
                     cmp.setStore(baseLayersStore);
+                    if (baseLayersStore.getAllCount() <= 1) {
+                        cmp.parent.hide();
+                    }
 
                     // listen to change event only once the store is set
                     cmp.on({
@@ -229,7 +232,12 @@ Ext.define('App.controller.Main', {
 
     loadTheme: function(theme) {
         if (!theme) {
-            App.theme = theme = App.themes[0].name;
+            if (App.themes && App.themes.length > 0) {
+                App.theme = theme = App.themes[0].name;
+            }
+            else if (console) {
+                console.log("No themes are displayed in mobile for the curent role");
+            }
         }
         Ext.each(App.themes, function(t) {
             if (t.name == theme) {

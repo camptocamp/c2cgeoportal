@@ -74,7 +74,13 @@ Ext.define("App.view.Layers", {
         if (currentTheme == -1) {
             currentTheme = 0;
         }
-        this.setButtonText(App.theme);
+
+        if (App.themes.length > 1) {
+            this.setButtonText(App.theme);
+        }
+        else {
+            this.down('#theme_switcher').hide();
+        }
     },
 
     toArray: function(value) {
