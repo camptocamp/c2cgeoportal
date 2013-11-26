@@ -24,6 +24,9 @@ first =
     OpenLayers/Lang/fr.js
     OpenLayers/Lang/en.js
     OpenLayers/Lang/de.js
+    app/locale/fr.js
+    app/locale/en.js
+    app/locale/de.js
     proj4js/lib/proj4js.js
 exclude =
 include =
