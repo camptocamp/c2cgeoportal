@@ -1,7 +1,8 @@
-Ext.define('App.controller.Main', {
     extend: 'Ext.app.Controller',
+Ext.define('App.controller.Main', {
 
     config: {
+        overlay: null,
         refs: {
             mainView: 'mainview',
             layersView: 'layersview',
@@ -154,8 +155,8 @@ Ext.define('App.controller.Main', {
             if (layer.setParams) {
                 layer.setParams(params);
             }
-            else if (layer.mergeNewParams) { // WMS or WMTS 
-                layer.mergeNewParams(params); 
+            else if (layer.mergeNewParams) { // WMS or WMTS
+                layer.mergeNewParams(params);
             }
         }
     },
@@ -187,21 +188,16 @@ Ext.define('App.controller.Main', {
     queryMap: function(view, bounds, map) {
         var layers = [];
 
-        // overlay layers
-        for (var i=0; i<map.layers.length; i++) {
-            var layer = map.layers[i];
-            if (!layer.isBaseLayer && layer.visibility &&
-                layer.CLASS_NAME != 'OpenLayers.Layer.Vector') {
-                var layersParam = this.toArray(layer.params.LAYERS),
-                    // Ensure that we query the child layers in case of groups
-                    layersParam = this.getChildLayers(layer, layersParam),
-                    WFSTypes = this.toArray(layer.WFSTypes);
-                for (var j=0; j<layersParam.length; j++) {
-                    if (WFSTypes.indexOf(layersParam[j]) != -1) {
-                        layers.push(layersParam[j]);
-                    }
-                }
-            }
+        // overlay
+        var overlay = this.getOverlay();
+        var layersParam = this.toArray(overlay.params.LAYERS),
+            // Ensure that we query the child layers in case of groups
+            layersParam = this.getChildLayers(overlay, layersParam),
+            WFSTypes = this.toArray(App.WFSTypes);
+        for (var j=0; j<layersParam.length; j++) {
+            if (WFSTypes.indexOf(layersParam[j]) != -1) {
+                layers.push(layersParam[j]);
+             }
         }
 
         // currently displayed baseLayer
@@ -221,9 +217,9 @@ Ext.define('App.controller.Main', {
     onThemeChange: function(list, index, target, record) {
         var map = this.getMainView().getMap(),
             theme = record.get('name'),
-            layer = map.getLayersByName('overlay')[0];
-        if (layer) {
-            map.removeLayer(layer);
+            overlay = this.getOverlay();
+        if (overlay) {
+            map.removeLayer(overlay);
         }
         this.loadTheme(theme);
         this.getLayersView().getStore().setData(map.layers);
@@ -247,15 +243,14 @@ Ext.define('App.controller.Main', {
                     },{
                         singleTile: true,
                         // list of available layers
-                        allLayers: t.allLayers,
-                        // list of queriable layers
-                        WFSTypes: App.WFSTypes
+                        allLayers: t.allLayers
                     }
                 );
                 App.map.addLayer(overlay);
+                this.setOverlay(overlay);
                 App.theme = theme;
                 return false;
             }
-        });
+        }, this);
     }
 });
