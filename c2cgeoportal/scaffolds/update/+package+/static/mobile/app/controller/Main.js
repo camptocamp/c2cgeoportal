@@ -107,6 +107,9 @@ Ext.define('App.controller.Main', {
 
     showHome: function() {
         Ext.Viewport.setActiveItem(0);
+        var view = this.getLayersView();
+        var mainView = this.getMainView();
+        view.getStore().setData(mainView.getMap().layers);
     },
 
     showLayers: function() {

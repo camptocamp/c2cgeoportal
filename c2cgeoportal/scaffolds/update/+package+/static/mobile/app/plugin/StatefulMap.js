@@ -26,12 +26,35 @@ Ext.define('App.plugin.StatefulMap', {
     init: function(view) {
         if (view) {
             view.on('setmap', function(view, map) {
+                var main = App.app.getController('Main');
                 this.setMap(map);
                 // apply saved state
                 var state = this.getState();
-                if (state) {
-                    view.setCenter(state.lonlat);
-                    view.setZoom(state.zoom);
+                if (state.theme) {
+                    main.loadTheme(state.theme);
+                }
+                if (state.bgLayer) {
+                    map.setBaseLayer(
+                        map.getLayersBy('layer', state.bgLayer)[0]
+                    );
+                }
+                if (state.layers) {
+                    var overlay = main.getOverlay();
+                    overlay.mergeNewParams({layers: state.layers});
+                    Ext.each(App.themes, function(theme){
+                        if (theme.name !== App.theme) {
+                            return;
+                        }
+                        theme.allLayers = state.layers.map(function(layer) {
+                            return { "name": layer };
+                        });
+                        overlay.allLayers = theme.allLayers;
+                        return false;
+                    });
+                    main.getLayersView().getStore().setData(map.layers);
+                }
+                if (state.lonlat) {
+                    map.setCenter(state.lonlat, state.zoom);
                 }
                 map.events.on({
                     moveend: this.moveend,
@@ -49,14 +72,22 @@ Ext.define('App.plugin.StatefulMap', {
     },
 
     getState: function() {
-        var state = localStorage.getItem(this.getMap().id + '-position');
-        if (state) {
-            var items = state.split(',');
-            return {
-                lonlat: items.slice(0, 2),
-                zoom: items[2]
+        var q= Ext.Object.fromQueryString(window.location.search),
+            state = {
+                theme: q.theme,
+                bgLayer: q.baselayer_ref
             };
+        Ext.iterate(q, function(key, value) {
+            if ('tree_group_layers_' === key.substr(0, 18)) {
+                state.layers = state.layers || [];
+                state.layers.push.apply(state.layers, value.split(','));
+            }
+        });
+        if (q.map_x && q.map_y) {
+            state.lonlat = [ q.map_x, q.map_y ];
+            state.zoom = q.map_zoom;
         }
+        return state;
     },
 
     applyState: function(state) {

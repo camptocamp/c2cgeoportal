@@ -76,6 +76,8 @@ Ext.application({
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');
+        var layersView = Ext.create('App.view.Layers');
+
         // App.map should be set in config.js
         mainView.setMap(App.map);
 
