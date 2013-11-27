@@ -168,10 +168,10 @@ Ext.define("App.view.Main", {
         var ll = this.getMap().getLonLatFromPixel(llPx);
         var ur = this.getMap().getLonLatFromPixel(urPx);
         return new OpenLayers.Bounds(
-            parseInt(ll.lon),
-            parseInt(ll.lat),
-            parseInt(ur.lon),
-            parseInt(ur.lat)
+            parseInt(ll.lon, 10),
+            parseInt(ll.lat, 10),
+            parseInt(ur.lon, 10),
+            parseInt(ur.lat, 10)
         );
     },
 
