@@ -370,21 +370,6 @@ the repository, which can be obtained with::
     <current_version>
     $
 
-Now that we know the latest version of the repository (= current version of the
-database), we need to actually put the database under version control.
-A dedicated table is used by sqlalchemy-migrate to store the current version
-of the database. This table should be named ``version_<package_name>``.
-
-So let's create this table and set the current version of the database
-(obtained from the previous command)::
-
-    $ ./buildout/bin/manage_db version_control <current_version>
-
-The database is now under version control, you can check that the current
-database version is correct with the command::
-
-    $ ./buildout/bin/manage_db db_version
-
 Note that future schema upgrades will only be done via change scripts from the
 repository, and they will automatically increment the ``db_version``.
 
