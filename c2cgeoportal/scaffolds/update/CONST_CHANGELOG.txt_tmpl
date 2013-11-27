@@ -667,7 +667,7 @@ localHostForward:
     +     maxlimit: 200
     +     defaultlimit: 30
 
-33. Mobile application updates. ``config.js`` needs to be changed as following.
+33. Mobile application updates. ``{{package}}/static/mobile/config.js`` needs to be changed as following.
 
     The ``overlay`` layer config should be removed. Only the background layers
     should now be listed in the map config.
@@ -676,6 +676,26 @@ localHostForward:
 
         App.themes = '${themes | n}';
         App.WFSTypes = '${wfs_types | n}';
+
+34. In the `{{package}}/static/mobile/config.js` we need to remove the localisation:
+
+        - OpenLayers.Util.extend(OpenLayers.Lang.en, {
+        -   ...
+        - }
+        - OpenLayers.Util.extend(OpenLayers.Lang.fr, {
+        -   ...
+        - }
+        - OpenLayers.Util.extend(OpenLayers.Lang.de, {
+        -   ...
+        - }
+
+    And in the `jsbuild/mobile.cfg` add the new files:
+
+          OpenLayers/Lang/de.js
+        + app/locale/fr.js
+        + app/locale/en.js
+        + app/locale/de.js
+
 
 Version 1.3.2
 =============

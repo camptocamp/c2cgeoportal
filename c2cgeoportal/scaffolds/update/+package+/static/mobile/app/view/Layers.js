@@ -1,3 +1,20 @@
+/**
+ * Copyright (c) 2011-2013 by Camptocamp SA
+ *
+ * CGXP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CGXP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with CGXP. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 Ext.define("App.view.Layers", {
     extend: 'Ext.form.Panel',
     xtype: 'layersview',
@@ -21,7 +38,7 @@ Ext.define("App.view.Layers", {
             }]
         }, {
             xtype: 'fieldset',
-            title: 'Fond',
+            title: OpenLayers.i18n('layer_switcher.background'),
             items: [{
                 xtype: 'selectfield',
                 id: 'baselayer_switcher',
@@ -34,7 +51,7 @@ Ext.define("App.view.Layers", {
             }]
         }, {
             xtype: 'fieldset',
-            title: 'Couches de données',
+            title: OpenLayers.i18n('layer_switcher.data_layers'),
             id: 'overlays',
             items: [{
                 xtype: 'button',
@@ -74,7 +91,13 @@ Ext.define("App.view.Layers", {
         if (currentTheme == -1) {
             currentTheme = 0;
         }
-        this.setButtonText(App.theme);
+
+        if (App.themes.length > 1) {
+            this.setButtonText(App.theme);
+        }
+        else {
+            this.down('#theme_switcher').hide();
+        }
     },
 
     toArray: function(value) {
