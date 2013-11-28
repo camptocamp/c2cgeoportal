@@ -57,17 +57,30 @@ Ext.define('App.plugin.StatefulMap', {
                     map.setCenter(state.lonlat, state.zoom);
                 }
                 map.events.on({
-                    moveend: this.moveend,
+                    moveend: this.update,
+                    changebaselayer: this.update,
+                    changelayer: this.update,
                     scope: this
                 });
             }, this);
         }
     },
 
-    moveend: function() {
+    update: function() {
         this.setState({
             lonlat: this.getMap().getCenter(),
-            zoom: this.getMap().getZoom()
+            zoom: this.getMap().getZoom(),
+            theme: App.theme,
+            bgLayer: this.getMap().baseLayer.layer,
+            layers: Ext.Array.flatten(
+                this.getMap().layers.filter(function(layer) {
+                    return !layer.isBaseLayer &&
+                        layer instanceof OpenLayers.Layer.WMS &&
+                        layer.visibility;
+                }).map(function(layer){
+                    return layer.params.LAYERS;
+                })
+            )
         });
     },
 
