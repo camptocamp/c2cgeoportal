@@ -4,321 +4,92 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.4
 ===========
 
-1. Tileforge has been removed from c2cgeoportal and replaced by a combination
-   of TileCloud and MapCache.
+1. Get the new files:
 
-   The main documentation is available at:
-   http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
+    git add versions.cfg
 
-   The first things you should do are::
-   * In `{{package}}/templates/viewer.js`, `{{package}}/templates/api/mapconfig.js`,
-     `{{package}}/templates/edit.js` replace
-     `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
-   * In the `config.yaml.in` transform tilecache_url in an array,
-     and name it `tiles_url`.
-   * Remove `apache/tilecache.conf.in`.
-   * Remove the parameter `tilecache.cfg` in the `production.ini.in` and
-     in the `devlopment.ini.in`.
-   * In the `buildout.cfg` section `[buildout]` remove the line:
-     find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge
-   * In the file `<package>/__init__.py` remove the following code::
+    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
 
-        from c2cgeoportal.views.tilecache import load_tilecache_config
+    cp /tmp/{{project}}/README.rst .
+    git add README.rst
+    cp /tmp/{{project}}/{{package}}/templates/routing.{js,html} {{package}}/templates/
+    git add {{package}}/templates/routing.{js,html}
 
-        # add a TileCache view
-        load_tilecache_config(config.get_settings())
-        config.add_route('tilecache', '/tilecache{path:.*?}')
-        config.add_view(
-            view='c2cgeoportal.views.tilecache:tilecache',
-            route_name='tilecache')
+    rm -rf /tmp/{{project}}
 
-   * When the new configuration is done you can remove the ``tilecache``
-     folder.
+2. Remove the deprecated files:
 
-2. Add sub domain support for pyramid views.
-   You can add the following configuration to the `config.yaml.in`:
+    git rm CONST_TIPS.txt.in # replaced by README.rst
 
-   # The URL template used to generate the sub domain URL
-   # %(sub)s will be replaced by the sub domain value.
-   #subdomain_url_template: http://%(sub)s.${vars:host}
-   # The used sub domain for the static resources
-   #subdomains: [s1, s2, s3, s4]
+      * Tileforge has been removed from c2cgeoportal and replaced by a combination
+        of TileCloud and MapCache.
 
-   For the documentation see:
-   http://docs.camptocamp.net/c2cgeoportal/integrator/customize_ui.html#sub-domain
-   http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html#internal-service
+        The main documentation is available at:
+        http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
 
-3. We don't anymore reset all default CSS attributes in the XAPI.
-   Than the XAPI should not anymore brake the CSS of the page.
+            git rm apache/tilecache.conf.in
+            git rm tilecache
 
-   For that you should:
+3. Update the `jsbuild/app.cfg` file.
 
-   Add in the file `{{package}}/templates/api/viewer.js`,
-   in the `portalConfig`:
+  * Set all the `root` sections to:
 
-                ctCls: 'x-map',
-
-   In the file `{{package}}/templates/api/xapi.js`, replace:
-
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" + '" />');
-
-   By:
-
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/reset.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/editor.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/menu.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/panel.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/grid.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/debug.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/qtips.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dd.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/form.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/resizable.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/toolbar.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/slider.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/combo.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/layout.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dialog.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/core.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/button.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/progress.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tabs.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/box.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/borders.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/date-picker.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tree.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/window.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/list-view.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/editor.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/pivotgrid.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/menu.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/grid.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/debug.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/qtips.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dd.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/form.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/resizable.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/toolbar.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel-reset.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/slider.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/combo.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/layout.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dialog.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/core.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/button.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/progress.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tabs.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/box.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/borders.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/date-picker.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tree.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/window.css')}" + '" />');
-document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
-
-4. In this version we call mapserver and the MapFish print directly on localhost
-   with the given Host header.
-
-   In `comfig.yaml.in` set `mapserver_url` and `print_url` using localhost
-   as follows:
-
-# For mapserver proxy
-mapserv_url: http://localhost/${vars:instanceid}/mapserv
-
-# For print proxy
-print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
-
-    And in the print config template `print/templates/print.mako.in`
-    you should add the following config:
-
-localHostForward:
-    from:
-        - ${vars:host}
-    https2http: True
-
-5. Remove print config file (changed and required only for Windows):
-
-        git rm print/WEB-INF/classes/spring-application-context.xml
-
-    For Windows user redo the change done in http://docs.camptocamp.net/c2cgeoportal/integrator/create_application.html?highlight=windows#configure-the-application
-
-6. Replace the CONST_TIPS by a README:
-
-        git rm CONST_TIPS.txt.in
-        ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
-        cp /tmp/{{project}}/README.rst .
-        rm -rf /tmp/{{project}}
-        git add README.rst
-
-7. Remove all the `[versions]` section from your `buildout.cfg` file,
-   from now it's managed in the `versions.cfg` file.
-
-   Add the new `versions.cfg` file to Git:
-
-       git add versions.cfg
-
-8. Add to git the new print file name:
-
-    mv print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war.new
-    git mv print/print-servlet-1.2-SNAPSHOT.war print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
-    mv print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war.new print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
-    git add print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
-
-9. Move the `mobile_default_theme` to the functionalities int the
-   `config.yaml.in` file:
-
-     functionalities:
-        anonymous:
-    +        mobile_default_theme:
-
-    -mobile_default_theme:
-
-10. In the `jsbuild/app.cfg` use the ext debug files (3x):
-
-    -    Ext/adapter/ext/ext-base.js
-    -    Ext/ext-all.js
-    +    Ext/adapter/ext/ext-base-debug.js
-    +    Ext/ext-all-debug.js
-
-11. Password modification UI has been implemented.
-
-     It is now possible to allow the user to change his password, and optionally to remind him to change it.
-
-     a) You need to add some configuration parameters in the cgxp_login plugin:
-
-      {
-          ptype: "cgxp_login",
-          actionTarget: "center.tbar",
-          toggleGroup: "maptools",
-      % if user:
-          username: "${user.username}",
-          isPasswordChanged: ${"true" if user.is_password_changed else "false"},
-      % endif
-          loginURL: "${request.route_url('login', path='')}",
-          loginChangeURL: "${request.route_url('loginchange', path='')}",
-          logoutURL: "${request.route_url('logout', path='')}",
-          enablePasswordChange: true,
-          forcePasswordChange: true,
-          permalinkId: "permalink"
-      },
-
-     ``enablePasswordChange`` enable the password modification UI,
-     ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
-     to remind the user he should change his password.
-
-     b) The form in {{package}}/templates/index.html and {{package}}/templates/edit.html must be updated:
-
-              <form method="POST" id="loginForm" style="display: none">
-                  <input id="login" name="login" type="text" autocomplete="on"/>
-                  <input id="password" name="password" type="password" autocomplete="on"/>
-     +            <input id="newPassword" name="newPassword" type="password" />
-     +            <input id="confirmNewPassword" name="confirmNewPassword" type="password" />
-              </form>
-
-     c) The database must also be upgraded to version 10.
-
-     d) You must add the following line in your production.ini.in and
-     development.ini.in in the [app:app] section:
-
-     auth_replication_enabled = ${vars:enable_auth_replication}
-     sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}
-
-     e) Then you can enable the replication by specifying the following configuration in your buildout_<user>.cfg:
-
-     enable_auth_replication = true
-     dbhost_replication: <target database hostname>
-     dbport_replication: <target database port>
-     db_replication: <target database name>
-     dbuser_replication: <target database username>
-     dbpassword_replication: <target database password>
-
-     The target database is the database where the changes are replicated.
-
-12. In the apache/wsgi.conf.in do the following change to make the end slash optional:
-
-   -RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
-   +RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
-
-13. With Mapfish-Print 2.0 some legend parameters have been added or renamed.
-    In the printing configuration, change the ``legends`` blocks as follows:
-
-   -maxIconHeight: 0
-   +iconMaxHeight: 0
-   -maxIconWidth: 0
-   +iconMaxWidth: 0
-   +horizontalAlignment: left
-
-14. In jsbuild/app.cfg add the following line to the "root" sections:
-
-    {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
-
-15. Add routing panel files:
-
-        ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
-        cp /tmp/{{project}}/{{package}}/templates/routing.{js,html} {{package}}/templates/
-        rm -rf /tmp/{{project}}/
-        git add {{package}}/templates/routing.{js,html}
-
-    Adding the following entries to all the ``root`` lists in
-    ``jsbuild/app.cfg`` is recommended:
-
+        {{package}}/static/lib/cgxp/core/src/script
+        {{package}}/static/lib/cgxp/ext
+        {{package}}/static/lib/cgxp/geoext/lib
+        {{package}}/static/lib/cgxp/openlayers/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
         {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
+        {{package}}/static/lib/cgxp/gxp/src/script
+        {{package}}/static/lib/cgxp/proj4js
+        {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/WMSBrowser/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/StreetViewPanel
+        {{package}}/static/lib/cgxp/sandbox
+        {{package}}/static/lib/cgxp/styler/lib
+        {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+        {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
+        {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+        {{package}}/static/lib/cgxp/ext.ux/base64
+        {{package}}/static/lib/cgxp/ext.overrides
+        {{package}}/static/lib/cgxp/dygraphs
+        {{package}}/static/js
 
-    And add a new routing section (replace <<srid>> by the right value):
+  * Use the ext debug files (3x):
+
+        - Ext/adapter/ext/ext-base.js
+        - Ext/ext-all.js
+        + Ext/adapter/ext/ext-base-debug.js
+        + Ext/ext-all-debug.js
+
+  * Remove from all the `include` section the line:
+
+        DragTracker.js #ext.overrides
+
+  * Adaptations for generic backend usage require the following change.
+
+    In the ``jsbuild/app.cfg`` file, add ``CGXP/cgxp.js`` in ``[app.js]``,
+    ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` in the ``include =`` block,
+    before any other CGXP/* entries.
+
+    For example:
+
+         include =
+             EPSG21781.js #proj4js
+             util.js #GXP
+             widgets/Viewer.js #GXP
+             DragTracker.js #ext.overrides
+        +    CGXP/cgxp.js
+             CGXP/plugins/ThemeSelector.js
+             ...
+
+  * And add a new routing section (replace <<srid>> by the right value):
 
         [routing.js]
         root =
@@ -329,6 +100,7 @@ localHostForward:
             {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
             {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
             {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
+            {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
             {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
             {{package}}/static/lib/cgxp/gxp/src/script
             {{package}}/static/lib/cgxp/proj4js
@@ -344,6 +116,8 @@ localHostForward:
             {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
             {{package}}/static/lib/cgxp/ext.ux/ColorPicker
             {{package}}/static/lib/cgxp/ext.ux/base64
+            {{package}}/static/lib/cgxp/ext.overrides
+            {{package}}/static/lib/cgxp/dygraphs
             {{package}}/static/js
         first =
             Ext/adapter/ext/ext-base-debug.js
@@ -386,175 +160,88 @@ localHostForward:
             OpenLayers/Renderer/SVG.js
             OpenLayers/Renderer/VML.js
 
-16. Manage all translations in one place. Translations for the mobile
-    application (layer names for example) are managed in the same place as for
-    the desktop application.
-    The following modifications are required.
-    Change the `jsbuild/mobile.cfg` file as follows:
+4. Update the `config.yaml.in` file:
 
-    @@ -8,6 +8,7 @@
-     root =
-         {{package}}/static/lib/cgxp/openlayers/lib
-         {{package}}/static/lib/cgxp/proj4js
-    +    {{package}}/static/js
-     first =
-         OpenLayers/SingleFile.js
-         OpenLayers/Console.js
-    @@ -20,6 +21,9 @@ first =
-         OpenLayers/BaseTypes/Size.js
-         OpenLayers/Util.js
-         OpenLayers/Lang.js
-    +    OpenLayers/Lang/fr.js
-    +    OpenLayers/Lang/en.js
-    +    OpenLayers/Lang/de.js
-         proj4js/lib/proj4js.js
-     exclude =
-     include =
-    @@ -45,3 +49,6 @@ include =
-         OpenLayers/Format/GML.js
-         OpenLayers/Strategy/Fixed.js
-         OpenLayers/Control/Zoom.js
-    +    Proj/Lang/fr.js
-    +    Proj/Lang/en.js
-    +    Proj/Lang/de.js
+  * Add sub domain support for pyramid views.
+    You can add the following configuration:
 
+       # The URL template used to generate the sub domain URL
+       # %(sub)s will be replaced by the sub domain value.
+       subdomain_url_template: http://%(sub)s.${vars:host}
+       # The used sub domain for the static resources
+       subdomains: [s1, s2, s3, s4]
 
-    Also remove any lines for translations in `{{package}}/static/mobile/config.js`, and
-    replace them by the following lines:
+   For the documentation see:
+   http://docs.camptocamp.net/c2cgeoportal/integrator/customize_ui.html#sub-domain
+   http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html#internal-service
 
-    OpenLayers.Util.extend(OpenLayers.Lang.en, {
-        "summits": "Summits",
-        "huts": "Huts",
-        "sites": "Sites",
+  * Transform `tilecache_url` into an array, and name it `tiles_url`.
 
-        // base layer switcher picker (you shouldn't remove this)
-        'layer_switcher.cancel': 'Cancel',
-        'layer_switcher.done': 'Done',
+  * In this version we call mapserver and the MapFish print directly on localhost
+    with the given `Host` header.
 
-        // login/logout
-        'loginButtonText': 'Log in',
-        'welcomeText': '<p>You are {username}.</p>',
-        'logoutButtonText': 'Log out',
-        'loginLabel': 'Login',
-        'passwordLabel': 'Password',
-        'loginSubmitButtonText': 'Submit',
-        'loginCancelButtonText': 'Cancel',
+    Set `mapserver_url` and `print_url` using localhost as follows:
 
-        // redirect to standard application
-        'redirect_msg': "You're using the mobile version. Check out the" +
-            " <a href='${'${url}'}'>standard version</a>.",
-        'close': "Close"
-    });
-    OpenLayers.Util.extend(OpenLayers.Lang.fr, {
-        "summits": "Sommets",
-        "huts": "Cabanes",
-        "sites": "Sites",
+        # For mapserver proxy
+        mapserv_url: http://localhost/${vars:instanceid}/mapserv
 
-        // base layer switcher picker (you shouldn't remove this)
-        'layer_switcher.cancel': 'Annuler',
-        'layer_switcher.done': 'OK',
+        # For print proxy
+        print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
 
-        // login/logout
-        'loginButtonText': 'Me connecter',
-        'welcomeText': '<p>Vous êtes {username}.</p>',
-        'logoutButtonText': 'Me déconnecter',
-        'loginLabel': 'Nom',
-        'passwordLabel': 'Mot de passe',
-        'loginSubmitButtonText': 'Me connecter',
-        'loginCancelButtonText': 'Annuler',
+  * Set mobile_default_theme as a functionality:
 
-        // redirect to standard application
-        'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
-            " consulter la <a href='${'${url}'}'>version standard</a>.",
-        'close': "Fermer"
-    });
-    OpenLayers.Util.extend(OpenLayers.Lang.de, {
-        "summits": "Gipfel",
-        "huts": "Hütten",
-        "sites": "Sehenswürdigkeiten",
+         functionalities:
+            anonymous:
+        +        mobile_default_theme:
 
-        // base layer switcher picker (you shouldn't remove this)
-        'layer_switcher.cancel': 'Abbrechen',
-        'layer_switcher.done': 'OK',
+        -mobile_default_theme:
 
-        // login/logout
-        'loginButtonText': 'Log in',
-        'welcomeText': '<p>Sie sind {username}.</p>',
-        'logoutButtonText': 'Log out',
-        'loginLabel': 'Login',
-        'passwordLabel': 'Passwort',
-        'loginSubmitButtonText': 'OK',
-        'loginCancelButtonText': 'Abbrechen',
+  * If the FullTextSearch has a configuration, do the following changes::
 
-        // redirect to standard application
-        'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
-            " die <a href='${'${url}'}'>Standardversion</a> benutzen.",
-        'close': "Schliessen"
-    });
-    OpenLayers.Lang.setCode("${lang}");
+        - fulltextsearch_maxlimit: 200
+        - fulltextsearch_defaultlimit: 30
+        + fulltextsearch:
+        +     maxlimit: 200
+        +     defaultlimit: 30
 
-17. The mobile application now has a built-in theme chooser.
-    Add the following line in the ``{{package}}/static/mobile/config.js`` file:
+5. Update the templates:
 
-    App.themes = '${themes | n}';
+  * In the `{{package}}/templates/viewer.js`
 
-    Both themes and layers can now be configured to be visible on desktop or
-    mobile, both or none.
+      - The LayerTree defaultThemes parameter has been separated in two to allow to handle separately
+        the default theme and the themes loaded from url, then replace:
 
-18. Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
+            % if permalink_themes:
+              defaultThemes: ${permalink_themes | n},
+            % else:
+              defaultThemes: ["lieu_interet_thm"],
+            % endif
 
-19. In the `{{package}}/templates/*.js` files remove the `getMatrix` method from the `WMTS_OPTIONS`.
+        by:
 
-20. The LayerTree defaultThemes parameter has been separated in two to allow to handle separately
-    the default theme and the themes loaded from url.
+            % if permalink_themes:
+                permalinkThemes: ${permalink_themes | n},
+            % endif
+            defaultThemes: ["to_be_defined"],
 
-    In ``viewer.js`` replace:
+  * In all the `{{package}}/templates/*.js` files:
 
-    % if permalink_themes:
-      defaultThemes: ${permalink_themes | n},
-    % else:
-      defaultThemes: ["lieu_interet_thm"],
-    % endif
+      - Remove the `getMatrix` method from the `WMTS_OPTIONS`.
 
-    by:
+      - Remove the following line:
 
-    % if permalink_themes:
-        permalinkThemes: ${permalink_themes | n},
-    % endif
-    defaultThemes: ["to_be_defined"],
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 2;
 
-21. Add the new configuration to the ``cgxp_querier`` plugin in the
+  * Add the new configuration to the ``cgxp_querier`` plugin in the
     ``{{project}}/templates/viewer.js`` file:
 
         attributeURLs: ${queryer_attribute_urls | n}
 
-22. Add missing ``{{package}}/static/mobile/resources/css/app.css`` line in the ``.gitignore`` file,
-    and remove the related file:
+  * In `{{package}}/templates/viewer.js`, `{{package}}/templates/api/mapconfig.js`,
+    `{{package}}/templates/edit.js` replace
+    `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
 
-    git rm -f {{package}}/static/mobile/resources/css/app.css
-
-23. Adaptations for generic backend usage necessitate the following change.
-
-    In the ``jsbuild/app.cfg`` file, add ``CGXP/cgxp.js`` in ``[app.js]``,
-    ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` in the ``include =`` block,
-    before any other CGXP/* entries.
-
-    for example:
-
-    include =
-        EPSG21781.js #proj4js
-        util.js #GXP
-        widgets/Viewer.js #GXP
-        DragTracker.js #ext.overrides
-        CGXP/cgxp.js
-        CGXP/plugins/ThemeSelector.js
-        ...
-
-24. Add the following line in the ``apache/wsgi.conf.in``:
-
-    RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
-
-25. Change the `X-UA-Compatible` meta in the HTML templates, and other little
+  * Change the `X-UA-Compatible` meta in the HTML templates, and other little
     things to do: in `{{package}}/templates/index.html`:
 
     - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
@@ -585,116 +272,337 @@ localHostForward:
     - var THEMES = {
       var THEMES = {
 
-26. in the `{{package}}/templates/api/api.js`` and
-    `{{package}}/templates/api/xapi.js`` files you should remove the line:
+  * In the `{{package}}/templates/api/mapconfig.js`` file you should remove the lines:
 
-    -        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 2;
+        + ...
+        - ..., # just remove the comma
+        - getMatrix: function() {
+        -     return {
+        -         identifier: OpenLayers.Util.indexOf(
+        -                         this.serverResolutions,
+        -                         this.map.getResolution())
+        -     };
+        - }
 
-    in the `{{package}}/templates/api/mapconfig.js`` file you should remove the lines:
+  * Password modification UI has been implemented.
 
-    +            ...
-    -            ..., # just remove the comma
-    -            getMatrix: function() {
-    -                return {
-    -                    identifier: OpenLayers.Util.indexOf(
-    -                                    this.serverResolutions,
-    -                                    this.map.getResolution())
-    -                };
-    -            }
+    It is now possible to allow the user to change his password, and optionally to remind him to change it.
 
-27. In the mobile application, modify `{{package}}/static/mobile/config.js` as follows:
+      - In the `{{package}}/templates/viewer.js` and `{{package}}/templates/edit.js` files:
+        You need to add some configuration parameters in the `cgxp_login` plugin:
 
-    -allLayers: "${layers}",
-    +allLayers: '${layers | n}',
+            {
+                ptype: "cgxp_login",
+                actionTarget: "center.tbar",
+                toggleGroup: "maptools",
+            % if user:
+                username: "${user.username}",
+                isPasswordChanged: ${"true" if user.is_password_changed else "false"},
+            % endif
+                loginURL: "${request.route_url('login', path='')}",
+                loginChangeURL: "${request.route_url('loginchange', path='')}",
+                logoutURL: "${request.route_url('logout', path='')}",
+                enablePasswordChange: true,
+                forcePasswordChange: true,
+                permalinkId: "permalink"
+            },
 
-    And the Overlay (`Openlayers.Layer.WMS`) layer should be named as 'overlay'.
+        ``enablePasswordChange`` enables the password modification UI,
+        ``isPasswordChanged`` is required if you enable ``forcePasswordChange``
+        to remind the user he should change his password.
 
-28. Currently the `Settings` view in the mobile application is not scrollable.
+        If you need it see the documentation about password replication:
+        http://docs.camptocamp.net/c2cgeoportal/integrator/password_replication.html
+
+      - The form in {{package}}/templates/index.html and {{package}}/templates/edit.html must be updated:
+
+              <form method="POST" id="loginForm" style="display: none">
+                  <input id="login" name="login" type="text" autocomplete="on"/>
+                  <input id="password" name="password" type="password" autocomplete="on"/>
+            +     <input id="newPassword" name="newPassword" type="password" />
+            +     <input id="confirmNewPassword" name="confirmNewPassword" type="password" />
+              </form>
+
+  * In the XAPI we don't anymore reset all default CSS attributes.
+    Than the XAPI should not anymore break the CSS of the page.
+
+    In the `{{package}}/templates/api/viewer.js` file in the `portalConfig`,
+    you should add the line:
+
+                ctCls: 'x-map',
+
+    In the file `{{package}}/templates/api/xapi.js`, replace:
+
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/ext-all.css')}" + '" />');
+
+   By:
+
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/reset.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/editor.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/menu.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/panel.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/grid.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/debug.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/qtips.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dd.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/form.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/resizable.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/toolbar.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/slider.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/combo.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/layout.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/dialog.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/core.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/button.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/progress.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tabs.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/box.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/borders.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/date-picker.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/tree.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/window.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/visual/list-view.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/editor.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/pivotgrid.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/menu.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/grid.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/debug.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/qtips.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dd.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/form.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/resizable.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/toolbar.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/panel-reset.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/slider.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/combo.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/layout.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/dialog.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/core.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/button.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/progress.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tabs.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/box.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/borders.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/date-picker.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/tree.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/window.css')}" + '" />');
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
+
+6. In the `production.ini.in`and `development.ini.in`:
+
+    You must add the following lines in the `[app:app]` section:
+
+        auth_replication_enabled = ${vars:enable_auth_replication}
+        sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}
+
+    Remove the parameter `tilecache.cfg`.
+
+7. In the `buildout.cfg` file:
+
+      - Remove all the `[versions]` section from your `buildout.cfg` file,
+        from now it's managed in the `versions.cfg` file.
+
+      - In the `[buildout]` section remove the line:
+
+            find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge
+
+8. Update the print configuration:
+
+  * In the print config template `print/templates/print.mako.in`
+    you should add the following config:
+
+        localHostForward:
+            from:
+                - ${vars:host}
+            https2http: True
+
+  * Remove print config file (changed and required only for Windows):
+
+        git rm print/WEB-INF/classes/spring-application-context.xml
+
+    For Windows user redo the change done in http://docs.camptocamp.net/c2cgeoportal/integrator/create_application.html?highlight=windows#configure-the-application
+
+  * Add to git the new print file name:
+
+        mv print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war.new
+        git mv print/print-servlet-1.2-SNAPSHOT.war print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
+        mv print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war.new print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
+        git add print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
+
+  * With Mapfish-Print 2.0 some legend parameters have been added or renamed.
+    In the printing configuration, change the ``legends`` blocks as follows:
+
+       -maxIconHeight: 0
+       +iconMaxHeight: 0
+       -maxIconWidth: 0
+       +iconMaxWidth: 0
+       +horizontalAlignment: left
+
+9. Update the mobile application:
+
+  * In the `{{package}}/static/mobile/config.js` file:
+
+      - Remove any lines for translations:
+
+            - OpenLayers.Lang.en = {
+            -   ...
+            - }
+            - OpenLayers.Lang.fr = {
+            -   ...
+            - }
+            - OpenLayers.Lang.de = {
+            -   ...
+            - }
+
+      - The mobile application now has a built-in theme chooser, do the following changes:
+
+            + App.themes = '${themes | n}';
+            + App.WFSTypes = '${wfs_types | n}';
+
+            ...
+
+            - allLayers: "${layers}",
+            + allLayers: '${layers | n}',
+
+        Both themes and layers can now be configured to be visible on desktop or
+        mobile, both or none.
+
+      - The Overlay (`Openlayers.Layer.WMS`) layer should be removed.  Only the
+        background layers should now be listed in the map config.
+
+
+  * Currently the `Settings` view in the mobile application is not scrollable.
     Add the following in `{{package}}/static/mobile/app/view/Settings.js` in the config object:
 
-    scrollable: 'vertical',
+        scrollable: 'vertical',
 
-29. Version 1.4 adds support for WMSTime layer which requires the isodate library
-    for parsing dates from the mapfile. The isodate version should be added to
-    `versions.cfg`:
+  * Manage all translations in one place. Translations for the mobile
+    application (layer names for example) are managed in the same place as for
+    the desktop application.
+    The following modifications are required.
+    Change the `jsbuild/mobile.cfg` file as follows:
 
-    isodate=0.4.9
+    @@ -8,6 +8,7 @@
+     root =
+         {{package}}/static/lib/cgxp/openlayers/lib
+         {{package}}/static/lib/cgxp/proj4js
+    +    {{package}}/static/js
+     first =
+         OpenLayers/SingleFile.js
+         OpenLayers/Console.js
+    @@ -20,6 +21,9 @@ first =
+         OpenLayers/BaseTypes/Size.js
+         OpenLayers/Util.js
+         OpenLayers/Lang.js
+    +    OpenLayers/Lang/fr.js
+    +    OpenLayers/Lang/en.js
+    +    OpenLayers/Lang/de.js
+    +    app/locale/fr.js
+    +    app/locale/en.js
+    +    app/locale/de.js
+         proj4js/lib/proj4js.js
+     exclude =
+     include =
+    @@ -45,3 +49,6 @@ include =
+         OpenLayers/Format/GML.js
+         OpenLayers/Strategy/Fixed.js
+         OpenLayers/Control/Zoom.js
+    +    Proj/Lang/fr.js
+    +    Proj/Lang/en.js
+    +    Proj/Lang/de.js
+
+  * Add missing ``{{package}}/static/mobile/resources/css/app.css`` line in the ``.gitignore`` file,
+    and remove the related file:
+
+       git rm -f {{package}}/static/mobile/resources/css/app.css
+
+10. In the `apache/wsgi.conf.in` do the following changes:
+
+  * Make the end slash optional:
+
+        -RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
+        +RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
+
+    Add the following line:
+
+        RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
+
+  * In the file `<package>/__init__.py` remove the following code::
+
+        from c2cgeoportal.views.tilecache import load_tilecache_config
+
+        # add a TileCache view
+        load_tilecache_config(config.get_settings())
+        config.add_route('tilecache', '/tilecache{path:.*?}')
+        config.add_view(
+            view='c2cgeoportal.views.tilecache:tilecache',
+            route_name='tilecache')
+
+11. Some important notices:
+
+  * Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
+
+  * Adds support for WMSTime layer which requires the isodate library
+    for parsing dates from the mapfile.
 
     Note: The default time value specified in the map file ("wms_timedefault") is
     not currently taken into account due to a limitation in the OWSLib, see:
     https://github.com/geopython/OWSLib/pull/92
-
-30. In the `jsbuild/app.cfg` file set all the `root` sections to:
-
-    {{package}}/static/lib/cgxp/core/src/script
-    {{package}}/static/lib/cgxp/ext
-    {{package}}/static/lib/cgxp/geoext/lib
-    {{package}}/static/lib/cgxp/openlayers/lib
-    {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
-    {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
-    {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
-    {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
-    {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
-    {{package}}/static/lib/cgxp/gxp/src/script
-    {{package}}/static/lib/cgxp/proj4js
-    {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
-    {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
-    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
-    {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
-    {{package}}/static/lib/cgxp/geoext.ux/ux/WMSBrowser/lib
-    {{package}}/static/lib/cgxp/geoext.ux/ux/StreetViewPanel
-    {{package}}/static/lib/cgxp/sandbox
-    {{package}}/static/lib/cgxp/styler/lib
-    {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
-    {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
-    {{package}}/static/lib/cgxp/ext.ux/ColorPicker
-    {{package}}/static/lib/cgxp/ext.ux/base64
-    {{package}}/static/lib/cgxp/ext.overrides
-    {{package}}/static/lib/cgxp/dygraphs
-    {{package}}/static/js
-
-31. In the `jsbuild/app.cfg` file remove from the `include` section
-    of `[app.js]` the line:
-
-    DragTracker.js #ext.overrides
-
-32. If the FullTextSearch has a configuration in the ``config.yaml.in`` file,
-    do the following changes::
-
-    - fulltextsearch_maxlimit: 200
-    - fulltextsearch_defaultlimit: 30
-    + fulltextsearch:
-    +     maxlimit: 200
-    +     defaultlimit: 30
-
-33. Mobile application updates. ``{{package}}/static/mobile/config.js`` needs to be changed as following.
-
-    The ``overlay`` layer config should be removed. Only the background layers
-    should now be listed in the map config.
-
-    Ensure that the following variables are defined:
-
-        App.themes = '${themes | n}';
-        App.WFSTypes = '${wfs_types | n}';
-
-34. In the `{{package}}/static/mobile/config.js` we need to remove the localisation:
-
-        - OpenLayers.Util.extend(OpenLayers.Lang.en, {
-        -   ...
-        - }
-        - OpenLayers.Util.extend(OpenLayers.Lang.fr, {
-        -   ...
-        - }
-        - OpenLayers.Util.extend(OpenLayers.Lang.de, {
-        -   ...
-        - }
-
-    And in the `jsbuild/mobile.cfg` add the new files:
-
-          OpenLayers/Lang/de.js
-        + app/locale/fr.js
-        + app/locale/en.js
-        + app/locale/de.js
 
 
 Version 1.3.2
