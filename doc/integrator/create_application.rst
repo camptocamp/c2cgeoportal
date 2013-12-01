@@ -65,7 +65,7 @@ do not have the required permissions. Please contact Camptocamp in that case.
 To install ``c2cgeoportal`` you first need to clone the c2cgeoportal repository
 from GitHub::
 
-    git clone git@github.com:camptocamp/c2cgeoportal.git
+    git clone https://github.com/camptocamp/c2cgeoportal.git
     cd c2cgeoportal
 
 Then you should checkout the branch or tag of the version you want to install::
