@@ -497,6 +497,9 @@ Version 1.4
 
   * In the `{{package}}/static/mobile/config.js` file:
 
+      - Move the 'rasterTpl' and all other mobile specific localisation
+        in the `{{package}}/static/js/Proj/Lang/<lang>.js` files.
+
       - Remove any lines for translations:
 
             - OpenLayers.Lang.en = {
