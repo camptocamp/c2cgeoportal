@@ -137,8 +137,8 @@ Ext.define("App.view.Layers", {
         }
         store.each(function(record) {
             var layer = record.raw;
-            if (!layer.isBaseLayer &&
-                layer instanceof OpenLayers.Layer.WMS) {
+            if (!layer.isBaseLayer && layer.allLayers &&
+                    layer instanceof OpenLayers.Layer.WMS) {
                 var allLayers = layer.allLayers,
                     layersParam = layer.params.LAYERS ?
                         this.toArray(layer.params.LAYERS) : [],
