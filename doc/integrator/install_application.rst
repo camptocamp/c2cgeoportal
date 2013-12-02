@@ -115,7 +115,7 @@ then to create it use::
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
-and schema name, respectively.
+and schema name ('main' by default), respectively.
 
 .. _integrator_install_application_create_user:
 
