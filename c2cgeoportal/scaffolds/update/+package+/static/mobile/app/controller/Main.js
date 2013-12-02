@@ -242,6 +242,9 @@ Ext.define('App.controller.Main', {
         }
         Ext.each(App.themes, function(t) {
             if (t.name == theme) {
+                if (App.map.getLayerIndex(this.getOverlay()) != -1) {
+                    App.map.removeLayer(this.getOverlay());
+                }
                 var overlay = new OpenLayers.Layer.WMS(
                     'overlay',
                     App.wmsUrl,
@@ -258,6 +261,7 @@ Ext.define('App.controller.Main', {
                 App.map.addLayer(overlay);
                 this.setOverlay(overlay);
                 App.theme = theme;
+                App.map.events.triggerEvent('themechange');
                 return false;
             }
         }, this);

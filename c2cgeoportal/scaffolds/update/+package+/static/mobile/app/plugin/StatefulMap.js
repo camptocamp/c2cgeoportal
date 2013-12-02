@@ -31,6 +31,7 @@ Ext.define('App.plugin.StatefulMap', {
                 // apply saved state
                 var state = this.getState();
                 if (state.theme) {
+                    App.theme = state.theme;
                     main.loadTheme(state.theme);
                 }
                 if (state.bgLayer) {
@@ -45,10 +46,22 @@ Ext.define('App.plugin.StatefulMap', {
                         if (theme.name !== App.theme) {
                             return;
                         }
-                        theme.allLayers = state.layers.map(function(layer) {
+                        var layers = state.layers.map(function(layer) {
                             return { "name": layer };
                         });
+                        theme.allLayers = (theme.allLayers || []);
+                        Ext.each(layers, function(l) {
+                            if (l.name == "") {
+                                return;
+                            }
+                            if (theme.allLayers.filter(function(a) {
+                                    return a.name == l.name;
+                                }).length==0) {
+                                theme.allLayers.push(l);
+                            }
+                        });
                         overlay.allLayers = theme.allLayers;
+                        overlay.layers = state.layers;
                         return false;
                     });
                     main.getLayersView().getStore().setData(map.layers);
@@ -60,6 +73,9 @@ Ext.define('App.plugin.StatefulMap', {
                     moveend: this.update,
                     changebaselayer: this.update,
                     changelayer: this.update,
+                    removelayer: this.update,
+                    addlayer: this.update,
+                    themechange: this.update,
                     scope: this
                 });
             }, this);
@@ -67,20 +83,14 @@ Ext.define('App.plugin.StatefulMap', {
     },
 
     update: function() {
+        var center = this.getMap().getCenter();
+        var main = App.app.getController('Main');
         this.setState({
-            lonlat: this.getMap().getCenter(),
+            lonlat: [center.lon, center.lat],
             zoom: this.getMap().getZoom(),
             theme: App.theme,
             bgLayer: this.getMap().baseLayer.layer,
-            layers: Ext.Array.flatten(
-                this.getMap().layers.filter(function(layer) {
-                    return !layer.isBaseLayer &&
-                        layer instanceof OpenLayers.Layer.WMS &&
-                        layer.visibility;
-                }).map(function(layer){
-                    return layer.params.LAYERS;
-                })
-            )
+            layers: main.getOverlay().params.LAYERS
         });
     },
 
@@ -104,9 +114,28 @@ Ext.define('App.plugin.StatefulMap', {
     },
 
     applyState: function(state) {
-        var key = this.getMap().id + '-position',
-            value = [state.lonlat.lon, state.lonlat.lat, state.zoom].join(',');
+        var layers = (state.layers.join && state.layers[0] != '') ?
+            state.layers.join(',') : state.layers,
+            params,
+            qs;
 
-        localStorage.setItem(key, value);
+        var params = {
+            theme: state.theme,
+            baselayer_ref: state.bgLayer,
+            map_x: state.lonlat[0],
+            map_y: state.lonlat[1],
+            map_zoom: state.zoom,
+        };
+        if (state.layers) {
+            params.tree_group_layers_fake = (state.layers.join) ?
+                    state.layers.join(',') : state.layers
+        }
+
+        var qs = Ext.Object.toQueryString(params);
+        if (history.replaceState) {
+            history.replaceState(null, '',
+                location.pathname + '?' + qs
+            );
+        }
     }
 });
