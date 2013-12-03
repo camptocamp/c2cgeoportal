@@ -239,7 +239,7 @@ Version 1.4
 
   * In `{{package}}/templates/viewer.js`, `{{package}}/templates/api/mapconfig.js`,
     `{{package}}/templates/edit.js` replace
-    `url: '${tilecache_url}',` by `url: ${tiles_url},` (no quotes).
+    `url: '${tilecache_url}',` by `url: ${tiles_url | n},` (no quotes).
 
   * Change the `X-UA-Compatible` meta in the HTML templates, and other little
     things to do: in `{{package}}/templates/index.html`:
