@@ -171,6 +171,7 @@ include =
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/MapOpacitySlider.js
     CGXP/widgets/MapPanel.js
+    CGXP/tools/tools.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
     OpenLayers/Control/PanZoomBar.js
@@ -241,6 +242,7 @@ include =
     CGXP/plugins/Routing.js
     CGXP/data/OSRM.js
     CGXP/widgets/MapPanel.js
+    CGXP/tools/tools.js
     OpenLayers/Control/Navigation.js
     OpenLayers/Control/KeyboardDefaults.js
     OpenLayers/Control/PanZoomBar.js
