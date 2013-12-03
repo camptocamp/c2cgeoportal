@@ -9,6 +9,7 @@ root =
     {{package}}/static/lib/cgxp/openlayers/lib
     {{package}}/static/lib/cgxp/proj4js
     {{package}}/static/js
+    {{package}}/static/mobile
 first =
     OpenLayers/SingleFile.js
     OpenLayers/Console.js
