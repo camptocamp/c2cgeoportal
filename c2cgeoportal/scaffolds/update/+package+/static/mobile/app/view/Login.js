@@ -31,8 +31,7 @@ Ext.define('App.view.Login', {
                 items = [{
                     xtype: 'button',
                     text: OpenLayers.i18n('loginButtonText'),
-                    iconCls: 'lock_closed',
-                    iconMask: true,
+                    iconCls: 'lock',
                     action: 'loginform'
                 }];
             } else {
@@ -43,8 +42,7 @@ Ext.define('App.view.Login', {
                 }, {
                     xtype: 'button',
                     text: OpenLayers.i18n('logoutButtonText'),
-                    iconCls: 'lock_open',
-                    iconMask: true,
+                    iconCls: 'unlock',
                     action: 'logout'
                 }];
             }

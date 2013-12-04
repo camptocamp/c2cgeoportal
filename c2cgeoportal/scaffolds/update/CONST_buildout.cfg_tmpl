@@ -197,16 +197,9 @@ cmds =
     >>> archive_dir = os.path.join(src_dir, 'archive')
     >>> if os.path.exists(archive_dir):
     >>>     shutil.rmtree(archive_dir)
-    >>> Popen([buildout.get('mobile').get('compass_cmd'), 'compile', 'resources/sass'], cwd=src_dir).wait()
     >>> env = os.environ.copy()
     >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
-    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'production'], cwd=src_dir, env=env).wait()
-    >>> from shutil import copy
-    >>> dst_dir = os.path.join(src_dir, 'build', 'production')
-    >>> src = os.path.join(src_dir, 'config.js')
-    >>> copy(src, dst_dir)
-    >>> src = os.path.join(src_dir, 'openlayers-mobile.js')
-    >>> copy(src, dst_dir)
+    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'testing'], cwd=src_dir, env=env).wait()
 
 [cssbuild]
 recipe = c2c.recipe.cssmin

@@ -57,7 +57,7 @@ Ext.define("App.view.Layers", {
                 xtype: 'button',
                 id: 'theme_switcher',
                 text: ' ',
-                iconCls: "code3",
+                iconCls: "right",
                 iconMask: true,
                 iconAlign: "right"
             }],

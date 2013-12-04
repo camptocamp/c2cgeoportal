@@ -23,9 +23,7 @@ Ext.define("App.view.Main", {
         'Ext.field.Select',
         'Ext.SegmentedButton',
         'App.model.Layer',
-        'App.plugin.StatefulMap',
-        'App.view.GeolocateControl',
-        'App.view.MobileMeasure'
+        'App.plugin.StatefulMap'
     ],
 
     config: {
@@ -50,16 +48,20 @@ Ext.define("App.view.Main", {
             }, {
                 xtype: 'button',
                 iconCls: 'layers',
-                action: 'layers',
-                iconMask: true
+                action: 'layers'
             }, {
                 xtype: 'button',
                 iconCls: 'settings',
-                action: 'settings',
-                iconMask: true
+                action: 'settings'
             }]
         }, {
-            id: 'map-container'
+            xtype: 'component',
+            id: 'map-container',
+            height: '100%',
+            style: {
+                position: 'relative',
+                zIndex: 0
+            }
         }]
     },
 
@@ -148,8 +150,8 @@ Ext.define("App.view.Main", {
 
         map.addControls([
             new OpenLayers.Control.Zoom(),
-            new App.view.GeolocateControl(),
-            new App.view.MobileMeasure()
+            new App.GeolocateControl(),
+            new App.MobileMeasure()
         ]);
     },
 

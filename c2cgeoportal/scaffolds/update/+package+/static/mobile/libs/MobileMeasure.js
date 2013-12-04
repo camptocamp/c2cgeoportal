@@ -15,8 +15,8 @@
  * along with CGXP. If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('App.view');
-App.view.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
+window.App = App || {};
+App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
     button: null,
 

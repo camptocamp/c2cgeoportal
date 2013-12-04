@@ -25,6 +25,7 @@ Ext.application({
     },
 
     requires: [
+        'Ext.viewport.Viewport',
         'Ext.MessageBox',
         'Ext.data.Store',
         'Ext.data.proxy.JsonP',
