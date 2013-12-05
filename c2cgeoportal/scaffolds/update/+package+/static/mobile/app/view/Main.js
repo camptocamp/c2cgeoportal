@@ -192,7 +192,7 @@ Ext.define("App.view.Main", {
                     [f.geometry.x, f.geometry.y],
                     map.baseLayer.numZoomLevels - 3
                 );
-            } else if (f.geometry){
+            } else if (f.geometry) {
                 map.zoomToExtent(f.geometry.getBounds());
             } else if (f.bounds) {
                 map.zoomToExtent(f.bounds);
