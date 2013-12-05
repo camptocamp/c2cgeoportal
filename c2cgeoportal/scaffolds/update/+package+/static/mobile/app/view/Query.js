@@ -18,11 +18,12 @@
 Ext.define("App.view.Query", {
     extend: 'Ext.Container',
     xtype: 'queryview',
-    requires: ['Ext.dataview.List', 'App.model.Query'],
+    requires: ['Ext.dataview.List', 'App.model.Query', 'App.view.AutoHeightList'],
 
     config: {
-        fullscreen: true,
-        scrollable: 'vertical',
+        scrollable: {
+            direction: 'vertical'
+        },
         items: [{
             docked: 'top',
             xtype: 'toolbar',
@@ -37,7 +38,7 @@ Ext.define("App.view.Query", {
         }, {
             pseudo: 'coordinates'
         }, {
-            xtype: 'list',
+            xtype: 'autoheightlist',
             itemTpl: '<div>{detail}</div>',
             selectedCls: '',
             emptyText: OpenLayers.i18n('No query result'),
@@ -46,6 +47,7 @@ Ext.define("App.view.Query", {
             pinHeaders: true,
             ui: 'round',
             grouped: true,
+            height: 0,
             scrollable: false
         }]
     }
