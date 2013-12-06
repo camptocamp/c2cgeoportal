@@ -72,6 +72,10 @@ Version 1.4
 
         DragTracker.js #ext.overrides
 
+  * In the `include` section of the `[edit.js]` add the missing line:
+
+        CGXP/tools/tools.js
+
   * Adaptations for generic backend usage require the following change.
 
     In the ``jsbuild/app.cfg`` file, add ``CGXP/cgxp.js`` in ``[app.js]``,
@@ -147,6 +151,7 @@ Version 1.4
             CGXP/plugins/Routing.js
             CGXP/data/OSRM.js
             CGXP/widgets/MapPanel.js
+            CGXP/tools/tools.js
             OpenLayers/Control/Navigation.js
             OpenLayers/Control/KeyboardDefaults.js
             OpenLayers/Control/PanZoomBar.js
