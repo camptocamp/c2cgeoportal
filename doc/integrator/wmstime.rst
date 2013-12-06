@@ -50,6 +50,15 @@ requests. For example when a layer has monthly data, the ``YYYY-MM`` should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.
 
+The interval (``interval``) has to be defined regarding international standard
+ISO 8601 and its duration/time intervals definition (see
+`ISO 8601 Durations / Time intervals <http://en.wikipedia.org/wiki/ISO_8601#Durations>`_).
+
+Some examples for the interval definition:
+
+  * An interval of one year: ``P1Y``
+  * An interval of six months: ``P6M``
+
 Admin interface
 ~~~~~~~~~~~~~~~
 
