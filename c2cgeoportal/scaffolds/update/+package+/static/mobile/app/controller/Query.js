@@ -107,6 +107,9 @@ Ext.define('App.controller.Query', {
             });
         }
 
+        // scroll to top
+        this.getQueryView().getScrollable().getScroller().scrollTo(0, 0);
+
         Ext.Viewport.setActiveItem(this.getQueryView());
     }
 });

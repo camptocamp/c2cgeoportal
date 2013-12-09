@@ -15,8 +15,8 @@
  * along with CGXP. If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ext.ns('App.view');
-App.view.GeolocateControl = OpenLayers.Class(OpenLayers.Control, {
+window.App = App || {};
+App.GeolocateControl = OpenLayers.Class(OpenLayers.Control, {
 
     autoActivate: true,
     button: null,

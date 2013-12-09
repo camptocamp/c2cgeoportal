@@ -21,10 +21,13 @@ Ext.application({
 
     viewport: {
         // hide the address bar
-        autoMaximize: true
+        // autoMaximize set to false. See "AutoMaximize No More!" in
+        // http://www.sencha.com/blog/top-sencha-support-tips/
+        //autoMaximize: true
     },
 
     requires: [
+        'Ext.viewport.Viewport',
         'Ext.MessageBox',
         'Ext.data.Store',
         'Ext.data.proxy.JsonP',

@@ -76,6 +76,25 @@ how to upgrade a project.
 Adding the Sencha Touch SDK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Any c2cgeoportal project includes a ``static/mobile`` directory containing
+a Sencha Touch mobile application. This directory actually misses a major
+component of the Sencha Touch application: the Sencha Touch SDK. So you need to
+manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
+you will (1) download the Sencha Touch SDK (version 2.3.1), (2) dearchive it
+at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
+and (4) copy the ``touch`` directory from that temporary Sencha Touch application
+to your project's ``static/mobile`` dir. For example::
+
+    $ cd /tmp/
+    $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
+    $ unzip sencha-touch-2.3.1-gpl.zip
+    $ cd touch-2.3.1
+    $ sencha generate app TempApp /tmp/TempApp
+    $ cp -r /tmp/TempApp/touch <path/to/c2cgeoportal/project/module>/static/mobile/
+
+Adding the Sencha Touch SDK (for version below 1.4)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Any c2cgeoportal 0.8 project includes a ``static/mobile`` directory containing
 a Sencha Touch mobile application. This directory actually misses a major
 component of the Sencha Touch application: the Sencha Touch SDK. So you need to

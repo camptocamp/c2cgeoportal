@@ -76,28 +76,9 @@ Ext.define('App.controller.Main', {
                 }
             },
             '#baselayer_switcher': {
-                painted: function(cmp) {
-                    var baseLayersStore = Ext.create('Ext.data.Store', {
-                        model: 'App.model.Layer'
-                    });
-                    Ext.each(App.map.layers, function(layer) {
-                        if (layer.isBaseLayer) {
-                            baseLayersStore.add(layer);
-                        }
-                    });
-                    cmp.setStore(baseLayersStore);
-                    if (baseLayersStore.getAllCount() <= 1) {
-                        cmp.parent.hide();
-                    }
-
-                    // listen to change event only once the store is set
-                    cmp.on({
-                        'change': function(select, newValue) {
-                            App.map.setBaseLayer(App.map.getLayer(newValue));
-                            this.redirectTo('');
-                        },
-                        scope: this
-                    });
+                'change': function(select, newValue) {
+                    App.map.setBaseLayer(App.map.getLayer(newValue));
+                    this.redirectTo('');
                 }
             },
             '#theme_switcher': {

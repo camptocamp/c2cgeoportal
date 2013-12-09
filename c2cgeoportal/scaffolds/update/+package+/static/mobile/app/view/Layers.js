@@ -57,7 +57,7 @@ Ext.define("App.view.Layers", {
                 xtype: 'button',
                 id: 'theme_switcher',
                 text: ' ',
-                iconCls: "code3",
+                iconCls: "right",
                 iconMask: true,
                 iconAlign: "right"
             }],
@@ -97,6 +97,20 @@ Ext.define("App.view.Layers", {
         }
         else {
             this.down('#theme_switcher').hide();
+        }
+
+        var baseLayerSwitcher = this.down('#baselayer_switcher');
+        var baseLayersStore = Ext.create('Ext.data.Store', {
+            model: 'App.model.Layer'
+        });
+        Ext.each(App.map.layers, function(layer) {
+            if (layer.isBaseLayer) {
+                baseLayersStore.add(layer);
+            }
+        });
+        baseLayerSwitcher.setStore(baseLayersStore);
+        if (baseLayersStore.getAllCount() <= 1) {
+            baseLayerSwitcher.parent.hide();
         }
     },
 

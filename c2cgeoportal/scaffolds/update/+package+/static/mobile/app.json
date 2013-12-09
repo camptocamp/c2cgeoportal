@@ -41,7 +41,18 @@
      */
     "js": [
         {
-            "path": "sdk/sencha-touch.js"
+            "path": "touch/sencha-touch.js",
+            "x-bootstrap": true
+        },
+        {
+            "path": "bootstrap.js",
+            "x-bootstrap": true
+        },
+        {
+          "path": "libs/GeolocateControl.js"
+        },
+        {
+          "path": "libs/MobileMeasure.js"
         },
         {
             "path": "app.js",
@@ -98,7 +109,9 @@
     "resources": [
         "resources/images",
         "resources/icons",
-        "resources/startup"
+        "resources/startup",
+        "openlayers-mobile.js",
+        "config.js"
     ],
 
     /**
@@ -115,27 +128,10 @@
     "archivePath": "archive",
 
     /**
-     * Default paths to build this application to for each environment
+     * List of package names to require for the cmd build process
      */
-    "buildPaths": {
-        "testing": "build/testing",
-        "production": "build/production",
-        "package": "build/package",
-        "native": "build/native"
-    },
-
-    /**
-     * Build options
-     *
-     * "logger" set to false instead of "no", to fix a known Sencha Touch bug.
-     * See http://www.sencha.com/forum/showthread.php?229399
-     */
-    "buildOptions": {
-        "product": "touch",
-        "minVersion": 3,
-        "debug": false,
-        "logger": false
-    },
+    "requires": [
+    ],
 
     /**
      * Uniquely generated id for this application, used as prefix for localStorage keys.
