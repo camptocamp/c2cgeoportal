@@ -73,6 +73,7 @@ include =
     widgets/Viewer.js #GXP
     CGXP/cgxp.js
     CGXP/plugins/ThemeSelector.js
+    CGXP/plugins/ThemeFinder.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/FeaturesGrid.js
     CGXP/plugins/Zoom.js
