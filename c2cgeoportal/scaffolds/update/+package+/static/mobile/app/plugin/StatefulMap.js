@@ -127,7 +127,7 @@ Ext.define('App.plugin.StatefulMap', {
             map_zoom: state.zoom,
         };
         if (state.layers) {
-            params.tree_group_layers_fake = (state.layers.join) ?
+            params.tree_layers = (state.layers.join) ?
                     state.layers.join(',') : state.layers
         }
 
