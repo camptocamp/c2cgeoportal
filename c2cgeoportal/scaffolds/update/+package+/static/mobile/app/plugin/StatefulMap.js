@@ -124,7 +124,7 @@ Ext.define('App.plugin.StatefulMap', {
             baselayer_ref: state.bgLayer,
             map_x: state.lonlat[0],
             map_y: state.lonlat[1],
-            map_zoom: state.zoom,
+            map_zoom: state.zoom
         };
         if (state.layers) {
             params.tree_layers = (state.layers.join) ?
