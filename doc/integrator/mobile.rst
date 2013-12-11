@@ -41,9 +41,25 @@ application uses this commit (or better) of CGXP.
 Infrastructure
 --------------
 
-Creating and building a mobile application requires the `Sencha SDK Tools
-<http://www.sencha.com/products/sdk-tools/>`_ and `Compass
+Creating and building a mobile application requires the `Sencha Cmd
+<http://www.sencha.com/products/sencha-cmd/download/>`_ tools and `Compass
 <http://compass-style.org/>`_ to be installed on the target machine.
+
+On Camptocamp server we just need the Debian packages ``sencha-cmd``
+and ``libcompass-ruby1.8`` (The ``sencha-cmd`` package was created by
+the Camptocamp sysadmins).
+
+On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
+``sencha-cmd`` installed, please ensure that the correct one is used by
+default::
+
+    sudo update-alternatives --config sencha
+
+Infrastructure (for version below 1.4)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For versions of c2cgeoportal below 1.4, the ``sencha`` command must be provided
+by `Sencha SDK Tools (version 2.0.0~beta3)`.
 
 On Camptocamp server we just need the Debian packages ``sencha-sdk-tools``
 and ``libcompass-ruby1.8`` (The ``sencha-sdk-tools`` package was created by
