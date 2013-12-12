@@ -654,6 +654,16 @@ Version 1.4
 -    config.add_static_view('mobile', '{{package}}:static/mobile/build/production')
 +    config.add_static_view('mobile', '{{package}}:static/mobile/build/testing/App')
 
+13. Mobile permalink field
+
+  * On mobile, the page URL is now synchronized with the application state.
+    Browsers native sharing function can be used to share a permalink.
+
+  * But if a permalink field is needed, just add the following component in the
+    Settings view:
+
+        { xtype: 'map_permalink' }
+
 Version 1.3.2
 =============
 
