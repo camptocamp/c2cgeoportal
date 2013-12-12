@@ -9,7 +9,7 @@ Ext.define("App.view.Permalink", {
         cls: 'settings',
         items: [{
             xtype: 'textfield',
-            label: 'Permalien',
+            label: OpenLayers.i18n('permalink'),
             id: 'permalink'
         }]
     },
