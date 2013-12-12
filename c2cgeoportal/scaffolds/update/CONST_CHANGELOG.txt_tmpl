@@ -510,12 +510,15 @@ Version 1.4
             Sencha Cmd v4.0.1.45
             Sencha Cmd provides several categories [...]
 
+        At Camptocamp we provide a Debian package for that.
+
       - Sencha Touch 2.3.1 SDK needs to be downloaded::
 
             $ cd /tmp/
             $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
             $ unzip sencha-touch-2.3.1-gpl.zip
             $ cd touch-2.3.1
+            $ rm -rf /tmp/TempApp
             $ sencha generate app TempApp /tmp/TempApp
             $ cd <path/to/c2cgeoportal/project/>
             $ cp -r /tmp/TempApp/touch {{package}}/static/mobile/
@@ -523,13 +526,13 @@ Version 1.4
       - Some files can be removed from the mobile application directory since they
         are not used anymore. You can launch the following command::
 
-            $ rm -rf {{package}}/static/mobile/.senchasdk \
+            $ git rm -r {{package}}/static/mobile/.senchasdk \
                      {{package}}/static/mobile/app/view/GeolocateControl.js \
                      {{package}}/static/mobile/app/view/MobileMeasure.js \
                      {{package}}/static/mobile/sdk
 
-      - The following modifications of the routes to mobile built application are
-        are required::
+      - In the ``{{package}}/__init__.py`` the following modifications of the
+        routes to mobile built application are required::
 
          config.add_route('mobile_index_prod', '/mobile/')
          config.add_view('c2cgeoportal.views.entry.Entry',
