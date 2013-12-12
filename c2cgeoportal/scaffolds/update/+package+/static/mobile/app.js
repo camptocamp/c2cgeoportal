@@ -76,8 +76,11 @@ Ext.application({
 
         // create the main view and set the map into it
         var mainView = Ext.create('App.view.Main');
+
         // App.map should be set in config.js
         mainView.setMap(App.map);
+
+        var layersView = Ext.create('App.view.Layers');
 
         // destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();

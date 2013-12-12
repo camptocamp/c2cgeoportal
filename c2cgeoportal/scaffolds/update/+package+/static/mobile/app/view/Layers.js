@@ -112,6 +112,7 @@ Ext.define("App.view.Layers", {
         if (baseLayersStore.getAllCount() <= 1) {
             baseLayerSwitcher.parent.hide();
         }
+        baseLayerSwitcher.setValue(App.map.baseLayer.id);
     },
 
     toArray: function(value) {
