@@ -344,6 +344,16 @@ applying the ``c2cgeoportal_update`` scaffold during an update of c2cgeoportal.
 If style customization is also required for components in this view, use the
 ``custom.scss`` file.
 
+Permalink
+~~~~~~~~~
+
+If a permalink field is needed, just add the following component in the
+Settings view:
+
+.. code:: javascript
+
+    { xtype: 'map_permalink' }
+
 Login/logout
 ~~~~~~~~~~~~
 
