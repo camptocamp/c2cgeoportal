@@ -40,5 +40,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // redirect to standard application
     'redirect_msg': "You're using the mobile version. Check out the" +
         " <a href='${'${url}'}'>standard version</a>.",
-    'close': "Close"
+    'close': "Close",
+
+    // permalink
+    'permalink': 'Permalink'
 });
