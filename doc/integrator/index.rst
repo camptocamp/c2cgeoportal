@@ -20,6 +20,7 @@ Content:
    update_application
    deploy
    authentication
+   optimization
    mobile
    raster
    functionality
