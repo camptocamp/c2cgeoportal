@@ -131,7 +131,7 @@ class Entry(object):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
-        q = DBSession.query(Layer).filter(Layer.public == True)
+        q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
         if role_id:
             q2 = DBSession.query(Layer)
             q2 = q2.join(
@@ -141,7 +141,7 @@ class Entry(object):
                 (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
                 (Role, Role.id == role_ra.c.role_id))
             q2 = q2.filter(Role.id == role_id)
-            q2 = q2.filter(Layer.public != True)
+            q2 = q2.filter(Layer.public != True)  # NOQA
             q = q.union(q2)
         return q
 
@@ -276,7 +276,7 @@ class Entry(object):
                     Role.id == self.request.user.role.id)) \
                 .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
                 .filter(RestrictionArea.readwrite == True) \
-                .count()
+                .count()  # NOQA
             if c > 0:
                 l['editable'] = True
 
@@ -481,7 +481,7 @@ class Entry(object):
         errors = []
         query = self._create_layer_query(role_id)
         filter = Layer.inDesktopViewer == True if not mobile else \
-            Layer.inMobileViewer == True
+            Layer.inMobileViewer == True  # NOQA
         query = query.filter(filter)
         query = query.order_by(Layer.order.asc())
         layers = query.all()
