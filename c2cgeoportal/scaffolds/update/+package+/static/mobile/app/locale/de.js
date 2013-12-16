@@ -52,5 +52,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'No query result': 'Keine Abfrageresultate',
 
     // search
-    'No search result': 'Keine Suchresultate'
+    'No search result': 'Keine Suchresultate',
+
+    // permalink
+    'permalink': 'Permalink'
 });

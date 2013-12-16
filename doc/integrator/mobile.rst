@@ -99,7 +99,9 @@ manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
 you will (1) download the Sencha Touch SDK (version 2.3.1), (2) dearchive it
 at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
 and (4) copy the ``touch`` directory from that temporary Sencha Touch application
-to your project's ``static/mobile`` dir. For example::
+to your project's ``static/mobile`` dir. For example:
+
+.. code::
 
     $ cd /tmp/
     $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
@@ -118,7 +120,9 @@ manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
 you will (1) download the Sencha Touch SDK (version 2.0.1.1), (2) dearchive it
 at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
 and (4) copy the ``skd`` directory from that temporary Sencha Touch application
-to your project's ``static/mobile`` dir. For example::
+to your project's ``static/mobile`` dir. For example:
+
+.. code::
 
     $ cd /tmp/
     $ wget http://cdn.sencha.io/touch/sencha-touch-2.0.1.1-gpl.zip
@@ -142,7 +146,9 @@ directory in the project. But this directory does not include all the necessary
 files, as some files are provided by the ``c2cgeoportal_create`` scaffold
 (which is not applied for updates). The easiest way to get all the necessary
 files involves creating a temporary c2cgeoportal project of the same name as
-the target project, and copying the missing files from there::
+the target project, and copying the missing files from there:
+
+.. code::
 
    $ cd <project_name>
    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
@@ -164,7 +170,9 @@ New files and directories are provided by the ``c2cgeoportal_create`` and need
 to be added manually to the ``static/mobile`` directory.
 The easiest way to get all the necessary files involves creating a temporary
 c2cgeoportal project of the same name as the target project, and copying the
-missing files from there::
+missing files from there:
+
+.. code::
 
    $ cd <project_name>
    $ ./buildout/bin/pcreate -s c2cgeoportal_create \
@@ -180,7 +188,9 @@ Adding mobile routes and views
 
 The last step involves adding *routes* and *views* specific to the mobile
 application. Edit the project's ``__init__.py`` file and add the following
-lines before the ``main`` function's return statement::
+lines before the ``main`` function's return statement:
+
+.. code:: javascript
 
     # mobile views and routes
     config.add_route('mobile_index_dev', '/mobile_dev/')
@@ -303,7 +313,9 @@ in the mobile application by adding the following to the config.js file::
     App.raster = true;
 
 You'll also need to add a template string to each translation object. It needs
-to be adapted to the data retrieved from the server::
+to be adapted to the data retrieved from the server:
+
+.. code:: javascript
 
     OpenLayers.Lang.fr = {
         [...]
@@ -332,6 +344,16 @@ applying the ``c2cgeoportal_update`` scaffold during an update of c2cgeoportal.
 If style customization is also required for components in this view, use the
 ``custom.scss`` file.
 
+Permalink
+~~~~~~~~~
+
+If a permalink field is needed, just add the following component in the
+Settings view:
+
+.. code:: javascript
+
+    { xtype: 'map_permalink' }
+
 Login/logout
 ~~~~~~~~~~~~
 
@@ -343,7 +365,9 @@ If the user is authenticated the ``Login`` component adds a welcome message,
 and a "log out" button.
 
 Here's an example of a ``Settings`` view that includes a ``Login`` view
-component::
+component:
+
+.. code:: javascript
 
     Ext.define("App.view.Settings", {
         extend: 'Ext.Container',
@@ -386,7 +410,9 @@ The i18n keys relative to the login/logout functionality are: ``welcomeText``,
 be self-explanatory. ``welcomeText`` is the text displayed above the "log out"
 button when the user is authenticated, it typically includes the variable
 ``{username}``, which is changed to the actual username at render time. By
-default, ``config.js`` includes the following english translations::
+default, ``config.js`` includes the following english translations:
+
+.. code:: javascript
 
     OpenLayers.Lang.en = {
         ...
@@ -402,7 +428,9 @@ default, ``config.js`` includes the following english translations::
 
 For the ``Login`` component to work the ``App.info`` JavaScript variable should
 be set. The setting of this variable should be done anywhere in the
-``config.js`` file, with this::
+``config.js`` file, with this:
+
+.. code:: javascript
 
     App.info = '${info | n}';
 
@@ -425,7 +453,9 @@ Any c2cgeoportal application includes a mobile application in the
 ``<package_name>/static/mobile/`` directory.  The mobile application is created
 by the ``c2cgeoportal_create`` and ``c2cgeoportal_update`` scaffolds. To create
 another mobile application, the easiest is to copy the existing ``mobile``
-directory into a new directory. For example::
+directory into a new directory. For example:
+
+.. code::
 
     $ cd <package_name>/static
     $ cp -r mobile mobile2

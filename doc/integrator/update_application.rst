@@ -32,24 +32,38 @@ Update c2cgeoportal
 Upgrading an application to a new version of c2cgeoportal requires several
 steps:
 
-1. If you are upgrading from version 1.3.1 or older, make your application 
-   require the new version of the ``c2cgeoportal`` package by editing the 
-   application's Buildout config (``buildout.cfg``) and change the version of 
-   ``c2cgeoportal`` in the ``[versions]`` section. Make sure the version 
+1. It's good to start an update in a clean repository, then:
+
+   * See what's not commited::
+
+        git status
+
+   * Reset non commited changes::
+
+        git reset --hard
+
+   * Remove all untracked files and directories::
+
+        git clean -f -d
+
+2. If you are upgrading from version 1.3.1 or older, make your application
+   require the new version of the ``c2cgeoportal`` package by editing the
+   application's Buildout config (``buildout.cfg``) and change the version of
+   ``c2cgeoportal`` in the ``[versions]`` section. Make sure the version
    specifications in ``setup.py`` and ``buildout.cfg`` do not conflict.
 
-2. Now, to update the application's other dependencies,
+3. Now, to update the application's other dependencies,
    get the new ``version.cfg`` file::
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/<release>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
    Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
 
-3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version::
+4. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version::
 
        $ ./buildout/bin/buildout install eggs
 
-4. Apply the ``c2cgeoportal_update`` scaffold::
+5. Apply the ``c2cgeoportal_update`` scaffold::
 
        $ ./buildout/bin/pcreate --interactive -s c2cgeoportal_update \
          ../<project_name> package=<package_name>
@@ -69,17 +83,17 @@ steps:
    application's Python code. If unsure, see the ``name`` argument to the
    ``setup`` call in the application's ``setup.py`` file.
 
-5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+6. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-6. If it still exists, you can now entirely remove the ``[versions]`` section in your 
+7. If it still exists, you can now entirely remove the ``[versions]`` section in your
    ``buildout.cfg`` file.
 
-7. Execute ``buildout`` to rebuild and install the application::
+8. Execute ``buildout`` to rebuild and install the application::
 
        $ ./buildout/bin/buildout -c <buildout_config_file>
 
-8. Update the database using the ``manage_db`` script::
+9. Update the database using the ``manage_db`` script::
 
        $ ./buildout/bin/manage_db upgrade
 
@@ -95,6 +109,16 @@ steps:
 
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
+
+11. Add the new files in the repository:
+
+   Get informations on the status of the repository::
+
+        git status
+
+   Add the new files::
+
+        git add <file1> <file2> ...
 
 
 Update CGXP
@@ -137,3 +161,16 @@ to reference the new commit for the cgxp submodule::
 
 Do manual migration steps based on what's in the
 `CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
+
+Test and commit
+~~~~~~~~~~~~~~~
+
+* After the update process is done, restart Apache::
+
+        sudo apache2ctl graceful
+
+* Test your application
+
+* Commit your changes::
+
+        git commit -am "Update GeoMapFish to version <version>"

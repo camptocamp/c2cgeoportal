@@ -500,6 +500,56 @@ Version 1.4
 
 9. Update the mobile application:
 
+  * Sencha Touch upgrade:
+
+      - Sencha Cmd 4.0.1.45 needs to be installed. Ensure that it's the case by
+        typing `sencha` in your terminal console. It should return the following
+        response::
+
+            $ sencha
+            Sencha Cmd v4.0.1.45
+            Sencha Cmd provides several categories [...]
+
+        At Camptocamp we provide a Debian package for that.
+
+      - Sencha Touch 2.3.1 SDK needs to be downloaded::
+
+            $ cd /tmp/
+            $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
+            $ unzip sencha-touch-2.3.1-gpl.zip
+            $ cd touch-2.3.1
+            $ rm -rf /tmp/TempApp
+            $ sencha generate app TempApp /tmp/TempApp
+            $ cd <path/to/c2cgeoportal/project/>
+            $ cp -r /tmp/TempApp/touch {{package}}/static/mobile/
+
+      - Some files can be removed from the mobile application directory since they
+        are not used anymore. You can launch the following command::
+
+            $ git rm -r {{package}}/static/mobile/.senchasdk \
+                     {{package}}/static/mobile/app/view/GeolocateControl.js \
+                     {{package}}/static/mobile/app/view/MobileMeasure.js \
+                     {{package}}/static/mobile/sdk
+
+      - In the ``{{package}}/__init__.py`` the following modifications of the
+        routes to mobile built application are required::
+
+         config.add_route('mobile_index_prod', '/mobile/')
+         config.add_view('c2cgeoportal.views.entry.Entry',
+                         attr='mobile',
+    -                    renderer='{{package}}:static/mobile/build/production/index.html',
+    +                    renderer='{{package}}:static/mobile/build/testing/App/index.html',
+                         route_name='mobile_index_prod')
+         config.add_route('mobile_config_prod', '/mobile/config.js')
+         config.add_view('c2cgeoportal.views.entry.Entry',
+                         attr='mobileconfig',
+    -                    renderer='{{package}}:static/mobile/build/production/config.js',
+    +                    renderer='{{package}}:static/mobile/build/testing/App/config.js',
+                         route_name='mobile_config_prod')
+    -    config.add_static_view('mobile', '{{package}}:static/mobile/build/production')
+    +    config.add_static_view('mobile', '{{package}}:static/mobile/build/testing/App')
+
+
   * In the `{{package}}/static/mobile/config.js` file:
 
       - Move the 'rasterTpl' and all other mobile specific localisation
@@ -608,61 +658,16 @@ Version 1.4
     not currently taken into account due to a limitation in the OWSLib, see:
     https://github.com/geopython/OWSLib/pull/92
 
-12. Mobile application, Sencha Touch upgrade:
+  * Mobile permalink field
 
-  * Sencha Cmd 4.0.1.45 needs to be installed. Ensure that it's the case by
-    typing `sencha` in your terminal console. It should return the following
-    response::
+      - On mobile, the page URL is now synchronized with the application state.
+        Browsers native sharing function can be used to share a permalink.
 
-        $ sencha
-        Sencha Cmd v4.0.1.45
-        Sencha Cmd provides several categories [...]
+      - But if a permalink field is needed, just add the following component in the
+        Settings view:
 
-  * Sencha Touch 2.3.1 SDK needs to be downloaded::
+            { xtype: 'map_permalink' }
 
-        $ cd /tmp/
-        $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
-        $ unzip sencha-touch-2.3.1-gpl.zip
-        $ cd touch-2.3.1
-        $ sencha generate app TempApp /tmp/TempApp
-        $ cd <path/to/c2cgeoportal/project/>
-        $ cp -r /tmp/TempApp/touch {{package}}/static/mobile/
-
-  * Some files can be removed from the mobile application directory since they
-    are not used anymore. You can launch the following command::
-
-        $ rm -rf {{package}}/static/mobile/.senchasdk \
-                 {{package}}/static/mobile/app/view/GeolocateControl.js \
-                 {{package}}/static/mobile/app/view/MobileMeasure.js \
-                 {{package}}/static/mobile/sdk
-
-  * The following modifications of the routes to mobile built application are
-    are required::
-
-     config.add_route('mobile_index_prod', '/mobile/')
-     config.add_view('c2cgeoportal.views.entry.Entry',
-                     attr='mobile',
--                    renderer='{{package}}:static/mobile/build/production/index.html',
-+                    renderer='{{package}}:static/mobile/build/testing/App/index.html',
-                     route_name='mobile_index_prod')
-     config.add_route('mobile_config_prod', '/mobile/config.js')
-     config.add_view('c2cgeoportal.views.entry.Entry',
-                     attr='mobileconfig',
--                    renderer='{{package}}:static/mobile/build/production/config.js',
-+                    renderer='{{package}}:static/mobile/build/testing/App/config.js',
-                     route_name='mobile_config_prod')
--    config.add_static_view('mobile', '{{package}}:static/mobile/build/production')
-+    config.add_static_view('mobile', '{{package}}:static/mobile/build/testing/App')
-
-13. Mobile permalink field
-
-  * On mobile, the page URL is now synchronized with the application state.
-    Browsers native sharing function can be used to share a permalink.
-
-  * But if a permalink field is needed, just add the following component in the
-    Settings view:
-
-        { xtype: 'map_permalink' }
 
 Version 1.3.2
 =============
