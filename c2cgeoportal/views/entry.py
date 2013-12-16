@@ -901,7 +901,8 @@ class Entry(object):
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'queryable_layers': json.dumps(queryable_layers)
+            'queryable_layers': json.dumps(queryable_layers),
+            'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
         return d
@@ -916,7 +917,8 @@ class Entry(object):
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'queryable_layers': json.dumps(queryable_layers)
+            'queryable_layers': json.dumps(queryable_layers),
+            'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
         return d
