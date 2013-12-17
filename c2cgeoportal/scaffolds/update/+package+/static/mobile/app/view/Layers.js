@@ -32,8 +32,7 @@ Ext.define("App.view.Layers", {
                 xtype: 'spacer'
             }, {
                 xtype: 'button',
-                iconCls: 'home',
-                iconMask: true,
+                text: OpenLayers.i18n('close'),
                 action: 'home'
             }]
         }, {

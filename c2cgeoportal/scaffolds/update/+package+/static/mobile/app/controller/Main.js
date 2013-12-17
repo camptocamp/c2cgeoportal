@@ -106,7 +106,11 @@ Ext.define('App.controller.Main', {
     },
 
     showHome: function() {
-        Ext.Viewport.setActiveItem(0);
+        var animation = {type: 'reveal', direction: 'down'};
+        if (Ext.Viewport.getActiveItem() == this.getLoginFormView()) {
+            animation = {type: 'fade'};
+        }
+        Ext.Viewport.animateActiveItem(0, animation);
         var view = this.getLayersView();
         var mainView = this.getMainView();
         view.getStore().setData(mainView.getMap().layers);
@@ -118,22 +122,31 @@ Ext.define('App.controller.Main', {
             view = Ext.create('App.view.Layers');
             view.getStore().setData(this.getMainView().getMap().layers);
         }
-        Ext.Viewport.setActiveItem(view);
+        var animation;
+        if (Ext.Viewport.getActiveItem() == this.getMainView()) {
+            animation = {type: 'cover', direction: 'up'};
+        } else if (Ext.Viewport.getActiveItem() == this.getThemesView()) {
+            animation = {type: 'slide', direction: 'right'};
+        }
+        Ext.Viewport.animateActiveItem(view, animation);
     },
 
     showLoginForm: function() {
         var view = this.getLoginFormView();
-        Ext.Viewport.setActiveItem(view);
+        var animation = {type: 'fade'};
+        Ext.Viewport.animateActiveItem(view, animation);
     },
 
     showSettings: function() {
         var view = this.getSettingsView();
-        Ext.Viewport.setActiveItem(view);
+        var animation = {type: 'cover', direction: 'up'};
+        Ext.Viewport.animateActiveItem(view, animation);
     },
 
     showThemes: function() {
         var view = this.getThemesView();
-        Ext.Viewport.setActiveItem(view);
+        var animation = {type: 'slide', direction: 'left'};
+        Ext.Viewport.animateActiveItem(view, animation);
     },
 
     login: function() {
