@@ -435,6 +435,7 @@ include =
     OpenLayers/Control/LayerSwitcher.js
     OpenLayers/Layer/WMTS.js
     OpenLayers/Layer/TMS.js
+    OpenLayers/Layer/OSM.js
     CGXP/api/Map.js
 
 [api-lang-en.js]
@@ -614,6 +615,7 @@ include =
     OpenLayers/Control/LayerSwitcher.js
     OpenLayers/Layer/WMTS.js
     OpenLayers/Layer/TMS.js
+    OpenLayers/Layer/OSM.js
     plugins/OLSource.js #GXP
     plugins/ZoomToExtent.js #GXP
     plugins/NavigationHistory.js #GXP

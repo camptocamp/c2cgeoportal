@@ -46,6 +46,7 @@ Extended APIs.
                     bottomOutUnits: false
                 }),
                 new OpenLayers.Control.LayerSwitcher(),
+                // Static image version
                 /*
                 new OpenLayers.Control.OverviewMap({
                     size: new OpenLayers.Size(200, 100),
@@ -63,8 +64,28 @@ Extended APIs.
                         units: "m",
                         numZoomLevels: 1
                     }
-                }),
-                */
+                }),*/
+                // OSM version
+                new OpenLayers.Control.OverviewMap({
+                    size: new OpenLayers.Size(200, 100),
+                    mapOptions: {
+                        theme: null
+                    },
+                    minRatio: 64,
+                    maxRatio: 64,
+                    layers: [new OpenLayers.Layer.OSM("OSM", [
+                            'http://a.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
+                            'http://b.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png',
+                            'http://c.tile.openstreetmap.org/${"${z}/${x}/${y}"}.png'
+                        ], {
+                            transitionEffect: 'resize',
+                            attribution: [
+                                "(c) <a href='http://openstreetmap.org/'>OSM</a>",
+                                "<a href='http://creativecommons.org/licenses/by-sa/2.0/'>by-sa</a>"
+                            ].join(' ')
+                        }
+                    )]
+                })
                 new OpenLayers.Control.MousePosition({numDigits: 0})
             ],
             layers: [{
