@@ -29,7 +29,9 @@ if [[ ! -d ${BUILDDIR} ]]; then
     mkdir -p ${BUILDDIR}
 fi
 
-# get the latest files
+# reset local changes and get the latest files
+git reset --hard
+git clean -f -d
 git pull origin master
 
 # create a virtual env if none exists already
