@@ -628,8 +628,8 @@ Version 1.4
         git rm -f {{package}}/static/mobile/bootstrap.js
         git rm -f {{package}}/static/mobile/bootstrap.json
 
-  * Change the 'Home' button in Settings by a button with text. It better
-    matches the animated transitions:
+  * Change the 'Home' button in Settings by a button with text. It's more
+    coherent with the application's panels:
 
          }, {
              xtype: 'button',
