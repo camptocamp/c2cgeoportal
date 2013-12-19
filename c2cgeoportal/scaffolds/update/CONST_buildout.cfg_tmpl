@@ -184,7 +184,6 @@ compress = True
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
-compass_cmd = compass
 sencha_cmd = sencha
 cmds =
     >>> import os
