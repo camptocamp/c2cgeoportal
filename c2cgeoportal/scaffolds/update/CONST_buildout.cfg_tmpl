@@ -106,6 +106,8 @@ cmds =
     >>>    for d in [d for d in dirs.split('\n') if len(d) > 0]:
     >>>        call(['chmod', '--quiet', 'g+s', d])
     >>>    call(['chmod', '--quiet', '-R', 'g+rw,o+r', '.'])
+    >>>    # remove wsgi file (rights issue)
+    >>>    call(['rm', '-f', 'buildout/parts/modwsgi/wsgi'])
 
 [activate]
 recipe = evg.recipe.activate
