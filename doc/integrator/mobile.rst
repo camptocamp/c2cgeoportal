@@ -50,10 +50,15 @@ and ``libcompass-ruby1.8`` (The ``sencha-cmd`` package was created by
 the Camptocamp sysadmins).
 
 On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
-``sencha-cmd`` installed, please ensure that the correct one is used by
-default::
+``sencha-cmd`` installed, please ensure that the correct one is used for your
+instance. To do so, put the following configuration variables in your
+`buildout_$USER.cfg` file::
 
-    sudo update-alternatives --config sencha
+    [mobile]
+    sencha_cmd = sencha-cmd
+
+Replace `sencha-cmd` by `sencha-sdk` if you want to use the command which comes
+with Sencha SDK Tools instead.
 
 Infrastructure (for version below 1.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
