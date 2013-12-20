@@ -630,6 +630,11 @@ Version 1.4
        {{package}}/static/mobile/bootstrap.js
        {{package}}/static/mobile/bootstrap.json
 
+    Also remove the corresponding files from your repository:
+
+        git rm -f {{package}}/static/mobile/bootstrap.js
+        git rm -f {{package}}/static/mobile/bootstrap.json
+
 10. In the `apache/wsgi.conf.in` do the following changes:
 
   * Make the end slash optional:
