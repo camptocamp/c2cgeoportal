@@ -247,22 +247,26 @@ class TestEntryView(TestCase):
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
 
-        theme = themes[0]
-
-        layers = theme['children']
+        layers = themes[0]['children']
         self.assertEqual(len(layers), 4)
 
-        layer = layers[0]
-        self.assertEqual(layer['name'], 'test_wmsfeaturesgroup')
-        self.assertFalse('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == 'test_wmsfeaturesgroup'
+        ], [False])
 
-        layer = layers[1]
-        self.assertEqual(layer['name'], '__test_private_layer')
-        self.assertFalse('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == '__test_private_layer'
+        ], [False])
 
-        layer = layers[2]
-        self.assertEqual(layer['name'], '__test_public_layer')
-        self.assertFalse('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == '__test_public_layer'
+        ], [False])
 
     def test_index_auth_edit_permission(self):
         import json
@@ -280,22 +284,26 @@ class TestEntryView(TestCase):
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
 
-        theme = themes[0]
-
-        layers = theme['children']
+        layers = themes[0]['children']
         self.assertEqual(len(layers), 4)
 
-        layer = layers[0]
-        self.assertEqual(layer['name'], 'test_wmsfeaturesgroup')
-        self.assertFalse('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == 'test_wmsfeaturesgroup'
+        ], [False])
 
-        layer = layers[1]
-        self.assertEqual(layer['name'], '__test_private_layer')
-        self.assertTrue('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == '__test_private_layer'
+        ], [True])
 
-        layer = layers[2]
-        self.assertEqual(layer['name'], '__test_public_layer')
-        self.assertFalse('editable' in layer)
+        self.assertEqual([
+            'editable' in layer
+            for layer in themes[0]['children']
+            if layer['name'] == '__test_public_layer'
+        ], [False])
 
     def test_mobileconfig_no_auth_no_theme(self):
         entry = self._create_entry_obj()
