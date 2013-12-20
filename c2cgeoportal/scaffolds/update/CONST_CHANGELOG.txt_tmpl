@@ -1489,7 +1489,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 3. To add the support of WMTS layers the database should be updated by
    standard procedure, CGXP also. We also need the ogcproxy, and to
    use is we need to add the following line in the file
-   <project>/templates/viewer.js:
+   {{project}}/templates/viewer.js:
 
         OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
 
@@ -1578,7 +1578,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 9. GeoExt popup css resource in template for debug mode was missing
    - add:
      <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/lib/cgxp/geoext/resources/css/popup.css')}" />
-     in file <project>/templates/index.html
+     in file {{project}}/templates/index.html
 
 10. In the CGXP print plugin config autoFit: true should be set in the "options"
    object instead of the "outputConfig" object.
@@ -1727,7 +1727,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
 21. Improve the checker an add a check collector, see integator/check in the
     documentation to configure them.
-    Something like this can be removed in the <project>/__init__.py
+    Something like this can be removed in the {{project}}/__init__.py
     config.add_settings({'check_print_template': '1 A4 portrait'})
     config.add_settings({'check_FullTextSearch': 'te'})
 
@@ -2187,7 +2187,7 @@ Wed, 14 Dec 2011 17:00:24 +0100
 Implements group restriction to acces to the admin interface.
 
 To continue to acces to the admin interface you should, in the file
-'<project>/__init__.py' replaxe the line
+'{{project}}/__init__.py' replaxe the line
 -     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'))
 by:
 +     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'),
