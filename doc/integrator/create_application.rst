@@ -46,7 +46,7 @@ for a project composed of a main application and sub-applications::
       +- <second_sub_project>
       +- ...
 
-Here ``<root>`` is the root of the Git (or SVN) tree.
+Here ``<root>`` is the root of the Git tree.
 
 Install c2cgeoportal
 --------------------
@@ -118,12 +118,6 @@ c2cgeoportal application you want to create the new application from:
 
     ./buildout/bin/pcreate -l
 
-.. note::
-
-    With ``c2cgeoportal`` 0.6 and lower use::
-
-        ./buildout/bin/paster create --list-templates
-
 You should at least see the c2cgeoportal skeletons:
 
 * c2cgeoportal_create
@@ -150,19 +144,6 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
     Don't add any '/' after the project name.
 
-.. note::
-
-   With ``c2cgeoportal`` 0.6 and lower use::
-
-       ./buildout/bin/paster create --template=c2cgeoportal_create --output-dir=.. $PROJECT
-
-.. note::
-
-    If you need a specific name for the Python package defined by the project
-    you can use::
-
-        pcreate -s c2cgeoportal_create ../$PROJECT package=<package_name>
-
 You'll be asked to enter the SRID for this project.
 
 This will create a directory named ``<project_name>`` that will be next to the
@@ -178,12 +159,6 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 .. note::
 
     Don't add any '/' after the project name.
-
-.. note::
-
-    With ``c2cgeoportal`` 0.6 and lower use::
-
-        ./buildout/bin/paster create --template=c2cgeoportal_update --output-dir=.. $PROJECT
 
 .. note::
 

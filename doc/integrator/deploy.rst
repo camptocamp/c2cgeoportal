@@ -137,7 +137,7 @@ Build on the dev server:
 
   ssh -A <dev_server> # SSH agent forward is needed
   cd /var/www/<your_vhost>/public/<your_project>
-  svn up # update the code
+  git pull origin master # update the code
   rm -rf buildout/parts/modwsgi # to prevent rights error
   ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportal
 

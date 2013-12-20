@@ -20,14 +20,6 @@ To get the changes done by other people, we need to ``pull`` the new code:
 
    The submodule command is used to have the right version of CGXP.
 
-If you still use SVN::
-
-    svn update
-
-.. caution::
-   This command will not update CGXP, and c2cgeoportal is not able to
-   fix the revision of CGXP.
-
 
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
@@ -55,14 +47,8 @@ steps:
 
         git clean -f -d
 
-2. If you are upgrading from version 1.3.1 or older, make your application
-   require the new version of the ``c2cgeoportal`` package by editing the
-   application's Buildout config (``buildout.cfg``) and change the version of
-   ``c2cgeoportal`` in the ``[versions]`` section. Make sure the version
-   specifications in ``setup.py`` and ``buildout.cfg`` do not conflict.
-
-3. Now, to update the application's other dependencies,
-   get the new ``version.cfg`` file:
+2. Now, to update the application's other dependencies,
+   get the ``version.cfg`` file:
 
    .. prompt:: bash
 
@@ -70,13 +56,13 @@ steps:
 
    Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
 
-4. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version:
+3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version:
 
    .. prompt:: bash
 
        ./buildout/bin/buildout install eggs
 
-5. Apply the ``c2cgeoportal_update`` scaffold:
+4. Apply the ``c2cgeoportal_update`` scaffold:
 
    .. prompt:: bash
 
@@ -86,55 +72,26 @@ steps:
 
     Don't add any '/' after the project name.
 
-.. note::
-
-   For ``c2cgeoportal`` 0.6 and lower:
-
-   .. prompt:: bash
-
-       ./buildout/bin/paster create --template=c2cgeoportal_update \
-            --output-dir=.. <project_name> package=<package_name>
-
-   ``<project_name>`` is the name of the application's root directory,
-   including ``development.ini``, etc.  ``<package_name>`` is the name of the
-   application's root Python module, i.e. the name of the subdir including the
-   application's Python code. If unsure, see the ``name`` argument to the
-   ``setup`` call in the application's ``setup.py`` file.
-
-6. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
+5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-7. If it still exists, you can now entirely remove the ``[versions]`` section in your
-   ``buildout.cfg`` file.
-
-8. Execute ``buildout`` to rebuild and install the application:
+6. Execute ``buildout`` to rebuild and install the application:
 
    .. prompt:: bash
 
        ./buildout/bin/buildout -c <buildout_config_file>
 
-9. Update the database using the ``manage_db`` script:
+7. Update the database using the ``manage_db`` script:
 
    .. prompt:: bash
 
        ./buildout/bin/manage_db upgrade
 
 
-   .. note::
-
-        With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
-        in the production.ini file, you need to specify the app name on the
-        ``manage_db`` command line. For example, the above command would be as
-        follows:
-
-        .. prompt:: bash
-
-           ./buildout/bin/manage_db -n <package_name> upgrade
-
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-11. Add the new files in the repository:
+8. Add the new files in the repository:
 
     Get informations on the status of the repository:
 

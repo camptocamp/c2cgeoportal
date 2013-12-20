@@ -43,8 +43,6 @@ on your system:
 .. note::
     Additional notes for Windows users:
 
-        For Subversion install `Tortoises SVN <http://tortoisesvn.net>`_.
-
         For Git look at GitHub's `Set Up Git page
         <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
         keys, so you only need to follow the first section of this page.
@@ -192,12 +190,6 @@ OpenLayers and GeoExt.
     directory's permissions using ``chmod -R g+w``.  You certainly want to do
     that if the application has been cloned in a shared directory like
     ``/var/www/<vhost>/private``.
-
-.. note::
-
-    If you still use SVN::
-
-        svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
