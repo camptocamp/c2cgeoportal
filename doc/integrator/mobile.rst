@@ -94,27 +94,6 @@ To be able to add a mobile app to a c2cgeoportal project this project should use
 c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know
 how to upgrade a project.
 
-Adding the Sencha Touch SDK
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Any c2cgeoportal project includes a ``static/mobile`` directory containing
-a Sencha Touch mobile application. This directory actually misses a major
-component of the Sencha Touch application: the Sencha Touch SDK. So you need to
-manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
-you will (1) download the Sencha Touch SDK (version 2.3.1), (2) dearchive it
-at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
-and (4) copy the ``touch`` directory from that temporary Sencha Touch application
-to your project's ``static/mobile`` dir. For example:
-
-.. code::
-
-    $ cd /tmp/
-    $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
-    $ unzip sencha-touch-2.3.1-gpl.zip
-    $ cd touch-2.3.1
-    $ sencha generate app TempApp /tmp/TempApp
-    $ cp -r /tmp/TempApp/touch <path/to/c2cgeoportal/project/module>/static/mobile/
-
 Adding the Sencha Touch SDK (for version below 1.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -257,11 +236,15 @@ Building the mobile application
 -------------------------------
 
 The ``CONST_buildout.cfg`` file includes the parts ``jsbuild-mobile`` and
-``mobile`` that are dedicated to building the mobile application. These parts
-are not executed by default.  To change that edit ``buildout.cfg`` and add the
-following line to the ``[buildout]`` section::
+``mobile`` that are dedicated to building the mobile application.
 
-    parts += jsbuild-mobile mobile
+.. note::
+
+   In version bellow 1.4 these parts are not executed by default.
+   To change that edit ``buildout.cfg`` and add the following line
+   to the ``[buildout]`` section:
+
+        parts += jsbuild-mobile mobile
 
 For the ``mobile`` part to work Sencha SDK Tools and Compass should be
 installed on the build machine. (See above.)
@@ -269,10 +252,10 @@ installed on the build machine. (See above.)
 .. note::
 
     On Windows you will need to override the values of the `mobile` part's
-    `compass_cmd` and `sencha_cmd` variables as such::
+    `sencha_cmd` (and `compass_cmd` for version bellow 1.4) variables as such::
 
         [mobile]
-        compass_cmd = compass.bat
+        compass_cmd = compass.bat  # for version bellow 1.4
         sencha_cmd = sencha.bat
 
     You would add this in `buildout.cfg`, or any Buildout configuration file

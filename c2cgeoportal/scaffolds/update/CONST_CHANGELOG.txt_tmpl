@@ -466,6 +466,10 @@ Version 1.4
 
             find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge
 
+      - Now the mobile is built by default than remove the line:
+
+            parts += jsbuild-mobile mobile
+
 8. Update the print configuration:
 
   * In the print config template `print/templates/print.mako.in`
@@ -511,17 +515,6 @@ Version 1.4
             Sencha Cmd provides several categories [...]
 
         At Camptocamp we provide a Debian package for that.
-
-      - Sencha Touch 2.3.1 SDK needs to be downloaded::
-
-            $ cd /tmp/
-            $ wget http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip
-            $ unzip sencha-touch-2.3.1-gpl.zip
-            $ cd touch-2.3.1
-            $ rm -rf /tmp/TempApp
-            $ sencha generate app TempApp /tmp/TempApp
-            $ cd <path/to/c2cgeoportal/project/>
-            $ cp -r /tmp/TempApp/touch {{package}}/static/mobile/
 
       - Some files can be removed from the mobile application directory since they
         are not used anymore. You can launch the following command::

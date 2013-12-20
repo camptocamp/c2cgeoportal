@@ -12,6 +12,8 @@ parts = eggs
         po2mo
         print-template
         print-war
+        jsbuild-mobile
+        mobile
 develop = .
 index = http://pypi.camptocamp.net/pypi
 allow-hosts = pypi.camptocamp.net
