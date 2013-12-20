@@ -625,6 +625,11 @@ Version 1.4
 
        git rm -f {{package}}/static/mobile/resources/css/app.css
 
+  * Add new lines to your application's ``.gitignore`` file:
+
+       {{package}}/static/mobile/bootstrap.js
+       {{package}}/static/mobile/bootstrap.json
+
 10. In the `apache/wsgi.conf.in` do the following changes:
 
   * Make the end slash optional:
