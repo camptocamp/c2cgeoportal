@@ -26,3 +26,5 @@ deploy/hooks/post-restore-database
 {{package}}/static/mobile/archive/
 {{package}}/static/mobile/build/
 {{package}}/static/mobile/openlayers-mobile.js
+{{package}}/static/mobile/bootstrap.js
+{{package}}/static/mobile/bootstrap.json
