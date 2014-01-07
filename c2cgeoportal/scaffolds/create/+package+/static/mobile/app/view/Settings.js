@@ -14,8 +14,7 @@ Ext.define("App.view.Settings", {
                 xtype: 'spacer'
             }, {
                 xtype: 'button',
-                iconCls: 'home',
-                iconMask: true,
+                text: OpenLayers.i18n('close'),
                 action: 'home'
             }]
         }, {
