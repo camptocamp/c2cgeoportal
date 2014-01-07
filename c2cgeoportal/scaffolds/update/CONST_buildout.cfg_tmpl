@@ -32,6 +32,9 @@ eggs-directory = buildout/eggs
 parts-directory = buildout/parts
 bin-directory = buildout/bin
 
+[fact]
+recipe = c2c.recipe.facts
+
 [vars]
 # project instance id
 instanceid = override_me
@@ -166,6 +169,7 @@ source-directory = .
 exclude-directories = buildout
 interpreted-options = authtkt_secret
 extends = vars
+    facts
 
 [jsbuild]
 recipe = JSTools:buildjs
