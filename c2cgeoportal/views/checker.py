@@ -122,7 +122,8 @@ class Checker(object):  # pragma: no cover
         }
         body = simplejson.dumps(body)
 
-        _url = self.request.route_url('printproxy_create')
+        _url = self.request.route_url('printproxy_create') + \
+            '?url=' + self.request.route_url('printproxy')
         h = Http()
         headers = {'Content-type': 'application/json;charset=utf-8'}
         resp, content = h.request(_url, 'POST', headers=headers, body=body)
