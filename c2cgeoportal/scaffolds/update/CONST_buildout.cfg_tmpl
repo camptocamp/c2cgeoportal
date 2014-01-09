@@ -32,7 +32,7 @@ eggs-directory = buildout/eggs
 parts-directory = buildout/parts
 bin-directory = buildout/bin
 
-[fact]
+[facts]
 recipe = c2c.recipe.facts
 
 [vars]
