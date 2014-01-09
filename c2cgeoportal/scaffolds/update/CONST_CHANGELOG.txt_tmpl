@@ -650,7 +650,7 @@ Version 1.4
 
         RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
 
-  * In the file `<package>/__init__.py` remove the following code::
+  * In the file `{{package}}/__init__.py` remove the following code::
 
         from c2cgeoportal.views.tilecache import load_tilecache_config
 
