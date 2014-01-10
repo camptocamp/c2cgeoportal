@@ -572,10 +572,21 @@ Version 1.4
         background layers should now be listed in the map config.
 
 
-  * Currently the `Settings` view in the mobile application is not scrollable.
-    Add the following in `{{package}}/static/mobile/app/view/Settings.js` in the config object:
+  * In the `{{package}}/static/mobile/app/view/Settings.js` file:
+
+      - Currently the view is not scrollable, add the following in the config object:
 
         scrollable: 'vertical',
+
+      - Change the 'Home' button with text. It's more coherent with the application's panels:
+
+             }, {
+                 xtype: 'button',
+        -        iconCls: 'home',
+        -        iconMask: true,
+        +        text: OpenLayers.i18n('close'),
+                 action: 'home'
+             }]
 
   * Manage all translations in one place. Translations for the mobile
     application (layer names for example) are managed in the same place as for
@@ -627,17 +638,6 @@ Version 1.4
 
         git rm -f {{package}}/static/mobile/bootstrap.js
         git rm -f {{package}}/static/mobile/bootstrap.json
-
-  * Change the 'Home' button in Settings by a button with text. It's more
-    coherent with the application's panels:
-
-         }, {
-             xtype: 'button',
-    -        iconCls: 'home',
-    -        iconMask: true,
-    +        text: OpenLayers.i18n('close'),
-             action: 'home'
-         }]
 
 10. In the `apache/wsgi.conf.in` do the following changes:
 
