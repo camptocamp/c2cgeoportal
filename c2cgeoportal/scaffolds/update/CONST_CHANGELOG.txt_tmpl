@@ -2196,7 +2196,7 @@ Wed, 14 Dec 2011 17:00:24 +0100
 Implements group restriction to acces to the admin interface.
 
 To continue to acces to the admin interface you should, in the file
-'{{project}}/__init__.py' replaxe the line
+'{{project}}/__init__.py' replace the line
 -     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'))
 by:
 +     authentication_policy = AuthTktAuthenticationPolicy(settings.get('authtkt_secret'),
