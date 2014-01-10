@@ -21,6 +21,7 @@ of an existing c2cgeoportal application. Here's how:
     [buildout]
     extends = buildout.cfg
     develop += c2cgeoportal
+    parts -= fix-perm
 
     [versions]
     c2cgeoportal =
@@ -43,8 +44,13 @@ of an existing c2cgeoportal application. Here's how:
     [versions]
     c2cgeoportal =
 
-  Note the ``develop += c2cgeoportal`` and ``c2cgeoportal =`` lines. This is to
-  install ``c2cgeoportal`` as a develop egg.
+  .. note::
+
+    ``develop += c2cgeoportal`` and ``c2cgeoportal =`` lines refer to the
+    installation of c2cgeoportal as a develop egg.
+
+    ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
+    time whereas it is not needed in a personal environment.
 
 * Remove the regular c2cgeoportal egg from the Buildout environment::
 
