@@ -29,7 +29,7 @@ installed on your system:
 
 * Git. In most cases you will want to use Git as the revision control system
   for your c2cgeoportal application.
-* Python 2.7 or 2.6. Python 3.x is not yet supported.
+* Python 2.7. Python 3.x is not yet supported.
 
 Project structure
 -----------------
