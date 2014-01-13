@@ -66,6 +66,12 @@ class Entry(object):
 
     def __init__(self, request):
         self.request = request
+        if request.user:
+            request.response.cache_control.private = True
+        else:
+            request.response.cache_control.public = True
+        request.response.cache_control.max_age = \
+            request.registry.settings["default_max_age"]
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
@@ -969,7 +975,10 @@ class Entry(object):
             if cameFrom:
                 return HTTPFound(location=cameFrom, headers=headers)
             else:
-                return Response('true', headers=headers)
+                response = Response(
+                    'true', headers=headers, cache_control="no-cache"
+                )
+                return response
         else:
             return HTTPUnauthorized('bad credentials')
 
@@ -983,8 +992,10 @@ class Entry(object):
         if not self.request.user:
             return HTTPNotFound()
 
-        log.info("User '%s' (%i) logging out." % (self.request.user.username,
-                                                  self.request.user.id))
+        log.info("User '%s' (%i) logging out." % (
+            self.request.user.username,
+            self.request.user.id
+        ))
 
         if cameFrom:
             return HTTPFound(location=cameFrom, headers=headers)
@@ -1046,7 +1057,7 @@ class Entry(object):
                 log.info("password changed in replication target database \
                     for user: %s" % self.request.user.username)
 
-        return Response('true')
+        return Response('true', cache_control="no-cache")
 
     @view_config(route_name='permalinktheme', renderer='index.html')
     def permalinktheme(self):

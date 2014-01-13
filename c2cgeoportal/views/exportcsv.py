@@ -29,7 +29,6 @@
 
 
 from pyramid.httpexceptions import HTTPBadRequest
-from pyramid.response import Response
 from pyramid.view import view_config
 import codecs
 
@@ -46,11 +45,14 @@ def echo(request):
     csv = request.params.get('csv', None)
     if csv is None:
         return HTTPBadRequest('csv parameter is required')
+
+    request.response.cache_control.no_cache = True
+
     csv_extension = request.params.get('csv_extension', default_csv_extension)
     csv_encoding = request.params.get('csv_encoding', default_csv_encoding)
     name = request.params.get('name', 'export')
 
-    res = Response()
+    res = request.response
     content = ''
     if csv_encoding == default_csv_encoding:
         content += codecs.BOM_UTF8

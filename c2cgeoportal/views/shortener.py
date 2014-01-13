@@ -49,6 +49,7 @@ class shortener(object):
 
     def __init__(self, request):
         self.request = request
+        request.response.cache_control.no_cache = True
         self.settings = request.registry.settings.get('shortener', {})
 
     @view_config(route_name='shortener_get')

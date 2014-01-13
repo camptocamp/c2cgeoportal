@@ -49,21 +49,34 @@ Version 1.5
         {{package}}/static/lib/cgxp/dygraphs
         {{package}}/static/js
 
-4. Update the `config.yaml.in` file:
+4. Update the `production.ini.in` and `development.ini.in` files:
+
+  * Add the new default_max_age to 10 hours:
+
+        default_max_age: 36000
 
 5. In the `buildout.cfg` file:
 
-6. Update the templates:
+6. In the `{{package}}/__init__.py` file:
+
+   * Use a cache header in the static view:
+
+        - config.add_static_view('proj', '{{package}}:static')
+        + config.add_static_view('proj', '{{package}}:static',
+        +     cache_max_age=config.get_settings()["default_max_age"]
+        + )
+
+7. Update the templates:
 
   * In all the `{{package}}/templates/*.js` files:
 
   * In the `{{package}}/templates/viewer.js`:
 
-7. Update the mobile application:
+8. Update the mobile application:
 
   * In the `{{package}}/static/mobile/config.js` file:
 
-8. Some important notices:
+9. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION

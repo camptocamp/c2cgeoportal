@@ -345,4 +345,6 @@ def includeme(config):
         MultiDomainStaticURLInfo(), IStaticURLInfo)
     # add the static view (for static resources)
     config.add_static_view(
-        'static', 'c2cgeoportal:static')
+        'static', 'c2cgeoportal:static',
+        cache_max_age=settings["default_max_age"]
+    )

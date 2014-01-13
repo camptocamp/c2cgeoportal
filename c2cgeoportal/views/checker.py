@@ -47,11 +47,16 @@ class Checker(object):  # pragma: no cover
         self.status_int = max(self.status_int, int(code))
 
     def make_response(self, msg):
-        return Response(body=msg, status_int=self.status_int)
+        return Response(
+            body=msg, status_int=self.status_int, cache_control="no-cache"
+        )
 
     def testurl(self, url):
         h = Http()
-        resp, content = h.request(url)
+        headers = {
+            "Cache-Control": "no-cache"
+        }
+        resp, content = h.request(url, headers=headers)
 
         if resp['status'] != '200':
             self.update_status_int(resp['status'])

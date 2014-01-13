@@ -65,4 +65,5 @@ def echo(request):
     response = Response()
     response.app_iter = json_base64_encode(file.filename, file.file)
     response.content_type = 'text/html'
+    response.cache_control.no_cache = True
     return response
