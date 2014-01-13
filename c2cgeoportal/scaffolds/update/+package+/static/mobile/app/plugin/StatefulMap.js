@@ -36,7 +36,7 @@ Ext.define('App.plugin.StatefulMap', {
                 }
                 if (state.bgLayer) {
                     map.setBaseLayer(
-                        map.getLayersBy('layer', state.bgLayer)[0]
+                        map.getLayersBy('ref', state.bgLayer)[0]
                     );
                 }
                 if (state.layers) {
@@ -89,7 +89,7 @@ Ext.define('App.plugin.StatefulMap', {
             lonlat: [center.lon, center.lat],
             zoom: this.getMap().getZoom(),
             theme: App.theme,
-            bgLayer: this.getMap().baseLayer.layer,
+            bgLayer: this.getMap().baseLayer.ref,
             layers: main.getOverlay().params.LAYERS
         });
     },
