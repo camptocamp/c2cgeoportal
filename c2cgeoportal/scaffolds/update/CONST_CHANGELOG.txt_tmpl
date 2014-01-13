@@ -677,6 +677,15 @@ Version 1.4
       - On mobile, the page URL is now synchronized with the application state.
         Browsers native sharing function can be used to share a permalink.
 
+      - Baselayers definition needs to be updated with a `ref` property, as
+        it’s already on the desktop version:
+
+        new OpenLayers.Layer.WMTS(OpenLayers.Util.applyDefaults({
+            name: OpenLayers.i18n('plan'),
+            layer: 'plan',
+        +   ref: 'plan'
+        }, WMTS_OPTIONS),
+
       - But if a permalink field is needed, just add the following component in the
         Settings view:
 
