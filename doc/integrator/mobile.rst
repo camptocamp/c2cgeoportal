@@ -46,7 +46,7 @@ Creating and building a mobile application requires the `Sencha Cmd
 <http://compass-style.org/>`_ to be installed on the target machine.
 
 On Camptocamp server we just need the Debian packages ``sencha-cmd``
-and ``libcompass-ruby1.8`` (The ``sencha-cmd`` package was created by
+and ``ruby-compass`` (The ``sencha-cmd`` package was created by
 the Camptocamp sysadmins).
 
 On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
