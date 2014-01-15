@@ -69,7 +69,7 @@ Server
 
 #. Finally don't forget to restart apache::
 
-    sudo apache2ctl graceful
+    sudo /usr/sbin/apache2ctl graceful
 
 When you add a new message repeat all steps but replace the step 2. by::
 

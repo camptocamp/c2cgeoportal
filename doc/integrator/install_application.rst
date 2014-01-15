@@ -396,7 +396,7 @@ where ``<project_path>`` is the path to your project.
 
 Reload apache configuration and you're done::
 
-    $ sudo apache2ctl graceful
+    $ sudo /usr/sbin/apache2ctl graceful
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>/wsgi``.

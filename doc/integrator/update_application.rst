@@ -167,7 +167,7 @@ Test and commit
 
 * After the update process is done, restart Apache::
 
-        sudo apache2ctl graceful
+        sudo /usr/sbin/apache2ctl graceful
 
 * Test your application
 

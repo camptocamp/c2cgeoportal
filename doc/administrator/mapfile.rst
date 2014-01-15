@@ -29,7 +29,7 @@ and/or *private* (a.k.a *restricted*).
     Please note that, because of c2cgeoportal's caching system, each time you
     update the mapfile configuration, you have to reload apache.
 
-    (on debian system, you can do: ``sudo apache2ctl graceful``).
+    (on debian system, you can do: ``sudo /usr/sbin/apache2ctl graceful``).
 
 Print
 -----
