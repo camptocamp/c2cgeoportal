@@ -23,9 +23,6 @@ of an existing c2cgeoportal application. Here's how:
     develop += c2cgeoportal
     parts -= fix-perm
 
-    [versions]
-    c2cgeoportal =
-
     [vars]
     instanceid = <instanceid>
 
