@@ -109,10 +109,11 @@ with ``<db_name>`` replaced by the actual database name.
 Create the schema
 ~~~~~~~~~~~~~~~~~
 
-Each parent or children need an application-specific schema,
+Each parent or child needs two application-specific schemas,
 then to create it use::
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
+    sudo -u postgres psql -c "CREATE SCHEMA <schema_name>_static;" <db_name>
 
 with ``<db_name>`` and ``<schema_name>`` replaced by the actual database name,
 and schema name ('main' by default), respectively.
@@ -135,6 +136,7 @@ We use a specific user for the application, ``www-data`` by default.
 Give the rights to the user::
 
     sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name> TO "www-data"' <db_name>
+    sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name>_static TO "www-data"' <db_name>
 
 .. note::
 

@@ -140,10 +140,10 @@ If you don't have a ``www-data`` user you need to create one::
 
 To create the ``main`` schema::
 
-    $ sudo -u postgres psql -d c2cgeoportal_test \
-           -c 'CREATE SCHEMA main;'
-    $ sudo -u postgres psql -d c2cgeoportal_test \
-           -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
+    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
+    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
 
 Now edit ``buildout_dev.cfg`` (or create your own buildout config file
 extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
