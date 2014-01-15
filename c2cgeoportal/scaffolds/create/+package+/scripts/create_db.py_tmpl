@@ -38,13 +38,13 @@ def main():
     if options.drop:
         print "Dropping tables"
         for table in reversed(c2cmodels.Base.metadata.sorted_tables):
-            if table.schema == schema:
+            if table.schema == schema or table.schema == (schema + '_static'):
                 print "Dropping table %s" % table.name
                 table.drop(bind=c2cmodels.DBSession.bind, checkfirst=True)
 
     print "Creating tables"
     for table in c2cmodels.Base.metadata.sorted_tables:
-        if table.schema == schema:
+        if table.schema == schema or table.schema == (schema + '_static'):
             print "Creating table %s" % table.name
             table.create(bind=c2cmodels.DBSession.bind, checkfirst=True)
     sess = c2cmodels.DBSession()

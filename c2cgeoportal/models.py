@@ -531,11 +531,11 @@ if _parentschema is not None and _parentschema != '':  # pragma: no cover
 
 class Shorturl(Base):
     __tablename__ = 'shorturl'
-    __table_args__ = {'schema': _schema}
+    __table_args__ = {'schema': _schema + "_static"}
     __acl__ = [DENY_ALL]
     id = Column(types.Integer, primary_key=True)
     url = Column(types.Unicode(1000))
-    ref = Column(types.String(20), index=True, unique=True)
+    ref = Column(types.String(20), index=True, unique=True, nullable=False)
     creator_email = Column(types.Unicode(200))
     creation = Column(types.DateTime)
     last_hit = Column(types.DateTime)
