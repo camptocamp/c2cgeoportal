@@ -283,6 +283,14 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 
     ScriptAlias /${vars:instanceid}/mapserv /usr/libexec/mapserv
 
+apache2ctl
+~~~~~~~~~~
+
+On RedHat the commands hasn't the '2'!
+Then to graceful apache do::
+
+    /usr/sbin/apachectl graceful
+
 Buildout bootstrap
 ~~~~~~~~~~~~~~~~~~
 
@@ -404,7 +412,7 @@ where ``<project_path>`` is the path to your project.
 
 Reload apache configuration and you're done::
 
-    $ sudo apache2ctl graceful
+    $ sudo /usr/sbin/apache2ctl graceful
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>/wsgi``.
