@@ -60,22 +60,23 @@ class TestshortenerView(TestCase):
         from c2cgeoportal.views.shortener import shortener
 
         def route_url(name, *elements, **kw):
-            return 'http://example.com/s/' + kw['ref']
+            return 'https://example.com/s/' + kw['ref']
 
         request = DummyRequest()
         request.user = None
-        request.host = 'example.com'
+        request.host = 'example.com:443'
+        request.server_name = 'example.com'
         request.route_url = route_url
         shortener = shortener(request)
 
         request.params = {
-            'url': 'http://example.com/hi'
+            'url': 'https://example.com/hi'
         }
         result = shortener.create()
         index = result['short_url'].rfind('/')
         self.assertEqual(
             result['short_url'][:index],
-            'http://example.com/s'
+            'https://example.com/s'
         )
 
         request.params = {}
@@ -84,7 +85,7 @@ class TestshortenerView(TestCase):
         }
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
-        self.assertEqual(result.location, 'http://example.com/hi')
+        self.assertEqual(result.location, 'https://example.com/hi')
 
         request.params = {}
         request.matchdict = {
@@ -97,6 +98,6 @@ class TestshortenerView(TestCase):
         self.assertRaises(HTTPBadRequest, shortener.create)
 
         request.params = {
-            'url': 'http://other-site.com/hi'
+            'url': 'https://other-site.com/hi'
         }
         self.assertRaises(HTTPBadRequest, shortener.create)

@@ -74,8 +74,8 @@ class shortener(object):
 
         # Check that it is an internal URL...
         hostname = urlparse(url).hostname
-        if hostname != self.request.host:
-            raise HTTPBadRequest("The requested host '%s' shound be '%s'" % (
+        if hostname != self.request.server_name:
+            raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
                 hostname, self.request.host
             ))
 

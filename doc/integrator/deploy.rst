@@ -3,6 +3,54 @@
 Deploy the application
 ======================
 
+Important notes
+---------------
+
+When we deploy an application we:
+
+* Deploy the application code (copy, and specific build).
+* Copy the geodata files usually in /var/sig/... 
+* Copy the database.
+* Add the Apache configuration
+
+Copying the database may be critical since it may result in losing data.
+For instance if the target database contains user-edited data such as:
+
+1. features modified in the editing interface,
+2. shortened URLs,
+3. new passwords.
+
+Features modified in the editing interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We should have three different schemas:
+
+* one for the application data that should be deployed,
+* one for the readonly geodata that should be deployed,
+* one for the editable geodata that shouldn't be deployed.
+
+We should configure the deploy tool to deploy only the
+wanted schema, by setting the following configuration in the
+``[databases]`` section of the ``deploy/deploy.cfg.in`` file::
+
+    names = ${vars:db}.${vars:schema},${vars:db}.<readonly_geodata_schema>
+    use_schema = true
+
+And use deploy version >= 0.3.3.
+
+Shortened URLs
+~~~~~~~~~~~~~~
+
+We put the short URL table in a separate schema postfixed with ``_static``
+then the deploy configuration set in the previous point also fix this case.
+
+New passwords
+~~~~~~~~~~~~~
+
+We are able to replicate the password,
+see :ref:`integrator_password_replication`.
+
+
 Deploy configuration
 --------------------
 
