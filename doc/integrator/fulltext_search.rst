@@ -37,6 +37,7 @@ If you did want to create the table manually you'd use the following commands::
         layer_name TEXT,
         label TEXT,
         public BOOLEAN DEFAULT 't',
+        params TEXT,
         role_id INTEGER REFERENCES <schema_name>.role,
         ts TSVECTOR);" <db_name>
     $ sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
@@ -112,6 +113,23 @@ available to users of the corresponding role.
         SELECT
            geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
         FROM table;
+
+Params
+------
+
+The ``params`` column can contain a JSON with a dictionary of parameters.
+For instance to specify a ``floor``:
+
+.. code:: json
+
+    {
+        "floor": "1"
+    }
+
+Query string ``floor=1`` is then automatically appended to all WMS requests.
+
+See `FloorSlider <http://docs.camptocamp.net/cgxp/master/lib/plugins/FloorSlider.html>`_
+for more information.
 
 Configuration
 -------------
