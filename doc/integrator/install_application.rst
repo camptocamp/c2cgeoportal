@@ -310,7 +310,7 @@ configuration::
 
     [buildout]
     extends = buildout.cfg
-    extensions -= buildout.dumppickedversions
+    parts -= fix-perm
 
     [vars]
     instanceid = <instanceid>
@@ -318,11 +318,19 @@ configuration::
     [jsbuild]
     compress = False
 
+    [jsbuild-mobile]
+    compress = False
+
     [cssbuild]
     compress = false
 
-The ``<instanceid>`` should be unique on the server, the username is a good
-choice or something like ``<user>-<sub-project>`` in case of parent/children project.
+.. note::
+
+    The ``<instanceid>`` should be unique on the server, the username is a good
+    choice or something like ``<user>-<sub-project>`` in case of parent/children project.
+
+    ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
+    time whereas it is not needed in a personal environment.
 
 Add it to Git::
 

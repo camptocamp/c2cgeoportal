@@ -467,12 +467,16 @@ Create the project
 
    [buildout]
    extends = buildout_{{instance}}.cfg
+   parts -= fix-perm
 
    [vars]
    instanceid = <user>-{{instance}}
    host = <host>
 
    [jsbuild]
+   compress = False
+
+   [jsbuild-mobile]
    compress = False
 
    [cssbuild]
