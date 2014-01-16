@@ -80,6 +80,7 @@ App.map = new OpenLayers.Map({
         }, WMTS_OPTIONS),
         new OpenLayers.Layer(
             OpenLayers.i18n('blank'),{
+                isBaseLayer: true,
                 ref: 'blank'
             }
         )
