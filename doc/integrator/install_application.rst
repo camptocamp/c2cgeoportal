@@ -283,6 +283,14 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 
     ScriptAlias /${vars:instanceid}/mapserv /usr/libexec/mapserv
 
+apache2ctl
+~~~~~~~~~~
+
+On RedHat the commands hasn't the '2'!
+Then to graceful apache do::
+
+    /usr/sbin/apachectl graceful
+
 Buildout bootstrap
 ~~~~~~~~~~~~~~~~~~
 
