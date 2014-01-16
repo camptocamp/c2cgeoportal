@@ -70,13 +70,6 @@ class Entry(object):
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
 
-        # detect if HTTPS scheme must be set
-        https_flag = self.settings.get('https_flag_header')
-        if https_flag:  # pragma: no cover
-            if https_flag in self.request.headers and \
-                    self.request.headers[https_flag] == self.settings.get('https_flag_value'):
-                self.request.scheme = 'https'
-
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
