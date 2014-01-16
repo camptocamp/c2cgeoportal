@@ -70,7 +70,8 @@ Ext.define('App.controller.Search', {
     showSearchResultView: function(terms) {
         terms = decodeURIComponent(terms);
         var view = this.getSearchView();
-        Ext.Viewport.setActiveItem(view);
+        var animation = {type: 'cover', direction: 'up'};
+        Ext.Viewport.animateActiveItem(view, animation);
         var store = view.getStore();
         store.getProxy().setExtraParams({
             'query': terms,
