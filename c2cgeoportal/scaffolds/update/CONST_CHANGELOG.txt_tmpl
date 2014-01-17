@@ -1,6 +1,71 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.5
+===========
+
+1. Get the new files:
+
+    git add versions.cfg
+
+    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+
+    # Get the new files ...
+
+    rm -rf /tmp/{{project}}
+
+2. Remove the deprecated files:
+
+    git rm ...
+
+3. Update the `jsbuild/app.cfg` file.
+
+  * Set all the `root` sections to:
+
+        {{package}}/static/lib/cgxp/core/src/script
+        {{package}}/static/lib/cgxp/ext
+        {{package}}/static/lib/cgxp/geoext/lib
+        {{package}}/static/lib/cgxp/openlayers/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/GoogleEarthView/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/Spherical/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/URLCompressed/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/DynamicMeasure/lib
+        {{package}}/static/lib/cgxp/openlayers.addins/AddViaPoint/lib
+        {{package}}/static/lib/cgxp/gxp/src/script
+        {{package}}/static/lib/cgxp/proj4js
+        {{package}}/static/lib/cgxp/geoext.ux/ux/Measure/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/SimplePrint/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureEditing/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/FeatureSelectionModel/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/WMSBrowser/lib
+        {{package}}/static/lib/cgxp/geoext.ux/ux/StreetViewPanel
+        {{package}}/static/lib/cgxp/sandbox
+        {{package}}/static/lib/cgxp/styler/lib
+        {{package}}/static/lib/cgxp/ext.ux/TwinTriggerComboBox
+        {{package}}/static/lib/cgxp/ext.ux/GroupComboBox
+        {{package}}/static/lib/cgxp/ext.ux/ColorPicker
+        {{package}}/static/lib/cgxp/ext.ux/base64
+        {{package}}/static/lib/cgxp/ext.overrides
+        {{package}}/static/lib/cgxp/dygraphs
+        {{package}}/static/js
+
+4. Update the `config.yaml.in` file:
+
+5. In the `buildout.cfg` file:
+
+6. Update the templates:
+
+  * In all the `{{package}}/templates/*.js` files:
+
+  * In the `{{package}}/templates/viewer.js`:
+
+7. Update the mobile application:
+
+  * In the `{{package}}/static/mobile/config.js` file:
+
+8. Some important notices:
+
+
 Version 1.4
 ===========
 
