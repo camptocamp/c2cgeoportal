@@ -55,9 +55,9 @@ steps:
 3. Now, to update the application's other dependencies,
    get the new ``version.cfg`` file::
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/<release>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-   Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
+   The ``1.4`` is the version we get, it can be a version (branch), a release (tag), 'master' (dev version).
 
 4. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version::
 

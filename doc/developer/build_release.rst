@@ -65,13 +65,18 @@ c2cgeoportal
 New version
 ~~~~~~~~~~~
 
-Edit the ``c2cgeoportal/scaffolds/create/versions.cfg`` to set the c2cgeoportal
-release version.
-
 Checkout the code::
 
     git checkout master
     git pull origin master
+
+Edit the ``doc/integrator/update_application.rst`` file to change the default version
+for the ``version.cfg``.
+
+Add and commit the changes::
+
+    git add doc/integrator/update_application.rst
+    git commit -m "Update the default downloaded version.cfg"
 
 For each version we create a new branch (at the latest at the final release)::
 
