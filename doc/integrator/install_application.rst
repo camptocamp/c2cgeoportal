@@ -17,7 +17,6 @@ This guide considers that:
     - Postgres has a gis template 'template_postgis' and a user 'www-data'
     - Apache use the user 'www-data'
  - We use Git as revision control
- - We use a version of ``c2cgeoportal`` >= 0.7
 
 For the others system there is some notes to give some help.
 
@@ -41,6 +40,7 @@ on your system:
 * ImageMagick
 
 .. note::
+
     Additional notes for Windows users:
 
         For Git look at GitHub's `Set Up Git page
@@ -380,18 +380,6 @@ populate the application tables, and directly set the version (details later):
 
     ./buildout/bin/create_db --populate
     ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
-
-.. note::
-
-    With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
-    in the production.ini file, you need to specify the app name on the
-    ``manage_db`` command line. For example, the above command would be as
-    follows::
-
-    .. prompt:: bash
-
-        ./buildout/bin/manage_db -n <package_name> version_control \
-            `./buildout/bin/manage_db -n <package_name> version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
