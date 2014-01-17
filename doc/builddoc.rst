@@ -13,8 +13,16 @@ Build this doc
 
   .. prompt:: bash
 
-      wget http://www.mapfish.org/downloads/virtualenv-1.4.5.py
-      python virtualenv-1.4.5.py --distribute --no-site-packages env
+      virtualenv --distribute --no-site-packages env
+
+  .. note::
+
+     if virtualenv isn't installed you can also use:
+
+     .. prompt:: bash
+
+        wget http://www.mapfish.org/downloads/virtualenv-1.4.5.py
+        python virtualenv-1.4.5.py --distribute --no-site-packages env
 
 * Activate the virtual env
 
