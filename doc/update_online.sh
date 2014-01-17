@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #
-# This script updates the c2cgeoportal HTML docs available at 
-# http://docs.camptocamp.net/c2cgeoportal/ 
+# This script updates the c2cgeoportal HTML docs available at
+# http://docs.camptocamp.net/c2cgeoportal/
 #
 # This script is to be run on the doc.camptocamp.net server,
 # from the c2cgeoportal/doc directory.
@@ -21,27 +21,46 @@
 # </Directory>
 #
 
-# BUILDDIR is where the HTML files are generated
-BUILDDIR=/var/www/vhosts/docs.camptocamp.net/htdocs/c2cgeoportal
+BUILDBASEDIR=/var/www/vhosts/docs.camptocamp.net/htdocs/c2cgeoportal
 
-# create the build dir if it doesn't exist
-if [[ ! -d ${BUILDDIR} ]]; then
-    mkdir -p ${BUILDDIR}
-fi
+git fetch
 
-# reset local changes and get the latest files
-git reset --hard
-git clean -f -d
+for VERSION in master 1.4
+do
+
+    # BUILDDIR is where the HTML files are generated
+    BUILDDIR=${BUILDBASEDIR}/${VERSION}
+
+    # create the build dir if it doesn't exist
+    if [[ ! -d ${BUILDDIR} ]]; then
+        mkdir -p ${BUILDDIR}
+    fi
+
+    if [ ! -e ]; then
+        ln -s ${BUILDBASEDIR}/${VERSION}/html ${BUILDBASEDIR}/html/${VERSION}
+    fi
+
+    # reset local changes and get the latest files
+    git reset --hard
+    git clean -f -d
+    git checkout --force ${VERSION}
+    git pull origin ${VERSION}
+
+    # create a virtual env if none exists already
+    if [[ ! -d env ]]; then
+        virtualenv --no-site-packages --distribute env
+    fi
+
+    # install or update Sphinx
+    ./env/bin/pip install -r requirements.txt
+
+    make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
+
+done
+
+# have the right script to run it on the next time
+git checkout --force master
 git pull origin master
-
-# create a virtual env if none exists already
-if [[ ! -d env ]]; then
-    virtualenv --no-site-packages --distribute env
-fi
-
-# install or update Sphinx
-./env/bin/pip install -r requirements.txt
-
-make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
+git reset --hard
 
 exit 0
