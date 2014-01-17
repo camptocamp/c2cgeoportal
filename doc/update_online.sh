@@ -36,10 +36,6 @@ do
         mkdir -p ${BUILDDIR}
     fi
 
-    if [ ! -e ]; then
-        ln -s ${BUILDBASEDIR}/${VERSION}/html ${BUILDBASEDIR}/html/${VERSION}
-    fi
-
     # reset local changes and get the latest files
     git reset --hard
     git clean -f -d
@@ -55,6 +51,10 @@ do
     ./env/bin/pip install -r requirements.txt
 
     make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
+
+    if [ ! -e ${BUILDBASEDIR}/html/${VERSION} ]; then
+        ln -s ${BUILDBASEDIR}/${VERSION}/html ${BUILDBASEDIR}/html/${VERSION}
+    fi
 
 done
 
