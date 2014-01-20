@@ -71,15 +71,15 @@ App.map = new OpenLayers.Map({
             name: OpenLayers.i18n('plan'),
             layer: 'plan',
             ref: 'plan'
-        }, WMTS_OPTIONS),
+        }, WMTS_OPTIONS)),
         new OpenLayers.Layer.WMTS(OpenLayers.Util.applyDefaults({
             name: OpenLayers.i18n('ortho'),
             layer: 'ortho',
             ref: 'ortho',
             formatSuffix: 'jpeg'
-        }, WMTS_OPTIONS),
+        }, WMTS_OPTIONS)),
         new OpenLayers.Layer(
-            OpenLayers.i18n('blank'),{
+            OpenLayers.i18n('blank'), {
                 isBaseLayer: true,
                 ref: 'blank'
             }
