@@ -17,7 +17,6 @@ This guide considers that:
     - Postgres has a gis template 'template_postgis' and a user 'www-data'
     - Apache use the user 'www-data'
  - We use Git as revision control
- - We use a version of ``c2cgeoportal`` >= 0.7
 
 For the others system there is some notes to give some help.
 
@@ -41,9 +40,8 @@ on your system:
 * ImageMagick
 
 .. note::
-    Additional notes for Windows users:
 
-        For Subversion install `Tortoises SVN <http://tortoisesvn.net>`_.
+    Additional notes for Windows users:
 
         For Git look at GitHub's `Set Up Git page
         <http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
@@ -87,15 +85,19 @@ layers*), where joining user/role tables to PostGIS layer tables is necessary.
 Create the database
 ~~~~~~~~~~~~~~~~~~~
 
-To create the database you can use::
+To create the database you can use:
 
-    $ sudo -u postgres createdb <db_name> -T template_postgis
+.. prompt:: bash
+
+    sudo -u postgres createdb <db_name> -T template_postgis
 
 with ``<db_name>`` replaced by the actual database name.
 
 .. note::
 
-   if you don't have the template_postgis you can use::
+   if you don't have the template_postgis you can use:
+
+   .. prompt:: bash
 
        sudo -u postgres createdb -E UTF8 -T template0 <db_name>
        sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
@@ -110,7 +112,9 @@ Create the schema
 ~~~~~~~~~~~~~~~~~
 
 Each parent or child needs two application-specific schemas,
-then to create it use::
+then to create it use:
+
+.. prompt:: bash
 
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>;" <db_name>
     sudo -u postgres psql -c "CREATE SCHEMA <schema_name>_static;" <db_name>
@@ -127,13 +131,17 @@ We use a specific user for the application, ``www-data`` by default.
 
 .. note::
 
-   It the user doesn't already exist in your database, create it first::
+   It the user doesn't already exist in your database, create it first:
+
+   .. prompt:: bash
 
         sudo -u postgres createuser -P <db_user>
         sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO <db_user>' <db_name>
         sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO <db_user>' <db_name>
 
-Give the rights to the user::
+Give the rights to the user:
+
+.. prompt:: bash
 
     sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name> TO "www-data"' <db_name>
     sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name>_static TO "www-data"' <db_name>
@@ -150,12 +158,16 @@ Get the application source tree
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If Git is used for the application use the following command to get the
-application source tree::
+application source tree:
+
+.. prompt:: bash
 
     git clone git@github.com:camptocamp/<my_project>.git <my_project>
 
 c2cgeoportal applications include a Git submodule for CGXP. The following
-commands should be used to download CGXP and its dependencies::
+commands should be used to download CGXP and its dependencies:
+
+.. prompt:: bash
 
     cd <my_project>
     git submodule update --init
@@ -178,12 +190,6 @@ OpenLayers and GeoExt.
     directory's permissions using ``chmod -R g+w``.  You certainly want to do
     that if the application has been cloned in a shared directory like
     ``/var/www/<vhost>/private``.
-
-.. note::
-
-    If you still use SVN::
-
-        svn co https://project.camptocamp.com/svn/<my_project>/trunk <my_project>
 
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -300,9 +306,11 @@ The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
 build, install, and deploy c2cgeoportal applications.
 
 Prior to using Buildout, its ``bootstrap.py`` script should be run at the root
-of the application::
+of the application:
 
-  $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+.. prompt:: bash
+
+    python bootstrap.py --version 1.5.2 --distribute --download-base \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
@@ -342,18 +350,16 @@ configuration::
     ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
     time whereas it is not needed in a personal environment.
 
-Add it to Git::
+Add it to Git:
+
+.. prompt:: bash
 
     git add buildout_<user>.cfg
     git commit -m "add user buildout"
 
-.. note::
-    for SVN users::
+Then you can build and install the application with the command:
 
-        svn add buildout_<user>.cfg
-        svn commit -m "add user buildout"
-
-Then you can build and install the application with the command::
+.. prompt:: bash
 
     ./buildout/bin/buildout -c buildout_<user>.cfg
 
@@ -368,20 +374,12 @@ This previous command will do many things like:
   * compile the translation files.
 
 Once the application is built and installed, you now have to create and
-populate the application tables, and directly set the version (details later)::
+populate the application tables, and directly set the version (details later):
 
-    $ ./buildout/bin/create_db --populate
-    $ ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
+.. prompt:: bash
 
-.. note::
-
-    With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
-    in the production.ini file, you need to specify the app name on the
-    ``manage_db`` command line. For example, the above command would be as
-    follows::
-
-        $ ./buildout/bin/manage_db -n <package_name> version_control \
-          `./buildout/bin/manage_db -n <package_name> version`
+    ./buildout/bin/create_db --populate
+    ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
 
 A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
 control a database. It relies on a **repository** in source code which contains
@@ -390,7 +388,9 @@ latest repository version.
 
 After having created the application tables with the previous command,
 the current database version correspond to the latest version available in
-the repository, which can be obtained with::
+the repository, which can be obtained with:
+
+.. prompt:: bash $ auto
 
     $ ./buildout/bin/manage_db version
     <current_version>
@@ -412,9 +412,11 @@ with the following content::
 
 where ``<project_path>`` is the path to your project.
 
-Reload apache configuration and you're done::
+Reload apache configuration and you're done:
 
-    $ sudo /usr/sbin/apache2ctl graceful
+.. prompt:: bash
+
+    sudo /usr/sbin/apache2ctl graceful
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>/wsgi``.

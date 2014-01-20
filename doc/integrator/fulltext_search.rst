@@ -30,31 +30,37 @@ You don't need to create the table yourself, as it is created by the
 ``create_db`` command line (see the section
 :ref:`integrator_install_application`).
 
-If you did want to create the table manually you'd use the following commands::
+If you did want to create the table manually you'd use the following commands:
 
-    $ sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (
-        id SERIAL PRIMARY KEY,
-        layer_name TEXT,
-        label TEXT,
-        public BOOLEAN DEFAULT 't',
-        params TEXT,
-        role_id INTEGER REFERENCES <schema_name>.role,
+.. prompt:: bash
+
+    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch ( \
+        id SERIAL PRIMARY KEY, \
+        layer_name TEXT, \
+        label TEXT, \
+        public BOOLEAN DEFAULT 't', \
+        params TEXT, \
+        role_id INTEGER REFERENCES <schema_name>.role, \
         ts TSVECTOR);" <db_name>
-    $ sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
-    $ sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
+    sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
+    sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
 
 with ``<schema_name>``, ``<srid>``, and ``<db_name>``  substituted as appropriate.
 
-Also make sure that the db user can ``SELECT`` in the ``tsearch`` table::
+Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
 
-    $ sudo -u postgres psql -c "GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";" <db_name>
+.. prompt:: bash
+
+    sudo -u postgres psql -c 'GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";' <db_name>
 
 with ``<db_user>``, and ``<db_name>`` substituded as appropriately.
 
 Populate the full-text search table
 -----------------------------------
 
-Here's an example of an insertion in the ``tsearch`` table::
+Here's an example of an insertion in the ``tsearch`` table:
+
+.. code:: sql
 
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
@@ -67,7 +73,9 @@ Where ``Layer group`` is the name of the layer group that should be activated,
 ``test to search`` is the text that we search for,
 ``french`` is the used language.
 
-Here's another example where rows from a ``SELECT`` are inserted::
+Here's another example where rows from a ``SELECT`` are inserted:
+
+.. code:: sql
 
     INSERT INTO app_schema.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
@@ -100,7 +108,9 @@ available to users of the corresponding role.
     If you want to restrict some data to specific roles, then you will need to
     insert that data multiple times. For example, if you want to make the data
     of a table *text-searchable*, and restrict that data to the roles whose ids
-    are ``1`` and ``2`` you will use two SQL ``INSERT`` statements::
+    are ``1`` and ``2`` you will use two SQL ``INSERT`` statements:
+
+    .. code:: sql
 
         INSERT INTO app_schema.tsearch
            (the_geom, layer_name, label, public, role_id, ts)
@@ -137,9 +147,9 @@ Configuration
 In the configuration file ``config.yaml.in`` you can add the
 following variables:
 
- *  ``fulltextsearch_defaultlimit`` the default limit on the results,
-    default is 30.
- *  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
+*  ``fulltextsearch_defaultlimit`` the default limit on the results,
+   default is 30.
+*  ``fulltextsearch_maxlimit`` the max possible limit, default is 200.
 
 Using the unaccent extension
 ----------------------------
@@ -151,7 +161,7 @@ can be used.
 
 First connect to the database:
 
-.. code:: bash
+.. prompt:: bash
 
     sudo -u postgres psql -d <database>
 

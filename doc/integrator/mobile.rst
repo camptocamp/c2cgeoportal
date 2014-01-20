@@ -3,8 +3,6 @@
 Mobile Applications
 ===================
 
-*New in 0.8.*
-
 Any c2cgeoportal projet created with the ``c2cgeoportal_create`` and
 ``c2cgeoportal_update`` scaffolds comes with a `Sencha Touch
 <http://www.sencha.com/products/touch/>`_ based mobile application.
@@ -60,115 +58,8 @@ instance. To do so, put the following configuration variables in your
 Replace `sencha-cmd` by `sencha-sdk` if you want to use the command which comes
 with Sencha SDK Tools instead.
 
-Infrastructure (for version below 1.4)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For versions of c2cgeoportal below 1.4, the ``sencha`` command must be provided
-by `Sencha SDK Tools (version 2.0.0~beta3)`.
-
-On Camptocamp server we just need the Debian packages ``sencha-sdk-tools``
-and ``libcompass-ruby1.8`` (The ``sencha-sdk-tools`` package was created by
-the Camptocamp sysadmins).
-
-.. note::
-
-    If you need to install Sencha SDK Tools and Compass yourself,
-    the ``sencha`` and ``compass`` commands should be available
-    on the ``PATH``, and the ``SENCHA_SDK_TOOLS_<version>``
-    environment variable should be set as appropriate.
-
-    Here's an example of setting these environment variables::
-
-        export PATH=${HOME}/.gem/ruby/1.8/bin:${PATH}
-        export PATH=/opt/SenchaSDKTools-2.0.0-beta3/:${PATH}
-        export SENCHA_SDK_TOOLS_2_0_0_BETA3=/opt/SenchaSDKTools-2.0.0-beta3/
-
-    On Camptocamp servers the Debian package ``sencha-sdk-tools`` adds the
-    script ``/usr/bin/sencha`` which sets the required environment
-    variables for you.
-
-Adding a mobile app to a project
---------------------------------
-
-To be able to add a mobile app to a c2cgeoportal project this project should use
-c2cgeoportal 0.8 or better. See :ref:`integrator_update_application` to know
-how to upgrade a project.
-
-Adding the Sencha Touch SDK (for version below 1.4)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Any c2cgeoportal 0.8 project includes a ``static/mobile`` directory containing
-a Sencha Touch mobile application. This directory actually misses a major
-component of the Sencha Touch application: the Sencha Touch SDK. So you need to
-manually add the Sencha Touch SDK to the ``static/mobile`` directory.  For that
-you will (1) download the Sencha Touch SDK (version 2.0.1.1), (2) dearchive it
-at any location (``/tmp/``), (3) create a temporary Sencha Touch application,
-and (4) copy the ``skd`` directory from that temporary Sencha Touch application
-to your project's ``static/mobile`` dir. For example:
-
-.. code::
-
-    $ cd /tmp/
-    $ wget http://cdn.sencha.io/touch/sencha-touch-2.0.1.1-gpl.zip
-    $ unzip sencha-touch-2.0.1.1-gpl.zip
-    $ cd sencha-touch-2.0.1.1
-    $ sencha generate app TempApp /tmp/TempApp
-    $ cp -r /tmp/TempApp/sdk <path/to/c2cgeoportal/project/module>/static/mobile/
-
-You can now version-control this ``sdk`` directory.
-
-Adding missing files (Upgrading from version below 0.8)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can skip this section if your project has been created using c2cgeoportal
-0.8 or better. If your project was created using an older c2cgeoportal, and if
-you've just upgraded your project to c2cgeoportal 0.8, then you need to follow
-the below instructions.
-
-Upgrading the project to c2cgeoportal 0.8 will create a ``static/mobile``
-directory in the project. But this directory does not include all the necessary
-files, as some files are provided by the ``c2cgeoportal_create`` scaffold
-(which is not applied for updates). The easiest way to get all the necessary
-files involves creating a temporary c2cgeoportal project of the same name as
-the target project, and copying the missing files from there:
-
-.. code::
-
-   $ cd <project_name>
-   $ ./buildout/bin/pcreate -s c2cgeoportal_create \
-           /tmp/<project_name> package=<package_name>
-   $ cp /tmp/<project_name>/<package_name>/static/mobile/config.js \
-        <package_name>/static/mobile/
-   $ cp /tmp/<project_name>/jsbuild/mobile.cfg jsbuild/
-   $ rm -rf /tmp/<project_name>
-
-Adding missing files (Upgrading from version below 1.2)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can skip this section if your project has been created using c2cgeoportal
-1.2 or better. If your project was created using an older c2cgeoportal, and if
-you've just upgraded your project to c2cgeoportal 1.2, then you need to follow
-the below instructions.
-
-New files and directories are provided by the ``c2cgeoportal_create`` and need
-to be added manually to the ``static/mobile`` directory.
-The easiest way to get all the necessary files involves creating a temporary
-c2cgeoportal project of the same name as the target project, and copying the
-missing files from there:
-
-.. code::
-
-   $ cd <project_name>
-   $ ./buildout/bin/pcreate -s c2cgeoportal_create \
-           /tmp/<project_name> package=<package_name>
-   $ cp /tmp/<project_name>/<package_name>/static/mobile/app/view/Settings.js \
-        <package_name>/static/mobile/app/view/
-   $ cp /tmp/<project_name>/<package_name>/static/mobile/custom.scss \
-        <package_name>/static/mobile/
-   $ rm -rf /tmp/<project_name>
-
 Adding mobile routes and views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
 The last step involves adding *routes* and *views* specific to the mobile
 application. Edit the project's ``__init__.py`` file and add the following
@@ -203,33 +94,6 @@ lines before the ``main`` function's return statement:
 
 Replace ``<package_name>`` with the project's actual package name.
 
-.. note::
-
-    With c2cgeoportal 1.2 and lower the definitions of views is
-    different::
-
-        # mobile views and routes
-        config.add_route('mobile_index_dev', '/mobile_dev/')
-        config.add_view('c2cgeoportal.views.mobile.index',
-                        renderer='<package_name>:static/mobile/index.html',
-                        route_name='mobile_index_dev')
-        config.add_route('mobile_config_dev', '/mobile_dev/config.js')
-        config.add_view('c2cgeoportal.views.mobile.config',
-                        attr='mobileconfig',
-                        renderer='<package_name>:static/mobile/config.js',
-                        route_name='mobile_config_dev')
-        config.add_static_view('mobile_dev', '<package_name>:static/mobile')
-
-        config.add_route('mobile_index_prod', '/mobile/')
-        config.add_view('c2cgeoportal.views.mobile.index',
-                        renderer='<package_name>:static/mobile/build/production/index.html',
-                        route_name='mobile_index_prod')
-        config.add_route('mobile_config_prod', '/mobile/config.js')
-        config.add_view('c2cgeoportal.views.mobile.config',
-                        renderer='<package_name>:static/mobile/build/production/config.js',
-                        route_name='mobile_config_prod')
-        config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
-
 Now switch to the next section.
 
 Building the mobile application
@@ -238,24 +102,15 @@ Building the mobile application
 The ``CONST_buildout.cfg`` file includes the parts ``jsbuild-mobile`` and
 ``mobile`` that are dedicated to building the mobile application.
 
-.. note::
-
-   In version bellow 1.4 these parts are not executed by default.
-   To change that edit ``buildout.cfg`` and add the following line
-   to the ``[buildout]`` section:
-
-        parts += jsbuild-mobile mobile
-
 For the ``mobile`` part to work Sencha SDK Tools and Compass should be
 installed on the build machine. (See above.)
 
 .. note::
 
     On Windows you will need to override the values of the `mobile` part's
-    `sencha_cmd` (and `compass_cmd` for version bellow 1.4) variables as such::
+    `sencha_cmd` variables as such::
 
         [mobile]
-        compass_cmd = compass.bat  # for version bellow 1.4
         sencha_cmd = sencha.bat
 
     You would add this in `buildout.cfg`, or any Buildout configuration file
@@ -443,10 +298,10 @@ by the ``c2cgeoportal_create`` and ``c2cgeoportal_update`` scaffolds. To create
 another mobile application, the easiest is to copy the existing ``mobile``
 directory into a new directory. For example:
 
-.. code::
+.. prompt:: bash
 
-    $ cd <package_name>/static
-    $ cp -r mobile mobile2
+    cd <package_name>/static
+    cp -r mobile mobile2
 
 .. warning::
 

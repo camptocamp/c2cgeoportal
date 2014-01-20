@@ -12,29 +12,31 @@ For that we have two services: a *checker* and a *check_collector*.
 Those services (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.
 
-The return code are::
+The return code are:
 
-  * 200-299 => OK
-  * 400-499 => Warning
-  * 500-599 => Error
+* ``200``-``299`` => OK
+* ``400``-``499`` => Warning
+* ``500``-``599`` => Error
 
 Checker
 -------
 
-Available services::
+Available services:
 
-  * ``checker_main``: Check the main page.
-  * ``checker_viewer``: Check the viewer.js used by the main page.
-  * ``checker_edit``: Check the edit page.
-  * ``checker_edit_js``: Check the edit.js used by the edit page.
-  * ``checker_apiloader``: Check the API loader.
-  * ``checker_printcapabilities``: Check the print capabilities.
-  * ``checker_pdf``: Check the print (try to print a page).
-  * ``checker_fts``: Check the FullTextSearch.
-  * ``checker_wmscapabilities``: Check the WMS GetCapabilities.
-  * ``checker_wfscapabilities``: Check the WFS GetCapabilities.
+* ``checker_main``: Check the main page.
+* ``checker_viewer``: Check the viewer.js used by the main page.
+* ``checker_edit``: Check the edit page.
+* ``checker_edit_js``: Check the edit.js used by the edit page.
+* ``checker_apiloader``: Check the API loader.
+* ``checker_printcapabilities``: Check the print capabilities.
+* ``checker_pdf``: Check the print (try to print a page).
+* ``checker_fts``: Check the FullTextSearch.
+* ``checker_wmscapabilities``: Check the WMS GetCapabilities.
+* ``checker_wfscapabilities``: Check the WFS GetCapabilities.
 
-Configuration in ``config.yaml.in``::
+Configuration in ``config.yaml.in``:
+
+.. code:: yaml
 
     checker:
         print_template: 1 A4 portrait
@@ -49,7 +51,9 @@ Check collector
 Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.
 
-A typical configuration::
+A typical configuration:
+
+.. code:: yaml
 
     check_collector:
         check_type:

@@ -26,7 +26,9 @@ For print-related issues have a look at the logs in the
 Mapserver
 ---------
 
-Sometime more information are available by using this command::
+Sometime more information are available by using this command:
+
+.. prompt:: bash
 
     shp2img -m <mapfile> -o test.png -e <minx> <miny> <maxx> <maxy> -s <sizex> <sizey> -l <layers>
 
@@ -49,7 +51,9 @@ you can set ``log_statement`` to ``all`` to see all the called statements.
 This file must be edited using the ``postgres`` user.
 
 Reloading PostgreSQL is required so that the new configuration is taken into
-account::
+account:
+
+.. prompt:: bash
 
     sudo /etc/init.d/postgres reload
 

@@ -3,25 +3,51 @@
 Build this doc
 ==============
 
-* Change to the ``doc`` directory::
+* Change to the ``doc`` directory
   
-  $ cd doc
+  .. prompt:: bash
 
-* Create a virtual env::
+      cd doc
 
-  $ wget http://www.mapfish.org/downloads/virtualenv-1.4.5.py
-  $ python virtualenv-1.4.5.py --distribute --no-site-packages env
+* Create a virtual env
 
-* Activate the virtual env::
+  .. prompt:: bash
 
-  $ source env/bin/activate
+      virtualenv --distribute --no-site-packages env
 
-* Install Sphinx::
+  .. note::
 
-  $ pip install sphinx
+     if virtualenv isn't installed you can also use:
 
-* Build the doc::
+     .. prompt:: bash
 
-  $ make html
+        wget http://www.mapfish.org/downloads/virtualenv-1.4.5.py
+        python virtualenv-1.4.5.py --distribute --no-site-packages env
+
+* Activate the virtual env
+
+  .. prompt:: bash $,(env)...$ auto
+
+     $ source env/bin/activate
+     (env)...$
+
+* Install requirements
+
+  .. prompt:: bash $,(env)...$ auto
+
+     (env)...$ pip install -r requirements.txt
+
+* Build the doc
+
+  .. prompt:: bash $,(env)...$ auto
+
+     (env)...$ make html
+
+* Deactivate the virtual env
+
+  .. prompt:: bash $,(env)...$ auto
+
+     (env)...$ deactivate 
+     $
 
 The HTML should now be available in the ``_build/html`` directory.
