@@ -23,7 +23,7 @@ CGXP
 New version
 ~~~~~~~~~~~
 
-For each version we create a new branch (at the latest at the final release):
+For each version we create a new branch (at least at the final release):
 
 .. prompt:: bash
 
@@ -85,7 +85,7 @@ Checkout the code:
     git checkout master
     git pull origin master
 
-For each version we create a new branch (at the latest at the final release)::
+For each version we create a new branch (at least at the final release):
 
 .. prompt:: bash
 
