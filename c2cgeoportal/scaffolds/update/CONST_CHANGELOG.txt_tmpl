@@ -646,22 +646,22 @@ Version 1.4
         -RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
         +RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
 
-    Add the following line:
+  * Add the following line:
 
         RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
 
-  * In the file `{{package}}/__init__.py` remove the following code::
+11. In the file `{{package}}/__init__.py` remove the following code::
 
-        from c2cgeoportal.views.tilecache import load_tilecache_config
+    from c2cgeoportal.views.tilecache import load_tilecache_config
 
-        # add a TileCache view
-        load_tilecache_config(config.get_settings())
-        config.add_route('tilecache', '/tilecache{path:.*?}')
-        config.add_view(
-            view='c2cgeoportal.views.tilecache:tilecache',
-            route_name='tilecache')
+    # add a TileCache view
+    load_tilecache_config(config.get_settings())
+    config.add_route('tilecache', '/tilecache{path:.*?}')
+    config.add_view(
+        view='c2cgeoportal.views.tilecache:tilecache',
+        route_name='tilecache')
 
-11. Some important notices:
+12. Some important notices:
 
   * Public layers can no longer be edited (feature creation/update/deletion) by anonymous users.
 
