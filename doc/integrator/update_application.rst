@@ -57,9 +57,10 @@ steps:
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-   Replace ``<release>`` with the version (branch), a release (tag) or 'master' (dev version) to get what you want.
+   Replace ``<version>`` by a version number (branch) or release number (tag).
+   To get the last dev version, replace <version> by "master".
 
-   For example to get the ``versions.cfg`` get the current version::
+   For example to get the ``versions.cfg`` file of version 1.4, type::
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
