@@ -59,7 +59,7 @@ Ext.define('App.controller.Query', {
     },
 
     showQueryResultView: function(params) {
-        var store = this.getQueryView().down('list').getStore();
+        var store = this.getQueryView().getStore();
         store.removeAll();
 
         params = decodeURIComponent(params);
@@ -85,10 +85,9 @@ Ext.define('App.controller.Query', {
         });
 
         if (App.raster) {
-            var coords = this.getQueryView().down('[pseudo=coordinates]');
             var x = (bounds.right - bounds.left) / 2 + bounds.left;
             var y = (bounds.top - bounds.bottom) / 2 + bounds.bottom;
-            coords.setTpl(OpenLayers.i18n('rasterTpl'));
+            var template = new Ext.XTemplate(OpenLayers.i18n('rasterTpl'));
             Ext.Ajax.request({
                 url: App.rasterUrl,
                 method: 'GET',
@@ -102,8 +101,13 @@ Ext.define('App.controller.Query', {
                         x: x,
                         y: y
                     });
-                    coords.setData(data);
-                }
+                    var records = store.add({
+                        type: '&nbsp;',
+                        detail: template.apply(data),
+                        disclosure: false
+                    });
+                },
+                scope: this
             });
         }
 

@@ -24,28 +24,32 @@ Ext.define('App.model.Query', {
                 name: 'detail',
                 mapping: 'properties',
                 convert: function(value, record) {
-                    var detail = [],
-                        attributes = record.raw.attributes;
-                    detail.push('<table class="detail">');
-                    for (var k in attributes) {
-                        if (attributes.hasOwnProperty(k) && attributes[k]) {
-                            detail = detail.concat([
-                                '<tr>',
-                                '<th>',
-                                OpenLayers.i18n(k),
-                                '</th>',
-                                '<td>',
-                                OpenLayers.String.format(attributes[k], App),
-                                '</td>',
-                                '</tr>'
-                            ]);
+                    if (typeof record.raw.attributes == 'object') {
+                        var detail = [],
+                            attributes = record.raw.attributes;
+                        detail.push('<table class="detail">');
+                        for (var k in attributes) {
+                            if (attributes.hasOwnProperty(k) && attributes[k]) {
+                                detail = detail.concat([
+                                    '<tr>',
+                                    '<th>',
+                                    OpenLayers.i18n(k),
+                                    '</th>',
+                                    '<td>',
+                                    OpenLayers.String.format(attributes[k], App),
+                                    '</td>',
+                                    '</tr>'
+                                ]);
+                            }
                         }
+                        detail.push('</table>');
+                        return detail.join('');
                     }
-                    detail.push('</table>');
-                    return detail.join('');
+                    return record.raw.detail;
                 }
             },
-            {name: 'type'}
+            {name: 'type'},
+            {name: 'disclosure'}
         ]
     }
 });
