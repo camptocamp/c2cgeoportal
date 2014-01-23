@@ -102,3 +102,22 @@ Some of those limitations apply to the mapfile:
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same time mode (``single``,
 ``range`` or ``disabled``).
+
+Default values
+--------------
+
+If you need to get the default WMS-time values, you must make sure to use
+``OWSLib`` ``0.8.3`` and Python 2.7.
+
+To use the ``OWSLib`` ``0.8.3``, add the following lines in the
+``buildout.cfg`` file::
+
+    [versions]
+    OWSLib = 0.8.3
+    PIL = 1.1.7
+    cov-core = 1.7
+    pytest-cov = 1.6
+    python-dateutil = 2.1
+    coverage = 3.7
+    py = 1.4.19
+    pytest = 2.5.1
