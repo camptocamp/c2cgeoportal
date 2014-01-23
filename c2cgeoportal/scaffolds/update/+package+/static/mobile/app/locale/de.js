@@ -39,7 +39,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
 
     // redirect to standard application
     'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
-        " die <a href='${'${url}'}'>Standardversion</a> benutzen.",
+        " die <a href='${url}'>Standardversion</a> benutzen.",
     'close': "Schliessen",
 
     // measure
