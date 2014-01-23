@@ -50,15 +50,16 @@ and ``ruby-compass`` (The ``sencha-cmd`` package was created by
 the Camptocamp sysadmins).
 
 On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
-``sencha-cmd`` installed, please ensure that the correct one is used for your
-instance. To do so, put the following configuration variables in your
-`buildout_$USER.cfg` file::
+``sencha-cmd`` installed, commands are named respectively ``sencha-sdk``
+and ``sencha-cmd``. By default the ``sencha-cmd`` command is used, if
+it's not the case on your host put the following configuration variables
+in your `buildout.cfg` file::
 
     [mobile]
-    sencha_cmd = sencha-cmd
+    sencha_cmd = <sencha-command>
 
-Replace `sencha-cmd` by `sencha-sdk` if you want to use the command which comes
-with Sencha SDK Tools instead.
+Replace ``<sencha-command>`` by ``sencha-sdk`` if you want to build the
+mobile app using a version of GeoMapFish older than 1.4.
 
 Infrastructure (for version below 1.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
