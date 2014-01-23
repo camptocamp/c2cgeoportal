@@ -192,7 +192,7 @@ compress = True
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
-sencha_cmd = sencha
+sencha_cmd = sencha-cmd
 cmds =
     >>> import os
     >>> import shutil
