@@ -563,6 +563,7 @@ Version 1.4
       - The mobile application now has a built-in theme chooser, do the following changes:
 
             + App.themes = '${themes | n}';
+            + App.theme = '${theme | n}';
             + App.WFSTypes = '${wfs_types | n}';
 
         Both themes and layers can now be configured to be visible on desktop or
