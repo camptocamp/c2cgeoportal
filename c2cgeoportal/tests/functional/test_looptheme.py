@@ -45,8 +45,6 @@ from c2cgeoportal.tests.functional import (  # NOQA
 class TestLoopTheme(TestCase):
 
     def setUp(self):
-        self.config = testing.setUp()
-
         from c2cgeoportal.models import DBSession, Layer, \
             Theme, LayerGroup
 
@@ -85,9 +83,7 @@ class TestLoopTheme(TestCase):
         curdir = os.path.dirname(os.path.abspath(__file__))
         mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
         ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
-        request.registry.settings = {
-            'mapserv_url': ms_url,
-        }
+        request.registry.settings['mapserv_url'] = ms_url
         request.user = None
         entry = Entry(request)
 

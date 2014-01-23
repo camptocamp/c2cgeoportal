@@ -13,6 +13,7 @@ class Test_includeme(TestCase):
                 'srid': 3857,
                 'schema': 'main',
                 'parentschema': '',
+                'default_max_age': 86400,
                 'tilecache.cfg': 'c2cgeoportal/tests/tilecache.cfg',
                 'app.cfg': 'c2cgeoportal/tests/config.yaml'
             })

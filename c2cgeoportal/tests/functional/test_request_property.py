@@ -4,7 +4,8 @@ from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # NOQA
     tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule)
+    setUpCommon as setUpModule,
+    createDummyRequest)
 
 
 @attr(functional=True)
@@ -17,9 +18,9 @@ class TestRequestFactory(TestCase):
         from c2cgeoportal.models import DBSession, User, Role
 
         r = Role(name=u'__test_role')
-        u = User(username=u'__test_user', password=u'__test_user',
-                 role=r
-                 )
+        u = User(
+            username=u'__test_user', password=u'__test_user', role=r
+        )
 
         DBSession.add(u)
         transaction.commit()

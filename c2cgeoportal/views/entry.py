@@ -732,7 +732,7 @@ class Entry(object):
         # check if route to mobile app exists
         try:
             d['mobile_url'] = self.request.route_url('mobile_index_prod')
-        except:
+        except:  # pragma: no cover
             d['mobile_url'] = None
 
         d['no_redirect'] = self.request.params.get('no_redirect') is not None

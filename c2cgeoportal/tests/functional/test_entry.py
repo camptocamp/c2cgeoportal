@@ -40,15 +40,15 @@ from owslib.wms import WebMapService
 from c2cgeoportal.tests.functional import (  # NOQA
     tearDownCommon as tearDownModule,
     setUpCommon as setUpModule,
-    mapserv_url, host)
+    mapserv_url, host, createDummyRequest)
 
+import logging
+log = logging.getLogger(__name__)
 
 @attr(functional=True)
 class TestEntryView(TestCase):
 
     def setUp(self):
-        self.config = testing.setUp()
-
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
             RestrictionArea, Theme, LayerGroup
 
@@ -132,46 +132,38 @@ class TestEntryView(TestCase):
     #
 
     def test_login(self):
-        from c2cgeoportal import default_user_validator
         from c2cgeoportal.views.entry import Entry
 
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.params['login'] = u'__test_user1'
-        request.params['password'] = u'__test_user1'
-        request.params['came_from'] = "/came_from"
-        request.registry.validate_user = default_user_validator
-        request.user = None
+        request = self._create_request_obj(params={
+            'login': u'__test_user1',
+            'password': u'__test_user1',
+            'came_from': "/came_from",
+        })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from")
 
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.params['login'] = u'__test_user1'
-        request.params['password'] = u'__test_user1'
-        request.registry.validate_user = default_user_validator
-        request.user = None
+        request = self._create_request_obj(params={
+            'login': u'__test_user1',
+            'password': u'__test_user1',
+        })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.body, 'true')
 
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.params['login'] = u'__test_user1'
-        request.params['password'] = u'bad password'
-        request.registry.validate_user = default_user_validator
-        request.user = None
+        request = self._create_request_obj(params={
+            'login': u'__test_user1',
+            'password': u'bad password',
+        })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 401)
 
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = testing.DummyRequest(path='/')
-        request.headers['Host'] = host
-        request.params['came_from'] = '/came_from'
-        request.user = None
+        request = self._create_request_obj(path='/', params={
+            'came_from': '/came_from'
+        })
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
@@ -180,18 +172,18 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
-        request = testing.DummyRequest(path='/')
-        request.headers['Host'] = host
-        request.params['came_from'] = '/came_from'
-        request.user = DBSession.query(User) \
-                                .filter_by(username=u'__test_user1').one()
+        request = self._create_request_obj(path='/', params={
+            'came_from': '/came_from'
+        })
+        request.user = DBSession.query(User).filter_by(
+            username=u'__test_user1'
+        ).one()
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers['Location'], "/came_from")
 
-        request = testing.DummyRequest(path='/')
-        request.headers['Host'] = host
+        request = self._create_request_obj(path='/')
         request.route_url = lambda url: '/dummy/route/url'
         request.user = DBSession.query(User).filter_by(
             username=u'__test_user1'
@@ -205,32 +197,25 @@ class TestEntryView(TestCase):
     # viewer view tests
     #
 
-    def _create_entry_obj(self, username=None, params={}):
+    def _create_request_obj(self, username=None, params={}, **kwargs):
         from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'c2cgeoportal_test.map'
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.registry.settings = {
-            'mapserv_url': mapserv,
-        }
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+        request = createDummyRequest(**kwargs)
         request.static_url = lambda url: '/dummy/static/url'
-        request.route_url = lambda url: mapserv
+        request.route_url = lambda url, **kwargs: \
+            request.registry.settings['mapserv_url']
         request.params = params
 
-        if username:
+        if username is not None:
             request.user = DBSession.query(User) \
-                                    .filter_by(username=username).one()
-        else:
-            request.user = None
+                .filter_by(username=username).one()
 
-        return Entry(request)
+        return request
+
+    def _create_entry_obj(self, **kwargs):
+        from c2cgeoportal.views.entry import Entry
+
+        return Entry(self._create_request_obj(**kwargs))
 
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
@@ -412,17 +397,8 @@ class TestEntryView(TestCase):
     def test_theme(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
-        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
-        request.registry.settings = {
-            'mapserv_url': ms_url,
-        }
-        request.user = None
+        request = self._create_request_obj()
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         entry = Entry(request)
 
         # unautenticated
@@ -449,34 +425,24 @@ class TestEntryView(TestCase):
 
         # mapfile error
         request.params = {}
-        request.registry.settings = {
-            'mapserv_url': mapserv_url + '?map=not_a_mapfile',
-        }
+        request.registry.settings['mapserv_url'] = mapserv_url + '?map=not_a_mapfile'
+        log.info(request.registry.settings['mapserv_url'])
         from c2cgeoportal import caching
         caching.invalidate_region()
+        log.info(type(request.registry.settings['mapserv_url']))
         themes, errors = entry._themes(None)
         self.assertEquals(len(themes), 0)
         self.assertEquals(len(errors), 1)
 
     def test_WFS_types(self):
         from c2cgeoportal.views.entry import Entry
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
 
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
-        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
-        request.registry.settings = {
-            'mapserv_url': ms_url,
-            'external_mapserv_url': ms_url,
-            'functionalities': {
-                'available_in_templates': []
-            }
-        }
+        request = self._create_request_obj()
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.registry.settings.update({
+            'external_mapserv_url': request.registry.settings['mapserv_url'],
+        })
         entry = Entry(request)
-        request.user = None
 
         response = entry._getVars()
         self.assertEquals(
@@ -494,19 +460,14 @@ class TestEntryView(TestCase):
 
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
-        request.registry.settings = {
-            'mapserv_url': mapserv_url,
-            'external_mapserv_url': mapserv_url,
-        }
+        request = self._create_request_obj()
+        request.registry.settings['external_mapserv_url'] = \
+            request.registry.settings['mapserv_url']
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.params = {
             'permalink_themes': 'my_themes',
         }
         entry = Entry(request)
-        request.user = None
 
         response = entry._getVars()
         self.assertEquals(response['permalink_themes'], '["my_themes"]')
@@ -514,19 +475,10 @@ class TestEntryView(TestCase):
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'c2cgeoportal_test.map'
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url, **kwargs: mapserv
-        request.registry.settings = {
-            'mapserv_url': mapserv,
+        request = self._create_request_obj()
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        mapserv = request.registry.settings['mapserv_url']
+        request.registry.settings.update({
             'external_mapserv_url': mapserv,
             'layers_enum': {
                 'layer_test': {
@@ -535,7 +487,7 @@ class TestEntryView(TestCase):
                     }
                 }
             }
-        }
+        })
         entry = Entry(request)
         request.user = None
 
@@ -547,12 +499,9 @@ class TestEntryView(TestCase):
         result = entry.home()
         self.assertEquals(
             set(result.keys()),
-            set(
-                [
-                    'lang', 'debug', 'extra_params',
-                    'mobile_url', 'no_redirect'
-                ]
-            )
+            set([
+                'lang', 'debug', 'extra_params', 'mobile_url', 'no_redirect'
+            ])
         )
         result = entry.viewer()
         self.assertEquals(set(result.keys()), all_params)
@@ -582,19 +531,10 @@ class TestEntryView(TestCase):
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'c2cgeoportal_test.map'
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url, **kwargs: mapserv
-        request.registry.settings = {
-            'mapserv_url': mapserv,
+        request = self._create_request_obj()
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        mapserv = request.registry.settings['mapserv_url']
+        request.registry.settings.update({
             'external_mapserv_url': mapserv,
             'mapserv_wfs_url': mapserv,
             'external_mapserv_wfs_url': mapserv,
@@ -605,10 +545,9 @@ class TestEntryView(TestCase):
                     }
                 }
             }
-        }
+        })
 
         entry = Entry(request)
-        request.user = None
 
         result = entry.home()
         self.assertEquals(
@@ -625,19 +564,9 @@ class TestEntryView(TestCase):
     def test_entry_points_noexternal(self):
         from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'c2cgeoportal_test.map'
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url, **kwargs: mapserv
-        request.registry.settings = {
-            'mapserv_url': mapserv,
+        request = self._create_request_obj()
+        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.registry.settings.update({
             'layers_enum': {
                 'layer_test': {
                     'attributes': {
@@ -645,10 +574,9 @@ class TestEntryView(TestCase):
                     }
                 }
             }
-        }
+        })
 
         entry = Entry(request)
-        request.user = None
 
         result = entry.home()
         self.assertEquals(
@@ -664,15 +592,8 @@ class TestEntryView(TestCase):
 
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.registry.settings = {
-            'mapserv_url': mapserv_url,
-            'external_mapserv_url': mapserv_url,
-        }
+        request = self._create_request_obj()
         entry = Entry(request)
-        request.user = None
 
         request.matchdict = {
             'themes': ['theme'],
@@ -685,7 +606,7 @@ class TestEntryView(TestCase):
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme')
+        self.assertEquals(result['extra_params'], '?lang=fr&permalink_themes=theme')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
 
         request.matchdict = {
@@ -699,7 +620,7 @@ class TestEntryView(TestCase):
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme1,theme2')
+        self.assertEquals(result['extra_params'], '?lang=fr&permalink_themes=theme1,theme2')
         self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
 
     def test_layer(self):
@@ -708,13 +629,10 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import Layer, LayerGroup
         from c2cgeoportal.lib.wmstparsing import TimeInformation
 
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: '/dummy/static/' + url
-        request.route_url = lambda url: '/dummy/route/' + url
-        request.registry.settings = {
-            'project': 'test_layer',
-        }
+        request = self._create_request_obj()
+        request.static_url = lambda name: '/dummy/static/' + name
+        request.route_url = lambda name: '/dummy/route/' + name
+        request.registry.settings['project'] = 'test_layer'
         entry = Entry(request)
 
         self.assertEqual(entry._group(LayerGroup(), [], [], None, TimeInformation()), (None, [], False))
@@ -1227,16 +1145,16 @@ class TestEntryView(TestCase):
         except ImportError:  # pragma: nocover
             from sha import new as sha1  # flake8: noqa
 
-        request = testing.DummyRequest()
-        request.user = None
+        request = self._create_request_obj()
         entry = Entry(request)
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
-        request.params = {
+        request = self._create_request_obj(params={
             'lang': 'en',
             'newPassword': '1234',
             'confirmNewPassword': '12345',
-        }
+        })
+        entry = Entry(request)
         self.assertRaises(HTTPUnauthorized, entry.loginchange)
 
         request.user = User()
@@ -1244,7 +1162,13 @@ class TestEntryView(TestCase):
         self.assertEquals(request.user._password, unicode(sha1('').hexdigest()))
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
-        request.params['confirmNewPassword'] = '1234'
+        request = self._create_request_obj(params={
+            'lang': 'en',
+            'newPassword': '1234',
+            'confirmNewPassword': '1234'
+        })
+        request.user = User()
+        entry = Entry(request)
         self.assertNotEqual(entry.loginchange(), None)
         self.assertEqual(request.user.is_password_changed, True)
         self.assertEqual(request.user._password, unicode(sha1('1234').hexdigest()))

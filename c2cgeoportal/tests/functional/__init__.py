@@ -36,6 +36,7 @@ from ConfigParser import ConfigParser
 from urlparse import urlparse, urljoin
 
 import c2cgeoportal
+from c2cgeoportal import tests
 
 
 mapserv_url = None
@@ -105,3 +106,25 @@ def tearDownCommon():
     sqlahelper.reset()
 
     c2cgeoportal.caching.invalidate_region()
+
+
+def createDummyRequest(additional_settings={}, *args, **kargs):
+    from c2cgeoportal import default_user_validator
+    mapfile = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        'c2cgeoportal_test.map'
+    )
+    mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+    request = tests.createDummyRequest({
+        'mapserv_url': mapserv,
+        'functionalities': {
+            'registered': {},
+            'anonymous': {},
+            'available_in_templates': []
+        }
+    }, *args, **kargs)
+    request.registry.settings.update(additional_settings)
+    request.headers['Host'] = host
+    request.user = None
+    request.registry.validate_user = default_user_validator
+    return request

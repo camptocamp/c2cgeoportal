@@ -145,7 +145,7 @@ class MapservProxy:
 
                 if _params['service'] == u'wfs' and \
                         _params['request'] == u'describefeaturetype':
-                    use_cache = True
+                    use_cache = True  # pragma: no cover
 
             if 'service' in _params and _params['service'] == u'wfs':
                 _url = self._get_external_wfs_url() if external else self._get_wfs_url()
