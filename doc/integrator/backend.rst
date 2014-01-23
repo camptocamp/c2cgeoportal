@@ -11,4 +11,5 @@ user other backends.
 .. toctree::
    :maxdepth: 1
 
+   backend_qgis
    backend_arcgis
