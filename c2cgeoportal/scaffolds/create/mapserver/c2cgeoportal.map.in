@@ -114,7 +114,6 @@ MAP
 
             ${mapserver_layer_metadata} # For secured layers
         END
-        DUMP TRUE # For GetFeatureInfo
         STATUS ON
         PROJECTION
           "init=epsg:21781"
