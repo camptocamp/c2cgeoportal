@@ -76,23 +76,6 @@ Version 1.4
 
         CGXP/tools/tools.js
 
-  * Adaptations for generic backend usage require the following change.
-
-    In the ``jsbuild/app.cfg`` file, add ``CGXP/cgxp.js`` in ``[app.js]``,
-    ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` in the ``include =`` block,
-    before any other CGXP/* entries.
-
-    For example:
-
-         include =
-             EPSG21781.js #proj4js
-             util.js #GXP
-             widgets/Viewer.js #GXP
-             DragTracker.js #ext.overrides
-        +    CGXP/cgxp.js
-             CGXP/plugins/ThemeSelector.js
-             ...
-
   * And add a new routing section (replace <<srid>> by the right value):
 
         [routing.js]
@@ -147,6 +130,7 @@ Version 1.4
             util.js #GXP
             widgets/Viewer.js #GXP
             plugins/OLSource.js #GXP
+            CGXP/cgxp.js
             CGXP/plugins/MapOpacitySlider.js
             CGXP/plugins/Routing.js
             CGXP/data/OSRM.js
@@ -164,6 +148,22 @@ Version 1.4
             OpenLayers/Layer/WMTS.js
             OpenLayers/Renderer/SVG.js
             OpenLayers/Renderer/VML.js
+
+  * Adaptations for generic backend usage require the following change.
+
+    In the ``jsbuild/app.cfg`` file, make sure to have ``CGXP/cgxp.js`` in
+    ``[app.js]``, ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` 
+    in the ``include =`` block, before any other CGXP/* entries.
+
+    For example:
+
+         include =
+             EPSG21781.js #proj4js
+             util.js #GXP
+             widgets/Viewer.js #GXP
+        +    CGXP/cgxp.js
+             CGXP/plugins/ThemeSelector.js
+             ...
 
 4. Update the `config.yaml.in` file:
 
@@ -229,7 +229,7 @@ Version 1.4
             % endif
             defaultThemes: ["to_be_defined"],
 
-  * In all the `{{package}}/templates/*.js` files:
+  * In all the `{{package}}/templates/*.js` files (including in `{{package}}/templates/api/`):
 
       - Remove the `getMatrix` method from the `WMTS_OPTIONS`.
 
@@ -276,18 +276,6 @@ Version 1.4
 
     - var THEMES = {
       var THEMES = {
-
-  * In the `{{package}}/templates/api/mapconfig.js`` file you should remove the lines:
-
-        + ...
-        - ..., # just remove the comma
-        - getMatrix: function() {
-        -     return {
-        -         identifier: OpenLayers.Util.indexOf(
-        -                         this.serverResolutions,
-        -                         this.map.getResolution())
-        -     };
-        - }
 
   * Password modification UI has been implemented.
 
@@ -719,7 +707,7 @@ Version 1.4
     running the following SQL statements::
 
         CREATE SCHEMA <schema>_static;
-        GRANT USAGE ON SCHEMA <schema>_static TO "www-data";
+        GRANT ALL ON SCHEMA <schema>_static TO "www-data";
         ALTER TABLE <schema>.shorturl SET SCHEMA <schema>_static;
         ALTER TABLE <schema>_static.shorturl ALTER COLUMN ref SET NOT NULL;
 
