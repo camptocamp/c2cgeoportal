@@ -27,7 +27,7 @@ Ext.define('App.controller.Query', {
                 autoCreate: true
             },
             queryViewList: {
-                selector: 'queryview list'
+                selector: 'queryview'
             }
         },
         control: {
