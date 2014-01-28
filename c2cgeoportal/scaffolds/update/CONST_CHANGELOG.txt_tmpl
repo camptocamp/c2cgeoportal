@@ -153,7 +153,6 @@ Version 1.4
              EPSG21781.js #proj4js
              util.js #GXP
              widgets/Viewer.js #GXP
-             DragTracker.js #ext.overrides
         +    CGXP/cgxp.js
              CGXP/plugins/ThemeSelector.js
              ...
