@@ -193,12 +193,12 @@ lines before the ``main`` function's return statement:
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobile',
-                    renderer='<package_name>:static/mobile/build/production/index.html',
+                    renderer='<package_name>:static/mobile/build/testing/App/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobileconfig',
-                    renderer='<package_name>:static/mobile/build/production/config.js',
+                    renderer='<package_name>:static/mobile/build/testing/App/config.js',
                     route_name='mobile_config_prod')
     config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
 
@@ -241,7 +241,7 @@ The ``CONST_buildout.cfg`` file includes the parts ``jsbuild-mobile`` and
 
 .. note::
 
-   In version bellow 1.4 these parts are not executed by default.
+   In version below 1.4 these parts are not executed by default.
    To change that edit ``buildout.cfg`` and add the following line
    to the ``[buildout]`` section:
 
@@ -253,10 +253,10 @@ installed on the build machine. (See above.)
 .. note::
 
     On Windows you will need to override the values of the `mobile` part's
-    `sencha_cmd` (and `compass_cmd` for version bellow 1.4) variables as such::
+    `sencha_cmd` (and `compass_cmd` for version below 1.4) variables as such::
 
         [mobile]
-        compass_cmd = compass.bat  # for version bellow 1.4
+        compass_cmd = compass.bat  # for version below 1.4
         sencha_cmd = sencha.bat
 
     You would add this in `buildout.cfg`, or any Buildout configuration file
