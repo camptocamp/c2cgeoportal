@@ -75,6 +75,7 @@ Ext.define('App.controller.Query', {
         var response = this.protocol.read({
             maxFeatures: 20,
             filter: filter,
+            params: this.getApplication().getController('Main').getParams(),
             callback: function(result) {
                 if(result.success()) {
                     if(result.features.length) {

@@ -102,7 +102,29 @@ Ext.define('App.controller.Main', {
 
     //called when the Application is launched, remove if not needed
     launch: function(app) {
-
+        // To deal with params, the following methods are available:
+        // * `getParams`: returns all params
+        // * `setParams`: used to update the values of some params
+        //
+        // Three OpenLayers Map events are also available:
+        // * `changeparams`: launched with the changed params values
+        // * `changeparamsready`: launched when the application is ready to
+        //   receive `dochangeparams` events
+        // * `dochangeparams`: used to call for `setParams` without knowing
+        //   the current object.
+        //
+        // Events are passed through the map in order to be able to create an
+        // OpenLayers Controller that uses the params without any dependencies
+        // on Sencha Touch, required by a project component.
+        this.params = {};
+        this.map = this.getMainView().getMap();
+        this.map.events.register('addlayer', this, function(event){
+            this.setLayerParams(this.params)(event.layer);
+        });
+        this.map.events.register('dochangeparams', this, function(event){
+            this.setParams(event.params);
+        });
+        this.map.events.triggerEvent('changeparamsready');
     },
 
     showHome: function() {
@@ -162,9 +184,16 @@ Ext.define('App.controller.Main', {
         this.redirectTo('home');
     },
 
+    getParams: function() {
+        return this.params;
+    },
+
     setParams: function(params) {
-        this.getMainView().getMap().layers.map(this.setLayerParams(params));
-        this.getMainView().getMap().events.triggerEvent("changeparams", params);
+        Ext.apply(this.params, params);
+        this.map.layers.map(this.setLayerParams(params));
+        this.map.events.triggerEvent("changeparams", {
+            params: params
+        });
     },
 
     setLayerParams: function(params) {
