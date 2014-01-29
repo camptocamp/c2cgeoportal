@@ -94,7 +94,8 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-    def _create_layer(self, public=False, none_area=False, attr_list=False):
+    def _create_layer(self, public=False, none_area=False, attr_list=False,
+                      exclude_properties=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -165,6 +166,10 @@ class TestLayers(TestCase):
         layer.id = id
         layer.geoTable = tablename
         layer.public = public
+
+        if exclude_properties:
+            layer.excludeProperties = 'name'
+
         DBSession.add(layer)
 
         if not public:
@@ -455,6 +460,15 @@ class TestLayers(TestCase):
         self.assertEquals(cls.__table__.name, 'table_%d' % layer_id)
         self.assertTrue(hasattr(cls, 'name'))
         self.assertTrue('child' in cls.__dict__)
+
+    def test_metadata_exclude_properties(self):
+        from c2cgeoportal.views.layers import metadata
+
+        layer_id = self._create_layer(exclude_properties=True)
+        request = self._get_request(layer_id, username=u'__test_user')
+
+        cls = metadata(request)
+        self.assertFalse(hasattr(cls, 'name'))
 
     ### With None area ###
     def test_read_public_none_area(self):

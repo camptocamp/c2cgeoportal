@@ -429,6 +429,7 @@ class Layer(TreeItem):
     # data attribute field in which application can find a human identifiable name or number
     identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))
     geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
+    excludeProperties = Column(types.Unicode, label=_(u'Attributes to exclude'))
     timeMode = Column(types.Enum(
         "disabled",
         "single",

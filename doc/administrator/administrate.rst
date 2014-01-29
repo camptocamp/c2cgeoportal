@@ -37,6 +37,9 @@ The layers in the admin interface has the following attributes:
     `FeaturesWindow <http://docs.camptocamp.net/cgxp/lib/plugins/FeaturesWindow.html>`_.
  *  ``Related Postgres table``: the related postgres table,
     used by the :ref:`administrator_editing`.
+ *  ``Attributes to exclude``: the list of attributes that shouldn't appear in
+    the :ref:`administrator_editing` so that they cannot be modified by end
+    user.
  *  ``Restrictions area``: the areas throw witch the user can see the layer.
  *  ``Parents``: the groups and theme in witch the layer is.
 

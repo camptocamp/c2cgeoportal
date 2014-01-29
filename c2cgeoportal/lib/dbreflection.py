@@ -160,7 +160,7 @@ def get_table(tablename, schema=None, DBSession=None):
     return table
 
 
-def get_class(tablename, DBSession=None):
+def get_class(tablename, DBSession=None, exclude_properties=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -176,7 +176,7 @@ def get_class(tablename, DBSession=None):
     table = get_table(tablename, schema, DBSession)
 
     # create the mapped class
-    cls = _create_class(table)
+    cls = _create_class(table, exclude_properties)
 
     # add class to cache
     _class_cache[(schema, tablename)] = cls
@@ -184,12 +184,18 @@ def get_class(tablename, DBSession=None):
     return cls
 
 
-def _create_class(table):
+def _create_class(table, exclude_properties=None):
+
+    if isinstance(exclude_properties, basestring):
+        exclude_properties = [p.strip() for p in exclude_properties.split(',')]
 
     cls = type(
         str(table.name.capitalize()),
         (GeoInterface, Base),
-        dict(__table__=table)
+        dict(
+            __table__=table,
+            __mapper_args__={'exclude_properties': exclude_properties}
+        ),
     )
 
     for col in table.columns:
