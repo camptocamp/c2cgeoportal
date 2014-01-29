@@ -312,7 +312,11 @@ def metadata(request):
     layer = _get_layer_for_request(request)
     if not layer.public and request.user is None:
         raise HTTPForbidden()
-    return get_class(str(layer.geoTable))
+    cls = get_class(
+        str(layer.geoTable),
+        exclude_properties=layer.excludeProperties
+    )
+    return cls
 
 
 @view_config(route_name='layers_enumerate_attribute_values', renderer='json')

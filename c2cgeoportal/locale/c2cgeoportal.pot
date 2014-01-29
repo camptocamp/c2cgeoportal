@@ -1,14 +1,14 @@
 # Translations template for c2cgeoportal.
-# Copyright (C) 2013 ORGANIZATION
+# Copyright (C) 2014 ORGANIZATION
 # This file is distributed under the same license as the c2cgeoportal project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: c2cgeoportal 1.4\n"
+"Project-Id-Version: c2cgeoportal 1.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-11-15 15:18+0100\n"
+"POT-Creation-Date: 2014-01-29 13:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgid "functionalitys"
 msgstr ""
 
 #: c2cgeoportal/models.py:124 c2cgeoportal/models.py:244 c2cgeoportal/models.py:292
-#: c2cgeoportal/models.py:483 c2cgeoportal/models.py:523
+#: c2cgeoportal/models.py:484 c2cgeoportal/models.py:524
 msgid "Name"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "roles"
 msgstr ""
 
-#: c2cgeoportal/models.py:245 c2cgeoportal/models.py:484
+#: c2cgeoportal/models.py:245 c2cgeoportal/models.py:485
 msgid "Description"
 msgstr ""
 
@@ -234,27 +234,31 @@ msgstr ""
 msgid "Related Postgres table"
 msgstr ""
 
-#: c2cgeoportal/models.py:437
+#: c2cgeoportal/models.py:432
+msgid "Attributes to exclude"
+msgstr ""
+
+#: c2cgeoportal/models.py:438
 msgid "Time mode"
 msgstr ""
 
-#: c2cgeoportal/models.py:473
+#: c2cgeoportal/models.py:474
 msgid "restrictionarea"
 msgstr ""
 
-#: c2cgeoportal/models.py:474
+#: c2cgeoportal/models.py:475
 msgid "restrictionareas"
 msgstr ""
 
-#: c2cgeoportal/models.py:485
+#: c2cgeoportal/models.py:486
 msgid "Read-write mode"
 msgstr ""
 
-#: c2cgeoportal/models.py:515
+#: c2cgeoportal/models.py:516
 msgid "parentrole"
 msgstr ""
 
-#: c2cgeoportal/models.py:516
+#: c2cgeoportal/models.py:517
 msgid "parentroles"
 msgstr ""
 
@@ -282,11 +286,11 @@ msgstr ""
 msgid "my translation test"
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:83
+#: c2cgeoportal/views/entry.py:76
 msgid "title i18n"
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:122
+#: c2cgeoportal/views/entry.py:115
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover the "
 "themes"
