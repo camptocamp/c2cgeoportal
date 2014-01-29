@@ -682,8 +682,8 @@ Version 1.4
 
   * A new static schema is needed:
 
-        sudo -u postgres psql -e 'CREATE SCHEMA <schema>_static;' <database>
-        sudo -u postgres psql -e 'GRANT ALL ON SCHEMA <schema>_static TO "www-data";' <database>
+        sudo -u postgres psql -c 'CREATE SCHEMA <schema>_static;' <database>
+        sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema>_static TO "www-data";' <database>
 
   * Add the following lines at the end of the `deploy/hooks/post-restore-database.in` file:
 
