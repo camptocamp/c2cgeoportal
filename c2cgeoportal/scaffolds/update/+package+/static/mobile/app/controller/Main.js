@@ -204,14 +204,14 @@ Ext.define('App.controller.Main', {
             else if (layer.mergeNewParams) { // WMS or WMTS
                 layer.mergeNewParams(params);
             }
-        }
+        };
     },
 
     toArray: function(value) {
         return Ext.isArray(value) ? value : value.split(',');
     },
 
-    // get the list of queriable layers given a list of displayed WMS layers
+    // get the list of queryable layers given a list of displayed WMS layers
     getChildLayers: function(ollayer, params) {
         var result = [],
             allLayers = ollayer.allLayers;
@@ -237,9 +237,9 @@ Ext.define('App.controller.Main', {
         // overlay
         var overlay = this.getOverlay();
         var layersParam = this.toArray(overlay.params.LAYERS),
-            // Ensure that we query the child layers in case of groups
-            layersParam = this.getChildLayers(overlay, layersParam),
             WFSTypes = this.toArray(App.WFSTypes);
+        // Ensure that we query the child layers in case of groups
+        layersParam = this.getChildLayers(overlay, layersParam);
         for (var j=0; j<layersParam.length; j++) {
             if (WFSTypes.indexOf(layersParam[j]) != -1) {
                 layers.push(layersParam[j]);
