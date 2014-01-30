@@ -56,7 +56,7 @@
     query_params = dict(request.params)
     def enc(vals):
         return (vals[0], vals[1].encode('utf8'))
-    query_string = urllib.urlencode(dict(map(enc, query_params)))
+    query_string = urllib.urlencode(dict(map(enc, query_params.items())))
     came_from = request.current_route_url(_query=query_params)
 %>
 <%doc>
