@@ -77,20 +77,19 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 Configuring security
 --------------------
 
-For a layer to be editable it must be private, i.e. its ``public`` field must
-be set to ``false``. This means that some security configuration is required.
-Layer security is configured in the ``restrictionarea`` table, which is managed
-by selecting the ``Restriction Areas`` item in the admin interface.
+Editing the features of a layer implies to write changes in the database. To make
+sure that only authorized users may edit a feature, editable layers (including
+public layers) must be linked to a restriction area, used itself to specify the
+roles of authorized users.
 
-For a layer to be actually editable in the editing interface it should have at
-least one associated *restriction area*, and this restriction area should have
-its ``readwrite`` field set to ``true``.
+The restriction area should have its ``readwrite`` field set to ``true`` in the
+administration interface.
 
-Some notes:
+.. note::
 
-* By default a restriction areas has its ``readwrite`` fields set to ``false``.
-* A restriction area whose ``readwrite`` field is ``true`` applies to both
-  ``read`` and ``write`` operations.
+    * By default a restriction areas has its ``readwrite`` field set to ``false``.
+    * A restriction area whose ``readwrite`` field is ``true`` applies to both
+      ``read`` and ``write`` operations.
 
 Binding restriction areas and layers together can be done from either the
 ``Restriction Area`` objects or the ``Layer`` objects in the admin interface.
