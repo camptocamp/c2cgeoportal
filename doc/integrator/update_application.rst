@@ -102,7 +102,6 @@ steps:
 
        $ ./buildout/bin/manage_db upgrade
 
-
    .. note::
 
         With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
@@ -115,7 +114,7 @@ steps:
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-11. Add the new files in the repository:
+10. Add the new files in the repository:
 
    Get informations on the status of the repository::
 
@@ -170,7 +169,11 @@ Do manual migration steps based on what's in the
 Test and commit
 ~~~~~~~~~~~~~~~
 
-* After the update process is done, restart Apache::
+* After the update process is done, do a final build of the application::
+
+        ./buildout/bin/buildout -c <buildout_config_file>
+
+* Reload Apache configuration::
 
         sudo /usr/sbin/apache2ctl graceful
 
