@@ -120,9 +120,10 @@ class Entry(object):
         except AttributeError:
             error = _(
                 "WARNING! an error occured while trying to "
-                "read the mapfile and recover the themes"
+                "read the mapfile and recover the themes."
             )
-            errors.append("%s\nurl: %s\nxml:\n%s" % (error, url, content))
+            error = "%s\nurl: %s\nxml:\n%s" % (error, url, content)
+            errors.append(error)
             log.exception(error)
         return wms, errors
 
