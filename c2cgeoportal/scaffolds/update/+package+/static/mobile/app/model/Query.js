@@ -25,25 +25,29 @@ Ext.define('App.model.Query', {
                 mapping: 'properties',
                 convert: function(value, record) {
                     if (typeof record.raw.attributes == 'object') {
-                        var detail = [],
-                            attributes = record.raw.attributes;
-                        detail.push('<table class="detail">');
-                        for (var k in attributes) {
-                            if (attributes.hasOwnProperty(k) && attributes[k]) {
-                                detail = detail.concat([
-                                    '<tr>',
-                                    '<th>',
-                                    OpenLayers.i18n(k),
-                                    '</th>',
-                                    '<td>',
-                                    OpenLayers.String.format(attributes[k], App),
-                                    '</td>',
-                                    '</tr>'
-                                ]);
+                        var detail = App.getDetail ? App.getDetail(record.raw) : null;
+                        if (!detail) {
+                            detail = []
+                            var attributes = record.raw.attributes;
+                            detail.push('<table class="detail">');
+                            for (var k in attributes) {
+                                if (attributes.hasOwnProperty(k) && attributes[k]) {
+                                    detail = detail.concat([
+                                        '<tr>',
+                                        '<th>',
+                                        OpenLayers.i18n(k),
+                                        '</th>',
+                                        '<td>',
+                                        OpenLayers.String.format(attributes[k], App),
+                                        '</td>',
+                                        '</tr>'
+                                    ]);
+                                }
                             }
+                            detail.push('</table>');
+                            detail = detail.join('');
                         }
-                        detail.push('</table>');
-                        return detail.join('');
+                        return detail;
                     }
                     return record.raw.detail;
                 }
