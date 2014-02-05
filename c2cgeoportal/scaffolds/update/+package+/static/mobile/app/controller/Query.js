@@ -38,7 +38,7 @@ Ext.define('App.controller.Query', {
             }
         },
         routes: {
-            'query/:coords': {
+            'query/:coords/:layers': {
                 action: 'showQueryResultView',
                 condition: '.+'
             }
@@ -58,20 +58,19 @@ Ext.define('App.controller.Query', {
         });
     },
 
-    showQueryResultView: function(params) {
+    showQueryResultView: function(coords, layers) {
         var store = this.getQueryView().getStore();
         store.removeAll();
 
-        params = decodeURIComponent(params);
-        params = params.split('-');
-        var bounds = params[0].split(',');
+        layers = decodeURIComponent(layers).split('-');
 
+        bounds = coords.split('-');
         bounds = new OpenLayers.Bounds.fromArray(bounds);
         var filter = new OpenLayers.Filter.Spatial({
             type: OpenLayers.Filter.Spatial.BBOX,
             value: bounds
         });
-        this.protocol.format.featureType = params[1].split(',');
+        this.protocol.format.featureType = layers;
         var response = this.protocol.read({
             maxFeatures: 20,
             filter: filter,

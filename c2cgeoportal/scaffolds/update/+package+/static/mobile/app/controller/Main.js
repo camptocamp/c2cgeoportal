@@ -253,10 +253,9 @@ Ext.define('App.controller.Main', {
 
         // launch query only if there are layers or raster to query
         if (layers.length || App.raster) {
-            var p = [bounds, layers.join(',')];
-            var joinedParams = p.join('-');
-            joinedParams = encodeURIComponent(joinedParams);
-            this.redirectTo('query/' + joinedParams);
+            var layers = encodeURIComponent(layers.join('-'));
+            var bounds = encodeURIComponent(bounds.toArray().join('-'));
+            this.redirectTo(['query', bounds, layers].join('/'));
         }
     },
 
