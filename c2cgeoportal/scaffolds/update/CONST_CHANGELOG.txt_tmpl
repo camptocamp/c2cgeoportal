@@ -65,6 +65,11 @@ Version 1.5
 
 8. Some important notices:
 
+  * If using Mapserver 6.4 you have to move the substitution variables default
+    values and validation patterns from the METADATA section to a VALIDATION
+    section. See ``Variable Substitution`` in the Mapfile chapter of the
+    administrator manual. 
+
 
 Version 1.4
 ===========

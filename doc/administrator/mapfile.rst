@@ -276,23 +276,24 @@ The ``${vars:mapfile_data_noarea_subselect}`` is defined as follows::
 Metadata and filename
 ~~~~~~~~~~~~~~~~~~~~~
 
-It is required to have the following in the ``METADATA`` of the ``LAYER``::
+It is required to have the following in the ``VALIDATION`` section of
+the ``LAYER``::
 
     ${mapserver_layer_metadata}
 
-This variable is defined in the Buildout configuration file as*
-follows::
+This variable is defined in the Buildout configuration file as follows::
 
     mapserver_layer_metadata =
         "default_role_id" "-1"
         "role_id_validation_pattern" "^-?[0-9]*$$"
 
-The metadata section is needed because MapServer 6  applies a validation
-with a pattern for all the variable substitution present in the ``DATA``.
-
 The mapfile should be a ``.map.in`` file, for the Buildout variable to be
 substituted at Buildout execution time.
 
+.. note::
+
+    Before using Mapserver 6.4 ``mapserver_layer_metadata`` was placed in
+    the ``METADATA`` section.
 
 Variable Substitution
 ---------------------
@@ -302,7 +303,7 @@ by using variable substitution. For instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
-To define variables, edit the matching ``MAP``/``LAYER``/``METADATA``
+To define variables, edit the matching ``MAP``/``LAYER``/``VALIDATION``
 section in the mapfile and add::
 
     "default_s_<variable>" "<default_value>"
@@ -312,6 +313,11 @@ The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
 use ``^[a-z,]*$$`` (the double '$' is needed since we are
 in a ``.in`` file).
+
+.. note::
+
+    Before using Mapserver 6.4 those parameters were placed in
+    the ``METADATA`` section.
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value.
@@ -331,6 +337,8 @@ listed in the ``DATA`` section. For instance::
             ...
             "gml_exclude_items" "type,gid"
             "gml_include_items" "all"
+        END
+        VALIDATION
             "default_s_columns" "t.name"
             "s_columns_validation_pattern" "^[a-z,._]*$$"
         END
