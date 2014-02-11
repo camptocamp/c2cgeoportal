@@ -28,7 +28,7 @@ Version 1.4
         http://docs.camptocamp.net/c2cgeoportal/integrator/tilegeneration.html.
 
             git rm apache/tilecache.conf.in
-            git rm tilecache
+            git rm -r tilecache
 
 3. Update the `jsbuild/app.cfg` file.
 
