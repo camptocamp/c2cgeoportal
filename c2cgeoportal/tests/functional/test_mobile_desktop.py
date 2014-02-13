@@ -32,21 +32,18 @@ from unittest import TestCase
 from nose.plugins.attrib import attr
 
 import transaction
-import os
 from pyramid import testing
 
 from c2cgeoportal.tests.functional import (  # NOQA
     tearDownCommon as tearDownModule,
     setUpCommon as setUpModule,
-    mapserv_url, host)
+    mapserv_url, host, createDummyRequest)
 
 
 @attr(functional=True)
 class TestMobileDesktop(TestCase):
 
     def setUp(self):
-        self.config = testing.setUp()
-
         from c2cgeoportal.models import DBSession, Layer, Theme
 
         layer = Layer(name=u'__test_layer')
@@ -102,22 +99,11 @@ class TestMobileDesktop(TestCase):
     def _create_entry_obj(self, username=None, params={}):
         from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            'c2cgeoportal_test.map'
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-        request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.registry.settings = {
-            'mapserv_url': mapserv,
-        }
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+        request = createDummyRequest()
         request.static_url = lambda url: '/dummy/static/url'
-        request.route_url = lambda url: mapserv
+        request.route_url = lambda url, **kwargs: \
+            request.registry.settings['mapserv_url']
         request.params = params
-
-        request.user = None
 
         return Entry(request)
 

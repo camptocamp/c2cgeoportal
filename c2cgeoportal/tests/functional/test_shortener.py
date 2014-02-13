@@ -43,7 +43,7 @@ from c2cgeoportal.tests.functional import (  # NOQA
 class TestshortenerView(TestCase):
 
     def setUp(self):
-        self.config = testing.setUp()
+        pass
 
     def tearDown(self):
         testing.tearDown()

@@ -42,7 +42,12 @@ class TestEntryView(TestCase):
 
     def setUp(self):
         from pyramid import testing
-        self.config = testing.setUp(settings={})
+        testing.setUp(
+            settings={
+                'default_locale_name': 'fr',
+                'default_max_age': 1000,
+            }
+        )
 
     def test_decimal_JSON(self):
         from decimal import Decimal
@@ -50,6 +55,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal import DecimalJSON
         renderer = DecimalJSON()(None)
         request = DummyRequest()
+        request.user = None
         system = {'request': request}
 
         self.assertEquals(
@@ -79,6 +85,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = DummyRequest()
+        request.user = None
         entry = Entry(request)
 
         class Layer(object):
@@ -121,12 +128,12 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = DummyRequest()
-        request.params = {'lang': 'en'}
+        request.user = None
         entry = Entry(request)
 
         request.path = '/for_test'
         expected = {
-            'lang': 'en',
+            'lang': 'fr',
             'came_from': '/for_test',
         }
         self.assertEqual(entry.loginform403(), expected)
@@ -136,7 +143,7 @@ class TestEntryView(TestCase):
         }
         entry = Entry(request)
         expected = {
-            'lang': 'en',
+            'lang': 'fr',
             'came_from': '/for_a_second_test',
         }
         self.assertEqual(entry.loginform(), expected)
@@ -144,7 +151,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.params = {}
         expected = {
-            'lang': 'en',
+            'lang': 'fr',
             'came_from': '/',
         }
         self.assertEqual(entry.loginform(), expected)
@@ -154,6 +161,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = DummyRequest()
+        request.user = None
         entry = Entry(request)
 
         class Layer(object):

@@ -41,6 +41,11 @@ from c2cgeoportal.views.raster import Raster
 
 class Profile(Raster):
 
+    def __init__(self, request):
+        self.request = request
+        request.response.cache_control = "no-cache"
+        Raster.__init__(self, request)
+
     @view_config(route_name='profile.json', renderer='decimaljson')
     def json(self):
         """answers to /profile.json"""
@@ -57,10 +62,12 @@ class Profile(Raster):
         for point in points:
             r = template % tuple((str(point['values'][l]) for l in layers))
             result += '\n%s,%s,%d,%d' % (str(point['dist']), r, point['x'], point['y'])
-        return Response(result, headers={
+
+        response = Response(result, cache_control="no-cache", headers={
             'Content-Type': 'text/csv; charset=utf-8',
             'Content-Disposition': 'attachment; filename="profil.csv"'
         })
+        return response
 
     def _compute_points(self):
         """Compute the alt=fct(dist) array"""

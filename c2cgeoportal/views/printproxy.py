@@ -40,9 +40,11 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
+from c2cgeoportal.lib import caching
 from c2cgeoportal.lib.functionality import get_functionality
 
 log = logging.getLogger(__name__)
+cache_region = caching.get_region()
 
 
 class Printproxy(object):  # pragma: no cover
@@ -58,6 +60,10 @@ class Printproxy(object):  # pragma: no cover
         templates = get_functionality(
             'print_template', self.config, self.request)
 
+        return self._info(templates)
+
+    @cache_region.cache_on_arguments()
+    def _info(self, templates):
         # get query string
         params = dict(self.request.params)
         query_string = urllib.urlencode(params)
@@ -90,11 +96,15 @@ class Printproxy(object):  # pragma: no cover
 
         headers = dict(resp)
         del headers['content-length']
-        headers["Expires"] = "-1"
-        headers["Pragma"] = "no-cache"
-        headers["CacheControl"] = "no-cache"
-        return Response(json.dumps(capabilities, separators=(',', ':')),
-                        status=resp.status, headers=headers)
+
+        response = Response(
+            json.dumps(capabilities, separators=(',', ':')),
+            status=resp.status, headers=headers,
+        )
+        response.cache_control.public = True
+        response.cache_control.max_age = \
+            self.request.registry.settings["default_max_age"]
+        return response
 
     @view_config(route_name='printproxy_create')
     def create(self):
@@ -117,6 +127,8 @@ class Printproxy(object):  # pragma: no cover
         if urlparse(_url).hostname != 'localhost':
             h.pop('Host')
         h['Content-Length'] = str(len(body))
+        h["Cache-Control"] = "no-cache"
+
         try:
             resp, content = http.request(
                 _url, method='POST', body=body, headers=h
@@ -124,7 +136,10 @@ class Printproxy(object):  # pragma: no cover
         except:
             return HTTPBadGateway()
 
-        return Response(content, status=resp.status, headers=dict(resp))
+        return Response(
+            content, status=resp.status, headers=dict(resp),
+            cache_control="no-cache"
+        )
 
     @view_config(route_name='printproxy_get')
     def get(self):
@@ -141,6 +156,9 @@ class Printproxy(object):  # pragma: no cover
         h = dict(self.request.headers)
         if urlparse(_url).hostname != 'localhost':
             h.pop('Host')
+
+        h["Cache-Control"] = "no-cache"
+
         try:
             resp, content = http.request(_url, method='GET', headers=h)
         except:
@@ -153,4 +171,6 @@ class Printproxy(object):  # pragma: no cover
         # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
         #del response.headers['Pragma']
         #del response.headers['Cache-Control']
-        return Response(content, status=resp.status, headers=headers)
+        return Response(
+            content, status=resp.status, headers=headers, cache_control="no-cache"
+        )

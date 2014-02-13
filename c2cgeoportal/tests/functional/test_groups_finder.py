@@ -4,7 +4,8 @@ from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # NOQA
     tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule)
+    setUpCommon as setUpModule
+)
 
 
 @attr(functional=True)

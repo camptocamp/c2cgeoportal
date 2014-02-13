@@ -104,15 +104,15 @@ class TestFunctionalities(TestCase):
         transaction.commit()
 
     def test_functionalities(self):
-        from pyramid.testing import DummyRequest
+        from c2cgeoportal.tests.functional import createDummyRequest
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.lib.functionality import get_functionality
 
-        request = DummyRequest()
+        request = createDummyRequest()
         request.user = None
-        request1 = DummyRequest()
+        request1 = createDummyRequest()
         request1.user = DBSession.query(User).filter(User.username == '__test_user1').one()
-        request2 = DummyRequest()
+        request2 = createDummyRequest()
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
         settings = {
@@ -180,22 +180,17 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
     def test_web_client_functionalities(self):
-        from pyramid.testing import DummyRequest
         from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.tests.functional import mapserv_url
+        from c2cgeoportal.tests.functional import mapserv_url, createDummyRequest
         from c2cgeoportal.views.entry import Entry
 
-        request = DummyRequest()
+        request = createDummyRequest()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request.route_url = lambda url: mapserv_url
-        request.user = None
-        request1 = DummyRequest()
+        request1 = createDummyRequest()
         request1.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request1.route_url = lambda url: mapserv_url
         request1.user = DBSession.query(User).filter(User.username == '__test_user1').one()
-        request2 = DummyRequest()
+        request2 = createDummyRequest()
         request2.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request2.route_url = lambda url: mapserv_url
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
         settings = {
@@ -212,9 +207,9 @@ class TestFunctionalities(TestCase):
             },
             'mapserv_url': mapserv_url,
         }
-        request.registry.settings = settings
-        request1.registry.settings = settings
-        request2.registry.settings = settings
+        request.registry.settings.update(settings)
+        request1.registry.settings.update(settings)
+        request2.registry.settings.update(settings)
 
         annon = Entry(request)._getVars()
         u1 = Entry(request1)._getVars()

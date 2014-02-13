@@ -64,7 +64,9 @@ class CheckerCollector(object):  # pragma: no cover
                     (check['display'], res, time() - start2)
             body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
         body += "<p>Elapsed all: %0.4f</p>" % (time() - start0)
-        return Response(body=body, status_int=self.status_int)
+        return Response(
+            body=body, status_int=self.status_int, cache_control="no-cache"
+        )
 
     def _testurl(self, url):
         h = Http()

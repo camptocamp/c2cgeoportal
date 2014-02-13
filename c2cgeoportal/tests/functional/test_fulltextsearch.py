@@ -32,19 +32,19 @@ from unittest import TestCase
 from nose.plugins.attrib import attr
 
 from pyramid import testing
+from pyramid.response import Response
 
 from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule, setUpCommon as setUpModule)
+    tearDownCommon as tearDownModule,
+    setUpCommon as setUpModule,
+    createDummyRequest
+)
 
 
 @attr(functional=True)
 class TestFulltextsearchView(TestCase):
 
     def setUp(self):
-        self.config = testing.setUp(
-            settings=dict(default_locale_name='fr')
-        )
-
         import transaction
         from sqlalchemy import func
         from geoalchemy import WKTSpatialElement
@@ -128,20 +128,21 @@ class TestFulltextsearchView(TestCase):
     def _create_dummy_request(self, username=None, params=None):
         from c2cgeoportal.models import DBSession, User
 
-        request = testing.DummyRequest(params=params)
+        request = createDummyRequest(params=params)
+        request.responce = Response()
+        request.user = None
         if username:
             request.user = DBSession.query(User) \
-                                    .filter_by(username=username).one()
-        else:
-            request.user = None
+                .filter_by(username=username).one()
         return request
 
     def test_no_default_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
-        del(self.config.registry.settings['default_locale_name'])
         request = self._create_dummy_request()
+        del(request.registry.settings['default_locale_name'])
+
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
@@ -150,8 +151,8 @@ class TestFulltextsearchView(TestCase):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
-        self.config.registry.settings['default_locale_name'] = 'it'
         request = self._create_dummy_request()
+        request.registry.settings['default_locale_name'] = 'it'
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))

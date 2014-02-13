@@ -46,6 +46,7 @@ class Raster(object):
 
     def __init__(self, request):
         self.request = request
+        request.response.cache_control.no_cache = True
         self.rasters = self.request.registry.settings['raster']
 
     @view_config(route_name='raster', renderer='decimaljson')
