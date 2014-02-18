@@ -60,11 +60,6 @@ Ext.application({
     },
 
     launch: function() {
-
-        // store current theme
-        var queryParams = Ext.Object.fromQueryString(window.location.search);
-        App.theme = queryParams.theme;
-
         // decode the information received from the server
         if (App.info) {
             App.info = Ext.JSON.decode(App.info, true);

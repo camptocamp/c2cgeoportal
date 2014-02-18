@@ -52,9 +52,14 @@ steps:
 
    .. prompt:: bash
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/<release>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-   Replace ``<release>`` with the release you want, it can be for example ``1.3.2``.
+   Replace ``<version>`` by a version number (branch) or release number (tag).
+   To get the last dev version, replace <version> by "master".
+
+   For example to get the ``versions.cfg`` file of version 1.4, type::
+
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
 3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version:
 
@@ -156,7 +161,13 @@ Do manual migration steps based on what's in the
 Test and commit
 ~~~~~~~~~~~~~~~
 
-* After the update process is done, restart Apache:
+* After the update process is done, do a final build of the application:
+
+  .. prompt:: bash
+    
+    ./buildout/bin/buildout -c <buildout_config_file>
+
+* Reload Apache configuration:
 
   .. prompt:: bash
 

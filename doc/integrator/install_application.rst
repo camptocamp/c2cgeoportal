@@ -30,7 +30,7 @@ on your system:
 
 * Git (or whatever revision control (for example Subversion)
     is used for the application)
-* Python 2.7 (2.5 or 3.x are not supported, 2.6 can be supported but with limited functionalities)
+* Python 2.6, 2.7 (2.5 or 3.x are not supportedi)
 * Oracle Java SE Development Kit 6 or 7
 * Tomcat
 * Apache
@@ -273,14 +273,6 @@ Also, by default, the path to Tomcat's ``webapps`` directory is
 
     [print-war]
     output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${vars:instanceid}.war
-
-By default we use ``OWSLib`` ``0.8.3`` which is not compatible with Python 2.6.
-``OWSLib`` ``0.7.2`` actually supports Python 2.6 but then it is not possible
-to get the WMS-time default value. To do so, add the following lines in the
-``buildout.cfg`` file::
-
-    [versions]
-    OWSLib = 0.7.2
 
 apache/mapserver.conf.in
 ^^^^^^^^^^^^^^^^^^^^^^^^

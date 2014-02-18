@@ -360,6 +360,15 @@ Don't miss to add your changes to git:
 
    with the right path to ``convert``.
 
+   Some parts will not work or will not do anything on Windows, than add in
+   your `buildout.cfg` file in the `[buildout]` section::
+
+        parts -= fix-perm
+
+    and in the `[template]` section::
+
+        extends -= facts
+
 
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:

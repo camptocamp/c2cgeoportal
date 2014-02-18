@@ -6,7 +6,7 @@
         <meta name="keywords" content="{{package}}, mapfish, routing, geoportal">
         <meta name="description" content="{{package}} Routing.">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
-        <title>{{package}} Rounting</title>
+        <title>{{package}} Routing</title>
         <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 
         <style>

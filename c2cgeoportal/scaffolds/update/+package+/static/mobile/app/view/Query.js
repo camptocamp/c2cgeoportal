@@ -16,14 +16,20 @@
  */
 
 Ext.define("App.view.Query", {
-    extend: 'Ext.Container',
+    extend: 'Ext.dataview.List',
     xtype: 'queryview',
-    requires: ['Ext.dataview.List', 'App.model.Query', 'App.view.AutoHeightList'],
+    requires: ['Ext.dataview.List', 'App.model.Query'],
 
     config: {
-        scrollable: {
-            direction: 'vertical'
-        },
+        fullscreen: true,
+        itemTpl: '<div>{detail}</div>',
+        selectedCls: '',
+        emptyText: OpenLayers.i18n('No query result'),
+        store: 'queryStore',
+        onItemDisclosure: true,
+        pinHeaders: true,
+        ui: 'round',
+        grouped: true,
         items: [{
             docked: 'top',
             xtype: 'toolbar',
@@ -34,20 +40,6 @@ Ext.define("App.view.Query", {
                 text: OpenLayers.i18n('close'),
                 action: 'home'
             }]
-        }, {
-            pseudo: 'coordinates'
-        }, {
-            xtype: 'autoheightlist',
-            itemTpl: '<div>{detail}</div>',
-            selectedCls: '',
-            emptyText: OpenLayers.i18n('No query result'),
-            store: 'queryStore',
-            onItemDisclosure: true,
-            pinHeaders: true,
-            ui: 'round',
-            grouped: true,
-            height: 0,
-            scrollable: false
         }]
     }
 });

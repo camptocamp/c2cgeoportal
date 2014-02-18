@@ -884,6 +884,7 @@ class Entry(object):
         return {
             'lang': self.lang,
             'themes': json.dumps(themes_),
+            'theme': theme_name if theme_name is not None else "",
             'wfs_types': wfs_types,
             'server_error': json.dumps(errors),
             'info': json.dumps(info)

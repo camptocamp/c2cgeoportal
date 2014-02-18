@@ -85,12 +85,13 @@ Ext.define('App.plugin.StatefulMap', {
     update: function() {
         var center = this.getMap().getCenter();
         var main = App.app.getController('Main');
+        var layers = main.getOverlay() && main.getOverlay().params.LAYERS || [];
         this.setState({
             lonlat: [center.lon, center.lat],
             zoom: this.getMap().getZoom(),
             theme: App.theme,
             bgLayer: this.getMap().baseLayer.ref,
-            layers: main.getOverlay().params.LAYERS
+            layers: layers
         });
     },
 
