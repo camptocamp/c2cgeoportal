@@ -85,7 +85,7 @@ Extended APIs.
                             ].join(' ')
                         }
                     )]
-                })
+                }),
                 new OpenLayers.Control.MousePosition({numDigits: 0})
             ],
             layers: [{
