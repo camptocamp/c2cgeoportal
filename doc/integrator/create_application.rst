@@ -613,7 +613,7 @@ These are placeholder variables which must be defined
    external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
    external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
 
-   tilecache_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/tilecache
+   tiles_url: http://${vars:host}/${vars:parent_instanceid}/tiles
 
 15. In the files ``<project>/templates/api/mapconfig.js``,
     ``<project>/templates/viewer.js`` and ``<project>/templates/edit.js``
@@ -622,7 +622,7 @@ These are placeholder variables which must be defined
 .. code:: javascript
 
    var WMTS_OPTIONS = {
-       url: '${tilecache_url}',
+       url: '${tiles_url}',
        ...
     }
 
