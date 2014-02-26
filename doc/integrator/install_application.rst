@@ -411,7 +411,7 @@ Reload apache configuration and you're done:
     sudo /usr/sbin/apache2ctl graceful
 
 Your application should be available at:
-``http://<hostname>/<instanceid>/wsgi``.
+``http://<hostname>/<instanceid>``.
 
 Where the ``<hostname>`` is directly linked to the virtual host,
 and the ``<instanceid>`` is the value you provided before.

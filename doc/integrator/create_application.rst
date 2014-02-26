@@ -385,37 +385,6 @@ Then follow the sections in the install application guide:
     except the 'Get the application source tree' chapter.
 
 
-.. Minimal setup of the application
-.. --------------------------------
-
-.. This section provides the minimal set of things to do to get a working
-.. application.
-
-.. Defining background layers
-.. --------------------------
-
-.. A c2cgeoportal application has *background layers* and *overlays*. Background
-.. layers, also known as base layers, sit at the bottom of the map. They're
-.. typically cached layers. Overlays represent application-specific data. They're
-.. displayed on top of background layers.
-
-.. Background layers are created by the application integrator, while overlays are
-.. created by the application administrator. This is why only background layers
-.. are covered here in the Integrator Guide. Defining overlays is described in the
-.. :ref:`administrator_guide`.
-
-.. Create a WMTS layer (**To Be Changed**)
-
-.. * Make sure that ``/var/sig/tilecache/`` exists and is writeable by the user ``www-data``.
-.. * Add the matching layers definitions in the mapfile (``mapserver/c2cgeoportal.map.in``).
-.. * Add a layer entry in ``tilecache/tilecache.cfg.in``. The ``layers`` attribute
-..   must contain the list of mapserver layers defined above.
-.. * Update the layers list in the ``<package>/templates/viewer.js`` template.
-..   The ``layer`` parameter is the name
-..   of the tilecache layer entry just added in ``tilecache/tilecache.cfg.in``.
-
-.. **To Be Completed**
-
 Create a multi instance project
 -------------------------------
 
@@ -644,7 +613,7 @@ These are placeholder variables which must be defined
    external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
    external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
 
-   tilecache_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/tilecache
+   tiles_url: http://${vars:host}/${vars:parent_instanceid}/tiles
 
 15. In the files ``<project>/templates/api/mapconfig.js``,
     ``<project>/templates/viewer.js`` and ``<project>/templates/edit.js``
@@ -653,7 +622,7 @@ These are placeholder variables which must be defined
 .. code:: javascript
 
    var WMTS_OPTIONS = {
-       url: '${tilecache_url}',
+       url: '${tiles_url}',
        ...
     }
 
