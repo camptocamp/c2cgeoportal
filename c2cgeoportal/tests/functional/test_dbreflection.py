@@ -164,7 +164,7 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ('public', 'table_a') in
+            ('public', 'table_a', None) in
             c2cgeoportal.lib.dbreflection._class_cache
         )
         _modelclass = get_class('table_a')
@@ -199,6 +199,19 @@ class TestReflection(TestCase):
         # is required here in the test because tearDown does table.drop,
         # which will block forever if the transaction is not committed.
         transaction.commit()
+
+    def test_get_class_exclude_properties(self):
+        import c2cgeoportal.lib.dbreflection
+        from c2cgeoportal.lib.dbreflection import get_class
+
+        self._create_table('table_d')
+        get_class('table_d', exclude_properties='foo,bar')
+
+        # the class should now be in the cache
+        self.assertTrue(
+            ('public', 'table_d', 'foo,bar') in
+            c2cgeoportal.lib.dbreflection._class_cache
+        )
 
 
 @attr(functional=True)

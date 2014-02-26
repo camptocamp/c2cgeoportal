@@ -330,10 +330,10 @@ class Layers(object):
         return self._metadata(str(layer.geoTable), layer.excludeProperties)
 
     @cache_region.cache_on_arguments()
-    def _metadata(self, geoTable, excludeProperties):
+    def _metadata(self, geoTable, exclude_properties):
         return get_class(
             geoTable,
-            exclude_properties=excludeProperties
+            exclude_properties=exclude_properties
         )
 
     @view_config(route_name='layers_enumerate_attribute_values', renderer='json')
