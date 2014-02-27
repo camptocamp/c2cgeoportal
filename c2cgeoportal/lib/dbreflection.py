@@ -169,9 +169,10 @@ def get_class(tablename, DBSession=None, exclude_properties=None):
     is raised.
     """
     tablename, schema = _get_schema(tablename)
+    cache_key = (schema, tablename, exclude_properties)
 
-    if (schema, tablename) in _class_cache:
-        return _class_cache[(schema, tablename)]
+    if cache_key in _class_cache:
+        return _class_cache[cache_key]
 
     table = get_table(tablename, schema, DBSession)
 
@@ -179,7 +180,7 @@ def get_class(tablename, DBSession=None, exclude_properties=None):
     cls = _create_class(table, exclude_properties)
 
     # add class to cache
-    _class_cache[(schema, tablename)] = cls
+    _class_cache[cache_key] = cls
 
     return cls
 
