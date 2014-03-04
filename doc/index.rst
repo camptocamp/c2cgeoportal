@@ -6,8 +6,6 @@
 c2cgeoportal documentation
 ==========================
 
-**This documentation is under construction.**
-
 Content:
 
 .. toctree::
