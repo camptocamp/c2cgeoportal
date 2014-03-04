@@ -147,7 +147,10 @@ Ext.onReady(function() {
 % endif
                 defaultThemes: ["to_be_defined"],
                 uniqueTheme: true,
-                wmsURL: "${request.route_url('mapserverproxy', path='')}"
+                wmsURL: "${request.route_url('mapserverproxy', path='')}",
+                wmsOptions: {
+                    ratio: (Ext.isChrome && Ext.isWindows) ? 1 : 1.5
+                }
             },
             outputTarget: "layerpanel"
         },
