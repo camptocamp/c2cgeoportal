@@ -53,7 +53,7 @@ Version 1.5
 
   * Add the new default_max_age to 10 hours:
 
-        default_max_age: 36000
+        default_max_age = 36000
 
 5. In the `buildout.cfg` file:
 
@@ -63,7 +63,7 @@ Version 1.5
 
         - config.add_static_view('proj', '{{package}}:static')
         + config.add_static_view('proj', '{{package}}:static',
-        +     cache_max_age=config.get_settings()["default_max_age"]
+        +     cache_max_age=int(config.get_settings()["default_max_age"])
         + )
 
 7. Update the templates:
@@ -76,7 +76,24 @@ Version 1.5
 
   * In the `{{package}}/static/mobile/config.js` file:
 
-9. Some important notices:
+9. Do the following changes in the ``apache/frontend.conf.in`` file:
+
+  -<LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
+  -    # Remove etags to enable better client-side caching
+  -    # (potential proxy problems)
+  -    # Also instruct proxys that these files are cacheable.
+  -    Header unset ETag
+  -    FileETag None
+  -    Header merge Cache-Control "public"
+  -
+  -    # Short term cache, before OpenLayers images (and others) are "CSS-Sprited"
+  -    ExpiresActive On
+  -    ExpiresDefault "access plus 1 hour"
+  +<LocationMatch /${vars:instanceid}/wsgi/(proj|static)>
+  +    # Instruct proxys that these files are cacheable.
+  +    Header merge Cache-Control "public"
+
+10. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION

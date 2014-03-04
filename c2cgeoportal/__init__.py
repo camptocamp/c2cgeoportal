@@ -346,5 +346,5 @@ def includeme(config):
     # add the static view (for static resources)
     config.add_static_view(
         'static', 'c2cgeoportal:static',
-        cache_max_age=settings["default_max_age"]
+        cache_max_age=int(settings["default_max_age"])
     )

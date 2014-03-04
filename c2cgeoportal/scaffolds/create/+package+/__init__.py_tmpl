@@ -35,7 +35,7 @@ def main(global_config, **settings):
 
     # add the main static view
     config.add_static_view('proj', '{{package}}:static',
-        cache_max_age=config.get_settings()["default_max_age"]
+        cache_max_age=int(config.get_settings()["default_max_age"])
     )
 
     # mobile views and routes
