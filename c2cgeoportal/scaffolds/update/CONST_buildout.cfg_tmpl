@@ -34,6 +34,7 @@ bin-directory = buildout/bin
 
 [facts]
 recipe = c2c.recipe.facts
+values = fqdn
 
 [vars]
 # project instance id
