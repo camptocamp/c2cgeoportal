@@ -113,6 +113,13 @@ Ext.onReady(function() {
             defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
         }],
 
+        // layer sources
+        sources: {
+            "olsource": {
+                ptype: "gxp_olsource"
+            }
+        },
+
         // map and layers
         map: {
             id: "app-map", // id needed to reference map in portalConfig above

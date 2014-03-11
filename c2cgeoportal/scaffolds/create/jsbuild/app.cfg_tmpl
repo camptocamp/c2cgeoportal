@@ -185,6 +185,7 @@ include =
     OpenLayers/Layer/Vector.js
     OpenLayers/Renderer/SVG.js
     OpenLayers/Renderer/VML.js
+    plugins/OLSource.js #GXP
 
 [routing.js]
 root =
