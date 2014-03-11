@@ -415,10 +415,7 @@ RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
     ('default_lon', formalchemy_default_x),
-    ('default_lat', formalchemy_default_y),
-    # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
-    # and we want to use our own build script.
-    ('openlayers_lib', 'none')
+    ('default_lat', formalchemy_default_y)
 ])
 fieldOrder = [RestrictionArea.name,
               RestrictionArea.description,
@@ -439,10 +436,7 @@ Role.extent.set(label=_(u'Extent'), options=[
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
     ('zoom', formalchemy_default_zoom),
     ('default_lon', formalchemy_default_x),
-    ('default_lat', formalchemy_default_y),
-    # if we specify None or '' GeoFolmAlchemy will add a script from openlayers.org
-    # and we want to use our own build script.
-    ('openlayers_lib', 'none')
+    ('default_lat', formalchemy_default_y)
 ])
 fieldOrder = [Role.name,
               Role.description,
