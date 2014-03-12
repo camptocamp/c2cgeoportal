@@ -18,6 +18,9 @@ App.theme = '${theme | n}';
 
 App.WFSTypes = '${wfs_types | n}';
 
+// Query mode. Can be either 'click' or 'longpress'
+App.queryMode = 'longpress';
+
 var dummy = "<% from json import dumps %>";
 jsonFormat = new OpenLayers.Format.JSON();
 try {

@@ -71,7 +71,7 @@ Ext.define('App.controller.Main', {
                 }
             },
             mainView: {
-                longpress: function(view, bounds, map) {
+                'query': function(view, bounds, map) {
                     this.queryMap(view, bounds, map);
                 }
             },
