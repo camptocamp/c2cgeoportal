@@ -18,14 +18,30 @@
 window.App = App || {};
 App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
-    button: null,
-
     /**
-     * Property: helpMessageEl
+     * Property: addFirstPointButton
      * {DOMElement}
      */
-    helpMessageEl: null,
+    buttonsCtn: null,
+    
+    /**
+     * Property: addFirstPointButton
+     * {DOMElement}
+     */
+    activateButton: null,
 
+    /**
+     * Property: addFirstPointButton
+     * {DOMElement}
+     */
+    deactivateButton: null,
+    
+    /**
+     * Property: addFirstPointButton
+     * {DOMElement}
+     */
+    addFirstPointButton: null,
+    
     /**
      * Property: addPointButton
      * {DOMElement}
@@ -45,16 +61,22 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     newMeasureButton: null,
 
     /**
+     * Property: helpMessageEl
+     * {DOMElement}
+     */
+    helpMessageEl: null,
+
+    /**
      * Property: layer
      * {OpenLayers.Layer.Vector}
      */
     layer: null,
 
     /**
-     * Property: origin
-     * {OpenLayers.Geometry.Point} First point
+     * Property: line
+     * {OpenLayers.Geometry.LineString} Measure linestring
      */
-    origin: null,
+    linestring: null,
 
     /**
      * Property: target
@@ -112,13 +134,18 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
     draw: function() {
         var div = OpenLayers.Control.prototype.draw.apply(this);
-
-        var measure = document.createElement("a");
-        measure.id = "mobileMeasure";
-        div.appendChild(measure);
-        OpenLayers.Element.addClass(measure, "olButton");
-        this.button = measure;
-
+        
+        this.buttonsCtn = document.createElement('div');
+        this.buttonsCtn.id = 'buttonsCtn';
+        this.div.appendChild(this.buttonsCtn);
+        
+        this.activateButton = this.addButton("activateButton", "", true);
+        this.deactivateButton = this.addButton("deactivateButton", "");
+        this.newMeasureButton = this.addButton('newMeasureButton', "");
+        this.addFirstPointButton = this.addButton('addFirstPointButton', 'Set starting point');
+        this.finishButton = this.addButton('finishButton', 'Finish');
+        this.addPointButton = this.addButton('addPointButton', '');
+        
         this.eventsInstance = this.map.events;
         this.eventsInstance.register("buttonclick", this, this.onClick);
 
@@ -139,28 +166,51 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     onClick: function(evt) {
         var button = evt.buttonElement;
         switch (button) {
-            case this.button:
-                if (this.active) {
-                    this.deactivate();
-                } else {
-                    this.activate();
-                }
+            case this.activateButton:
+                this.activate();
+                this.showMessage("Move the map to locate starting point");
+                break;
+            case this.deactivateButton:
+                this.deactivate();
+                break;
+            case this.addFirstPointButton:
+                this.hideButton(button);
+                this.addFirstPoint();
+                this.showMessage("Move the map to measure distance");
                 break;
             case this.addPointButton:
-                button.parentNode.removeChild(button);
-                this.addFirstPoint();
+                this.addPoint();
+                this.showMessage("New point added, you can move again");
                 break;
             case this.newMeasureButton:
-                button.parentNode.removeChild(button);
                 this.deactivate();
                 this.activate();
+                this.showMessage("Move the map to locate starting point");
                 break;
             case this.finishButton:
-                button.parentNode.removeChild(button);
+                this.hideButton(this.addPointButton);
+                this.hideButton(button);
                 this.map.events.unregister('move', this, this.measure);
-                this.helpMessageEl.style.display = 'none';
+                this.hideMessage();
                 break;
         }
+    },
+
+    /**
+     * Method: showMessage
+     * Display a message to user.
+     */
+    showMessage: function(message) {
+    	this.helpMessageEl.innerHTML = OpenLayers.i18n(message);
+        this.helpMessageEl.style.display = '';
+    },
+    
+    /**
+     * Method: hideMessage
+     * Hide previously showed message.
+     */
+    hideMessage: function() {
+        this.helpMessageEl.style.display = 'none';
     },
 
     /**
@@ -188,22 +238,24 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * Remove any button or message but the control initial button.
      */
     deactivate: function() {
-        OpenLayers.Element.removeClass(this.button, 'active');
         this.hideCenter();
-        this.active = false;
-
+        this.showButton(this.activateButton);
+        this.hideButton(this.deactivateButton);
+        this.hideButton(this.addFirstPointButton);
+        this.hideButton(this.addPointButton);
+        this.hideButton(this.finishButton);
+        this.hideButton(this.newMeasureButton);
         this.helpMessageEl.style.display = "none";
-        this.addPointButton && this.addPointButton.parentNode && this.addPointButton.parentNode.removeChild(this.addPointButton);
-        this.finishButton && this.finishButton.parentNode && this.finishButton.parentNode.removeChild(this.finishButton);
-        this.newMeasureButton && this.newMeasureButton.parentNode && this.newMeasureButton.parentNode.removeChild(this.newMeasureButton);
 
+        OpenLayers.Element.addClass(div, 'olButton');
+        
         this.map.removeLayer(this.layer);
         this.map.events.unregister('move', this, this.measure);
-
+        this.map.events.unregister('move', this, this.hidemessage);
         this.layer.removeFeatures(this.layer.features);
-        this.origin = null;
-        this.line = null;
+        this.linetring= null;
         this.target = null;
+        this.active = false;
     },
 
     /**
@@ -212,35 +264,12 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      */
     activate: function() {
         this.showCenter();
-
-        OpenLayers.Element.addClass(this.button, 'active');
-
-        var addPoint = document.createElement('div');
-        this.div.appendChild(addPoint);
-        OpenLayers.Element.addClass(addPoint, 'olButton');
-        addPoint.id = 'addPointButton';
-
-        var msg = this.helpMessageEl;
-        msg.innerHTML = OpenLayers.i18n("Move the map to locate starting point");
-        msg.style.display = '';
-
-        // hide message as soon as map has moved
-        var map = this.map;
-
-        function hide() {
-            msg.style.display = 'none';
-            map.events.unregister('move', null, hide);
-        }
-        map.events.register('move', null, hide);
-
-        var button = document.createElement('a');
-        button.innerHTML = OpenLayers.i18n('Set starting point');
-        addPoint.appendChild(button);
-        this.addPointButton = addPoint;
-
-        this.active = true;
-
+        this.hideButton(this.activateButton);
+        this.showButton(this.deactivateButton);
+        this.showButton(this.addFirstPointButton);
+        this.map.events.register('move', this, this.hideMessage);
         this.map.addLayer(this.layer);
+        this.active = true;
     },
 
     /**
@@ -249,68 +278,127 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      */
     addFirstPoint: function() {
         this.hideCenter();
-
-        var center = this.map.getCenter();
-        this.origin = new OpenLayers.Feature.Vector(
-        new OpenLayers.Geometry.Point(center.lon, center.lat), {
-            label: ''
-        });
-        this.layer.addFeatures(this.origin);
+        this.createTarget();
+        this.createLineString();
+        this.addPoint();
         this.map.events.register('move', this, this.measure);
-
-        var div = document.createElement('div');
-        this.div.appendChild(div);
-        OpenLayers.Element.addClass(div, 'olButton');
-        div.id = 'newMeasureButton';
-
-        var button = document.createElement('a');
-        div.appendChild(button);
-        this.newMeasureButton = div;
-
-        this.helpMessageEl.innerHTML = OpenLayers.i18n("Move the map to measure distance");
-        this.helpMessageEl.style.display = '';
-
-        div = document.createElement('div');
-        this.div.appendChild(div);
-        OpenLayers.Element.addClass(div, 'olButton');
-        div.id = 'finishButton';
-
-        button = document.createElement('a');
-        button.innerHTML = OpenLayers.i18n('Finish');
-        div.appendChild(button);
-        this.finishButton = div;
+        this.showButton(this.addPointButton);
+        this.showButton(this.finishButton);
+        this.showButton(this.newMeasureButton);
     },
 
+    /**
+     * Method: addPoint
+     * Adds new point as target.
+     */
+    addPoint: function() {
+        this.updateTarget();
+        this.target.attributes.label = "";
+        this.target.geometry.clearBounds();
+        this.layer.drawFeature(this.target);
+        this.linestring.geometry.addPoint(this.createTarget().geometry);
+        this.measure();
+    },
+
+    /**
+     * Method: createTarget
+     * Adds new point as target.
+     */
+    createTarget: function() {
+        var center = this.map.getCenter();
+        this.target = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point(center.lon, center.lat), {
+                label: ''
+            });
+        this.layer.addFeatures(this.target);
+        return this.target;
+    },
+
+    /**
+     * Method: updateTarget
+     * Update target position to the center of the map.
+     */
+    updateTarget: function() {
+        var center = this.map.getCenter();
+        this.target.geometry.x = center.lon;
+        this.target.geometry.y = center.lat;
+    },
+
+    /**
+     * Method: createLineString
+     * Create the linestring feature.
+     */
+    createLineString: function() {
+        var geom = new OpenLayers.Geometry.LineString([
+            this.target.geometry]);
+        this.linestring = new OpenLayers.Feature.Vector(geom, {
+            label: ''
+        });
+        this.layer.addFeatures(this.linestring);
+    },
+    
+
+    /**
+     * Method: addButton
+     * Create a button with id and text.
+     */
+    addButton: function(id, text, visible) {
+        div = document.createElement('div');
+        div.id = id;
+        OpenLayers.Element.addClass(div, 'olButton');
+        if (!visible) {
+            OpenLayers.Element.addClass(div, 'hidden');
+        }
+        this.buttonsCtn.appendChild(div);
+        
+        a = document.createElement('a');
+        a.innerHTML = OpenLayers.i18n(text);
+        div.appendChild(a);
+      
+        return div;
+    },
+    
+    /**
+     * Method: removeButton
+     * Remove a button by dom object.
+     */
+    removeButton: function(button) {
+        if (button && button.parentNode) {
+            button.parentNode.removeChild(button);
+        }
+    },
+    
+    /**
+     * Method: showButton
+     * Show button to the user.
+     */
+    showButton: function(button) {
+        OpenLayers.Element.removeClass(button, 'hidden');
+    },
+    
+    /**
+     * Method: hideButton
+     * Hide button to the user.
+     */
+    hideButton: function(button) {
+        OpenLayers.Element.addClass(button, 'hidden');
+    },
+    
     /**
      * Method: measure
      * Draw a line from first point and current center, display measure.
      */
     measure: function() {
-        this.helpMessageEl.style.display = 'none';
-        var center = this.map.getCenter();
-        if (!this.line) {
-            this.target = new OpenLayers.Feature.Vector(
-            new OpenLayers.Geometry.Point(center.lon, center.lat));
-            var geom = new OpenLayers.Geometry.LineString([
-            this.origin.geometry,
-            this.target.geometry]);
-            this.line = new OpenLayers.Feature.Vector(geom, {
-                label: ''
-            });
-            this.layer.addFeatures([
-            this.line,
-            this.target]);
-        } else {
-            this.target.geometry.x = center.lon;
-            this.target.geometry.y = center.lat;
-            var measure = this.getBestLength(this.line.geometry);
+        this.hideMessage();
+        this.updateTarget();
+        var measure = this.getBestLength(this.linestring.geometry);
+        if (measure != undefined) {
             this.target.attributes.label = measure[0].toPrecision(4) + ' ' + measure[1];
-
-            this.line.geometry.clearBounds();
-            this.layer.drawFeature(this.line);
-            this.target.geometry.clearBounds();
-            this.layer.drawFeature(this.target);
         }
+        this.linestring.geometry.clearBounds();
+        this.layer.drawFeature(this.linestring);
+        this.target.geometry.clearBounds();
+        this.layer.drawFeature(this.target);
     },
 
     /**
