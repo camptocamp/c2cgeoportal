@@ -128,17 +128,6 @@ Ext.define("App.view.Main", {
             map.zoomToMaxExtent();
         }
 
-        mapContainer.on('longpress', function(event, node) {
-            var map = this.getMap();
-            var el = Ext.get(map.div);
-            var pixel = new OpenLayers.Pixel(
-                event.pageX - el.getX(),
-                event.pageY - el.getY()
-            );
-            var bounds = this.pixelToBounds(pixel);
-            this.fireEvent('longpress', this, bounds, map, event);
-        }, this);
-
         // highlight layer
         this.setVectorLayer(new OpenLayers.Layer.Vector('Vector', {
             styleMap: new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
@@ -148,11 +137,70 @@ Ext.define("App.view.Main", {
         }));
         map.addLayer(this.getVectorLayer());
 
+        this.addQueryControls(mapContainer);
+
         map.addControls([
             new OpenLayers.Control.Zoom(),
             new App.GeolocateControl(),
             new App.MobileMeasure()
         ]);
+    },
+
+    /**
+     * Method: addQueryControls
+     * Adds a longpress or a single click event listener for queries.
+     *
+     * Parameters:
+     * mapContainer - {<DOMElement>}
+     */
+    addQueryControls: function(mapContainer) {
+        if (App.queryMode == 'click') {
+            var self = this;
+            OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+                autoActivate: true,
+                initialize: function(options) {
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    );
+                    this.handler = new OpenLayers.Handler.Click(
+                        this,
+                        {
+                            'click': function(evt) {
+                                self.handleQueryEvents(evt.xy);
+                            }
+                        },
+                        {
+                            'single': true
+                        }
+                    );
+                }
+            });
+
+            this.getMap().addControl(new OpenLayers.Control.Click({}));
+        } else {
+            mapContainer.on('longpress', function(event, node) {
+                var map = this.getMap();
+                var el = Ext.get(map.div);
+                var pixel = new OpenLayers.Pixel(
+                    event.pageX - el.getX(),
+                    event.pageY - el.getY()
+                );
+                this.handleQueryEvents(pixel);
+            }, this);
+        }
+    },
+
+    /**
+     * Method: handleQueryEvents
+     * Takes a pixel as argument and sends a query event.
+     *
+     * Parameters:
+     * pixel - {<OpenLayers.Pixel>}
+     */
+    handleQueryEvents: function(pixel) {
+        var map = this.getMap();
+        var bounds = this.pixelToBounds(pixel);
+        this.fireEvent('query', this, bounds, map);
     },
 
     /**
