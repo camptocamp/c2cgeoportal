@@ -250,7 +250,6 @@ div.MobileMeasure .olButton {
     line-height: 28px;
     text-align: center;
     text-decoration: none;
-    /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);*/
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
     white-space: nowrap;
 }
@@ -282,6 +281,7 @@ div.MobileMeasure .hidden {
 }
 
 #addPointButton {
+    padding: 2px 5px 2px 28px;
     background-size: 16px;
     background-position-x: 8px;
     background-position-y: 8px;
