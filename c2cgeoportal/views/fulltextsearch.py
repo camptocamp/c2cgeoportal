@@ -43,10 +43,10 @@ class FullTextSearchView(object):
     def __init__(self, request):
         self.request = request
         if request.user:
-            request.responce.cache_control.private = True
+            request.response.cache_control.private = True
         else:
-            request.responce.cache_control.public = True
-        request.responce.cache_control.max_age = \
+            request.response.cache_control.public = True
+        request.response.cache_control.max_age = \
             request.registry.settings["default_max_age"]
         self.settings = request.registry.settings.get('fulltextsearch', {})
         if 'languages' in self.settings:  # pragma: nocover
