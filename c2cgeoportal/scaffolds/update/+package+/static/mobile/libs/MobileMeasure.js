@@ -226,7 +226,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * Display a message to user.
      */
     showMessage: function(message) {
-    	  this.helpMessageEl.innerHTML = OpenLayers.i18n(message);
+        this.helpMessageEl.innerHTML = OpenLayers.i18n(message);
         OpenLayers.Element.removeClass(this.helpMessageEl, 'hidden');
     },
 
