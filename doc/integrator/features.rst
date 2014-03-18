@@ -32,3 +32,4 @@ Features that require additional steps (most of the time):
    api
    password_replication
    shortener
+   intranet

@@ -62,7 +62,11 @@ Ext.onReady(function() {
             {
                 id: 'left-panel',
                 region: 'west',
-                width: 300
+                width: 300,
+                layout: "vbox",
+                layoutConfig: {
+                    align: "stretch"
+                }
             }]
         },
 
@@ -77,10 +81,20 @@ Ext.onReady(function() {
             outputTarget: 'left-panel',
             outputConfig: {
                 layout: 'fit',
-                style: 'padding: 3px;'
+                style: 'padding: 3px 0 3px 3px;'
             },
             layerTreeId: 'layertree',
             themes: THEMES
+        },
+        {
+            ptype: "cgxp_themefinder",
+            outputTarget: "left-panel",
+            layerTreeId: "layertree",
+            themes: THEMES,
+            outputConfig: {
+                layout: "fit",
+                style: "padding: 3px;"
+            }
         },
         {
             ptype: "cgxp_layertree",
@@ -94,6 +108,12 @@ Ext.onReady(function() {
                 wmsURL: '${request.route_url('mapserverproxy')}'
             },
             outputTarget: 'left-panel'
+        },
+        {
+            ptype: "cgxp_permalink",
+            id: "permalink",
+            actionTarget: "map.tbar",
+            shortenerCreateURL: "${request.route_url('shortener_create', path='')}"
         },
         {
             ptype: "cgxp_menushortcut",
@@ -110,8 +130,16 @@ Ext.onReady(function() {
         },
         {
             ptype: "cgxp_mapopacityslider",
-            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}",
+            permalinkId: "permalink"
         }],
+
+        // layer sources
+        sources: {
+            "olsource": {
+                ptype: "gxp_olsource"
+            }
+        },
 
         // map and layers
         map: {

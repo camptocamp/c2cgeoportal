@@ -536,6 +536,17 @@ Version 1.4
         document.write('<link rel="stylesheet" type="text/css" href="'
                 + "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/css/structure/list-view.css')}" + '" />');
 
+
+  * Because of a bug in Chrome on Windows highlighted by changes in OpenLayers,
+    parts of the user may turn gray on large screens.  We advice you do the
+    following changes in `{{package}}/templates/viewer.js`:
+
+        -       wmsURL: "${request.route_url('mapserverproxy', path='')}"
+        +       wmsURL: "${request.route_url('mapserverproxy', path='')}",
+        +       wmsOptions: {
+        +           ratio: (Ext.isChrome && Ext.isWindows) ? 1 : 1.5
+        +       }
+
 6. In the `production.ini.in`and `development.ini.in`:
 
     You must add the following lines in the `[app:app]` section:

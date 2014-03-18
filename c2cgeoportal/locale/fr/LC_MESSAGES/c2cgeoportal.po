@@ -226,7 +226,7 @@ msgstr "Résolution maximale"
 
 #: c2cgeoportal/models.py:428
 msgid "Disclaimer"
-msgstr "Responsabilité"
+msgstr ""
 
 #: c2cgeoportal/models.py:430
 msgid "Identifier attribute field"

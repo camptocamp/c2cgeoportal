@@ -258,7 +258,7 @@ geoformalchemy.init_map = function (
         panelControls.push(controlDragFeature);
     }
     
-    map = new OpenLayers.Map('map_' + field_name);
+    map = new OpenLayers.Map('map_' + field_name, {theme: null});
 
     $('#map_' + field_name).resizable({
         stop: function(event, ui) {
