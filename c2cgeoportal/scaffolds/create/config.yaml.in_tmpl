@@ -161,3 +161,10 @@ check_collector:
           type: main
 #        - display: Child:
 #          url: http://${host}/child/wsgi
+
+wfs:
+    # Set to True so that MapserverProxy limits the number of features
+    # returned by a WFS GetFeature request:
+    enable_limit_featurecollection: True
+    # Max number of features returned by a WFS GetFeature request:
+    maxfeatures: 200
