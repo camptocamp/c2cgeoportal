@@ -201,8 +201,12 @@ def proxy(request):
     if "content-type" not in resp:
         return HTTPNotAcceptable()  # pragma: no cover
 
-    if method == "POST" and is_get_feature(request.body):
-        content = limit_featurecollection(content, limit=200)
+    wfs_settings = request.registry.settings.get('wfs', {})
+    if method == "POST" and is_get_feature(request.body) and \
+            wfs_settings.get('enable_limit_featurecollection', True):
+        content = limit_featurecollection(
+            content,
+            limit=wfs_settings.get('maxfeatures', 200))
 
     content_type = None
     if callback:
