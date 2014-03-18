@@ -303,8 +303,9 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             this.linestring.geometry.addPoint(this.lastPoint.geometry);
             var measure = this.getBestLength(this.linestring.geometry);
             if (measure != undefined && measure[0] != 0) {
-                this.lastPoint.attributes.label = measure[0].toPrecision(4) \
-                                                  + ' ' + measure[1];
+                var measure = measure[0].toPrecision(4) + ' ' + measure[1];
+                this.lastPoint.attributes.label = measure;
+                                                  
             }
         }
         
@@ -341,8 +342,8 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         if (this.linestring) {
             var measure = this.getBestLength(this.linestring.geometry);
             if (measure != undefined && measure[0] != 0) {
-                this.target.attributes.label = measure[0].toPrecision(4) \
-                                               + ' ' + measure[1];
+                var measure = measure[0].toPrecision(4) + ' ' + measure[1];
+                this.target.attributes.label = measure;
             }
             this.linestring.geometry.clearBounds();
             this.layer.drawFeature(this.linestring);
