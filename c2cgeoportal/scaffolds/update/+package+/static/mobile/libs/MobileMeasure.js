@@ -19,19 +19,19 @@ window.App = App || {};
 App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
     /**
-     * Property: addFirstPointButton
-     * {DOMElement}
+     * Property: buttonsCtn
+     * {DOMElement} Buttons container
      */
     buttonsCtn: null,
     
     /**
-     * Property: addFirstPointButton
+     * Property: activateButton
      * {DOMElement}
      */
     activateButton: null,
 
     /**
-     * Property: addFirstPointButton
+     * Property: deactivateButton
      * {DOMElement}
      */
     deactivateButton: null,
@@ -102,8 +102,8 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     /**
      * Property: displaySystemUnits
      * {Object} Units for various measurement systems.  Values are arrays
-     *     of unit abbreviations (from OpenLayers.INCHES_PER_UNIT) in decreasing
-     *     order of length.
+     *     of unit abbreviations (from OpenLayers.INCHES_PER_UNIT)
+     *     in decreasing order of length.
      */
     displaySystemUnits: {
         geographic: ['dd'],
@@ -120,7 +120,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     initialize: function(options) {
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
 
-        defaultStyle = OpenLayers.Util.applyDefaults({
+        var defaultStyle = OpenLayers.Util.applyDefaults({
             fillColor: 'red',
             fillOpacity: 1.0,
             strokeColor: 'red',
@@ -133,11 +133,11 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             labelYOffset: -10
         }, OpenLayers.Feature.Vector.style['default']);
 
-        lineStyle = OpenLayers.Util.applyDefaults({
+        var lineStyle = OpenLayers.Util.applyDefaults({
             strokeWidth: 2
         }, defaultStyle);
         
-        temporaryStyle = OpenLayers.Util.applyDefaults({
+        var temporaryStyle = OpenLayers.Util.applyDefaults({
             fillColor: 'blue',
             strokeColor: 'blue',
             fontColor: 'blue'
@@ -165,8 +165,10 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         this.activateButton = this.addButton("activateButton", "", true);
         this.deactivateButton = this.addButton("deactivateButton", "");
         this.newMeasureButton = this.addButton('newMeasureButton', "");
-        this.addFirstPointButton = this.addButton('addFirstPointButton', 'Set starting point');
-        this.addPointButton = this.addButton('addPointButton', 'Add new point');
+        this.addFirstPointButton = this.addButton('addFirstPointButton',
+                                                  'Set starting point');
+        this.addPointButton = this.addButton('addPointButton',
+                                             'Add new point');
         this.finishButton = this.addButton('finishButton', 'Finish');
         
         this.eventsInstance = this.map.events;
@@ -174,7 +176,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
         this.helpMessageEl = document.createElement('div');
         this.helpMessageEl.id = 'mobileMeasureHelp';
-        this.helpMessageEl.style.display = 'none';
+        this.hideMessage();
         div.appendChild(this.helpMessageEl);
         return div;
     },
@@ -225,15 +227,15 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      */
     showMessage: function(message) {
     	  this.helpMessageEl.innerHTML = OpenLayers.i18n(message);
-        this.helpMessageEl.style.display = '';
+        OpenLayers.Element.removeClass(this.helpMessageEl, 'hidden');
     },
-    
+
     /**
      * Method: hideMessage
      * Hide previously showed message.
      */
     hideMessage: function() {
-        this.helpMessageEl.style.display = 'none';
+        OpenLayers.Element.addClass(this.helpMessageEl, 'hidden');
     },
 
     /**
@@ -301,7 +303,8 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             this.linestring.geometry.addPoint(this.lastPoint.geometry);
             var measure = this.getBestLength(this.linestring.geometry);
             if (measure != undefined && measure[0] != 0) {
-                this.lastPoint.attributes.label = measure[0].toPrecision(4) + ' ' + measure[1];
+                this.lastPoint.attributes.label = measure[0].toPrecision(4) \
+                                                  + ' ' + measure[1];
             }
         }
         
@@ -338,7 +341,8 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         if (this.linestring) {
             var measure = this.getBestLength(this.linestring.geometry);
             if (measure != undefined && measure[0] != 0) {
-                this.target.attributes.label = measure[0].toPrecision(4) + ' ' + measure[1];
+                this.target.attributes.label = measure[0].toPrecision(4) \
+                                               + ' ' + measure[1];
             }
             this.linestring.geometry.clearBounds();
             this.layer.drawFeature(this.linestring);
@@ -358,7 +362,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * Create a button with id and text.
      */
     addButton: function(id, text, visible) {
-        div = document.createElement('div');
+        var div = document.createElement('div');
         div.id = id;
         OpenLayers.Element.addClass(div, 'olButton');
         if (!visible) {
@@ -366,7 +370,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         }
         this.buttonsCtn.appendChild(div);
         
-        a = document.createElement('a');
+        var a = document.createElement('a');
         a.innerHTML = OpenLayers.i18n(text);
         div.appendChild(a);
       
