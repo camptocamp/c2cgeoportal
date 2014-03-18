@@ -168,9 +168,11 @@ include =
     CGXP/plugins/Editing.js
     CGXP/plugins/Login.js
     CGXP/plugins/ThemeSelector.js
+    CGXP/plugins/ThemeFinder.js
     CGXP/plugins/LayerTree.js
     CGXP/plugins/MenuShortcut.js
     CGXP/plugins/MapOpacitySlider.js
+    CGXP/plugins/Permalink.js
     CGXP/widgets/MapPanel.js
     CGXP/tools/tools.js
     OpenLayers/Control/Navigation.js
