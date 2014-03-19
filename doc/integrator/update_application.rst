@@ -20,6 +20,16 @@ To get the changes done by other people, we need to ``pull`` the new code:
 
    The submodule command is used to have the right version of CGXP.
 
+.. note::
+
+   If you update the code after an upgrade of the application it is
+   recommended to clean your old eggs (this will also build your application):
+
+  .. prompt:: bash
+
+        ./buildout/bin/buildout -c CONST_buildout_cleaner.cfg
+        rm -rf old
+
 
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
@@ -32,7 +42,7 @@ steps:
    * See what's not commited:
 
      .. prompt:: bash
-    
+
         git status
 
    * Reset non commited changes:
@@ -80,13 +90,24 @@ steps:
 5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-6. Execute ``buildout`` to rebuild and install the application:
+6. Clean your old eggs:
+
+   .. prompt:: bash
+
+        ./buildout/bin/buildout -c CONST_buildout_cleaner.cfg
+        rm -rf old
+
+   .. note::
+
+      The first line will build the application and move the old eggs in a folder named `old/`.
+
+7. Execute ``buildout`` to rebuild and install the application:
 
    .. prompt:: bash
 
        ./buildout/bin/buildout -c <buildout_config_file>
 
-7. Update the database using the ``manage_db`` script:
+8. Update the database using the ``manage_db`` script:
 
    .. prompt:: bash
 
@@ -96,7 +117,7 @@ steps:
    ``<package_name>`` is to be replaced by the name of the application module.
    See above for more information.
 
-8. Add the new files in the repository:
+9. Add the new files in the repository:
 
     Get informations on the status of the repository:
 
@@ -164,7 +185,7 @@ Test and commit
 * After the update process is done, do a final build of the application:
 
   .. prompt:: bash
-    
+
     ./buildout/bin/buildout -c <buildout_config_file>
 
 * Reload Apache configuration:
