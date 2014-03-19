@@ -5,23 +5,37 @@ Version 1.4.3
 =============
 
 1. MapserverProxy by default limits the number of features returned by a WFS
-    GetFeature request to 200 because Mapserver used to not support correctly
-    the ``maxFeatures`` parameter. This issue is fixed with Mapserver 6.4.
+   GetFeature request to 200 because Mapserver used to not support correctly
+   the ``maxFeatures`` parameter. This issue is fixed with Mapserver 6.4.
 
-    It is possible to disable or customize this limit by adding to the 
-    ``config.yaml.in`` file the following configuration:
+   It is possible to disable or customize this limit by adding to the 
+   ``config.yaml.in`` file the following configuration:
 
     wfs:
         enable_limit_featurecollection: True
         maxfeatures: 200
 
-    This configuration may also be used in the templates (for instance 
-    ``viewer.js``) by adding the following code:
+   This configuration may also be used in the templates (for instance 
+   ``viewer.js``) by adding the following code:
 
     <%
     wfs_settings = request.registry.settings.get('wfs', {})
     %>
     maxFeatures: ${wfs_settings.get('maxfeatures')}
+
+2. In ``deploy/deploy.cfg.in`` replace
+
+    restore_tmp = sudo -u postgres pg_restore --no-owner -Fc -d
+
+   by
+
+    restore_tmp = sudo -u postgres pg_restore -Fc -d
+
+   You may also remove the GRANT instructions in ``deploy/hooks/post-restore-database.in``:
+
+    psql -c 'GRANT USAGE ON SCHEMA "${schema}" TO "${dbuser}";' ${db}
+    psql -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "${schema}" TO "${dbuser}";' ${db}
+
 
 Version 1.4
 ===========

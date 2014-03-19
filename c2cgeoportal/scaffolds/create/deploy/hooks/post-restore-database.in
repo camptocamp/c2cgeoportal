@@ -16,9 +16,6 @@ DATABASES=$@
 #   psql -c "VACUUM ANALYZE;" $b
 # done
 
-psql -c 'GRANT USAGE ON SCHEMA "${schema}" TO "${dbuser}";' ${db}
-psql -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "${schema}" TO "${dbuser}";' ${db}
-
 psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
 psql -c 'CREATE TABLE ${schema}_static.shorturl (
     id serial PRIMARY KEY,
