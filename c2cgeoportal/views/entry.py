@@ -48,10 +48,10 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
-from c2cgeoportal.lib import get_setting, caching
+from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
-    Theme, RestrictionArea, Role, layer_ra, role_ra, User
+    Theme, RestrictionArea, Role, User
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 
 
@@ -76,7 +76,7 @@ class Entry(object):
         return {'title': _('title i18n')}
 
     @cache_region.cache_on_arguments()
-    def _wms_getcap(self, url):
+    def _wms_getcap(self, url, role_id=None):
         errors = []
         wms = None
 
@@ -85,9 +85,15 @@ class Entry(object):
             ('VERSION', '1.1.1'),
             ('REQUEST', 'GetCapabilities'),
         )
+
         if url.find('?') < 0:
             url += '?'
         url = url + '&'.join(['='.join(p) for p in params])
+
+        if role_id:
+            q = get_protected_layers_query(role_id)
+            for layer in q.all():
+                url += '&s_enable_' + str(layer.name) + '=*'
 
         log.info("WMS GetCapabilities for base url: %s" % url)
 
@@ -126,16 +132,7 @@ class Entry(object):
         """
         q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
         if role_id:
-            q2 = DBSession.query(Layer)
-            q2 = q2.join(
-                (layer_ra, Layer.id == layer_ra.c.layer_id),
-                (RestrictionArea,
-                    RestrictionArea.id == layer_ra.c.restrictionarea_id),
-                (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
-                (Role, Role.id == role_ra.c.role_id))
-            q2 = q2.filter(Role.id == role_id)
-            q2 = q2.filter(Layer.public != True)  # NOQA
-            q = q.union(q2)
+            q = q.union(get_protected_layers_query(role_id))
         return q
 
     def _getLayerMetadataUrls(self, layer):
@@ -481,7 +478,7 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'])
+            self.request.registry.settings['mapserv_url'], role_id)
         if len(wms_errors) > 0:
             return [], wms_errors
 
@@ -885,8 +882,10 @@ class Entry(object):
 
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
+        role_id = None if self.request.user is None \
+            else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'])
+            self.request.registry.settings['mapserv_url'], role_id)
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(wms_errors))
         queryable_layers = [
@@ -903,8 +902,10 @@ class Entry(object):
 
     @view_config(route_name='xapijs', renderer='api/xapi.js')
     def xapijs(self):
+        role_id = None if self.request.user is None \
+            else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'])
+            self.request.registry.settings['mapserv_url'], role_id)
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]

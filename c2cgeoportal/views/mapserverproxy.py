@@ -40,10 +40,13 @@ from pyramid.httpexceptions import (HTTPBadGateway, HTTPNotAcceptable,
 from pyramid.response import Response
 from pyramid.view import view_config
 
+from c2cgeoportal.lib import caching, get_protected_layers_query
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 from c2cgeoportal.lib.functionality import get_functionality
+from c2cgeoportal.models import Layer
 
 log = logging.getLogger(__name__)
+cache_region = caching.get_region()
 
 
 def _get_wfs_url(request):
@@ -60,6 +63,12 @@ def _get_external_wfs_url(request):
     if 'external_mapserv_url' in request.registry.settings and \
             request.registry.settings['external_mapserv_url']:
         return request.registry.settings['external_mapserv_url']
+
+
+@cache_region.cache_on_arguments()
+def _get_protected_layers(role_id):
+    q = get_protected_layers_query(role_id, Layer.name)
+    return [r for r, in q.all()]
 
 
 @view_config(route_name='mapserverproxy')
@@ -99,6 +108,24 @@ def proxy(request):
                         (k, params[k]))
             del params[k]
 
+    # add protected layers enabling params
+    if user:
+        role_id = user.parent_role.id if external else user.role.id
+        layers = _get_protected_layers(role_id)
+        _params = dict(
+            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+        )
+        if 'layers' in _params:
+            # limit the list to queried layers
+            l = []
+            for layer in _params['layers'].split(','):
+                if layer in layers:
+                    l.append(layer)
+            layers = l
+        for layer in layers:
+            params['s_enable_' + str(layer)] = '*'
+
+    # add functionalities params
     mss = get_functionality('mapserver_substitution',
                             request.registry.settings, request)
     if mss:
