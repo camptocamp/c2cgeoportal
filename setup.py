@@ -96,7 +96,6 @@ setup_requires = [
     'nose==1.3.0',
     'nosexcover==1.0.8',
     'nose-progressive==1.5',
-    'ipdbplugin==1.2',
 ]
 
 tests_require = install_requires + [
