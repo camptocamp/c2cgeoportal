@@ -237,7 +237,6 @@ class MapservProxy:
         if use_cache:
             response.cache_control.public = True
             response.cache_control.max_age = self.request.registry.settings["default_max_age"]
-            print response.cache_control.max_age
         else:
             response.cache_control.no_cache = True
 
