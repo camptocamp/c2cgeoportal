@@ -239,12 +239,10 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     },
 
     /**
-     * Method: activate
+     * Method: deactivate
      * Remove any button or message but the control initial button.
      */
     deactivate: function() {
-        OpenLayers.Element.addClass(div, 'olButton');
-
         this.showButton(this.activateButton);
         this.hideButton(this.deactivateButton);
         this.hideButton(this.addFirstPointButton);
