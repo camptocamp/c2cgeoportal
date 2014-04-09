@@ -30,7 +30,7 @@ on your system:
 
 * Git (or whatever revision control (for example Subversion)
     is used for the application)
-* Python 2.6, 2.7 (2.5 or 3.x are not supportedi)
+* Python 2.6, 2.7 (2.5 or 3.x are not supported)
 * Oracle Java SE Development Kit 6 or 7
 * Tomcat
 * Apache
@@ -58,13 +58,10 @@ on your system:
         `Stickpeople Project
         <http://www.stickpeople.com/projects/python/win-psycopg/>`_.
 
-        There also some packages that cannot be install through easy_install (you
-        need to install them in the main Python environment):
-
-         * `PIL <http://www.pythonware.com/products/pil/>`_
-         * `Python for Windows extensions <http://sourceforge.net/projects/pywin32/>`_
-         * `Shapely <http://pypi.python.org/pypi/Shapely/1.2.13#downloads>`_
-         * `Babel <http://pypi.python.org/pypi/Babel/>`_ (to be unconfirmed)
+        When you download and configure Apache be sure that modules ``header_module``,
+        ``expire_module`` and ``rewrite_module`` are uncommented. You must also download
+        and add modules ``mod_wsgi`` (http://modwsgi.readthedocs.org/) and ``mod_fcgid``
+        (https://httpd.apache.org/mod_fcgid/).
 
 Set up the database
 -------------------
@@ -216,22 +213,48 @@ The following lines must be commented/removed::
 apache/mapserver.conf.in
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Mapserver doesn't seem to work with fast-cgi on windows, so we need to use
-   normal cgi.
-
-   Replace::
-
-       SetHandler fcgid-script
-
-   by::
-
-       SetHandler cgi-script
-
-#. The path to Mapserver executable must be modified::
+The path to Mapserver executable must be modified::
 
     ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
 .. _integrator_install_application_bootstrap_buildout:
+
+CONST_buildout.cfg
+^^^^^^^^^^^^^^^^^^
+
+Some outputs paths must be modified for the print::
+
+    basedir = print\
+    ...
+    output = C:\path\to\tomcat\webapps\print-c2cgeoportal-${vars:instanceid}.war
+
+buildout.cfg
+^^^^^^^^^^^^
+
+It may be better to create a specific buildout file for Windows (for
+instance ``buildout_windows.cfg``) that extends the buildout.cfg file.
+
+    #. Under ``[buildout]`` add ``exec-sitecustomize = true`` to use our eggs.
+
+    #. Under ``[template]`` add ``extends -= facts`` to ignore facts that are specific to Unix.
+    
+    #. Under ``[version]`` add these two lines to pick the installed version (It may be
+        preferable to specify the version that you've installed):
+
+        * ``distribute =``
+        * ``psycopg2 =``
+
+    #. Under ``[print-war]`` add ``mod = create`` because update seems not to work on Windows.
+
+
+mapserver/c2cgeoportal.map.in
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You must specify the path to the mapserver's epsg file by uncommenting and adapting
+this line under ``MAP`` (use regular slash ``/``) ::
+
+    PROJ_LIB" "C:/PATH/TO/ms4w/proj/nad"
+
 
 RHEL 6 Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -307,6 +330,16 @@ of the application:
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
 This step is done only once for installation/instance of the application.
+
+.. Note::
+
+    If you have permissions issues on Windows you can try to set the TMP
+    path variable to a folder that you created (like ``C:\tmp``). If
+    the problem persists don't use the proxy by using this command instead
+    (where buildout_windows.cfg is your specific buildout for Windows
+    as configured above)::
+
+        $ python bootstrap.py --version 1.5.2 --distribute -c buildout_windows.cfg
 
 .. _integrator_install_application_install_application:
 

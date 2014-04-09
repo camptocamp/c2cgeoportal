@@ -1,3 +1,6 @@
+<%
+wfs_settings = request.registry.settings.get('wfs', {})
+%>
 Ext.onReady(function() {
     // Ext global settings
     Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
@@ -160,9 +163,7 @@ Ext.onReady(function() {
             outputTarget: "left-panel",
             events: EVENTS,
             mapserverproxyURL: "${request.route_url('mapserverproxy', path='')}",
-            // don't work with actual version of mapserver, the proxy will limit to 200
-            // it is intended to be reactivated this once mapserver is fixed
-            //maxFeatures: 200,
+            maxFeatures: ${wfs_settings.get('maxfeatures', 200)},
             srsName: 'EPSG:{{srid}}',
             featureTypes: ["query_layer"],
             attributeURLs: ${queryer_attribute_urls | n}
@@ -187,7 +188,6 @@ Ext.onReady(function() {
             ptype: "cgxp_featuresgrid",
             id: "featuresGrid",
             csvURL: "${request.route_url('csvecho')}",
-            maxFeatures: 200,
             outputTarget: "featuresgrid-container",
             themes: THEMES,
             events: EVENTS,
@@ -226,6 +226,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_getfeature",
             actionTarget: "center.tbar",
+            maxFeatures: ${wfs_settings.get('maxfeatures', 200)},
             toggleGroup: "maptools",
             events: EVENTS,
             themes: THEMES,

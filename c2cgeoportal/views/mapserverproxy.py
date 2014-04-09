@@ -40,9 +40,10 @@ from pyramid.httpexceptions import (HTTPBadGateway, HTTPNotAcceptable,
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import caching
+from c2cgeoportal.lib import caching, get_protected_layers_query
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 from c2cgeoportal.lib.functionality import get_functionality
+
 
 cache_region = caching.get_region()
 log = logging.getLogger(__name__)
@@ -52,6 +53,14 @@ class MapservProxy:
 
     def __init__(self, request):
         self.request = request
+        self.settings = request.registry.settings.get('wfs', {})
+
+    @cache_region.cache_on_arguments()
+    def _get_protected_layers(self, role_id):
+        from c2cgeoportal.models import Layer
+
+        q = get_protected_layers_query(role_id, Layer.name)
+        return [r for r, in q.all()]
 
     def _get_wfs_url(self):
         if 'mapserv_wfs_url' in self.request.registry.settings and \
@@ -104,6 +113,24 @@ class MapservProxy:
                             (k, params[k]))
                 del params[k]
 
+        # add protected layers enabling params
+        if user:
+            role_id = user.parent_role.id if external else user.role.id
+            layers = self._get_protected_layers(role_id)
+            _params = dict(
+                (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+            )
+            if 'layers' in _params:
+                # limit the list to queried layers
+                l = []
+                for layer in _params['layers'].split(','):
+                    if layer in layers:
+                        l.append(layer)
+                layers = l
+            for layer in layers:
+                params['s_enable_' + str(layer)] = '*'
+
+        # add functionalities params
         mss = get_functionality(
             'mapserver_substitution',
             self.request.registry.settings, self.request
@@ -218,8 +245,12 @@ class MapservProxy:
         if "content-type" not in resp:
             return HTTPNotAcceptable()  # pragma: no cover
 
-        if method == "POST" and is_get_feature(body):
-            content = limit_featurecollection(content, limit=200)
+        if method == "POST" and is_get_feature(body) and \
+                self.settings.get('enable_limit_featurecollection', True):
+            content = limit_featurecollection(
+                content,
+                limit=self.settings.get('maxfeatures', 200)
+            )
 
         content_type = None
         if callback:

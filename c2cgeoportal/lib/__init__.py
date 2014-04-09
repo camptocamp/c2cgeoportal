@@ -48,6 +48,21 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
+def get_protected_layers_query(role_id, what=None):
+    from c2cgeoportal.models import DBSession, Layer, \
+        RestrictionArea, Role, layer_ra, role_ra
+
+    q = DBSession.query(what if what is not None else Layer)
+    q = q.join(
+        (layer_ra, Layer.id == layer_ra.c.layer_id),
+        (RestrictionArea,
+            RestrictionArea.id == layer_ra.c.restrictionarea_id),
+        (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
+        (Role, Role.id == role_ra.c.role_id))
+    q = q.filter(Role.id == role_id)
+    return q.filter(Layer.public != True)  # NOQA
+
+
 @implementer(IRoutePregenerator)
 class MultiDomainPregenerator:  # pragma: no cover
     def __call__(self, request, elements, kw):
