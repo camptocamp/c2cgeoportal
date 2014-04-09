@@ -11,6 +11,7 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.mo
 c2cgeoportal/locale/fr/LC_MESSAGES/c2cgeoportal.mo
 doc/_build/doctrees
 doc/_build/html
+/doc/env
 /dist
 buildout/bin/
 buildout/develop-eggs/
