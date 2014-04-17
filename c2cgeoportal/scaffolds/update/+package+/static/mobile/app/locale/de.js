@@ -45,8 +45,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     // measure
     'Move the map to locate starting point': 'Karte auf ersten Messpunkt bewegen',
     'Set starting point': 'Messpunkt setzen',
-    'Move the map to measure distance': "Karte bewegen um Distanz zu messen",
-    'Finish': 'Beenden',
+    'Add new point': 'Punkt hinzufügen',
+    'Finish': 'Abschließen',
+    'Move the map to next point': 'Karte auf nächsten Punkt verschieben',
+    'Finish or move the map to next point': 'Abschließen oder Karte auf nächsten Punkt verschieben',
 
     // query
     'No query result': 'Keine Abfrageresultate',
