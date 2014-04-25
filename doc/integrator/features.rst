@@ -33,3 +33,4 @@ Features that require additional steps (most of the time):
    password_replication
    shortener
    intranet
+   security
