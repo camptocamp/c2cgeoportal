@@ -76,6 +76,7 @@ def proxy(request):
 
     user = request.user
     external = bool(request.params.get("EXTERNAL", None))
+    useSecurityMetadata = bool(request.registry.settings.get('use_security_metadata', False))
 
     # params hold the parameters we're going to send to MapServer
     params = dict(request.params)
@@ -109,7 +110,7 @@ def proxy(request):
             del params[k]
 
     # add protected layers enabling params
-    if user:
+    if user and useSecurityMetadata:
         role_id = user.parent_role.id if external else user.role.id
         layers = _get_protected_layers(role_id)
         _params = dict(
