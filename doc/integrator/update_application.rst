@@ -166,7 +166,7 @@ to reference the new commit for the cgxp submodule:
 .. prompt:: bash
 
     cd ..
-    git add cgxp
+    git add <package>/static/lib/cgxp
     git commit -m "Update cgxp submodule"
 
 .. warning::
