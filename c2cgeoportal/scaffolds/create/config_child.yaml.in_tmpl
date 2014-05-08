@@ -92,6 +92,14 @@ mapserv_url: http://${vars:host}/${vars:instanceid}/mapserv
 # Define whether the MapServer proxy should hide the OGC capabilities.
 hide_capabilities: false
 
+
+# Enable or disable the filtering of the layers using Mapserver runtime 
+# substitution variables in METADATA to hide protected layers from the 
+# GetCapabilities. 
+# Be careful as too many protected layers will cause an error because Apache has a 
+# 8190 characters hard limit for GET query length.
+use_security_metadata: false
+
 # For print proxy
 # This value mean that we use the parent print server
 print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
