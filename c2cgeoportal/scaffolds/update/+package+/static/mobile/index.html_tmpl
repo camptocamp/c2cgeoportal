@@ -71,7 +71,8 @@
         App.searchUrl = "${request.route_url('fulltextsearch', path='')}";
         App.wmsUrl = "${request.route_url('mapserverproxy', path='')}";
         App.rasterUrl = "${request.route_url('raster', path='')}";
-        App.loginUrl = "${request.route_url('login', _query={'came_from': came_from})}";
+        App.loginUrl = "${request.route_url('login', path='')}";
+        App.cameFrom = "${came_from}";
         App.logoutUrl = "${request.route_url('logout', _query={'came_from': came_from})}";
         App.desktopAppUrl = "${request.route_url('home', path='', _query={'no_redirect':''})}";
     </script>
