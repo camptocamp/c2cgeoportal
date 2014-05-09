@@ -80,6 +80,7 @@ install_requires = [
     'waitress',
     # WMST support
     'isodate',
+    'nose==1.3.0',
 ]
 
 # nose plugins with options set in setup.cfg cannot be in
@@ -93,7 +94,6 @@ install_requires = [
 # Others are fixed because the versions are mot listed
 # by buildout.dumppickedversions.
 setup_requires = [
-    'nose==1.3.0',
     'nosexcover==1.0.8',
     'nose-progressive==1.5',
 ]
