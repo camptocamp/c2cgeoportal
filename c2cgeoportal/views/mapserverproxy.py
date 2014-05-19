@@ -81,6 +81,7 @@ class MapservProxy:
 
         user = self.request.user
         external = bool(self.request.params.get("EXTERNAL", None))
+        useSecurityMetadata = bool(self.request.registry.settings.get('use_security_metadata', False))
 
         # params hold the parameters we're going to send to MapServer
         params = dict(self.request.params)
@@ -90,7 +91,7 @@ class MapservProxy:
             del params['role_id']
         if 'user_id' in params:  # pragma: no cover
             del params['user_id']
-        if user:
+        if user and useSecurityMetadata:
             # We have a user logged in. We need to set group_id and
             # possible layer_name in the params. We set layer_name
             # when either QUERY_PARAMS or LAYERS is set in the

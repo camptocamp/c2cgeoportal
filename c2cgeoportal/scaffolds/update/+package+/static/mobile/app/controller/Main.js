@@ -172,7 +172,7 @@ Ext.define('App.controller.Main', {
     },
 
     login: function() {
-        this.getLoginFormView().submit();
+        this.getLoginFormView().submit({});
     },
 
     logout: function() {
