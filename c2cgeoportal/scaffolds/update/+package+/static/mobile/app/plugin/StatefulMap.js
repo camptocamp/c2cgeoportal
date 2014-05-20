@@ -64,7 +64,10 @@ Ext.define('App.plugin.StatefulMap', {
                         overlay.layers = state.layers;
                         return false;
                     });
-                    main.getLayersView().getStore().setData(map.layers);
+                    // Defer because layersView is not always created yet
+                    Ext.Function.defer(function() {
+                        main.getLayersView().getStore().setData(map.layers);
+                    }, 1);
                 }
                 if (state.lonlat) {
                     map.setCenter(state.lonlat, state.zoom);
@@ -107,6 +110,10 @@ Ext.define('App.plugin.StatefulMap', {
                 state.layers.push.apply(state.layers, value.split(','));
             }
         });
+        if ((!state.layers || state.layers.length == 0) && q.tree_layers) {
+            state.layers = state.layers || [];
+            state.layers.push.apply(state.layers, q.tree_layers.split(','));
+        }
         if (q.map_x && q.map_y) {
             state.lonlat = [ q.map_x, q.map_y ];
             state.zoom = q.map_zoom;
