@@ -107,11 +107,12 @@ Ext.define("App.view.Layers", {
                 baseLayersStore.add(layer);
             }
         });
+        var id = App.map.baseLayer.id;
         baseLayerSwitcher.setStore(baseLayersStore);
         if (baseLayersStore.getAllCount() <= 1) {
             baseLayerSwitcher.parent.hide();
         }
-        baseLayerSwitcher.setValue(App.map.baseLayer.id);
+        baseLayerSwitcher.setValue(id);
     },
 
     toArray: function(value) {
