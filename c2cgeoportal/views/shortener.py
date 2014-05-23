@@ -74,14 +74,21 @@ class shortener(object):
         url = self.request.params['url']
 
         # Check that it is an internal URL...
-        hostname = urlparse(url).hostname
+        uri_parts = urlparse(url)
+        hostname = uri_parts.hostname
+        paths = uri_parts.path.split('/')
         if hostname != self.request.server_name:
             raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
                 hostname, self.request.host
             ))
 
+        shortened = False
+        if (len(paths) > 1 and paths[-2] == 'short'):
+            ref = paths[-1]
+            shortened = True
+
         tries = 0
-        while True:
+        while not shortened:
             ref = ''.join(
                 random.choice(string.ascii_letters + string.digits)
                 for i in range(self.settings.get('length', 4))
@@ -89,23 +96,24 @@ class shortener(object):
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
             if len(test_url) == 0:
                 break
-            tries += 1
+            tries += 1  # pragma: no cover
             if tries > 20:  # pragma: no cover
-                message = "No free ref found, considere to incrase the length"
+                message = "No free ref found, considere to increase the length"
                 logging.error(message)
                 raise HTTPInternalServerError(message)
 
         user_email = self.request.user.email \
             if self.request.user is not None else None
         email = self.request.params.get('email') or user_email
-        short_url = Shorturl()
-        short_url.url = url
-        short_url.ref = ref
-        short_url.creator_email = email
-        short_url.creation = datetime.now()
-        short_url.nb_hits = 0
+        if not shortened:
+            short_url = Shorturl()
+            short_url.url = url
+            short_url.ref = ref
+            short_url.creator_email = email
+            short_url.creation = datetime.now()
+            short_url.nb_hits = 0
 
-        DBSession.add(short_url)
+            DBSession.add(short_url)
 
         s_url = self.request.route_url('shortener_get', ref=ref)
 
