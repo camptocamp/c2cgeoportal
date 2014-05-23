@@ -89,6 +89,7 @@ class shortener(object):
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
             if len(test_url) == 0:
                 break
+            tries += 1
             if tries > 20:  # pragma: no cover
                 message = "No free ref found, considere to incrase the length"
                 logging.error(message)
