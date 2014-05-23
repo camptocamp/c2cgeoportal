@@ -176,7 +176,16 @@ Ext.define('App.controller.Main', {
     },
 
     logout: function() {
-        window.location = App.logoutUrl;
+        Ext.Ajax.request({
+            url: App.logoutUrl,
+            success: function(response) {
+                var sep = App.cameFrom.indexOf('?') > 0 ? '&' : '?';
+                window.location = App.cameFrom + sep + 'v=' + Math.round(Math.random() * 1000000);
+            },
+            failure: function(response, opts) {
+                Ext.Msg.alert(response.statusText);
+            }
+        });
     },
 
     recenterMap: function(f) {
