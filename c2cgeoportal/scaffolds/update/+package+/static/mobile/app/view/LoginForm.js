@@ -33,7 +33,8 @@ Ext.define('App.view.LoginForm', {
         listeners: {
             exception: function (self, result, eOpts) {
                 if (result === true) {
-                    window.location = App.cameFrom;
+                    var sep = App.cameFrom.indexOf('?') > 0 ? '&' : '?';
+                    window.location = App.cameFrom + sep + 'v=' + Math.round(Math.random() * 1000000);
                 }
                 else {
                     if (result.status == 401) {
