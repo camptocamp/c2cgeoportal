@@ -194,7 +194,9 @@ Test and commit
 
     sudo /usr/sbin/apache2ctl graceful
 
-* Test your application
+* Test your application.
+
+* Test the checker at `http://<application base>/wsgi/check_collector?type=all`.
 
 * Commit your changes:
 
