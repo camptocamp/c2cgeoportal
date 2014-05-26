@@ -57,7 +57,27 @@ Version 1.5
 
 5. In the `buildout.cfg` file:
 
-6. In the `{{package}}/__init__.py` file:
+6. In the `config.yaml.in` file:
+
+   * Update the `main` `checkers` by removing `checker_apiloader` (no longer exists),
+     and adding `checker_api`, `checker_xapi`, `checker_fts`, `checker_wmscapabilities`
+     and `checker_wfscapabilities`::
+
+        -  - name: checker_apiloader
+        -    display: API loader
+        +  - name: checker_api
+        +    display: API
+        +  - name: checker_xapi
+        +    display: Extended API
+        +  - name: checker_fts
+        +    display: FullTextSearch
+        +  - name: checker_wmscapabilities
+        +    display: WMS capabilities
+        +  - name: checker_wfscapabilities
+        +    display: WFS capabilities
+
+
+7. In the `{{package}}/__init__.py` file:
 
    * Use a cache header in the static view:
 
@@ -66,17 +86,17 @@ Version 1.5
         +     cache_max_age=int(config.get_settings()["default_max_age"])
         + )
 
-7. Update the templates:
+8. Update the templates:
 
   * In all the `{{package}}/templates/*.js` files:
 
   * In the `{{package}}/templates/viewer.js`:
 
-8. Update the mobile application:
+9. Update the mobile application:
 
   * In the `{{package}}/static/mobile/config.js` file:
 
-9. Do the following changes in the ``apache/frontend.conf.in`` file:
+10. Do the following changes in the ``apache/frontend.conf.in`` file:
 
   -<LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
   -    # Remove etags to enable better client-side caching
@@ -93,12 +113,12 @@ Version 1.5
   +    # Instruct proxys that these files are cacheable.
   +    Header merge Cache-Control "public"
 
-10. Some important notices:
+11. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION
     section. See ``Variable Substitution`` in the Mapfile chapter of the
-    administrator manual. 
+    administrator manual.
 
 
 Version 1.4.3
@@ -108,14 +128,14 @@ Version 1.4.3
    GetFeature request to 200 because Mapserver used to not support correctly
    the ``maxFeatures`` parameter. This issue is fixed with Mapserver 6.4.
 
-   It is possible to disable or customize this limit by adding to the 
+   It is possible to disable or customize this limit by adding to the
    ``config.yaml.in`` file the following configuration:
 
     wfs:
         enable_limit_featurecollection: True
         maxfeatures: 200
 
-   This configuration may also be used in the templates (for instance 
+   This configuration may also be used in the templates (for instance
    ``viewer.js``) by adding the following code:
 
     <%
@@ -288,7 +308,7 @@ Version 1.4
   * Adaptations for generic backend usage require the following change.
 
     In the ``jsbuild/app.cfg`` file, make sure to have ``CGXP/cgxp.js`` in
-    ``[app.js]``, ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]`` 
+    ``[app.js]``, ``[edit.js]``, ``[routing.js]`` and ``[xapi.js]``
     in the ``include =`` block, before any other CGXP/* entries.
 
     For example:

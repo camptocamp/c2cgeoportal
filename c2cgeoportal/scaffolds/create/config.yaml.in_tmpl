@@ -157,8 +157,16 @@ check_collector:
               display: Print capabilities
             - name: checker_pdf
               display: Print PDF
-            - name: checker_apiloader
-              display: API loader
+            - name: checker_api
+              display: API
+            - name: checker_xapi
+              display: Extended API
+            - name: checker_fts
+              display: FullTextSearch
+            - name: checker_wmscapabilities
+              display: WMS capabilities
+            - name: checker_wfscapabilities
+              display: WFS capabilities
         default: # for children
             - name: checker_viewer
               display: Viewer script
