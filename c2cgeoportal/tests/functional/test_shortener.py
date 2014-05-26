@@ -93,6 +93,12 @@ class TestshortenerView(TestCase):
         }
         self.assertRaises(HTTPNotFound, shortener.get)
 
+        request.params = {
+            'url': 'https://example.com/short/truite'
+        }
+        result = shortener.create()
+        self.assertEqual(result['short_url'], 'https://example.com/s/truite')
+
         request.params = {}
         request.matchdict = {}
         self.assertRaises(HTTPBadRequest, shortener.create)
