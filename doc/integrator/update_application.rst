@@ -34,7 +34,7 @@ To get the changes done by other people, we need to ``pull`` the new code:
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
 
-Upgrading an application to a new version of c2cgeoportal requires several
+Upgrading an application to a new release of c2cgeoportal requires several
 steps:
 
 1. It's good to start an update in a clean repository, then:
@@ -200,4 +200,4 @@ Test and commit
 
   .. prompt:: bash
 
-    git commit -am "Update GeoMapFish to version <version>"
+    git commit -am "Update to GeoMapFish <release>"
