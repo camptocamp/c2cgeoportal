@@ -75,6 +75,8 @@ class Entry(object):
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
+        self.useSecurityMetadata = bool(
+            request.registry.settings.get('use_security_metadata', False))
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):  # pragma: no cover
@@ -485,7 +487,8 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'], role_id)
+            self.request.registry.settings['mapserv_url'],
+            role_id if self.useSecurityMetadata else None)
         if len(wms_errors) > 0:
             return [], wms_errors
 
@@ -550,8 +553,10 @@ class Entry(object):
             return self.request.registry.settings['mapserv_wfs_url']
         return self.request.registry.settings['mapserv_url']
 
-    def _internal_wfs_types(self):
-        return self._wfs_types(self._get_wfs_url())
+    def _internal_wfs_types(self, role_id=None):
+        return self._wfs_types(
+            self._get_wfs_url(),
+            role_id if self.useSecurityMetadata else None)
 
     def _get_external_wfs_url(self):
         if 'external_mapserv_wfs_url' in self.request.registry.settings and \
@@ -562,14 +567,16 @@ class Entry(object):
             return self.request.registry.settings['external_mapserv_url']
         return None
 
-    def _external_wfs_types(self):
+    def _external_wfs_types(self, role_id=None):
         url = self._get_external_wfs_url()
         if not url:
             return [], []
-        return self._wfs_types(url)
+        return self._wfs_types(
+            url,
+            role_id if self.useSecurityMetadata else None)
 
     @cache_region.cache_on_arguments()
-    def _wfs_types(self, wfs_url):
+    def _wfs_types(self, wfs_url, role_id=None):
         errors = []
 
         # retrieve layers metadata via GetCapabilities
@@ -581,6 +588,10 @@ class Entry(object):
         if wfs_url.find('?') < 0:
             wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
+        if role_id:
+            q = get_protected_layers_query(role_id)
+            for layer in q.all():
+                wfsgc_url += '&s_enable_' + str(layer.name) + '=*'
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         # forward request to target (without Host Header)
@@ -670,9 +681,9 @@ class Entry(object):
 
         themes, errors = self._themes(role_id)
         themes = filter(lambda theme: theme['inDesktopViewer'], themes)
-        wfs_types, add_errors = self._internal_wfs_types()
+        wfs_types, add_errors = self._internal_wfs_types(role_id)
         errors.extend(add_errors)
-        external_wfs_types, add_errors = self._external_wfs_types()
+        external_wfs_types, add_errors = self._external_wfs_types(role_id)
         errors.extend(add_errors)
         external_themes, add_errors = self._external_themes()
         errors.extend(add_errors)
@@ -852,7 +863,7 @@ class Entry(object):
 
         # comma-separated string including the feature types supported
         # by WFS service
-        wfs_types, errors = self._internal_wfs_types()
+        wfs_types, errors = self._internal_wfs_types(role_id)
         if len(errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(errors))
         wfs_types = ','.join(wfs_types)
@@ -892,7 +903,8 @@ class Entry(object):
         role_id = None if self.request.user is None \
             else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'], role_id)
+            self.request.registry.settings['mapserv_url'],
+            role_id if self.useSecurityMetadata else None)
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(wms_errors))
         queryable_layers = [
@@ -912,7 +924,8 @@ class Entry(object):
         role_id = None if self.request.user is None \
             else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'], role_id)
+            self.request.registry.settings['mapserv_url'],
+            role_id if self.useSecurityMetadata else None)
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]

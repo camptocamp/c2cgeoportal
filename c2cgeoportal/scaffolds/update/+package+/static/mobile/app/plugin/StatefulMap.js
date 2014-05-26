@@ -86,7 +86,7 @@ Ext.define('App.plugin.StatefulMap', {
     },
 
     update: function() {
-        var center = this.getMap().getCenter();
+        var center = this.getMap().getCenter() || new OpenLayers.Bounds(this.getMap().extent).getCenterLonLat();
         var main = App.app.getController('Main');
         var layers = main.getOverlay() && main.getOverlay().params.LAYERS || [];
         this.setState({

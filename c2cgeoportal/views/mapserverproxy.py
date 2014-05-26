@@ -119,18 +119,7 @@ class MapservProxy:
         # add protected layers enabling params
         if user and useSecurityMetadata:
             role_id = user.parent_role.id if external else user.role.id
-            layers = self._get_protected_layers(role_id)
-            _params = dict(
-                (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
-            )
-            if 'layers' in _params:
-                # limit the list to queried layers
-                l = []
-                for layer in _params['layers'].split(','):
-                    if layer in layers:
-                        l.append(layer)
-                layers = l
-            for layer in layers:
+            for layer in self._get_protected_layers(role_id):
                 params['s_enable_' + str(layer)] = '*'
 
         # add functionalities params
