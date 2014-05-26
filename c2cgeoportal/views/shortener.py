@@ -104,18 +104,20 @@ class shortener(object):
 
         user_email = self.request.user.email \
             if self.request.user is not None else None
-        email = self.request.params.get('email') or user_email
+        email = self.request.params.get('email')
         if not shortened:
             short_url = Shorturl()
             short_url.url = url
             short_url.ref = ref
-            short_url.creator_email = email
+            short_url.creator_email = user_email
             short_url.creation = datetime.now()
             short_url.nb_hits = 0
 
             DBSession.add(short_url)
 
         s_url = self.request.route_url('shortener_get', ref=ref)
+
+        email = email or user_email
 
         if \
                 email is not None and \
