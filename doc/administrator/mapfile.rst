@@ -313,6 +313,18 @@ argument. For example if you only want lowercase characters and commas,
 use ``^[a-z,]*$$`` (the double '$' is needed since we are
 in a ``.in`` file).
 
+.. note::
+ 
+     For MapServer above 6.0, you must place the value and the pattern definition
+     in a VALIDATION section instead of the METADATA block::
+
+        VALIDATION
+            "default_s_<variable>" "<default_value>"
+            "s_<variable>_validation_pattern" "<validation_pattern>"
+        END
+
+     VALIDATION block can be used within a CLASS, a LAYER or a WEB block.
+
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value.
 
