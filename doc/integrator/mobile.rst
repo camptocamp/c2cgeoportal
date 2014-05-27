@@ -200,7 +200,7 @@ lines before the ``main`` function's return statement:
                     attr='mobileconfig',
                     renderer='<package_name>:static/mobile/build/testing/App/config.js',
                     route_name='mobile_config_prod')
-    config.add_static_view('mobile', '<package_name>:static/mobile/build/production')
+    config.add_static_view('mobile', '<package_name>:static/mobile/build/testing/App')
 
 Replace ``<package_name>`` with the project's actual package name.
 
