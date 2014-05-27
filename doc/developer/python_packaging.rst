@@ -51,6 +51,17 @@ required to have an appropriate (e.g. ``[c2c-internal]``) section in
     password:<pypi.camptocamp.net/internal-pypi_password>
     repository:http://pypi.camptocamp.net/internal-pypi/simple
 
+Prepare your repository
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Before creating a version or a release you should have a clean repository,
+then reset non commited changes and remove all untracked files and directories:
+
+.. prompt:: bash
+
+    git reset --hard
+    git clean -f -d
+
 Build c2cgeoportal
 ~~~~~~~~~~~~~~~~~~
 

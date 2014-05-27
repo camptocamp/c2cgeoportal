@@ -34,7 +34,7 @@ To get the changes done by other people, we need to ``pull`` the new code:
 Update c2cgeoportal
 ~~~~~~~~~~~~~~~~~~~
 
-Upgrading an application to a new version of c2cgeoportal requires several
+Upgrading an application to a new release of c2cgeoportal requires several
 steps:
 
 1. It's good to start an update in a clean repository, then:
@@ -165,9 +165,9 @@ to reference the new commit for the cgxp submodule:
 
 .. prompt:: bash
 
-    cd ..
-    git add cgxp
-    git commit -m "Update cgxp submodule"
+    cd -
+    git add <package>/static/lib/cgxp
+    git commit -m "Update cgxp submodule to <tag|branch>"
 
 .. warning::
 
@@ -194,10 +194,12 @@ Test and commit
 
     sudo /usr/sbin/apache2ctl graceful
 
-* Test your application
+* Test your application.
+
+* Test the checker at `http://<application base>/wsgi/check_collector?type=all`.
 
 * Commit your changes:
 
   .. prompt:: bash
 
-    git commit -am "Update GeoMapFish to version <version>"
+    git commit -am "Update to GeoMapFish <release>"

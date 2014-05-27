@@ -72,6 +72,17 @@ Tag the new CGXP release:
 c2cgeoportal
 ------------
 
+Prepare your repository
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Before creating a version or a release you should have a clean repository,
+then reset non commited changes and remove all untracked files and directories:
+
+.. prompt:: bash
+
+    git reset --hard
+    git clean -f -d
+
 New version
 ~~~~~~~~~~~
 
