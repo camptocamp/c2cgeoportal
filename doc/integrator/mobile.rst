@@ -193,14 +193,14 @@ lines before the ``main`` function's return statement:
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobile',
-                    renderer='<package_name>:static/mobile/build/testing/App/index.html',
+                    renderer='<package_name>:static/mobile/build/production/App/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobileconfig',
-                    renderer='<package_name>:static/mobile/build/testing/App/config.js',
+                    renderer='<package_name>:static/mobile/build/production/App/config.js',
                     route_name='mobile_config_prod')
-    config.add_static_view('mobile', '<package_name>:static/mobile/build/testing/App')
+    config.add_static_view('mobile', '<package_name>:static/mobile/build/production/App')
 
 Replace ``<package_name>`` with the project's actual package name.
 
