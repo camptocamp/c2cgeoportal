@@ -34,6 +34,7 @@ from pyramid.view import view_config
 from pyramid.response import Response
 
 from httplib2 import Http
+from urlparse import urlparse
 
 
 class CheckerCollector(object):  # pragma: no cover
@@ -68,7 +69,12 @@ class CheckerCollector(object):  # pragma: no cover
 
     def _testurl(self, url):
         h = Http()
-        resp, content = h.request(url)
+
+        urlfragments = urlparse(url)
+        localurl = "%s://localhost%s" % (urlfragments.scheme, urlfragments.path)
+        headers = {'Host': urlfragments.netloc}
+
+        resp, content = h.request(localurl, headers=headers)
 
         if resp['status'] != '200':
             self.status_int = max(self.status_int, int(resp['status']))
