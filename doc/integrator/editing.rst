@@ -30,3 +30,9 @@ and add scripts in the ``[edit.js]`` sections.
 See the `Editing API doc
 <http://docs.camptocamp.net/cgxp/lib/plugins/Editing.html>`_ for the list of
 options the plugin can receive.
+
+
+Limitations
+-----------
+
+At the moment only fields of type ``datetime`` and ``date`` are supported. ``time`` is NOT supported.
