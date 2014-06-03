@@ -30,7 +30,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
 
     // login/logout
     'loginButtonText': 'Log in',
-    'welcomeText': '<p>Sie sind {username}.</p>',
+    'welcomeText': '<p>Sie sind als Benutzer <em>{username}</em> eingeloggt.</p>',
     'logoutButtonText': 'Log out',
     'loginLabel': 'Login',
     'passwordLabel': 'Passwort',
