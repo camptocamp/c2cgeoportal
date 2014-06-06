@@ -38,10 +38,10 @@ Ext.define('App.view.LoginForm', {
                 }
                 else {
                     if (result.status == 401) {
-                        Ext.Msg.alert(OpenLayers.i18n('unauthorized'));
+                        Ext.Msg.alert(OpenLayers.i18n('unauthorized'), OpenLayers.i18n('wrongUserPass'));
                     }
                     else {
-                        Ext.Msg.alert(result.statusText);
+                        Ext.Msg.alert(OpenLayers.i18n('unauthorized'), result.statusText);
                     }
                 }
             }

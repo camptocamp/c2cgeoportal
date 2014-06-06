@@ -36,7 +36,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'passwordLabel': 'Passwort',
     'loginSubmitButtonText': 'OK',
     'loginCancelButtonText': 'Abbrechen',
-    'unauthorized': 'Nutzername oder Passwort inkorrekt, bitte versuchen Sie es erneut.',
+    'unauthorized': 'Unbefugt',
+    'wrongUserPass': 'Nutzername oder Passwort inkorrekt, bitte versuchen Sie es erneut.',
 
     // redirect to standard application
     'redirect_msg': "Sie benutzen die mobile Version. Sie können auch" +
