@@ -36,7 +36,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     'passwordLabel': 'Mot de passe',
     'loginSubmitButtonText': 'Me connecter',
     'loginCancelButtonText': 'Annuler',
-    'unauthorized': 'Identificant ou mot de passe incorrects, merci de réessayer.',
+    'unauthorized': 'Accés refusé',
+    'wrongUserPass': 'Identificant ou mot de passe incorrects, merci de réessayer.',
 
     // redirect to standard application
     'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +
