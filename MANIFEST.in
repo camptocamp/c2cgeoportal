@@ -1,6 +1,7 @@
 include *.txt *.ini *.cfg *.rst
 recursive-include c2cgeoportal *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml *.mo
 recursive-include c2cgeoportal/scaffolds *
+include c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 prune buildout
 exclude buildout.cfg
 exclude bootstrap.py
