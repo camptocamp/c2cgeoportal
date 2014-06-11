@@ -65,9 +65,11 @@ steps:
        wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
    Replace ``<version>`` by a version number (branch) or release number (tag).
-   To get the last dev version, replace <version> by "master".
+   To get the last dev version, replace ``<version>`` by ``master``.
 
-   For example to get the ``versions.cfg`` file of version 1.4, type::
+   For example to get the ``versions.cfg`` file of version 1.4, type:
+
+   .. prompt:: bash
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
@@ -83,9 +85,14 @@ steps:
 
        ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../<project_name> package=<package_name>
 
-.. note::
+   .. note::
 
-    Don't add any '/' after the project name.
+      Don't add any '/' after the project name.
+
+   .. note::
+
+      ``<package_name>`` is to be replaced by the name of the application module.
+      See above for more information.
 
 5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
@@ -99,7 +106,7 @@ steps:
 
    .. note::
 
-      The first line will build the application and move the old eggs in a folder named `old/`.
+      The first line will build the application and move the old eggs in a folder named ``old/``.
 
 7. Execute ``buildout`` to rebuild and install the application:
 
@@ -113,9 +120,6 @@ steps:
 
        ./buildout/bin/manage_db upgrade
 
-
-   ``<package_name>`` is to be replaced by the name of the application module.
-   See above for more information.
 
 9. Add the new files in the repository:
 
