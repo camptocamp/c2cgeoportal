@@ -167,10 +167,8 @@ class Printproxy(object):  # pragma: no cover
         headers = {}
         headers['content-type'] = resp['content-type']
         headers['content-disposition'] = resp['content-disposition']
-        # remove Pragma and Cache-Control headers because of ie bug:
+        # Pragma and Cache-Control headers because of ie 8 bug:
         # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
-        #del response.headers['Pragma']
-        #del response.headers['Cache-Control']
         return Response(
-            content, status=resp.status, headers=headers, cache_control="no-cache"
+            content, status=resp.status, headers=headers
         )
