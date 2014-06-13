@@ -195,7 +195,7 @@ Using Functionalities list to configure the layers in the QueryBuilder
 Add the new ``querybuilder_layer`` functionality to the list of
 ``available_functionalities`` in your ``config.yaml.in`` file:
 
-.. code: yaml
+.. code:: yaml
 
     admin_interface:
         available_functionalities:
@@ -205,7 +205,7 @@ Add the new ``querybuilder_layer`` functionality to the list of
 Make sure that the ``dumps`` function is imported in
 ``<package>/templates/viewer.js`` using:
 
-.. code: python
+.. code:: python
 
    <%
    from json import dumps
@@ -213,7 +213,7 @@ Make sure that the ``dumps`` function is imported in
 
 And configure your plugin like that:
 
-.. code: javascript
+.. code:: javascript
 
     {
         ptype: "cgxp_querier",
