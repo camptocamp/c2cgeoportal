@@ -204,9 +204,7 @@ cmds =
     >>> archive_dir = os.path.join(src_dir, 'archive')
     >>> if os.path.exists(archive_dir):
     >>>     shutil.rmtree(archive_dir)
-    >>> env = os.environ.copy()
-    >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
-    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'testing'], cwd=src_dir, env=env).wait()
+    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'production'], cwd=src_dir).wait()
 
 [cssbuild]
 recipe = c2c.recipe.cssmin

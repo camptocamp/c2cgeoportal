@@ -52,13 +52,13 @@ def main(global_config, **settings):
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobile',
-                    renderer='{{package}}:static/mobile/build/testing/App/index.html',
+                    renderer='{{package}}:static/mobile/build/production/App/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobileconfig',
-                    renderer='{{package}}:static/mobile/build/testing/App/config.js',
+                    renderer='{{package}}:static/mobile/build/production/App/config.js',
                     route_name='mobile_config_prod')
-    config.add_static_view('mobile', '{{package}}:static/mobile/build/testing/App')
+    config.add_static_view('mobile', '{{package}}:static/mobile/build/production/App')
 
     return config.make_wsgi_app()
