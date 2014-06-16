@@ -740,7 +740,7 @@ class Entry(object):
             d = dict(d.items() + templates_params.items())
         # specific permalink_themes handling
         if 'permalink_themes' in d:
-            d['extra_params'] = d['extra_params'] + d['permalink_themes']
+            d['extra_params'] += d['permalink_themes']
 
         # check if route to mobile app exists
         try:
