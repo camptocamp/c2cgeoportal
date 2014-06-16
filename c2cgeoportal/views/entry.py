@@ -34,6 +34,7 @@ import json
 import sys
 
 from urlparse import urlparse
+from urllib import quote
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
@@ -730,6 +731,9 @@ class Entry(object):
             'debug': self.debug,
             'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
+
+        if self.request.user is not None:
+            d['extra_params'] += 'user=%s&' % quote(self.request.user.username.encode('utf-8'))
 
         # general templates_params handling
         if templates_params is not None:
