@@ -82,7 +82,7 @@ Version 1.5
         shortener:
           # The base of created URL
           base_url:  http://${vars:host}${vars:apache-entry-point}s/
-
+    
 7. In the `{{package}}/__init__.py` file:
 
    * Use a cache header in the static view:

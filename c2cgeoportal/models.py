@@ -155,6 +155,17 @@ role_functionality = Table(
         ForeignKey(_schema + '.functionality.id'), primary_key=True),
     schema=_schema)
 
+# association table theme <> functionality
+theme_functionality = Table(
+    'theme_functionality', Base.metadata,
+    Column(
+        'theme_id', types.Integer, ForeignKey(_schema + '.theme.id'),
+        primary_key=True),
+    Column(
+        'functionality_id', types.Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+    schema=_schema)
+
 
 class User(Base):
     __label__ = _(u'user')
@@ -375,6 +386,11 @@ class Theme(TreeGroup):
     icon = Column(types.Unicode, label=_(u'Icon'))
     inMobileViewer = Column(types.Boolean, default=False, label=_(u'Display in mobile'))
     inDesktopViewer = Column(types.Boolean, default=True, label=_(u'Display in desktop'))
+
+    # functionality
+    functionalities = relationship(
+        'Functionality', secondary=theme_functionality,
+        cascade='save-update,merge,refresh-expire')
 
     def __init__(self, name=u'', order=100, icon=u'', display=True):
         TreeGroup.__init__(self, name=name, order=order)

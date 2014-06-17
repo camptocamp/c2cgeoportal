@@ -397,6 +397,7 @@ Theme = FieldSet(models.Theme)
 Theme.order.set(metadata=dict(mandatory='')).required()
 Theme.children.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.configure(exclude=[Theme.parents])
+Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 
 # Functionality
 Functionality = FieldSet(models.Functionality)

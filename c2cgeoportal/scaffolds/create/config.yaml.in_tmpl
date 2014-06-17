@@ -43,6 +43,7 @@ admin_interface:
     - default_basemap
     - print_template
     - mapserver_substitution
+    - theme_basemap
 
 functionalities:
 # Functionalities that are accessible to anonymous
