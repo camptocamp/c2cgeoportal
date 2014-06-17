@@ -60,14 +60,14 @@ class Printproxy(object):  # pragma: no cover
         templates = get_functionality(
             'print_template', self.config, self.request)
 
-        return self._info(templates)
-
-    @cache_region.cache_on_arguments()
-    def _info(self, templates):
         # get query string
         params = dict(self.request.params)
         query_string = urllib.urlencode(params)
 
+        return self._info(templates, query_string)
+
+    @cache_region.cache_on_arguments()
+    def _info(self, templates, query_string):
         # get URL
         _url = self.config['print_url'] + 'info.json' + '?' + query_string
         log.info("Get print capabilities from %s." % _url)
