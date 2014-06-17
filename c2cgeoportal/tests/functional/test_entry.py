@@ -523,6 +523,35 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
+    def test_auth_home(self):
+        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal.models import User
+
+        request = self._create_request_obj()
+        mapserv = request.registry.settings['mapserv_url']
+        request.registry.settings.update({
+            'external_mapserv_url': mapserv,
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
+        })
+        entry = Entry(request)
+        request.user = User()
+        request.user.username = "a user"
+
+        result = entry.home()
+        self.assertEquals(
+            set(result.keys()),
+            set([
+                'lang', 'debug', 'extra_params', 'mobile_url', 'no_redirect'
+            ])
+        )
+        self.assertEquals(result['extra_params'], '?lang=fr&user=a%20user&')
+
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
 
