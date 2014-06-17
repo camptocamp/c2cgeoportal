@@ -222,3 +222,16 @@ And configure your plugin like that:
     }
 
 This way you may assign more than one layer per role using functionalities.
+
+Using Functionalities to configure the basemap to use for each theme
+....................................................................
+
+Add the new ``querybuilder_layer`` functionality to the list of
+``available_functionalities`` in your ``config.yaml.in`` file:
+
+.. code:: yaml
+
+    admin_interface:
+        available_functionalities:
+            ...
+            - theme_basemap
