@@ -744,6 +744,8 @@ class Entry(object):
         d['debug'] = self.debug
 
         self.request.response.content_type = 'application/javascript'
+        self.request.response.headers['cache-control'] = \
+            "private, max-age=0, no-cache"
         return d
 
     @view_config(route_name='edit', renderer='edit.html')
