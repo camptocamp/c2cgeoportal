@@ -29,6 +29,7 @@
 
 
 import httplib2
+import urllib
 import logging
 import json
 import sys
@@ -49,7 +50,8 @@ from xml.dom.minidom import parseString
 from math import sqrt
 
 from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
-from c2cgeoportal.lib.functionality import get_functionality
+from c2cgeoportal.lib.functionality import get_functionality, \
+    get_mapserver_substitution_params
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
     Theme, RestrictionArea, Role, User
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -96,6 +98,11 @@ class Entry(object):
             q = get_protected_layers_query(role_id)
             for layer in q.all():
                 url += '&s_enable_' + str(layer.name) + '=*'
+
+        # add functionalities params
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            url += '&' + urllib.urlencode(sparams)
 
         log.info("WMS GetCapabilities for base url: %s" % url)
 
