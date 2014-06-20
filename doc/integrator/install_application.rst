@@ -35,9 +35,10 @@ on your system:
 * Oracle Java SE Development Kit 6 or 7
 * Tomcat
 * Apache
-* PostgreSQL 9.x/PostGIS 1.6 (PostgreSQL 8.x should work but some commands used
-    in this guide don't work)
-* MapServer 6.0.2 and upper (MapServer 6.0.0 and 6.0.1 have some issue in WFS)
+* PostgreSQL >= 9.1/PostGIS 1.5.3 (PostgreSQL 8.x and 9.0 should work but some adaptations
+    are required)
+* MapServer 6.0.x (MapServer 6.0.0 and 6.0.1 have some issue in WFS, not all versions 
+    >= 6.2 are compatible)
 * ImageMagick
 
 .. note::
