@@ -17,7 +17,7 @@ DATABASES=$@
 # done
 
 psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
-psql -c 'CREATE TABLE ${schema}_static.shorturl (
+psql -c 'CREATE TABLE ${schema}_static.shorturl IF NOT EXISTS (
     id serial PRIMARY KEY,
     url character varying(1000),
     ref character varying(20) NOT NULL UNIQUE,
