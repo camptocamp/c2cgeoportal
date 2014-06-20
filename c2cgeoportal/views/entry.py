@@ -34,10 +34,11 @@ import json
 import sys
 
 from urlparse import urlparse
+from urllib import quote
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
+from pyramid.httpexceptions import HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
@@ -731,12 +732,15 @@ class Entry(object):
             'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
         }
 
+        if self.request.user is not None:
+            d['extra_params'] += 'user=%s&' % quote(self.request.user.username.encode('utf-8'))
+
         # general templates_params handling
         if templates_params is not None:
             d = dict(d.items() + templates_params.items())
         # specific permalink_themes handling
         if 'permalink_themes' in d:
-            d['extra_params'] = d['extra_params'] + d['permalink_themes']
+            d['extra_params'] += d['permalink_themes']
 
         # check if route to mobile app exists
         try:
@@ -989,21 +993,16 @@ class Entry(object):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
 
-            cameFrom = self.request.params.get("came_from")
-            if cameFrom:
-                return HTTPFound(location=cameFrom, headers=headers)
-            else:
-                response = Response(
-                    'true', headers=headers, cache_control="no-cache"
-                )
-                return response
+            response = Response(
+                'true', headers=headers, cache_control="no-cache"
+            )
+            return response
         else:
             return HTTPUnauthorized('bad credentials')
 
     @view_config(route_name='logout')
     def logout(self):
         headers = forget(self.request)
-        cameFrom = self.request.params.get("came_from")
 
         # if there's no user to log out, we send a 404 Not Found (which
         # is the status code that applies best here)
@@ -1015,12 +1014,7 @@ class Entry(object):
             self.request.user.id
         ))
 
-        if cameFrom:
-            return HTTPFound(location=cameFrom, headers=headers)
-        else:
-            return HTTPFound(
-                location=self.request.route_url('home'),
-                headers=headers)
+        return Response('true', headers=headers, cache_control="no-cache")
 
     @view_config(route_name='loginchange')
     def loginchange(self):

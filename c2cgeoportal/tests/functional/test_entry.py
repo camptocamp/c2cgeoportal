@@ -137,11 +137,10 @@ class TestEntryView(TestCase):
         request = self._create_request_obj(params={
             'login': u'__test_user1',
             'password': u'__test_user1',
-            'came_from': "/came_from",
         })
         response = Entry(request).login()
-        self.assertEquals(response.status_int, 302)
-        self.assertEquals(response.headers['Location'], "/came_from")
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.body, 'true')
 
         request = self._create_request_obj(params={
             'login': u'__test_user1',
@@ -161,9 +160,7 @@ class TestEntryView(TestCase):
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(path='/', params={
-            'came_from': '/came_from'
-        })
+        request = self._create_request_obj(path='/')
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
@@ -172,16 +169,14 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(path='/', params={
-            'came_from': '/came_from'
-        })
+        request = self._create_request_obj(path='/')
         request.user = DBSession.query(User).filter_by(
             username=u'__test_user1'
         ).one()
         entry = Entry(request)
         response = entry.logout()
-        self.assertEquals(response.status_int, 302)
-        self.assertEquals(response.headers['Location'], "/came_from")
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.body, 'true')
 
         request = self._create_request_obj(path='/')
         request.route_url = lambda url: '/dummy/route/url'
@@ -190,8 +185,8 @@ class TestEntryView(TestCase):
         ).one()
         entry = Entry(request)
         response = entry.logout()
-        self.assertEquals(response.status_int, 302)
-        self.assertEquals(response.headers['Location'], '/dummy/route/url')
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.body, 'true')
 
     #
     # viewer view tests
@@ -527,6 +522,35 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
+
+    def test_auth_home(self):
+        from c2cgeoportal.views.entry import Entry
+        from c2cgeoportal.models import User
+
+        request = self._create_request_obj()
+        mapserv = request.registry.settings['mapserv_url']
+        request.registry.settings.update({
+            'external_mapserv_url': mapserv,
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
+        })
+        entry = Entry(request)
+        request.user = User()
+        request.user.username = "a user"
+
+        result = entry.home()
+        self.assertEquals(
+            set(result.keys()),
+            set([
+                'lang', 'debug', 'extra_params', 'mobile_url', 'no_redirect'
+            ])
+        )
+        self.assertEquals(result['extra_params'], '?lang=fr&user=a%20user&')
 
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
