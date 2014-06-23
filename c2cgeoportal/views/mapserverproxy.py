@@ -42,7 +42,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal.lib import caching, get_protected_layers_query
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
-from c2cgeoportal.lib.functionality import get_functionality
+from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.models import Layer
 
 log = logging.getLogger(__name__)
@@ -116,21 +116,7 @@ def proxy(request):
             params['s_enable_' + str(layer)] = '*'
 
     # add functionalities params
-    mss = get_functionality('mapserver_substitution',
-                            request.registry.settings, request)
-    if mss:
-        for s in mss:
-            index = s.find('=')
-            if index > 0:
-                attribute = 's_' + s[:index]
-                value = s[index + 1:]
-                if attribute in params:
-                    params[attribute] += "," + value
-                else:
-                    params[attribute] = value
-            else:
-                log.warning("Mapserver Substitution '%s' does not "
-                            "respect pattern: <attribute>=<value>" % s)
+    params.update(get_mapserver_substitution_params(request))
 
     # get method
     method = request.method
