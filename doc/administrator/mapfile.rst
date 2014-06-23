@@ -320,7 +320,7 @@ in a ``.in`` file).
 
         VALIDATION
             "default_s_<variable>" "<default_value>"
-            "s_<variable>_validation_pattern" "<validation_pattern>"
+            "s_<variable>" "<validation_pattern>"
         END
 
      VALIDATION block can be used within a CLASS, a LAYER or a WEB block.
