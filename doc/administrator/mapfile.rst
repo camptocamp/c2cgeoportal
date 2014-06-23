@@ -307,7 +307,7 @@ To define variables, edit the matching ``MAP``/``LAYER``/``VALIDATION``
 section in the mapfile and add::
 
     "default_s_<variable>" "<default_value>"
-    "s_<variable>_validation_pattern" "<validation_pattern>"
+    "s_<variable>" "<validation_pattern>"
 
 The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
