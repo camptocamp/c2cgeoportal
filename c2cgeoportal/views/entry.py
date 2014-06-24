@@ -592,6 +592,12 @@ class Entry(object):
             q = get_protected_layers_query(role_id)
             for layer in q.all():
                 wfsgc_url += '&s_enable_' + str(layer.name) + '=*'
+
+        # add functionalities params
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            wfsgc_url += '&' + urllib.urlencode(sparams)
+
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         # forward request to target (without Host Header)
