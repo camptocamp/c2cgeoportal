@@ -79,8 +79,19 @@ class Entry(object):
         _ = self.request.translate
         return {'title': _('title i18n')}
 
-    @cache_region.cache_on_arguments()
     def _wms_getcap(self, url, role_id=None):
+        if url.find('?') < 0:
+            url += '?'
+
+        # add functionalities params
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            url += urllib.urlencode(sparams) + '&'
+
+        return self._wms_getcap_cached(url, role_id)
+
+    @cache_region.cache_on_arguments()
+    def _wms_getcap_cached(self, url, role_id):
         errors = []
         wms = None
 
@@ -89,20 +100,12 @@ class Entry(object):
             ('VERSION', '1.1.1'),
             ('REQUEST', 'GetCapabilities'),
         )
-
-        if url.find('?') < 0:
-            url += '?'
-        url = url + '&'.join(['='.join(p) for p in params])
+        url += '&'.join(['='.join(p) for p in params])
 
         if role_id:
             q = get_protected_layers_query(role_id)
             for layer in q.all():
                 url += '&s_enable_' + str(layer.name) + '=*'
-
-        # add functionalities params
-        sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            url += '&' + urllib.urlencode(sparams)
 
         log.info("WMS GetCapabilities for base url: %s" % url)
 
