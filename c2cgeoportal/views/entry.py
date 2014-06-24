@@ -554,9 +554,7 @@ class Entry(object):
         return self.request.registry.settings['mapserv_url']
 
     def _internal_wfs_types(self, role_id=None):
-        return self._wfs_types(
-            self._get_wfs_url(),
-            role_id if self.useSecurityMetadata else None)
+        return self._wfs_types(self._get_wfs_url(), role_id)
 
     def _get_external_wfs_url(self):
         if 'external_mapserv_wfs_url' in self.request.registry.settings and \
@@ -571,12 +569,21 @@ class Entry(object):
         url = self._get_external_wfs_url()
         if not url:
             return [], []
-        return self._wfs_types(
-            url,
-            role_id if self.useSecurityMetadata else None)
+        return self._wfs_types(url, role_id)
+
+    def _wfs_types(self, wfs_url, role_id=None):
+        if wfs_url.find('?') < 0:
+            wfs_url += '?'
+
+        # add functionalities query_string
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            wfs_url += urllib.urlencode(sparams) + '&'
+
+        return self._wfs_types_cached(wfs_url, role_id if self.useSecurityMetadata else None)
 
     @cache_region.cache_on_arguments()
-    def _wfs_types(self, wfs_url, role_id=None):
+    def _wfs_types_cached(self, wfs_url, role_id):
         errors = []
 
         # retrieve layers metadata via GetCapabilities
@@ -585,18 +592,11 @@ class Entry(object):
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
         )
-        if wfs_url.find('?') < 0:
-            wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         if role_id:
             q = get_protected_layers_query(role_id)
             for layer in q.all():
                 wfsgc_url += '&s_enable_' + str(layer.name) + '=*'
-
-        # add functionalities params
-        sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            wfsgc_url += '&' + urllib.urlencode(sparams)
 
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
