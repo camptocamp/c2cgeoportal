@@ -70,18 +70,6 @@ Then you should checkout the branch or tag of the version you want to install:
 ``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
 ``1.4.0`` for the first stable 1.4 version.
 
-.. note::
-
-    To install c2cgeoportal version ``1.3`` and previous you should get the
-    branch ``1.3``::
-
-        git checkout 1.3
-        git submodule update --init
-
-    To install a release candidate or a specific development version you
-    should add in the section ``[versions]`` of ``buildout.cfg`` the version
-    of c2cgeoportal you want to install, eg. ``c2cgeoportal = 1.3rc2``.
-
 Now run the ``bootstrap.py`` script to boostrap the Buildout environment:
 
 .. prompt:: bash
