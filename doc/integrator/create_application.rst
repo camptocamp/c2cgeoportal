@@ -21,16 +21,6 @@ that is already alongside the existing c2cgeoportal application (in the
     applications. In that case, the c2cgeoportal skeletons, as well as the
     application skeletons, should be applied.
 
-Requirements
-------------
-
-To be able to create a c2cgeoportal application you need to have the following
-installed on your system:
-
-* Git. In most cases you will want to use Git as the revision control system
-  for your c2cgeoportal application.
-* Python 2.7. Python 3.x is not yet supported.
-
 Project structure
 -----------------
 

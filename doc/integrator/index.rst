@@ -9,6 +9,7 @@ Content:
 .. toctree::
    :maxdepth: 2
 
+   requirements
    create_application
    install_application
    features
