@@ -180,6 +180,10 @@ Go to your new project:
 
     cd ../$PROJECT
 
+.. note:: For Windows:
+
+   A special egg is available for Windows. It may be used by replacing
+   ``'c2cgeoportal'`` by ``'c2cgeoportal-win'`` in  the ``setup.py`` file.
 
 ``pcreate`` doesn't conserve file permission, so restore it manually:
 
@@ -187,9 +191,17 @@ Go to your new project:
 
     chmod +x deploy/hooks/post-restore-database.in
 
-In ``versions.cfg`` make sure that c2cgeoportal version is set::
+In the ``versions.cfg`` file make sure that c2cgeoportal version is set:
 
-    c2cgeoportal = <version>
+.. code::
+
+   c2cgeoportal = <version>
+
+.. note:: For Windows:
+
+   .. code::
+
+      c2cgeoportal-win = <version>
 
 With ``<version>`` the egg version you want to use, normally it should be the same
 number as the ``tag`` you use to checkout ``c2cgeoportal``.
@@ -217,6 +229,11 @@ main Buildout configuration file, and ``config_child.yaml.in`` the config file:
     parent, the others are children. Child instances display layers
     served by the parent instance. Parent and child instances share
     the same database, but use dedicated schemas within that database.
+
+.. note:: For Windows:
+
+    The ``$PROJECT/static/mobile/touch.tar.gz`` archive must be uncompressed
+    and then removed.
 
 Put the application under revision control
 ------------------------------------------

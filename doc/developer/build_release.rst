@@ -161,6 +161,20 @@ Create a new package:
 
     ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
 
+Create a new package for Windows:
+
+.. prompt:: bash
+
+    cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
+    tar -czvf touch.tar.gz touch
+    cd -
+    echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
+    echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
+    sed -i 's/name=\'c2cgeoportal\',/name=\'c2cgeoportal-win\',/g'
+    ./buildout/bin/python setup.py sdist upload -r c2c-internal
+    rm c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz
+    git checkout MANIFEST.in setup.py
+
 Commit your changes:
 
 .. prompt:: bash
