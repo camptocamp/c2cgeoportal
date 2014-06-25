@@ -168,6 +168,15 @@ and vice versa.
 With a RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+A RestrictionArea is used to restricted the layer displaying to a given area.
+This area is specified in the administration interface while defining the
+``RestrictionArea`` element.
+
+.. warning::
+
+   Using an restriction area on a big layer or defining a too complex area
+   may slow down the application.
+
 To define a restricted layer in the mapfile the ``DATA`` property of the
 ``LAYER`` should look like this::
 
@@ -220,20 +229,6 @@ writing of the mapfile. It is defined as follows::
       lra.layer_id = la.id
     AND
       la.name =
-
-.. note::
-
-    Before c2cgeoportal 0.6 the following ``DATA`` query was given
-    in this documentation::
-
-        DATA "geometry FROM (SELECT geo.geom as geom
-            FROM geodata.table AS geo, ${mapserver_join_tables}
-            WHERE ST_Contains(${mapserver_join_area}, geo.geometry)
-            AND ${mapserver_join_where} 'layer_name') AS foo
-            USING UNIQUE gid USING srid=-1"
-
-    In most cases this query should continue to work with 0.6 and
-    higher, but changing to the new query is recommended.
 
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
