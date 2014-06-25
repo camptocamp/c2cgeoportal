@@ -76,6 +76,12 @@ Version 1.5
         +  - name: checker_wfscapabilities
         +    display: WFS capabilities
 
+    * Add `theme_basemap` in the list of functionalities that can be configured
+      through the admin interface::
+
+        admin_interface:
+            available_functionalities:
+        +    - theme_basemap
 
 7. In the `{{package}}/__init__.py` file:
 

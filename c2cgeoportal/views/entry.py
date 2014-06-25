@@ -502,6 +502,7 @@ class Entry(object):
             children, children_errors, stop = self._getChildren(
                 theme, layers, wms_layers, wms)
             errors += children_errors
+
             if stop:
                 break
             # test if the theme is visible for the current user
@@ -516,10 +517,17 @@ class Entry(object):
                     'inMobileViewer': theme.inMobileViewer,
                     'name': theme.name,
                     'icon': icon,
-                    'children': children
+                    'children': children,
+                    'functionalities': self._getFunctionalities(theme)
                 })
 
         return exportThemes, errors
+
+    def _getFunctionalities(self, theme):
+        result = {}
+        for functionality in theme.functionalities:
+            result[functionality.name] = functionality.value
+        return result
 
     def _getChildren(self, theme, layers, wms_layers, wms):
         children = []
