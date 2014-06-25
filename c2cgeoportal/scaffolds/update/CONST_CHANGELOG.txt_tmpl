@@ -76,6 +76,12 @@ Version 1.5
         +  - name: checker_wfscapabilities
         +    display: WFS capabilities
 
+    * Add (or update) the following configuration
+
+        # The shortner base configuration
+        shortener:
+          # The base of created URL
+          base_url:  http://${vars:host}${vars:apache-entry-point}s/
 
 7. In the `{{package}}/__init__.py` file:
 
@@ -113,7 +119,11 @@ Version 1.5
   +    # Instruct proxys that these files are cacheable.
   +    Header merge Cache-Control "public"
 
-11. Some important notices:
+11. Add the following line in the ``apache/wsgi.conf.in`` file:
+
+    RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
+
+12. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION

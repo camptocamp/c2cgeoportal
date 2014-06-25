@@ -29,6 +29,7 @@ RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit [PT
 RewriteRule ^${vars:apache-entry-point}mobile$ ${vars:apache-entry-point}mobile/ [R]
 RewriteRule ^${vars:apache-entry-point}mobile/(.*)$ /${vars:instanceid}/wsgi/mobile/$1 [PT]
 RewriteRule ^${vars:apache-entry-point}admin/?$ /${vars:instanceid}/wsgi/admin/ [PT]
+RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
 
 # define a process group
 # WSGIDaemonProcess must be commented/removed when running the project on windows
