@@ -709,8 +709,6 @@ class Entry(object):
             'WFSTypes': json.dumps(wfs_types),
             'externalWFSTypes': json.dumps(external_wfs_types),
             'external_themes': external_themes,
-            # for backward compatibility
-            'tilecache_url': json.dumps(self.settings.get("tilecache_url")),
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
             'queryer_attribute_urls': json.dumps(layers_enum),

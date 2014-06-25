@@ -120,6 +120,8 @@ Version 1.5
     section. See ``Variable Substitution`` in the Mapfile chapter of the
     administrator manual.
 
+  * All references of tilecache will be removed.
+
 
 Version 1.4.3
 =============
