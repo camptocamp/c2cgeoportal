@@ -94,7 +94,9 @@ Version 1.5
 
 9. Update the mobile application:
 
-  * In the `{{package}}/static/mobile/config.js` file:
+  * In the `{{package}}/static/mobile/config.js` file add the line:
+
+        App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
 
 10. Do the following changes in the ``apache/frontend.conf.in`` file:
 

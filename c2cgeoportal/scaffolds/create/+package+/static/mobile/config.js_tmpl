@@ -21,6 +21,8 @@ App.WFSTypes = '${wfs_types | n}';
 // Query mode. Can be either 'click' or 'longpress'
 App.queryMode = 'longpress';
 
+App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
+
 var dummy = "<% from json import dumps %>";
 jsonFormat = new OpenLayers.Format.JSON();
 try {
