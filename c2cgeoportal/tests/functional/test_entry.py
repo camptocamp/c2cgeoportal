@@ -549,7 +549,7 @@ class TestEntryView(TestCase):
             set(result.keys()),
             set(
                 [
-                    'lang', 'debug', 'extra_params',
+                    'lang', 'debug', 'extra_params', 'url_params',
                     'mobile_url', 'no_redirect'
                 ]
             )
@@ -561,19 +561,31 @@ class TestEntryView(TestCase):
             '{"layer_test": {"label": "%s"}}' % mapserv
         )
         result = entry.edit()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'extra_params']))
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'extra_params', 'url_params'])
+        )
         result = entry.editjs()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.routing()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'extra_params']))
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'extra_params', 'url_params'])
+        )
         result = entry.routingjs()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.mobile()
         self.assertEquals(set(result.keys()), set(['lang']))
         result = entry.apijs()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'queryable_layers', 'tiles_url']))
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'queryable_layers', 'tiles_url', 'url_params'])
+        )
         result = entry.xapijs()
-        self.assertEquals(set(result.keys()), set(['lang', 'debug', 'queryable_layers', 'tiles_url']))
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'queryable_layers', 'tiles_url', 'url_params'])
+        )
         result = entry.apihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
         result = entry.xapihelp()
@@ -615,7 +627,7 @@ class TestEntryView(TestCase):
             set(result.keys()),
             set(
                 [
-                    'lang', 'debug', 'extra_params',
+                    'lang', 'debug', 'extra_params', 'url_params',
                     'mobile_url', 'no_redirect'
                 ]
             )
@@ -655,7 +667,7 @@ class TestEntryView(TestCase):
             set(result.keys()),
             set(
                 [
-                    'lang', 'debug', 'extra_params',
+                    'lang', 'debug', 'extra_params', 'url_params',
                     'mobile_url', 'no_redirect'
                 ]
             )
@@ -681,12 +693,12 @@ class TestEntryView(TestCase):
         self.assertEquals(
             result.keys(),
             [
-                'lang', 'mobile_url', 'permalink_themes',
+                'lang', 'url_params', 'mobile_url', 'permalink_themes',
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme')
-        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme')
+        self.assertEquals(result['extra_params'], {'lang': 'en', 'permalink_themes': 'theme'})
+        self.assertEquals(result['permalink_themes'], 'theme')
 
         request.matchdict = {
             'themes': ['theme1', 'theme2'],
@@ -695,12 +707,12 @@ class TestEntryView(TestCase):
         self.assertEquals(
             result.keys(),
             [
-                'lang', 'mobile_url', 'permalink_themes',
+                'lang', 'url_params', 'mobile_url', 'permalink_themes',
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], '?lang=en&permalink_themes=theme1,theme2')
-        self.assertEquals(result['permalink_themes'], 'permalink_themes=theme1,theme2')
+        self.assertEquals(result['extra_params'], {'lang': 'en', 'permalink_themes': 'theme1,theme2'})
+        self.assertEquals(result['permalink_themes'], 'theme1,theme2')
 
     def test_layer(self):
         import httplib2
