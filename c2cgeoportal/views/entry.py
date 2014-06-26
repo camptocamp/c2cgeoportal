@@ -38,7 +38,7 @@ from urllib import quote
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
-from pyramid.httpexceptions import HTTPNotFound, \
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.response import Response
@@ -991,10 +991,14 @@ class Entry(object):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
 
-            response = Response(
-                'true', headers=headers, cache_control="no-cache"
-            )
-            return response
+            cameFrom = self.request.params.get("came_from")
+            if cameFrom:
+                return HTTPFound(location=cameFrom, headers=headers)
+            else:
+                response = Response(
+                    'true', headers=headers, cache_control="no-cache"
+                )
+                return response
         else:
             return HTTPUnauthorized('bad credentials')
 

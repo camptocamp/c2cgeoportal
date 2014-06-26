@@ -137,10 +137,11 @@ class TestEntryView(TestCase):
         request = self._create_request_obj(params={
             'login': u'__test_user1',
             'password': u'__test_user1',
+            'came_from': "/came_from",
         })
         response = Entry(request).login()
-        self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.body, 'true')
+        self.assertEquals(response.status_int, 302)
+        self.assertEquals(response.headers['Location'], "/came_from")
 
         request = self._create_request_obj(params={
             'login': u'__test_user1',
@@ -160,7 +161,9 @@ class TestEntryView(TestCase):
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(path='/')
+        request = self._create_request_obj(path='/', params={
+            'came_from': '/came_from'
+        })
         entry = Entry(request)
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
