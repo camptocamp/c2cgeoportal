@@ -26,7 +26,6 @@ and ``find-links`` to reference these Package Index::
     ...
     index = http://pypi.camptocamp.net/pypi
     find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
-                 http://pypi.camptocamp.net/internal-pypi/index/tileforge
     ...
 
 c2cgeoportal releases

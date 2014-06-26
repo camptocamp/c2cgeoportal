@@ -487,7 +487,7 @@ class TestEntryView(TestCase):
         request.user = None
 
         all_params = set([
-            'lang', 'tilecache_url', 'tiles_url', 'debug',
+            'lang', 'tiles_url', 'debug',
             'serverError', 'themes', 'external_themes', 'functionality',
             'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls'
         ])
