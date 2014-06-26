@@ -473,14 +473,16 @@ User.configure(include=fieldOrder)
 
 # LayerGrid
 LayerGrid = Grid(models.Layer)
-fieldOrder = [Layer.name,
-              Layer.public,
-              Layer.inDesktopViewer,
-              Layer.inMobileViewer,
-              Layer.isChecked,
-              Layer.icon,
-              Layer.legend,
-              Layer.identifierAttributeField]
+fieldOrder = [
+    Layer.name,
+    Layer.order,
+    Layer.public,
+    Layer.inDesktopViewer,
+    Layer.inMobileViewer,
+    Layer.isChecked,
+    Layer.icon,
+    Layer.legend,
+    Layer.identifierAttributeField]
 LayerGrid.configure(include=fieldOrder)
 
 # LayerGroupGrid
