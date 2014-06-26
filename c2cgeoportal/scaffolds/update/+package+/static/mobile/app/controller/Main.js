@@ -125,6 +125,19 @@ Ext.define('App.controller.Main', {
             this.setParams(event.params);
         });
         this.map.events.triggerEvent('changeparamsready');
+
+        this.layers = {};
+        for (var i = 0, il = App.themes.length; i < il; i++ ) {
+            var theme = App.themes[i];
+            for (var j = 0, jl = theme.allLayers.length; j < jl; j++ ) {
+                var layer = theme.allLayers[j];
+                this.layers[layer.name] = layer;
+                for (var k = 0, kl = layer.childLayers.length; k < kl; k++ ) {
+                    var childLayer = layer.childLayers[k];
+                    this.layers[childLayer.name] = childLayer;
+                }
+            }
+        }
     },
 
     showHome: function() {
@@ -222,38 +235,55 @@ Ext.define('App.controller.Main', {
 
     // get the list of queryable layers given a list of displayed WMS layers
     getChildLayers: function(ollayer, params) {
-        var result = [],
-            allLayers = ollayer.allLayers;
+        var results = [];
         Ext.each(params, function(p) {
-            Ext.each(allLayers, function(layer) {
-                if (layer.name == p) {
-                    if (layer.childLayers) {
-                        Ext.each(layer.childLayers, function(item) {
-                            result.push(item.name);
-                        });
-                    } else {
-                        result.push(layer.name);
-                    }
-                }
-            });
-        });
-        return result;
+            var layer = this.layers[p]
+            if (layer.childLayers) {
+                Ext.each(layer.childLayers, function(item) {
+                    results.push(item.name);
+                });
+            } else {
+                results.push(layer.name);
+            }
+        }, this);
+        return results;
+    },
+
+    filterScale: function(layers) {
+        var res = App.map.getResolution();
+        function inRange(l) {
+            return (!l.minResolutionHint || res >= l.minResolutionHint) &&
+                (!l.maxResolutionHint || res <= l.maxResolutionHint);
+        }
+
+        var results = [];
+        Ext.each(layers, function(layer) {
+            if (inRange(this.layers[layer])) {
+                results.push(layer)
+            }
+        }, this);
+ 
+        return results;
+    },
+
+    filterWFS: function(layers) {
+        var results = [];
+        for (var j = 0; j < layers.length; j++) {
+            if (App.WFSTypes.indexOf(layers[j]) != -1) {
+                results.push(layers[j]);
+             }
+        }
+        return results;
     },
 
     queryMap: function(view, bounds, map) {
-        var layers = [];
-
         // overlay
         var overlay = this.getOverlay();
-        var layersParam = this.toArray(overlay.params.LAYERS),
-            WFSTypes = this.toArray(App.WFSTypes);
+        var layers = this.toArray(overlay.params.LAYERS);
         // Ensure that we query the child layers in case of groups
-        layersParam = this.getChildLayers(overlay, layersParam);
-        for (var j=0; j<layersParam.length; j++) {
-            if (WFSTypes.indexOf(layersParam[j]) != -1) {
-                layers.push(layersParam[j]);
-             }
-        }
+        layers = this.getChildLayers(overlay, layers);
+        layers = this.filterScale(layers);
+        layers = this.filterWFS(layers);
 
         // currently displayed baseLayer
         if (map.baseLayer.WFSTypes) {
@@ -304,8 +334,6 @@ Ext.define('App.controller.Main', {
                         transparent: true
                     },{
                         singleTile: true,
-                        // list of available layers
-                        allLayers: t.allLayers
                     }
                 );
                 App.map.addLayer(overlay);

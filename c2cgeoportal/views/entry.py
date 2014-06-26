@@ -824,6 +824,10 @@ class Entry(object):
 
             def process_layers(l, layers):
                 layer = {'name': l['name']}
+                if 'minResolutionHint' in l:
+                    layer['minResolutionHint'] = l['minResolutionHint']
+                if 'maxResolutionHint' in l:
+                    layer['maxResolutionHint'] = l['maxResolutionHint']
                 if 'childLayers' in l and len(l['childLayers']) > 0:
                     layer['childLayers'] = []
                     for child in l['childLayers']:
@@ -887,17 +891,17 @@ class Entry(object):
                     'name': theme['name'],
                     'icon': theme['icon'],
                     'allLayers': theme['allLayers'],
-                    'layers': theme['layers']
+                    'layers': theme['layers'],
                 })
 
         self.request.response.content_type = 'application/javascript'
         return {
             'lang': self.lang,
-            'themes': json.dumps(themes_),
+            'themes': themes_,
             'theme': theme_name if theme_name is not None else "",
             'wfs_types': wfs_types,
-            'server_error': json.dumps(errors),
-            'info': json.dumps(info)
+            'server_error': errors,
+            'info': info,
         }
 
     @view_config(route_name='apijs', renderer='api/api.js')
