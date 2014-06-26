@@ -244,7 +244,7 @@ class Role(Base):
     name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
     description = Column(types.Unicode, label=_(u'Description'))
     extent = GeometryColumn(Polygon(srid=_srid))
-    #product = Column(types.Unicode)
+    # product = Column(types.Unicode)
 
     # functionality
     functionalities = relationship(
