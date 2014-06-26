@@ -52,7 +52,7 @@ Ext.define('App.controller.Query', {
             geometryName: 'geom',
             srsName: App.map.getProjection(),
             formatOptions: {
-                featureNS: 'http://mapserver.gis.umn.edu/mapserver',
+                featureNS: App.featureNS,
                 autoconfig: false
             }
         });
