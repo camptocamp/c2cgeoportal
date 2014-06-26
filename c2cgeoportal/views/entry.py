@@ -722,8 +722,7 @@ class Entry(object):
 
         return d
 
-    @view_config(route_name='home', renderer='index.html')
-    def home(self, templates_params=None):
+    def _get_home_vars(self):
         d = {
             'lang': self.lang,
             'debug': self.debug,
@@ -732,6 +731,12 @@ class Entry(object):
 
         if self.request.user is not None:
             d['extra_params'] += 'user=%s&' % quote(self.request.user.username.encode('utf-8'))
+
+        return d
+
+    @view_config(route_name='home', renderer='index.html')
+    def home(self, templates_params=None):
+        d = self._get_home_vars()
 
         # general templates_params handling
         if templates_params is not None:
@@ -761,11 +766,7 @@ class Entry(object):
 
     @view_config(route_name='edit', renderer='edit.html')
     def edit(self):
-        return {
-            'lang': self.lang,
-            'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
-        }
+        return self._get_home_vars()
 
     @view_config(route_name='edit.js', renderer='edit.js')
     def editjs(self):
