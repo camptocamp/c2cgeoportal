@@ -115,7 +115,10 @@ class shortener(object):
 
             DBSession.add(short_url)
 
-        s_url = self.request.route_url('shortener_get', ref=ref)
+        if 'base_url' in self.settings:
+            s_url = self.settings['base_url'] + ref
+        else:
+            s_url = self.request.route_url('shortener_get', ref=ref)
 
         email = email or user_email
 
