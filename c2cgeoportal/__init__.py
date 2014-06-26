@@ -30,8 +30,7 @@
 
 import yaml
 
-from pyramid.mako_templating import renderer_factory as mako_renderer_factory
-from pyramid.security import authenticated_userid
+from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 
 import sqlalchemy
@@ -94,7 +93,7 @@ def get_user_from_request(request):
     """
     from c2cgeoportal.models import DBSession, User
     from sqlalchemy.orm import joinedload
-    username = authenticated_userid(request)
+    username = request.authenticated_userid
     if username is not None:
         # we know we'll need to role object for the
         # user so we use earger loading
@@ -192,8 +191,9 @@ def includeme(config):
     caching.invalidate_region()
 
     # bind the mako renderer to other file extensions
-    config.add_renderer('.html', mako_renderer_factory)
-    config.add_renderer('.js', mako_renderer_factory)
+    add_mako_renderer(config, '.html')
+    add_mako_renderer(config, '.js')
+    config.include('pyramid_chameleon')
 
     # add the "geojson" renderer
     config.add_renderer('geojson', GeoJSON())
