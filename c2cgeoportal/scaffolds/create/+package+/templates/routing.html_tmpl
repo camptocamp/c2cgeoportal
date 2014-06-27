@@ -50,7 +50,7 @@
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-map.css')}" />
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-widgets.css')}" />
 % else:
-        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css', _query=url_params)}" />
 % endif
     </head>
 
@@ -87,9 +87,9 @@ jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
         <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
 % endfor
 % else:
-        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/routing.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/routing.js', _query=url_params)}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang, _query=url_params)}"></script>
 % endif
-        <script type="text/javascript" src="${request.route_url('routing.js')}${extra_params}"></script>
+        <script type="text/javascript" src="${request.route_url('routing.js', _query=extra_params)}"></script>
     </body>
 </html>

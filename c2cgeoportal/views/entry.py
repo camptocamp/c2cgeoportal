@@ -734,10 +734,19 @@ class Entry(object):
 
     @view_config(route_name='home', renderer='index.html')
     def home(self, templates_params=None):
+        cache_version = self.settings.get('cache_version', None)
+        extra_params = {}
+        url_params = {}
+        if cache_version:
+            url_params['version'] = cache_version
+            extra_params['version'] = cache_version
+        if self.lang:
+            extra_params['lang'] = self.lang
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
+            'url_params': url_params,
+            'extra_params': extra_params
         }
 
         # general templates_params handling
@@ -745,7 +754,7 @@ class Entry(object):
             d = dict(d.items() + templates_params.items())
         # specific permalink_themes handling
         if 'permalink_themes' in d:
-            d['extra_params'] = d['extra_params'] + d['permalink_themes']
+            d['extra_params']['permalink_themes'] = d['permalink_themes']
 
         # check if route to mobile app exists
         try:
@@ -768,10 +777,19 @@ class Entry(object):
 
     @view_config(route_name='edit', renderer='edit.html')
     def edit(self):
+        cache_version = self.settings.get('cache_version', None)
+        extra_params = {}
+        url_params = {}
+        if cache_version:
+            url_params['version'] = cache_version
+            extra_params['version'] = cache_version
+        if self.lang:
+            extra_params['lang'] = self.lang
         return {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
+            'url_params': url_params,
+            'extra_params': extra_params
         }
 
     @view_config(route_name='edit.js', renderer='edit.js')
@@ -785,10 +803,19 @@ class Entry(object):
 
     @view_config(route_name='routing', renderer='routing.html')
     def routing(self):
+        cache_version = self.settings.get('cache_version', None)
+        extra_params = {}
+        url_params = {}
+        if cache_version:
+            url_params['version'] = cache_version
+            extra_params['version'] = cache_version
+        if self.lang:
+            extra_params['lang'] = self.lang
         return {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
+            'url_params': url_params,
+            'extra_params': extra_params
         }
 
     @view_config(route_name='routing.js', renderer='routing.js')
@@ -919,10 +946,12 @@ class Entry(object):
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
+        cache_version = self.settings.get('cache_version', None)
         d = {
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
+            'url_params': {'version': cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -938,10 +967,12 @@ class Entry(object):
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
+        cache_version = self.settings.get('cache_version', None)
         d = {
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
+            'url_params': {'version': cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -1086,6 +1117,6 @@ class Entry(object):
         # recover themes from url route
         themes = self.request.matchdict['themes']
         d = {}
-        d['permalink_themes'] = 'permalink_themes=' + ','.join(themes)
+        d['permalink_themes'] = ','.join(themes)
         # call home with extra params
         return self.home(d)
