@@ -33,6 +33,9 @@ from pyramid.response import Response
 
 from httplib2 import Http
 import simplejson
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class Checker(object):  # pragma: no cover
@@ -53,9 +56,15 @@ class Checker(object):  # pragma: no cover
 
     def testurl(self, url):
         h = Http()
+
+        log.info("Checker for url: %s" % url)
+
+        url = url.replace(self.request.environ.get('SERVER_NAME'), 'localhost')
         headers = {
-            "Cache-Control": "no-cache"
+            'Host': self.request.environ.get('HTTP_HOST'),
+            "Cache-Control": "no-cache",
         }
+
         resp, content = h.request(url, headers=headers)
 
         if resp['status'] != '200':
@@ -130,16 +139,24 @@ class Checker(object):  # pragma: no cover
         _url = self.request.route_url('printproxy_create') + \
             '?url=' + self.request.route_url('printproxy')
         h = Http()
-        headers = {'Content-type': 'application/json;charset=utf-8'}
+
+        log.info("Checker for printproxy request (create): %s" % _url)
+        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost:8080")
+        headers = {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Host': self.request.environ.get('HTTP_HOST')
+        }
         resp, content = h.request(_url, 'POST', headers=headers, body=body)
 
         if resp['status'] != '200':
             self.update_status_int(resp['status'])
             return 'Failed creating PDF: ' + content
 
+        log.info("Checker for printproxy pdf (retrieve): %s" % _url)
         json = simplejson.loads(content)
-        _url = json['getURL']
-        resp, content = h.request(_url)
+        _url = json['getURL'].replace(self.request.environ.get('SERVER_NAME'), "localhost")
+        headers = {'Host': self.request.environ.get('HTTP_HOST')}
+        resp, content = h.request(_url, headers=headers)
 
         if resp['status'] != '200':
             self.update_status_int(resp['status'])
@@ -157,7 +174,12 @@ class Checker(object):  # pragma: no cover
             self.settings['fulltextsearch']
         )
         h = Http()
-        resp, content = h.request(_url)
+
+        log.info("Checker for fulltextsearch: %s" % _url)
+        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost")
+        headers = {'host': self.request.environ.get('HTTP_HOST')}
+
+        resp, content = h.request(_url, headers=headers)
 
         if resp['status'] != '200':
             self.update_status_int(resp['status'])

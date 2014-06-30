@@ -143,9 +143,9 @@ template at your disposal:
         sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
         sudo -u postgres createlang plpgsql c2cgeoportal_test
         sudo -u postgres psql -d c2cgeoportal_test \
-               -f /usr/share/postgresql/9.0/contrib/postgis-1.5/postgis.sql
+               -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
         sudo -u postgres psql -d c2cgeoportal_test \
-               -f /usr/share/postgresql/9.0/contrib/postgis-1.5/spatial_ref_sys.sql
+               -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
         sudo -u postgres psql -d c2cgeoportal_test \
                -c 'GRANT ALL ON geometry_columns TO "www-data";'
         sudo -u postgres psql -d c2cgeoportal_test \

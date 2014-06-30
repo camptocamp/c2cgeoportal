@@ -95,7 +95,10 @@ class Printproxy(object):  # pragma: no cover
             layout['name'] in templates)
 
         headers = dict(resp)
-        del headers['content-length']
+        if 'content-length' in headers:
+            del headers['content-length']
+        if 'transfer-encoding' in headers:
+            del headers['transfer-encoding']
 
         response = Response(
             json.dumps(capabilities, separators=(',', ':')),
@@ -169,6 +172,8 @@ class Printproxy(object):  # pragma: no cover
         headers['content-disposition'] = resp['content-disposition']
         # Pragma and Cache-Control headers because of ie 8 bug:
         # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
+        # del response.headers['Pragma']
+        # del response.headers['Cache-Control']
         return Response(
             content, status=resp.status, headers=headers
         )

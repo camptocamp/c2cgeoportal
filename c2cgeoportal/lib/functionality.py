@@ -28,7 +28,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 from c2cgeoportal.lib import get_setting
+
+log = logging.getLogger(__name__)
 
 
 def _get_config_functionality(name, registered, config):
@@ -69,3 +72,23 @@ def get_functionality(name, config, request):
     if len(result) == 0:
         result = _get_config_functionality(name, request.user is not None, config)
     return result
+
+
+def get_mapserver_substitution_params(request):
+    params = {}
+    mss = get_functionality('mapserver_substitution',
+                            request.registry.settings, request)
+    if mss:
+        for s in mss:
+            index = s.find('=')
+            if index > 0:
+                attribute = 's_' + s[:index]
+                value = s[index + 1:]
+                if attribute in params:
+                    params[attribute] += "," + value
+                else:
+                    params[attribute] = value
+            else:
+                log.warning("Mapserver Substitution '%s' does not "
+                            "respect pattern: <attribute>=<value>" % s)
+    return params

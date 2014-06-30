@@ -135,6 +135,62 @@ Version 1.5
   * All references of tilecache will be removed.
 
 
+Version 1.4.5
+=============
+
+1. In the `{{package}}/__init__.py` replace 'testing' by 'production':
+
+         config.add_route('mobile_index_prod', '/mobile/')
+         config.add_view('c2cgeoportal.views.entry.Entry',
+                         attr='mobile',
+    -                    renderer='{{package}}:static/mobile/build/testing/App/index.html',
+    +                    renderer='{{package}}:static/mobile/build/production/App/index.html',
+                         route_name='mobile_index_prod')
+         config.add_route('mobile_config_prod', '/mobile/config.js')
+         config.add_view('c2cgeoportal.views.entry.Entry',
+                         attr='mobileconfig',
+    -                    renderer='{{package}}:static/mobile/build/testing/App/config.js',
+    +                    renderer='{{package}}:static/mobile/build/production/App/config.js',
+                         route_name='mobile_config_prod')
+    -    config.add_static_view('mobile', '{{package}}:static/mobile/build/testing/App')
+    +    config.add_static_view('mobile', '{{package}}:static/mobile/build/production/App')
+
+2. To add the cache version parameter to the JS/CSS URLs:
+
+   * Add to ``production.ini.in`` and ``development.ini.in`` in the ``[app:app]`` section:
+
+   cache_version = ${cache_version}
+
+   * In ``{{package}}/templates/index.html`` do the following changes:
+
+   - <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css')}" />
+   + <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css', _query=url_params)}" />
+
+   - <script type="text/javascript" src="${request.static_url('{{package}}:static/build/app.js')}"></script>
+   - <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
+   + <script type="text/javascript" src="${request.static_url('{{package}}:static/build/app.js', _query=url_params)}"></script>
+   + <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang, _query=url_params)}"></script>
+
+   - <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}"></script>
+   + <script type="text/javascript" src="${request.route_url('viewer', _query=extra_params)}"></script>
+
+   The same changes must be done in ``{{package}}/templates/edit.html`` and ``{{package}}/templates/routing.html``.
+
+   In ``{{package}}/templates/api/api.js`` do the following changes:
+
+     document.write('<scr' + 'ipt type="text/javascript" src="'
+   -     + "${request.static_url('{{package}}:static/build/api.js')}" + '"></scr' + 'ipt>');
+   +     + "${request.static_url('{{package}}:static/build/api.js', _query=url_params)}" + '"></scr' + 'ipt>');
+     document.write('<scr' + 'ipt type="text/javascript" src="'
+   -     + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang)}" + '"></scr' + 'ipt>');
+   +     + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang, _query=url_params)}" + '"></scr' + 'ipt>');
+     document.write('<link rel="stylesheet" type="text/css" href="'
+   -     + "${request.static_url('{{package}}:static/build/api.css')}" + '" />');
+   +     + "${request.static_url('{{package}}:static/build/api.css', _query=url_params)}" + '" />');
+
+   Similar changes are needed in ``{{package}}/templates/api/xapi.js`` as well.
+
+
 Version 1.4.3
 =============
 

@@ -17,11 +17,11 @@ document.write('<link rel="stylesheet" type="text/css" href="'
         + "${request.static_url('{{package}}:static/css/proj-map.css')}" + '" />');
 % else:
 document.write('<scr' + 'ipt type="text/javascript" src="'
-        + "${request.static_url('{{package}}:static/build/api.js')}" + '"></scr' + 'ipt>');
+        + "${request.static_url('{{package}}:static/build/api.js', _query=url_params)}" + '"></scr' + 'ipt>');
 document.write('<scr' + 'ipt type="text/javascript" src="'
-        + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang)}" + '"></scr' + 'ipt>');
+        + "${request.static_url('{{package}}:static/build/api-lang-%s.js' % lang, _query=url_params)}" + '"></scr' + 'ipt>');
 document.write('<link rel="stylesheet" type="text/css" href="'
-        + "${request.static_url('{{package}}:static/build/api.css')}" + '" />');
+        + "${request.static_url('{{package}}:static/build/api.css', _query=url_params)}" + '" />');
 % endif
 
 

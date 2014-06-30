@@ -29,6 +29,7 @@
 
 
 import httplib2
+import urllib
 import logging
 import json
 import sys
@@ -50,7 +51,8 @@ from xml.dom.minidom import parseString
 from math import sqrt
 
 from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
-from c2cgeoportal.lib.functionality import get_functionality
+from c2cgeoportal.lib.functionality import get_functionality, \
+    get_mapserver_substitution_params
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
     Theme, RestrictionArea, Role, User
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -84,8 +86,19 @@ class Entry(object):
         _ = self.request.translate
         return {'title': _('title i18n')}
 
-    @cache_region.cache_on_arguments()
     def _wms_getcap(self, url, role_id=None):
+        if url.find('?') < 0:
+            url += '?'
+
+        # add functionalities params
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            url += urllib.urlencode(sparams) + '&'
+
+        return self._wms_getcap_cached(url, role_id)
+
+    @cache_region.cache_on_arguments()
+    def _wms_getcap_cached(self, url, role_id):
         errors = []
         wms = None
 
@@ -94,10 +107,7 @@ class Entry(object):
             ('VERSION', '1.1.1'),
             ('REQUEST', 'GetCapabilities'),
         )
-
-        if url.find('?') < 0:
-            url += '?'
-        url = url + '&'.join(['='.join(p) for p in params])
+        url += '&'.join(['='.join(p) for p in params])
 
         if role_id:
             q = get_protected_layers_query(role_id)
@@ -555,9 +565,7 @@ class Entry(object):
         return self.request.registry.settings['mapserv_url']
 
     def _internal_wfs_types(self, role_id=None):
-        return self._wfs_types(
-            self._get_wfs_url(),
-            role_id if self.useSecurityMetadata else None)
+        return self._wfs_types(self._get_wfs_url(), role_id)
 
     def _get_external_wfs_url(self):
         if 'external_mapserv_wfs_url' in self.request.registry.settings and \
@@ -572,12 +580,21 @@ class Entry(object):
         url = self._get_external_wfs_url()
         if not url:
             return [], []
-        return self._wfs_types(
-            url,
-            role_id if self.useSecurityMetadata else None)
+        return self._wfs_types(url, role_id)
+
+    def _wfs_types(self, wfs_url, role_id=None):
+        if wfs_url.find('?') < 0:
+            wfs_url += '?'
+
+        # add functionalities query_string
+        sparams = get_mapserver_substitution_params(self.request)
+        if sparams:  # pragma: no cover
+            wfs_url += urllib.urlencode(sparams) + '&'
+
+        return self._wfs_types_cached(wfs_url, role_id if self.useSecurityMetadata else None)
 
     @cache_region.cache_on_arguments()
-    def _wfs_types(self, wfs_url, role_id=None):
+    def _wfs_types_cached(self, wfs_url, role_id):
         errors = []
 
         # retrieve layers metadata via GetCapabilities
@@ -586,13 +603,12 @@ class Entry(object):
             ('VERSION', '1.0.0'),
             ('REQUEST', 'GetCapabilities'),
         )
-        if wfs_url.find('?') < 0:
-            wfs_url += '?'
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
         if role_id:
             q = get_protected_layers_query(role_id)
             for layer in q.all():
                 wfsgc_url += '&s_enable_' + str(layer.name) + '=*'
+
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
         # forward request to target (without Host Header)
@@ -723,10 +739,19 @@ class Entry(object):
         return d
 
     def _get_home_vars(self):
+        cache_version = self.settings.get('cache_version', None)
+        extra_params = {}
+        url_params = {}
+        if cache_version:
+            url_params['version'] = cache_version
+            extra_params['version'] = cache_version
+        if self.lang:
+            extra_params['lang'] = self.lang
         d = {
             'lang': self.lang,
             'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
+            'url_params': url_params,
+            'extra_params': extra_params
         }
 
         if self.request.user is not None:
@@ -743,7 +768,7 @@ class Entry(object):
             d = dict(d.items() + templates_params.items())
         # specific permalink_themes handling
         if 'permalink_themes' in d:
-            d['extra_params'] += d['permalink_themes']
+            d['extra_params']['permalink_themes'] = d['permalink_themes']
 
         # check if route to mobile app exists
         try:
@@ -779,11 +804,7 @@ class Entry(object):
 
     @view_config(route_name='routing', renderer='routing.html')
     def routing(self):
-        return {
-            'lang': self.lang,
-            'debug': self.debug,
-            'extra_params': '?lang=%s&' % self.lang if self.lang else '?'
-        }
+        return self._get_home_vars()
 
     @view_config(route_name='routing.js', renderer='routing.js')
     def routingjs(self):
@@ -913,10 +934,12 @@ class Entry(object):
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
+        cache_version = self.settings.get('cache_version', None)
         d = {
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
+            'url_params': {'version': cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -932,10 +955,12 @@ class Entry(object):
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
+        cache_version = self.settings.get('cache_version', None)
         d = {
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
+            'url_params': {'version': cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -1079,6 +1104,6 @@ class Entry(object):
         # recover themes from url route
         themes = self.request.matchdict['themes']
         d = {}
-        d['permalink_themes'] = 'permalink_themes=' + ','.join(themes)
+        d['permalink_themes'] = ','.join(themes)
         # call home with extra params
         return self.home(d)

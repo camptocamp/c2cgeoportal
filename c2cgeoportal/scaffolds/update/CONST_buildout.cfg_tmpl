@@ -46,6 +46,8 @@ modwsgi_user = www-data
 apache-entry-point = /${vars:instanceid}/
 # cookie session secret
 authtkt_secret = __import__('uuid').uuid4().hex
+# UUID for inhibiting the browser cache after the application has been rebuilt:
+cache_version = __import__('uuid').uuid4().hex
 # database user
 dbuser = www-data
 # database password
@@ -168,6 +170,7 @@ recipe = z3c.recipe.filetemplate
 source-directory = .
 exclude-directories = buildout
 interpreted-options = authtkt_secret
+    cache_version
 extends = vars
     facts
 
@@ -204,9 +207,7 @@ cmds =
     >>> archive_dir = os.path.join(src_dir, 'archive')
     >>> if os.path.exists(archive_dir):
     >>>     shutil.rmtree(archive_dir)
-    >>> env = os.environ.copy()
-    >>> env['_JAVA_OPTIONS'] = '-Xmx128m'
-    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'testing'], cwd=src_dir, env=env).wait()
+    >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'production'], cwd=src_dir).wait()
 
 [cssbuild]
 recipe = c2c.recipe.cssmin

@@ -62,7 +62,7 @@
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-map.css')}" />
         <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/css/proj-widgets.css')}" />
 % else:
-        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css')}" />
+        <link rel="stylesheet" type="text/css" href="${request.static_url('{{package}}:static/build/app.css', _query=url_params)}" />
 % endif
     </head>
     <body class="${lang}">
@@ -103,9 +103,9 @@
         <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
     % endfor
 % else:
-        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/app.js')}"></script>
-        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang)}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/app.js', _query=url_params)}"></script>
+        <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang, _query=url_params)}"></script>
 % endif
-        <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}"></script>
+        <script type="text/javascript" src="${request.route_url('viewer', _query=extra_params)}"></script>
     </body>
 </html>

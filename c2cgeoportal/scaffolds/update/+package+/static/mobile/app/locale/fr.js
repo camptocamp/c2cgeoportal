@@ -30,13 +30,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.fr, {
 
     // login/logout
     'loginButtonText': 'Me connecter',
-    'welcomeText': '<p>Vous êtes {username}.</p>',
+    'welcomeText': '<p>Vous êtes connecté(e) en tant que <em>{username}</em>.</p>',
     'logoutButtonText': 'Me déconnecter',
     'loginLabel': 'Nom',
     'passwordLabel': 'Mot de passe',
     'loginSubmitButtonText': 'Me connecter',
     'loginCancelButtonText': 'Annuler',
-    'unauthorized': 'Identificant ou mot de passe incorrects, merci de réessayer.',
+    'unauthorized': 'Accés refusé',
+    'wrongUserPass': 'Identificant ou mot de passe incorrects, merci de réessayer.',
 
     // redirect to standard application
     'redirect_msg': "Vous utilisez la version pour mobile. Vous pouvez aussi" +

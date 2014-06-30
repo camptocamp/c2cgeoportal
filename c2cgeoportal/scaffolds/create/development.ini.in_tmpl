@@ -21,6 +21,7 @@ parentschema = ${vars:parent_schema}
 # For debug mode
 jsbuild_cfg = ${jsbuild:config}
 jsbuild_root_dir = ${buildout:directory}
+cache_version = ${cache_version}
 
 # Admin interface
 enable_admin_interface = ${vars:enable_admin_interface}

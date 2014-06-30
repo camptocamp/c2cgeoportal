@@ -18,6 +18,11 @@ The return code are:
 * ``400``-``499`` => Warning
 * ``500``-``599`` => Error
 
+.. Note::
+
+    Check collector can only check pages that are on the same server as it.
+
+
 Checker
 -------
 

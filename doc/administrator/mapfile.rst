@@ -310,9 +310,16 @@ use ``^[a-z,]*$$`` (the double '$' is needed since we are
 in a ``.in`` file).
 
 .. note::
+ 
+     For MapServer above 6.0, you must place the value and the pattern definition
+     in a VALIDATION section instead of the METADATA block::
 
-    Before using Mapserver 6.4 those parameters were placed in
-    the ``METADATA`` section.
+        VALIDATION
+            "default_s_<variable>" "<default_value>"
+            "s_<variable>" "<validation_pattern>"
+        END
+
+     VALIDATION block can be used within a CLASS, a LAYER or a WEB block.
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value.
