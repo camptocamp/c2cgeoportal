@@ -591,6 +591,65 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
+    def test_entry_points_version(self):
+        from c2cgeoportal.views.entry import Entry
+
+        mapfile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'c2cgeoportal_test.map'
+        )
+        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+
+        request = testing.DummyRequest()
+        request.headers['Host'] = host
+
+        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.route_url = lambda url, **kwargs: mapserv
+        request.registry.settings = {
+            'mapserv_url': mapserv,
+            'external_mapserv_url': mapserv,
+            'cache_version': '___test_version___',
+            'layers_enum': {
+                'layer_test': {
+                    'attributes': {
+                        'label': None
+                    }
+                }
+            }
+        }
+        entry = Entry(request)
+        request.user = None
+
+        all_params = set([
+            'lang', 'tilecache_url', 'tiles_url', 'debug',
+            'serverError', 'themes', 'external_themes', 'functionality',
+            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls'
+        ])
+        result = entry.home()
+        self.assertEquals(
+            set(result.keys()),
+            set([
+                'lang', 'debug', 'extra_params', 'url_params',
+                'mobile_url', 'no_redirect'
+            ])
+        )
+        self.assertEquals(result['url_params']['version'], '___test_version___')
+        self.assertEquals(result['extra_params']['version'], '___test_version___')
+        result = entry.edit()
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'extra_params', 'url_params'])
+        )
+        self.assertEquals(result['url_params']['version'], '___test_version___')
+        self.assertEquals(result['extra_params']['version'], '___test_version___')
+        result = entry.routing()
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'debug', 'extra_params', 'url_params'])
+        )
+        self.assertEquals(result['url_params']['version'], '___test_version___')
+        self.assertEquals(result['extra_params']['version'], '___test_version___')
+
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
 
