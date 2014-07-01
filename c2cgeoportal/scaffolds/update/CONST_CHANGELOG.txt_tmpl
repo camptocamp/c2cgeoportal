@@ -51,9 +51,9 @@ Version 1.5
 
 4. Update the `production.ini.in` and `development.ini.in` files:
 
-  * Add the new default_max_age to 10 hours:
+  * Add the new default_max_age to 10 days:
 
-        default_max_age = 36000
+        default_max_age = 864000
 
 5. In the `buildout.cfg` file:
 

@@ -26,8 +26,8 @@ cache_version = ${cache_version}
 # Admin interface
 enable_admin_interface = ${vars:enable_admin_interface}
 
-# 10 hours of default cache
-default_max_age = 36000
+# 10 days of default cache
+default_max_age = 864000
 
 [filter:weberror]
 use = egg:WebError#error_catcher
