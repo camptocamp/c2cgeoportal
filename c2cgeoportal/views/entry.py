@@ -776,6 +776,7 @@ class Entry(object):
             d['mobile_url'] = None
 
         d['no_redirect'] = self.request.params.get('no_redirect') is not None
+        self.request.response.headers['Cache-Control'] = 'no-cache'
 
         return d
 
@@ -790,6 +791,7 @@ class Entry(object):
 
     @view_config(route_name='edit', renderer='edit.html')
     def edit(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         return self._get_home_vars()
 
     @view_config(route_name='edit.js', renderer='edit.js')
@@ -803,6 +805,7 @@ class Entry(object):
 
     @view_config(route_name='routing', renderer='routing.html')
     def routing(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         return self._get_home_vars()
 
     @view_config(route_name='routing.js', renderer='routing.js')
@@ -818,6 +821,7 @@ class Entry(object):
         """
         View callable for the mobile application's index.html file.
         """
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         return {'lang': self.lang}
 
     def flatten_layers(self, theme):
@@ -923,6 +927,7 @@ class Entry(object):
 
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         role_id = None if self.request.user is None \
             else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
@@ -946,6 +951,7 @@ class Entry(object):
 
     @view_config(route_name='xapijs', renderer='api/xapi.js')
     def xapijs(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         role_id = None if self.request.user is None \
             else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
@@ -967,6 +973,7 @@ class Entry(object):
 
     @view_config(route_name='apihelp', renderer='api/apihelp.html')
     def apihelp(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         return {
             'lang': self.lang,
             'debug': self.debug,
@@ -974,6 +981,7 @@ class Entry(object):
 
     @view_config(route_name='xapihelp', renderer='api/xapihelp.html')
     def xapihelp(self):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
         return {
             'lang': self.lang,
             'debug': self.debug,
