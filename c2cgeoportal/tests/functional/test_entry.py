@@ -563,10 +563,13 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                'lang', 'debug', 'extra_params', 'mobile_url', 'no_redirect'
+                'lang', 'debug', 'url_params', 'extra_params', 'mobile_url', 'no_redirect'
             ])
         )
-        self.assertEquals(result['extra_params'], '?lang=fr&user=a%20user&')
+        self.assertEquals(result['extra_params'], {
+            'lang': 'fr',
+            'user': 'a user'
+        })
 
     def test_entry_points_version(self):
         from c2cgeoportal.views.entry import Entry
@@ -578,6 +581,7 @@ class TestEntryView(TestCase):
         mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
 
         request = testing.DummyRequest()
+        request.user = None
         request.headers['Host'] = host
 
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
@@ -586,6 +590,7 @@ class TestEntryView(TestCase):
             'mapserv_url': mapserv,
             'external_mapserv_url': mapserv,
             'cache_version': '___test_version___',
+            'default_max_age': 76,
             'layers_enum': {
                 'layer_test': {
                     'attributes': {
@@ -734,7 +739,7 @@ class TestEntryView(TestCase):
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], {'lang': 'en', 'permalink_themes': 'theme'})
+        self.assertEquals(result['extra_params'], {'lang': 'fr', 'permalink_themes': 'theme'})
         self.assertEquals(result['permalink_themes'], 'theme')
 
         request.matchdict = {
@@ -748,7 +753,7 @@ class TestEntryView(TestCase):
                 'no_redirect', 'extra_params', 'debug'
             ]
         )
-        self.assertEquals(result['extra_params'], {'lang': 'en', 'permalink_themes': 'theme1,theme2'})
+        self.assertEquals(result['extra_params'], {'lang': 'fr', 'permalink_themes': 'theme1,theme2'})
         self.assertEquals(result['permalink_themes'], 'theme1,theme2')
 
     def test_layer(self):

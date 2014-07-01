@@ -35,7 +35,6 @@ import json
 import sys
 
 from urlparse import urlparse
-from urllib import quote
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
@@ -755,7 +754,7 @@ class Entry(object):
         }
 
         if self.request.user is not None:
-            d['extra_params'] += 'user=%s&' % quote(self.request.user.username.encode('utf-8'))
+            d['extra_params']['user'] = self.request.user.username.encode('utf-8')
 
         return d
 
