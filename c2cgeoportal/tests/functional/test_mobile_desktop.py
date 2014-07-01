@@ -111,11 +111,9 @@ class TestMobileDesktop(TestCase):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
-        import json
-        themes = json.loads(response['themes'])
-        self.assertEqual(len(themes), 2)
+        self.assertEqual(len(response['themes']), 2)
         self.assertEqual(
-            themes,
+            response['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -144,11 +142,9 @@ class TestMobileDesktop(TestCase):
         }
         response = entry.mobileconfig()
 
-        import json
-        themes = json.loads(response['themes'])
-        self.assertEqual(len(themes), 3)
+        self.assertEqual(len(response['themes']), 3)
         self.assertEqual(
-            themes,
+            response['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -181,7 +177,6 @@ class TestMobileDesktop(TestCase):
         import json
         themes = json.loads(response['themes'])
         theme = themes[0]
-
         layers = theme['children']
         self.assertEqual(len(layers), 2)
         self.assertEqual(

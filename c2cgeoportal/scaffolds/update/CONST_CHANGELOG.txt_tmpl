@@ -100,9 +100,43 @@ Version 1.5
 
 9. Update the mobile application:
 
-  * In the `{{package}}/static/mobile/config.js` file add the line:
+    * In the `{{package}}/static/mobile/config.js` file do the following changes:
 
-        App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
+        -// App.info includes information that is needed by internal
+        -// components, such as the Login view component.
+        -App.info = '${info | n}';
+        -
+        -App.themes = '${themes | n}';
+        -App.theme = '${theme | n}';
+        -
+        -App.WFSTypes = '${wfs_types | n}';
+        -
+        -// Query mode. Can be either 'click' or 'longpress'
+        -App.queryMode = 'longpress';
+        -
+         var dummy = "<% from json import dumps %>";
+         jsonFormat = new OpenLayers.Format.JSON();
+         try {
+        +    // App.info includes information that is needed by internal
+        +    // components, such as the Login view component.
+        +    App.info = jsonFormat.read('${dumps(info) | n}');
+        +
+        +    App.themes = jsonFormat.read('${dumps(themes) | n}');
+        +    App.theme = '${theme | n}';
+        +
+        +    App.WFSTypes = '${wfs_types | n}'.split(',');
+        +
+        +    // Query mode. Can be either 'click' or 'longpress'
+        +    App.queryMode = 'longpress';
+
+             App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
+         }
+         catch (e) {
+             // For the Sencha build ...
+        -    App.tilesURL = "";
+         }
+        +
+        +App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
 
 10. Do the following changes in the ``apache/frontend.conf.in`` file:
 

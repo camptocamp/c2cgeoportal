@@ -60,13 +60,6 @@ Ext.application({
     },
 
     launch: function() {
-        // decode the information received from the server
-        if (App.info) {
-            App.info = Ext.JSON.decode(App.info, true);
-        }
-        if (App.themes) {
-            App.themes = Ext.JSON.decode(App.themes, true);
-        }
         this.getController('Main').loadTheme(App.theme);
 
         // create the main view and set the map into it
