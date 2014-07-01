@@ -34,6 +34,7 @@ README = "c2cgeoportal, generic GIS portal made by Camptocamp"
 
 install_requires = [
     'pyramid<=1.3.99,>=1.3.2',
+    'pyramid_multiauth',
     'WebError',
     'psycopg2',
     # sqlalchemy-migrate 0.7.2 and GeoAlchemy 0.7.1
