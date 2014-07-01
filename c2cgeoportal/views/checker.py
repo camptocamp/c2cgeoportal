@@ -141,7 +141,7 @@ class Checker(object):  # pragma: no cover
         h = Http()
 
         log.info("Checker for printproxy request (create): %s" % _url)
-        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost:8080")
+        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost")
         headers = {
             'Content-Type': 'application/json;charset=utf-8',
             'Host': self.request.environ.get('HTTP_HOST')
