@@ -475,6 +475,7 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj()
         #request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.current_route_url = lambda **kwargs: 'http://example.com/current/view'
         mapserv = request.registry.settings['mapserv_url']
         request.registry.settings.update({
             'external_mapserv_url': mapserv,
@@ -523,7 +524,10 @@ class TestEntryView(TestCase):
         result = entry.routingjs()
         self.assertEquals(set(result.keys()), all_params)
         result = entry.mobile()
-        self.assertEquals(set(result.keys()), set(['lang']))
+        self.assertEquals(
+            set(result.keys()),
+            set(['lang', 'came_from', 'url_params', 'extra_params'])
+        )
         result = entry.apijs()
         self.assertEquals(
             set(result.keys()),

@@ -822,7 +822,23 @@ class Entry(object):
         View callable for the mobile application's index.html file.
         """
         self.request.response.headers['Cache-Control'] = 'no-cache'
-        return {'lang': self.lang}
+
+        extra_params = dict(self.request.params)
+        came_from = self.request.current_route_url(_query=extra_params)
+        url_params = {}
+        cache_version = self.settings.get('cache_version', None)
+        if cache_version is not None:
+            extra_params['cache_version'] = cache_version
+            url_params['cache_version'] = cache_version
+
+        def enc(vals):
+            return (vals[0], vals[1].encode('utf8'))
+        return {
+            'lang': self.lang,
+            'came_from': came_from,
+            'url_params': urllib.urlencode(dict(map(enc, url_params.items()))),
+            'extra_params': urllib.urlencode(dict(map(enc, extra_params.items()))),
+        }
 
     def flatten_layers(self, theme):
         """
