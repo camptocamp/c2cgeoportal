@@ -40,7 +40,7 @@ from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
-from pyramid.security import remember, forget, authenticated_userid
+from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import engine_from_config
@@ -1017,7 +1017,7 @@ class Entry(object):
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
-        if authenticated_userid(self.request):
+        if self.request.authenticated_userid:
             return HTTPForbidden()  # pragma: no cover
         return {
             'lang': self.lang,

@@ -33,8 +33,10 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = "c2cgeoportal, generic GIS portal made by Camptocamp"
 
 install_requires = [
-    'pyramid<=1.3.99,>=1.3.2',
+    'pyramid<=1.5.99,>=1.5.0',
     'pyramid_multiauth',
+    'pyramid_mako',
+    'pyramid_chameleon',
     'WebError',
     'psycopg2',
     # sqlalchemy-migrate 0.7.2 and GeoAlchemy 0.7.1
