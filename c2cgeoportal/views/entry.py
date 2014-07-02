@@ -535,7 +535,10 @@ class Entry(object):
     def _getFunctionalities(self, theme):
         result = {}
         for functionality in theme.functionalities:
-            result[functionality.name] = functionality.value
+            if functionality.name in result:
+                result[functionality.name].append(functionality.value)
+            else:
+                result[functionality.name] = [functionality.value]
         return result
 
     def _getChildren(self, theme, layers, wms_layers, wms):

@@ -82,7 +82,7 @@ Version 1.5
         shortener:
           # The base of created URL
           base_url:  http://${vars:host}${vars:apache-entry-point}s/
-    
+
 7. In the `{{package}}/__init__.py` file:
 
    * Use a cache header in the static view:
@@ -97,6 +97,14 @@ Version 1.5
   * In all the `{{package}}/templates/*.js` files:
 
   * In the `{{package}}/templates/viewer.js`:
+
+    * Add a reference to the `LayerTree` plugin in the `MapOpacitySlider` config:
+
+        {
+            ptype: "cgxp_mapopacityslider",
+      +     layerTreeId: "layertree",
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
+        }
 
 9. Update the mobile application:
 

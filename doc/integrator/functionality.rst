@@ -226,12 +226,22 @@ This way you may assign more than one layer per role using functionalities.
 Using Functionalities to configure the basemap to use for each theme
 ....................................................................
 
-Add the new ``querybuilder_layer`` functionality to the list of
-``available_functionalities`` in your ``config.yaml.in`` file:
+A default basemap may be automatically loaded when the user selects a given
+theme.
 
-.. code:: yaml
+To do so make sure that the ``MapOpacitySlider`` plugin has a reference to the
+layertree plugin. For instance:
 
-    admin_interface:
-        available_functionalities:
-            ...
-            - theme_basemap
+.. code:: javascript
+
+    {
+        ptype: "cgxp_mapopacityslider",
+        layerTreeId: "layertree",
+        defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
+    }
+
+Then, in the administration interface, if not available yet, define a 
+``default_basemap`` functionality containing the basemap reference. Edit the
+theme and select the basemap to load in the ``default_basemap`` list. If
+several ``default_basemap`` items are selected, only the first one will be
+taken into account.
