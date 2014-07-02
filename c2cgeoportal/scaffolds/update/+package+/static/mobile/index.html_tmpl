@@ -51,14 +51,6 @@
             }
         }
     </style>
-<%
-    import urllib
-    query_params = dict(request.params)
-    def enc(vals):
-        return (vals[0], vals[1].encode('utf8'))
-    query_string = urllib.urlencode(dict(map(enc, query_params.items())))
-    came_from = request.current_route_url(_query=query_params)
-%>
 <%doc>
     Be careful, the Sencha Touch build tool will fail if the script tag
     includes text that is not JavaScript. For example you cannot include
@@ -76,10 +68,10 @@
         App.cameFrom = "${came_from}";
         App.desktopAppUrl = "${request.route_url('home', path='', _query={'no_redirect':''})}";
     </script>
-    <script type="text/javascript" src="openlayers-mobile.js"></script>
-    <script type="text/javascript" src="config.js?${query_string}"></script>
+    <script type="text/javascript" src="openlayers-mobile.js?${url_params}"></script>
+    <script type="text/javascript" src="config.js?${extra_params}"></script>
     <!-- The line below must be kept intact for Sencha Command to build your application -->
-    <script id="microloader" type="text/javascript" src=".sencha/app/microloader/development.js"></script>
+    <script id="microloader" type="text/javascript" src=".sencha/app/microloader/development.js?${url_params}"></script>
     ${'<script>Ext.Loader.setConfig({disableCaching: false}); </script>' if request.path_info == '/mobile_dev/' else '' | n}
 </head>
 <body>
