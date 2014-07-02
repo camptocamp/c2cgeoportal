@@ -140,6 +140,9 @@ Version 1.5
 
 10. Do the following changes in the ``apache/frontend.conf.in`` file:
 
+  -AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
+  +AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
+
   -<LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
   -    # Remove etags to enable better client-side caching
   -    # (potential proxy problems)
