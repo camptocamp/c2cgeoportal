@@ -21,16 +21,6 @@ that is already alongside the existing c2cgeoportal application (in the
     applications. In that case, the c2cgeoportal skeletons, as well as the
     application skeletons, should be applied.
 
-Requirements
-------------
-
-To be able to create a c2cgeoportal application you need to have the following
-installed on your system:
-
-* Git. In most cases you will want to use Git as the revision control system
-  for your c2cgeoportal application.
-* Python 2.7. Python 3.x is not yet supported.
-
 Project structure
 -----------------
 
@@ -79,18 +69,6 @@ Then you should checkout the branch or tag of the version you want to install:
 
 ``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
 ``1.4.0`` for the first stable 1.4 version.
-
-.. note::
-
-    To install c2cgeoportal version ``1.3`` and previous you should get the
-    branch ``1.3``::
-
-        git checkout 1.3
-        git submodule update --init
-
-    To install a release candidate or a specific development version you
-    should add in the section ``[versions]`` of ``buildout.cfg`` the version
-    of c2cgeoportal you want to install, eg. ``c2cgeoportal = 1.3rc2``.
 
 Now run the ``bootstrap.py`` script to boostrap the Buildout environment:
 
@@ -180,6 +158,10 @@ Go to your new project:
 
     cd ../$PROJECT
 
+.. note:: For Windows:
+
+   A special egg is available for Windows. It may be used by replacing
+   ``'c2cgeoportal'`` by ``'c2cgeoportal-win'`` in  the ``setup.py`` file.
 
 ``pcreate`` doesn't conserve file permission, so restore it manually:
 
@@ -187,9 +169,17 @@ Go to your new project:
 
     chmod +x deploy/hooks/post-restore-database.in
 
-In ``versions.cfg`` make sure that c2cgeoportal version is set::
+In the ``versions.cfg`` file make sure that c2cgeoportal version is set:
 
-    c2cgeoportal = <version>
+.. code::
+
+   c2cgeoportal = <version>
+
+.. note:: For Windows:
+
+   .. code::
+
+      c2cgeoportal-win = <version>
 
 With ``<version>`` the egg version you want to use, normally it should be the same
 number as the ``tag`` you use to checkout ``c2cgeoportal``.
@@ -217,6 +207,11 @@ main Buildout configuration file, and ``config_child.yaml.in`` the config file:
     parent, the others are children. Child instances display layers
     served by the parent instance. Parent and child instances share
     the same database, but use dedicated schemas within that database.
+
+.. note:: For Windows:
+
+    The ``$PROJECT/static/mobile/touch.tar.gz`` archive must be uncompressed
+    and then removed.
 
 Put the application under revision control
 ------------------------------------------

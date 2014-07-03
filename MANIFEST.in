@@ -25,3 +25,5 @@ prune c2cgeoportal/static/lib/openlayers/lib
 prune c2cgeoportal/static/lib/openlayers/tests
 prune c2cgeoportal/static/lib/openlayers/tools
 
+include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz
+prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch

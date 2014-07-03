@@ -9,4 +9,12 @@ if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
     echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
 
     ./buildout/bin/python setup.py sdist upload -r c2c-internal
+
+    cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
+    tar -czvf touch.tar.gz touch
+    cd -
+    echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
+    echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
+    sed -i 's/name=\'c2cgeoportal\',/name=\'c2cgeoportal-win\',/g'
+    ./buildout/bin/python setup.py sdist upload -r c2c-internal
 fi

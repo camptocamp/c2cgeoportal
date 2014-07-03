@@ -94,6 +94,19 @@ steps:
       ``<package_name>`` is to be replaced by the name of the application module.
       See above for more information.
 
+   .. note:: For Windows:
+
+      The ``$PROJECT/static/mobile/touch.tar.gz`` archive must be uncompressed and then removed.
+
+      If it's not present, proceed as follows:
+
+      * Get Sencha Touch at http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip.
+      * Unzip it.
+      * Open a terminal and go to the folder where you have unzipped Sencha Touch.
+      * Run ``sencha generate app TempApp C:/tmp/TempApp``.
+      * Copy the ``C:/tmp/TempApp/touch`` to your project in the folder ``<package>/static/mobile/touch``.
+      * Remove the generated app (``C:/tmp/TempApp``).
+
 5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
