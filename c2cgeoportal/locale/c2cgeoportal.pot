@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: c2cgeoportal 1.5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-01-29 13:25+0100\n"
+"POT-Creation-Date: 2014-07-03 15:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,11 +29,11 @@ msgstr ""
 msgid "Unlinked layers"
 msgstr ""
 
-#: c2cgeoportal/forms.py:413
+#: c2cgeoportal/forms.py:414
 msgid "Restriction area"
 msgstr ""
 
-#: c2cgeoportal/forms.py:437
+#: c2cgeoportal/forms.py:435
 msgid "Extent"
 msgstr ""
 
@@ -45,8 +45,8 @@ msgstr ""
 msgid "functionalitys"
 msgstr ""
 
-#: c2cgeoportal/models.py:124 c2cgeoportal/models.py:244 c2cgeoportal/models.py:292
-#: c2cgeoportal/models.py:484 c2cgeoportal/models.py:524
+#: c2cgeoportal/models.py:124 c2cgeoportal/models.py:255 c2cgeoportal/models.py:303
+#: c2cgeoportal/models.py:500 c2cgeoportal/models.py:540
 msgid "Name"
 msgstr ""
 
@@ -54,211 +54,211 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: c2cgeoportal/models.py:160
+#: c2cgeoportal/models.py:171
 msgid "user"
 msgstr ""
 
-#: c2cgeoportal/models.py:161
+#: c2cgeoportal/models.py:172
 msgid "users"
 msgstr ""
 
-#: c2cgeoportal/models.py:175 c2cgeoportal/templates/login.html:59
+#: c2cgeoportal/models.py:186 c2cgeoportal/templates/login.html:59
 msgid "Username"
 msgstr ""
 
-#: c2cgeoportal/models.py:178 c2cgeoportal/templates/login.html:62
+#: c2cgeoportal/models.py:189 c2cgeoportal/templates/login.html:62
 msgid "Password"
 msgstr ""
 
-#: c2cgeoportal/models.py:179
+#: c2cgeoportal/models.py:190
 msgid "E-mail"
 msgstr ""
 
-#: c2cgeoportal/models.py:180
+#: c2cgeoportal/models.py:191
 msgid "PasswordChanged"
 msgstr ""
 
-#: c2cgeoportal/models.py:236
+#: c2cgeoportal/models.py:247
 msgid "role"
 msgstr ""
 
-#: c2cgeoportal/models.py:237
+#: c2cgeoportal/models.py:248
 msgid "roles"
 msgstr ""
 
-#: c2cgeoportal/models.py:245 c2cgeoportal/models.py:485
+#: c2cgeoportal/models.py:256 c2cgeoportal/models.py:501
 msgid "Description"
 msgstr ""
 
-#: c2cgeoportal/models.py:293
+#: c2cgeoportal/models.py:304
 msgid "Order"
 msgstr ""
 
-#: c2cgeoportal/models.py:294
+#: c2cgeoportal/models.py:305
 msgid "Metadata URL"
 msgstr ""
 
-#: c2cgeoportal/models.py:338
+#: c2cgeoportal/models.py:349
 msgid "layergroup"
 msgstr ""
 
-#: c2cgeoportal/models.py:339
+#: c2cgeoportal/models.py:350
 msgid "layergroups"
 msgstr ""
 
-#: c2cgeoportal/models.py:349
+#: c2cgeoportal/models.py:360
 msgid "Expanded"
 msgstr ""
 
-#: c2cgeoportal/models.py:350
+#: c2cgeoportal/models.py:361
 msgid "Internal WMS"
 msgstr ""
 
-#: c2cgeoportal/models.py:352
+#: c2cgeoportal/models.py:363
 msgid "Group of base layers"
 msgstr ""
 
-#: c2cgeoportal/models.py:364
+#: c2cgeoportal/models.py:375
 msgid "theme"
 msgstr ""
 
-#: c2cgeoportal/models.py:365
+#: c2cgeoportal/models.py:376
 msgid "themes"
 msgstr ""
 
-#: c2cgeoportal/models.py:375 c2cgeoportal/models.py:402
+#: c2cgeoportal/models.py:386 c2cgeoportal/models.py:418
 msgid "Icon"
 msgstr ""
 
-#: c2cgeoportal/models.py:376 c2cgeoportal/models.py:399
+#: c2cgeoportal/models.py:387 c2cgeoportal/models.py:415
 msgid "Display in mobile"
 msgstr ""
 
-#: c2cgeoportal/models.py:377 c2cgeoportal/models.py:400
+#: c2cgeoportal/models.py:388 c2cgeoportal/models.py:416
 msgid "Display in desktop"
 msgstr ""
 
-#: c2cgeoportal/models.py:386
+#: c2cgeoportal/models.py:402
 msgid "layer"
 msgstr ""
 
-#: c2cgeoportal/models.py:387
+#: c2cgeoportal/models.py:403
 msgid "layers"
 msgstr ""
 
-#: c2cgeoportal/models.py:398
+#: c2cgeoportal/models.py:414
 msgid "Public"
 msgstr ""
 
-#: c2cgeoportal/models.py:401
+#: c2cgeoportal/models.py:417
 msgid "Checked"
 msgstr ""
 
-#: c2cgeoportal/models.py:408
+#: c2cgeoportal/models.py:424
 msgid "Type"
 msgstr ""
 
-#: c2cgeoportal/models.py:409
+#: c2cgeoportal/models.py:425
 msgid "Base URL"
 msgstr ""
 
-#: c2cgeoportal/models.py:413
+#: c2cgeoportal/models.py:429
 msgid "Image type"
 msgstr ""
 
-#: c2cgeoportal/models.py:414
+#: c2cgeoportal/models.py:430
 msgid "Style"
 msgstr ""
 
-#: c2cgeoportal/models.py:415
+#: c2cgeoportal/models.py:431
 msgid "Dimensions"
 msgstr ""
 
-#: c2cgeoportal/models.py:416
+#: c2cgeoportal/models.py:432
 msgid "Matrix set"
 msgstr ""
 
-#: c2cgeoportal/models.py:417
+#: c2cgeoportal/models.py:433
 msgid "WMS server URL"
 msgstr ""
 
-#: c2cgeoportal/models.py:418
+#: c2cgeoportal/models.py:434
 msgid "WMS layers"
 msgstr ""
 
-#: c2cgeoportal/models.py:419
+#: c2cgeoportal/models.py:435
 msgid "Query layers"
 msgstr ""
 
-#: c2cgeoportal/models.py:420
+#: c2cgeoportal/models.py:436
 msgid "KML 3D"
 msgstr ""
 
-#: c2cgeoportal/models.py:421
+#: c2cgeoportal/models.py:437
 msgid "Single tile"
 msgstr ""
 
-#: c2cgeoportal/models.py:422
+#: c2cgeoportal/models.py:438
 msgid "Display legend"
 msgstr ""
 
-#: c2cgeoportal/models.py:423
+#: c2cgeoportal/models.py:439
 msgid "Legend image"
 msgstr ""
 
-#: c2cgeoportal/models.py:424
+#: c2cgeoportal/models.py:440
 msgid "Legend rule"
 msgstr ""
 
-#: c2cgeoportal/models.py:425
+#: c2cgeoportal/models.py:441
 msgid "Legend expanded"
 msgstr ""
 
-#: c2cgeoportal/models.py:426
+#: c2cgeoportal/models.py:442
 msgid "Min resolution"
 msgstr ""
 
-#: c2cgeoportal/models.py:427
+#: c2cgeoportal/models.py:443
 msgid "Max resolution"
 msgstr ""
 
-#: c2cgeoportal/models.py:428
+#: c2cgeoportal/models.py:444
 msgid "Disclaimer"
 msgstr ""
 
-#: c2cgeoportal/models.py:430
+#: c2cgeoportal/models.py:446
 msgid "Identifier attribute field"
 msgstr ""
 
-#: c2cgeoportal/models.py:431
+#: c2cgeoportal/models.py:447
 msgid "Related Postgres table"
 msgstr ""
 
-#: c2cgeoportal/models.py:432
+#: c2cgeoportal/models.py:448
 msgid "Attributes to exclude"
 msgstr ""
 
-#: c2cgeoportal/models.py:438
+#: c2cgeoportal/models.py:454
 msgid "Time mode"
 msgstr ""
 
-#: c2cgeoportal/models.py:474
+#: c2cgeoportal/models.py:490
 msgid "restrictionarea"
 msgstr ""
 
-#: c2cgeoportal/models.py:475
+#: c2cgeoportal/models.py:491
 msgid "restrictionareas"
 msgstr ""
 
-#: c2cgeoportal/models.py:486
+#: c2cgeoportal/models.py:502
 msgid "Read-write mode"
 msgstr ""
 
-#: c2cgeoportal/models.py:516
+#: c2cgeoportal/models.py:532
 msgid "parentrole"
 msgstr ""
 
-#: c2cgeoportal/models.py:517
+#: c2cgeoportal/models.py:533
 msgid "parentroles"
 msgstr ""
 
@@ -274,6 +274,10 @@ msgstr ""
 msgid "search tip message"
 msgstr ""
 
+#: c2cgeoportal/scaffolds/create/+package+/templates/index.html_tmpl:16
+msgid "Application Title"
+msgstr ""
+
 #: c2cgeoportal/templates/login.html:6
 msgid "Login to Geoportal Application"
 msgstr ""
@@ -286,13 +290,13 @@ msgstr ""
 msgid "my translation test"
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:76
+#: c2cgeoportal/views/entry.py:86
 msgid "title i18n"
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:115
+#: c2cgeoportal/views/entry.py:139
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover the "
-"themes"
+"themes."
 msgstr ""
 
