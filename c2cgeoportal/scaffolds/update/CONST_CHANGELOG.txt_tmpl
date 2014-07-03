@@ -98,6 +98,14 @@ Version 1.5
 
   * In the `{{package}}/templates/viewer.js`:
 
+    * Add a reference to the `LayerTree` plugin in the `MapOpacitySlider` config:
+
+        {
+            ptype: "cgxp_mapopacityslider",
+      +     layerTreeId: "layertree",
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
+        }
+
 9. Update the mobile application:
 
     * In the `{{package}}/static/mobile/config.js` file do the following changes:
