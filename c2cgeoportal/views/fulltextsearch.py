@@ -28,6 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
+
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 
@@ -94,7 +96,7 @@ class FullTextSearchView(object):
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms = '&'.join(w + ':*' for w in query.split(' ') if w != '')
+        terms = '&'.join(re.sub("'", "''", w) + ':*' for w in query.split(' ') if w != '')
         _filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
             {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
