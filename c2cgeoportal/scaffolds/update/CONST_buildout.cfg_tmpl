@@ -95,6 +95,7 @@ dbuser_replication = to_be_defined
 dbpassword_replication = to_be_defined
 
 [eggs]
+help = Install the eggs.
 recipe = z3c.recipe.scripts
 eggs = {{package}}
 dependent-scripts = true
@@ -104,6 +105,7 @@ initialization =
     for egg in ['PasteScript', 'Pyramid', 'c2cgeoportal']: paste.script.command.system_plugins.append(egg)
 
 [fix-perm]
+help = Fix the permissions.
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
@@ -145,6 +147,7 @@ uninstall_cmds =
     >>>    remove(fpath)
 
 [print-war]
+help = Build the print.
 recipe = c2c.recipe.jarfile
 mode = update
 basewar = print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
@@ -176,6 +179,7 @@ extends = vars
     facts
 
 [jsbuild]
+help = Build the JavaScript for the desktop application.
 recipe = JSTools:buildjs
 resource-dir = ${buildout:directory}/jsbuild
 # the following jsbuild config files must be written on
@@ -185,6 +189,7 @@ output-dir = {{package}}/static/build
 compress = True
 
 [jsbuild-mobile]
+help = Build OpenLayers for the mobile application.
 recipe = JSTools:buildjs
 resource-dir = ${buildout:directory}/jsbuild
 config = ${jsbuild:resource-dir}/mobile.cfg
@@ -193,6 +198,7 @@ only = openlayers-mobile.js
 compress = True
 
 [mobile]
+help = Build the JavaScript and the css for the desktop application.
 recipe = collective.recipe.cmd:py
 on_install = true
 on_update = true
@@ -211,6 +217,7 @@ cmds =
     >>> Popen([buildout.get('mobile').get('sencha_cmd'), 'app', 'build', 'production'], cwd=src_dir).wait()
 
 [cssbuild]
+help = Build the CSS for the desktop application.
 recipe = c2c.recipe.cssmin
 input =
     {{package}}/static/lib/cgxp/ext/Ext/resources/css/ext-all.css
@@ -231,6 +238,7 @@ input =
 output = {{package}}/static/build/app.css
 
 [cssbuild-api]
+help = Build the CSS for the API.
 recipe = c2c.recipe.cssmin
 input =
     {{package}}/static/lib/cgxp/openlayers/theme/default/style.css
@@ -238,6 +246,7 @@ input =
 output = {{package}}/static/build/api.css
 
 [cssbuild-xapi]
+help = Build the CSS for the extended API.
 recipe = c2c.recipe.cssmin
 input =
     {{package}}/static/lib/cgxp/core/src/theme/reset.css
@@ -303,5 +312,6 @@ input =
 output = {{package}}/static/build/xapi.css
 
 [po2mo]
+help = Update the server localysation.
 recipe = c2c.recipe.msgfmt
 po-directory = {{package}}/locale/
