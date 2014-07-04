@@ -6,11 +6,11 @@ Version 1.5
 
 1. Update the `jsbuild/app.cfg` file.
 
-    * In the language sections [fr.js], [de.js] Add the following
+    * In the language sections [lang-fr.js], [lang-de.js] Add the following
       localisation files (in `include`) respectively:
 
-        GeoExt.ux/locale/StreetViewPanel-fr.js
-        GeoExt.ux/locale/StreetViewPanel-de.js
+        ux/locale/StreetViewPanel-fr.js
+        ux/locale/StreetViewPanel-de.js
 
 2. Update the `production.ini.in` and `development.ini.in` files:
 
