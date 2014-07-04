@@ -122,13 +122,6 @@ cmds =
 [activate]
 recipe = evg.recipe.activate
 
-[cgxp-install]
-recipe = collective.recipe.cmd
-on_install = true
-on_update = false
-cmds =
-    (cd ${buildout:directory}/{{package}}/static/lib && git clone https://github.com/camptocamp/cgxp.git && cd cgxp && git submodule update --init)
-
 [print-template]
 recipe = collective.recipe.cmd:py
 on_install = true

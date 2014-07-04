@@ -1,5 +1,34 @@
 .. _integrator_update_application:
 
+Easy update the application code (experimental)
+-----------------------------------------------
+
+.. prompt:: bash
+
+   ./buildout/bin/c2ctool update
+
+Easy upgrade the application (experimental)
+-----------------------------------------------
+
+Create a ``project.yaml`` file that contains
+
+.. code::
+
+   project_folder: <folder>
+   project_package: <package>
+
+Where `<folder>` is the last element of the folder e.g. for
+`/home/user/c2cgeoportal` it will be `c2cgeoportal`.
+
+And the `<package>` is the package name
+
+.. prompt:: bash
+
+   ./buildout/bin/c2ctool upgrade
+
+And follow the instructions.
+
+
 Update a c2cgeoportal application
 ---------------------------------
 
