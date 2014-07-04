@@ -49,6 +49,12 @@ Version 1.5
         {{package}}/static/lib/cgxp/dygraphs
         {{package}}/static/js
 
+    * In the language sections [fr.js], [de.js] Add the following
+      localisation files (in `include`) respectively:
+
+        GeoExt.ux/locale/StreetViewPanel-fr.js
+        GeoExt.ux/locale/StreetViewPanel-de.js
+
 4. Update the `production.ini.in` and `development.ini.in` files:
 
   * Add the new default_max_age to 10 days:
