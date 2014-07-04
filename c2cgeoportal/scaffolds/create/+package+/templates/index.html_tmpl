@@ -13,7 +13,7 @@
             }
         </script>
 % endif
-        <title>{{package}} Geoportal Application</title>
+        <title>${_('Application Title')}</title>
         <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 
         <style>
