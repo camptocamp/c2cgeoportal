@@ -334,6 +334,7 @@ include =
     FeatureEditing/resources/lang/fr.js
     Styler/lang/fr.js
     GeoExt.ux/locale/WMSBrowser-fr.js
+    GeoExt.ux/locale/StreetViewPanel-fr.js
     locale/fr.js #GXP
     CGXP/locale/fr.js
     Proj/Lang/fr.js
@@ -377,6 +378,7 @@ include =
     FeatureEditing/resources/lang/de.js
     Styler/lang/de.js
     GeoExt.ux/locale/WMSBrowser-de.js
+    GeoExt.ux/locale/StreetViewPanel-de.js
     locale/de.js #GXP
     CGXP/locale/de.js
     Proj/Lang/de.js
