@@ -28,9 +28,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from os import environ, path
 import sys
+import argparse
 from subprocess import call, check_output
 from argparse import ArgumentParser
+
+
+_command_to_use = None
 
 
 def main():  # pragma: no cover
@@ -65,6 +70,9 @@ To have some help on a command type:
 
     parser = fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
+
+    global _command_to_use
+    _command_to_use = environ['COMMAND_TO_USE'] if 'COMMAND_TO_USE' in environ else sys.argv[0]
 
     if sys.argv[1] == 'build':
         build(options)
@@ -104,7 +112,10 @@ def fill_arguments(command):
         pass
     elif command == 'upgrade':
         parser.add_argument(
-            'version', metavar='VERSION', help='uUpdate to version'
+            '--step', type=int, help=argparse.SUPPRESS, default=0
+        )
+        parser.add_argument(
+            'version', metavar='VERSION', help='Update to version'
         )
     elif command == 'buildoutcmds':
         pass
@@ -115,20 +126,30 @@ def fill_arguments(command):
     return parser
 
 
-def build(options):
+def run_buildout_cmd(file='buildout.cfg', commands=[]):
     import zc.buildout.buildout
 
-    sys.argv = ['./buildout/bin/buildout', '-c', options.file]
+    sys.argv = ['./buildout/bin/buildout', '-c', file]
 
-    if options.cmd:
+    if len(commands) > 0:
         sys.argv += ['install']
-        sys.argv += [options.cmd]
-    elif options.desktop:
-        sys.argv += ['install', 'template', 'jsbuild', 'cssbuild']
-    elif options.mobile:
-        sys.argv += ['install', 'jsbuild-mobile', 'mobile']
+        sys.argv += commands
 
     zc.buildout.buildout.main()
+
+
+def build(options):
+    sys.argv = ['./buildout/bin/buildout', '-c', options.file]
+
+    cmds = []
+    if options.cmd:
+        cmds = options.cmd
+    elif options.desktop:
+        cmds = ['install', 'template', 'jsbuild', 'cssbuild']
+    elif options.mobile:
+        cmds = ['install', 'jsbuild-mobile', 'mobile']
+
+    run_buildout_cmd(options.file, cmds)
 
     call(['sudo', 'apache2ctl', 'graceful'])
 
@@ -141,10 +162,101 @@ def update(options):
     call(['git', 'submodule', 'update', '--init'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
+    run_buildout_cmd('CONST_buildout_cleaner.cfg')
+    call(['rm', '-rf', 'old'])
+
+
+def print_step(options, step, intro="To continue type:"):
+    global _command_to_use
+    print intro
+    print "\x1b[01;33m%s upgrade %s --step %i\x1b[0m" % (
+        _command_to_use, options.version, step
+    )
 
 
 def upgrade(options):
-    print "TODO"
+    from yaml import load
+    import c2cgeoportal.scripts.manage_db
+
+    if not path.isfile('project.yaml'):
+        print "Unable to find the required 'project.yaml' file."
+        exit(1)
+
+    project = load(file('project.yaml', 'r'))
+
+    if options.step == 0:
+        print project
+        print project['project_folder']
+        if path.split(path.realpath('.'))[1] != project['project_folder']:
+            print "Your project isn't in the right folder!"
+            print "It should be in folder '%s' instead of folder '%s'.i" % (
+                project['project_folder'], path.split(path.realpath('.'))[1]
+            )
+
+        call(['git', 'status'])
+        print
+        print "\x1b[01;32m=================================================================\x1b[0m"
+        print "Here is the output of 'git status'. Please make sure to commit all your changes " \
+            "before going further. All uncommited changes will be lost."
+        print_step(options, 1)
+
+    elif options.step == 1:
+        call(['git', 'status'])
+        call(['git', 'reset', '--hard'])
+        call(['git', 'clean', '-f', '-d'])
+        branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+        call(['git', 'pull', 'origin', branch])
+        call(['git', 'submodule', 'foreach', 'git', 'fetch'])
+        call([
+            'git', 'submodule', 'foreach', 'git', 'reset',
+            '--hard', 'origin/%s' % options.version
+        ])
+        call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
+        call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
+        call([
+            'wget',
+            'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
+            'c2cgeoportal/scaffolds/create/versions.cfg'
+            % options.version, '-O', 'versions.cfg'
+        ])
+        run_buildout_cmd(commands=['eggs'])
+
+        call([
+            './buildout/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
+            '../%s' % project['project_folder'], 'package=%s' % project['project_package']
+        ])
+
+        call(['git', 'diff', 'CONST_CHANGELOG.txt'])
+        print
+        print "\x1b[01;32m=================================================================\x1b[0m"
+        print "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file" \
+            " (listed previously)."
+        print_step(options, 2)
+
+    elif options.step == 2:
+        run_buildout_cmd('CONST_buildout_cleaner.cfg')
+        call(['rm', '-rf', 'old'])
+        run_buildout_cmd()
+        sys.argv = ['./buildout/bin/manage_db', 'upgrade']
+        c2cgeoportal.scripts.manage_db.main()
+        global _command_to_use
+
+        print
+        print "\x1b[01;32m=================================================================\x1b[0m"
+        print "The upgrade is nearly done, now you should:"
+        print "- build your application with:"
+        print "%s build BUILDOUT_FILE" % _command_to_use
+        print "- Test your application."
+        print "- Test that 'http://<application base>/wsgi/check_collector?type=all'" \
+            " returns no error."
+
+        print_step(options, 3, intro="Then to commit your changes type:")
+
+    elif options.step == 3:
+        call(['git', 'add', '-A'])
+        call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
+        branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+        call(['git', 'push', 'origin', branch])
 
 
 def readBuildoutFile(name, help):
