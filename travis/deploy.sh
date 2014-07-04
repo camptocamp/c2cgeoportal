@@ -15,6 +15,6 @@ if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
     cd -
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i 's/name=\'c2cgeoportal\',/name=\'c2cgeoportal-win\',/g'
+    sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
     ./buildout/bin/python setup.py sdist upload -r c2c-internal
 fi

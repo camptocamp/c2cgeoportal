@@ -161,6 +161,13 @@ Create a new package:
 
     ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
 
+Commit your changes:
+
+.. prompt:: bash
+
+    git add setup.py c2cgeoportal/scaffolds/create/versions.cfg
+    git commit -m "Do release <release>"
+
 Create a new package for Windows:
 
 .. prompt:: bash
@@ -170,17 +177,10 @@ Create a new package for Windows:
     cd -
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i 's/name=\'c2cgeoportal\',/name=\'c2cgeoportal-win\',/g'
-    ./buildout/bin/python setup.py sdist upload -r c2c-internal
+    sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
+    ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
     rm c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz
     git checkout MANIFEST.in setup.py
-
-Commit your changes:
-
-.. prompt:: bash
-
-    git add setup.py c2cgeoportal/scaffolds/create/versions.cfg
-    git commit -m "Do release <release>"
 
 Tag the new release:
 
