@@ -305,6 +305,6 @@ input =
 output = {{package}}/static/build/xapi.css
 
 [po2mo]
-help = Update the server localysation.
+help = Update the server localisation.
 recipe = c2c.recipe.msgfmt
 po-directory = {{package}}/locale/
