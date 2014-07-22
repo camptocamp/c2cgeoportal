@@ -6,11 +6,22 @@ Version 1.5
 
 1. Update the `jsbuild/app.cfg` file.
 
-    * In the language sections [lang-fr.js], [lang-de.js] Add the following
+    * In the language sections [lang-fr.js], [lang-de.js] add the following
       localisation files (in `include`) respectively:
 
         ux/locale/StreetViewPanel-fr.js
         ux/locale/StreetViewPanel-de.js
+
+    * To make sure that custom translations always have priority, also
+      do the following changes in [lang-fr.js], [lang-de.js]:
+
+        + last =
+        +     Proj/Lang/<lang>.js
+        +     Proj/Lang/GeoExt-<lang>.js
+          include =
+              ...
+        -     Proj/Lang/<lang>.js
+        -     Proj/Lang/GeoExt-<lang>.js
 
 2. Update the `production.ini.in` and `development.ini.in` files:
 
