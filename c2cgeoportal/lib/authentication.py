@@ -33,7 +33,8 @@ def create_authentication(settings):
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings.get('authtkt_secret'),
         callback=defaultgroupsfinder,
-        cookie_name=settings.get('authtkt_cookie_name'))
+        cookie_name=settings.get('authtkt_cookie_name'),
+        hashalg='sha512')
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
     policies = [cookie_authentication_policy, basic_authentication_policy]
     return MultiAuthenticationPolicy(policies)
