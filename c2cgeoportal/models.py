@@ -224,7 +224,7 @@ class User(Base):
 
     def __encrypt_password(self, password):
         """Hash the given password with SHA1."""
-        return unicode(sha1(password).hexdigest())
+        return sha1(password.encode('utf8')).hexdigest()
 
     def validate_password(self, passwd):
         """Check the password against existing credentials.
