@@ -29,6 +29,7 @@
 
 
 import os
+import warnings
 from optparse import OptionParser, SUPPRESS_HELP
 import pkg_resources
 
@@ -38,6 +39,8 @@ import c2cgeoportal
 
 
 def main():
+
+    warnings.simplefilter('ignore', DeprecationWarning)
 
     usage = 'The wrapper adds two options to define ' \
             'the target WSGI application.'
