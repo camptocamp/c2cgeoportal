@@ -805,7 +805,6 @@ class TestEntryView(TestCase):
             'maxResolutionHint': 1000,
             'disclaimer': 'Camptocamp',
             'identifierAttribute': 'name',
-            'editable': True,
             'public': True,
         }, ['The layer test internal WMS is not defined in WMS capabilities']))
 

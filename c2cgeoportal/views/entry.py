@@ -277,9 +277,7 @@ class Entry(object):
         return errors
 
     def _fill_editable(self, l, layer):
-        if layer.public:
-            l['editable'] = True
-        elif self.request.user:
+        if self.request.user:
             c = DBSession.query(RestrictionArea) \
                 .filter(RestrictionArea.roles.any(
                     Role.id == self.request.user.role.id)) \
