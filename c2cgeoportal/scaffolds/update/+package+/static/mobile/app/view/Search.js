@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2013 by Camptocamp SA
+ * Copyright (c) 2011-2014 by Camptocamp SA
  *
  * CGXP is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
