@@ -201,6 +201,7 @@ either expressed or implied, of the FreeBSD Project.
 
         internalWMS = state == "internal WMS"
         var e = $.fn.adminapp.findField("public",  [el.id]);
+        e.attr('readOnly', !internalWMS);
         if (internalWMS) {
             e.removeClass('disabledinput');
         }
@@ -321,4 +322,11 @@ $(document).ready(function(){
         $.fn.adminapp.toogleBaseLayer(wmsi, bl);
     }
 
+    // make read only for Chrome
+    var e = $(":checkbox");
+    e.click(function(evt) {
+        if ($(evt.target).hasClass('disabledinput')) {
+            evt.preventDefault();
+        }
+    });
 });
