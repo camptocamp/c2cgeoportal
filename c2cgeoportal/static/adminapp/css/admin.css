@@ -89,3 +89,9 @@ form div.fa_controls {
 #models-menu {
     border: 1px solid #AAAAAA;
 }
+/* mark as disabled for Chrome */
+form input[type="checkbox"].disabledinput {
+    opacity : .50;
+    filter  : alpha(opacity=50); /* IE<9 */
+    cursor  : default;
+}
