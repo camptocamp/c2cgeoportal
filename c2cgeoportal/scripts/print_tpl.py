@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013, Camptocamp SA
+# Copyright (c) 2011-2014, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,6 @@ def main():  # pragma: no cover
         mylookup = TemplateLookup(directories=['print/templates'])
         mytemplate = Template(filename=base_template, lookup=mylookup)
 
-        #print mytemplate.render()
         print_template = open('print/config.yaml', 'w+')
         print_template.write(mytemplate.render().encode('UTF-8'))
         print_template.close()
