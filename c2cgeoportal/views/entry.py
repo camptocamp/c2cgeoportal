@@ -326,9 +326,9 @@ class Entry(object):
             self.request.route_url('mapserverproxy'))
 
         # this is a leaf, ie. a Mapserver layer
-        if layer.minResolution:
+        if layer.minResolution is not None:
             l['minResolutionHint'] = layer.minResolution
-        if layer.maxResolution:
+        if layer.maxResolution is not None:
             l['maxResolutionHint'] = layer.maxResolution
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
@@ -357,9 +357,9 @@ class Entry(object):
         l['url'] = layer.url
         l['isSingleTile'] = layer.isSingleTile
 
-        if layer.minResolution:
+        if layer.minResolution is not None:
             l['minResolutionHint'] = layer.minResolution
-        if layer.minResolution:
+        if layer.maxResolution is not None:
             l['maxResolutionHint'] = layer.maxResolution
 
     def _fill_WMTS(self, l, layer, wms_layers, wms, errors):
@@ -392,9 +392,9 @@ class Entry(object):
         if layer.queryLayers == '[]':  # pragma: no cover
             l['queryLayers'] = []
 
-        if layer.minResolution:
+        if layer.minResolution is not None:
             l['minResolutionHint'] = layer.minResolution
-        if layer.minResolution:
+        if layer.maxResolution is not None:
             l['maxResolutionHint'] = layer.maxResolution
 
         # if we have associated local WMS layers then look at what's in the
