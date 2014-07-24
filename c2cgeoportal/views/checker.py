@@ -31,6 +31,7 @@
 from pyramid.view import view_config
 from pyramid.response import Response
 
+import httplib
 from httplib2 import Http
 import simplejson
 import logging
@@ -40,18 +41,20 @@ log = logging.getLogger(__name__)
 
 class Checker(object):  # pragma: no cover
 
-    status_int = 200
+    status_int = httplib.OK
+    status = httplib.responses[httplib.OK]
 
     def __init__(self, request):
         self.request = request
         self.settings = self.request.registry.settings['checker']
 
-    def update_status_int(self, code):
+    def set_status(self, code, text):
         self.status_int = max(self.status_int, int(code))
+        self.status = text
 
     def make_response(self, msg):
         return Response(
-            body=msg, status_int=self.status_int, cache_control="no-cache"
+            body=msg, status="%i %s" % (self.status_int, self.status), cache_control="no-cache"
         )
 
     def testurl(self, url):
@@ -67,8 +70,9 @@ class Checker(object):  # pragma: no cover
 
         resp, content = h.request(url, headers=headers)
 
-        if resp['status'] != '200':
-            self.update_status_int(resp['status'])
+        if resp.status != httplib.OK:
+            print resp.items()
+            self.set_status(resp.status, resp.reason)
             return url + "<br/>" + content
 
         return 'OK'
@@ -148,8 +152,8 @@ class Checker(object):  # pragma: no cover
         }
         resp, content = h.request(_url, 'POST', headers=headers, body=body)
 
-        if resp['status'] != '200':
-            self.update_status_int(resp['status'])
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
             return 'Failed creating PDF: ' + content
 
         log.info("Checker for printproxy pdf (retrieve): %s" % _url)
@@ -158,8 +162,8 @@ class Checker(object):  # pragma: no cover
         headers = {'Host': self.request.environ.get('HTTP_HOST')}
         resp, content = h.request(_url, headers=headers)
 
-        if resp['status'] != '200':
-            self.update_status_int(resp['status'])
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
             return 'Failed retrieving PDF: ' + content
 
         return 'OK'
@@ -181,14 +185,14 @@ class Checker(object):  # pragma: no cover
 
         resp, content = h.request(_url, headers=headers)
 
-        if resp['status'] != '200':
-            self.update_status_int(resp['status'])
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
             return content
 
         result = simplejson.loads(content)
 
         if len(result['features']) == 0:
-            self.update_status_int(400)
+            self.set_status(httplib.BAD_REQUEST, httplib.responses[httplib.BAD_REQUEST])
             return 'No result'
 
         return 'OK'
