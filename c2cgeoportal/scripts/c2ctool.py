@@ -31,9 +31,19 @@
 from os import environ, path
 import sys
 import argparse
-from subprocess import call, check_output
+from subprocess import call
 from argparse import ArgumentParser
 
+try:
+    from subprocess import check_output
+except ImportError:
+    from subprocess import Popen, PIPE
+
+    def check_output(cmd, cwd=None, stdin=None, stderr=None, shell=False):  # noqa
+        """Backwards compatible check_output"""
+        p = Popen(cmd, cwd=cwd, stdin=stdin, stderr=stderr, shell=shell, stdout=PIPE)
+        out, err = p.communicate()
+        return out
 
 _command_to_use = None
 
