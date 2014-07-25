@@ -102,13 +102,13 @@ class FullTextSearchView(object):
 
         # flake8 does not like `== True`
         if self.request.user is None:
-            _filter = and_(_filter, FullTextSearch.public == True)  # NOQA
+            _filter = and_(_filter, FullTextSearch.public.is_(True))
         else:
             _filter = and_(
                 _filter,
                 or_(
-                    FullTextSearch.public == True,  # NOQA
-                    FullTextSearch.role_id == None,
+                    FullTextSearch.public.is_(True),
+                    FullTextSearch.role_id.is_(None),
                     FullTextSearch.role_id == self.request.user.role.id
                 )
             )

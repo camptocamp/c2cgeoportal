@@ -239,7 +239,7 @@ class Layers(object):
                 allowed = DBSession.query(func.count(RestrictionArea.id))
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
-                allowed = allowed.filter(RestrictionArea.readwrite == True)
+                allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
                 allowed = allowed.filter(Role.id == self.request.user.role.id)
                 allowed = allowed.filter(Layer.id == layer.id)
                 allowed = allowed.filter(or_(
@@ -271,7 +271,7 @@ class Layers(object):
             allowed = DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
-            allowed = allowed.filter(RestrictionArea.readwrite == True)
+            allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id == self.request.user.role.id)
             allowed = allowed.filter(Layer.id == layer.id)
             none = None  # the only way I found to remove the pep8 warning
@@ -308,7 +308,7 @@ class Layers(object):
             allowed = DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
-            allowed = allowed.filter(RestrictionArea.readwrite == True)
+            allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id == self.request.user.role.id)
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(

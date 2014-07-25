@@ -149,7 +149,7 @@ class Entry(object):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
-        q = DBSession.query(Layer).filter(Layer.public == True)  # NOQA
+        q = DBSession.query(Layer).filter(Layer.public.is_(True))
         if role_id:
             q = q.union(get_protected_layers_query(role_id))
         return q
@@ -282,8 +282,8 @@ class Entry(object):
                 .filter(RestrictionArea.roles.any(
                     Role.id == self.request.user.role.id)) \
                 .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
-                .filter(RestrictionArea.readwrite == True) \
-                .count()  # NOQA
+                .filter(RestrictionArea.readwrite.is_(True)) \
+                .count()
             if c > 0:
                 l['editable'] = True
 
@@ -487,8 +487,8 @@ class Entry(object):
         """
         errors = []
         query = self._create_layer_query(role_id)
-        filter = Layer.inDesktopViewer == True if not mobile else \
-            Layer.inMobileViewer == True  # NOQA
+        filter = Layer.inDesktopViewer.is_(True) if not mobile else \
+            Layer.inMobileViewer.is_(True)
         query = query.filter(filter)
         query = query.order_by(Layer.order.asc())
         layers = query.all()
