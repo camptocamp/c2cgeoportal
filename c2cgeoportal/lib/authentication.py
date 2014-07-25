@@ -28,10 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import binascii
-
-from paste.httpheaders import AUTHORIZATION
-
 from pyramid.authentication import AuthTktAuthenticationPolicy, \
     BasicAuthAuthenticationPolicy
 from pyramid_multiauth import MultiAuthenticationPolicy
@@ -39,27 +35,7 @@ from pyramid_multiauth import MultiAuthenticationPolicy
 from c2cgeoportal.resources import defaultgroupsfinder
 
 
-def _get_basicauth_credentials(request):
-    authorization = AUTHORIZATION(request.environ)
-    try:
-        authmeth, auth = authorization.split(' ', 1)
-    except ValueError:  # not enough values to unpack
-        return None
-    if authmeth.lower() == 'basic':
-        try:
-            auth = auth.strip().decode('base64')
-        except binascii.Error:  # can't decode
-            return None
-        try:
-            login, password = auth.split(':', 1)
-        except ValueError:  # not enough values to unpack
-            return None
-        return {'login': login, 'password': password}
-
-    return None
-
-
-def create_authentication(settings):
+def create_authentication(settings):  # pargma: nocover
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings.get('authtkt_secret'),
         callback=defaultgroupsfinder,
@@ -70,8 +46,7 @@ def create_authentication(settings):
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(credentials, request):
-    if request.registry.validate_user(request, credentials['login'],
-                                      credentials['password']):
+def c2cgeoportal_check(username, password, request):  # pargma: nocover
+    if request.registry.validate_user(request, username, password):
         return []
     return None

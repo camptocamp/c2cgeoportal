@@ -50,7 +50,7 @@ class TestEntryView(TestCase):
 
     def setUp(self):
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-            RestrictionArea, Theme, LayerGroup
+            RestrictionArea, Theme, LayerGroup, Functionality
 
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
@@ -76,6 +76,10 @@ class TestEntryView(TestCase):
         theme = Theme(name=u'__test_theme')
         theme.children = [public_layer, private_layer, layer_group,
                 layer_wmsgroup]
+
+        functionality1 = Functionality(name=u'test_name', value=u'test_value_1')
+        functionality2 = Functionality(name=u'test_name', value=u'test_value_2')
+        theme.functionalities = [functionality1, functionality2]
 
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
@@ -359,7 +363,6 @@ class TestEntryView(TestCase):
 
         theme = response['themes'][0]
         layers = theme['allLayers']
-        self.assertEqual(len(layers), 4)
 
         self.assertEqual(set([
             layer['name'] for layer in layers
@@ -380,12 +383,6 @@ class TestEntryView(TestCase):
             {"username": "__test_user1"}
         )
 
-    def _find_layer(self, themes, layer_name):
-        for l in themes['children']:
-            if l['name'] == layer_name:
-                return True
-        return False
-
     def test_theme(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -396,23 +393,29 @@ class TestEntryView(TestCase):
         # unautenticated
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
-        self.assertFalse(self._find_layer(themes[0], '__test_private_layer'))
+        self.assertEquals(
+            set([l['name'] for l in themes[0]['children']]),
+            set(['__test_public_layer'])
+        )
 
         # autenticated on parent
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
-        self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
+        self.assertEquals(
+            set([l['name'] for l in themes[0]['children']]),
+            set(['__test_public_layer', '__test_private_layer'])
+        )
 
         # autenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))
-        self.assertTrue(self._find_layer(themes[0], '__test_private_layer'))
+        self.assertEquals(
+            set([l['name'] for l in themes[0]['children']]),
+            set(['__test_public_layer', '__test_private_layer'])
+        )
 
         # mapfile error
         request.params = {}
@@ -462,6 +465,20 @@ class TestEntryView(TestCase):
 
         response = entry._getVars()
         self.assertEquals(response['permalink_themes'], '["my_themes"]')
+
+    def test_mobile_cache_version(self):
+        from c2cgeoportal.views.entry import Entry
+
+        request = self._create_request_obj()
+        request.registry.settings.update({
+            'cache_version': u'123456789',
+        })
+        request.user = None
+        entry = Entry(request)
+        request.current_route_url = lambda **kwargs: 'http://example.com/current/view'
+        result = entry.mobile()
+        self.assertEquals(result['url_params'], 'cache_version=123456789')
+        self.assertEquals(result['extra_params'], 'cache_version=123456789')
 
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
