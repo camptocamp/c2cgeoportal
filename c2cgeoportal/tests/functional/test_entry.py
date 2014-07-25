@@ -387,35 +387,31 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         entry = Entry(request)
 
         # unautenticated
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l['name'] for l in themes[0]['children']]),
-            set(['__test_public_layer'])
-        )
+        layers = [l['name'] for l in themes[0]['children']]
+        self.assertTrue('__test_public_layer' in layers)
+        self.assertFalse('__test_private_layer' in layers)
 
         # autenticated on parent
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l['name'] for l in themes[0]['children']]),
-            set(['__test_public_layer', '__test_private_layer'])
-        )
+        layers = [l['name'] for l in themes[0]['children']]
+        self.assertTrue('__test_public_layer' in layers)
+        self.assertTrue('__test_private_layer' in layers)
 
         # autenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l['name'] for l in themes[0]['children']]),
-            set(['__test_public_layer', '__test_private_layer'])
-        )
+        layers = [l['name'] for l in themes[0]['children']]
+        self.assertTrue('__test_public_layer' in layers)
+        self.assertTrue('__test_private_layer' in layers)
 
         # mapfile error
         request.params = {}
@@ -484,7 +480,6 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.current_route_url = lambda **kwargs: 'http://example.com/current/view'
         mapserv = request.registry.settings['mapserv_url']
         request.registry.settings.update({

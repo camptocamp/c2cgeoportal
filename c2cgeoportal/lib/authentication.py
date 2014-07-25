@@ -35,7 +35,7 @@ from pyramid_multiauth import MultiAuthenticationPolicy
 from c2cgeoportal.resources import defaultgroupsfinder
 
 
-def create_authentication(settings):  # pargma: nocover
+def create_authentication(settings):  # pragma: nocover
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings.get('authtkt_secret'),
         callback=defaultgroupsfinder,
@@ -46,7 +46,7 @@ def create_authentication(settings):  # pargma: nocover
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(username, password, request):  # pargma: nocover
+def c2cgeoportal_check(username, password, request):  # pragma: nocover
     if request.registry.validate_user(request, username, password):
         return []
     return None

@@ -102,7 +102,7 @@ class MapservProxy:
             # In some application we want to display the features owned by a user
             # than we need his id.
             if not self.external:
-                params['user_id'] = self.user.id
+                params['user_id'] = self.user.id  # pragma: nocover
 
         # don't allows direct variable substitution
         for k in params.keys():
@@ -127,19 +127,29 @@ class MapservProxy:
             if 'request' not in self.lower_params:
                 params = {}  # pragma: no cover
             else:
-                # WMS GetLegendGraphic self.request?
-                use_cache = \
+                use_cache = (
+                    self.lower_params['request'] == u'getcapabilities'
+                ) or (
                     (
                         'service' not in self.lower_params or
                         self.lower_params['service'] == u'wms'
                     ) and (
-                        self.lower_params['request'] == u'getlegendgraphic' or
-                        self.lower_params['request'] == u'getcapabilities'
+                        self.lower_params['request'] == u'getlegendgraphic'
                     )
+                ) or (
+                    (
+                        'service' in self.lower_params and
+                        self.lower_params['service'] == u'wfs'
+                    ) and (
+                        self.lower_params['request'] == u'describefeaturetype'
+                    )
+                )
 
-                use_cache = use_cache or (
-                    ('service' in self.lower_params and self.lower_params['service'] == u'wfs') and
-                    self.lower_params['request'] == u'describefeaturetype')
+                # no user_id and role_id or cached queries
+                if use_cache and 'user_id' in params:
+                    del params['user_id']
+                if use_cache and 'role_id' in params:
+                    del params['role_id']
 
             if 'service' in self.lower_params and self.lower_params['service'] == u'wfs':
                 _url = self._get_external_wfs_url() if self.external else self._get_wfs_url()
