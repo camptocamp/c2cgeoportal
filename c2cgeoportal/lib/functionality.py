@@ -76,8 +76,9 @@ def get_functionality(name, config, request):
 
 def get_mapserver_substitution_params(request):
     params = {}
-    mss = get_functionality('mapserver_substitution',
-                            request.registry.settings, request)
+    mss = get_functionality(
+        'mapserver_substitution', request.registry.settings, request
+    )
     if mss:
         for s in mss:
             index = s.find('=')
@@ -89,6 +90,8 @@ def get_mapserver_substitution_params(request):
                 else:
                     params[attribute] = value
             else:
-                log.warning("Mapserver Substitution '%s' does not "
-                            "respect pattern: <attribute>=<value>" % s)
+                log.warning(
+                    "Mapserver Substitution '%s' does not "
+                    "respect pattern: <attribute>=<value>" % s
+                )
     return params

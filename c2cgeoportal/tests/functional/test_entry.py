@@ -400,8 +400,7 @@ class TestEntryView(TestCase):
         self.assertFalse(self._find_layer(themes[0], '__test_private_layer'))
 
         # autenticated on parent
-        role_id = DBSession.query(User.role_id).filter_by(username=u'__test_user1').one()
-        request.params = {'role_id': role_id}
+        request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
         self.assertTrue(self._find_layer(themes[0], '__test_public_layer'))

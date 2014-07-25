@@ -52,9 +52,9 @@ from math import sqrt
 from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
+from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
     Theme, RestrictionArea, Role, User
-from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -77,15 +77,13 @@ class Entry(object):
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
-        self.useSecurityMetadata = bool(
-            request.registry.settings.get('use_security_metadata', False))
 
     @view_config(route_name='testi18n', renderer='testi18n.html')
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
         return {'title': _('title i18n')}
 
-    def _wms_getcap(self, url, role_id=None):
+    def _wms_getcap(self, url):
         if url.find('?') < 0:
             url += '?'
 
@@ -94,10 +92,10 @@ class Entry(object):
         if sparams:  # pragma: no cover
             url += urllib.urlencode(sparams) + '&'
 
-        return self._wms_getcap_cached(url, role_id)
+        return self._wms_getcap_cached(url)
 
     @cache_region.cache_on_arguments()
-    def _wms_getcap_cached(self, url, role_id):
+    def _wms_getcap_cached(self, url):
         errors = []
         wms = None
 
@@ -108,12 +106,7 @@ class Entry(object):
         )
         url += '&'.join(['='.join(p) for p in params])
 
-        if role_id:
-            q = get_protected_layers_query(role_id)
-            for layer in q.all():
-                url += '&s_enable_' + str(layer.name) + '=*'
-
-        log.info("WMS GetCapabilities for base url: %s" % url)
+        log.info("Get WMS GetCapabilities for url: %s" % url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -495,8 +488,8 @@ class Entry(object):
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'],
-            role_id if self.useSecurityMetadata else None)
+            self.request.registry.settings['mapserv_url']
+        )
         if len(wms_errors) > 0:
             return [], wms_errors
 
@@ -572,7 +565,7 @@ class Entry(object):
             return self.request.registry.settings['mapserv_wfs_url']
         return self.request.registry.settings['mapserv_url']
 
-    def _internal_wfs_types(self, role_id=None):
+    def _internal_wfs_types(self, role_id):
         return self._wfs_types(self._get_wfs_url(), role_id)
 
     def _get_external_wfs_url(self):
@@ -584,13 +577,13 @@ class Entry(object):
             return self.request.registry.settings['external_mapserv_url']
         return None
 
-    def _external_wfs_types(self, role_id=None):
+    def _external_wfs_types(self, role_id):
         url = self._get_external_wfs_url()
         if not url:
             return [], []
         return self._wfs_types(url, role_id)
 
-    def _wfs_types(self, wfs_url, role_id=None):
+    def _wfs_types(self, wfs_url, role_id):
         if wfs_url.find('?') < 0:
             wfs_url += '?'
 
@@ -599,10 +592,13 @@ class Entry(object):
         if sparams:  # pragma: no cover
             wfs_url += urllib.urlencode(sparams) + '&'
 
-        return self._wfs_types_cached(wfs_url, role_id if self.useSecurityMetadata else None)
+        if role_id is not None:
+            wfs_url += "&role_id=%s" % role_id
+
+        return self._wfs_types_cached(wfs_url)
 
     @cache_region.cache_on_arguments()
-    def _wfs_types_cached(self, wfs_url, role_id):
+    def _wfs_types_cached(self, wfs_url):
         errors = []
 
         # retrieve layers metadata via GetCapabilities
@@ -612,10 +608,6 @@ class Entry(object):
             ('REQUEST', 'GetCapabilities'),
         )
         wfsgc_url = wfs_url + '&'.join(['='.join(p) for p in params])
-        if role_id:
-            q = get_protected_layers_query(role_id)
-            for layer in q.all():
-                wfsgc_url += '&s_enable_' + str(layer.name) + '=*'
 
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
@@ -957,11 +949,8 @@ class Entry(object):
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
         self.request.response.headers['Cache-Control'] = 'no-cache'
-        role_id = None if self.request.user is None \
-            else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'],
-            role_id if self.useSecurityMetadata else None)
+            self.request.registry.settings['mapserv_url'])
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(wms_errors))
         queryable_layers = [
@@ -981,11 +970,8 @@ class Entry(object):
     @view_config(route_name='xapijs', renderer='api/xapi.js')
     def xapijs(self):
         self.request.response.headers['Cache-Control'] = 'no-cache'
-        role_id = None if self.request.user is None \
-            else self.request.user.role.id
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'],
-            role_id if self.useSecurityMetadata else None)
+            self.request.registry.settings['mapserv_url'])
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
