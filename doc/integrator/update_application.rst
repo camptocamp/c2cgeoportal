@@ -1,5 +1,9 @@
 .. _integrator_update_application:
 
+Update the application
+======================
+
+
 Easy update the application code (experimental)
 -----------------------------------------------
 
