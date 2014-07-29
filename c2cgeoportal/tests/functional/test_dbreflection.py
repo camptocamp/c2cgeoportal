@@ -104,7 +104,7 @@ class TestReflection(TestCase):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self.assertRaises(NoSuchTableError, get_class, 'nonexisting')
+        self.assertRaises(NoSuchTableError, get_class, 'nonexisting', False)
         self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
@@ -115,7 +115,7 @@ class TestReflection(TestCase):
         from c2cgeoportal.lib.dbreflection import get_class
 
         self._create_table('table_a')
-        modelclass = get_class('table_a')
+        modelclass = get_class('table_a', True)
 
         # test the class
         self.assertEquals(modelclass.__name__, 'Table_a')
@@ -167,14 +167,14 @@ class TestReflection(TestCase):
             ('public', 'table_a') in
             c2cgeoportal.lib.dbreflection._class_cache
         )
-        _modelclass = get_class('table_a')
+        _modelclass = get_class('table_a', True)
         self.assertTrue(_modelclass is modelclass)
 
     def test_get_class_dotted_notation(self):
         from c2cgeoportal.lib.dbreflection import get_class
 
         self._create_table('table_b')
-        modelclass = get_class('public.table_b')
+        modelclass = get_class('public.table_b', False)
 
         self.assertEquals(modelclass.__name__, 'Table_b')
         self.assertEquals(modelclass.__table__.name, 'table_b')
@@ -192,7 +192,7 @@ class TestReflection(TestCase):
 
         DBSession.execute(text('SELECT id FROM table_c'))
 
-        modelclass = get_class('table_c')
+        modelclass = get_class('table_c', False)
         self.assertEquals(modelclass.__name__, 'Table_c')
 
         # This commits the transaction created by DBSession.execute. This
