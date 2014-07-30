@@ -1,3 +1,31 @@
+# Copyright (c) 2012-2014, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
+
+import logging
 import functools
 import warnings
 
@@ -13,6 +41,8 @@ from geoalchemy import (Point, LineString, Polygon,
 
 from papyrus.geo_interface import GeoInterface
 from papyrus.xsd import tag
+
+log = logging.getLogger(__name__)
 
 
 _class_cache = {}
@@ -160,7 +190,7 @@ def get_table(tablename, schema=None, DBSession=None):
     return table
 
 
-def get_class(tablename, DBSession=None):
+def get_class(tablename, use_cache, DBSession=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -170,21 +200,22 @@ def get_class(tablename, DBSession=None):
     """
     tablename, schema = _get_schema(tablename)
 
-    if (schema, tablename) in _class_cache:
+    if use_cache and (schema, tablename) in _class_cache:
         return _class_cache[(schema, tablename)]
 
     table = get_table(tablename, schema, DBSession)
 
     # create the mapped class
-    cls = _create_class(table)
+    cls = _create_class(table, use_cache)
 
     # add class to cache
-    _class_cache[(schema, tablename)] = cls
+    if use_cache:
+        _class_cache[(schema, tablename)] = cls
 
     return cls
 
 
-def _create_class(table):
+def _create_class(table, use_cache):
 
     cls = type(
         str(table.name.capitalize()),
@@ -194,20 +225,20 @@ def _create_class(table):
 
     for col in table.columns:
         if col.foreign_keys:
-            _add_association_proxy(cls, col)
+            _add_association_proxy(cls, col, use_cache)
         elif isinstance(col.type, Geometry):
             setattr(cls, col.name, GeometryColumn(col.type))
 
     return cls
 
 
-def _add_association_proxy(cls, col):
+def _add_association_proxy(cls, col, use_cache):
     if len(col.foreign_keys) != 1:  # pragma: no cover
         raise NotImplementedError
 
     fk = next(iter(col.foreign_keys))
     child_tablename, child_pk = fk.target_fullname.rsplit('.', 1)
-    child_cls = get_class(child_tablename)
+    child_cls = get_class(child_tablename, use_cache)
 
     try:
         proxy = col.name[0:col.name.rindex('_id')]

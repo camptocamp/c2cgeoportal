@@ -25,6 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import logging
+
 from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
                                     HTTPBadRequest, HTTPForbidden)
 from pyramid.view import view_config
@@ -49,8 +51,10 @@ from papyrus.protocol import Protocol, create_filter
 from c2cgeoportal.lib.dbreflection import get_class, get_table
 from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
+log = logging.getLogger(__name__)
 
-def _get_geom_col_info(layer):
+
+def _get_geom_col_info(layer, request):
     """ Return information about the layer's geometry column, namely
     a ``(name, srid)`` tuple, where ``name`` is the name of the
     geometry column, and ``srid`` its srid.
@@ -58,7 +62,10 @@ def _get_geom_col_info(layer):
     This function assumes that the names of geometry attributes
     in the mapped class are the same as those of geometry columns.
     """
-    mapped_class = get_class(str(layer.geoTable))
+    mapped_class = get_class(
+        str(layer.geoTable),
+        request.registry.settings.get('layers', {}).get('use_cache', True)
+    )
     for p in class_mapper(mapped_class).iterate_properties:
         if not isinstance(p, ColumnProperty):
             continue  # pragma: no cover
@@ -111,10 +118,13 @@ def _get_layer_for_request(request):
     return next(_get_layers_for_request(request))
 
 
-def _get_protocol_for_layer(layer, **kwargs):
+def _get_protocol_for_layer(layer, request, **kwargs):
     """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
-    cls = get_class(str(layer.geoTable))
-    geom_attr = _get_geom_col_info(layer)[0]
+    cls = get_class(
+        str(layer.geoTable),
+        request.registry.settings.get('layers', {}).get('use_cache', True)
+    )
+    geom_attr = _get_geom_col_info(layer, request)[0]
     return Protocol(DBSession, cls, geom_attr, **kwargs)
 
 
@@ -122,12 +132,12 @@ def _get_protocol_for_request(request, **kwargs):
     """ Returns a papyrus ``Protocol`` for the first layer
     id found in the ``layer_id`` matchdict. """
     layer = _get_layer_for_request(request)
-    return _get_protocol_for_layer(layer, **kwargs)
+    return _get_protocol_for_layer(layer, request, **kwargs)
 
 
 def _proto_read(layer, request):
     """ Read features for the layer based on the request. """
-    proto = _get_protocol_for_layer(layer)
+    proto = _get_protocol_for_layer(layer, request)
     if layer.public:
         return proto.read(request)
     user = request.user
@@ -176,7 +186,7 @@ def read_many(request):
 @view_config(route_name='layers_read_one', renderer='geojson')
 def read_one(request):
     layer = _get_layer_for_request(request)
-    protocol = _get_protocol_for_layer(layer)
+    protocol = _get_protocol_for_layer(layer, request)
     feature_id = request.matchdict.get('feature_id', None)
     feature = protocol.read(request, id=feature_id)
     if not isinstance(feature, Feature):
@@ -189,7 +199,7 @@ def read_one(request):
     if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
         return feature
     shape = asShape(geom)
-    srid = _get_geom_col_info(layer)[1]
+    srid = _get_geom_col_info(layer, request)[1]
     spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
     none = None  # the only way I found to remove the pep8 warning
     allowed = DBSession.query(func.count(RestrictionArea.id))
@@ -222,7 +232,7 @@ def create(request):
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = asShape(geom)
-            srid = _get_geom_col_info(layer)[1]
+            srid = _get_geom_col_info(layer, request)[1]
             spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
             none = None  # the only way I found to remove the pep8 warning
             allowed = DBSession.query(func.count(RestrictionArea.id))
@@ -238,7 +248,7 @@ def create(request):
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
-    protocol = _get_protocol_for_layer(layer, before_create=security_cb)
+    protocol = _get_protocol_for_layer(layer, request, before_create=security_cb)
     return protocol.create(request)
 
 
@@ -252,7 +262,7 @@ def update(request):
     def security_cb(r, feature, o):
         # we need both the "original" and "new" geometry to be
         # within the restriction area
-        geom_attr, srid = _get_geom_col_info(layer)
+        geom_attr, srid = _get_geom_col_info(layer, request)
         geom_attr = getattr(o, geom_attr)
         geom = feature.geometry
         allowed = DBSession.query(func.count(RestrictionArea.id))
@@ -276,7 +286,7 @@ def update(request):
         if allowed.scalar() == 0:
             raise HTTPForbidden()
 
-    protocol = _get_protocol_for_layer(layer, before_update=security_cb)
+    protocol = _get_protocol_for_layer(layer, request, before_update=security_cb)
     return protocol.update(request, feature_id)
 
 
@@ -288,7 +298,7 @@ def delete(request):
     layer = _get_layer_for_request(request)
 
     def security_cb(r, o):
-        geom_attr = getattr(o, _get_geom_col_info(layer)[0])
+        geom_attr = getattr(o, _get_geom_col_info(layer, request)[0])
         none = None  # the only way I found to remove the pep8 warning
         allowed = DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
@@ -303,7 +313,7 @@ def delete(request):
         if allowed.scalar() == 0:
             raise HTTPForbidden()
 
-    protocol = _get_protocol_for_layer(layer, before_delete=security_cb)
+    protocol = _get_protocol_for_layer(layer, request, before_delete=security_cb)
     return protocol.delete(request, feature_id)
 
 
@@ -312,7 +322,10 @@ def metadata(request):
     layer = _get_layer_for_request(request)
     if not layer.public and request.user is None:
         raise HTTPForbidden()
-    return get_class(str(layer.geoTable))
+    return get_class(
+        str(layer.geoTable),
+        request.registry.settings.get('layers', {}).get('use_cache', True)
+    )
 
 
 @view_config(route_name='layers_enumerate_attribute_values', renderer='json')
