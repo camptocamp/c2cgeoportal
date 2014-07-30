@@ -1,18 +1,18 @@
 .. _integrator_update_application:
 
-Update the application
-======================
+Updating a GeoMapFish application
+=================================
 
 
-Easy update the application code (experimental)
------------------------------------------------
+Easy updating an application code (experimental)
+------------------------------------------------
 
 .. prompt:: bash
 
    ./buildout/bin/c2ctool update
 
-Easy upgrade the application (experimental)
------------------------------------------------
+Easy upgrading an application (experimental)
+--------------------------------------------
 
 Create a ``project.yaml`` file that contains
 
@@ -33,11 +33,8 @@ And the `<package>` is the package name
 And follow the instructions.
 
 
-Update a c2cgeoportal application
----------------------------------
-
-Update the application code
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Updating an application code
+----------------------------
 
 To get the changes done by other people, we need to ``pull`` the new code:
 
@@ -64,8 +61,8 @@ To get the changes done by other people, we need to ``pull`` the new code:
         rm -rf old
 
 
-Update c2cgeoportal
-~~~~~~~~~~~~~~~~~~~
+Updating c2cgeoportal
+---------------------
 
 Upgrading an application to a new release of c2cgeoportal requires several
 steps:
@@ -182,8 +179,8 @@ steps:
         git add <file1> <file2> ...
 
 
-Update CGXP
-~~~~~~~~~~~
+Updating CGXP
+-------------
 
 To update CGXP to a release tag (like 1.3.0) use the following:
 
@@ -230,7 +227,7 @@ Do manual migration steps based on what's in the
 `CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 Test and commit
-~~~~~~~~~~~~~~~
+---------------
 
 * After the update process is done, do a final build of the application:
 
