@@ -240,7 +240,8 @@ class MapservProxy:
             content = filter_capabilities(
                 content, role_id, self.lower_params.get('service') == 'wms',
                 self.request.registry.settings['mapserv_url'],
-                self.request.headers
+                self.request.headers,
+                self.request.registry.settings.get('proxies', None)
             )
 
         content_type = None

@@ -31,12 +31,17 @@
 import logging
 import httplib2
 from StringIO import StringIO
-from urlparse import urlparse
+from urlparse import urlparse, urljoin
+from urllib import urlopen
 
 from xml import sax
+from xml.sax import saxutils
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
+from xml.sax.xmlreader import InputSource
 
 from pyramid.httpexceptions import HTTPBadGateway
+
+from sqlalchemy import distinct
 
 from owslib.wms import WebMapService
 
@@ -49,7 +54,7 @@ log = logging.getLogger(__name__)
 
 @cache_region.cache_on_arguments()
 def _get_protected_layers(role_id):
-    q = get_protected_layers_query(role_id, Layer.name)
+    q = get_protected_layers_query(role_id, distinct(Layer.name))
     return [r for r, in q.all()]
 
 
@@ -116,7 +121,39 @@ def _wms_structure(wms_url, host):
         raise HTTPBadGateway(error)
 
 
-def filter_capabilities(content, role_id, wms, wms_url, headers):
+def enable_proxies(proxies):  # pragma: no cover
+    old_prepare_input_source = saxutils.prepare_input_source
+
+    def caching_prepare_input_source(source, base=None):
+        if isinstance(source, InputSource):
+            return source
+
+        full_uri = urljoin(base or "", source)
+
+        # Convert StringIO to string
+        if hasattr(full_uri, 'getvalue'):
+            full_uri = full_uri.getvalue()
+
+        if not full_uri.startswith('http:'):
+            args = (source,) if base is None else (source, base)
+            return old_prepare_input_source(*args)
+
+        document = urlopen(full_uri, proxies=proxies)
+
+        input_source = InputSource()
+        input_source.setSystemId(source)
+        input_source.setByteStream(document)
+
+        return input_source
+
+    saxutils.prepare_input_source = caching_prepare_input_source
+
+
+def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
+
+    if proxies:  # pragma: no cover
+        enable_proxies(proxies)
+
     wms_structure = _wms_structure(wms_url, headers.get('Host', None))
     tmp_private_layers = _get_private_layers()
     for name in _get_protected_layers(role_id):
