@@ -84,7 +84,7 @@ Ext.application({
     },
 
     handleTablet: function() {
-        if (Ext.os.is.Tablet) {
+        if (Ext.os.is.Tablet || Ext.os.is.Desktop) {
             var msg = OpenLayers.String.format(
                 OpenLayers.i18n('redirect_msg'),
                 {
