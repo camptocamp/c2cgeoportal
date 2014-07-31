@@ -33,6 +33,7 @@ from time import time
 from pyramid.view import view_config
 from pyramid.response import Response
 
+import httplib
 from httplib2 import Http
 from urlparse import urlparse
 
@@ -40,7 +41,7 @@ from urlparse import urlparse
 class CheckerCollector(object):  # pragma: no cover
 
     def __init__(self, request):
-        self.status_int = 200
+        self.status_int = httplib.OK
         self.request = request
         self.settings = request.registry.settings['check_collector']
 
@@ -60,9 +61,11 @@ class CheckerCollector(object):  # pragma: no cover
             start1 = time()
             for check in checks:
                 start2 = time()
-                res = self._testurl("%s/%s" % (host['url'], check['name']))
+                res, err = self._testurl("%s/%s" % (host['url'], check['name']))
                 body += "<p>%s: %s (%0.4fs)</p>" % \
                     (check['display'], res, time() - start2)
+                if err:
+                    body += "%s<hr/>" % err
             body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
         body += "<p>Elapsed all: %0.4f</p>" % (time() - start0)
         return Response(
@@ -78,7 +81,10 @@ class CheckerCollector(object):  # pragma: no cover
 
         resp, content = h.request(localurl, headers=headers)
 
-        if resp['status'] != '200':
-            self.status_int = max(self.status_int, int(resp['status']))
+        if resp.status != httplib.OK:
+            self.status_int = max(self.status_int, resp.status)
+            return '<span style="color: red;">%i - %s</span>' % (
+                resp.status, resp.reason
+            ), content
 
-        return content
+        return '<span style="color: green;">%s</span>' % content, None
