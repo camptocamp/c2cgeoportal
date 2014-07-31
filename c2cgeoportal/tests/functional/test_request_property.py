@@ -39,12 +39,12 @@ class TestRequestProperty(TestCase):
         DBSession.query(Role).filter_by(name=u'__test_role').delete()
         transaction.commit()
 
-    @attr(no_auth=True)
+    @attr(request_no_auth=True)
     def test_request_no_auth(self):
         request = self._create_request()
         self.assertEqual(request.user, None)
 
-    @attr(auth=True)
+    @attr(request_auth=True)
     def test_request_auth(self):
         self.config.testing_securitypolicy(u'__test_user')
         request = self._create_request()
@@ -93,6 +93,7 @@ class TestRequestProperty(TestCase):
 
         self.assertEqual(request.user, None)
 
+    @attr(request_auth_overwritten_property=True)
     def test_request_auth_overwritten_property(self):
         def setter(request):
             class User(object):

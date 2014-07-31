@@ -37,6 +37,7 @@ class TestGroupsFinder(TestCase):
         DBSession.query(Role).filter_by(name=u'__test_role').delete()
         transaction.commit()
 
+    @attr(group_finder=True)
     def test_it(self):
         from c2cgeoportal.resources import defaultgroupsfinder
         self.config.testing_securitypolicy(u'__test_user')

@@ -115,6 +115,7 @@ class TestReflection(TestCase):
 
         self.metadata = Base.metadata
 
+    @attr(get_class_nonexisting_table=True)
     def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
         import c2cgeoportal.lib.dbreflection
@@ -123,6 +124,7 @@ class TestReflection(TestCase):
         self.assertRaises(NoSuchTableError, get_class, 'nonexisting')
         self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
 
+    @attr(get_class=True)
     def test_get_class(self):
         from geoalchemy2 import Geometry
         import c2cgeoportal.lib.dbreflection
@@ -185,6 +187,7 @@ class TestReflection(TestCase):
         _modelclass = get_class('table_a')
         self.assertTrue(_modelclass is modelclass)
 
+    @attr(get_class_dotted_notation=True)
     def test_get_class_dotted_notation(self):
         from c2cgeoportal.lib.dbreflection import get_class
 
@@ -195,6 +198,7 @@ class TestReflection(TestCase):
         self.assertEquals(modelclass.__table__.name, 'table_b')
         self.assertEquals(modelclass.__table__.schema, 'public')
 
+    @attr(mixing_get_class_and_queries=True)
     def test_mixing_get_class_and_queries(self):
         """ This test shows that we can mix the use of DBSession
         and the db reflection API. """
@@ -215,6 +219,7 @@ class TestReflection(TestCase):
         # which will block forever if the transaction is not committed.
         transaction.commit()
 
+    @attr(get_class_exclude_properties=True)
     def test_get_class_exclude_properties(self):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
@@ -280,6 +285,7 @@ class TestXSDSequenceCallback(TestCase):
             for table in self._tables:
                 table.drop()
 
+    @attr(xsd_sequence_callback=True)
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
         from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
