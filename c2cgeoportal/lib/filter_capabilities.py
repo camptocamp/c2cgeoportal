@@ -162,7 +162,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     private_layers = set()
     for layer in tmp_private_layers:
         private_layers.add(layer)
-        if layer in wms_structure:  # pragma: no cover
+        if layer in wms_structure:
             private_layers.update(wms_structure[layer])
 
     parser = sax.make_parser()
