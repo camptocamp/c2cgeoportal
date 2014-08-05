@@ -60,7 +60,7 @@ def get_protected_layers_query(role_id, what=None):
         (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
         (Role, Role.id == role_ra.c.role_id))
     q = q.filter(Role.id == role_id)
-    return q.filter(Layer.public != True)  # NOQA
+    return q.filter(Layer.public.is_(False))
 
 
 @implementer(IRoutePregenerator)

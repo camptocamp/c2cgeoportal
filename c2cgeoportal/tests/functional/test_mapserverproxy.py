@@ -244,9 +244,8 @@ class TestMapserverproxyView(TestCase):
             os.path.dirname(os.path.abspath(__file__)),
             'c2cgeoportal_test.map'
         )}
-        if username:
-            request.user = DBSession.query(User) \
-                                    .filter_by(username=username).one()
+        request.user = None if username is None else \
+            DBSession.query(User).filter_by(username=username).one()
         return request
 
     def test_GetLegendGraphic(self):
@@ -521,6 +520,57 @@ class TestMapserverproxyView(TestCase):
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertEquals(md5sum, '0a4fac2209d06c6fa36048c125b1679a')
+
+    def _create_getcap_request(self, username=None):
+        from c2cgeoportal.models import DBSession, User
+
+        request = createDummyRequest({
+            'mapserv_url': "%s?map=%s" % (mapserv_url, os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                'c2cgeoportal_test.map'
+            ))
+        })
+        request.user = None if username is None else \
+            DBSession.query(User).filter_by(username=username).one()
+        return request
+
+    @attr(getcapabilities=True)
+    def test_WMS_GetCapabilities(self):
+        from c2cgeoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_getcap_request()
+        request.params.update(dict(
+            service='wms', version='1.1.1', request='getcapabilities',
+        ))
+        response = MapservProxy(request).proxy()
+
+        self.assertFalse((response.body).find('<Name>testpoint_protected</Name>') > 0)
+
+        request = self._create_getcap_request(username=u'__test_user1')
+        request.params.update(dict(
+            service='wms', version='1.1.1', request='getcapabilities',
+        ))
+        response = MapservProxy(request).proxy()
+        self.assertTrue(response.body.find('<Name>testpoint_protected</Name>') > 0)
+
+    @attr(getcapabilities=True)
+    def test_WFS_GetCapabilities(self):
+        from c2cgeoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_getcap_request()
+        request.params.update(dict(
+            service='wfs', version='1.1.1', request='getcapabilities',
+        ))
+        response = MapservProxy(request).proxy()
+
+        self.assertFalse((response.body).find('<Name>testpoint_protected</Name>') > 0)
+
+        request = self._create_getcap_request(username=u'__test_user1')
+        request.params.update(dict(
+            service='wfs', version='1.1.1', request='getcapabilities',
+        ))
+        response = MapservProxy(request).proxy()
+        self.assertTrue(response.body.find('<Name>testpoint_protected</Name>') > 0)
 
     def GetFeature_IsEqualTo(self, value):
         from c2cgeoportal.views.mapserverproxy import MapservProxy

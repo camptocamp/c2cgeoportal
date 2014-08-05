@@ -65,6 +65,7 @@ MAP
 
     LAYER
         NAME "testpoint_unprotected"
+        GROUP "testpoint_group"
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -99,6 +100,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected"
+        GROUP "testpoint_group"
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -266,7 +268,7 @@ MAP
            "init=epsg:21781"
         END
         CLASS
-            NAME "testpoint_unprotected"
+            NAME "test_wmsfeatures"
             STYLE
                 SYMBOL "square"
                 SIZE 16
@@ -297,7 +299,7 @@ MAP
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
         CLASS
-            NAME "testpoint_unprotected"
+            NAME "test_wmstime"
             STYLE
                 SYMBOL "square"
                 SIZE 16

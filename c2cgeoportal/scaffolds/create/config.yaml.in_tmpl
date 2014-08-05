@@ -182,6 +182,9 @@ check_collector:
 #        - display: Child:
 #          url: http://${host}/child/wsgi
 
+#proxies:
+#    http: http://someproxy
+
 wfs:
     # Set to True so that MapserverProxy limits the number of features
     # returned by a WFS GetFeature request:

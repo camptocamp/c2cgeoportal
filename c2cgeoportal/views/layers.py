@@ -200,14 +200,13 @@ class Layers(object):
         shape = asShape(geom)
         srid = self._get_geom_col_info(layer)[1]
         spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-        none = None  # the only way I found to remove the pep8 warning
         allowed = DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
         allowed = allowed.filter(Role.id == self.request.user.role.id)
         allowed = allowed.filter(Layer.id == layer.id)
         allowed = allowed.filter(or_(
-            RestrictionArea.area == none,
+            RestrictionArea.area.is_(None),
             RestrictionArea.area.gcontains(spatial_elt)
         ))
         if allowed.scalar() == 0:
@@ -235,15 +234,14 @@ class Layers(object):
                 shape = asShape(geom)
                 srid = self._get_geom_col_info(layer)[1]
                 spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
-                none = None  # the only way I found to remove the pep8 warning
                 allowed = DBSession.query(func.count(RestrictionArea.id))
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
-                allowed = allowed.filter(RestrictionArea.readwrite == True)
+                allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
                 allowed = allowed.filter(Role.id == self.request.user.role.id)
                 allowed = allowed.filter(Layer.id == layer.id)
                 allowed = allowed.filter(or_(
-                    RestrictionArea.area == none,
+                    RestrictionArea.area.is_(None),
                     RestrictionArea.area.gcontains(spatial_elt)
                 ))
                 if allowed.scalar() == 0:
@@ -271,19 +269,18 @@ class Layers(object):
             allowed = DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
-            allowed = allowed.filter(RestrictionArea.readwrite == True)
+            allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id == self.request.user.role.id)
             allowed = allowed.filter(Layer.id == layer.id)
-            none = None  # the only way I found to remove the pep8 warning
             allowed = allowed.filter(or_(
-                RestrictionArea.area == none,
+                RestrictionArea.area.is_(None),
                 RestrictionArea.area.gcontains(geom_attr)
             ))
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
                 spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
                 allowed = allowed.filter(or_(
-                    RestrictionArea.area == none,
+                    RestrictionArea.area.is_(None),
                     RestrictionArea.area.gcontains(spatial_elt)
                 ))
             if allowed.scalar() == 0:
@@ -304,15 +301,14 @@ class Layers(object):
 
         def security_cb(r, o):
             geom_attr = getattr(o, self._get_geom_col_info(layer)[0])
-            none = None  # the only way I found to remove the pep8 warning
             allowed = DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
-            allowed = allowed.filter(RestrictionArea.readwrite == True)
+            allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
             allowed = allowed.filter(Role.id == self.request.user.role.id)
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(
-                RestrictionArea.area == none,
+                RestrictionArea.area.is_(None),
                 RestrictionArea.area.gcontains(geom_attr)
             ))
             if allowed.scalar() == 0:

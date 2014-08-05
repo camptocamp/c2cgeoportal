@@ -310,7 +310,7 @@ use ``^[a-z,]*$$`` (the double '$' is needed since we are
 in a ``.in`` file).
 
 .. note::
- 
+
      For MapServer above 6.0, you must place the value and the pattern definition
      in a VALIDATION section instead of the METADATA block::
 
@@ -352,8 +352,14 @@ listed in the ``DATA`` section. For instance::
     END
 
 Then add a ``mapserver_substitution`` functionality in the administration
-interface with for instance the following value for tthee given role:
+interface with for instance the following value for the given role:
 ``columns=t.private``.
+
+.. note::
+
+   We also be able to use the ``role_id`` and ``user_id`` as
+   variable substitution, but they are not avalable for cached query like:
+   ``GetCapabilities``, ``GetLegendGraphique``, ``DescribeFeatureType``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
 

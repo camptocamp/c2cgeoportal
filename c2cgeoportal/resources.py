@@ -48,6 +48,6 @@ def defaultgroupsfinder(username, request):
     the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
     policy. """
     if not hasattr(request, 'user'):
-        return []
+        return []  # pragma: nocover
     role = request.user.role
     return [role.name] if role else []

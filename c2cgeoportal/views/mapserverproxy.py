@@ -35,15 +35,15 @@ import logging
 
 from urlparse import urlparse
 
-from pyramid.httpexceptions import (HTTPBadGateway, HTTPNotAcceptable,
-                                    HTTPInternalServerError)
+from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable, \
+    HTTPInternalServerError
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import caching, get_protected_layers_query
+from c2cgeoportal.lib import caching
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
-from c2cgeoportal.models import Layer
+from c2cgeoportal.lib.filter_capabilities import filter_capabilities
 
 cache_region = caching.get_region()
 log = logging.getLogger(__name__)
@@ -54,11 +54,6 @@ class MapservProxy:
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get('wfs', {})
-
-    @cache_region.cache_on_arguments()
-    def _get_protected_layers(self, role_id):
-        q = get_protected_layers_query(role_id, Layer.name)
-        return [r for r, in q.all()]
 
     def _get_wfs_url(self):
         if 'mapserv_wfs_url' in self.request.registry.settings and \
@@ -77,11 +72,8 @@ class MapservProxy:
     @view_config(route_name='mapserverproxy')
     def proxy(self):
 
-        user = self.request.user
-        external = bool(self.request.params.get("EXTERNAL", None))
-        useSecurityMetadata = bool(self.request.registry.settings.get(
-            'use_security_metadata', False
-        ))
+        self.user = self.request.user
+        self.external = bool(self.request.params.get("EXTERNAL", None))
 
         # params hold the parameters we're going to send to MapServer
         params = dict(self.request.params)
@@ -91,7 +83,12 @@ class MapservProxy:
             del params['role_id']
         if 'user_id' in params:  # pragma: no cover
             del params['user_id']
-        if user:
+
+        self.lower_params = dict(
+            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+        )
+
+        if self.user is not None:
             # We have a user logged in. We need to set group_id and
             # possible layer_name in the params. We set layer_name
             # when either QUERY_PARAMS or LAYERS is set in the
@@ -100,12 +97,12 @@ class MapservProxy:
             # send layer_name, but MapServer shouldn't use the DATA
             # string for GetLegendGraphic.
 
-            params['role_id'] = user.parent_role.id if external else user.role.id
+            params['role_id'] = self.user.parent_role.id if self.external else self.user.role.id
 
             # In some application we want to display the features owned by a user
             # than we need his id.
-            if not external:
-                params['user_id'] = user.id
+            if not self.external:
+                params['user_id'] = self.user.id  # pragma: nocover
 
         # don't allows direct variable substitution
         for k in params.keys():
@@ -113,12 +110,6 @@ class MapservProxy:
                 log.warning("Direct substitution not allowed (%s=%s)." %
                             (k, params[k]))
                 del params[k]
-
-        # add protected layers enabling params
-        if user and useSecurityMetadata:
-            role_id = user.parent_role.id if external else user.role.id
-            for layer in self._get_protected_layers(role_id):
-                params['s_enable_' + str(layer)] = '*'
 
         # add functionalities params
         params.update(get_mapserver_substitution_params(self.request))
@@ -131,46 +122,60 @@ class MapservProxy:
         use_cache = False
 
         if method == "GET":
-            _params = dict(
-                (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
-            )
-
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
-            if 'request' not in _params:
+            if 'request' not in self.lower_params:
                 params = {}  # pragma: no cover
             else:
-                # WMS GetLegendGraphic self.request?
-                use_cache = ('service' not in _params or _params['service'] == u'wms') and \
-                    _params['request'] == u'getlegendgraphic'
+                use_cache = (
+                    self.lower_params['request'] == u'getcapabilities'
+                ) or (
+                    (
+                        'service' not in self.lower_params or
+                        self.lower_params['service'] == u'wms'
+                    ) and (
+                        self.lower_params['request'] == u'getlegendgraphic'
+                    )
+                ) or (
+                    (
+                        'service' in self.lower_params and
+                        self.lower_params['service'] == u'wfs'
+                    ) and (
+                        self.lower_params['request'] == u'describefeaturetype'
+                    )
+                )
 
-                if _params['service'] == u'wfs' and \
-                        _params['request'] == u'describefeaturetype':
-                    use_cache = True  # pragma: no cover
+                # no user_id and role_id or cached queries
+                if use_cache and 'user_id' in params:
+                    del params['user_id']
+                if use_cache and 'role_id' in params:
+                    del params['role_id']
 
-            if 'service' in _params and _params['service'] == u'wfs':
-                _url = self._get_external_wfs_url() if external else self._get_wfs_url()
+            if 'service' in self.lower_params and self.lower_params['service'] == u'wfs':
+                _url = self._get_external_wfs_url() if self.external else self._get_wfs_url()
             else:
                 _url = self.request.registry.settings['external_mapserv_url'] \
-                    if external \
+                    if self.external \
                     else self.request.registry.settings['mapserv_url']
         else:
             # POST means WFS
-            _url = self._get_external_wfs_url() if external else self._get_wfs_url()
+            _url = self._get_external_wfs_url() if self.external else self._get_wfs_url()
 
+        role_id = None if self.user is None else \
+            self.user.parent_role.id if self.external else self.user.role.id
         if use_cache:
-            return self._proxy_cache(_url, params, method, self.request.headers)
+            return self._proxy_cache(_url, params, method, self.request.headers, role_id)
         else:
             return self._proxy(
                 _url, params, use_cache, method, self.request.body,
-                self.request.headers
+                self.request.headers, role_id
             )
 
     @cache_region.cache_on_arguments()
-    def _proxy_cache(self, _url, params, method, headers):
-        return self._proxy(_url, params, True, method, None, headers)
+    def _proxy_cache(self, _url, params, method, headers, role_id):
+        return self._proxy(_url, params, True, method, None, headers, role_id)
 
-    def _proxy(self, _url, params, use_cache, method, body, headers):
+    def _proxy(self, _url, params, use_cache, method, body, headers, role_id):
         # name of the JSON callback (value for the "callback" query string param
         # in the self.request). None if self.request has no "callback" param in the query
         # string
@@ -184,7 +189,12 @@ class MapservProxy:
             params_encoded[k] = unicode(v).encode('utf-8')
         query_string = urllib.urlencode(params_encoded)
 
-        _url += '?' + query_string
+        parsed_url = urlparse(_url)
+        _url = "%s://%s%s?%s%s%s" % (
+            parsed_url.scheme, parsed_url.hostname,
+            parsed_url.path, parsed_url.query,
+            "&" if len(parsed_url.query) > 0 else "", query_string
+        )
         log.info("Querying mapserver proxy at URL: %s." % _url)
 
         # forward self.request to target (without Host Header)
@@ -224,6 +234,14 @@ class MapservProxy:
             content = limit_featurecollection(
                 content,
                 limit=self.settings.get('maxfeatures', 200)
+            )
+
+        if self.lower_params.get('request') == 'getcapabilities':
+            content = filter_capabilities(
+                content, role_id, self.lower_params.get('service') == 'wms',
+                self.request.registry.settings['mapserv_url'],
+                self.request.headers,
+                self.request.registry.settings.get('proxies', None)
             )
 
         content_type = None
