@@ -311,15 +311,14 @@ in a ``.in`` file).
 
 .. note::
 
-     For MapServer above 6.0, you must place the value and the pattern definition
-     in a VALIDATION section instead of the METADATA block::
+     For MapServer 6.0.x, the default value and the pattern definition
+     are placed in the METADATA block instead of the VALIDATION one.
+     The validation pattern uses a slightly different metadata name::
 
-        VALIDATION
+        METADATA
             "default_s_<variable>" "<default_value>"
-            "s_<variable>" "<validation_pattern>"
+            "s_<variable>_validation_pattern" "<validation_pattern>"
         END
-
-     VALIDATION block can be used within a CLASS, a LAYER or a WEB block.
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value.
@@ -342,7 +341,7 @@ listed in the ``DATA`` section. For instance::
         END
         VALIDATION
             "default_s_columns" "t.name"
-            "s_columns_validation_pattern" "^[a-z,._]*$$"
+            "s_columns" "^[a-z,._]*$$"
         END
         CLASS
             EXPRESSION ([type]=1)
