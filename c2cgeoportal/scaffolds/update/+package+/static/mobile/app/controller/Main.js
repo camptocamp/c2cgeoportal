@@ -333,7 +333,7 @@ Ext.define('App.controller.Main', {
                         layers: t.layers,
                         transparent: true
                     },{
-                        singleTile: true,
+                        singleTile: true
                     }
                 );
                 App.map.addLayer(overlay);
