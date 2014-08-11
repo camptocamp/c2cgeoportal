@@ -593,7 +593,7 @@ class Entry(object):
             wfs_url += urllib.urlencode(sparams) + '&'
 
         if role_id is not None:
-            wfs_url += "&role_id=%s" % role_id
+            wfs_url += "role_id=%s&" % role_id
 
         return self._wfs_types_cached(wfs_url)
 
