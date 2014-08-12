@@ -332,8 +332,10 @@ Ext.define('App.controller.Main', {
                         // layers to display at startup
                         layers: t.layers,
                         transparent: true
-                    },{
-                        singleTile: true
+                    }, {
+                        singleTile: true,
+                        // list of available layers
+                        allLayers: t.allLayers
                     }
                 );
                 App.map.addLayer(overlay);
