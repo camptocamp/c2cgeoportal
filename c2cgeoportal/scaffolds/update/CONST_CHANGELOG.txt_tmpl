@@ -140,6 +140,7 @@ Version 1.5
 
 8. Add the following line in the ``apache/wsgi.conf.in`` file:
 
+    RewriteRule ^${vars:apache-entry-point}search$ /${vars:instanceid}/wsgi/fulltextsearch [PT]
     RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
 
 9. Some important notices:
