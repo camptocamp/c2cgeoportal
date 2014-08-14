@@ -43,6 +43,7 @@ import simplejson as json
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
     MultiDomainPregenerator, MultiDomainStaticURLInfo
 
+
 # used by (sql|form)alchemy
 srid = None
 schema = None
@@ -93,15 +94,21 @@ def get_user_from_request(request):
     """
     from c2cgeoportal.models import DBSession, User
     from sqlalchemy.orm import joinedload
-    username = request.authenticated_userid
-    if username is not None:
-        # we know we'll need to role object for the
-        # user so we use earger loading
-        return DBSession.query(User) \
-            .options(joinedload(User.role)) \
-            .filter_by(username=username) \
-            .first()
-    return None
+
+    cache_region = caching.get_region()
+
+    @cache_region.cache_on_arguments()
+    def get_user_from_username(username):
+        if username is not None:
+            # We know we will need the role object of the
+            # user so we use joined loading
+            return DBSession.query(User) \
+                .options(joinedload(User.role)) \
+                .filter_by(username=username) \
+                .first()
+        return None
+
+    return get_user_from_username(request.authenticated_userid)
 
 
 def set_user_validator(config, user_validator):
