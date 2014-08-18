@@ -88,27 +88,26 @@ def locale_negotiator(request):
 
 
 def get_user_from_request(request):
-    """ Return the User object for the request. Return
-    ``None`` if user is anonymous or if it does not
+    """ Return the User object for the request.
+
+    Return ``None`` if user is anonymous or if it does not
     exist in the database.
     """
     from c2cgeoportal.models import DBSession, User
     from sqlalchemy.orm import joinedload
 
-    cache_region = caching.get_region()
-
-    @cache_region.cache_on_arguments()
-    def get_user_from_username(username):
+    if not hasattr(request, '_user'):
+        request._user = None
+        username = request.unauthenticated_userid
         if username is not None:
             # We know we will need the role object of the
             # user so we use joined loading
-            return DBSession.query(User) \
+            request._user = DBSession.query(User) \
                 .options(joinedload(User.role)) \
                 .filter_by(username=username) \
                 .first()
-        return None
 
-    return get_user_from_username(request.authenticated_userid)
+    return request._user
 
 
 def set_user_validator(config, user_validator):
