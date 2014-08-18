@@ -53,20 +53,21 @@ class CheckerCollector(object):  # pragma: no cover
         start0 = time()
         for host in self.settings['hosts']:
             params = self.request.params
-            check_type = params['type'] if 'type' in params else \
-                host['type'] if 'type' in host else 'default'
-            checks = self.settings['check_type'][check_type]
-            body += "<h2>%s</h2>" % host['display']
+            if 'host' not in params or host['display'] == params['host']:
+                check_type = params['type'] if 'type' in params else \
+                    host['type'] if 'type' in host else 'default'
+                checks = self.settings['check_type'][check_type]
+                body += "<h2>%s</h2>" % host['display']
 
-            start1 = time()
-            for check in checks:
-                start2 = time()
-                res, err = self._testurl("%s/%s" % (host['url'], check['name']))
-                body += "<p>%s: %s (%0.4fs)</p>" % \
-                    (check['display'], res, time() - start2)
-                if err:
-                    body += "%s<hr/>" % err
-            body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
+                start1 = time()
+                for check in checks:
+                    start2 = time()
+                    res, err = self._testurl("%s/%s" % (host['url'], check['name']))
+                    body += "<p>%s: %s (%0.4fs)</p>" % \
+                        (check['display'], res, time() - start2)
+                    if err:
+                        body += "%s<hr/>" % err
+                body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
         body += "<p>Elapsed all: %0.4f</p>" % (time() - start0)
         return Response(
             body=body, status_int=self.status_int, cache_control="no-cache"

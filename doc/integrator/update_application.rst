@@ -14,21 +14,33 @@ Easy updating an application code (experimental)
 Easy upgrading an application (experimental)
 --------------------------------------------
 
-Create a ``project.yaml`` file that contains
+Create a ``project.yaml.in`` file that contains:
 
 .. code::
 
    project_folder: <folder>
    project_package: <package>
+   host: <host>
+   checker_path: /${instance-id}/wsgi/check_collector
+   template_vars:
+        mobile_application_title: 'Geoportal Mobile Application'
 
-Where `<folder>` is the last element of the folder e.g. for
-`/home/user/c2cgeoportal` it will be `c2cgeoportal`.
+Where ``<folder>`` is the last element of the folder e.g. for
+``/home/user/c2cgeoportal`` it will be ``c2cgeoportal``,
 
-And the `<package>` is the package name
+the ``<package>`` is the package name,
+
+and the ``<host>`` is the host to use for the Apache VirtualHost.
+
+
+Add ``project.yaml`` in the ``.gitignore`` file.
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool upgrade
+   ./buildout/bin/c2ctool upgrade <buildout_file> <target_version>
+
+Where ``<buildout_file>`` is your user buildout file,
+``<target_version>`` is the version on witch we want to update to.
 
 And follow the instructions.
 

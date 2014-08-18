@@ -28,11 +28,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from os import environ, path
+from os import environ, path, unlink
 import sys
+import shutil
 import argparse
+import httplib2
 from subprocess import call
 from argparse import ArgumentParser
+from ConfigParser import ConfigParser
 
 try:
     from subprocess import check_output
@@ -46,6 +49,7 @@ except ImportError:
         return out
 
 _command_to_use = None
+_color_bar = "\x1b[01;32m=================================================================\x1b[0m"
 
 
 def main():  # pragma: no cover
@@ -124,10 +128,13 @@ def fill_arguments(command):
         )
     elif command == 'upgrade':
         parser.add_argument(
+            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build', default=None
+        )
+        parser.add_argument(
             '--step', type=int, help=argparse.SUPPRESS, default=0
         )
         parser.add_argument(
-            'version', metavar='VERSION', help='Update to version'
+            'version', metavar='VERSION', help='Upgrade to version'
         )
     elif command == 'buildoutcmds':
         pass
@@ -174,7 +181,7 @@ def update(options):
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
 
     run_buildout_cmd('CONST_buildout_cleaner.cfg')
-    call(['rm', '-rf', 'old'])
+    shutil.rmtree('old')
 
     run_buildout_cmd(options.file)
     call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
@@ -183,8 +190,10 @@ def update(options):
 def print_step(options, step, intro="To continue type:"):
     global _command_to_use
     print intro
-    print "\x1b[01;33m%s upgrade %s --step %i\x1b[0m" % (
-        _command_to_use, options.version, step
+    print "\x1b[01;33m%s upgrade %s %s --step %i\x1b[0m" % (
+        _command_to_use,
+        options.file if options.file is not None else "<buildout_user.cfg>",
+        options.version, step
     )
 
 
@@ -199,17 +208,15 @@ def upgrade(options):
     project = load(file('project.yaml', 'r'))
 
     if options.step == 0:
-        print project
-        print project['project_folder']
         if path.split(path.realpath('.'))[1] != project['project_folder']:
             print "Your project isn't in the right folder!"
-            print "It should be in folder '%s' instead of folder '%s'.i" % (
+            print "It should be in folder '%s' instead of folder '%s'." % (
                 project['project_folder'], path.split(path.realpath('.'))[1]
             )
 
         call(['git', 'status'])
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "Here is the output of 'git status'. Please make sure to commit all your changes " \
             "before going further. All uncommited changes will be lost."
         print_step(options, 1)
@@ -240,37 +247,72 @@ def upgrade(options):
             '../%s' % project['project_folder'], 'package=%s' % project['project_package']
         ])
 
-        call(['git', 'diff', 'CONST_CHANGELOG.txt'])
+        diff_file = open("changelog.diff", "w")
+        call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
+        diff_file.close()
+
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file" \
-            " (listed previously)."
+            " (listed in the `changelog.diff` file)."
         print_step(options, 2)
 
     elif options.step == 2:
+        if project.file is None:
+            print "The buildout file is missing"
+            exit(1)
+
+        buildout_config = ConfigParser()
+        buildout_config.read(project.file)
+        if buildout_config.has_option('buildout', 'develop'):
+            print(
+                "The user buildout file shouldn't override the `develop`"
+                " option of the `[buildout]` section."
+            )
+            exit(1)
+        if buildout_config.has_option('version', 'c2cgeoportal'):
+            print "The user buildout file shouldn't specify the `c2cgeoportal` version"
+            exit(1)
+
+        unlink("changelog.diff")
+
         run_buildout_cmd('CONST_buildout_cleaner.cfg')
-        call(['rm', '-rf', 'old'])
-        run_buildout_cmd()
+        shutil.rmtree('old')
+
+        run_buildout_cmd(options.file)
+
         sys.argv = ['./buildout/bin/manage_db', 'upgrade']
         c2cgeoportal.scripts.manage_db.main()
-        global _command_to_use
 
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "The upgrade is nearly done, now you should:"
         print "- build your application with:"
-        print "%s build BUILDOUT_FILE" % _command_to_use
         print "- Test your application."
-        print "- Test that 'http://<application base>/wsgi/check_collector?type=all'" \
-            " returns no error."
 
         print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
+        http = httplib2.Http()
+        for check_type in ["", "type=all"]:
+            resp, content = http.request(
+                "http://localhost/%s%s" % (project['checker_path'], check_type),
+                method='GET',
+                headers={
+                    "Host": project['host']
+                }
+            )
+            if resp.status < 200 or resp.status >= 300:
+                print(_color_bar)
+                print "Checker error:"
+                print "Open `http://%s/%s%s` for more informations." % (
+                    project['host'], project['checker_path'], check_type
+                )
+                print_step(options, 3, intro="Correct them then type:")
+                exit(1)
+
         call(['git', 'add', '-A'])
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
-        branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-        call(['git', 'push', 'origin', branch])
 
 
 def readBuildoutFile(name, help):

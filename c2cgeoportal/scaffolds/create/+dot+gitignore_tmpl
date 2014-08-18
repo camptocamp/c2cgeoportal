@@ -8,6 +8,7 @@ deploy/deploy.cfg
 development.ini
 production.ini
 config.yaml
+project.yaml
 mapserver/c2cgeoportal.map
 *.egg-info/
 {{package}}/locale/*/LC_MESSAGES/*.mo

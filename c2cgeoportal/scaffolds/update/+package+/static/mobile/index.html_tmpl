@@ -2,7 +2,7 @@
 <html lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title>{{package}} Mobile Application</title>
+    <title>{{mobile_application_title}}</title>
     <style type="text/css">
         /**
          * This file is managed by the update scaffold then
