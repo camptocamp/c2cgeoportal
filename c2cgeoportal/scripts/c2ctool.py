@@ -119,7 +119,9 @@ def fill_arguments(command):
             help='Build a specific buildout task.'
         )
     elif command == 'update':
-        pass
+        parser.add_argument(
+            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build'
+        )
     elif command == 'upgrade':
         parser.add_argument(
             '--step', type=int, help=argparse.SUPPRESS, default=0
@@ -149,8 +151,6 @@ def run_buildout_cmd(file='buildout.cfg', commands=[]):
 
 
 def build(options):
-    sys.argv = ['./buildout/bin/buildout', '-c', options.file]
-
     cmds = []
     if options.cmd:
         cmds = options.cmd
@@ -161,7 +161,7 @@ def build(options):
 
     run_buildout_cmd(options.file, cmds)
 
-    call(['sudo', 'apache2ctl', 'graceful'])
+    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def update(options):
@@ -172,8 +172,12 @@ def update(options):
     call(['git', 'submodule', 'update', '--init'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
+
     run_buildout_cmd('CONST_buildout_cleaner.cfg')
     call(['rm', '-rf', 'old'])
+
+    run_buildout_cmd(options.file)
+    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def print_step(options, step, intro="To continue type:"):
