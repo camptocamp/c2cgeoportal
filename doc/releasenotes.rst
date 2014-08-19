@@ -3,6 +3,81 @@
 Release notes
 =============
 
+1.5
+---
+
+New Features
+~~~~~~~~~~~~
+
+* Configure a default base map for each themes.
+* Be able to be authenticated in basic auth.
+* Measure a polyline in the mobile application.
+* Directly have a short permalink.
+* Display results on the map.
+* Multiline text editing in the edit interface.
+* Update StreetView for the new API.
+
+Full list
+~~~~~~~~~
+
+* `c2cgeoportal 1.5 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.5+is%3Aclosed>`_.
+* `CGXP 1.5 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.5+is%3Aclosed>`_.
+
+1.4
+---
+
+Main interface
+~~~~~~~~~~~~~~
+
+* The user is able to change his password.
+* Add WMS-T support.
+* Add a floor slider.
+* Display distance and area in the redlining tool.
+* Be able to rotate redlining geometries.
+* Get the circle radius.
+* Add a short permalink.
+* Add the attribute name in CSV export.
+* Better context management during the connection.
+* Display the legend for the external WMS.
+* Open by default the legend.
+* Open the layer group on activation.
+
+Editing interface
+~~~~~~~~~~~~~~~~~
+
+* Add snapping capabilities.
+
+Routing interface
+~~~~~~~~~~~~~~~~~
+
+* Completely new.
+
+Mobile interface
+~~~~~~~~~~~~~~~~
+
+* Interface consolidation
+* Add permalink
+* Update Sencha Touch
+* Query WMS group
+* Measure distance
+* Manage floors
+
+Full list
+~~~~~~~~~
+
+* `c2cgeoportal 1.4 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4+is%3Aclosed>`_.
+* `CGXP 1.4 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4+is%3Aclosed>`_.
+
+Stabilisation releases
+~~~~~~~~~~~~~~~~~~~~~~
+
+* `c2cgeoportal 1.4.5 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.5+is%3Aclosed>`_, `CGXP 1.4.5 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.5+is%3Aclosed>`_.
+* `c2cgeoportal 1.4.4 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.4+is%3Aclosed>`_, `CGXP 1.4.4 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.4+is%3Aclosed>`_.
+* `c2cgeoportal 1.4.3 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.3+is%3Aclosed>`_, `CGXP 1.4.3 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.3+is%3Aclosed>`_.
+* `c2cgeoportal 1.4.2 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.2+is%3Aclosed>`_, `CGXP 1.4.2 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.2+is%3Aclosed>`_.
+* `c2cgeoportal 1.4.1.1 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.1.1+is%3Aclosed>`_, `CGXP 1.4.1.1 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.1.1+is%3Aclosed>`_.
+* `c2cgeoportal 1.4.1 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.1+is%3Aclosed>`_, `CGXP 1.4.1 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.1+is%3Aclosed>`_.
+
 1.3
 ---
 
@@ -33,6 +108,5 @@ Bugfixs and other
 Full list
 ~~~~~~~~~
 
-https://github.com/camptocamp/cgxp/issues?milestone=4&page=1&state=closed
-
-https://github.com/camptocamp/c2cgeoportal/issues?milestone=7&page=1&sort=created&state=closed
+* `c2cgeoportal 1.3 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.3+is%3Aclosed>`_.
+* `CGXP 1.3 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.3+is%3Aclosed>`_.
