@@ -33,6 +33,7 @@ import sys
 import shutil
 import argparse
 import httplib2
+from yaml import load
 from subprocess import call
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
@@ -58,11 +59,11 @@ CYAN = 6
 WHITE = 7
 
 
-def colorize(text, color):
+def _colorize(text, color):
     return "\x1b[01;3%im%s\x1b[0m" % (color, text)
 
 _command_to_use = None
-_color_bar = colorize("=================================================================", GREEN)
+_color_bar = _colorize("=================================================================", GREEN)
 
 
 def main():  # pragma: no cover
@@ -74,11 +75,12 @@ def main():  # pragma: no cover
 
 Available commands:
 
-""" + colorize("help", GREEN) + """: show this page
-""" + colorize("build", GREEN) + """: build the application
-""" + colorize("update", GREEN) + """: update the application code
-""" + colorize("upgrade", GREEN) + """: upgrade the application to a new version
-""" + colorize("buildoutcmds", GREEN) + """: show the buildout commands
+""" + _colorize("help", GREEN) + """: show this page
+""" + _colorize("build", GREEN) + """: build the application
+""" + _colorize("update", GREEN) + """: update the application code
+""" + _colorize("upgrade", GREEN) + """: upgrade the application to a new version
+""" + _colorize("deploy", GREEN) + """: deploy the application to a server
+""" + _colorize("buildoutcmds", GREEN) + """: show the buildout commands
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -89,13 +91,13 @@ To have some help on a command type:
 
     if sys.argv[1] == 'help':
         if len(sys.argv) > 2:
-            parser = fill_arguments(sys.argv[2])
+            parser = _fill_arguments(sys.argv[2])
             parser.print_help()
         else:
             print usage
         exit()
 
-    parser = fill_arguments(sys.argv[1])
+    parser = _fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
 
     global _command_to_use
@@ -113,7 +115,7 @@ To have some help on a command type:
         print "Unknown command"
 
 
-def fill_arguments(command):
+def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
     if command == 'help':
         parser.add_argument(
@@ -158,7 +160,7 @@ def fill_arguments(command):
     return parser
 
 
-def run_buildout_cmd(file='buildout.cfg', commands=[]):
+def _run_buildout_cmd(file='buildout.cfg', commands=[]):
     import zc.buildout.buildout
 
     sys.argv = ['./buildout/bin/buildout', '-c', file]
@@ -179,7 +181,7 @@ def build(options):
     elif options.mobile:
         cmds = ['install', 'jsbuild-mobile', 'mobile']
 
-    run_buildout_cmd(options.file, cmds)
+    _run_buildout_cmd(options.file, cmds)
 
     call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
@@ -193,17 +195,17 @@ def update(options):
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
 
-    run_buildout_cmd('CONST_buildout_cleaner.cfg')
+    _run_buildout_cmd('CONST_buildout_cleaner.cfg')
     shutil.rmtree('old')
 
-    run_buildout_cmd(options.file)
+    _run_buildout_cmd(options.file)
     call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
-def print_step(options, step, intro="To continue type:"):
+def _print_step(options, step, intro="To continue type:"):
     global _command_to_use
     print intro
-    print colorize("%s upgrade %s %s --step %i", YELLOW) % (
+    print _colorize("%s upgrade %s %s --step %i", YELLOW) % (
         _command_to_use,
         options.file if options.file is not None else "<buildout_user.cfg>",
         options.version, step
@@ -232,7 +234,7 @@ def upgrade(options):
         print _color_bar
         print "Here is the output of 'git status'. Please make sure to commit all your changes " \
             "before going further. All uncommited changes will be lost."
-        print_step(options, 1)
+        _print_step(options, 1)
 
     elif options.step == 1:
         call(['git', 'status'])
@@ -253,7 +255,7 @@ def upgrade(options):
             'c2cgeoportal/scaffolds/create/versions.cfg'
             % options.version, '-O', 'versions.cfg'
         ])
-        run_buildout_cmd(commands=['eggs'])
+        _run_buildout_cmd(commands=['eggs'])
 
         call([
             './buildout/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
@@ -268,7 +270,7 @@ def upgrade(options):
         print _color_bar
         print "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file" \
             " (listed in the `changelog.diff` file)."
-        print_step(options, 2)
+        _print_step(options, 2)
 
     elif options.step == 2:
         if project.file is None:
@@ -289,10 +291,10 @@ def upgrade(options):
 
         unlink("changelog.diff")
 
-        run_buildout_cmd('CONST_buildout_cleaner.cfg')
+        _run_buildout_cmd('CONST_buildout_cleaner.cfg')
         shutil.rmtree('old')
 
-        run_buildout_cmd(options.file)
+        _run_buildout_cmd(options.file)
 
         sys.argv = ['./buildout/bin/manage_db', 'upgrade']
         c2cgeoportal.scripts.manage_db.main()
@@ -303,7 +305,7 @@ def upgrade(options):
         print "- build your application with:"
         print "- Test your application."
 
-        print_step(options, 3, intro="Then to commit your changes type:")
+        _print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
         http = httplib2.Http()
@@ -328,26 +330,26 @@ def upgrade(options):
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
 
 
-def readBuildoutFile(name, help):
+def _read_buildout_files_help(name, commands_help):
     from ConfigParser import ConfigParser
     config = ConfigParser()
     config.read(name)
 
     if config.has_option('buildout', 'extends'):
-        readBuildoutFile(config.get('buildout', 'extends'), help)
+        _read_buildout_files_help(config.get('buildout', 'extends'), commands_help)
 
     for cmd in config.sections():
         if config.has_option(cmd, 'help'):
-            help[cmd] = config.get(cmd, 'help')
+            commands_help[cmd] = config.get(cmd, 'help')
 
 
 def buildoutcmds(options):
-    help = {}
-    readBuildoutFile('buildout.cfg', help)
+    commands_help = {}
+    _read_buildout_files_help('buildout.cfg', commands_help)
 
-    for cmd, help in help.items():
+    for cmd, command_help in commands_help.items():
         # for cmd not in ['buildout', 'versions', 'eggs', 'activate']
-        print "%s: %s" % (colorize(cmd, GREEN), help)
+        print "%s: %s" % (_colorize(cmd, GREEN), command_help)
 
 
 if __name__ == "__main__":  # pragma: no cover
