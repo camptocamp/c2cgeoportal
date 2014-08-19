@@ -48,8 +48,21 @@ except ImportError:
         out, err = p.communicate()
         return out
 
+BLACK = 0
+RED = 1
+GREEN = 2
+YELLOW = 3
+BLUE = 4
+MAGENTA = 5
+CYAN = 6
+WHITE = 7
+
+
+def colorize(text, color):
+    return "\x1b[01;3%im%s\x1b[0m" % (color, text)
+
 _command_to_use = None
-_color_bar = "\x1b[01;32m=================================================================\x1b[0m"
+_color_bar = colorize("=================================================================", GREEN)
 
 
 def main():  # pragma: no cover
@@ -61,11 +74,11 @@ def main():  # pragma: no cover
 
 Available commands:
 
-\x1b[01;32mhelp\x1b[0m: show this page
-\x1b[01;32mbuild\x1b[0m: build the application
-\x1b[01;32mupdate\x1b[0m: update the application code
-\x1b[01;32mupgrade\x1b[0m: upgrade the application to a new version
-\x1b[01;32mbuildoutcmds\x1b[0m: show the buildout commands
+""" + colorize("help", GREEN) + """: show this page
+""" + colorize("build", GREEN) + """: build the application
+""" + colorize("update", GREEN) + """: update the application code
+""" + colorize("upgrade", GREEN) + """: upgrade the application to a new version
+""" + colorize("buildoutcmds", GREEN) + """: show the buildout commands
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -190,7 +203,7 @@ def update(options):
 def print_step(options, step, intro="To continue type:"):
     global _command_to_use
     print intro
-    print "\x1b[01;33m%s upgrade %s %s --step %i\x1b[0m" % (
+    print colorize("%s upgrade %s %s --step %i", YELLOW) % (
         _command_to_use,
         options.file if options.file is not None else "<buildout_user.cfg>",
         options.version, step
@@ -334,7 +347,7 @@ def buildoutcmds(options):
 
     for cmd, help in help.items():
         # for cmd not in ['buildout', 'versions', 'eggs', 'activate']
-        print "\x1b[01;32m%s\x1b[0m: %s" % (cmd, help)
+        print "%s: %s" % (colorize(cmd, GREEN), help)
 
 
 if __name__ == "__main__":  # pragma: no cover
