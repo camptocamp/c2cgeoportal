@@ -4,6 +4,21 @@ Updating a GeoMapFish application
 =================================
 
 
+User the easy c2c tool (experimantal)
+-------------------------------------
+
+The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish,
+to use it from a c2cgeoportal 1.4 you should at first get the c2cgeoportal 1.5:
+
+.. prompt:: bash
+
+   wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+    ./buildout/bin/buildout install eggs
+
+Replace ``<version>`` by a version number (branch) or release number (tag).
+To get the last dev version, replace ``<version>`` by ``master``.
+
+
 Easy updating an application code (experimental)
 ------------------------------------------------
 

@@ -33,6 +33,7 @@ from nose.plugins.attrib import attr
 
 import transaction
 import os
+import json
 from geoalchemy import WKTSpatialElement
 from pyramid import testing
 from owslib.wms import WebMapService
