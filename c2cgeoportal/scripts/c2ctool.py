@@ -109,6 +109,8 @@ To have some help on a command type:
         update(options)
     elif sys.argv[1] == 'upgrade':
         upgrade(options)
+    elif sys.argv[1] == 'deploy':
+        deploy(options)
     elif sys.argv[1] == 'buildoutcmds':
         buildoutcmds(options)
     else:
@@ -150,6 +152,15 @@ def _fill_arguments(command):
         )
         parser.add_argument(
             'version', metavar='VERSION', help='Upgrade to version'
+        )
+    elif command == 'deploy':
+        parser.add_argument(
+            'host', metavar='HOST', help='The destination host'
+        )
+        parser.add_argument(
+            '--components',
+            help="Restrict component to update. [databases,files,code]. default to all",
+            default=None
         )
     elif command == 'buildoutcmds':
         pass
@@ -212,15 +223,38 @@ def _print_step(options, step, intro="To continue type:"):
     )
 
 
-def upgrade(options):
-    from yaml import load
-    import c2cgeoportal.scripts.manage_db
-
+def _get_project():
     if not path.isfile('project.yaml'):
         print "Unable to find the required 'project.yaml' file."
         exit(1)
 
-    project = load(file('project.yaml', 'r'))
+    return load(file('project.yaml', 'r'))
+
+
+def _test_checkers(project):
+    http = httplib2.Http()
+    for check_type in ["", "type=all"]:
+        resp, content = http.request(
+            "http://localhost/%s%s" % (project['checker_path'], check_type),
+            method='GET',
+            headers={
+                "Host": project['host']
+            }
+        )
+        if resp.status < 200 or resp.status >= 300:
+            print(_color_bar)
+            print "Checker error:"
+            print "Open `http://%s/%s%s` for more informations." % (
+                project['host'], project['checker_path'], check_type
+            )
+            return False
+    return True
+
+
+def upgrade(options):
+    import c2cgeoportal.scripts.manage_db
+
+    project = _get_project()
 
     if options.step == 0:
         if path.split(path.realpath('.'))[1] != project['project_folder']:
@@ -308,26 +342,23 @@ def upgrade(options):
         _print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
-        http = httplib2.Http()
-        for check_type in ["", "type=all"]:
-            resp, content = http.request(
-                "http://localhost/%s%s" % (project['checker_path'], check_type),
-                method='GET',
-                headers={
-                    "Host": project['host']
-                }
-            )
-            if resp.status < 200 or resp.status >= 300:
-                print(_color_bar)
-                print "Checker error:"
-                print "Open `http://%s/%s%s` for more informations." % (
-                    project['host'], project['checker_path'], check_type
-                )
-                print_step(options, 3, intro="Correct them then type:")
-                exit(1)
+        if not _test_checkers():
+            _print_step(options, 3, intro="Correct them then type:")
+            exit(1)
 
         call(['git', 'add', '-A'])
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
+
+
+def deploy(options):
+    project = _get_project()
+    if not _test_checkers(project):
+        print _colorize("Correct them and run again", RED)
+        exit(1)
+
+    shutil.rmtree('buildout/parts/modwsgi')
+    call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
+    _run_buildout_cmd(commands=['modwsgi'])
 
 
 def _read_buildout_files_help(name, commands_help):
