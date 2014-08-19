@@ -222,7 +222,8 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_measure",
             actionTarget: "center.tbar",
-            toggleGroup: "maptools"
+            toggleGroup: "maptools",
+            minAzimuth: 0
         },
         {
             ptype: "cgxp_getfeature",
