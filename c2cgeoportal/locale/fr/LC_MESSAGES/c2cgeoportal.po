@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: c2cgeoportal 0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-03 15:21+0200\n"
+"POT-Creation-Date: 2014-08-20 16:37+0200\n"
 "PO-Revision-Date: 2011-08-31 17:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -292,22 +292,17 @@ msgstr "Connexion"
 msgid "my translation test"
 msgstr "mon test de traduction"
 
-#: c2cgeoportal/views/entry.py:86
+#: c2cgeoportal/views/entry.py:84
 msgid "title i18n"
 msgstr "Test de l'i18n"
 
-#: c2cgeoportal/views/entry.py:139
+#: c2cgeoportal/views/entry.py:132
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover "
 "the themes."
 msgstr ""
 
-#~ msgid "Display"
-#~ msgstr "Afficher"
-
-#~ msgid "Visible"
-#~ msgstr "Visible"
-
-#~ msgid ""
-#~ msgstr ""
+#: c2cgeoportal/views/entry.py:1116
+msgid "User not found in replication target database"
+msgstr "Utilisateur non trouvé dans la base de données de réplication"
 

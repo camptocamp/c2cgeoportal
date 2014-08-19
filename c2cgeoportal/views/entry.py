@@ -1077,8 +1077,9 @@ class Entry(object):
 
         return Response('true', headers=headers, cache_control="no-cache")
 
-    @view_config(route_name='loginchange')
+    @view_config(route_name='loginchange', renderer='json')
     def loginchange(self):
+        self.request.response.cache_control.no_cache = True
         new_password = self.request.params.get('newPassword', None)
         new_password_confirm = self.request.params.get('confirmNewPassword', None)
         if new_password is None or new_password_confirm is None:
@@ -1121,7 +1122,10 @@ class Entry(object):
                 msg = 'user not found in replication target database: %s' \
                     % self.request.user.username
                 log.exception(msg)
-                return HTTPBadRequest(msg)  # pragma nocover
+                return {
+                    "success": "false",
+                    "error": _("User not found in replication target database"),
+                }
             else:
                 u_r = dbuser_r.all()[0]
                 u_r._set_password(new_password)
@@ -1130,7 +1134,9 @@ class Entry(object):
                 log.info("password changed in replication target database \
                     for user: %s" % self.request.user.username)
 
-        return Response('true', cache_control="no-cache")
+        return {
+            "success": "true"
+        }
 
     @view_config(route_name='permalinktheme', renderer='index.html')
     def permalinktheme(self):
