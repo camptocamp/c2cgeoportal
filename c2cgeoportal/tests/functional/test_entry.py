@@ -262,10 +262,12 @@ class TestEntryView(TestCase):
         response = entry.viewer()
 
         self.assertEqual(
-            response['serverError'],
-            '["The layer __test_private_layer is not defined in WMS capabilities", '
-            '"The layer __test_public_layer is not defined in WMS capabilities", '
-            '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
+            set(json.loads(response['serverError'])),
+            set([
+                "The layer __test_private_layer is not defined in WMS capabilities",
+                "The layer __test_public_layer is not defined in WMS capabilities",
+                "The layer __test_layer_in_group is not defined in WMS capabilities"
+            ])
         )
 
         themes = json.loads(response['themes'])
@@ -436,9 +438,11 @@ class TestEntryView(TestCase):
 
         response = entry._getVars()
         self.assertEquals(
-            response['serverError'],
-            '["The layer __test_public_layer is not defined in WMS capabilities", '
-            '"The layer __test_layer_in_group is not defined in WMS capabilities"]'
+            set(json.loads(response['serverError'])),
+            set([
+                "The layer __test_public_layer is not defined in WMS capabilities",
+                "The layer __test_layer_in_group is not defined in WMS capabilities"
+            ])
         )
 
         result = '["testpoint_unprotected", "testpoint_protected", ' \
