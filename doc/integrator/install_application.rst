@@ -12,15 +12,12 @@ all the commands concerning the database.
 This guide considers that:
  - We use a server manages by Camptocamp, meaning:
     - all dependencies described in the
-      :ref:`system requirements <integrator_install_application_system_requirement>`
-      section are installed
-    - Postgres has a gis template 'template_postgis' and a user 'www-data'
-    - Apache use the user 'www-data'
- - We use Git as revision control
+      :ref:`requirements <integrator_requirements>` are installed,
+    - Postgres has a GIS template ``template_postgis`` and a user ``www-data``,
+    - Apache uses the user ``www-data``.
+ - Use Git as revision control.
 
 For the others system there is some notes to give some help.
-
-.. _integrator_install_application_system_requirement:
 
 Set up the database
 -------------------
