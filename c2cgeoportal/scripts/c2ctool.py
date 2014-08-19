@@ -28,11 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from os import environ, path
+from os import environ, path, unlink
 import sys
+import shutil
 import argparse
+import httplib2
+from yaml import load
 from subprocess import call
 from argparse import ArgumentParser
+from ConfigParser import ConfigParser
 
 try:
     from subprocess import check_output
@@ -45,7 +49,21 @@ except ImportError:
         out, err = p.communicate()
         return out
 
+BLACK = 0
+RED = 1
+GREEN = 2
+YELLOW = 3
+BLUE = 4
+MAGENTA = 5
+CYAN = 6
+WHITE = 7
+
+
+def _colorize(text, color):
+    return "\x1b[01;3%im%s\x1b[0m" % (color, text)
+
 _command_to_use = None
+_color_bar = _colorize("=================================================================", GREEN)
 
 
 def main():  # pragma: no cover
@@ -57,11 +75,12 @@ def main():  # pragma: no cover
 
 Available commands:
 
-\x1b[01;32mhelp\x1b[0m: show this page
-\x1b[01;32mbuild\x1b[0m: build the application
-\x1b[01;32mupdate\x1b[0m: update the application code
-\x1b[01;32mupgrade\x1b[0m: upgrade the application to a new version
-\x1b[01;32mbuildoutcmds\x1b[0m: show the buildout commands
+""" + _colorize("help", GREEN) + """: show this page
+""" + _colorize("build", GREEN) + """: build the application
+""" + _colorize("update", GREEN) + """: update the application code
+""" + _colorize("upgrade", GREEN) + """: upgrade the application to a new version
+""" + _colorize("deploy", GREEN) + """: deploy the application to a server
+""" + _colorize("buildoutcmds", GREEN) + """: show the buildout commands
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -72,13 +91,13 @@ To have some help on a command type:
 
     if sys.argv[1] == 'help':
         if len(sys.argv) > 2:
-            parser = fill_arguments(sys.argv[2])
+            parser = _fill_arguments(sys.argv[2])
             parser.print_help()
         else:
             print usage
         exit()
 
-    parser = fill_arguments(sys.argv[1])
+    parser = _fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
 
     global _command_to_use
@@ -90,13 +109,15 @@ To have some help on a command type:
         update(options)
     elif sys.argv[1] == 'upgrade':
         upgrade(options)
+    elif sys.argv[1] == 'deploy':
+        deploy(options)
     elif sys.argv[1] == 'buildoutcmds':
         buildoutcmds(options)
     else:
         print "Unknown command"
 
 
-def fill_arguments(command):
+def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
     if command == 'help':
         parser.add_argument(
@@ -119,13 +140,27 @@ def fill_arguments(command):
             help='Build a specific buildout task.'
         )
     elif command == 'update':
-        pass
+        parser.add_argument(
+            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build'
+        )
     elif command == 'upgrade':
+        parser.add_argument(
+            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build', default=None
+        )
         parser.add_argument(
             '--step', type=int, help=argparse.SUPPRESS, default=0
         )
         parser.add_argument(
-            'version', metavar='VERSION', help='Update to version'
+            'version', metavar='VERSION', help='Upgrade to version'
+        )
+    elif command == 'deploy':
+        parser.add_argument(
+            'host', metavar='HOST', help='The destination host'
+        )
+        parser.add_argument(
+            '--components',
+            help="Restrict component to update. [databases,files,code]. default to all",
+            default=None
         )
     elif command == 'buildoutcmds':
         pass
@@ -136,7 +171,7 @@ def fill_arguments(command):
     return parser
 
 
-def run_buildout_cmd(file='buildout.cfg', commands=[]):
+def _run_buildout_cmd(file='buildout.cfg', commands=[]):
     import zc.buildout.buildout
 
     sys.argv = ['./buildout/bin/buildout', '-c', file]
@@ -149,8 +184,6 @@ def run_buildout_cmd(file='buildout.cfg', commands=[]):
 
 
 def build(options):
-    sys.argv = ['./buildout/bin/buildout', '-c', options.file]
-
     cmds = []
     if options.cmd:
         cmds = options.cmd
@@ -159,9 +192,9 @@ def build(options):
     elif options.mobile:
         cmds = ['install', 'jsbuild-mobile', 'mobile']
 
-    run_buildout_cmd(options.file, cmds)
+    _run_buildout_cmd(options.file, cmds)
 
-    call(['sudo', 'apache2ctl', 'graceful'])
+    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def update(options):
@@ -172,43 +205,70 @@ def update(options):
     call(['git', 'submodule', 'update', '--init'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
     call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-    run_buildout_cmd('CONST_buildout_cleaner.cfg')
-    call(['rm', '-rf', 'old'])
+
+    _run_buildout_cmd('CONST_buildout_cleaner.cfg')
+    shutil.rmtree('old')
+
+    _run_buildout_cmd(options.file)
+    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
-def print_step(options, step, intro="To continue type:"):
+def _print_step(options, step, intro="To continue type:"):
     global _command_to_use
     print intro
-    print "\x1b[01;33m%s upgrade %s --step %i\x1b[0m" % (
-        _command_to_use, options.version, step
+    print _colorize("%s upgrade %s %s --step %i", YELLOW) % (
+        _command_to_use,
+        options.file if options.file is not None else "<buildout_user.cfg>",
+        options.version, step
     )
 
 
-def upgrade(options):
-    from yaml import load
-    import c2cgeoportal.scripts.manage_db
-
+def _get_project():
     if not path.isfile('project.yaml'):
         print "Unable to find the required 'project.yaml' file."
         exit(1)
 
-    project = load(file('project.yaml', 'r'))
+    return load(file('project.yaml', 'r'))
+
+
+def _test_checkers(project):
+    http = httplib2.Http()
+    for check_type in ["", "type=all"]:
+        resp, content = http.request(
+            "http://localhost/%s%s" % (project['checker_path'], check_type),
+            method='GET',
+            headers={
+                "Host": project['host']
+            }
+        )
+        if resp.status < 200 or resp.status >= 300:
+            print(_color_bar)
+            print "Checker error:"
+            print "Open `http://%s/%s%s` for more informations." % (
+                project['host'], project['checker_path'], check_type
+            )
+            return False
+    return True
+
+
+def upgrade(options):
+    import c2cgeoportal.scripts.manage_db
+
+    project = _get_project()
 
     if options.step == 0:
-        print project
-        print project['project_folder']
         if path.split(path.realpath('.'))[1] != project['project_folder']:
             print "Your project isn't in the right folder!"
-            print "It should be in folder '%s' instead of folder '%s'.i" % (
+            print "It should be in folder '%s' instead of folder '%s'." % (
                 project['project_folder'], path.split(path.realpath('.'))[1]
             )
 
         call(['git', 'status'])
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "Here is the output of 'git status'. Please make sure to commit all your changes " \
             "before going further. All uncommited changes will be lost."
-        print_step(options, 1)
+        _print_step(options, 1)
 
     elif options.step == 1:
         call(['git', 'status'])
@@ -229,66 +289,98 @@ def upgrade(options):
             'c2cgeoportal/scaffolds/create/versions.cfg'
             % options.version, '-O', 'versions.cfg'
         ])
-        run_buildout_cmd(commands=['eggs'])
+        _run_buildout_cmd(commands=['eggs'])
 
         call([
             './buildout/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
             '../%s' % project['project_folder'], 'package=%s' % project['project_package']
         ])
 
-        call(['git', 'diff', 'CONST_CHANGELOG.txt'])
+        diff_file = open("changelog.diff", "w")
+        call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
+        diff_file.close()
+
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file" \
-            " (listed previously)."
-        print_step(options, 2)
+            " (listed in the `changelog.diff` file)."
+        _print_step(options, 2)
 
     elif options.step == 2:
-        run_buildout_cmd('CONST_buildout_cleaner.cfg')
-        call(['rm', '-rf', 'old'])
-        run_buildout_cmd()
+        if project.file is None:
+            print "The buildout file is missing"
+            exit(1)
+
+        buildout_config = ConfigParser()
+        buildout_config.read(project.file)
+        if buildout_config.has_option('buildout', 'develop'):
+            print(
+                "The user buildout file shouldn't override the `develop`"
+                " option of the `[buildout]` section."
+            )
+            exit(1)
+        if buildout_config.has_option('version', 'c2cgeoportal'):
+            print "The user buildout file shouldn't specify the `c2cgeoportal` version"
+            exit(1)
+
+        unlink("changelog.diff")
+
+        _run_buildout_cmd('CONST_buildout_cleaner.cfg')
+        shutil.rmtree('old')
+
+        _run_buildout_cmd(options.file)
+
         sys.argv = ['./buildout/bin/manage_db', 'upgrade']
         c2cgeoportal.scripts.manage_db.main()
-        global _command_to_use
 
         print
-        print "\x1b[01;32m=================================================================\x1b[0m"
+        print _color_bar
         print "The upgrade is nearly done, now you should:"
         print "- build your application with:"
-        print "%s build BUILDOUT_FILE" % _command_to_use
         print "- Test your application."
-        print "- Test that 'http://<application base>/wsgi/check_collector?type=all'" \
-            " returns no error."
 
-        print_step(options, 3, intro="Then to commit your changes type:")
+        _print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
+        if not _test_checkers():
+            _print_step(options, 3, intro="Correct them then type:")
+            exit(1)
+
         call(['git', 'add', '-A'])
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
-        branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-        call(['git', 'push', 'origin', branch])
 
 
-def readBuildoutFile(name, help):
+def deploy(options):
+    project = _get_project()
+    if not _test_checkers(project):
+        print _colorize("Correct them and run again", RED)
+        exit(1)
+
+    shutil.rmtree('buildout/parts/modwsgi')
+    call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
+    _run_buildout_cmd(commands=['modwsgi'])
+
+
+def _read_buildout_files_help(name, commands_help):
     from ConfigParser import ConfigParser
     config = ConfigParser()
     config.read(name)
 
     if config.has_option('buildout', 'extends'):
-        readBuildoutFile(config.get('buildout', 'extends'), help)
+        _read_buildout_files_help(config.get('buildout', 'extends'), commands_help)
 
     for cmd in config.sections():
         if config.has_option(cmd, 'help'):
-            help[cmd] = config.get(cmd, 'help')
+            commands_help[cmd] = config.get(cmd, 'help')
 
 
 def buildoutcmds(options):
-    help = {}
-    readBuildoutFile('buildout.cfg', help)
+    commands_help = {}
+    _read_buildout_files_help('buildout.cfg', commands_help)
 
-    for cmd, help in help.items():
+    for cmd, command_help in commands_help.items():
         # for cmd not in ['buildout', 'versions', 'eggs', 'activate']
-        print "\x1b[01;32m%s\x1b[0m: %s" % (cmd, help)
+        print "%s: %s" % (_colorize(cmd, GREEN), command_help)
 
 
 if __name__ == "__main__":  # pragma: no cover

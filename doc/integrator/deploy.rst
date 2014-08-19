@@ -128,6 +128,33 @@ is required in the ``apache-entry-point`` but not in the URL, than
 `http://host/a_name` will work.
 
 
+Easy deploy (experimental)
+--------------------------
+
+First of all be sure that the application on the source server work well!
+
+Connect to your server using your SSH agent:
+
+.. prompt:: bash
+
+   ssh -A <dev_server>
+
+Go into your project directory:
+
+.. prompt:: bash
+
+   cd /var/www/<your_vhost>/private/<your_project>
+
+Deploy your project:
+
+.. prompt:: bash
+
+   ./buildout/bin/c2ctool deploy <host>
+
+Where ``<host>`` where host is your destination host that you configured in the
+``deploy/deploy.cfg`` file, e.g. ``demo``, ``prod``.
+
+
 To deploy from dev to demo
 --------------------------
 
@@ -136,7 +163,7 @@ Build on the dev server:
 .. prompt:: bash
 
   ssh -A <dev_server> # SSH agent forward is needed
-  cd /var/www/<your_vhost>/public/<your_project>
+  cd /var/www/<your_vhost>/private/<your_project>
   git pull origin master # update the code
   rm -rf buildout/parts/modwsgi # to prevent rights error
   ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportal
@@ -165,7 +192,7 @@ Deploy on the prod server:
 .. prompt:: bash
 
   ssh -A <demo_server> # SSH agent forward is needed
-  cd /var/www/<your_vhost>/public/<your_project>
+  cd /var/www/<your_vhost>/private/<your_project>
   cd deploy
   sudo -u deploy deploy -r deploy.cfg prod 
 

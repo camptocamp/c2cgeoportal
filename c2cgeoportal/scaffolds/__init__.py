@@ -29,6 +29,8 @@
 
 
 import re
+from os import path
+from yaml import load
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -79,7 +81,7 @@ class BaseTemplate(Template):  # pragma: no cover
                 vars['package'] = m.group(1)
                 break
 
-    def out(self, msg):  # pragma: no cover (replaceable testing hook)
+    def out(self, msg):
         print(msg)
 
 
@@ -93,9 +95,10 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         the variables list.
         """
         self._set_srid_in_vars(command, vars)
+        self._set_mobile_title_in_vars(command, vars)
         return BaseTemplate.pre(self, command, output_dir, vars)
 
-    def post(self, command, output_dir, vars):  # pragma: no cover
+    def post(self, command, output_dir, vars):
         """
         Overrides the base template class to print "Welcome to c2cgeoportal!"
         after a successful scaffolding rendering.
@@ -103,6 +106,23 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
 
         self.out('Welcome to c2cgeoportal!')
         return BaseTemplate.post(self, command, output_dir, vars)
+
+    def _set_mobile_title_in_vars(self, command, vars):
+        """
+        Set the mobile_title into the vars dict.
+        """
+        mobile_title = None
+        for arg in command.args:
+            m = re.match('mobile_application_title=(.+)', arg)
+            if m:
+                mobile_title = m.group(1)
+                break
+
+        if mobile_title is None:
+            prompt = 'The mobile application title:'
+            mobile_title = input_(prompt).strip()
+
+        vars['mobile_application_title'] = mobile_title
 
     def _set_srid_in_vars(self, command, vars):
         """
@@ -125,6 +145,23 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
                 'Specified SRID is not an integer')
 
 
-class TemplateUpdate(BaseTemplate):
+class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = 'update'
     summary = 'Template used to update a c2cgeoportal project'
+
+    def pre(self, command, output_dir, vars):
+        """
+        Overrides the base template, adding the "mobile_application_title" variable to
+        the variables list.
+        """
+
+        # Init defaults
+        vars['mobile_application_title'] = "Geoportal Mobile Application"
+
+        if path.exists('project.yaml'):
+            project = load(file('project.yaml', 'r'))
+            if 'template_vars' in project:
+                for key, value in project['template_vars'].items():
+                    vars[key] = value
+
+        return BaseTemplate.pre(self, command, output_dir, vars)
