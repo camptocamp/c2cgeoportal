@@ -226,7 +226,6 @@ to reference the new commit for the cgxp submodule:
 
     cd -
     git add <package>/static/lib/cgxp
-    git commit -m "Update cgxp submodule to <tag|branch>"
 
 .. warning::
 
