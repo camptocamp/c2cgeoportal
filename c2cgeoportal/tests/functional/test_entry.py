@@ -498,7 +498,8 @@ class TestEntryView(TestCase):
         all_params = set([
             'lang', 'tiles_url', 'debug',
             'serverError', 'themes', 'external_themes', 'functionality',
-            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls'
+            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls',
+            'url_params', 'url_role_params'
         ])
         result = entry.home()
         self.assertEquals(

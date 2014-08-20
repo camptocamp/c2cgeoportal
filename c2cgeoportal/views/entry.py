@@ -719,6 +719,15 @@ class Entry(object):
                         path=''
                     )
 
+        cache_version = self.settings.get('cache_version', None)
+        url_params = {}
+        url_role_params = {} if self.request.user is None else {
+            'role': self.request.user.role.name
+        }
+        if cache_version:  # pragma: no cover
+            url_params['version'] = cache_version
+            url_role_params['version'] = cache_version
+
         d = {
             'themes': json.dumps(themes),
             'user': self.request.user,
@@ -728,6 +737,8 @@ class Entry(object):
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
             'queryer_attribute_urls': json.dumps(layers_enum),
+            'url_params': url_params,
+            'url_role_params': url_role_params,
             'serverError': json.dumps(errors),
         }
 

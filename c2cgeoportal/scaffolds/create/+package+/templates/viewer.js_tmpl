@@ -1,4 +1,5 @@
 <%
+from json import dumps
 wfs_settings = request.registry.settings.get('wfs', {})
 %>
 Ext.onReady(function() {
@@ -176,6 +177,7 @@ Ext.onReady(function() {
             outputTarget: "left-panel",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            printProviderConfig: ${dumps(url_role_params)|n},
             options: {
                 labelAlign: 'top',
                 defaults: {
