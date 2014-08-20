@@ -71,7 +71,7 @@
 
         <div style="display:none">
             <div id="search-tip">
-                <p>${_('search tip message')}</p>
+                <p>${_('search tip message') | n}</p>
             </div>
         </div>
 
