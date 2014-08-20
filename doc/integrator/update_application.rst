@@ -4,12 +4,28 @@ Updating a GeoMapFish application
 =================================
 
 
+User the easy c2c tool (experimantal)
+-------------------------------------
+
+The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish,
+to use it from a c2cgeoportal 1.4 you should at first get the c2cgeoportal 1.5:
+
+.. prompt:: bash
+
+   wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+    ./buildout/bin/buildout install eggs
+
+Replace ``<version>`` by a version number (branch) or release number (tag).
+To get the last dev version, replace ``<version>`` by ``master``.
+
+
 Easy updating an application code (experimental)
 ------------------------------------------------
 
 .. prompt:: bash
 
    ./buildout/bin/c2ctool update
+
 
 Easy upgrading an application (experimental)
 --------------------------------------------
@@ -71,6 +87,53 @@ To get the changes done by other people, we need to ``pull`` the new code:
 
         ./buildout/bin/buildout -c CONST_buildout_cleaner.cfg
         rm -rf old
+
+
+Updating CGXP
+-------------
+
+To update CGXP to a release tag (like 1.3.0) use the following:
+
+.. prompt:: bash
+
+    cd <package>/static/lib/cgxp
+    git fetch
+    git checkout <tag>
+    git submodule sync
+    git submodule update --init
+
+To update CGXP to a version branch (like 1.3) use the following:
+
+.. prompt:: bash
+
+    cd <package>/static/lib/cgxp
+    git fetch
+    git checkout <branch>
+    git pull origin <branch>
+    git submodule sync
+    git submodule update --init
+
+``<package>`` is to be replaced by the name of your application package name,
+``<tag>`` is the name of the release (in Git we use a tag),
+``<branch>`` is the name of the version (in Git we use a branch).
+
+If the application code is under Git you also need to update the application
+to reference the new commit for the cgxp submodule:
+
+.. prompt:: bash
+
+    cd -
+    git add <package>/static/lib/cgxp
+
+.. warning::
+
+    We have a major issue here for applications under SVN. When SVN, as
+    opposed to Git, is used for the application the version of CGXP is
+    not fixed in the application. This means that each installation of
+    an application may work with a different version of CGXP.
+
+Do manual migration steps based on what's in the
+`CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 
 Updating c2cgeoportal
@@ -190,52 +253,6 @@ steps:
 
         git add <file1> <file2> ...
 
-
-Updating CGXP
--------------
-
-To update CGXP to a release tag (like 1.3.0) use the following:
-
-.. prompt:: bash
-
-    cd <package>/static/lib/cgxp
-    git fetch
-    git checkout <tag>
-    git submodule sync
-    git submodule update --init
-
-To update CGXP to a version branch (like 1.3) use the following:
-
-.. prompt:: bash
-
-    cd <package>/static/lib/cgxp
-    git fetch
-    git checkout <branch>
-    git pull origin <branch>
-    git submodule sync
-    git submodule update --init
-
-``<package>`` is to be replaced by the name of your application package name,
-``<tag>`` is the name of the release (in Git we use a tag),
-``<branch>`` is the name of the version (in Git we use a branch).
-
-If the application code is under Git you also need to update the application
-to reference the new commit for the cgxp submodule:
-
-.. prompt:: bash
-
-    cd -
-    git add <package>/static/lib/cgxp
-
-.. warning::
-
-    We have a major issue here for applications under SVN. When SVN, as
-    opposed to Git, is used for the application the version of CGXP is
-    not fixed in the application. This means that each installation of
-    an application may work with a different version of CGXP.
-
-Do manual migration steps based on what's in the
-`CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 Test and commit
 ---------------

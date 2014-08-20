@@ -21,7 +21,7 @@ application, and does the initial setup. *Developer* is the person who
 produces code for c2cgeoportal itself.
 
 The c2cgeoportal project is composed of two software components: CGXP, a JS
-library based on OpenGeo's `GXP <http://github.com/opengeo/GXP>`_, and
+library based on `Boundless GXP <http://github.com/boundless/GXP>`_, and
 c2cgeoportal, a Python library for the Pyramid web framework. So c2cgeoportal
 applications are Pyramid applications with user interfaces based on ExtJS and
 OpenLayers.
@@ -32,6 +32,12 @@ ourselves!*
 
 :ref:`releasenotes`.
 
+`Demo <http://mapfish-geoportal.demo-camptocamp.com/1.5>`_,
+`with features grid <http://mapfish-geoportal.demo-camptocamp.com/1.5?grig>`_,
+to test the editing you can use the username 'demo' with the password 'demo'.
+
+`CGXP (Client) documentation <http://docs.camptocamp.net/cgxp/master/>`_.
+
 .. toctree::
    :hidden:
 
@@ -39,11 +45,3 @@ ourselves!*
    builddoc
 
 See the :ref:`build_doc` section to know how to build this doc.
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
