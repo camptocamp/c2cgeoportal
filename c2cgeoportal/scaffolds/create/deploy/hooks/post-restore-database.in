@@ -16,7 +16,10 @@ DATABASES=$@
 #   psql -c "VACUUM ANALYZE;" $b
 # done
 
-psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+# The following line works only with Postgres 9.3 and upper.
+# otherwise the schema should be create manually
+# psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+
 psql -c 'CREATE TABLE ${schema}_static.shorturl IF NOT EXISTS (
     id serial PRIMARY KEY,
     url character varying(1000),
