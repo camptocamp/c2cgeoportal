@@ -149,7 +149,7 @@ Ext.onReady(function() {
 % if permalink_themes:
                 permalinkThemes: ${permalink_themes | n},
 % endif
-                defaultThemes: ["to_be_defined"],
+                defaultThemes: ["default_theme_to_load"],
                 uniqueTheme: true,
                 wmsURL: "${request.route_url('mapserverproxy', path='')}",
                 wmsOptions: {
@@ -173,7 +173,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_print",
             legendPanelId: "legendPanel",
-            featureProvider: "featuresGrid",
+            featureProvider: "featuresProvider",
             outputTarget: "left-panel",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
@@ -187,13 +187,10 @@ Ext.onReady(function() {
             }
         },
         {
-            ptype: "cgxp_featuresgrid",
-            id: "featuresGrid",
-            csvURL: "${request.route_url('csvecho')}",
-            outputTarget: "featuresgrid-container",
+            ptype: "cgxp_featureswindow",
+            id: "featuresProvider",
             themes: THEMES,
-            events: EVENTS,
-            csvIncludeHeader: true
+            events: EVENTS
         },
         {
             ptype: "cgxp_mapopacityslider",
