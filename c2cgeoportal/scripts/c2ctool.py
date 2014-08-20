@@ -188,9 +188,9 @@ def build(options):
     if options.cmd:
         cmds = options.cmd
     elif options.desktop:
-        cmds = ['install', 'template', 'jsbuild', 'cssbuild']
+        cmds = ['template', 'jsbuild', 'cssbuild']
     elif options.mobile:
-        cmds = ['install', 'jsbuild-mobile', 'mobile']
+        cmds = ['jsbuild-mobile', 'mobile']
 
     _run_buildout_cmd(options.file, cmds)
 
