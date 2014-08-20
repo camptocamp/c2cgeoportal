@@ -134,11 +134,11 @@ msgstr "Îcone"
 
 #: c2cgeoportal/models.py:387 c2cgeoportal/models.py:415
 msgid "Display in mobile"
-msgstr ""
+msgstr "Affiche sur un mobile"
 
 #: c2cgeoportal/models.py:388 c2cgeoportal/models.py:416
 msgid "Display in desktop"
-msgstr ""
+msgstr "Affiche sur un desktop"
 
 #: c2cgeoportal/models.py:402
 msgid "layer"
