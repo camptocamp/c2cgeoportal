@@ -168,8 +168,10 @@ class Printproxy(object):  # pragma: no cover
             return HTTPBadGateway()
 
         headers = {}
-        headers['content-type'] = resp['content-type']
-        headers['content-disposition'] = resp['content-disposition']
+        if 'content-type' in resp:
+            headers['content-type'] = resp['content-type']
+        if 'content-disposition' in resp:
+            headers['content-disposition'] = resp['content-disposition']
         # Pragma and Cache-Control headers because of ie 8 bug:
         # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
         # del response.headers['Pragma']
