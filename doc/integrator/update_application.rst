@@ -24,7 +24,7 @@ Easy updating an application code (experimental)
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool update
+   ./buildout/bin/c2ctool update <buildout_file>
 
 
 Easy upgrading an application (experimental)
@@ -37,7 +37,7 @@ Create a ``project.yaml.in`` file that contains:
    project_folder: <folder>
    project_package: <package>
    host: <host>
-   checker_path: /${instance-id}/wsgi/check_collector
+   checker_path: /${instanceid}/wsgi/check_collector?
    template_vars:
         mobile_application_title: 'Geoportal Mobile Application'
 
