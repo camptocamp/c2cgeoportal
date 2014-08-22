@@ -40,11 +40,11 @@ msgstr "Emprise"
 
 #: c2cgeoportal/models.py:116
 msgid "functionality"
-msgstr "Fonctionalité"
+msgstr "Fonctionnalité"
 
 #: c2cgeoportal/models.py:117
 msgid "functionalitys"
-msgstr "Fonctionalités"
+msgstr "Fonctionnalités"
 
 #: c2cgeoportal/models.py:124 c2cgeoportal/models.py:255
 #: c2cgeoportal/models.py:303 c2cgeoportal/models.py:500
