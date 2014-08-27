@@ -143,7 +143,7 @@ Deploy your project:
 
    ./buildout/bin/c2ctool deploy <host>
 
-Where ``<host>`` where host is your destination host that you configured in the
+Where ``<host>`` is your destination host that you configured in the
 ``deploy/deploy.cfg`` file, e.g. ``demo``, ``prod``.
 
 
