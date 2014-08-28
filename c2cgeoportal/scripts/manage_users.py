@@ -38,7 +38,7 @@ import transaction
 
 def main():  # pragma: no cover
     """
-    emergency user create and password reset script
+    Emergency user create and password reset script
     exemple, reset toto password to foobar:
     ./buildout/bin/manage_users -p foobar toto
     exemple, create user foo with password bar and role admin:
@@ -48,31 +48,43 @@ def main():  # pragma: no cover
     ./buildout/bin/manage_users -h
     """
 
-    usage = 'usage: %prog [options] USERNAME\n\n\
-Reset a user password.\nThe username is used as password if the password is not provided \
-with the corresponding option.\nuser can be created if it doesnt exist.'
+    usage = """Usage: %prog [options] USERNAME
+
+Reset a user password.
+The username is used as password if the password is not provided with the corresponding option.
+User can be created if it doesn\'t exist yet."""
 
     parser = OptionParser(usage)
-    _help = 'The application .ini config file (optional, '\
-            'default is production.ini)'
-    parser.add_option('-i', '--app-config', default='production.ini',
-                      dest='app_config', help=_help)
-    _help = 'The application name (optional, default is "app")'
-    parser.add_option('-n', '--app-name', default="app",
-                      dest='app_name', help=_help)
-    _help = 'set password (if not set, username is ' \
-            'used as password'
-    parser.add_option('-p', '--password', help=_help)
+    parser.add_option(
+        '-i', '--app-config', default='production.ini',
+        dest='app_config',
+        help='The application .ini config file (optional, default is '
+        'production.ini)'
+    )
+    parser.add_option(
+        '-n', '--app-name', default="app", dest='app_name',
+        help='The application name (optional, default is "app")'
+    )
+    parser.add_option(
+        '-p', '--password',
+        help='Set password (if not set, username is used as password'
+    )
     parser.add_option(
         '-c', '--create', action="store_true", default=False,
-        help='create user if it doesnt already exist')
+        help='Create user if it doesni\'t already exist'
+    )
     parser.add_option(
         '-r', '--rolename', default='role_admin',
-        help='the role name which must exist in the database')
+        help='The role name which must exist in the database'
+    )
+    parser.add_option(
+        '-e', '--email', default=None,
+        help='The user email'
+    )
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
-        parser.error("you must specify a username")
+        parser.error("You must specify a username")
 
     username = args[0]
 
@@ -112,11 +124,11 @@ with the corresponding option.\nuser can be created if it doesnt exist.'
     result = query.count()
     if result == 0:
         if not options.create:
-            # if doesnt existe and no -c option, throw error
-            raise StandardError('user %s doesnt exists in database' % username)
+            # if doesn't exist and no -c option, throw error
+            raise StandardError('User %s doesn\'t exist in database' % username)
         else:
-            print 'user %s doesnt exists in database, creating' % username
-            # if doesnt existe and -c option, create user
+            print 'User %s doesn\'t exist in database, creating' % username
+            # if doesn't exist and -c option, create user
 
             password = get_password(options.password, username)
 
@@ -127,7 +139,7 @@ with the corresponding option.\nuser can be created if it doesnt exist.'
             if query_role.count() == 0:
                 # role not found in db?
                 raise StandardError(
-                    'role matching %s doesnt exists in database' %
+                    'Role matching %s doesn\'t exist in database' %
                     options.rolename)
 
             role = query_role.first()
@@ -141,7 +153,7 @@ with the corresponding option.\nuser can be created if it doesnt exist.'
             sess.add(user)
             transaction.commit()
 
-            print "user %s created with password %s and role %s" % \
+            print "User %s created with password %s and role %s" % \
                 (username, password, options.rolename)
 
     else:
@@ -156,7 +168,7 @@ with the corresponding option.\nuser can be created if it doesnt exist.'
         sess.add(user)
         transaction.commit()
 
-        print "password reseted for user %s" % username
+        print "Password resetted for user %s" % username
 
 
 def get_password(password, username):  # pragma: no cover
