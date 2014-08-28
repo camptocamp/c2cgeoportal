@@ -130,7 +130,8 @@ User can be created if it doesn\'t exist yet."""
             print 'User %s doesn\'t exist in database, creating' % username
             # if doesn't exist and -c option, create user
 
-            password = get_password(options.password, username)
+            password = options.password if options.password is not None else username
+            email = options.email if options.email is not None else username
 
             # get roles
             query_role = sess.query(models.Role).filter(
@@ -147,7 +148,7 @@ User can be created if it doesn\'t exist yet."""
             user = models.User(
                 username=u'%s' % username,
                 password=u'%s' % password,
-                email=u'%s' % username,
+                email=u'%s' % email,
                 role=role
             )
             sess.add(user)
@@ -160,23 +161,17 @@ User can be created if it doesn\'t exist yet."""
         # if user exists (assuming username are unique)
         user = query.first()
 
-        password = get_password(options.password, username)
+        if options.password is not None:
+            print "Password set to: %s" % password
+            user.password = u'%s' % password
 
-        print "password set: %s" % password
+        if options.email is not None:
+            user.email = options.email
 
-        user.password = u'%s' % password
         sess.add(user)
         transaction.commit()
 
         print "Password resetted for user %s" % username
-
-
-def get_password(password, username):  # pragma: no cover
-    if password is not None:
-        # if password is provided, use passwrd
-        return password
-    else:
-        return username
 
 if __name__ == "__main__":  # pragma: no cover
     main()
