@@ -30,7 +30,7 @@ before_script:
 
 script: 
 - ./travis/doc.sh
-- find c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views -name \*.py | xargs ./buildout/bin/flake8 --ignore=E712 --max-complexity=35 --max-line-length=100
+- find c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views -name \*.py | xargs ./buildout/bin/flake8 --ignore=E712 --max-complexity=20 --max-line-length=100
 - find c2cgeoportal/*.py c2cgeoportal/tests -name \*.py | xargs ./buildout/bin/flake8 --ignore=E501
 - buildout/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App"
 - buildout/bin/pcreate -s c2cgeoportal_update /tmp/test package=test
