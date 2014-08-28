@@ -13,9 +13,10 @@ New Features
 * Be able to be authenticated in basic auth.
 * Measure a polyline in the mobile application.
 * Directly have a short permalink.
-* Display results on the map.
+* Display the query results as vector features on the map.
 * Multiline text editing in the edit interface.
 * Update StreetView for the new API.
+* Extend cache usage in all the application and improve the HTTP headers about the cache.
 
 Full list
 ~~~~~~~~~
