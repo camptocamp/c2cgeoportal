@@ -75,8 +75,6 @@ mapserver_join_area = ra.area
 mapserver_join_where = rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name =
 # mapserver metadata for validation
 mapserver_layer_metadata =
-    "default_role_id" "-1"
-    "role_id_validation_pattern" "^-?[0-9]*$"
 mapserver_layer_validation =
     "default_role_id" "-1"
     "role_id" "^-?[0-9]*$"

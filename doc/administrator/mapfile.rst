@@ -271,24 +271,20 @@ The ``${vars:mapfile_data_noarea_subselect}`` is defined as follows::
 Metadata and filename
 ~~~~~~~~~~~~~~~~~~~~~
 
-It is required to have the following in the ``METADATA`` section of
+It is required to have the following in the ``VALIDATION`` section of
 the ``LAYER``::
 
-    ${mapserver_layer_metadata}
+    ${mapserver_layer_validation}
 
 This variable is defined in the Buildout configuration file as follows::
 
-    mapserver_layer_metadata =
+    mapserver_layer_validation =
         "default_role_id" "-1"
-        "role_id_validation_pattern" "^-?[0-9]*$$"
+        "role_id" "^-?[0-9]*$$"
 
 The mapfile should be a ``.map.in`` file, for the Buildout variable to be
 substituted at Buildout execution time.
 
-.. note::
-
-    Using Mapserver 6.4 and above we need to add a ``mapserver_layer_validation`` placed in
-    the ``VALIDATION`` section.
 
 Variable Substitution
 ---------------------

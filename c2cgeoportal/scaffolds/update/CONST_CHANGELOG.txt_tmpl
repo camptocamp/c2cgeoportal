@@ -1,6 +1,16 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6
+===========
+
+1. In the mapfile add the following lines to all restricted layers:
+
+    VALIDATION
+        ${mapserver_layer_validation}
+    END
+
+
 Version 1.5
 ===========
 
