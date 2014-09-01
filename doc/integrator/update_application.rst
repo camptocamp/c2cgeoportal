@@ -56,7 +56,7 @@ Add ``project.yaml`` in the ``.gitignore`` file.
    ./buildout/bin/c2ctool upgrade <buildout_file> <target_version>
 
 Where ``<buildout_file>`` is your user buildout file,
-``<target_version>`` is the version on witch we want to update to.
+``<target_version>`` is the version that you wish to update to.
 
 And follow the instructions.
 
