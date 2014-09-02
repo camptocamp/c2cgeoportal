@@ -166,6 +166,11 @@ Version 1.5
 
   * All references of tilecache will be removed.
 
+10. Editing plugin variable name change:
+
+     The variable `windowOptions` of the plugin Editing is now named `attributesWindowOptions`,
+     modify your Editing plugin config in the edit.js accordingly.
+
 
 Version 1.4.5
 =============
