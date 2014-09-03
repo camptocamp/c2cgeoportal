@@ -73,9 +73,21 @@ Version 1.5
     * Import the json dumps.
     * Add some print argument (printProviderConfig).
     * Add a reference to the `LayerTree` plugin in the `MapOpacitySlider` config.
+    * Set stateful false of collapsible panels
 
     Then:
 
+      ...
+       id: "featuresgrid-container",
+      ...
+       collapseMode: "mini",
+      +stateful: false,
+      ...
+       id: "left-panel",
+      ...
+       collapseMode: "mini",
+      +stateful: false,
+      ...
        <%
       +from json import dumps
        wfs_settings = request.registry.settings.get('wfs', {})
