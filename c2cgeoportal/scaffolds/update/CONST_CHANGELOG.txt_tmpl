@@ -157,7 +157,32 @@ Version 1.5
     RewriteRule ^${vars:apache-entry-point}search$ /${vars:instanceid}/wsgi/fulltextsearch [PT]
     RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
 
-9. Some important notices:
+9. Some changes in the Deploy:
+
+    In the ``deploy/hooks/post-restore-database.in`` file do the following changes:
+
+    -#!/bin/sh
+    +#!/bin/sh +e
+
+    ...
+
+    -psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+    -psql -c 'CREATE TABLE ${schema}_static.shorturl IF NOT EXISTS (
+    +# The following line works only with Postgres 9.3 and upper.
+    +# otherwise the schema should be create manually
+    +# psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+    +
+    +# The workaround is to ignore the error
+    +psql -c 'CREATE SCHEMA ${schema}_static;' ${db} 2> /dev/null || true
+
+    ...
+
+10. Editing plugin variable name change:
+
+    The variable `windowOptions` of the plugin Editing is now named `attributesWindowOptions`,
+    modify your Editing plugin config in the edit.js accordingly.
+
+11. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION
@@ -165,12 +190,6 @@ Version 1.5
     administrator manual.
 
   * All references of tilecache will be removed.
-
-10. Editing plugin variable name change:
-
-     The variable `windowOptions` of the plugin Editing is now named `attributesWindowOptions`,
-     modify your Editing plugin config in the edit.js accordingly.
-
 
 Version 1.4.5
 =============
