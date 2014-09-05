@@ -336,16 +336,16 @@ def upgrade(options):
         print
         print _color_bar
         print "The upgrade is nearly done, now you should:"
-        print "- build your application with:"
         print "- Test your application."
 
         _print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
-        if not _test_checkers():
+        if not _test_checkers(project):
             _print_step(options, 3, intro="Correct them then type:")
             exit(1)
 
+        shutil.rmtree('old')
         call(['git', 'add', '-A'])
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
 
