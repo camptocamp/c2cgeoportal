@@ -307,12 +307,12 @@ def upgrade(options):
         _print_step(options, 2)
 
     elif options.step == 2:
-        if project.file is None:
+        if options.file is None:
             print "The buildout file is missing"
             exit(1)
 
         buildout_config = ConfigParser()
-        buildout_config.read(project.file)
+        buildout_config.read(options.file)
         if buildout_config.has_option('buildout', 'develop'):
             print(
                 "The user buildout file shouldn't override the `develop`"
