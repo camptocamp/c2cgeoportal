@@ -3,6 +3,8 @@
 Release notes
 =============
 
+.. _releasenotes_1_5:
+
 1.5
 ---
 
@@ -23,6 +25,8 @@ Full list
 
 * `c2cgeoportal 1.5 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.5+is%3Aclosed>`_.
 * `CGXP 1.5 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.5+is%3Aclosed>`_.
+
+.. _releasenotes_1_4:
 
 1.4
 ---
@@ -78,6 +82,8 @@ Stabilisation releases
 * `c2cgeoportal 1.4.2 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.2+is%3Aclosed>`_, `CGXP 1.4.2 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.2+is%3Aclosed>`_.
 * `c2cgeoportal 1.4.1.1 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.1.1+is%3Aclosed>`_, `CGXP 1.4.1.1 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.1.1+is%3Aclosed>`_.
 * `c2cgeoportal 1.4.1 <https://github.com/camptocamp/c2cgeoportal/issues?q=milestone%3A1.4.1+is%3Aclosed>`_, `CGXP 1.4.1 <https://github.com/camptocamp/cgxp/issues?q=milestone%3A1.4.1+is%3Aclosed>`_.
+
+.. _releasenotes_1_3:
 
 1.3
 ---
