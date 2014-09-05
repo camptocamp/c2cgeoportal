@@ -271,15 +271,15 @@ def upgrade(options):
         _print_step(options, 1)
 
     elif options.step == 1:
-        call(['git', 'status'])
         call(['git', 'reset', '--hard'])
         call(['git', 'clean', '-f', '-d'])
         branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
         call(['git', 'pull', 'origin', branch])
         call(['git', 'submodule', 'foreach', 'git', 'fetch'])
+        call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
         call([
             'git', 'submodule', 'foreach', 'git', 'reset',
-            '--hard', 'origin/%s' % options.version
+            '--hard', options.version
         ])
         call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
         call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
