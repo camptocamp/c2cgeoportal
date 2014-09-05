@@ -186,6 +186,7 @@ Version 1.5
     +
     +# The workaround is to ignore the error
     +psql -c 'CREATE SCHEMA ${schema}_static;' ${db} 2> /dev/null || true
+    +psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
 
     ...
 
