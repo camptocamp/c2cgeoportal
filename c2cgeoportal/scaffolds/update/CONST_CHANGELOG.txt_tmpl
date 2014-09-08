@@ -4,58 +4,10 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.5
 ===========
 
-1. Update the `jsbuild/app.cfg` file.
+Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#diff-24
+(Every files started with `c2cgeoportal/scaffolds/create/`)
 
-    * In the language sections [lang-fr.js], [lang-de.js] add the following
-      localisation files (in `include`) respectively:
-
-        ux/locale/StreetViewPanel-fr.js
-        ux/locale/StreetViewPanel-de.js
-
-    * To make sure that custom translations always have priority, also
-      do the following changes in [lang-fr.js], [lang-de.js]:
-
-        + last =
-        +     Proj/Lang/<lang>.js
-        +     Proj/Lang/GeoExt-<lang>.js
-          include =
-              ...
-        -     Proj/Lang/<lang>.js
-        -     Proj/Lang/GeoExt-<lang>.js
-
-2. Update the `production.ini.in` and `development.ini.in` files:
-
-  * Add the new default_max_age to 10 days:
-
-        default_max_age = 864000
-
-3. In the `config.yaml.in` file:
-
-   * Update the `main` `checkers` by removing `checker_apiloader` (no longer exists),
-     and adding `checker_api`, `checker_xapi`, `checker_fts`, `checker_wmscapabilities`
-     and `checker_wfscapabilities`::
-
-        -  - name: checker_apiloader
-        -    display: API loader
-        +  - name: checker_api
-        +    display: API
-        +  - name: checker_xapi
-        +    display: Extended API
-        +  - name: checker_fts
-        +    display: FullTextSearch
-        +  - name: checker_wmscapabilities
-        +    display: WMS capabilities
-        +  - name: checker_wfscapabilities
-        +    display: WFS capabilities
-
-    * Add (or update) the following configuration
-
-        # The shortner base configuration
-        shortener:
-          # The base of created URL
-          base_url:  http://${vars:host}${vars:apache-entry-point}s/
-
-4. In the `{{package}}/__init__.py` file:
+1. In the `{{package}}/__init__.py` file:
 
    * Use a cache header in the static view:
 
@@ -64,47 +16,7 @@ Version 1.5
         +     cache_max_age=int(config.get_settings()["default_max_age"])
         + )
 
-5. Update the templates:
-
-  * In all the `{{package}}/templates/*.js` files:
-
-  * In the `{{package}}/templates/viewer.js`:
-
-    * Import the json dumps.
-    * Add some print argument (printProviderConfig).
-    * Add a reference to the `LayerTree` plugin in the `MapOpacitySlider` config.
-    * Set stateful false of collapsible panels
-
-    Then:
-
-      ...
-       id: "featuresgrid-container",
-      ...
-       collapseMode: "mini",
-      +stateful: false,
-      ...
-       id: "left-panel",
-      ...
-       collapseMode: "mini",
-      +stateful: false,
-      ...
-       <%
-      +from json import dumps
-       wfs_settings = request.registry.settings.get('wfs', {})
-       %>
-      ...
-             printURL: "${request.route_url('printproxy', path='')}",
-             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
-      +      printProviderConfig: ${dumps(url_role_params)|n},
-             options: {
-      ...
-        {
-            ptype: "cgxp_mapopacityslider",
-      +     layerTreeId: "layertree",
-            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
-        }
-
-6. Update the mobile application:
+2. Update the mobile application:
 
     * In the `{{package}}/static/mobile/config.js` file do the following changes:
 
@@ -144,7 +56,45 @@ Version 1.5
         +
         +App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
 
-7. Do the following changes in the ``apache/frontend.conf.in`` file:
+3. Update the templates:
+
+  * In the `{{package}}/templates/viewer.js`:
+
+    * Import the json dumps.
+    * Add some print argument (printProviderConfig).
+    * Add a reference to the `LayerTree` plugin in the `MapOpacitySlider` config.
+    * Set stateful false of collapsible panels
+
+    Then:
+
+      ...
+       id: "featuresgrid-container",
+      ...
+       collapseMode: "mini",
+      +stateful: false,
+      ...
+       id: "left-panel",
+      ...
+       collapseMode: "mini",
+      +stateful: false,
+      ...
+       <%
+      +from json import dumps
+       wfs_settings = request.registry.settings.get('wfs', {})
+       %>
+      ...
+             printURL: "${request.route_url('printproxy', path='')}",
+             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+      +      printProviderConfig: ${dumps(url_role_params)|n},
+             options: {
+      ...
+        {
+            ptype: "cgxp_mapopacityslider",
+      +     layerTreeId: "layertree",
+            defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
+        }
+
+4. Do the following changes in the ``apache/frontend.conf.in`` file:
 
   -AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
   +AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
@@ -164,17 +114,43 @@ Version 1.5
   +    # Instruct proxys that these files are cacheable.
   +    Header merge Cache-Control "public"
 
-8. Add the following line in the ``apache/wsgi.conf.in`` file:
+5. Add the following line in the ``apache/wsgi.conf.in`` file:
 
     RewriteRule ^${vars:apache-entry-point}search$ /${vars:instanceid}/wsgi/fulltextsearch [PT]
     RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
 
-9. Some changes in the Deploy:
+6. In the `config.yaml.in` file:
+
+   * Update the `main` `checkers` by removing `checker_apiloader` (no longer exists),
+     and adding `checker_api`, `checker_xapi`, `checker_fts`, `checker_wmscapabilities`
+     and `checker_wfscapabilities`::
+
+        -  - name: checker_apiloader
+        -    display: API loader
+        +  - name: checker_api
+        +    display: API
+        +  - name: checker_xapi
+        +    display: Extended API
+        +  - name: checker_fts
+        +    display: FullTextSearch
+        +  - name: checker_wmscapabilities
+        +    display: WMS capabilities
+        +  - name: checker_wfscapabilities
+        +    display: WFS capabilities
+
+    * Add (or update) the following configuration
+
+        # The shortner base configuration
+        shortener:
+          # The base of created URL
+          base_url:  http://${vars:host}${vars:apache-entry-point}s/
+
+7. Some changes in the Deploy:
 
     In the ``deploy/hooks/post-restore-database.in`` file do the following changes:
 
     -#!/bin/sh
-    +#!/bin/sh +e
+    +#!/bin/sh -e
 
     ...
 
@@ -190,19 +166,40 @@ Version 1.5
 
     ...
 
-10. Editing plugin variable name change:
+8. Update the `production.ini.in` and `development.ini.in` files:
 
-    The variable `windowOptions` of the plugin Editing is now named `attributesWindowOptions`,
-    modify your Editing plugin config in the edit.js accordingly.
+  * Add the new default_max_age to 10 days:
 
-11. Some important notices:
+        default_max_age = 864000
+
+9. Update the `jsbuild/app.cfg` file.
+
+    * In the language sections [lang-fr.js], [lang-de.js] add the following
+      localisation files (in `include`) respectively:
+
+        ux/locale/StreetViewPanel-fr.js
+        ux/locale/StreetViewPanel-de.js
+
+    * To make sure that custom translations always have priority, also
+      do the following changes in [lang-fr.js], [lang-de.js]:
+
+        + last =
+        +     Proj/Lang/<lang>.js
+        +     Proj/Lang/GeoExt-<lang>.js
+          include =
+              ...
+        -     Proj/Lang/<lang>.js
+        -     Proj/Lang/GeoExt-<lang>.js
+
+10. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION
     section. See ``Variable Substitution`` in the Mapfile chapter of the
     administrator manual.
 
-  * All references of tilecache will be removed.
+  * All references of tilecache are removed.
+
 
 Version 1.4.5
 =============
