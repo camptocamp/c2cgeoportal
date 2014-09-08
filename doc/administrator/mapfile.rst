@@ -271,7 +271,7 @@ The ``${vars:mapfile_data_noarea_subselect}`` is defined as follows::
 Metadata and filename
 ~~~~~~~~~~~~~~~~~~~~~
 
-It is required to have the following in the ``VALIDATION`` section of
+It is required to have the following in the ``METADATA`` section of
 the ``LAYER``::
 
     ${mapserver_layer_metadata}
@@ -287,8 +287,8 @@ substituted at Buildout execution time.
 
 .. note::
 
-    Before using Mapserver 6.4 ``mapserver_layer_metadata`` was placed in
-    the ``METADATA`` section.
+    Using Mapserver 6.4 and above we need to add a ``mapserver_layer_validation`` placed in
+    the ``VALIDATION`` section.
 
 Variable Substitution
 ---------------------
@@ -298,11 +298,11 @@ by using variable substitution. For instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
-To define variables, edit the matching ``MAP``/``LAYER``/``VALIDATION``
+To define variables, edit the matching ``MAP``/``LAYER``/``METADATA``
 section in the mapfile and add::
 
     "default_s_<variable>" "<default_value>"
-    "s_<variable>" "<validation_pattern>"
+    "s_<variable>_validation_pattern" "<validation_pattern>"
 
 The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
@@ -311,13 +311,13 @@ in a ``.in`` file).
 
 .. note::
 
-     For MapServer 6.0.x, the default value and the pattern definition
-     are placed in the METADATA block instead of the VALIDATION one.
+     For MapServer 6.4.0 and above, the default value and the pattern definition
+     are placed in the VALIDATION block instead of the METADATA one.
      The validation pattern uses a slightly different metadata name::
 
         METADATA
             "default_s_<variable>" "<default_value>"
-            "s_<variable>_validation_pattern" "<validation_pattern>"
+            "s_<variable>" "<validation_pattern>"
         END
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
@@ -338,10 +338,9 @@ listed in the ``DATA`` section. For instance::
             ...
             "gml_exclude_items" "type,gid"
             "gml_include_items" "all"
-        END
-        VALIDATION
+
             "default_s_columns" "t.name"
-            "s_columns" "^[a-z,._]*$$"
+            "s_columns_validation_pattern" "^[a-z,._]*$$"
         END
         CLASS
             EXPRESSION ([type]=1)

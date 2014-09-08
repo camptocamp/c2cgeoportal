@@ -115,10 +115,13 @@ MAP
             "wms_metadataurl_href" "http://www.example.com/bar" # For metadata URL
             "wms_metadataurl_format" "text/html" # For metadata URL
             "wms_metadataurl_type" "TC211" # For metadata URL
-        END
-        VALIDATION
+
             ${mapserver_layer_metadata} # For secured layers
         END
+        # For secured layers in MapServer 6.4 and above
+#        VALIDATION
+#            ${mapserver_layer_validation}
+#        END
         STATUS ON
         PROJECTION
           "init=epsg:21781"
