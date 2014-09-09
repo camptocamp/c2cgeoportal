@@ -73,6 +73,11 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 .. warning::
 
     Only layers embedded in a layergroup are detected as editable.
+
+.. warning::
+
+    Acctually the editing widn't work well with many ediable layers.
+
     
 Configuring security
 --------------------

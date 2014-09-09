@@ -271,15 +271,15 @@ def upgrade(options):
         _print_step(options, 1)
 
     elif options.step == 1:
-        call(['git', 'status'])
         call(['git', 'reset', '--hard'])
         call(['git', 'clean', '-f', '-d'])
         branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
         call(['git', 'pull', 'origin', branch])
         call(['git', 'submodule', 'foreach', 'git', 'fetch'])
+        call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
         call([
             'git', 'submodule', 'foreach', 'git', 'reset',
-            '--hard', 'origin/%s' % options.version
+            '--hard', options.version
         ])
         call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
         call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
@@ -307,12 +307,12 @@ def upgrade(options):
         _print_step(options, 2)
 
     elif options.step == 2:
-        if project.file is None:
+        if options.file is None:
             print "The buildout file is missing"
             exit(1)
 
         buildout_config = ConfigParser()
-        buildout_config.read(project.file)
+        buildout_config.read(options.file)
         if buildout_config.has_option('buildout', 'develop'):
             print(
                 "The user buildout file shouldn't override the `develop`"
@@ -336,16 +336,16 @@ def upgrade(options):
         print
         print _color_bar
         print "The upgrade is nearly done, now you should:"
-        print "- build your application with:"
         print "- Test your application."
 
         _print_step(options, 3, intro="Then to commit your changes type:")
 
     elif options.step == 3:
-        if not _test_checkers():
+        if not _test_checkers(project):
             _print_step(options, 3, intro="Correct them then type:")
             exit(1)
 
+        shutil.rmtree('old')
         call(['git', 'add', '-A'])
         call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
 

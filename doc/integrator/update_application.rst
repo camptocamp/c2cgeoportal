@@ -24,7 +24,9 @@ Easy updating an application code (experimental)
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool update
+   ./buildout/bin/c2ctool update <buildout_file>
+
+Where ``<buildout_file>`` is your user buildout file.
 
 
 Easy upgrading an application (experimental)
