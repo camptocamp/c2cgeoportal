@@ -20,41 +20,41 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
 
     * In the `{{package}}/static/mobile/config.js` file do the following changes:
 
-        -// App.info includes information that is needed by internal
-        -// components, such as the Login view component.
-        -App.info = '${info | n}';
+        - // App.info includes information that is needed by internal
+        - // components, such as the Login view component.
+        - App.info = '${info | n}';
         -
-        -App.themes = '${themes | n}';
-        -App.theme = '${theme | n}';
+        - App.themes = '${themes | n}';
+        - App.theme = '${theme | n}';
         -
-        -App.WFSTypes = '${wfs_types | n}';
+        - App.WFSTypes = '${wfs_types | n}';
         -
-        -// Query mode. Can be either 'click' or 'longpress'
-        -App.queryMode = 'longpress';
+        - // Query mode. Can be either 'click' or 'longpress'
+        - App.queryMode = 'longpress';
         -
-         var dummy = "<% from json import dumps %>";
-         jsonFormat = new OpenLayers.Format.JSON();
-         try {
-        +    // App.info includes information that is needed by internal
-        +    // components, such as the Login view component.
-        +    App.info = jsonFormat.read('${dumps(info) | n}');
+          var dummy = "<% from json import dumps %>";
+          jsonFormat = new OpenLayers.Format.JSON();
+          try {
+        +     // App.info includes information that is needed by internal
+        +     // components, such as the Login view component.
+        +     App.info = jsonFormat.read('${dumps(info) | n}');
         +
-        +    App.themes = jsonFormat.read('${dumps(themes) | n}');
-        +    App.theme = '${theme | n}';
+        +     App.themes = jsonFormat.read('${dumps(themes) | n}');
+        +     App.theme = '${theme | n}';
         +
-        +    App.WFSTypes = '${wfs_types | n}'.split(',');
+        +     App.WFSTypes = '${wfs_types | n}'.split(',');
         +
-        +    // Query mode. Can be either 'click' or 'longpress'
-        +    App.queryMode = 'longpress';
+        +     // Query mode. Can be either 'click' or 'longpress'
+        +     App.queryMode = 'longpress';
 
-             App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
-         }
-         catch (e) {
-             // For the Sencha build ...
-        -    App.tilesURL = "";
-         }
+              App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
+          }
+          catch (e) {
+              // For the Sencha build ...
+        -     App.tilesURL = "";
+          }
         +
-        +App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
+        + App.featureNS = 'http://mapserver.gis.umn.edu/mapserver';
 
 3. Update the templates:
 
@@ -68,25 +68,25 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
     Then:
 
       ...
-       id: "featuresgrid-container",
+        id: "featuresgrid-container",
       ...
-       collapseMode: "mini",
-      +stateful: false,
+        collapseMode: "mini",
+      + stateful: false,
       ...
-       id: "left-panel",
+        id: "left-panel",
       ...
-       collapseMode: "mini",
-      +stateful: false,
+        collapseMode: "mini",
+      + stateful: false,
       ...
-       <%
-      +from json import dumps
-       wfs_settings = request.registry.settings.get('wfs', {})
-       %>
+        <%
+      + from json import dumps
+        wfs_settings = request.registry.settings.get('wfs', {})
+        %>
       ...
-             printURL: "${request.route_url('printproxy', path='')}",
-             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
-      +      printProviderConfig: ${dumps(url_role_params)|n},
-             options: {
+            printURL: "${request.route_url('printproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+      +     printProviderConfig: ${dumps(url_role_params)|n},
+            options: {
       ...
         {
             ptype: "cgxp_mapopacityslider",
@@ -96,23 +96,23 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
 
 4. Do the following changes in the ``apache/frontend.conf.in`` file:
 
-  -AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
-  +AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
+  - AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
+  + AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
 
-  -<LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
-  -    # Remove etags to enable better client-side caching
-  -    # (potential proxy problems)
-  -    # Also instruct proxys that these files are cacheable.
-  -    Header unset ETag
-  -    FileETag None
-  -    Header merge Cache-Control "public"
+  - <LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
+  -     # Remove etags to enable better client-side caching
+  -     # (potential proxy problems)
+  -     # Also instruct proxys that these files are cacheable.
+  -     Header unset ETag
+  -     FileETag None
+  -     Header merge Cache-Control "public"
   -
-  -    # Short term cache, before OpenLayers images (and others) are "CSS-Sprited"
-  -    ExpiresActive On
-  -    ExpiresDefault "access plus 1 hour"
-  +<LocationMatch /${vars:instanceid}/wsgi/(proj|static)>
-  +    # Instruct proxys that these files are cacheable.
-  +    Header merge Cache-Control "public"
+  -     # Short term cache, before OpenLayers images (and others) are "CSS-Sprited"
+  -     ExpiresActive On
+  -     ExpiresDefault "access plus 1 hour"
+  + <LocationMatch /${vars:instanceid}/wsgi/(proj|static)>
+  +     # Instruct proxys that these files are cacheable.
+  +     Header merge Cache-Control "public"
 
 5. Add the following line in the ``apache/wsgi.conf.in`` file:
 
@@ -149,20 +149,20 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
 
     In the ``deploy/hooks/post-restore-database.in`` file do the following changes:
 
-    -#!/bin/sh
-    +#!/bin/sh -e
+    - #!/bin/sh
+    + #!/bin/sh -e
 
     ...
 
-    -psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
-    -psql -c 'CREATE TABLE ${schema}_static.shorturl IF NOT EXISTS (
-    +# The following line works only with Postgres 9.3 and upper.
-    +# otherwise the schema should be create manually
-    +# psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+    - psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
+    - psql -c 'CREATE TABLE ${schema}_static.shorturl IF NOT EXISTS (
+    + # The following line works only with Postgres 9.3 and upper.
+    + # otherwise the schema should be create manually
+    + # psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
     +
-    +# The workaround is to ignore the error
-    +psql -c 'CREATE SCHEMA ${schema}_static;' ${db} 2> /dev/null || true
-    +psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
+    + # The workaround is to ignore the error
+    + psql -c 'CREATE SCHEMA ${schema}_static;' ${db} 2> /dev/null || true
+    + psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
 
     ...
 
