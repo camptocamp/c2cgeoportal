@@ -36,7 +36,7 @@ ourselves!*
 `with features grid <http://mapfish-geoportal.demo-camptocamp.com/1.5?grig>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
-`CGXP (Client) documentation <http://docs.camptocamp.net/cgxp/1.5/>`_.
+`CGXP (Client) documentation <http://docs.camptocamp.net/cgxp/master/>`_.
 
 .. toctree::
    :hidden:
