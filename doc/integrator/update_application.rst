@@ -174,11 +174,11 @@ steps:
    Replace ``<version>`` by a version number (branch) or release number (tag).
    To get the last dev version, replace ``<version>`` by ``master``.
 
-   For example to get the ``versions.cfg`` file of version 1.4, type:
+   For example to get the ``versions.cfg`` file of version 1.5, type:
 
    .. prompt:: bash
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/1.4/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
 3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version:
 
