@@ -110,8 +110,8 @@ User can be created if it doesn\'t exist yet."""
     print "\n"
 
     # check that User and Role exist in model
-    modelList = ['User', 'Role']
-    for model in modelList:
+    model_list = ['User', 'Role']
+    for model in model_list:
         try:
             getattr(models, model)
         except AttributeError:

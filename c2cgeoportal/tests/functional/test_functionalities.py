@@ -31,15 +31,15 @@
 from nose.plugins.attrib import attr
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule)
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule)
 
 
 @attr(functional=True)
 class TestFunctionalities(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality
@@ -70,7 +70,7 @@ class TestFunctionalities(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality
 
@@ -104,15 +104,15 @@ class TestFunctionalities(TestCase):
         transaction.commit()
 
     def test_functionalities(self):
-        from c2cgeoportal.tests.functional import createDummyRequest
+        from c2cgeoportal.tests.functional import create_dummy_request
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.lib.functionality import get_functionality
 
-        request = createDummyRequest()
+        request = create_dummy_request()
         request.user = None
-        request1 = createDummyRequest()
+        request1 = create_dummy_request()
         request1.user = DBSession.query(User).filter(User.username == '__test_user1').one()
-        request2 = createDummyRequest()
+        request2 = create_dummy_request()
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
         settings = {
@@ -181,15 +181,15 @@ class TestFunctionalities(TestCase):
 
     def test_web_client_functionalities(self):
         from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.tests.functional import mapserv_url, createDummyRequest
+        from c2cgeoportal.tests.functional import mapserv_url, create_dummy_request
         from c2cgeoportal.views.entry import Entry
 
-        request = createDummyRequest()
+        request = create_dummy_request()
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
-        request1 = createDummyRequest()
+        request1 = create_dummy_request()
         request1.static_url = lambda url: 'http://example.com/dummy/static/url'
         request1.user = DBSession.query(User).filter(User.username == '__test_user1').one()
-        request2 = createDummyRequest()
+        request2 = create_dummy_request()
         request2.static_url = lambda url: 'http://example.com/dummy/static/url'
         request2.user = DBSession.query(User).filter(User.username == '__test_user2').one()
 
@@ -211,9 +211,9 @@ class TestFunctionalities(TestCase):
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
 
-        annon = Entry(request)._getVars()
-        u1 = Entry(request1)._getVars()
-        u2 = Entry(request2)._getVars()
+        annon = Entry(request)._get_vars()
+        u1 = Entry(request1)._get_vars()
+        u2 = Entry(request2)._get_vars()
         self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
         self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
         self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

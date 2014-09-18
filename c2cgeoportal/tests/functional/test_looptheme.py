@@ -35,16 +35,16 @@ import transaction
 import os
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule,
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule,
     mapserv_url, host)
 
 
 @attr(functional=True)
 class TestLoopTheme(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         from c2cgeoportal.models import DBSession, Layer, \
             Theme, LayerGroup
 
@@ -58,7 +58,7 @@ class TestLoopTheme(TestCase):
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \

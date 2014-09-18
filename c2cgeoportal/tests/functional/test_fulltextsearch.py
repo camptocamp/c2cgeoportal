@@ -34,17 +34,17 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 from pyramid.response import Response
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule,
-    createDummyRequest
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule,
+    create_dummy_request
 )
 
 
 @attr(functional=True)
 class TestFulltextsearchView(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         import transaction
         from sqlalchemy import func
         from geoalchemy import WKTSpatialElement
@@ -99,7 +99,7 @@ class TestFulltextsearchView(TestCase):
         DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4, entry5])
         transaction.commit()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         import transaction
@@ -128,7 +128,7 @@ class TestFulltextsearchView(TestCase):
     def _create_dummy_request(self, username=None, params=None):
         from c2cgeoportal.models import DBSession, User
 
-        request = createDummyRequest(params=params)
+        request = create_dummy_request(params=params)
         request.responce = Response()
         request.user = None
         if username:

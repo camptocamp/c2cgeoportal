@@ -45,7 +45,7 @@ from c2cgeoportal.lib.email_ import send_email
 logger = logging.getLogger(__name__)
 
 
-class shortener(object):
+class Shortener(object):
 
     def __init__(self, request):
         self.request = request

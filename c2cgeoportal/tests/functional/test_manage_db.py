@@ -39,7 +39,7 @@ log = logging.getLogger(__name__)
 @attr(functional=True)
 class TestCreateDB(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         from c2cgeoportal.scripts.manage_db import main as manage_db
 
         try:

@@ -32,9 +32,9 @@ from unittest import TestCase
 from pyramid import testing
 
 
-class Test_includeme(TestCase):
+class TestIncludeme(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.config = testing.setUp(
             # the c2cgeoportal includeme function requires a number
             # of settings

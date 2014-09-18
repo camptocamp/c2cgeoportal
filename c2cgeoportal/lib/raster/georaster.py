@@ -6,18 +6,20 @@ from struct import unpack
 
 
 class Tile(object):
-    def __init__(self, minX, minY, maxX, maxY, filename):
-        self.minX = minX
-        self.minY = minY
-        self.maxX = maxX
-        self.maxY = maxY
+    def __init__(self, min_x, min_y, max_x, max_y, filename):
+        self.min_x = min_x
+        self.min_y = min_y
+        self.max_x = max_x
+        self.max_y = max_y
         self.filename = filename
 
     def contains(self, x, y):
-        return self.minX <= x and self.maxX > x and self.minY <= y and self.maxY > y
+        return self.min_x <= x and self.max_x > x and self.min_y <= y and self.max_y > y
 
     def __str__(self):
-        return "%f, %f, %f, %f: %s" % (self.minX, self.minY, self.maxX, self.maxY, self.filename)
+        return "%f, %f, %f, %f: %s" % (
+            self.min_x, self.min_y, self.max_x, self.max_y, self.filename
+        )
 
 
 class BTTile(Tile):
@@ -27,12 +29,12 @@ class BTTile(Tile):
             file.seek(10)
             (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
                 unpack('<LLhh', file.read(12))
-            self.resolutionX = (self.maxX - self.minX) / self.cols
-            self.resolutionY = (self.maxY - self.minY) / self.rows
+            self.resolution_x = (self.max_x - self.min_x) / self.cols
+            self.resolution_y = (self.max_y - self.min_y) / self.rows
 
-        posX = int((x - self.minX) / self.resolutionX)
-        posY = int((y - self.minY) / self.resolutionY)
-        file.seek(256 + (posY + posX * self.rows) * self.dataSize)
+        pos_x = int((x - self.min_x) / self.resolution_x)
+        pos_y = int((y - self.min_y) / self.resolution_y)
+        file.seek(256 + (pos_y + pos_x * self.rows) * self.dataSize)
 
         if self.floatingPoint == 1:
             val = unpack("<f", file.read(self.dataSize))[0]
@@ -49,21 +51,21 @@ class BTTile(Tile):
 
 
 class GeoRaster:
-    def __init__(self, shapefileName):
+    def __init__(self, shapefile_name):
         self.tiles = []
-        shpRecords = shputils.load_shapefile(shapefileName)
-        dir = dirname(shapefileName)
+        shp_records = shputils.load_shapefile(shapefile_name)
+        dir = dirname(shapefile_name)
         if dir == "":
             dir = "."
-        for shape in shpRecords:
+        for shape in shp_records:
             filename = shape['dbf_data']['location'].rstrip()
-            tileClass = None
+            tile_class = None
             if filename.endswith(".bt"):
-                tileClass = BTTile
+                tile_class = BTTile
             if not filename.startswith("/"):
                 filename = dir + '/' + filename
             geo = shape['shp_data']
-            tile = tileClass(geo['xmin'], geo['ymin'], geo['xmax'], geo['ymax'], filename)
+            tile = tile_class(geo['xmin'], geo['ymin'], geo['xmax'], geo['ymax'], filename)
             self.tiles.append(tile)
 
     def get_value(self, x, y):
@@ -73,7 +75,6 @@ class GeoRaster:
         else:
             return None
 
-    #private
     def _get_tile(self, x, y):
         for cur in self.tiles:
             if cur.contains(x, y):

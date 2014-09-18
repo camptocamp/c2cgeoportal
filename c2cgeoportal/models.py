@@ -363,12 +363,12 @@ class LayerGroup(TreeGroup):
     isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
 
     def __init__(
-            self, name=u'', order=100, isExpanded=False,
-            isInternalWMS=True, isBaseLayer=False):
+            self, name=u'', order=100, is_expanded=False,
+            is_internal_wms=True, is_base_layer=False):
         TreeGroup.__init__(self, name=name, order=order)
-        self.isExpanded = isExpanded
-        self.isInternalWMS = isInternalWMS
-        self.isBaseLayer = isBaseLayer
+        self.isExpanded = is_expanded
+        self.isInternalWMS = is_internal_wms
+        self.isBaseLayer = is_base_layer
 
 
 class Theme(TreeGroup):
@@ -455,11 +455,11 @@ class Layer(TreeItem):
 
     def __init__(
             self, name=u'', order=0, public=True, icon=u'',
-            layerType=u'internal WMS'):
+            layer_type=u'internal WMS'):
         TreeItem.__init__(self, name=name, order=order)
         self.public = public
         self.icon = icon
-        self.layerType = layerType
+        self.layerType = layer_type
 
 # association table role <> restriciton area
 role_ra = Table(

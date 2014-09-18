@@ -168,7 +168,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     parser = sax.make_parser()
     result = StringIO()
     downstream_handler = XMLGenerator(result, 'utf-8')
-    filter_handler = _capabilities_filter(
+    filter_handler = _CapabilitiesFilter(
         parser, downstream_handler, private_layers,
         u'Layer' if wms else u'FeatureType'
     )
@@ -176,14 +176,14 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     return unicode(result.getvalue(), 'utf-8')
 
 
-class _layer:
+class _Layer:
     def __init__(self, self_hidden=False):
         self.accumul = []
         self.hidden = True
         self.self_hidden = self_hidden
 
 
-class _capabilities_filter(XMLFilterBase):
+class _CapabilitiesFilter(XMLFilterBase):
     """
     SAX filter to ensure that contiguous white space nodes are
     delivered merged into a single node
@@ -210,35 +210,35 @@ class _capabilities_filter(XMLFilterBase):
             self._complete_text_node()
             action()
 
-    def setDocumentLocator(self, locator):
+    def setDocumentLocator(self, locator):  # noqa
         self._downstream.setDocumentLocator(locator)
 
-    def startDocument(self):
+    def startDocument(self):  # noqa
         self._downstream.startDocument()
 
-    def endDocument(self):
+    def endDocument(self):  # noqa
         self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix, uri):  # pragma: no cover
+    def startPrefixMapping(self, prefix, uri):  # pragma: no cover  # noqa
         self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix):  # pragma: no cover
+    def endPrefixMapping(self, prefix):  # pragma: no cover  # noqa
         self._downstream.endPrefixMapping(prefix)
 
-    def startElement(self, name, attrs):
+    def startElement(self, name, attrs):  # noqa
         if name == self.tag_name:
             if len(self.layers_path) > 1:
-                self.layers_path.append(_layer(
+                self.layers_path.append(_Layer(
                     self.layers_path[-1].self_hidden
                 ))
             else:
-                self.layers_path.append(_layer())
+                self.layers_path.append(_Layer())
         elif name == 'Name' and len(self.layers_path) != 0:
             self.in_name = True
 
         self._do(lambda: self._downstream.startElement(name, attrs))
 
-    def endElement(self, name):
+    def endElement(self, name):  # noqa
         self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
@@ -246,10 +246,10 @@ class _capabilities_filter(XMLFilterBase):
         elif name == 'Name':
             self.in_name = False
 
-    def startElementNS(self, name, qname, attrs):  # pragma: nocover
+    def startElementNS(self, name, qname, attrs):  # pragma: nocover  # noqa
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name, qname):  # pragma: nocover
+    def endElementNS(self, name, qname):  # pragma: nocover  # noqa
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def characters(self, text):
@@ -267,11 +267,11 @@ class _capabilities_filter(XMLFilterBase):
 
         self._do(lambda: self._accumulator.append(text.encode('utf-8')))
 
-    def ignorableWhitespace(self, ws):  # pragma: nocover
+    def ignorableWhitespace(self, ws):  # pragma: nocover  # noqa
         self._do(lambda: self._accumulator.append(ws))
 
-    def processingInstruction(self, target, body):  # pragma: nocover
+    def processingInstruction(self, target, body):  # pragma: nocover  # noqa
         self._do(lambda: self._downstream.processingInstruction(target, body))
 
-    def skippedEntity(self, name):  # pragma: no cover
+    def skippedEntity(self, name):  # pragma: no cover  # noqa
         self._downstream.skippedEntity(name)

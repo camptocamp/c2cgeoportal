@@ -33,7 +33,7 @@ try:
 except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
-    from setuptools import setup, find_packages  # flake8: noqa
+    from setuptools import setup, find_packages  # noqa
 
 setup(
     name='testegg',

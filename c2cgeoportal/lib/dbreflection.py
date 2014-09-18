@@ -47,7 +47,7 @@ def init(engine):
     Base.metadata.bind = engine
 
 
-class _association_proxy(object):
+class _AssociationProxy(object):
     # A specific "association proxy" implementation
 
     def __init__(self, target, value_attr):
@@ -82,7 +82,7 @@ class _association_proxy(object):
 def _xsd_sequence_callback(tb, cls):
     from c2cgeoportal.models import DBSession
     for k, p in cls.__dict__.iteritems():
-        if not isinstance(p, _association_proxy):
+        if not isinstance(p, _AssociationProxy):
             continue
         relationship_property = class_mapper(cls) \
             .get_property(p.target)
@@ -128,12 +128,12 @@ def _get_schema(tablename):
     return tablename, schema
 
 
-def get_table(tablename, schema=None, DBSession=None):
+def get_table(tablename, schema=None, session=None):
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
-    if DBSession is not None:
-        engine = DBSession.bind.engine
+    if session is not None:
+        engine = session.bind.engine
         metadata = MetaData(bind=engine)
     else:
         engine = Base.metadata.bind
@@ -160,7 +160,7 @@ def get_table(tablename, schema=None, DBSession=None):
     return table
 
 
-def get_class(tablename, DBSession=None, exclude_properties=None):
+def get_class(tablename, session=None, exclude_properties=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -174,7 +174,7 @@ def get_class(tablename, DBSession=None, exclude_properties=None):
     if cache_key in _class_cache:
         return _class_cache[cache_key]
 
-    table = get_table(tablename, schema, DBSession)
+    table = get_table(tablename, schema, session)
 
     # create the mapped class
     cls = _create_class(table, exclude_properties)
@@ -234,7 +234,7 @@ def _add_association_proxy(cls, col):
                                  lazy='immediate')
     setattr(cls, rel, relationship_)
 
-    setattr(cls, proxy, _association_proxy(rel, 'name'))
+    setattr(cls, proxy, _AssociationProxy(rel, 'name'))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]

@@ -31,10 +31,10 @@
 from nose.plugins.attrib import attr
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule,
-    createDummyRequest
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule,
+    create_dummy_request
 )
 
 
@@ -43,7 +43,7 @@ class TestLayers(TestCase):
 
     _table_index = 0
 
-    def setUp(self):
+    def setUp(self):  # noqa
         import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User
@@ -65,7 +65,7 @@ class TestLayers(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         import transaction
         from c2cgeoportal.models import (DBSession, Role, User,
                                          Layer, TreeItem, RestrictionArea)
@@ -192,7 +192,7 @@ class TestLayers(TestCase):
 
     def _get_request(self, layerid, username=None):
         from c2cgeoportal.models import DBSession, User
-        request = createDummyRequest()
+        request = create_dummy_request()
         request.matchdict = {'layer_id': str(layerid)}
         if username is not None:
             request.user = DBSession.query(User).filter_by(
@@ -349,7 +349,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -360,7 +360,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -371,7 +371,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         collection = layers.create()
         self.assertTrue(isinstance(collection, FeatureCollection))
@@ -385,7 +385,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -397,7 +397,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -409,7 +409,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 2
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -420,7 +420,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         feature = layers.update()
         self.assertEquals(feature.id, 1)
@@ -492,7 +492,7 @@ class TestLayers(TestCase):
         cls = layers.metadata()
         self.assertFalse(hasattr(cls, 'name'))
 
-    ### With None area ###
+    # # # With None area # # #
     def test_read_public_none_area(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
@@ -589,7 +589,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -600,7 +600,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id, username=u'__test_user')
         request.method = 'POST'
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # NOQA
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         collection = layers.create()
         self.assertTrue(isinstance(collection, FeatureCollection))
@@ -614,7 +614,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -625,7 +625,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username=u'__test_user')
         request.matchdict['feature_id'] = 1
         request.method = 'PUT'
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # NOQA
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         feature = layers.update()
         self.assertEquals(feature.id, 1)

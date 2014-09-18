@@ -56,7 +56,7 @@ if os.path.exists(configfile):
 c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
 
 
-def setUpCommon():
+def set_up_common():
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
 
@@ -82,7 +82,7 @@ def setUpCommon():
     Base.metadata.create_all()
 
 
-def tearDownCommon():
+def tear_down_common():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
@@ -108,14 +108,14 @@ def tearDownCommon():
     c2cgeoportal.caching.invalidate_region()
 
 
-def createDummyRequest(additional_settings={}, *args, **kargs):
+def create_dummy_request(additional_settings={}, *args, **kargs):
     from c2cgeoportal import default_user_validator
     mapfile = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         'c2cgeoportal_test.map'
     )
     mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-    request = tests.createDummyRequest({
+    request = tests.create_dummy_request({
         'mapserv_url': mapserv,
         'functionalities': {
             'registered': {},
