@@ -33,10 +33,12 @@ import sys
 import shutil
 import argparse
 import httplib2
+import logging
 from yaml import load
 from subprocess import call
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
+from zc.buildout.buildout import Buildout
 
 try:
     from subprocess import check_output
@@ -171,16 +173,12 @@ def _fill_arguments(command):
     return parser
 
 
-def _run_buildout_cmd(file='buildout.cfg', commands=[]):
-    import zc.buildout.buildout
-
-    sys.argv = ['./buildout/bin/buildout', '-c', file]
-
-    if len(commands) > 0:
-        sys.argv += ['install']
-        sys.argv += commands
-
-    zc.buildout.buildout.main()
+def _run_buildout_cmd(config_file='buildout.cfg', commands=[]):
+    buildout = Buildout(config_file, [], True)
+    buildout.install(commands)
+    # remove logger to don't have duplicate messages
+    logging.getLogger().handlers.pop()
+    logging.getLogger('zc.buildout').handlers.pop()
 
 
 def build(options):
@@ -235,7 +233,7 @@ def _test_checkers(project):
     http = httplib2.Http()
     for check_type in ["", "type=all"]:
         resp, content = http.request(
-            "http://localhost/%s%s" % (project['checker_path'], check_type),
+            "http://localhost%s%s" % (project['checker_path'], check_type),
             method='GET',
             headers={
                 "Host": project['host']
@@ -244,7 +242,7 @@ def _test_checkers(project):
         if resp.status < 200 or resp.status >= 300:
             print(_color_bar)
             print "Checker error:"
-            print "Open `http://%s/%s%s` for more informations." % (
+            print "Open `http://%s%s%s` for more informations." % (
                 project['host'], project['checker_path'], check_type
             )
             return False
@@ -323,7 +321,8 @@ def upgrade(options):
             print "The user buildout file shouldn't specify the `c2cgeoportal` version"
             exit(1)
 
-        unlink("changelog.diff")
+        if path.isfile('changelog.diff'):
+            unlink("changelog.diff")
 
         _run_buildout_cmd('CONST_buildout_cleaner.cfg')
         shutil.rmtree('old')
@@ -347,7 +346,7 @@ def upgrade(options):
 
         shutil.rmtree('old')
         call(['git', 'add', '-A'])
-        call(['git', 'commit', '-m', '"Update to GeoMapFish %s"' % options.version])
+        call(['git', 'commit', '-m', 'Update to GeoMapFish %s' % options.version])
 
 
 def deploy(options):

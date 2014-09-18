@@ -191,7 +191,13 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
         -     Proj/Lang/<lang>.js
         -     Proj/Lang/GeoExt-<lang>.js
 
-10. Some important notices:
+10. Remove old files:
+
+   We now use the mapfish print 2.1, than remove the 2.0 war:
+
+        git rm print/print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
+
+11. Some important notices:
 
   * If using Mapserver 6.4 you have to move the substitution variables default
     values and validation patterns from the METADATA section to a VALIDATION
