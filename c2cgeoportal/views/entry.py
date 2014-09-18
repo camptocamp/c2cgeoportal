@@ -147,29 +147,29 @@ class Entry(object):
             q = q.union(get_protected_layers_query(role_id))
         return q
 
-    def _getLayerMetadataUrls(self, layer):
-        metadataUrls = []
+    def _get_layer_metadata_urls(self, layer):
+        metadata_urls = []
         if len(layer.metadataUrls) > 0:
-            metadataUrls = layer.metadataUrls
+            metadata_urls = layer.metadataUrls
         for childLayer in layer.layers:
-            metadataUrls.extend(self._getLayerMetadataUrls(childLayer))
-        return metadataUrls
+            metadata_urls.extend(self._get_layer_metadata_urls(childLayer))
+        return metadata_urls
 
-    def _getLayerResolutionHint(self, layer):
-        resolutionHintMin = float('inf')
-        resolutionHintMax = 0
+    def _get_layer_resolution_hint(self, layer):
+        resolution_hint_min = float('inf')
+        resolution_hint_max = 0
         if layer.scaleHint:
             # scaleHint is based upon a pixel diagonal length whereas we use
             # resolutions based upon a pixel edge length. There is a sqrt(2)
             # ratio between edge and diagonal of a square.
-            resolutionHintMin = float(layer.scaleHint['min']) / sqrt(2)
-            resolutionHintMax = float(layer.scaleHint['max']) / sqrt(2)
+            resolution_hint_min = float(layer.scaleHint['min']) / sqrt(2)
+            resolution_hint_max = float(layer.scaleHint['max']) / sqrt(2)
         for childLayer in layer.layers:
-            resolution = self._getLayerResolutionHint(childLayer)
-            resolutionHintMin = min(resolutionHintMin, resolution[0])
-            resolutionHintMax = max(resolutionHintMax, resolution[1])
+            resolution = self._get_layer_resolution_hint(childLayer)
+            resolution_hint_min = min(resolution_hint_min, resolution[0])
+            resolution_hint_max = max(resolution_hint_max, resolution[1])
 
-        return (resolutionHintMin, resolutionHintMax)
+        return (resolution_hint_min, resolution_hint_max)
 
     def _get_child_layers_info(self, layer):
         """ Return information about sub layers of a layer.
@@ -181,7 +181,7 @@ class Entry(object):
         child_layers_info = []
         for child_layer in layer.layers:
             child_layer_info = dict(name=child_layer.name)
-            resolution = self._getLayerResolutionHint(child_layer)
+            resolution = self._get_layer_resolution_hint(child_layer)
             if resolution[0] <= resolution[1]:
                 child_layer_info.update({
                     'minResolutionHint': float('%0.2f' % resolution[0]),
@@ -192,7 +192,7 @@ class Entry(object):
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
-    def _getIconPath(self, icon):
+    def _get_icon_path(self, icon):
         if not icon:
             return None  # pragma: no cover
         icon = unicode(icon)
@@ -226,23 +226,23 @@ class Entry(object):
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
         if layer.icon:
-            l['icon'] = self._getIconPath(layer.icon)
+            l['icon'] = self._get_icon_path(layer.icon)
         if layer.kml:
-            l['kml'] = self._getIconPath(layer.kml)
+            l['kml'] = self._get_icon_path(layer.kml)
         if layer.metadataURL:
             l['metadataURL'] = layer.metadataURL
         if layer.geoTable:
             self._fill_editable(l, layer)
         if layer.legendImage:
-            l['legendImage'] = self._getIconPath(layer.legendImage)
+            l['legendImage'] = self._get_icon_path(layer.legendImage)
 
         if layer.layerType == "internal WMS":
-            self._fill_internal_WMS(l, layer, wms_layers, wms, errors)
+            self._fill_internal_wms(l, layer, wms_layers, wms, errors)
             errors += self._merge_time(time, layer, wms_layers, wms)
         elif layer.layerType == "external WMS":
-            self._fill_external_WMS(l, layer)
+            self._fill_external_wms(l, layer)
         elif layer.layerType == "WMTS":
-            self._fill_WMTS(l, layer, wms_layers, wms, errors)
+            self._fill_wmts(l, layer, wms_layers, wms, errors)
 
         return l, errors
 
@@ -280,7 +280,7 @@ class Entry(object):
             if c > 0:
                 l['editable'] = True
 
-    def _fill_WMS(self, l, layer):
+    def _fill_wms(self, l, layer):
         l['imageType'] = layer.imageType
         if layer.legendRule:
             query = (
@@ -310,8 +310,8 @@ class Entry(object):
             )
             l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
 
-    def _fill_internal_WMS(self, l, layer, wms_layers, wms, errors):
-        self._fill_WMS(l, layer)
+    def _fill_internal_wms(self, l, layer, wms_layers, wms, errors):
+        self._fill_wms(l, layer)
         self._fill_legend_rule_query_string(
             l, layer,
             self.request.route_url('mapserverproxy'))
@@ -324,10 +324,10 @@ class Entry(object):
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]
-            metadataUrls = self._getLayerMetadataUrls(wms_layer_obj)
-            if len(metadataUrls) > 0:
-                l['metadataUrls'] = metadataUrls
-            resolutions = self._getLayerResolutionHint(wms_layer_obj)
+            metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
+            if len(metadata_urls) > 0:
+                l['metadataUrls'] = metadata_urls
+            resolutions = self._get_layer_resolution_hint(wms_layer_obj)
             if resolutions[0] <= resolutions[1]:
                 if 'minResolutionHint' not in l:
                     l['minResolutionHint'] = float('%0.2f' % resolutions[0])
@@ -341,8 +341,8 @@ class Entry(object):
                 'The layer %s is not defined in WMS capabilities' % layer.name
             )
 
-    def _fill_external_WMS(self, l, layer):
-        self._fill_WMS(l, layer)
+    def _fill_external_wms(self, l, layer):
+        self._fill_wms(l, layer)
         self._fill_legend_rule_query_string(l, layer, layer.url)
 
         l['url'] = layer.url
@@ -353,7 +353,7 @@ class Entry(object):
         if layer.maxResolution is not None:
             l['maxResolutionHint'] = layer.maxResolution
 
-    def _fill_WMTS(self, l, layer, wms_layers, wms, errors):
+    def _fill_wmts(self, l, layer, wms_layers, wms, errors):
         l['url'] = layer.url
 
         if layer.dimensions:
@@ -403,7 +403,7 @@ class Entry(object):
                 query_layer_obj = wms[query_layer]
 
                 ql = {'name': query_layer}
-                resolutions = self._getLayerResolutionHint(query_layer_obj)
+                resolutions = self._get_layer_resolution_hint(query_layer_obj)
 
                 if resolutions[0] <= resolutions[1]:
                     ql['minResolutionHint'] = float(
@@ -497,9 +497,9 @@ class Entry(object):
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
 
-        exportThemes = []
+        export_themes = []
         for theme in themes:
-            children, children_errors, stop = self._getChildren(
+            children, children_errors, stop = self._get_children(
                 theme, layers, wms_layers, wms)
             errors += children_errors
 
@@ -507,23 +507,23 @@ class Entry(object):
                 break
             # test if the theme is visible for the current user
             if len(children) > 0:
-                icon = self._getIconPath(theme.icon) \
+                icon = self._get_icon_path(theme.icon) \
                     if theme.icon \
                     else self.request.static_url(
                         'c2cgeoportal:static/images/blank.gif')
 
-                exportThemes.append({
+                export_themes.append({
                     'inDesktopViewer': theme.inDesktopViewer,
                     'inMobileViewer': theme.inMobileViewer,
                     'name': theme.name,
                     'icon': icon,
                     'children': children,
-                    'functionalities': self._getFunctionalities(theme)
+                    'functionalities': self._get_functionalities(theme)
                 })
 
-        return exportThemes, errors
+        return export_themes, errors
 
-    def _getFunctionalities(self, theme):
+    def _get_functionalities(self, theme):
         result = {}
         for functionality in theme.functionalities:
             if functionality.name in result:
@@ -532,7 +532,7 @@ class Entry(object):
                 result[functionality.name] = [functionality.value]
         return result
 
-    def _getChildren(self, theme, layers, wms_layers, wms):
+    def _get_children(self, theme, layers, wms_layers, wms):
         children = []
         errors = []
         for item in sorted(theme.children, key=lambda item: item.order):
@@ -617,7 +617,7 @@ class Entry(object):
         if urlparse(wfsgc_url).hostname != 'localhost':  # pragma: no cover
             h.pop('Host')
         try:
-            resp, getCapabilities_xml = http.request(wfsgc_url, method='GET', headers=h)
+            resp, get_capabilities_xml = http.request(wfsgc_url, method='GET', headers=h)
         except:  # pragma: no cover
             errors.append("Unable to GetCapabilities from url %s" % wfsgc_url)
             return None, errors
@@ -630,23 +630,23 @@ class Entry(object):
             return None, errors
 
         try:
-            getCapabilities_dom = parseString(getCapabilities_xml)
+            get_capabilities_dom = parseString(get_capabilities_xml)
             featuretypes = []
-            for featureType in getCapabilities_dom.getElementsByTagNameNS(self.WFS_NS,
-                                                                          "FeatureType"):
+            for featureType in get_capabilities_dom.getElementsByTagNameNS(
+                    self.WFS_NS, "FeatureType"):
                 # don't includes FeatureType without name
                 name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
-                    nameValue = name.childNodes[0].data
+                    name_value = name.childNodes[0].data
                     # ignore namespace
-                    if nameValue.find(':') >= 0:
-                        nameValue = nameValue.split(':')[1]  # pragma nocover
-                    featuretypes.append(nameValue)
+                    if name_value.find(':') >= 0:  # pragma nocover
+                        name_value = name_value.split(':')[1]
+                    featuretypes.append(name_value)
                 else:  # pragma nocover
                     log.warn("Feature type without name: %s" % featureType.toxml())
             return featuretypes, errors
         except:  # pragma: no cover
-            return getCapabilities_xml, errors
+            return get_capabilities_xml, errors
 
     @cache_region.cache_on_arguments()
     def _external_themes(self):  # pragma nocover
@@ -692,7 +692,7 @@ class Entry(object):
                 func, self.settings, self.request)
         return functionality
 
-    def _getVars(self):
+    def _get_vars(self):
         role_id = None if self.request.user is None else \
             self.request.user.role.id
 
@@ -794,7 +794,7 @@ class Entry(object):
 
     @view_config(route_name='viewer', renderer='viewer.js')
     def viewer(self):
-        d = self._getVars()
+        d = self._get_vars()
         d['lang'] = self.lang
         d['debug'] = self.debug
 
@@ -808,7 +808,7 @@ class Entry(object):
 
     @view_config(route_name='edit.js', renderer='edit.js')
     def editjs(self):
-        d = self._getVars()
+        d = self._get_vars()
         d['lang'] = self.lang
         d['debug'] = self.debug
 
@@ -822,7 +822,7 @@ class Entry(object):
 
     @view_config(route_name='routing.js', renderer='routing.js')
     def routingjs(self):
-        d = self._getVars()
+        d = self._get_vars()
         d['lang'] = self.lang
         d['debug'] = self.debug
 
@@ -1050,9 +1050,9 @@ class Entry(object):
             headers = remember(self.request, login)
             log.info("User '%s' logged in." % login)
 
-            cameFrom = self.request.params.get("came_from")
-            if cameFrom:
-                return HTTPFound(location=cameFrom, headers=headers)
+            came_from = self.request.params.get("came_from")
+            if came_from:
+                return HTTPFound(location=came_from, headers=headers)
             else:
                 response = Response(
                     'true', headers=headers, cache_control="no-cache"
@@ -1114,9 +1114,9 @@ class Entry(object):
                     'sqlalchemy_replication.')
                 sqlahelper.add_engine(engine, 'replication')
 
-            DBSession2 = scoped_session(sessionmaker(bind=engine))
+            session2 = scoped_session(sessionmaker(bind=engine))
 
-            dbuser_r = DBSession2.query(User).filter(User.id == self.request.user.id)
+            dbuser_r = session2.query(User).filter(User.id == self.request.user.id)
             result = dbuser_r.all()
             if len(result) == 0:
                 msg = 'user not found in replication target database: %s' \
@@ -1130,7 +1130,7 @@ class Entry(object):
                 u_r = dbuser_r.all()[0]
                 u_r._set_password(new_password)
                 u_r.is_password_changed = True
-                DBSession2.commit()
+                session2.commit()
                 log.info("password changed in replication target database \
                     for user: %s" % self.request.user.username)
 

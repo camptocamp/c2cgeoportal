@@ -31,15 +31,15 @@
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule)
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule)
 
 
 @attr(functional=True)
 class TestReflection(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
 
@@ -48,7 +48,7 @@ class TestReflection(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         import c2cgeoportal.lib.dbreflection
 
         if self.metadata is not None:
@@ -71,7 +71,7 @@ class TestReflection(TestCase):
                                 MultiPoint, MultiLineString, MultiPolygon)
 
         engine = sqlahelper.get_engine()
-        Base = declarative_base(bind=engine)
+        Base = declarative_base(bind=engine)  # noqa
 
         ctable = Table('%s_child' % tablename, Base.metadata,
                        Column('id', types.Integer, primary_key=True),
@@ -217,16 +217,16 @@ class TestReflection(TestCase):
 @attr(functional=True)
 class TestXSDSequenceCallback(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         import transaction
         import sqlahelper
         from sqlalchemy import Column, types, ForeignKey
         from sqlalchemy.orm import relationship
         from sqlalchemy.ext.declarative import declarative_base
         from c2cgeoportal.models import DBSession
-        from c2cgeoportal.lib.dbreflection import _association_proxy
+        from c2cgeoportal.lib.dbreflection import _AssociationProxy
         engine = sqlahelper.get_engine()
-        Base = declarative_base(bind=engine)
+        Base = declarative_base(bind=engine)  # noqa
 
         class Child(Base):
             __tablename__ = 'child'
@@ -242,16 +242,16 @@ class TestXSDSequenceCallback(TestCase):
             child1_id = Column(types.Integer, ForeignKey('child.id'))
             child2_id = Column(types.Integer, ForeignKey('child.id'))
             child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
-            child1 = _association_proxy('child1_', 'name')
+            child1 = _AssociationProxy('child1_', 'name')
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _association_proxy('child2_', 'name')
+            child2 = _AssociationProxy('child2_', 'name')
         Base.metadata.create_all()
         DBSession.add_all([Child('foo'), Child('bar')])
         transaction.commit()
         self.metadata = Base.metadata
         self.cls = Parent
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         import transaction
 
         transaction.commit()

@@ -33,8 +33,8 @@ from nose.plugins.attrib import attr
 
 from pyramid import testing
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule, setUpCommon as setUpModule
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule, set_up_common as setUpModule
 )
 
 
@@ -42,10 +42,10 @@ from c2cgeoportal.tests.functional import (  # NOQA
 @attr(shortener=True)
 class TestshortenerView(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         pass
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Shorturl
@@ -57,7 +57,7 @@ class TestshortenerView(TestCase):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
             HTTPBadRequest
-        from c2cgeoportal.views.shortener import shortener
+        from c2cgeoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
             return 'https://example.com/s/' + kw['ref']
@@ -67,7 +67,7 @@ class TestshortenerView(TestCase):
         request.host = 'example.com:443'
         request.server_name = 'example.com'
         request.route_url = route_url
-        shortener = shortener(request)
+        shortener = Shortener(request)
 
         request.params = {
             'url': 'https://example.com/hi'
@@ -110,7 +110,7 @@ class TestshortenerView(TestCase):
 
     def test_shortener_baseurl(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal.views.shortener import shortener
+        from c2cgeoportal.views.shortener import Shortener
 
         request = DummyRequest()
         request.user = None
@@ -119,7 +119,7 @@ class TestshortenerView(TestCase):
         request.registry.settings['shortener'] = {
             'base_url': 'http://my_host/my_short/'
         }
-        shortener = shortener(request)
+        shortener = Shortener(request)
 
         request.params = {
             'url': 'https://example.com/hi'

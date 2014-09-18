@@ -2,7 +2,7 @@ from unittest import TestCase
 from pyramid import testing
 
 
-class Test_subscribers(TestCase):
+class TestSubscribers(TestCase):
 
     def test_add_renderer_globals(self):
         from c2cgeoportal.subscribers import add_renderer_globals

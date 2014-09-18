@@ -326,9 +326,9 @@ class Layers(object):
         return self._metadata(str(layer.geoTable), layer.excludeProperties)
 
     @cache_region.cache_on_arguments()
-    def _metadata(self, geoTable, exclude_properties):
+    def _metadata(self, geo_table, exclude_properties):
         return get_class(
-            geoTable,
+            geo_table,
             exclude_properties=exclude_properties
         )
 
@@ -370,7 +370,7 @@ class Layers(object):
             raise HTTPInternalServerError(
                 'No config table found for layer "%s"' % layername
             )
-        layertable = get_table(table, DBSession=dbsession)
+        layertable = get_table(table, session=dbsession)
 
         column = attrinfos['column_name'] \
             if 'column_name' in attrinfos else fieldname

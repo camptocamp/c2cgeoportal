@@ -2,16 +2,16 @@ from nose.plugins.attrib import attr
 from pyramid import testing
 from unittest import TestCase
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule
 )
 
 
 @attr(functional=True)
 class TestGroupsFinder(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.config = testing.setUp()
 
         import transaction
@@ -25,7 +25,7 @@ class TestGroupsFinder(TestCase):
         DBSession.add(u)
         transaction.commit()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         import transaction

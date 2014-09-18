@@ -49,7 +49,7 @@ record_class = {
 
 
 def create_record(fp):
-# read header
+    # read header
     record_number = read_and_unpack('>L', fp.read(4))
     if record_number == '':
         return False
@@ -122,15 +122,15 @@ def read_record_poly_line(fp):
 
         # while( ! in_array( points_read, data['parts']) and
         # points_read < data['numpoints'] and !feof(fp)):
-        checkPoint = []
+        check_point = []
         while (points_read < data['numpoints']):
-            currPoint = read_record_point(fp)
-            data['parts'][part_index]['points'].append(currPoint)
+            curr_point = read_record_point(fp)
+            data['parts'][part_index]['points'].append(curr_point)
             points_read += 1
-            if points_read == 0 or checkPoint == []:
-                checkPoint = currPoint
-            elif currPoint == checkPoint:
-                checkPoint = []
+            if points_read == 0 or check_point == []:
+                check_point = curr_point
+            elif curr_point == check_point:
+                check_point = []
                 break
 
     fp.seek(points_initial_index + (points_read * XY_POINT_RECORD_LENGTH))
@@ -155,13 +155,13 @@ def read_and_unpack(type, data):
     return unpack(type, data)[0]
 
 
-####
-#### additional functions
-####
+# ###
+# ### additional functions
+# ###
 
 
 def get_centroids(records, projected=False):
-# for each feature
+    # for each feature
     if projected:
         points = 'projectedPoints'
     else:
@@ -189,8 +189,8 @@ def get_bound_centers(records):
 
 
 def get_true_centers(records, projected=False):
-#gets the true polygonal centroid for each feature (uses largest ring)
-#should be spherical, but isn't
+    # gets the true polygonal centroid for each feature (uses largest ring)
+    # should be spherical, but isn't
 
     if projected:
         points = 'projectedPoints'
@@ -200,33 +200,37 @@ def get_true_centers(records, projected=False):
     for feature in records:
         maxarea = 0
         for ring in feature['shp_data']['parts']:
-            ringArea = get_area(ring, points)
-            if ringArea > maxarea:
-                maxarea = ringArea
+            ring_area = get_area(ring, points)
+            if ring_area > maxarea:
+                maxarea = ring_area
                 biggest = ring
-            #now get the true centroid
-        tempPoint = {'x': 0, 'y': 0}
+            # now get the true centroid
+        temp_point = {'x': 0, 'y': 0}
         if biggest[points][0] != biggest[points][len(biggest[points]) - 1]:
             print  \
                 "mug", biggest[points][0], \
                 biggest[points][len(biggest[points]) - 1]
         for i in range(0, len(biggest[points]) - 1):
             j = (i + 1) % (len(biggest[points]) - 1)
-            tempPoint['x'] -= (biggest[points][i]['x'] + biggest[points][j]['x']) * \
-                ((biggest[points][i]['x'] * biggest[points][j]['y']) -
-                (biggest[points][j]['x'] * biggest[points][i]['y']))
-            tempPoint['y'] -= (biggest[points][i]['y'] + biggest[points][j]['y']) * \
-                ((biggest[points][i]['x'] * biggest[points][j]['y']) -
-                (biggest[points][j]['x'] * biggest[points][i]['y']))
+            temp_point['x'] -= \
+                (biggest[points][i]['x'] + biggest[points][j]['x']) * \
+                (
+                    (biggest[points][i]['x'] * biggest[points][j]['y']) -
+                    (biggest[points][j]['x'] * biggest[points][i]['y']))
+            temp_point['y'] -= \
+                (biggest[points][i]['y'] + biggest[points][j]['y']) * \
+                (
+                    (biggest[points][i]['x'] * biggest[points][j]['y']) -
+                    (biggest[points][j]['x'] * biggest[points][i]['y']))
 
-        tempPoint['x'] = tempPoint['x'] / ((6) * maxarea)
-        tempPoint['y'] = tempPoint['y'] / ((6) * maxarea)
-        feature['shp_data']['truecentroid'] = tempPoint
+        temp_point['x'] = temp_point['x'] / ((6) * maxarea)
+        temp_point['y'] = temp_point['y'] / ((6) * maxarea)
+        feature['shp_data']['truecentroid'] = temp_point
 
 
 def get_area(ring, points):
-#returns the area of a polygon
-#needs to be spherical area, but isn't
+    # returns the area of a polygon
+    # needs to be spherical area, but isn't
     area = 0
     for i in range(0, len(ring[points]) - 1):
         j = (i + 1) % (len(ring[points]) - 1)
@@ -237,36 +241,34 @@ def get_area(ring, points):
 
 
 def get_neighbors(records):
-
-#for each feature
+    # for each feature
     for i in range(len(records)):
-    #print i, records[i]['dbf_data']['ADMIN_NAME']
-        if not 'neighbors' in records[i]['shp_data']:
+        if 'neighbors' not in records[i]['shp_data']:
             records[i]['shp_data']['neighbors'] = []
 
-        #for each other feature
+        # for each other feature
         for j in range(i + 1, len(records)):
             numcommon = 0
-            #first check to see if the bounding boxes overlap
+            # first check to see if the bounding boxes overlap
             if overlap(records[i], records[j]):
-            #if so, check every single point in this feature
-            #to see if it matches a point in the other feature
+                # if so, check every single point in this feature
+                # to see if it matches a point in the other feature
 
-            #for each part:
+                # for each part:
                 for part in records[i]['shp_data']['parts']:
 
-                #for each point:
+                    # for each point:
                     for point in part['points']:
 
                         for otherPart in records[j]['shp_data']['parts']:
                             if point in otherPart['points']:
                                 numcommon += 1
                                 if numcommon == 2:
-                                    if not 'neighbors' in records[j]['shp_data']:
+                                    if 'neighbors' not in records[j]['shp_data']:
                                         records[j]['shp_data']['neighbors'] = []
                                     records[i]['shp_data']['neighbors'].append(j)
                                     records[j]['shp_data']['neighbors'].append(i)
-                                    #now break out to the next j
+                                    # now break out to the next j
                                     break
                         if numcommon == 2:
                             break
@@ -274,40 +276,40 @@ def get_neighbors(records):
                         break
 
 
-def projectShapefile(records, whatProjection, lonCenter=0, latCenter=0):
-    print 'projecting to ', whatProjection
+def project_shapefile(records, what_projection, lon_center=0, lat_center=0):
+    print 'projecting to ', what_projection
     for feature in records:
         for part in feature['shp_data']['parts']:
             part['projectedPoints'] = []
             for point in part['points']:
-                tempPoint = project_point(
-                    point, whatProjection, lonCenter, latCenter)
-                part['projectedPoints'].append(tempPoint)
+                temp_point = project_point(
+                    point, what_projection, lon_center, lat_center)
+                part['projectedPoints'].append(temp_point)
 
 
-def project_point(fromPoint, whatProjection, lonCenter, latCenter):
-    latRadians = fromPoint['y'] * math.pi / 180
-    if latRadians > 1.5:
-        latRadians = 1.5
-    if latRadians < -1.5:
-        latRadians = -1.5
-    lonRadians = fromPoint['x'] * math.pi / 180
-    lonCenter = lonCenter * math.pi / 180
-    latCenter = latCenter * math.pi / 180
-    newPoint = {}
-    if whatProjection == "MERCATOR":
-        newPoint['x'] = (180 / math.pi) * (lonRadians - lonCenter)
-        newPoint['y'] = (180 / math.pi) * math.log(
-            math.tan(latRadians) + (1 / math.cos(latRadians)))
-        if newPoint['y'] > 200:
-            newPoint['y'] = 200
-        if newPoint['y'] < -200:
-            newPoint['y'] = 200
-        return newPoint
-    if whatProjection == "EQUALAREA":
-        newPoint['x'] = 0
-        newPoint['y'] = 0
-        return newPoint
+def project_point(from_point, what_projection, lon_center, lat_center):
+    lat_radians = from_point['y'] * math.pi / 180
+    if lat_radians > 1.5:
+        lat_radians = 1.5
+    if lat_radians < -1.5:
+        lat_radians = -1.5
+    lon_radians = from_point['x'] * math.pi / 180
+    lon_center = lon_center * math.pi / 180
+    lat_center = lat_center * math.pi / 180
+    new_point = {}
+    if what_projection == "MERCATOR":
+        new_point['x'] = (180 / math.pi) * (lon_radians - lon_center)
+        new_point['y'] = (180 / math.pi) * math.log(
+            math.tan(lat_radians) + (1 / math.cos(lat_radians)))
+        if new_point['y'] > 200:
+            new_point['y'] = 200
+        if new_point['y'] < -200:
+            new_point['y'] = 200
+        return new_point
+    if what_projection == "EQUALAREA":
+        new_point['x'] = 0
+        new_point['y'] = 0
+        return new_point
 
 
 def overlap(feature1, feature2):

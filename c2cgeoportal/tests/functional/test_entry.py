@@ -38,18 +38,19 @@ from geoalchemy import WKTSpatialElement
 from pyramid import testing
 from owslib.wms import WebMapService
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule,
-    mapserv_url, host, createDummyRequest)
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule,
+    mapserv_url, host, create_dummy_request)
 
 import logging
 log = logging.getLogger(__name__)
 
+
 @attr(functional=True)
 class TestEntryView(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
             RestrictionArea, Theme, LayerGroup, Functionality
 
@@ -75,8 +76,9 @@ class TestEntryView(TestCase):
         layer_wmsgroup.isChecked = False
 
         theme = Theme(name=u'__test_theme')
-        theme.children = [public_layer, private_layer, layer_group,
-                layer_wmsgroup]
+        theme.children = [
+            public_layer, private_layer, layer_group, layer_wmsgroup
+        ]
 
         functionality1 = Functionality(name=u'test_name', value=u'test_value_1')
         functionality2 = Functionality(name=u'test_name', value=u'test_value_2')
@@ -100,7 +102,7 @@ class TestEntryView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
@@ -203,7 +205,7 @@ class TestEntryView(TestCase):
     def _create_request_obj(self, username=None, params={}, **kwargs):
         from c2cgeoportal.models import DBSession, User
 
-        request = createDummyRequest(**kwargs)
+        request = create_dummy_request(**kwargs)
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url, **kwargs: \
             request.registry.settings['mapserv_url']
@@ -427,17 +429,16 @@ class TestEntryView(TestCase):
         self.assertEquals(len(themes), 0)
         self.assertEquals(len(errors), 1)
 
-    def test_WFS_types(self):
+    def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.registry.settings.update({
             'external_mapserv_url': request.registry.settings['mapserv_url'],
         })
         entry = Entry(request)
 
-        response = entry._getVars()
+        response = entry._get_vars()
         self.assertEquals(
             set(json.loads(response['serverError'])),
             set([
@@ -458,13 +459,12 @@ class TestEntryView(TestCase):
         request = self._create_request_obj()
         request.registry.settings['external_mapserv_url'] = \
             request.registry.settings['mapserv_url']
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.params = {
             'permalink_themes': 'my_themes',
         }
         entry = Entry(request)
 
-        response = entry._getVars()
+        response = entry._get_vars()
         self.assertEquals(response['permalink_themes'], '["my_themes"]')
 
     def test_mobile_cache_version(self):
@@ -617,11 +617,6 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = set([
-            'lang', 'tilecache_url', 'tiles_url', 'debug',
-            'serverError', 'themes', 'external_themes', 'functionality',
-            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls'
-        ])
         result = entry.home()
         self.assertEquals(
             set(result.keys()),
@@ -671,16 +666,17 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                'lang', 'debug', 'extra_params', 'mobile_url', 'no_redirect'
+                'lang', 'debug', 'extra_params', 'url_params', 'mobile_url', 'no_redirect'
             ])
         )
-        self.assertEquals(result['extra_params'], '?lang=fr&user=a%20user&')
+        self.assertEquals(result['extra_params'], {
+            'lang': 'fr', 'user': 'a user'
+        })
 
-    def test_entry_points_wfs(self):
+    def test_entry_points_wfs_url(self):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         mapserv = request.registry.settings['mapserv_url']
         request.registry.settings.update({
             'external_mapserv_url': mapserv,
@@ -713,7 +709,6 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        #request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.registry.settings.update({
             'layers_enum': {
                 'layer_test': {
@@ -1290,7 +1285,7 @@ class TestEntryView(TestCase):
             from hashlib import sha1
             sha1  # suppress pyflakes warning
         except ImportError:  # pragma: nocover
-            from sha import new as sha1  # flake8: noqa
+            from sha import new as sha1  # noqa
 
         request = self._create_request_obj()
         entry = Entry(request)

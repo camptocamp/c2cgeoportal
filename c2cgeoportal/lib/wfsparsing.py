@@ -13,7 +13,7 @@ class _XMLFilterGetFeature(handler.ContentHandler):
     def __init__(self):
         self.result = False
 
-    def startElement(self, name, attrs):
+    def startElement(self, name, attrs):  # noqa
         if name == "wfs:GetFeature":
             self.result = True
 
@@ -29,11 +29,11 @@ class _XMLFilterLimit(XMLFilterBase):
         self._limit = limit
         self._downstream = downstream
 
-    def startDocument(self):
+    def startDocument(self):  # noqa
         # Set the initial state, and set up the stack of states
         self._exportContent = True
 
-    def startElement(self, name, attrs):
+    def startElement(self, name, attrs):  # noqa
         if name == "gml:featureMember":
             if self._count >= self._limit:
                 self._exportContent = False
@@ -43,7 +43,7 @@ class _XMLFilterLimit(XMLFilterBase):
         if self._exportContent:
             self._downstream.startElement(name, attrs)
 
-    def endElement(self, name):
+    def endElement(self, name):  # noqa
         # Only forward the event if the state warrants it
         if self._exportContent:
             self._downstream.endElement(name)

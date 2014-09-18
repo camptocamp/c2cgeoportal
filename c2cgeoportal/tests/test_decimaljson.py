@@ -3,14 +3,14 @@ from unittest import TestCase
 from pyramid import testing
 
 
-class Test_DecimalJSON(TestCase):
-    def _callFUT(self, **kwargs):
+class TestDecimalJSON(TestCase):
+    def _call_fut(self, **kwargs):
         from c2cgeoportal import DecimalJSON
         fake_info = {}
         return DecimalJSON(**kwargs)(fake_info)
 
-    def test_Decimal(self):
-        renderer = self._callFUT()
+    def test_decimal(self):
+        renderer = self._call_fut()
         value = {
             'str': 'an str',
             'int': 1,
@@ -24,7 +24,7 @@ class Test_DecimalJSON(TestCase):
                          'application/json')
 
     def test_jsonp(self):
-        renderer = self._callFUT()
+        renderer = self._call_fut()
         value = {
             'str': 'an str',
             'int': 1,

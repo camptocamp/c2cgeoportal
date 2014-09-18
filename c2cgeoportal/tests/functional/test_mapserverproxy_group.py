@@ -36,10 +36,10 @@ from geoalchemy import WKTSpatialElement
 import transaction
 import sqlahelper
 
-from c2cgeoportal.tests.functional import (  # NOQA
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule,
-    createDummyRequest, mapserv_url)
+from c2cgeoportal.tests.functional import (  # noqa
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule,
+    create_dummy_request, mapserv_url)
 
 Base = sqlahelper.get_base()
 
@@ -47,7 +47,7 @@ Base = sqlahelper.get_base()
 @attr(functional=True)
 class TestMapserverproxyViewGroup(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, DBSession
 
         user1 = User(username=u'__test_user1', password=u'__test_user1')
@@ -66,7 +66,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         from c2cgeoportal.models import User, Role, Layer, RestrictionArea, DBSession
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
@@ -89,7 +89,7 @@ class TestMapserverproxyViewGroup(TestCase):
     def _create_getcap_request(self, username=None):
         from c2cgeoportal.models import DBSession, User
 
-        request = createDummyRequest({
+        request = create_dummy_request({
             'mapserv_url': "%s?map=%s" % (mapserv_url, os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
                 'c2cgeoportal_test.map'
@@ -100,7 +100,7 @@ class TestMapserverproxyViewGroup(TestCase):
         return request
 
     @attr(getcapabilities=True)
-    def test_WMS_GetCapabilities(self):
+    def test_wms_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
@@ -123,7 +123,7 @@ class TestMapserverproxyViewGroup(TestCase):
         self.assertTrue((response.body).find('<Name>testpoint_group</Name>') > 0)
 
     @attr(getcapabilities=True)
-    def test_WFS_GetCapabilities(self):
+    def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()

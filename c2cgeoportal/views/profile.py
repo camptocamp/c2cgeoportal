@@ -121,16 +121,16 @@ class Profile(Raster):
         return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) +
                          math.pow(coord1[1] - coord2[1], 2.0))
 
-    def _create_points(self, coords, nbPoints):
+    def _create_points(self, coords, nb_points):
         """Add some points in order to reach roughly the asked number of points"""
-        totalLength = 0
+        total_length = 0
         prev_coord = None
         for coord in coords:
             if prev_coord is not None:
-                totalLength += self._dist(prev_coord, coord)
+                total_length += self._dist(prev_coord, coord)
             prev_coord = coord
 
-        if totalLength == 0.0:
+        if total_length == 0.0:
             return coords
 
         result = []
@@ -138,7 +138,7 @@ class Profile(Raster):
         for coord in coords:
             if prev_coord is not None:
                 cur_length = self._dist(prev_coord, coord)
-                cur_nb_points = int(nbPoints * cur_length / totalLength + 0.5)
+                cur_nb_points = int(nb_points * cur_length / total_length + 0.5)
                 if cur_nb_points < 1:
                     cur_nb_points = 1
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)

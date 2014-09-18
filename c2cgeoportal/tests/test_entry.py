@@ -31,7 +31,7 @@
 from unittest import TestCase
 
 
-def setUpModule():
+def setUpModule():  # noqa
     import c2cgeoportal
     c2cgeoportal.schema = 'main'
     c2cgeoportal.srid = 21781
@@ -40,7 +40,7 @@ def setUpModule():
 
 class TestEntryView(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         from pyramid import testing
         testing.setUp(
             settings={
@@ -49,7 +49,7 @@ class TestEntryView(TestCase):
             }
         )
 
-    def test_decimal_JSON(self):
+    def test_decimal_json(self):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
         from c2cgeoportal import DecimalJSON
