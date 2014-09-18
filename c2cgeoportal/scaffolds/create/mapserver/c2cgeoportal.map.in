@@ -118,10 +118,9 @@ MAP
 
             ${mapserver_layer_metadata} # For secured layers
         END
-        # For secured layers in MapServer 6.4 and above
-#        VALIDATION
-#            ${mapserver_layer_validation}
-#        END
+        VALIDATION
+            ${mapserver_layer_validation} # For secured layers
+        END
         STATUS ON
         PROJECTION
           "init=epsg:21781"

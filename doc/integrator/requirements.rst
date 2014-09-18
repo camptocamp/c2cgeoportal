@@ -13,8 +13,7 @@ components installed on your system:
 * **Apache**
 * **PostgreSQL** >= 9.1/**PostGIS** 1.5.3 (PostgreSQL 8.x and 9.0 should work
     but some commands used in this guide don't work)
-* **MapServer** 6.0.2 and upper (MapServer 6.0.0 and 6.0.1 have some
-    issues with WFS) or **QGIS**-mapserver 2.2 and upper
+* **MapServer** 7.0 or **QGIS**-mapserver 2.2 and upper
 * **ImageMagick**
 * **Sencha** Command
 

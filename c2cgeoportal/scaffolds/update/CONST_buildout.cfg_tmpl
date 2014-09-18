@@ -2,6 +2,9 @@
 extends = versions.cfg
 parts = eggs
         fix-perm
+        test-packages
+        test-packages-mobile
+        test-packages-tilecloud-chain
         activate
         template
         modwsgi
@@ -75,8 +78,6 @@ mapserver_join_area = ra.area
 mapserver_join_where = rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name =
 # mapserver metadata for validation
 mapserver_layer_metadata =
-    "default_role_id" "-1"
-    "role_id_validation_pattern" "^-?[0-9]*$"
 mapserver_layer_validation =
     "default_role_id" "-1"
     "role_id" "^-?[0-9]*$"
@@ -121,6 +122,23 @@ cmds =
     >>>    call(['chmod', '--quiet', '-R', 'g+rw,o+r', '.'])
     >>>    # remove wsgi file (rights issue)
     >>>    call(['rm', '-f', 'buildout/parts/modwsgi/wsgi'])
+
+[test-packages]
+recipe = c2c.recipe.pkgversions
+mapserver-bin = 7.0.0
+deploy = 0.3.1
+postgis = 1.5.3
+libapache2-mod-wsgi =
+
+[test-packages-mobile]
+recipe = c2c.recipe.pkgversions
+libcompass-ruby1.8 =
+sencha-sdk-tools =
+
+[test-packages-tilecloud-chain]
+recipe = c2c.recipe.pkgversions
+libapache2-mod-mapcache =
+memcached =
 
 [activate]
 recipe = evg.recipe.activate
