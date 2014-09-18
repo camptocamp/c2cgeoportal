@@ -104,7 +104,6 @@ class Printproxy(object):  # pragma: no cover
             json.dumps(capabilities, separators=(',', ':')),
             status=resp.status, headers=headers,
         )
-        response.cache_control.public = True
         response.cache_control.max_age = \
             self.request.registry.settings["default_max_age"]
         return response

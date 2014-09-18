@@ -59,8 +59,6 @@ class Layers(object):
         self.request = request
         if request.user:
             request.response.cache_control.private = True
-        else:
-            request.response.cache_control.public = True
         self.request.response.cache_control.max_age = \
             request.registry.settings["default_max_age"]
         self.layers_enum_config = \

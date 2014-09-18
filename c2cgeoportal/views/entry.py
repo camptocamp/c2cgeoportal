@@ -70,8 +70,6 @@ class Entry(object):
         self.request = request
         if request.user:
             request.response.cache_control.private = True
-        else:
-            request.response.cache_control.public = True
         request.response.cache_control.max_age = \
             request.registry.settings["default_max_age"]
         self.settings = request.registry.settings
