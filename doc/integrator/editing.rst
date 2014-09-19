@@ -3,8 +3,6 @@
 Editing
 =======
 
-*New in c2cgeoportal 0.6.*
-
 Any c2cgeoportal application comes with an editing interface, available at
 ``/edit`` (assuming ``/`` is the application's root URL).
 
