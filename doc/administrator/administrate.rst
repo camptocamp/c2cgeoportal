@@ -31,10 +31,10 @@ The layers in the admin interface has the following attributes:
     the given layer, used to zoom to visible scale, with WMS if it's empty
     we get the values from the capabilities.
  *  ``Disclaimer``: optional, copyright of the layer, used by
-    `Disclaimer <http://docs.camptocamp.net/cgxp/lib/plugins/Disclaimer.html>`_.
+    `Disclaimer <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Disclaimer.html>`_.
  *  ``Identifier attribute field``: field used to identify a feature from the
     layer, e.g.: 'name', used by
-    `FeaturesWindow <http://docs.camptocamp.net/cgxp/lib/plugins/FeaturesWindow.html>`_.
+    `FeaturesWindow <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FeaturesWindow.html>`_.
  *  ``Related Postgres table``: the related postgres table,
     used by the :ref:`administrator_editing`.
  *  ``Attributes to exclude``: the list of attributes that shouldn't appear in
