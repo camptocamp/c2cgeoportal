@@ -155,7 +155,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         enable_proxies(proxies)
 
     wms_structure = _wms_structure(wms_url, headers.get('Host', None))
-    tmp_private_layers = _get_private_layers()
+    tmp_private_layers = list(_get_private_layers())
     for name in _get_protected_layers(role_id):
         tmp_private_layers.remove(name)
 
