@@ -50,7 +50,8 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
-from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
+from c2cgeoportal.lib import get_setting, get_protected_layers_query
+from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -60,7 +61,7 @@ from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
-cache_region = caching.get_region()
+cache_region = get_region()
 
 
 class Entry(object):
@@ -535,6 +536,13 @@ class Entry(object):
     def _get_cache_version(self):
         "Return a cache version that is regenerate after each cache invalidation"
         return uuid.uuid4().hex
+
+    @view_config(route_name='invalidate', renderer='json')
+    def invalidate_cache(self):  # pargma: nocover
+        invalidate_region()
+        return {
+            'success': True
+        }
 
     def _getChildren(self, theme, layers, wms_layers, wms):
         children = []
