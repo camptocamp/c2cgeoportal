@@ -38,16 +38,14 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy import func, desc, or_, and_
 
 from c2cgeoportal.models import DBSession, FullTextSearch
+from c2cgeoportal.lib.caching import init_cache_control
 
 
 class FullTextSearchView(object):
 
     def __init__(self, request):
         self.request = request
-        if request.user:
-            request.response.cache_control.private = True
-        request.response.cache_control.max_age = \
-            request.registry.settings["default_max_age"]
+        init_cache_control(request, "fulltextsearch")
         self.settings = request.registry.settings.get('fulltextsearch', {})
         if 'languages' in self.settings:  # pragma: nocover
             self.languages = self.settings['languages']
