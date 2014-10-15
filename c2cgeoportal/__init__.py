@@ -98,7 +98,7 @@ def get_user_from_request(request):
 
     if not hasattr(request, '_user'):
         request._user = None
-        username = request.unauthenticated_userid
+        username = request.authenticated_userid
         if username is not None:
             # We know we will need the role object of the
             # user so we use joined loading
