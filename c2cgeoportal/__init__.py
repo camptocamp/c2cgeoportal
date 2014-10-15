@@ -176,8 +176,7 @@ def includeme(config):
     global formalchemy_default_y
     global formalchemy_available_functionalities
 
-    config.set_request_property(
-        get_user_from_request, name='user', reify=True)
+    config.set_request_property(get_user_from_request, name='user')
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs('c2cgeoportal:locale/')
