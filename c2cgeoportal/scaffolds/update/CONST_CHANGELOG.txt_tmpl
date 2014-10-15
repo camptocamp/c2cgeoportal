@@ -1,6 +1,13 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.5.1
+=============
+
+1. Remove in ``production.ini.in`` and ``development.ini.in`` in the ``[app:app]`` section:
+
+   cache_version = ${cache_version}
+
 Version 1.5
 ===========
 

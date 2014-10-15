@@ -47,8 +47,6 @@ modwsgi_user = www-data
 apache-entry-point = /${vars:instanceid}/
 # cookie session secret
 authtkt_secret = __import__('uuid').uuid4().hex
-# UUID for inhibiting the browser cache after the application has been rebuilt:
-cache_version = __import__('uuid').uuid4().hex
 # database user
 dbuser = www-data
 # database password
@@ -170,7 +168,6 @@ recipe = z3c.recipe.filetemplate
 source-directory = .
 exclude-directories = buildout
 interpreted-options = authtkt_secret
-    cache_version
 extends = vars
     facts
 

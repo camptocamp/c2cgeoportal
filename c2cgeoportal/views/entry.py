@@ -33,6 +33,7 @@ import urllib
 import logging
 import json
 import sys
+import uuid
 
 from urlparse import urlparse
 
@@ -530,6 +531,11 @@ class Entry(object):
                 result[functionality.name] = [functionality.value]
         return result
 
+    @cache_region.cache_on_arguments()
+    def _get_cache_version(self):
+        "Return a cache version that is regenerate after each cache invalidation"
+        return uuid.uuid4().hex
+
     def _getChildren(self, theme, layers, wms_layers, wms):
         children = []
         errors = []
@@ -717,14 +723,15 @@ class Entry(object):
                         path=''
                     )
 
-        cache_version = self.settings.get('cache_version', None)
-        url_params = {}
-        url_role_params = {} if self.request.user is None else {
-            'role': self.request.user.role.name
+        cache_version = self._get_cache_version()
+        url_params = {
+            'version': cache_version
         }
-        if cache_version:  # pragma: no cover
-            url_params['version'] = cache_version
-            url_role_params['version'] = cache_version
+        url_role_params = {
+            'version': cache_version
+        }
+        if self.request.user is not None:
+            url_role_params['role'] = self.request.user.role.name
 
         d = {
             'themes': json.dumps(themes),
@@ -748,12 +755,13 @@ class Entry(object):
         return d
 
     def _get_home_vars(self):
-        cache_version = self.settings.get('cache_version', None)
-        extra_params = {}
-        url_params = {}
-        if cache_version:
-            url_params['version'] = cache_version
-            extra_params['version'] = cache_version
+        cache_version = self._get_cache_version()
+        extra_params = {
+            'version': cache_version
+        }
+        url_params = {
+            'version': cache_version
+        }
         if self.lang:
             extra_params['lang'] = self.lang
         d = {
@@ -835,11 +843,11 @@ class Entry(object):
 
         extra_params = dict(self.request.params)
         came_from = self.request.current_route_url(_query=extra_params)
-        url_params = {}
-        cache_version = self.settings.get('cache_version', None)
-        if cache_version is not None:
-            extra_params['cache_version'] = cache_version
-            url_params['cache_version'] = cache_version
+        cache_version = self._get_cache_version()
+        url_params = {
+            'cache_version': cache_version
+        }
+        extra_params['cache_version'] = cache_version
 
         def enc(vals):
             return (vals[0], vals[1].encode('utf8'))
