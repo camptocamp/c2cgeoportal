@@ -252,6 +252,7 @@ def includeme(config):
     config.add_route('themes', '/themes')
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route('permalinktheme', '/theme/*themes')
+    config.add_route('invalidate', '/invalidate')
 
     # checker routes, Checkers are web services to test and assess that
     # the application is correctly functioning.
