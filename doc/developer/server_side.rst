@@ -329,9 +329,8 @@ Object model
 ~~~~~~~~~~~~
 
 .. image:: database.png
-.. source file is database.dia
-   export to database.eps
-   than run « convert -density 150 database.eps database.png » to have a good quality png file
+.. source file is database.dia.
+   export from DIA using the type "PNG (anti-crénelé) (*.png)", set the width to 1000px.
 
 ``TreeItem`` and ``TreeGroup`` are abstract (can't be create) class used to create the tree.
 
