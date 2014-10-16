@@ -538,7 +538,7 @@ class Entry(object):
         return uuid.uuid4().hex
 
     @view_config(route_name='invalidate', renderer='json')
-    def invalidate_cache(self):  # pargma: nocover
+    def invalidate_cache(self):  # pragma: no cover
         invalidate_region()
         return {
             'success': True
@@ -558,15 +558,15 @@ class Entry(object):
                     return children, errors, True
 
                 if gp is not None:
-                    if time.has_time():
-                        gp.update({"time": time.to_dict()})  # pragma nocover
+                    if time.has_time():  # pragma: nocover
+                        gp.update({"time": time.to_dict()})
                     children.append(gp)
             elif type(item) == Layer:
                 if item in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(item, wms_layers, wms, time)
-                    if time.has_time():
-                        l.update({"time": time.to_dict()})  # pragma nocover
+                    if time.has_time():  # pragma: nocover
+                        l.update({"time": time.to_dict()})
                     errors += l_errors
                     children.append(l)
         return children, errors, False

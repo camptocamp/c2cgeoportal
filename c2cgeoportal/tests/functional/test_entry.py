@@ -471,15 +471,17 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        request.registry.settings.update({
-            'cache_version': u'123456789',
-        })
         request.user = None
         entry = Entry(request)
         request.current_route_url = lambda **kwargs: 'http://example.com/current/view'
         result = entry.mobile()
-        self.assertEquals(result['url_params'], 'cache_version=123456789')
-        self.assertEquals(result['extra_params'], 'cache_version=123456789')
+        self.assertRegexpMatches(result['url_params'], 'cache_version=[0-9a-f]*')
+        self.assertRegexpMatches(result['extra_params'], 'cache_version=[0-9a-f]*')
+        self.assertEquals(result['url_params'], result['extra_params'])
+
+        result2 = entry.mobile()
+        self.assertEquals(result2['url_params'], result['url_params'])
+        self.assertEquals(result2['extra_params'], result['extra_params'])
 
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
@@ -581,10 +583,13 @@ class TestEntryView(TestCase):
                 'lang', 'debug', 'url_params', 'extra_params', 'mobile_url', 'no_redirect'
             ])
         )
-        self.assertEquals(result['extra_params'], {
-            'lang': 'fr',
-            'user': 'a user'
-        })
+        self.assertEquals(
+            set(result['extra_params'].keys()),
+            set(['lang', 'user', 'version'])
+        )
+        self.assertEquals(result['extra_params']['lang'], 'fr')
+        self.assertEquals(result['extra_params']['user'], 'a user')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
 
     def test_entry_points_version(self):
         from c2cgeoportal.views.entry import Entry
@@ -604,7 +609,6 @@ class TestEntryView(TestCase):
         request.registry.settings = {
             'mapserv_url': mapserv,
             'external_mapserv_url': mapserv,
-            'cache_version': '___test_version___',
             'default_max_age': 76,
             'layers_enum': {
                 'layer_test': {
@@ -630,22 +634,22 @@ class TestEntryView(TestCase):
                 'mobile_url', 'no_redirect'
             ])
         )
-        self.assertEquals(result['url_params']['version'], '___test_version___')
-        self.assertEquals(result['extra_params']['version'], '___test_version___')
+        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
         result = entry.edit()
         self.assertEquals(
             set(result.keys()),
             set(['lang', 'debug', 'extra_params', 'url_params'])
         )
-        self.assertEquals(result['url_params']['version'], '___test_version___')
-        self.assertEquals(result['extra_params']['version'], '___test_version___')
+        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
         result = entry.routing()
         self.assertEquals(
             set(result.keys()),
             set(['lang', 'debug', 'extra_params', 'url_params'])
         )
-        self.assertEquals(result['url_params']['version'], '___test_version___')
-        self.assertEquals(result['extra_params']['version'], '___test_version___')
+        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
 
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
@@ -748,13 +752,19 @@ class TestEntryView(TestCase):
         }
         result = entry.permalinktheme()
         self.assertEquals(
-            result.keys(),
-            [
+            set(result.keys()),
+            set([
                 'lang', 'url_params', 'mobile_url', 'permalink_themes',
                 'no_redirect', 'extra_params', 'debug'
-            ]
+            ])
         )
-        self.assertEquals(result['extra_params'], {'lang': 'fr', 'permalink_themes': 'theme'})
+        self.assertEquals(
+            set(result['extra_params'].keys()),
+            set(['lang', 'permalink_themes', 'version'])
+        )
+        self.assertEquals(result['extra_params']['lang'], 'fr')
+        self.assertEquals(result['extra_params']['permalink_themes'], 'theme')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
         self.assertEquals(result['permalink_themes'], 'theme')
 
         request.matchdict = {
@@ -762,13 +772,19 @@ class TestEntryView(TestCase):
         }
         result = entry.permalinktheme()
         self.assertEquals(
-            result.keys(),
-            [
+            set(result.keys()),
+            set([
                 'lang', 'url_params', 'mobile_url', 'permalink_themes',
                 'no_redirect', 'extra_params', 'debug'
-            ]
+            ])
         )
-        self.assertEquals(result['extra_params'], {'lang': 'fr', 'permalink_themes': 'theme1,theme2'})
+        self.assertEquals(
+            set(result['extra_params'].keys()),
+            set(['lang', 'permalink_themes', 'version'])
+        )
+        self.assertEquals(result['extra_params']['lang'], 'fr')
+        self.assertEquals(result['extra_params']['permalink_themes'], 'theme1,theme2')
+        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
         self.assertEquals(result['permalink_themes'], 'theme1,theme2')
 
     def test_layer(self):
