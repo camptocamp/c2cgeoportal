@@ -37,53 +37,24 @@ install_requires = [
     'pyramid_multiauth',
     'pyramid_mako',
     'pyramid_chameleon',
-    'WebError',
     'psycopg2',
-    # sqlalchemy-migrate 0.7.2 and GeoAlchemy 0.7.1
-    # don't work with SQLAlchemy 0.8.
-    'SQLAlchemy<=0.7.9',
     'sqlalchemy-migrate<=0.7.99',
     'SQLAHelper',
     'pyramid_tm',
     'papyrus>=0.10dev1',
     'papyrus_ogcproxy>=0.2dev1',
-    'httplib2',
-    'Babel',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
-    # fa.jquery uses js.jqueryui_selectmenu, whose released
-    # version (0.1) doesn't work with js.jquery > 1.7.1.
-    'js.jquery==1.7.1',
-    # The latest js.jqgrid lib (4.4.1) needs a DOCTYPE for IE8
-    # See: https://github.com/camptocamp/c2cgeoportal/issues/411
-    'js.jqgrid==4.3.1-1',
-    'fanstatic>=0.11.3',
     'GeoFormAlchemy>=0.4',
-    'GeoAlchemy>=0.7,<=0.7.99',
-    # With Formalchemy 1.4.3 the Layer types 'WMTS' and 'no 2D' are not visible.
-    'FormAlchemy<=1.4.2',
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
-    'JSTools>=0.6',
-    'simplejson',
-    'PyYAML',
     'dogpile.cache',
     'PasteScript',
-    # Used in the CONST_buildout.cfg
-    # Needs to be here to correctly generate version.cfg
-    'c2c.recipe.cssmin',
-    'c2c.recipe.facts',
-    'c2c.recipe.jarfile',
-    'c2c.recipe.msgfmt',
-    'collective.recipe.cmd',
-    'collective.recipe.modwsgi',
-    'JSTools',
-    'z3c.recipe.filetemplate',
     # Needed by the production.ini
     'waitress',
     # WMST support
     'isodate',
-    'nose==1.3.0',
+    'nose',
 ]
 
 # nose plugins with options set in setup.cfg cannot be in
