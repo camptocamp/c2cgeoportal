@@ -53,6 +53,7 @@ formalchemy_default_zoom = 10
 formalchemy_default_x = 740000
 formalchemy_default_y = 5860000
 formalchemy_available_functionalities = []
+formalchemy_available_metadata = []
 
 
 class DecimalJSON:
@@ -175,6 +176,7 @@ def includeme(config):
     global formalchemy_default_x
     global formalchemy_default_y
     global formalchemy_available_functionalities
+    global formalchemy_available_metadata
 
     config.set_request_property(get_user_from_request, name='user')
 
@@ -343,6 +345,10 @@ def includeme(config):
         settings,
         ('admin_interface', 'available_functionalities'),
         formalchemy_available_functionalities)
+    formalchemy_available_metadata = get_setting(
+        settings,
+        ('admin_interface', 'available_metadata'),
+        formalchemy_available_metadata)
 
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')

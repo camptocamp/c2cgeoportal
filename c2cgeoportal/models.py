@@ -53,7 +53,10 @@ from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
 __all__ = [
     'Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
-    'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea']
+    'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea',
+    'LayerV1', 'LayerInternalWMS', 'LayerExternalWMS', 'LayerWMTS',
+    'Interface', 'UIMetadata', 'WMTSDimension'
+]
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
@@ -159,7 +162,8 @@ role_functionality = Table(
         'functionality_id', Integer,
         ForeignKey(_schema + '.functionality.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 # association table theme <> functionality
 theme_functionality = Table(
@@ -172,7 +176,8 @@ theme_functionality = Table(
         'functionality_id', Integer,
         ForeignKey(_schema + '.functionality.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 
 class User(Base):
@@ -269,7 +274,8 @@ class Role(Base):
     # functionality
     functionalities = relationship(
         'Functionality', secondary=role_functionality,
-        cascade='save-update,merge,refresh-expire')
+        cascade='save-update,merge,refresh-expire'
+    )
 
     def __init__(self, name=u'', description=u'', functionalities=[], extent=None):
         self.name = name
@@ -336,7 +342,8 @@ layergroup_treeitem = Table(
         'treeitem_id', Integer,
         ForeignKey(_schema + '.treeitem.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 
 class TreeGroup(TreeItem):
@@ -351,7 +358,8 @@ class TreeGroup(TreeItem):
     # relationship with Role and Layer
     children = relationship(
         'TreeItem', backref='parents',
-        secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire')
+        secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire'
+    )
 
     def __init__(self, name=u'', order=0):
         TreeItem.__init__(self, name=name, order=order)
@@ -402,7 +410,8 @@ class Theme(TreeGroup):
     # functionality
     functionalities = relationship(
         'Functionality', secondary=theme_functionality,
-        cascade='save-update,merge,refresh-expire')
+        cascade='save-update,merge,refresh-expire'
+    )
 
     def __init__(self, name=u'', order=100, icon=u'', display=True):
         TreeGroup.__init__(self, name=name, order=order)
@@ -488,8 +497,8 @@ class LayerV1(Layer):
 
 
 class LayerInternalWMS(Layer):
-    __label__ = _(u'internal WMS layer')
-    __plural__ = _(u'internal WMS layers')
+    __label__ = _(u'Internal WMS layer')
+    __plural__ = _(u'Internal WMS layers')
     __tablename__ = 'layer_internal_wms'
     __table_args__ = {'schema': _schema}
     __acl__ = [
@@ -518,8 +527,8 @@ class LayerInternalWMS(Layer):
 
 
 class LayerExternalWMS(Layer):
-    __label__ = _(u'external WMS layer')
-    __plural__ = _(u'external WMS layers')
+    __label__ = _(u'External WMS layer')
+    __plural__ = _(u'External WMS layers')
     __tablename__ = 'layer_external_wms'
     __table_args__ = {'schema': _schema}
     __acl__ = [
@@ -580,7 +589,8 @@ role_ra = Table(
         'restrictionarea_id', Integer,
         ForeignKey(_schema + '.restrictionarea.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 # association table layer <> restriciton area
 layer_ra = Table(
@@ -593,7 +603,8 @@ layer_ra = Table(
         'restrictionarea_id', Integer,
         ForeignKey(_schema + '.restrictionarea.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 
 class RestrictionArea(Base):
@@ -614,10 +625,12 @@ class RestrictionArea(Base):
     # relationship with Role and Layer
     roles = relationship(
         'Role', secondary=role_ra,
-        backref='restrictionareas', cascade='save-update,merge,refresh-expire')
+        backref='restrictionareas', cascade='save-update,merge,refresh-expire'
+    )
     layers = relationship(
         'Layer', secondary=layer_ra,
-        backref='restrictionareas', cascade='save-update,merge,refresh-expire')
+        backref='restrictionareas', cascade='save-update,merge,refresh-expire'
+    )
 
     def __init__(self, name='', description='', layers=[], roles=[],
                  area=None, readwrite=False):
@@ -649,7 +662,8 @@ interface_layer = Table(
         'layer_id', Integer,
         ForeignKey(_schema + '.layer.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 # association table interface <> theme
 interface_theme = Table(
@@ -662,12 +676,13 @@ interface_theme = Table(
         'theme_id', Integer,
         ForeignKey(_schema + '.theme.id'), primary_key=True
     ),
-    schema=_schema)
+    schema=_schema
+)
 
 
 class Interface(Base):
-    __label__ = _(u'interface')
-    __plural__ = _(u'interfacess')
+    __label__ = _(u'Interface')
+    __plural__ = _(u'Interfaces')
     __tablename__ = 'interface'
     __table_args__ = {'schema': _schema}
     __acl__ = [
@@ -681,10 +696,12 @@ class Interface(Base):
     # relationship with Layer and Theme
     layers = relationship(
         'Layer', secondary=interface_layer,
-        backref='interfaces', cascade='save-update,merge,refresh-expire')
+        backref='interfaces', cascade='save-update,merge,refresh-expire'
+    )
     theme = relationship(
         'Theme', secondary=interface_theme,
-        backref='interfaces', cascade='save-update,merge,refresh-expire')
+        backref='interfaces', cascade='save-update,merge,refresh-expire'
+    )
 
     def __init__(self, name='', description=''):
         self.name = name
