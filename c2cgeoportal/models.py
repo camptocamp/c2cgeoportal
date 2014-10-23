@@ -37,7 +37,9 @@ except ImportError:  # pragma: nocover
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
-from sqlalchemy import ForeignKey, types, Table, event
+from sqlalchemy import ForeignKey, Table, event
+from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
+    Enum, DateTime, UserDefinedType
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
@@ -67,25 +69,25 @@ AUTHORIZED_ROLE = 'role_admin'
 
 if schema is not None:
     _schema = schema
-else:
+else:  # pragma: nocover
     raise Exception(
         'schema not specified, you need to add it to your buildout config'
-    )  # pragma: nocover
+    )
 _parentschema = parentschema
 
 if srid is not None:
     _srid = srid
-else:
+else:  # pragma: nocover
     raise Exception(
         'srid not specified, you need to add it to your buildout config'
-    )  # pragma: nocover
+    )
 
 
 def cache_invalidate_cb(*args):
     caching.invalidate_region()
 
 
-class TsVector(types.UserDefinedType):
+class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
     def get_col_spec(self):
         return 'TSVECTOR'
@@ -98,16 +100,16 @@ class FullTextSearch(GeoInterface, Base):
         {'schema': _schema}
     )
     __acl__ = [DENY_ALL]
-    id = Column('id', types.Integer, primary_key=True)
-    label = Column('label', types.Unicode)
-    layer_name = Column('layer_name', types.Unicode)
-    role_id = Column('role_id', types.Integer,
-                     ForeignKey(_schema + '.role.id'), nullable=True)
+
+    id = Column(Integer, primary_key=True)
+    label = Column(Unicode)
+    layer_name = Column(Unicode)
+    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=True)
     role = relationship("Role")
-    public = Column('public', types.Boolean, server_default='true')
-    ts = Column('ts', TsVector)
+    public = Column(Boolean, server_default='true')
+    ts = Column(TsVector)
     the_geom = GeometryColumn(Geometry(srid=_srid))
-    params = Column('params', JSONEncodedDict, nullable=True)
+    params = Column(JSONEncodedDict, nullable=True)
 
 GeometryDDL(FullTextSearch.__table__)
 
@@ -120,10 +122,11 @@ class Functionality(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.Unicode, nullable=False, label=_(u'Name'))
-    value = Column(types.Unicode, nullable=False, label=_(u'Value'))
-    description = Column(types.Unicode)
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, nullable=False, label=_(u'Name'))
+    value = Column(Unicode, nullable=False, label=_(u'Value'))
+    description = Column(Unicode)
 
     def __init__(self, name=u'', value=u'', description=u''):
         self.name = name
@@ -137,33 +140,38 @@ class Functionality(Base):
 user_functionality = Table(
     'user_functionality', Base.metadata,
     Column(
-        'user_id', types.Integer, ForeignKey(_schema + '.user.id'),
-        primary_key=True),
+        'user_id', Integer, ForeignKey(_schema + '.user.id'), primary_key=True
+    ),
     Column(
-        'functionality_id', types.Integer,
-        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+        'functionality_id', Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True
+    ),
     schema=_schema)
 
 # association table role <> functionality
 role_functionality = Table(
     'role_functionality', Base.metadata,
     Column(
-        'role_id', types.Integer, ForeignKey(_schema + '.role.id'),
-        primary_key=True),
+        'role_id', Integer,
+        ForeignKey(_schema + '.role.id'), primary_key=True
+    ),
     Column(
-        'functionality_id', types.Integer,
-        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+        'functionality_id', Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True
+    ),
     schema=_schema)
 
 # association table theme <> functionality
 theme_functionality = Table(
     'theme_functionality', Base.metadata,
     Column(
-        'theme_id', types.Integer, ForeignKey(_schema + '.theme.id'),
-        primary_key=True),
+        'theme_id', Integer,
+        ForeignKey(_schema + '.theme.id'), primary_key=True
+    ),
     Column(
-        'functionality_id', types.Integer,
-        ForeignKey(_schema + '.functionality.id'), primary_key=True),
+        'functionality_id', Integer,
+        ForeignKey(_schema + '.functionality.id'), primary_key=True
+    ),
     schema=_schema)
 
 
@@ -175,20 +183,21 @@ class User(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    itemType = Column('type', types.String(10), nullable=False)
+    item_type = Column('type', String(10), nullable=False)
     __mapper_args__ = {
-        'polymorphic_on': itemType,
+        'polymorphic_on': item_type,
         'polymorphic_identity': 'user',
     }
-    id = Column(types.Integer, primary_key=True)
+
+    id = Column(Integer, primary_key=True)
     username = Column(
-        types.Unicode, unique=True, nullable=False,
+        Unicode, unique=True, nullable=False,
         label=_(u'Username'))
     _password = Column(
-        'password', types.Unicode, nullable=False,
+        'password', Unicode, nullable=False,
         label=_(u'Password'))
-    email = Column(types.Unicode, nullable=False, label=_(u'E-mail'))
-    is_password_changed = Column(types.Boolean, default=False, label=_(u'PasswordChanged'))
+    email = Column(Unicode, nullable=False, label=_(u'E-mail'))
+    is_password_changed = Column(Boolean, default=False, label=_(u'PasswordChanged'))
 
     # functionality
     functionalities = relationship(
@@ -196,12 +205,12 @@ class User(Base):
         cascade='save-update,merge,refresh-expire')
 
     # role relationship
-    role_id = Column(types.Integer, ForeignKey(_schema + '.role.id'), nullable=False)
+    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
     role = relationship("Role", backref=backref('users', enable_typechecks=False))
 
     if _parentschema is not None and _parentschema != '':  # pragma: no cover
         # parent role relationship
-        parent_role_id = Column(types.Integer, ForeignKey(_parentschema + '.role.id'))
+        parent_role_id = Column(Integer, ForeignKey(_parentschema + '.role.id'))
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
     def __init__(
@@ -251,11 +260,11 @@ class Role(Base):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
-    description = Column(types.Unicode, label=_(u'Description'))
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, unique=True, nullable=False, label=_(u'Name'))
+    description = Column(Unicode, label=_(u'Description'))
     extent = GeometryColumn(Polygon(srid=_srid))
-    # product = Column(types.Unicode)
 
     # functionality
     functionalities = relationship(
@@ -297,12 +306,13 @@ class TreeItem(Base):
     __tablename__ = 'treeitem'
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
-    itemType = Column('type', types.String(10), nullable=False)
-    __mapper_args__ = {'polymorphic_on': itemType}
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.Unicode, label=_(u'Name'))
-    order = Column(types.Integer, nullable=False, label=_(u'Order'))
-    metadataURL = Column(types.Unicode, label=_(u'Metadata URL'))
+    item_type = Column('type', String(10), nullable=False)
+    __mapper_args__ = {'polymorphic_on': item_type}
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, label=_(u'Name'))
+    order = Column(Integer, nullable=False, label=_(u'Order'))
+    metadata_url = Column(Unicode, label=_(u'Metadata URL'))  # shouldn't be used in V3
 
     def __init__(self, name=u'', order=0):
         self.name = name
@@ -319,11 +329,13 @@ event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 layergroup_treeitem = Table(
     'layergroup_treeitem', Base.metadata,
     Column(
-        'treegroup_id', types.Integer, ForeignKey(_schema + '.treegroup.id'),
-        primary_key=True),
+        'treegroup_id', Integer,
+        ForeignKey(_schema + '.treegroup.id'), primary_key=True
+    ),
     Column(
-        'treeitem_id', types.Integer, ForeignKey(_schema + '.treeitem.id'),
-        primary_key=True),
+        'treeitem_id', Integer,
+        ForeignKey(_schema + '.treeitem.id'), primary_key=True
+    ),
     schema=_schema)
 
 
@@ -332,16 +344,16 @@ class TreeGroup(TreeItem):
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
     __mapper_args__ = {'polymorphic_identity': 'treegroup'}
-    id = Column(
-        types.Integer, ForeignKey(_schema + '.treeitem.id'),
-        primary_key=True)
 
+    id = Column(
+        Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True
+    )
     # relationship with Role and Layer
     children = relationship(
         'TreeItem', backref='parents',
         secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire')
 
-    def __init__(self, name=u'', order=u''):
+    def __init__(self, name=u'', order=0):
         TreeItem.__init__(self, name=name, order=order)
 
 
@@ -354,21 +366,22 @@ class LayerGroup(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'group'}
+
     id = Column(
-        types.Integer, ForeignKey(_schema + '.treegroup.id'),
-        primary_key=True)
-    isExpanded = Column(types.Boolean, label=_(u'Expanded'))
-    isInternalWMS = Column(types.Boolean, label=_(u'Internal WMS'))
+        Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True
+    )
+    is_expanded = Column(Boolean, label=_(u'Expanded'))  # shouldn't be used in V3
+    is_internal_wms = Column(Boolean, label=_(u'Internal WMS'))
     # children have radio button instance of check box
-    isBaseLayer = Column(types.Boolean, label=_(u'Group of base layers'))
+    is_base_layer = Column(Boolean, label=_(u'Group of base layers'))  # Shouldn't be used in V3
 
     def __init__(
             self, name=u'', order=100, is_expanded=False,
             is_internal_wms=True, is_base_layer=False):
         TreeGroup.__init__(self, name=name, order=order)
-        self.isExpanded = is_expanded
-        self.isInternalWMS = is_internal_wms
-        self.isBaseLayer = is_base_layer
+        self.is_expanded = is_expanded
+        self.is_internal_wms = is_internal_wms
+        self.is_base_layer = is_base_layer
 
 
 class Theme(TreeGroup):
@@ -380,12 +393,11 @@ class Theme(TreeGroup):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
     __mapper_args__ = {'polymorphic_identity': 'theme'}
+
     id = Column(
-        types.Integer, ForeignKey(_schema + '.treegroup.id'),
-        primary_key=True)
-    icon = Column(types.Unicode, label=_(u'Icon'))
-    inMobileViewer = Column(types.Boolean, default=False, label=_(u'Display in mobile'))
-    inDesktopViewer = Column(types.Boolean, default=True, label=_(u'Display in desktop'))
+        Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True
+    )
+    icon = Column(Unicode, label=_(u'Icon'))
 
     # functionality
     functionalities = relationship(
@@ -399,54 +411,67 @@ class Theme(TreeGroup):
 
 
 class Layer(TreeItem):
+    __tablename__ = 'layer'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [DENY_ALL]
+    __mapper_args__ = {'polymorphic_identity': 'layer'}
+
+    id = Column(
+        Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True
+    )
+    public = Column(Boolean, default=True, label=_(u'Public'))
+    geo_table = Column(Unicode, label=_(u'Related Postgres table'))
+
+    def __init__(self, name=u'', order=0, public=True):
+        TreeItem.__init__(self, name=name, order=order)
+        self.public = public
+
+
+class LayerV1(Layer):
     __label__ = _(u'layer')
     __plural__ = _(u'layers')
-    __tablename__ = 'layer'
+    __tablename__ = 'layerv1'
     __table_args__ = {'schema': _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {'polymorphic_identity': 'layer'}
-    id = Column(
-        types.Integer, ForeignKey(_schema + '.treeitem.id'),
-        primary_key=True)
+    __mapper_args__ = {'polymorphic_identity': 'layerv1'}
 
-    public = Column(types.Boolean, default=True, label=_(u'Public'))
-    inMobileViewer = Column(types.Boolean, default=True, label=_(u'Display in mobile'))
-    inDesktopViewer = Column(types.Boolean, default=True, label=_(u'Display in desktop'))
-    isChecked = Column(types.Boolean, default=True, label=_(u'Checked'))  # by default
-    icon = Column(types.Unicode, label=_(u'Icon'))  # on the tree
-    layerType = Column(types.Enum(
+    id = Column(
+        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
+    )
+    is_checked = Column(Boolean, default=True, label=_(u'Checked'))  # by default
+    icon = Column(Unicode, label=_(u'Icon'))  # on the tree
+    layer_type = Column(Enum(
         "internal WMS",
         "external WMS",
         "WMTS",
         "no 2D",
         native_enum=False), label=_(u'Type'))
-    url = Column(types.Unicode, label=_(u'Base URL'))  # for externals
-    imageType = Column(types.Enum(
+    url = Column(Unicode, label=_(u'Base URL'))  # for externals
+    image_type = Column(Enum(
         "image/jpeg",
         "image/png",
         native_enum=False), label=_(u'Image type'))  # for WMS
-    style = Column(types.Unicode, label=_(u'Style'))
-    dimensions = Column(types.Unicode, label=_(u'Dimensions'))  # for WMTS
-    matrixSet = Column(types.Unicode, label=_(u'Matrix set'))  # for WMTS
-    wmsUrl = Column(types.Unicode, label=_(u'WMS server URL'))  # for WMTS
-    wmsLayers = Column(types.Unicode, label=_(u'WMS layers'))  # for WMTS
-    queryLayers = Column(types.Unicode, label=_(u'Query layers'))  # for WMTS
-    kml = Column(types.Unicode, label=_(u'KML 3D'))  # for kml 3D
-    isSingleTile = Column(types.Boolean, label=_(u'Single tile'))  # for extenal WMS
-    legend = Column(types.Boolean, default=True, label=_(u'Display legend'))  # on the tree
-    legendImage = Column(types.Unicode, label=_(u'Legend image'))  # fixed legend image
-    legendRule = Column(types.Unicode, label=_(u'Legend rule'))  # on wms legend only one rule
-    isLegendExpanded = Column(types.Boolean, default=False, label=_(u'Legend expanded'))
-    minResolution = Column(types.Float, label=_(u'Min resolution'))  # for all except internal WMS
-    maxResolution = Column(types.Float, label=_(u'Max resolution'))  # for all except internal WMS
-    disclaimer = Column(types.Unicode, label=_(u'Disclaimer'))
+    style = Column(Unicode, label=_(u'Style'))
+    dimensions = Column(Unicode, label=_(u'Dimensions'))  # for WMTS
+    matrix_set = Column(Unicode, label=_(u'Matrix set'))  # for WMTS
+    wms_url = Column(Unicode, label=_(u'WMS server URL'))  # for WMTS
+    wms_layers = Column(Unicode, label=_(u'WMS layers'))  # for WMTS
+    query_layers = Column(Unicode, label=_(u'Query layers'))  # for WMTS
+    kml = Column(Unicode, label=_(u'KML 3D'))  # for kml 3D
+    is_single_tile = Column(Boolean, label=_(u'Single tile'))  # for extenal WMS
+    legend = Column(Boolean, default=True, label=_(u'Display legend'))  # on the tree
+    legend_image = Column(Unicode, label=_(u'Legend image'))  # fixed legend image
+    legend_rule = Column(Unicode, label=_(u'Legend rule'))  # on wms legend only one rule
+    is_legend_expanded = Column(Boolean, default=False, label=_(u'Legend expanded'))
+    min_resolution = Column(Float, label=_(u'Min resolution'))  # for all except internal WMS
+    max_resolution = Column(Float, label=_(u'Max resolution'))  # for all except internal WMS
+    disclaimer = Column(Unicode, label=_(u'Disclaimer'))
     # data attribute field in which application can find a human identifiable name or number
-    identifierAttributeField = Column(types.Unicode, label=_(u'Identifier attribute field'))
-    geoTable = Column(types.Unicode, label=_(u'Related Postgres table'))
-    excludeProperties = Column(types.Unicode, label=_(u'Attributes to exclude'))
-    timeMode = Column(types.Enum(
+    identifier_attribute_field = Column(Unicode, label=_(u'Identifier attribute field'))
+    exclude_properties = Column(Unicode, label=_(u'Attributes to exclude'))
+    time_mode = Column(Enum(
         "disabled",
         "single",
         "range",
@@ -454,35 +479,120 @@ class Layer(TreeItem):
         label=_(u'Time mode'))
 
     def __init__(
-            self, name=u'', order=0, public=True, icon=u'',
-            layer_type=u'internal WMS'):
-        TreeItem.__init__(self, name=name, order=order)
-        self.public = public
+        self, name=u'', order=0, public=True, icon=u'',
+        layer_type=u'internal WMS'
+    ):
+        Layer.__init__(self, name=name, order=order, public=public)
         self.icon = icon
-        self.layerType = layer_type
+        self.layer_type = layer_type
+
+
+class LayerInternalWMS(Layer):
+    __label__ = _(u'internal WMS layer')
+    __plural__ = _(u'internal WMS layers')
+    __tablename__ = 'layer_internal_wms'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+    __mapper_args__ = {'polymorphic_identity': 'layer_internal_wms'}
+
+    id = Column(
+        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
+    )
+    layer = Column(Unicode, label=_(u'Layer'))
+    image_type = Column(Enum(
+        "image/jpeg",
+        "image/png",
+        native_enum=False), label=_(u'Image type'))  # for WMS
+    style = Column(Unicode, label=_(u'Style'))
+    time_mode = Column(Enum(
+        "disabled",
+        "single",
+        "range",
+        native_enum=False), default="disabled", nullable=False,
+        label=_(u'Time mode'))
+
+    def __init__(self, name=u'', order=0, public=True, icon=u''):
+        Layer.__init__(self, name=name, order=order, public=public)
+
+
+class LayerExternalWMS(Layer):
+    __label__ = _(u'external WMS layer')
+    __plural__ = _(u'external WMS layers')
+    __tablename__ = 'layer_external_wms'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+    __mapper_args__ = {'polymorphic_identity': 'layer_external_wms'}
+
+    id = Column(
+        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
+    )
+    url = Column(Unicode, label=_(u'Base URL'))
+    layer = Column(Unicode, label=_(u'Layer'))
+    image_type = Column(Enum(
+        "image/jpeg",
+        "image/png",
+        native_enum=False), label=_(u'Image type'))
+    style = Column(Unicode, label=_(u'Style'))
+    is_single_tile = Column(Boolean, label=_(u'Single tile'))
+    time_mode = Column(Enum(
+        "disabled",
+        "single",
+        "range",
+        native_enum=False), default="disabled", nullable=False,
+        label=_(u'Time mode'))
+
+    def __init__(self, name=u'', order=0, public=True):
+        Layer.__init__(self, name=name, order=order, public=public)
+
+
+class LayerWMTS(Layer):
+    __label__ = _(u'WMTS layer')
+    __plural__ = _(u'WMTS layers')
+    __tablename__ = 'layer_wmts'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+    __mapper_args__ = {'polymorphic_identity': 'layer_wmts'}
+
+    id = Column(
+        Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
+    )
+    url = Column(Unicode, label=_(u'GetCapabilities URL'))
+    layer = Column(Unicode, label=_(u'Layer'))
+    style = Column(Unicode, label=_(u'Style'))
+    matrix_set = Column(Unicode, label=_(u'Matrix set'))
+
+    def __init__(self, name=u'', order=0, public=True):
+        Layer.__init__(self, name=name, order=order, public=public)
 
 # association table role <> restriciton area
 role_ra = Table(
     'role_restrictionarea', Base.metadata,
     Column(
-        'role_id', types.Integer, ForeignKey(_schema + '.role.id'),
-        primary_key=True),
+        'role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True
+    ),
     Column(
-        'restrictionarea_id', types.Integer,
-        ForeignKey(_schema + '.restrictionarea.id'),
-        primary_key=True),
+        'restrictionarea_id', Integer,
+        ForeignKey(_schema + '.restrictionarea.id'), primary_key=True
+    ),
     schema=_schema)
 
 # association table layer <> restriciton area
 layer_ra = Table(
     'layer_restrictionarea', Base.metadata,
     Column(
-        'layer_id', types.Integer, ForeignKey(_schema + '.layer.id'),
-        primary_key=True),
+        'layer_id', Integer,
+        ForeignKey(_schema + '.layer.id'), primary_key=True
+    ),
     Column(
-        'restrictionarea_id', types.Integer,
-        ForeignKey(_schema + '.restrictionarea.id'),
-        primary_key=True),
+        'restrictionarea_id', Integer,
+        ForeignKey(_schema + '.restrictionarea.id'), primary_key=True
+    ),
     schema=_schema)
 
 
@@ -495,11 +605,11 @@ class RestrictionArea(Base):
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
 
-    id = Column(types.Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     area = GeometryColumn(Polygon(srid=_srid))
-    name = Column(types.Unicode, label=_(u'Name'))
-    description = Column(types.Unicode, label=_(u'Description'))
-    readwrite = Column(types.Boolean, label=_(u'Read-write mode'), default=False)
+    name = Column(Unicode, label=_(u'Name'))
+    description = Column(Unicode, label=_(u'Description'))
+    readwrite = Column(Boolean, label=_(u'Read-write mode'), default=False)
 
     # relationship with Role and Layer
     roles = relationship(
@@ -518,14 +628,127 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __unicode__(self):
-        return self.name or u''  # pragma: nocover
+    def __unicode__(self):  # pragma: nocover
+        return self.name or u''
 
 event.listen(RestrictionArea, 'after_insert', cache_invalidate_cb)
 event.listen(RestrictionArea, 'after_update', cache_invalidate_cb)
 event.listen(RestrictionArea, 'after_delete', cache_invalidate_cb)
 
 GeometryDDL(RestrictionArea.__table__)
+
+
+# association table interface <> layer
+interface_layer = Table(
+    'interface_layer', Base.metadata,
+    Column(
+        'interface_id', Integer,
+        ForeignKey(_schema + '.interface.id'), primary_key=True
+    ),
+    Column(
+        'layer_id', Integer,
+        ForeignKey(_schema + '.layer.id'), primary_key=True
+    ),
+    schema=_schema)
+
+# association table interface <> theme
+interface_theme = Table(
+    'interface_theme', Base.metadata,
+    Column(
+        'interface_id', Integer,
+        ForeignKey(_schema + '.interface.id'), primary_key=True
+    ),
+    Column(
+        'theme_id', Integer,
+        ForeignKey(_schema + '.theme.id'), primary_key=True
+    ),
+    schema=_schema)
+
+
+class Interface(Base):
+    __label__ = _(u'interface')
+    __plural__ = _(u'interfacess')
+    __tablename__ = 'interface'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, label=_(u'Name'))
+    description = Column(Unicode, label=_(u'Description'))
+
+    # relationship with Layer and Theme
+    layers = relationship(
+        'Layer', secondary=interface_layer,
+        backref='interfaces', cascade='save-update,merge,refresh-expire')
+    theme = relationship(
+        'Theme', secondary=interface_theme,
+        backref='interfaces', cascade='save-update,merge,refresh-expire')
+
+    def __init__(self, name='', description=''):
+        self.name = name
+        self.description = description
+
+    def __unicode__(self):  # pragma: nocover
+        return self.name or u''
+
+
+class UIMetadata(Base):
+    __label__ = _(u'UI metadata')
+    __plural__ = _(u'UI metadata')
+    __tablename__ = 'ui_metadata'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, label=_(u'Name'))
+    value = Column(Unicode, label=_(u'Value'))
+    description = Column(Unicode, label=_(u'Description'))
+
+    item_id = Column(
+        'item_id', Integer,
+        ForeignKey(_schema + '.treeitem.id'), nullable=False
+    )
+    item = relationship("TreeItem", backref='ui_metadata')
+
+    def __init__(self, name='', description=''):
+        self.name = name
+        self.description = description
+
+    def __unicode__(self):  # pragma: nocover
+        return self.name or u''
+
+
+class WMTSDimension(Base):
+    __label__ = _(u'WMTS dimension')
+    __plural__ = _(u'WMTS dimenson')
+    __tablename__ = 'wmts_dimension'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, label=_(u'Name'))
+    value = Column(Unicode, label=_(u'Value'))
+    description = Column(Unicode, label=_(u'Description'))
+
+    layer_id = Column(
+        'layer_id', Integer,
+        ForeignKey(_schema + '.layer_wmts.id'), nullable=False
+    )
+    layer = relationship("LayerWMTS", backref='dimensions')
+
+    def __init__(self, name='', description=''):
+        self.name = name
+        self.description = description
+
+    def __unicode__(self):  # pragma: nocover
+        return self.name or u''
+
 
 if _parentschema is not None and _parentschema != '':  # pragma: no cover
     class ParentRole(Base):
@@ -536,8 +759,9 @@ if _parentschema is not None and _parentschema != '':  # pragma: no cover
         __acl__ = [
             (Allow, AUTHORIZED_ROLE, ('view')),
         ]
-        id = Column(types.Integer, primary_key=True)
-        name = Column(types.Unicode, unique=True, nullable=False, label=_(u'Name'))
+
+        id = Column(Integer, primary_key=True)
+        name = Column(Unicode, unique=True, nullable=False, label=_(u'Name'))
 
         def __init__(self, name=u''):
             self.name = name
@@ -550,10 +774,10 @@ class Shorturl(Base):
     __tablename__ = 'shorturl'
     __table_args__ = {'schema': _schema + "_static"}
     __acl__ = [DENY_ALL]
-    id = Column(types.Integer, primary_key=True)
-    url = Column(types.Unicode(1000))
-    ref = Column(types.String(20), index=True, unique=True, nullable=False)
-    creator_email = Column(types.Unicode(200))
-    creation = Column(types.DateTime)
-    last_hit = Column(types.DateTime)
-    nb_hits = Column(types.Integer)
+    id = Column(Integer, primary_key=True)
+    url = Column(Unicode(1000))
+    ref = Column(String(20), index=True, unique=True, nullable=False)
+    creator_email = Column(Unicode(200))
+    creation = Column(DateTime)
+    last_hit = Column(DateTime)
+    nb_hits = Column(Integer)
