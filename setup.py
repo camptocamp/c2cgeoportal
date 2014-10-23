@@ -38,7 +38,7 @@ install_requires = [
     'pyramid_mako',
     'pyramid_chameleon',
     'psycopg2',
-    'sqlalchemy-migrate<=0.7.99',
+    'alembic',
     'SQLAHelper',
     'pyramid_tm',
     'papyrus>=0.10dev1',
