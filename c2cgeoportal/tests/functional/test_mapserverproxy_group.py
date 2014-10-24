@@ -48,14 +48,18 @@ Base = sqlahelper.get_base()
 class TestMapserverproxyViewGroup(TestCase):
 
     def setUp(self):  # noqa
-        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, DBSession
+        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+            Interface, DBSession
 
         user1 = User(username=u'__test_user1', password=u'__test_user1')
         role1 = Role(name=u'__test_role1', description=u'__test_role1')
         user1.role = role1
         user1.email = u'Tarenpion'
 
-        layer1 = Layer(u'testpoint_group', 400, public=False)
+        main = Interface(name=u'main')
+
+        layer1 = LayerV1(u'testpoint_group', 400, public=False)
+        layer1.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTSpatialElement(area, srid=21781)
@@ -67,7 +71,8 @@ class TestMapserverproxyViewGroup(TestCase):
         transaction.commit()
 
     def tearDown(self):  # noqa
-        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, DBSession
+        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+            Interface, DBSession
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
 
@@ -81,8 +86,11 @@ class TestMapserverproxyViewGroup(TestCase):
         r = DBSession.query(Role).filter(Role.name == '__test_role1').one()
         DBSession.delete(r)
 
-        for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_group').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'testpoint_group').all():
             DBSession.delete(layer)
+        DBSession.query(Interface).filter(
+            Interface.name == 'main'
+        ).delete()
 
         transaction.commit()
 

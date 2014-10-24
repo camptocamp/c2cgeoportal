@@ -49,10 +49,10 @@ def get_setting(settings, path, default=None):
 
 
 def get_protected_layers_query(role_id, what=None):
-    from c2cgeoportal.models import DBSession, Layer, \
-        RestrictionArea, Role, layer_ra, role_ra
+    from c2cgeoportal.models import DBSession, LayerV1, \
+        Layer, RestrictionArea, Role, layer_ra, role_ra
 
-    q = DBSession.query(what if what is not None else Layer)
+    q = DBSession.query(what if what is not None else LayerV1)
     q = q.join(
         (layer_ra, Layer.id == layer_ra.c.layer_id),
         (RestrictionArea,

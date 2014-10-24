@@ -320,6 +320,16 @@ class TreeItem(Base):
     order = Column(Integer, nullable=False, label=_(u'Order'))
     metadata_url = Column(Unicode, label=_(u'Metadata URL'))  # shouldn't be used in V3
 
+    def is_in_interface(self, name):
+        if not hasattr(self, 'interfaces'):
+            return False
+
+        for interface in self.interfaces:
+            if interface.name == name:
+                return True
+
+        return False
+
     def __init__(self, name=u'', order=0):
         self.name = name
         self.order = order
