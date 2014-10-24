@@ -342,63 +342,48 @@ to the ``Role`` of the parent schema.
 Migration
 ~~~~~~~~~
 
-We use the sqlalchemy-migrate module for database migration.
-sqlalchemy-migrate works with a so-called *migration
-repository*, which is a simple directory in the application
-source tree:``<package>/CONST_migration``. As the
-``CONST_`` prefix suggests this repository is part of
-the ``c2cgeoportal_update`` scaffold, it is created or
-updated when this scaffold is applied. So developers
-who modify the c2cgeoportal database schema should add
-migration scripts to the ``c2cgeoportal_update``
-scaffold, as opposed to the application.
+We use the ``alembic`` module for database migration. ``alembic`` works with a
+so-called *migration repository*, which is a simple directory in the
+application source tree:``CONST_alembic``. As the ``CONST_`` prefix suggests
+this repository is part of the ``c2cgeoportal_update`` scaffold, it is created
+or updated when this scaffold is applied. So developers who modify the
+``c2cgeoportal`` database schema should add migration scripts to the
+``c2cgeoportal_update`` scaffold, as opposed to the application.
 
 Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    ./buildout/bin/manage_db script "<Explicite name>"
-
-.. note::
-
-    With c2cgeoportal 0.7 and lower, or if the app section is not ``[app:app]``
-    in the production.ini file, you need to specify the app name on the
-    ``manage_db`` command line. For example, the above command would be as
-    follows:
-
-    .. prompt:: bash
-
-       ./buildout/bin/manage_db -n <package_name> script "<Explicite name>"
+    ./buildout/bin/alembic revision -m "<Explicite name>"
 
 This will generate the migration script in
-``<package>/CONST_migration/versions/xxx_<Explicite_name>.py``
+``CONST_alembic/versions/xxx_<Explicite_name>.py``
 You should *NOT* commit the script in this directory because this migration
 script should be shared with all c2cgeoportal projects.
 It is the c2cgeoportal ``update`` template which is responsible for updating
 this directory.
 
+The script should not get any part of the ``c2cgeoportal.model`` module!
+
+To get the project schema use:
+``schema = context.get_context().config.get_main_option('schema')``
+
+The scripts should not fail if it is run again. See:
+http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements
+
 Then customize the migration to suit your needs, test it:
 
 .. prompt:: bash
 
-    ./buildout/bin/manage_db test
-
-If your script fails during upgrade, it is possible the version number has been
-incremented anyway, so you need to explicitly reset the version to its
-correct value using:
-
-.. prompt:: bash
-
-    ./buildout/bin/manage_db drop_version_control
-    ./buildout/bin/manage_db version_control <the_correct_version_number>
+    ./buildout/bin/alembic upgrade head
 
 Once you have tested it, move it to the c2cgeoportal ``update`` template, in
-``c2cgeoportal/scaffolds/update/+package+/CONST_migration/versions/``.
-
+``c2cgeoportal/scaffolds/update/CONST_mlembic/versions/``.
 
 More information at:
- * http://code.google.com/p/sqlalchemy-migrate/
- * http://www.karoltomala.com/blog/?p=633
+ * http://alembic.readthedocs.org/en/latest/index.html
+ * http://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script
+ * http://alembic.readthedocs.org/en/latest/ops.html
 
 Sub domain
 ----------
@@ -436,11 +421,11 @@ Dependencies
 
 Major dependencies docs:
 
-* `SQLAlchemy <http://docs.sqlalchemy.org/en/latest/>`_
+* `SQLAlchemy <http://docs.sqlalchemy.org/>`_
 * `GeoAlchemy <http://www.geoalchemy.org/>`_
 * `Formalchemy <http://docs.formalchemy.org/>`_
 * `GeoFormAlchemy <https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst>`_
-* `sqlalchemy-migrate <http://readthedocs.org/docs/sqlalchemy-migrate/en/v0.7.2/>`_
+* `alembic <http://alembic.readthedocs.org/>`_
 * `Pyramid <http://docs.pylonsproject.org/en/latest/docs/pyramid.html>`_
 * `Papyrus <http://pypi.python.org/pypi/papyrus>`_
 * `MapFish Print <http://www.mapfish.org/doc/print/index.html>`_

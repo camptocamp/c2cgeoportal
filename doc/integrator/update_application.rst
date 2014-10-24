@@ -3,6 +3,11 @@
 Updating a GeoMapFish application
 =================================
 
+.. warning::
+
+    From version 1.6 we use Alembic instead of sqlachemy-migrate for database migration.
+    Than to upgrade to GeoMapFish 1.6, integrators must start from the very last release
+    of 1.5 since the upgrades to 1.5 are no longer available with the new tool.
 
 User the easy c2c tool (experimantal)
 -------------------------------------
@@ -234,11 +239,11 @@ steps:
 
        ./buildout/bin/buildout -c <buildout_config_file>
 
-8. Update the database using the ``manage_db`` script:
+8. Update the database using the ``alembic`` script:
 
    .. prompt:: bash
 
-       ./buildout/bin/manage_db upgrade
+       ./buildout/bin/alembic upgrade head
 
 
 9. Add the new files in the repository:

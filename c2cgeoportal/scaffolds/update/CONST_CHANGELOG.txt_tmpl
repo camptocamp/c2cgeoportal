@@ -4,14 +4,31 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.6
 ===========
 
-1. In the mapfile add the following lines to all restricted layers:
+1. Get the new files:
+
+    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+
+    cp /tmp/{{project}}/alembic.ini.in .
+    git add alembic.ini.in
+
+    rm -rf /tmp/{{project}}
+
+2. Removes the deprecated files:
+
+    git rm -r {{package}}/CONST_migration
+
+3. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
         ${mapserver_layer_validation}
     END
 
-2. For non Apt/Dpkg based OS, disable the package checking:
-    In the ``buildout.cfg`` section ``[buildout]`` add:
+4. Remove the deprecated versioning table:
+
+    sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
+
+5. For non Apt/Dpkg based OS, disable the package checking:
+   In the ``buildout.cfg`` section ``[buildout]`` add:
 
         parts -=
             test-packages

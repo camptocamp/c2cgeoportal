@@ -656,19 +656,7 @@ These are placeholder variables which must be defined
    [app:app]
    app2.cfg = %(here)s/config_${vars:instance}.yaml
 
-19. In the ``<package>/CONST_migration/migrate.cfg.in``, replace
-
-.. code::
-
-   version_table=version_<package>
-
-by:
-
-.. code::
-
-   version_table=version_${vars:instance}
-
-20. In ``.gitignore`` add the following lines:
+19. In ``.gitignore`` add the following lines:
 
 .. code::
 
