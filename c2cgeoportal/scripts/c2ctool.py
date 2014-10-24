@@ -39,6 +39,8 @@ from subprocess import call
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
 from zc.buildout.buildout import Buildout
+from alembic.config import Config
+from alembic import command
 
 try:
     from subprocess import check_output
@@ -250,8 +252,6 @@ def _test_checkers(project):
 
 
 def upgrade(options):
-    import c2cgeoportal.scripts.manage_db
-
     project = _get_project()
 
     if options.step == 0:
@@ -329,8 +329,8 @@ def upgrade(options):
 
         _run_buildout_cmd(options.file)
 
-        sys.argv = ['./buildout/bin/manage_db', 'upgrade']
-        c2cgeoportal.scripts.manage_db.main()
+        alembic_cfg = Config("alembic.ini")
+        command.upgrade(alembic_cfg, "head")
 
         print
         print _color_bar

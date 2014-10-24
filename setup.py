@@ -111,7 +111,6 @@ setup(
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
-            'manage_db = c2cgeoportal.scripts.manage_db:main',
             'c2ctool = c2cgeoportal.scripts.c2ctool:main',
         ],
         'pyramid.scaffold': [
