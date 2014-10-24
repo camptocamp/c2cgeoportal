@@ -1,5 +1,0 @@
-This is a database migration repository.
-
-/!\ WARNING: the content of this CONST_migration directory should not be
-    manually updated. You should update the c2cgeoportal "update" template
-    instead, and apply this template on the current project.

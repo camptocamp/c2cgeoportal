@@ -1,2 +1,0 @@
-ALTER TABLE ${schema}.shorturl SET SCHEMA ${schema}_static;
-ALTER TABLE ${schema}_static.shorturl ALTER COLUMN ref SET NOT NULL;
