@@ -115,6 +115,7 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_themes=True)
     def test_mobile_themes(self):
         entry = self._create_entry_obj()
+        entry.request.interface_name = 'mobile'
         response_vars = entry.mobileconfig()
 
         self.assertEqual(
@@ -144,6 +145,7 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_private_theme=True)
     def test_mobile_private_theme(self):
         entry = self._create_entry_obj()
+        entry.request.interface_name = 'mobile'
         response_vars = entry.mobileconfig()
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
@@ -205,7 +207,7 @@ class TestMobileDesktop(TestCase):
                 u'type': u'internal WMS',
                 u'imageType': None
             }, {
-                u'id': 2,
+                u'id': 4,
                 u'name': u'__test_desktop_only_layer',
                 u'isLegendExpanded': False,
                 u'legend': True,

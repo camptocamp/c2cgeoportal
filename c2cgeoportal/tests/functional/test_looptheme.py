@@ -97,7 +97,7 @@ class TestLoopTheme(TestCase):
         self.assertEquals(len(themes), 0)
 
         cache_region.invalidate()
-        themes, errors = entry._themes(None)
+        themes, errors = entry._themes(None, u'main')
         self.assertEquals(len(errors), 22)
         self.assertEquals(errors[0], 'The layer __test_layer is not defined in WMS capabilities')
         self.assertEquals(errors[11], 'Too many recursions with group "__test_layer_group"')

@@ -17,17 +17,28 @@ Version 1.6
 
     git rm -r {{package}}/CONST_migration
 
-3. In the mapfile add the following lines to all restricted layers:
+3. In the {{package}}/__init__.py file do the following changes:
+
+    -from c2cgeoportal import locale_negotiator
+    +from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
+
+    -    mobile view configuration ...
+    +    add_interface(config)
+    +    add_interface(config, 'edit')
+    +    add_interface(config, 'routing')
+    +    add_interface(config, 'mobile', INTERFACE_TYPE_SENCHA_TOUCH)
+
+4. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
         ${mapserver_layer_validation}
     END
 
-4. Remove the deprecated versioning table:
+5. Remove the deprecated versioning table:
 
     sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
 
-5. For non Apt/Dpkg based OS, disable the package checking:
+6. For non Apt/Dpkg based OS, disable the package checking:
    In the ``buildout.cfg`` section ``[buildout]`` add:
 
         parts -=

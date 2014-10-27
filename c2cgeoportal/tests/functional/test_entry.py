@@ -223,6 +223,7 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url, **kwargs: \
             request.registry.settings['mapserv_url']
+        request.interface_name = 'main'
         request.params = params
 
         if username is not None:
@@ -324,6 +325,7 @@ class TestEntryView(TestCase):
     @attr(mobileconfig_no_auth_theme=True)
     def test_mobileconfig_no_auth_theme(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
         self.assertEqual(
@@ -347,6 +349,7 @@ class TestEntryView(TestCase):
     @attr(mobileconfig_no_auth_default_theme=True)
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
+        entry.request.interface_name = 'mobile'
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
                 'mobile_default_theme': u'__test_theme'
@@ -361,6 +364,7 @@ class TestEntryView(TestCase):
     @attr(mobileconfig_wmsgroup=True)
     def test_mobileconfig_wmsgroup(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
         theme = response['themes'][0]
@@ -386,7 +390,9 @@ class TestEntryView(TestCase):
     @attr(mobileconfig_auth_theme=True)
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
-            params={'theme': u'__test_theme'}, username=u'__test_user1')
+            params={'theme': u'__test_theme'}, username=u'__test_user1'
+        )
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
         theme = response['themes'][0]
@@ -449,7 +455,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal import caching
         caching.invalidate_region()
         log.info(type(request.registry.settings['mapserv_url']))
-        themes, errors = entry._themes(None)
+        themes, errors = entry._themes(None, 'main')
         self.assertEquals(len(themes), 0)
         self.assertEquals(len(errors), 1)
 
@@ -527,6 +533,9 @@ class TestEntryView(TestCase):
                 }
             }
         })
+        request.matchdict = {
+            'themes': ['theme'],
+        }
         entry = Entry(request)
         request.user = None
 

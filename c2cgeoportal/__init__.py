@@ -83,7 +83,7 @@ INTERFACE_TYPE_NGEO = 'ngeo'
 INTERFACE_TYPE_NGEO_CATALOGUE = 'ngeo'
 
 
-def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP):
+def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs):
     if interface_type == INTERFACE_TYPE_CGXP:
         if interface_name is None:
             add_interface_cgxp(
@@ -103,49 +103,7 @@ def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGX
             )
 
     elif interface_type == INTERFACE_TYPE_SENCHA_TOUCH:
-        config.add_route('mobile_index_dev', '/mobile_dev/')
-        config.add_view(
-            'c2cgeoportal.views.entry.Entry',
-            attr='mobile',
-            renderer='%(project)s:static/mobile/index.html' % {
-                'project': config['project']
-            },
-            route_name='mobile_index_dev'
-        )
-        config.add_route('mobile_config_dev', '/mobile_dev/config.js')
-        config.add_view(
-            'c2cgeoportal.views.entry.Entry',
-            attr='mobileconfig',
-            renderer='%(project)s:static/mobile/config.js' % {
-                'project': config['project']
-            },
-            route_name='mobile_config_dev'
-        )
-        config.add_static_view('mobile_dev', '%(project)s:static/mobile' % {
-            'project': config['project']
-        })
-
-        config.add_route('mobile_index_prod', '/mobile/')
-        config.add_view(
-            'c2cgeoportal.views.entry.Entry',
-            attr='mobile',
-            renderer='%(project)s:static/mobile/build/production/App/index.html' % {
-                'project': config['project']
-            },
-            route_name='mobile_index_prod'
-        )
-        config.add_route('mobile_config_prod', '/mobile/config.js')
-        config.add_view(
-            'c2cgeoportal.views.entry.Entry',
-            attr='mobileconfig',
-            renderer='%(project)s:static/mobile/build/production/App/config.js' % {
-                'project': config['project']
-            },
-            route_name='mobile_config_prod'
-        )
-        config.add_static_view('mobile', '%(project)s:static/mobile/build/production/App' % {
-            'project': config['project']
-        })
+        add_interface_senchatouch(config, interface_name, **kwargs)
 
     elif interface_type == INTERFACE_TYPE_NGEO:
         if interface_name is None:
@@ -170,9 +128,16 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
+    def add_interface(f):
+        def new_f(root, request):
+            request.interface_name = interface_name
+            return f(root, request)
+        return new_f
+
     config.add_route(route_names[0], routes[0])
     config.add_view(
         Entry,
+        decorator=add_interface,
         attr='get_cgxp_index_vars',
         route_name=route_names[0],
         renderer=renderers[0]
@@ -184,6 +149,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
     )
     config.add_view(
         Entry,
+        decorator=add_interface,
         attr='get_cgxp_permalinktheme_vars',
         route_name='%stheme' % route_names[0],
         renderer=renderers[0]
@@ -191,20 +157,90 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
     config.add_route(route_names[1], routes[1])
     config.add_view(
         Entry,
-        interface_name,
+        decorator=add_interface,
         attr='get_cgxp_viewer_vars',
         route_name=route_names[1],
         renderer=renderers[1]
     )
 
 
+def add_interface_senchatouch(config, interface_name, package=None):
+    # Cannot be at the header to don't load the model too early
+    from c2cgeoportal.views.entry import Entry
+
+    if package is None:
+        package = config.get_settings()['project']
+
+    def add_interface(f):
+        def new_f(root, request):
+            request.interface_name = interface_name
+            return f(root, request)
+        return new_f
+
+    interface_name = 'mobile' if interface_name is None else interface_name
+    config.add_route('mobile_index_dev', '/mobile_dev/')
+    config.add_view(
+        Entry,
+        decorator=add_interface,
+        attr='mobile',
+        renderer='%(package)s:static/mobile/index.html' % {
+            'package': package
+        },
+        route_name='mobile_index_dev'
+    )
+    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+    config.add_view(
+        Entry,
+        decorator=add_interface,
+        attr='mobileconfig',
+        renderer='%(package)s:static/mobile/config.js' % {
+            'package': package
+        },
+        route_name='mobile_config_dev'
+    )
+    config.add_static_view('%s_dev' % interface_name, '%(package)s:static/mobile' % {
+        'package': package
+    })
+
+    config.add_route('mobile_index_prod', '/mobile/')
+    config.add_view(
+        Entry,
+        decorator=add_interface,
+        attr='mobile',
+        renderer='%(package)s:static/mobile/build/production/App/index.html' % {
+            'package': package
+        },
+        route_name='mobile_index_prod'
+    )
+    config.add_route('mobile_config_prod', '/mobile/config.js')
+    config.add_view(
+        Entry,
+        decorator=add_interface,
+        attr='mobileconfig',
+        renderer='%(package)s:static/mobile/build/production/App/config.js' % {
+            'package': package
+        },
+        route_name='mobile_config_prod'
+    )
+    config.add_static_view(interface_name, '%(package)s:static/mobile/build/production/App' % {
+        'package': package
+    })
+
+
 def add_interface_ngeo(config, interface_name, route_name, route, renderer):
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
+    def add_interface(f):
+        def new_f(root, request):
+            request.interface_name = interface_name
+            return f(root, request)
+        return new_f
+
     config.add_route(route_name, route)
     config.add_view(
         Entry,
+        decorator=add_interface,
         attr='get_ngeo_vars',
         route_name=route_name,
         renderer=renderer
@@ -216,6 +252,7 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):
     )
     config.add_view(
         Entry,
+        decorator=add_interface,
         attr='get_ngeo_permalinktheme_vars',
         route_name='%stheme' % route_name,
         renderer=renderer

@@ -473,7 +473,7 @@ class Entry(object):
             return None, errors, False
 
     @cache_region.cache_on_arguments()
-    def _themes(self, role_id, mobile=False):
+    def _themes(self, role_id, interface, filter_themes=True):
         """
         This function returns theme information for the role identified
         to by ``role_id``.
@@ -482,7 +482,8 @@ class Entry(object):
         errors = []
         query = self._create_layer_query(role_id)
         query = query.join(LayerV1.interfaces)
-        query = query.filter(Interface.name == ('mobile' if mobile else 'main'))
+        if interface is not None:
+            query = query.filter(Interface.name == interface)
         query = query.order_by(LayerV1.order.asc())
         layers = query.all()
 
@@ -496,9 +497,9 @@ class Entry(object):
         wms_layers = list(wms.contents)
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
-        if not mobile:
+        if filter_themes and interface is not None:
             themes = themes.join(Theme.interfaces)
-            themes = themes.filter(Interface.name == 'main')
+            themes = themes.filter(Interface.name == interface)
 
         export_themes = []
         for theme in themes.all():
@@ -663,17 +664,26 @@ class Entry(object):
             return get_capabilities_xml, errors
 
     @cache_region.cache_on_arguments()
-    def _external_themes(self):  # pragma nocover
+    def _external_themes(self, interface):  # pragma nocover
         errors = []
 
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
             return None, errors
         ext_url = self.settings['external_themes_url']
+        url_params = {
+            'interface': interface
+        }
         if self.request.user is not None and \
                 hasattr(self.request.user, 'parent_role') and \
                 self.request.user.parent_role is not None:
-            ext_url += '?role_id=' + str(self.request.user.parent_role.id)
+            url_params['role_id'] = str(self.request.user.parent_role.id)
+
+        if ext_url[-1] not in ['?', '&']:
+            ext_url += '?'
+        ext_url += '&'.join([
+            '='.join(p) for p in url_params.items()
+        ])
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -775,12 +785,14 @@ class Entry(object):
         role_id = None if self.request.user is None else \
             self.request.user.role.id
 
-        themes, errors = self._themes(role_id)
+        interface = self.request.interface_name
+
+        themes, errors = self._themes(role_id, interface)
         wfs_types, add_errors = self._internal_wfs_types(role_id)
         errors.extend(add_errors)
         external_wfs_types, add_errors = self._external_wfs_types(role_id)
         errors.extend(add_errors)
-        external_themes, add_errors = self._external_themes()
+        external_themes, add_errors = self._external_themes(interface)
         errors.extend(add_errors)
 
         cache_version = self._get_cache_version()
@@ -920,6 +932,7 @@ class Entry(object):
         View callable for the mobile application's config.js file.
         """
         errors = []
+        interface = self.request.interface_name
 
         mobile_default_themes = get_functionality(
             'mobile_default_theme',
@@ -933,7 +946,7 @@ class Entry(object):
         user = self.request.user
 
         role_id = None if user is None else user.role.id
-        themes, errors = self._themes(role_id, True)
+        themes, errors = self._themes(role_id, interface, False)
 
         for t in themes:
             self.flatten_layers(t)
@@ -954,7 +967,7 @@ class Entry(object):
 
         # get the list of themes available for mobile
         themes_ = []
-        themes, errors = self._themes(role_id, True)
+        themes, errors = self._themes(role_id, interface, False)
         for theme in themes:
             # mobile theme or hidden theme explicitely loaded
             if theme['in_mobile_viewer'] or theme['name'] == theme_name:
@@ -1036,7 +1049,8 @@ class Entry(object):
         role_id = self.request.params.get("role_id") or None
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
-        return self._themes(role_id)[0]
+        interface = self.request.params.get("interface") or None
+        return self._themes(role_id, interface)[0]
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
