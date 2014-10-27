@@ -706,18 +706,8 @@ class Entry(object):
                 func, self.settings, self.request)
         return functionality
 
-    def _get_vars(self):
-        role_id = None if self.request.user is None else \
-            self.request.user.role.id
-
-        themes, errors = self._themes(role_id)
-        wfs_types, add_errors = self._internal_wfs_types(role_id)
-        errors.extend(add_errors)
-        external_wfs_types, add_errors = self._external_wfs_types(role_id)
-        errors.extend(add_errors)
-        external_themes, add_errors = self._external_themes()
-        errors.extend(add_errors)
-
+    @cache_region.cache_on_arguments()
+    def _get_layers_enum(self):
         layers_enum = {}
         if 'layers_enum' in self.request.registry.settings:
             for layer_name, layer in \
@@ -731,6 +721,67 @@ class Entry(object):
                         field_name=attribute,
                         path=''
                     )
+        return layers_enum
+
+    def get_cgxp_index_vars(self, templates_params=None):
+        cache_version = self._get_cache_version()
+        extra_params = {
+            'version': cache_version
+        }
+        url_params = {
+            'version': cache_version
+        }
+        if self.lang:
+            extra_params['lang'] = self.lang
+
+        d = {
+            'lang': self.lang,
+            'debug': self.debug,
+            'url_params': url_params,
+            'extra_params': extra_params
+        }
+
+        if self.request.user is not None:
+            d['extra_params']['user'] = self.request.user.username.encode('utf-8')
+
+        # general templates_params handling
+        if templates_params is not None:
+            d.update(templates_params)
+
+        # specific permalink_themes handling
+        if 'permalink_themes' in d:
+            extra_params['permalink_themes'] = d['permalink_themes']
+
+        # check if route to mobile app exists
+        try:
+            d['mobile_url'] = self.request.route_url('mobile_index_prod')
+        except:  # pragma: no cover
+            d['mobile_url'] = None
+
+        d['no_redirect'] = self.request.params.get('no_redirect') is not None
+        self.request.response.headers['Cache-Control'] = 'no-cache'
+
+        return d
+
+    def get_cgxp_permalinktheme_vars(self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = ','.join(themes)
+        # call home with extra params
+        return self.get_cgxp_index_vars(d)
+
+    def get_cgxp_viewer_vars(self):
+        role_id = None if self.request.user is None else \
+            self.request.user.role.id
+
+        themes, errors = self._themes(role_id)
+        wfs_types, add_errors = self._internal_wfs_types(role_id)
+        errors.extend(add_errors)
+        external_wfs_types, add_errors = self._external_wfs_types(role_id)
+        errors.extend(add_errors)
+        external_themes, add_errors = self._external_themes()
+        errors.extend(add_errors)
 
         cache_version = self._get_cache_version()
         url_params = {
@@ -750,7 +801,7 @@ class Entry(object):
             'external_themes': external_themes,
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
-            'queryer_attribute_urls': json.dumps(layers_enum),
+            'queryer_attribute_urls': json.dumps(self._get_layers_enum()),
             'url_params': url_params,
             'url_role_params': url_role_params,
             'serverError': json.dumps(errors),
@@ -761,88 +812,40 @@ class Entry(object):
         if permalink_themes:
             d['permalink_themes'] = json.dumps(permalink_themes.split(','))
 
+        d['lang'] = self.lang
+        d['debug'] = self.debug
+
+        self.request.response.content_type = 'application/javascript'
         return d
 
-    def _get_home_vars(self):
-        cache_version = self._get_cache_version()
-        extra_params = {
-            'version': cache_version
-        }
+    def get_ngeo_index_vars(self, vars={}):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
+
         url_params = {
-            'version': cache_version
-        }
-        if self.lang:
-            extra_params['lang'] = self.lang
-        d = {
-            'lang': self.lang,
-            'debug': self.debug,
-            'url_params': url_params,
-            'extra_params': extra_params
+            'version': self._get_cache_version()
         }
 
         if self.request.user is not None:
-            d['extra_params']['user'] = self.request.user.username.encode('utf-8')
+            # For the cache
+            url_params['role'] = self.request.user.role.name
 
-        return d
+        vars.update({
+            'lang': self.lang,
+            'debug': self.debug,
+            'url_params': url_params,
+            'user': self.request.user,
+            'functionality': self._functionality(),
+            'queryer_attribute_urls': self._get_layers_enum(),
+        })
+        return vars
 
-    @view_config(route_name='home', renderer='index.html')
-    def home(self, templates_params=None):
-        d = self._get_home_vars()
-
-        # general templates_params handling
-        if templates_params is not None:
-            d = dict(d.items() + templates_params.items())
-        # specific permalink_themes handling
-        if 'permalink_themes' in d:
-            d['extra_params']['permalink_themes'] = d['permalink_themes']
-
-        # check if route to mobile app exists
-        try:
-            d['mobile_url'] = self.request.route_url('mobile_index_prod')
-        except:  # pragma: no cover
-            d['mobile_url'] = None
-
-        d['no_redirect'] = self.request.params.get('no_redirect') is not None
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-
-        return d
-
-    @view_config(route_name='viewer', renderer='viewer.js')
-    def viewer(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
-
-    @view_config(route_name='edit', renderer='edit.html')
-    def edit(self):
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-        return self._get_home_vars()
-
-    @view_config(route_name='edit.js', renderer='edit.js')
-    def editjs(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
-
-    @view_config(route_name='routing', renderer='routing.html')
-    def routing(self):
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-        return self._get_home_vars()
-
-    @view_config(route_name='routing.js', renderer='routing.js')
-    def routingjs(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
+    def get_ngeo_permalinktheme_vars(self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = themes
+        # call home with extra params
+        return self.get_ngeo_index_vars(d)
 
     def mobile(self):
         """
@@ -1151,12 +1154,3 @@ class Entry(object):
         return {
             "success": "true"
         }
-
-    @view_config(route_name='permalinktheme', renderer='index.html')
-    def permalinktheme(self):
-        # recover themes from url route
-        themes = self.request.matchdict['themes']
-        d = {}
-        d['permalink_themes'] = ','.join(themes)
-        # call home with extra params
-        return self.home(d)

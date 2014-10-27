@@ -211,9 +211,9 @@ class TestFunctionalities(TestCase):
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
 
-        annon = Entry(request)._get_vars()
-        u1 = Entry(request1)._get_vars()
-        u2 = Entry(request2)._get_vars()
+        annon = Entry(request).get_cgxp_viewer_vars()
+        u1 = Entry(request1).get_cgxp_viewer_vars()
+        u2 = Entry(request2).get_cgxp_viewer_vars()
         self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
         self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
         self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

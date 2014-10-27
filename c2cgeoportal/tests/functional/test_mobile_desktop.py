@@ -115,14 +115,14 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_themes=True)
     def test_mobile_themes(self):
         entry = self._create_entry_obj()
-        response = entry.mobileconfig()
+        response_vars = entry.mobileconfig()
 
         self.assertEqual(
-            [t['name'] for t in response['themes']],
+            [t['name'] for t in response_vars['themes']],
             [u"__test_theme", u"__test_mobile_only_theme"]
         )
         self.assertEqual(
-            response['themes'],
+            response_vars['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -144,17 +144,17 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_private_theme=True)
     def test_mobile_private_theme(self):
         entry = self._create_entry_obj()
-        response = entry.mobileconfig()
+        response_vars = entry.mobileconfig()
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
                 'mobile_default_theme': u'__test_mobile_private_theme'
             }
         }
-        response = entry.mobileconfig()
+        response_vars = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 3)
+        self.assertEqual(len(response_vars['themes']), 3)
         self.assertEqual(
-            response['themes'],
+            response_vars['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -183,32 +183,35 @@ class TestMobileDesktop(TestCase):
     @attr(desktop_layers=True)
     def test_desktop_layers(self):
         entry = self._create_entry_obj()
-        response = entry.viewer()
+        response_vars = entry.get_cgxp_viewer_vars()
 
         import json
-        themes = json.loads(response['themes'])
+        themes = json.loads(response_vars['themes'])
         theme = themes[0]
         layers = theme['children']
-        self.assertEqual(len(layers), 2)
+        self.assertEqual(
+            [l['name'] for l in layers],
+            [u'__test_layer', u'__test_desktop_only_layer'],
+        )
         self.assertEqual(
             layers,
             [{
+                u'id': 1,
                 u'name': u'__test_layer',
                 u'isLegendExpanded': False,
                 u'legend': True,
                 u'public': True,
                 u'isChecked': True,
                 u'type': u'internal WMS',
-                u'id': 1,
                 u'imageType': None
             }, {
+                u'id': 2,
                 u'name': u'__test_desktop_only_layer',
                 u'isLegendExpanded': False,
                 u'legend': True,
                 u'public': True,
                 u'isChecked': True,
                 u'type': u'internal WMS',
-                u'id': 4,
                 u'imageType': None
             }]
         )

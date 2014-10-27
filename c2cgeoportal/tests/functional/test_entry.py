@@ -239,7 +239,7 @@ class TestEntryView(TestCase):
     @attr(index_no_auth=True)
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
@@ -248,7 +248,7 @@ class TestEntryView(TestCase):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user1')
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -279,7 +279,7 @@ class TestEntryView(TestCase):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user2')
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
 
         self.assertEqual(
             set(json.loads(response['serverError'])),
@@ -463,7 +463,7 @@ class TestEntryView(TestCase):
         })
         entry = Entry(request)
 
-        response = entry._get_vars()
+        response = entry.get_cgxp_viewer_vars()
         self.assertEquals(
             set(json.loads(response['serverError'])),
             set([
@@ -490,7 +490,7 @@ class TestEntryView(TestCase):
         }
         entry = Entry(request)
 
-        response = entry._get_vars()
+        response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response['permalink_themes'], '["my_themes"]')
 
     @attr(mobile_cache_version=True)
@@ -530,13 +530,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        all_params = set([
-            'lang', 'tiles_url', 'debug',
-            'serverError', 'themes', 'external_themes', 'functionality',
-            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls',
-            'url_params', 'url_role_params'
-        ])
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -544,26 +538,17 @@ class TestEntryView(TestCase):
                 'mobile_url', 'no_redirect'
             ])
         )
-        result = entry.viewer()
-        self.assertEquals(set(result.keys()), all_params)
+        result = entry.get_cgxp_viewer_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'tiles_url', 'debug',
+            'serverError', 'themes', 'external_themes', 'functionality',
+            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls',
+            'url_params', 'url_role_params'
+        ]))
         self.assertEquals(
             result['queryer_attribute_urls'],
             '{"layer_test": {"label": "%s"}}' % mapserv
         )
-        result = entry.edit()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        result = entry.editjs()
-        self.assertEquals(set(result.keys()), all_params)
-        result = entry.routing()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        result = entry.routingjs()
-        self.assertEquals(set(result.keys()), all_params)
         result = entry.mobile()
         self.assertEquals(
             set(result.keys()),
@@ -605,7 +590,7 @@ class TestEntryView(TestCase):
         request.user = User()
         request.user.username = "a user"
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -651,27 +636,13 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
                 'lang', 'debug', 'extra_params', 'url_params',
                 'mobile_url', 'no_redirect'
             ])
-        )
-        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
-        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        result = entry.edit()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
-        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        result = entry.routing()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
         )
         self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
@@ -697,7 +668,7 @@ class TestEntryView(TestCase):
         request.user = User()
         request.user.username = "a user"
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -732,7 +703,7 @@ class TestEntryView(TestCase):
 
         entry = Entry(request)
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set(
@@ -742,7 +713,7 @@ class TestEntryView(TestCase):
                 ]
             )
         )
-        result = entry.viewer()
+        result = entry.get_cgxp_viewer_vars()
 
     @attr(entry_points_noexternal=True)
     def test_entry_points_noexternal(self):
@@ -761,7 +732,7 @@ class TestEntryView(TestCase):
 
         entry = Entry(request)
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set(
@@ -771,7 +742,7 @@ class TestEntryView(TestCase):
                 ]
             )
         )
-        result = entry.viewer()
+        result = entry.get_cgxp_viewer_vars()
 
     @attr(permalink_theme=True)
     def test_permalink_theme(self):
@@ -782,7 +753,7 @@ class TestEntryView(TestCase):
         request.matchdict = {
             'themes': ['theme'],
         }
-        result = entry.permalinktheme()
+        result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -802,7 +773,7 @@ class TestEntryView(TestCase):
         request.matchdict = {
             'themes': ['theme1', 'theme2'],
         }
-        result = entry.permalinktheme()
+        result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
             set([

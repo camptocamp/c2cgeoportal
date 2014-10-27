@@ -77,6 +77,150 @@ class DecimalJSON:
             return ret
         return _render
 
+INTERFACE_TYPE_CGXP = 'cgxp'
+INTERFACE_TYPE_SENCHA_TOUCH = 'senchatouch'
+INTERFACE_TYPE_NGEO = 'ngeo'
+INTERFACE_TYPE_NGEO_CATALOGUE = 'ngeo'
+
+
+def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP):
+    if interface_type == INTERFACE_TYPE_CGXP:
+        if interface_name is None:
+            add_interface_cgxp(
+                config,
+                interface_name='main',
+                route_names=('home', 'viewer'),
+                routes=('/', '/viewer.js'),
+                renderers=('index.html', 'viewer.js'),
+            )
+        else:
+            add_interface_cgxp(
+                config,
+                interface_name=interface_name,
+                route_names=(interface_name, interface_name + '.js'),
+                routes=('/%s' % interface_name, '/%s.js' % interface_name),
+                renderers=('/%s.html' % interface_name, '/%s.js' % interface_name),
+            )
+
+    elif interface_type == INTERFACE_TYPE_SENCHA_TOUCH:
+        config.add_route('mobile_index_dev', '/mobile_dev/')
+        config.add_view(
+            'c2cgeoportal.views.entry.Entry',
+            attr='mobile',
+            renderer='%(project)s:static/mobile/index.html' % {
+                'project': config['project']
+            },
+            route_name='mobile_index_dev'
+        )
+        config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+        config.add_view(
+            'c2cgeoportal.views.entry.Entry',
+            attr='mobileconfig',
+            renderer='%(project)s:static/mobile/config.js' % {
+                'project': config['project']
+            },
+            route_name='mobile_config_dev'
+        )
+        config.add_static_view('mobile_dev', '%(project)s:static/mobile' % {
+            'project': config['project']
+        })
+
+        config.add_route('mobile_index_prod', '/mobile/')
+        config.add_view(
+            'c2cgeoportal.views.entry.Entry',
+            attr='mobile',
+            renderer='%(project)s:static/mobile/build/production/App/index.html' % {
+                'project': config['project']
+            },
+            route_name='mobile_index_prod'
+        )
+        config.add_route('mobile_config_prod', '/mobile/config.js')
+        config.add_view(
+            'c2cgeoportal.views.entry.Entry',
+            attr='mobileconfig',
+            renderer='%(project)s:static/mobile/build/production/App/config.js' % {
+                'project': config['project']
+            },
+            route_name='mobile_config_prod'
+        )
+        config.add_static_view('mobile', '%(project)s:static/mobile/build/production/App' % {
+            'project': config['project']
+        })
+
+    elif interface_type == INTERFACE_TYPE_NGEO:
+        if interface_name is None:
+            add_interface_ngeo(
+                config,
+                interface_name='main',
+                route_name='home',
+                routes='/',
+                renderer='index.html',
+            )
+        else:
+            add_interface_ngeo(
+                config,
+                interface_name=interface_name,
+                route_name=interface_name,
+                route='/%s' % interface_name,
+                renderer='/%s.html' % interface_name,
+            )
+
+
+def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
+    # Cannot be at the header to don't load the model too early
+    from c2cgeoportal.views.entry import Entry
+
+    config.add_route(route_names[0], routes[0])
+    config.add_view(
+        Entry,
+        attr='get_cgxp_index_vars',
+        route_name=route_names[0],
+        renderer=renderers[0]
+    )
+    # permalink theme: recover the theme for generating custom viewer.js url
+    config.add_route(
+        '%stheme' % route_names[0],
+        '%s%stheme/*themes' % (routes[0], '' if routes[0][-1] == '/' else '/')
+    )
+    config.add_view(
+        Entry,
+        attr='get_cgxp_permalinktheme_vars',
+        route_name='%stheme' % route_names[0],
+        renderer=renderers[0]
+    )
+    config.add_route(route_names[1], routes[1])
+    config.add_view(
+        Entry,
+        interface_name,
+        attr='get_cgxp_viewer_vars',
+        route_name=route_names[1],
+        renderer=renderers[1]
+    )
+
+
+def add_interface_ngeo(config, interface_name, route_name, route, renderer):
+    # Cannot be at the header to don't load the model too early
+    from c2cgeoportal.views.entry import Entry
+
+    config.add_route(route_name, route)
+    config.add_view(
+        Entry,
+        attr='get_ngeo_vars',
+        route_name=route_name,
+        renderer=renderer
+    )
+    # permalink theme: recover the theme for generating custom viewer.js url
+    config.add_route(
+        '%stheme' % route_name,
+        '%s%stheme/*themes' % (route, '' if route[-1] == '/' else '/')
+    )
+    config.add_view(
+        Entry,
+        attr='get_ngeo_permalinktheme_vars',
+        route_name='%stheme' % route_name,
+        renderer=renderer
+    )
+
 
 def locale_negotiator(request):
     lang = request.params.get('lang')
@@ -236,12 +380,6 @@ def includeme(config):
     config.add_route('echo', '/echo')
 
     # add routes to the entry view class
-    config.add_route('home', '/')
-    config.add_route('viewer', '/viewer.js')
-    config.add_route('edit', '/edit')
-    config.add_route('edit.js', '/edit.js')
-    config.add_route('routing', '/routing')
-    config.add_route('routing.js', '/routing.js')
     config.add_route('loginform', '/login.html')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
@@ -252,8 +390,6 @@ def includeme(config):
     config.add_route('apihelp', '/apihelp.html')
     config.add_route('xapihelp', '/xapihelp.html')
     config.add_route('themes', '/themes')
-    # permalink theme: recover the theme for generating custom viewer.js url
-    config.add_route('permalinktheme', '/theme/*themes')
     config.add_route('invalidate', '/invalidate')
 
     # checker routes, Checkers are web services to test and assess that
