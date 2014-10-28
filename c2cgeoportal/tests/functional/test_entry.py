@@ -673,9 +673,12 @@ class TestEntryView(TestCase):
                 'lang', 'debug', 'extra_params', 'url_params', 'mobile_url', 'no_redirect'
             ])
         )
-        self.assertEquals(result['extra_params'], {
-            'lang': 'fr', 'user': 'a user'
-        })
+        self.assertEquals(
+            set(result['extra_params'].keys()),
+            set(['lang', 'user', 'version']),
+        )
+        self.assertEquals(result['extra_params']['lang'], 'fr')
+        self.assertEquals(result['extra_params']['user'], 'a user')
 
     def test_entry_points_wfs_url(self):
         from c2cgeoportal.views.entry import Entry
