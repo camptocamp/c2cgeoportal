@@ -4,8 +4,8 @@ from pyramid import testing
 from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # noqa
-    tearDownCommon as tearDownModule,
-    setUpCommon as setUpModule
+    tear_down_common as tearDownModule,
+    set_up_common as setUpModule
 )
 
 
