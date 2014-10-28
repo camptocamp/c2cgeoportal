@@ -47,7 +47,7 @@ def defaultgroupsfinder(username, request):
     """ The c2cgeoportal default group finder. To be used as the callback of
     the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
     policy. """
-    if not hasattr(request, 'user'):
+    if not hasattr(request, 'user') or request.user is None:
         return []  # pragma: nocover
     role = request.user.role
     return [role.name] if role else []

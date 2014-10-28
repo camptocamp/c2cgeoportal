@@ -119,6 +119,7 @@ class MapservProxy:
         # we want the browser to cache GetLegendGraphic and
         # DescribeFeatureType requests
         use_cache = False
+        public_cache = False
 
         if method == "GET":
             # For GET requests, params are added only if the self.request
@@ -144,6 +145,8 @@ class MapservProxy:
                     )
                 )
 
+                public_cache = self.lower_params['request'] == u'getlegendgraphic'
+
                 # no user_id and role_id or cached queries
                 if use_cache and 'user_id' in params:
                     del params['user_id']
@@ -163,18 +166,20 @@ class MapservProxy:
         role_id = None if self.user is None else \
             self.user.parent_role.id if self.external else self.user.role.id
         if use_cache:
-            return self._proxy_cache(_url, params, method, self.request.headers, role_id)
+            return self._proxy_cache(
+                _url, params, public_cache, method, self.request.headers, role_id
+            )
         else:
             return self._proxy(
-                _url, params, use_cache, method, self.request.body,
+                _url, params, use_cache, public_cache, method, self.request.body,
                 self.request.headers, role_id
             )
 
     @cache_region.cache_on_arguments()
-    def _proxy_cache(self, _url, params, method, headers, role_id):
-        return self._proxy(_url, params, True, method, None, headers, role_id)
+    def _proxy_cache(self, _url, params, public_cache, method, headers, role_id):
+        return self._proxy(_url, params, True, public_cache, method, None, headers, role_id)
 
-    def _proxy(self, _url, params, use_cache, method, body, headers, role_id):
+    def _proxy(self, _url, params, use_cache, public_cache, method, body, headers, role_id):
         # name of the JSON callback (value for the "callback" query string param
         # in the self.request). None if self.request has no "callback" param in the query
         # string
@@ -250,8 +255,10 @@ class MapservProxy:
         response = Response(content, status=resp.status, headers=headers)
 
         if use_cache:
-            response.cache_control.public = True
+            response.cache_control.public = public_cache
             response.cache_control.max_age = self.request.registry.settings["default_max_age"]
+            if self.request.user and not public_cache:
+                response.cache_control.private = True
         else:
             response.cache_control.no_cache = True
 

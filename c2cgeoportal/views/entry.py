@@ -33,6 +33,7 @@ import urllib
 import logging
 import json
 import sys
+import uuid
 
 from urlparse import urlparse
 
@@ -49,7 +50,8 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
-from c2cgeoportal.lib import get_setting, caching, get_protected_layers_query
+from c2cgeoportal.lib import get_setting, get_protected_layers_query
+from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -59,7 +61,7 @@ from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
 
 _ = TranslationStringFactory('c2cgeoportal')
 log = logging.getLogger(__name__)
-cache_region = caching.get_region()
+cache_region = get_region()
 
 
 class Entry(object):
@@ -70,8 +72,6 @@ class Entry(object):
         self.request = request
         if request.user:
             request.response.cache_control.private = True
-        else:
-            request.response.cache_control.public = True
         request.response.cache_control.max_age = \
             request.registry.settings["default_max_age"]
         self.settings = request.registry.settings
@@ -532,6 +532,18 @@ class Entry(object):
                 result[functionality.name] = [functionality.value]
         return result
 
+    @cache_region.cache_on_arguments()
+    def _get_cache_version(self):
+        "Return a cache version that is regenerate after each cache invalidation"
+        return uuid.uuid4().hex
+
+    @view_config(route_name='invalidate', renderer='json')
+    def invalidate_cache(self):  # pragma: no cover
+        invalidate_region()
+        return {
+            'success': True
+        }
+
     def _get_children(self, theme, layers, wms_layers, wms):
         children = []
         errors = []
@@ -546,15 +558,15 @@ class Entry(object):
                     return children, errors, True
 
                 if gp is not None:
-                    if time.has_time():
-                        gp.update({"time": time.to_dict()})  # pragma nocover
+                    if time.has_time():  # pragma: nocover
+                        gp.update({"time": time.to_dict()})
                     children.append(gp)
             elif type(item) == Layer:
                 if item in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(item, wms_layers, wms, time)
-                    if time.has_time():
-                        l.update({"time": time.to_dict()})  # pragma nocover
+                    if time.has_time():  # pragma: nocover
+                        l.update({"time": time.to_dict()})
                     errors += l_errors
                     children.append(l)
         return children, errors, False
@@ -719,14 +731,15 @@ class Entry(object):
                         path=''
                     )
 
-        cache_version = self.settings.get('cache_version', None)
-        url_params = {}
-        url_role_params = {} if self.request.user is None else {
-            'role': self.request.user.role.name
+        cache_version = self._get_cache_version()
+        url_params = {
+            'version': cache_version
         }
-        if cache_version:  # pragma: no cover
-            url_params['version'] = cache_version
-            url_role_params['version'] = cache_version
+        url_role_params = {
+            'version': cache_version
+        }
+        if self.request.user is not None:
+            url_role_params['role'] = self.request.user.role.name
 
         d = {
             'themes': json.dumps(themes),
@@ -750,12 +763,13 @@ class Entry(object):
         return d
 
     def _get_home_vars(self):
-        cache_version = self.settings.get('cache_version', None)
-        extra_params = {}
-        url_params = {}
-        if cache_version:
-            url_params['version'] = cache_version
-            extra_params['version'] = cache_version
+        cache_version = self._get_cache_version()
+        extra_params = {
+            'version': cache_version
+        }
+        url_params = {
+            'version': cache_version
+        }
         if self.lang:
             extra_params['lang'] = self.lang
         d = {
@@ -837,11 +851,11 @@ class Entry(object):
 
         extra_params = dict(self.request.params)
         came_from = self.request.current_route_url(_query=extra_params)
-        url_params = {}
-        cache_version = self.settings.get('cache_version', None)
-        if cache_version is not None:
-            extra_params['cache_version'] = cache_version
-            url_params['cache_version'] = cache_version
+        cache_version = self._get_cache_version()
+        url_params = {
+            'cache_version': cache_version
+        }
+        extra_params['cache_version'] = cache_version
 
         def enc(vals):
             return (vals[0], vals[1].encode('utf8'))
