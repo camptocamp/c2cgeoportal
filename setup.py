@@ -55,6 +55,8 @@ install_requires = [
     # WMST support
     'isodate',
     'nose',
+    'JSTools',
+    'zc.buildout',
 ]
 
 # nose plugins with options set in setup.cfg cannot be in
