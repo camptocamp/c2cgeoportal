@@ -271,7 +271,9 @@ Add the project:
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
             jsbuild/ print/ apache/ \
-            mapserver/ deploy/
+            mapserver/ deploy/ CONST_alembic/ \
+            CONST_buildout_cleaner.cfg alembic.ini.in \
+            project.yaml.in
     git remote add origin git@github.com:camptocamp/$PROJECT.git
 
 Add the CGXP submodule:
