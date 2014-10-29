@@ -53,6 +53,8 @@ def upgrade():
     ):
         return
 
+    op.drop_table('user_functionality', schema=schema)
+
     op.create_table(
         'interface',
         Column(
@@ -375,3 +377,16 @@ def downgrade():
     op.drop_table('interface_theme', schema=schema)
     op.drop_table('interface_layer', schema=schema)
     op.drop_table('interface', schema=schema)
+
+    op.create_table(
+        'user_functionality',
+        Column(
+            'user_id', Integer,
+            ForeignKey(schema + '.user.id'), primary_key=True
+        ),
+        Column(
+            'functionality_id', Integer,
+            ForeignKey(schema + '.functionality.id'), primary_key=True
+        ),
+        schema=schema,
+    )

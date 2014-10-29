@@ -139,18 +139,6 @@ class Functionality(Base):
     def __unicode__(self):
         return "%s - %s" % (self.name or u'', self.value or u'')  # pragma: nocover
 
-# association table user <> functionality
-user_functionality = Table(
-    'user_functionality', Base.metadata,
-    Column(
-        'user_id', Integer, ForeignKey(_schema + '.user.id'), primary_key=True
-    ),
-    Column(
-        'functionality_id', Integer,
-        ForeignKey(_schema + '.functionality.id'), primary_key=True
-    ),
-    schema=_schema)
-
 # association table role <> functionality
 role_functionality = Table(
     'role_functionality', Base.metadata,
@@ -203,11 +191,6 @@ class User(Base):
         label=_(u'Password'))
     email = Column(Unicode, nullable=False, label=_(u'E-mail'))
     is_password_changed = Column(Boolean, default=False, label=_(u'PasswordChanged'))
-
-    # functionality
-    functionalities = relationship(
-        'Functionality', secondary=user_functionality,
-        cascade='save-update,merge,refresh-expire')
 
     # role relationship
     role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)

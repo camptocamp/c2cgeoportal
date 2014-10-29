@@ -708,12 +708,20 @@ class Entry(object):
         return content, errors
 
     def _functionality(self):
+        return self._functionality_cached(
+            self.request.user.role.name if self.request.user is not None else None
+        )
+
+    @cache_region.cache_on_arguments()
+    def _functionality_cached(self, role):
         functionality = {}
         for func in get_setting(
                 self.settings,
-                ('functionalities', 'available_in_templates'), []):
+                ('functionalities', 'available_in_templates'), []
+        ):
             functionality[func] = get_functionality(
-                func, self.settings, self.request)
+                func, self.settings, self.request
+            )
         return functionality
 
     @cache_region.cache_on_arguments()

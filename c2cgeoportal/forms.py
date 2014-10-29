@@ -527,7 +527,6 @@ field_order = [
 if hasattr(User, 'parent_role'):  # pragma: no cover
     field_order.append(User.parent_role)
 field_order.extend([
-    User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
     User.email.with_metadata(mandatory='')
 ])
 User.configure(include=field_order)
@@ -624,7 +623,7 @@ RoleGrid.configure(include=field_order)
 
 # UserGrid
 UserGrid = Grid(models.User)
-field_order = [User.username, User.functionalities, User.role]
+field_order = [User.username, User.role]
 if hasattr(UserGrid, 'parent_role'):  # pragma: no cover
     field_order.append(User.parent_role)
 UserGrid.configure(include=field_order)
