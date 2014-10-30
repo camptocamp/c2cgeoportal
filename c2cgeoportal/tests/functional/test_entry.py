@@ -558,11 +558,24 @@ class TestEntryView(TestCase):
             result['queryer_attribute_urls'],
             '{"layer_test": {"label": "%s"}}' % mapserv
         )
+
+        result = entry.get_ngeo_index_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'debug', 'functionality', 'user',
+            'queryer_attribute_urls', 'url_params'
+        ]))
+        result = entry.get_ngeo_permalinktheme_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'debug', 'functionality', 'user',
+            'queryer_attribute_urls', 'url_params', 'permalink_themes'
+        ]))
+
         result = entry.mobile()
         self.assertEquals(
             set(result.keys()),
             set(['lang', 'came_from', 'url_params', 'extra_params'])
         )
+
         result = entry.apijs()
         self.assertEquals(
             set(result.keys()),

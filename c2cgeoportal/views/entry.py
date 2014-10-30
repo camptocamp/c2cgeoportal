@@ -845,7 +845,7 @@ class Entry(object):
             'version': self._get_cache_version()
         }
 
-        if self.request.user is not None:
+        if self.request.user is not None:  # pragma: nocover
             # For the cache
             url_params['role'] = self.request.user.role.name
 
