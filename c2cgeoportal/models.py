@@ -304,7 +304,7 @@ class TreeItem(Base):
     metadata_url = Column(Unicode, label=_(u'Metadata URL'))  # shouldn't be used in V3
 
     def is_in_interface(self, name):
-        if not hasattr(self, 'interfaces'):
+        if not hasattr(self, 'interfaces'):  # pragma: nocover
             return False
 
         for interface in self.interfaces:

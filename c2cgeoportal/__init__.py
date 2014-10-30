@@ -83,7 +83,9 @@ INTERFACE_TYPE_NGEO = 'ngeo'
 INTERFACE_TYPE_NGEO_CATALOGUE = 'ngeo'
 
 
-def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs):
+def add_interface(
+    config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs
+):  # pragma: nocover
     if interface_type == INTERFACE_TYPE_CGXP:
         if interface_name is None:
             add_interface_cgxp(
@@ -124,7 +126,7 @@ def add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGX
             )
 
 
-def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
+def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: nocover
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -164,7 +166,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers):
     )
 
 
-def add_interface_senchatouch(config, interface_name, package=None):
+def add_interface_senchatouch(config, interface_name, package=None):  # pragma: nocover
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -227,7 +229,7 @@ def add_interface_senchatouch(config, interface_name, package=None):
     })
 
 
-def add_interface_ngeo(config, interface_name, route_name, route, renderer):
+def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: nocover
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
