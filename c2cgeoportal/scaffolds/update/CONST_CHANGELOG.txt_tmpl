@@ -8,6 +8,12 @@ Version 1.5.1
 
    cache_version = ${cache_version}
 
+2. In the ``viewer.js`` you should add the following configuration in the
+   ``cgxp_permalink`` plugin:
+
+    shortenerCreateURL: "${request.route_url('shortener_create', path='')}",
+
+
 Version 1.5
 ===========
 
