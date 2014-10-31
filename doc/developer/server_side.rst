@@ -339,6 +339,22 @@ Object model
 It's not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
 to the ``Role`` of the parent schema.
 
+``ui_metadata`` vs ``functionality``
+....................................
+
+Technically the same ``functionality`` can be reused by more than one element.
+
+``functionalities`` are designed to configure and customize various parts of
+the application. For instance to change the default basemap when a new theme
+is loaded.
+
+To do that in the CGXP application we trigger an event when we load a theme the
+new ``functionnalities``.
+
+The ``ui_metadata`` contains attributes that are directly related to the element.
+For example the layer disclaimer, ...
+
+
 Migration
 ~~~~~~~~~
 
