@@ -199,25 +199,3 @@ class TestMobileDesktop(TestCase):
             [l['name'] for l in layers],
             [u'__test_layer', u'__test_desktop_only_layer'],
         )
-        self.assertEqual(
-            layers,
-            [{
-                u'id': 1,
-                u'name': u'__test_layer',
-                u'isLegendExpanded': False,
-                u'legend': True,
-                u'public': True,
-                u'isChecked': True,
-                u'type': u'internal WMS',
-                u'imageType': None
-            }, {
-                u'id': 4,
-                u'name': u'__test_desktop_only_layer',
-                u'isLegendExpanded': False,
-                u'legend': True,
-                u'public': True,
-                u'isChecked': True,
-                u'type': u'internal WMS',
-                u'imageType': None
-            }]
-        )
