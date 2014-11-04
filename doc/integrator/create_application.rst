@@ -271,7 +271,9 @@ Add the project:
             bootstrap.py setup.cfg setup.py \
             development.ini.in production.ini.in \
             jsbuild/ print/ apache/ \
-            mapserver/ deploy/
+            mapserver/ deploy/ CONST_alembic/ \
+            CONST_buildout_cleaner.cfg alembic.ini.in \
+            project.yaml.in
     git remote add origin git@github.com:camptocamp/$PROJECT.git
 
 Add the CGXP submodule:
@@ -654,19 +656,7 @@ These are placeholder variables which must be defined
    [app:app]
    app2.cfg = %(here)s/config_${vars:instance}.yaml
 
-19. In the ``<package>/CONST_migration/migrate.cfg.in``, replace
-
-.. code::
-
-   version_table=version_<package>
-
-by:
-
-.. code::
-
-   version_table=version_${vars:instance}
-
-20. In ``.gitignore`` add the following lines:
+19. In ``.gitignore`` add the following lines:
 
 .. code::
 

@@ -371,26 +371,7 @@ populate the application tables, and directly set the version (details later):
 
 .. prompt:: bash
 
-    ./buildout/bin/create_db --populate
-    ./buildout/bin/manage_db version_control `./buildout/bin/manage_db version`
-
-A c2cgeoportal application makes use of ``sqlalchemy-migrate`` to version
-control a database. It relies on a **repository** in source code which contains
-upgrade scripts that are used to keep the database up to date with the
-latest repository version.
-
-After having created the application tables with the previous command,
-the current database version correspond to the latest version available in
-the repository, which can be obtained with:
-
-.. prompt:: bash $ auto
-
-    $ ./buildout/bin/manage_db version
-    <current_version>
-    $
-
-Note that future schema upgrades will only be done via change scripts from the
-repository, and they will automatically increment the ``db_version``.
+    ./buildout/bin/alembic upgrade head
 
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just

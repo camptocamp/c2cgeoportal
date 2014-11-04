@@ -72,7 +72,7 @@ class Layers(object):
         This function assumes that the names of geometry attributes
         in the mapped class are the same as those of geometry columns.
         """
-        mapped_class = get_class(str(layer.geoTable))
+        mapped_class = get_class(str(layer.geo_table))
         for p in class_mapper(mapped_class).iterate_properties:
             if not isinstance(p, ColumnProperty):
                 continue  # pragma: no cover
@@ -81,14 +81,14 @@ class Layers(object):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
             'Failed getting geometry column info for table "%s".' %
-            str(layer.geoTable)
+            str(layer.geo_table)
         )  # pragma: no cover
 
     def _get_layer(self, layer_id):
         """ Return a ``Layer`` object for ``layer_id``. """
         layer_id = int(layer_id)
         try:
-            query = DBSession.query(Layer, Layer.geoTable)
+            query = DBSession.query(Layer, Layer.geo_table)
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
@@ -123,7 +123,7 @@ class Layers(object):
 
     def _get_protocol_for_layer(self, layer, **kwargs):
         """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
-        cls = get_class(str(layer.geoTable))
+        cls = get_class(str(layer.geo_table))
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(DBSession, cls, geom_attr, **kwargs)
 
@@ -321,7 +321,7 @@ class Layers(object):
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        return self._metadata(str(layer.geoTable), layer.excludeProperties)
+        return self._metadata(str(layer.geo_table), layer.exclude_properties)
 
     @cache_region.cache_on_arguments()
     def _metadata(self, geo_table, exclude_properties):

@@ -38,7 +38,7 @@ install_requires = [
     'pyramid_mako',
     'pyramid_chameleon',
     'psycopg2',
-    'sqlalchemy-migrate<=0.7.99',
+    'alembic',
     'SQLAHelper',
     'pyramid_tm',
     'papyrus>=0.10dev1',
@@ -111,7 +111,6 @@ setup(
         'console_scripts': [
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
-            'manage_db = c2cgeoportal.scripts.manage_db:main',
             'c2ctool = c2cgeoportal.scripts.c2ctool:main',
         ],
         'pyramid.scaffold': [

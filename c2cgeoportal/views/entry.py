@@ -55,8 +55,8 @@ from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
-from c2cgeoportal.models import DBSession, Layer, LayerGroup, \
-    Theme, RestrictionArea, Role, User
+from c2cgeoportal.models import DBSession, LayerV1, LayerGroup, \
+    Theme, RestrictionArea, Role, User, Interface
 
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -142,7 +142,7 @@ class Entry(object):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
-        q = DBSession.query(Layer).filter(Layer.public.is_(True))
+        q = DBSession.query(LayerV1).filter(LayerV1.public.is_(True))
         if role_id:
             q = q.union(get_protected_layers_query(role_id))
         return q
@@ -215,33 +215,33 @@ class Entry(object):
         l = {
             'id': layer.id,
             'name': layer.name,
-            'type': layer.layerType,
+            'type': layer.layer_type,
             'legend': layer.legend,
-            'isChecked': layer.isChecked,
+            'isChecked': layer.is_checked,
             'public': layer.public,
-            'isLegendExpanded': layer.isLegendExpanded,
+            'isLegendExpanded': layer.is_legend_expanded,
         }
-        if layer.identifierAttributeField:
-            l['identifierAttribute'] = layer.identifierAttributeField
+        if layer.identifier_attribute_field:
+            l['identifierAttribute'] = layer.identifier_attribute_field
         if layer.disclaimer:
             l['disclaimer'] = layer.disclaimer
         if layer.icon:
             l['icon'] = self._get_icon_path(layer.icon)
         if layer.kml:
             l['kml'] = self._get_icon_path(layer.kml)
-        if layer.metadataURL:
-            l['metadataURL'] = layer.metadataURL
-        if layer.geoTable:
+        if layer.metadata_url:
+            l['metadataURL'] = layer.metadata_url
+        if layer.geo_table:
             self._fill_editable(l, layer)
-        if layer.legendImage:
-            l['legendImage'] = self._get_icon_path(layer.legendImage)
+        if layer.legend_image:
+            l['legendImage'] = self._get_icon_path(layer.legend_image)
 
-        if layer.layerType == "internal WMS":
+        if layer.layer_type == "internal WMS":
             self._fill_internal_wms(l, layer, wms_layers, wms, errors)
             errors += self._merge_time(time, layer, wms_layers, wms)
-        elif layer.layerType == "external WMS":
+        elif layer.layer_type == "external WMS":
             self._fill_external_wms(l, layer)
-        elif layer.layerType == "WMTS":
+        elif layer.layer_type == "WMTS":
             self._fill_wmts(l, layer, wms_layers, wms, errors)
 
         return l, errors
@@ -255,14 +255,14 @@ class Entry(object):
                 if wms_layer_obj.timepositions:
                     extent = parse_extent(wms_layer_obj.timepositions)
                     time.merge_extent(extent)
-                    time.merge_mode(layer.timeMode)
+                    time.merge_mode(layer.time_mode)
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
                         extent = parse_extent(child_layer.timepositions)
                         time.merge_extent(extent)
                         # The time mode comes from the layer group
-                        time.merge_mode(layer.timeMode)
+                        time.merge_mode(layer.time_mode)
         except:  # pragma no cover
             errors.append("Error while handling time for layer '%s' : '%s'"
                           % (layer.name, sys.exc_info()[1]))
@@ -274,15 +274,15 @@ class Entry(object):
             c = DBSession.query(RestrictionArea) \
                 .filter(RestrictionArea.roles.any(
                     Role.id == self.request.user.role.id)) \
-                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
+                .filter(RestrictionArea.layers.any(LayerV1.id == layer.id)) \
                 .filter(RestrictionArea.readwrite.is_(True)) \
                 .count()
             if c > 0:
                 l['editable'] = True
 
     def _fill_wms(self, l, layer):
-        l['imageType'] = layer.imageType
-        if layer.legendRule:
+        l['imageType'] = layer.image_type
+        if layer.legend_rule:
             query = (
                 ('SERVICE', 'WMS'),
                 ('VERSION', '1.1.1'),
@@ -290,7 +290,7 @@ class Entry(object):
                 ('LAYER', layer.name),
                 ('FORMAT', 'image/png'),
                 ('TRANSPARENT', 'TRUE'),
-                ('RULE', layer.legendRule),
+                ('RULE', layer.legend_rule),
             )
             l['icon'] = self.request.route_url('mapserverproxy') + \
                 '?' + '&'.join('='.join(p) for p in query)
@@ -298,7 +298,7 @@ class Entry(object):
             l['style'] = layer.style
 
     def _fill_legend_rule_query_string(self, l, layer, url):
-        if layer.legendRule and url:
+        if layer.legend_rule and url:
             query = (
                 ('SERVICE', 'WMS'),
                 ('VERSION', '1.1.1'),
@@ -306,7 +306,7 @@ class Entry(object):
                 ('LAYER', layer.name),
                 ('FORMAT', 'image/png'),
                 ('TRANSPARENT', 'TRUE'),
-                ('RULE', layer.legendRule),
+                ('RULE', layer.legend_rule),
             )
             l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
 
@@ -317,10 +317,10 @@ class Entry(object):
             self.request.route_url('mapserverproxy'))
 
         # this is a leaf, ie. a Mapserver layer
-        if layer.minResolution is not None:
-            l['minResolutionHint'] = layer.minResolution
-        if layer.maxResolution is not None:
-            l['maxResolutionHint'] = layer.maxResolution
+        if layer.min_resolution is not None:
+            l['minResolutionHint'] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l['maxResolutionHint'] = layer.max_resolution
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]
@@ -346,12 +346,12 @@ class Entry(object):
         self._fill_legend_rule_query_string(l, layer, layer.url)
 
         l['url'] = layer.url
-        l['isSingleTile'] = layer.isSingleTile
+        l['isSingleTile'] = layer.is_single_tile
 
-        if layer.minResolution is not None:
-            l['minResolutionHint'] = layer.minResolution
-        if layer.maxResolution is not None:
-            l['maxResolutionHint'] = layer.maxResolution
+        if layer.min_resolution is not None:
+            l['minResolutionHint'] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l['maxResolutionHint'] = layer.max_resolution
 
     def _fill_wmts(self, l, layer, wms_layers, wms, errors):
         l['url'] = layer.url
@@ -368,33 +368,33 @@ class Entry(object):
 
         if layer.style:
             l['style'] = layer.style
-        if layer.matrixSet:
-            l['matrixSet'] = layer.matrixSet
+        if layer.matrix_set:
+            l['matrixSet'] = layer.matrix_set
 
-        if layer.wmsUrl:
-            l['wmsUrl'] = layer.wmsUrl
-        elif layer.wmsLayers or layer.queryLayers:
+        if layer.wms_url:
+            l['wmsUrl'] = layer.wms_url
+        elif layer.wms_layers or layer.query_layers:
             l['wmsUrl'] = mapserverproxy_url
-        if layer.wmsLayers:
-            l['wmsLayers'] = layer.wmsLayers
-        elif layer.wmsUrl:
+        if layer.wms_layers:
+            l['wmsLayers'] = layer.wms_layers
+        elif layer.wms_url:
             l['wmsLayers'] = layer.name
         # needed for external WMTS
-        if layer.queryLayers == '[]':  # pragma: no cover
+        if layer.query_layers == '[]':  # pragma: no cover
             l['queryLayers'] = []
 
-        if layer.minResolution is not None:
-            l['minResolutionHint'] = layer.minResolution
-        if layer.maxResolution is not None:
-            l['maxResolutionHint'] = layer.maxResolution
+        if layer.min_resolution is not None:
+            l['minResolutionHint'] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l['maxResolutionHint'] = layer.max_resolution
 
         # if we have associated local WMS layers then look at what's in the
         # WMS capabilities, and add a queryLayers array with the "resolution
         # hint" information.
         if 'wmsUrl' in l and l['wmsUrl'] == mapserverproxy_url:
 
-            query_layers = layer.queryLayers.strip('[]') \
-                if layer.queryLayers else l['wmsLayers']
+            query_layers = layer.query_layers.strip('[]') \
+                if layer.query_layers else l['wmsLayers']
             l['queryLayers'] = []
 
             for query_layer in query_layers.split(','):
@@ -430,9 +430,10 @@ class Entry(object):
         for treeItem in sorted(group.children, key=lambda item: item.order):
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
-                        group.isInternalWMS == treeItem.isInternalWMS):
-                    gp, gp_errors, stop = self._group(treeItem, layers,
-                                                      wms_layers, wms, time, depth)
+                        group.is_internal_wms == treeItem.is_internal_wms):
+                    gp, gp_errors, stop = self._group(
+                        treeItem, layers, wms_layers, wms, time, depth
+                    )
                     errors += gp_errors
                     if stop:
                         errors.append("Too many recursions with group \"%s\""
@@ -444,35 +445,35 @@ class Entry(object):
                     errors.append(
                         "Group %s connot be in group %s (wrong isInternalWMS)." %
                         (treeItem.name, group.name))
-            elif type(treeItem) == Layer:
+            elif type(treeItem) == LayerV1:
                 if (treeItem in layers):
-                    if (group.isInternalWMS ==
-                            (treeItem.layerType == 'internal WMS')):
+                    if (group.is_internal_wms ==
+                            (treeItem.layer_type == 'internal WMS')):
                         l, l_errors = self._layer(treeItem, wms_layers, wms, time)
                         errors += l_errors
                         children.append(l)
                     else:
                         errors.append(
                             "Layer %s of type %s cannot be in the group %s." %
-                            (treeItem.name, treeItem.layerType, group.name))
+                            (treeItem.name, treeItem.layer_type, group.name))
 
         if len(children) > 0:
             g = {
                 'name': group.name,
                 'children': children,
-                'isExpanded': group.isExpanded,
-                'isInternalWMS': group.isInternalWMS,
-                'isBaseLayer': group.isBaseLayer
+                'isExpanded': group.is_expanded,
+                'isInternalWMS': group.is_internal_wms,
+                'isBaseLayer': group.is_base_layer
             }
-            if group.metadataURL:
-                g['metadataURL'] = group.metadataURL
+            if group.metadata_url:
+                g['metadataURL'] = group.metadata_url
 
             return g, errors, False
         else:
             return None, errors, False
 
     @cache_region.cache_on_arguments()
-    def _themes(self, role_id, mobile=False):
+    def _themes(self, role_id, interface, filter_themes=True):
         """
         This function returns theme information for the role identified
         to by ``role_id``.
@@ -480,10 +481,10 @@ class Entry(object):
         """
         errors = []
         query = self._create_layer_query(role_id)
-        filter = Layer.inDesktopViewer.is_(True) if not mobile else \
-            Layer.inMobileViewer.is_(True)
-        query = query.filter(filter)
-        query = query.order_by(Layer.order.asc())
+        query = query.join(LayerV1.interfaces)
+        if interface is not None:
+            query = query.filter(Interface.name == interface)
+        query = query.order_by(LayerV1.order.asc())
         layers = query.all()
 
         # retrieve layers metadata via GetCapabilities
@@ -496,9 +497,12 @@ class Entry(object):
         wms_layers = list(wms.contents)
 
         themes = DBSession.query(Theme).order_by(Theme.order.asc())
+        if filter_themes and interface is not None:
+            themes = themes.join(Theme.interfaces)
+            themes = themes.filter(Interface.name == interface)
 
         export_themes = []
-        for theme in themes:
+        for theme in themes.all():
             children, children_errors, stop = self._get_children(
                 theme, layers, wms_layers, wms)
             errors += children_errors
@@ -513,8 +517,7 @@ class Entry(object):
                         'c2cgeoportal:static/images/blank.gif')
 
                 export_themes.append({
-                    'inDesktopViewer': theme.inDesktopViewer,
-                    'inMobileViewer': theme.inMobileViewer,
+                    'in_mobile_viewer': theme.is_in_interface('mobile'),
                     'name': theme.name,
                     'icon': icon,
                     'children': children,
@@ -561,7 +564,7 @@ class Entry(object):
                     if time.has_time():  # pragma: nocover
                         gp.update({"time": time.to_dict()})
                     children.append(gp)
-            elif type(item) == Layer:
+            elif type(item) == LayerV1:
                 if item in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(item, wms_layers, wms, time)
@@ -661,17 +664,26 @@ class Entry(object):
             return get_capabilities_xml, errors
 
     @cache_region.cache_on_arguments()
-    def _external_themes(self):  # pragma nocover
+    def _external_themes(self, interface):  # pragma nocover
         errors = []
 
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
             return None, errors
         ext_url = self.settings['external_themes_url']
+        url_params = {
+            'interface': interface
+        }
         if self.request.user is not None and \
                 hasattr(self.request.user, 'parent_role') and \
                 self.request.user.parent_role is not None:
-            ext_url += '?role_id=' + str(self.request.user.parent_role.id)
+            url_params['role_id'] = str(self.request.user.parent_role.id)
+
+        if ext_url[-1] not in ['?', '&']:
+            ext_url += '?'
+        ext_url += '&'.join([
+            '='.join(p) for p in url_params.items()
+        ])
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -696,27 +708,24 @@ class Entry(object):
         return content, errors
 
     def _functionality(self):
+        return self._functionality_cached(
+            self.request.user.role.name if self.request.user is not None else None
+        )
+
+    @cache_region.cache_on_arguments()
+    def _functionality_cached(self, role):
         functionality = {}
         for func in get_setting(
                 self.settings,
-                ('functionalities', 'available_in_templates'), []):
+                ('functionalities', 'available_in_templates'), []
+        ):
             functionality[func] = get_functionality(
-                func, self.settings, self.request)
+                func, self.settings, self.request
+            )
         return functionality
 
-    def _get_vars(self):
-        role_id = None if self.request.user is None else \
-            self.request.user.role.id
-
-        themes, errors = self._themes(role_id)
-        themes = filter(lambda theme: theme['inDesktopViewer'], themes)
-        wfs_types, add_errors = self._internal_wfs_types(role_id)
-        errors.extend(add_errors)
-        external_wfs_types, add_errors = self._external_wfs_types(role_id)
-        errors.extend(add_errors)
-        external_themes, add_errors = self._external_themes()
-        errors.extend(add_errors)
-
+    @cache_region.cache_on_arguments()
+    def _get_layers_enum(self):
         layers_enum = {}
         if 'layers_enum' in self.request.registry.settings:
             for layer_name, layer in \
@@ -730,6 +739,69 @@ class Entry(object):
                         field_name=attribute,
                         path=''
                     )
+        return layers_enum
+
+    def get_cgxp_index_vars(self, templates_params=None):
+        cache_version = self._get_cache_version()
+        extra_params = {
+            'version': cache_version
+        }
+        url_params = {
+            'version': cache_version
+        }
+        if self.lang:
+            extra_params['lang'] = self.lang
+
+        d = {
+            'lang': self.lang,
+            'debug': self.debug,
+            'url_params': url_params,
+            'extra_params': extra_params
+        }
+
+        if self.request.user is not None:
+            d['extra_params']['user'] = self.request.user.username.encode('utf-8')
+
+        # general templates_params handling
+        if templates_params is not None:
+            d.update(templates_params)
+
+        # specific permalink_themes handling
+        if 'permalink_themes' in d:
+            extra_params['permalink_themes'] = d['permalink_themes']
+
+        # check if route to mobile app exists
+        try:
+            d['mobile_url'] = self.request.route_url('mobile_index_prod')
+        except:  # pragma: no cover
+            d['mobile_url'] = None
+
+        d['no_redirect'] = self.request.params.get('no_redirect') is not None
+        self.request.response.headers['Cache-Control'] = 'no-cache'
+
+        return d
+
+    def get_cgxp_permalinktheme_vars(self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = ','.join(themes)
+        # call home with extra params
+        return self.get_cgxp_index_vars(d)
+
+    def get_cgxp_viewer_vars(self):
+        role_id = None if self.request.user is None else \
+            self.request.user.role.id
+
+        interface = self.request.interface_name
+
+        themes, errors = self._themes(role_id, interface)
+        wfs_types, add_errors = self._internal_wfs_types(role_id)
+        errors.extend(add_errors)
+        external_wfs_types, add_errors = self._external_wfs_types(role_id)
+        errors.extend(add_errors)
+        external_themes, add_errors = self._external_themes(interface)
+        errors.extend(add_errors)
 
         cache_version = self._get_cache_version()
         url_params = {
@@ -749,7 +821,7 @@ class Entry(object):
             'external_themes': external_themes,
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
             'functionality': self._functionality(),
-            'queryer_attribute_urls': json.dumps(layers_enum),
+            'queryer_attribute_urls': json.dumps(self._get_layers_enum()),
             'url_params': url_params,
             'url_role_params': url_role_params,
             'serverError': json.dumps(errors),
@@ -760,88 +832,40 @@ class Entry(object):
         if permalink_themes:
             d['permalink_themes'] = json.dumps(permalink_themes.split(','))
 
+        d['lang'] = self.lang
+        d['debug'] = self.debug
+
+        self.request.response.content_type = 'application/javascript'
         return d
 
-    def _get_home_vars(self):
-        cache_version = self._get_cache_version()
-        extra_params = {
-            'version': cache_version
-        }
+    def get_ngeo_index_vars(self, vars={}):
+        self.request.response.headers['Cache-Control'] = 'no-cache'
+
         url_params = {
-            'version': cache_version
+            'version': self._get_cache_version()
         }
-        if self.lang:
-            extra_params['lang'] = self.lang
-        d = {
+
+        if self.request.user is not None:  # pragma: nocover
+            # For the cache
+            url_params['role'] = self.request.user.role.name
+
+        vars.update({
             'lang': self.lang,
             'debug': self.debug,
             'url_params': url_params,
-            'extra_params': extra_params
-        }
+            'user': self.request.user,
+            'functionality': self._functionality(),
+            'queryer_attribute_urls': self._get_layers_enum(),
+        })
+        return vars
 
-        if self.request.user is not None:
-            d['extra_params']['user'] = self.request.user.username.encode('utf-8')
-
-        return d
-
-    @view_config(route_name='home', renderer='index.html')
-    def home(self, templates_params=None):
-        d = self._get_home_vars()
-
-        # general templates_params handling
-        if templates_params is not None:
-            d = dict(d.items() + templates_params.items())
-        # specific permalink_themes handling
-        if 'permalink_themes' in d:
-            d['extra_params']['permalink_themes'] = d['permalink_themes']
-
-        # check if route to mobile app exists
-        try:
-            d['mobile_url'] = self.request.route_url('mobile_index_prod')
-        except:  # pragma: no cover
-            d['mobile_url'] = None
-
-        d['no_redirect'] = self.request.params.get('no_redirect') is not None
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-
-        return d
-
-    @view_config(route_name='viewer', renderer='viewer.js')
-    def viewer(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
-
-    @view_config(route_name='edit', renderer='edit.html')
-    def edit(self):
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-        return self._get_home_vars()
-
-    @view_config(route_name='edit.js', renderer='edit.js')
-    def editjs(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
-
-    @view_config(route_name='routing', renderer='routing.html')
-    def routing(self):
-        self.request.response.headers['Cache-Control'] = 'no-cache'
-        return self._get_home_vars()
-
-    @view_config(route_name='routing.js', renderer='routing.js')
-    def routingjs(self):
-        d = self._get_vars()
-        d['lang'] = self.lang
-        d['debug'] = self.debug
-
-        self.request.response.content_type = 'application/javascript'
-        return d
+    def get_ngeo_permalinktheme_vars(self):
+        # recover themes from url route
+        themes = self.request.matchdict['themes']
+        d = {}
+        d['permalink_themes'] = themes
+        # call home with extra params
+        return self.get_ngeo_index_vars(d)
 
     def mobile(self):
         """
@@ -916,6 +940,7 @@ class Entry(object):
         View callable for the mobile application's config.js file.
         """
         errors = []
+        interface = self.request.interface_name
 
         mobile_default_themes = get_functionality(
             'mobile_default_theme',
@@ -929,7 +954,7 @@ class Entry(object):
         user = self.request.user
 
         role_id = None if user is None else user.role.id
-        themes, errors = self._themes(role_id, True)
+        themes, errors = self._themes(role_id, interface, False)
 
         for t in themes:
             self.flatten_layers(t)
@@ -950,10 +975,10 @@ class Entry(object):
 
         # get the list of themes available for mobile
         themes_ = []
-        themes, errors = self._themes(role_id, True)
+        themes, errors = self._themes(role_id, interface, False)
         for theme in themes:
             # mobile theme or hidden theme explicitely loaded
-            if theme['inMobileViewer'] or theme['name'] == theme_name:
+            if theme['in_mobile_viewer'] or theme['name'] == theme_name:
                 themes_.append({
                     'name': theme['name'],
                     'icon': theme['icon'],
@@ -1032,8 +1057,8 @@ class Entry(object):
         role_id = self.request.params.get("role_id") or None
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
-        themes = self._themes(role_id)[0]
-        return filter(lambda theme: theme['inDesktopViewer'], themes)
+        interface = self.request.params.get("interface") or None
+        return self._themes(role_id, interface)[0]
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
@@ -1151,12 +1176,3 @@ class Entry(object):
         return {
             "success": "true"
         }
-
-    @view_config(route_name='permalinktheme', renderer='index.html')
-    def permalinktheme(self):
-        # recover themes from url route
-        themes = self.request.matchdict['themes']
-        d = {}
-        d['permalink_themes'] = ','.join(themes)
-        # call home with extra params
-        return self.home(d)

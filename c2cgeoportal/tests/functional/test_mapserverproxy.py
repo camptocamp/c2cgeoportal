@@ -126,8 +126,8 @@ COLUMN_RESTRICTION_GETFEATURE_REQUEST = (GETFEATURE_REQUEST % {
 class TestMapserverproxyView(TestCase):
 
     def setUp(self):  # noqa
-        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
-            Functionality, DBSession
+        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+            Functionality, Interface, DBSession
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
@@ -157,8 +157,12 @@ class TestMapserverproxyView(TestCase):
         user3.role = role3
         user3.email = u'Tarenpion'
 
-        layer2 = Layer(u'testpoint_protected', 400, public=False)
-        layer3 = Layer(u'testpoint_protected_query_with_collect', public=False)
+        main = Interface(name=u'main')
+
+        layer2 = LayerV1(u'testpoint_protected', 400, public=False)
+        layer2.interfaces = [main]
+        layer3 = LayerV1(u'testpoint_protected_query_with_collect', public=False)
+        layer3.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTSpatialElement(area, srid=21781)
@@ -184,8 +188,8 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
 
     def tearDown(self):  # noqa
-        from c2cgeoportal.models import User, Role, Layer, RestrictionArea, \
-            Functionality, DBSession
+        from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
+            Functionality, Interface, DBSession
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
@@ -224,12 +228,15 @@ class TestMapserverproxyView(TestCase):
             DBSession.delete(f)
         for f in DBSession.query(Functionality).filter(Functionality.value == u'2 Wohlen A3 landscape').all():
             DBSession.delete(f)
-        for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_unprotected').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'testpoint_unprotected').all():
             DBSession.delete(layer)  # pragma: nocover
-        for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_protected').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'testpoint_protected').all():
             DBSession.delete(layer)
-        for layer in DBSession.query(Layer).filter(Layer.name == 'testpoint_protected_query_with_collect').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'testpoint_protected_query_with_collect').all():
             DBSession.delete(layer)
+        DBSession.query(Interface).filter(
+            Interface.name == 'main'
+        ).delete()
 
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)

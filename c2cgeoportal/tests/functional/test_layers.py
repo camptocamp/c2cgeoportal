@@ -39,6 +39,7 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
+@attr(Layers=True)
 class TestLayers(TestCase):
 
     _table_index = 0
@@ -46,7 +47,7 @@ class TestLayers(TestCase):
     def setUp(self):  # noqa
         import sqlahelper
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User
+        from c2cgeoportal.models import DBSession, Role, User, Interface
         from c2cgeoportal.lib.dbreflection import init
 
         self.metadata = None
@@ -58,8 +59,10 @@ class TestLayers(TestCase):
             password=u'__test_user',
             role=self.role
         )
+        self.main = Interface(name=u'main')
 
         DBSession.add(self.user)
+        DBSession.add(self.main)
         transaction.commit()
 
         engine = sqlahelper.get_engine()
@@ -67,8 +70,8 @@ class TestLayers(TestCase):
 
     def tearDown(self):  # noqa
         import transaction
-        from c2cgeoportal.models import (DBSession, Role, User,
-                                         Layer, TreeItem, RestrictionArea)
+        from c2cgeoportal.models import DBSession, Role, User,  \
+            LayerV1, TreeItem, RestrictionArea, Interface
 
         transaction.commit()
 
@@ -78,25 +81,30 @@ class TestLayers(TestCase):
         for i in self.layer_ids:
             treeitem = DBSession.query(TreeItem).get(i)
             DBSession.delete(treeitem)
-            layer = DBSession.query(Layer).get(i)
+            layer = DBSession.query(LayerV1).get(i)
             DBSession.delete(layer)
 
         DBSession.query(User).filter(
-            User.username == '__test_user'
+            User.username == u'__test_user'
         ).delete()
         r = DBSession.query(Role).filter(
-            Role.name == '__test_role'
+            Role.name == u'__test_role'
         ).one()
         r.restrictionareas = []
         DBSession.delete(r)
         DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == '__test_ra'
+            RestrictionArea.name == u'__test_ra'
+        ).delete()
+
+        DBSession.query(Interface).filter(
+            Interface.name == u'main'
         ).delete()
 
         transaction.commit()
 
-    def _create_layer(self, public=False, none_area=False, attr_list=False,
-                      exclude_properties=False):
+    def _create_layer(
+            self, public=False, none_area=False, attr_list=False,
+            exclude_properties=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -107,7 +115,7 @@ class TestLayers(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy import (GeometryDDL, GeometryExtensionColumn,
                                 Point, WKTSpatialElement)
-        from c2cgeoportal.models import DBSession, Layer, RestrictionArea
+        from c2cgeoportal.models import DBSession, LayerV1, RestrictionArea
 
         self.__class__._table_index = self.__class__._table_index + 1
         id = self.__class__._table_index
@@ -163,13 +171,14 @@ class TestLayers(TestCase):
             )
             engine.connect().execute(ins).inserted_primary_key[0]
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = id
-        layer.geoTable = tablename
+        layer.geo_table = tablename
         layer.public = public
+        layer.interface = [self.main]
 
         if exclude_properties:
-            layer.excludeProperties = 'name'
+            layer.exclude_properties = 'name'
 
         DBSession.add(layer)
 

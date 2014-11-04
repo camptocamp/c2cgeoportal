@@ -41,39 +41,41 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
+@attr(MobileDesktop=True)
 class TestMobileDesktop(TestCase):
 
     def setUp(self):  # noqa
-        from c2cgeoportal.models import DBSession, Layer, Theme
+        from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface
 
-        layer = Layer(name=u'__test_layer')
+        main = Interface(name=u'main')
+        mobile = Interface(name=u'mobile')
 
-        mobile_only_layer = Layer(name=u'__test_mobile_only_layer')
-        mobile_only_layer.inDesktopViewer = False
+        layer = LayerV1(name=u'__test_layer')
+        layer.interfaces = [main, mobile]
 
-        desktop_only_layer = Layer(name=u'__test_desktop_only_layer')
-        desktop_only_layer.inMobileViewer = False
+        mobile_only_layer = LayerV1(name=u'__test_mobile_only_layer')
+        mobile_only_layer.interfaces = [mobile]
+
+        desktop_only_layer = LayerV1(name=u'__test_desktop_only_layer')
+        desktop_only_layer.interfaces = [main]
 
         theme = Theme(name=u'__test_theme')
         theme.children = [layer, mobile_only_layer, desktop_only_layer]
-        theme.inMobileViewer = True
+        theme.interfaces = [main, mobile]
 
         mobile_only_theme = Theme(name=u'__test_mobile_only_theme')
         mobile_only_theme.children = [layer]
-        mobile_only_theme.inDesktopViewer = False
-        mobile_only_theme.inMobileViewer = True
+        mobile_only_theme.interfaces = [mobile]
 
         desktop_only_theme = Theme(name=u'__test_desktop_only_theme')
         desktop_only_theme.children = [layer]
-        desktop_only_theme.inMobileViewer = False
+        desktop_only_theme.interfaces = [main]
 
         # the following theme should not appear in the list of themes on desktop
         # nor on mobile
         # It should be accessible by explicitely loading it in mobile though
         mobile_private_theme = Theme(name=u'__test_mobile_private_theme')
         mobile_private_theme.children = [layer]
-        mobile_private_theme.inDesktopViewer = False
-        mobile_private_theme.inMobileViewer = False
 
         DBSession.add_all([
             layer, mobile_only_layer, desktop_only_layer, theme,
@@ -84,15 +86,18 @@ class TestMobileDesktop(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup
+        from c2cgeoportal.models import DBSession, LayerV1, \
+            Theme, LayerGroup, Interface
 
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
             DBSession.delete(layergroup)  # pragma: nocover
-        for layer in DBSession.query(Layer).all():
+        for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: nocover
+        DBSession.query(Interface).filter(
+            Interface.name == 'main'
+        ).delete()
 
         transaction.commit()
 
@@ -107,13 +112,18 @@ class TestMobileDesktop(TestCase):
 
         return Entry(request)
 
+    @attr(mobile_themes=True)
     def test_mobile_themes(self):
         entry = self._create_entry_obj()
-        response = entry.mobileconfig()
+        entry.request.interface_name = 'mobile'
+        response_vars = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 2)
         self.assertEqual(
-            response['themes'],
+            [t['name'] for t in response_vars['themes']],
+            [u"__test_theme", u"__test_mobile_only_theme"]
+        )
+        self.assertEqual(
+            response_vars['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -132,19 +142,21 @@ class TestMobileDesktop(TestCase):
             }]
         )
 
+    @attr(mobile_private_theme=True)
     def test_mobile_private_theme(self):
         entry = self._create_entry_obj()
-        response = entry.mobileconfig()
+        entry.request.interface_name = 'mobile'
+        response_vars = entry.mobileconfig()
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
                 'mobile_default_theme': u'__test_mobile_private_theme'
             }
         }
-        response = entry.mobileconfig()
+        response_vars = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 3)
+        self.assertEqual(len(response_vars['themes']), 3)
         self.assertEqual(
-            response['themes'],
+            response_vars['themes'],
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
@@ -170,34 +182,20 @@ class TestMobileDesktop(TestCase):
             }]
         )
 
+    @attr(desktop_layers=True)
     def test_desktop_layers(self):
         entry = self._create_entry_obj()
-        response = entry.viewer()
+        response_vars = entry.get_cgxp_viewer_vars()
 
         import json
-        themes = json.loads(response['themes'])
-        theme = themes[0]
-        layers = theme['children']
-        self.assertEqual(len(layers), 2)
+        themes = json.loads(response_vars['themes'])
         self.assertEqual(
-            layers,
-            [{
-                u'name': u'__test_layer',
-                u'isLegendExpanded': False,
-                u'legend': True,
-                u'public': True,
-                u'isChecked': True,
-                u'type': u'internal WMS',
-                u'id': 1,
-                u'imageType': None
-            }, {
-                u'name': u'__test_desktop_only_layer',
-                u'isLegendExpanded': False,
-                u'legend': True,
-                u'public': True,
-                u'isChecked': True,
-                u'type': u'internal WMS',
-                u'id': 4,
-                u'imageType': None
-            }]
+            set([t['name'] for t in themes]),
+            set([u'__test_desktop_only_theme', u'__test_theme']),
+        )
+        theme = [t for t in themes if t['name'] == u'__test_theme']
+        layers = theme[0]['children']
+        self.assertEqual(
+            [l['name'] for l in layers],
+            [u'__test_layer', u'__test_desktop_only_layer'],
         )

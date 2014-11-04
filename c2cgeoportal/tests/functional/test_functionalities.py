@@ -37,6 +37,7 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
+@attr(Functionalities=True)
 class TestFunctionalities(TestCase):
 
     def setUp(self):  # noqa
@@ -61,7 +62,7 @@ class TestFunctionalities(TestCase):
         functionality1 = Functionality(u'__test_s', u'db')
         functionality2 = Functionality(u'__test_a', u'db1')
         functionality3 = Functionality(u'__test_a', u'db2')
-        user2.functionalities = [functionality1, functionality2, functionality3]
+        role2.functionalities = [functionality1, functionality2, functionality3]
 
         DBSession.add(user1)
         DBSession.add(user2)
@@ -103,6 +104,7 @@ class TestFunctionalities(TestCase):
 
         transaction.commit()
 
+    @attr(functionalities=True)
     def test_functionalities(self):
         from c2cgeoportal.tests.functional import create_dummy_request
         from c2cgeoportal.models import DBSession, User
@@ -179,6 +181,7 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionality('__test_s', settings, request2), ['db'])
         self.assertEquals(get_functionality('__test_a', settings, request2), ['db1', 'db2'])
 
+    @attr(web_client_functionalities=True)
     def test_web_client_functionalities(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.tests.functional import mapserv_url, create_dummy_request
@@ -211,9 +214,9 @@ class TestFunctionalities(TestCase):
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
 
-        annon = Entry(request)._get_vars()
-        u1 = Entry(request1)._get_vars()
-        u2 = Entry(request2)._get_vars()
+        annon = Entry(request).get_cgxp_viewer_vars()
+        u1 = Entry(request1).get_cgxp_viewer_vars()
+        u2 = Entry(request2).get_cgxp_viewer_vars()
         self.assertEquals(annon['functionality'], {"__test_s": ["anonymous"], "__test_a": ["a1", "a2"]})
         self.assertEquals(u1['functionality'], {"__test_s": ["registered"], "__test_a": ["r1", "r2"]})
         self.assertEquals(u2['functionality'], {"__test_s": ["db"], "__test_a": ["db1", "db2"]})

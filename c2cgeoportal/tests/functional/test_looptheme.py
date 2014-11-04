@@ -45,15 +45,20 @@ from c2cgeoportal.tests.functional import (  # noqa
 class TestLoopTheme(TestCase):
 
     def setUp(self):  # noqa
-        from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup
+        from c2cgeoportal.models import DBSession, LayerV1, \
+            Theme, LayerGroup, Interface
 
-        layer = Layer(name=u'__test_layer', public=True)
+        main = Interface(name=u'main')
+
+        layer = LayerV1(name=u'__test_layer', public=True)
+        layer.interfaces = [main]
+
         layer_group = LayerGroup(name=u'__test_layer_group')
         layer_group.children = [layer, layer_group]
 
         theme = Theme(name=u'__test_theme')
         theme.children = [layer, layer_group]
+        theme.interfaces = [main]
 
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
@@ -61,14 +66,14 @@ class TestLoopTheme(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
+        from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup
 
         for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
             DBSession.delete(layergroup)  # pragma: nocover
-        for layer in DBSession.query(Layer).all():
+        for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: nocover
 
         transaction.commit()
@@ -92,7 +97,7 @@ class TestLoopTheme(TestCase):
         self.assertEquals(len(themes), 0)
 
         cache_region.invalidate()
-        themes, errors = entry._themes(None)
+        themes, errors = entry._themes(None, u'main')
         self.assertEquals(len(errors), 22)
         self.assertEquals(errors[0], 'The layer __test_layer is not defined in WMS capabilities')
         self.assertEquals(errors[11], 'Too many recursions with group "__test_layer_group"')

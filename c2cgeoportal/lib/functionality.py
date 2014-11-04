@@ -52,23 +52,18 @@ def _get_config_functionality(name, registered, config):
     return result
 
 
-def _get_db_functionality(name, user):
-    result = [
+def _get_db_functionality(name, role):
+    return [
         functionality.value for
-        functionality in user.functionalities
-        if functionality.name == name]
-    if len(result) == 0:
-        result = [
-            functionality.value for
-            functionality in user.role.functionalities
-            if functionality.name == name]
-    return result
+        functionality in role.functionalities
+        if functionality.name == name
+    ]
 
 
 def get_functionality(name, config, request):
     result = []
     if request.user:
-        result = _get_db_functionality(name, request.user)
+        result = _get_db_functionality(name, request.user.role)
     if len(result) == 0:
         result = _get_config_functionality(name, request.user is not None, config)
     return result

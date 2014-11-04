@@ -126,5 +126,6 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     request.registry.settings.update(additional_settings)
     request.headers['Host'] = host
     request.user = None
+    request.interface_name = 'main'
     request.registry.validate_user = default_user_validator
     return request

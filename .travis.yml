@@ -35,7 +35,8 @@ script:
 - find c2cgeoportal/*.py c2cgeoportal/tests -name \*.py | xargs ./buildout/bin/flake8 --ignore=E501
 - buildout/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App"
 - buildout/bin/pcreate -s c2cgeoportal_update /tmp/test package=test
-- buildout/bin/migrate version /tmp/test/test/CONST_migration/
+- buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
+- buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
 - rm -rf /tmp/test
 - buildout/bin/python setup.py nosetests
 

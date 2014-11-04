@@ -52,12 +52,19 @@ from c2cgeoportal import models
 from c2cgeoportal import (
     formalchemy_default_zoom,
     formalchemy_default_x, formalchemy_default_y,
-    formalchemy_available_functionalities)
+    formalchemy_available_functionalities,
+    formalchemy_available_metadata,
+)
 
 __all__ = [
-    'Functionality', 'User', 'Role', 'LayerGroup', 'Theme', 'Layer',
-    'RestrictionArea', 'LayerGrid', 'LayerGroupGrid', 'ThemeGrid',
-    'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid']
+    'Functionality', 'User', 'Role', 'LayerGroup', 'Theme',
+    'LayerV1', 'LayerInternalWMS', 'LayerExternalWMS', 'LayerWMTS',
+    'RestrictionArea', 'Interface', 'UIMetadata', 'WMTSDimension',
+    'LayerV1Grid', 'LayerGroupGrid', 'ThemeGrid',
+    'LayerInternalWMSGrid', 'LayerExternalWMSGrid', 'LayerWMTSGrid',
+    'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid',
+    'InterfaceGrid', 'UIMetadataGrid', 'WMTSDimensionGrid'
+]
 
 
 log = logging.getLogger(__name__)
@@ -266,7 +273,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
         # escape public layer if wanted
         if self.only_internal_wms and isinstance(item, models.Layer) \
-                and item.layerType != "internal WMS":
+                and item.layer_type != "internal WMS":
             return ""
 
         if item in self.layer_group:
@@ -371,25 +378,65 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 #
 ##############################################################################
 
-# Layer
-Layer = FieldSet(models.Layer)
-Layer.order.set(metadata=dict(mandatory='')).required()
-Layer.layerType.set(
+# Layer V1
+LayerV1 = FieldSet(models.LayerV1)
+LayerV1.order.set(metadata=dict(mandatory='')).required()
+LayerV1.layer_type.set(
     renderer=fields.SelectFieldRenderer,
     options=["internal WMS", "external WMS", "WMTS", "no 2D"])
-Layer.imageType.set(
+LayerV1.image_type.set(
     renderer=fields.SelectFieldRenderer,
     options=["image/jpeg", "image/png"])
-Layer.timeMode.set(
+LayerV1.time_mode.set(
     renderer=fields.SelectFieldRenderer,
     options=["disabled", "value", "range"])
-Layer.restrictionareas.set(renderer=fields.CheckBoxSet)
-Layer.parents.set(readonly=True)
+LayerV1.interfaces.set(renderer=fields.CheckBoxSet)
+LayerV1.ui_metadata.set(readonly=True)
+LayerV1.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerV1.parents.set(readonly=True)
+
+# LayerInternalWMS
+LayerInternalWMS = FieldSet(models.LayerInternalWMS)
+LayerInternalWMS.order.set(metadata=dict(mandatory='')).required()
+LayerInternalWMS.image_type.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["image/jpeg", "image/png"])
+LayerInternalWMS.time_mode.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["disabled", "value", "range"])
+LayerInternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
+LayerInternalWMS.ui_metadata.set(readonly=True)
+LayerInternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerInternalWMS.parents.set(readonly=True)
+
+# LayerExternalWMS
+LayerExternalWMS = FieldSet(models.LayerExternalWMS)
+LayerExternalWMS.order.set(metadata=dict(mandatory='')).required()
+LayerExternalWMS.image_type.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["image/jpeg", "image/png"])
+LayerExternalWMS.time_mode.set(
+    renderer=fields.SelectFieldRenderer,
+    options=["disabled", "value", "range"])
+LayerExternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
+LayerExternalWMS.ui_metadata.set(readonly=True)
+LayerExternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerExternalWMS.parents.set(readonly=True)
+
+# LayerWMTS
+LayerWMTS = FieldSet(models.LayerWMTS)
+LayerWMTS.order.set(metadata=dict(mandatory='')).required()
+LayerWMTS.interfaces.set(renderer=fields.CheckBoxSet)
+LayerWMTS.ui_metadata.set(readonly=True)
+LayerWMTS.dimensions.set(readonly=True)
+LayerWMTS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerWMTS.parents.set(readonly=True)
 
 # LayerGroup
 LayerGroup = FieldSet(models.LayerGroup)
 LayerGroup.order.set(metadata=dict(mandatory='')).required()
 LayerGroup.children.set(renderer=TreeItemCheckBoxTreeSet)
+LayerGroup.ui_metadata.set(readonly=True)
 LayerGroup.parents.set(readonly=True)
 
 # Theme
@@ -398,6 +445,8 @@ Theme.order.set(metadata=dict(mandatory='')).required()
 Theme.children.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.configure(exclude=[Theme.parents])
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
+Theme.interfaces.set(renderer=fields.CheckBoxSet)
+Theme.ui_metadata.set(readonly=True)
 
 # Functionality
 Functionality = FieldSet(models.Functionality)
@@ -405,6 +454,21 @@ Functionality.name.set(
     renderer=fields.SelectFieldRenderer,
     options=formalchemy_available_functionalities)
 Functionality.value.set(metadata=dict(mandatory='')).required()
+
+# Interface
+Interface = FieldSet(models.Interface)
+Interface.configure(include=[Interface.name, Interface.description])
+
+# UIMetadata
+UIMetadata = FieldSet(models.UIMetadata)
+UIMetadata.name.set(
+    renderer=fields.SelectFieldRenderer,
+    options=formalchemy_available_metadata)
+UIMetadata.value.set(metadata=dict(mandatory='')).required()
+
+# WMTSDimension
+WMTSDimension = FieldSet(models.WMTSDimension)
+WMTSDimension.value.set(metadata=dict(mandatory='')).required()
 
 # RestrictionArea
 RestrictionArea = FieldSet(models.RestrictionArea)
@@ -418,13 +482,15 @@ RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('default_lon', formalchemy_default_x),
     ('default_lat', formalchemy_default_y)
 ])
-fieldOrder = [RestrictionArea.name,
-              RestrictionArea.description,
-              RestrictionArea.layers,
-              RestrictionArea.roles,
-              RestrictionArea.readwrite,
-              RestrictionArea.area]
-RestrictionArea.configure(include=fieldOrder)
+field_order = [
+    RestrictionArea.name,
+    RestrictionArea.description,
+    RestrictionArea.layers,
+    RestrictionArea.roles,
+    RestrictionArea.readwrite,
+    RestrictionArea.area
+]
+RestrictionArea.configure(include=field_order)
 
 # Role
 Role = FieldSet(models.Role)
@@ -439,30 +505,31 @@ Role.extent.set(label=_(u'Extent'), options=[
     ('default_lon', formalchemy_default_x),
     ('default_lat', formalchemy_default_y)
 ])
-fieldOrder = [Role.name,
-              Role.description,
-              Role.functionalities,
-              Role.restrictionareas,
-              Role.users,
-              Role.extent]
-Role.configure(include=fieldOrder)
+field_order = [
+    Role.name,
+    Role.description,
+    Role.functionalities,
+    Role.restrictionareas,
+    Role.users,
+    Role.extent
+]
+Role.configure(include=field_order)
 
 # User
 User = FieldSet(models.User)
 password = DblPasswordField(User, User._password)
 User.append(password)
-fieldOrder = [
+field_order = [
     User.username.validate(unique_validator).with_metadata(mandatory=''),
     password,
     User.role
 ]
 if hasattr(User, 'parent_role'):  # pragma: no cover
-    fieldOrder.append(User.parent_role)
-fieldOrder.extend([
-    User.functionalities.set(renderer=FunctionalityCheckBoxTreeSet),
+    field_order.append(User.parent_role)
+field_order.extend([
     User.email.with_metadata(mandatory='')
 ])
-User.configure(include=fieldOrder)
+User.configure(include=field_order)
 
 #############################################################################
 # GRID defs
@@ -472,19 +539,48 @@ User.configure(include=fieldOrder)
 #
 #############################################################################
 
-# LayerGrid
-LayerGrid = Grid(models.Layer)
-fieldOrder = [
-    Layer.name,
-    Layer.order,
-    Layer.public,
-    Layer.inDesktopViewer,
-    Layer.inMobileViewer,
-    Layer.isChecked,
-    Layer.icon,
-    Layer.legend,
-    Layer.identifierAttributeField]
-LayerGrid.configure(include=fieldOrder)
+# LayerV1Grid
+LayerV1Grid = Grid(models.LayerV1)
+field_order = [
+    LayerV1.name,
+    LayerV1.order,
+    LayerV1.public,
+    LayerV1.is_checked,
+    LayerV1.icon,
+    LayerV1.legend,
+    LayerV1.identifier_attribute_field
+]
+LayerV1Grid.configure(include=field_order)
+
+# LayerInternalWMSGrid
+LayerInternalWMSGrid = Grid(models.LayerInternalWMS)
+field_order = [
+    LayerInternalWMS.name,
+    LayerInternalWMS.order,
+    LayerInternalWMS.public,
+    LayerInternalWMS.layer
+]
+LayerInternalWMSGrid.configure(include=field_order)
+
+# LayerExternalWMSGrid
+LayerExternalWMSGrid = Grid(models.LayerExternalWMS)
+field_order = [
+    LayerExternalWMS.name,
+    LayerExternalWMS.order,
+    LayerExternalWMS.public,
+    LayerExternalWMS.layer
+]
+LayerExternalWMSGrid.configure(include=field_order)
+
+# LayerWMTSGrid
+LayerWMTSGrid = Grid(models.LayerWMTS)
+field_order = [
+    LayerWMTS.name,
+    LayerWMTS.order,
+    LayerWMTS.public,
+    LayerWMTS.layer
+]
+LayerWMTSGrid.configure(include=field_order)
 
 # LayerGroupGrid
 LayerGroupGrid = Grid(models.LayerGroup)
@@ -496,25 +592,38 @@ ThemeGrid.configure(exclude=[ThemeGrid.parents])
 # FunctionalityGrid
 FunctionalityGrid = Grid(models.Functionality)
 
+# InterfaceGrid
+InterfaceGrid = Grid(models.Interface)
+
+# UIMetadataGrid
+UIMetadataGrid = Grid(models.UIMetadata)
+
+# WMTSDimensionGrid
+WMTSDimensionGrid = Grid(models.WMTSDimension)
+
 # RestrictionAreaGrid
 RestrictionAreaGrid = Grid(models.RestrictionArea)
-fieldOrder = [RestrictionArea.name,
-              RestrictionArea.description,
-              RestrictionAreaGrid.roles]
-RestrictionAreaGrid.configure(include=fieldOrder)
+field_order = [
+    RestrictionArea.name,
+    RestrictionArea.description,
+    RestrictionAreaGrid.roles
+]
+RestrictionAreaGrid.configure(include=field_order)
 
 # RoleGrid
 RoleGrid = Grid(models.Role)
-fieldOrder = [Role.name,
-              Role.description,
-              RoleGrid.functionalities,
-              RoleGrid.restrictionareas,
-              RoleGrid.users]
-RoleGrid.configure(include=fieldOrder)
+field_order = [
+    Role.name,
+    Role.description,
+    RoleGrid.functionalities,
+    RoleGrid.restrictionareas,
+    RoleGrid.users
+]
+RoleGrid.configure(include=field_order)
 
 # UserGrid
 UserGrid = Grid(models.User)
-fieldOrder = [User.username, User.functionalities, User.role]
+field_order = [User.username, User.role]
 if hasattr(UserGrid, 'parent_role'):  # pragma: no cover
-    fieldOrder.append(User.parent_role)
-UserGrid.configure(include=fieldOrder)
+    field_order.append(User.parent_role)
+UserGrid.configure(include=field_order)

@@ -51,8 +51,8 @@ log = logging.getLogger(__name__)
 class TestEntryView(TestCase):
 
     def setUp(self):  # noqa
-        from c2cgeoportal.models import DBSession, User, Role, Layer, \
-            RestrictionArea, Theme, LayerGroup, Functionality
+        from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
+            RestrictionArea, Theme, LayerGroup, Functionality, Interface
 
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
@@ -62,23 +62,31 @@ class TestEntryView(TestCase):
         ))
         user2 = User(username=u'__test_user2', password=u'__test_user2', role=role2)
 
-        public_layer = Layer(name=u'__test_public_layer', order=40, public=True)
-        public_layer.isChecked = False
+        main = Interface(name=u'main')
+        mobile = Interface(name=u'mobile')
 
-        private_layer = Layer(name=u'__test_private_layer', order=40, public=False)
-        private_layer.geoTable = 'a_schema.a_geo_table'
+        public_layer = LayerV1(name=u'__test_public_layer', order=40, public=True)
+        public_layer.is_checked = False
+        public_layer.interfaces = [main, mobile]
 
-        layer_in_group = Layer(name=u'__test_layer_in_group')
+        private_layer = LayerV1(name=u'__test_private_layer', order=40, public=False)
+        private_layer.geo_table = 'a_schema.a_geo_table'
+        private_layer.interfaces = [main, mobile]
+
+        layer_in_group = LayerV1(name=u'__test_layer_in_group')
+        layer_in_group.interfaces = [main, mobile]
         layer_group = LayerGroup(name=u'__test_layer_group')
         layer_group.children = [layer_in_group]
 
-        layer_wmsgroup = Layer(name=u'test_wmsfeaturesgroup')
-        layer_wmsgroup.isChecked = False
+        layer_wmsgroup = LayerV1(name=u'test_wmsfeaturesgroup')
+        layer_wmsgroup.is_checked = False
+        layer_wmsgroup.interfaces = [main, mobile]
 
         theme = Theme(name=u'__test_theme')
         theme.children = [
             public_layer, private_layer, layer_group, layer_wmsgroup
         ]
+        theme.interfaces = [main]
 
         functionality1 = Functionality(name=u'test_name', value=u'test_value_1')
         functionality2 = Functionality(name=u'test_name', value=u'test_value_2')
@@ -87,14 +95,14 @@ class TestEntryView(TestCase):
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
         area = WKTSpatialElement(poly, srid=21781)
-        RestrictionArea(name=u'__test_ra1', description=u'',
-                             layers=[private_layer],
-                             roles=[role1], area=area)
+        RestrictionArea(
+            name=u'__test_ra1', description=u'', layers=[private_layer],
+            roles=[role1], area=area
+        )
 
         area = WKTSpatialElement(poly, srid=21781)
         RestrictionArea(
-            name=u'__test_ra2', description=u'',
-            layers=[private_layer],
+            name=u'__test_ra2', description=u'', layers=[private_layer],
             roles=[role2], area=area, readwrite=True
         )
 
@@ -105,8 +113,8 @@ class TestEntryView(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, User, Role, Layer, \
-            RestrictionArea, Theme, LayerGroup
+        from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
+            RestrictionArea, Theme, LayerGroup, Interface
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
         DBSession.query(User).filter(User.username == '__test_user2').delete()
@@ -129,8 +137,11 @@ class TestEntryView(TestCase):
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
             DBSession.delete(layergroup)  # pragma: nocover
-        for layer in DBSession.query(Layer).all():
+        for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: nocover
+        DBSession.query(Interface).filter(
+            Interface.name == 'main'
+        ).delete()
 
         transaction.commit()
 
@@ -138,6 +149,7 @@ class TestEntryView(TestCase):
     # login/logout tests
     #
 
+    @attr(login=True)
     def test_login(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -165,6 +177,7 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 401)
 
+    @attr(logout_no_auth=True)
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -175,6 +188,7 @@ class TestEntryView(TestCase):
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
 
+    @attr(logout=True)
     def test_logout(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -209,6 +223,7 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url, **kwargs: \
             request.registry.settings['mapserv_url']
+        request.interface_name = 'main'
         request.params = params
 
         if username is not None:
@@ -222,17 +237,19 @@ class TestEntryView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
+    @attr(index_no_auth=True)
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
         assert '__test_public_layer' in response['themes']
         assert '__test_private_layer' not in response['themes']
 
+    @attr(index_auth_no_edit_permission=True)
     def test_index_auth_no_edit_permission(self):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user1')
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
@@ -258,11 +275,12 @@ class TestEntryView(TestCase):
             if layer['name'] == '__test_public_layer'
         ], [False])
 
+    @attr(index_auth_edit_permission=True)
     def test_index_auth_edit_permission(self):
         import json
 
         entry = self._create_entry_obj(username=u'__test_user2')
-        response = entry.viewer()
+        response = entry.get_cgxp_viewer_vars()
 
         self.assertEqual(
             set(json.loads(response['serverError'])),
@@ -297,26 +315,30 @@ class TestEntryView(TestCase):
             if layer['name'] == '__test_public_layer'
         ], [False])
 
+    @attr(mobileconfig_no_auth_no_theme=True)
     def test_mobileconfig_no_auth_no_theme(self):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
         self.assertEqual(response['themes'], [])
 
+    @attr(mobileconfig_no_auth_theme=True)
     def test_mobileconfig_no_auth_theme(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
-        self.assertEqual(len(response['themes']), 1)
+        self.assertEqual(
+            [t['name'] for t in response['themes']],
+            ['__test_theme']
+        )
         theme = response['themes'][0]
-        layers = theme['allLayers']
-        layer = layers[0]
-        self.assertEqual(layer['name'], u'__test_layer_in_group')
-        layer = layers[1]
-        self.assertEqual(layer['name'], u'__test_public_layer')
+        self.assertEqual(
+            [l['name'] for l in theme['allLayers']],
+            [u'__test_layer_in_group', u'__test_public_layer', u'test_wmsfeaturesgroup']
+        )
 
-        visible_layers = theme['layers']
-        self.assertEqual(visible_layers, '__test_layer_in_group')
+        self.assertEqual(theme['layers'], '__test_layer_in_group')
 
         info = response['info']
         self.assertEqual(
@@ -324,8 +346,10 @@ class TestEntryView(TestCase):
             {"username": ""}
         )
 
+    @attr(mobileconfig_no_auth_default_theme=True)
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
+        entry.request.interface_name = 'mobile'
         entry.request.registry.settings['functionalities'] = {
             'anonymous': {
                 'mobile_default_theme': u'__test_theme'
@@ -337,8 +361,10 @@ class TestEntryView(TestCase):
         layers = theme['allLayers']
         self.assertEqual(len(layers), 3)
 
+    @attr(mobileconfig_wmsgroup=True)
     def test_mobileconfig_wmsgroup(self):
         entry = self._create_entry_obj(params={'theme': u'__test_theme'})
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
         theme = response['themes'][0]
@@ -361,9 +387,12 @@ class TestEntryView(TestCase):
             }]
         )
 
+    @attr(mobileconfig_auth_theme=True)
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
-            params={'theme': u'__test_theme'}, username=u'__test_user1')
+            params={'theme': u'__test_theme'}, username=u'__test_user1'
+        )
+        entry.request.interface_name = 'mobile'
         response = entry.mobileconfig()
 
         theme = response['themes'][0]
@@ -388,6 +417,7 @@ class TestEntryView(TestCase):
             {"username": "__test_user1"}
         )
 
+    @attr(theme=True)
     def test_theme(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -425,10 +455,11 @@ class TestEntryView(TestCase):
         from c2cgeoportal import caching
         caching.invalidate_region()
         log.info(type(request.registry.settings['mapserv_url']))
-        themes, errors = entry._themes(None)
+        themes, errors = entry._themes(None, 'main')
         self.assertEquals(len(themes), 0)
         self.assertEquals(len(errors), 1)
 
+    @attr(wfs_types=True)
     def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -438,7 +469,7 @@ class TestEntryView(TestCase):
         })
         entry = Entry(request)
 
-        response = entry._get_vars()
+        response = entry.get_cgxp_viewer_vars()
         self.assertEquals(
             set(json.loads(response['serverError'])),
             set([
@@ -454,6 +485,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response['WFSTypes'], result)
         self.assertEquals(response['externalWFSTypes'], result)
 
+    @attr(permalink_themes=True)
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
@@ -464,9 +496,10 @@ class TestEntryView(TestCase):
         }
         entry = Entry(request)
 
-        response = entry._get_vars()
+        response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response['permalink_themes'], '["my_themes"]')
 
+    @attr(mobile_cache_version=True)
     def test_mobile_cache_version(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -483,6 +516,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result2['url_params'], result['url_params'])
         self.assertEquals(result2['extra_params'], result['extra_params'])
 
+    @attr(entry_points=True)
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -499,16 +533,13 @@ class TestEntryView(TestCase):
                 }
             }
         })
+        request.matchdict = {
+            'themes': ['theme'],
+        }
         entry = Entry(request)
         request.user = None
 
-        all_params = set([
-            'lang', 'tiles_url', 'debug',
-            'serverError', 'themes', 'external_themes', 'functionality',
-            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls',
-            'url_params', 'url_role_params'
-        ])
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -516,31 +547,35 @@ class TestEntryView(TestCase):
                 'mobile_url', 'no_redirect'
             ])
         )
-        result = entry.viewer()
-        self.assertEquals(set(result.keys()), all_params)
+        result = entry.get_cgxp_viewer_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'tiles_url', 'debug',
+            'serverError', 'themes', 'external_themes', 'functionality',
+            'WFSTypes', 'externalWFSTypes', 'user', 'queryer_attribute_urls',
+            'url_params', 'url_role_params'
+        ]))
         self.assertEquals(
             result['queryer_attribute_urls'],
             '{"layer_test": {"label": "%s"}}' % mapserv
         )
-        result = entry.edit()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        result = entry.editjs()
-        self.assertEquals(set(result.keys()), all_params)
-        result = entry.routing()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        result = entry.routingjs()
-        self.assertEquals(set(result.keys()), all_params)
+
+        result = entry.get_ngeo_index_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'debug', 'functionality', 'user',
+            'queryer_attribute_urls', 'url_params'
+        ]))
+        result = entry.get_ngeo_permalinktheme_vars()
+        self.assertEquals(set(result.keys()), set([
+            'lang', 'debug', 'functionality', 'user',
+            'queryer_attribute_urls', 'url_params', 'permalink_themes'
+        ]))
+
         result = entry.mobile()
         self.assertEquals(
             set(result.keys()),
             set(['lang', 'came_from', 'url_params', 'extra_params'])
         )
+
         result = entry.apijs()
         self.assertEquals(
             set(result.keys()),
@@ -556,6 +591,7 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(['lang', 'debug']))
 
+    @attr(auth_home=True)
     def test_auth_home(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User
@@ -576,7 +612,7 @@ class TestEntryView(TestCase):
         request.user = User()
         request.user.username = "a user"
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -591,6 +627,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result['extra_params']['user'], 'a user')
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
 
+    @attr(entry_points_version=True)
     def test_entry_points_version(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -621,7 +658,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = None
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -631,21 +668,8 @@ class TestEntryView(TestCase):
         )
         self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        result = entry.edit()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
-        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        result = entry.routing()
-        self.assertEquals(
-            set(result.keys()),
-            set(['lang', 'debug', 'extra_params', 'url_params'])
-        )
-        self.assertRegexpMatches(result['url_params']['version'], '[0-9a-f]*')
-        self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
 
+    @attr(entry_points_wfs=True)
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User
@@ -666,7 +690,7 @@ class TestEntryView(TestCase):
         request.user = User()
         request.user.username = "a user"
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -680,6 +704,7 @@ class TestEntryView(TestCase):
         self.assertEquals(result['extra_params']['lang'], 'fr')
         self.assertEquals(result['extra_params']['user'], 'a user')
 
+    @attr(entry_points_wfs_url=True)
     def test_entry_points_wfs_url(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -700,7 +725,7 @@ class TestEntryView(TestCase):
 
         entry = Entry(request)
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set(
@@ -710,8 +735,9 @@ class TestEntryView(TestCase):
                 ]
             )
         )
-        result = entry.viewer()
+        result = entry.get_cgxp_viewer_vars()
 
+    @attr(entry_points_noexternal=True)
     def test_entry_points_noexternal(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -728,7 +754,7 @@ class TestEntryView(TestCase):
 
         entry = Entry(request)
 
-        result = entry.home()
+        result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set(
@@ -738,8 +764,9 @@ class TestEntryView(TestCase):
                 ]
             )
         )
-        result = entry.viewer()
+        result = entry.get_cgxp_viewer_vars()
 
+    @attr(permalink_theme=True)
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
@@ -748,7 +775,7 @@ class TestEntryView(TestCase):
         request.matchdict = {
             'themes': ['theme'],
         }
-        result = entry.permalinktheme()
+        result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -768,7 +795,7 @@ class TestEntryView(TestCase):
         request.matchdict = {
             'themes': ['theme1', 'theme2'],
         }
-        result = entry.permalinktheme()
+        result = entry.get_cgxp_permalinktheme_vars()
         self.assertEquals(
             set(result.keys()),
             set([
@@ -785,10 +812,11 @@ class TestEntryView(TestCase):
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
         self.assertEquals(result['permalink_themes'], 'theme1,theme2')
 
+    @attr(layer=True)
     def test_layer(self):
         import httplib2
         from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import Layer, LayerGroup
+        from c2cgeoportal.models import LayerV1, LayerGroup
         from c2cgeoportal.lib.wmstparsing import TimeInformation
 
         request = self._create_request_obj()
@@ -799,24 +827,24 @@ class TestEntryView(TestCase):
 
         self.assertEqual(entry._group(LayerGroup(), [], [], None, TimeInformation()), (None, [], False))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test internal WMS'
-        layer.metadataURL = "http://example.com/tiwms"
-        layer.isChecked = True
-        layer.layerType = "internal WMS"
-        layer.imageType = "image/png"
+        layer.metadata_url = "http://example.com/tiwms"
+        layer.is_checked = True
+        layer.layer_type = "internal WMS"
+        layer.image_type = "image/png"
         layer.style = "my-style"
         layer.kml = "tiwms.kml"
         layer.legend = True
-        layer.legendRule = "rule"
-        layer.legendImage = "legend:static/tiwms-legend.png"
-        layer.isLegendExpanded = False
-        layer.minResolution = 10
-        layer.maxResolution = 1000
+        layer.legend_rule = "rule"
+        layer.legend_image = "legend:static/tiwms-legend.png"
+        layer.is_legend_expanded = False
+        layer.min_resolution = 10
+        layer.max_resolution = 1000
         layer.disclaimer = "Camptocamp"
-        layer.identifierAttributeField = "name"
-        layer.geoTable = "tiwms"
+        layer.identifier_attribute_field = "name"
+        layer.geo_table = "tiwms"
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation()), ({
             'id': 20,
@@ -839,19 +867,19 @@ class TestEntryView(TestCase):
             'public': True,
         }, ['The layer test internal WMS is not defined in WMS capabilities']))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test external WMS'
-        layer.isChecked = False
+        layer.is_checked = False
         layer.icon = "tewms.png"
-        layer.layerType = "external WMS"
+        layer.layer_type = "external WMS"
         layer.url = "http://example.com"
-        layer.imageType = "image/jpeg"
-        layer.isSingleTile = True
+        layer.image_type = "image/jpeg"
+        layer.is_single_tile = True
         layer.legend = False
-        layer.isLegendExpanded = False
-        layer.minResolution = 10
-        layer.maxResolution = 1000
+        layer.is_legend_expanded = False
+        layer.min_resolution = 10
+        layer.max_resolution = 1000
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation), ({
             'id': 20,
@@ -869,21 +897,21 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test WMTS'
-        layer.isChecked = False
-        layer.layerType = "WMTS"
+        layer.is_checked = False
+        layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
         layer.style = 'wmts-style'
         layer.dimensions = '{"DATE": "1012"}'
-        layer.matrixSet = "swissgrid"
-        layer.wmsUrl = 'http://example.com/'
-        layer.wmsLayers = 'test'
+        layer.matrix_set = "swissgrid"
+        layer.wms_url = 'http://example.com/'
+        layer.wms_layers = 'test'
         layer.legend = False
-        layer.isLegendExpanded = False
-        layer.minResolution = 10
-        layer.maxResolution = 1000
+        layer.is_legend_expanded = False
+        layer.min_resolution = 10
+        layer.max_resolution = 1000
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation()), ({
             'id': 20,
@@ -903,17 +931,17 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test WMTS'
-        layer.isChecked = False
-        layer.layerType = "WMTS"
+        layer.is_checked = False
+        layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wmsUrl = 'http://example.com/'
+        layer.wms_url = 'http://example.com/'
         layer.legend = False
-        layer.isLegendExpanded = False
-        layer.minResolution = 10
-        layer.maxResolution = 1000
+        layer.is_legend_expanded = False
+        layer.min_resolution = 10
+        layer.max_resolution = 1000
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation()), ({
             'id': 20,
@@ -930,17 +958,17 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test WMTS'
-        layer.isChecked = False
-        layer.layerType = "WMTS"
+        layer.is_checked = False
+        layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wmsLayers = 'test'
+        layer.wms_layers = 'test'
         layer.legend = False
-        layer.isLegendExpanded = False
-        layer.minResolution = 10
-        layer.maxResolution = 1000
+        layer.is_legend_expanded = False
+        layer.min_resolution = 10
+        layer.max_resolution = 1000
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation()), ({
             'id': 20,
@@ -958,14 +986,14 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test no 2D'
-        layer.isChecked = False
-        layer.layerType = "no 2D"
+        layer.is_checked = False
+        layer.layer_type = "no 2D"
         layer.legend = False
-        layer.isLegendExpanded = False
-        layer.metadataURL = 'http://example.com/wmsfeatures.metadata'
+        layer.is_legend_expanded = False
+        layer.metadata_url = 'http://example.com/wmsfeatures.metadata'
         layer.public = True
         self.assertEqual(entry._layer(layer, [], None, TimeInformation()), ({
             'id': 20,
@@ -1000,14 +1028,14 @@ class TestEntryView(TestCase):
         wms = WebMapService(None, xml=xml)
         wms_layers = list(wms.contents)
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test_wmsfeaturesgroup'
-        layer.layerType = "internal WMS"
-        layer.imageType = "image/png"
-        layer.isChecked = False
+        layer.layer_type = "internal WMS"
+        layer.image_type = "image/png"
+        layer.is_checked = False
         layer.legend = False
-        layer.isLegendExpanded = False
+        layer.is_legend_expanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms, TimeInformation()), ({
             'id': 20,
@@ -1034,16 +1062,16 @@ class TestEntryView(TestCase):
             }],
         }, []))
 
-        layer_t1 = Layer()
+        layer_t1 = LayerV1()
         layer_t1.id = 20
         layer_t1.name = 'test_wmstime'
-        layer_t1.layerType = "internal WMS"
-        layer_t1.imageType = "image/png"
-        layer_t1.isChecked = False
+        layer_t1.layer_type = "internal WMS"
+        layer_t1.image_type = "image/png"
+        layer_t1.is_checked = False
         layer_t1.legend = False
-        layer_t1.isLegendExpanded = False
+        layer_t1.is_legend_expanded = False
         layer_t1.public = True
-        layer_t1.timeMode = 'single'
+        layer_t1.time_mode = 'single'
         time = TimeInformation()
         entry._layer(layer_t1, wms_layers, wms, time)
         self.assertEqual(time.to_dict(), {
@@ -1054,16 +1082,16 @@ class TestEntryView(TestCase):
             'mode': 'single',
         })
 
-        layer_t2 = Layer()
+        layer_t2 = LayerV1()
         layer_t2.id = 30
         layer_t2.name = 'test_wmstime2'
-        layer_t2.layerType = "internal WMS"
-        layer_t2.imageType = "image/png"
-        layer_t2.isChecked = False
+        layer_t2.layer_type = "internal WMS"
+        layer_t2.image_type = "image/png"
+        layer_t2.is_checked = False
         layer_t2.legend = False
-        layer_t2.isLegendExpanded = False
+        layer_t2.is_legend_expanded = False
         layer_t2.public = True
-        layer_t2.timeMode = 'single'
+        layer_t2.time_mode = 'single'
         time = TimeInformation()
         entry._layer(layer_t2, wms_layers, wms, time)
         self.assertEqual(time.to_dict(), {
@@ -1087,16 +1115,16 @@ class TestEntryView(TestCase):
             'mode': 'single',
         })
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test_wmstimegroup'
-        layer.layerType = "internal WMS"
-        layer.imageType = "image/png"
-        layer.isChecked = False
+        layer.layer_type = "internal WMS"
+        layer.image_type = "image/png"
+        layer.is_checked = False
         layer.legend = False
-        layer.isLegendExpanded = False
+        layer.is_legend_expanded = False
         layer.public = True
-        layer.timeMode = 'single'
+        layer.time_mode = 'single'
         time = TimeInformation()
         entry._layer(layer, wms_layers, wms, time)
         self.assertEqual(time.to_dict(), {
@@ -1107,15 +1135,15 @@ class TestEntryView(TestCase):
             'mode': 'single',
         })
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test WMTS'
-        layer.isChecked = False
-        layer.layerType = "WMTS"
+        layer.is_checked = False
+        layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wmsLayers = 'test_wmsfeatures'
+        layer.wms_layers = 'test_wmsfeatures'
         layer.legend = False
-        layer.isLegendExpanded = False
+        layer.is_legend_expanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms, TimeInformation()), ({
             'id': 20,
@@ -1135,16 +1163,16 @@ class TestEntryView(TestCase):
             'public': True,
         }, []))
 
-        layer = Layer()
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test WMTS'
-        layer.isChecked = False
-        layer.layerType = "WMTS"
+        layer.is_checked = False
+        layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
-        layer.wmsLayers = 'foo'
-        layer.queryLayers = 'test_wmsfeatures'
+        layer.wms_layers = 'foo'
+        layer.query_layers = 'test_wmsfeatures'
         layer.legend = False
-        layer.isLegendExpanded = False
+        layer.is_legend_expanded = False
         layer.public = True
         self.assertEqual(entry._layer(layer, wms_layers, wms, TimeInformation()), ({
             'id': 20,
@@ -1168,15 +1196,15 @@ class TestEntryView(TestCase):
         group1.name = 'block'
         group2 = LayerGroup()
         group2.name = 'node'
-        group2.metadataURL = 'http://example.com/group.metadata'
-        layer = Layer()
+        group2.metadata_url = 'http://example.com/group.metadata'
+        layer = LayerV1()
         layer.id = 20
         layer.name = 'test layer in group'
-        layer.isChecked = False
-        layer.layerType = "internal WMS"
-        layer.imageType = "image/png"
+        layer.is_checked = False
+        layer.layer_type = "internal WMS"
+        layer.image_type = "image/png"
         layer.legend = False
-        layer.isLegendExpanded = False
+        layer.is_legend_expanded = False
         layer.public = True
         group1.children = [group2]
         group2.children = [layer]
@@ -1205,27 +1233,27 @@ class TestEntryView(TestCase):
         }, ['The layer test layer in group is not defined in WMS capabilities'], False))
 
         group1 = LayerGroup()
-        group1.isInternalWMS = True
+        group1.is_internal_wms = True
         group2 = LayerGroup()
-        group2.isInternalWMS = False
+        group2.is_internal_wms = False
         group1.children = [group2]
         _, errors, stop = entry._group(group1, [], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group1 = LayerGroup()
-        group1.isInternalWMS = False
+        group1.is_internal_wms = False
         group2 = LayerGroup()
-        group2.isInternalWMS = True
+        group2.is_internal_wms = True
         group1.children = [group2]
         _, errors, stop = entry._group(group1, [], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = True
-        layer = Layer()
-        layer.layerType = 'internal WMS'
+        group.is_internal_wms = True
+        layer = LayerV1()
+        layer.layer_type = 'internal WMS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertEqual(len(errors), 1)
@@ -1233,69 +1261,69 @@ class TestEntryView(TestCase):
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = True
-        layer = Layer()
-        layer.layerType = 'external WMS'
+        group.is_internal_wms = True
+        layer = LayerV1()
+        layer.layer_type = 'external WMS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = True
-        layer = Layer()
-        layer.layerType = 'WMTS'
+        group.is_internal_wms = True
+        layer = LayerV1()
+        layer.layer_type = 'WMTS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = True
-        layer = Layer()
-        layer.layerType = 'no 2D'
+        group.is_internal_wms = True
+        layer = LayerV1()
+        layer.layer_type = 'no 2D'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = False
-        layer = Layer()
-        layer.layerType = 'internal WMS'
+        group.is_internal_wms = False
+        layer = LayerV1()
+        layer.layer_type = 'internal WMS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertTrue(len(errors) > 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = False
-        layer = Layer()
-        layer.layerType = 'external WMS'
+        group.is_internal_wms = False
+        layer = LayerV1()
+        layer.layer_type = 'external WMS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertEqual(len(errors), 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = False
-        layer = Layer()
-        layer.layerType = 'WMTS'
+        group.is_internal_wms = False
+        layer = LayerV1()
+        layer.layer_type = 'WMTS'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertEqual(len(errors), 0)
         self.assertFalse(stop)
 
         group = LayerGroup()
-        group.isInternalWMS = False
-        layer = Layer()
-        layer.layerType = 'no 2D'
+        group.is_internal_wms = False
+        layer = LayerV1()
+        layer.layer_type = 'no 2D'
         group.children = [layer]
         _, errors, stop = entry._group(group, [layer], [], None, TimeInformation())
         self.assertEqual(len(errors), 0)
         self.assertFalse(stop)
 
-    @attr(test=True)
+    @attr(loginchange=True)
     def test_loginchange(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User
@@ -1334,7 +1362,7 @@ class TestEntryView(TestCase):
         self.assertEqual(request.user.is_password_changed, True)
         self.assertEqual(request.user._password, unicode(sha1('1234').hexdigest()))
 
-    @attr(test=True)
+    @attr(json_extent=True)
     def test_json_extent(self):
         from c2cgeoportal.models import DBSession, Role
 
