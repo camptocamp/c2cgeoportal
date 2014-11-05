@@ -113,7 +113,7 @@ def add_interface(
                 config,
                 interface_name='main',
                 route_name='home',
-                routes='/',
+                route='/',
                 renderer='index.html',
             )
         else:
@@ -243,7 +243,7 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_ngeo_vars',
+        attr='get_ngeo_index_vars',
         route_name=route_name,
         renderer=renderer
     )
