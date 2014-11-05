@@ -39,9 +39,10 @@ install_requires = [
     'pyramid_chameleon',
     'psycopg2',
     'alembic',
+    'SQLAlchemy==0.7.9',
     'SQLAHelper',
     'pyramid_tm',
-    'papyrus>=0.10dev1',
+    'papyrus==0.10',
     'papyrus_ogcproxy>=0.2dev1',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
@@ -49,6 +50,8 @@ install_requires = [
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
     'dogpile.cache',
+    'Paste',
+    'PasteDeploy',
     'PasteScript',
     # Needed by the production.ini
     'waitress',
@@ -57,6 +60,7 @@ install_requires = [
     'nose',
     'JSTools',
     'zc.buildout',
+    'couchdbkit',  # missing dependency of formalchemy
 ]
 
 # nose plugins with options set in setup.cfg cannot be in
