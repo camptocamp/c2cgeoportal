@@ -202,8 +202,9 @@ class User(Base):
         parent_role = relationship("ParentRole", backref=backref('parentusers'))
 
     def __init__(
-            self, username=u'', password=u'', email=u'', is_password_changed=False,
-            functionalities=[], role=None):
+        self, username=u'', password=u'', email=u'', is_password_changed=False,
+        functionalities=[], role=None
+    ):
         self.username = username
         self.password = password
         self.email = email
