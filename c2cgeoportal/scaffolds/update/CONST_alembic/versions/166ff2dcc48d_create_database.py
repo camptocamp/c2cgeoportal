@@ -40,8 +40,14 @@ Create Date: 2014-10-24 11:43:23.886123
 revision = '166ff2dcc48d'
 down_revision = None
 
+try:
+    from hashlib import sha1
+    sha1  # suppress pyflakes warning
+except ImportError:  # pragma: nocover
+    from sha import new as sha1
+
 from alembic import op, context
-from sqlalchemy import ForeignKey, Column
+from sqlalchemy import ForeignKey, Column, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, String, Float, \
     UserDefinedType, DateTime
 
@@ -102,6 +108,7 @@ def upgrade():
         Column('nb_hits', Integer),
         schema=schema + "_static",
     )
+
     op.create_table(
         'role',
         Column('id', Integer, primary_key=True),
@@ -112,6 +119,15 @@ def upgrade():
     op.execute("SELECT AddGeometryColumn('%(schema)s', 'role', 'extent', %(srid)s, 'POLYGON', 2)" % {
         'schema': schema, 'srid': srid
     })
+    role = Table(
+        'role', MetaData(),
+        Column('name', Unicode, unique=True, nullable=False),
+        schema=schema,
+    )
+    op.bulk_insert(role, [
+        {'name': 'role_admin'}
+    ])
+
     op.create_table(
         'layer',
         Column(
@@ -186,6 +202,7 @@ def upgrade():
         ),
         schema=schema,
     )
+
     op.create_table(
         'user',
         Column('type', String(10), nullable=False),
@@ -203,6 +220,16 @@ def upgrade():
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),
             schema=schema
         )
+    op.execute(
+        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "
+        "(SELECT 'user', 'admin', 'info@example.com', '%(pass)s', r.id "
+        "FROM %(schema)s.role AS r "
+        "WHERE r.name = 'role_admin')" % {
+            'schema': schema,
+            'pass': sha1('admin').hexdigest()
+        }
+    )
+
     op.create_table(
         'role_functionality',
         Column(
