@@ -785,7 +785,7 @@ class Entry(object):
         # recover themes from url route
         themes = self.request.matchdict['themes']
         d = {}
-        d['permalink_themes'] = ','.join(themes)
+        d['permalink_themes'] = themes
         # call home with extra params
         return self.get_cgxp_index_vars(d)
 
@@ -933,7 +933,7 @@ class Entry(object):
         # comma-separated string including the names of layers that
         # should visible by default in the map
         visible_layers = filter(lambda li: li['isChecked'] is True, layer_info)
-        theme['layers'] = ','.join(reversed([li['name'] for li in visible_layers]))
+        theme['layers'] = [li['name'] for li in visible_layers][::-1]
 
     def mobileconfig(self):
         """
@@ -964,7 +964,6 @@ class Entry(object):
         wfs_types, errors = self._internal_wfs_types(role_id)
         if len(errors) > 0:  # pragma: no cover
             raise HTTPBadGateway('\n'.join(errors))
-        wfs_types = ','.join(wfs_types)
 
         # info includes various information that is not used by config.js,
         # but by other - private to the integrator - parts of the mobile

@@ -127,7 +127,7 @@ class TestMobileDesktop(TestCase):
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
-                u"layers": u"__test_mobile_only_layer,__test_layer",
+                u"layers": [u"__test_mobile_only_layer", "__test_layer"],
                 u"allLayers": [
                     {u"name": u"__test_mobile_only_layer"},
                     {u"name": u"__test_layer"}
@@ -135,7 +135,7 @@ class TestMobileDesktop(TestCase):
             }, {
                 u"name": u"__test_mobile_only_theme",
                 u"icon": u"/dummy/static/url",
-                u"layers": u"__test_layer",
+                u"layers": [u"__test_layer"],
                 u"allLayers": [
                     {u"name": u"__test_layer"}
                 ]
@@ -160,7 +160,7 @@ class TestMobileDesktop(TestCase):
             [{
                 u"name": u"__test_theme",
                 u"icon": u"/dummy/static/url",
-                u"layers": u"__test_mobile_only_layer,__test_layer",
+                u"layers": [u"__test_mobile_only_layer", "__test_layer"],
                 u"allLayers": [
                     {u"name": u"__test_mobile_only_layer"},
                     {u"name": u"__test_layer"}
@@ -168,14 +168,14 @@ class TestMobileDesktop(TestCase):
             }, {
                 u"name": u"__test_mobile_only_theme",
                 u"icon": u"/dummy/static/url",
-                u"layers": u"__test_layer",
+                u"layers": [u"__test_layer"],
                 u"allLayers": [
                     {u"name": u"__test_layer"}
                 ]
             }, {
                 u"name": u"__test_mobile_private_theme",
                 u"icon": u"/dummy/static/url",
-                u"layers": u"__test_layer",
+                u"layers": [u"__test_layer"],
                 u"allLayers": [
                     {u"name": u"__test_layer"}
                 ]

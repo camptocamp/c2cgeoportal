@@ -338,7 +338,7 @@ class TestEntryView(TestCase):
             [u'__test_layer_in_group', u'__test_public_layer', u'test_wmsfeaturesgroup']
         )
 
-        self.assertEqual(theme['layers'], '__test_layer_in_group')
+        self.assertEqual(theme['layers'], ['__test_layer_in_group'])
 
         info = response['info']
         self.assertEqual(
@@ -405,9 +405,8 @@ class TestEntryView(TestCase):
             u'__test_private_layer', u'test_wmsfeaturesgroup'
         ]))
 
-        visible_layers = set(theme['layers'].split(','))
         self.assertEqual(
-            visible_layers,
+            set(theme['layers']),
             set([u'__test_layer_in_group', u'__test_private_layer'])
 
         )
@@ -788,9 +787,9 @@ class TestEntryView(TestCase):
             set(['lang', 'permalink_themes', 'version'])
         )
         self.assertEquals(result['extra_params']['lang'], 'fr')
-        self.assertEquals(result['extra_params']['permalink_themes'], 'theme')
+        self.assertEquals(result['extra_params']['permalink_themes'], ['theme'])
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        self.assertEquals(result['permalink_themes'], 'theme')
+        self.assertEquals(result['permalink_themes'], ['theme'])
 
         request.matchdict = {
             'themes': ['theme1', 'theme2'],
@@ -808,9 +807,9 @@ class TestEntryView(TestCase):
             set(['lang', 'permalink_themes', 'version'])
         )
         self.assertEquals(result['extra_params']['lang'], 'fr')
-        self.assertEquals(result['extra_params']['permalink_themes'], 'theme1,theme2')
+        self.assertEquals(result['extra_params']['permalink_themes'], ['theme1', 'theme2'])
         self.assertRegexpMatches(result['extra_params']['version'], '[0-9a-f]*')
-        self.assertEquals(result['permalink_themes'], 'theme1,theme2')
+        self.assertEquals(result['permalink_themes'], ['theme1', 'theme2'])
 
     @attr(layer=True)
     def test_layer(self):
