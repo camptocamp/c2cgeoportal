@@ -33,12 +33,17 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = "c2cgeoportal, generic GIS portal made by Camptocamp"
 
 install_requires = [
+    # On Travis pip would use setuptools 2.0.
+    'setuptools>=7.0',
+    # Required by FormAlchemy with pip
+    'WebHelpers2>=2.0rc1',
     'pyramid<=1.5.99,>=1.5.0',
     'pyramid_multiauth',
     'pyramid_mako',
     'pyramid_chameleon',
     'psycopg2',
     'alembic',
+    # GeoAlchemy 0.7.1 doesn't work with SQLAlchemy 0.8.
     'SQLAlchemy==0.7.9',
     'SQLAHelper',
     'pyramid_tm',
@@ -46,6 +51,14 @@ install_requires = [
     'papyrus_ogcproxy>=0.2dev1',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
+    # With Formalchemy 1.4.3 the Layer types 'WMTS' and 'no 2D' are not visible.
+    'FormAlchemy==1.4.2',
+    # fa.jquery uses js.jqueryui_selectmenu, whose released
+    # version (0.1) doesn't work with js.jquery > 1.7.1.
+    'js.jquery==1.7.1',
+    # The latest js.jqgrid lib (4.4.1) needs a DOCTYPE for IE8
+    # See: https://github.com/camptocamp/c2cgeoportal/issues/411
+    'js.jqgrid==4.3.1-1',
     'GeoFormAlchemy>=0.4',
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
