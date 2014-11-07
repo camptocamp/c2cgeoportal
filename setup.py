@@ -30,7 +30,14 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = "c2cgeoportal, generic GIS portal made by Camptocamp"
+README = """c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
+the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
+
+`Documentation <http://docs.camptocamp.net/c2cgeoportal/>`_
+
+`Announcement <https://www.camptocamp.com/en/actualite/geomapfish-release-of/>`_
+
+`Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
     'pyramid<=1.5.99,>=1.5.0',
@@ -106,7 +113,7 @@ tests_require = install_requires + [
 
 setup(
     name='c2cgeoportal',
-    version='1.5.0',
+    version='1.5.1',
     description='c2cgeoportal',
     long_description=README,
     classifiers=[
