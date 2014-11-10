@@ -198,7 +198,13 @@ def build(options):
 def update(options):
     branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
     print "Use branch %s." % branch
-    check_call(['git', 'pull', 'origin', branch])
+    check_call(['git', 'pull', '--rebase', 'origin', branch])
+    if len(check_output(['git', 'status', '-z']).strip()) != 0:
+        print _color_bar
+        print _colorize("The pull isn't fast forward.", RED)
+        print _colorize("Please solve the rebase and run it again.", YELLOW)
+        exit(1)
+
     check_call(['git', 'submodule', 'sync'])
     check_call(['git', 'submodule', 'update', '--init'])
     check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
@@ -272,7 +278,13 @@ def upgrade(options):
         check_call(['git', 'reset', '--hard'])
         check_call(['git', 'clean', '-f', '-d'])
         branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-        check_call(['git', 'pull', 'origin', branch])
+        check_call(['git', 'pull', '--rebase', 'origin', branch])
+        if len(check_output(['git', 'status', '-z']).strip()) != 0:
+            print _color_bar
+            print _colorize("The pull isn't fast forward.", RED)
+            print _colorize("Please solve the rebase and run it again.", YELLOW)
+            exit(1)
+
         check_call(['git', 'submodule', 'foreach', 'git', 'fetch'])
         check_call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
         check_call([
