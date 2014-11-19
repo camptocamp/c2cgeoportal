@@ -89,13 +89,13 @@ We use a specific user for the application, ``www-data`` by default.
    .. prompt:: bash
 
         sudo -u postgres createuser -P <db_user>
-        sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO <db_user>' <db_name>
-        sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO <db_user>' <db_name>
 
 Give the rights to the user:
 
 .. prompt:: bash
 
+    sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO "www-data"' <db_name>
+    sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO "www-data"' <db_name>
     sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name> TO "www-data"' <db_name>
     sudo -u postgres psql -c 'GRANT ALL ON SCHEMA <schema_name>_static TO "www-data"' <db_name>
 
