@@ -35,7 +35,7 @@ import argparse
 import httplib2
 import logging
 from yaml import load
-from subprocess import call
+from subprocess import check_call
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
 from zc.buildout.buildout import Buildout
@@ -194,23 +194,29 @@ def build(options):
 
     _run_buildout_cmd(options.file, cmds)
 
-    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
+    check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def update(options):
     branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
     print "Use branch %s." % branch
-    call(['git', 'pull', 'origin', branch])
-    call(['git', 'submodule', 'sync'])
-    call(['git', 'submodule', 'update', '--init'])
-    call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
-    call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
+    check_call(['git', 'pull', '--rebase', 'origin', branch])
+    if len(check_output(['git', 'status', '-z']).strip()) != 0:
+        print _color_bar
+        print _colorize("The pull isn't fast forward.", RED)
+        print _colorize("Please solve the rebase and run it again.", YELLOW)
+        exit(1)
+
+    check_call(['git', 'submodule', 'sync'])
+    check_call(['git', 'submodule', 'update', '--init'])
+    check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
+    check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
 
     _run_buildout_cmd('CONST_buildout_cleaner.cfg')
     shutil.rmtree('old')
 
     _run_buildout_cmd(options.file)
-    call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
+    check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def _print_step(options, step, intro="To continue type:"):
@@ -261,7 +267,7 @@ def upgrade(options):
                 project['project_folder'], path.split(path.realpath('.'))[1]
             )
 
-        call(['git', 'status'])
+        check_call(['git', 'status'])
         print
         print _color_bar
         print "Here is the output of 'git status'. Please make sure to commit all your changes " \
@@ -269,19 +275,25 @@ def upgrade(options):
         _print_step(options, 1)
 
     elif options.step == 1:
-        call(['git', 'reset', '--hard'])
-        call(['git', 'clean', '-f', '-d'])
+        check_call(['git', 'reset', '--hard'])
+        check_call(['git', 'clean', '-f', '-d'])
         branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-        call(['git', 'pull', 'origin', branch])
-        call(['git', 'submodule', 'foreach', 'git', 'fetch'])
-        call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
-        call([
+        check_call(['git', 'pull', '--rebase', 'origin', branch])
+        if len(check_output(['git', 'status', '-z']).strip()) != 0:
+            print _color_bar
+            print _colorize("The pull isn't fast forward.", RED)
+            print _colorize("Please solve the rebase and run it again.", YELLOW)
+            exit(1)
+
+        check_call(['git', 'submodule', 'foreach', 'git', 'fetch'])
+        check_call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
+        check_call([
             'git', 'submodule', 'foreach', 'git', 'reset',
             '--hard', options.version
         ])
-        call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
-        call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-        call([
+        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
+        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
+        check_call([
             'wget',
             'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
             'c2cgeoportal/scaffolds/create/versions.cfg'
@@ -289,13 +301,13 @@ def upgrade(options):
         ])
         _run_buildout_cmd(commands=['eggs'])
 
-        call([
+        check_call([
             './buildout/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
             '../%s' % project['project_folder'], 'package=%s' % project['project_package']
         ])
 
         diff_file = open("changelog.diff", "w")
-        call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
+        check_call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
         diff_file.close()
 
         print
@@ -345,8 +357,8 @@ def upgrade(options):
             exit(1)
 
         shutil.rmtree('old')
-        call(['git', 'add', '-A'])
-        call(['git', 'commit', '-m', 'Update to GeoMapFish %s' % options.version])
+        check_call(['git', 'add', '-A'])
+        check_call(['git', 'commit', '-m', 'Update to GeoMapFish %s' % options.version])
 
 
 def deploy(options):
@@ -356,7 +368,7 @@ def deploy(options):
         exit(1)
 
     shutil.rmtree('buildout/parts/modwsgi')
-    call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
+    check_call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
     _run_buildout_cmd(commands=['modwsgi'])
 
 

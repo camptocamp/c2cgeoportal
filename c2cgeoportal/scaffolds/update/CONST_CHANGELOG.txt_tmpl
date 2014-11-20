@@ -47,6 +47,15 @@ Version 1.6
             test-packages-tilecloud-chain
 
 
+Version 1.5.2
+=============
+
+1. In the {{package}}/static/mobile/config.js file do the following change:
+
+   -    App.WFSTypes = '${wfs_types | n}'.split(',');
+   +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
+
+
 Version 1.5.1
 =============
 

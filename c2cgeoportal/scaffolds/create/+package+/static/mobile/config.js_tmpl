@@ -19,7 +19,7 @@ try {
     App.themes = jsonFormat.read('${dumps(themes) | n}');
     App.theme = '${theme | n}';
 
-    App.WFSTypes = '${wfs_types | n}'.split(',');
+    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
     // Query mode. Can be either 'click' or 'longpress'
     App.queryMode = 'longpress';
