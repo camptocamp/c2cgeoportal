@@ -143,23 +143,11 @@ Checkout the code:
     git checkout <version>
     git pull origin <version>
 
-Build c2cgeoportal:
-
-.. prompt:: bash
-
-    ./buildout/bin/buildout -c buildout_dev.cfg
-
 Update the version of c2cgeoportal in the
 ``c2cgeoportal/scaffolds/create/versions.cfg`` file to the ``<release>``.
 
 Verify that the version in the ``setup.py`` is correct
 (as the ``<release>``).
-
-Create a new package:
-
-.. prompt:: bash
-
-    ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
 
 Commit your changes:
 
@@ -167,20 +155,6 @@ Commit your changes:
 
     git add setup.py c2cgeoportal/scaffolds/create/versions.cfg
     git commit -m "Do release <release>"
-
-Create a new package for Windows:
-
-.. prompt:: bash
-
-    cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
-    tar -czvf touch.tar.gz touch
-    cd -
-    echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
-    echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
-    ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
-    rm c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz
-    git checkout MANIFEST.in setup.py
 
 Tag the new release:
 
@@ -203,3 +177,8 @@ Push your changes:
 
     git push origin <version>
     git push origin <release>
+
+.. note::
+
+   When we push the tag with the same value as the egg version
+   a new release will be automatically created, if the tests pass.
