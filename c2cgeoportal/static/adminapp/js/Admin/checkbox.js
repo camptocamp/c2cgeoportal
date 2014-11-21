@@ -142,7 +142,7 @@ either expressed or implied, of the FreeBSD Project.
      */
     $.fn.adminapp.toogleRestrictionAreas = function(el) {
         var els = $.fn.adminapp.findField('restrictionareas', [el.id]);
-        var state = el.value == "internal WMS";
+        var state = el.value == "internal WMS" || el.value == "WMTS";
         if (state) {
             els.removeClass('disabledinput');
         } else {
