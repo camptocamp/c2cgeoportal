@@ -498,7 +498,7 @@ class LayerInternalWMS(Layer):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {'polymorphic_identity': 'layer_internal_wms'}
+    __mapper_args__ = {'polymorphic_identity': 'l_int_wms'}
 
     id = Column(
         Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
@@ -528,7 +528,7 @@ class LayerExternalWMS(Layer):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {'polymorphic_identity': 'layer_external_wms'}
+    __mapper_args__ = {'polymorphic_identity': 'l_ext_wms'}
 
     id = Column(
         Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
@@ -560,7 +560,7 @@ class LayerWMTS(Layer):
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {'polymorphic_identity': 'layer_wmts'}
+    __mapper_args__ = {'polymorphic_identity': 'l_wmts'}
 
     id = Column(
         Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
