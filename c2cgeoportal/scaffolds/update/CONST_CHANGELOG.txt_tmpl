@@ -9,6 +9,24 @@ Version 1.5.2
    -    App.WFSTypes = '${wfs_types | n}'.split(',');
    +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
+2. In <package>/template/viewer.js file, for plugins ``cgxp_layertree`` and ``cgxp_login``, 
+   add the ``events`` parameter:
+        
+        ...
+        ptype: "cgxp_layertree",
+        id: "layertree",
+    +   events: EVENTS,
+        ...
+        ...
+        ptype: 'cgxp_login',
+        actionTarget: 'center.tbar',
+        toggleGroup: 'maptools',
+    +   events: EVENTS,
+        ...
+        
+    this allows to use the new ``showRestrictedContentWarning`` parameter
+    in plugin ``cgxp_layertree`` to warn the user that some content in the 
+    permalink he has loaded is only available if logged in.
 
 Version 1.5.1
 =============

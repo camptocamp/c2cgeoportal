@@ -142,6 +142,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_layertree",
             id: "layertree",
+            events: EVENTS,
             outputConfig: {
                 header: false,
                 flex: 1,
@@ -274,6 +275,7 @@ Ext.onReady(function() {
             ptype: "cgxp_login",
             actionTarget: "center.tbar",
             toggleGroup: "maptools",
+            events: EVENTS,
 % if user:
             username: "${user.username}",
             isPasswordChanged: ${"true" if user.is_password_changed else "false"},
