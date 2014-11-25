@@ -43,6 +43,7 @@ from c2cgeoportal.tests.functional import (  # noqa
 class TestLayers(TestCase):
 
     _table_index = 0
+    _tables = None
 
     def setUp(self):  # noqa
         import sqlahelper
@@ -75,9 +76,6 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-        if self.metadata is not None:
-            self.metadata.drop_all()
-
         for i in self.layer_ids:
             treeitem = DBSession.query(TreeItem).get(i)
             DBSession.delete(treeitem)
@@ -100,6 +98,10 @@ class TestLayers(TestCase):
             Interface.name == u'main'
         ).delete()
 
+        if self._tables is not None:
+            for table in self._tables[::-1]:
+                table.drop()
+
         transaction.commit()
 
     def _create_layer(
@@ -117,6 +119,9 @@ class TestLayers(TestCase):
                                 Point, WKTSpatialElement)
         from c2cgeoportal.models import DBSession, LayerV1, RestrictionArea
 
+        if self._tables is None:
+            self._tables = []
+
         self.__class__._table_index = self.__class__._table_index + 1
         id = self.__class__._table_index
 
@@ -133,6 +138,7 @@ class TestLayers(TestCase):
                       schema='public'
                       )
         table.create()
+        self._tables.append(table)
 
         ins = table.insert().values(name=u'c1é')
         c1_id = engine.connect().execute(ins).inserted_primary_key[0]
@@ -150,6 +156,7 @@ class TestLayers(TestCase):
         )
         GeometryDDL(table)
         table.create()
+        self._tables.append(table)
 
         ins = table.insert().values(
             child_id=c1_id,

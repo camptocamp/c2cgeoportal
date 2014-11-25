@@ -427,7 +427,7 @@ class Entry(object):
             return None, errors, True
         depth += 1
 
-        for treeItem in sorted(group.children, key=lambda item: item.order):
+        for treeItem in group.children:
             if type(treeItem) == LayerGroup:
                 if (type(group) == Theme or
                         group.is_internal_wms == treeItem.is_internal_wms):
@@ -484,7 +484,6 @@ class Entry(object):
         query = query.join(LayerV1.interfaces)
         if interface is not None:
             query = query.filter(Interface.name == interface)
-        query = query.order_by(LayerV1.order.asc())
         layers = query.all()
 
         # retrieve layers metadata via GetCapabilities
@@ -496,7 +495,7 @@ class Entry(object):
 
         wms_layers = list(wms.contents)
 
-        themes = DBSession.query(Theme).order_by(Theme.order.asc())
+        themes = DBSession.query(Theme).order_by(Theme.ordering.asc())
         if filter_themes and interface is not None:
             themes = themes.join(Theme.interfaces)
             themes = themes.filter(Interface.name == interface)
@@ -550,7 +549,7 @@ class Entry(object):
     def _get_children(self, theme, layers, wms_layers, wms):
         children = []
         errors = []
-        for item in sorted(theme.children, key=lambda item: item.order):
+        for item in theme.children:
             if type(item) == LayerGroup:
                 time = TimeInformation()
                 gp, gp_errors, stop = self._group(item, layers, wms_layers, wms, time)

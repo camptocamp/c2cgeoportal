@@ -55,7 +55,7 @@ __all__ = [
     'Base', 'DBSession', 'Functionality', 'User', 'Role', 'TreeItem',
     'TreeGroup', 'LayerGroup', 'Theme', 'Layer', 'RestrictionArea',
     'LayerV1', 'LayerInternalWMS', 'LayerExternalWMS', 'LayerWMTS',
-    'Interface', 'UIMetadata', 'WMTSDimension'
+    'Interface', 'UIMetadata', 'WMTSDimension', 'LayergroupTreeitem'
 ]
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -301,8 +301,11 @@ class TreeItem(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, label=_(u'Name'))
-    order = Column(Integer, nullable=False, label=_(u'Order'))
     metadata_url = Column(Unicode, label=_(u'Metadata URL'))  # shouldn't be used in V3
+
+    @property
+    def parents(self):  # pragma: nocover
+        return [c.group for c in self.parents_relation]
 
     def is_in_interface(self, name):
         if not hasattr(self, 'interfaces'):  # pragma: nocover
@@ -314,9 +317,8 @@ class TreeItem(Base):
 
         return False
 
-    def __init__(self, name=u'', order=0):
+    def __init__(self, name=u''):
         self.name = name
-        self.order = order
 
     def __unicode__(self):
         return self.name or u''  # pragma: nocover
@@ -325,19 +327,51 @@ event.listen(TreeItem, 'after_insert', cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, 'after_update', cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 
+
 # association table LayerGroup <> TreeItem
-layergroup_treeitem = Table(
-    'layergroup_treeitem', Base.metadata,
-    Column(
-        'treegroup_id', Integer,
-        ForeignKey(_schema + '.treegroup.id'), primary_key=True
-    ),
-    Column(
-        'treeitem_id', Integer,
-        ForeignKey(_schema + '.treeitem.id'), primary_key=True
-    ),
-    schema=_schema
-)
+class LayergroupTreeitem(Base):
+    __tablename__ = 'layergroup_treeitem'
+    __table_args__ = {'schema': _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+
+    # required by formalchemy
+    id = Column(Integer, primary_key=True)
+    treegroup_id = Column(
+        Integer, ForeignKey(_schema + '.treegroup.id')
+    )
+    group = relationship(
+        'TreeGroup',
+        backref=backref(
+            'children_relation', cascade='save-update,merge,delete'
+        ),
+        primaryjoin="LayergroupTreeitem.treegroup_id==TreeGroup.id",
+    )
+    treeitem_id = Column(
+        Integer, ForeignKey(_schema + '.treeitem.id')
+    )
+    item = relationship(
+        'TreeItem',
+        backref=backref(
+            'parents_relation', cascade='save-update,merge,delete'
+        ),
+        primaryjoin="LayergroupTreeitem.treeitem_id==TreeItem.id",
+    )
+    ordering = Column(Integer)
+
+    # Used by formalchemy
+    def __unicode__(self):  # pragma: nocover
+        return self.group.name
+
+    def __init__(self, group=None, item=None, ordering=0):
+        self.group = group
+        self.item = item
+        self.ordering = ordering
+
+event.listen(LayergroupTreeitem, 'after_insert', cache_invalidate_cb, propagate=True)
+event.listen(LayergroupTreeitem, 'after_update', cache_invalidate_cb, propagate=True)
+event.listen(LayergroupTreeitem, 'after_delete', cache_invalidate_cb, propagate=True)
 
 
 class TreeGroup(TreeItem):
@@ -349,14 +383,19 @@ class TreeGroup(TreeItem):
     id = Column(
         Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True
     )
-    # relationship with Role and Layer
-    children = relationship(
-        'TreeItem', backref='parents',
-        secondary=layergroup_treeitem, cascade='save-update,merge,refresh-expire'
-    )
 
-    def __init__(self, name=u'', order=0):
-        TreeItem.__init__(self, name=name, order=order)
+    def _get_children(self):
+        return [c.item for c in self.children_relation]
+
+    def _set_children(self, children):
+        self.children_relation = [
+            LayergroupTreeitem(self, item, index) for index, item in enumerate(children)
+        ]
+
+    children = property(_get_children, _set_children)
+
+    def __init__(self, name=u''):
+        TreeItem.__init__(self, name=name)
 
 
 class LayerGroup(TreeGroup):
@@ -378,9 +417,9 @@ class LayerGroup(TreeGroup):
     is_base_layer = Column(Boolean, label=_(u'Group of base layers'))  # Shouldn't be used in V3
 
     def __init__(
-            self, name=u'', order=100, is_expanded=False,
+            self, name=u'', is_expanded=False,
             is_internal_wms=True, is_base_layer=False):
-        TreeGroup.__init__(self, name=name, order=order)
+        TreeGroup.__init__(self, name=name)
         self.is_expanded = is_expanded
         self.is_internal_wms = is_internal_wms
         self.is_base_layer = is_base_layer
@@ -399,6 +438,7 @@ class Theme(TreeGroup):
     id = Column(
         Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True
     )
+    ordering = Column(Integer, nullable=False, label=_(u'Order'))
     icon = Column(Unicode, label=_(u'Icon'))
 
     # functionality
@@ -407,10 +447,10 @@ class Theme(TreeGroup):
         cascade='save-update,merge,refresh-expire'
     )
 
-    def __init__(self, name=u'', order=100, icon=u'', display=True):
-        TreeGroup.__init__(self, name=name, order=order)
+    def __init__(self, name=u'', ordering=100, icon=u''):
+        TreeGroup.__init__(self, name=name)
+        self.ordering = ordering
         self.icon = icon
-        self.display = display
 
 
 class Layer(TreeItem):
@@ -425,8 +465,8 @@ class Layer(TreeItem):
     public = Column(Boolean, default=True, label=_(u'Public'))
     geo_table = Column(Unicode, label=_(u'Related Postgres table'))
 
-    def __init__(self, name=u'', order=0, public=True):
-        TreeItem.__init__(self, name=name, order=order)
+    def __init__(self, name=u'', public=True):
+        TreeItem.__init__(self, name=name)
         self.public = public
 
 
@@ -482,10 +522,10 @@ class LayerV1(Layer):
         label=_(u'Time mode'))
 
     def __init__(
-        self, name=u'', order=0, public=True, icon=u'',
+        self, name=u'', public=True, icon=u'',
         layer_type=u'internal WMS'
     ):
-        Layer.__init__(self, name=name, order=order, public=public)
+        Layer.__init__(self, name=name, public=public)
         self.icon = icon
         self.layer_type = layer_type
 
@@ -516,8 +556,8 @@ class LayerInternalWMS(Layer):
         native_enum=False), default="disabled", nullable=False,
         label=_(u'Time mode'))
 
-    def __init__(self, name=u'', order=0, public=True, icon=u''):
-        Layer.__init__(self, name=name, order=order, public=public)
+    def __init__(self, name=u'', public=True, icon=u''):
+        Layer.__init__(self, name=name, public=public)
 
 
 class LayerExternalWMS(Layer):
@@ -548,8 +588,8 @@ class LayerExternalWMS(Layer):
         native_enum=False), default="disabled", nullable=False,
         label=_(u'Time mode'))
 
-    def __init__(self, name=u'', order=0, public=True):
-        Layer.__init__(self, name=name, order=order, public=public)
+    def __init__(self, name=u'', public=True):
+        Layer.__init__(self, name=name, public=public)
 
 
 class LayerWMTS(Layer):
@@ -570,8 +610,8 @@ class LayerWMTS(Layer):
     style = Column(Unicode, label=_(u'Style'))
     matrix_set = Column(Unicode, label=_(u'Matrix set'))
 
-    def __init__(self, name=u'', order=0, public=True):
-        Layer.__init__(self, name=name, order=order, public=public)
+    def __init__(self, name=u'', public=True):
+        Layer.__init__(self, name=name, public=public)
 
 # association table role <> restriciton area
 role_ra = Table(
