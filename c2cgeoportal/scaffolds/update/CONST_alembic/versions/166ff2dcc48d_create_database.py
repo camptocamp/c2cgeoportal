@@ -187,7 +187,7 @@ def upgrade():
         Column('params', Unicode, nullable=True),
         schema=schema,
     )
-    op.execute("SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', %(srid)s, 'POLYGON', 2)" % {
+    op.execute("SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', %(srid)s, 'GEOMETRY', 2)" % {
         'schema': schema, 'srid': srid
     })
     op.create_index(
