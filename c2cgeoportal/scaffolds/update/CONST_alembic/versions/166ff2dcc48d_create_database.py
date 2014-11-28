@@ -66,7 +66,7 @@ def upgrade():
     engine = op.get_bind().engine
     if op.get_context().dialect.has_table(
         engine, 'functionality', schema=schema
-    ):
+    ):  # pragma: nocover
         return
 
     op.create_table(
@@ -214,7 +214,7 @@ def upgrade():
         Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
         schema=schema,
     )
-    if parentschema is not None:
+    if parentschema is not None:  # pragma: nocover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

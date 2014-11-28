@@ -92,7 +92,7 @@ def cache_invalidate_cb(*args):
 
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
-    def get_col_spec(self):
+    def get_col_spec(self):  # pragma: nocover
         return 'TSVECTOR'
 
 

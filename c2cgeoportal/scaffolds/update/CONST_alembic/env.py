@@ -23,7 +23,7 @@ target_metadata = None
 # ... etc.
 
 
-def run_migrations_offline():
+def run_migrations_offline():  # pragma: nocover
     """Run migrations in 'offline' mode.
 
     This configures the context with just a URL
@@ -71,7 +71,7 @@ def run_migrations_online():
     finally:
         connection.close()
 
-if context.is_offline_mode():
+if context.is_offline_mode():  # pragma: nocover
     run_migrations_offline()
 else:
     run_migrations_online()

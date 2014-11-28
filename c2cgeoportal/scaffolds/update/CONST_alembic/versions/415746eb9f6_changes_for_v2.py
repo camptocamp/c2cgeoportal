@@ -50,7 +50,7 @@ def upgrade():
     engine = op.get_bind().engine
     if op.get_context().dialect.has_table(
         engine, 'interface', schema=schema
-    ):
+    ):  # pragma: nocover
         return
 
     op.drop_table('user_functionality', schema=schema)
