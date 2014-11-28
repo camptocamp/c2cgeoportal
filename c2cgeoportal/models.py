@@ -425,6 +425,20 @@ class LayerGroup(TreeGroup):
         self.is_base_layer = is_base_layer
 
 
+# role theme link for restricted theme
+restricted_role_theme = Table(
+    'restricted_role_theme', Base.metadata,
+    Column(
+        'role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True
+    ),
+    Column(
+        'theme_id', Integer,
+        ForeignKey(_schema + '.theme.id'), primary_key=True
+    ),
+    schema=_schema
+)
+
+
 class Theme(TreeGroup):
     __label__ = _(u'theme')
     __plural__ = _(u'themes')
@@ -439,12 +453,19 @@ class Theme(TreeGroup):
         Integer, ForeignKey(_schema + '.treegroup.id'), primary_key=True
     )
     ordering = Column(Integer, nullable=False, label=_(u'Order'))
+    public = Column(Boolean, default=True, nullable=False, label=_(u'Public'))
     icon = Column(Unicode, label=_(u'Icon'))
 
     # functionality
     functionalities = relationship(
         'Functionality', secondary=theme_functionality,
         cascade='save-update,merge,refresh-expire'
+    )
+
+    # restricted to role
+    restricted_roles = relationship(
+        'Role', secondary=restricted_role_theme,
+        cascade='save-update,merge,refresh-expire',
     )
 
     def __init__(self, name=u'', ordering=100, icon=u''):

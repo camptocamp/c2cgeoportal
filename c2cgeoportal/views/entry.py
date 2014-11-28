@@ -143,7 +143,7 @@ class Entry(object):
             identified to by ``role_id``.
         """
         q = DBSession.query(LayerV1).filter(LayerV1.public.is_(True))
-        if role_id:
+        if role_id is not None:
             q = q.union(get_protected_layers_query(role_id))
         return q
 
@@ -495,7 +495,18 @@ class Entry(object):
 
         wms_layers = list(wms.contents)
 
-        themes = DBSession.query(Theme).order_by(Theme.ordering.asc())
+        themes = DBSession.query(Theme)
+        themes = themes.filter(Theme.public.is_(True))
+        if role_id is not None:
+            auth_themes = DBSession.query(Theme)
+            auth_themes = auth_themes.filter(Theme.public.is_(False))
+            auth_themes = auth_themes.join(Theme.restricted_roles)
+            auth_themes = auth_themes.filter(Role.id == role_id)
+
+            themes = themes.union(auth_themes)
+
+        themes = themes.order_by(Theme.ordering.asc())
+
         if filter_themes and interface is not None:
             themes = themes.join(Theme.interfaces)
             themes = themes.filter(Interface.name == interface)

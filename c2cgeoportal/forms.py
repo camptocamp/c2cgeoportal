@@ -448,6 +448,7 @@ Theme.configure(exclude=[Theme.parents_relation])
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=fields.CheckBoxSet)
 Theme.ui_metadata.set(readonly=True)
+Theme.restricted_roles.set(renderer=fields.CheckBoxSet)
 
 # Functionality
 Functionality = FieldSet(models.Functionality)
