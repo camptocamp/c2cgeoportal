@@ -438,7 +438,7 @@ Dependencies
 Major dependencies docs:
 
 * `SQLAlchemy <http://docs.sqlalchemy.org/>`_
-* `GeoAlchemy <http://www.geoalchemy.org/>`_
+* `GeoAlchemy2 <http://geoalchemy-2.readthedocs.org/>`_
 * `Formalchemy <http://docs.formalchemy.org/>`_
 * `GeoFormAlchemy <https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst>`_
 * `alembic <http://alembic.readthedocs.org/>`_

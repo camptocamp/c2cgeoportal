@@ -1,15 +1,43 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2011-2014, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
+
+
 import functools
 import warnings
 
-from sqlalchemy import Table, sql, types, MetaData
+from sqlalchemy import Table, sql, MetaData
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.declarative import declarative_base
 
-from geoalchemy import Geometry, GeometryColumn
-from geoalchemy import (Point, LineString, Polygon,
-                        MultiPoint, MultiLineString, MultiPolygon)
+from geoalchemy2 import Geometry
 
 from papyrus.geo_interface import GeoInterface
 from papyrus.xsd import tag
@@ -17,17 +45,10 @@ from papyrus.xsd import tag
 
 _class_cache = {}
 
-_geometry_type_mappings = dict(
-    [(t.name, t) for t in (Point, LineString, Polygon,
-                           MultiPoint, MultiLineString, MultiPolygon)])
-
 Base = declarative_base()
 
 SQL_GEOMETRY_COLUMNS = """
     SELECT
-      f_table_schema,
-      f_table_name,
-      f_geometry_column,
       srid,
       type
     FROM
@@ -101,22 +122,18 @@ def _xsd_sequence_callback(tb, cls):
                             pass
 
 
-def _column_reflect_listener(table, column_info, engine):
-    if isinstance(column_info['type'], types.NullType):
-
-        # SQLAlchemy set type to NullType, which means SQLAlchemy does not know
-        # the type advertized by the database. This may be a PostGIS geometry
-        # colum, which we verify by querying the geometry_columns table. If
-        # this is a geometry column we set "type" to an actual Geometry object.
-
-        query = engine.execute(sql.text(SQL_GEOMETRY_COLUMNS),
-                               table_schema=table.schema,
-                               table_name=table.name,
-                               geometry_column=column_info['name'])
+def _column_reflect_listener(inspector, table, column_info, engine):
+    if isinstance(column_info['type'], Geometry):
+        query = engine.execute(
+            sql.text(SQL_GEOMETRY_COLUMNS),
+            table_schema=table.schema,
+            table_name=table.name,
+            geometry_column=column_info['name']
+        )
         results = query.fetchall()
         if len(results) == 1:
-            geometry_type = _geometry_type_mappings[results[0][4]]
-            column_info['type'] = geometry_type(srid=results[0][3])
+            column_info['type'].geometry_type = results[0][1]
+            column_info['type'].srid = int(results[0][0])
 
 
 def _get_schema(tablename):
@@ -129,6 +146,8 @@ def _get_schema(tablename):
 
 
 def get_table(tablename, schema=None, session=None):
+    from c2cgeoportal.models import management
+
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -154,8 +173,9 @@ def get_table(tablename, schema=None, session=None):
                 'column_reflect',
                 functools.partial(
                     _column_reflect_listener,
-                    engine=engine))
-            ]
+                    engine=engine
+                )
+            )] if management else []
         )
     return table
 
@@ -202,8 +222,6 @@ def _create_class(table, exclude_properties=None):
     for col in table.columns:
         if col.foreign_keys:
             _add_association_proxy(cls, col)
-        elif isinstance(col.type, Geometry):
-            setattr(cls, col.name, GeometryColumn(col.type))
 
     return cls
 

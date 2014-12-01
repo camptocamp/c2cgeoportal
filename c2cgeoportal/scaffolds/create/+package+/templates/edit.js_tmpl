@@ -13,12 +13,12 @@ Ext.onReady(function() {
     // GeoExt global settings
     GeoExt.Lang.set("${lang}");
 
-    <% json_extent = user.role.json_extent if user else None %>
-    % if json_extent:
-    var INITIAL_EXTENT = ${json_extent};
-    % else:
+<% bounds = user.role.bounds if user else None %>
+% if bounds:
+    var INITIAL_EXTENT = ${dumps(bounds)};
+% else:
     var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
-    % endif
+% endif
     var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
 
     // Themes definitions

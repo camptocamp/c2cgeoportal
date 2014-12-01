@@ -25,8 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from pyramid.httpexceptions import (HTTPInternalServerError, HTTPNotFound,
-                                    HTTPBadRequest, HTTPForbidden)
+from pyramid.httpexceptions import HTTPInternalServerError, \
+    HTTPNotFound, HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
 from sqlalchemy import func, distinct
@@ -35,12 +35,12 @@ from sqlalchemy.sql import and_, or_
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
 
-from geoalchemy import Geometry, WKBSpatialElement, functions
+from geoalchemy2 import Geometry, func as ga_func
+from geoalchemy2.shape import from_shape, to_shape
 
 import geojson
 from geojson.feature import FeatureCollection, Feature
 
-from shapely import wkb
 from shapely.geometry import asShape
 from shapely.ops import cascaded_union
 
@@ -143,7 +143,7 @@ class Layers(object):
             raise HTTPForbidden()
         cls = proto.mapped_class
         geom_attr = proto.geom_attr
-        ras = DBSession.query(RestrictionArea.area, functions.srid(RestrictionArea.area))
+        ras = DBSession.query(RestrictionArea.area, RestrictionArea.area.ST_SRID())
         ras = ras.join(RestrictionArea.roles)
         ras = ras.join(RestrictionArea.layers)
         ras = ras.filter(Role.id == user.role.id)
@@ -155,18 +155,17 @@ class Layers(object):
                 return proto.read(self.request)
             else:
                 use_srid = srid
-                collect_ra.append(wkb.loads(str(ra.geom_wkb)))
+                collect_ra.append(to_shape(ra))
         if len(collect_ra) == 0:  # pragma: no cover
             raise HTTPForbidden()
 
+        filter1_ = create_filter(self.request, cls, geom_attr)
         ra = cascaded_union(collect_ra)
-        filter_ = and_(
-            create_filter(self.request, cls, geom_attr),
-            functions.gcontains(
-                func.st_geomfromtext(ra.wkt, use_srid),
-                getattr(cls, geom_attr)
-            )
+        filter2_ = ga_func.ST_Contains(
+            from_shape(ra, use_srid),
+            getattr(cls, geom_attr)
         )
+        filter_ = filter2_ if filter1_ is None else and_(filter1_, filter2_)
 
         return proto.read(self.request, filter=filter_)
 
@@ -197,7 +196,7 @@ class Layers(object):
             return feature
         shape = asShape(geom)
         srid = self._get_geom_col_info(layer)[1]
-        spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+        spatial_elt = from_shape(shape, srid=srid)
         allowed = DBSession.query(func.count(RestrictionArea.id))
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
@@ -205,7 +204,7 @@ class Layers(object):
         allowed = allowed.filter(Layer.id == layer.id)
         allowed = allowed.filter(or_(
             RestrictionArea.area.is_(None),
-            RestrictionArea.area.gcontains(spatial_elt)
+            RestrictionArea.area.ST_Contains(spatial_elt)
         ))
         if allowed.scalar() == 0:
             raise HTTPForbidden()
@@ -231,7 +230,7 @@ class Layers(object):
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
                 srid = self._get_geom_col_info(layer)[1]
-                spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+                spatial_elt = from_shape(shape, srid=srid)
                 allowed = DBSession.query(func.count(RestrictionArea.id))
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
@@ -240,7 +239,7 @@ class Layers(object):
                 allowed = allowed.filter(Layer.id == layer.id)
                 allowed = allowed.filter(or_(
                     RestrictionArea.area.is_(None),
-                    RestrictionArea.area.gcontains(spatial_elt)
+                    RestrictionArea.area.ST_Contains(spatial_elt)
                 ))
                 if allowed.scalar() == 0:
                     raise HTTPForbidden()
@@ -272,14 +271,14 @@ class Layers(object):
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(
                 RestrictionArea.area.is_(None),
-                RestrictionArea.area.gcontains(geom_attr)
+                RestrictionArea.area.ST_Contains(geom_attr)
             ))
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
-                spatial_elt = WKBSpatialElement(buffer(shape.wkb), srid=srid)
+                spatial_elt = from_shape(shape, srid=srid)
                 allowed = allowed.filter(or_(
                     RestrictionArea.area.is_(None),
-                    RestrictionArea.area.gcontains(spatial_elt)
+                    RestrictionArea.area.ST_Contains(spatial_elt)
                 ))
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
@@ -307,7 +306,7 @@ class Layers(object):
             allowed = allowed.filter(Layer.id == layer.id)
             allowed = allowed.filter(or_(
                 RestrictionArea.area.is_(None),
-                RestrictionArea.area.gcontains(geom_attr)
+                RestrictionArea.area.ST_Contains(geom_attr)
             ))
             if allowed.scalar() == 0:
                 raise HTTPForbidden()

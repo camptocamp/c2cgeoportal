@@ -1,25 +1,41 @@
 language: python
 python:
+- 2.6
 - 2.7
+
+services:
+- postgresql
 
 env:
   global:
   - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
+  matrix:
+  - POSTGIS_VERSION=1.5 MAPSERVER_VERSION=6.0 BUILDOUT_CFG=buildout_travis_ms6.cfg PKG_INSTALL="cgi-mapserver=6.0.1-2ubuntu1.1 postgresql-9.1-postgis=1.5.3-2 postgis=1.5.3-2"
+  - POSTGIS_VERSION=2.1 MAPSERVER_VERSION=6.0 BUILDOUT_CFG=buildout_travis_ms6.cfg PKG_INSTALL="cgi-mapserver=6.0.1-2ubuntu1.1"
+  - POSTGIS_VERSION=1.5 MAPSERVER_VERSION=7.0 BUILDOUT_CFG=buildout_travis.cfg APT_REPO=ppa:stephane-brunner/precise PKG_INSTALL="cgi-mapserver postgresql-9.1-postgis=1.5.3-2 postgis=1.5.3-2"
+  - POSTGIS_VERSION=2.0 MAPSERVER_VERSION=7.0 BUILDOUT_CFG=buildout_travis.cfg APT_REPO=ppa:stephane-brunner/precise-gis PKG_INSTALL="cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4"
 
 before_install:
-- sudo add-apt-repository -y -r ppa:ubuntugis/ppa
+- sudo apt-get install -y --force-yes apache2 aptitude
+- if [[ "$APT_REPO" != "" ]]; then sudo add-apt-repository -y $APT_REPO; fi
 - sudo apt-get update
-- sudo apt-get install -y --force-yes postgresql-9.1-postgis=1.5.3-2 postgis=1.5.3-2 apache2 cgi-mapserver
+- if [[ "$PKG_INSTALL" != "" ]]; then sudo aptitude install -y $PKG_INSTALL; fi
+- dpkg -l|grep postgis
+- sudo -u postgres psql --version
+
 - sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-- sudo -u postgres psql -q -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-- sudo -u postgres psql -q -d c2cgeoportal_test -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/postgis.sql > /dev/null; fi
+- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/spatial_ref_sys.sql > /dev/null; fi
+- if [[ "$POSTGIS_VERSION" == "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -c "CREATE EXTENSION postgis;"; fi
+- if [[ "$MAPSERVER_VERSION-$POSTGIS_VERSION" == "6.0-2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/legacy_minimal.sql; fi
+
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
-- sudo apache2ctl graceful
 
 install:
 - python bootstrap.py --version 1.5.2 --distribute --download-base http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
-- ./buildout/bin/buildout -c buildout_travis.cfg
+- buildout/bin/buildout -c $BUILDOUT_CFG
+- sudo /usr/sbin/apache2ctl graceful
 
 before_script:
 - cd doc
@@ -28,9 +44,11 @@ before_script:
 - pip install -r requirements.txt
 - cd -
 
+- cat ./c2cgeoportal/tests/functional/c2cgeoportal_test.map
+
 script: 
-- ./travis/doc.sh
-- ./buildout/bin/flake8 --version
+- travis/doc.sh
+- buildout/bin/flake8 --version
 - find c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views -name \*.py | xargs ./buildout/bin/flake8 --ignore=E712 --max-complexity=20 --max-line-length=100
 - find c2cgeoportal/*.py c2cgeoportal/tests -name \*.py | xargs ./buildout/bin/flake8 --ignore=E501
 - buildout/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App"
@@ -50,5 +68,4 @@ after_success:
 
 notifications:
   email:
-    recipients:
-    - c2cgeoportal@camptocamp.com
+    on_failure: change

@@ -42,7 +42,9 @@ from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, DateTime, UserDefinedType
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
-from geoalchemy import GeometryColumn, Geometry, Polygon, GeometryDDL
+from sqlalchemy.exc import UnboundExecutionError
+from geoalchemy2 import Geometry, func
+from geoalchemy2.shape import to_shape
 from formalchemy import Column
 from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
 from pyramid.i18n import TranslationStringFactory
@@ -67,6 +69,12 @@ DBSession = sqlahelper.get_session()
 DBSessions = {
     'dbsession': DBSession,
 }
+
+try:
+    postgis_version = DBSession.execute(func.postgis_version()).scalar()
+except UnboundExecutionError:  # pragma: nocover - needed by non functional tests
+    postgis_version = '2.0'
+management = postgis_version.startswith('1.')
 
 AUTHORIZED_ROLE = 'role_admin'
 
@@ -111,10 +119,8 @@ class FullTextSearch(GeoInterface, Base):
     role = relationship("Role")
     public = Column(Boolean, server_default='true')
     ts = Column(TsVector)
-    the_geom = GeometryColumn(Geometry(srid=_srid))
+    the_geom = Column(Geometry('GEOMETRY', srid=_srid, management=management))
     params = Column(JSONEncodedDict, nullable=True)
-
-GeometryDDL(FullTextSearch.__table__)
 
 
 class Functionality(Base):
@@ -253,7 +259,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True, nullable=False, label=_(u'Name'))
     description = Column(Unicode, label=_(u'Description'))
-    extent = GeometryColumn(Polygon(srid=_srid))
+    extent = Column(Geometry('POLYGON', srid=_srid, management=management))
 
     # functionality
     functionalities = relationship(
@@ -270,26 +276,11 @@ class Role(Base):
     def __unicode__(self):
         return self.name or u''  # pragma: nocover
 
-    def _json_extent(self):
+    @property
+    def bounds(self):
         if self.extent is None:
             return None
-
-        coords = self.extent.coords(DBSession)
-        left = coords[0][0][0]
-        right = coords[0][0][0]
-        top = coords[0][0][1]
-        bottom = coords[0][0][1]
-        for way in coords:
-            for coord in way:
-                left = min(left, coord[0])
-                right = max(right, coord[0])
-                bottom = min(bottom, coord[1])
-                top = max(top, coord[1])
-        return "[%i, %i, %i, %i]" % (left, bottom, right, top)
-
-    json_extent = property(_json_extent)
-
-GeometryDDL(Role.__table__)
+        return to_shape(self.extent).bounds
 
 
 class TreeItem(Base):
@@ -672,7 +663,7 @@ class RestrictionArea(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    area = GeometryColumn(Polygon(srid=_srid))
+    area = Column(Geometry('POLYGON', srid=_srid, management=management))
     name = Column(Unicode, label=_(u'Name'))
     description = Column(Unicode, label=_(u'Description'))
     readwrite = Column(Boolean, label=_(u'Read-write mode'), default=False)
@@ -702,8 +693,6 @@ class RestrictionArea(Base):
 event.listen(RestrictionArea, 'after_insert', cache_invalidate_cb)
 event.listen(RestrictionArea, 'after_update', cache_invalidate_cb)
 event.listen(RestrictionArea, 'after_delete', cache_invalidate_cb)
-
-GeometryDDL(RestrictionArea.__table__)
 
 
 # association table interface <> layer

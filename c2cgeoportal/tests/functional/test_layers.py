@@ -72,15 +72,13 @@ class TestLayers(TestCase):
     def tearDown(self):  # noqa
         import transaction
         from c2cgeoportal.models import DBSession, Role, User,  \
-            LayerV1, TreeItem, RestrictionArea, Interface
+            TreeItem, RestrictionArea, Interface
 
         transaction.commit()
 
         for i in self.layer_ids:
             treeitem = DBSession.query(TreeItem).get(i)
             DBSession.delete(treeitem)
-            layer = DBSession.query(LayerV1).get(i)
-            DBSession.delete(layer)
 
         DBSession.query(User).filter(
             User.username == u'__test_user'
@@ -112,17 +110,15 @@ class TestLayers(TestCase):
         to it. """
         import transaction
         import sqlahelper
-        from sqlalchemy import func
         from sqlalchemy import Column, Table, types, ForeignKey
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy import (GeometryDDL, GeometryExtensionColumn,
-                                Point, WKTSpatialElement)
-        from c2cgeoportal.models import DBSession, LayerV1, RestrictionArea
+        from geoalchemy2 import Geometry, WKTElement
+        from c2cgeoportal.models import DBSession, management, LayerV1, RestrictionArea
 
         if self._tables is None:
             self._tables = []
 
-        self.__class__._table_index = self.__class__._table_index + 1
+        self.__class__._table_index += 1
         id = self.__class__._table_index
 
         engine = sqlahelper.get_engine()
@@ -132,11 +128,12 @@ class TestLayers(TestCase):
 
         tablename = "table_%d" % id
 
-        table = Table('%s_child' % tablename, self.metadata,
-                      Column('id', types.Integer, primary_key=True),
-                      Column('name', types.Unicode),
-                      schema='public'
-                      )
+        table = Table(
+            '%s_child' % tablename, self.metadata,
+            Column('id', types.Integer, primary_key=True),
+            Column('name', types.Unicode),
+            schema='public'
+        )
         table.create()
         self._tables.append(table)
 
@@ -151,30 +148,29 @@ class TestLayers(TestCase):
             Column('child_id', types.Integer,
                    ForeignKey('public.%s_child.id' % tablename)),
             Column('name', types.Unicode),
-            GeometryExtensionColumn('geom', Point(srid=21781)),
+            Column('geom', Geometry("POINT", srid=21781, management=management)),
             schema='public'
         )
-        GeometryDDL(table)
         table.create()
         self._tables.append(table)
 
         ins = table.insert().values(
             child_id=c1_id,
             name='foo',
-            geom=func.ST_GeomFromText('POINT(5 45)', 21781)
+            geom=WKTElement('POINT(5 45)', 21781)
         )
         engine.connect().execute(ins).inserted_primary_key[0]
         ins = table.insert().values(
             child_id=c2_id,
             name='bar',
-            geom=func.ST_GeomFromText('POINT(6 46)', 21781)
+            geom=WKTElement('POINT(6 46)', 21781)
         )
         engine.connect().execute(ins).inserted_primary_key[0]
         if attr_list:
             ins = table.insert().values(
                 child_id=c2_id,
                 name='aaa,bbb,foo',
-                geom=func.ST_GeomFromText('POINT(6 46)', 21781)
+                geom=WKTElement('POINT(6 46)', 21781)
             )
             engine.connect().execute(ins).inserted_primary_key[0]
 
@@ -197,13 +193,12 @@ class TestLayers(TestCase):
             ra.readwrite = True
             if not none_area:
                 poly = 'POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))'
-                ra.area = WKTSpatialElement(poly, srid=21781)
+                ra.area = WKTElement(poly, srid=21781)
             DBSession.add(ra)
-
-        self.layer_ids.append(self.__class__._table_index)
 
         transaction.commit()
 
+        self.layer_ids.append(id)
         return id
 
     def _get_request(self, layerid, username=None):
@@ -225,9 +220,10 @@ class TestLayers(TestCase):
 
         collection = Layers(request).read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 2)
-        self.assertEquals(collection.features[0].properties['child'], u'c1é')
-        self.assertEquals(collection.features[1].properties['child'], u'c2é')
+        self.assertEquals(
+            [f.properties['child'] for f in collection.features],
+            [u'c1é', u'c2é'],
+        )
 
     def test_read_many_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -239,6 +235,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_many)
 
+    @attr(layers_read_many=True)
     def test_read_many(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
@@ -249,9 +246,10 @@ class TestLayers(TestCase):
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 1)
-        self.assertEquals(collection.features[0].properties['child'], u'c1é')
+        self.assertEquals([f.properties['child'] for f in collection.features], [u'c1é'])
 
+    @attr(layers_read_many=True)
+    @attr(layers_read_many_layer_not_found=True)
     def test_read_many_layer_not_found(self):
         from pyramid.httpexceptions import HTTPNotFound
         from c2cgeoportal.views.layers import Layers
@@ -262,6 +260,8 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPNotFound, layers.read_many)
 
+    @attr(layers_read_many=True)
+    @attr(layers_read_many_multi=True)
     def test_read_many_multi(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
@@ -276,13 +276,10 @@ class TestLayers(TestCase):
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 3)
-        self.assertEquals(collection.features[0].properties['__layer_id__'],
-                          layer_id1)
-        self.assertEquals(collection.features[1].properties['__layer_id__'],
-                          layer_id2)
-        self.assertEquals(collection.features[2].properties['__layer_id__'],
-                          layer_id3)
+        self.assertEquals(
+            [f.properties['__layer_id__'] for f in collection.features],
+            [layer_id1, layer_id2, layer_id3],
+        )
 
     def test_read_one_public(self):
         from geojson.feature import Feature
@@ -519,9 +516,10 @@ class TestLayers(TestCase):
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals(len(collection.features), 2)
-        self.assertEquals(collection.features[0].properties['child'], u'c1é')
-        self.assertEquals(collection.features[1].properties['child'], u'c2é')
+        self.assertEquals(
+            [f.properties['child'] for f in collection.features],
+            [u'c1é', u'c2é'],
+        )
 
     def test_read_many_no_auth_none_area(self):
         from pyramid.httpexceptions import HTTPForbidden

@@ -117,6 +117,9 @@ MAP
 
             ${vars:mapserver_layer_metadata}
         END
+        VALIDATION
+            ${vars:mapserver_layer_validation}
+        END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
@@ -150,6 +153,9 @@ MAP
             "gml_the_geom_type" "point"
 
             ${vars:mapserver_layer_metadata}
+        END
+        VALIDATION
+            ${vars:mapserver_layer_validation}
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
@@ -187,6 +193,10 @@ MAP
             "s_name_validation_pattern" "^[a-z]*$$"
             "default_s_name" "foo"
         END
+        VALIDATION
+            "s_name" "^[a-z]*$"
+            "default_s_name" "foo"
+        END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
@@ -221,6 +231,10 @@ MAP
             "gml_types" "auto"
 
             "s_cols_validation_pattern" "^[a-z,]*$$"
+            "default_s_cols" "name"
+        END
+        VALIDATION
+            "s_cols" "^[a-z,]*$"
             "default_s_cols" "name"
         END
         DUMP TRUE # for GetFeatureInfo

@@ -69,40 +69,47 @@ class TestReflection(TestCase):
         """
         import sqlahelper
         from sqlalchemy import Table, Column, ForeignKey, types
+        from sqlalchemy.orm import sessionmaker
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy import GeometryExtensionColumn, GeometryDDL
-        from geoalchemy import (Point, LineString, Polygon,
-                                MultiPoint, MultiLineString, MultiPolygon)
+        from geoalchemy2 import Geometry, func
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
+        session = sessionmaker(bind=engine)()
+        postgis_version = session.execute(func.postgis_version()).scalar()
+        management = postgis_version.startswith('1.')
 
         if self._tables is None:
             self._tables = []
 
-        ctable = Table('%s_child' % tablename, Base.metadata,
-                       Column('id', types.Integer, primary_key=True),
-                       Column('name', types.Unicode),
-                       schema='public'
-                       )
+        ctable = Table(
+            '%s_child' % tablename, Base.metadata,
+            Column('id', types.Integer, primary_key=True),
+            Column('name', types.Unicode),
+            schema='public'
+        )
         ctable.create()
         self._tables.append(ctable)
 
-        ptable = Table(tablename, Base.metadata,
-                       Column('id', types.Integer, primary_key=True),
-                       Column('child1_id', types.Integer,
-                              ForeignKey('public.%s_child.id' % tablename)),
-                       Column('child2_id', types.Integer,
-                              ForeignKey('public.%s_child.id' % tablename)),
-                       GeometryExtensionColumn('point', Point),
-                       GeometryExtensionColumn('linestring', LineString),
-                       GeometryExtensionColumn('polygon', Polygon),
-                       GeometryExtensionColumn('multipoint', MultiPoint),
-                       GeometryExtensionColumn('multilinestring', MultiLineString),
-                       GeometryExtensionColumn('multipolygon', MultiPolygon),
-                       schema='public'
-                       )
-        GeometryDDL(ptable)
+        ptable = Table(
+            tablename, Base.metadata,
+            Column('id', types.Integer, primary_key=True),
+            Column(
+                'child1_id', types.Integer,
+                ForeignKey('public.%s_child.id' % tablename)
+            ),
+            Column(
+                'child2_id', types.Integer,
+                ForeignKey('public.%s_child.id' % tablename)
+            ),
+            Column('point', Geometry("POINT", management=management)),
+            Column('linestring', Geometry("LINESTRING", management=management)),
+            Column('polygon', Geometry("POLYGON", management=management)),
+            Column('multipoint', Geometry("MULTIPOINT", management=management)),
+            Column('multilinestring', Geometry("MULTILINESTRING", management=management)),
+            Column('multipolygon', Geometry("MULTIPOLYGON", management=management)),
+            schema='public'
+        )
         ptable.create()
         self._tables.append(ptable)
 
@@ -117,9 +124,7 @@ class TestReflection(TestCase):
         self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
 
     def test_get_class(self):
-        from geoalchemy import SpatialComparator
-        from geoalchemy import (Point, LineString, Polygon,
-                                MultiPoint, MultiLineString, MultiPolygon)
+        from geoalchemy2 import Geometry
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
@@ -130,12 +135,13 @@ class TestReflection(TestCase):
         self.assertEquals(modelclass.__name__, 'Table_a')
         self.assertEquals(modelclass.__table__.name, 'table_a')
         self.assertEquals(modelclass.__table__.schema, 'public')
-        self.assertTrue(isinstance(modelclass.point.comparator, SpatialComparator))
-        self.assertTrue(isinstance(modelclass.linestring.comparator, SpatialComparator))
-        self.assertTrue(isinstance(modelclass.polygon.comparator, SpatialComparator))
-        self.assertTrue(isinstance(modelclass.multipoint.comparator, SpatialComparator))
-        self.assertTrue(isinstance(modelclass.multilinestring.comparator, SpatialComparator))
-        self.assertTrue(isinstance(modelclass.multipolygon.comparator, SpatialComparator))
+
+        self.assertTrue(isinstance(modelclass.point.type, Geometry))
+        self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
+        self.assertTrue(isinstance(modelclass.polygon.type, Geometry))
+        self.assertTrue(isinstance(modelclass.multipoint.type, Geometry))
+        self.assertTrue(isinstance(modelclass.multilinestring.type, Geometry))
+        self.assertTrue(isinstance(modelclass.multipolygon.type, Geometry))
 
         # test the Table object
         table = modelclass.__table__
@@ -154,22 +160,22 @@ class TestReflection(TestCase):
         self.assertEqual(col_child2_id.name, 'child2_id')
         col_point = table.c['point']
         self.assertEqual(col_point.name, 'point')
-        self.assertTrue(isinstance(col_point.type, Point))
+        self.assertEqual(col_point.type.geometry_type, "POINT")
         col_linestring = table.c['linestring']
         self.assertEqual(col_linestring.name, 'linestring')
-        self.assertTrue(isinstance(col_linestring.type, LineString))
+        self.assertEqual(col_linestring.type.geometry_type, "LINESTRING")
         col_polygon = table.c['polygon']
         self.assertEqual(col_polygon.name, 'polygon')
-        self.assertTrue(isinstance(col_polygon.type, Polygon))
+        self.assertEqual(col_polygon.type.geometry_type, "POLYGON")
         col_multipoint = table.c['multipoint']
         self.assertEqual(col_multipoint.name, 'multipoint')
-        self.assertTrue(isinstance(col_multipoint.type, MultiPoint))
+        self.assertEqual(col_multipoint.type.geometry_type, "MULTIPOINT")
         col_multilinestring = table.c['multilinestring']
         self.assertEqual(col_multilinestring.name, 'multilinestring')
-        self.assertTrue(isinstance(col_multilinestring.type, MultiLineString))
+        self.assertEqual(col_multilinestring.type.geometry_type, "MULTILINESTRING")
         col_multipolygon = table.c['multipolygon']
         self.assertEqual(col_multipolygon.name, 'multipolygon')
-        self.assertTrue(isinstance(col_multipolygon.type, MultiPolygon))
+        self.assertEqual(col_multipolygon.type.geometry_type, "MULTIPOLYGON")
 
         # the class should now be in the cache
         self.assertTrue(

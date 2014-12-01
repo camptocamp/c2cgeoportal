@@ -33,9 +33,9 @@ import re
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 
-from shapely.wkb import loads as wkb_loads
 from geojson import Feature, FeatureCollection
 from sqlalchemy import func, desc, or_, and_
+from geoalchemy2.shape import to_shape
 
 from c2cgeoportal.models import DBSession, FullTextSearch
 
@@ -156,7 +156,7 @@ class FullTextSearchView(object):
                     "layer_name": o.layer_name,
                     "params": o.params,
                 }
-                geom = wkb_loads(str(o.the_geom.geom_wkb))
+                geom = to_shape(o.the_geom)
                 feature = Feature(id=o.id, geometry=geom,
                                   properties=properties, bbox=geom.bounds)
                 features.append(feature)

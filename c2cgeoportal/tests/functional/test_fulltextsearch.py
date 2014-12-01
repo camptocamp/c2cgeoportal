@@ -47,7 +47,7 @@ class TestFulltextsearchView(TestCase):
     def setUp(self):  # noqa
         import transaction
         from sqlalchemy import func
-        from geoalchemy import WKTSpatialElement
+        from geoalchemy2 import WKTElement
         from c2cgeoportal.models import FullTextSearch, User, Role
         from c2cgeoportal.models import DBSession
 
@@ -63,21 +63,21 @@ class TestFulltextsearchView(TestCase):
         entry1.label = 'label1'
         entry1.layer_name = 'layer1'
         entry1.ts = func.to_tsvector('french', 'soleil travail')
-        entry1.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry1.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry1.public = True
 
         entry2 = FullTextSearch()
         entry2.label = 'label2'
         entry2.layer_name = 'layer2'
         entry2.ts = func.to_tsvector('french', 'pluie semaine')
-        entry2.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry2.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry2.public = False
 
         entry3 = FullTextSearch()
         entry3.label = 'label3'
         entry3.layer_name = 'layer3'
         entry3.ts = func.to_tsvector('french', 'vent neige')
-        entry3.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry3.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry3.public = False
         entry3.role = role2
 
@@ -85,14 +85,14 @@ class TestFulltextsearchView(TestCase):
         entry4.label = 'label4'
         entry4.layer_name = 'layer1'
         entry4.ts = func.to_tsvector('french', 'soleil travail')
-        entry4.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry4.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry4.public = True
 
         entry5 = FullTextSearch()
         entry5.label = 'label5'
         entry5.layer_name = 'layer1'
         entry5.ts = func.to_tsvector('french', 'params')
-        entry5.the_geom = WKTSpatialElement("POINT(-90 -45)")
+        entry5.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry5.public = True
         entry5.params = {'floor': 5}
 

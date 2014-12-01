@@ -28,13 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from unittest import TestCase
+from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
 import transaction
 import os
 import json
-from geoalchemy import WKTSpatialElement
+from geoalchemy2 import WKTElement
 from pyramid import testing
 from owslib.wms import WebMapService
 
@@ -58,7 +58,7 @@ class TestEntryView(TestCase):
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
 
-        role2 = Role(name=u'__test_role2', extent=WKTSpatialElement(
+        role2 = Role(name=u'__test_role2', extent=WKTElement(
             "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
         ))
         user2 = User(username=u'__test_user2', password=u'__test_user2', role=role2)
@@ -95,13 +95,13 @@ class TestEntryView(TestCase):
 
         poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
-        area = WKTSpatialElement(poly, srid=21781)
+        area = WKTElement(poly, srid=21781)
         RestrictionArea(
             name=u'__test_ra1', description=u'', layers=[private_layer],
             roles=[role1], area=area
         )
 
-        area = WKTSpatialElement(poly, srid=21781)
+        area = WKTElement(poly, srid=21781)
         RestrictionArea(
             name=u'__test_ra2', description=u'', layers=[private_layer],
             roles=[role2], area=area, readwrite=True
@@ -1376,7 +1376,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import DBSession, Role
 
         role = DBSession.query(Role).filter(Role.name == '__test_role1').one()
-        self.assertEqual(role.json_extent, None)
+        self.assertEqual(role.bounds, None)
 
         role = DBSession.query(Role).filter(Role.name == '__test_role2').one()
-        self.assertEqual(role.json_extent, '[1, 2, 3, 4]')
+        self.assertEqual(role.bounds, (1, 2, 3, 4))
