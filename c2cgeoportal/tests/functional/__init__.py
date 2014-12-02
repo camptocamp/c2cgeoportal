@@ -78,8 +78,15 @@ def set_up_common():
     import sqlahelper
     sqlahelper.add_engine(engine)
 
-    from c2cgeoportal.models import Base
-    Base.metadata.create_all()
+    import alembic.config
+    import sys
+    sys.argv = [
+        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic.ini', 'upgrade', 'head'
+    ]
+    try:
+        alembic.config.main()
+    except:  # alembic call the exit method!
+        pass
 
 
 def tear_down_common():
@@ -99,8 +106,15 @@ def tear_down_common():
     except OperationalError:  # pragma: nocover
         return
 
-    from c2cgeoportal.models import Base
-    Base.metadata.drop_all(checkfirst=True)
+    import alembic.config
+    import sys
+    sys.argv = [
+        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic.ini', 'downgrade', 'base'
+    ]
+    try:
+        alembic.config.main()
+    except:  # alembic call the exit method!
+        pass
 
     import sqlahelper
     sqlahelper.reset()

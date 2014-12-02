@@ -48,6 +48,7 @@ log = logging.getLogger(__name__)
 
 
 @attr(functional=True)
+@attr(entry=True)
 class TestEntryView(TestCase):
 
     def setUp(self):  # noqa
@@ -65,11 +66,11 @@ class TestEntryView(TestCase):
         main = Interface(name=u'main')
         mobile = Interface(name=u'mobile')
 
-        public_layer = LayerV1(name=u'__test_public_layer', order=40, public=True)
+        public_layer = LayerV1(name=u'__test_public_layer', public=True)
         public_layer.is_checked = False
         public_layer.interfaces = [main, mobile]
 
-        private_layer = LayerV1(name=u'__test_private_layer', order=40, public=False)
+        private_layer = LayerV1(name=u'__test_private_layer', public=False)
         private_layer.geo_table = 'a_schema.a_geo_table'
         private_layer.interfaces = [main, mobile]
 
@@ -334,13 +335,14 @@ class TestEntryView(TestCase):
         )
         theme = response['themes'][0]
         self.assertEqual(
-            [l['name'] for l in theme['allLayers']],
-            [u'__test_layer_in_group', u'__test_public_layer', u'test_wmsfeaturesgroup']
+            set([l['name'] for l in theme['allLayers']]),
+            set([u'__test_layer_in_group', u'__test_public_layer', u'test_wmsfeaturesgroup'])
         )
 
         self.assertEqual(theme['layers'], ['__test_layer_in_group'])
 
         info = response['info']
+        print info
         self.assertEqual(
             info,
             {"username": ""}
@@ -372,10 +374,6 @@ class TestEntryView(TestCase):
         self.assertEqual(
             layers,
             [{
-                "name": u"__test_layer_in_group"
-            }, {
-                "name": u"__test_public_layer"
-            }, {
                 "name": u"test_wmsfeaturesgroup",
                 'minResolutionHint': 1.76,
                 'maxResolutionHint': 8.82,
@@ -384,6 +382,10 @@ class TestEntryView(TestCase):
                     'minResolutionHint': 1.76,
                     'maxResolutionHint': 8.82,
                 }]
+            }, {
+                "name": u"__test_layer_in_group"
+            }, {
+                "name": u"__test_public_layer"
             }]
         )
 

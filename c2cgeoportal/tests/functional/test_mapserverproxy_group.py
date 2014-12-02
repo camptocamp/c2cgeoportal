@@ -58,7 +58,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
         main = Interface(name=u'main')
 
-        layer1 = LayerV1(u'testpoint_group', 400, public=False)
+        layer1 = LayerV1(u'testpoint_group', public=False)
         layer1.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"

@@ -50,7 +50,7 @@ def upgrade():
     engine = op.get_bind().engine
     if op.get_context().dialect.has_table(
         engine, 'interface', schema=schema
-    ):
+    ):  # pragma: nocover
         return
 
     op.drop_table('user_functionality', schema=schema)
@@ -360,17 +360,17 @@ def downgrade():
     op.add_column('layer', Column('isChecked', Boolean, default=True), schema=schema)
 
     op.execute(
-        'INSERT INTO %(schema)s.layer ('
+        'UPDATE %(schema)s.layer AS l SET ('
         'id, "isChecked", icon, "layerType", url, "imageType", style, dimensions, "matrixSet", '
         '"wmsUrl", "wmsLayers", "queryLayers", kml, "isSingleTile", legend, "legendImage", "legendRule", '
         '"isLegendExpanded", "minResolution", "maxResolution", disclaimer, "identifierAttributeField", '
-        '"excludeProperties", "timeMode") '
-        '(SELECT '
-        'id, is_checked, icon, layer_type, url, image_type, style, dimensions, matrix_set, '
-        'wms_url, wms_layers, query_layers, kml, is_single_tile, legend, legend_image, legend_rule, '
-        'is_legend_expanded, min_resolution, max_resolution, disclaimer, identifier_attribute_field, '
-        'exclude_properties, time_mode '
-        'FROM %(schema)s.layerv1)' % {'schema': schema}
+        '"excludeProperties", "timeMode"'
+        ') = ('
+        'o.id, o.is_checked, o.icon, o.layer_type, o.url, o.image_type, o.style, o.dimensions, o.matrix_set, '
+        'o.wms_url, o.wms_layers, o.query_layers, o.kml, o.is_single_tile, o.legend, o.legend_image, o.legend_rule, '
+        'o.is_legend_expanded, o.min_resolution, o.max_resolution, o.disclaimer, o.identifier_attribute_field, '
+        'o.exclude_properties, o.time_mode '
+        ') FROM %(schema)s.layerv1 AS o WHERE o.id = l.id' % {'schema': schema}
     )
 
     op.drop_table('layerv1', schema=schema)

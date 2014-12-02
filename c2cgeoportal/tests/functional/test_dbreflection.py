@@ -39,6 +39,8 @@ from c2cgeoportal.tests.functional import (  # noqa
 @attr(functional=True)
 class TestReflection(TestCase):
 
+    _tables = None
+
     def setUp(self):  # noqa
         import sqlahelper
         from c2cgeoportal.lib.dbreflection import init
@@ -51,8 +53,10 @@ class TestReflection(TestCase):
     def tearDown(self):  # noqa
         import c2cgeoportal.lib.dbreflection
 
-        if self.metadata is not None:
-            self.metadata.drop_all()
+        if self._tables is not None:
+            for table in self._tables[::-1]:
+                table.drop()
+                # table.drop(checkfirst=True)
 
         # clear the dbreflection class cache
         c2cgeoportal.lib.dbreflection._class_cache = {}
@@ -73,12 +77,16 @@ class TestReflection(TestCase):
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
 
+        if self._tables is None:
+            self._tables = []
+
         ctable = Table('%s_child' % tablename, Base.metadata,
                        Column('id', types.Integer, primary_key=True),
                        Column('name', types.Unicode),
                        schema='public'
                        )
         ctable.create()
+        self._tables.append(ctable)
 
         ptable = Table(tablename, Base.metadata,
                        Column('id', types.Integer, primary_key=True),
@@ -96,6 +104,7 @@ class TestReflection(TestCase):
                        )
         GeometryDDL(ptable)
         ptable.create()
+        self._tables.append(ptable)
 
         self.metadata = Base.metadata
 
@@ -217,6 +226,8 @@ class TestReflection(TestCase):
 @attr(functional=True)
 class TestXSDSequenceCallback(TestCase):
 
+    _tables = None
+
     def setUp(self):  # noqa
         import transaction
         import sqlahelper
@@ -245,7 +256,11 @@ class TestXSDSequenceCallback(TestCase):
             child1 = _AssociationProxy('child1_', 'name')
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
             child2 = _AssociationProxy('child2_', 'name')
-        Base.metadata.create_all()
+
+        Child.__table__.create()
+        Parent.__table__.create()
+        self._tables = [Parent.__table__, Child.__table__]
+
         DBSession.add_all([Child('foo'), Child('bar')])
         transaction.commit()
         self.metadata = Base.metadata
@@ -253,9 +268,11 @@ class TestXSDSequenceCallback(TestCase):
 
     def tearDown(self):  # noqa
         import transaction
-
         transaction.commit()
-        self.metadata.drop_all()
+
+        if self._tables is not None:
+            for table in self._tables:
+                table.drop()
 
     def test_xsd_sequence_callback(self):
         from xml.etree.ElementTree import TreeBuilder, tostring

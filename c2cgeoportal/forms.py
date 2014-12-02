@@ -247,14 +247,16 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result = ""
         if isinstance(item, models.TreeGroup):
             result += "<ul>"
-            for child in item.children:
+            for child in item.children_relation:
                 result += self.render_item(child, depth + 1)
             result += "</ul>"
         return result
 
     def render_organisational_item(self, item, depth):
-        if item in self.layer_group:
-            self.layer_group.remove(item)
+        final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
+
+        if final_item in self.layer_group:
+            self.layer_group.remove(final_item)
 
         result = "<li>"
         if self.auto_check:
@@ -265,6 +267,8 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         return result
 
     def render_item(self, item, depth):
+        final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
+
         # no link to theme
         # if autocheck mean that we want select only layers.
         if isinstance(item, models.Theme) or \
@@ -276,10 +280,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
                 and item.layer_type != "internal WMS":
             return ""
 
-        if item in self.layer_group:
-            self.layer_group.remove(item)
-        elif item in self.layer:
-            self.layer.remove(item)
+        if final_item in self.layer_group:
+            self.layer_group.remove(final_item)
+        elif final_item in self.layer:
+            self.layer.remove(final_item)
 
         result = """
         <li>
@@ -292,21 +296,19 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             'name': self.name + ("-second" if item.id in self._rendered_id else ""),
             'value': item.id,
             'add': ' checked="checked"' if self._is_checked(item.id) else "",
-            'label': item.name
+            'label': final_item.name
         }
         self._rendered_id.append(item.id)
         self.i += 1
-        result += self.render_children(item, depth)
+        result += self.render_children(final_item, depth)
         result += '</li>'
         return result
 
     def render_tree(self):
-        self.layer = models.DBSession.query(models.Layer). \
-            order_by(models.Layer.order).all()
-        self.layer_group = models.DBSession.query(models.LayerGroup). \
-            order_by(models.LayerGroup.order).all()
+        self.layer = models.DBSession.query(models.Layer).all()
+        self.layer_group = models.DBSession.query(models.LayerGroup).all()
         themes = models.DBSession.query(models.Theme). \
-            order_by(models.Theme.order).all()
+            order_by(models.Theme.ordering).all()
         self.i = 0
         result = ""
         for item in themes:
@@ -380,7 +382,6 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
 # Layer V1
 LayerV1 = FieldSet(models.LayerV1)
-LayerV1.order.set(metadata=dict(mandatory='')).required()
 LayerV1.layer_type.set(
     renderer=fields.SelectFieldRenderer,
     options=["internal WMS", "external WMS", "WMTS", "no 2D"])
@@ -393,11 +394,10 @@ LayerV1.time_mode.set(
 LayerV1.interfaces.set(renderer=fields.CheckBoxSet)
 LayerV1.ui_metadata.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=fields.CheckBoxSet)
-LayerV1.parents.set(readonly=True)
+LayerV1.parents_relation.set(readonly=True)
 
 # LayerInternalWMS
 LayerInternalWMS = FieldSet(models.LayerInternalWMS)
-LayerInternalWMS.order.set(metadata=dict(mandatory='')).required()
 LayerInternalWMS.image_type.set(
     renderer=fields.SelectFieldRenderer,
     options=["image/jpeg", "image/png"])
@@ -407,11 +407,10 @@ LayerInternalWMS.time_mode.set(
 LayerInternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
 LayerInternalWMS.ui_metadata.set(readonly=True)
 LayerInternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
-LayerInternalWMS.parents.set(readonly=True)
+LayerInternalWMS.parents_relation.set(readonly=True)
 
 # LayerExternalWMS
 LayerExternalWMS = FieldSet(models.LayerExternalWMS)
-LayerExternalWMS.order.set(metadata=dict(mandatory='')).required()
 LayerExternalWMS.image_type.set(
     renderer=fields.SelectFieldRenderer,
     options=["image/jpeg", "image/png"])
@@ -421,32 +420,35 @@ LayerExternalWMS.time_mode.set(
 LayerExternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
 LayerExternalWMS.ui_metadata.set(readonly=True)
 LayerExternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
-LayerExternalWMS.parents.set(readonly=True)
+LayerExternalWMS.parents_relation.set(readonly=True)
 
 # LayerWMTS
 LayerWMTS = FieldSet(models.LayerWMTS)
-LayerWMTS.order.set(metadata=dict(mandatory='')).required()
 LayerWMTS.interfaces.set(renderer=fields.CheckBoxSet)
 LayerWMTS.ui_metadata.set(readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
 LayerWMTS.restrictionareas.set(renderer=fields.CheckBoxSet)
-LayerWMTS.parents.set(readonly=True)
+LayerWMTS.parents_relation.set(readonly=True)
 
 # LayerGroup
 LayerGroup = FieldSet(models.LayerGroup)
-LayerGroup.order.set(metadata=dict(mandatory='')).required()
-LayerGroup.children.set(renderer=TreeItemCheckBoxTreeSet)
+LayerGroup.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 LayerGroup.ui_metadata.set(readonly=True)
-LayerGroup.parents.set(readonly=True)
+LayerGroup.parents_relation.set(readonly=True)
+
+# LayergroupTreeitem
+LayergroupTreeitem = FieldSet(models.LayergroupTreeitem)
+LayergroupTreeitem.ordering.set(metadata=dict(mandatory='')).required()
 
 # Theme
 Theme = FieldSet(models.Theme)
-Theme.order.set(metadata=dict(mandatory='')).required()
-Theme.children.set(renderer=TreeItemCheckBoxTreeSet)
-Theme.configure(exclude=[Theme.parents])
+Theme.ordering.set(metadata=dict(mandatory='')).required()
+Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
+Theme.configure(exclude=[Theme.parents_relation])
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=fields.CheckBoxSet)
 Theme.ui_metadata.set(readonly=True)
+Theme.restricted_roles.set(renderer=fields.CheckBoxSet)
 
 # Functionality
 Functionality = FieldSet(models.Functionality)
@@ -543,7 +545,6 @@ User.configure(include=field_order)
 LayerV1Grid = Grid(models.LayerV1)
 field_order = [
     LayerV1.name,
-    LayerV1.order,
     LayerV1.public,
     LayerV1.is_checked,
     LayerV1.icon,
@@ -556,7 +557,6 @@ LayerV1Grid.configure(include=field_order)
 LayerInternalWMSGrid = Grid(models.LayerInternalWMS)
 field_order = [
     LayerInternalWMS.name,
-    LayerInternalWMS.order,
     LayerInternalWMS.public,
     LayerInternalWMS.layer
 ]
@@ -566,7 +566,6 @@ LayerInternalWMSGrid.configure(include=field_order)
 LayerExternalWMSGrid = Grid(models.LayerExternalWMS)
 field_order = [
     LayerExternalWMS.name,
-    LayerExternalWMS.order,
     LayerExternalWMS.public,
     LayerExternalWMS.layer
 ]
@@ -576,7 +575,6 @@ LayerExternalWMSGrid.configure(include=field_order)
 LayerWMTSGrid = Grid(models.LayerWMTS)
 field_order = [
     LayerWMTS.name,
-    LayerWMTS.order,
     LayerWMTS.public,
     LayerWMTS.layer
 ]
@@ -585,9 +583,12 @@ LayerWMTSGrid.configure(include=field_order)
 # LayerGroupGrid
 LayerGroupGrid = Grid(models.LayerGroup)
 
+# LayergroupTreeitemGrid
+LayergroupTreeitemGrid = Grid(models.LayergroupTreeitem)
+
 # ThemeGrid
 ThemeGrid = Grid(models.Theme)
-ThemeGrid.configure(exclude=[ThemeGrid.parents])
+ThemeGrid.configure(exclude=[ThemeGrid.parents_relation])
 
 # FunctionalityGrid
 FunctionalityGrid = Grid(models.Functionality)

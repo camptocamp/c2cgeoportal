@@ -66,7 +66,7 @@ def upgrade():
     engine = op.get_bind().engine
     if op.get_context().dialect.has_table(
         engine, 'functionality', schema=schema
-    ):
+    ):  # pragma: nocover
         return
 
     op.create_table(
@@ -187,7 +187,7 @@ def upgrade():
         Column('params', Unicode, nullable=True),
         schema=schema,
     )
-    op.execute("SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', %(srid)s, 'POLYGON', 2)" % {
+    op.execute("SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', %(srid)s, 'GEOMETRY', 2)" % {
         'schema': schema, 'srid': srid
     })
     op.create_index(
@@ -214,7 +214,7 @@ def upgrade():
         Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
         schema=schema,
     )
-    if parentschema is not None:
+    if parentschema is not None:  # pragma: nocover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

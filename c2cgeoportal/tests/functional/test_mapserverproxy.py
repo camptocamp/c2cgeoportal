@@ -159,7 +159,7 @@ class TestMapserverproxyView(TestCase):
 
         main = Interface(name=u'main')
 
-        layer2 = LayerV1(u'testpoint_protected', 400, public=False)
+        layer2 = LayerV1(u'testpoint_protected', public=False)
         layer2.interfaces = [main]
         layer3 = LayerV1(u'testpoint_protected_query_with_collect', public=False)
         layer3.interfaces = [main]

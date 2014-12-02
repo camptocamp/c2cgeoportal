@@ -38,6 +38,9 @@ script:
 - buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
 - buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
 - rm -rf /tmp/test
+- buildout/bin/python setup.py nosetests --stop
+
+after_failure:
 - buildout/bin/python setup.py nosetests
 
 after_success:
