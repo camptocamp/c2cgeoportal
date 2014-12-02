@@ -36,23 +36,23 @@ import isodate
 class TestExtent(TestCase):
     def test_parse_values(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentValue
-        extent = parse_extent(["2005", "2006"])
+        extent = parse_extent(["2005", "2006"], "2005")
         self.assertTrue(isinstance(extent, TimeExtentValue))
 
     def test_parse_interval(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
-        extent = parse_extent(["2000/2005/P1Y"])
+        extent = parse_extent(["2000/2005/P1Y"], "2002")
         self.assertTrue(isinstance(extent, TimeExtentInterval))
 
     def test_unsupported_format(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent
-        self.assertRaises(ValueError, parse_extent, ["2000/2010"])
-        self.assertRaises(ValueError, parse_extent, [])
+        self.assertRaises(ValueError, parse_extent, ["2000/2010"], "2002")
+        self.assertRaises(ValueError, parse_extent, [], "2002")
 
     def test_merge_values(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentValue
-        e1 = parse_extent(["2000", "2005"])
-        e2 = parse_extent(["2001", "2003"])
+        e1 = parse_extent(["2000", "2005"], "2000/2005")
+        e2 = parse_extent(["2001", "2003"], "2001/2003")
         self.assertTrue(isinstance(e1, TimeExtentValue))
         self.assertTrue(isinstance(e2, TimeExtentValue))
         e1.merge(e2)
@@ -66,13 +66,15 @@ class TestExtent(TestCase):
                 '2001-01-01T00:00:00Z',
                 '2003-01-01T00:00:00Z',
                 '2005-01-01T00:00:00Z'
-            ]
+            ],
+            "minDefValue": "2000-01-01T00:00:00Z",
+            "maxDefValue": "2005-01-01T00:00:00Z",
         })
 
     def test_merge_interval(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
-        e1 = parse_extent(["2000/2005/P1Y"])
-        e2 = parse_extent(["2006/2010/P1Y"])
+        e1 = parse_extent(["2000/2005/P1Y"], "2000/2005")
+        e2 = parse_extent(["2006/2010/P1Y"], "2006/2010")
         self.assertTrue(isinstance(e1, TimeExtentInterval))
         self.assertTrue(isinstance(e2, TimeExtentInterval))
         e1.merge(e2)
@@ -81,20 +83,22 @@ class TestExtent(TestCase):
             "minValue": "2000-01-01T00:00:00Z",
             "maxValue": "2010-01-01T00:00:00Z",
             "resolution": "year",
-            "interval": (1, 0, 0, 0)
+            "interval": (1, 0, 0, 0),
+            "minDefValue": "2000-01-01T00:00:00Z",
+            "maxDefValue": "2010-01-01T00:00:00Z",
         })
 
     def test_merge_value_interval(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent
-        tev = parse_extent(["2000", "2001"])
-        tei = parse_extent(["2000/2010/P1Y"])
+        tev = parse_extent(["2000", "2001"], "2000")
+        tei = parse_extent(["2000/2010/P1Y"], "2002")
         self.assertRaises(ValueError, tev.merge, tei)
         self.assertRaises(ValueError, tei.merge, tev)
 
     def test_merge_different_intervals(self):
         from c2cgeoportal.lib.wmstparsing import parse_extent
-        e1 = parse_extent(["2000/2005/P1Y"])
-        e2 = parse_extent(["2006/2010/P1M"])
+        e1 = parse_extent(["2000/2005/P1Y"], "2002")
+        e2 = parse_extent(["2006/2010/P1M"], "2002")
         self.assertRaises(ValueError, e1.merge, e2)
 
 

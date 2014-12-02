@@ -47,15 +47,19 @@ class TimeExtentValue(object):
     """
     Represents time as a list of values.
     """
-    def __init__(self, values, resolution):
+    def __init__(self, values, resolution, min_def_value, max_def_value):
         """
         Arguments:
 
         * ``values`` A set() of datetime
         * ``resolution`` The resolution from the mapfile time definition
+        * ``min_def_value`` the minimum default value as a datetime
+        * ``max_def_value`` the maximum default value as a datetime
         """
         self.values = values
         self.resolution = resolution
+        self.min_def_value = min_def_value
+        self.max_def_value = max_def_value
 
     def merge(self, extent):
         if not isinstance(extent, TimeExtentValue):
@@ -63,15 +67,23 @@ class TimeExtentValue(object):
                 "Could not mix time defined as a list of "
                 "values with other type of definition")
         self.values.update(extent.values)
+        self.min_def_value = min(self.min_def_value, extent.min_def_value)
+        self.max_def_value = max(self.max_def_value, extent.max_def_value)
 
     def to_dict(self):
         values = sorted(self.values)
+        min_def_value = _format_date(self.min_def_value) \
+            if self.min_def_value else None
+        max_def_value = _format_date(self.max_def_value) \
+            if self.max_def_value else None
 
         return {
             "minValue": _format_date(values[0]),
             "maxValue": _format_date(values[-1]),
             "values": map(_format_date, values),
             "resolution": self.resolution,
+            "minDefValue": min_def_value,
+            "maxDefValue": max_def_value,
         }
 
 
@@ -79,7 +91,8 @@ class TimeExtentInterval(object):
     """
     Represents time with the help of a start, an end and an interval.
     """
-    def __init__(self, start, end, interval, resolution):
+    def __init__(self, start, end, interval, resolution,
+                 min_def_value, max_def_value):
         """
         Arguments:
 
@@ -87,11 +100,15 @@ class TimeExtentInterval(object):
         * ``end`` The end value as a datetime
         * ``interval`` The interval as a tuple (years, months, days, seconds)
         * ``resolution`` The resolution from the mapfile time definition
+        * ``min_def_value`` the minimum default value as a datetime
+        * ``max_def_value`` the maximum default value as a datetime
         """
         self.start = start
         self.end = end
         self.interval = interval
         self.resolution = resolution
+        self.min_def_value = min_def_value
+        self.max_def_value = max_def_value
 
     def merge(self, extent):
         if not isinstance(extent, TimeExtentInterval):
@@ -104,17 +121,26 @@ class TimeExtentInterval(object):
                 "different interval")
         self.start = min(self.start, extent.start)
         self.end = max(self.end, extent.end)
+        self.min_def_value = min(self.min_def_value, extent.min_def_value)
+        self.max_def_value = max(self.max_def_value, extent.max_def_value)
 
     def to_dict(self):
+        min_def_value = _format_date(self.min_def_value) \
+            if self.min_def_value else None
+        max_def_value = _format_date(self.max_def_value) \
+            if self.max_def_value else None
+
         return {
             "minValue": _format_date(self.start),
             "maxValue": _format_date(self.end),
             "interval": self.interval,
             "resolution": self.resolution,
+            "minDefValue": min_def_value,
+            "maxDefValue": max_def_value,
         }
 
 
-def parse_extent(extent):
+def parse_extent(extent, default_values):
     """
     Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a
     ``TimeExtentInterval``
@@ -122,10 +148,12 @@ def parse_extent(extent):
     Two formats are supported:
     * ['start/end/interval']
     * ['date1', 'date2', ..., 'date N']
+
+    default_values must be a slash separated String from OWSLib's a
+    defaulttimeposition
     """
-    # TODO handle default value when supported by OWSLib
-    # see https://github.com/geopython/OWSLib/pull/92
     if len(extent) > 0:
+        min_def_value, max_def_value = _parse_default_values(default_values)
         if extent[0].count("/") > 0:
             # case "start/end/interval"
             if len(extent) > 1 or extent[0].count("/") != 2:
@@ -137,17 +165,36 @@ def parse_extent(extent):
             end = _parse_date(e)
             interval = _parse_duration(i)
 
-            return TimeExtentInterval(start[1], end[1], interval,
-                                      start[0])
+            return TimeExtentInterval(start[1], end[1], interval, start[0],
+                                      min_def_value, max_def_value)
         else:
             # case "value1, value2, ..., valueN"
             dates = [_parse_date(d) for d in extent]
             resolution = dates[0][0]
             values = set(d[1] for d in dates)
 
-            return TimeExtentValue(values, resolution)
+            return TimeExtentValue(values, resolution, min_def_value,
+                                   max_def_value)
     else:
         raise ValueError("Invalid time extent format '%s'", extent)
+
+
+def _parse_default_values(default_values):
+    """
+    Parse the 'default' value from OWSLib's defaulttimeposition
+    and return a maximum of two dates. default value must be a
+    slash separated String.
+    return None on the seconde value if it doesn't exist.
+    """
+    def_value = str(default_values).split("/")
+
+    r, min_def_value = _parse_date(def_value[0])
+    max_def_value = None
+
+    if len(def_value) > 1:
+        r, max_def_value = _parse_date(def_value[1])
+
+    return min_def_value, max_def_value
 
 
 def _parse_date(date):

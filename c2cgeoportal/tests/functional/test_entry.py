@@ -1079,6 +1079,8 @@ class TestEntryView(TestCase):
             'maxValue': '2010-01-01T00:00:00Z',
             'minValue': '2000-01-01T00:00:00Z',
             'mode': 'single',
+            'minDefValue': '2000-01-01T00:00:00Z',
+            'maxDefValue': None,
         })
 
         layer_t2 = LayerV1()
@@ -1099,6 +1101,8 @@ class TestEntryView(TestCase):
             'maxValue': '2020-01-01T00:00:00Z',
             'minValue': '2015-01-01T00:00:00Z',
             'mode': 'single',
+            'minDefValue': '2015-01-01T00:00:00Z',
+            'maxDefValue': None,
         })
 
         group = LayerGroup()
@@ -1112,6 +1116,8 @@ class TestEntryView(TestCase):
             'maxValue': '2020-01-01T00:00:00Z',
             'minValue': '2000-01-01T00:00:00Z',
             'mode': 'single',
+            'minDefValue': '2000-01-01T00:00:00Z',
+            'maxDefValue': None,
         })
 
         layer = LayerV1()
@@ -1132,6 +1138,8 @@ class TestEntryView(TestCase):
             'maxValue': '2020-01-01T00:00:00Z',
             'minValue': '2000-01-01T00:00:00Z',
             'mode': 'single',
+            'minDefValue': '2000-01-01T00:00:00Z',
+            'maxDefValue': None,
         })
 
         layer = LayerV1()

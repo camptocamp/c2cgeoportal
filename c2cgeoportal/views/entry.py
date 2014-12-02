@@ -253,13 +253,15 @@ class Entry(object):
                 wms_layer_obj = wms[layer.name]
 
                 if wms_layer_obj.timepositions:
-                    extent = parse_extent(wms_layer_obj.timepositions)
+                    extent = parse_extent(wms_layer_obj.timepositions,
+                                          wms_layer_obj.defaulttimeposition)
                     time.merge_extent(extent)
                     time.merge_mode(layer.time_mode)
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
-                        extent = parse_extent(child_layer.timepositions)
+                        extent = parse_extent(child_layer.timepositions,
+                                              child_layer.defaulttimeposition)
                         time.merge_extent(extent)
                         # The time mode comes from the layer group
                         time.merge_mode(layer.time_mode)
