@@ -55,8 +55,9 @@ from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
-from c2cgeoportal.models import DBSession, LayerV1, LayerGroup, \
-    Theme, RestrictionArea, Role, User, Interface
+from c2cgeoportal.models import DBSession, User, Role, \
+    Theme, LayerGroup, RestrictionArea, Interface, \
+    Layer, LayerV1, LayerInternalWMS, LayerExternalWMS, LayerWMTS
 
 
 _ = TranslationStringFactory('c2cgeoportal')
@@ -138,11 +139,18 @@ class Entry(object):
             log.exception(error)
         return wms, errors
 
-    def _create_layer_query(self, role_id):
+    def _create_layer_query(self, role_id, version):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
-        q = DBSession.query(LayerV1).filter(LayerV1.public.is_(True))
+        if version == 1:
+            q = DBSession.query(LayerV1)
+        else:
+            q = DBSession.query(Layer).filter(Layer.type.in_([
+                "l_int_wms", "l_ext_wms", "l_wmts"
+            ]))
+
+        q = q.filter(LayerV1.public.is_(True))
         if role_id is not None:
             q = q.union(get_protected_layers_query(role_id))
         return q
@@ -210,43 +218,57 @@ class Entry(object):
                 return None
         return icon
 
-    def _layer(self, layer, wms_layers, wms, time):
+    def _layer(self, layer, wms, wms_layers, time):
         errors = []
         l = {
             'id': layer.id,
             'name': layer.name,
-            'type': layer.layer_type,
-            'legend': layer.legend,
-            'isChecked': layer.is_checked,
             'public': layer.public,
-            'isLegendExpanded': layer.is_legend_expanded,
+            'metadata': {}
         }
-        if layer.identifier_attribute_field:
-            l['identifierAttribute'] = layer.identifier_attribute_field
-        if layer.disclaimer:
-            l['disclaimer'] = layer.disclaimer
-        if layer.icon:
-            l['icon'] = self._get_icon_path(layer.icon)
-        if layer.kml:
-            l['kml'] = self._get_icon_path(layer.kml)
-        if layer.metadata_url:
-            l['metadataURL'] = layer.metadata_url
+        for metadata in layer.ui_metadata:
+            l['metadata'][metadata.name] = metadata.value
         if layer.geo_table:
             self._fill_editable(l, layer)
-        if layer.legend_image:
-            l['legendImage'] = self._get_icon_path(layer.legend_image)
 
-        if layer.layer_type == "internal WMS":
-            self._fill_internal_wms(l, layer, wms_layers, wms, errors)
-            errors += self._merge_time(time, layer, wms_layers, wms)
-        elif layer.layer_type == "external WMS":
+        if isinstance(layer, LayerV1):
+            l.update({
+                'type': layer.layer_type,
+                'legend': layer.legend,
+                'isChecked': layer.is_checked,
+                'isLegendExpanded': layer.is_legend_expanded,
+            })
+            if layer.identifier_attribute_field:
+                l['identifierAttribute'] = layer.identifier_attribute_field
+            if layer.disclaimer:
+                l['disclaimer'] = layer.disclaimer
+            if layer.icon:
+                l['icon'] = self._get_icon_path(layer.icon)
+            if layer.kml:
+                l['kml'] = self._get_icon_path(layer.kml)
+            if layer.metadata_url:
+                l['metadataURL'] = layer.metadata_url
+            if layer.legend_image:
+                l['legendImage'] = self._get_icon_path(layer.legend_image)
+
+            if layer.layer_type == "internal WMS":
+                self._fill_internal_wms(l, layer, wms, wms_layers, errors)
+                errors += self._merge_time(time, layer, wms, wms_layers)
+            elif layer.layer_type == "external WMS":
+                self._fill_external_wms(l, layer)
+            elif layer.layer_type == "WMTS":
+                self._fill_wmts(l, layer, wms, wms_layers, errors)
+        elif isinstance(layer, LayerInternalWMS):
+            self._fill_internal_wms(l, layer, wms, wms_layers, errors)
+            errors += self._merge_time(time, layer, wms, wms_layers)
+        elif isinstance(layer, LayerExternalWMS):
             self._fill_external_wms(l, layer)
-        elif layer.layer_type == "WMTS":
-            self._fill_wmts(l, layer, wms_layers, wms, errors)
+        elif isinstance(layer, LayerWMTS):
+            self._fill_wmts(l, layer, wms, wms_layers, errors)
 
         return l, errors
 
-    def _merge_time(self, time, layer, wms_layers, wms):
+    def _merge_time(self, time, layer, wms, wms_layers):
         errors = []
         try:
             if layer.name in wms_layers:
@@ -312,7 +334,7 @@ class Entry(object):
             )
             l['icon'] = url + '?' + '&'.join('='.join(p) for p in query)
 
-    def _fill_internal_wms(self, l, layer, wms_layers, wms, errors):
+    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors):
         self._fill_wms(l, layer)
         self._fill_legend_rule_query_string(
             l, layer,
@@ -340,7 +362,7 @@ class Entry(object):
                 l['queryable'] = wms_layer_obj.queryable
         else:
             errors.append(
-                'The layer %s is not defined in WMS capabilities' % layer.name
+                "The layer '%s' is not defined in WMS capabilities" % layer.name
             )
 
     def _fill_external_wms(self, l, layer):
@@ -355,7 +377,7 @@ class Entry(object):
         if layer.max_resolution is not None:
             l['maxResolutionHint'] = layer.max_resolution
 
-    def _fill_wmts(self, l, layer, wms_layers, wms, errors):
+    def _fill_wmts(self, l, layer, wms, wms_layers, errors):
         l['url'] = layer.url
 
         if layer.dimensions:
@@ -420,7 +442,7 @@ class Entry(object):
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
 
-    def _group(self, group, layers, wms_layers, wms, time, depth=1):
+    def _group(self, group, layers, depth=0, min_level=1, catalogue=False, version=1, **kwargs):
         children = []
         errors = []
 
@@ -430,14 +452,14 @@ class Entry(object):
                 "Too many recursions with group '%s'" % group.name
             )
             return None, errors, True
-        depth += 1
 
         for treeItem in group.children:
             if type(treeItem) == LayerGroup:
-                if (type(group) == Theme or
+                depth += 1
+                if (type(group) == Theme or catalogue or
                         group.is_internal_wms == treeItem.is_internal_wms):
                     gp, gp_errors, stop = self._group(
-                        treeItem, layers, wms_layers, wms, time, depth
+                        treeItem, layers, depth, **kwargs
                     )
                     errors += gp_errors
                     if stop:
@@ -446,19 +468,25 @@ class Entry(object):
                         children.append(gp)
                 else:
                     errors.append(
-                        "Group %s connot be in group %s (wrong isInternalWMS)." %
-                        (treeItem.name, group.name))
+                        "Item '%s' cannot be in group '%s' (wrong isInternalWMS)." %
+                        (treeItem.name, group.name)
+                    )
             elif type(treeItem) == LayerV1:
                 if (treeItem in layers):
-                    if (group.is_internal_wms ==
+                    if (catalogue or group.is_internal_wms ==
                             (treeItem.layer_type == 'internal WMS')):
-                        l, l_errors = self._layer(treeItem, wms_layers, wms, time)
+                        l, l_errors = self._layer(treeItem, **kwargs)
                         errors += l_errors
+                        if depth < min_level:
+                            errors.append(
+                                "The Layer '%s' is under indented." % treeItem.name
+                            )
                         children.append(l)
                     else:
                         errors.append(
-                            "Layer %s of type %s cannot be in the group %s." %
-                            (treeItem.name, treeItem.layer_type, group.name))
+                            "Layer '%s' of type '%s' cannot be in the group '%s'." %
+                            (treeItem.name, treeItem.layer_type, group.name)
+                        )
 
         if len(children) > 0:
             g = {
@@ -466,9 +494,12 @@ class Entry(object):
                 'children': children,
                 'isExpanded': group.is_expanded,
                 'isInternalWMS': group.is_internal_wms,
-                'isBaseLayer': group.is_base_layer
+                'isBaseLayer': group.is_base_layer,
+                'metadata': {},
             }
-            if group.metadata_url:
+            for metadata in group.ui_metadata:
+                g['metadata'][metadata.name] = metadata.value
+            if version == 1 and group.metadata_url:
                 g['metadataURL'] = group.metadata_url
 
             return g, errors, False
@@ -476,19 +507,15 @@ class Entry(object):
             return None, errors, False
 
     @cache_region.cache_on_arguments()
-    def _themes(self, role_id, interface, filter_themes=True):
-        """
-        This function returns theme information for the role identified
-        to by ``role_id``.
-        ``mobile`` tells whether to retrieve mobile or desktop layers
-        """
-        errors = []
-        query = self._create_layer_query(role_id)
-        query = query.join(LayerV1.interfaces)
+    def _layers(self, role_id, version, interface):
+        query = self._create_layer_query(role_id, version)
+        query = query.join(Layer.interfaces)
         if interface is not None:
             query = query.filter(Interface.name == interface)
-        layers = query.all()
+        return query.all()
 
+    @cache_region.cache_on_arguments()
+    def _wms_layers(self):
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
             self.request.registry.settings['mapserv_url']
@@ -496,7 +523,21 @@ class Entry(object):
         if len(wms_errors) > 0:
             return [], wms_errors
 
-        wms_layers = list(wms.contents)
+        return wms, list(wms.contents)
+
+    @cache_region.cache_on_arguments()
+    def _themes(
+        self, role_id, interface="main", filter_themes=True, version=1,
+        catalogue=False, min_levels=1
+    ):
+        """
+        This function returns theme information for the role identified
+        to by ``role_id``.
+        ``mobile`` tells whether to retrieve mobile or desktop layers
+        """
+        errors = []
+        layers = self._layers(role_id, version, interface)
+        wms, wms_layers = self._wms_layers()
 
         themes = DBSession.query(Theme)
         themes = themes.filter(Theme.public.is_(True))
@@ -517,7 +558,8 @@ class Entry(object):
         export_themes = []
         for theme in themes.all():
             children, children_errors, stop = self._get_children(
-                theme, layers, wms_layers, wms)
+                theme, layers, wms, wms_layers, catalogue
+            )
             errors += children_errors
 
             if stop:
@@ -529,13 +571,17 @@ class Entry(object):
                     else self.request.static_url(
                         'c2cgeoportal:static/images/blank.gif')
 
-                export_themes.append({
+                t = {
                     'in_mobile_viewer': theme.is_in_interface('mobile'),
                     'name': theme.name,
                     'icon': icon,
                     'children': children,
-                    'functionalities': self._get_functionalities(theme)
-                })
+                    'functionalities': self._get_functionalities(theme),
+                    'metadata': {},
+                }
+                for metadata in theme.ui_metadata:
+                    t['metadata'][metadata.name] = metadata.value
+                export_themes.append(t)
 
         return export_themes, errors
 
@@ -560,13 +606,16 @@ class Entry(object):
             'success': True
         }
 
-    def _get_children(self, theme, layers, wms_layers, wms):
+    @cache_region.cache_on_arguments()
+    def _get_children(self, theme, layers, wms, wms_layers, catalogue):
         children = []
         errors = []
         for item in theme.children:
             if type(item) == LayerGroup:
                 time = TimeInformation()
-                gp, gp_errors, stop = self._group(item, layers, wms_layers, wms, time)
+                gp, gp_errors, stop = self._group(
+                    item, layers, time=time, wms=wms, wms_layers=wms_layers, catalogue=catalogue
+                )
                 errors += gp_errors
                 if stop:
                     errors.append("Themes listing interrupted because of an error"
@@ -577,10 +626,12 @@ class Entry(object):
                     if time.has_time():  # pragma: nocover
                         gp.update({"time": time.to_dict()})
                     children.append(gp)
-            elif type(item) == LayerV1:
+            elif isinstance(item, Layer):
                 if item in layers:
                     time = TimeInformation()
-                    l, l_errors = self._layer(item, wms_layers, wms, time)
+                    l, l_errors = self._layer(
+                        item, time=time, wms=wms, wms_layers=wms_layers
+                    )
                     if time.has_time():  # pragma: nocover
                         l.update({"time": time.to_dict()})
                     errors += l_errors
@@ -1066,11 +1117,35 @@ class Entry(object):
 
     @view_config(route_name='themes', renderer='json')
     def themes(self):
-        role_id = self.request.params.get("role_id") or None
+        role_id = self.request.params.get("role_id", None)
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
-        interface = self.request.params.get("interface") or None
-        return self._themes(role_id, interface)[0]
+        elif self.request.client_addr != '127.0.0.1':
+            role_id = None
+
+        interface = self.request.params.get("interface", None)
+        version = int(self.request.params.get("version", 1))
+        catalogue = self.request.params.get("catalogue", "false") == "true"
+        min_levels = self.request.params.get("min_levels", 1)
+        group = self.request.params.get("group", None)
+
+        if group is None:
+            items, errors = self._themes(
+                role_id, interface, True, version, catalogue, min_levels
+            )
+        else:
+            time = TimeInformation()
+            layers = self._layers(role_id, version, interface)
+            wms, wms_layers = self._wms_layers()
+            item = DBSession.query(LayerGroup).filter(LayerGroup.name.eq_(group))
+            items, errors, stop = self._group(
+                item, layers, time, wms=wms, wms_layers=wms_layers, catalogue=catalogue
+            )
+
+        return items if version == 1 else {
+            "items": items,
+            "errors": errors
+        }
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
