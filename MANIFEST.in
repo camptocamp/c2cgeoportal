@@ -1,7 +1,6 @@
 include *.txt *.ini *.cfg *.rst
 recursive-include c2cgeoportal *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml *.mo
 recursive-include c2cgeoportal/scaffolds *
-include c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 prune buildout
 exclude buildout.cfg
 exclude bootstrap.py
@@ -24,6 +23,3 @@ prune c2cgeoportal/static/lib/openlayers/examples
 prune c2cgeoportal/static/lib/openlayers/lib
 prune c2cgeoportal/static/lib/openlayers/tests
 prune c2cgeoportal/static/lib/openlayers/tools
-
-include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz
-prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch

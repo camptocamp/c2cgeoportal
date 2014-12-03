@@ -36,6 +36,7 @@ before_install:
 install:
 - python bootstrap.py --version 1.5.2 --distribute --download-base http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 - buildout/bin/buildout -c $BUILDOUT_CFG
+- buildout/bin/pip install -r dev-requirements.txt
 - sudo /usr/sbin/apache2ctl graceful
 
 before_script:
@@ -44,8 +45,6 @@ before_script:
 - source env/bin/activate
 - pip install -r requirements.txt
 - cd -
-
-- cat ./c2cgeoportal/tests/functional/c2cgeoportal_test.map
 
 script: 
 - travis/doc.sh

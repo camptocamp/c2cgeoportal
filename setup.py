@@ -69,29 +69,16 @@ install_requires = [
     'waitress',
     # WMST support
     'isodate',
-    'nose',
     'JSTools',
     'zc.buildout',
     'couchdbkit',  # missing dependency of formalchemy
+    'pip',
 ]
 
-# nose plugins with options set in setup.cfg cannot be in
-# tests_require, they need be in setup_requires
-#
-# nose has version fixed because we have regression with
-# command line options.
-# This also forces us to stick with nose-progressive 1.3.
-# See https://github.com/camptocamp/c2cgeoportal/pull/333
-#
-# Others are fixed because the versions are mot listed
-# by buildout.dumppickedversions.
 setup_requires = [
-    'nosexcover==1.0.8',
 ]
 
 tests_require = install_requires + [
-    'testegg==1.0',
-    'unittest2',
 ]
 
 setup(
@@ -105,11 +92,11 @@ setup(
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
-    author='camptocamp',
+    author='Camptocamp',
     author_email='info@camptocamp.com',
     url='http://www.camptocamp.com/geospatial-solutions',
     keywords='web gis geoportail c2cgeoportal geocommune pyramid',
-    packages=find_packages(),
+    packages=find_packages(exclude=["*.tests", "*.tests.*"]),
     include_package_data=True,
     message_extractors={'c2cgeoportal': [
         ('static/**', 'ignore', None),
