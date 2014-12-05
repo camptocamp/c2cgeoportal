@@ -426,6 +426,9 @@ class Entry(object):
 
         # escape loop
         if depth > 10:
+            errors.append(
+                "Too many recursions with group '%s'" % group.name
+            )
             return None, errors, True
         depth += 1
 
@@ -438,8 +441,6 @@ class Entry(object):
                     )
                     errors += gp_errors
                     if stop:
-                        errors.append("Too many recursions with group \"%s\""
-                                      % group.name)
                         return None, errors, True
                     if gp is not None:
                         children.append(gp)

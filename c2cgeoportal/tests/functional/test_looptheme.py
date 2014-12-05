@@ -45,6 +45,10 @@ from c2cgeoportal.tests.functional import (  # noqa
 class TestLoopTheme(TestCase):
 
     def setUp(self):  # noqa
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
+
         from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup, Interface
 
@@ -98,6 +102,4 @@ class TestLoopTheme(TestCase):
 
         cache_region.invalidate()
         themes, errors = entry._themes(None, u'main')
-        self.assertEquals(len(errors), 21)
-        self.assertEquals(errors[0], 'The layer __test_layer is not defined in WMS capabilities')
-        self.assertEquals(errors[11], 'Too many recursions with group "__test_layer_group"')
+        self.assertEquals(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)
