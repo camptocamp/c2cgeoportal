@@ -199,10 +199,10 @@ either expressed or implied, of the FreeBSD Project.
         change("isSingleTile", fields);
         change("legendRule", fields);
 
-        internalWMS = state == "internal WMS"
+        enablePrivateOption = state == "internal WMS" || state == "WMTS"
         var e = $.fn.adminapp.findField("public",  [el.id]);
-        e.attr('readOnly', !internalWMS);
-        if (internalWMS) {
+        e.attr('readOnly', !enablePrivateOption);
+        if (enablePrivateOption) {
             e.removeClass('disabledinput');
         }
         else {
