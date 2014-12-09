@@ -369,7 +369,6 @@ class TreeGroup(TreeItem):
     __tablename__ = 'treegroup'
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
-    __mapper_args__ = {'polymorphic_identity': 'treegroup'}
 
     id = Column(
         Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True
@@ -469,7 +468,6 @@ class Layer(TreeItem):
     __tablename__ = 'layer'
     __table_args__ = {'schema': _schema}
     __acl__ = [DENY_ALL]
-    __mapper_args__ = {'polymorphic_identity': 'layer'}
 
     id = Column(
         Integer, ForeignKey(_schema + '.treeitem.id'), primary_key=True
@@ -624,6 +622,7 @@ class LayerWMTS(Layer):
 
     def __init__(self, name=u'', public=True):
         Layer.__init__(self, name=name, public=public)
+
 
 # association table role <> restriciton area
 role_ra = Table(
