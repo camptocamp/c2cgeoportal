@@ -46,6 +46,15 @@ Version 1.6
             test-packages-mobile
             test-packages-tilecloud-chain
 
+7. In the `{{package}}/templates/*.js` files do the following change:
+
+    -<% json_extent = user.role.json_extent if user else None %>
+    -% if json_extent:
+    -    var INITIAL_EXTENT = ${json_extent};
+    +<% bounds = user.role.bounds if user else None %>
+    +% if bounds:
+    +    var INITIAL_EXTENT = ${dumps(bounds)};
+
 
 Version 1.5.2
 =============

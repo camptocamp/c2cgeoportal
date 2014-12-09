@@ -35,17 +35,16 @@ from fanstatic import Library, Group, Resource
 from fanstatic.core import set_resource_file_existence_checking
 from pyramid_formalchemy.utils import TemplateEngine
 from formalchemy import config as fa_config
-from formalchemy import fields
 from formalchemy import FieldSet, Grid
-from formalchemy.fields import Field, CheckBoxSet
+from formalchemy.fields import Field, CheckBoxSet, SelectFieldRenderer
 from formalchemy.validators import ValidationError
 from formalchemy.helpers import password_field
+from geoalchemy2 import Geometry
 from mako.lookup import TemplateLookup
 from fa.jquery import renderers as fa_renderers
 from fa.jquery import fanstatic_resources
 from pyramid_formalchemy import events as fa_events
 from geoformalchemy.base import GeometryFieldRenderer
-from geoalchemy import geometry
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal import models
@@ -165,8 +164,7 @@ class PyramidGeometryFieldRenderer(GeometryFieldRenderer):  # pragma: no cover
 
 
 FieldSet.default_renderers.update(fa_renderers.default_renderers)
-FieldSet.default_renderers[geometry.Geometry] = PyramidGeometryFieldRenderer
-FieldSet.default_renderers[geometry.Polygon] = PyramidGeometryFieldRenderer
+FieldSet.default_renderers[Geometry] = PyramidGeometryFieldRenderer
 
 
 class DblPasswordField(Field):  # pragma: no cover
@@ -383,51 +381,60 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 # Layer V1
 LayerV1 = FieldSet(models.LayerV1)
 LayerV1.layer_type.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["internal WMS", "external WMS", "WMTS", "no 2D"])
+    renderer=SelectFieldRenderer,
+    options=[
+        ("internal WMS", _("internal WMS")),
+        ("external WMS", _("external WMS")),
+        ("WMTS", _("WMTS")),
+        ("no 2D", _("no 2D"))
+    ])
 LayerV1.image_type.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["image/jpeg", "image/png"])
+    renderer=SelectFieldRenderer,
+    options=[("image/jpeg", _("image/jpeg")), ("image/png", _("image/png"))])
 LayerV1.time_mode.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["disabled", "value", "range"])
-LayerV1.interfaces.set(renderer=fields.CheckBoxSet)
+    renderer=SelectFieldRenderer,
+    options=[
+        ("disabled", _("disabled")),
+        ("value", _("value")),
+        ("range", _("range"))
+    ])
+LayerV1.interfaces.set(renderer=CheckBoxSet)
 LayerV1.ui_metadata.set(readonly=True)
-LayerV1.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 LayerV1.parents_relation.set(readonly=True)
 
 # LayerInternalWMS
 LayerInternalWMS = FieldSet(models.LayerInternalWMS)
 LayerInternalWMS.image_type.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["image/jpeg", "image/png"])
+    renderer=SelectFieldRenderer,
+    options=[("image/jpeg", "image/png", _("image/jpeg", "image/png"))])
 LayerInternalWMS.time_mode.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["disabled", "value", "range"])
-LayerInternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
+    renderer=SelectFieldRenderer,
+    options=[("disabled", "value", "range", _("disabled", "value", "range"))])
+LayerInternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerInternalWMS.ui_metadata.set(readonly=True)
-LayerInternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerInternalWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerInternalWMS.parents_relation.set(readonly=True)
 
 # LayerExternalWMS
 LayerExternalWMS = FieldSet(models.LayerExternalWMS)
 LayerExternalWMS.image_type.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["image/jpeg", "image/png"])
+    renderer=SelectFieldRenderer,
+    options=[("image/jpeg", "image/png", _("image/jpeg", "image/png"))])
 LayerExternalWMS.time_mode.set(
-    renderer=fields.SelectFieldRenderer,
-    options=["disabled", "value", "range"])
-LayerExternalWMS.interfaces.set(renderer=fields.CheckBoxSet)
+    renderer=SelectFieldRenderer,
+    options=[("disabled", "value", "range", _("disabled", "value", "range"))])
+LayerExternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerExternalWMS.ui_metadata.set(readonly=True)
-LayerExternalWMS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerExternalWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerExternalWMS.parents_relation.set(readonly=True)
 
 # LayerWMTS
 LayerWMTS = FieldSet(models.LayerWMTS)
-LayerWMTS.interfaces.set(renderer=fields.CheckBoxSet)
+LayerWMTS.interfaces.set(renderer=CheckBoxSet)
 LayerWMTS.ui_metadata.set(readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
-LayerWMTS.restrictionareas.set(renderer=fields.CheckBoxSet)
+LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMTS.parents_relation.set(readonly=True)
 
 # LayerGroup
@@ -446,15 +453,15 @@ Theme.ordering.set(metadata=dict(mandatory='')).required()
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.configure(exclude=[Theme.parents_relation])
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
-Theme.interfaces.set(renderer=fields.CheckBoxSet)
+Theme.interfaces.set(renderer=CheckBoxSet)
 Theme.ui_metadata.set(readonly=True)
-Theme.restricted_roles.set(renderer=fields.CheckBoxSet)
+Theme.restricted_roles.set(renderer=CheckBoxSet)
 
 # Functionality
 Functionality = FieldSet(models.Functionality)
 Functionality.name.set(
-    renderer=fields.SelectFieldRenderer,
-    options=formalchemy_available_functionalities)
+    renderer=SelectFieldRenderer,
+    options=[(f, f) for f in formalchemy_available_functionalities])
 Functionality.value.set(metadata=dict(mandatory='')).required()
 
 # Interface
@@ -464,8 +471,8 @@ Interface.configure(include=[Interface.name, Interface.description])
 # UIMetadata
 UIMetadata = FieldSet(models.UIMetadata)
 UIMetadata.name.set(
-    renderer=fields.SelectFieldRenderer,
-    options=formalchemy_available_metadata)
+    renderer=SelectFieldRenderer,
+    options=[(m, m) for m in formalchemy_available_metadata])
 UIMetadata.value.set(metadata=dict(mandatory='')).required()
 
 # WMTSDimension
@@ -476,7 +483,7 @@ WMTSDimension.value.set(metadata=dict(mandatory='')).required()
 RestrictionArea = FieldSet(models.RestrictionArea)
 RestrictionArea.name.set(metadata=dict(mandatory='')).required()
 RestrictionArea.layers.set(renderer=LayerCheckBoxTreeSet)
-RestrictionArea.roles.set(renderer=fields.CheckBoxSet)
+RestrictionArea.roles.set(renderer=CheckBoxSet)
 RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('map_srid', 3857),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
@@ -498,7 +505,7 @@ RestrictionArea.configure(include=field_order)
 Role = FieldSet(models.Role)
 Role.name.set(metadata=dict(mandatory='')).required()
 Role.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
-Role.restrictionareas.set(renderer=fields.CheckBoxSet)
+Role.restrictionareas.set(renderer=CheckBoxSet)
 Role.users.set(readonly=True)
 Role.extent.set(label=_(u'Extent'), options=[
     ('map_srid', 3857),

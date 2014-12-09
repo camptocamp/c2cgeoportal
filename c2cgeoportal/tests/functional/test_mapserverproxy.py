@@ -56,22 +56,14 @@
 #                                       +
 #
 #
-# GetMap
-# ======
-#
-# md5sum with 4 points: 61cbb0a6d18b72e4a28c1087019de245
-# md5sum with the 2 top points: 0a4fac2209d06c6fa36048c125b1679a
-# md5sum with no points: ef33223235b26c782736c88933b35331
-#
-#
 
 import os
 import hashlib
-from unittest import TestCase
+from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
 from sqlalchemy import Column, types
-from geoalchemy import GeometryColumn, MultiPoint, GeometryDDL, WKTSpatialElement
+from geoalchemy2 import Geometry, WKTElement
 import transaction
 import sqlahelper
 
@@ -82,16 +74,20 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 Base = sqlahelper.get_base()
 
+# GetMap hash for MapServer 6.0 and 7.0
+FOUR_POINTS = ['61cbb0a6d18b72e4a28c1087019de245', 'e2fe30a8085b0db4040c9ad0d331b6b8']
+TWO_POINTS = ['0a4fac2209d06c6fa36048c125b1679a', '0469e20ee04f22ab7ccdfebaa125f203']
+NO_POINT = ['ef33223235b26c782736c88933b35331', 'aaa27d9450664d34fd8f53b6e76af1e1']
+
 
 class TestPoint(Base):
     __tablename__ = 'testpoint'
     __table_args__ = {'schema': 'main'}
     id = Column(types.Integer, primary_key=True)
-    the_geom = GeometryColumn(MultiPoint(srid=21781))
+    the_geom = Column(Geometry("MULTIPOINT", srid=21781))
     name = Column(types.Unicode)
     city = Column(types.Unicode)
     country = Column(types.Unicode)
-GeometryDDL(TestPoint.__table__)
 
 GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
 <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -127,17 +123,20 @@ class TestMapserverproxyView(TestCase):
 
     def setUp(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
-            Functionality, Interface, DBSession
+            Functionality, Interface, DBSession, management
+
+        if management:
+            TestPoint.__table__.c.the_geom.type.management = True
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        geom = WKTSpatialElement("MULTIPOINT((-90 -45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((-90 -45))", srid=21781)
         p1 = TestPoint(the_geom=geom, name=u'foo', city=u'Lausanne', country=u'Swiss')
-        geom = WKTSpatialElement("MULTIPOINT((-90 45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((-90 45))", srid=21781)
         p2 = TestPoint(the_geom=geom, name=u'bar', city=u'Chambéry', country=u'France')
-        geom = WKTSpatialElement("MULTIPOINT((90 45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((90 45))", srid=21781)
         p3 = TestPoint(the_geom=geom, name=u'éàè', city="Paris", country=u'France')
-        geom = WKTSpatialElement("MULTIPOINT((90 -45))", srid=21781)
+        geom = WKTElement("MULTIPOINT((90 -45))", srid=21781)
         p4 = TestPoint(the_geom=geom, name=u'123', city='Londre', country=u'UK')
 
         pt1 = Functionality(name=u'print_template', value=u'1 Wohlen A4 portrait')
@@ -165,15 +164,15 @@ class TestMapserverproxyView(TestCase):
         layer3.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
-        area = WKTSpatialElement(area, srid=21781)
+        area = WKTElement(area, srid=21781)
         restricted_area1 = RestrictionArea(u'__test_ra1', u'', [layer2, layer3], [role1], area)
 
         area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
-        area = WKTSpatialElement(area, srid=21781)
+        area = WKTElement(area, srid=21781)
         restricted_area2 = RestrictionArea(u'__test_ra2', u'', [layer2, layer3], [role2, role3], area)
 
         area = "POLYGON((-95 43, -95 47, 95 47, 95 43, -95 43))"
-        area = WKTSpatialElement(area, srid=21781)
+        area = WKTElement(area, srid=21781)
         restricted_area3 = RestrictionArea(u'__test_ra3', u'', [layer3], [role3], area, readwrite=True)
 
         DBSession.add_all([
@@ -391,7 +390,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '61cbb0a6d18b72e4a28c1087019de245')
+        self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_unprotected_layer_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -408,7 +407,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '61cbb0a6d18b72e4a28c1087019de245')
+        self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_unprotected_layer_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -425,7 +424,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '61cbb0a6d18b72e4a28c1087019de245')
+        self.assertIn(md5sum, FOUR_POINTS)
 
     def test_get_map_protected_layer_anonymous(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -442,7 +441,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, 'ef33223235b26c782736c88933b35331')
+        self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -459,7 +458,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '0a4fac2209d06c6fa36048c125b1679a')
+        self.assertIn(md5sum, TWO_POINTS)
 
     def test_get_map_protected_layer_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -475,7 +474,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, 'ef33223235b26c782736c88933b35331')
+        self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_collect_query_user1(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -492,7 +491,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '0a4fac2209d06c6fa36048c125b1679a')
+        self.assertIn(md5sum, TWO_POINTS)
 
     def test_get_map_protected_layer_collect_query_user2(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -509,7 +508,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, 'ef33223235b26c782736c88933b35331')
+        self.assertIn(md5sum, NO_POINT)
 
     def test_get_map_protected_layer_collect_query_user3(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
@@ -526,7 +525,7 @@ class TestMapserverproxyView(TestCase):
         self.assertEqual(str(response.cache_control), "no-cache")
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
-        self.assertEquals(md5sum, '0a4fac2209d06c6fa36048c125b1679a')
+        self.assertIn(md5sum, TWO_POINTS)
 
     def _create_getcap_request(self, username=None):
         from c2cgeoportal.models import DBSession, User

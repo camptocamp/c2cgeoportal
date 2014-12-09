@@ -204,7 +204,7 @@ geoformalchemy.init_map = function (
         vlayer.events.on({"sketchcomplete": feature_modified_handler});
         
         panelControls = [new OpenLayers.Control.Navigation()];
-        
+
         if (geometry_type === 'Polygon' || geometry_type === 'Collection') {
             if (restrictRectangle == false) {
                 panelControls.push(new OpenLayers.Control.DrawFeature(vlayer,

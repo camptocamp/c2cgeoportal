@@ -32,7 +32,7 @@ import os
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
-from geoalchemy import WKTSpatialElement
+from geoalchemy2 import WKTElement
 import transaction
 import sqlahelper
 
@@ -62,7 +62,7 @@ class TestMapserverproxyViewGroup(TestCase):
         layer1.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
-        area = WKTSpatialElement(area, srid=21781)
+        area = WKTElement(area, srid=21781)
         restricted_area1 = RestrictionArea(u'__test_ra1', u'', [layer1], [role1], area)
 
         DBSession.add_all([user1, layer1, restricted_area1])

@@ -196,6 +196,6 @@ class TestMobileDesktop(TestCase):
         theme = [t for t in themes if t['name'] == u'__test_theme']
         layers = theme[0]['children']
         self.assertEqual(
-            [l['name'] for l in layers],
-            [u'__test_layer', u'__test_desktop_only_layer'],
+            set([l['name'] for l in layers]),
+            set([u'__test_layer', u'__test_desktop_only_layer']),
         )

@@ -59,7 +59,7 @@ options['image_remove_feature_off'] = get_current_request().static_url('c2cgeopo
        style="width: ${map_width or options['map_width']}px; height: ${map_height or options['map_height']}px;"></div>
     % if run_js:
     <script>
-    ${_renderer.render_runjs()}
+    ${_renderer.render_runjs(read_only)}
     </script>
     % endif
     <br />
