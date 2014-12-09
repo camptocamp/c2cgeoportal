@@ -89,6 +89,7 @@ class TestLoopTheme(TestCase):
         request.headers['Host'] = host
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url: mapserv_url
+        request.client_addr = None
         curdir = os.path.dirname(os.path.abspath(__file__))
         mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
         ms_url = "%s?map=%s&" % (mapserv_url, mapfile)

@@ -142,4 +142,5 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     request.user = None
     request.interface_name = 'main'
     request.registry.validate_user = default_user_validator
+    request.client_addr = None
     return request
