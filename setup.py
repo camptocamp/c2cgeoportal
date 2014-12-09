@@ -58,7 +58,7 @@ install_requires = [
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
     'FormAlchemy',
-    'GeoFormAlchemy2',
+    'GeoFormAlchemy2>=2.0dev2',
     'OWSLib>=0.6.0',
     'tilecloud-chain>=0.2',
     'dogpile.cache',
