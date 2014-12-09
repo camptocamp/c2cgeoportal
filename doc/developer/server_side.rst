@@ -104,6 +104,12 @@ Install and build c2cgeoportal:
 
     ./buildout/bin/buildout -c buildout_dev.cfg
 
+Install the development requirement:
+
+.. prompt:: bash
+
+   ./buildout/bin/pip install -r dev-requirements.txt
+
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require a PostGIS database and a MapServer installation that can access

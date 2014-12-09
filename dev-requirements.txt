@@ -1,0 +1,5 @@
+--index-url http://pypi.camptocamp.net/pypi
+c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
+nose
+nosexcover
+unittest2
