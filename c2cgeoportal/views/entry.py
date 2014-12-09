@@ -442,6 +442,13 @@ class Entry(object):
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
 
+    def _layer_included(self, tree_item, version):
+        if version == 1 and type(tree_item) == LayerV1:
+            return True
+        if version == 2 and isinstance(tree_item, Layer):
+            return type(tree_item) != LayerV1
+        return False
+
     def _group(self, group, layers, depth=0, min_level=1, catalogue=False, version=1, **kwargs):
         children = []
         errors = []
@@ -453,13 +460,13 @@ class Entry(object):
             )
             return None, errors, True
 
-        for treeItem in group.children:
-            if type(treeItem) == LayerGroup:
+        for tree_item in group.children:
+            if type(tree_item) == LayerGroup:
                 depth += 1
                 if (type(group) == Theme or catalogue or
-                        group.is_internal_wms == treeItem.is_internal_wms):
+                        group.is_internal_wms == tree_item.is_internal_wms):
                     gp, gp_errors, stop = self._group(
-                        treeItem, layers, depth, **kwargs
+                        tree_item, layers, depth, **kwargs
                     )
                     errors += gp_errors
                     if stop:
@@ -469,23 +476,23 @@ class Entry(object):
                 else:
                     errors.append(
                         "Item '%s' cannot be in group '%s' (wrong isInternalWMS)." %
-                        (treeItem.name, group.name)
+                        (tree_item.name, group.name)
                     )
-            elif type(treeItem) == LayerV1:
-                if (treeItem in layers):
+            elif self._layer_included(tree_item, version):
+                if (tree_item in layers):
                     if (catalogue or group.is_internal_wms ==
-                            (treeItem.layer_type == 'internal WMS')):
-                        l, l_errors = self._layer(treeItem, **kwargs)
+                            (tree_item.layer_type == 'internal WMS')):
+                        l, l_errors = self._layer(tree_item, **kwargs)
                         errors += l_errors
                         if depth < min_level:
                             errors.append(
-                                "The Layer '%s' is under indented." % treeItem.name
+                                "The Layer '%s' is under indented." % tree_item.name
                             )
                         children.append(l)
                     else:
                         errors.append(
                             "Layer '%s' of type '%s' cannot be in the group '%s'." %
-                            (treeItem.name, treeItem.layer_type, group.name)
+                            (tree_item.name, tree_item.layer_type, group.name)
                         )
 
         if len(children) > 0:
@@ -532,7 +539,7 @@ class Entry(object):
     ):
         """
         This function returns theme information for the role identified
-        to by ``role_id``.
+        by ``role_id``.
         ``mobile`` tells whether to retrieve mobile or desktop layers
         """
         errors = []
@@ -558,7 +565,7 @@ class Entry(object):
         export_themes = []
         for theme in themes.all():
             children, children_errors, stop = self._get_children(
-                theme, layers, wms, wms_layers, catalogue
+                theme, layers, wms, wms_layers, version, catalogue
             )
             errors += children_errors
 
@@ -607,7 +614,7 @@ class Entry(object):
         }
 
     @cache_region.cache_on_arguments()
-    def _get_children(self, theme, layers, wms, wms_layers, catalogue):
+    def _get_children(self, theme, layers, wms, wms_layers, version, catalogue):
         children = []
         errors = []
         for item in theme.children:
@@ -626,7 +633,7 @@ class Entry(object):
                     if time.has_time():  # pragma: nocover
                         gp.update({"time": time.to_dict()})
                     children.append(gp)
-            elif isinstance(item, Layer):
+            elif self._layer_included(item, version):
                 if item in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(
