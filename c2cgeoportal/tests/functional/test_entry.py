@@ -835,7 +835,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         self.assertEqual(entry._group(
-            LayerGroup(), layers=[], wms=None, wms_layers=[], time=TimeInformation()), (None, [], False)
+            LayerGroup(), layers=[], wms=None, wms_layers=[], time=TimeInformation()), (None, [])
         )
 
         layer = LayerV1()
@@ -1261,7 +1261,7 @@ class TestEntryView(TestCase):
                     'metadata': {},
                 }]
             }]
-        }, ["The layer 'test layer in group' is not defined in WMS capabilities"], False))
+        }, ["The layer 'test layer in group' is not defined in WMS capabilities"]))
 
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
@@ -1287,93 +1287,83 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = False
         group1.children = [group2]
-        _, errors, stop = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Item '' cannot be in group '' (wrong isInternalWMS).")
-        self.assertFalse(stop)
+        _, errors = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group1 = LayerGroup()
         group1.is_internal_wms = False
         group2 = LayerGroup()
         group2.is_internal_wms = True
         group1.children = [group2]
-        _, errors, stop = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Item '' cannot be in group '' (wrong isInternalWMS).")
-        self.assertFalse(stop)
+        _, errors = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group = LayerGroup()
         group.is_internal_wms = True
         layer = LayerV1()
         layer.layer_type = 'internal WMS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
         self.assertEqual(errors, [
             "The layer '' is not defined in WMS capabilities",
             "The Layer '' is under indented.",
         ])
-        self.assertFalse(stop)
 
         group = LayerGroup()
         group.is_internal_wms = True
         layer = LayerV1()
         layer.layer_type = 'external WMS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Layer '' of type 'external WMS' cannot be in the group ''.")
-        self.assertFalse(stop)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
         group.is_internal_wms = True
         layer = LayerV1()
         layer.layer_type = 'WMTS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Layer '' of type 'WMTS' cannot be in the group ''.")
-        self.assertFalse(stop)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
         group.is_internal_wms = True
         layer = LayerV1()
         layer.layer_type = 'no 2D'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Layer '' of type 'no 2D' cannot be in the group ''.")
-        self.assertFalse(stop)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
         group.is_internal_wms = False
         layer = LayerV1()
         layer.layer_type = 'internal WMS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
-        self._assert_has_error(errors, "Layer '' of type 'internal WMS' cannot be in the group ''.")
-        self.assertFalse(stop)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
         group.is_internal_wms = False
         layer = LayerV1()
         layer.layer_type = 'external WMS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_level=0)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
-        self.assertFalse(stop)
 
         group = LayerGroup()
         group.is_internal_wms = False
         layer = LayerV1()
         layer.layer_type = 'WMTS'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_level=0)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
-        self.assertFalse(stop)
 
         group = LayerGroup()
         group.is_internal_wms = False
         layer = LayerV1()
         layer.layer_type = 'no 2D'
         group.children = [layer]
-        _, errors, stop = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_level=0)
+        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
-        self.assertFalse(stop)
 
     @attr(loginchange=True)
     def test_loginchange(self):

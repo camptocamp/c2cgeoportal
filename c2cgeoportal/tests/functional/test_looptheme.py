@@ -99,7 +99,7 @@ class TestLoopTheme(TestCase):
 
         cache_region.invalidate()
         themes = entry.themes()
-        self.assertEquals(len(themes), 0)
+        self.assertEquals([t['name'] for t in themes], [u'__test_theme'])
 
         cache_region.invalidate()
         themes, errors = entry._themes(None, u'main')
