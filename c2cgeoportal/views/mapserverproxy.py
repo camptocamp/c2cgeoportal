@@ -54,19 +54,21 @@ class MapservProxy:
         self.request = request
         self.settings = request.registry.settings.get('wfs', {})
 
-    def _get_wfs_url(self):
-        if 'mapserv_wfs_url' in self.request.registry.settings and \
-                self.request.registry.settings['mapserv_wfs_url']:
-            return self.request.registry.settings['mapserv_wfs_url']
-        return self.request.registry.settings['mapserv_url']
+    def _get_wms_url(self):
+        return self.request.registry.settings.get("external_mapserv_url") if \
+            self.external else \
+            self.request.registry.settings.get("mapserv_url")
 
-    def _get_external_wfs_url(self):
-        if 'external_mapserv_wfs_url' in self.request.registry.settings and \
-                self.request.registry.settings['external_mapserv_wfs_url']:
-            return self.request.registry.settings['external_mapserv_wfs_url']
-        if 'external_mapserv_url' in self.request.registry.settings and \
-                self.request.registry.settings['external_mapserv_url']:
-            return self.request.registry.settings['external_mapserv_url']
+    def _get_wfs_url(self):
+        internal_url = self.request.registry.settings.get(
+            "mapserv_wfs_url",
+            self.request.registry.settings.get("mapserv_url")
+        )
+        external_url = self.request.registry.settings.get(
+            "external_mapserv_wfs_url",
+            self.request.registry.settings.get("external_mapserv_url")
+        )
+        return external_url if self.external else internal_url
 
     @view_config(route_name='mapserverproxy')
     def proxy(self):
@@ -154,14 +156,12 @@ class MapservProxy:
                     del params['role_id']
 
             if 'service' in self.lower_params and self.lower_params['service'] == u'wfs':
-                _url = self._get_external_wfs_url() if self.external else self._get_wfs_url()
+                _url = self._get_wfs_url()
             else:
-                _url = self.request.registry.settings['external_mapserv_url'] \
-                    if self.external \
-                    else self.request.registry.settings['mapserv_url']
+                _url = self._get_wms_url()
         else:
             # POST means WFS
-            _url = self._get_external_wfs_url() if self.external else self._get_wfs_url()
+            _url = self._get_wfs_url()
 
         role_id = None if self.user is None else \
             self.user.parent_role.id if self.external else self.user.role.id
@@ -236,7 +236,7 @@ class MapservProxy:
         if self.lower_params.get('request') == 'getcapabilities':
             content = filter_capabilities(
                 content, role_id, self.lower_params.get('service') == 'wms',
-                self.request.registry.settings['mapserv_url'],
+                self._get_wms_url(),
                 self.request.headers,
                 self.request.registry.settings.get('proxies', None)
             )

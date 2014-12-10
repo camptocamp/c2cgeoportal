@@ -45,6 +45,10 @@ from c2cgeoportal.tests.functional import (  # noqa
 class TestMobileDesktop(TestCase):
 
     def setUp(self):  # noqa
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
+        self.maxDiff = None
+
         from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface
 
         main = Interface(name=u'main')
@@ -125,19 +129,19 @@ class TestMobileDesktop(TestCase):
         self.assertEqual(
             response_vars['themes'],
             [{
-                u"name": u"__test_theme",
-                u"icon": u"/dummy/static/url",
-                u"layers": [u"__test_mobile_only_layer", "__test_layer"],
-                u"allLayers": [
-                    {u"name": u"__test_mobile_only_layer"},
-                    {u"name": u"__test_layer"}
+                "name": u"__test_theme",
+                "icon": u"",
+                "layers": [u"__test_mobile_only_layer", "__test_layer"],
+                "allLayers": [
+                    {"name": u"__test_mobile_only_layer"},
+                    {"name": u"__test_layer"}
                 ]
             }, {
-                u"name": u"__test_mobile_only_theme",
-                u"icon": u"/dummy/static/url",
-                u"layers": [u"__test_layer"],
-                u"allLayers": [
-                    {u"name": u"__test_layer"}
+                "name": u"__test_mobile_only_theme",
+                "icon": u"",
+                "layers": [u"__test_layer"],
+                "allLayers": [
+                    {"name": u"__test_layer"}
                 ]
             }]
         )
@@ -154,30 +158,29 @@ class TestMobileDesktop(TestCase):
         }
         response_vars = entry.mobileconfig()
 
-        self.assertEqual(len(response_vars['themes']), 3)
         self.assertEqual(
             response_vars['themes'],
             [{
-                u"name": u"__test_theme",
-                u"icon": u"/dummy/static/url",
-                u"layers": [u"__test_mobile_only_layer", "__test_layer"],
-                u"allLayers": [
-                    {u"name": u"__test_mobile_only_layer"},
-                    {u"name": u"__test_layer"}
+                "name": u"__test_theme",
+                "icon": u"",
+                "layers": [u"__test_mobile_only_layer", u"__test_layer"],
+                "allLayers": [
+                    {"name": u"__test_mobile_only_layer"},
+                    {"name": u"__test_layer"}
                 ]
             }, {
-                u"name": u"__test_mobile_only_theme",
-                u"icon": u"/dummy/static/url",
-                u"layers": [u"__test_layer"],
-                u"allLayers": [
-                    {u"name": u"__test_layer"}
+                "name": u"__test_mobile_only_theme",
+                "icon": u"",
+                "layers": [u"__test_layer"],
+                "allLayers": [
+                    {"name": u"__test_layer"}
                 ]
             }, {
-                u"name": u"__test_mobile_private_theme",
-                u"icon": u"/dummy/static/url",
-                u"layers": [u"__test_layer"],
-                u"allLayers": [
-                    {u"name": u"__test_layer"}
+                "name": u"__test_mobile_private_theme",
+                "icon": u"",
+                "layers": [u"__test_layer"],
+                "allLayers": [
+                    {"name": u"__test_layer"}
                 ]
             }]
         )

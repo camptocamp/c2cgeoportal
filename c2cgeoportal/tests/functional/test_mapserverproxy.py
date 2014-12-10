@@ -689,6 +689,7 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(unicode(response.body.decode('utf-8')).find(u'éàè') < 0)
         self.assertTrue(unicode(response.body.decode('utf-8')).find(u'123') > 0)
 
+    @attr(get_feature_feature_id_get=True)
     def test_get_feature_feature_id_get(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 

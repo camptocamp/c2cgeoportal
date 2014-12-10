@@ -52,6 +52,8 @@ log = logging.getLogger(__name__)
 class TestEntryView(TestCase):
 
     def setUp(self):  # noqa
+        # Always see the diff
+        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
@@ -846,10 +848,10 @@ class TestEntryView(TestCase):
         layer.layer_type = "internal WMS"
         layer.image_type = "image/png"
         layer.style = "my-style"
-        layer.kml = "tiwms.kml"
+        layer.kml = "static:///tiwms.kml"
         layer.legend = True
         layer.legend_rule = "rule"
-        layer.legend_image = "legend:static/tiwms-legend.png"
+        layer.legend_image = "static://legend:static/tiwms-legend.png"
         layer.is_legend_expanded = False
         layer.min_resolution = 10
         layer.max_resolution = 1000
@@ -864,12 +866,12 @@ class TestEntryView(TestCase):
             'isChecked': True,
             'icon': '/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&'
             'REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule',
-            'type': u'internal WMS',
+            'type': 'internal WMS',
             'imageType': 'image/png',
             'style': 'my-style',
-            'kml': u'/dummy/static/test_layer:static/tiwms.kml',
+            'kml': '/dummy/static/test_layer:static/tiwms.kml',
             'legend': True,
-            'legendImage': u'/dummy/static/legend:static/tiwms-legend.png',
+            'legendImage': '/dummy/static/legend:static/tiwms-legend.png',
             'isLegendExpanded': False,
             'minResolutionHint': 10,
             'maxResolutionHint': 1000,
@@ -883,7 +885,7 @@ class TestEntryView(TestCase):
         layer.id = 20
         layer.name = 'test external WMS'
         layer.is_checked = False
-        layer.icon = "tewms.png"
+        layer.icon = "static:///tewms.png"
         layer.layer_type = "external WMS"
         layer.url = "http://example.com"
         layer.image_type = "image/jpeg"
@@ -898,7 +900,7 @@ class TestEntryView(TestCase):
             'name': 'test external WMS',
             'icon': '/dummy/static/test_layer:static/tewms.png',
             'isChecked': False,
-            'type': u'external WMS',
+            'type': 'external WMS',
             'url': 'http://example.com',
             'imageType': 'image/jpeg',
             'isSingleTile': True,
@@ -1015,7 +1017,7 @@ class TestEntryView(TestCase):
             'id': 20,
             'name': u'test no 2D',
             'isChecked': False,
-            'type': u'no 2D',
+            'type': 'no 2D',
             'legend': False,
             'isLegendExpanded': False,
             'metadataURL': u'http://example.com/wmsfeatures.metadata',
@@ -1057,7 +1059,7 @@ class TestEntryView(TestCase):
         self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation()), ({
             'id': 20,
             'name': u'test_wmsfeaturesgroup',
-            'type': u'internal WMS',
+            'type': 'internal WMS',
             'isChecked': False,
             'legend': False,
             'isLegendExpanded': False,
