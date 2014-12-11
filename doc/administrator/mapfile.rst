@@ -353,7 +353,7 @@ interface with for instance the following value for the given role:
 
    We also be able to use the ``role_id`` and ``user_id`` as
    variable substitution, but they are not avalable for cached query like:
-   ``GetCapabilities``, ``GetLegendGraphique``, ``DescribeFeatureType``.
+   ``GetCapabilities``, ``GetLegendGraphic``, ``DescribeFeatureType``.
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
 
