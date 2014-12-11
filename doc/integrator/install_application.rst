@@ -88,7 +88,7 @@ We use a specific user for the application, ``www-data`` by default.
 
    .. prompt:: bash
 
-        sudo -u postgres createuser -P "www-data"'
+        sudo -u postgres createuser -P <db_user>
 
 Give the rights to the user:
 
