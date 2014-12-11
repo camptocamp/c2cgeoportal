@@ -551,7 +551,7 @@ class Shorturl(Base):
     __table_args__ = {'schema': _schema + "_static"}
     __acl__ = [DENY_ALL]
     id = Column(types.Integer, primary_key=True)
-    url = Column(types.Unicode(1000))
+    url = Column(types.Unicode)
     ref = Column(types.String(20), index=True, unique=True, nullable=False)
     creator_email = Column(types.Unicode(200))
     creation = Column(types.DateTime)
