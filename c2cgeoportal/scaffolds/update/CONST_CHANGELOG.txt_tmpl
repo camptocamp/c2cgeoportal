@@ -9,7 +9,7 @@ Version 1.5.2
    -    App.WFSTypes = '${wfs_types | n}'.split(',');
    +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
-2. In <package>/template/viewer.js file, for plugins ``cgxp_layertree`` and ``cgxp_login``, 
+2. In the <package>/templates/viewer.js and <package>/templates/edit.js files, for plugins ``cgxp_layertree`` and ``cgxp_login``, 
    add the ``events`` parameter:
         
         ...
@@ -20,7 +20,6 @@ Version 1.5.2
         ...
         ptype: 'cgxp_login',
         actionTarget: 'center.tbar',
-        toggleGroup: 'maptools',
     +   events: EVENTS,
         ...
         
