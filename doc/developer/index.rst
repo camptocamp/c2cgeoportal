@@ -16,6 +16,7 @@ Content:
 
     development_procedure
     server_side
+    webservices
     client_side
     debugging
     build_release
