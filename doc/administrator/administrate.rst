@@ -8,19 +8,63 @@ The administration interface is located at ``http://<server>/<project>/admin``.
 Authentication for the administration interface is done through the main application interface. Role ``role_admin`` is
 required.
 
-*To Be Done*
+Layers
+------
 
-Layer
------
+In the version 2 we split the layer table in 3 tables: 'layer_internal_wms',
+'layer_external_wms', 'layer_wmts', and we copy the previous layer table in 'layerv1'.
 
-The layers in the admin interface has the following attributes:
+And the 'order' will be moved in the relation of the tree.
+
+All layer type
+~~~~~~~~~~~~~~
+
+All the layers in the admin interface have the following attributes:
  *  ``Name``: the name of the WMS layer/group, or he WMTS layer.
     It also used throw OpenLayers.i18n to display the name on the layers tree.
- *  ``Order``: used to order the layers and group on the layer tree.
- *  ``Metadata URL``: optional, with WMTS if it's empty it will
-    be get throw the capabilities.
  *  ``Public``: make the layer public, also it is accessible
     throw the ``Restriction areas``.
+ *  ``Restrictions area``: the areas through which the user can see the layer.
+ *  ``Related Postgres table``: the related postgres table,
+    used by the :ref:`administrator_editing`.
+ *  ``Attributes to exclude``: the list of attributes that shouldn't appear in
+    the :ref:`administrator_editing` so that they cannot be modified by end user.
+ *  ``Parents``: the groups and theme in which the layer is.
+ *  ``UI Metadata``: Additional metadata used by the UI.
+
+Internal WMS layer
+~~~~~~~~~~~~~~~~~~
+On internal WMS layers we have the following specific attributes:
+ *  ``Layers``: the WMS layers.
+ *  ``Image type``: the MIME type of the images (e.g.: 'image/png').
+ *  ``Style``: the used style, can be empty.
+ *  ``Time mode``: used for the WMS time slider.
+
+External WMS layer
+~~~~~~~~~~~~~~~~~~
+On external WMS layers we have the following specific attributes:
+ *  ``Layers``: the WMS layers.
+ *  ``Base URL``: the base URL of the WMS server.
+ *  ``Image type``: the MIME type of the images (e.g.: 'image/png').
+ *  ``Style``: the used style, can be empty.
+ *  ``Single tile``: use the single tile mode.
+ *  ``Time mode``: used for the WMS time slider.
+
+WMTS layer
+~~~~~~~~~~
+On WMTS layers we have the following specific attributes:
+ *  ``GetCapabilities URL``: the URL to the WMTS capabilities.
+ *  ``Layer``: the WMTS layer.
+ *  ``Style``: the used style, if not present we use the default style.
+ *  ``Matrix set``: the used matrix set, if there's only one matrix set
+    in the capabilities it can be empty.
+ *  ``WMTS Dimensions``: the dimensions, if not provided default values are used.
+
+layerv1
+~~~~~~~
+
+The layers in the admin interface have the following attributes:
+ *  ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
  *  ``Visible``: if it's false the layer is just ignored.
  *  ``Checked``: the layer is checked by default.
  *  ``Icon``: icon on the layer tree.
@@ -35,13 +79,7 @@ The layers in the admin interface has the following attributes:
  *  ``Identifier attribute field``: field used to identify a feature from the
     layer, e.g.: 'name', used by
     `FeaturesWindow <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FeaturesWindow.html>`_.
- *  ``Related Postgres table``: the related postgres table,
-    used by the :ref:`administrator_editing`.
- *  ``Attributes to exclude``: the list of attributes that shouldn't appear in
-    the :ref:`administrator_editing` so that they cannot be modified by end
-    user.
  *  ``Restrictions area``: the areas throw witch the user can see the layer.
- *  ``Parents``: the groups and theme in witch the layer is.
 
 On ``internal WMS`` layer we have the following specific attributes:
  *  ``Image type``: the type of the images.
@@ -62,7 +100,7 @@ On ``WMTS`` layer we have the following specific attributes:
  *  ``Style``: the used style, if not present we use the default style.
  *  ``Dimensions``: a JSON string that gives the dimensions,
     e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
- *  ``Matrix set``: the used matrix set, if there only one matrix set
+ *  ``Matrix set``: the used matrix set, if there's only one matrix set
     in the capabilities it can be empty.
  *  ``WMS server URL``: optional, URL to a WMS server to use for printing
     and querying. The URL to the internal WMS is used if this field is not
@@ -84,10 +122,22 @@ LayerGroup
  *  ``Name``: used throw OpenLayers.i18n to display the name on the layers tree.
  *  ``Order``: used to order the layers and group on the layer tree.
  *  ``Metadata URL``: optional.
- *  ``Expanded``: is expanded on the layer tree by default.
+ *  ``Expanded``: is expanded on the layer tree by default (deprecated in v2).
  *  ``Internal WMS``: if true it can include only ``Internal WMS`` layers,
     if false it can include only ``external WMS`` or ``WMTS`` layers.
- *  ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box.
+ *  ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box (deprecated in v2).
 
-Add users
----------
+URL
+---
+
+In the admin interface we can use in all the URL the following special schema:
+
+* ``static``: to use a static route, 
+  * 'static:///icon.png' will get the URL of the 'static' static route of the project.
+  * 'static://c2cgeoportal/icon.png' will get the URL of the 'static' static route of 'c2cgeoportal'.
+  * 'static://prj:img/icon.png' will get the URL of the 'img' static route of 'prj'.
+
+* ``config``: to get the server name from the url, 
+  if we use 'config://my_server/icon.png', with the config: 
+  `servers: { "my_server": "http://example.com/test" }`
+  we will get the URL: 'http://example.com/test/icon.png'
