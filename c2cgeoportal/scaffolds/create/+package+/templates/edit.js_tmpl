@@ -99,6 +99,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_layertree",
             id: "layertree",
+            events: EVENTS,
             outputConfig: {
                 header: false,
                 flex: 1,
@@ -122,6 +123,7 @@ Ext.onReady(function() {
         {
             ptype: "cgxp_login",
             actionTarget: "map.tbar",
+            events: EVENTS,
     % if user:
             username: "${user.username}",
     % endif
