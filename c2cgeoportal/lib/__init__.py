@@ -28,7 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from urlparse import urljoin
+import re
+from urlparse import urlparse, urljoin
 from urllib import quote
 
 from pyramid.interfaces import IRoutePregenerator, \
@@ -36,6 +37,36 @@ from pyramid.interfaces import IRoutePregenerator, \
 from zope.interface import implementer
 from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo
+
+
+def get_url(url, request, default=None, errors=None):
+    if url is None:
+        return default
+
+    if re.match("^[a-z]*://", url) is None:
+        return url
+
+    obj = urlparse(url)
+    if obj.scheme == 'static':
+        netloc = obj.netloc
+        if netloc == '':
+            netloc = request.registry.settings['project'] + ':static'
+        elif ':' not in netloc:
+            netloc += ':static'
+
+        return request.static_url(netloc + obj.path)
+
+    if obj.scheme == 'config':
+        server = request.registry.settings.get('servers', {}).get(obj.netloc, None)
+        if server is None:
+            if default is None and errors is not None:
+                errors.append("The server '%s' isn't found in the config" % obj.netloc)
+            return default
+        else:
+            return "%s%s?%s" % (server, obj.path, obj.query)
+
+    else:
+        return url
 
 
 def get_setting(settings, path, default=None):

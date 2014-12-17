@@ -50,7 +50,7 @@ from owslib.wms import WebMapService
 from xml.dom.minidom import parseString
 from math import sqrt
 
-from c2cgeoportal.lib import get_setting, get_protected_layers_query
+from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url
 from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
@@ -202,24 +202,6 @@ class Entry(object):
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
-    def _get_icon_path(self, icon):
-        if not icon:
-            return None  # pragma: no cover
-        icon = unicode(icon)
-        # test full URL
-        if not icon[0:4] == 'http':
-            try:
-                # test full resource ref
-                if icon.find(':') < 0:
-                    if icon[0] is not '/':
-                        icon = '/' + icon
-                    icon = self.settings['project'] + ':static' + icon
-                icon = self.request.static_url(icon)
-            except ValueError:  # pragma: no cover
-                log.exception('can\'t generate url for icon: %s' % icon)
-                return None
-        return icon
-
     def _layer(self, layer, wms, wms_layers, time):
         errors = []
         l = {
@@ -227,7 +209,7 @@ class Entry(object):
             'metadata': {}
         }
         for metadata in layer.ui_metadata:
-            l['metadata'][metadata.name] = metadata.value
+            l['metadata'][metadata.name] = get_url(metadata.value, self.request, errors=errors)
         if layer.geo_table:
             self._fill_editable(l, layer)
 
@@ -245,19 +227,19 @@ class Entry(object):
             if layer.disclaimer:
                 l['disclaimer'] = layer.disclaimer
             if layer.icon:
-                l['icon'] = self._get_icon_path(layer.icon)
+                l['icon'] = get_url(layer.icon, self.request, errors=errors)
             if layer.kml:
-                l['kml'] = self._get_icon_path(layer.kml)
+                l['kml'] = get_url(layer.kml, self.request, errors=errors)
             if layer.metadata_url:
                 l['metadataURL'] = layer.metadata_url
             if layer.legend_image:
-                l['legendImage'] = self._get_icon_path(layer.legend_image)
+                l['legendImage'] = get_url(layer.legend_image, self.request, errors=errors)
 
             if layer.layer_type == "internal WMS":
                 self._fill_internal_wms(l, layer, wms, wms_layers, errors)
                 errors += self._merge_time(time, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
-                self._fill_external_wms(l, layer)
+                self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
                 self._fill_wmts(l, layer, wms, wms_layers, errors)
         elif isinstance(layer, LayerInternalWMS):
@@ -266,7 +248,7 @@ class Entry(object):
             errors += self._merge_time(time, layer, wms, wms_layers)
         elif isinstance(layer, LayerExternalWMS):
             l["type"] = "external WMS"
-            self._fill_external_wms(l, layer, version=2)
+            self._fill_external_wms(l, layer, errors, version=2)
         elif isinstance(layer, LayerWMTS):
             l["type"] = "WMTS"
             self._fill_wmts(l, layer, wms, wms_layers, errors, version=2)
@@ -373,7 +355,7 @@ class Entry(object):
                 "The layer '%s' is not defined in WMS capabilities" % layer.name
             )
 
-    def _fill_external_wms(self, l, layer, version=1):
+    def _fill_external_wms(self, l, layer, errors, version=1):
         self._fill_wms(l, layer, version=version)
         if version == 1:
             self._fill_legend_rule_query_string(l, layer, layer.url)
@@ -383,11 +365,11 @@ class Entry(object):
             if layer.max_resolution is not None:
                 l['maxResolutionHint'] = layer.max_resolution
 
-        l['url'] = layer.url
+        l['url'] = get_url(layer.url, self.request, errors=errors)
         l['isSingleTile'] = layer.is_single_tile
 
     def _fill_wmts(self, l, layer, wms, wms_layers, errors, version=1):
-        l['url'] = layer.url
+        l['url'] = get_url(layer.url, self.request, errors=errors)
 
         if layer.style:
             l['style'] = layer.style
@@ -532,7 +514,7 @@ class Entry(object):
                     'isBaseLayer': group.is_base_layer,
                 })
             for metadata in group.ui_metadata:
-                g['metadata'][metadata.name] = metadata.value
+                g['metadata'][metadata.name] = get_url(metadata.value, self.request, errors=errors)
             if version == 1 and group.metadata_url:
                 g['metadataURL'] = group.metadata_url
 
@@ -598,10 +580,13 @@ class Entry(object):
 
             # test if the theme is visible for the current user
             if len(children) > 0:
-                icon = self._get_icon_path(theme.icon) \
-                    if theme.icon \
-                    else self.request.static_url(
-                        'c2cgeoportal:static/images/blank.gif')
+                icon = get_url(
+                    theme.icon, self.request,
+                    self.request.static_url(
+                        'c2cgeoportal:static/images/blank.gif'
+                    ),
+                    errors=errors
+                )
 
                 t = {
                     'name': theme.name,
@@ -615,7 +600,9 @@ class Entry(object):
                         'in_mobile_viewer': theme.is_in_interface('mobile'),
                     })
                 for metadata in theme.ui_metadata:
-                    t['metadata'][metadata.name] = metadata.value
+                    t['metadata'][metadata.name] = get_url(
+                        metadata.value, self.request, errors=errors
+                    )
                 export_themes.append(t)
 
         return export_themes, errors

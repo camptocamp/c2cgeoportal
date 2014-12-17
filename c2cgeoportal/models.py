@@ -553,7 +553,7 @@ class LayerInternalWMS(Layer):
     id = Column(
         Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
     )
-    layer = Column(Unicode, label=_(u'Layer'))
+    layer = Column(Unicode, label=_(u'Layers'))
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
@@ -584,7 +584,7 @@ class LayerExternalWMS(Layer):
         Integer, ForeignKey(_schema + '.layer.id'), primary_key=True
     )
     url = Column(Unicode, label=_(u'Base URL'))
-    layer = Column(Unicode, label=_(u'Layer'))
+    layer = Column(Unicode, label=_(u'Layers'))
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
