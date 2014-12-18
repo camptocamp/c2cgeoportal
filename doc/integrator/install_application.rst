@@ -35,6 +35,8 @@ and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (*restricted
 layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
+.. _integrator_install_application_create_database:
+
 Create the database
 ~~~~~~~~~~~~~~~~~~~
 
