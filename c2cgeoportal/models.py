@@ -335,7 +335,9 @@ class LayergroupTreeitem(Base):
     group = relationship(
         'TreeGroup',
         backref=backref(
-            'children_relation', cascade='save-update,merge,delete'
+            'children_relation',
+            order_by="LayergroupTreeitem.ordering",
+            cascade='save-update,merge,delete',
         ),
         primaryjoin="LayergroupTreeitem.treegroup_id==TreeGroup.id",
     )
@@ -774,9 +776,9 @@ class UIMetadata(Base):
     )
     item = relationship("TreeItem", backref='ui_metadata')
 
-    def __init__(self, name='', description=''):
+    def __init__(self, name='', value=''):
         self.name = name
-        self.description = description
+        self.value = value
 
     def __unicode__(self):  # pragma: nocover
         return self.name or u''
@@ -802,9 +804,9 @@ class WMTSDimension(Base):
     )
     layer = relationship("LayerWMTS", backref='dimensions')
 
-    def __init__(self, name='', description=''):
+    def __init__(self, name='', value=''):
         self.name = name
-        self.description = description
+        self.value = value
 
     def __unicode__(self):  # pragma: nocover
         return self.name or u''
