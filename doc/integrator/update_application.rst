@@ -260,6 +260,52 @@ steps:
 
         git add <file1> <file2> ...
 
+Migrating database to Postgis 2.x
+---------------------------------
+
+When migrating the database from Postgis 1.x to 2.x using the postgis_restore.pl 
+script, the table ``<schema_name>.layer`` (and related index and foreign key) 
+will cause some problem because the name is conflicting with an existing table 
+with the same name in the Postgis topology schema.
+
+The easiest workaroud is to rename the table, index and foreign key before 
+creating the Postgres dump and reimporting the data with postgis_restore.pl. 
+Then renaming them back after the restoration.
+
+First rename all the conflicting items:
+
+   .. prompt:: sql
+
+      ALTER INDEX layer_pkey RENAME TO layertmp_pkey;
+      ALTER TABLE layer ADD CONSTRAINT layertmp_id_fkey FOREIGN KEY (id) REFERENCES treeitem(id);
+      ALTER TABLE layer DROP CONSTRAINT layer_id_fkey;
+      ALTER TABLE layer RENAME TO layertmp;
+
+.. note::
+  We can't rename a foreign key, we have to create a new one before removing the 
+  old one.
+
+Then you can create the database dump and run postgis_restore.pl to restore 
+it in your Postgis 2.x database (exemple using Postgres 9.1, Postgis 2.1):
+
+    .. prompt:: bash
+      
+       createdb -T template_postgis <database_name>
+       perl /usr/share/Postgresql/9.1/contrib/Postgis-2.1/postgis_restore.pl -v <dump_name>.dump | psql <database_name>
+
+.. note::
+  If you dont have a template_postgis database, you need to add Postgis support 
+  manually, refer to :ref:`integrator_install_application_create_database`.
+
+Once restored, set the original names back:
+
+   .. prompt:: sql
+
+      ALTER TABLE layertmp RENAME TO layer;
+      ALTER INDEX layertmp_pkey RENAME TO layer_pkey;
+      ALTER TABLE layer ADD CONSTRAINT layer_id_fkey FOREIGN KEY (id) REFERENCES treeitem(id);
+      ALTER TABLE layer DROP CONSTRAINT layertmp_id_fkey;
+
 
 Test and commit
 ---------------
