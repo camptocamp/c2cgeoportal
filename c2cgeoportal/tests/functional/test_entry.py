@@ -1224,7 +1224,9 @@ class TestEntryView(TestCase):
 
         group1 = LayerGroup()
         group1.name = 'block'
+        group1.id = 11
         group2 = LayerGroup()
+        group2.id = 12
         group2.name = 'node'
         group2.metadata_url = 'http://example.com/group.metadata'
         layer = LayerV1()
@@ -1239,12 +1241,14 @@ class TestEntryView(TestCase):
         group1.children = [group2]
         group2.children = [layer]
         self.assertEqual(entry._group('', group1, [layer.name], wms=None, wms_layers=[], time=TimeInformation()), ({
+            'id': 11,
             'isExpanded': False,
             'isInternalWMS': True,
             'name': 'block',
             'isBaseLayer': False,
             'metadata': {},
             'children': [{
+                'id': 12,
                 'isExpanded': False,
                 'isInternalWMS': True,
                 'name': 'node',

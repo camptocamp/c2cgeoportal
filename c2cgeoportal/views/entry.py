@@ -205,6 +205,7 @@ class Entry(object):
     def _layer(self, layer, wms, wms_layers, time):
         errors = []
         l = {
+            'id': layer.id,
             'name': layer.name,
             'metadata': {}
         }
@@ -215,7 +216,6 @@ class Entry(object):
 
         if isinstance(layer, LayerV1):
             l.update({
-                'id': layer.id,
                 'type': layer.layer_type,
                 'public': layer.public,
                 'legend': layer.legend,
@@ -507,6 +507,7 @@ class Entry(object):
 
         if len(children) > 0:
             g = {
+                'id': group.id,
                 'name': group.name,
                 'children': children,
                 'metadata': {},
@@ -593,6 +594,7 @@ class Entry(object):
                 )
 
                 t = {
+                    'id': theme.id,
                     'name': theme.name,
                     'icon': icon,
                     'children': children,
