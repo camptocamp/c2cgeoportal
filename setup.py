@@ -40,8 +40,6 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    # On Travis pip would use setuptools 2.0.
-    'setuptools>=7.0',
     # Required by FormAlchemy with pip
     'WebHelpers2>=2.0rc1',
     'pyramid<=1.5.99,>=1.5.0',
@@ -60,7 +58,6 @@ install_requires = [
     'FormAlchemy',
     'GeoFormAlchemy2>=2.0dev2',
     'OWSLib>=0.6.0',
-    'tilecloud-chain>=1.0.0dev',
     'dogpile.cache',
     'Paste',
     'PasteDeploy',
@@ -70,7 +67,6 @@ install_requires = [
     # WMST support
     'isodate',
     'JSTools',
-    'zc.buildout',
     'couchdbkit',  # missing dependency of formalchemy
     'pip',
 ]

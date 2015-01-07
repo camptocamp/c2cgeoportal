@@ -90,25 +90,11 @@ Change into the ``c2cgeoportal`` directory and initialize the submodules:
     cd c2cgeoportal
     git submodule update --init
 
-Bootstrap Buildout:
-
-.. prompt:: bash
-
-    python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
-
 Install and build c2cgeoportal:
 
 .. prompt:: bash
 
-    ./buildout/bin/buildout -c buildout_dev.cfg
-
-Install the development requirement:
-
-.. prompt:: bash
-
-   ./buildout/bin/pip install -r dev-requirements.txt
+    make build
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
@@ -122,7 +108,7 @@ To run the unit tests do this:
 
 .. prompt:: bash
 
-    ./buildout/bin/python setup.py nosetests -a '!functional'
+    .build/venv/bin/python setup.py nosetests -a '!functional'
 
 Functional tests
 ................
@@ -175,8 +161,7 @@ To create the ``main`` and ``main_static`` schema:
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
 
-Now edit ``buildout_dev.cfg`` (or create your own buildout config file
-extending ``buildout_dev.cfg``) and set the ``dbuser``, ``dbpassword``,
+Now edit ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
 
 ``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
@@ -185,10 +170,23 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
 .. note::
 
+   On some server like 'mapfish-geoportal-demo' a configuration is already exists,
+   you can directly do:
+
+   .. prompt:: bash
+
+      # Regenerate files that depends on vars:
+      touch vars_mapfish-geoportal-demo.yaml
+      make -f mapfish-geoportal-demo.mk build
+
+.. note::
+
     On Camptocamp servers ``mapserv`` is usually not available on the
     ``localhost`` virtual host. One option involves creating a specific script
     alias for ``mapserv``, for example by adding something like the following
-    to your ``/var/www/<virtual_host_name>/conf/<your_login>.conf`` file::
+    to your ``/var/www/<virtual_host_name>/conf/<your_login>.conf`` file:
+
+    .. code::
 
         ScriptAlias /elemoine-mapserv /usr/lib/cgi-bin/mapserv
         <Location /elemoine-mapserv>
@@ -203,28 +201,19 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
     ``http://mapfish-geoportal-demo/elemoine-mapserv``.
 
 
-Once done with the editing of ``buildout_dev.cfg``, run the ``template`` part
+Once done with the editing of ``vars.yaml``, run ``make``
 to generate ``c2cgeoportal/tests/functional/test.ini`` and
 ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``:
 
 .. prompt:: bash
 
-    ./buildout/bin/buildout -c buildout_dev.cfg install template
-
-.. warning::
-
-    If you change the configuration in ``buildout_dev.cfg`` you may need to
-    manually remove ``c2cgeoportal/tests/functional/test.ini`` and
-    ``c2cgeoportal/tests/functional/c2cgeoportal_test.map`` before running the
-    ``template`` part again. This is due to an unknown issue with the
-    ``z3c.recipe.filetemplate`` recipe. See
-    https://github.com/camptocamp/c2cgeoportal/issues/145.
+    make build
 
 You can now run the functional tests with this:
 
 .. prompt:: bash
 
-    ./buildout/bin/python setup.py nosetests -a functional
+    .build/venv/bin/python setup.py nosetests -a functional
 
 All tests
 .........
@@ -233,13 +222,13 @@ To run all the tests do this:
 
 .. prompt:: bash
 
-    ./buildout/bin/python setup.py nosetests
+    make tests
 
 To run a specific test use the ``--tests`` switch. For example:
 
 .. prompt:: bash
 
-    ./buildout/bin/python setup.py nosetests --tests \
+    .build/venv/bin/python setup.py nosetests --tests \
             c2cgeoportal/tests/test_echoview.py:test_json_base64_encode
 
 Adding tests
@@ -436,7 +425,7 @@ And run validation:
 
 .. prompt:: bash
 
-    ./buildout/bin/buildout -c buildout_dev.cfg install validate-py
+    make checks
 
 Dependencies
 ------------

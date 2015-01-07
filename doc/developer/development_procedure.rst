@@ -73,7 +73,7 @@ Pull requests
 ~~~~~~~~~~~~~
 
 Making a pull request is done via the GitHub web interface. Open your branch in
-the browser (e.g. https://github.com/elemoine/c2cgeoportal/tree/buildout) and
+the browser (e.g. https://github.com/camptocamp/c2cgeoportal/tree/make) and
 press the ``Pull Request`` button.
 
 Once a pull request is merged it is good practise to add a comment in the pull
