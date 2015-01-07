@@ -60,7 +60,7 @@ install_requires = [
     'FormAlchemy',
     'GeoFormAlchemy2>=2.0dev2',
     'OWSLib>=0.6.0',
-    'tilecloud-chain>=0.2',
+    'tilecloud-chain>=1.0.0dev',
     'dogpile.cache',
     'Paste',
     'PasteDeploy',
