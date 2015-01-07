@@ -205,6 +205,7 @@ class Entry(object):
     def _layer(self, layer, wms, wms_layers, time):
         errors = []
         l = {
+            'id': layer.id,
             'name': layer.name,
             'metadata': {}
         }
@@ -215,7 +216,6 @@ class Entry(object):
 
         if isinstance(layer, LayerV1):
             l.update({
-                'id': layer.id,
                 'type': layer.layer_type,
                 'public': layer.public,
                 'legend': layer.legend,
@@ -456,7 +456,9 @@ class Entry(object):
             isinstance(layer, LayerInternalWMS) or \
             isinstance(layer, LayerV1) and layer.layer_type == 'internal WMS'
 
-    def _group(self, group, layers, depth=0, min_levels=1, catalogue=False, version=1, **kwargs):
+    def _group(
+            self, path, group, layers, depth=1, min_levels=1,
+            catalogue=False, version=1, **kwargs):
         children = []
         errors = []
 
@@ -473,8 +475,9 @@ class Entry(object):
                 if type(group) == Theme or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        tree_item, layers, depth, min_levels=min_levels,
-                        catalogue=catalogue, **kwargs
+                        "%s/%s" % (path, tree_item.name),
+                        tree_item, layers, depth=depth, min_levels=min_levels,
+                        catalogue=catalogue, version=version, **kwargs
                     )
                     errors += gp_errors
                     if gp is not None:
@@ -485,16 +488,17 @@ class Entry(object):
                         (tree_item.name, group.name)
                     )
             elif self._layer_included(tree_item, version):
-                if (tree_item in layers):
+                if (tree_item.name in layers):
                     if (catalogue or group.is_internal_wms ==
                             self._is_internal_wms(tree_item)):
                         l, l_errors = self._layer(tree_item, **kwargs)
                         errors += l_errors
                         if depth < min_levels:
-                            errors.append(
-                                "The Layer '%s' is under indented." % tree_item.name
-                            )
-                        children.append(l)
+                            errors.append("The Layer '%s' is under indented (%i/%i)." % (
+                                path + "/" + tree_item.name, depth, min_levels
+                            ))
+                        else:
+                            children.append(l)
                     else:
                         errors.append(
                             "Layer '%s' cannot be in the group '%s' (internal/external mix)." %
@@ -503,6 +507,7 @@ class Entry(object):
 
         if len(children) > 0:
             g = {
+                'id': group.id,
                 'name': group.name,
                 'children': children,
                 'metadata': {},
@@ -525,10 +530,10 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _layers(self, role_id, version, interface):
         query = self._create_layer_query(role_id, version)
-        query = query.join(Layer.interfaces)
         if interface is not None:
+            query = query.join(Layer.interfaces)
             query = query.filter(Interface.name == interface)
-        return query.all()
+        return [l.name for l in query.all()]
 
     @cache_region.cache_on_arguments()
     def _wms_layers(self):
@@ -589,6 +594,7 @@ class Entry(object):
                 )
 
                 t = {
+                    'id': theme.id,
                     'name': theme.name,
                     'icon': icon,
                     'children': children,
@@ -636,6 +642,7 @@ class Entry(object):
             if type(item) == LayerGroup:
                 time = TimeInformation()
                 gp, gp_errors = self._group(
+                    "%s/%s" % (theme.name, item.name),
                     item, layers, time=time, wms=wms, wms_layers=wms_layers,
                     version=version, catalogue=catalogue, min_levels=min_levels
                 )
@@ -646,7 +653,11 @@ class Entry(object):
                         gp.update({"time": time.to_dict()})
                     children.append(gp)
             elif self._layer_included(item, version):
-                if item in layers:
+                if min_levels > 0:
+                    errors.append("The Layer '%s' cannot be directly in the theme '%s' (0/%i)." % (
+                        item.name, theme.name, min_levels
+                    ))
+                elif item.name in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(
                         item, time=time, wms=wms, wms_layers=wms_layers
@@ -1142,7 +1153,7 @@ class Entry(object):
         elif self.request.client_addr != '127.0.0.1':
             role_id = None
 
-        interface = self.request.params.get("interface", None)
+        interface = self.request.params.get("interface", "main")
         version = int(self.request.params.get("version", 1))
         catalogue = self.request.params.get("catalogue", "false") == "true"
         min_levels = int(self.request.params.get("min_levels", 1))
@@ -1152,19 +1163,23 @@ class Entry(object):
             items, errors = self._themes(
                 role_id, interface, True, version, catalogue, min_levels
             )
+            return items if version == 1 else {
+                "items": items,
+                "errors": errors
+            }
         else:
             time = TimeInformation()
             layers = self._layers(role_id, version, interface)
             wms, wms_layers = self._wms_layers()
-            item = DBSession.query(LayerGroup).filter(LayerGroup.name.eq_(group))
-            items, errors, stop = self._group(
-                item, layers, time, wms=wms, wms_layers=wms_layers, catalogue=catalogue
+            lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
+            item, errors = self._group(
+                lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers,
+                catalogue=catalogue, version=version
             )
-
-        return items if version == 1 else {
-            "items": items,
-            "errors": errors
-        }
+            return {
+                "item": item,
+                "errors": errors
+            }
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):

@@ -49,7 +49,7 @@ class TestMobileDesktop(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface
+        from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface, LayerGroup
 
         main = Interface(name=u'main')
         mobile = Interface(name=u'mobile')
@@ -63,23 +63,31 @@ class TestMobileDesktop(TestCase):
         desktop_only_layer = LayerV1(name=u'__test_desktop_only_layer')
         desktop_only_layer.interfaces = [main]
 
+        group = LayerGroup(name=u'__test_layer_group')
+        group.children = [layer, mobile_only_layer, desktop_only_layer]
         theme = Theme(name=u'__test_theme')
-        theme.children = [layer, mobile_only_layer, desktop_only_layer]
+        theme.children = [group]
         theme.interfaces = [main, mobile]
 
+        mobile_only_group = LayerGroup(name=u'__test_mobile_only_layer_group')
+        mobile_only_group.children = [layer]
         mobile_only_theme = Theme(name=u'__test_mobile_only_theme')
-        mobile_only_theme.children = [layer]
+        mobile_only_theme.children = [mobile_only_group]
         mobile_only_theme.interfaces = [mobile]
 
+        desktop_only_group = LayerGroup(name=u'__test_desktop_only_layer_group')
+        desktop_only_group.children = [layer]
         desktop_only_theme = Theme(name=u'__test_desktop_only_theme')
-        desktop_only_theme.children = [layer]
+        desktop_only_theme.children = [desktop_only_group]
         desktop_only_theme.interfaces = [main]
 
         # the following theme should not appear in the list of themes on desktop
         # nor on mobile
         # It should be accessible by explicitely loading it in mobile though
+        mobile_private_group = LayerGroup(name=u'__test_mobile_private_layer_group')
+        mobile_private_group.children = [layer]
         mobile_private_theme = Theme(name=u'__test_mobile_private_theme')
-        mobile_private_theme.children = [layer]
+        mobile_private_theme.children = [mobile_private_group]
 
         DBSession.add_all([
             layer, mobile_only_layer, desktop_only_layer, theme,
@@ -197,7 +205,7 @@ class TestMobileDesktop(TestCase):
             set([u'__test_desktop_only_theme', u'__test_theme']),
         )
         theme = [t for t in themes if t['name'] == u'__test_theme']
-        layers = theme[0]['children']
+        layers = theme[0]['children'][0]['children']
         self.assertEqual(
             set([l['name'] for l in layers]),
             set([u'__test_layer', u'__test_desktop_only_layer']),

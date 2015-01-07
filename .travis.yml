@@ -36,7 +36,7 @@ before_install:
 install:
 - python bootstrap.py --version 1.5.2 --distribute --download-base http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 - buildout/bin/buildout -c $BUILDOUT_CFG
-- buildout/bin/pip install -r dev-requirements.txt
+- buildout/bin/pip install -r dev-requirements.txt --trusted-host pypi.camptocamp.net
 - sudo /usr/sbin/apache2ctl graceful
 
 before_script:
@@ -56,7 +56,7 @@ script:
 - buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
 - buildout/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
 - rm -rf /tmp/test
-- buildout/bin/python setup.py nosetests --stop
+- buildout/bin/python setup.py nosetests --stop --nocapture --nologcapture
 
 after_failure:
 - buildout/bin/python setup.py nosetests

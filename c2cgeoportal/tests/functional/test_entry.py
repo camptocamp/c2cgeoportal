@@ -87,10 +87,12 @@ class TestEntryView(TestCase):
         layer_wmsgroup.is_checked = False
         layer_wmsgroup.interfaces = [main, mobile]
 
-        theme = Theme(name=u'__test_theme')
-        theme.children = [
+        group = LayerGroup(name=u'__test_layer_group')
+        group.children = [
             public_layer, private_layer, layer_group, layer_wmsgroup
         ]
+        theme = Theme(name=u'__test_theme')
+        theme.children = [group]
         theme.interfaces = [main]
 
         functionality1 = Functionality(name=u'test_name', value=u'test_value_1')
@@ -259,24 +261,24 @@ class TestEntryView(TestCase):
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
 
-        layers = themes[0]['children']
+        layers = themes[0]['children'][0]['children']
         self.assertEqual(len(layers), 4)
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == 'test_wmsfeaturesgroup'
         ], [False])
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == '__test_private_layer'
         ], [False])
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == '__test_public_layer'
         ], [False])
 
@@ -284,40 +286,41 @@ class TestEntryView(TestCase):
     def test_index_auth_edit_permission(self):
         import json
 
-        entry = self._create_entry_obj(username=u'__test_user2')
+        entry = self._create_entry_obj(username=u'__test_user2', params={
+            "min_levels": "0"
+        })
         response = entry.get_cgxp_viewer_vars()
 
         self.assertEqual(
             set(json.loads(response['serverError'])),
             set([
-                "The layer '__test_private_layer' is not defined in WMS capabilities",
-                "The layer '__test_public_layer' is not defined in WMS capabilities",
-                "The layer '__test_layer_in_group' is not defined in WMS capabilities",
-                "The Layer '__test_layer_in_group' is under indented."
+                u"The layer '__test_private_layer' is not defined in WMS capabilities",
+                u"The layer '__test_public_layer' is not defined in WMS capabilities",
+                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             ])
         )
 
         themes = json.loads(response['themes'])
         self.assertEqual(len(themes), 1)
 
-        layers = themes[0]['children']
+        layers = themes[0]['children'][0]['children']
         self.assertEqual(len(layers), 4)
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == 'test_wmsfeaturesgroup'
         ], [False])
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == '__test_private_layer'
         ], [True])
 
         self.assertEqual([
             'editable' in layer
-            for layer in themes[0]['children']
+            for layer in themes[0]['children'][0]['children']
             if layer['name'] == '__test_public_layer'
         ], [False])
 
@@ -347,7 +350,6 @@ class TestEntryView(TestCase):
         self.assertEqual(theme['layers'], ['__test_layer_in_group'])
 
         info = response['info']
-        print info
         self.assertEqual(
             info,
             {"username": ""}
@@ -433,7 +435,7 @@ class TestEntryView(TestCase):
         # unautenticated
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children']]
+        layers = [l['name'] for l in themes[0]['children'][0]['children']]
         self.assertTrue('__test_public_layer' in layers)
         self.assertFalse('__test_private_layer' in layers)
 
@@ -441,7 +443,7 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children']]
+        layers = [l['name'] for l in themes[0]['children'][0]['children']]
         self.assertTrue('__test_public_layer' in layers)
         self.assertTrue('__test_private_layer' in layers)
 
@@ -450,7 +452,7 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children']]
+        layers = [l['name'] for l in themes[0]['children'][0]['children']]
         self.assertTrue('__test_public_layer' in layers)
         self.assertTrue('__test_private_layer' in layers)
 
@@ -463,10 +465,9 @@ class TestEntryView(TestCase):
         log.info(type(request.registry.settings['mapserv_url']))
         themes, errors = entry._themes(None, 'main')
         self.assertEquals(errors, [
-            "The layer '__test_public_layer' is not defined in WMS capabilities",
-            "The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            "The Layer '__test_layer_in_group' is under indented.",
-            "The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
+            u"The layer '__test_public_layer' is not defined in WMS capabilities",
+            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+            u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
         ])
 
     @attr(wfs_types=True)
@@ -483,9 +484,8 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(json.loads(response['serverError'])),
             set([
-                "The layer '__test_public_layer' is not defined in WMS capabilities",
-                "The layer '__test_layer_in_group' is not defined in WMS capabilities",
-                "The Layer '__test_layer_in_group' is under indented.",
+                u"The layer '__test_public_layer' is not defined in WMS capabilities",
+                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             ])
         )
 
@@ -837,7 +837,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         self.assertEqual(entry._group(
-            LayerGroup(), layers=[], wms=None, wms_layers=[], time=TimeInformation()), (None, [])
+            '', LayerGroup(), layers=[], wms=None, wms_layers=[], time=TimeInformation()), (None, [])
         )
 
         layer = LayerV1()
@@ -1130,7 +1130,7 @@ class TestEntryView(TestCase):
         group.name = 'time'
         group.children = [layer_t1, layer_t2]
         time = TimeInformation()
-        entry._group(group, [layer_t1, layer_t2], wms=wms, wms_layers=wms_layers, time=time)
+        entry._group('', group, [layer_t1.name, layer_t2.name], wms=wms, wms_layers=wms_layers, time=time)
         self.assertEqual(time.to_dict(), {
             'resolution': 'year',
             'interval': (1, 0, 0, 0),
@@ -1224,7 +1224,9 @@ class TestEntryView(TestCase):
 
         group1 = LayerGroup()
         group1.name = 'block'
+        group1.id = 11
         group2 = LayerGroup()
+        group2.id = 12
         group2.name = 'node'
         group2.metadata_url = 'http://example.com/group.metadata'
         layer = LayerV1()
@@ -1238,13 +1240,15 @@ class TestEntryView(TestCase):
         layer.public = True
         group1.children = [group2]
         group2.children = [layer]
-        self.assertEqual(entry._group(group1, [layer], wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._group('', group1, [layer.name], wms=None, wms_layers=[], time=TimeInformation()), ({
+            'id': 11,
             'isExpanded': False,
             'isInternalWMS': True,
             'name': 'block',
             'isBaseLayer': False,
             'metadata': {},
             'children': [{
+                'id': 12,
                 'isExpanded': False,
                 'isInternalWMS': True,
                 'name': 'node',
@@ -1289,7 +1293,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = False
         group1.children = [group2]
-        _, errors = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group1, [], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group1 = LayerGroup()
@@ -1297,7 +1301,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = True
         group1.children = [group2]
-        _, errors = entry._group(group1, [], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group1, [], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1305,10 +1309,9 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'internal WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation())
         self.assertEqual(errors, [
-            "The layer '' is not defined in WMS capabilities",
-            "The Layer '' is under indented.",
+            u"The layer '' is not defined in WMS capabilities",
         ])
 
         group = LayerGroup()
@@ -1316,7 +1319,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'external WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1324,7 +1327,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'WMTS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1332,7 +1335,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'no 2D'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1340,7 +1343,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'internal WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation())
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1348,7 +1351,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'external WMS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
 
         group = LayerGroup()
@@ -1356,7 +1359,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'WMTS'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
 
         group = LayerGroup()
@@ -1364,7 +1367,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = 'no 2D'
         group.children = [layer]
-        _, errors = entry._group(group, [layer], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group('', group, [layer.name], wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, [])
 
     @attr(loginchange=True)
