@@ -244,10 +244,12 @@ class Entry(object):
                 self._fill_wmts(l, layer, wms, wms_layers, errors)
         elif isinstance(layer, LayerInternalWMS):
             l["type"] = "internal WMS"
+            l["layers"] = layer.layer
             self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2)
             errors += self._merge_time(time, layer, wms, wms_layers)
         elif isinstance(layer, LayerExternalWMS):
             l["type"] = "external WMS"
+            l["layers"] = layer.layer
             self._fill_external_wms(l, layer, errors, version=2)
         elif isinstance(layer, LayerWMTS):
             l["type"] = "WMTS"
