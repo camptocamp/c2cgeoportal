@@ -337,6 +337,7 @@ class Entry(object):
                 l['minResolutionHint'] = layer.min_resolution
             if layer.max_resolution is not None:
                 l['maxResolutionHint'] = layer.max_resolution
+
         # now look at what's in the WMS capabilities doc
         if layer.name in wms_layers:
             wms_layer_obj = wms[layer.name]

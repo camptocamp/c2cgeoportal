@@ -124,6 +124,8 @@ available to users of the corresponding role.
            geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
         FROM table;
 
+.. _integrator_fulltext_search_params:
+
 Params
 ------
 
