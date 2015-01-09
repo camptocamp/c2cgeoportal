@@ -259,8 +259,8 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result = "<li>"
         if self.auto_check:
             result += '<input type="checkbox"></input>'
-        result += "<label>%(label)s</label>" % {'label': item.name}
-        result += self.render_children(item, depth)
+        result += "<label>%(label)s</label>" % {'label': final_item.name}
+        result += self.render_children(final_item, depth)
         result += '</li>'
         return result
 
