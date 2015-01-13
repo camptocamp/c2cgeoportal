@@ -60,7 +60,7 @@ class TsVector(UserDefinedType):
 
 def upgrade():
     schema = context.get_context().config.get_main_option('schema')
-    parentschema = context.get_context().config.get_main_option('parent_schema')
+    parentschema = context.get_context().config.get_main_option('parentschema')
     srid = context.get_context().config.get_main_option('srid')
 
     engine = op.get_bind().engine
@@ -214,7 +214,7 @@ def upgrade():
         Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
         schema=schema,
     )
-    if parentschema is not None:  # pragma: nocover
+    if parentschema is not None and parentschema is not "":  # pragma: nocover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

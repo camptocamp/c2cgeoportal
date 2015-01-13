@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ## the leading / is needed to tell mako to look for the template using the provided TemplateLookup
-<%inherit file="/A4_landscape.mako" />
+<%inherit file="A4_landscape.mako" />
 
 ## using a trailing \ to prevent new line from being inserted by mako
 <%def name="title()">\

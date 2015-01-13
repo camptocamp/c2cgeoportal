@@ -9,10 +9,10 @@ the application according to the user's permissions.
 A functionality may be associated to users through different ways:
 
 1. Functionalities for anonymous users are defined through the
-   ``functionalities:anonymous`` variable in the ``config.yaml.in``
+   ``functionalities:anonymous`` variable in the ``vars_<project>.yaml``
    configuration file.
 2. Functionalities for authenticated users are defined through the
-   ``functionalities:registered`` variable in the ``config.yaml.in``
+   ``functionalities:registered`` variable in the ``vars_<project>.yaml``
    configuration file.
 3. Functionalities for specific roles are defined in the database through the
    administration interface.
@@ -30,14 +30,16 @@ functionality associated with his/her role, will be ignored.
 Configuration
 -------------
 
-The ``config.yaml.in`` file includes variables for managing *functionalities*.
+The ``vars_<project>.yaml`` file includes variables for managing *functionalities*.
 
 ``admin_interface``/``available_functionalities``
     List of functionality types that should be available in the
     administration interface (and added to the ``functionality`` table in the
     database).
 
-    For example::
+    For example:
+
+    .. code:: yaml
 
         admin_interface:
             available_functionalities:
@@ -45,7 +47,9 @@ The ``config.yaml.in`` file includes variables for managing *functionalities*.
             - print_template
             - mapserver_substitution
 
-    The following syntax is also accepted::
+    The following syntax is also accepted:
+
+    .. code:: yaml
 
         admin_interface:
             available_functionalities: [default_basemap, print_template, mapserver_substitution]
@@ -55,7 +59,9 @@ The ``config.yaml.in`` file includes variables for managing *functionalities*.
     Functionalities accessible to anonymous users. This is a list of
     key/value pairs, whose values are either arrays or scalars.
 
-    For example::
+    For example:
+
+    .. code:: yaml
 
         functionalities:
             anonymous:
@@ -76,7 +82,9 @@ The ``config.yaml.in`` file includes variables for managing *functionalities*.
     Functionalities that are made available to Mako templates (e.g.
     ``viewer.js``) through the ``functionality`` template variable.
 
-    For example with::
+    For example with:
+
+    .. code:: yaml
 
         functionalities:
             available_in_templates:
@@ -93,7 +101,7 @@ Using Functionalities in Templates
 As explained in the :ref:`integrator_functionality_configuration` section above,
 a functionality can be used in the Mako templates as long as it has been
 enabled using the ``functionalities:available_in_templates`` parameter in the
-``config.yaml.in`` configuration file.
+``vars_<project>.yaml`` configuration file.
 
 Functionalities may be used in templates for various purposes. The examples
 below explain how to set the default basemap and how to limit access to some
@@ -108,13 +116,17 @@ anonymous, authenticated or has some specific role.
 
 First make sure that ``default_basemap`` is made available in the templates
 using the ``functionalities:available_in_templates`` parameter in the
-``config.yaml.in`` configuration file::
+``vars_<project>.yaml`` configuration file:
+
+.. code:: yaml
 
     functionalities:
         available_in_templates: [default_basemap]
 
-Then indicate (still in ``config.yaml.in``) what default basemap should be used
-for anonymous users::
+Then indicate (still in ``vars_<project>.yaml``) what default basemap should be used
+for anonymous users:
+
+.. code:: yaml
 
     functionalities:
         anonymous:
@@ -122,7 +134,9 @@ for anonymous users::
             default_basemap: <some_basemap>
 
 Optionally you may also indicate what basemap to use for authenticated users
-(if omitted, the anonymous ``default_basemap`` value will be used)::
+(if omitted, the anonymous ``default_basemap`` value will be used):
+
+.. code:: yaml
 
     functionalities:
         anonymous:
@@ -135,7 +149,9 @@ users in the administration interface.
 
 So that the ``default_basemap`` is actually provided to the
 ``cgxp_mapopacityslider`` plugin, use the following configuration in your
-project's ``viewer.js`` template::
+project's ``viewer.js`` template:
+
+.. code:: javascript
 
     {
         ptype: "cgxp_mapopacityslider",
@@ -151,7 +167,9 @@ with specific roles.
 To do so, add ``authorized_plugins`` to the list of functionalities that must be
 available in the administration interface and to the list of functionalities
 provided to the templates. Set also ``authorized_plugins`` as an empty list for
-anonymous users. In ``config.yaml.in``::
+anonymous users. In ``vars_<project>.yaml``:
+
+.. code:: yaml
 
     admin_interface:
         # ...
@@ -171,7 +189,9 @@ anonymous users. In ``config.yaml.in``::
         available_in_templates: [default_basemap, authorized_plugins]
 
 Then you may test in your project's ``viewer.js`` template if the current user
-has been granted access to some protected plugins::
+has been granted access to some protected plugins:
+
+.. code:: javascript
 
     app = new gxp.Viewer({
         // ...
@@ -193,7 +213,7 @@ Using Functionalities list to configure the layers in the QueryBuilder
 ......................................................................
 
 Add the new ``querybuilder_layer`` functionality to the list of
-``available_functionalities`` in your ``config.yaml.in`` file:
+``available_functionalities`` in your ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 

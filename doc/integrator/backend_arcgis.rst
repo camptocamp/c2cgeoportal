@@ -16,7 +16,7 @@ Differentiating WMS and WFS services
 
 It may be necessary to differentiate the WMS and WFS services url.
 
-In the ``config.yaml.in`` file, define:
+In the ``vars_<project>.yaml`` file, define:
 
 .. code:: yaml
 
@@ -27,7 +27,7 @@ These are the urls which respond respectively to the *WMS GetCapabilities* and
 *WFS GetCapabilities*.
 
 If your project has a parent (in a parent/child architecture),
-in the ``config_child.yaml.in`` file also define the WFS service separately:
+in the ``config_child.yaml.mako`` file also define the WFS service separately:
 
 .. code:: yaml
 

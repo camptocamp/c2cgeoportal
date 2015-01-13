@@ -210,29 +210,35 @@ Sub domain
 ----------
 
 If you want to optimize the parallelization of static resource download you
-can use sub domain to do that you should define in the ``config.yaml.in``
-something like this::
+can use sub domain to do that you should define in the ``vars_<project>.yaml``
+something like this:
+
+.. code:: yaml
 
     # The used sub domain for the static resources
     subdommains: ['s1', 's2', 's3', 's4']
 
 Those sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the ``config.yaml.in``
-the following::
+the sub domain on only one of them you can define in the ``vars_<project>.yaml``
+the following:
+
+.. code:: yaml
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${vars:host}
+    subdomain_url_template: http://%(sub)s.${host}
 
 
 Advanced configuration examples
 -------------------------------
 
-We can use the ``functionalities`` or the ``config.yaml.in`` to configure the
+We can use the ``functionalities`` or the ``vars_<project>.yaml`` to configure the
 interface. For instance:
 
-Activate CGXP plugin using an ``authorized_plugins`` functionality::
+Activate CGXP plugin using an ``authorized_plugins`` functionality:
+
+.. code:: javascript
 
    % if 'my_plugin' in functionality['authorized_plugins']:
    {
@@ -241,15 +247,19 @@ Activate CGXP plugin using an ``authorized_plugins`` functionality::
    % endif
 
 
-Configure the ``querier`` layer using the ``config.yaml.in``,
-Add in ``config.yaml.in``::
+Configure the ``querier`` layer using the ``vars_<project>.yaml``,
+Add in ``vars_<project>.yaml``:
+
+.. code:: yaml
 
     viewer:
         feature_types:
         - layer_1
         - layer_2
 
-And in ``viewer.js``::
+And in ``viewer.js``:
+
+.. code:: javascript
 
     <%
     from json import dumps

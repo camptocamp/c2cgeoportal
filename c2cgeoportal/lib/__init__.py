@@ -50,7 +50,7 @@ def get_url(url, request, default=None, errors=None):
     if obj.scheme == 'static':
         netloc = obj.netloc
         if netloc == '':
-            netloc = request.registry.settings['project'] + ':static'
+            netloc = request.registry.settings['package'] + ':static'
         elif ':' not in netloc:
             netloc += ':static'
 

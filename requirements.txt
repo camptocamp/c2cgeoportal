@@ -1,2 +1,4 @@
 --index-url http://pypi.camptocamp.net/pypi
+Shapely==1.5.3 # the version 1.5.3 is buggy see Toblerity/Shapely#231
+-e git+https://github.com/camptocamp/pyramid_closure#egg=pyramid_closure
 -e .

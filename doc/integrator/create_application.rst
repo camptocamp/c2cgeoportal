@@ -11,8 +11,7 @@ the ``c2cgeoportal`` package must be installed.
 If you already have a c2cgeoportal application installed, and if that
 application uses a version of c2cgeoportal that fits you, then you don't need
 to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
-that is already alongside the existing c2cgeoportal application (in the
-``buildout/eggs`` directory).
+that is already alongside the existing c2cgeoportal application.
 
 .. note::
 
@@ -70,19 +69,11 @@ Then you should checkout the branch or tag of the version you want to install:
 ``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
 ``1.4.0`` for the first stable 1.4 version.
 
-Now run the ``bootstrap.py`` script to boostrap the Buildout environment:
-
-.. prompt:: bash
-
-    python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
-
 Build c2cgeoportal:
 
 .. prompt:: bash
 
-    ./buildout/bin/buildout
+    make -f <user>.mk build
 
 List existing skeletons
 -----------------------
@@ -94,7 +85,7 @@ c2cgeoportal application you want to create the new application from:
 
 .. prompt:: bash
 
-    ./buildout/bin/pcreate -l
+    .build/venv/bin/pcreate -l
 
 You should at least see the c2cgeoportal skeletons:
 
@@ -105,7 +96,7 @@ Create the new application
 --------------------------
 
 The first step in the project creation is to chose a project name
-``<project_name>``, and a package name ``<package_name>``.
+``<project>``, and a package name ``<package>``.
 
 Normally the project name should be the same name as the Git repository name.
 
@@ -116,7 +107,7 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 .. prompt:: bash
 
-    ./buildout/bin/pcreate -s c2cgeoportal_create ../<project_name> package=<package_name>
+    .build/venv/bin/pcreate -s c2cgeoportal_create ../<project> package=<package>
 
 .. note::
 
@@ -124,7 +115,7 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 You'll be asked to enter the SRID for this project.
 
-This will create a directory named ``<project_name>`` that will be next to the
+This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you're
 creating this application from.
 
@@ -132,7 +123,7 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 
 .. prompt:: bash
 
-    ./buildout/bin/pcreate -s c2cgeoportal_update ../<project_name> package=<package_name>
+    .build/venv/bin/pcreate -s c2cgeoportal_update ../<project> package=<package>
 
 .. note::
 
@@ -148,7 +139,7 @@ Go to your new project:
 
 .. prompt:: bash
 
-    cd ../<project_name>
+    cd ../<project>
 
 .. note:: For Windows:
 
@@ -159,9 +150,9 @@ Go to your new project:
 
 .. prompt:: bash
 
-    chmod +x deploy/hooks/post-restore-database.in
+    chmod +x deploy/hooks/post-restore-database.mako
 
-In the ``versions.cfg`` file make sure that c2cgeoportal version is set:
+In the ``CONST_versions.txt`` file make sure that c2cgeoportal version is set:
 
 .. code::
 
@@ -176,24 +167,11 @@ In the ``versions.cfg`` file make sure that c2cgeoportal version is set:
 With ``<version>`` the egg version you want to use, normally it should be the same
 number as the ``tag`` you use to checkout ``c2cgeoportal``.
 
-If this application is not part of a parent/child architecture, or is
-a ``parent`` application, you can just remove the
-``buildout_child.cfg`` and ``config_child.yaml.in`` files:
-
-.. prompt:: bash
-
-    rm buildout_child.cfg config_child.yaml.in
-
-If this application is a ``child`` application make ``buildout_child.cfg`` the
-main Buildout configuration file, and ``config_child.yaml.in`` the config file:
-
-.. prompt:: bash
-
-    rm buildout.cfg config.yaml.in
-    mv buildout_child.cfg buildout.cfg
-    mv config_child.yaml.in config.yaml.in
-
 .. note::
+
+    If this application is a child of a parent/child architecture you should
+    fill the ``parent_schema`` and the ``parent_instanceid`` in the
+    ``vars_<package>.yaml`` file.
 
     In a parent/child architecture one instance of the application is the
     parent, the others are children. Child instances display layers
@@ -202,25 +180,14 @@ main Buildout configuration file, and ``config_child.yaml.in`` the config file:
 
 .. note:: For Windows:
 
-    The ``<project_name>/static/mobile/touch.tar.gz`` archive must be uncompressed
+    The ``<project>/static/mobile/touch.tar.gz`` archive must be uncompressed
     and then removed.
 
 Put the application under revision control
 ------------------------------------------
 
-Remove the ``egg-info`` directory, as it shouldn't be added to the
-application's source repository:
-
-.. prompt:: bash
-
-    rm -rf *.egg-info
-
 Now is a good time to put the application source code under revision
 control (Git preferably).
-
-.. note::
-
-   We use the http URL to allow everybody to clone.
 
 To add a new child in an existing repository
 ............................................
@@ -230,13 +197,13 @@ Add the project:
 .. prompt:: bash
 
     cd ..
-    git add <package_name>/
+    git add <package>/
 
 Add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add https://github.com/camptocamp/cgxp.git <project_name>/<package_name>/static/lib/cgxp -b <version>
+    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp -b <version>
     git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
@@ -246,7 +213,7 @@ Commit and push on the main repository:
 
 .. prompt:: bash
 
-    git commit -m "initial commit of <project_name>"
+    git commit -m "initial commit of <project>"
     git push origin master
 
 To add a project in a new repository
@@ -257,22 +224,14 @@ Add the project:
 .. prompt:: bash
 
     git init
-    git add <package_name>/ .gitignore config.yaml.in \
-            versions.cfg README.rst CONST_CHANGELOG.txt \
-            CONST_buildout.cfg buildout.cfg buildout/ \
-            bootstrap.py setup.cfg setup.py \
-            development.ini.in production.ini.in \
-            jsbuild/ print/ apache/ \
-            mapserver/ deploy/ CONST_alembic/ \
-            CONST_buildout_cleaner.cfg alembic.ini.in \
-            project.yaml.in
-    git remote add origin git@github.com:camptocamp/<project_name>.git
+    git add *
+    git remote add origin git@github.com:camptocamp/<project>.git
 
 Add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add https://github.com/camptocamp/cgxp.git <pacakge_name>/static/lib/cgxp -b <version>
+    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp -b <version>
     git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
@@ -289,31 +248,14 @@ Configure the application
 -------------------------
 
 As the integrator you need to edit two files to configure the application:
-``config.yaml.in`` and ``buildout.cfg``.
-
-``config.yaml.in`` includes the *static configuration* of the application.  This
-configuration is to be opposed to the *dynamic configuration*, which is in the
-database, and managed by the *administrator*. The static configuration
-includes for example the application's default language (specified with
-``default_locale_name``).  It also includes the
-configuration for specific parts of the application, like
-:ref:`integrator_raster` web services.
-
-``buildout.cfg`` includes the execution environment configuration. In this
-files are set *environment variables* such as the application instance id
-(``instance_id``), the database name (``db``), and host names. Pay particular
-attention to the ``to_be_defined`` values. ``buildout.cfg`` actually defines
-the *default* environment configuration. The configuration for specific
-installations (specific servers for example) can be written in specific files,
-that extend ``buildout.cfg``.  The :ref:`integrator_install_application`
-section provides more information.
+``vars_<package>.yaml``.
 
 Don't miss to add your changes to git:
 
 .. prompt:: bash
 
-    git add buildout.cfg
-    git commit -m "initialise buildout.cfg"
+    git add vars_<package>.yaml
+    git commit -m "Configure the project"
     git push origin master
 
 .. note::
@@ -349,22 +291,12 @@ Don't miss to add your changes to git:
 
    with the right path to ``convert``.
 
-   Some parts will not work or will not do anything on Windows, than add in
-   your `buildout.cfg` file in the `[buildout]` section::
-
-        parts -= fix-perm
-
-    and in the `[template]` section::
-
-        extends -= facts
-
 
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:
 
 * :ref:`integrator_install_application_create_schema`.
 * :ref:`integrator_install_application_create_user`.
-* :ref:`integrator_install_application_bootstrap_buildout`.
 * :ref:`integrator_install_application_install_application`.
 
 .. note::
@@ -386,194 +318,117 @@ the project.
 This procedure will deal with:
 
 * One folder per instance ``mapfile/<instance>``.
-* One configuration file for all the project ``config.yaml.in``.
-* One configuration file for each instance ``config_<instance>.yaml.in``.
-* One buildout file for all the project ``buildout.cfg``.
-* One buildout file for each instance ``buildout_<instane>.cfg``.
-* One buildout generator for each developer and server ``buildout_<user>.cfg.jinja``.
-* One additional CSS file for each instance ``<package_name>/static/css/proj_<instance>.css``.
+* One configuration file for all the project ``vars_<project>.yaml``.
+* One configuration file for each instance ``vars_<instance>.yaml``.
+* One make file for all the project ``<project>.mk``.
+* One make file for each instance ``<instance>.mk``.
+* One Makefile generator for each developer and server ``<user>.mk.jinja``.
+* One additional CSS file for each instance ``<package>/static/css/proj_<instance>.css``.
 
 Create the project
 ..................
 
-1. In ``setup.py`` add the following dependencies:
+1. Configure the instances in thee ``vars_<package>.yaml`` as follow:
 
-.. code:: python
+  .. code:: yaml
 
-   'bottle',
-   'jinja2',
+    vars:
 
-2. In ``setup.py`` add the following ``console_scripts``:
-
-.. code:: python
-
-   'gen_project_files = <package_name>.scripts.gen_project_files:main'
-
-3. Create the generated project files from templates
-   ``<package_name>/scripts/gen_project_files.py`` script:
-
-.. code:: python
-
-   # -*- coding: utf-8 -*-
-
-   import yaml
-   import glob
-   import os
-   from bottle import jinja2_template
-
-   def main():
-       config = yaml.load(open('config.yaml', 'r'))
-       for template in glob.glob('*.jinja'):
-           for instance in config['instances']:
-               file_parts = template.split('.')
-               file_name = "%s_%s.%s" % (file_parts[0], instance, '.'.join(file_parts[1:-1]))
-               result = jinja2_template(
-                   template,
-                   instance=instance,
-                   config=config,
-               )
-               file_open = open(file_name, 'w')
-               file_open.write(result)
-               file_open.close()
-
-4. In ``buildout.cfg`` add a task to generate the buildout files:
-
-.. code::
-
-   [jinja-template]
-   recipe = collective.recipe.cmd:py
-   on_install = true
-   on_update = true
-   cmds =
-       >>> from subprocess import call
-       >>> from os.path import join
-       >>> cmd = join('buildout', 'bin', 'gen_project_files')
-       >>> call([cmd])
-
-5. Define the developer templates as follows (``buildout_<user>.cfg.jinja``):
-
-.. code::
-
-   [buildout]
-   extends = buildout_{{instance}}.cfg
-   parts -= fix-perm
-
-   [vars]
-   instanceid = <user>-{{instance}}
-   host = <host>
-
-   [jsbuild]
-   compress = False
-
-   [jsbuild-mobile]
-   compress = False
-
-   [cssbuild]
-   compress = false
-
-6. Define the host templates as follows (``buildout_main.cfg.jinja``,
-   ``buildout_demo.cfg.jinja``, ``buildout_prod.cfg.jinja``):
-
-.. code::
-
-   [buildout]
-   extends = buildout_{{instance}}.cfg
-
-   [vars]
-   instanceid = ${vars:instance}
-   apache-entry-point = /${vars:instanceid}/
-   host = <host>
-
-7. Create a ``config_<instance>.yaml.in`` file with:
-
-.. code::
-
-   page_title: <title>
-
-   viewer:
-        initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-        restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-        default_themes:
-        - <theme>
-        feature_types:
-        - <feature>
-
-   functionalities:
-        anonymous:
-            print_template:
-            - <template>
-
-8. In ``<package_name>/__init__.py`` use the previous YAML file:
-
-.. code:: python
-
-    import collections
-    import yaml
-
-    def update(d, u):
-        for k, v in u.iteritems():
-            if isinstance(v, collections.Mapping):
-                r = update(d.get(k, {}), v)
-                d[k] = r
-            else:
-                d[k] = u[k]
-        return d
-
-
-    def main(global_config, **settings): # already defined
         ...
-        settings = config.get_settings() # already defined
-        project_settings = yaml.load(file(settings.get('app2.cfg')))
-        if project_settings:
-            update(settings, project_settings)
+        instance: INSTANCE
 
-9. Define the instance buildout file ``buildout_<instance>.cfg`` as follows:
+        external_themes_url: http://{host}/{parent_instanceid}/wsgi/themes
+        external_mapserv_url: http://{host}/{parent_instanceid}/mapserv
+
+        tiles_url: http://{host}/{parent_instanceid}/tiles
+
+        instances:
+        - instance: a name
+        ...
+
+    interpreted:
+        environment:
+        - instance
+
+2. Create the ``<instance>.mk`` files:
+
+    .. code:: make
+
+        INSTANCE = <instance>
+        VARS_FILE = vars_$(INSTANCE).yaml
+        include <package>.mk
+
+3. In ``<project>.mk`` add a task to generate the make files:
+
+.. code:: make
+
+    ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
+
+    %_<an_instance>.mk: %.mk.jinja $(VARS_FILES)
+        $(C2C_TEMPLATE_CMD) --files-builder $< $*_{instance}.mk $(VARS_FILE)
+
+4. Define the developer templates as follows (``<user>.mk.jinja``):
+
+.. code:: make
+
+    INSTANCE = {{instance}}
+    INSTANCE_ID = <user>_{{instance}}
+    DEVELOPMENT = TRUE
+    include {{instance}}.mk
+
+5. Define the host templates as follows (``main.mk.jinja``,
+   ``demo.mk.jinja``, ``prod.mk.jinja``):
 
 .. code::
 
-   [buildout]
-   extends = buildout.cfg
+    INSTANCE = {{instance}}
+    INSTANCE_ID = {{instance}}
+    include {{instance}}.mk
 
-   [vars]
-   instance = <instance>
-
-10. In ``buildout.cfg`` define the vars as follows:
+6. Create a ``<instance>.yaml`` file with:
 
 .. code::
 
-   [vars]
-   instance = to_be_overridden
-   schema = ${vars:instance}
-   instanceid = to_be_overridden
-   parent_instanceid = to_be_defined
-   host = to_be_overridden
+    extends: vars_<project>.yaml
 
-These are placeholder variables which must be defined
+    vars:
+        page_title: <title>
 
-11. In the ``buildout.cfg`` add the additional CSS:
+        viewer:
+            initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
+            restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
+            default_themes:
+            - <theme>
+            feature_types:
+            - <feature>
+
+        functionalities:
+            anonymous:
+                print_template:
+                - <template>
+
+7. In the ``<package>.mk`` add the additional CSS:
 
 .. code::
 
-   [cssbuild]
-   input +=
-       <package_name>/static/css/proj_${vars:instance}.css
+   CSS_BASE_FILES += <package>/static/css/proj_$(INSTANCE).css
 
-12. In the ``<package_name>/templates/index.html`` file do the following changes:
+8. In the ``<package>/templates/index.html`` file do the following changes:
 
 .. code:: diff
 
-   -        <meta name="keywords" content="<package_name>, geoportal">
-   -        <meta name="description" content="<package_name> Geoportal Application.">
+   -        <meta name="keywords" content="<package>, geoportal">
+   -        <meta name="description" content="<package> Geoportal Application.">
    +        <meta name="keywords" content="${request.registry.settings['instance']}, geoportal">
    +        <meta name="description" content="${request.registry.settings['page_title']}.">
 
-   -        <title><project_name> Geoportal Application</title>
+   -        <title><project> Geoportal Application</title>
    +        <title>${request.registry.settings['page_title']}</title>
 
-            <link rel="stylesheet" type="text/css" href="${request.static_url('<package_name>:static/css/proj-widgets.css')}" />
-   +        <link rel="stylesheet" type="text/css" href="${request.static_url('<package_name>:static/css/proj_%s.css' % request.registry.settings['instance'])}" />
+            <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj-widgets.css')}" />
+   +        <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj_%s.css' % request.registry.settings['instance'])}" />
 
-13. Create the instance CSS file ``<package_name>/static/css/proj_<instance>.css``:
+9. Create the instance CSS file ``<package>/static/css/proj_<instance>.css``:
 
 .. code:: css
 
@@ -587,25 +442,8 @@ These are placeholder variables which must be defined
        height: <height>px;
    }
 
-14. In ``config.yaml.in`` define the following attributes:
-
-.. code:: yaml
-
-   # list of instance(s) for the project
-   instances:
-       - <instance>
-       - <another_instance>
-       - <as_many_instance_as_wanted>
-
-   instance: ${vars:instance}
-
-   external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
-   external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
-
-   tiles_url: http://${vars:host}/${vars:parent_instanceid}/tiles
-
-15. In the files ``<package_name>/templates/api/mapconfig.js``,
-    ``<package_name>/templates/viewer.js`` and ``<package_name>/templates/edit.js``
+10. In the files ``<package>/templates/api/mapconfig.js``,
+    ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js``
     define the ``WMTS_OPTIONS`` url as follows:
 
 .. code:: javascript
@@ -615,48 +453,36 @@ These are placeholder variables which must be defined
        ...
     }
 
-16. In ``apache/mapserver.conf.in`` file do the following change:
+11. In ``apache/mapserver.conf.mako`` file do the following change:
 
 .. code:: diff
 
-   -   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
-   +   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/${vars:instance}/c2cgeoportal.map
+   -   SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
+   +   SetEnv MS_MAPFILE ${directory}/mapserver/${instance}/c2cgeoportal.map
 
-17. Edit ``deploy/deploy.cfg.in`` as follows:
+12. Edit ``deploy/deploy.cfg.mako`` as follows:
 
 .. code:: diff
 
     [DEFAULT]
-   -project = ${vars:project}
-   +project = ${vars:instance}
+   -project = ${project}
+   +project = ${instance}
 
     [code]
-   -dir = /var/www/vhosts/<project_name>/private/<project_name>
-   +dir = /var/www/vhosts/<project_name>/private/${vars:instance}
+   -dir = /var/www/vhosts/<project>/private/<project>
+   +dir = /var/www/vhosts/<project>/private/${instance}
 
     [apache]
-   -dest = /var/www/vhosts/<project_name>/conf/<project_name>.conf
-   -content = Include /var/www/vhosts/<project_name>/private/<project_name>/apache/*.conf
-   +dest = /var/www/vhosts/<project_name>/conf/${vars:instance}.conf
-   +content = Include /var/www/vhosts/<project_name>/private/${vars:instance}/apache/*.conf
-
-18. In ``production.ini.in`` and ``developement.ini.in``
-    add the following value:
-
-.. code::
-
-   [app:app]
-   app2.cfg = %(here)s/config_${vars:instance}.yaml
+   -dest = /var/www/vhosts/<project>/conf/<project>.conf
+   -content = Include /var/www/vhosts/<project>/private/<project>/apache/*.conf
+   +dest = /var/www/vhosts/<project>/conf/${instance}.conf
+   +content = Include /var/www/vhosts/<project>/private/${instance}/apache/*.conf
 
 19. In ``.gitignore`` add the following lines:
 
 .. code::
 
-   config_*.yaml
-   buildout_*_*.cfg
-   mapserver/*/*.map
-   mapserver/*/*/*.map
-
+   /*_*.mk
 
 Result
 ......
@@ -664,20 +490,14 @@ Result
 Now you can configure the application at instance level in the following places:
 
 * ``mapserver/<instance>``
-* ``buildout_<instance>.cfg``
+* ``<instance>.mk``
 * ``mandant/static/images/<instance>_banner_right.png``
 * ``mandant/static/images/<instance>_banner_left.png``
 * ``mandant/static/css/proj_<instance>.css``
-* ``config_<instance>.yaml.in``
+* ``vars_<instance>.yaml``
 
-To generate the configuration files, run the following command:
-
-.. prompt:: bash
-
-   ./buildout/bin/buildout install eggs template jinja-template
-
-then run the buildout command with the .cfg file for the instance you want to setup:
+Then run the make command with the ``.mk`` file for the instance you want to setup:
 
 .. prompt:: bash
 
-   ./buildout/bin/buildout -c buildout_<user>_<instance>.cfg
+    make <user>_<instance>.mk build

@@ -88,11 +88,11 @@ It is possible to manually trigger the system by calling the following command:
 
 .. prompt:: bash
 
-    ./buildout/bin/print_tpl
+    .build/venv/bin/print_tpl
 
-If you want to include some buildout variables in your mako template, you need to
-add a .in extension to your mako template(s) as the variable replacement must be done
-before the mako templating is called (for example print/templates/print.mako.in)
+If you want to include some variables in your mako template, you need to
+add a .mako extension to your mako template(s) as the variable replacement must be done
+before the mako templating is called (for example print/templates/print.mako.mako)
 
 In the default template we have two base print template A4_portrait.mako and
 A3_landscape.mako where we have some blocks like::
@@ -105,7 +105,7 @@ And in ``print/templates/A3_landscape_inherit.mako`` and
 ``print/templates/A4_portrait_inherit.mako`` thoses block will
 be redefined.
 
-The ``print.mako.in`` has the "header" part and includes the wanted templates.
+The ``print.mako`` has the "header" part and includes the wanted templates.
 
 Using backgroundPdf parameter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,41 +114,41 @@ In print configuration you can use a PDF as a background image. You should put t
 PDF file in the print directory and use '<%text>$</%text>{configDir}/template_A4_portrait.pdf'
 for the valeur of backgroundPdf parameter.
 
-In your buildout.cfg file you should add this parts::
-
-   [print-war]
-   input += *.pdf
-
-The print.mako.in has the "header" part and includes the wanted templates.
+The print.mako.mako has the "header" part and includes the wanted templates.
 
 Using one printserver in a set of site
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For memory issue we can use only one print server for a set of site.
 
-For that we need to have only one config.yaml who can easily generated
+For that we need to have only one ``vars_<project>.yaml`` who can easily generated
 by the templating. Than we should do:
 
 * Remove the print from the ``children`` projects,
-  remove the ``print`` folder::
+  remove the ``print`` folder:
+
+  .. prompt:: bash
 
     git rm print
 
 * Deactivate the print compilation by adding the following lines
-  in the ``[buildout]`` section of the ``buildout.cfg`` file::
+  in the ``<package>.mk`` file:
 
-    parts += print-template
-        print-war
+  .. code:: make
+
+    DESABLE_BUILD_RULES = print-template print-war
 
 * Point to the parent print server by editing the following lines
-  in the ``config.yaml.in`` file::
+  in the ``vars_<project>.yaml`` file:
+
+  .. code:: yaml
 
     # For print proxy
     # This value mean that we use the parent print server
-    print_url: http://${vars:host}:8080/print-c2cgeoportal-${vars:parent_instanceid}/pdf/
+    print_url: http://{host}:8080/print-c2cgeoportal-{parent_instanceid}/pdf/
 
 * If needed set the print templates used by anonymous user by adding the
-  following in the application configuration (``config.yaml.in``):
+  following in the application configuration (``vars_<project>.yaml``):
 
   .. code:: yaml
 
@@ -160,6 +160,6 @@ by the templating. Than we should do:
 
 .. note::
 
-   In the user buildout config file of children project,
-   the ``parent_instanceid`` in ``[vars]`` section should be defined
+   In the user vars of children project,
+   the ``parent_instanceid`` should be defined
    to make working the pair in the user dev environment.

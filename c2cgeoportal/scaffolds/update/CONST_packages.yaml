@@ -1,0 +1,57 @@
+default_cmd: dpkg -l {package} | grep ^ii | awk '{{print $3}}'
+
+main:
+    mapserver:
+        cmd: /usr/lib/cgi-bin/mapserv -v | awk '{{print $3}}'
+        version: 7.0
+    python:
+        cmd: /usr/bin/python --version 2>&1 | awk '{{print $2}}'
+        version: 2.7
+    postgres:
+        cmd: sudo -u postgres /usr/lib/postgresql/9.1/bin/postmaster --version | awk '{{print $3}}'
+        version: 9.1
+    postgis: 
+        cmd: sudo -u postgres psql template_postgis -c "select PostGIS_lib_version();" -At
+        version: 1.5
+    deploy: 0.4
+    java:
+        cmd: java -version 2>&1 | grep 'java version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
+        version: 1.7.0
+    tomcat:
+        cmd: /usr/share/tomcat6/bin/version.sh | grep 'Server number' | awk '{{print $3}}'
+        version: 6.0
+    libproj0: 4.7
+    virtualenv:
+        cmd: virtualenv --version
+        version: 1.7
+    httpd:
+        cmd: /usr/sbin/apache2ctl -v 2> /dev/null | head -n 1 | awk '{{print $3}}' | awk -F / '{{print $2}}'
+        version: 2.2
+    libapache2-mod-wsgi: 3.3
+    libpq-dev: 9.1
+    python-dev: 2.7
+    gcc:
+        cmd: gcc --version | head -n 1 | awk '{{print $4}}'
+        version: 4.7
+    gettext:
+        cmd: gettext -V | head -n1 | awk '{{print $4}}'
+        version: 0.18
+
+mobile:
+    sencha: 
+        cmd: sencha help 2> /dev/null | grep 'Sencha Cmd' | head -n 1 | awk '{{print $3}}' | sed 's/^v//'
+    ruby-compass: 0 # just present
+
+tilecloud-chain:
+    libapache2-mod-mapcache: dev # just present
+    memcached:
+        cmd: memcached -h | head -n 1 | awk '{{print $2}}'
+        version: 1.4
+
+ngeo:
+    node:
+        cmd: node --version | sed s/^v//g
+        version: 0.10
+    npm:
+        cmd: npm --version
+        version: 1.3

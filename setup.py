@@ -40,7 +40,7 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    # Required by FormAlchemy with pip
+    # Required by FormAlchemy
     'WebHelpers2>=2.0rc1',
     'pyramid<=1.5.99,>=1.5.0',
     'pyramid_multiauth',
@@ -57,8 +57,8 @@ install_requires = [
     'fa.jquery>=0.9.5',
     'js.jqgrid==4.3.1-1',
     'js.jquery==1.7.1',
-# The version 1.10.3 have an issue with the 'jump to' combobox of the
-# admin interface
+    # The version 1.10.3 have an issue with the 'jump to' combobox of the
+    # admin interface
     'js.jqueryui==1.8.24',
     'FormAlchemy',
     'GeoFormAlchemy2>=2.0dev2',
@@ -73,7 +73,8 @@ install_requires = [
     'isodate',
     'JSTools',
     'couchdbkit',  # missing dependency of formalchemy
-    'pip',
+    'pyramid_closure',
+    'lingua',
 ]
 
 setup_requires = [
@@ -99,14 +100,6 @@ setup(
     keywords='web gis geoportail c2cgeoportal geocommune pyramid',
     packages=find_packages(exclude=["*.tests", "*.tests.*"]),
     include_package_data=True,
-    message_extractors={'c2cgeoportal': [
-        ('static/**', 'ignore', None),
-        ('tests/**', 'ignore', None),
-        ('scaffolds/create/+package+/templates/**', 'mako', {'input_encoding': 'utf-8'}),
-        ('scaffolds/**', 'ignore', None),
-        ('**.py', 'python', None),
-        ('templates/**', 'mako', {'input_encoding': 'utf-8'}),
-    ]},
     zip_safe=False,
     install_requires=install_requires,
     setup_requires=setup_requires,
@@ -117,6 +110,7 @@ setup(
             'print_tpl = c2cgeoportal.scripts.print_tpl:main',
             'manage_users = c2cgeoportal.scripts.manage_users:main',
             'c2ctool = c2cgeoportal.scripts.c2ctool:main',
+            'db2pot = c2cgeoportal.scripts.db2pot:main',
         ],
         'pyramid.scaffold': [
             'c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate',

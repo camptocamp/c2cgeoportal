@@ -140,7 +140,7 @@ OpenLayers and GeoExt.
 
 .. important::
 
-    If you want other people than you to be able to run ``buildout`` from an
+    If you want other people than you to be able to run ``make`` from an
     application clone created by you then you need to change the application
     directory's permissions using ``chmod -R g+w``.  You certainly want to do
     that if the application has been cloned in a shared directory like
@@ -151,12 +151,9 @@ Non Apt/Dpkg based OS Configuration
 
 Disable the package checking:
 
-In the ``buildout.cfg`` section ``[buildout]`` add::
+In the ``<package>.mk`` add::
 
-    parts -=
-        test-packages
-        test-packages-mobile
-        test-packages-tilecloud-chain
+    TEST_PACKAGES = FALSE
 
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -164,8 +161,8 @@ Windows Specific Configuration
 Some changes in the apache wsgi and mapserver configurations are required to make
 c2cgeoportal work on Windows.
 
-apache/wsgi.conf.in
-^^^^^^^^^^^^^^^^^^^
+apache/wsgi.conf.mako
+^^^^^^^^^^^^^^^^^^^^^
 
 ``WSGIDaemonProcess`` and ``WSGIProcessGroup`` are not supported on windows.
 
@@ -176,49 +173,19 @@ available on Windows or when running Apache 1.3.")
 
 The following lines must be commented/removed::
 
-    WSGIDaemonProcess c2cgeoportal:${vars:instanceid} display-name=%{GROUP} user=${vars:modwsgi_user}
+    WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
     ...
-    WSGIProcessGroup c2cgeoportal:${vars:instanceid}
+    WSGIProcessGroup c2cgeoportal:${instanceid}
 
-apache/mapserver.conf.in
-^^^^^^^^^^^^^^^^^^^^^^^^
+apache/mapserver.conf.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The path to Mapserver executable must be modified::
 
-    ScriptAlias /${vars:instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
+    ScriptAlias /${instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 
-.. _integrator_install_application_bootstrap_buildout:
-
-CONST_buildout.cfg
-^^^^^^^^^^^^^^^^^^
-
-Some outputs paths must be modified for the print::
-
-    basedir = print\
-    ...
-    output = C:\path\to\tomcat\webapps\print-c2cgeoportal-${vars:instanceid}.war
-
-buildout.cfg
-^^^^^^^^^^^^
-
-It may be better to create a specific buildout file for Windows (for
-instance ``buildout_windows.cfg``) that extends the buildout.cfg file.
-
-    #. Under ``[buildout]`` add ``exec-sitecustomize = true`` to use our eggs.
-
-    #. Under ``[template]`` add ``extends -= facts`` to ignore facts that are specific to Unix.
-    
-    #. Under ``[version]`` add these two lines to pick the installed version (It may be
-        preferable to specify the version that you've installed):
-
-        * ``distribute =``
-        * ``psycopg2 =``
-
-    #. Under ``[print-war]`` add ``mod = create`` because update seems not to work on Windows.
-
-
-mapserver/c2cgeoportal.map.in
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+mapserver/c2cgeoportal.map.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You must specify the path to the mapserver's epsg file by uncommenting and adapting
 this line under ``MAP`` (use regular slash ``/``) ::
@@ -246,12 +213,12 @@ on RedHat Enterprise Linux (RHEL) 6.
     is the name of the Apache virtual host, and ``<username>`` is your Unix
     login name.
 
-buildout.cfg
-^^^^^^^^^^^^
+vars_<project>.xaml
+^^^^^^^^^^^^^^^^^^^
 
 By default, ``mod_wsgi`` processes are executed under the ``www-data`` Unix
 user, which is the Apache user. In RHEL 6, there's no user ``www-data``, and
-the Apache user is ``apache``. To accomodate that edit ``buildout.cfg`` and
+the Apache user is ``apache``. To accomodate that edit ``vars_<project>.yaml`` and
 set ``modwsgi_user`` to ``apache`` in the ``[vars]`` section::
 
     [vars]
@@ -265,16 +232,16 @@ Also, by default, the path to Tomcat's ``webapps`` directory is
 ``[print-war]`` part should be changed::
 
     [print-war]
-    output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${vars:instanceid}.war
+    output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${instanceid}.war
 
-apache/mapserver.conf.in
-^^^^^^^^^^^^^^^^^^^^^^^^
+apache/mapserver.conf.mako
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
-``mapserver.conf.in`` Apache config file assumes that ``mapserv`` is located in
+``mapserver.conf.mako`` Apache config file assumes that ``mapserv`` is located in
 ``/usr/lib/cgi-bin/``, and should therefore be changed::
 
-    ScriptAlias /${vars:instanceid}/mapserv /usr/libexec/mapserv
+    ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
 
 apache2ctl
 ~~~~~~~~~~
@@ -284,79 +251,39 @@ Then to graceful apache do::
 
     /usr/sbin/apachectl graceful
 
-Buildout bootstrap
-~~~~~~~~~~~~~~~~~~
-
-The `Buildout <http://pypi.python.org/pypi/zc.buildout/1.5.2>`_ tool is used to
-build, install, and deploy c2cgeoportal applications.
-
-Prior to using Buildout, its ``bootstrap.py`` script should be run at the root
-of the application:
-
-.. prompt:: bash
-
-    python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
-
-This step is done only once for installation/instance of the application.
-
-.. Note::
-
-    If you have permissions issues on Windows you can try to set the TMP
-    path variable to a folder that you created (like ``C:\tmp``). If
-    the problem persists don't use the proxy by using this command instead
-    (where buildout_windows.cfg is your specific buildout for Windows
-    as configured above)::
-
-        $ python bootstrap.py --version 1.5.2 --distribute -c buildout_windows.cfg
-
 .. _integrator_install_application_install_application:
 
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If it doesn't already exist, create a ``buildout_<user>.cfg`` file
+If it doesn't already exist, create a ``<user>.mk`` file
 (where ``<user>`` is for example your username),
 that will contain your application special
-configuration::
+configuration:
 
-    [buildout]
-    extends = buildout.cfg
-    parts -= fix-perm
+.. code:: make
 
-    [vars]
-    instanceid = <instanceid>
-
-    [jsbuild]
-    compress = False
-
-    [jsbuild-mobile]
-    compress = False
-
-    [cssbuild]
-    compress = false
+    INSTANCE_ID = <instanceid>
+    VARS_FILE = vars_$(INSTANCE_ID).yaml
+    DEVELOPMENT = TRUE
 
 .. note::
 
     The ``<instanceid>`` should be unique on the server, the username is a good
     choice or something like ``<user>-<sub-project>`` in case of parent/children project.
 
-    ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
-    time whereas it is not needed in a personal environment.
-
 Add it to Git:
 
 .. prompt:: bash
 
-    git add buildout_<user>.cfg
-    git commit -m "add user buildout"
+    git add <user>.mk
+    git commit -m "Add user build file"
 
 Then you can build and install the application with the command:
 
 .. prompt:: bash
 
-    ./buildout/bin/buildout -c buildout_<user>.cfg
+    make -f <user>.mk build
 
 This previous command will do many things like:
 
@@ -373,7 +300,7 @@ populate the application tables, and directly set the version (details later):
 
 .. prompt:: bash
 
-    ./buildout/bin/alembic upgrade head
+    .build/venv/bin/alembic upgrade head
 
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just

@@ -1,3 +1,0 @@
-[test]
-sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
-mapserv.url = ${vars:mapserv_url}

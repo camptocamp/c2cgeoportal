@@ -1,4 +1,4 @@
-extends: vars.yaml
+extends: vars_travis.yaml
 
 vars:
     mapserver_layer_metadata:

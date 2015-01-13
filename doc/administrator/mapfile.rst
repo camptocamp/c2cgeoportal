@@ -13,12 +13,12 @@ GetFeatureInfo``). WFS is used for the ``box query`` and ``query builder``
 features (``WFS GetFeature``).
 
 The application's mapfile is located in the ``mapserver`` directory, it is
-commonly named ``c2cgeoportal.map.in``.
+commonly named ``c2cgeoportal.map.mako``.
 
 .. note::
 
-    The application's mapfile is a ``.in`` file because it contains variables.
-    These variables are substituted when the ``buildout`` install command is
+    The application's mapfile is a ``.mako`` file because it contains variables.
+    These variables are substituted when the ``make`` build command is
     executed.
 
 This section describes how to make layers *printable* and/or *queryable*
@@ -187,7 +187,7 @@ To define a restricted layer in the mapfile the ``DATA`` property of the
              <schema>.<table> AS geo
            WHERE
              ST_Contains(
-               (${vars:mapfile_data_subselect} '<layername>'),
+               (${mapfile_data_subselect} '<layername>'),
                ST_SetSRID(geo.<the_geom>, 21781)
              )
           ) as foo using unique id using srid=21781"
@@ -208,9 +208,11 @@ what's configured in the admin interface for the layer.
 	*contained*). *st_intersects* or other operator could be used instead of the
 	*st_contains* operator.
 
-The ``${vars:mapfile_data_subselect}`` variable is defined in the Buildout
-configuration file (``CONST_buildout.cfg``). Its goal is to simplify the
-writing of the mapfile. It is defined as follows::
+The ``${mapfile_data_subselect}`` variable is defined in the ``CONST_vars.yaml``
+configuration file. Its goal is to simplify the writing of the mapfile.
+It is defined as follows:
+
+.. code:: sql
 
     SELECT
       ST_Collect(ra.area)
@@ -250,7 +252,7 @@ If we don't need to restrict on an area we can use the following
 
 Then you don't need to define an area in the admin interface.
 
-The ``${vars:mapfile_data_noarea_subselect}`` is defined as follows::
+The ``${mapfile_data_noarea_subselect}`` is defined as follows::
 
     SELECT
         rra.role_id
@@ -276,14 +278,17 @@ the ``LAYER``::
 
     ${mapserver_layer_validation}
 
-This variable is defined in the Buildout configuration file as follows::
+This variable is defined in the ``CONST_vars.yaml`` configuration file
+as follows:
+
+.. code::
 
     mapserver_layer_validation =
         "default_role_id" "-1"
         "role_id" "^-?[0-9]*$$"
 
-The mapfile should be a ``.map.in`` file, for the Buildout variable to be
-substituted at Buildout execution time.
+The mapfile should be a ``.map.mako`` file, for the variable to be
+substituted at make execution time.
 
 
 Variable Substitution
@@ -303,7 +308,7 @@ section in the mapfile and add::
 The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
 use ``^[a-z,]*$$`` (the double '$' is needed since we are
-in a ``.in`` file).
+in a ``.mako`` file).
 
 .. note::
 
@@ -366,5 +371,5 @@ images and has memory leaks with ECW. See this
 for example.
 
 If you still want to use it then replace ``SetHandler fcgid-script``
-by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.in``
+by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.mako``
 file. But note that this affects performance.

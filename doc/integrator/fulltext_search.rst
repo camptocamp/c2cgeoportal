@@ -87,7 +87,7 @@ Here's another example where rows from a ``SELECT`` are inserted:
 
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_locale_name`` variable of
-    the application configuration (``config.yaml``). For example if you have
+    the application configuration (``vars_<project>.yaml``). For example if you have
     "french" text in the database the application's ``default_locale_name`` should
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
@@ -146,7 +146,7 @@ for more information.
 Configuration
 -------------
 
-In the configuration file ``config.yaml.in`` you can add the
+In the configuration file ``vars_<project>.yaml`` you can add the
 following variables:
 
 *  ``fulltextsearch_defaultlimit`` the default limit on the results,
@@ -194,7 +194,7 @@ instead of 'french'. For example:
       (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
        'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
 
-And define the configuration in the ``config.yaml.in`` file:
+And define the configuration in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 

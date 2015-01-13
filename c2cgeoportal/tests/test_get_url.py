@@ -40,7 +40,7 @@ class TestGetURL(TestCase):
         from c2cgeoportal.lib import get_url
 
         request = create_dummy_request({
-            "project": "my_project",
+            "package": "my_project",
             "servers": {
                 "srv": "https://example.com/test",
             },

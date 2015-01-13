@@ -54,12 +54,12 @@ the target project, and copying the missing files from there:
 
 .. prompt:: bash
 
-    cd <project_name>
-    ./buildout/bin/pcreate -s c2cgeoportal_create \
-            /tmp/<project_name> package=<package_name>
-    cp -r /tmp/<project_name>/<package_name>/templates/api <project_name>/templates/
-    cp -r /tmp/<project_name>/<package_name>/static/apihelp <project_name>/static/
-    rm -rf /tmp/<project_name>
+    cd <project>
+    .build/venv/bin/pcreate -s c2cgeoportal_create \
+            /tmp/<project> package=<package>
+    cp -r /tmp/<project>/<package>/templates/api <project>/templates/
+    cp -r /tmp/<project>/<package>/static/apihelp <project>/static/
+    rm -rf /tmp/<project>
 
 Configuring the API
 -------------------

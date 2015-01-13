@@ -9,60 +9,43 @@ Create development environment in a project
 c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here's how:
 
-* Change dir to your application's root dir and clone ``c2cgeoportal`` there:
+* Change current directory to your sources root directory and clone
+    ``c2cgeoportal`` there, in the following line the sources directory is the
+    user home directory. Than checkout the submodules, build c2cgeoportal,
+    and go back to your project directory:
 
   .. prompt:: bash
 
+    cd ~
     git clone git@github.com:camptocamp/c2cgeoportal.git
-    cd c2cgeoportal; git submodule update --init; cd -
+    cd c2cgeoportal
+    git submodule update --init
+    make build
+    cd  ~/<project>
 
   You can now check out your development branch if necessary.
 
-* Edit your ``buildout_$USER.cfg`` to have something like this::
+* Edit your ``<user>.mk`` to have something like this:
 
-    [buildout]
-    extends = buildout.cfg
-    develop += c2cgeoportal
-    parts -= fix-perm
+  .. code:: make
 
-    [vars]
-    instanceid = <instanceid>
+    INSTANCE_ID = <user>
+    DEVELOPMENT = TRUE
+    REQUIREMENTS = -e ../c2cgeoportal
 
-    [jsbuild]
-    compress = False
+    include <package>.mk
 
-    [jsbuild-mobile]
-    compress = False
-
-    [cssbuild]
-    compress = false
-
-    [template]
-    exclude-directories += c2cgeoportal
-
-    [versions]
-    c2cgeoportal =
-
-  .. note::
-
-    ``develop += c2cgeoportal`` and ``c2cgeoportal =`` lines refer to the
-    installation of c2cgeoportal as a develop egg.
-
-    ``parts -= fix-perm`` disables the ``fix-perm`` task that may take some
-    time whereas it is not needed in a personal environment.
-
-* Remove the regular c2cgeoportal egg from the Buildout environment:
+* Uninstall the regular c2cgeoportal egg from the viretual environment:
 
   .. prompt:: bash
 
-    rm -rf ./buildout/eggs/c2cgeoportal-*
+    .build/venv/bin/pip uninstall c2cgeoportal
 
-* Build c2cgeoportal and rebuild the c2cgeoportal application:
+* Build your application application:
 
   .. prompt:: bash
 
-    ./buildout/bin/buildout -c c2cgeoportal/buildout_dev.cfg
-    ./buildout/bin/buildout -c buildout_$USER.cfg
+    make -f <user>.mk build
 
 
 Tests
@@ -72,7 +55,7 @@ Running tests
 ~~~~~~~~~~~~~
 
 To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
-code, and a buildout environment for it. So do that first, as described below.
+code, and a make environment for it. So do that first, as described below.
 
 Install c2cgeportal from source
 ...............................
@@ -90,12 +73,6 @@ Change into the ``c2cgeoportal`` directory and initialize the submodules:
     cd c2cgeoportal
     git submodule update --init
 
-Install and build c2cgeoportal:
-
-.. prompt:: bash
-
-    make build
-
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require a PostGIS database and a MapServer installation that can access
@@ -108,6 +85,7 @@ To run the unit tests do this:
 
 .. prompt:: bash
 
+    make build
     .build/venv/bin/python setup.py nosetests -a '!functional'
 
 Functional tests
@@ -161,23 +139,12 @@ To create the ``main`` and ``main_static`` schema:
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
 
-Now edit ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
+Now edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
 
 ``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
 i.e. on the machine you run the tests on. For example, if you use your desktop
 machine it may be ``http://locahost/cgi-bin/mapserv``.
-
-.. note::
-
-   On some server like 'mapfish-geoportal-demo' a configuration is already exists,
-   you can directly do:
-
-   .. prompt:: bash
-
-      # Regenerate files that depends on vars:
-      touch vars_mapfish-geoportal-demo.yaml
-      make -f mapfish-geoportal-demo.mk build
 
 .. note::
 
@@ -188,8 +155,8 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
 
     .. code::
 
-        ScriptAlias /elemoine-mapserv /usr/lib/cgi-bin/mapserv
-        <Location /elemoine-mapserv>
+        ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
+        <Location /mapserv>
             SetHandler fcgid-script
         </Location>
 
@@ -198,7 +165,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
     ``/etc/apache2/sites-enabled/<virtual_host_name>``.
 
     Here's an example of a possible ``mapserv_url``:
-    ``http://mapfish-geoportal-demo/elemoine-mapserv``.
+    ``http://mapfish-geoportal-demo/mapserv``.
 
 
 Once done with the editing of ``vars.yaml``, run ``make``
@@ -246,51 +213,10 @@ Eggs
 ~~~~
 
 All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
-the ``c2cgeoportal/scaffolds/create/versions.cfg`` file.
+the ``c2cgeoportal/scaffolds/update/CONST_versions.mako`` file.
 
-To update them you should remove all the version listed after the
-line ``# Package version that can be easily update``.
-
-Then run:
-
-.. prompt:: bash
-
-    rm -rf *.egg
-    ./buildout/bin/buildout -n
-
-Copy the dependency version lines (of the form ``Mako = 0.7.2``)
-from the ``buildout`` command output and paste them where you have previously
-removed the versions.
-
-And apply the following corrections (to work around bugs in
-``buildout.dumppickedversions``)::
-
-     Jinja2 = x.y.z
-    +jinja2 = x.y.z
-     Mako = x.y.z
-    +mako = x.y.z
-     Markdown = x.y.z
-    +markdown = x.y.z
-     MarkupSafe = x.y.z
-    +markupsafe = x.y.z
-     Pillow = x.y.z
-    +pillow = x.y.z
-     Tempita = x.y.z
-    +tempita = x.y.z
-
-Development eggs
-~~~~~~~~~~~~~~~~
-
-Empty the ``[versions]`` section of the ``buildout_dev.cfg`` file.
-
-Then run:
-
-.. prompt:: bash
-
-    ./buildout/bin/buildout -n -c buildout_dev.cfg
-
-Copy the dependency version lines from the ``buildout`` command output and
-paste them where you have previously removed the versions.
+To update them you can simply get them from a travis build in the 
+``.build/venv/bin/pip freeze`` task.
 
 Submodules
 ~~~~~~~~~~
@@ -365,7 +291,7 @@ Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    ./buildout/bin/alembic revision -m "<Explicite name>"
+    .build/venv/bin/alembic revision -m "<Explicite name>"
 
 This will generate the migration script in
 ``CONST_alembic/versions/xxx_<Explicite_name>.py``
@@ -386,7 +312,7 @@ Then customize the migration to suit your needs, test it:
 
 .. prompt:: bash
 
-    ./buildout/bin/alembic upgrade head
+    .build/venv/bin/alembic upgrade head
 
 Once you have tested it, move it to the c2cgeoportal ``update`` template, in
 ``c2cgeoportal/scaffolds/update/CONST_mlembic/versions/``.

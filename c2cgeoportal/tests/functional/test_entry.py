@@ -833,7 +833,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj()
         request.static_url = lambda name: '/dummy/static/' + name
         request.route_url = lambda name: '/dummy/route/' + name
-        request.registry.settings['project'] = 'test_layer'
+        request.registry.settings['package'] = 'test_layer'
         entry = Entry(request)
 
         self.assertEqual(entry._group(
@@ -1285,7 +1285,7 @@ class TestEntryView(TestCase):
         request = self._create_request_obj()
         request.static_url = lambda name: '/dummy/static/' + name
         request.route_url = lambda name: '/dummy/route/' + name
-        request.registry.settings['project'] = 'test_layer'
+        request.registry.settings['package'] = 'test_layer'
         entry = Entry(request)
 
         group1 = LayerGroup()

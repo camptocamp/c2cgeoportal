@@ -171,7 +171,7 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
     from c2cgeoportal.views.entry import Entry
 
     if package is None:
-        package = config.get_settings()['project']
+        package = config.get_settings()['package']
 
     def add_interface(f):
         def new_f(root, request):

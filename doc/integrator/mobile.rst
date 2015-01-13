@@ -51,10 +51,11 @@ On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
 ``sencha-cmd`` installed, commands are named respectively ``sencha-sdk``
 and ``sencha-cmd``. By default the ``sencha-cmd`` command is used, if
 it's not the case on your host put the following configuration variables
-in your `buildout.cfg` file::
+in your `<package>.mk` file:
 
-    [mobile]
-    sencha_cmd = <sencha-command>
+.. code:: make
+
+    SENCHA_CMD = <sencha-command>
 
 Replace ``<sencha-command>`` by ``sencha-sdk`` if you want to build the
 mobile app using a version of GeoMapFish older than 1.4.
@@ -72,35 +73,35 @@ lines before the ``main`` function's return statement:
     config.add_route('mobile_index_dev', '/mobile_dev/')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobile',
-                    renderer='<package_name>:static/mobile/index.html',
+                    renderer='<package>:static/mobile/index.html',
                     route_name='mobile_index_dev')
     config.add_route('mobile_config_dev', '/mobile_dev/config.js')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobileconfig',
-                    renderer='<package_name>:static/mobile/config.js',
+                    renderer='<package>:static/mobile/config.js',
                     route_name='mobile_config_dev')
-    config.add_static_view('mobile_dev', '<package_name>:static/mobile')
+    config.add_static_view('mobile_dev', '<package>:static/mobile')
 
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobile',
-                    renderer='<package_name>:static/mobile/build/production/App/index.html',
+                    renderer='<package>:static/mobile/build/production/App/index.html',
                     route_name='mobile_index_prod')
     config.add_route('mobile_config_prod', '/mobile/config.js')
     config.add_view('c2cgeoportal.views.entry.Entry',
                     attr='mobileconfig',
-                    renderer='<package_name>:static/mobile/build/production/App/config.js',
+                    renderer='<package>:static/mobile/build/production/App/config.js',
                     route_name='mobile_config_prod')
-    config.add_static_view('mobile', '<package_name>:static/mobile/build/production/App')
+    config.add_static_view('mobile', '<package>:static/mobile/build/production/App')
 
-Replace ``<package_name>`` with the project's actual package name.
+Replace ``<package>`` with the project's actual package name.
 
 Now switch to the next section.
 
 Building the mobile application
 -------------------------------
 
-The ``CONST_buildout.cfg`` file includes the parts ``jsbuild-mobile`` and
+The ``CONST_Makefile`` file includes the part ``sencha-touch`` and
 ``mobile`` that are dedicated to building the mobile application.
 
 For the ``mobile`` part to work Sencha SDK Tools and Compass should be
@@ -108,14 +109,15 @@ installed on the build machine. (See above.)
 
 .. note::
 
-    On Windows you will need to override the values of the `mobile` part's
-    `sencha_cmd` variables as such::
+    On Windows you will need to override the values of the ``mobile`` part
+    ``SENCHA_CMD`` variables as such:
 
-        [mobile]
-        sencha_cmd = sencha.bat
+    .. code:: make
 
-    You would add this in `buildout.cfg`, or any Buildout configuration file
-    that extends `buildout.cfg`.
+        SENCHA_CMD = sencha.bat
+
+    You would add this in ``<package>.mk``, or any make configuration file
+    that extends ``<package>.mk``.
 
 
 Once built the mobile application should be available on ``/mobile_dev/`` and
@@ -294,14 +296,14 @@ multiple mobile applications if you want, for example, different base layers,
 and/or a high degree of customization, for each application.
 
 Any c2cgeoportal application includes a mobile application in the
-``<package_name>/static/mobile/`` directory.  The mobile application is created
+``<package>/static/mobile/`` directory.  The mobile application is created
 by the ``c2cgeoportal_create`` and ``c2cgeoportal_update`` scaffolds. To create
 another mobile application, the easiest is to copy the existing ``mobile``
 directory into a new directory. For example:
 
 .. prompt:: bash
 
-    cd <package_name>/static
+    cd <package>/static
     cp -r mobile mobile2
 
 .. warning::
@@ -320,7 +322,7 @@ Other things need to be duplicated:
   ``jsbuild/mobile.cfg`` into ``jsbuild/mobile2.cfg``, for example. You may
   want to adapt the new config file, based on your needs.
 
-* The ``jsbuild-mobile`` and ``mobile`` Buildout parts should be duplicated.
+* The ``sencha-touch`` make part should be duplicated.
 
   For this copy the ``[jsbuild-mobile]`` and ``[mobile]`` sections of
   ``CONST_buildout.cfg``, them into the application's ``buildout.cfg`` file,
@@ -345,8 +347,8 @@ Other things need to be duplicated:
   ``mobile_index_dev2``. Change the route URLs, for example from
   ``/mobile_dev/`` to ``/mobile_dev2/``. Change the paths to the templates
   files, for example from
-  ``renderer='<package_name>:static/mobile/index.html'`` to
-  ``renderer='<package_name>:static/mobile2/index.html'``.  Do this for every
+  ``renderer='<package>:static/mobile/index.html'`` to
+  ``renderer='<package>:static/mobile2/index.html'``.  Do this for every
   route and view.
 
   You should be done.

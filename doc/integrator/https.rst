@@ -17,7 +17,7 @@ proxy:
   on`` (``X-Https`` is the header name, and ``on`` is the header value).
 * To make c2cgeoportal generate HTTPS URLs when requests with this header are
   received you will set the `HTTPS` environment variable by adding the
-  following in the ``apache/wsgi.conf.in`` file in the ``<location ...>``
+  following in the ``apache/wsgi.conf.mako`` file in the ``<location ...>``
   section, in our example::
 
     SetEnvIf    X-Https on HTTPS=1

@@ -33,12 +33,9 @@ import sys
 import shutil
 import argparse
 import httplib2
-import logging
 from yaml import load
 from subprocess import check_call
 from argparse import ArgumentParser
-from ConfigParser import ConfigParser
-from zc.buildout.buildout import Buildout
 from alembic.config import Config
 from alembic import command
 
@@ -80,11 +77,9 @@ def main():  # pragma: no cover
 Available commands:
 
 """ + _colorize("help", GREEN) + """: show this page
-""" + _colorize("build", GREEN) + """: build the application
 """ + _colorize("update", GREEN) + """: update the application code
 """ + _colorize("upgrade", GREEN) + """: upgrade the application to a new version
 """ + _colorize("deploy", GREEN) + """: deploy the application to a server
-""" + _colorize("buildoutcmds", GREEN) + """: show the buildout commands
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -107,16 +102,12 @@ To have some help on a command type:
     global _command_to_use
     _command_to_use = environ['COMMAND_TO_USE'] if 'COMMAND_TO_USE' in environ else sys.argv[0]
 
-    if sys.argv[1] == 'build':
-        build(options)
-    elif sys.argv[1] == 'update':
+    if sys.argv[1] == 'update':
         update(options)
     elif sys.argv[1] == 'upgrade':
         upgrade(options)
     elif sys.argv[1] == 'deploy':
         deploy(options)
-    elif sys.argv[1] == 'buildoutcmds':
-        buildoutcmds(options)
     else:
         print "Unknown command"
 
@@ -127,29 +118,13 @@ def _fill_arguments(command):
         parser.add_argument(
             'command', metavar='COMMAND', help='The command'
         )
-    elif command == 'build':
-        parser.add_argument(
-            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build'
-        )
-        parser.add_argument(
-            '--desktop', action='store_true',
-            help='Build only task needed for the desktop application.'
-        )
-        parser.add_argument(
-            '--mobile', action='store_true',
-            help='Build only task needed for the mobile application.'
-        )
-        parser.add_argument(
-            '--cmd', '-c', action='append',
-            help='Build a specific buildout task.'
-        )
     elif command == 'update':
         parser.add_argument(
-            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build'
+            'file', metavar='MAKEFILE', help='The makefile used to build'
         )
     elif command == 'upgrade':
         parser.add_argument(
-            'file', metavar='BUILDOUT_FILE', help='The buildout file used to build', default=None
+            'file', metavar='MAKEFILE', help='The makefile used to build', default=None
         )
         parser.add_argument(
             '--step', type=int, help=argparse.SUPPRESS, default=0
@@ -166,35 +141,11 @@ def _fill_arguments(command):
             help="Restrict component to update. [databases,files,code]. default to all",
             default=None
         )
-    elif command == 'buildoutcmds':
-        pass
     else:
         print "Unknown command"
         exit()
 
     return parser
-
-
-def _run_buildout_cmd(config_file='buildout.cfg', commands=[]):
-    buildout = Buildout(config_file, [], True)
-    buildout.install(commands)
-    # remove logger to don't have duplicate messages
-    logging.getLogger().handlers.pop()
-    logging.getLogger('zc.buildout').handlers.pop()
-
-
-def build(options):
-    cmds = []
-    if options.cmd:
-        cmds = options.cmd
-    elif options.desktop:
-        cmds = ['template', 'jsbuild', 'cssbuild']
-    elif options.mobile:
-        cmds = ['jsbuild-mobile', 'mobile']
-
-    _run_buildout_cmd(options.file, cmds)
-
-    check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def update(options):
@@ -212,10 +163,7 @@ def update(options):
     check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
     check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
 
-    _run_buildout_cmd('CONST_buildout_cleaner.cfg')
-    shutil.rmtree('old')
-
-    _run_buildout_cmd(options.file)
+    check_call(['make', '-f', options.file, 'build'])
     check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
@@ -224,7 +172,7 @@ def _print_step(options, step, intro="To continue type:"):
     print intro
     print _colorize("%s upgrade %s %s --step %i", YELLOW) % (
         _command_to_use,
-        options.file if options.file is not None else "<buildout_user.cfg>",
+        options.file if options.file is not None else "<user.mk>",
         options.version, step
     )
 
@@ -299,10 +247,10 @@ def upgrade(options):
             'c2cgeoportal/scaffolds/create/versions.cfg'
             % options.version, '-O', 'versions.cfg'
         ])
-        _run_buildout_cmd(commands=['eggs'])
+        check_call(['make', '-f', options.file, 'build'])
 
         check_call([
-            './buildout/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
+            '.build/venv/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
             '../%s' % project['project_folder'], 'package=%s' % project['project_package']
         ])
 
@@ -318,28 +266,13 @@ def upgrade(options):
 
     elif options.step == 2:
         if options.file is None:
-            print "The buildout file is missing"
-            exit(1)
-
-        buildout_config = ConfigParser()
-        buildout_config.read(options.file)
-        if buildout_config.has_option('buildout', 'develop'):
-            print(
-                "The user buildout file shouldn't override the `develop`"
-                " option of the `[buildout]` section."
-            )
-            exit(1)
-        if buildout_config.has_option('version', 'c2cgeoportal'):
-            print "The user buildout file shouldn't specify the `c2cgeoportal` version"
+            print "The makefile is missing"
             exit(1)
 
         if path.isfile('changelog.diff'):
             unlink("changelog.diff")
 
-        _run_buildout_cmd('CONST_buildout_cleaner.cfg')
-        shutil.rmtree('old')
-
-        _run_buildout_cmd(options.file)
+        check_call(['make', '-f', options.file, 'build'])
 
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
@@ -367,31 +300,8 @@ def deploy(options):
         print _colorize("Correct them and run again", RED)
         exit(1)
 
-    shutil.rmtree('buildout/parts/modwsgi')
     check_call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
-    _run_buildout_cmd(commands=['modwsgi'])
-
-
-def _read_buildout_files_help(name, commands_help):
-    from ConfigParser import ConfigParser
-    config = ConfigParser()
-    config.read(name)
-
-    if config.has_option('buildout', 'extends'):
-        _read_buildout_files_help(config.get('buildout', 'extends'), commands_help)
-
-    for cmd in config.sections():
-        if config.has_option(cmd, 'help'):
-            commands_help[cmd] = config.get(cmd, 'help')
-
-
-def buildoutcmds(options):
-    commands_help = {}
-    _read_buildout_files_help('buildout.cfg', commands_help)
-
-    for cmd, command_help in commands_help.items():
-        # for cmd not in ['buildout', 'versions', 'eggs', 'activate']
-        print "%s: %s" % (_colorize(cmd, GREEN), command_help)
+    check_call(['make', '-f', options.file, 'build'])
 
 
 if __name__ == "__main__":  # pragma: no cover

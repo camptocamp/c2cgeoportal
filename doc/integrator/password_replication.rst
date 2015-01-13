@@ -3,14 +3,14 @@
 Password Replication
 ====================
 
-*New in c2cgeoportal 1.4*
-
 To replicate a password change between the main database and a secondary 
-database, you need to add the following configuration in the buildout 
-configuration file used to setup your project::
+database, you need to add the following configuration in the vars 
+configuration file used to setup your project:
+    
+.. code:: yaml
 
     # enable / disable the replication
-    enable_auth_replication = true
+    enable_auth_replication: true
 
     # the target database connection configuration
     dbhost_replication: <target database hostname>
@@ -21,9 +21,3 @@ configuration file used to setup your project::
 
 The target database is the secondary database where the changes are being 
 replicated.
-
-Also be sure you have the following line in your development.ini.in / 
-production.ini.in in the [app:app] section::
-
-    auth_replication_enabled = ${vars:enable_auth_replication}
-    sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}

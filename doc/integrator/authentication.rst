@@ -74,7 +74,7 @@ work properly.
 
 So when using an external authentication system this system should also provide
 the c2cgeoportal application with the name of the user's role. This can be done
-in ``apache/wsgi.conf.in`` by relying on the `mod_setenvif
+in ``apache/wsgi.conf.mako`` by relying on the `mod_setenvif
 <http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html>`_ Apache module's
 ``SetEnvIf`` directive. For example::
 
