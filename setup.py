@@ -57,6 +57,11 @@ install_requires = [
     'papyrus_ogcproxy>=0.2dev1',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
+    'js.jqgrid==4.3.1-1',
+    'js.jquery==1.7.1',
+# The version 1.10.3 have an issue with the 'jump to' combobox of the
+# admin interface
+    'js.jqueryui==1.8.24',
     'FormAlchemy',
     'GeoFormAlchemy2>=2.0dev2',
     'OWSLib>=0.6.0',
