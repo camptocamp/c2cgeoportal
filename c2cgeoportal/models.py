@@ -758,7 +758,7 @@ class Interface(Base):
 
 class UIMetadata(Base):
     __label__ = _(u'UI metadata')
-    __plural__ = _(u'UI metadata')
+    __plural__ = _(u'UI metadatas')
     __tablename__ = 'ui_metadata'
     __table_args__ = {'schema': _schema}
     __acl__ = [
@@ -786,7 +786,7 @@ class UIMetadata(Base):
 
 class WMTSDimension(Base):
     __label__ = _(u'WMTS dimension')
-    __plural__ = _(u'WMTS dimenson')
+    __plural__ = _(u'WMTS dimensions')
     __tablename__ = 'wmts_dimension'
     __table_args__ = {'schema': _schema}
     __acl__ = [

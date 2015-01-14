@@ -19,13 +19,11 @@ http://pypi.camptocamp.net/internal-pypi/index includes ``c2cgeoportal`` and
 on `CheesePrism <https://github.com/SurveyMonkey/CheesePrism>`_. To access this
 PyPI a login/password is required.
 
-The buildout configurations of c2cgeoportal applications use ``index``
+The requirement of c2cgeoportal applications use ``index``
 and ``find-links`` to reference these Package Index::
 
-    [buildout]
-    ...
-    index = http://pypi.camptocamp.net/pypi
-    find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+    --index-url http://pypi.camptocamp.net/pypi
+    --find-links = http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
     ...
 
 c2cgeoportal releases
@@ -65,11 +63,11 @@ Build c2cgeoportal
 ~~~~~~~~~~~~~~~~~~
 
 Creating c2cgeoportal distributions requires building c2cgeoportal. This
-is done using Buildout:
+is done using make:
 
 .. prompt:: bash
 
-    buildout/bin/buildout -c buildout_dev.cfg
+    make build
 
 Create and upload development distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +79,7 @@ command:
 
 .. prompt:: bash
 
-    buildout/bin/python setup.py sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py sdist upload -r c2c-internal
 
 As you can see the name of a development distribution includes a ``dev``
 *pre-release* tag and a date *post-release* tag. This is by convention.
@@ -103,7 +101,7 @@ distributions* specific options are required on the command line:
 
 .. prompt:: bash
 
-    buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
 
 The important note of the previous section applies here too, obviously.
 

@@ -1,0 +1,7 @@
+extends: vars.yaml
+
+vars:
+    mapserver_layer_metadata:
+        '"default_role_id" "-1"
+        "role_id_validation_pattern" "^-?[0-9]*$$"'
+    mapserver_layer_validation: ""
