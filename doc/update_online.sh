@@ -44,11 +44,11 @@ do
 
     # create a virtual env if none exists already
     if [[ ! -d env ]]; then
-        virtualenv --no-site-packages --distribute env
+        virtualenv env
     fi
 
     # install or update Sphinx
-    ./env/bin/pip install -r requirements.txt
+    ./env/bin/pip install Sphinx==1.1.3 sphinx-prompt==0.2.2
 
     make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
 
