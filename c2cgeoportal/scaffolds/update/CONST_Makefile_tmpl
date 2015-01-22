@@ -1,4 +1,3 @@
-SITE_PACKAGES = $(shell .build/venv/bin/python -c "import distutils; print(distutils.sysconfig.get_python_lib())" 2> /dev/null)
 PYTHON_VERSION = $(shell .build/venv/bin/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
 
@@ -586,11 +585,11 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 	touch $@
 
 .PHONY: eggs
-eggs: $(SITE_PACKAGES)/$(PACKAGE).egg-link
+eggs: .build/eggs.timestamp
 
-$(SITE_PACKAGES)/$(PACKAGE).egg-link: .build/venv.timestamp setup.py CONST_versions.txt $(EXTRA_EGGS_DEPENDENTIES)
+.build/eggs.timestamp: .build/venv.timestamp setup.py CONST_versions.txt $(EXTRA_EGGS_DEPENDENTIES)
 	.build/venv/bin/pip install $(REQUIREMENTS)
-	touch -m $@ | true
+	touch -m $@
 
 # Print
 
