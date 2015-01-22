@@ -383,6 +383,7 @@ $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES)
 	node tasks/extract-messages.js $^ > $@
 
 $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot
+	mkdir -p $(dir $@)
 	.build/venv/bin/db2pot
 	msguniq $@ -o $@
 
