@@ -73,7 +73,7 @@ Build c2cgeoportal:
 
 .. prompt:: bash
 
-    make -f <user>.mk build
+    make build
 
 List existing skeletons
 -----------------------
@@ -247,8 +247,8 @@ Commit and push on the main repository:
 Configure the application
 -------------------------
 
-As the integrator you need to edit two files to configure the application:
-``vars_<package>.yaml``.
+As the integrator you need to edit the ``vars_<package>.yaml`` and
+``<package>.mk`` files to configure the application.
 
 Don't miss to add your changes to git:
 

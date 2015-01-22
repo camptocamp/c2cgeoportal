@@ -12,6 +12,7 @@ Content:
    requirements
    create_application
    install_application
+   make
    features
    backend
    tilegeneration
