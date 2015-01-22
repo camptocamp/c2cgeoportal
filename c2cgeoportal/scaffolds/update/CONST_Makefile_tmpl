@@ -466,8 +466,8 @@ build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(
 
 .build/venv/bin/cssmin: .build/dev-requirements.timestamp
 
-.PHONY: update-git
-update-git:
+.PHONY: update
+update:
 	git pull --rebase
 	git submodule sync
 	git submodule update
