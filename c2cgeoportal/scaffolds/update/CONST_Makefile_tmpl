@@ -343,12 +343,12 @@ endif
 
 # server localisation
 
-.build/venv/bin/pot-create: .build/dev-requirements.timestamp
+.build/venv/bin/pot-create: eggs
 
 .PHONY: compile-py-catalog
 compile-py-catalog: $(MO_SERVER_LOCALISATION_FILES)
 
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create
+$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create lingua.cfg
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
 	# removes the allways changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
