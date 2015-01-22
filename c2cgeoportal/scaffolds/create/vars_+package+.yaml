@@ -38,7 +38,7 @@ vars:
             print_template:
             - 1 A4 portrait demo
             - 2 A3 portrait demo
-            default_basemap: plan
+            default_basemap: map
 
             # The name of the theme to use as the default theme for the
             # mobile app. The default theme is the theme loaded when no

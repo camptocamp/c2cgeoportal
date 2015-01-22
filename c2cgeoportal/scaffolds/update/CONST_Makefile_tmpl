@@ -347,7 +347,10 @@ endif
 .build/venv/bin/pot-create: eggs
 
 .PHONY: compile-py-catalog
-compile-py-catalog: $(MO_SERVER_LOCALISATION_FILES)
+compile-py-catalog: $(SERVER_LOCALISATION_FILES)
+
+# to don't delete them
+.SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
 
 $(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create lingua.cfg
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
