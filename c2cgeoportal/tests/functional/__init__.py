@@ -85,7 +85,7 @@ def set_up_common():
     ]
     try:
         alembic.config.main()
-    except:  # alembic call the exit method!
+    except SystemExit:  # alembic call the exit method!
         pass
 
 

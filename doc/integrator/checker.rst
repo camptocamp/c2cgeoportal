@@ -39,7 +39,7 @@ Available services:
 * ``checker_wmscapabilities``: Check the WMS GetCapabilities.
 * ``checker_wfscapabilities``: Check the WFS GetCapabilities.
 
-Configuration in ``config.yaml.in``:
+Configuration in ``vars_<project>.yaml``:
 
 .. code:: yaml
 
@@ -99,12 +99,12 @@ A typical configuration:
                   display: Viewer script
         hosts:
             - display: Parent
-              url: http://${vars:host}/main/wsgi
+              url: http://${host}/main/wsgi
               type: main
             - display: Child 1
-              url: http://${vars:host}/child1/wsgi
+              url: http://${host}/child1/wsgi
             - display: Child 2
-              url: http://${vars:host}/child2/wsgi
+              url: http://${host}/child2/wsgi
 
 ``check_collector/check_type/<name>`` is the list of definitions of the
 checkers that we want to apply on a host,

@@ -5,7 +5,7 @@ EGG_INFO=''
 
 if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
     DEPLOY=true
-elif [ $TRAVIS_TAG = `./buildout/bin/python setup.py --version` ]; then
+elif [ $TRAVIS_TAG = `.build/venv/bin/python setup.py --version` ]; then
     DEPLOY=true
     EGG_INFO='egg_info --no-date --tag-build ""'
 fi
@@ -19,7 +19,7 @@ if [ $DEPLOY = true ] ; then
     echo "password:$PIP_PASSWORD" >> ~/.pypirc
     echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
 
-    ./buildout/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
     tar -czvf touch.tar.gz touch
@@ -27,6 +27,6 @@ if [ $DEPLOY = true ] ; then
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
     sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
-    ./buildout/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
 
 fi

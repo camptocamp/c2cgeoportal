@@ -53,19 +53,19 @@ Server
 
 #. Extract all messages from the project::
 
-    ./buildout/bin/python setup.py extract_messages
+    .build/venv/bin/python setup.py extract_messages
 
 #. Initialize a catalog for every supported language, for example::
 
-    ./buildout/bin/python setup.py init_catalog -l en
-    ./buildout/bin/python setup.py init_catalog -l fr
-    ./buildout/bin/python setup.py init_catalog -l de
+    .build/venv/bin/python setup.py init_catalog -l en
+    .build/venv/bin/python setup.py init_catalog -l fr
+    .build/venv/bin/python setup.py init_catalog -l de
 
 #. Edit the .po files in ``<package>/locale/<lang>/LC_MESSAGES/<package>.po``
 
-#. Run buildout to compile all the .po files to .mo::
+#. Run make to compile all the .po files to .mo::
 
-    ./buildout/bin/buildout -c buildout_$USER.cfg install po2mo
+    make -f <user>.mk build install po2mo
 
 #. Finally don't forget to restart apache::
 
@@ -73,7 +73,7 @@ Server
 
 When you add a new message repeat all steps but replace the step 2. by::
 
-    ./buildout/bin/python setup.py update_catalog
+    .build/venv/bin/python setup.py update_catalog
 
 
 `Source from pylondhq <http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization>`_
@@ -95,7 +95,7 @@ Than mark your title as translated:
 
    <title>${_('GeoMapFish Mobile Application')}</title>
 
-And don't forget (for the upgrades) to do the same in the ``project.yaml.in`` file,
+And don't forget (for the upgrades) to do the same in the ``project.yaml.mako`` file,
 in section ``template_vars``:
 
 .. code:: yaml

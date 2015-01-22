@@ -40,12 +40,12 @@ def main():  # pragma: no cover
     """
     Emergency user create and password reset script
     exemple, reset toto password to foobar:
-    ./buildout/bin/manage_users -p foobar toto
+    .build/venv/bin/manage_users -p foobar toto
     exemple, create user foo with password bar and role admin:
-    ./buildout/bin/manage_users -c -r role_admin -p bar foo
+    .build/venv/bin/manage_users -c -r role_admin -p bar foo
 
     to get the options list, do:
-    ./buildout/bin/manage_users -h
+    .build/venv/bin/manage_users -h
     """
 
     usage = """Usage: %prog [options] USERNAME

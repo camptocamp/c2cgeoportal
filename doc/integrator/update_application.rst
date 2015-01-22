@@ -17,8 +17,8 @@ to use it from a c2cgeoportal 1.4 you should at first get the c2cgeoportal 1.5:
 
 .. prompt:: bash
 
-   wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
-    ./buildout/bin/buildout install eggs
+    wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
+    make <user>.mk build
 
 Replace ``<version>`` by a version number (branch) or release number (tag).
 To get the last dev version, replace ``<version>`` by ``master``.
@@ -29,15 +29,15 @@ Easy updating an application code (experimental)
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool update <buildout_file>
+   .build/venv/bin/c2ctool update <makefile>
 
-Where ``<buildout_file>`` is your user buildout file.
+Where ``<amkefile>`` is your user makefile (``<user>.mk``).
 
 
 Easy upgrading an application (experimental)
 --------------------------------------------
 
-Create a ``project.yaml.in`` file that contains:
+Create a ``project.yaml.mako`` file that contains:
 
 .. code::
 
@@ -60,9 +60,9 @@ Add ``project.yaml`` in the ``.gitignore`` file.
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool upgrade <buildout_file> <target_version>
+   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
 
-Where ``<buildout_file>`` is your user buildout file,
+Where ``<makefile>`` is your user make file (``<user>.mk``),
 ``<target_version>`` is the version that you wish to update to.
 
 And follow the instructions.
@@ -85,16 +85,6 @@ To get the changes done by other people, we need to ``pull`` the new code:
 
    The submodule command is used to have the right version of CGXP.
 
-.. note::
-
-   If you update the code after an upgrade of the application it is
-   recommended to clean your old eggs (this will also build your application):
-
-  .. prompt:: bash
-
-        ./buildout/bin/buildout -c CONST_buildout_cleaner.cfg
-        rm -rf old
-
 
 Updating CGXP
 -------------
@@ -102,12 +92,8 @@ Updating CGXP
 To update CGXP to a release tag (like 1.3.0) use the following:
 
 .. prompt:: bash
-
-    cd <package>/static/lib/cgxp
-    git fetch
-    git checkout <tag>
-    git submodule sync
-    git submodule update --init
+    
+    make <user>.mk update-git
 
 To update CGXP to a version branch (like 1.3) use the following:
 
@@ -185,17 +171,17 @@ steps:
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
 
-3. Execute ``buildout`` (``eggs`` part) to get the new ``c2cgeoportal`` version:
+3. Execute ``make`` to get the new ``c2cgeoportal`` version:
 
    .. prompt:: bash
 
-       ./buildout/bin/buildout install eggs
+        make <user>.mk build
 
 4. Apply the ``c2cgeoportal_update`` scaffold:
 
    .. prompt:: bash
 
-       ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../<project_name> package=<package_name>
+       .build/venv/bin/pcreate --interactive -s c2cgeoportal_update ../<project> package=<package>
 
    .. note::
 
@@ -203,7 +189,7 @@ steps:
 
    .. note::
 
-      ``<package_name>`` is to be replaced by the name of the application module.
+      ``<package>`` is to be replaced by the name of the application module.
       See above for more information.
 
    .. note:: For Windows:
@@ -222,31 +208,20 @@ steps:
 5. Do manual migration steps based on what's in the ``CONST_CHANGELOG.txt``
    file.
 
-6. Clean your old eggs:
+6. Execute ``make`` to rebuild and install the application:
 
    .. prompt:: bash
 
-        ./buildout/bin/buildout -c CONST_buildout_cleaner.cfg
-        rm -rf old
+        make <user>.mk
 
-   .. note::
-
-      The first line will build the application and move the old eggs in a folder named ``old/``.
-
-7. Execute ``buildout`` to rebuild and install the application:
+7. Update the database using the ``alembic`` script:
 
    .. prompt:: bash
 
-       ./buildout/bin/buildout -c <buildout_config_file>
-
-8. Update the database using the ``alembic`` script:
-
-   .. prompt:: bash
-
-       ./buildout/bin/alembic upgrade head
+       .build/venv/bin/alembic upgrade head
 
 
-9. Add the new files in the repository:
+8. Add the new files in the repository:
 
     Get informations on the status of the repository:
 
@@ -259,6 +234,7 @@ steps:
     .. prompt:: bash
 
         git add <file1> <file2> ...
+
 
 Migrating database to Postgis 2.x
 ---------------------------------
@@ -314,7 +290,7 @@ Test and commit
 
   .. prompt:: bash
 
-    ./buildout/bin/buildout -c <buildout_config_file>
+    make -f <user>.mk build
 
 * Reload Apache configuration:
 

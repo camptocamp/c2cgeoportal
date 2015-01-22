@@ -10,15 +10,17 @@ The ``raster`` web service allows getting information for points.
 The ``profile`` web service allows getting information for lines.
 
 To configure these web services you need to set the ``raster`` variable in the
-application config (``config.yaml``).  For example::
+application config (``vars_<project>.yaml``).  For example:
+
+.. code:: yaml
 
     raster:
-      mns:
-        file: /var/sig/altimetrie/mns.shp
-        round: 1
-      mnt:
-        file: /var/sig/altimetrie/mnt.shp
-        round: 1
+        mns:
+            file: /var/sig/altimetrie/mns.shp
+            round: 1
+        mnt:
+            file: /var/sig/altimetrie/mnt.shp
+            round: 1
 
 ``raster`` is a list of "DEM layers". There are only two entries in this example,
 but there could be more.

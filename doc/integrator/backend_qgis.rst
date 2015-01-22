@@ -21,20 +21,20 @@ Change the DPI value to use the same as in the server::
 Apache configuration
 --------------------
 
-In the ``apache/mapserv.conf.in`` do the following changes:
+In the ``apache/mapserv.conf.mako`` do the following changes:
 
 .. code::
 
-   - ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/mapserv
-   + ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
+   - ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
+   + ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
-   - SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
-   + SetEnv QGIS_PROJECT_FILE ${buildout:directory}/qgisserver.qgs
+   - SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
+   + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 
 Application configuration
 -------------------------
 
-In the ``config.yaml.in`` file, define:
+In the ``vars_<project>.yaml`` file, define:
 
 .. code:: yaml
 

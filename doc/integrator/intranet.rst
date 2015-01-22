@@ -7,7 +7,7 @@ It may be interesting to assign a default role to anonymous users connecting
 from a given IP or set of IP addresses (eg. intranet users).
 
 The default username and role for anonymous intranet users as well as the 
-matching IP regexp are configured in ``buildout.cfg`` (see step #4 below). 
+matching IP regexp are configured in ``<package>.mk`` (see step #4 below). 
 The assigned role must obviously have been defined in the administration interface.
 
 Example of accepted IP setting:
@@ -73,19 +73,19 @@ This page lists the changes that must be applied to add such a functionality.
                                    name='user', reify=True
        )
 
-3. In ``apache/wsgi.conf.in`` add to ``<Location /${vars:instanceid}/wsgi>``:
+3. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
 
    .. code:: apache
    
-       SetEnvIf REMOTE_ADDR ${vars:intranet_ip} intranet=1
+       SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
    
    or, depending on the proxies setup:
    
    .. code:: apache
    
-       SetEnvIf x-forwarded-for ${vars:intranet_ip} intranet=1
+       SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
    
-4. In the ``[vars]`` section of ``buildout.cfg`` add
+4. In the ``vars`` section of ``vars_<package>.yaml`` add
 
    .. code:: yaml
 
@@ -94,13 +94,11 @@ This page lists the changes that must be applied to add such a functionality.
        intranet_default_user = 'Intranet'
        intranet_default_role = 'role_intranet'
 
-5. At the end of ``config.yaml.in`` add
+5. At the end of ``<package>.mk`` add
 
-   .. code:: yaml
+   .. code:: make
 
-       # Default role/username from within the intranet
-       intranet_default_user: ${vars:intranet_default_user}
-       intranet_default_role: ${vars:intranet_default_role}
+        CONFIG_VARS += intranet_default_user intranet_default_role 
 
 6. In ``<package>/templates/index.html`` replace
 

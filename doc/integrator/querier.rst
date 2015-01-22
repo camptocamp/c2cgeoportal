@@ -8,7 +8,7 @@ it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a ``SELECT dinstinct(<column>) FROM <table>``.
 
-The web service configuration is done in the ``config.yaml.in`` file:
+The web service configuration is done in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 

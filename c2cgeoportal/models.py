@@ -82,7 +82,7 @@ if schema is not None:
     _schema = schema
 else:  # pragma: nocover
     raise Exception(
-        'schema not specified, you need to add it to your buildout config'
+        'schema not specified, you need to add it to your config'
     )
 _parentschema = parentschema
 
@@ -90,7 +90,7 @@ if srid is not None:
     _srid = srid
 else:  # pragma: nocover
     raise Exception(
-        'srid not specified, you need to add it to your buildout config'
+        'srid not specified, you need to add it to your config'
     )
 
 

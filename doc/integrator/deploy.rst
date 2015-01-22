@@ -37,9 +37,9 @@ For that we should have 4 different schemas:
 
 We should configure the deploy tool to deploy only the
 wanted schema, by setting the following configuration in the
-``[databases]`` section of the ``deploy/deploy.cfg.in`` file::
+``[databases]`` section of the ``deploy/deploy.cfg.mako`` file::
 
-    names = ${vars:db}.${vars:schema},${vars:db}.<readonly_geodata_schema>
+    names = ${db}.${schema},${db}.<readonly_geodata_schema>
     use_schema = true
 
 And use deploy version >= 0.3.3.
@@ -72,7 +72,7 @@ Deploy configuration
 --------------------
 
 The first time you want do deploy an application the configuration
-should be set up in file ``deploy/deploy.cfg[.in]``.
+should be set up in file ``deploy/deploy.cfg[.mako]``.
 
 The deploy tool has four parts:
 
@@ -89,23 +89,23 @@ All the configuration option can be found in ``/etc/deploy/deploy.cfg``.
 Get help with the command line ``deploy --help``.
 
 
-Buildout configuration
+Make configuration
 ----------------------
 
-To use specific parameter values on the ``$TARGET`` server (for instance for
-``host``), create dedicated ``buildout_$TARGET.cfg`` files that will contain
+To use specific parameter values on the ``<target>`` server (for instance for
+``host``), create dedicated ``<target>.mk`` files that will contain
 those values. The deploy tool will then automatically detect those files and
-use them when running the buildout command on the ``$TARGET`` server.
+use them when running the make command on the ``<target>`` server.
 
-For instance a buildout configuration file for the ``prod`` server would be
-named ``buildout_prod.cfg`` and look like::
+For instance a makefile for the ``prod`` server would be
+named ``prod.mk`` and look like:
 
-     [buildout]
-     extends = buildout.cfg
+.. code:: make
 
-     [vars]
-     host = <prod hostname>
-     apache-entry-point = /
+    INSTANCE_ID = main
+    VARS_FILE = vars_main.yaml
+
+    include <project>.mk
 
 If you have more than one instance on a domain name you can define
 ``apache-entry-point`` with something like ``/a_name/``. The trailing ``/``
@@ -141,7 +141,7 @@ Deploy your project:
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool deploy <host>
+   .build/venv/bin/c2ctool deploy <host>
 
 Where ``<host>`` is your destination host that you configured in the
 ``deploy/deploy.cfg`` file, e.g. ``demo``, ``prod``.
@@ -157,8 +157,7 @@ Build on the dev server:
   ssh -A <dev_server> # SSH agent forward is needed
   cd /var/www/<your_vhost>/private/<your_project>
   git pull origin master # update the code
-  rm -rf buildout/parts/modwsgi # to prevent rights error
-  ./buildout/bin/buildout -c buildout_main.cfg # configure c2cgeoportal
+  make -f main.mk build # configure c2cgeoportal
 
 **Test on the dev server**
 
@@ -166,10 +165,8 @@ Deploy to the demo server:
 
 .. prompt:: bash
 
-  rm -rf buildout/parts/modwsgi # to prevent rights error
   cd deploy
   sudo -u deploy deploy -r deploy.cfg demo
-  ./buildout/bin/buildout -c buildout_main.cfg # to make dev working again
 
 **Test on the demo server**
 

@@ -6,7 +6,7 @@ Version 1.6
 
 1. Get the new files:
 
-    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+    .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
 
     cp /tmp/{{project}}/alembic.ini.in .
     git add alembic.ini.in
@@ -64,9 +64,9 @@ Version 1.5.2
    -    App.WFSTypes = '${wfs_types | n}'.split(',');
    +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
-2. In the <package>/templates/viewer.js and <package>/templates/edit.js files, for plugins ``cgxp_layertree`` and ``cgxp_login``, 
+2. In the <package>/templates/viewer.js and <package>/templates/edit.js files, for plugins ``cgxp_layertree`` and ``cgxp_login``,
    add the ``events`` parameter:
-        
+
         ...
         ptype: "cgxp_layertree",
         id: "layertree",
@@ -77,9 +77,9 @@ Version 1.5.2
         actionTarget: 'center.tbar',
     +   events: EVENTS,
         ...
-        
+
     this allows to use the new ``showRestrictedContentWarning`` parameter
-    in plugin ``cgxp_layertree`` to warn the user that some content in the 
+    in plugin ``cgxp_layertree`` to warn the user that some content in the
     permalink he has loaded is only available if logged in.
 
 Version 1.5.1
@@ -193,7 +193,7 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
   - AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript application/javascript application/json
   + AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
 
-  - <LocationMatch /${vars:instanceid}/wsgi/(app|build|lib)>
+  - <LocationMatch /${instanceid}/wsgi/(app|build|lib)>
   -     # Remove etags to enable better client-side caching
   -     # (potential proxy problems)
   -     # Also instruct proxys that these files are cacheable.
@@ -204,14 +204,14 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
   -     # Short term cache, before OpenLayers images (and others) are "CSS-Sprited"
   -     ExpiresActive On
   -     ExpiresDefault "access plus 1 hour"
-  + <LocationMatch /${vars:instanceid}/wsgi/(proj|static)>
+  + <LocationMatch /${instanceid}/wsgi/(proj|static)>
   +     # Instruct proxys that these files are cacheable.
   +     Header merge Cache-Control "public"
 
 5. Add the following line in the ``apache/wsgi.conf.in`` file:
 
-    RewriteRule ^${vars:apache-entry-point}search$ /${vars:instanceid}/wsgi/fulltextsearch [PT]
-    RewriteRule ^${vars:apache-entry-point}s/(.*)$ /${vars:instanceid}/wsgi/short/$1 [PT]
+    RewriteRule ^${apache-entry-point}search$ /${instanceid}/wsgi/fulltextsearch [PT]
+    RewriteRule ^${apache-entry-point}s/(.*)$ /${instanceid}/wsgi/short/$1 [PT]
 
 6. In the `config.yaml.in` file:
 
@@ -237,7 +237,7 @@ Full git hub diff: https://github.com/camptocamp/c2cgeoportal/compare/1.4...1.5#
         # The shortner base configuration
         shortener:
           # The base of created URL
-          base_url:  http://${vars:host}${vars:apache-entry-point}s/
+          base_url:  http://${host}${apache-entry-point}s/
 
 7. Some changes in the Deploy:
 
@@ -590,7 +590,7 @@ Version 1.4
 
        # The URL template used to generate the sub domain URL
        # %(sub)s will be replaced by the sub domain value.
-       subdomain_url_template: http://%(sub)s.${vars:host}
+       subdomain_url_template: http://%(sub)s.${host}
        # The used sub domain for the static resources
        subdomains: [s1, s2, s3, s4]
 
@@ -606,10 +606,10 @@ Version 1.4
     Set `mapserver_url` and `print_url` using localhost as follows:
 
         # For mapserver proxy
-        mapserv_url: http://localhost/${vars:instanceid}/mapserv
+        mapserv_url: http://localhost/${instanceid}/mapserv
 
         # For print proxy
-        print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid}/pdf/
+        print_url: http://localhost:8080/print-c2cgeoportal-${instanceid}/pdf/
 
   * Set mobile_default_theme as a functionality:
 
@@ -869,7 +869,7 @@ Version 1.4
 
     You must add the following lines in the `[app:app]` section:
 
-        auth_replication_enabled = ${vars:enable_auth_replication}
+        auth_replication_enabled = ${enable_auth_replication}
         sqlalchemy_replication.url = postgresql://${dbuser_replication}:${dbpassword_replication}@${dbhost_replication}:${dbport_replication}/${db_replication}
 
     Remove the parameter `tilecache.cfg`.
@@ -894,7 +894,7 @@ Version 1.4
 
         localHostForward:
             from:
-                - ${vars:host}
+                - ${host}
             https2http: True
 
   * Remove print config file (changed and required only for Windows):
@@ -1061,12 +1061,12 @@ Version 1.4
 
   * Make the end slash optional:
 
-        -RewriteRule ^${vars:apache-entry-point}$ /${vars:instanceid}/wsgi/ [PT]
-        +RewriteRule ^${vars:apache-entry-point}?$ /${vars:instanceid}/wsgi/ [PT]
+        -RewriteRule ^${apache-entry-point}$ /${instanceid}/wsgi/ [PT]
+        +RewriteRule ^${apache-entry-point}?$ /${instanceid}/wsgi/ [PT]
 
   * Add the following line:
 
-        RewriteRule ^${vars:apache-entry-point}routing/?$ /${vars:instanceid}/wsgi/routing [PT]
+        RewriteRule ^${apache-entry-point}routing/?$ /${instanceid}/wsgi/routing [PT]
 
 11. In the file `{{package}}/__init__.py` remove the following code::
 
@@ -1147,9 +1147,9 @@ Version 1.3.2
 1. Correct the mobile apache rewrite rules, in the 'apache/wsgi.conf.in' file
    do the following changes:
 
--RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
-+RewriteRule ^${vars:apache-entry-point}mobile$ ${vars:apache-entry-point}mobile/ [R]
-+RewriteRule ^${vars:apache-entry-point}mobile/(.*)$ /${vars:instanceid}/wsgi/mobile/$1 [PT]
+-RewriteRule ^${apache-entry-point}mobile/?$ /${instanceid}/wsgi/mobile/ [PT]
++RewriteRule ^${apache-entry-point}mobile$ ${apache-entry-point}mobile/ [R]
++RewriteRule ^${apache-entry-point}mobile/(.*)$ /${instanceid}/wsgi/mobile/$1 [PT]
 
 2. Camptocamp pypi repository is now public. As a result the `.httpauth` file
    may be removed:
@@ -1307,8 +1307,8 @@ Version 1.3
 8. In the file `apache/wsgi.conf.in` remove the trailing '/' in the `edit`
    `RewriteRule`.
 
--RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit/ [PT]
-+RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit [PT]
+-RewriteRule ^${apache-entry-point}edit/?$ /${instanceid}/wsgi/edit/ [PT]
++RewriteRule ^${apache-entry-point}edit/?$ /${instanceid}/wsgi/edit [PT]
 
 9. On the API help we have some issue with IE7 and IE8, to fix them you
    should apply the same modification as in the following commit:
@@ -1438,7 +1438,7 @@ Version 1.2
    b. Add the following parameter in the ``[app:app]`` section of
       production.ini.in/developement.ini.in:
 
-       enable_admin_interface = ${vars:enable_admin_interface}
+       enable_admin_interface = ${enable_admin_interface}
 
    c. Add the following parameter in the ``[vars]`` section of buildout.cfg:
 
@@ -1612,20 +1612,20 @@ Version 1.2
 
         Add the following API-related RewriteRule's:
 
-        RewriteRule ^${vars:apache-entry-point}api.js$ /${vars:instanceid}/wsgi/api.js [PT]
-        RewriteRule ^${vars:apache-entry-point}xapi.js$ /${vars:instanceid}/wsgi/xapi.js [PT]
-        RewriteRule ^${vars:apache-entry-point}xapihelp.html$ /${vars:instanceid}/wsgi/xapihelp.html [PT]
+        RewriteRule ^${apache-entry-point}api.js$ /${instanceid}/wsgi/api.js [PT]
+        RewriteRule ^${apache-entry-point}xapi.js$ /${instanceid}/wsgi/xapi.js [PT]
+        RewriteRule ^${apache-entry-point}xapihelp.html$ /${instanceid}/wsgi/xapihelp.html [PT]
 
         And remove this one:
 
-        RewriteRule ^${vars:apache-entry-point}apiloader.js$ /${vars:instanceid}/wsgi/apiloader.js [PT]
+        RewriteRule ^${apache-entry-point}apiloader.js$ /${instanceid}/wsgi/apiloader.js [PT]
 
 13. Add the following lines in `apache/wsgi.conf.in` to enable short URLs
     for the editing, mobile and admin pages:
 
-    RewriteRule ^${vars:apache-entry-point}edit/?$ /${vars:instanceid}/wsgi/edit/ [PT]
-    RewriteRule ^${vars:apache-entry-point}mobile/?$ /${vars:instanceid}/wsgi/mobile/ [PT]
-    RewriteRule ^${vars:apache-entry-point}admin/?$ /${vars:instanceid}/wsgi/admin/ [PT]
+    RewriteRule ^${apache-entry-point}edit/?$ /${instanceid}/wsgi/edit/ [PT]
+    RewriteRule ^${apache-entry-point}mobile/?$ /${instanceid}/wsgi/mobile/ [PT]
+    RewriteRule ^${apache-entry-point}admin/?$ /${instanceid}/wsgi/admin/ [PT]
 
 14. Redlining is now supported in CGXP's Permalink.
     The following path should be added in all root sections
@@ -1786,10 +1786,10 @@ external_mapserv_url:
 raster:
 
 # For mapserver proxy
-mapserv_url: http://$${vars:host}/$${vars:instanceid}/mapserv
+mapserv_url: http://$${host}/$${instanceid}/mapserv
 
 # For print proxy
-print_url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:instanceid}/pdf/
+print_url: http://$${host}:8080/print-c2cgeoportal-$${instanceid}/pdf/
 
 # For base layers
 # Nothing => gets the URL using the pyramid routes
@@ -1834,23 +1834,23 @@ TODO fix the array (comma is missing)
 # Define URLs to the parent application. Only useful is
 # this application is a child application in a parent/child
 # architecture:
-external_themes_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/themes
-external_mapserv_url: http://$${vars:host}/$${vars:parent_instanceid}/mapserv
+external_themes_url: http://$${host}/$${parent_instanceid}/wsgi/themes
+external_mapserv_url: http://$${host}/$${parent_instanceid}/mapserv
 
 # The "raster web services" configuration. See the "raster"
 # chapter in the integrator documentation.
 raster:
 
 # For mapserver proxy
-mapserv_url: http://$${vars:host}/$${vars:instanceid}/mapserv
+mapserv_url: http://$${host}/$${instanceid}/mapserv
 
 # For print proxy
 # This value mean that we use the parent print server
-print_url: http://$${vars:host}:8080/print-c2cgeoportal-$${vars:parent_instanceid}/pdf/
+print_url: http://$${host}:8080/print-c2cgeoportal-$${parent_instanceid}/pdf/
 
 # For base layers
 # This value mean that we use the parent tiles
-tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
+tilecache_url: http://$${host}/$${parent_instanceid}/wsgi/tilecache
 # ------------------------------------------------------------------------
 
     - Then interpretate it by running:
@@ -1873,19 +1873,19 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
 
         url = ${mapserv_url}
         by:
-        url = http://${vars:host}/${vars:instanceid}/mapserv
+        url = http://${host}/${instanceid}/mapserv
 
         and
 
         wmts_gettile = ${wmts_url}
         by
-        wmts_gettile = http://${vars:host}/${vars:instanceid}/tilecache
+        wmts_gettile = http://${host}/${instanceid}/tilecache
 
     - In the file mapserver/c2cgeoportal.map.in replace:
 
-        "wms_onlineresource" "http://${vars:wsgi_host}/${vars:instanceid}/wsgi/mapserv_proxy"
+        "wms_onlineresource" "http://${wsgi_host}/${instanceid}/wsgi/mapserv_proxy"
         by
-        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wsgi/mapserv_proxy"
+        "wms_onlineresource" "http://${host}/${instanceid}/wsgi/mapserv_proxy"
 
     - Add the following line in the [app:{{package}}] of the production.ini.in
             and the developement.ini.in:
@@ -1915,11 +1915,11 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
         ./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../{{project}} package={{package}}
 
     - In the file ``print/templates/print.mako.in`` replace
-        ``${vars:mapserv_host}`` and ``${vars:wsgi_host}`` by ``${vars:host}``.
+        ``${mapserv_host}`` and ``${wsgi_host}`` by ``${host}``.
 
     - In the file ``./apache/mapserver.conf.in`` remove the line
-        Allow from ${vars:mapserv_host}
-        we will use only ${vars:mapserv_allow}
+        Allow from ${mapserv_host}
+        we will use only ${mapserv_allow}
 
     - Edit ``{{package}}/templates/viewer.js`` and ``{{package}}/templates/edit.js`` and change
 
@@ -1951,7 +1951,7 @@ tilecache_url: http://$${vars:host}/$${vars:parent_instanceid}/wsgi/tilecache
        <script type="text/javascript" src="${request.route_url('viewer')}${extra_params}"></script>
 
    - In wsgi.conf.in, add a new RewriteRule:
-     RewriteRule ^${vars:apache-entry-point}theme/(.+)$ /${vars:instanceid}/wsgi/theme/$1 [PT]
+     RewriteRule ^${apache-entry-point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
 
 3. To add the support of WMTS layers the database should be updated by
    standard procedure, CGXP also. We also need the ogcproxy, and to
@@ -2212,8 +2212,8 @@ Version 0.7
      = egg:Paste#http" by "use = egg:waitress#main".
 
    - In development.ini.in, production.ini.in, print/config.yaml.in, and
-     print/templates/print.mako.in replace "${vars:paster_port}" by
-     "${vars:waitress_port}".
+     print/templates/print.mako.in replace "${paster_port}" by
+     "${waitress_port}".
 
    And to be able to use "pserve" you need to add "waitress" to
    the "install_requires" list defined in the application's
@@ -2381,9 +2381,9 @@ Other changes
    0.7 in the project's buildout configuration.
 
 3. In production.ini.in and development.ini.in jsbuild_root_dir should now be
-   set to ${buildout:directory}:
+   set to ${directory}:
 
-   jsbuild_root_dir = ${buildout:directory}
+   jsbuild_root_dir = ${directory}
 
 4. To be able to use the AddKMLFile CGXP plugin (cgxp_addkmlfile) the directory
    {{package}}/static/lib/cgxp/ext.ux/base64 should be a "root" in each [*.js]

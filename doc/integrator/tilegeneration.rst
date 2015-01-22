@@ -73,25 +73,23 @@ EC2, SQS, SNS.
 Initialization
 ~~~~~~~~~~~~~~
 
-* Add ``tilecloud-chain`` to the dependencies in the ``setup.py``.
-
 * Build the project:
 
   .. prompt:: bash
 
-    ./buildout/bin/buildout -c buildout_<user>.cfg
+     make -f <user>.mk build
 
 * Install the base template template:
 
   .. prompt:: bash
 
-    ./buildout/bin/pcreate --interactive -s tilecloud_chain ../<project_name> package=<package_name>
+    .build/venv/bin/pcreate --interactive -s tilecloud_chain ../<project> package=<package>
 
 * Add configuration to Git:
 
   .. prompt:: bash
 
-   	git add tilegeneration buildout_tilegeneration.cfg
+   	git add tilegeneration
 
 Configuration
 ~~~~~~~~~~~~~
@@ -119,7 +117,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./buildout/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+     .build/venv/bin/generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
   Than copy past the result in the layer config.
@@ -128,13 +126,13 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     ./buildout/bin/generate_controller --generate_wmts_capabilities
+     .build/venv/bin/generate_controller --generate_wmts_capabilities
 
 * And an OpenLayers test page:
 
   .. prompt:: bash
 
-     ./buildout/bin/generate_controller --openlayers-test
+     .build/venv/bin/generate_controller --openlayers-test
 
 If you generate the tiles locally you don't need all the configuration
 variables, because many of them in the ``generation`` part are for
@@ -148,26 +146,26 @@ see help:
 
 .. prompt:: bash
 
-    ./buildout/bin/generate_tiles --help
+    .build/venv/bin/generate_tiles --help
 
 one to generate the tiles using AWS, see help:
 
 .. prompt:: bash
 
-    ./buildout/bin/generate_controller --help
+    .build/venv/bin/generate_controller --help
 
 Before start a tile generation on S3 measure the cost:
 
 .. prompt:: bash
 
-    ./buildout/bin/generate_controller --cost
+    .build/venv/bin/generate_controller --cost
 
 If you setup all the default options you can generate the tiles by
 using the command:
 
 .. prompt:: bash
 
-    ./buildout/bin/generate_tiles
+    .build/venv/bin/generate_tiles
 
 .. note:: Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
 
@@ -186,15 +184,15 @@ In the ``viewer.js``, ``api/viewer.js`` and ``edit.js``:
  * Be sure that ``OpenLayers.IMAGE_RELOAD_ATTEMPTS`` is not defined.
  * In ``WMTS_OPTION`` url should be ${tiles_url}.
 
-In the ``config.yaml.in`` define ``tiles_url`` to something like, for S3 usage:
+In the ``vars_<project>.yaml`` define ``tiles_url`` to something like, for S3 usage:
 
 .. code:: yaml
 
     tiles_url:
-    - http://a.tiles.${vars:host}/
-    - http://b.tiles.${vars:host}/
-    - http://c.tiles.${vars:host}/
-    - http://d.tiles.${vars:host}/
+    - http://a.tiles.${host}/
+    - http://b.tiles.${host}/
+    - http://c.tiles.${host}/
+    - http://d.tiles.${host}/
 
 The configuration of the ``tiles`` vhost will be done by the sysadmins.
 
@@ -252,9 +250,11 @@ to access to them by using that in ``WMTS_OPTION``:
 With ``<view>`` the name of the view that serve the tiles.
 The sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the ``config.yaml.in``
-the following::
+the sub domain on only one of them you can define in the ``vars_<project>.yaml``
+the following:
+
+.. code:: yaml
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${vars:host}
+    subdomain_url_template: http://%(sub)s.${host}

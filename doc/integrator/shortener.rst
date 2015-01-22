@@ -3,13 +3,13 @@
 Configure short URL
 ===================
 
-The configuration in ``config.yaml.in`` looks like this:
+The configuration in ``vars_<project>.yaml`` looks like this:
 
 .. code:: yaml
 
    shortener:
         # The base of created URL
-        base_url:  http://${vars:host}/${vars:apache-entry-point}s/
+        base_url:  http://${host}/${apache-entry-point}s/
         # Used to send a confirmation email
         email_from: info@camptocamp.com
         email_subject: You create the following short URL
