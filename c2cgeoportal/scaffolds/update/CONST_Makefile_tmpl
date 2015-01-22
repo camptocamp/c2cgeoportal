@@ -232,7 +232,7 @@ TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
-VARS_DEPENDS += VARS_FILES .build/node_modules.timestamp 
+VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp 
 CONFIG_VARS += sqlalchemy.url auth_replication_enabled \
 	sqlalchemy_replication.url schema parentschema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers \
