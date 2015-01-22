@@ -1,0 +1,127 @@
+extends: CONST_vars.yaml
+
+vars:
+    # Database name
+    db: to be defined
+
+    # The visible host name
+    host: to be define
+
+    # The application's default language. This is the language used by
+    # the application if no specific language is specified in the URLs.
+    # This also defines the language used for the text search.
+    default_locale_name: fr
+
+    # The set of languages supported by the applications.
+    available_locale_names:
+    - en
+    - fr
+    - de
+
+    admin_interface:
+        # Default values for the admin interface's maps.
+        map_x: 740000
+        map_y: 5860000
+        map_zoom: 10
+
+        # The list of functionalities that can be configured
+        # through the admin interface.
+        available_functionalities:
+        - default_basemap
+        - print_template
+        - mapserver_substitution
+
+    functionalities:
+        # Functionalities that are accessible to anonymous
+        # users.
+        anonymous:
+            print_template:
+            - 1 A4 portrait demo
+            - 2 A3 portrait demo
+            default_basemap: plan
+
+            # The name of the theme to use as the default theme for the
+            # mobile app. The default theme is the theme loaded when no
+            # theme name is specified in the mobile app URL. If unset
+            # then there's no default theme, and no theme information
+            # will be passed to the config.js template.
+            mobile_default_theme:
+
+        # Functionalities that are accessible to authenticated
+        # users with no associated functionalities in the
+        # database.
+        registered:
+
+        # Functionalities that are made available to Mako templates.
+        available_in_templates:
+        - default_basemap
+
+    # For base layers
+    tiles_url:
+    - http://a.tiles.${host}/${instanceid}/tiles
+    - http://b.tiles.${host}/${instanceid}/tiles
+    - http://c.tiles.${host}/${instanceid}/tiles
+
+    # The URL template used to generate the sub domain URL
+    # %(sub)s will be replaced by the sub domain value.
+    subdomain_url_template: http://%(sub)s.${vars:host}
+
+    # The used sub domain for the static resources
+    subdomains: [s1, s2, s3]
+
+    # Checker configuration
+    checker:
+        print_template: 1 A4 portrait
+        print_center_lon: to be defined
+        print_center_lat: to be defined
+        print_scale: 10000
+        fulltextsearch: text to search
+
+    # Check collector configuration
+    check_collector:
+        check_type:
+            all:
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_edit
+              display: Edit page
+            - name: checker_edit_js
+              display: Edit script
+            - name: checker_api
+              display: API
+            - name: checker_xapi
+              display: Extended API
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_pdf
+              display: Print PDF
+            - name: checker_fts
+              display: FullTextSearch
+            - name: checker_wmscapabilities
+              display: WMS capabilities
+            - name: checker_wfscapabilities
+              display: WFS capabilities
+            main:
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_api
+              display: API
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_fts
+              display: FullTextSearch
+            default: # for children
+            - name: checker_viewer
+              display: Viewer script
+        hosts:
+        - display: Main
+          url: http://{host}/{instanceid}/wsgi
+          type: main
+        # - display: Child:
+        #   url: http://${host}/child/wsgi
+
+
