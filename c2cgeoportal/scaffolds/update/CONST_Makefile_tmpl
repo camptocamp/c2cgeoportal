@@ -314,21 +314,23 @@ update-node-modules:
 
 # Templates
 
-%: %.in .build/venv/bin/c2c-template ${VARS_DEPENDS}
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+
+%: %.in
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine template --files $@.in
 
-%: %.mako .build/venv/bin/c2c-template ${VARS_DEPENDS}
+%: %.mako
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine mako --files $@.mako
 
-%: %.jinja .build/venv/bin/c2c-template ${VARS_DEPENDS}
+%: %.jinja
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
@@ -378,8 +380,8 @@ compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
 
-$(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES)
-	node tasks/extract-messages.js $^ > $@
+$(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
+	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
 
 $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot
 	mkdir -p $(dir $@)
@@ -388,6 +390,8 @@ $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: $(PACKAGE)/locale/$(PACKAGE)-js.pot $(PACKAGE)/locale/$(PACKAGE)-db.pot
 	msgcat $^ > $@
+
+$(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 	mkdir -p $(dir $@)
