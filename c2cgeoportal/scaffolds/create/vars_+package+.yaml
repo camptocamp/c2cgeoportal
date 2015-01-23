@@ -64,7 +64,7 @@ vars:
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${vars:host}
+    subdomain_url_template: http://%(sub)s.${host}
 
     # The used sub domain for the static resources
     subdomains: [s1, s2, s3]
