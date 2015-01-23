@@ -18,23 +18,23 @@ RewriteEngine on
 # http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
 WSGIPassAuthorization On
 
-RewriteRule ^${apache-entry-point}?$ /${instanceid}/wsgi/ [PT]
-RewriteRule ^${apache-entry-point}api.js$ /${instanceid}/wsgi/api.js [PT]
-RewriteRule ^${apache-entry-point}xapi.js$ /${instanceid}/wsgi/xapi.js [PT]
-RewriteRule ^${apache-entry-point}apihelp.html$ /${instanceid}/wsgi/apihelp.html [PT]
-RewriteRule ^${apache-entry-point}xapihelp.html$ /${instanceid}/wsgi/xapihelp.html [PT]
-RewriteRule ^${apache-entry-point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
-RewriteRule ^${apache-entry-point}routing/?$ /${instanceid}/wsgi/routing [PT]
-RewriteRule ^${apache-entry-point}edit/?$ /${instanceid}/wsgi/edit [PT]
-RewriteRule ^${apache-entry-point}mobile$ ${apache-entry-point}mobile/ [R]
-RewriteRule ^${apache-entry-point}mobile/(.*)$ /${instanceid}/wsgi/mobile/$1 [PT]
-RewriteRule ^${apache-entry-point}admin/?$ /${instanceid}/wsgi/admin/ [PT]
-RewriteRule ^${apache-entry-point}search$ /${instanceid}/wsgi/fulltextsearch [PT]
-RewriteRule ^${apache-entry-point}s/(.*)$ /${instanceid}/wsgi/short/$1 [PT]
+RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/ [PT]
+RewriteRule ^${apache_entry_point}api.js$ /${instanceid}/wsgi/api.js [PT]
+RewriteRule ^${apache_entry_point}xapi.js$ /${instanceid}/wsgi/xapi.js [PT]
+RewriteRule ^${apache_entry_point}apihelp.html$ /${instanceid}/wsgi/apihelp.html [PT]
+RewriteRule ^${apache_entry_point}xapihelp.html$ /${instanceid}/wsgi/xapihelp.html [PT]
+RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
+RewriteRule ^${apache_entry_point}routing/?$ /${instanceid}/wsgi/routing [PT]
+RewriteRule ^${apache_entry_point}edit/?$ /${instanceid}/wsgi/edit [PT]
+RewriteRule ^${apache_entry_point}mobile$ ${apache_entry_point}mobile/ [R]
+RewriteRule ^${apache_entry_point}mobile/(.*)$ /${instanceid}/wsgi/mobile/$1 [PT]
+RewriteRule ^${apache_entry_point}admin/?$ /${instanceid}/wsgi/admin/ [PT]
+RewriteRule ^${apache_entry_point}search$ /${instanceid}/wsgi/fulltextsearch [PT]
+RewriteRule ^${apache_entry_point}s/(.*)$ /${instanceid}/wsgi/short/$1 [PT]
 
 # define a process group
 # WSGIDaemonProcess must be commented/removed when running the project on windows
-WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%${GROUP} user=${modwsgi_user} python-path=${python_path}
+WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user} python-path=${python_path}
 
 # define the path to the WSGI app
 WSGIScriptAlias /${instanceid}/wsgi ${directory}/apache/application.wsgi

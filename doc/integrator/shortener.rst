@@ -9,7 +9,7 @@ The configuration in ``vars_<project>.yaml`` looks like this:
 
    shortener:
         # The base of created URL
-        base_url:  http://${host}/${apache-entry-point}s/
+        base_url:  http://${host}/${apache_entry_point}s/
         # Used to send a confirmation email
         email_from: info@camptocamp.com
         email_subject: You create the following short URL
