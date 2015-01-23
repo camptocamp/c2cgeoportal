@@ -74,7 +74,7 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
 ifeq ($(CGXP), TRUE)
-DEV_REQUIREMENTS += jsbuild c2c.cssmin
+DEV_REQUIREMENTS += JSTools c2c.cssmin
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
