@@ -493,32 +493,32 @@ update-git-submodules:
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
 
-.git/modules/$(PACKAGE)/static/lib/cgxp/modules/%: .git/modules/$(PACKAGE)/static/lib/cgxp
+.git/modules/$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: .git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	git submodule foreach git submodule update --init
 
-.git/modules/$(PACKAGE)/static/lib/cgxp:
+.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD:
 	git submodule update --init
 
 $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
 	.build/venv/bin/jsbuild \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	mkdir -p $(dir $@)
 	.build/venv/bin/jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
 
 $(CSS_BASE_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Sencha touch
