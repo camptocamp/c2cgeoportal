@@ -4,12 +4,13 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.5.2
 =============
 
-1. In the {{package}}/static/mobile/config.js file do the following change:
+1. In the ``{{package}}/static/mobile/config.js`` file do the following change:
 
    -    App.WFSTypes = '${wfs_types | n}'.split(',');
    +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
-2. In the <package>/templates/viewer.js and <package>/templates/edit.js files, for plugins ``cgxp_layertree`` and ``cgxp_login``, 
+2. In the ``{{package}}/templates/viewer.js`` and ``{{package}}/templates/edit.js`` files,
+   for plugins ``cgxp_layertree`` and ``cgxp_login``, 
    add the ``events`` parameter:
         
         ...
@@ -34,7 +35,7 @@ Version 1.5.1
 
    cache_version = ${cache_version}
 
-2. In the ``viewer.js`` you should add the following configuration in the
+2. In the ``{{package}}/templates/viewer.js`` you should add the following configuration in the
    ``cgxp_permalink`` plugin:
 
     shortenerCreateURL: "${request.route_url('shortener_create', path='')}",
