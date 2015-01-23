@@ -102,6 +102,9 @@ JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
 JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
 JSBUILD_ARGS = $(if ifeq($(DEVELOPMENT), ‘TRUE’),-u,)
 
+ifeq ($(DEVELOPMENT), FALSE)
+	CSSMIN_ARGS += --compress
+endif
 CSS_BASE_FILES += \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/ext-all.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
@@ -505,26 +508,17 @@ $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
 $(CSS_BASE_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
 	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_BASE_FILES)
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
 	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_API_FILES)
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
 	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_XAPI_FILES)
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Sencha touch
 
