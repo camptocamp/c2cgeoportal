@@ -362,6 +362,7 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .b
 	sed -i '/^"PO-Revision-Date: /d' $@
 
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot .build/dev-requirements.timestamp
+	mkdir -p $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
 
