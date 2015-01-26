@@ -58,6 +58,31 @@ Ext.define('App.controller.Query', {
         });
     },
 
+    addResultsToStore: function(features) {
+        var store = this.getQueryView().getStore();
+        var featuresWithAttributes = [];
+        Ext.each(features, function(feature) {
+            var hasAttributes = false;
+            for (var k in feature.attributes) {
+                if (feature.attributes.hasOwnProperty(k) &&
+                    feature.attributes[k]) {
+                    hasAttributes = true;
+                }
+            }
+            // don't use feature without attributes
+            if (!hasAttributes) {
+                return;
+            }
+
+            if (!feature.geometry && feature.bounds) {
+                feature.geometry = feature.bounds.toGeometry();
+            }
+
+            featuresWithAttributes.push(feature);
+        });
+        store.add(featuresWithAttributes);
+    },
+
     showQueryResultView: function(coords, layers) {
         var store = this.getQueryView().getStore();
         store.removeAll();
@@ -78,10 +103,11 @@ Ext.define('App.controller.Query', {
             callback: function(result) {
                 if(result.success()) {
                     if(result.features.length) {
-                        store.add(result.features);
+                        this.addResultsToStore(result.features);
                     }
                 }
-            }
+            },
+            scope: this
         });
 
         if (App.raster) {
