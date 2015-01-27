@@ -12,7 +12,10 @@ Parameters
 ----------
 
 * ``version``: ``1`` or ``2 ``, API version, default is ``1``.
-* ``group``: get only one group, used to get the base layers.
+* ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
+  or ``background_layers``, default is ``all``.
+* ``background_layers_group``: parent group of background layers to get.
+* ``group``: the group to get.
 * ``catalog``: ``true`` or ``false``, different error reporting for catalog mode, default is ``false``.
 * ``min_levels``: minimum number of group levels that's required, default is ``1``.
 * ``role``: role name, not used by the server but it's required for the cache management.
@@ -21,22 +24,14 @@ Parameters
 Result in v2
 ------------
 
-Main for themes:
+Base for all possible results:
 
 .. code:: json
 
     {
-        items: [<themes>],
-        errors: [<errors>]
-    }
-
-
-Main for group:
-
-.. code:: json
-
-    {
+        themes: [<themes>],
         group: <group>,
+        background_layers: [<layers>],
         errors: [<errors>]
     }
 

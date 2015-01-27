@@ -97,7 +97,7 @@ class Entry(object):
 
     @cache_region.cache_on_arguments()
     def _wms_getcap_cached(self, url):
-        errors = []
+        errors = set()
         wms = None
 
         params = (
@@ -117,11 +117,11 @@ class Entry(object):
         try:
             resp, content = http.request(url, method='GET', headers=h)
         except:  # pragma: no cover
-            errors.append("Unable to GetCapabilities from url %s" % url)
+            errors.add("Unable to GetCapabilities from url %s" % url)
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.append(
+            errors.add(
                 "GetCapabilities from url %s return the error: %i %s" %
                 (url, resp.status, resp.reason)
             )
@@ -135,7 +135,7 @@ class Entry(object):
                 "read the mapfile and recover the themes."
             )
             error = "%s\nurl: %s\nxml:\n%s" % (error, url, content)
-            errors.append(error)
+            errors.add(error)
             log.exception(error)
         return wms, errors
 
@@ -203,7 +203,7 @@ class Entry(object):
         return child_layers_info
 
     def _layer(self, layer, wms, wms_layers, time):
-        errors = []
+        errors = set()
         l = {
             'id': layer.id,
             'name': layer.name,
@@ -237,7 +237,7 @@ class Entry(object):
 
             if layer.layer_type == "internal WMS":
                 self._fill_internal_wms(l, layer, wms, wms_layers, errors)
-                errors += self._merge_time(time, layer, wms, wms_layers)
+                errors |= self._merge_time(time, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
@@ -246,7 +246,7 @@ class Entry(object):
             l["type"] = "internal WMS"
             l["layers"] = layer.layer
             self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2)
-            errors += self._merge_time(time, layer, wms, wms_layers)
+            errors |= self._merge_time(time, layer, wms, wms_layers)
         elif isinstance(layer, LayerExternalWMS):
             l["type"] = "external WMS"
             l["layers"] = layer.layer
@@ -258,7 +258,7 @@ class Entry(object):
         return l, errors
 
     def _merge_time(self, time, layer, wms, wms_layers):
-        errors = []
+        errors = set()
         try:
             if layer.name in wms_layers:
                 wms_layer_obj = wms[layer.name]
@@ -277,8 +277,10 @@ class Entry(object):
                         # The time mode comes from the layer group
                         time.merge_mode(layer.time_mode)
         except:  # pragma no cover
-            errors.append("Error while handling time for layer '%s' : '%s'"
-                          % (layer.name, sys.exc_info()[1]))
+            errors.add(
+                "Error while handling time for layer '%s' : '%s'"
+                % (layer.name, sys.exc_info()[1])
+            )
 
         return errors
 
@@ -354,7 +356,7 @@ class Entry(object):
             if hasattr(wms_layer_obj, 'queryable'):
                 l['queryable'] = wms_layer_obj.queryable
         else:
-            errors.append(
+            errors.add(
                 "The layer '%s' is not defined in WMS capabilities" % layer.name
             )
 
@@ -394,7 +396,7 @@ class Entry(object):
             try:
                 l['dimensions'] = json.loads(layer.dimensions)
             except:  # pragma: no cover
-                errors.append(
+                errors.add(
                     u"Unexpected error: '%s' while reading '%s' in layer '%s'" %
                     (sys.exc_info()[0], layer.dimensions, layer.name))
 
@@ -460,14 +462,15 @@ class Entry(object):
             isinstance(layer, LayerV1) and layer.layer_type == 'internal WMS'
 
     def _group(
-            self, path, group, layers, depth=1, min_levels=1,
-            catalogue=False, version=1, **kwargs):
+        self, path, group, layers, depth=1, min_levels=1,
+        catalogue=True, version=1, **kwargs
+    ):
         children = []
-        errors = []
+        errors = set()
 
         # escape loop
         if depth > 30:
-            errors.append(
+            errors.add(
                 "Too many recursions with group '%s'" % group.name
             )
             return None, errors
@@ -482,11 +485,11 @@ class Entry(object):
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, version=version, **kwargs
                     )
-                    errors += gp_errors
+                    errors |= gp_errors
                     if gp is not None:
                         children.append(gp)
                 else:
-                    errors.append(
+                    errors.add(
                         "Group '%s' cannot be in group '%s' (internal/external mix)." %
                         (tree_item.name, group.name)
                     )
@@ -495,15 +498,15 @@ class Entry(object):
                     if (catalogue or group.is_internal_wms ==
                             self._is_internal_wms(tree_item)):
                         l, l_errors = self._layer(tree_item, **kwargs)
-                        errors += l_errors
+                        errors |= l_errors
                         if depth < min_levels:
-                            errors.append("The Layer '%s' is under indented (%i/%i)." % (
+                            errors.add("The Layer '%s' is under indented (%i/%i)." % (
                                 path + "/" + tree_item.name, depth, min_levels
                             ))
                         else:
                             children.append(l)
                     else:
-                        errors.append(
+                        errors.add(
                             "Layer '%s' cannot be in the group '%s' (internal/external mix)." %
                             (tree_item.name, group.name)
                         )
@@ -559,7 +562,7 @@ class Entry(object):
         by ``role_id``.
         ``mobile`` tells whether to retrieve mobile or desktop layers
         """
-        errors = []
+        errors = set()
         layers = self._layers(role_id, version, interface)
         wms, wms_layers = self._wms_layers()
 
@@ -584,7 +587,7 @@ class Entry(object):
             children, children_errors = self._get_children(
                 theme, layers, wms, wms_layers, version, catalogue, min_levels
             )
-            errors += children_errors
+            errors |= children_errors
 
             # test if the theme is visible for the current user
             if len(children) > 0:
@@ -635,7 +638,7 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _get_children(self, theme, layers, wms, wms_layers, version, catalogue, min_levels):
         children = []
-        errors = []
+        errors = set()
         for item in theme.children:
             if type(item) == LayerGroup:
                 time = TimeInformation()
@@ -644,7 +647,7 @@ class Entry(object):
                     item, layers, time=time, wms=wms, wms_layers=wms_layers,
                     version=version, catalogue=catalogue, min_levels=min_levels
                 )
-                errors += gp_errors
+                errors |= gp_errors
 
                 if gp is not None:
                     if time.has_time():  # pragma: nocover
@@ -652,7 +655,7 @@ class Entry(object):
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
-                    errors.append("The Layer '%s' cannot be directly in the theme '%s' (0/%i)." % (
+                    errors.add("The Layer '%s' cannot be directly in the theme '%s' (0/%i)." % (
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
@@ -662,7 +665,7 @@ class Entry(object):
                     )
                     if time.has_time():  # pragma: nocover
                         l.update({"time": time.to_dict()})
-                    errors += l_errors
+                    errors |= l_errors
                     children.append(l)
         return children, errors
 
@@ -687,7 +690,7 @@ class Entry(object):
     def _external_wfs_types(self, role_id):
         url = self._get_external_wfs_url()
         if not url:
-            return [], []
+            return [], set()
         return self._wfs_types(url, role_id)
 
     def _wfs_types(self, wfs_url, role_id):
@@ -706,7 +709,7 @@ class Entry(object):
 
     @cache_region.cache_on_arguments()
     def _wfs_types_cached(self, wfs_url):
-        errors = []
+        errors = set()
 
         # retrieve layers metadata via GetCapabilities
         params = (
@@ -726,11 +729,11 @@ class Entry(object):
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method='GET', headers=h)
         except:  # pragma: no cover
-            errors.append("Unable to GetCapabilities from url %s" % wfsgc_url)
+            errors.add("Unable to GetCapabilities from url %s" % wfsgc_url)
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.append(
+            errors.add(
                 "GetCapabilities from url %s return the error: %i %s" %
                 (wfsgc_url, resp.status, resp.reason)
             )
@@ -757,7 +760,7 @@ class Entry(object):
 
     @cache_region.cache_on_arguments()
     def _external_themes(self, interface):  # pragma nocover
-        errors = []
+        errors = set()
 
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
@@ -785,13 +788,13 @@ class Entry(object):
         try:
             resp, content = http.request(ext_url, method='GET', headers=h)
         except:
-            errors.append(
+            errors.add(
                 "Unable to get external themes from url %s" % ext_url
             )
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:
-            errors.append(
+            errors.add(
                 "Get external themes from url %s return the error: %i %s" %
                 (ext_url, resp.status, resp.reason)
             )
@@ -889,11 +892,11 @@ class Entry(object):
 
         themes, errors = self._themes(role_id, interface)
         wfs_types, add_errors = self._internal_wfs_types(role_id)
-        errors.extend(add_errors)
+        errors |= add_errors
         external_wfs_types, add_errors = self._external_wfs_types(role_id)
-        errors.extend(add_errors)
+        errors |= add_errors
         external_themes, add_errors = self._external_themes(interface)
-        errors.extend(add_errors)
+        errors |= add_errors
 
         cache_version = get_cache_version()
         url_params = {
@@ -916,7 +919,7 @@ class Entry(object):
             'queryer_attribute_urls': json.dumps(self._get_layers_enum()),
             'url_params': url_params,
             'url_role_params': url_role_params,
-            'serverError': json.dumps(errors),
+            'serverError': json.dumps(list(errors)),
         }
 
         # handle permalink_themes
@@ -1031,7 +1034,7 @@ class Entry(object):
         """
         View callable for the mobile application's config.js file.
         """
-        errors = []
+        errors = set()
         interface = self.request.interface_name
 
         mobile_default_themes = get_functionality(
@@ -1152,32 +1155,51 @@ class Entry(object):
             role_id = None
 
         interface = self.request.params.get("interface", "main")
+        sets = self.request.params.get("set", "all")
         version = int(self.request.params.get("version", 1))
         catalogue = self.request.params.get("catalogue", "false") == "true"
         min_levels = int(self.request.params.get("min_levels", 1))
         group = self.request.params.get("group", None)
+        background_layers_group = self.request.params.get("background", None)
 
-        if group is None:
-            items, errors = self._themes(
+        export_themes = sets in ["all", "themes"]
+        export_group = group is not None and sets in ["all", "group"]
+        export_background = background_layers_group is not None and sets in ["all", "background"]
+
+        result = {}
+        all_errors = set()
+        if export_themes:
+            themes, errors = self._themes(
                 role_id, interface, True, version, catalogue, min_levels
             )
-            return items if version == 1 else {
-                "items": items,
-                "errors": errors
-            }
-        else:
-            time = TimeInformation()
-            layers = self._layers(role_id, version, interface)
-            wms, wms_layers = self._wms_layers()
-            lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
-            item, errors = self._group(
-                lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers,
-                catalogue=catalogue, version=version
-            )
-            return {
-                "item": item,
-                "errors": errors
-            }
+
+            if version == 1:
+                return themes
+
+            result["themes"] = themes
+            all_errors |= errors
+
+        if export_group:
+            group, errors = self._get_group(group, role_id, interface, version)
+            result["group"] = group
+            all_errors |= errors
+
+        if export_background:
+            group, errors = self._get_group(background_layers_group, role_id, interface, version)
+            result["background_layers"] = group["children"]
+            all_errors |= errors
+
+        result["errors"] = list(all_errors)
+        return result
+
+    def _get_group(self, group, role_id, interface, version):
+        time = TimeInformation()
+        layers = self._layers(role_id, version, interface)
+        wms, wms_layers = self._wms_layers()
+        lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
+        return self._group(
+            lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers, version=version
+        )
 
     @view_config(context=HTTPForbidden, renderer='login.html')
     def loginform403(self):
