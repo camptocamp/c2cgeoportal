@@ -32,7 +32,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 # Make rules
 
-DEFAULT_BUILD_RULES ?= test-packages eggs $(WEB_RULE) build-server
+DEFAULT_BUILD_RULES ?= test-packages .build/requirement.timestamp $(WEB_RULE) build-server
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
@@ -52,29 +52,18 @@ BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_
 
 # Requirements
 
+EGGS_DEPENDENTIES += .build/venv.timestamp setup.py CONST_versions.txt CONST_requirement.txt
 REQUIREMENTS += \
-	--index-url http://pypi.camptocamp.net/pypi \
-	--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
-	--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win \
 	--trusted-host pypi.camptocamp.net \
-	-r CONST_versions.txt \
-	-e git+https://github.com/camptocamp/pyramid_closure\#egg=pyramid_closure \
-	-e .
-# The version 1.5.3 of Shapely is buggy see Toblerity/Shapely#231
+	-r CONST_requirement.txt
 DEV_REQUIREMENTS += \
-	--index-url http://pypi.camptocamp.net/pypi \
 	--trusted-host pypi.camptocamp.net \
-	Shapely==1.5.3 \
-	flake8 \
-	pep8-naming \
-	'c2c.template>=1.0.1dev3' \
-	pyramid_debugtoolbar \
-	c2c.versions
+	-r CONST_dev-requirement.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
 ifeq ($(CGXP), TRUE)
-DEV_REQUIREMENTS += JSTools c2c.cssmin
+DEV_REQUIREMENTS += JSTools 'c2c.cssmin>=0.7dev6'
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
@@ -207,7 +196,7 @@ SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESS
 # Print
 PRINT_BASE_DIR ?= print
 PRINT_WAR ?= print-$(PACKAGE)-$(INSTANCE_ID).war
-PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps/
+PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 ifeq ($(PRINT3), TRUE)
 PRINT_BASE_WAR ?= print-servlet-3.1-SNAPSHOT.war
 PRINT_INPUT += print-app
@@ -285,6 +274,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 clean:
 	rm -f .build/venv.timestamp
 	rm -f .build/node_modules.timestamp
+	rm -f .build/requirements.timestamp
 	rm -f .build/dev-requirements.timestamp
 	rm -rf $(OUTPUT_DIR)/
 	rm -f $(TEMPLATE_FILES:.in=)
@@ -302,6 +292,9 @@ flake8: .build/venv/bin/flake8
 
 .PHONY: build-server
 build-server: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) compile-py-catalog .build/config.yaml $(SERVER_LOCALISATION_FILES)
+
+.PHONY: build-cgxp
+build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
 lint-ngeo: .build/venv/bin/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
@@ -347,7 +340,7 @@ endif
 
 # server localisation
 
-.build/venv/bin/pot-create: eggs
+.build/venv/bin/pot-create: .build/requirement.timestamp
 
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
@@ -382,7 +375,7 @@ build-ngeo: \
 .PHONY: compile-js-catalog
 compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 
-.build/venv/bin/db2pot: eggs
+.build/venv/bin/db2pot: .build/requirement.timestamp
 
 $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
@@ -466,12 +459,8 @@ endif
 	./node_modules/.bin/jshint --verbose $?
 	touch $@
 
-# CGXP
 
-.PHONY: build-cgxp
-build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
-
-.build/venv/bin/cssmin: .build/dev-requirements.timestamp
+# Git
 
 .PHONY: update
 update:
@@ -498,6 +487,13 @@ update-git-submodules:
 
 .git/modules/$(PACKAGE)/static/lib/cgxp/HEAD:
 	git submodule update --init
+
+
+# CGXP build
+
+.build/venv/bin/cssmin: .build/dev-requirements.timestamp
+
+.build/venv/bin/jsbuild: .build/dev-requirements.timestamp
 
 $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
 	.build/venv/bin/jsbuild \
@@ -574,7 +570,7 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 
 # Venv
 
-.build/dev-requirements.timestamp: .build/venv.timestamp
+.build/dev-requirements.timestamp: .build/venv.timestamp CONST_dev-requirement.txt
 	.build/venv/bin/pip install $(DEV_REQUIREMENTS)
 	touch $@
 
@@ -586,12 +582,9 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 		'pip>=6' 'setuptools>=12'
 	touch $@
 
-.PHONY: eggs
-eggs: .build/eggs.timestamp
-
-.build/eggs.timestamp: .build/venv.timestamp setup.py CONST_versions.txt $(EXTRA_EGGS_DEPENDENTIES)
+.build/requirement.timestamp: $(EGGS_DEPENDENTIES)
 	.build/venv/bin/pip install $(REQUIREMENTS)
-	touch -m $@
+	touch $@
 
 # Print
 
@@ -618,10 +611,3 @@ print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
-
-# Other
-
-.PHONY: fix-perm
-fix-perm:
-	find -type d -exec chmod --quiet g-s -- {}
-	chmod --quiet -R g+rw,o+r .

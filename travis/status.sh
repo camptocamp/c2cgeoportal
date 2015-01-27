@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if [ $# -gt 0 ]
+then
+    cd $1
+fi
+
 status=`git status -s`
 
-if [ "$status" != "" ];
+if [ "$status" != "" ]
 then
     echo Build generates changes
     git status

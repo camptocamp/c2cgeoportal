@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+
+# TODO
+# - Actually it's not working on Travis ...
+# - Should test the checkers
+
 STATUS_CODE=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost/test/wsgi/viewer.js)
 
 if [ $STATUS_CODE -eq 200 ]

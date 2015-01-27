@@ -1,0 +1,6 @@
+--index-url http://pypi.camptocamp.net/pypi
+--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win
+-r CONST_versions.txt
+-e git+https://github.com/camptocamp/pyramid_closure#egg=pyramid_closure
+-e .

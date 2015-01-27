@@ -23,7 +23,7 @@ vars:
     # database name
     db: override_me
     # sqlalchemy schema
-    schema: webapp
+    schema: main
     # database parent schema
     parentschema: ""
     # apache/mapserver.conf "Allow" statement

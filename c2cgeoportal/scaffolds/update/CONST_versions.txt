@@ -1,4 +1,4 @@
-#c2cgeoportal==
+c2cgeoportal>=1.6.0dev
 Chameleon==2.20
 FormAlchemy==1.5.5
 GeoAlchemy2==0.2.4

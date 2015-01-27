@@ -19,18 +19,22 @@ env:
 before_install:
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get install -y --force-yes aptitude
-- sudo aptitude install -y apache2 facter libapache2-mod-wsgi
+- sudo add-apt-repository -y ppa:stephane-brunner/precise 
 - if [[ "$APT_REPO" != "" ]]; then sudo add-apt-repository -y $APT_REPO; fi
 - sudo apt-get update
+- sudo aptitude install -y apache2 facter libapache2-mod-wsgi tomcat7 deploy
 - if [[ "$PKG_INSTALL" != "" ]]; then sudo aptitude install -y $PKG_INSTALL; fi
 - dpkg -l|grep postgis
 - sudo -u postgres psql --version
 
-- sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/postgis.sql > /dev/null; fi
-- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/spatial_ref_sys.sql > /dev/null; fi
-- if [[ "$POSTGIS_VERSION" == "2.1" ]]; then psql -d c2cgeoportal_test -U postgres -c "CREATE EXTENSION postgis;"; fi
-- if [[ "$MAPSERVER_VERSION-$POSTGIS_VERSION" == "6.0-2.1" ]]; then psql -d c2cgeoportal_test -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/legacy_minimal.sql; fi
+- sudo -u postgres createdb -E UTF8 -T template0 template_postgis
+- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/postgis.sql > /dev/null; fi
+- if [[ "$POSTGIS_VERSION" != "2.1" ]]; then psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/spatial_ref_sys.sql > /dev/null; fi
+- if [[ "$POSTGIS_VERSION" == "2.1" ]]; then psql -d template_postgis -U postgres -c "CREATE EXTENSION postgis;"; fi
+- if [[ "$MAPSERVER_VERSION-$POSTGIS_VERSION" == "6.0-2.1" ]]; then psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-$POSTGIS_VERSION/legacy_minimal.sql; fi
+
+- sudo -u postgres createdb -E UTF8 -T template_postgis c2cgeoportal_test
+- sudo -u postgres createdb -E UTF8 -T template_postgis geomapfish
 
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
@@ -51,6 +55,7 @@ script:
 # Actually don't work on travis see:
 # https://travis-ci.org/camptocamp/c2cgeoportal/jobs/48455036#L5312
 #- travis/test-new-project.sh
+- travis/status.sh /tmp/test/
 - travis/empty-make-new-project.sh
 - travis/empty-make.sh -f $MAKEFILE build
 - make -f $MAKEFILE doc

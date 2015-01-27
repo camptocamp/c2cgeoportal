@@ -1,5 +1,3 @@
-SITE_PACKAGES = $(shell .build/venv/bin/python -c "import distutils; print(distutils.sysconfig.get_python_lib())" 2> /dev/null)
-
 TEMPLATE_EXCLUDE = MANIFEST.in .build .eggs c2cgeoportal/scaffolds c2cgeoportal/tests/testegg c2cgeoportal/templates
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
@@ -77,7 +75,7 @@ cleanall: clean
 	rm -rf .build
 
 .PHONY: c2c-egg
-c2c-egg: $(SITE_PACKAGES)/c2cgeoportal.egg-link
+c2c-egg: .build/requirements.timestamp
 
 .build/sphinx.timestamp: .build/dev-requirements.timestamp $(SPHINX_FILES)
 	mkdir -p doc/_build/html
@@ -131,10 +129,10 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopor
 		'pip>=6' 'setuptools>=12'
 	touch $@
 
-$(SITE_PACKAGES)/c2cgeoportal.egg-link: .build/venv.timestamp setup.py \
+.build/requirements.timestamp: .build/venv.timestamp setup.py \
 		requirements.txt
-	.build/venv/bin/pip install --trusted-host pypi.camptocamp.net -r requirements.txt
-	touch -m $@ | true
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r requirements.txt $(PIP_REDIRECT)
+	touch $@
 
 $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
 	mkdir -p $(dir $@)
