@@ -462,6 +462,8 @@ endif
 
 # Git
 
+.build/venv/bin/jsbuild: .build/dev-requirements.timestamp
+
 .PHONY: update
 update:
 	git pull --rebase
