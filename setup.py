@@ -75,6 +75,7 @@ install_requires = [
     'couchdbkit',  # missing dependency of formalchemy
     'pyramid_closure',
     'lingua',
+    'PyYAML',
 ]
 
 setup_requires = [
