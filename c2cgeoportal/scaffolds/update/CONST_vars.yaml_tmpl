@@ -75,7 +75,7 @@ vars:
 
     # For debug mode
     jsbuild:
-        config: jsbuild/app.cfg
+        config: "{directory}/jsbuild/app.cfg"
         root_dir: "{directory}"
 
     # pyramid_closure configuration
