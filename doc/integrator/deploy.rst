@@ -108,8 +108,8 @@ named ``prod.mk`` and look like:
     include <project>.mk
 
 If you have more than one instance on a domain name you can define
-``apache-entry-point`` with something like ``/a_name/``. The trailing ``/``
-is required in the ``apache-entry-point`` but not in the URL, than
+``apache_entry_point`` with something like ``/a_name/``. The trailing ``/``
+is required in the ``apache_entry_point`` but not in the URL, than
 `http://host/a_name` will work.
 
 

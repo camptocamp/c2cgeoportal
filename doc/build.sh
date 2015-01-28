@@ -5,7 +5,7 @@ exec 3>&1
 error=$( { ../.build/venv/bin/sphinx-build -b html -d _build/doctrees . _build/html 1>&3; } 2>&1 )
 exec 3>&-
 cd -
-if [ "$error" != "" ];
+if [ "${error}" != "" ];
 then
   echo Documentation Error:
   echo ${error}

@@ -1,4 +1,3 @@
-SITE_PACKAGES = $(shell .build/venv/bin/python -c "import distutils; print(distutils.sysconfig.get_python_lib())" 2> /dev/null)
 PYTHON_VERSION = $(shell .build/venv/bin/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
 
@@ -75,7 +74,7 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
 ifeq ($(CGXP), TRUE)
-DEV_REQUIREMENTS += jsbuild c2c.cssmin
+DEV_REQUIREMENTS += JSTools c2c.cssmin
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
@@ -103,6 +102,9 @@ JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
 JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
 JSBUILD_ARGS = $(if ifeq($(DEVELOPMENT), ‘TRUE’),-u,)
 
+ifeq ($(DEVELOPMENT), FALSE)
+	CSSMIN_ARGS += --compress
+endif
 CSS_BASE_FILES += \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/ext-all.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
@@ -233,7 +235,7 @@ TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
-VARS_DEPENDS += VARS_FILES .build/node_modules.timestamp 
+VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp 
 CONFIG_VARS += sqlalchemy.url auth_replication_enabled \
 	sqlalchemy_replication.url schema parentschema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers \
@@ -315,21 +317,23 @@ update-node-modules:
 
 # Templates
 
-%: %.in .build/venv/bin/c2c-template ${VARS_DEPENDS}
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+
+%: %.in
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine template --files $@.in
 
-%: %.mako .build/venv/bin/c2c-template ${VARS_DEPENDS}
+%: %.mako
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine mako --files $@.mako
 
-%: %.jinja .build/venv/bin/c2c-template ${VARS_DEPENDS}
+%: %.jinja
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
@@ -343,18 +347,22 @@ endif
 
 # server localisation
 
-.build/venv/bin/pot-create: .build/dev-requirements.timestamp
+.build/venv/bin/pot-create: eggs
 
 .PHONY: compile-py-catalog
-compile-py-catalog: $(MO_SERVER_LOCALISATION_FILES)
+compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create
+# to don't delete them
+.SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
+
+$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create lingua.cfg
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
 	# removes the allways changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot .build/dev-requirements.timestamp
+	mkdir -p $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
 
@@ -379,15 +387,18 @@ compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
 
-$(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES)
-	node tasks/extract-messages.js $^ > $@
+$(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
+	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
 
 $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot
+	mkdir -p $(dir $@)
 	.build/venv/bin/db2pot
 	msguniq $@ -o $@
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: $(PACKAGE)/locale/$(PACKAGE)-js.pot $(PACKAGE)/locale/$(PACKAGE)-db.pot
 	msgcat $^ > $@
+
+$(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 	mkdir -p $(dir $@)
@@ -462,8 +473,8 @@ build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(
 
 .build/venv/bin/cssmin: .build/dev-requirements.timestamp
 
-.PHONY: update-git
-update-git:
+.PHONY: update
+update:
 	git pull --rebase
 	git submodule sync
 	git submodule update
@@ -482,42 +493,33 @@ update-git-submodules:
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
 
-.git/modules/$(PACKAGE)/static/lib/cgxp/modules/%: .git/modules/$(PACKAGE)/static/lib/cgxp
+.git/modules/$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: .git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	git submodule foreach git submodule update --init
 
-.git/modules/$(PACKAGE)/static/lib/cgxp:
+.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD:
 	git submodule update --init
 
 $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
 	.build/venv/bin/jsbuild \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	mkdir -p $(dir $@)
 	.build/venv/bin/jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
 
 $(CSS_BASE_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_BASE_FILES)
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_API_FILES)
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers \
-	.git/modules/$(PACKAGE)/static/lib/cgxp
-ifeq ($(DEVELOPMENT), FALSE)
-	ARGS = --compress
-endif
-	.build/venv/bin/c2c-cssmin $(ARGS) $@ $(CSS_XAPI_FILES)
+	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Sencha touch
 
@@ -585,11 +587,11 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 	touch $@
 
 .PHONY: eggs
-eggs: $(SITE_PACKAGES)/$(PACKAGE).egg-link
+eggs: .build/eggs.timestamp
 
-$(SITE_PACKAGES)/$(PACKAGE).egg-link: .build/venv.timestamp setup.py CONST_versions.txt $(EXTRA_EGGS_DEPENDENTIES)
+.build/eggs.timestamp: .build/venv.timestamp setup.py CONST_versions.txt $(EXTRA_EGGS_DEPENDENTIES)
 	.build/venv/bin/pip install $(REQUIREMENTS)
-	touch -m $@ | true
+	touch -m $@
 
 # Print
 

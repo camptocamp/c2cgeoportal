@@ -9,7 +9,7 @@ vars:
     # the Unix user under which the modwsgi daemon processes are executed.
     modwsgi_user: www-data
     # url-path where the instance must respond.
-    apache-entry-point: /{instanceid}/
+    apache_entry_point: /{instanceid}/
     # cookie session secret
     authtkt_secret: __import__('uuid').uuid4().hex
     # database user
@@ -179,7 +179,7 @@ vars:
     # The shortner base configuration
     shortener:
       # The base of created URL
-      base_url:  http://{host}{apache-entry-point}s/
+      base_url:  http://{host}{apache_entry_point}s/
 
     # URL to internal MapServer instance
     mapserv_url: http://localhost/{instanceid}/mapserv

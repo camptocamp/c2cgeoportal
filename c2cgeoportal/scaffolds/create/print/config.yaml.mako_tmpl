@@ -30,7 +30,7 @@ hosts:
     host: ${host}
     port: 80 
   - !dnsMatch
-    host: ${facts["fqdn"]}
+    host: ${host}
     port: ${waitress_port}
 
 localHostForward:
@@ -56,7 +56,7 @@ globalParallelFetches: 1
 layouts:
 
 ## A4 portrait default
-<%include file="/A4_portrait.mako" />
+<%include file="templates/A4_portrait.mako" />
 
 ## A4 portrait inherit example, inherit from A4_portrait.mako
 <%include file="templates/A4_portrait_inherit.mako" />

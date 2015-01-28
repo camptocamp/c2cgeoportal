@@ -79,10 +79,8 @@ cleanall: clean
 .PHONY: c2c-egg
 c2c-egg: $(SITE_PACKAGES)/c2cgeoportal.egg-link
 
-doc/_build/html:
-	mkdir $@
-
-.build/sphinx.timestamp: .build/dev-requirements.timestamp doc/_build/html $(SPHINX_FILES)
+.build/sphinx.timestamp: .build/dev-requirements.timestamp $(SPHINX_FILES)
+	mkdir -p doc/_build/html
 	doc/build.sh
 	touch $@
 
@@ -138,13 +136,12 @@ $(SITE_PACKAGES)/c2cgeoportal.egg-link: .build/venv.timestamp setup.py \
 	.build/venv/bin/pip install --trusted-host pypi.camptocamp.net -r requirements.txt
 	touch -m $@ | true
 
-$(ADMIN_OUTPUT_DIR):
-	mkdir -p $@
-
-$(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG) $(ADMIN_OUTPUT_DIR)
+$(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
+	mkdir -p $(dir $@)
 	.build/venv/bin/jsbuild $(JSBUILD_ADMIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(ADMIN_OUTPUT_DIR)
 
-$(CSS_ADMIN_OUTPUT): .build/venv/bin/cssmin $(ADMIN_OUTPUT_DIR)
+$(CSS_ADMIN_OUTPUT): .build/venv/bin/cssmin
+	mkdir -p $(dir $@)
 ifeq ($(DEVELOPPEMENT), ‘TRUE’)
 	cat $(CSS_ADMIN_FILES) > $(CSS_ADMIN_OUTPUT)
 else
