@@ -660,18 +660,27 @@ class Entry(object):
         except:  # pragma: no cover
             return getCapabilities_xml, errors
 
-    @cache_region.cache_on_arguments()
     def _external_themes(self):  # pragma nocover
-        errors = []
-
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
-            return None, errors
-        ext_url = self.settings['external_themes_url']
+            return None, []
+
+        role_id = None
+
         if self.request.user is not None and \
                 hasattr(self.request.user, 'parent_role') and \
                 self.request.user.parent_role is not None:
-            ext_url += '?role_id=' + str(self.request.user.parent_role.id)
+            role_id = self.request.user.parent_role.id
+
+        return self._external_themes_role(role_id)
+
+    @cache_region.cache_on_arguments()
+    def _external_themes_role(self, role_id):  # pragma nocover
+        errors = []
+
+        ext_url = self.settings['external_themes_url']
+        if role_id is not None:
+            ext_url += '?role_id=' + role_id
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
