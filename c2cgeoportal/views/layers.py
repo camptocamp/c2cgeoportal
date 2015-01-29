@@ -43,6 +43,7 @@ from geojson.feature import FeatureCollection, Feature
 
 from shapely.geometry import asShape
 from shapely.ops import cascaded_union
+from shapely.geos import TopologicalError
 
 from papyrus.protocol import Protocol, create_filter
 
@@ -225,7 +226,7 @@ class Layers(object):
 
         layer = self._get_layer_for_request()
 
-        def security_cb(r, feature, o):
+        def check_geometry(r, feature, o):
             geom = feature.geometry
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
@@ -244,8 +245,16 @@ class Layers(object):
                 if allowed.scalar() == 0:
                     raise HTTPForbidden()
 
-        protocol = self._get_protocol_for_layer(layer, before_create=security_cb)
-        return protocol.create(self.request)
+                # check if geometry is valid
+                self._validate_geometry(spatial_elt)
+
+        protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
+        try:
+            features = protocol.create(self.request)
+            return features
+        except TopologicalError, e:
+            self.request.response.status_int = 400
+            return {'validation_error': str(e)}
 
     @view_config(route_name='layers_update', renderer='geojson')
     def update(self):
@@ -257,7 +266,7 @@ class Layers(object):
         feature_id = self.request.matchdict.get('feature_id', None)
         layer = self._get_layer_for_request()
 
-        def security_cb(r, feature, o):
+        def check_geometry(r, feature, o):
             # we need both the "original" and "new" geometry to be
             # within the restriction area
             geom_attr, srid = self._get_geom_col_info(layer)
@@ -273,6 +282,7 @@ class Layers(object):
                 RestrictionArea.area.is_(None),
                 RestrictionArea.area.ST_Contains(geom_attr)
             ))
+            spatial_elt = None
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = asShape(geom)
                 spatial_elt = from_shape(shape, srid=srid)
@@ -283,8 +293,27 @@ class Layers(object):
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
-        protocol = self._get_protocol_for_layer(layer, before_update=security_cb)
-        return protocol.update(self.request, feature_id)
+            # check is geometry is valid
+            self._validate_geometry(spatial_elt)
+
+        protocol = self._get_protocol_for_layer(layer, before_update=check_geometry)
+        try:
+            feature = protocol.update(self.request, feature_id)
+            return feature
+        except TopologicalError, e:
+            self.request.response.status_int = 400
+            return {'validation_error': str(e)}
+
+    def _validate_geometry(self, geom):
+        validate = self.request.registry.settings.get("geometry_validation")
+        if validate and geom is not None:
+            simple = DBSession.query(func.ST_IsSimple(geom)).scalar()
+            if not simple:
+                raise TopologicalError('Not simple')
+            valid = DBSession.query(func.ST_IsValid(geom)).scalar()
+            if not valid:
+                reason = DBSession.query(func.ST_IsValidReason(geom)).scalar()
+                raise TopologicalError(reason)
 
     @view_config(route_name='layers_delete')
     def delete(self):

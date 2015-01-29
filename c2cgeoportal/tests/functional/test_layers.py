@@ -390,6 +390,19 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
 
+    def test_create_validation_fails(self):
+        from c2cgeoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.method = 'POST'
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        layers = Layers(request)
+        response = layers.create()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue('validation_error' in response)
+        self.assertEquals(response['validation_error'], 'Too few points in geometry component[5 45]')
+
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import Layers
@@ -439,6 +452,20 @@ class TestLayers(TestCase):
         self.assertEquals(feature.id, 1)
         self.assertEquals(feature.name, 'foobar')
         self.assertEquals(feature.child, u'c2é')
+
+    def test_update_validation_fails(self):
+        from c2cgeoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        layers = Layers(request)
+        response = layers.update()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue('validation_error' in response)
+        self.assertEquals(response['validation_error'], 'Too few points in geometry component[5 45]')
 
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
