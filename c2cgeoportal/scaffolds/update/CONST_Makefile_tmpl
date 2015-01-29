@@ -361,7 +361,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAG
 
 %.mo: %.po
 	msgfmt -o $@ $<
-	touch $@
+	touch -c $@
 
 # ngeo
 
