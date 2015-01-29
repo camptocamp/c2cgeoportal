@@ -317,21 +317,21 @@ ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
-	$(C2C_TEMPLATE_CMD) --engine template --files $@.in
+	$(C2C_TEMPLATE_CMD) --engine template --files $<
 
 %: %.mako
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
-	$(C2C_TEMPLATE_CMD) --engine mako --files $@.mako
+	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
 %: %.jinja
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
-	$(C2C_TEMPLATE_CMD) --engine jinja --files $@.jinja
+	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
 .build/venv/bin/c2c-template: .build/dev-requirements.timestamp
 

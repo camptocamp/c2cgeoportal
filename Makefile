@@ -98,8 +98,13 @@ flake8: .build/venv/bin/flake8
 		--copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA"
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 
-%: %.mako .build/venv/bin/c2c-template ${VARS_FILES}
-	$(C2C_TEMPLATE_CMD) --engine template --files $@.mako
+
+# Templates
+
+$(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+
+%: %.mako
+	$(C2C_TEMPLATE_CMD) --engine template --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/dev-requirements.timestamp
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SRC_FILES)
