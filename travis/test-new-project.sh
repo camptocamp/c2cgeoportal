@@ -1,11 +1,6 @@
 #!/bin/bash -ex
 
-
-# TODO
-# - Actually it's not working on Travis ...
-# - Should test the checkers
-
-STATUS_CODE=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost/test/wsgi/viewer.js)
+STATUS_CODE=$(curl --write-out %{http_code} --silent --output /dev/null "http://localhost/test/$1")
 
 if [ $STATUS_CODE -eq 200 ]
 then
@@ -14,10 +9,11 @@ then
 else
     echo "Bad status code $STATUS_CODE"
 
-    cd /tmp/test
+    cd /tmp/testgeomapfish
 
     sudo cat /var/log/apache2/error.log
-    curl http://localhost/test/wsgi/viewer.js
+    sudo cat /var/log/apache2/access.log
+    curl "http://localhost/test/$1"
 
     exit 1
 fi
