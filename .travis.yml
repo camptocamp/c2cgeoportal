@@ -24,7 +24,7 @@ before_install:
 - sudo apt-get update
 - sudo aptitude install -y apache2 facter libapache2-mod-wsgi tomcat7 deploy
 - if [[ "$PKG_INSTALL" != "" ]]; then sudo aptitude install -y $PKG_INSTALL; fi
-- dpkg -l|grep postgis
+- dpkg -l | grep postgis
 - sudo -u postgres psql --version
 
 - sudo -u postgres createdb -E UTF8 -T template0 template_postgis
@@ -41,9 +41,9 @@ before_install:
 
 install:
 - make -f $MAKEFILE c2c-egg
-- .build/venv/bin/pip install tilecloud_chain
-- .build/venv/bin/pip freeze|grep -v '^-e'|grep -v '^#'
-- diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze|grep -v '^-e'|grep -v '^#')|grep '^[+-]'
+- travis/pip.sh install tilecloud_chain
+- .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
+- diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
 - .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App" > /dev/null
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test > /dev/null
 - travis/build-new-project.sh

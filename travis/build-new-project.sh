@@ -10,7 +10,7 @@ git config --global user.email "travis@example.com"
 git init
 git add -A
 git submodule add https://github.com/camptocamp/cgxp.git test/static/lib/cgxp
-git commit -m "Initial commit"
+git commit -q -m "Initial commit"
 
 sudo chmod 777 /var/lib/tomcat7/webapps
 

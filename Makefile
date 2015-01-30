@@ -7,6 +7,9 @@ C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
 DEVELOPPEMENT ?= FALSE
 
+PIP_CMD ?= .build/venv/bin/pip
+PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
 
 JSBUILD_ADMIN_FILES = $(shell find c2cgeoportal/static/lib c2cgeoportal/static/adminapp -name "*.js" -print)
@@ -129,15 +132,15 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopor
 .build/venv/bin/cssmin: .build/dev-requirements.timestamp
 
 .build/dev-requirements.timestamp: .build/venv.timestamp dev-requirements.txt
-	.build/venv/bin/pip install --trusted-host pypi.camptocamp.net -r dev-requirements.txt
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r dev-requirements.txt $(PIP_REDIRECT)
 	touch $@
 
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
-	.build/venv/bin/pip install \
+	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
-		'pip>=6' 'setuptools>=12'
+		'pip>=6' 'setuptools>=12' $(PIP_REDIRECT)
 	touch $@
 
 .build/requirements.timestamp: .build/venv.timestamp setup.py \

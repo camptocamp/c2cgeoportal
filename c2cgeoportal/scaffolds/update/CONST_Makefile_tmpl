@@ -18,6 +18,9 @@ PRINT2 ?= FALSE
 # Use print V3
 PRINT3 ?= TRUE
 
+PIP_CMD ?= .build/venv/bin/pip
+PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+
 ifeq ($(CGXP), TRUE)
 DEFAULT_WEB_RULE += build-cgxp
 endif
@@ -53,12 +56,8 @@ BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_
 # Requirements
 
 EGGS_DEPENDENTIES += .build/venv.timestamp setup.py CONST_versions.txt CONST_requirement.txt
-REQUIREMENTS += \
-	--trusted-host pypi.camptocamp.net \
-	-r CONST_requirement.txt
-DEV_REQUIREMENTS += \
-	--trusted-host pypi.camptocamp.net \
-	-r CONST_dev-requirement.txt
+REQUIREMENTS += -r CONST_requirement.txt
+DEV_REQUIREMENTS += -r CONST_dev-requirement.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
@@ -573,19 +572,19 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 # Venv
 
 .build/dev-requirements.timestamp: .build/venv.timestamp CONST_dev-requirement.txt
-	.build/venv/bin/pip install $(DEV_REQUIREMENTS)
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(DEV_REQUIREMENTS) $(PIP_REDIRECT)
 	touch $@
 
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
-	.build/venv/bin/pip install \
+	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
 		'pip>=6' 'setuptools>=12'
 	touch $@
 
 .build/requirement.timestamp: $(EGGS_DEPENDENTIES)
-	.build/venv/bin/pip install $(REQUIREMENTS)
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS) $(PIP_REDIRECT)
 	touch $@
 
 # Print
