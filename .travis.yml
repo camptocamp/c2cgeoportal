@@ -71,8 +71,8 @@ after_failure:
 
 after_success:
 - travis/deploy.sh
-- pip install coveralls
-- coveralls
+- travis/pip.sh install coveralls
+- .build/venv/bin/coveralls
 
 notifications:
   email:
