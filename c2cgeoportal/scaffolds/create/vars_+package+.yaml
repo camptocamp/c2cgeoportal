@@ -2,10 +2,10 @@ extends: CONST_vars.yaml
 
 vars:
     # Database name
-    db: to be defined
+    db: geomapfish
 
     # The visible host name
-    host: to be define
+    host: localhost
 
     # The application's default language. This is the language used by
     # the application if no specific language is specified in the URLs.

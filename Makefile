@@ -1,5 +1,3 @@
-SITE_PACKAGES = $(shell .build/venv/bin/python -c "import distutils; print(distutils.sysconfig.get_python_lib())" 2> /dev/null)
-
 TEMPLATE_EXCLUDE = MANIFEST.in .build .eggs c2cgeoportal/scaffolds c2cgeoportal/tests/testegg c2cgeoportal/templates
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
@@ -8,6 +6,9 @@ VARS_FILES += vars.yaml
 C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
 DEVELOPPEMENT ?= FALSE
+
+PIP_CMD ?= .build/venv/bin/pip
+PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
 
@@ -77,7 +78,7 @@ cleanall: clean
 	rm -rf .build
 
 .PHONY: c2c-egg
-c2c-egg: $(SITE_PACKAGES)/c2cgeoportal.egg-link
+c2c-egg: .build/requirements.timestamp
 
 .build/sphinx.timestamp: .build/dev-requirements.timestamp $(SPHINX_FILES)
 	mkdir -p doc/_build/html
@@ -91,11 +92,22 @@ nose: .build/dev-requirements.timestamp c2c-egg $(MAKO_FILES:.mako=)
 .PHONY: flake8
 flake8: .build/venv/bin/flake8
 	# E712 is not compatible with SQLAlchemy
-	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E712 --max-complexity=20 --max-line-length=100
+	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 \
+		--ignore=E712 \
+		--max-complexity=20 \
+		--max-line-length=100 \
+		--copyright-check \
+		--copyright-min-file-size=1 \
+		--copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA"
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 
-%: %.mako .build/venv/bin/c2c-template ${VARS_FILES}
-	$(C2C_TEMPLATE_CMD) --engine template --files $@.mako
+
+# Templates
+
+$(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+
+%: %.mako
+	$(C2C_TEMPLATE_CMD) --engine template --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/dev-requirements.timestamp
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SRC_FILES)
@@ -120,21 +132,21 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopor
 .build/venv/bin/cssmin: .build/dev-requirements.timestamp
 
 .build/dev-requirements.timestamp: .build/venv.timestamp dev-requirements.txt
-	.build/venv/bin/pip install --trusted-host pypi.camptocamp.net -r dev-requirements.txt
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r dev-requirements.txt $(PIP_REDIRECT)
 	touch $@
 
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
-	.build/venv/bin/pip install \
+	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
-		'pip>=6' 'setuptools>=12'
+		'pip>=6' 'setuptools>=12' $(PIP_REDIRECT)
 	touch $@
 
-$(SITE_PACKAGES)/c2cgeoportal.egg-link: .build/venv.timestamp setup.py \
+.build/requirements.timestamp: .build/venv.timestamp setup.py \
 		requirements.txt
-	.build/venv/bin/pip install --trusted-host pypi.camptocamp.net -r requirements.txt
-	touch -m $@ | true
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r requirements.txt $(PIP_REDIRECT)
+	touch $@
 
 $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
 	mkdir -p $(dir $@)

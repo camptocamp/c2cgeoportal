@@ -5,10 +5,8 @@ MOBILE = FALSE
 TILECLOUD_CHAIN = FALSE
 
 REQUIREMENTS += -e /home/travis/build/camptocamp/c2cgeoportal
-DISABLE_BUILD_RULES = test-packages
+PRINT_OUTPUT = /var/lib/tomcat7/webapps
+
+PIP_CMD = /home/travis/build/camptocamp/c2cgeoportal/travis/pip.sh
 
 include test.mk
-
-$(PACKAGE)/locale/$(PACKAGE)-db.pot:
-	mkdir -p $(dir $@)
-	touch $@

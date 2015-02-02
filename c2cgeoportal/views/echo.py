@@ -1,4 +1,6 @@
-# Copyright (c) 2012-2014, Camptocamp SA
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
