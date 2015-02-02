@@ -467,6 +467,20 @@ class TestLayers(TestCase):
         self.assertTrue('validation_error' in response)
         self.assertEquals(response['validation_error'], 'Too few points in geometry component[5 45]')
 
+    def test_update_validation_fails_simple(self):
+        from c2cgeoportal.views.layers import Layers
+
+        layer_id = self._create_layer()
+        request = self._get_request(layer_id, username=u'__test_user')
+        request.matchdict['feature_id'] = 1
+        request.method = 'PUT'
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'  # noqa
+        layers = Layers(request)
+        response = layers.update()
+        self.assertEquals(request.response.status_int, 400)
+        self.assertTrue('validation_error' in response)
+        self.assertEquals(response['validation_error'], 'Not simple')
+
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import Layers
