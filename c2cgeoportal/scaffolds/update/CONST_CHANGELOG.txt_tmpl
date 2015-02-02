@@ -106,6 +106,9 @@ Version 1.6
     +% if bounds:
     +    var INITIAL_EXTENT = ${dumps(bounds)};
 
+12. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
+
+    +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
 Version 1.5.2
 =============

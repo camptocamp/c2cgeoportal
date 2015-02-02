@@ -345,5 +345,39 @@ Ext.define('App.controller.Main', {
                 return false;
             }
         }, this);
+    },
+
+    setCenterCrosshair: function(lonlat, zoom) {
+
+        var map = this.getMainView().getMap();
+
+        var path =  App.crosshair_options && App.crosshair_options.path
+            || OpenLayers.ImgPath + 'crosshair.png';
+        var width =  App.crosshair_options && App.crosshair_options.size
+            && App.marker_options.size[0] || 16;
+        var height =  App.crosshair_options && App.crosshair_options.size
+            && App.crosshair_options.size[1] || 16;
+
+        var style = OpenLayers.Util.applyDefaults({
+            externalGraphic: path,
+            graphicWidth: width,
+            graphicHeight: height,
+            graphicXOffset: -width/2,
+            graphicYOffset: -height/2,
+            graphicOpacity: 1
+        }, OpenLayers.Feature.Vector.style['default']);
+
+        var layer = new OpenLayers.Layer.Vector('Crosshair');
+
+        layer.addFeatures([
+            new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(lonlat[0], lonlat[1]),
+                null,
+                style
+            )
+        ]);
+        map.setCenter(lonlat, zoom);
+        map.addLayer(layer);
     }
+
 });

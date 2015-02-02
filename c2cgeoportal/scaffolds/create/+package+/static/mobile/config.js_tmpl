@@ -8,6 +8,7 @@
  */
 
 OpenLayers.Lang.setCode("${lang}");
+OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
 var dummy = "<% from json import dumps %>";
 jsonFormat = new OpenLayers.Format.JSON();

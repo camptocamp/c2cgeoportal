@@ -70,7 +70,11 @@ Ext.define('App.plugin.StatefulMap', {
                     }, 1);
                 }
                 if (state.lonlat) {
-                    map.setCenter(state.lonlat, state.zoom);
+                    if (state.crosshair === 1) {
+                        main.setCenterCrosshair(state.lonlat, state.zoom);
+                    } else {
+                        map.setCenter(state.lonlat, state.zoom);
+                    }
                 }
                 map.events.on({
                     moveend: this.update,
@@ -117,6 +121,9 @@ Ext.define('App.plugin.StatefulMap', {
         if (q.map_x && q.map_y) {
             state.lonlat = [ q.map_x, q.map_y ];
             state.zoom = q.map_zoom;
+            if (q.map_crosshair) {
+                state.crosshair = 1;
+            }
         }
         return state;
     },
