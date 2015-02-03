@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 RESULT=$(make $* 2>&1 | tail -n +2)
 

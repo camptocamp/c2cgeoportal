@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 DEPLOY=false
 EGG_INFO=''
