@@ -198,13 +198,13 @@ PRINT_WAR ?= print-$(PACKAGE)-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 ifeq ($(PRINT3), TRUE)
 PRINT_BASE_WAR ?= print-servlet-3.1-SNAPSHOT.war
-PRINT_INPUT += print-app
+PRINT_INPUT += print-apps
 PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/joda-time-1.6.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
-PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-app 2> /dev/null)
+PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
 ifeq ($(PRINT2), TRUE)
 PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war

@@ -1,0 +1,49 @@
+pdfConfig: !pdfConfig
+  compressed: false
+  author: "Mapfish Print"
+  subject: "Mapfish Print"
+  creator: "Mapfish Print"
+  keywords: ["legend", "table", "tablelist", "map"]
+
+throwErrorOnExtraParameters: true
+
+templates:
+  A4 portrait: !template
+    pdfConfig: !pdfConfig
+      title: "A4 Portrait"
+    reportTemplate: report.jrxml
+    tableData: jrDataSource
+    attributes:
+      name: !string {}
+      description: !string {}
+      map: !map
+        maxDpi: 400
+        dpiSuggestions: [72, 91, 128, 254, 300, 400]
+        width: 400
+        height: 200
+      legend: !legend {}
+      datasource: !datasource
+        attributes:
+          displayName: !string {}
+          table: !table {}
+      scalebar: !scalebar
+        width: 230
+        height: 40
+    processors:
+    - !restrictUris
+      matchers:
+      - !localMatch
+        port : 9876
+        pathRegex : /.+
+    - !reportBuilder # compile all reports in current directory
+      directory: '.'
+    - !createMap {}
+    - !createScalebar {}
+    - !prepareLegend # create a datasource for the report with the 'legend' attribute
+      template: legend.jrxml
+    - !prepareTable
+    - !createDataSource
+      reportTemplate: table.jrxml
+      reportKey: reportTemplate
+      processors:
+      - !prepareTable {}
