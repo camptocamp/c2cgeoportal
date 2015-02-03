@@ -115,11 +115,13 @@ class MultiDomainPregenerator:  # pragma: no cover
 class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
     def generate(self, path, request, **kw):
         registry = request.registry
-        for (url, spec, route_name) in self._get_registrations(registry):
+        for (url, spec, route_name, cachebust) in self._get_registrations(registry):
             if path.startswith(spec):
                 subpath = path[len(spec):]
                 if WIN:
                     subpath = subpath.replace('\\', '/')  # windows
+                if cachebust:
+                    subpath, kw = cachebust(subpath, kw)
                 if url is None:
                     kw['subpath'] = subpath
                     if 'subdomains' in request.registry.settings:

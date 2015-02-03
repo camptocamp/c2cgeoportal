@@ -200,9 +200,12 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
         route_name='mobile_config_dev'
     )
-    config.add_static_view('%s_dev' % interface_name, '%(package)s:static/mobile' % {
-        'package': package
-    })
+    config.add_static_view(
+        name='%s_dev' % interface_name,
+        path='%(package)s:static/mobile' % {
+            'package': package
+        },
+    )
 
     config.add_route('mobile_index_prod', '/mobile/')
     config.add_view(
@@ -224,9 +227,12 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
         route_name='mobile_config_prod'
     )
-    config.add_static_view(interface_name, '%(package)s:static/mobile/build/production/App' % {
-        'package': package
-    })
+    config.add_static_view(
+        name=interface_name,
+        path='%(package)s:static/mobile/build/production/App' % {
+            'package': package
+        },
+    )
 
 
 def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: nocover
@@ -258,6 +264,17 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         attr='get_ngeo_permalinktheme_vars',
         route_name='%stheme' % route_name,
         renderer=renderer
+    )
+
+
+def add_static_view(config):
+    """ Add the project static view """
+    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
+
+    config.add_static_view(
+        name='proj',
+        path='%s:static' % config.get_settings()["package"],
+        cachebust=VersionCacheBuster()
     )
 
 
@@ -530,8 +547,11 @@ def includeme(config):
 
     config.registry.registerUtility(
         MultiDomainStaticURLInfo(), IStaticURLInfo)
+
+    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
     # add the static view (for static resources)
     config.add_static_view(
-        'static', 'c2cgeoportal:static',
-        cache_max_age=int(settings["default_max_age"])
+        name='static',
+        path='c2cgeoportal:static',
+        cachebust=VersionCacheBuster(),
     )

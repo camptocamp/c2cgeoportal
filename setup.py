@@ -41,8 +41,8 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 
 install_requires = [
     # Required by FormAlchemy
-    'WebHelpers2>=2.0rc1',
-    'pyramid<=1.5.99,>=1.5.0',
+    'WebHelpers2>=2.0.rc1',
+    'pyramid<=1.6.99,>=1.6.0.dev',
     'pyramid_multiauth',
     'pyramid_mako',
     'pyramid_chameleon',
@@ -51,8 +51,8 @@ install_requires = [
     'GeoAlchemy2',
     'SQLAHelper',
     'pyramid_tm',
-    'papyrus>=2.0dev1',
-    'papyrus_ogcproxy>=0.2dev1',
+    'papyrus>=2.0.dev1',
+    'papyrus_ogcproxy>=0.2.dev1',
     'pyramid_formalchemy>=0.4.3',
     'fa.jquery>=0.9.5',
     'js.jqgrid==4.3.1-1',
@@ -61,7 +61,7 @@ install_requires = [
     # admin interface
     'js.jqueryui==1.8.24',
     'FormAlchemy',
-    'GeoFormAlchemy2>=2.0dev2',
+    'GeoFormAlchemy2>=2.0.dev2',
     'OWSLib>=0.6.0',
     'dogpile.cache',
     'Paste',
