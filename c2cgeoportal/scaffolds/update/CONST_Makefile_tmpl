@@ -382,7 +382,7 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
 	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
 
-$(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot
+$(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config.yaml
 	mkdir -p $(dir $@)
 	.build/venv/bin/db2pot
 	msguniq $@ -o $@
@@ -392,7 +392,7 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: $(PACKAGE)/locale/$(PACKAGE)-js.pot $(P
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
-$(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
+$(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node tasks/compile-catalog $< > $@
 
