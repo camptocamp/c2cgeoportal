@@ -20,6 +20,10 @@ vars:
     - fr
     - de
 
+    authtkt:
+        # One day
+        timeout: 86400
+
     admin_interface:
         # Default values for the admin interface's maps.
         map_x: 740000
@@ -86,3 +90,4 @@ vars:
 
 update_paths:
 - check_collector.hosts
+- authtkt

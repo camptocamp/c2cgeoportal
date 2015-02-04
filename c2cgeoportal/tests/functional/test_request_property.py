@@ -63,7 +63,8 @@ class TestRequestProperty(TestCase):
         })
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
-            'authtkt_cookie_name': '__test'
+            "authtkt_cookie_name": "__test",
+            "authtkt_secret": "123",
         })
         request.set_property(
             get_user_from_request, name='user', reify=True
@@ -83,7 +84,8 @@ class TestRequestProperty(TestCase):
         })
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
-            'authtkt_cookie_name': '__test'
+            "authtkt_cookie_name": "__test",
+            "authtkt_secret": "123",
         })
         request.set_property(
             get_user_from_request, name='user', reify=True

@@ -35,12 +35,16 @@ from pyramid_multiauth import MultiAuthenticationPolicy
 from c2cgeoportal.resources import defaultgroupsfinder
 
 
-def create_authentication(settings):  # pragma: nocover
+def create_authentication(settings):
+    timeout = settings.get("authtkt_timeout", None)
+    timeout = None if timeout is None else int(timeout)
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
-        settings.get('authtkt_secret'),
+        settings["authtkt_secret"],
         callback=defaultgroupsfinder,
-        cookie_name=settings.get('authtkt_cookie_name'),
-        hashalg='sha512')
+        cookie_name=settings["authtkt_cookie_name"],
+        timeout=timeout, max_age=timeout,
+        hashalg='sha512'
+    )
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
     policies = [cookie_authentication_policy, basic_authentication_policy]
     return MultiAuthenticationPolicy(policies)

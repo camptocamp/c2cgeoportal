@@ -270,8 +270,8 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
         config.formalchemy_admin(
-            name="admin",
-            package=config["package"],
+            route_name="admin",
+            package=config.get_settings()["package"],
             view="fa.jquery.pyramid.ModelView",
             factory=FAModels
         )
