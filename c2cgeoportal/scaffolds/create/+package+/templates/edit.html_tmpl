@@ -76,16 +76,17 @@
         </div>
 
 % if debug:
-<%!
-from jstools.merge import Merger
-%>
-<%
-jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
-jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
-%>
-% for script in Merger.from_fn(jsbuild_cfg.split(), root_dir=jsbuild_root_dir).list_run(['edit.js', 'lang-%s.js' % lang]):
+    <%!
+    from jstools.merge import Merger
+    %>
+    <%
+    jsbuild_settings = request.registry.settings.get('jsbuild', {})
+    jsbuild_cfg = jsbuild_settings.get('config')
+    jsbuild_root_dir = jsbuild_settings.get('root_dir')
+    %>
+    % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['edit.js', 'lang-%s.js' % lang]):
         <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
-% endfor
+    % endfor
 % else:
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/edit.js', _query=url_params)}"></script>
         <script type="text/javascript" src="${request.static_url('{{package}}:static/build/lang-%s.js' % lang, _query=url_params)}"></script>
