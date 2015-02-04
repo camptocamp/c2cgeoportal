@@ -22,14 +22,14 @@ then
     echo "password:$PIP_PASSWORD" >> ~/.pypirc
     echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
 
-    .build/venv/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py $EGG_INFO -q sdist upload -r c2c-internal
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
-    tar -czvf touch.tar.gz touch
+    tar -czf touch.tar.gz touch
     cd -
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
     sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
-    .build/venv/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py $EGG_INFO -d sdist upload -r c2c-internal
 
 fi
