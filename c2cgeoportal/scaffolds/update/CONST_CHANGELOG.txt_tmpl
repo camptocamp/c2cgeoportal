@@ -70,14 +70,23 @@ Version 1.6
     + add_interface(config, 'routing')
     + add_interface(config, 'mobile', INTERFACE_TYPE_SENCHA_TOUCH)
 
-    In the `add_static_view` do the following change:
+    Remove the activation of the static view (now done directly in c2cgeoportal):
     - # add the main static view
     - config.add_static_view(
     -     name='proj',
     -     path='{{package}}:static',
     -     cachebust=True,
     - )
-    + add_static_view(config)
+
+    Remove the activation of the admin interface (now done directly in c2cgeoportal):
+    - if asbool(config.get_settings().get('enable_admin_interface')):
+    -   config.formalchemy_admin(
+    -     'admin', package='{{package}}',
+    -     view='fa.jquery.pyramid.ModelView', factory=FAModels
+    -   )
+
+    Remove the activation of the checkers (now done directly in c2cgeoportal):
+    - config.add_route('checker_all', '/checker_all')
 
 7. In the `{{package}}/templates/*.html` files you should do the following
    changes:
