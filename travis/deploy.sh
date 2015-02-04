@@ -1,16 +1,19 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 DEPLOY=false
 EGG_INFO=''
 
-if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
+if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]
+then
     DEPLOY=true
-elif [ $TRAVIS_TAG = `.build/venv/bin/python setup.py --version` ]; then
+elif [ $TRAVIS_TAG = `.build/venv/bin/python setup.py --version` ]
+then
     DEPLOY=true
     EGG_INFO='egg_info --no-date --tag-build ""'
 fi
 
-if [ $DEPLOY = true ] ; then
+if [ $DEPLOY = true ]
+then
 
     echo "[distutils]" > ~/.pypirc
     echo "index-servers = c2c-internal" >> ~/.pypirc

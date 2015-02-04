@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 cp travis/build.mk /tmp/test/travis.mk
 
