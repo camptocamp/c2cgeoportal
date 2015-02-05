@@ -51,7 +51,8 @@ from xml.dom.minidom import parseString
 from math import sqrt
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query
-from c2cgeoportal.lib.caching import get_region, invalidate_region
+from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
+    init_cache_control
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -70,10 +71,7 @@ class Entry(object):
 
     def __init__(self, request):
         self.request = request
-        if request.user:
-            request.response.cache_control.private = True
-        request.response.cache_control.max_age = \
-            request.registry.settings["default_max_age"]
+        init_cache_control(request, "entry")
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)

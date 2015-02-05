@@ -40,12 +40,12 @@ from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable, \
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import caching
+from c2cgeoportal.lib.caching import get_region, init_cache_control
 from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
 
-cache_region = caching.get_region()
+cache_region = get_region()
 log = logging.getLogger(__name__)
 
 
@@ -263,10 +263,12 @@ class MapservProxy:
         response = Response(content, status=resp.status, headers=headers)
 
         if use_cache:
+            init_cache_control(
+                self.request, "mapserver",
+                self.request.user and not public_cache,
+                response=response
+            )
             response.cache_control.public = public_cache
-            response.cache_control.max_age = self.request.registry.settings["default_max_age"]
-            if self.request.user and not public_cache:
-                response.cache_control.private = True
         else:
             response.cache_control.no_cache = True
 

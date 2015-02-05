@@ -46,21 +46,18 @@ from shapely.ops import cascaded_union
 
 from papyrus.protocol import Protocol, create_filter
 
-from c2cgeoportal.lib import caching
+from c2cgeoportal.lib.caching import get_region, init_cache_control
 from c2cgeoportal.lib.dbreflection import get_class, get_table
 from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
-cache_region = caching.get_region()
+cache_region = get_region()
 
 
 class Layers(object):
 
     def __init__(self, request):
         self.request = request
-        if request.user:
-            request.response.cache_control.private = True
-        self.request.response.cache_control.max_age = \
-            request.registry.settings["default_max_age"]
+        init_cache_control(request, "layers")
         self.layers_enum_config = \
             request.registry.settings.get('layers_enum', None)
 

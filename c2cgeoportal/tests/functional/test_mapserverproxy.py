@@ -248,19 +248,46 @@ class TestMapserverproxyView(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
+    @attr(GetLegendGraphic=True)
     def test_GetLegendGraphic(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
-        request.params.update(dict(service='wms', version='1.1.1',
-                              request='getlegendgraphic',
-                              layer='testpoint_unprotected',
-                              srs='EPSG:21781',
-                              format='image/png',
-                              extraparam=u'with spéciàl chârs'))
+        request.params.update(dict(
+            service='wms', version='1.1.1',
+            request='getlegendgraphic',
+            layer='testpoint_unprotected',
+            srs='EPSG:21781',
+            format='image/png',
+            extraparam=u'with spéciàl chârs'
+        ))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.cache_control.public)
         self.assertEqual(response.cache_control.max_age, 1000)
+
+    @attr(GetLegendGraphic_custom_nocache=True)
+    def test_getlegendgraphic_custom_nocache(self):
+        from c2cgeoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_dummy_request()
+        request.registry.settings.update({
+            'cache_control': {
+                'mapserver': {
+                    'max_age': 0
+                }
+            }
+        })
+        request.params.update(dict(
+            service='wms', version='1.1.1',
+            request='getlegendgraphic',
+            layer='testpoint_unprotected',
+            srs='EPSG:21781',
+            format='image/png',
+            extraparam=u'with spéciàl chârs'
+        ))
+        response = MapservProxy(request).proxy()
+        self.assertTrue(response.cache_control.public)
+        self.assertTrue(response.cache_control.no_cache)
 
     def test_GetFeatureInfo(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy

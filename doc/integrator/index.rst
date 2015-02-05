@@ -13,6 +13,7 @@ Content:
    create_application
    install_application
    features
+   wmstime
    backend
    tilegeneration
    customize_ui
@@ -25,4 +26,4 @@ Content:
    raster
    functionality
    checker
-   wmstime
+   caching
