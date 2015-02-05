@@ -680,7 +680,7 @@ class Entry(object):
 
         ext_url = self.settings['external_themes_url']
         if role_id is not None:
-            ext_url += '?role_id=' + role_id
+            ext_url += "?role_id=%i" % role_id
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
