@@ -214,6 +214,16 @@ vars:
     # The used sub domain for the static resources
     #subdomains: [s1, s2, s3, s4]
 
+    #proxies:
+    #    http: http://someproxy
+
+    wfs:
+        # Set to True so that MapserverProxy limits the number of features
+        # returned by a WFS GetFeature request:
+        enable_limit_featurecollection: True
+        # Max number of features returned by a WFS GetFeature request:
+        maxfeatures: 200
+
     # Checker configuration
     checker:
         print_template: 1 A4 portrait
@@ -224,68 +234,49 @@ vars:
 
     # Check collector configuration
     check_collector:
+        disabled: []
         check_type:
             all:
-                - name: checker_main
-                  display: Main page
-                - name: checker_viewer
-                  display: Viewer script
-                - name: checker_edit
-                  display: Edit page
-                - name: checker_edit_js
-                  display: Edit script
-                - name: checker_api
-                  display: API
-                - name: checker_xapi
-                  display: Extended API
-                - name: checker_printcapabilities
-                  display: Print capabilities
-                - name: checker_pdf
-                  display: Print PDF
-                - name: checker_fts
-                  display: FullTextSearch
-                - name: checker_wmscapabilities
-                  display: WMS capabilities
-                - name: checker_wfscapabilities
-                  display: WFS capabilities
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_edit
+              display: Edit page
+            - name: checker_edit_js
+              display: Edit script
+            - name: checker_api
+              display: API
+            - name: checker_xapi
+              display: Extended API
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_pdf
+              display: Print PDF
+            - name: checker_fts
+              display: FullTextSearch
+            - name: checker_wmscapabilities
+              display: WMS capabilities
+            - name: checker_wfscapabilities
+              display: WFS capabilities
             main:
-                - name: checker_main
-                  display: Main page
-                - name: checker_viewer
-                  display: Viewer script
-                - name: checker_printcapabilities
-                  display: Print capabilities
-                - name: checker_pdf
-                  display: Print PDF
-                - name: checker_api
-                  display: API
-                - name: checker_xapi
-                  display: Extended API
-                - name: checker_fts
-                  display: FullTextSearch
-                - name: checker_wmscapabilities
-                  display: WMS capabilities
-                - name: checker_wfscapabilities
-                  display: WFS capabilities
+            - name: checker_main
+              display: Main page
+            - name: checker_viewer
+              display: Viewer script
+            - name: checker_api
+              display: API
+            - name: checker_printcapabilities
+              display: Print capabilities
+            - name: checker_fts
+              display: FullTextSearch
             default: # for children
-                - name: checker_viewer
-                  display: Viewer script
+            - name: checker_viewer
+              display: Viewer script
         hosts:
-            - display: {{package}}
-              url: http://{host}/{instanceid}/wsgi
-              type: main
-    #        - display: Child:
-    #          url: http://{host}/child/wsgi
-
-    #proxies:
-    #    http: http://someproxy
-
-    wfs:
-        # Set to True so that MapserverProxy limits the number of features
-        # returned by a WFS GetFeature request:
-        enable_limit_featurecollection: True
-        # Max number of features returned by a WFS GetFeature request:
-        maxfeatures: 200
+        - display: {{package}}
+          url: http://{host}/{instanceid}/wsgi
+          type: main
 
 interpreted:
     python:
