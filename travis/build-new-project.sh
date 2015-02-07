@@ -3,7 +3,6 @@
 cp travis/build.mk /tmp/test/travis.mk
 
 cd /tmp/test/
-mkdir print/print-app
 
 git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
@@ -14,6 +13,7 @@ git commit -q -m "Initial commit"
 
 sudo chmod 777 /var/lib/tomcat7/webapps
 
+make -f travis.mk clean
 make -f travis.mk build
 
 echo "Build complete"
