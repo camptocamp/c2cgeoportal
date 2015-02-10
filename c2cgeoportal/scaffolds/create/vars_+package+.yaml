@@ -77,51 +77,10 @@ vars:
         print_scale: 10000
         fulltextsearch: text to search
 
-    # Check collector configuration
     check_collector:
-        check_type:
-            all:
-            - name: checker_main
-              display: Main page
-            - name: checker_viewer
-              display: Viewer script
-            - name: checker_edit
-              display: Edit page
-            - name: checker_edit_js
-              display: Edit script
-            - name: checker_api
-              display: API
-            - name: checker_xapi
-              display: Extended API
-            - name: checker_printcapabilities
-              display: Print capabilities
-            - name: checker_pdf
-              display: Print PDF
-            - name: checker_fts
-              display: FullTextSearch
-            - name: checker_wmscapabilities
-              display: WMS capabilities
-            - name: checker_wfscapabilities
-              display: WFS capabilities
-            main:
-            - name: checker_main
-              display: Main page
-            - name: checker_viewer
-              display: Viewer script
-            - name: checker_api
-              display: API
-            - name: checker_printcapabilities
-              display: Print capabilities
-            - name: checker_fts
-              display: FullTextSearch
-            default: # for children
-            - name: checker_viewer
-              display: Viewer script
-        hosts:
-        - display: Main
-          url: http://{host}/{instanceid}/wsgi
-          type: main
+        hosts: []
         # - display: Child:
         #   url: http://${host}/child/wsgi
 
-
+update_paths:
+- check_collector.hosts

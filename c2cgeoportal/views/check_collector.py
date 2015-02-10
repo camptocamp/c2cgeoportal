@@ -50,7 +50,9 @@ class CheckerCollector(object):  # pragma: no cover
     @view_config(route_name='check_collector')
     def check_collector(self):
         body = ""
+        disabled = self.settings["disabled"]
         start0 = time()
+
         for host in self.settings['hosts']:
             params = self.request.params
             if 'host' not in params or host['display'] == params['host']:
@@ -61,6 +63,8 @@ class CheckerCollector(object):  # pragma: no cover
 
                 start1 = time()
                 for check in checks:
+                    if check["name"] in disabled:
+                        continue
                     start2 = time()
                     res, err = self._testurl("%s/%s" % (host['url'], check['name']))
                     body += "<p>%s: %s (%0.4fs)</p>" % \
