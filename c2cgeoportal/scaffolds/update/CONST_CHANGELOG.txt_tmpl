@@ -70,6 +70,15 @@ Version 1.6
     + add_interface(config, 'routing')
     + add_interface(config, 'mobile', INTERFACE_TYPE_SENCHA_TOUCH)
 
+    In the `add_static_view` do the following change:
+    - # add the main static view
+    - config.add_static_view(
+    -     name='proj',
+    -     path='{{package}}:static',
+    -     cachebust=True,
+    - )
+    + add_static_view(config)
+
 7. In the `{{package}}/templates/*.html` files you should do the following
    changes:
 
@@ -78,6 +87,9 @@ Version 1.6
    + jsbuild_settings = request.registry.settings.get('jsbuild', {})
    + jsbuild_cfg = jsbuild_settings.get('config')
    + jsbuild_root_dir = jsbuild_settings.get('root_dir')
+
+   Remove the no more needed `_query=url_params` argument of the
+   `static_url` calls.
 
 8. In the mapfile add the following lines to all restricted layers:
 

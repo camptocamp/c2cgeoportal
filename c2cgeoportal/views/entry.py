@@ -33,7 +33,6 @@ import urllib
 import logging
 import json
 import sys
-import uuid
 
 from urlparse import urlparse
 
@@ -51,6 +50,7 @@ from xml.dom.minidom import parseString
 from math import sqrt
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url
+from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
@@ -625,11 +625,6 @@ class Entry(object):
                 result[functionality.name] = [functionality.value]
         return result
 
-    @cache_region.cache_on_arguments()
-    def _get_cache_version(self):
-        "Return a cache version that is regenerate after each cache invalidation"
-        return uuid.uuid4().hex
-
     @view_config(route_name='invalidate', renderer='json')
     def invalidate_cache(self):  # pragma: no cover
         invalidate_region()
@@ -839,7 +834,7 @@ class Entry(object):
         return layers_enum
 
     def get_cgxp_index_vars(self, templates_params=None):
-        cache_version = self._get_cache_version()
+        cache_version = get_cache_version()
         extra_params = {
             'version': cache_version
         }
@@ -900,7 +895,7 @@ class Entry(object):
         external_themes, add_errors = self._external_themes(interface)
         errors.extend(add_errors)
 
-        cache_version = self._get_cache_version()
+        cache_version = get_cache_version()
         url_params = {
             'version': cache_version
         }
@@ -939,7 +934,7 @@ class Entry(object):
         self.request.response.headers['Cache-Control'] = 'no-cache'
 
         url_params = {
-            'version': self._get_cache_version()
+            'version': get_cache_version()
         }
 
         if self.request.user is not None:  # pragma: nocover
@@ -972,7 +967,7 @@ class Entry(object):
 
         extra_params = dict(self.request.params)
         came_from = self.request.current_route_url(_query=extra_params)
-        cache_version = self._get_cache_version()
+        cache_version = get_cache_version()
         url_params = {
             'cache_version': cache_version
         }
