@@ -35,3 +35,4 @@ Features that require additional steps (most of the time):
    wmstime
    intranet
    security
+   pdfreport

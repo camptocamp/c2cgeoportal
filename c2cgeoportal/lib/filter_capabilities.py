@@ -53,13 +53,13 @@ log = logging.getLogger(__name__)
 
 
 @cache_region.cache_on_arguments()
-def _get_protected_layers(role_id):
+def get_protected_layers(role_id):
     q = get_protected_layers_query(role_id, distinct(Layer.name))
     return [r for r, in q.all()]
 
 
 @cache_region.cache_on_arguments()
-def _get_private_layers():
+def get_private_layers():
     q = DBSession.query(Layer.name).filter(Layer.public.is_(False))
     return [r for r, in q.all()]
 
@@ -155,8 +155,8 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         enable_proxies(proxies)
 
     wms_structure = _wms_structure(wms_url, headers.get('Host', None))
-    tmp_private_layers = list(_get_private_layers())
-    for name in _get_protected_layers(role_id):
+    tmp_private_layers = list(get_private_layers())
+    for name in get_protected_layers(role_id):
         tmp_private_layers.remove(name)
 
     private_layers = set()
