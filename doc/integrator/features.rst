@@ -34,3 +34,4 @@ Features that require additional steps (most of the time):
    shortener
    intranet
    security
+   pdfreport
