@@ -38,7 +38,6 @@ from yaml import load
 from subprocess import check_call
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
-from zc.buildout.buildout import Buildout
 
 try:
     from subprocess import check_output
@@ -174,6 +173,8 @@ def _fill_arguments(command):
 
 
 def _run_buildout_cmd(config_file='buildout.cfg', commands=[]):
+    from zc.buildout.buildout import Buildout
+
     buildout = Buildout(config_file, [], True)
     buildout.install(commands)
     # remove logger to don't have duplicate messages
