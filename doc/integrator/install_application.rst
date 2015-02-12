@@ -52,11 +52,20 @@ with ``<db_name>`` replaced by the actual database name.
 
    if you don't have the template_postgis you can use:
 
+   with Postgres >= 9.1 and PostGIS >= 2.1:
+
    .. prompt:: bash
 
        sudo -u postgres createdb -E UTF8 -T template0 <db_name>
-       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+       sudo -u postgres psql -c "CREATE EXTENSION postgis;" <db_name>
+
+   with older versions:
+
+   .. prompt:: bash
+
+       sudo -u postgres createdb -E UTF8 -T template0 <db_name>
+       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql
+       sudo -u postgres psql -d <db_name> -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql
 
    Note that the path of the postgis scripts and the template name can
    differ on your host.

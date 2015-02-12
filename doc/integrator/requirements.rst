@@ -11,8 +11,7 @@ components installed on your system:
 * Oracle **Java** SE Development Kit 6 or 7
 * **Tomcat**
 * **Apache**
-* **PostgreSQL** >= 9.1/**PostGIS** 1.5.3 (PostgreSQL 8.x and 9.0 should work
-    but some commands used in this guide don't work)
+* **PostgreSQL** >= 9.1/**PostGIS** >= 2.0
 * **MapServer** 7.0 or **QGIS**-mapserver 2.2 and upper
 * **ImageMagick**
 * **Sencha** Command
