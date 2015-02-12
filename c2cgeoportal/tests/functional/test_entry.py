@@ -57,7 +57,8 @@ class TestEntryView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
-            RestrictionArea, Theme, LayerGroup, Functionality, Interface
+            RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
+            LayerInternalWMS
 
         role1 = Role(name=u'__test_role1')
         user1 = User(username=u'__test_user1', password=u'__test_user1', role=role1)
@@ -78,6 +79,12 @@ class TestEntryView(TestCase):
         private_layer.geo_table = 'a_schema.a_geo_table'
         private_layer.interfaces = [main, mobile]
 
+        public_layer2 = LayerInternalWMS(name=u'__test_public_layer2', public=True)
+        public_layer2.interfaces = [main, mobile]
+
+        private_layer2 = LayerInternalWMS(name=u'__test_private_layer2', public=False)
+        private_layer2.interfaces = [main, mobile]
+
         layer_in_group = LayerV1(name=u'__test_layer_in_group')
         layer_in_group.interfaces = [main, mobile]
         layer_group = LayerGroup(name=u'__test_layer_group')
@@ -89,7 +96,8 @@ class TestEntryView(TestCase):
 
         group = LayerGroup(name=u'__test_layer_group')
         group.children = [
-            public_layer, private_layer, layer_group, layer_wmsgroup
+            public_layer, private_layer, layer_group, layer_wmsgroup,
+            public_layer2, private_layer2
         ]
         theme = Theme(name=u'__test_theme')
         theme.children = [group]
@@ -103,24 +111,26 @@ class TestEntryView(TestCase):
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name=u'__test_ra1', description=u'', layers=[private_layer],
+            name=u'__test_ra1', description=u'', layers=[private_layer, private_layer2],
             roles=[role1], area=area
         )
 
         area = WKTElement(poly, srid=21781)
         RestrictionArea(
-            name=u'__test_ra2', description=u'', layers=[private_layer],
+            name=u'__test_ra2', description=u'', layers=[private_layer, private_layer2],
             roles=[role2], area=area, readwrite=True
         )
 
-        DBSession.add_all([user1, user2, public_layer, private_layer])
+        DBSession.add_all([
+            user1, user2, public_layer, private_layer, public_layer2, private_layer2
+        ])
 
         transaction.commit()
 
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
+        from c2cgeoportal.models import DBSession, User, Role, Layer, \
             RestrictionArea, Theme, LayerGroup, Interface
 
         DBSession.query(User).filter(User.username == '__test_user1').delete()
@@ -143,9 +153,9 @@ class TestEntryView(TestCase):
         for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
-            DBSession.delete(layergroup)  # pragma: nocover
-        for layer in DBSession.query(LayerV1).all():
-            DBSession.delete(layer)  # pragma: nocover
+            DBSession.delete(layergroup)
+        for layer in DBSession.query(Layer).all():
+            DBSession.delete(layer)
         DBSession.query(Interface).filter(
             Interface.name == 'main'
         ).delete()
@@ -435,40 +445,74 @@ class TestEntryView(TestCase):
         # unautenticated
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children'][0]['children']]
-        self.assertTrue('__test_public_layer' in layers)
-        self.assertFalse('__test_private_layer' in layers)
+        self.assertEquals(
+            set([l["name"] for l in themes[0]["children"][0]["children"]]),
+            ["__test_public_layer"]
+        )
 
         # autenticated on parent
-        request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
+        request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children'][0]['children']]
-        self.assertTrue('__test_public_layer' in layers)
-        self.assertTrue('__test_private_layer' in layers)
+        self.assertEquals(
+            set([l["name"] for l in themes[0]["children"][0]["children"]]),
+            ["__test_public_layer", "__test_private_layer"]
+        )
 
         # autenticated
         request.params = {}
-        request.user = DBSession.query(User).filter_by(username=u'__test_user1').one()
+        request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        layers = [l['name'] for l in themes[0]['children'][0]['children']]
-        self.assertTrue('__test_public_layer' in layers)
-        self.assertTrue('__test_private_layer' in layers)
+        self.assertEquals(
+            set([l["name"] for l in themes[0]["children"][0]["children"]]),
+            set(["__test_public_layer", "__test_private_layer"])
+        )
 
         # mapfile error
         request.params = {}
-        request.registry.settings['mapserv_url'] = mapserv_url + '?map=not_a_mapfile'
-        log.info(request.registry.settings['mapserv_url'])
+        request.registry.settings["mapserv_url"] = mapserv_url + "?map=not_a_mapfile"
+        log.info(request.registry.settings["mapserv_url"])
         from c2cgeoportal import caching
         caching.invalidate_region()
-        log.info(type(request.registry.settings['mapserv_url']))
-        themes, errors = entry._themes(None, 'main')
+        log.info(type(request.registry.settings["mapserv_url"]))
+        themes, errors = entry._themes(None, "main")
         self.assertEquals(errors, set([
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
         ]))
+
+    @attr(themev2=True)
+    def test_themev2(self):
+        from c2cgeoportal.models import DBSession, User
+        from c2cgeoportal.views.entry import Entry
+        request = self._create_request_obj()
+        entry = Entry(request)
+
+        # unautenticated
+        request.params = {
+            "version": "2"
+        }
+        themes = entry.themes()
+        print themes
+        self.assertEquals(len(themes["themes"]), 1)
+        self.assertEquals(
+            set([l["name"] for l in themes["themes"][0]["children"][0]["children"]]),
+            set(["__test_public_layer2"])
+        )
+
+        # autenticated
+        request.params = {
+            "version": "2"
+        }
+        request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
+        themes = entry.themes()
+        self.assertEquals(len(themes["themes"]), 1)
+        self.assertEquals(
+            set([l["name"] for l in themes["themes"][0]["children"][0]["children"]]),
+            set(["__test_public_layer2", "__test_private_layer2"])
+        )
 
     @attr(wfs_types=True)
     def test_wfs_types(self):
