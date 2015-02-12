@@ -7,3 +7,8 @@
     # Instruct proxys that these files are cacheable.
     Header merge Cache-Control "public"
 </LocationMatch>
+
+<LocationMatch /${vars:instanceid}/tiles/>
+    Header set Access-Control-Allow-Origin "*"
+    Header merge Cache-Control "public"
+</LocationMatch>

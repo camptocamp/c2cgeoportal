@@ -259,7 +259,10 @@ class MapservProxy:
         else:
             content_type = resp["content-type"]
 
-        headers = {"Content-Type": content_type}
+        headers = {
+            "Content-Type": content_type,
+            "Access-Control-Allow-Origin": "*",
+        }
         response = Response(content, status=resp.status, headers=headers)
 
         if use_cache:
