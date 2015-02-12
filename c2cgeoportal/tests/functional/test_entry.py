@@ -445,29 +445,26 @@ class TestEntryView(TestCase):
         # unautenticated
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l["name"] for l in themes[0]["children"][0]["children"]]),
-            ["__test_public_layer"]
-        )
+        layers = [l["name"] for l in themes[0]["children"][0]["children"]]
+        self.assertTrue("__test_public_layer" in layers)
+        self.assertFalse("__test_private_layer" in layers)
 
         # autenticated on parent
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l["name"] for l in themes[0]["children"][0]["children"]]),
-            ["__test_public_layer", "__test_private_layer"]
-        )
+        layers = [l["name"] for l in themes[0]["children"][0]["children"]]
+        self.assertTrue("__test_public_layer" in layers)
+        self.assertTrue("__test_private_layer" in layers)
 
         # autenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes), 1)
-        self.assertEquals(
-            set([l["name"] for l in themes[0]["children"][0]["children"]]),
-            set(["__test_public_layer", "__test_private_layer"])
-        )
+        layers = [l["name"] for l in themes[0]["children"][0]["children"]]
+        self.assertTrue("__test_public_layer" in layers)
+        self.assertTrue("__test_private_layer" in layers)
 
         # mapfile error
         request.params = {}
@@ -497,10 +494,10 @@ class TestEntryView(TestCase):
         themes = entry.themes()
         print themes
         self.assertEquals(len(themes["themes"]), 1)
-        self.assertEquals(
-            set([l["name"] for l in themes["themes"][0]["children"][0]["children"]]),
-            set(["__test_public_layer2"])
-        )
+        layers = [l["name"] for l in themes["themes"][0]["children"][0]["children"]]
+        print layers
+        self.assertTrue("__test_public_layer2" in layers)
+        self.assertFalse("__test_private_layer2" in layers)
 
         # autenticated
         request.params = {
@@ -509,10 +506,9 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes["themes"]), 1)
-        self.assertEquals(
-            set([l["name"] for l in themes["themes"][0]["children"][0]["children"]]),
-            set(["__test_public_layer2", "__test_private_layer2"])
-        )
+        layers = [l["name"] for l in themes["themes"][0]["children"][0]["children"]]
+        self.assertTrue("__test_public_layer2" in layers)
+        self.assertTrue("__test_private_layer2" in layers)
 
     @attr(wfs_types=True)
     def test_wfs_types(self):
@@ -1338,7 +1334,6 @@ class TestEntryView(TestCase):
         group2.is_internal_wms = False
         group1.children = [group2]
         _, errors = entry._group('', group1, [], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
-        print errors
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group1 = LayerGroup()

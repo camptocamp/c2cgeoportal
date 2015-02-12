@@ -79,11 +79,17 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
-def get_protected_layers_query(role_id, what=None):
+def get_protected_layers_query(role_id, what=None, version=1):
     from c2cgeoportal.models import DBSession, LayerV1, \
-        Layer, RestrictionArea, Role, layer_ra, role_ra
+        Layer, RestrictionArea, Role, layer_ra, role_ra, \
+        LayerInternalWMS, LayerExternalWMS, LayerWMTS
 
-    q = DBSession.query(what if what is not None else LayerV1)
+    if version == 1:
+        q = DBSession.query(what if what is not None else LayerV1)
+    else:
+        q = DBSession.query(Layer).with_polymorphic(
+            [LayerInternalWMS, LayerExternalWMS, LayerWMTS]
+        )
     q = q.join(
         (layer_ra, Layer.id == layer_ra.c.layer_id),
         (RestrictionArea,
