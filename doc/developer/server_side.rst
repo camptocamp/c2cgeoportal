@@ -191,12 +191,12 @@ To run all the tests do this:
 
     make tests
 
-To run a specific test use the ``--tests`` switch. For example:
+To run a specific test use the ``--where`` switch. For example:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py nosetests --tests \
-            c2cgeoportal/tests/test_echoview.py:test_json_base64_encode
+    .build/venv/bin/python setup.py nosetests --where \
+        c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests
 ~~~~~~~~~~~~

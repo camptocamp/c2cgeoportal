@@ -163,9 +163,9 @@ class TestThemesView(TestCase):
 
         return result
 
-    def _get_filtred_errors(self, themes):
+    def _get_filtered_errors(self, themes):
         prog = re.compile("^The layer '[a-z_]*' is not defined in WMS capabilities$")
-        return [e for e in themes['errors'] if prog.match(e) is None]
+        return set([e for e in themes['errors'] if prog.match(e) is None])
 
     @attr(version=True)
     @attr(order=True)
@@ -190,9 +190,9 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['items']],
+            [self._only_name(t) for t in themes['themes']],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -227,9 +227,9 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['item']),
+            self._only_name(themes['group']),
             {
                 "name": u"__test_layer_group_3",
                 # order is important
@@ -249,9 +249,9 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['item']),
+            self._only_name(themes['group']),
             {
                 "name": u"__test_layer_group_4",
                 "children": [{
@@ -275,23 +275,23 @@ class TestThemesView(TestCase):
             "interface": "min_levels",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [
+        self.assertEquals(self._get_filtered_errors(themes), set([
             u"The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
-        ])
+        ]))
 
         entry = self._create_entry_obj(params={
             "version": "2",
             "min_levels": "2",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [
+        self.assertEquals(self._get_filtered_errors(themes), set([
             u"The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_1' (internal/external mix).",
             u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_1' (internal/external mix).",
             u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_2' (internal/external mix).",
             u"The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
-        ])
+        ]))
 
     @attr(theme_layer=True)
     def test_theme_layer(self):
@@ -301,10 +301,9 @@ class TestThemesView(TestCase):
             "min_levels": "0",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [
-        ])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['items']],
+            [self._only_name(t) for t in themes['themes']],
             [{
                 "name": u"__test_theme_layer",
                 "children": [{
@@ -319,14 +318,14 @@ class TestThemesView(TestCase):
             "version": "2",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [
+        self.assertEquals(self._get_filtered_errors(themes), set([
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_1' (internal/external mix).",
             u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_1' (internal/external mix).",
             u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_2' (internal/external mix).",
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
-        ])
+        ]))
         self.assertEquals(
-            [self._only_name(t) for t in themes['items']],
+            [self._only_name(t) for t in themes['themes']],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -348,7 +347,7 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
 
     @attr(tinterface=True)
     def test_interface(self):
@@ -358,9 +357,9 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['items']],
+            [self._only_name(t) for t in themes['themes']],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -384,9 +383,9 @@ class TestThemesView(TestCase):
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t, 'metadata') for t in themes['items']],
+            [self._only_name(t, 'metadata') for t in themes['themes']],
             [{
                 "metadata": {
                     u"test": u"theme",
@@ -429,17 +428,17 @@ class TestThemesView(TestCase):
             }]
         )
 
-    @attr(dimentions=True)
-    def test_dimentions(self):
+    @attr(dimensions=True)
+    def test_dimensions(self):
         entry = self._create_entry_obj(params={
             "version": "2",
             "group": "__test_layer_group_3",
             "catalogue": "true",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtred_errors(themes), [])
+        self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['item'], 'dimensions'),
+            self._only_name(themes['group'], 'dimensions'),
             {
                 # order is important
                 "children": [{
@@ -448,4 +447,25 @@ class TestThemesView(TestCase):
                 }, {
                 }]
             }
+        )
+
+    @attr(background=True)
+    def test_background(self):
+        entry = self._create_entry_obj(params={
+            "version": "2",
+            "background": "__test_layer_group_3",
+            "set": "background",
+        })
+        themes = entry.themes()
+        self.assertEquals(self._get_filtered_errors(themes), set())
+        self.assertEquals(
+            [self._only_name(e) for e in themes['background_layers']],
+            # order is important
+            [{
+                "name": u"__test_layer_wmts"
+            }, {
+                "name": u"__test_layer_internal_wms"
+            }, {
+                "name": u"__test_layer_external_wms"
+            }]
         )

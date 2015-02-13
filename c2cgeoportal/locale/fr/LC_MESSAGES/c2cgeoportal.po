@@ -367,7 +367,7 @@ msgid ""
 "themes."
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:1290
+#: c2cgeoportal/views/entry.py:1312
 msgid "User not found in replication target database"
 msgstr "Utilisateur non trouvé dans la base de données de réplication"
 
