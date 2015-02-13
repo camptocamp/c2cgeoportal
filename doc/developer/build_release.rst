@@ -72,17 +72,6 @@ Tag the new CGXP release:
 c2cgeoportal
 ------------
 
-Prepare your repository
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Before creating a version or a release you should have a clean repository,
-then reset non commited changes and remove all untracked files and directories:
-
-.. prompt:: bash
-
-    git reset --hard
-    git clean -f -d
-
 New version
 ~~~~~~~~~~~
 
@@ -180,5 +169,5 @@ Push your changes:
 
 .. note::
 
-   When we push the tag with the same value as the egg version
-   a new release will be automatically created, if the tests pass.
+   When you push a tag with the pattern `^[0-9].[0-9]+.[0-9]$` a new release
+   will automatically be created on Travis CI.

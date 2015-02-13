@@ -40,11 +40,11 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.lib import caching
+from c2cgeoportal.lib.caching import get_region, init_cache_control
 from c2cgeoportal.lib.functionality import get_functionality
 
 log = logging.getLogger(__name__)
-cache_region = caching.get_region()
+cache_region = get_region()
 
 
 class Printproxy(object):  # pragma: no cover
@@ -104,8 +104,7 @@ class Printproxy(object):  # pragma: no cover
             json.dumps(capabilities, separators=(',', ':')),
             status=resp.status, headers=headers,
         )
-        response.cache_control.max_age = \
-            self.request.registry.settings["default_max_age"]
+        init_cache_control(self.request, "print")
         return response
 
     @view_config(route_name='printproxy_create')

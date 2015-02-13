@@ -1,20 +1,26 @@
 #!/bin/bash -ex
 
 DEPLOY=false
-EGG_INFO=''
+EGG_INFO=""
 
-if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]
+if [[ $TRAVIS_BRANCH =~ ^(master|[0-9].[0-9])$ ]] && [ $TRAVIS_PULL_REQUEST == false ]
 then
     DEPLOY=true
-elif [ $TRAVIS_TAG = `.build/venv/bin/python setup.py --version` ]
-then
-    DEPLOY=true
-    EGG_INFO='egg_info --no-date --tag-build ""'
 fi
 
-if [ $DEPLOY = true ]
+if [[ $TRAVIS_TAG =~ ^[0-9].[0-9]+.[0-9]$ ]]
 then
+    if [ $TRAVIS_TAG != $(python setup.py -V) ]
+    then
+        echo "The tag name doesn't match with the egg version."
+        exit 1
+    fi
+    DEPLOY=true
+    EGG_INFO="egg_info --no-date --tag-build"
+fi
 
+if [ $DEPLOY == true  ] && [ $TRAVIS_PYTHON_VERSION == "2.7" ]
+then
     echo "[distutils]" > ~/.pypirc
     echo "index-servers = c2c-internal" >> ~/.pypirc
     echo "[c2c-internal]" >> ~/.pypirc
@@ -31,5 +37,4 @@ then
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
     sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
     .build/venv/bin/python setup.py $EGG_INFO -d sdist upload -r c2c-internal
-
 fi

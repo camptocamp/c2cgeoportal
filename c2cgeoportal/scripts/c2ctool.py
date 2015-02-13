@@ -85,7 +85,7 @@ To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
 
     if len(sys.argv) <= 1:
-        print usage
+        print(usage)
         exit()
 
     if sys.argv[1] == 'help':
@@ -93,7 +93,7 @@ To have some help on a command type:
             parser = _fill_arguments(sys.argv[2])
             parser.print_help()
         else:
-            print usage
+            print(usage)
         exit()
 
     parser = _fill_arguments(sys.argv[1])
@@ -109,7 +109,7 @@ To have some help on a command type:
     elif sys.argv[1] == 'deploy':
         deploy(options)
     else:
-        print "Unknown command"
+        print("Unknown command")
 
 
 def _fill_arguments(command):
@@ -142,7 +142,7 @@ def _fill_arguments(command):
             default=None
         )
     else:
-        print "Unknown command"
+        print("Unknown command")
         exit()
 
     return parser
@@ -150,12 +150,12 @@ def _fill_arguments(command):
 
 def update(options):
     branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-    print "Use branch %s." % branch
+    print("Use branch %s." % branch)
     check_call(['git', 'pull', '--rebase', 'origin', branch])
     if len(check_output(['git', 'status', '-z']).strip()) != 0:
-        print _color_bar
-        print _colorize("The pull isn't fast forward.", RED)
-        print _colorize("Please solve the rebase and run it again.", YELLOW)
+        print(_color_bar)
+        print(_colorize("The pull isn't fast forward.", RED))
+        print(_colorize("Please solve the rebase and run it again.", YELLOW))
         exit(1)
 
     check_call(['git', 'submodule', 'sync'])
@@ -169,17 +169,17 @@ def update(options):
 
 def _print_step(options, step, intro="To continue type:"):
     global _command_to_use
-    print intro
-    print _colorize("%s upgrade %s %s --step %i", YELLOW) % (
+    print(intro)
+    print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
         _command_to_use,
         options.file if options.file is not None else "<user.mk>",
         options.version, step
-    )
+    ))
 
 
 def _get_project():
     if not path.isfile('project.yaml'):
-        print "Unable to find the required 'project.yaml' file."
+        print("Unable to find the required 'project.yaml' file.")
         exit(1)
 
     return load(file('project.yaml', 'r'))
@@ -197,10 +197,10 @@ def _test_checkers(project):
         )
         if resp.status < 200 or resp.status >= 300:
             print(_color_bar)
-            print "Checker error:"
-            print "Open `http://%s%s%s` for more informations." % (
+            print("Checker error:")
+            print("Open `http://%s%s%s` for more informations." % (
                 project['host'], project['checker_path'], check_type
-            )
+            ))
             return False
     return True
 
@@ -210,16 +210,18 @@ def upgrade(options):
 
     if options.step == 0:
         if path.split(path.realpath('.'))[1] != project['project_folder']:
-            print "Your project isn't in the right folder!"
-            print "It should be in folder '%s' instead of folder '%s'." % (
+            print("Your project isn't in the right folder!")
+            print("It should be in folder '%s' instead of folder '%s'." % (
                 project['project_folder'], path.split(path.realpath('.'))[1]
-            )
+            ))
 
         check_call(['git', 'status'])
-        print
-        print _color_bar
-        print "Here is the output of 'git status'. Please make sure to commit all your changes " \
+        print()
+        print(_color_bar)
+        print(
+            "Here is the output of 'git status'. Please make sure to commit all your changes "
             "before going further. All uncommited changes will be lost."
+        )
         _print_step(options, 1)
 
     elif options.step == 1:
@@ -228,9 +230,9 @@ def upgrade(options):
         branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
         check_call(['git', 'pull', '--rebase', 'origin', branch])
         if len(check_output(['git', 'status', '-z']).strip()) != 0:
-            print _color_bar
-            print _colorize("The pull isn't fast forward.", RED)
-            print _colorize("Please solve the rebase and run it again.", YELLOW)
+            print(_color_bar)
+            print(_colorize("The pull isn't fast forward.", RED))
+            print(_colorize("Please solve the rebase and run it again.", YELLOW))
             exit(1)
 
         check_call(['git', 'submodule', 'foreach', 'git', 'fetch'])
@@ -258,15 +260,17 @@ def upgrade(options):
         check_call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
         diff_file.close()
 
-        print
-        print _color_bar
-        print "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file" \
+        print()
+        print(_color_bar)
+        print(
+            "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file"
             " (listed in the `changelog.diff` file)."
+        )
         _print_step(options, 2)
 
     elif options.step == 2:
         if options.file is None:
-            print "The makefile is missing"
+            print("The makefile is missing")
             exit(1)
 
         if path.isfile('changelog.diff'):
@@ -277,10 +281,10 @@ def upgrade(options):
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
 
-        print
-        print _color_bar
-        print "The upgrade is nearly done, now you should:"
-        print "- Test your application."
+        print()
+        print(_color_bar)
+        print("The upgrade is nearly done, now you should:")
+        print("- Test your application.")
 
         _print_step(options, 3, intro="Then to commit your changes type:")
 
@@ -297,7 +301,7 @@ def upgrade(options):
 def deploy(options):
     project = _get_project()
     if not _test_checkers(project):
-        print _colorize("Correct them and run again", RED)
+        print(_colorize("Correct them and run again", RED))
         exit(1)
 
     check_call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])

@@ -95,3 +95,25 @@ def get_region(region=None):
 
 def invalidate_region(region=None):
     return get_region(region).invalidate()
+
+
+def init_cache_control(request, service_name, private=None, response=None):
+    if response is None:
+        response = request.response
+
+    if private is None:
+        if request.user is not None:
+            response.cache_control.private = True
+    else:
+        response.cache_control.private = private
+
+    max_age = request.registry.settings["default_max_age"]
+
+    settings = request.registry.settings.get("cache_control", {})
+    if service_name in settings and "max_age" in settings[service_name]:
+        max_age = settings[service_name]["max_age"]
+
+    if max_age != 0:
+        response.cache_control.max_age = max_age
+    else:
+        response.cache_control.no_cache = True

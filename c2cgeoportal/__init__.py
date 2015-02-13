@@ -417,11 +417,12 @@ def includeme(config):
     config.add_directive('set_user_validator', set_user_validator)
     config.set_user_validator(default_user_validator)
 
-    # add an OGCProxy view
-    config.add_route(
-        'ogcproxy', '/ogcproxy',
-        custom_predicates=(ogcproxy_route_predicate,))
-    config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
+    if config.get_settings().get("ogcproxy_enable", "true").lower() in ["true", "yes", "1"]:
+        # add an OGCProxy view
+        config.add_route(
+            'ogcproxy', '/ogcproxy',
+            custom_predicates=(ogcproxy_route_predicate,))
+        config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
 
     # add routes to the mapserver proxy
     config.add_route(

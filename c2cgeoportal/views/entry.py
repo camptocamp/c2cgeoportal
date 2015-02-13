@@ -51,7 +51,8 @@ from math import sqrt
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url
 from c2cgeoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal.lib.caching import get_region, invalidate_region
+from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
+    init_cache_control
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -71,10 +72,7 @@ class Entry(object):
 
     def __init__(self, request):
         self.request = request
-        if request.user:
-            request.response.cache_control.private = True
-        request.response.cache_control.max_age = \
-            request.registry.settings["default_max_age"]
+        init_cache_control(request, "entry")
         self.settings = request.registry.settings
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
@@ -758,21 +756,27 @@ class Entry(object):
         except:  # pragma: no cover
             return get_capabilities_xml, errors
 
-    @cache_region.cache_on_arguments()
     def _external_themes(self, interface):  # pragma nocover
-        errors = set()
-
         if not ('external_themes_url' in self.settings
                 and self.settings['external_themes_url']):
-            return None, errors
+            return None, set()
+
+        role_id = None
+        if self.request.user is not None and \
+                hasattr(self.request.user, 'parent_role') and \
+                self.request.user.parent_role is not None:
+            role_id = str(self.request.user.parent_role.id)
+
+        return self._external_themes_role(interface, role_id)
+
+    @cache_region.cache_on_arguments()
+    def _external_themes_role(self, interface, role_id):  # pragma nocover
+        errors = set()
+
         ext_url = self.settings['external_themes_url']
         url_params = {
             'interface': interface
         }
-        if self.request.user is not None and \
-                hasattr(self.request.user, 'parent_role') and \
-                self.request.user.parent_role is not None:
-            url_params['role_id'] = str(self.request.user.parent_role.id)
 
         if ext_url[-1] not in ['?', '&']:
             ext_url += '?'
