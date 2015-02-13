@@ -1,34 +1,41 @@
-#!/bin/bash
+#!/bin/bash -e
 
 DEPLOY=false
-EGG_INFO=""
+FINAL=false
 
-if [[ $TRAVIS_BRANCH =~ ^(master|[0-9].[0-9])$ ]] && [ $TRAVIS_PULL_REQUEST == false ]
+if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
     DEPLOY=true
 fi
 
-if [[ $TRAVIS_TAG =~ ^[0-9].[0-9]+.[0-9]$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]]
 then
-    if [ $TRAVIS_TAG != $(python setup.py -V) ]
+    if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
         echo "The tag name doesn't match with the egg version."
         exit 1
     fi
     DEPLOY=true
-    EGG_INFO="egg_info --no-date --tag-build"
+    FINAL=true
 fi
 
-if [ $DEPLOY == true  ] && [ $TRAVIS_PYTHON_VERSION == "2.7" ]
+if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
 then
     echo "[distutils]" > ~/.pypirc
     echo "index-servers = c2c-internal" >> ~/.pypirc
     echo "[c2c-internal]" >> ~/.pypirc
-    echo "username:$PIP_USERNAME" >> ~/.pypirc
-    echo "password:$PIP_PASSWORD" >> ~/.pypirc
+    echo "username:${PIP_USERNAME}" >> ~/.pypirc
+    echo "password:${PIP_PASSWORD}" >> ~/.pypirc
     echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
 
-    ./buildout/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
+    set -x
+
+    if [ ${FINAL} == true ]
+    then
+        ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+    else
+        ./buildout/bin/python setup.py sdist upload -r c2c-internal
+    fi
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
     tar -czvf touch.tar.gz touch
@@ -36,5 +43,11 @@ then
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
     sed -i "s/name='c2cgeoportal',/name='c2cgeoportal-win',/g" setup.py
-    ./buildout/bin/python setup.py sdist upload -r c2c-internal
+
+    if [ ${FINAL} == true ]
+    then
+        ./buildout/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+    else
+        ./buildout/bin/python setup.py sdist upload -r c2c-internal
+    fi
 fi
