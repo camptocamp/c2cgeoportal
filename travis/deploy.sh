@@ -1,6 +1,29 @@
 #!/bin/bash
 
-if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
+DEPLOY=false
+EGG_INFO=""
+
+if [[ $TRAVIS_BRANCH =~ ^(master|[0-9].[0-9])$ ]] && [ $TRAVIS_PULL_REQUEST == false ]
+then
+    DEPLOY=true
+fi
+
+if [[ $TRAVIS_TAG =~ ^[0-9].[0-9]+.[0-9]$ ]]
+then
+    if [ $TRAVIS_TAG != $(python setup.py -V) ]
+    then
+        echo "The tag name doesn't match with the egg version."
+        exit 1
+    fi
+    DEPLOY=true
+    EGG_INFO="egg_info --no-date --tag-build"
+fi
+
+if [ $DEPLOY == true  ] && [ $TRAVIS_PYTHON_VERSION == "2.7" ]
+then
+    echo deploy
+    exit 0
+
     echo "[distutils]" > ~/.pypirc
     echo "index-servers = c2c-internal" >> ~/.pypirc
     echo "[c2c-internal]" >> ~/.pypirc
@@ -8,7 +31,7 @@ if [[ $TRAVIS_BRANCH$TRAVIS_PULL_REQUEST =~ ^(master|[0-9].[0-9])false$ ]]; then
     echo "password:$PIP_PASSWORD" >> ~/.pypirc
     echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
 
-    ./buildout/bin/python setup.py sdist upload -r c2c-internal
+    ./buildout/bin/python setup.py $EGG_INFO sdist upload -r c2c-internal
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
     tar -czvf touch.tar.gz touch
