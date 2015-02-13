@@ -21,9 +21,6 @@ fi
 
 if [ $DEPLOY == true  ] && [ $TRAVIS_PYTHON_VERSION == "2.7" ]
 then
-    echo deploy
-    exit 0
-
     echo "[distutils]" > ~/.pypirc
     echo "index-servers = c2c-internal" >> ~/.pypirc
     echo "[c2c-internal]" >> ~/.pypirc
