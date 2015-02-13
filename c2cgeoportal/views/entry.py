@@ -151,7 +151,7 @@ class Entry(object):
 
         q = q.filter(Layer.public.is_(True))
         if role_id is not None:
-            q = q.union(get_protected_layers_query(role_id))
+            q = q.union(get_protected_layers_query(role_id, version=version))
 
         return q
 
