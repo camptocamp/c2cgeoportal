@@ -1,6 +1,17 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.5.3
+=============
+
+1. At the end of the file `apache/frontend.conf.in` add:
+
+    <LocationMatch /${vars:instanceid}/tiles/>
+        Header merge Access-Control-Allow-Origin "*"
+        Header merge Cache-Control "public"
+    </LocationMatch>
+
+
 Version 1.5.2
 =============
 
