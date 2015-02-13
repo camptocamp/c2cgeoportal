@@ -51,13 +51,14 @@ class TimeInformation(object):
             self.extent = extent
 
     def merge_mode(self, mode):
-        if self.mode:
-            if self.mode != mode:
-                raise ValueError(
-                    "Could not mix time mode '%s' and '%s'"
-                    % (mode, self.mode))
-        else:
-            self.mode = mode
+        if mode != "disabled":
+            if self.mode:
+                if self.mode != mode:
+                    raise ValueError(
+                        "Could not mix time mode '%s' and '%s'"
+                        % (mode, self.mode))
+            else:
+                self.mode = mode
 
     def has_time(self):
         return self.extent is not None
