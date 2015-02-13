@@ -8,7 +8,7 @@
     Header merge Cache-Control "public"
 </LocationMatch>
 
-<LocationMatch /${vars:instanceid}/tiles/>
+<LocationMatch /${instanceid}/tiles/>
     Header set Access-Control-Allow-Origin "*"
     Header merge Cache-Control "public"
 </LocationMatch>
