@@ -290,6 +290,9 @@ def includeme(config):
     config.add_route('shortener_create', '/short/create')
     config.add_route('shortener_get', '/short/{ref}')
 
+    # PDF report tool
+    config.add_route('pdfreport', '/pdfreport/{layername}/{id:\d+}')
+
     # add routes for the "layers" web service
     config.add_route(
         'layers_count', '/layers/{layer_id:\\d+}/count',
