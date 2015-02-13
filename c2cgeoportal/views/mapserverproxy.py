@@ -40,9 +40,7 @@ from pyramid.httpexceptions import HTTPBadGateway, HTTPNotAcceptable, \
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import caching
 from c2cgeoportal.lib.caching import get_region, init_cache_control
-from c2cgeoportal.lib.wfsparsing import is_get_feature, limit_featurecollection
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
 
