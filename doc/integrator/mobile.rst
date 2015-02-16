@@ -178,6 +178,33 @@ to be adapted to the data retrieved from the server:
 In the example above ``mns`` and ``mnt`` are the keys used in the server
 config for the ``raster web services``.
 
+Permalink crosshair
+-------------------
+
+A crosshair can be shown on the map when requesting the mobile application. To
+do so, the following parameters have to be defined in the called URL:
+
+* ``map_zoom``: map some level
+* ``map_x``: x coordinate on which the marker will be placed
+* ``map_y``: y coordinate on which the marker will be placed
+* ``map_crosshair``: set to a value (e.g. ``map_crosshair=1``)
+
+By default, the OpenLayers default marker will be used.
+
+To use a custom marker, do the following changes in the ``static/mobile/config.js``
+file:
+
+* Set ``OpenLayers.ImgPath`` to the path where you custom marker is.
+* Define the following new variable::
+
+      App.crosshair_options = {
+          'path': OpenLayers.ImgPath+'custom_marker.png',
+          'size': [image_width, image_height]
+      };
+
+Where ``image_width`` and ``image_height`` are respectively the width and the
+height of the crosshair image.
+
 Settings view
 -------------
 
