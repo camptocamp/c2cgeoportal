@@ -381,6 +381,16 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 #
 ##############################################################################
 
+image_type_options = [
+    ("image/jpeg", _("image/jpeg")),
+    ("image/png", _("image/png"))
+]
+time_options = [
+    ("disabled", _("disabled")),
+    ("value", _("value")),
+    ("range", _("range")),
+]
+
 # Layer V1
 LayerV1 = FieldSet(models.LayerV1)
 LayerV1.configure(exclude=[LayerV1.parents_relation])
@@ -390,18 +400,16 @@ LayerV1.layer_type.set(
         ("internal WMS", _("internal WMS")),
         ("external WMS", _("external WMS")),
         ("WMTS", _("WMTS")),
-        ("no 2D", _("no 2D"))
+        ("no 2D", _("no 2D")),
     ])
 LayerV1.image_type.set(
     renderer=SelectFieldRenderer,
-    options=[("image/jpeg", _("image/jpeg")), ("image/png", _("image/png"))])
+    options=image_type_options
+)
 LayerV1.time_mode.set(
     renderer=SelectFieldRenderer,
-    options=[
-        ("disabled", _("disabled")),
-        ("value", _("value")),
-        ("range", _("range"))
-    ])
+    options=time_options,
+)
 LayerV1.interfaces.set(renderer=CheckBoxSet)
 LayerV1.ui_metadata.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
@@ -411,10 +419,12 @@ LayerInternalWMS = FieldSet(models.LayerInternalWMS)
 LayerInternalWMS.configure(exclude=[LayerInternalWMS.parents_relation])
 LayerInternalWMS.image_type.set(
     renderer=SelectFieldRenderer,
-    options=[("image/jpeg", "image/png", _("image/jpeg", "image/png"))])
+    options=image_type_options,
+)
 LayerInternalWMS.time_mode.set(
     renderer=SelectFieldRenderer,
-    options=[("disabled", "value", "range", _("disabled", "value", "range"))])
+    options=time_options,
+)
 LayerInternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerInternalWMS.ui_metadata.set(readonly=True)
 LayerInternalWMS.restrictionareas.set(renderer=CheckBoxSet)
@@ -424,10 +434,12 @@ LayerExternalWMS = FieldSet(models.LayerExternalWMS)
 LayerExternalWMS.configure(exclude=[LayerExternalWMS.parents_relation])
 LayerExternalWMS.image_type.set(
     renderer=SelectFieldRenderer,
-    options=[("image/jpeg", "image/png", _("image/jpeg", "image/png"))])
+    options=image_type_options,
+)
 LayerExternalWMS.time_mode.set(
     renderer=SelectFieldRenderer,
-    options=[("disabled", "value", "range", _("disabled", "value", "range"))])
+    options=time_options,
+)
 LayerExternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerExternalWMS.ui_metadata.set(readonly=True)
 LayerExternalWMS.restrictionareas.set(renderer=CheckBoxSet)
