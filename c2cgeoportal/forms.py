@@ -329,6 +329,10 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += '</li>'
         return result
 
+    def stringify_value(self, item, **kargs):
+        final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
+        return super(LayerCheckBoxTreeSet, self).stringify_value(final_item, **kargs)
+
 
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
