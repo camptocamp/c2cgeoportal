@@ -40,8 +40,6 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    # Required by FormAlchemy
-    'WebHelpers2>=2.0.rc1',
     'pyramid<=1.6.99,>=1.6.0.dev',
     'pyramid_multiauth',
     'pyramid_mako',
@@ -60,7 +58,7 @@ install_requires = [
     # The version 1.10.3 have an issue with the 'jump to' combobox of the
     # admin interface
     'js.jqueryui==1.8.24',
-    'FormAlchemy',
+    'FormAlchemy<=1.5',
     'GeoFormAlchemy2>=2.0.dev2',
     'OWSLib>=0.6.0',
     'dogpile.cache',
