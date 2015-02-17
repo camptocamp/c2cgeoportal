@@ -73,6 +73,15 @@ Get the right version of the egg:
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
+Create your own ``<user>.mk``:
+
+.. code::
+
+   INSTANCE_ID = <instanceid>
+   DEVELOPMENT = TRUE
+
+   include <package>.mk
+
 Start the c2ctool upgrade:
 
 .. prompt:: bash

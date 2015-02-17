@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from os import environ, path, unlink
+from os import path, unlink
 import re
 import sys
 import argparse
@@ -63,7 +63,6 @@ WHITE = 7
 def _colorize(text, color):
     return "\x1b[01;3%im%s\x1b[0m" % (color, text)
 
-_command_to_use = None
 _color_bar = _colorize("=================================================================", GREEN)
 
 
@@ -97,9 +96,6 @@ To have some help on a command type:
 
     parser = _fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
-
-    global _command_to_use
-    _command_to_use = environ['COMMAND_TO_USE'] if 'COMMAND_TO_USE' in environ else sys.argv[0]
 
     if sys.argv[1] == 'upgrade':
         upgrade(options)
@@ -141,11 +137,17 @@ def _fill_arguments(command):
     return parser
 
 
+def _get_bin():
+    if path.exists(".build"):
+        return ".build/venv/bin"
+    else:
+        return "./buildout/bin"
+
+
 def _print_step(options, step, intro="To continue type:"):
-    global _command_to_use
     print(intro)
     print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
-        _command_to_use,
+        "%s/c2ctool" % _get_bin(),
         options.file if options.file is not None else "<user.mk>",
         options.version, step
     ))
@@ -263,17 +265,18 @@ def upgrade(options):
         ])
         check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
         check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-        check_call([
-            'wget',
-            'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
-            'c2cgeoportal/scaffolds/update/CONST_versions.txt'
-            % options.version, '-O', 'CONST_versions.txt'
-        ])
-        check_call(['make', '-f', options.file, 'build'])
+        if path.exists(".build"):
+            check_call([
+                'wget',
+                'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
+                'c2cgeoportal/scaffolds/update/CONST_versions.txt'
+                % options.version, '-O', 'CONST_versions.txt'
+            ])
+            check_call(['make', '-f', options.file, 'build'])
 
         check_call([
-            '.build/venv/bin/pcreate', '--interactive', '-s', 'c2cgeoportal_update',
-            '../%s' % project['project_folder'], 'package=%s' % project['project_package']
+            "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
+            "../%s" % project["project_folder"], "package=%s" % project["project_package"]
         ])
 
         diff_file = open("changelog.diff", "w")
