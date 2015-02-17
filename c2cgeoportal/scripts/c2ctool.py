@@ -267,8 +267,8 @@ def upgrade(options):
         check_call([
             'wget',
             'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
-            'c2cgeoportal/scaffolds/create/versions.cfg'
-            % options.version, '-O', 'versions.cfg'
+            'c2cgeoportal/scaffolds/update/CONST_versions.txt'
+            % options.version, '-O', 'CONST_versions.txt'
         ])
         check_call(['make', '-f', options.file, 'build'])
 
@@ -316,7 +316,6 @@ def upgrade(options):
             _print_step(options, 3, intro="Correct them then type:")
             exit(1)
 
-        shutil.rmtree('old')
         check_call(['git', 'add', '-A'])
         check_call(['git', 'commit', '-m', 'Update to GeoMapFish %s' % options.version])
 
