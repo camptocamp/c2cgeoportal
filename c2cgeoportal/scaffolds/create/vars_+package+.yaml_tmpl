@@ -7,6 +7,8 @@ vars:
     # The visible host name
     host: localhost
 
+    srid: {{srid}}
+
     # The application's default language. This is the language used by
     # the application if no specific language is specified in the URLs.
     # This also defines the language used for the text search.
@@ -17,6 +19,10 @@ vars:
     - en
     - fr
     - de
+
+    authtkt:
+        # One day
+        timeout: 86400
 
     admin_interface:
         # Default values for the admin interface's maps.
@@ -84,3 +90,4 @@ vars:
 
 update_paths:
 - check_collector.hosts
+- authtkt

@@ -757,8 +757,10 @@ class Entry(object):
             return get_capabilities_xml, errors
 
     def _external_themes(self, interface):  # pragma nocover
-        if not ('external_themes_url' in self.settings
-                and self.settings['external_themes_url']):
+        if not (
+            'external_themes_url' in self.settings and
+            self.settings['external_themes_url']
+        ):
             return None, set()
 
         role_id = None

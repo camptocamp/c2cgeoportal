@@ -39,12 +39,14 @@ class TestIncludeme(TestCase):
             # the c2cgeoportal includeme function requires a number
             # of settings
             settings={
-                'sqlalchemy.url': 'postgresql://u:p@h/d',
-                'srid': 3857,
-                'schema': 'main',
-                'parentschema': '',
-                'default_max_age': 86400,
-                'app.cfg': 'c2cgeoportal/tests/config.yaml'
+                "sqlalchemy.url": "postgresql://u:p@h/d",
+                "srid": 3857,
+                "schema": "main",
+                "parentschema": "",
+                "default_max_age": 86400,
+                "app.cfg": "c2cgeoportal/tests/config.yaml",
+                "package": "c2cgeoportal",
+                "enable_admin_interface": True,
             })
 
     def test_set_user_validator_directive(self):

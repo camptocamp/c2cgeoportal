@@ -39,7 +39,7 @@ import pyramid_tm
 
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
-
+from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
     MultiDomainPregenerator, MultiDomainStaticURLInfo
 
@@ -267,13 +267,27 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     )
 
 
+def add_admin_interface(config):
+    if config.get_settings().get("enable_admin_interface", False):
+        config.formalchemy_admin(
+            route_name="admin",
+            package=config.get_settings()["package"],
+            view="fa.jquery.pyramid.ModelView",
+            factory=FAModels
+        )
+
+
 def add_static_view(config):
     """ Add the project static view """
-    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
+    _add_static_view(config, 'proj', '%s:static' % config.get_settings()["package"])
 
+
+def _add_static_view(config, name, path):
+    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
     config.add_static_view(
-        name='proj',
-        path='%s:static' % config.get_settings()["package"],
+        name=name,
+        path=path,
+        cache_max_age=int(config.get_settings()["default_max_age"]),
         cachebust=VersionCacheBuster()
     )
 
@@ -366,7 +380,7 @@ def includeme(config):
 
     # update the settings object from the YAML application config file
     settings = config.get_settings()
-    settings.update(yaml.load(file(settings.get('app.cfg'))))
+    settings.update(yaml.load(file(settings.get("app.cfg"))))
 
     global srid
     global schema
@@ -385,7 +399,7 @@ def includeme(config):
 
     # initialize database
     engine = sqlalchemy.engine_from_config(
-        config.get_settings(),
+        settings,
         'sqlalchemy.')
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
@@ -417,7 +431,7 @@ def includeme(config):
     config.add_directive('set_user_validator', set_user_validator)
     config.set_user_validator(default_user_validator)
 
-    if config.get_settings().get("ogcproxy_enable", "true").lower() in ["true", "yes", "1"]:
+    if settings.get("ogcproxy_enable", "true").lower() in ["true", "yes", "1"]:
         # add an OGCProxy view
         config.add_route(
             'ogcproxy', '/ogcproxy',
@@ -521,10 +535,9 @@ def includeme(config):
 
     # define the srid, schema and parentschema
     # as global variables to be usable in the model
-    srid = config.get_settings()['srid']
-    schema = config.get_settings()['schema']
-    parentschema = config.get_settings()['parentschema']
-    settings = config.get_settings()
+    srid = settings['srid']
+    schema = settings['schema']
+    parentschema = settings['parentschema']
     formalchemy_default_zoom = get_setting(
         settings,
         ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
@@ -543,16 +556,16 @@ def includeme(config):
         ('admin_interface', 'available_metadata'),
         formalchemy_available_metadata)
 
+    config.add_route('checker_all', '/checker_all')
+
     # scan view decorator for adding routes
     config.scan(ignore='c2cgeoportal.tests')
 
     config.registry.registerUtility(
         MultiDomainStaticURLInfo(), IStaticURLInfo)
 
-    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
     # add the static view (for static resources)
-    config.add_static_view(
-        name='static',
-        path='c2cgeoportal:static',
-        cachebust=VersionCacheBuster(),
-    )
+    _add_static_view(config, 'static', 'c2cgeoportal:static')
+
+    add_admin_interface(config)
+    add_static_view(config)

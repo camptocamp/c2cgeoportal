@@ -123,7 +123,7 @@ def _xsd_sequence_callback(tb, cls):
 
 
 def _column_reflect_listener(inspector, table, column_info, engine):
-    if isinstance(column_info['type'], Geometry):
+    if isinstance(column_info['type'], Geometry):  # pragma: nocover
         query = engine.execute(
             sql.text(SQL_GEOMETRY_COLUMNS),
             table_schema=table.schema,

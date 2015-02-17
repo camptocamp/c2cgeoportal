@@ -4,9 +4,9 @@ from pyramid.config import Configurator
 from pyramid.settings import asbool
 from c2cgeoportal import locale_negotiator, add_interface, \
     INTERFACE_TYPE_SENCHA_TOUCH
-from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib.authentication import create_authentication
 from {{package}}.resources import Root
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -17,19 +17,9 @@ def main(global_config, **settings):
         authentication_policy=create_authentication(settings)
     )
 
-    config.add_settings({'srid': {{srid}}})
-
     config.include('c2cgeoportal')
 
     config.add_translation_dirs('{{package}}:locale/')
-
-    if asbool(config.get_settings().get('enable_admin_interface')):
-        config.formalchemy_admin(
-            'admin', package='{{package}}',
-            view='fa.jquery.pyramid.ModelView', factory=FAModels
-        )
-
-    config.add_route('checker_all', '/checker_all')
 
     # scan view decorator for adding routes
     config.scan()
@@ -39,6 +29,5 @@ def main(global_config, **settings):
     add_interface(config, 'edit')
     add_interface(config, 'routing')
     add_interface(config, 'mobile', INTERFACE_TYPE_SENCHA_TOUCH)
-    add_static_view(config)
 
     return config.make_wsgi_app()
