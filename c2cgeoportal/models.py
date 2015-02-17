@@ -380,9 +380,14 @@ class TreeGroup(TreeItem):
         return [c.item for c in self.children_relation]
 
     def _set_children(self, children):
-        self.children_relation = [
-            LayergroupTreeitem(self, item, index) for index, item in enumerate(children)
-        ]
+        for child in self.children_relation:
+            self._sa_instance_state.session.delete(child)
+        if len(children) == 0 or isinstance(children[0], LayergroupTreeitem):
+            self.children_relation = children
+        else:
+            self.children_relation = [
+                LayergroupTreeitem(self, item, index) for index, item in enumerate(children)
+            ]
 
     children = property(_get_children, _set_children)
 
