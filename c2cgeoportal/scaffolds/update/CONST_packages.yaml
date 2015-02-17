@@ -8,7 +8,7 @@ main:
         cmd: /usr/bin/python --version 2>&1 | awk '{{print $2}}'
         version: 2.7
     postgres:
-        cmd: sudo -u postgres /usr/lib/postgresql/9.1/bin/postmaster --version | awk '{{print $3}}'
+        cmd: psql --version | awk '{{print $3}}'
         version: 9.1
     postgis: 
         cmd: sudo -u postgres psql template_postgis -c "select PostGIS_lib_version();" -At
