@@ -1,7 +1,7 @@
-.. _integrator_update_application:
+.. _integrator_upgrade_application:
 
-Updating a GeoMapFish application
-=================================
+Upgrading a GeoMapFish application
+==================================
 
 .. warning::
 
@@ -9,33 +9,40 @@ Updating a GeoMapFish application
     Than to upgrade to GeoMapFish 1.6, integrators must start from the very last release
     of 1.5 since the upgrades to 1.5 are no longer available with the new tool.
 
-User the easy c2c tool (experimantal)
--------------------------------------
+Using the c2ctool command
+-------------------------
 
-The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish,
-to use it from a c2cgeoportal 1.4 you should at first get the c2cgeoportal 1.5:
-
-.. prompt:: bash
-
-    wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
-    make <user>.mk build
-
-Replace ``<version>`` by a version number (branch) or release number (tag).
-To get the last dev version, replace ``<version>`` by ``master``.
+The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 
 
-Easy updating an application code (experimental)
-------------------------------------------------
+Easy updating an application code
+---------------------------------
 
 .. prompt:: bash
 
-   .build/venv/bin/c2ctool update <makefile>
+   make -f <makefile> update
+   make -f <makefile> build
+   sudo /usr/sbin/apache2ctl graceful
 
-Where ``<amkefile>`` is your user makefile (``<user>.mk``).
+Where ``<makefile>`` is your user make file (``<user>.mk``).
 
 
-Easy upgrading an application (experimental)
---------------------------------------------
+Easy upgrading an application
+-----------------------------
+
+.. prompt:: bash
+
+   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
+
+Where ``<makefile>`` is your user make file (``<user>.mk``),
+``<target_version>`` is the version that you wish to upgrade to
+(for the development version it should be 'master').
+
+And follow the instructions.
+
+
+Easy upgrading an application from 1.5 to 1.6
+---------------------------------------------
 
 Create a ``project.yaml.mako`` file that contains:
 
@@ -58,44 +65,44 @@ and the ``<host>`` is the host to use for the Apache VirtualHost.
 
 Add ``project.yaml`` in the ``.gitignore`` file.
 
+Get the right version of the egg:
+
 .. prompt:: bash
 
-   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
+   ./buildout/bin/easy_install --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal c2cgeoportal==<egg_version>
+
+Where ``<egg_version>`` can be *1.6.0* for the first stable version.
+
+Start the c2ctool upgrade:
+
+.. prompt:: bash
+
+   ./buildout/bin/c2ctool upgrade <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
-``<target_version>`` is the version that you wish to update to.
+``<target_version>`` is the version that you wish to upgrade to
+(for the development version it should be 'master').
 
 And follow the instructions.
 
 
-Updating an application code
-----------------------------
+Upgrading CGXP (advanced version)
+---------------------------------
 
-To get the changes done by other people, we need to ``pull`` the new code:
+To upgrade CGXP to a release tag (like 1.3.0) use the following:
 
 .. prompt:: bash
 
-    git pull
+    cd <package>/static/lib/cgxp
+    git fetch
+    git checkout <tag>
     git submodule sync
     git submodule update --init
-    git submodule foreach git submodule sync
-    git submodule foreach git submodule update --init
 
-.. note::
+``<package>`` is to be replaced by the name of your application package name,
+``<tag>`` is the name of the release (in Git we use a tag),
 
-   The submodule command is used to have the right version of CGXP.
-
-
-Updating CGXP
--------------
-
-To update CGXP to a release tag (like 1.3.0) use the following:
-
-.. prompt:: bash
-    
-    make <user>.mk update-git
-
-To update CGXP to a version branch (like 1.3) use the following:
+To upgrade CGXP to a version branch (like 1.3) use the following:
 
 .. prompt:: bash
 
@@ -107,7 +114,6 @@ To update CGXP to a version branch (like 1.3) use the following:
     git submodule update --init
 
 ``<package>`` is to be replaced by the name of your application package name,
-``<tag>`` is the name of the release (in Git we use a tag),
 ``<branch>`` is the name of the version (in Git we use a branch).
 
 If the application code is under Git you also need to update the application
@@ -129,13 +135,13 @@ Do manual migration steps based on what's in the
 `CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 
-Updating c2cgeoportal
----------------------
+Upgrading c2cgeoportal (advance version)
+----------------------------------------
 
 Upgrading an application to a new release of c2cgeoportal requires several
 steps:
 
-1. It's good to start an update in a clean repository, then:
+1. It's good to start an upgrade in a clean repository, then:
 
    * See what's not commited:
 
@@ -160,7 +166,7 @@ steps:
 
    .. prompt:: bash
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
 
    Replace ``<version>`` by a version number (branch) or release number (tag).
    To get the last dev version, replace ``<version>`` by ``master``.
@@ -169,7 +175,7 @@ steps:
 
    .. prompt:: bash
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
 
 3. Execute ``make`` to get the new ``c2cgeoportal`` version:
 
@@ -214,7 +220,7 @@ steps:
 
         make <user>.mk
 
-7. Update the database using the ``alembic`` script:
+7. Upgrade the database using the ``alembic`` script:
 
    .. prompt:: bash
 
@@ -239,13 +245,13 @@ steps:
 Migrating database to Postgis 2.x
 ---------------------------------
 
-When migrating the database from Postgis 1.x to 2.x using the postgis_restore.pl 
-script, the table ``<schema_name>.layer`` (and related index and foreign key) 
-will cause some problem because the name is conflicting with an existing table 
+When migrating the database from Postgis 1.x to 2.x using the postgis_restore.pl
+script, the table ``<schema_name>.layer`` (and related index and foreign key)
+will cause some problem because the name is conflicting with an existing table
 with the same name in the Postgis topology schema.
 
-The easiest workaroud is to rename the table, index and foreign key before 
-creating the Postgres dump and reimporting the data with postgis_restore.pl. 
+The easiest workaroud is to rename the table, index and foreign key before
+creating the Postgres dump and reimporting the data with postgis_restore.pl.
 Then renaming them back after the restoration.
 
 First rename all the conflicting items:
@@ -258,19 +264,19 @@ First rename all the conflicting items:
       ALTER TABLE layer RENAME TO layertmp;
 
 .. note::
-  We can't rename a foreign key, we have to create a new one before removing the 
+  We can't rename a foreign key, we have to create a new one before removing the
   old one.
 
-Then you can create the database dump and run postgis_restore.pl to restore 
+Then you can create the database dump and run postgis_restore.pl to restore
 it in your Postgis 2.x database (exemple using Postgres 9.1, Postgis 2.1):
 
     .. prompt:: bash
-      
+
        createdb -T template_postgis <database_name>
        perl /usr/share/Postgresql/9.1/contrib/Postgis-2.1/postgis_restore.pl -v <dump_name>.dump | psql <database_name>
 
 .. note::
-  If you dont have a template_postgis database, you need to add Postgis support 
+  If you dont have a template_postgis database, you need to add Postgis support
   manually, refer to :ref:`integrator_install_application_create_database`.
 
 Once restored, set the original names back:
@@ -286,7 +292,7 @@ Once restored, set the original names back:
 Test and commit
 ---------------
 
-* After the update process is done, do a final build of the application:
+* After the upgrade process is done, do a final build of the application:
 
   .. prompt:: bash
 
@@ -306,4 +312,4 @@ Test and commit
 
   .. prompt:: bash
 
-    git commit -am "Update to GeoMapFish <release>"
+    git commit -am "Upgrade to GeoMapFish <release>"

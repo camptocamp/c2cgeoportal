@@ -31,7 +31,6 @@
 from os import environ, path, unlink
 import re
 import sys
-import shutil
 import argparse
 import httplib2
 from yaml import load
@@ -317,7 +316,7 @@ def upgrade(options):
             exit(1)
 
         check_call(['git', 'add', '-A'])
-        check_call(['git', 'commit', '-m', 'Update to GeoMapFish %s' % options.version])
+        check_call(['git', 'commit', '-m', 'Upgrade to GeoMapFish %s' % options.version])
 
 
 def deploy(options):
