@@ -272,7 +272,8 @@ def upgrade(options):
                 'c2cgeoportal/scaffolds/update/CONST_versions.txt'
                 % options.version, '-O', 'CONST_versions.txt'
             ])
-            check_call(['make', '-f', options.file, 'build'])
+            check_call(['make', '-f', options.file, 'cleanall'])
+            check_call(['make', '-f', options.file, '.build/dev-requirements.timestamp'])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
@@ -299,6 +300,7 @@ def upgrade(options):
         if path.isfile('changelog.diff'):
             unlink("changelog.diff")
 
+        check_call(['make', '-f', options.file, 'cleanall'])
         check_call(['make', '-f', options.file, 'build'])
 
         alembic_cfg = Config("alembic.ini")
