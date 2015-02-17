@@ -5,4 +5,6 @@ VARS_FILE = vars_{{package}}.yaml
 VARS_FILES += ${VARS_FILE} 
 endif
 
+APACHE_VHOST ?= {{project}}
+
 include CONST_Makefile

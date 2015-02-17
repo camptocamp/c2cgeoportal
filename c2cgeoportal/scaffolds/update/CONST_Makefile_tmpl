@@ -35,7 +35,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 # Make rules
 
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server
+DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
@@ -233,6 +233,12 @@ CONFIG_VARS += sqlalchemy.url auth_replication_enabled \
 ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} DEVELOPMENT=${DEVELOPMENT} PACKAGE=${PACKAGE}
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
+# Apache
+APACHE_VHOST ?= $(PACKAGE)
+APACHE_CONF_DIR ?= /var/www/vhost/$(APACHE_VHOST)/conf
+CONF_FILES = $(shell ls -1 apache/*.conf)
+PY_FILES = $(shell -type f -name '*.py' -print)
+
 
 .PHONY: help
 help:
@@ -273,10 +279,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 
 .PHONY: clean
 clean: template-clean
-	rm -f .build/venv.timestamp
-	rm -f .build/node_modules.timestamp
-	rm -f .build/requirements.timestamp
-	rm -f .build/dev-requirements.timestamp
+	rm -f .build/*.timestamp
 	rm -rf $(OUTPUT_DIR)/
 
 .PHONY: cleanall
@@ -628,3 +631,14 @@ print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
+
+# Apache config
+.PHONY: apache
+apache: .build/apache.timestamp
+
+$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
+	echo "Include $(shell pwd)/apache/*.conf" > $@
+
+.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+	sudo /usr/sbin/apache2ctl graceful
+	touch $@

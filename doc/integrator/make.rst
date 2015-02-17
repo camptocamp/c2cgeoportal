@@ -65,6 +65,7 @@ The following variables may be set in the makefiles:
 * ``PRE_RULES``: predefine some build rules, default is empty.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
+* ``APACHE_VHOST``: The vhost folder name in ``/var/www/vhost``.
 
 
 Custom rules
