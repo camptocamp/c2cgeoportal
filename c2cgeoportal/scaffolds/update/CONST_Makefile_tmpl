@@ -486,8 +486,6 @@ update:
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
-	# to install new package pypi version
-	touch .build/venv.timestamp
 ifeq ($(NGEO), TRUE)
 	npm install --force
 endif

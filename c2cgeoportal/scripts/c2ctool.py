@@ -78,7 +78,6 @@ def main():  # pragma: no cover
 Available commands:
 
 """ + _colorize("help", GREEN) + """: show this page
-""" + _colorize("update", GREEN) + """: update the application code
 """ + _colorize("upgrade", GREEN) + """: upgrade the application to a new version
 """ + _colorize("deploy", GREEN) + """: deploy the application to a server
 
@@ -103,9 +102,7 @@ To have some help on a command type:
     global _command_to_use
     _command_to_use = environ['COMMAND_TO_USE'] if 'COMMAND_TO_USE' in environ else sys.argv[0]
 
-    if sys.argv[1] == 'update':
-        update(options)
-    elif sys.argv[1] == 'upgrade':
+    if sys.argv[1] == 'upgrade':
         upgrade(options)
     elif sys.argv[1] == 'deploy':
         deploy(options)
@@ -118,10 +115,6 @@ def _fill_arguments(command):
     if command == 'help':
         parser.add_argument(
             'command', metavar='COMMAND', help='The command'
-        )
-    elif command == 'update':
-        parser.add_argument(
-            'file', metavar='MAKEFILE', help='The makefile used to build'
         )
     elif command == 'upgrade':
         parser.add_argument(
@@ -147,25 +140,6 @@ def _fill_arguments(command):
         exit()
 
     return parser
-
-
-def update(options):
-    branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-    print("Use branch %s." % branch)
-    check_call(['git', 'pull', '--rebase', 'origin', branch])
-    if len(check_output(['git', 'status', '-z']).strip()) != 0:
-        print(_color_bar)
-        print(_colorize("The pull isn't fast forward.", RED))
-        print(_colorize("Please solve the rebase and run it again.", YELLOW))
-        exit(1)
-
-    check_call(['git', 'submodule', 'sync'])
-    check_call(['git', 'submodule', 'update', '--init'])
-    check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
-    check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-
-    check_call(['make', '-f', options.file, 'build'])
-    check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
 
 def _print_step(options, step, intro="To continue type:"):
