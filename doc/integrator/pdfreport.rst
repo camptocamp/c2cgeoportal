@@ -12,6 +12,39 @@ and `Jasper Reports <http://community.jaspersoft.com/project/jasperreports-libra
 The webservice is called using the following URL schema:
 ``http://<host>/<instanceid>/wsgi/pdfreport/<layername>/<featureid>``.
 
+Prerequisites
+-------------
+
+To make queries to the database directly from the Jasper Reports, additional ``.jar`` files
+must be added to the MapFish Print directory:
+
+.. code-block:: bash
+
+    cd print
+    mkdir WEB-INF/lib
+    cd WEB-INF/lib
+    wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download -O jasperreports-functions-5.5.0.jar
+    wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
+    wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
+
+Edit the ``buildout.cfg`` file and add ``WEB-INF/lib/*.jar`` to the ``input`` list 
+of the ```[pdf-report]`` part:
+
+.. code::
+
+      input = ${print-war:basewar}
+          config.yaml
+          WEB-INF/mapfish-print-printer-factory.xml
+          WEB-INF/classes/logback.xml
+    +     WEB-INF/lib/*.jar
+          *.jrxml
+          *.tif
+          *.bmp
+          *.jpg
+          *.jpeg
+          *.gif
+          *.png
+
 Configuration
 -------------
 
@@ -22,26 +55,43 @@ as in the following example:
 
     pdfreport:
         print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid} 
-        default_backgroundlayers: "grp_ly_tilegenerierung_landeskarte"
-        default_imageformat: "image/png"
-        srs: "EPSG:21781"
+        defaults:
+            show_map: True
+            check_credentials: False
+            backgroundlayers: "grp_ly_tilegenerierung_landeskarte"
+            imageformat: "image/png"
+            srs: "EPSG:21781"
         layers: 
             ly_a020_belastete_standorte_point: 
                 backgroundlayers: "grp_ly_tilegenerierung_landeskarte,ly_a020_belastete_standorte_point"
                 imageformat: "image/jpeg"
-        spec_template: <optional spec template>
-
+            some_template_with_no_map:
+                show_map: False
+                spec_template: {
+                    "layout": "some_template_name",
+                    "outputFormat": "pdf",
+                    "attributes": {
+                        "paramID": "%(id)s"
+                    }
+                }
+            
 
 with the following parameters:
 
 * ``print_url`` is the local URL of the MapFish Print version 3 instance.
-* ``default_backgroundlayers`` and ``default_imageformat`` are default values used when the corresponding parameters are not provided for a given layer.
-* ``srs`` is the code of the used projection
+* ``defaults`` contains the default values of parameters not provided explicitely for a given layer.
 * ``layers`` is an optional per-layer list of settings specific to the listed layers. The entries of the list are the layernames provided as argument of the webservice. If a layer is not listed, the default parameters above are used.
-* ``backgroundlayers`` is a string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (").
-* ``spec_template`` is an optional JSON template used to build the ``spec`` argument sent to the MapFish Print webapp.
 
-If no ``spec_template`` is specified, the following template is used:
+``defaults`` and ``layers``-specific parameters are:
+
+* ``show_map``: boolean, wether a map is embedded in the report. Defaults to ``True``.
+* ``check_credentials``: boolean, wether layer credentials are checked before generating the report. Defaults to ``True``.
+* ``srs``: projection code (required when showing the map).
+* ``backgroundlayers``: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes ("). Defaults to ``""``.
+* ``imageformat``: format of the generated map. Defaults to ``image/png``.
+* ``spec_template``: optional JSON template used to build the ``spec`` argument sent to the MapFish Print webapp.
+
+If no ``spec_template`` is provided, the following template is used:
 
 .. code-block:: json
 
@@ -49,7 +99,7 @@ If no ``spec_template`` is specified, the following template is used:
         "layout": "%(layername)s",
         "outputFormat": "pdf",
         "attributes": {
-            "paramID": "%(id)d",
+            "paramID": "%(id)s",
             "map": {
                 "projection": "%(srs)s",
                 "dpi": 254,
@@ -95,7 +145,7 @@ variables values are passed to the template:
 
 * ``layername``: name of the layer
 * ``id``: feature id
-* ``srs``: projection code as passed using the ``srs`` parameter in ``config.yaml.in``
+* ``srs``: projection code
 * ``mapserv_url``: URL of the MapServer proxy
 * ``vector_request_url``: URL of the WFS GetFeature request retrieving the feature geometry in GML
 * ``imageformat``: format of the WMS layer
