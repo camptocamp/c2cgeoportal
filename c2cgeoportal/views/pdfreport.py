@@ -49,7 +49,7 @@ class PdfReport:  # pragma: no cover
         self.request = request
         self.config = self.request.registry.settings.get('pdfreport', {})
 
-    def do_print(self, spec):
+    def _do_print(self, spec):
         """ Get created PDF. """
         url = self.config['print_url'] + "/print/buildreport.pdf"
         http = httplib2.Http()
@@ -73,101 +73,107 @@ class PdfReport:  # pragma: no cover
             content, status=resp.status, headers=headers
         )
 
+    def _get_config(self, name, default=None):
+        config = self.config.get("layers", {}). \
+            get(self.layername, {}).get(name)
+        if config is None:
+            config = self.config.get("defaults", {}).get(name, default)
+        return config
+
     @view_config(route_name='pdfreport', renderer="json")
-    def getreport(self):
-        id = int(self.request.matchdict['id'])
-        layername = self.request.matchdict['layername']
-        featureid = layername + "." + str(id)
+    def get_report(self):
+        id = self.request.matchdict['id']
+        self.layername = self.request.matchdict['layername']
 
-        # check user credentials
-        role_id = None if self.request.user is None else \
-            self.request.user.role.id
+        if self._get_config('check_credentials', True):
+            # check user credentials
+            role_id = None if self.request.user is None else \
+                self.request.user.role.id
 
-        # FIXME: support of mapserver groups
-        if layername in get_private_layers() and \
-                layername not in get_protected_layers(role_id):
-            raise HTTPForbidden
+            # FIXME: support of mapserver groups
+            if self.layername in get_private_layers() and \
+                    self.layername not in get_protected_layers(role_id):
+                raise HTTPForbidden
 
-        srs = self.config.get('srs')
-        if srs is None:
-            raise HTTPInternalServerError(
-                'Missing "srs" in service configuration'
-            )
-        params = {
-            'service': 'WFS',
-            'version': '1.0.0',
-            'request': 'GetFeature',
-            'typeName': layername,
-            'featureid': featureid,
-            'srsName': srs
-        }
+        show_map = self._get_config('show_map', True)
+        if show_map:
+            srs = self._get_config('srs')
+            if srs is None:
+                raise HTTPInternalServerError(
+                    'Missing "srs" in service configuration'
+                )
+            params = {
+                'service': 'WFS',
+                'version': '1.0.0',
+                'request': 'GetFeature',
+                'typeName': self.layername,
+                'featureid': self.layername + "." + id,
+                'srsName': srs
+            }
 
-        mapserv_url = self.request.route_url('mapserverproxy')
-        vector_request_url = mapserv_url + "?" \
-            + "&".join(["%s=%s" % i for i in params.items()])
+            mapserv_url = self.request.route_url('mapserverproxy')
+            vector_request_url = mapserv_url + "?" \
+                + "&".join(["%s=%s" % i for i in params.items()])
 
-        backgroundlayers = self.config.get("layers", {}). \
-            get(layername, {}).get('backgroundlayers')
-        if backgroundlayers is None:
-            backgroundlayers = self.config.get('default_backgroundlayers', '""')
+            backgroundlayers = self._get_config('backgroundlayers', '""')
+            imageformat = self._get_config('imageformat', 'image/png')
+        else:
+            srs = mapserv_url = vector_request_url = imageformat = ""
+            backgroundlayers = '""'
 
-        imageformat = self.config.get("layers", {}). \
-            get(layername, {}).get('imageformat')
-        if imageformat is None:
-            imageformat = self.config.get('default_imageformat', 'image/png')
-
-        spec_template = self.config.get("spec_template")
+        spec_template = self._get_config("spec_template")
         if spec_template is None:
             spec_template = {
                 "layout": "%(layername)s",
                 "outputFormat": "pdf",
                 "attributes": {
-                    "paramID": "%(id)d",
-                    "map": {
-                        "projection": "%(srs)s",
-                        "dpi": 254,
-                        "rotation": 0,
-                        "bbox": [0, 0, 1000000, 1000000],
-                        "zoomToFeatures": {
-                            "zoomType": "center",
-                            "layer": "vector",
-                            "minScale": 25000
-                        },
-                        "layers": [{
-                            "type": "gml",
-                            "name": "vector",
-                            "style": {
-                                "version": "2",
-                                "[1 > 0]": {
-                                    "fillColor": "red",
-                                    "fillOpacity": 0.2,
-                                    "symbolizers": [{
-                                        "strokeColor": "red",
-                                        "strokeWidth": 1,
-                                        "type": "point",
-                                        "pointRadius": 10
-                                    }]
-                                }
-                            },
-                            "opacity": 1,
-                            "url": "%(vector_request_url)s"
-                        }, {
-                            "baseURL": "%(mapserv_url)s",
-                            "opacity": 1,
-                            "type": "WMS",
-                            "serverType": "mapserver",
-                            "layers": ["%(backgroundlayers)s"],
-                            "imageFormat": "%(imageformat)s"
-                        }]
-                    }
+                    "paramID": "%(id)s"
                 }
             }
+            if show_map:
+                spec_template["attributes"]["map"] = {
+                    "projection": "%(srs)s",
+                    "dpi": 254,
+                    "rotation": 0,
+                    "bbox": [0, 0, 1000000, 1000000],
+                    "zoomToFeatures": {
+                        "zoomType": "center",
+                        "layer": "vector",
+                        "minScale": 25000
+                    },
+                    "layers": [{
+                        "type": "gml",
+                        "name": "vector",
+                        "style": {
+                            "version": "2",
+                            "[1 > 0]": {
+                                "fillColor": "red",
+                                "fillOpacity": 0.2,
+                                "symbolizers": [{
+                                    "strokeColor": "red",
+                                    "strokeWidth": 1,
+                                    "type": "point",
+                                    "pointRadius": 10
+                                }]
+                            }
+                        },
+                        "opacity": 1,
+                        "url": "%(vector_request_url)s"
+                    }, {
+                        "baseURL": "%(mapserv_url)s",
+                        "opacity": 1,
+                        "type": "WMS",
+                        "serverType": "mapserver",
+                        "layers": ["%(backgroundlayers)s"],
+                        "imageFormat": "%(imageformat)s"
+                    }]
+                }
         spec = dumps(spec_template) % {
-            'layername': layername, 'id': id, 'srs': srs,
+            'layername': self.layername, 'id': id, 'srs': srs,
             'mapserv_url': mapserv_url,
             'vector_request_url': vector_request_url,
             'imageformat': imageformat,
             'backgroundlayers': backgroundlayers
         }
 
-        return self.do_print(loads(spec))
+        return self._do_print(loads(spec))
