@@ -25,9 +25,6 @@ application config (``vars_<project>.yaml``).  For example:
 ``raster`` is a list of "DEM layers". There are only two entries in this example,
 but there could be more.
 
-The keys (``mnt`` and ``mns`` in this example) are just strings/names.
-These strings can be translated for appropriate formatting in the UI.
-
 ``file`` provides the path to the shape index that references the raster files.
 The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 One may use GDAL/OGR to convert data to such a format.
