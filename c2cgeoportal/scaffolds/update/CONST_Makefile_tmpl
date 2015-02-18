@@ -487,7 +487,7 @@ update-git-submodules:
 	git submodule foreach git submodule update --init
 
 .git/modules/$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: .git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
-	git submodule foreach git submodule update --init
+	if [ -e $@ ]; then touch $@; else git submodule foreach git submodule update --init; fi
 
 .git/modules/$(PACKAGE)/static/lib/cgxp/HEAD:
 	git submodule update --init
