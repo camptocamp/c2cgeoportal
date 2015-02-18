@@ -458,7 +458,7 @@ class ChildrenAttributeField(AttributeField):
     def __init__(self, *args, **kargs):
         AttributeField.__init__(self, *args, **kargs)
 
-    def sync(self):
+    def sync(self):  # pragma: nocover
         self.model.children = [
             self.parent.session.query(models.TreeItem).get(int(pk))
             for pk in self.renderer.deserialize()
