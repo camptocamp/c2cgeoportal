@@ -291,7 +291,7 @@ def includeme(config):
     config.add_route('shortener_get', '/short/{ref}')
 
     # PDF report tool
-    config.add_route('pdfreport', '/pdfreport/{layername}/{id:\d+}')
+    config.add_route('pdfreport', '/pdfreport/{layername}/{id}')
 
     # add routes for the "layers" web service
     config.add_route(
