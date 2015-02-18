@@ -70,6 +70,11 @@ endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
 
+# Git
+
+GIT_REMOTE ?= origin
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+
 # ngeo
 OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
@@ -481,7 +486,7 @@ endif
 
 .PHONY: update
 update:
-	git pull --rebase
+	git pull --rebase $(GIT_REMOTE) $(GIT_BRANCH)
 	git submodule sync
 	git submodule update
 	git submodule foreach git submodule sync
