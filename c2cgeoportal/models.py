@@ -380,9 +380,9 @@ class TreeGroup(TreeItem):
         return [c.item for c in self.children_relation]
 
     def _set_children(self, children):
-        for child in self.children_relation:
+        for child in self.children_relation:  # pragma: nocover
             self._sa_instance_state.session.delete(child)
-        if len(children) == 0 or isinstance(children[0], LayergroupTreeitem):
+        if len(children) == 0 or isinstance(children[0], LayergroupTreeitem):  # pragma: nocover
             self.children_relation = children
         else:
             self.children_relation = [
