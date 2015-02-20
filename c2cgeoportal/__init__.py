@@ -282,7 +282,11 @@ def add_admin_interface(config):
 
 def add_static_view(config):
     """ Add the project static view """
-    _add_static_view(config, 'proj', '%s:static' % config.get_settings()["package"])
+    _add_static_view(config, "proj", "%s:static" % config.get_settings()["package"])
+    config.override_asset(
+        to_override="c2cgeoportal:project/",
+        override_with="%s:static/" % config.get_settings()["package"]
+    )
 
 
 def _add_static_view(config, name, path):
@@ -574,6 +578,7 @@ def includeme(config):
 
     # add the static view (for static resources)
     _add_static_view(config, 'static', 'c2cgeoportal:static')
+    _add_static_view(config, 'project', 'c2cgeoportal:project')
 
     add_admin_interface(config)
     add_static_view(config)
