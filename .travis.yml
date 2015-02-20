@@ -58,6 +58,8 @@ script:
 - make -f travis.mk checks
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
 - .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
 - git checkout c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po

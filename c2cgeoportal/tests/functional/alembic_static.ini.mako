@@ -2,7 +2,7 @@
 
 [alembic]
 # path to migration scripts
-script_location = c2cgeoportal/scaffolds/update/CONST_alembic/main
+script_location = c2cgeoportal/scaffolds/update/CONST_alembic/static
 
 # template used to generate migration files
 # file_template = %%(rev)s_%%(slug)s
@@ -22,6 +22,7 @@ script_location = c2cgeoportal/scaffolds/update/CONST_alembic/main
 
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 version_table_schema = main
+version_table_schema = main_static
 schema = main
 parentschema =
 srid = 21781
