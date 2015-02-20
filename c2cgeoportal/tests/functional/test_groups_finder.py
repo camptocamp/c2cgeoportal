@@ -18,11 +18,13 @@ class TestGroupsFinder(TestCase):
         from c2cgeoportal.models import DBSession, User, Role
 
         r = Role(name=u'__test_role')
-        u = User(username=u'__test_user', password=u'__test_user',
-                 role=r
-                 )
+        u = User(
+            username=u'__test_user',
+            password=u'__test_user',
+            role=r
+        )
 
-        DBSession.add(u)
+        DBSession.add_all([r, u])
         transaction.commit()
 
     def tearDown(self):  # noqa
@@ -49,6 +51,9 @@ class TestGroupsFinder(TestCase):
         from pyramid.request import Request
         from c2cgeoportal import get_user_from_request
         request = Request({})
-        request.set_property(get_user_from_request,
-                             name='user', reify=True)
+        request.set_property(
+            get_user_from_request,
+            name='user',
+            reify=True
+        )
         return request

@@ -143,17 +143,17 @@ class TestMapserverproxyView(TestCase):
         pt2 = Functionality(name=u'print_template', value=u'2 Wohlen A3 landscape')
         user1 = User(username=u'__test_user1', password=u'__test_user1')
         role1 = Role(name=u'__test_role1', description=u'__test_role1', functionalities=[pt1, pt2])
-        user1.role = role1
+        user1.role_name = role1.name
         user1.email = u'Tarenpion'
 
         user2 = User(username=u'__test_user2', password=u'__test_user2')
         role2 = Role(name=u'__test_role2', description=u'__test_role2', functionalities=[pt1, pt2])
-        user2.role = role2
+        user2.role_name = role2.name
         user2.email = u'Tarenpion'
 
         user3 = User(username=u'__test_user3', password=u'__test_user3')
         role3 = Role(name=u'__test_role3', description=u'__test_role3', functionalities=[pt1, pt2])
-        user3.role = role3
+        user3.role_name = role3.name
         user3.email = u'Tarenpion'
 
         main = Interface(name=u'main')
@@ -176,7 +176,7 @@ class TestMapserverproxyView(TestCase):
         restricted_area3 = RestrictionArea(u'__test_ra3', u'', [layer3], [role3], area, readwrite=True)
 
         DBSession.add_all([
-            p1, p2, p3, p4, user1, user2, user3,
+            p1, p2, p3, p4, user1, user2, user3, role1, role2, role3,
             restricted_area1, restricted_area2, restricted_area3
         ])
         DBSession.flush()

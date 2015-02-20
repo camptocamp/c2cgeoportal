@@ -31,7 +31,7 @@
 """Alter_column_url_to_remove_limitation
 
 Revision ID: 3f89a7d71a5e
-Revises: 20137477bd02
+Revises:
 Create Date: 2014-12-18 10:27:52.263992
 """
 
@@ -40,7 +40,7 @@ from sqlalchemy import types
 
 # revision identifiers, used by Alembic.
 revision = '3f89a7d71a5e'
-down_revision = '20137477bd02'
+down_revision = None
 
 
 def upgrade():

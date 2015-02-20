@@ -892,7 +892,7 @@ class Entry(object):
         return self.get_cgxp_index_vars(d)
 
     def get_cgxp_viewer_vars(self):
-        role_id = None if self.request.user is None else \
+        role_id = None if self.request.user is None or self.request.user.role is None else \
             self.request.user.role.id
 
         interface = self.request.interface_name
@@ -912,7 +912,7 @@ class Entry(object):
         url_role_params = {
             'version': cache_version
         }
-        if self.request.user is not None:
+        if self.request.user is not None and self.request.user.role is not None:
             url_role_params['role'] = self.request.user.role.name
 
         d = {

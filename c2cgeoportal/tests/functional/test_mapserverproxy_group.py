@@ -53,7 +53,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
         user1 = User(username=u'__test_user1', password=u'__test_user1')
         role1 = Role(name=u'__test_role1', description=u'__test_role1')
-        user1.role = role1
+        user1.role_name = role1.name
         user1.email = u'Tarenpion'
 
         main = Interface(name=u'main')
@@ -65,7 +65,7 @@ class TestMapserverproxyViewGroup(TestCase):
         area = WKTElement(area, srid=21781)
         restricted_area1 = RestrictionArea(u'__test_ra1', u'', [layer1], [role1], area)
 
-        DBSession.add_all([user1, layer1, restricted_area1])
+        DBSession.add_all([user1, role1, layer1, restricted_area1])
         DBSession.flush()
 
         transaction.commit()

@@ -96,8 +96,7 @@ class FullTextSearchView(object):
         _filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
             {'tsvector': 'ts', 'lang': lang, 'terms': terms}
 
-        # flake8 does not like `== True`
-        if self.request.user is None:
+        if self.request.user is None or self.request.user.role is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
         else:
             _filter = and_(

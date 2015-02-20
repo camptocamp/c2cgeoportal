@@ -178,7 +178,7 @@ class User(Base):
     __label__ = _(u'user')
     __plural__ = _(u'users')
     __tablename__ = 'user'
-    __table_args__ = {'schema': _schema}
+    __table_args__ = {"schema": _schema + "_static"}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
@@ -198,14 +198,41 @@ class User(Base):
     email = Column(Unicode, nullable=False, label=_(u'E-mail'))
     is_password_changed = Column(Boolean, default=False, label=_(u'PasswordChanged'))
 
-    # role relationship
-    role_id = Column(Integer, ForeignKey(_schema + '.role.id'), nullable=False)
-    role = relationship("Role", backref=backref('users', enable_typechecks=False))
+    role_name = Column(String, label=_(u'Role'))
+
+    _cached_role_name = None
+    _cached_role = None
+
+    @property
+    def role(self):
+        if self._cached_role_name == self.role_name:
+            return self._cached_role
+
+        if self.role_name is None or self.role_name == "":  # pragma: no cover
+            self._cached_role_name = self.role_name
+            self._cached_role = None
+            return None
+
+        result = self._sa_instance_state.session.query(Role).filter(
+            Role.name == self.role_name
+        ).all()
+        if len(result) == 0:  # pragma: no cover
+            self._cached_role = None
+        else:
+            self._cached_role = result[0]
+
+        self._cached_role_name = self.role_name
+        return self._cached_role
 
     if _parentschema is not None and _parentschema != '':  # pragma: no cover
         # parent role relationship
-        parent_role_id = Column(Integer, ForeignKey(_parentschema + '.role.id'))
-        parent_role = relationship("ParentRole", backref=backref('parentusers'))
+        parent_role_name = Column(String, label=_(u'Parent role'))
+
+        @property
+        def parent_role(self):
+            return self._sa_instance_state.session.query(Role).filter(
+                Role.name == self.parent_role_name
+            ).one()
 
     def __init__(
         self, username=u'', password=u'', email=u'', is_password_changed=False,
@@ -216,7 +243,8 @@ class User(Base):
         self.email = email
         self.is_password_changed = is_password_changed
         self.functionalities = functionalities
-        self.role = role
+        if role is not None:
+            self.role_name = role.name
 
     def _get_password(self):
         """returns password"""

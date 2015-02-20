@@ -63,6 +63,7 @@ class TestLayers(TestCase):
         self.main = Interface(name=u'main')
 
         DBSession.add(self.user)
+        DBSession.add(self.role)
         DBSession.add(self.main)
         transaction.commit()
 

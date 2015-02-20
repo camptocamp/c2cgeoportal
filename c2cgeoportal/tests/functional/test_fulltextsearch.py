@@ -53,11 +53,11 @@ class TestFulltextsearchView(TestCase):
 
         user1 = User(username=u'__test_user1', password=u'__test_user1')
         role1 = Role(name=u'__test_role1', description=u'__test_role1')
-        user1.role = role1
+        user1.role_name = role1.name
 
         user2 = User(username=u'__test_user2', password=u'__test_user2')
         role2 = Role(name=u'__test_role2', description=u'__test_role2')
-        user2.role = role2
+        user2.role_name = role2.name
 
         entry1 = FullTextSearch()
         entry1.label = 'label1'
@@ -96,7 +96,7 @@ class TestFulltextsearchView(TestCase):
         entry5.public = True
         entry5.params = {'floor': 5}
 
-        DBSession.add_all([user1, user2, entry1, entry2, entry3, entry4, entry5])
+        DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5])
         transaction.commit()
 
     def tearDown(self):  # noqa

@@ -64,8 +64,7 @@ class TestFunctionalities(TestCase):
         functionality3 = Functionality(u'__test_a', u'db2')
         role2.functionalities = [functionality1, functionality2, functionality3]
 
-        DBSession.add(user1)
-        DBSession.add(user2)
+        DBSession.add_all([user1, user2, role1, role2])
         transaction.commit()
 
         engine = sqlahelper.get_engine()
