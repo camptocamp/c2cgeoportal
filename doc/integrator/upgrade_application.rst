@@ -234,6 +234,7 @@ steps:
    .. prompt:: bash
 
        .build/venv/bin/alembic upgrade head
+       .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 
 8. Add the new files in the repository:
