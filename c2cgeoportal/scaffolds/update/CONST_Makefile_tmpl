@@ -85,9 +85,6 @@ JSBUILD_MAIN_OUTPUT_FILES ?= app.js edit.js routing.js api.js xapi.js
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
-JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
-JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
-JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
 JSBUILD_ARGS = $(if ifeq($(DEVELOPMENT), ‘TRUE’),-u,)
 
 ifeq ($(DEVELOPMENT), FALSE)
@@ -182,8 +179,13 @@ CSS_XAPI_OUTPUT = $(PACKAGE)/static/xapi.css
 VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAGE)/views
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
 
-# Sencha
+# Sencha touch
+
 SENCHA_CMD ?= sencha-cmd
+
+JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
+JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
+JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
 
 # Documentation
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
@@ -278,6 +280,9 @@ clean: template-clean
 	rm -f .build/requirements.timestamp
 	rm -f .build/dev-requirements.timestamp
 	rm -rf $(OUTPUT_DIR)/
+	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
+	rm -rf $(PACKAGE)/static/mobile/build
+	rm -rf $(PACKAGE)/static/mobile/archive
 
 .PHONY: cleanall
 cleanall: clean
@@ -539,10 +544,11 @@ $(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
 .PHONY: sencha-touch
 sencha-touch: $(PACKAGE)/static/mobile/build/production/App/app.js
 
-$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBIL_FILES) $(JSBUILD_MOBILE_CONFIG) .build/venv/bin/jsbuild
+$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) .build/venv/bin/jsbuild
 	.build/venv/bin/jsbuild $(JSBUILD_MOBILE_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(JSBUILD_MOBILE_OUTPUT_DIR)
 
-$(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FILES)
+$(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FILES) \
+	$(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/custom.scss $(PACKAGE)/static/mobile/app/view/Settings.js
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
 	cd $(PACKAGE)/static/mobile && $(SENCHA_CMD) app build production
