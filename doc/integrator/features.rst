@@ -30,7 +30,6 @@ Features that require additional steps (most of the time):
    print
    https
    api
-   password_replication
    shortener
    intranet
    security

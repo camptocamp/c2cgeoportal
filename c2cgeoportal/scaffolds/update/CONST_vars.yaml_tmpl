@@ -45,14 +45,6 @@ vars:
     mapfile_data_noarea_subselect: 'SELECT rra.role_id FROM {mapserver_join_tables} WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # port for the waitress web server
     waitress_port: 5000
-    # password change replication activation
-    auth_replication_enabled: false
-    # database connection for auth replication
-    dbhost_replication: to_be_defined
-    dbport_replication: to_be_defined
-    db_replication: to_be_defined
-    dbuser_replication: to_be_defined
-    dbpassword_replication: to_be_defined
     enable_admin_interface: True
 
     directory: pwd | tr -d '\n'
@@ -66,8 +58,6 @@ vars:
     # Database informations
     sqlalchemy:
         url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
-    sqlalchemy_replication:
-        url: postgresql://{dbuser_replication}:{dbpassword_replication}@{dbhost_replication}:{dbport_replication}/{db_replication}
 
     # 10 days of default cache
     default_max_age: 864000
