@@ -328,6 +328,8 @@ def upgrade(options):
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
 
+        check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
+
         print()
         print(_color_bar)
         print("The upgrade is nearly done, now you should:")
