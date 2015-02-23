@@ -2,6 +2,6 @@
 --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
 --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win
 -r CONST_versions.txt
--e git+https://github.com/camptocamp/pyramid_closure#egg=pyramid_closure
+-e git+https://github.com/camptocamp/pyramid_closure@d0bc3cbd6e4de27666eadbcb8a6a2ff942d56277#egg=pyramid_closure
 -e git+https://github.com/Pylons/pyramid@1e02bbfc0df09259bf207112acf019c8dba44a90#egg=pyramid
 -e .
