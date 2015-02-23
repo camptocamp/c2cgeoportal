@@ -266,6 +266,9 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         renderer=renderer
     )
 
+    config.add_static_view('node_modules', config.get_settings().get('node_modules_path'))
+    config.add_static_view('closure', config.get_settings().get('closure_library_path'))
+
 
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
