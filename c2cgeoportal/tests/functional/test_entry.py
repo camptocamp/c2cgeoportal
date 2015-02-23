@@ -612,12 +612,12 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            'lang', 'debug', 'functionality', 'user',
+            'debug', 'functionality', 'user',
             'queryer_attribute_urls', 'url_params'
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            'lang', 'debug', 'functionality', 'user',
+            'debug', 'functionality', 'user',
             'queryer_attribute_urls', 'url_params', 'permalink_themes'
         ]))
 
