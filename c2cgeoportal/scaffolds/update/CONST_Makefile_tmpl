@@ -508,17 +508,20 @@ $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
 
 $(CSS_BASE_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
+	$(CSS_BASE_FILES)
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
 $(CSS_API_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
+	$(CSS_API_FILES)
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
 $(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
-	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
+	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
+	$(CSS_XAPI_FILES)
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Sencha touch
