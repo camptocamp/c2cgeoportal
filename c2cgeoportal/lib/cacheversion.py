@@ -44,5 +44,5 @@ def get_cache_version():
 
 class VersionCacheBuster(PathSegmentMd5CacheBuster):
 
-    def token(self, pathspec):  # pragma: nocover
+    def tokenize(self, pathspec):  # pragma: nocover
         return get_cache_version()
