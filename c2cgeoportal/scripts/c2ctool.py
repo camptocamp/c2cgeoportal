@@ -29,6 +29,7 @@
 
 
 from os import environ, path, unlink
+import re
 import sys
 import shutil
 import argparse
@@ -209,6 +210,52 @@ def upgrade(options):
     project = _get_project()
 
     if options.step == 0:
+        if options.version != "master":
+            if re.match("^[0-9].[0-9]+.[0-9]$", options.version) is None:
+                print(
+                    "The version is wrong, should be 'master' or [0-9].[0-9]+.[0-9]). Found '%s'." %
+                    options.version
+                )
+                exit(1)
+
+            http = httplib2.Http()
+            headers, _ = http.request(
+                "https://github.com/camptocamp/c2cgeoportal/tree/%s" %
+                options.version, "HEAD"
+            )
+            if headers.status != 200:
+                print("This CGXP tag does not exist.")
+                exit(1)
+
+            headers, _ = http.request(
+                "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-%s.tar.gz" %
+                options.version, "HEAD"
+            )
+            if headers.status != 200:
+                print("This c2cgeoportal egg does not exist.")
+                exit(1)
+
+            url = (
+                "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
+                "c2cgeoportal/scaffolds/update/CONST_versions.txt" % options.version
+            )
+            headers, content = http.request(url)
+            if headers.status != 200:
+                print("Failed downloading the c2cgeoportal CONST_versions.txt file.")
+                print(url)
+                exit(1)
+            first_line = content.split()[0]
+            if not first_line.startswith("c2cgeoportal=="):
+                print("The first line of the version isn't about c2cgeoportal")
+                print(first_line)
+                exit(1)
+            if first_line[14:] != options.version:
+                print(
+                    "The c2cgeoportal version is wrong. Expected '%s' but found '%s'." %
+                    (options.version, first_line[14:])
+                )
+                exit(1)
+
         if path.split(path.realpath('.'))[1] != project['project_folder']:
             print("Your project isn't in the right folder!")
             print("It should be in folder '%s' instead of folder '%s'." % (
@@ -280,6 +327,8 @@ def upgrade(options):
 
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
+
+        check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
 
         print()
         print(_color_bar)
