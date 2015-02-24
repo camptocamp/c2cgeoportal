@@ -45,6 +45,16 @@ Required apache modules
 * ``mod_wsgi``
 * ``mod_mapcache``
 
+Print
+~~~~~
+
+The print requires a Tomcat server listening by default on port 8080.
+To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
+default is: ``http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/``.
+
+And by default the 'webapps' folder is ``/srv/tomcat/tomcat1/webapps``,
+to change it set the ``PRINT_OUTPUT`` value in the makefile.
+
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
