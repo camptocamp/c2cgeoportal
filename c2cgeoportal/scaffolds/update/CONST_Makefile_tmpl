@@ -404,6 +404,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/%/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACK
 $(OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js
 	mkdir -p $(dir $@)
 	awk 'FNR==1{print ""}1' $(addprefix node_modules/, jquery/dist/jquery.min.js angular/angular.min.js angular-gettext/dist/angular-gettext.min.js angular-animate/angular-animate.min.js bootstrap/dist/js/bootstrap.min.js) .build/build.js > $@
+	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
 $(OUTPUT_DIR)/build.min.css: $(LESS_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
