@@ -878,7 +878,8 @@ class Entry(object):
             d['mobile_url'] = None
 
         d['no_redirect'] = self.request.params.get('no_redirect') is not None
-        self.request.response.headers['Cache-Control'] = 'no-cache'
+        self.request.response.headers["Cache-Control"] = "no-cache"
+        self.request.response.headers["Vary"] = "Accept-Language"
 
         return d
 
@@ -937,6 +938,7 @@ class Entry(object):
         d['debug'] = self.debug
 
         self.request.response.content_type = 'application/javascript'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return d
 
     def get_ngeo_index_vars(self, vars={}):
@@ -951,7 +953,6 @@ class Entry(object):
             url_params['role'] = self.request.user.role.name
 
         vars.update({
-            'lang': self.lang,
             'debug': self.debug,
             'url_params': url_params,
             'user': self.request.user,
@@ -984,6 +985,7 @@ class Entry(object):
 
         def enc(vals):
             return (vals[0], vals[1].encode('utf8'))
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'came_from': came_from,
@@ -1087,6 +1089,7 @@ class Entry(object):
                 })
 
         self.request.response.content_type = 'application/javascript'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'themes': themes_,
@@ -1115,6 +1118,7 @@ class Entry(object):
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return d
 
     @view_config(route_name='xapijs', renderer='api/xapi.js')
@@ -1134,11 +1138,13 @@ class Entry(object):
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return d
 
     @view_config(route_name='apihelp', renderer='api/apihelp.html')
     def apihelp(self):
         self.request.response.headers['Cache-Control'] = 'no-cache'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'debug': self.debug,
@@ -1147,6 +1153,7 @@ class Entry(object):
     @view_config(route_name='xapihelp', renderer='api/xapihelp.html')
     def xapihelp(self):
         self.request.response.headers['Cache-Control'] = 'no-cache'
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'debug': self.debug,
@@ -1211,6 +1218,7 @@ class Entry(object):
     def loginform403(self):
         if self.request.authenticated_userid:
             return HTTPForbidden()  # pragma: no cover
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'came_from': self.request.path,
@@ -1218,6 +1226,7 @@ class Entry(object):
 
     @view_config(route_name='loginform', renderer='login.html')
     def loginform(self):
+        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             'lang': self.lang,
             'came_from': self.request.params.get("came_from") or "/",
