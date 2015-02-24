@@ -7,14 +7,32 @@ To install a GeoMapFish application you need to have the following
 components installed on your system:
 
 * **Git** (preferably to other revision control systems)
-* **Python** 2.6, 2.7 (2.5 or 3.x are not supported)
+* **Python** 2.6, 2.7 (2.5 or 3.x are not supported) with development files (``python-dev``)
+* **VirtualEnv** >= 1.7
 * Oracle **Java** SE Development Kit 6 or 7
-* **Tomcat**
-* **Apache**
-* **PostgreSQL** >= 9.1/**PostGIS** >= 2.0
+* **Tomcat** >= 6.0
+* **Apache** >= 2.2
+* **PostgreSQL** >= 9.1/**PostGIS** >= 2.1, with library (``libpq-dev``)
 * **MapServer** 7.0 or **QGIS**-mapserver 2.2 and upper
+* **MapCache** >= 1.0.0
+* **TinyOWS** >= 1.1.0
 * **ImageMagick**
+* **GCC** GNU Compiler Collection >= 4.6
+* **Deploy** >= 0.4
+* **libproj** >= 4.7
+* **gettext** >= 0.18
+
+For CGXP
+~~~~~~~~
+
 * **Sencha** Command
+* **Compass**
+
+For ngeo
+~~~~~~~~
+
+* **node** >= 0.10
+* **npm** >= 1.3
 
 Required apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,6 +43,17 @@ Required apache modules
 * ``mod_proxy_http``
 * ``mod_rewrite``
 * ``mod_wsgi``
+* ``mod_mapcache``
+
+Print
+~~~~~
+
+The print requires a Tomcat server listening by default on port 8080.
+To change it you should overwrite the ``print_url`` vars in ``config.yaml.in``,
+default is: ``http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/``.
+
+And by default the 'webapps' folder is ``/srv/tomcat/tomcat1/webapps``,
+to change it set the ``PRINT_OUTPUT`` value in the makefile.
 
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -7,6 +7,7 @@ main:
     python:
         cmd: /usr/bin/python --version 2>&1 | awk '{{print $2}}'
         version: 2.7
+    python-dev: 2.7
     postgres:
         cmd: psql --version | awk '{{print $3}}'
         version: 9.1
