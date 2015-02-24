@@ -9,6 +9,6 @@ pep8-naming
 flake8-copyright
 c2c.template>=1.0.1dev3
 JSTools
-cssmin
+c2c.cssmin
 Sphinx
 sphinx-prompt

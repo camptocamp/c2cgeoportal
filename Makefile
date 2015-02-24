@@ -19,6 +19,9 @@ JSBUILD_ARGS = $(if ifeq($(DEVELOPPEMENT), ‘TRUE’),-u,)
 
 CSS_ADMIN_FILES = c2cgeoportal/static/adminapp/css/admin.css c2cgeoportal/static/lib/openlayers/theme/default/style.css c2cgeoportal/static/lib/checkboxtree-r253/jquery.checkboxtree.css
 CSS_ADMIN_OUTPUT = c2cgeoportal/static/build/admin/admin.css
+ifeq ($(DEVELOPMENT), FALSE)
+	CSSMIN_ARGS += --compress
+endif
 
 VALIDATE_PY_FOLDERS = c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views
 VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
@@ -129,7 +132,7 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopor
 
 .build/venv/bin/jsbuild: .build/dev-requirements.timestamp
 
-.build/venv/bin/cssmin: .build/dev-requirements.timestamp
+.build/venv/bin/c2c-cssmin: .build/dev-requirements.timestamp
 
 .build/dev-requirements.timestamp: .build/venv.timestamp dev-requirements.txt
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r dev-requirements.txt $(PIP_REDIRECT)
@@ -152,10 +155,6 @@ $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
 	mkdir -p $(dir $@)
 	.build/venv/bin/jsbuild $(JSBUILD_ADMIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(ADMIN_OUTPUT_DIR)
 
-$(CSS_ADMIN_OUTPUT): .build/venv/bin/cssmin
+$(CSS_ADMIN_OUTPUT): .build/venv/bin/c2c-cssmin $(CSS_ADMIN_FILES)
 	mkdir -p $(dir $@)
-ifeq ($(DEVELOPPEMENT), ‘TRUE’)
-	cat $(CSS_ADMIN_FILES) > $(CSS_ADMIN_OUTPUT)
-else
-	cat $(CSS_ADMIN_FILES) | .build/venv/bin/cssmin > $(CSS_ADMIN_OUTPUT)
-endif
+	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
