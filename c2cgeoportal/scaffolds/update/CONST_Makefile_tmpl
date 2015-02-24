@@ -35,7 +35,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 # Make rules
 
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server
+DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
@@ -69,6 +69,11 @@ DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-la
 endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
+
+# Git
+
+GIT_REMOTE ?= origin
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 # ngeo
 OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
@@ -212,7 +217,7 @@ ifeq ($(PRINT2), TRUE)
 PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 PRINT_INPUT_LS ?= config.yaml WEB-INF/classes/log4j.properties
 PRINT_INPUT_FIND ?= *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf
-PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS))
+PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
 PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
 PRINT_REQUIREMENT += $(addprefix, $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
@@ -234,6 +239,12 @@ CONFIG_VARS += sqlalchemy.url auth_replication_enabled \
 	print_url tiles_url checker check_collector wfs default_max_age jsbuild package srid
 ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} DEVELOPMENT=${DEVELOPMENT} PACKAGE=${PACKAGE}
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
+
+# Apache
+APACHE_VHOST ?= $(PACKAGE)
+APACHE_CONF_DIR ?= /var/www/vhost/$(APACHE_VHOST)/conf
+CONF_FILES = $(shell ls -1 apache/*.conf)
+PY_FILES = $(shell -type f -name '*.py' -print)
 
 
 .PHONY: help
@@ -275,10 +286,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 
 .PHONY: clean
 clean: template-clean
-	rm -f .build/venv.timestamp
-	rm -f .build/node_modules.timestamp
-	rm -f .build/requirements.timestamp
-	rm -f .build/dev-requirements.timestamp
+	rm -f .build/*.timestamp
 	rm -rf $(OUTPUT_DIR)/
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
@@ -483,13 +491,11 @@ endif
 
 .PHONY: update
 update:
-	git pull --rebase
+	git pull --rebase $(GIT_REMOTE) $(GIT_BRANCH)
 	git submodule sync
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
-	# to install new package pypi version
-	touch .build/venv.timestamp
 ifeq ($(NGEO), TRUE)
 	npm install --force
 endif
@@ -634,3 +640,14 @@ print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
+
+# Apache config
+.PHONY: apache
+apache: .build/apache.timestamp
+
+$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
+	echo "Include $(shell pwd)/apache/*.conf" > $@
+
+.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+	sudo /usr/sbin/apache2ctl graceful
+	touch $@

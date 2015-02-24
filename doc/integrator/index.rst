@@ -20,7 +20,7 @@ Content:
    customize_ui
    extend_data_model
    internationalization
-   update_application
+   upgrade_application
    deploy
    authentication
    mobile

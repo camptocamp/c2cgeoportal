@@ -1,5 +1,9 @@
 #!/bin/bash -ex
 
+# create fake vhost
+sudo mkdir -p /var/www/vhost/test/conf
+sudo chmod g+w,o+w /var/www/vhost/test/conf
+
 cp travis/build.mk /tmp/test/travis.mk
 
 cd /tmp/test/

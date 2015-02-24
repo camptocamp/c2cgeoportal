@@ -273,8 +273,9 @@ configuration:
 .. code:: make
 
     INSTANCE_ID = <instanceid>
-    VARS_FILE = vars_$(INSTANCE_ID).yaml
     DEVELOPMENT = TRUE
+
+    include <package>.mk
 
 .. note::
 

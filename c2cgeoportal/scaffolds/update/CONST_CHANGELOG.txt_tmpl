@@ -133,6 +133,10 @@ Version 1.6
 
     +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
+13. Remove your Apache configuration file, probably in 
+    `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
+
+
 Version 1.5.3
 =============
 
