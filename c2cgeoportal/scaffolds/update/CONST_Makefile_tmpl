@@ -29,7 +29,7 @@ DEFAULT_WEB_RULE += sencha-touch
 endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_WEB_RULE += build-ngeo
-CLIENT_CHECH_RULE ?= lint-ngeo
+CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
