@@ -107,6 +107,14 @@ To have some help on a command type:
 
 def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
+    parser.add_argument(
+        "--no-cleanall",
+        description="Run clean instead of cleanall",
+        default="cleanall",
+        action="store_const",
+        const="clean",
+        dest="clean",
+    )
     if command == 'help':
         parser.add_argument(
             'command', metavar='COMMAND', help='The command'
@@ -281,7 +289,7 @@ def upgrade(options):
                 'c2cgeoportal/scaffolds/update/CONST_versions.txt'
                 % options.version, '-O', 'CONST_versions.txt'
             ])
-            check_call(['make', '-f', options.file, 'cleanall'])
+            check_call(['make', '-f', options.file, options.clean])
             check_call(['make', '-f', options.file, '.build/requirements.timestamp'])
 
         check_call([
@@ -309,7 +317,7 @@ def upgrade(options):
         if path.isfile('changelog.diff'):
             unlink("changelog.diff")
 
-        check_call(['make', '-f', options.file, 'cleanall'])
+        check_call(['make', '-f', options.file, options.clean])
         check_call(['make', '-f', options.file, 'build'])
 
         alembic_cfg = Config("alembic.ini")
