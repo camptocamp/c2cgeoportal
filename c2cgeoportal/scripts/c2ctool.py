@@ -281,7 +281,7 @@ def upgrade(options):
                 % options.version, '-O', 'CONST_versions.txt'
             ])
             check_call(['make', '-f', options.file, 'cleanall'])
-            check_call(['make', '-f', options.file, '.build/dev-requirements.timestamp'])
+            check_call(['make', '-f', options.file, '.build/requirements.timestamp'])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
