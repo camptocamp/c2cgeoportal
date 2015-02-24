@@ -261,6 +261,8 @@ help:
 	@echo "- compile-py-catalog		Compile the angular translation catalog"
 	@echo "- flake8					Run flake8 checker on the Python code"
 	@echo "- lint-ngeo				Check the JavaScript code with linters for ngeo"
+	@echo "- template-clean		 	Clean the template file"
+	@echo "- template-generate		Generate the template file"
 	@echo
 
 .PHONY: build
@@ -270,15 +272,12 @@ build: $(BUILD_RULES)
 checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 
 .PHONY: clean
-clean:
+clean: template-clean
 	rm -f .build/venv.timestamp
 	rm -f .build/node_modules.timestamp
 	rm -f .build/requirements.timestamp
 	rm -f .build/dev-requirements.timestamp
 	rm -rf $(OUTPUT_DIR)/
-	rm -f $(TEMPLATE_FILES:.in=)
-	rm -f $(MAKO_FILES:.mako=)
-	rm -f $(JINJA_FILES:.jinja=)
 
 .PHONY: cleanall
 cleanall: clean
@@ -290,7 +289,7 @@ flake8: .build/venv/bin/flake8
 	.build/venv/bin/flake8 $(PACKAGE)
 
 .PHONY: build-server
-build-server: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) compile-py-catalog .build/config.yaml $(SERVER_LOCALISATION_FILES)
+build-server: template-generate compile-py-catalog $(SERVER_LOCALISATION_FILES)
 
 .PHONY: build-cgxp
 build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
@@ -308,6 +307,16 @@ update-node-modules:
 	touch .build/node_modules.timestamp
 
 # Templates
+
+.PHONY: template-clean
+template-clean:
+	rm -f $(TEMPLATE_FILES:.in=)
+	rm -f $(MAKO_FILES:.mako=)
+	rm -f $(JINJA_FILES:.jinja=)
+	rm -f .build/config.yaml
+
+.PHONY: template-generate
+template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
 
 $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
 
