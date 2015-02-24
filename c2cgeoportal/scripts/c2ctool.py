@@ -107,6 +107,14 @@ To have some help on a command type:
 
 def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
+    parser.add_argument(
+        "--no-cleanall",
+        description="Run clean instead of cleanall",
+        default="cleanall",
+        action="store_const",
+        const="clean",
+        dest="clean",
+    )
     if command == 'help':
         parser.add_argument(
             'command', metavar='COMMAND', help='The command'
@@ -153,7 +161,8 @@ def _print_step(options, step, intro="To continue type:"):
     ))
 
 
-def _get_project():
+def _get_project(options):
+    check_call(["make", "-f", options.file, "project.yaml"])
     if not path.isfile('project.yaml'):
         print("Unable to find the required 'project.yaml' file.")
         exit(1)
@@ -182,7 +191,7 @@ def _test_checkers(project):
 
 
 def upgrade(options):
-    project = _get_project()
+    project = _get_project(options)
 
     if options.step == 0:
         if options.version != "master":
@@ -280,8 +289,8 @@ def upgrade(options):
                 'c2cgeoportal/scaffolds/update/CONST_versions.txt'
                 % options.version, '-O', 'CONST_versions.txt'
             ])
-            check_call(['make', '-f', options.file, 'cleanall'])
-            check_call(['make', '-f', options.file, '.build/dev-requirements.timestamp'])
+            check_call(['make', '-f', options.file, options.clean])
+            check_call(['make', '-f', options.file, '.build/requirements.timestamp'])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
@@ -308,7 +317,7 @@ def upgrade(options):
         if path.isfile('changelog.diff'):
             unlink("changelog.diff")
 
-        check_call(['make', '-f', options.file, 'cleanall'])
+        check_call(['make', '-f', options.file, options.clean])
         check_call(['make', '-f', options.file, 'build'])
 
         alembic_cfg = Config("alembic.ini")
@@ -333,7 +342,7 @@ def upgrade(options):
 
 
 def deploy(options):
-    project = _get_project()
+    project = _get_project(options)
     if not _test_checkers(project):
         print(_colorize("Correct them and run again", RED))
         exit(1)
