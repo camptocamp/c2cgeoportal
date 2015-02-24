@@ -229,7 +229,7 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         return result
 
 
-class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
+class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
     def __init__(
             self, attribute, dom_id='layer_tree',
@@ -263,6 +263,9 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result += '</li>'
         return result
 
+    def is_checked(self, item, final_item):
+        return self._is_checked(final_item.id)
+
     def render_item(self, item, depth):
         final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
 
@@ -292,7 +295,7 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             # don't save them twice (=> integrity error).
             'name': self.name + ("-second" if final_item.id in self._rendered_id else ""),
             'value': final_item.id,
-            'add': ' checked="checked"' if self._is_checked(item.id) else "",
+            'add': ' checked="checked"' if self.is_checked(item, final_item) else "",
             'label': final_item.name
         }
         self._rendered_id.append(final_item.id)
@@ -331,6 +334,11 @@ class LayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
     def stringify_value(self, item, **kargs):
         final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
         return super(LayerCheckBoxTreeSet, self).stringify_value(final_item, **kargs)
+
+
+class LayerCheckBoxTreeSet(SimpleLayerCheckBoxTreeSet):  # pragma: no cover
+    def is_checked(self, item, finalitem):
+        return self._is_checked(item.id)
 
 
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
@@ -517,7 +525,7 @@ WMTSDimension.value.set(metadata=dict(mandatory='')).required()
 # RestrictionArea
 RestrictionArea = FieldSet(models.RestrictionArea)
 RestrictionArea.name.set(metadata=dict(mandatory='')).required()
-RestrictionArea.layers.set(renderer=LayerCheckBoxTreeSet)
+RestrictionArea.layers.set(renderer=SimpleLayerCheckBoxTreeSet)
 RestrictionArea.roles.set(renderer=CheckBoxSet)
 RestrictionArea.area.set(label=_(u'Restriction area'), options=[
     ('map_srid', 3857),
