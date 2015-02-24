@@ -153,7 +153,8 @@ def _print_step(options, step, intro="To continue type:"):
     ))
 
 
-def _get_project():
+def _get_project(options):
+    check_call(["make", "-f", options.file, "project.yaml"])
     if not path.isfile('project.yaml'):
         print("Unable to find the required 'project.yaml' file.")
         exit(1)
@@ -182,7 +183,7 @@ def _test_checkers(project):
 
 
 def upgrade(options):
-    project = _get_project()
+    project = _get_project(options)
 
     if options.step == 0:
         if options.version != "master":
@@ -333,7 +334,7 @@ def upgrade(options):
 
 
 def deploy(options):
-    project = _get_project()
+    project = _get_project(options)
     if not _test_checkers(project):
         print(_colorize("Correct them and run again", RED))
         exit(1)
