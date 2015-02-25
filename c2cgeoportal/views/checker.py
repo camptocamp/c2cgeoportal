@@ -33,7 +33,7 @@ from pyramid.response import Response
 
 import httplib
 from httplib2 import Http
-import simplejson
+from json import dumps, loads
 import logging
 
 log = logging.getLogger(__name__)
@@ -49,8 +49,9 @@ class Checker(object):  # pragma: no cover
         self.settings = self.request.registry.settings['checker']
 
     def set_status(self, code, text):
-        self.status_int = max(self.status_int, int(code))
-        self.status = text
+        if int(code) > self.status_int:
+            self.status_int = int(code)
+            self.status = text
 
     def make_response(self, msg):
         return Response(
@@ -71,7 +72,7 @@ class Checker(object):  # pragma: no cover
         resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
-            print resp.items()
+            print(resp.items())
             self.set_status(resp.status, resp.reason)
             return url + "<br/>" + content
 
@@ -138,7 +139,7 @@ class Checker(object):  # pragma: no cover
                 }
             }]
         }
-        body = simplejson.dumps(body)
+        body = dumps(body)
 
         _url = self.request.route_url('printproxy_create') + \
             '?url=' + self.request.route_url('printproxy')
@@ -157,7 +158,7 @@ class Checker(object):  # pragma: no cover
             return 'Failed creating PDF: ' + content
 
         log.info("Checker for printproxy pdf (retrieve): %s" % _url)
-        json = simplejson.loads(content)
+        json = loads(content)
         _url = json['getURL'].replace(self.request.environ.get('SERVER_NAME'), "localhost")
         headers = {'Host': self.request.environ.get('HTTP_HOST')}
         resp, content = h.request(_url, headers=headers)
@@ -189,7 +190,7 @@ class Checker(object):  # pragma: no cover
             self.set_status(resp.status, resp.reason)
             return content
 
-        result = simplejson.loads(content)
+        result = loads(content)
 
         if len(result['features']) == 0:
             self.set_status(httplib.BAD_REQUEST, httplib.responses[httplib.BAD_REQUEST])
@@ -208,3 +209,36 @@ class Checker(object):  # pragma: no cover
         _url = self.request.route_url('mapserverproxy')
         _url += "?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities"
         return self.make_response(self.testurl(_url))
+
+    @view_config(route_name="checker_theme_errors")
+    def themes_errors(self):
+        from c2cgeoportal.models import DBSession, Interface
+
+        _url = self.request.route_url("themes")
+        h = Http()
+        for interface, in DBSession.query(Interface.name).all():
+            interface_url = _url + "%s?interface=%s" % (_url, interface)
+
+
+            log.info("Checker for theme: %s" % interface_url)
+            interface_url = interface_url.replace(
+                self.request.environ.get("SERVER_NAME"),
+                "localhost"
+            )
+            headers = {"host": self.request.environ.get("HTTP_HOST")}
+
+            resp, content = h.request(_url, headers=headers)
+
+            if resp.status != httplib.OK:
+                self.set_status(resp.status, resp.reason)
+                return content
+
+            result = loads(content)
+
+            if len(result.errors) != 0:
+                self.set_status(500, "Theme with error")
+
+                return "Theme with error for interface '%s'\n%s" % (
+                    Interface.name,
+                    "\n".join(result.errors)
+                )

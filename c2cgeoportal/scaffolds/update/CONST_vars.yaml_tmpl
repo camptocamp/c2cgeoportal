@@ -244,6 +244,8 @@ vars:
               display: Edit page
             - name: checker_edit_js
               display: Edit script
+            - name: checker_theme_errors
+              display: Errors in the themes
             - name: checker_api
               display: API
             - name: checker_xapi

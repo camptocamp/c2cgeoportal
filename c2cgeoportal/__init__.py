@@ -480,6 +480,7 @@ def includeme(config):
     config.add_route('checker_fts', '/checker_fts')
     config.add_route('checker_wmscapabilities', '/checker_wmscapabilities')
     config.add_route('checker_wfscapabilities', '/checker_wfscapabilities')
+    config.add_route('checker_theme_errors', '/checker_theme_errors')
     # collector
     config.add_route('check_collector', '/check_collector')
 
