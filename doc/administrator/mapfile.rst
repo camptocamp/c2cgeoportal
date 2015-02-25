@@ -362,6 +362,45 @@ interface with for instance the following value for the given role:
 
 `MapServer documentation <http://mapserver.org/cgi/runsub.html>`_
 
+
+Legend
+------------------
+
+Legend text configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Mapserver allows different forms of legends.
+
+- Legend with legend text (normal configuration, f.e. ``[ o ] Placemark``)::
+
+    CLASS
+        NAME "Placemark"
+        STYLE
+            ...
+        END
+    END
+
+- Legend without legend text (f.e. ``[ o ]`` , often used if there is one single class in the layer )::
+
+    CLASS
+        NAME " "
+        STYLE
+            ...
+        END
+    END
+
+  You can set the ``legend rule`` in the admin interface to ``%20``, if you want to show the legend icon in the layer tree
+
+- No legend (don't set any ``NAME`` in the ``CLASS``)::
+
+    CLASS
+        STYLE
+            ...
+        END
+    END
+
+
+
 Note about ECW
 --------------
 
