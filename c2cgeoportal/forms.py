@@ -234,7 +234,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
     def __init__(
             self, attribute, dom_id='layer_tree',
             auto_check=True, only_internal_wms=True):
-        super(LayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
+        super(SimpleLayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self._rendered_id = []
         self.only_internal_wms = only_internal_wms
 
@@ -333,7 +333,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
     def stringify_value(self, item, **kargs):
         final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
-        return super(LayerCheckBoxTreeSet, self).stringify_value(final_item, **kargs)
+        return super(SimpleLayerCheckBoxTreeSet, self).stringify_value(final_item, **kargs)
 
 
 class LayerCheckBoxTreeSet(SimpleLayerCheckBoxTreeSet):  # pragma: no cover
@@ -345,7 +345,8 @@ class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
         super(TreeItemCheckBoxTreeSet, self).__init__(
             attribute,
-            auto_check=False, only_internal_wms=False)
+            auto_check=False, only_internal_wms=False
+        )
 
 
 class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
@@ -488,13 +489,12 @@ LayergroupTreeitem.ordering.set(metadata=dict(mandatory='')).required()
 
 # Theme
 Theme = FieldSet(models.Theme)
-Theme.configure(exclude=[Theme.children_relation])
+Theme.configure(exclude=[Theme.parents_relation, Theme.children_relation])
 Theme.ordering.set(metadata=dict(mandatory='')).required()
 Theme.append(ChildrenAttributeField(
     manager_of_class(models.Theme)['children_relation'], Theme
 ))
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
-Theme.configure(exclude=[Theme.parents_relation])
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=CheckBoxSet)
 Theme.ui_metadata.set(readonly=True)
