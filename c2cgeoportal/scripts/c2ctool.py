@@ -279,17 +279,16 @@ def upgrade(options):
             "git", "submodule", "foreach", "git", "reset",
             "--hard", "origin/%s" % options.version
         ])
-        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
-        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-        if path.exists(".build"):
-            check_call([
-                'wget',
-                'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
-                'c2cgeoportal/scaffolds/update/CONST_versions.txt'
-                % options.version, '-O', 'CONST_versions.txt'
-            ])
-            check_call(['make', '-f', options.file, options.clean])
-            check_call(['make', '-f', options.file, '.build/requirements.timestamp'])
+        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
+        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
+        check_call([
+            "wget",
+            "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
+            "c2cgeoportal/scaffolds/update/CONST_versions.txt"
+            % options.version, "-O", "CONST_versions.txt"
+        ])
+        check_call(["make", "-f", options.file, options.clean])
+        check_call(["make", "-f", options.file, ".build/requirements.timestamp"])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
