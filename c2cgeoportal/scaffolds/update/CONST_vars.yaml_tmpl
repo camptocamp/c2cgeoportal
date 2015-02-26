@@ -77,18 +77,22 @@ vars:
         config: "{directory}/jsbuild/app.cfg"
         root_dir: "{directory}"
 
-    # pyramid_closure configuration
-    closure_library_path: 'process.stdout.write(require("openlayers/node_modules/closure-util").getLibraryPath())'
-    pyramid_closure:
-        roots:
-        - "{closure_library_path}/closure/goog"
-        roots_with_prefix:
-            ../../../../../../../../../proj/js: "{directory}/{package}/static/js"
-            ../../../../../../../../../node_modules/openlayers: "{directory}/node_modules/openlayers"
-            ../../../../../../../../../node_modules/ngeo/src: "{directory}/node_modules/ngeo/src"
-
     # used for the "node_modules" and "closure" static views
+    closure_library_path: 'process.stdout.write(require("openlayers/node_modules/closure-util").getLibraryPath())'
     node_modules_path: "{directory}/node_modules"
+
+    # pyramid_closure configuration
+    # Each item in the roots_with_prefix array is an array with two elements. The
+    # first element is the path pyramid_closure passed to request.static_url. The
+    # second element is the file system path where js source files are searched.
+    # For this to work window.CLOSURE_BASE_PATH being set to the empty string in
+    # the HTML page.
+    pyramid_closure:
+        roots_with_prefix:
+        - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
+        - ["{package}:static/js", "{directory}/{package}/static/js"]
+        - ["{node_modules_path}/openlayers", "{node_modules_path}/openlayers"]
+        - ["{node_modules_path}/ngeo/src", "{node_modules_path}/ngeo/src"]
 
     # The application's default language. This is the language used by
     # the application if no specific language is specified in the URLs.
