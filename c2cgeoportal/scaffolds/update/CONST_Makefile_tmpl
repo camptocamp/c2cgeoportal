@@ -242,7 +242,7 @@ C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VAR
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 CONF_FILES = $(shell ls -1 apache/*.conf)
-PY_FILES = $(shell -type f -name '*.py' -print)
+PY_FILES = $(shell find c2cgeoportal -type f -name '*.py' -print)
 
 
 .PHONY: help
@@ -657,5 +657,6 @@ apache: .build/apache.timestamp
 $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
-.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf .build/requirements.timestamp
 	sudo /usr/sbin/apache2ctl graceful
+	touch $@
