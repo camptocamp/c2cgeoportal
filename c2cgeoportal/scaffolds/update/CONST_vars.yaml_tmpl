@@ -55,7 +55,7 @@ vars:
     dbpassword_replication: to_be_defined
     enable_admin_interface: True
 
-    directory: pwd
+    directory: pwd | tr -d '\n'
     python_path: __import__('distutils').sysconfig.get_python_lib()
 
     # Authentication settings
@@ -291,5 +291,3 @@ interpreted:
     - development
     bash:
     - directory
-    yaml:
-    - directory # to trim
