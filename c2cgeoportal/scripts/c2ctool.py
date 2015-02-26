@@ -274,11 +274,10 @@ def upgrade(options):
             print(_colorize("Please solve the rebase and run it again.", YELLOW))
             exit(1)
 
-        check_call(['git', 'submodule', 'foreach', 'git', 'fetch'])
-        check_call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
+        check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
         check_call([
-            'git', 'submodule', 'foreach', 'git', 'reset',
-            '--hard', options.version
+            "git", "submodule", "foreach", "git", "reset",
+            "--hard", "origin/%s" % options.version
         ])
         check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
         check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
