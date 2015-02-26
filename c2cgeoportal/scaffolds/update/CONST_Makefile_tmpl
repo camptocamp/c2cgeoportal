@@ -300,6 +300,9 @@ clean: template-clean
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
+	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: flake8
 flake8: .build/venv/bin/flake8
