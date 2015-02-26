@@ -6,6 +6,7 @@ from pyramid.i18n import TranslationStringFactory
 from formalchemy import FieldSet, Grid  # noqa
 
 from {{package}} import models  # noqa
+from c2cgeoportal.forms import *  # noqa
 
 _ = TranslationStringFactory('{{package}}')
 log = logging.getLogger(__name__)
