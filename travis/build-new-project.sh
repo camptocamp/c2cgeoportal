@@ -1,8 +1,8 @@
 #!/bin/bash -ex
 
-# create fake vhost
-sudo mkdir -p /var/www/vhost/test/conf
-sudo chmod g+w,o+w /var/www/vhost/test/conf
+# create fake vhosts
+sudo mkdir -p /var/www/vhosts/test/conf
+sudo chmod g+w,o+w /var/www/vhosts/test/conf
 
 cp travis/build.mk /tmp/test/travis.mk
 
