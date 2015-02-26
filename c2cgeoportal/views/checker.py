@@ -49,7 +49,7 @@ class Checker(object):  # pragma: no cover
         self.settings = self.request.registry.settings['checker']
 
     def set_status(self, code, text):
-        if int(code) > self.status_int:
+        if int(code) >= self.status_int:
             self.status_int = int(code)
             self.status = text
 
@@ -219,7 +219,6 @@ class Checker(object):  # pragma: no cover
         for interface, in DBSession.query(Interface.name).all():
             interface_url = _url + "%s?interface=%s" % (_url, interface)
 
-
             log.info("Checker for theme: %s" % interface_url)
             interface_url = interface_url.replace(
                 self.request.environ.get("SERVER_NAME"),
@@ -242,3 +241,50 @@ class Checker(object):  # pragma: no cover
                     Interface.name,
                     "\n".join(result.errors)
                 )
+
+    @view_config(route_name="checker_lang_files")
+    def checker_lang_files(self):
+        available_locale_names = self.request.registry.settings["available_locale_names"]
+
+        if self.request.registry.settings["default_locale_name"] not in available_locale_names:
+            self.set_status(500, "default_locale_name not in available_locale_names")
+
+            return (
+                "Your `default_locale_names` '%s' is not in your "
+                "`available_locale_names` '%s'" % (
+                    self.request.registry.settings["default_locale_name"],
+                    ", ".join(available_locale_names)
+                )
+            )
+
+        result = []
+        for _type in self.settings.get("lang_files", []):
+            for lang in available_locale_names:
+                if _type == "cgxp":
+                    _url = self.request.static_url(
+                        "{package}:static/build/lang-{lang}.js".format(
+                            package=self.request.registry.settings["package"], lang=lang
+                        )
+                    )
+                elif _type == "cgxp-api":
+                    _url = self.request.static_url(
+                        "{package}:static/build/api-lang-{lang}.js".format(
+                            package=self.request.registry.settings["package"], lang=lang
+                        )
+                    )
+                elif _type == "ngeo":
+                    _url = self.request.static_url(
+                        "{package}:static/build/locale/{lang}/{package}.json".format(
+                            package=self.request.registry.settings["package"], lang=lang
+                        )
+                    )
+                else:
+                    self.set_status(500, "Unknown lang_files")
+                    return (
+                        "Your language type value '%s' isn't valid, "
+                        "available values [cgxp, cgxp-api, ngeo]" % (
+                            _type
+                        )
+                    )
+                result.append(self.testurl(_url))
+        return self.make_response("\n\n".join(result))

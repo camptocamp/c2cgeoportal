@@ -230,6 +230,7 @@ vars:
         print_center_lat: to be defined
         print_scale: 10000
         fulltextsearch: text to search
+        lang_files: [ngeo, cgxp, cgxp-api]
 
     # Check collector configuration
     check_collector:
@@ -250,6 +251,8 @@ vars:
               display: API
             - name: checker_xapi
               display: Extended API
+            - name: checker_lang_files
+              display: Language files
             - name: checker_printcapabilities
               display: Print capabilities
             - name: checker_pdf

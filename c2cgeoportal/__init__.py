@@ -475,6 +475,7 @@ def includeme(config):
     config.add_route('checker_edit_js', '/checker_edit_js')
     config.add_route('checker_api', '/checker_api')
     config.add_route('checker_xapi', '/checker_xapi')
+    config.add_route('checker_lang_files', '/checker_lang_files')
     config.add_route('checker_printcapabilities', '/checker_printcapabilities')
     config.add_route('checker_pdf', '/checker_pdf')
     config.add_route('checker_fts', '/checker_fts')
