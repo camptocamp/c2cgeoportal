@@ -25,7 +25,7 @@ vars:
     # database parent schema
     parentschema: ""
     # apache/mapserver.conf "Allow" statement
-    mapserv_allow: Allow from 127.0.0.1
+    mapserv_allow: Allow from 127.0.0.1 ::1
     # mapserver connexion string
     mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
     # mapserver join tables
