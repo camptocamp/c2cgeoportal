@@ -109,7 +109,7 @@ def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
     parser.add_argument(
         "--no-cleanall",
-        description="Run clean instead of cleanall",
+        help="Run clean instead of cleanall",
         default="cleanall",
         action="store_const",
         const="clean",
