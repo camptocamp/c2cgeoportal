@@ -488,6 +488,11 @@ def includeme(config):
     config.add_route('printproxy_info', '/printproxy/info.json')
     config.add_route('printproxy_create', '/printproxy/create.json')
     config.add_route('printproxy_get', '/printproxy/{file}.printout')
+    # V3
+    config.add_route('printproxy_capabilities', '/printproxy/capabilities.json')
+    config.add_route('printproxy_report_create', '/printproxy/report.{format}')
+    config.add_route('printproxy_status', '/printproxy/status/{ref}.json')
+    config.add_route('printproxy_report_get', '/printproxy/report/{ref}')
 
     # full text search routes
     config.add_route('fulltextsearch', '/fulltextsearch')

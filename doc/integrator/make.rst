@@ -60,8 +60,7 @@ The following variables may be set in the makefiles:
 * ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
 * ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
-* ``PRINT2``: , ``TRUE`` to build the print 2 server, defaults to ``FALSE``.
-* ``PRINT3``: , ``TRUE`` to build the print 3 server, defaults to ``TRUE``.
+* ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
 * ``PRE_RULES``: predefine some build rules, default is empty.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.

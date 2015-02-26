@@ -38,12 +38,14 @@ from pyramid import testing
 @attr(functional=True)
 class TestOgcproxyView(TestCase):
 
+    @attr(nourl=True)
     def test_nourl(self):
         request = testing.DummyRequest()
         request.scheme = 'http'
         response = ogcproxy(request)
         self.assertEqual(response.status_int, 400)
 
+    @attr(badurl=True)
     def test_badurl(self):
         request = testing.DummyRequest()
         request.scheme = 'http'

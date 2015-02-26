@@ -37,6 +37,7 @@ from pyramid import testing
 @attr(functional=True)
 class TestEchoView(TestCase):
 
+    @attr(echo_bad_method=True)
     def test_echo_bad_method(self):
         from c2cgeoportal.views import echo
 
@@ -45,6 +46,7 @@ class TestEchoView(TestCase):
         response = echo.echo(request)
         self.assertEquals(response.status_int, 400)
 
+    @attr(echo_bad_request=True)
     def test_echo_bad_request(self):
         from c2cgeoportal.views import echo
 
@@ -54,6 +56,7 @@ class TestEchoView(TestCase):
         response = echo.echo(request)
         self.assertEquals(response.status_int, 400)
 
+    @attr(echo=True)
     def test_echo(self):
         from c2cgeoportal.views import echo
         from webob import Request

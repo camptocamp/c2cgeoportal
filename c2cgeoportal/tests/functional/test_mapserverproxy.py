@@ -254,6 +254,7 @@ class TestMapserverproxyView(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
+    @attr(functional=True)
     def test_get_legend_graphic(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -567,6 +568,7 @@ class TestMapserverproxyView(TestCase):
         return request
 
     @attr(getcapabilities=True)
+    @attr(wms_getcapabilities=True)
     def test_wms_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -586,6 +588,7 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.body.find('<Name>testpoint_protected</Name>') > 0)
 
     @attr(getcapabilities=True)
+    @attr(wfs_getcapabilities=True)
     def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -645,6 +648,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
+        request.headers["Content-Type"] = "application/xml; charset=UTF-8"
 
         request.method = 'POST'
         request.body = (GETFEATURE_REQUEST % {
@@ -829,11 +833,13 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.body != '')
         self.assertEqual(str(response.cache_control), "no-cache")
 
+    @attr(substitution=True)
     def test_substitution(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
         request.method = 'POST'
+        request.headers["Content-Type"] = "application/xml; charset=UTF-8"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
 
         response = MapservProxy(request).proxy()

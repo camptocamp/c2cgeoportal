@@ -43,8 +43,6 @@ vars:
     mapfile_data_subselect: 'SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # mapserver filter on role id only
     mapfile_data_noarea_subselect: 'SELECT rra.role_id FROM {mapserver_join_tables} WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
-    # print path
-    print_path: /print-c2cgeoportal-{instanceid}/pdf/
     # port for the waitress web server
     waitress_port: 5000
     # password change replication activation
@@ -180,8 +178,8 @@ vars:
 
     # The shortner base configuration
     shortener:
-      # The base of created URL
-      base_url:  http://{host}{apache_entry_point}s/
+        # The base of created URL
+        base_url:  http://{host}{apache_entry_point}s/
 
     # URL to internal MapServer instance
     mapserv_url: http://localhost/{instanceid}/mapserv
@@ -200,7 +198,7 @@ vars:
     use_security_metadata: false
 
     # For print proxy
-    print_url: http://localhost:8080/print-c2cgeoportal-{instanceid}/pdf/
+    print_url: http://localhost:8080/print-{instanceid}/print/{package}
 
     # For base layers
     tiles_url:

@@ -104,8 +104,9 @@ def init_cache_control(request, service_name, private=None, response=None):
     if private is None:
         if request.user is not None:
             response.cache_control.private = True
-    else:
+    else:  # pragma: nocover
         response.cache_control.private = private
+    response.cache_control.public = not response.cache_control.private
 
     max_age = request.registry.settings["default_max_age"]
 

@@ -28,11 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import httplib2
 import urllib
 import logging
 
-from urlparse import urlparse
 import simplejson as json
 from simplejson.decoder import JSONDecodeError
 
@@ -42,23 +40,58 @@ from pyramid.httpexceptions import HTTPBadGateway
 
 from c2cgeoportal.lib.caching import get_region, init_cache_control
 from c2cgeoportal.lib.functionality import get_functionality
+from c2cgeoportal.views.proxy import Proxy
 
 log = logging.getLogger(__name__)
 cache_region = get_region()
 
 
-class Printproxy(object):  # pragma: no cover
+class PrintProxy(Proxy):  # pragma: no cover
 
     def __init__(self, request):
-        self.request = request
+        Proxy.__init__(self, request)
         self.config = self.request.registry.settings
+
+    def _get_capabilities_proxy(self, filter_, *args, **kwargs):
+        resp, content = self._proxy(*args, **kwargs)
+
+        try:
+            capabilities = json.loads(content)
+        except JSONDecodeError as e:
+            # log and raise
+            log.error("Unable to parse capabilities.")
+            log.exception(e)
+            log.error(content)
+            return HTTPBadGateway(content)
+
+        headers = dict(resp)
+        if 'content-length' in headers:
+            del headers['content-length']
+        if 'transfer-encoding' in headers:
+            del headers['transfer-encoding']
+
+        pretty = self.request.params.get('pretty', 'false') == 'true'
+        response = Response(
+            json.dumps(
+                capabilities, separators=None if pretty else (',', ':'),
+                indent=4 if pretty else None
+            ),
+            status=resp.status, headers=headers,
+        )
+        init_cache_control(self.request, "print")
+        return response
+
+    ##########
+    # # V2 # #
+    ##########
 
     @view_config(route_name='printproxy_info')
     def info(self):
         """ Get print capabilities. """
 
         templates = get_functionality(
-            'print_template', self.config, self.request)
+            'print_template', self.config, self.request
+        )
 
         # get query string
         params = dict(self.request.params)
@@ -69,101 +102,34 @@ class Printproxy(object):  # pragma: no cover
     @cache_region.cache_on_arguments()
     def _info(self, templates, query_string):
         # get URL
-        _url = self.config['print_url'] + 'info.json' + '?' + query_string
-        log.info("Get print capabilities from %s." % _url)
+        _url = self.config['print_url'] + 'info.json'
 
-        # forward request to target (without Host Header)
-        http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlparse(_url).hostname != 'localhost':
-            h.pop('Host')
-        try:
-            resp, content = http.request(_url, method='GET', headers=h)
-        except:
-            return HTTPBadGateway()
+        def _filter(capabilities):
+            capabilities['layouts'] = list(
+                layout for layout in capabilities['layouts'] if
+                layout['name'] in templates)
+            return capabilities
 
-        try:
-            capabilities = json.loads(content)
-        except JSONDecodeError:
-            # log and raise
-            log.error("Unable to parse capabilities.")
-            log.info(content)
-            return content
-
-        capabilities['layouts'] = list(
-            layout for layout in capabilities['layouts'] if
-            layout['name'] in templates)
-
-        headers = dict(resp)
-        if 'content-length' in headers:
-            del headers['content-length']
-        if 'transfer-encoding' in headers:
-            del headers['transfer-encoding']
-
-        response = Response(
-            json.dumps(capabilities, separators=(',', ':')),
-            status=resp.status, headers=headers,
-        )
-        init_cache_control(self.request, "print")
-        return response
+        return self._get_capabilities_proxy(_filter, _url)
 
     @view_config(route_name='printproxy_create')
     def create(self):
         """ Create PDF. """
-
-        # get query string
-        params = dict(self.request.params)
-        query_string = urllib.urlencode(params)
-
-        # get URL
-        _url = self.config['print_url'] + 'create.json' + '?' + query_string
-        log.info("Send print query to %s." % _url)
-
-        content_length = int(self.request.environ['CONTENT_LENGTH'])
-        body = self.request.environ['wsgi.input'].read(content_length)
-
-        # forward request to target (without Host Header)
-        http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlparse(_url).hostname != 'localhost':
-            h.pop('Host')
-        h['Content-Length'] = str(len(body))
-        h["Cache-Control"] = "no-cache"
-
-        try:
-            resp, content = http.request(
-                _url, method='POST', body=body, headers=h
+        return self._proxy_responce(
+            "print",
+            "%screate.json" % (
+                self.config['print_url']
             )
-        except:
-            return HTTPBadGateway()
-
-        return Response(
-            content, status=resp.status, headers=dict(resp),
-            cache_control="no-cache"
         )
 
     @view_config(route_name='printproxy_get')
     def get(self):
         """ Get created PDF. """
 
-        file = self.request.matchdict.get('file')
-
-        # get URL
-        _url = self.config['print_url'] + file + '.printout'
-        log.info("Get print document from %s." % _url)
-
-        # forward request to target (without Host Header)
-        http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlparse(_url).hostname != 'localhost':
-            h.pop('Host')
-
-        h["Cache-Control"] = "no-cache"
-
-        try:
-            resp, content = http.request(_url, method='GET', headers=h)
-        except:
-            return HTTPBadGateway()
+        resp, content = self._proxy("%s%s.printout" % (
+            self.config['print_url'],
+            self.request.matchdict.get('file')
+        ))
 
         headers = {}
         if 'content-type' in resp:
@@ -176,4 +142,68 @@ class Printproxy(object):  # pragma: no cover
         # del response.headers['Cache-Control']
         return Response(
             content, status=resp.status, headers=headers
+        )
+
+    ##########
+    # # V3 # #
+    ##########
+
+    @view_config(route_name='printproxy_capabilities')
+    def capabilities(self):
+        """ Get print capabilities. """
+
+        templates = get_functionality(
+            'print_template', self.config, self.request
+        )
+
+        # get query string
+        params = dict(self.request.params)
+        query_string = urllib.urlencode(params)
+
+        return self._capabilities(templates, query_string)
+
+    @cache_region.cache_on_arguments()
+    def _capabilities(self, templates, query_string):
+        # get URL
+        _url = self.config['print_url'] + '/capabilities.json'
+
+        def _filter(capabilities):
+            capabilities['layouts'] = list(
+                layout for layout in capabilities['layouts'] if
+                layout['name'] in templates)
+            return capabilities
+
+        return self._get_capabilities_proxy(_filter, _url)
+
+    @view_config(route_name='printproxy_report_create')
+    def report_create(self):
+        """ Create PDF. """
+        return self._proxy_responce(
+            "print",
+            "%s/report.%s" % (
+                self.config['print_url'],
+                self.request.matchdict.get('format')
+            )
+        )
+
+    @view_config(route_name='printproxy_status')
+    def status(self):
+        """ PDF status. """
+        return self._proxy_responce(
+            "print",
+            "%s/status/%s.json" % (
+                self.config['print_url'],
+                self.request.matchdict.get('ref')
+            )
+        )
+
+    @view_config(route_name='printproxy_report_get')
+    def report_get(self):
+        """ Get the PDF. """
+        return self._proxy_responce(
+            "print",
+            "%s/report/%s" % (
+                self.config['print_url'],
+                self.request.matchdict.get('ref')
+            )
         )

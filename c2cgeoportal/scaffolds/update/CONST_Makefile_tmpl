@@ -13,10 +13,8 @@ MOBILE ?= TRUE
 NGEO ?= FALSE
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
-# Use print V2
-PRINT2 ?= FALSE
-# Use print V3
-PRINT3 ?= TRUE
+# Used print version
+PRINT_VERSION ?= 3
 
 PIP_CMD ?= .build/venv/bin/pip
 PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
@@ -45,10 +43,10 @@ endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_BUILD_RULES += test-packages-ngeo
 endif
-ifeq ($(PRINT2), TRUE)
+ifeq ($(PRINT_VERSION), 2)
 DEFAULT_BUILD_RULES += print
 endif
-ifeq ($(PRINT3), TRUE)
+ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
 endif
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
@@ -201,10 +199,10 @@ SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESS
 
 # Print
 PRINT_BASE_DIR ?= print
-PRINT_WAR ?= print-$(PACKAGE)-$(INSTANCE_ID).war
+PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
-ifeq ($(PRINT3), TRUE)
-PRINT_BASE_WAR ?= print-servlet-3.1-SNAPSHOT.war
+ifeq ($(PRINT_VERSION), 3)
+PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps
 PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
@@ -213,7 +211,7 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
 PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
-ifeq ($(PRINT2), TRUE)
+ifeq ($(PRINT_VERSION), 2)
 PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 PRINT_INPUT_LS ?= config.yaml WEB-INF/classes/log4j.properties
 PRINT_INPUT_FIND ?= *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf
@@ -623,23 +621,28 @@ print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) /tmp/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf /tmp/$(PRINT_WAR) $(PRINT_INPUT)
+	chmod g+r,o+r /tmp/$(PRINT_WAR)
 	mv /tmp/$(PRINT_WAR) $(PRINT_OUTPUT)
 
 print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
 	mkdir -p $(dir $@)
 	wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download -O $@
+	touch $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
 	wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar -O $@
+	touch $@
 
 print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 	mkdir -p $(dir $@)
 	wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-fonts-5.5.0.jar/download -O $@
+	touch $@
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
+	touch $@
 
 # Apache config
 .PHONY: apache
@@ -650,4 +653,3 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 
 .build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	sudo /usr/sbin/apache2ctl graceful
-	touch $@
