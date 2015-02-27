@@ -11,31 +11,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: c2cgeoportal/forms.py:385
+#: c2cgeoportal/forms.py:394
 msgid "image/jpeg"
 msgstr ""
 
-#: c2cgeoportal/forms.py:386
+#: c2cgeoportal/forms.py:395
 msgid "image/png"
 msgstr ""
 
-#: c2cgeoportal/forms.py:389
+#: c2cgeoportal/forms.py:398
 msgid "disabled"
 msgstr ""
 
-#: c2cgeoportal/forms.py:390
+#: c2cgeoportal/forms.py:399
 msgid "value"
 msgstr ""
 
-#: c2cgeoportal/forms.py:391
+#: c2cgeoportal/forms.py:400
 msgid "range"
 msgstr ""
 
-#: c2cgeoportal/forms.py:522
+#: c2cgeoportal/forms.py:530
 msgid "Restriction area"
 msgstr ""
 
-#: c2cgeoportal/forms.py:545
+#: c2cgeoportal/forms.py:553
 msgid "Extent"
 msgstr ""
 
@@ -43,19 +43,19 @@ msgstr ""
 msgid "Duplicate record"
 msgstr ""
 
-#: c2cgeoportal/forms.py:400
+#: c2cgeoportal/forms.py:409
 msgid "internal WMS"
 msgstr ""
 
-#: c2cgeoportal/forms.py:401
+#: c2cgeoportal/forms.py:410
 msgid "external WMS"
 msgstr ""
 
-#: c2cgeoportal/forms.py:402
+#: c2cgeoportal/forms.py:411
 msgid "WMTS"
 msgstr ""
 
-#: c2cgeoportal/forms.py:403
+#: c2cgeoportal/forms.py:412
 msgid "no 2D"
 msgstr ""
 
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Passwords do not match"
 msgstr ""
 
-#: c2cgeoportal/forms.py:319
+#: c2cgeoportal/forms.py:322
 msgid "Unlinked layers"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgid ""
 "themes."
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:1313
+#: c2cgeoportal/views/entry.py:1322
 msgid "User not found in replication target database"
 msgstr ""
 
