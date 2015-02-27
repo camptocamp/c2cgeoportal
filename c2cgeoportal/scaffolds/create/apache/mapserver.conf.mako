@@ -1,6 +1,6 @@
 ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
 <Location /${instanceid}/mapserv>
-   # For security reason we want to prevent direct WMS access, 
+   # For security reason we want to prevent direct WMS access,
    # to force the users to use the mapserv_proxy
    Order Deny,Allow
    Deny from all

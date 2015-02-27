@@ -6,8 +6,8 @@ Intranet Users Detection
 It may be interesting to assign a default role to anonymous users connecting
 from a given IP or set of IP addresses (eg. intranet users).
 
-The default username and role for anonymous intranet users as well as the 
-matching IP regexp are configured in ``<package>.mk`` (see step #4 below). 
+The default username and role for anonymous intranet users as well as the
+matching IP regexp are configured in ``<package>.mk`` (see step #4 below).
 The assigned role must obviously have been defined in the administration interface.
 
 Example of accepted IP setting:
@@ -34,19 +34,19 @@ This page lists the changes that must be applied to add such a functionality.
        from c2cgeoportal import locale_negotiator, get_user_from_request
 
    Add the following function:
-   
+
    .. code:: python
-   
+
        def custom_get_user_from_request(request):
            if 'anonymous' in request.params:
                return None
-       
+
            user = get_user_from_request(request)
            if user is None and request.environ.get('intranet', 0) == '1':
                from c2cgeoportal.models import DBSession, Role
                class O(object):
                    pass
-               user = O() 
+               user = O()
                user.username = request.registry.settings.get('intranet_default_user', 'Intranet')
                user.functionalities = []
                user.is_password_changed = True
@@ -57,18 +57,18 @@ This page lists the changes that must be applied to add such a functionality.
                except:
                    request.environ['authFailed'] = True
                    user = None
-           return user  
-   
+           return user
+
    In the ``main()`` function before
-   
+
    .. code:: python
-   
+
        return config.make_wsgi_app()
-   
+
    add
-   
+
    .. code:: python
-   
+
        config.set_request_property(custom_get_user_from_request,
                                    name='user', reify=True
        )
@@ -76,15 +76,15 @@ This page lists the changes that must be applied to add such a functionality.
 3. In ``apache/wsgi.conf.mako`` add to ``<Location /${instanceid}/wsgi>``:
 
    .. code:: apache
-   
+
        SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
-   
+
    or, depending on the proxies setup:
-   
+
    .. code:: apache
-   
+
        SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
-   
+
 4. In the ``vars`` section of ``vars_<package>.yaml`` add
 
    .. code:: yaml
@@ -98,7 +98,7 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: make
 
-        CONFIG_VARS += intranet_default_user intranet_default_role 
+        CONFIG_VARS += intranet_default_user intranet_default_role
 
 6. In ``<package>/templates/index.html`` replace
 

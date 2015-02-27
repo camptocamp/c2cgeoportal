@@ -1,7 +1,7 @@
 #!/bin/sh -e
 #
 # variables set here:
-#   $TARGET: name of the symbolic remote host key (see remote_hosts 
+#   $TARGET: name of the symbolic remote host key (see remote_hosts
 #            section in config file)
 #
 

@@ -18,7 +18,7 @@ MAP
 
     # For Windows users: uncomment this line and adapt it to your
     # own mapserver's nad folder (use regular slash "/")
-    # CONFIG "PROJ_LIB" "C:/path/to/ms4w/proj/nad"    
+    # CONFIG "PROJ_LIB" "C:/path/to/ms4w/proj/nad"
 
     EXTENT 420000 30000 900000 350000 ##
     UNITS METERS

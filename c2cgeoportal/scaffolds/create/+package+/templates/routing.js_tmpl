@@ -63,26 +63,26 @@ Ext.onReady(function() {
         tools: [
         {
             ptype: 'cgxp_routing',
-            routingService: { 
+            routingService: {
                 engine_car: {
-                    type: 'OSRM', 
+                    type: 'OSRM',
                     url: 'http://mfusrgrp-re2013.demo-camptocamp.com/car',
                     dynamic: true
                 },
                 engine_bicycle: {
-                    type: 'OSRM', 
+                    type: 'OSRM',
                     url: 'http://mfusrgrp-re2013.demo-camptocamp.com/bicycle',
                     dynamic: true
                 },
                 foot: {
-                    type: 'OSRM', 
+                    type: 'OSRM',
                     url: 'http://mfusrgrp-re2013.demo-camptocamp.com/foot',
                     dynamic: true
                 }
             },
             searchOptions: {
                 url: "${request.route_url('fulltextsearch', path='')}",
-            }, 
+            },
             outputTarget: 'left-panel'
         },
         {

@@ -3,10 +3,10 @@
 Password Replication
 ====================
 
-To replicate a password change between the main database and a secondary 
-database, you need to add the following configuration in the vars 
+To replicate a password change between the main database and a secondary
+database, you need to add the following configuration in the vars
 configuration file used to setup your project:
-    
+
 .. code:: yaml
 
     # enable / disable the replication
@@ -19,5 +19,5 @@ configuration file used to setup your project:
     dbuser_replication: <target database username>
     dbpassword_replication: <target database password>
 
-The target database is the secondary database where the changes are being 
+The target database is the secondary database where the changes are being
 replicated.

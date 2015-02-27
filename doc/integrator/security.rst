@@ -6,7 +6,7 @@ Security
 Enable / Disable WMS GetCapability
 ----------------------------------
 
-Set ``hide_capabilities`` to ``true`` in your ``vars_<project>.yaml`` to disable 
+Set ``hide_capabilities`` to ``true`` in your ``vars_<project>.yaml`` to disable
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
 
 Default: ``false``

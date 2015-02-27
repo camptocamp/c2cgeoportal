@@ -100,6 +100,6 @@ Some of those limitations apply to the mapfile:
   all use the same interval.
 
 There is also a limitation that applies to the admin interface: all the WMS Time
-layers of a group should be configured to use the same time mode (``single`` or 
+layers of a group should be configured to use the same time mode (``single`` or
 ``range``) except for layers with time mode ``disabled`` that can be mixed
 within others.

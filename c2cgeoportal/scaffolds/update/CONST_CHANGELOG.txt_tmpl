@@ -131,7 +131,7 @@ Version 1.6
 
     +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
-13. Remove your Apache configuration file, probably in 
+13. Remove your Apache configuration file, probably in
     `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
 
 
@@ -155,7 +155,7 @@ Version 1.5.2
    +    App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
 2. In the ``{{package}}/templates/viewer.js`` and ``{{package}}/templates/edit.js`` files,
-   for plugins ``cgxp_layertree`` and ``cgxp_login``, 
+   for plugins ``cgxp_layertree`` and ``cgxp_login``,
    add the ``events`` parameter:
 
         ...

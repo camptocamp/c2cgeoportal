@@ -219,7 +219,7 @@ Ext.onReady(function() {
             ptype: "cgxp_permalink",
             id: "permalink",
             actionTarget: "center.tbar",
-            shortenerCreateURL: "${request.route_url('shortener_create', path='')}" 
+            shortenerCreateURL: "${request.route_url('shortener_create', path='')}"
         },
         {
             ptype: "cgxp_measure",

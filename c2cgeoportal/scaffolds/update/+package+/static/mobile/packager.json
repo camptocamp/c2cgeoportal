@@ -147,7 +147,7 @@
 
         /**
 	 * @cfg {Array[String]} permissions
-	 * Array of permissions that is used by an application (Android only) 
+	 * Array of permissions that is used by an application (Android only)
 	 * Full list of permissions for Android application can be found here: http://developer.android.com/reference/android/Manifest.permission.html#ACCESS_CHECKIN_PROPERTIES
 	 */
 	"permissions":[

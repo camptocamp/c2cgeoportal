@@ -260,7 +260,7 @@ layertree plugin. For instance:
         defaultBaseLayerRef: "${functionality['default_basemap'][0] | n}"
     }
 
-Then, in the administration interface, if not available yet, define a 
+Then, in the administration interface, if not available yet, define a
 ``default_basemap`` functionality containing the basemap reference. Edit the
 theme and select the basemap to load in the ``default_basemap`` list. If
 several ``default_basemap`` items are selected, only the first one will be

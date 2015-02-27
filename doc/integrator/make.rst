@@ -21,7 +21,7 @@ Default is:
     VARS_FILES += ${VARS_FILE} vars_<package>.yaml
     else
     VARS_FILE = vars_<package>.yaml
-    VARS_FILES += ${VARS_FILE} 
+    VARS_FILES += ${VARS_FILE}
     endif
 
     include CONST_Makefile
