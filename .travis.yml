@@ -45,6 +45,7 @@ install:
 - .build/venv/bin/flake8 --version
 
 script: 
+- find /tmp/test/CONST_alembic /tmp/test/test -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA"
 # Actually don't work on travis see:
 # https://travis-ci.org/camptocamp/c2cgeoportal/jobs/48455036#L5312
 #- travis/test-new-project.sh
