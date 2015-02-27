@@ -172,9 +172,9 @@ displayed or hidden at the same time.
 
 To do so:
 
-* in the normal base layer, add the parameter ``linkedLayers`` with the list of 
+* in the normal base layer, add the parameter ``linkedLayers`` with the list of
   *detached* base layers ``ref`` names.
-* add the *detached* base layer like any other normal base layer, but with 
+* add the *detached* base layer like any other normal base layer, but with
   ``visibility: false`` and no ``group`` in ``args``
 
 Example:
@@ -186,7 +186,7 @@ Example:
                 type: "OpenLayers.Layer.WMTS",
                 group: 'background',
                 args: [Ext.applyIf({
-                  name: 'detached_base_layer_nice_name', 
+                  name: 'detached_base_layer_nice_name',
                   ref: 'detached_base_layer',
                   layer: 'detached_base_layer_source_name',
                   transitionEffect: "resize",

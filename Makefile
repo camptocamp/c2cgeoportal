@@ -23,7 +23,8 @@ ifeq ($(DEVELOPMENT), FALSE)
 	CSSMIN_ARGS += --compress
 endif
 
-VALIDATE_PY_FOLDERS = c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views
+VALIDATE_PY_FOLDERS = setup.py c2cgeoportal/*.py c2cgeoportal/lib c2cgeoportal/scripts c2cgeoportal/views c2cgeoportal/scaffolds/update/CONST_alembic
+VALIDATE_TEMPLATE_PY_FOLDERS = c2cgeoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
@@ -102,6 +103,7 @@ flake8: .build/venv/bin/flake8
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA"
+	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 
 

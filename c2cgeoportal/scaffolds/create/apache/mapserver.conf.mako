@@ -1,6 +1,6 @@
 ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
 <Location /${instanceid}/mapserv>
-   # For security reason we want to prevent direct WMS access, 
+   # For security reason we want to prevent direct WMS access,
    # to force the users to use the mapserv_proxy
    Order Deny,Allow
    Deny from all
@@ -14,4 +14,3 @@ ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
    SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
    #SetEnv MS_MAPFILE_PATTERN "^${directory}/mapserver/c2cgeoportal.map$"
 </Location>
-

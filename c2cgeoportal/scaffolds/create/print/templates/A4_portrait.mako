@@ -27,13 +27,13 @@
           items:
             - !attributes
               source: table
-              tableConfig: 
-                cells: 
+              tableConfig:
+                cells:
                   - padding: 2
                     backgroundColor: #ffffff
                     borderWidthRight: 1
                     borderWidthBottom: 1
-                    borderColor: black  
+                    borderColor: black
               columnDefs:
                 col0:
                   header: !text

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2014, Camptocamp SA
+# Copyright (c) 2014-2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,36 +32,22 @@
 Revision ID: 54645a535ad6
 Revises: 415746eb9f6
 Create Date: 2014-11-25 14:39:05.110315
-
 """
+
+from alembic import op, context
+from sqlalchemy import Column
+from sqlalchemy.types import Integer
 
 # revision identifiers, used by Alembic.
 revision = '54645a535ad6'
 down_revision = '415746eb9f6'
 
-from alembic import op, context
-from sqlalchemy import Column
-from sqlalchemy.types import Integer
-# from sqlalchemy.engine.reflection import Inspector
-
 
 def upgrade():
     schema = context.get_context().config.get_main_option('schema')
 
-#    engine = op.get_bind().engine
-#    inspector = Inspector.from_engine(engine)
-#    if 'ordering' in [c.name for c in inspector.get_columns(
-#        'layergroup_treeitem', schema=schema
-#    )]:
-#        return
-
     op.drop_constraint('layergroup_treeitem_pkey', 'layergroup_treeitem', schema=schema)
     op.add_column('layergroup_treeitem', Column('id', Integer, primary_key=True), schema=schema)
-#    op.execute(
-#        'ALTER TABLE %(schema)s.layergroup_treeitem ADD COLUMN id serial PRIMARY KEY' % {
-#            'schema': schema
-#        }
-#    )
     op.add_column('layergroup_treeitem', Column('ordering', Integer), schema=schema)
     op.execute(
         "UPDATE ONLY %(schema)s.layergroup_treeitem AS lt SET ordering = ti.\"order\" "
@@ -80,7 +66,9 @@ def downgrade():
     op.add_column('treeitem', Column('order', Integer), schema=schema)
     op.execute(
         "UPDATE ONLY %(schema)s.treeitem AS ti SET \"order\" = lt.ordering "
-        "FROM %(schema)s.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id " % {'schema': schema}
+        "FROM %(schema)s.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id " % {
+            'schema': schema
+        }
     )
     op.execute(
         "UPDATE ONLY %(schema)s.treeitem AS ti SET \"order\" = t.ordering "

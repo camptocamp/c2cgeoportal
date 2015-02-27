@@ -262,7 +262,7 @@ Ext.define('App.controller.Main', {
                 results.push(layer)
             }
         }, this);
- 
+
         return results;
     },
 

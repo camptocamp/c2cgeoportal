@@ -28,7 +28,7 @@ hosts:
     dummy: true
   - !dnsMatch
     host: ${host}
-    port: 80 
+    port: 80
   - !dnsMatch
     host: ${host}
     port: ${waitress_port}
@@ -36,7 +36,7 @@ hosts:
 localHostForward:
     from:
         - ${host}
-    https2http: True 
+    https2http: True
 
 #===========================================================================
 # the output filename

@@ -89,7 +89,7 @@ Initialization
 
   .. prompt:: bash
 
-   	git add tilegeneration
+    git add tilegeneration
 
 Configuration
 ~~~~~~~~~~~~~

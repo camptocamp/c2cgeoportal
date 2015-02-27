@@ -251,13 +251,13 @@ ${self.block_logo()}
           items:
             - !attributes
               source: table
-              tableConfig: 
-                cells: 
+              tableConfig:
+                cells:
                   - padding: 2
                     backgroundColor: #ffffff
                     borderWidthRight: 1
                     borderWidthBottom: 1
-                    borderColor: black  
+                    borderColor: black
               columnDefs:
                 col0:
                   header: !text
@@ -404,7 +404,7 @@ ${self.block_logo()}
                       - !text
                         text: '<%text>$</%text>{col11}'
                         fontSize: 8
-                        backgroundColor: #ffffff  
+                        backgroundColor: #ffffff
                 col12:
                   header: !text
                     text: '<%text>$</%text>{col12}'
@@ -428,7 +428,7 @@ ${self.block_logo()}
                       - !text
                         text: '<%text>$</%text>{col13}'
                         fontSize: 8
-                        backgroundColor: #ffffff 
+                        backgroundColor: #ffffff
                 col14:
                   header: !text
                     text: '<%text>$</%text>{col14}'
@@ -440,7 +440,7 @@ ${self.block_logo()}
                       - !text
                         text: '<%text>$</%text>{col14}'
                         fontSize: 8
-                        backgroundColor: #ffffff   
+                        backgroundColor: #ffffff
 
     lastPage:
       pageSize: A4

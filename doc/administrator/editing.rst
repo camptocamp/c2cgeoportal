@@ -22,7 +22,7 @@ To be editable a layer should satisfy the following requirements:
    schema though, which is even recommended.
 3. The PostGIS table should include a primary key with a sequence
    associated. Example::
-   
+
        db=# \d table;
                             Table "public.table"
            Column   |      Type   |                              Modifiers
@@ -78,7 +78,7 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
     Acctually the editing widn't work well with many ediable layers.
 
-    
+
 Configuring security
 --------------------
 

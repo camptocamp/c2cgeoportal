@@ -1,5 +1,5 @@
 [DEFAULT]
-project = {{package}} 
+project = {{package}}
 
 [main]
 hookdir = %(here)s/hooks/
@@ -25,4 +25,3 @@ content = Include /var/www/c2cgeoportal_mapfish/private/c2cgeoportal/apache/*.co
 [remote_hosts]
 demo = c2cpc.camptocamp.com
 prod = c2cpc.camptocamp.com
-

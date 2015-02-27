@@ -20,6 +20,7 @@ tsf2 = TranslationStringFactory('c2cgeoportal')
 def add_localizer(event):
     request = event.request
     localizer = get_localizer(request)
+
     def auto_translate(string):
         return localizer.translate(tsf2(localizer.translate(tsf1(string))))
     request.localizer = localizer

@@ -1,0 +1,3 @@
+*.rst tex conflict-marker-size=100
+c2cgeoportal/scaffolds/update/+package+/static/mobile/+dot+sencha/** -whitespace
+c2cgeoportal/scaffolds/update/+package+/static/mobile/touch/** -whitespace

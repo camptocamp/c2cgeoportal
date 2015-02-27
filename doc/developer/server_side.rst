@@ -215,7 +215,7 @@ Eggs
 All the ``c2cgeoportal`` (and ``tilecloud-chain``) dependencies are present in
 the ``c2cgeoportal/scaffolds/update/CONST_versions.mako`` file.
 
-To update them you can simply get them from a travis build in the 
+To update them you can simply get them from a travis build in the
 ``.build/venv/bin/pip freeze`` task.
 
 Submodules

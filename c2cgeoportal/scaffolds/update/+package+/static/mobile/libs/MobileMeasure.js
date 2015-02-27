@@ -23,7 +23,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * {DOMElement} Buttons container
      */
     buttonsCtn: null,
-    
+
     /**
      * Property: activateButton
      * {DOMElement}
@@ -35,13 +35,13 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * {DOMElement}
      */
     deactivateButton: null,
-    
+
     /**
      * Property: addFirstPointButton
      * {DOMElement}
      */
     addFirstPointButton: null,
-    
+
     /**
      * Property: addPointButton
      * {DOMElement}
@@ -83,7 +83,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
      * {OpenLayers.Geometry.Point} Last added point
      */
     lastPoint: null,
-    
+
     /**
      * Property: target
      * {OpenLayers.Geometry.Point} End point
@@ -136,13 +136,13 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         var lineStyle = OpenLayers.Util.applyDefaults({
             strokeWidth: 2
         }, defaultStyle);
-        
+
         var temporaryStyle = OpenLayers.Util.applyDefaults({
             fillColor: 'blue',
             strokeColor: 'blue',
             fontColor: 'blue'
         }, defaultStyle);
-        
+
         this.layer = new OpenLayers.Layer.Vector(this.CLASS_NAME, {
             displayInLayerSwitcher: false,
             calculateInRange: OpenLayers.Function.True,
@@ -157,11 +157,11 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
 
     draw: function() {
         var div = OpenLayers.Control.prototype.draw.apply(this);
-        
+
         this.buttonsCtn = document.createElement('div');
         this.buttonsCtn.id = 'buttonsCtn';
         this.div.appendChild(this.buttonsCtn);
-        
+
         this.activateButton = this.addButton("activateButton", "", true);
         this.deactivateButton = this.addButton("deactivateButton", "");
         this.newMeasureButton = this.addButton('newMeasureButton', "");
@@ -170,7 +170,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         this.addPointButton = this.addButton('addPointButton',
                                              'Add new point');
         this.finishButton = this.addButton('finishButton', 'Finish');
-        
+
         this.eventsInstance = this.map.events;
         this.eventsInstance.register("buttonclick", this, this.onClick);
 
@@ -271,7 +271,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
         this.map.events.register('move', this, this.hideMessage);
         this.map.events.register('move', this, this.updateTarget);
         this.active = true;
-        
+
         this.updateTarget();
         this.hideButton(this.activateButton);
         this.showButton(this.deactivateButton);
@@ -303,10 +303,10 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             if (measure != undefined && measure[0] != 0) {
                 var measure = measure[0].toPrecision(4) + ' ' + measure[1];
                 this.lastPoint.attributes.label = measure;
-                                                  
+
             }
         }
-        
+
         this.lastPoint.geometry.clearBounds();
         this.linestring.geometry.clearBounds();
         this.layer.drawFeature(this.linestring, 'line');
@@ -355,7 +355,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             this.showButton(this.addPointButton);
         }
     },
-    
+
     /**
      * Method: addButton
      * Create a button with id and text.
@@ -368,14 +368,14 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             OpenLayers.Element.addClass(div, 'hidden');
         }
         this.buttonsCtn.appendChild(div);
-        
+
         var a = document.createElement('a');
         a.innerHTML = OpenLayers.i18n(text);
         div.appendChild(a);
-      
+
         return div;
     },
-    
+
     /**
      * Method: removeButton
      * Remove a button by dom object.
@@ -385,7 +385,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
             button.parentNode.removeChild(button);
         }
     },
-    
+
     /**
      * Method: showButton
      * Show button to the user.
@@ -393,7 +393,7 @@ App.MobileMeasure = OpenLayers.Class(OpenLayers.Control, {
     showButton: function(button) {
         OpenLayers.Element.removeClass(button, 'hidden');
     },
-    
+
     /**
      * Method: hideButton
      * Hide button to the user.

@@ -1,10 +1,10 @@
 /**
  * Class: DeleteFeatureControl
  * Control to delete features. It is supposed to be used together
- *      with a <OpenLayers.Control.ModifyFeature> control, which 
+ *      with a <OpenLayers.Control.ModifyFeature> control, which
  *      must be set in the constructor.
  *      The control is activated when a feature is selected with
- *      the <OpenLayers.Control.ModifyFeature> control. Then 
+ *      the <OpenLayers.Control.ModifyFeature> control. Then
  *      a click on the DeleteFeature control deletes the feature.
  *
  * Inherits From:
@@ -14,8 +14,8 @@ DeleteFeatureControl = OpenLayers.Class(OpenLayers.Control, {
 
     /**
      * Property: type
-     * {String} The type of <OpenLayers.Control> -- When added to a 
-     *     <Control.Panel>, 'type' is used by the panel to determine how to 
+     * {String} The type of <OpenLayers.Control> -- When added to a
+     *     <Control.Panel>, 'type' is used by the panel to determine how to
      *     handle our events.
      */
     type: OpenLayers.Control.TYPE_BUTTON,
@@ -32,12 +32,12 @@ DeleteFeatureControl = OpenLayers.Class(OpenLayers.Control, {
      */
     initialize: function (modifyFeatureControl, options) {
         this.modifyFeatureControl = modifyFeatureControl;
-        
-        modifyFeatureControl.layer.events.register("beforefeaturemodified", 
+
+        modifyFeatureControl.layer.events.register("beforefeaturemodified",
                 this, this.handleFeatureSelected);
-        modifyFeatureControl.layer.events.register("afterfeaturemodified", 
+        modifyFeatureControl.layer.events.register("afterfeaturemodified",
                 this, this.handleFeatureUnSelected);
-        
+
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
     },
 
@@ -58,7 +58,7 @@ DeleteFeatureControl = OpenLayers.Class(OpenLayers.Control, {
     handleFeatureUnSelected : function() {
         this.panel_div.className = this.displayClass + 'ItemInactive';
     },
-    
+
     /**
      * Method: trigger
      * Called when the control is clicked. Deletes the selected
@@ -68,17 +68,17 @@ DeleteFeatureControl = OpenLayers.Class(OpenLayers.Control, {
         if (this.modifyFeatureControl.feature && confirm(OpenLayers.i18n('confirm delete feature'))) {
             var layer = this.modifyFeatureControl.layer;
             var feature = this.modifyFeatureControl.feature;
-            
-            var continueRemoving = layer.events.triggerEvent("beforefeatureremoved", 
+
+            var continueRemoving = layer.events.triggerEvent("beforefeatureremoved",
                     {feature: feature});
-            
+
             if (continueRemoving === false) {
                 return;
             }
-            
+
             layer.removeFeatures([feature], {silent: true});
             feature.state = OpenLayers.State.DELETE;
-            layer.events.triggerEvent("featureremoved", 
+            layer.events.triggerEvent("featureremoved",
                             {feature: feature});
             this.modifyFeatureControl.unselectFeature(feature);
         }
@@ -86,7 +86,7 @@ DeleteFeatureControl = OpenLayers.Class(OpenLayers.Control, {
 
     CLASS_NAME: "DeleteFeatureControl"
 });
-  
+
 var geoformalchemy = {};
 
 geoformalchemy.getRestriction = function (field_name) {
@@ -111,16 +111,16 @@ geoformalchemy.init_map = function (
         zoom,
         base_layer,
         wkt
-                           ) {    
+                           ) {
     var map, layer, vlayer, panelControls;
     var geometry_field = document.getElementById(field_name);
     var wkt_parser = new OpenLayers.Format.WKT();
-    
+
     layer = base_layer;
     vlayer = new OpenLayers.Layer.Vector("Geometries");
 
     var restrictRectangle = geoformalchemy.getRestriction(field_name)
-    
+
     if (read_only) {
         // in read-mode, only show navigation control
         panelControls = [new OpenLayers.Control.Navigation()];
@@ -133,7 +133,7 @@ geoformalchemy.init_map = function (
          */
         var update_geometry_field = function (feature) {
             var wkt = null;
-            if (feature === null || 
+            if (feature === null ||
                     ((feature instanceof Array) && (feature.length <= 0))) {
                 wkt = '';
             } else {
@@ -141,10 +141,10 @@ geoformalchemy.init_map = function (
             }
             geometry_field.value = wkt;
         };
-        
+
         /**
          * Creates an array containing all features of
-         * the vector layer. OpenLayers can not create 
+         * the vector layer. OpenLayers can not create
          * WKT string from a GeometryCollection, so that's
          * why we are constructing an array of Geometries.
          */
@@ -155,7 +155,7 @@ geoformalchemy.init_map = function (
             }
             return collection_feature;
         };
-        
+
         /**
          * When a features is modified, update the geometry field.
          */
@@ -173,11 +173,11 @@ geoformalchemy.init_map = function (
                 }
             }
             update_geometry_field(features);
-        };        
+        };
 
         /**
          * When a features is added, update the geometry field. If the geometry
-         * type is 'Collection', construct an array of the already existing 
+         * type is 'Collection', construct an array of the already existing
          * features and add the new feature to this array.
          */
         var before_feature_added_handler = function (event) {
@@ -197,12 +197,12 @@ geoformalchemy.init_map = function (
 
             return true;
         };
-        
+
         vlayer.events.on({"featuremodified": feature_modified_handler});
         vlayer.events.on({"beforefeatureadded": before_feature_added_handler});
         vlayer.events.on({"afterfeaturemodified": feature_modified_handler});
         vlayer.events.on({"sketchcomplete": feature_modified_handler});
-        
+
         panelControls = [new OpenLayers.Control.Navigation()];
 
         if (geometry_type === 'Polygon' || geometry_type === 'Collection') {
@@ -218,24 +218,24 @@ geoformalchemy.init_map = function (
                          OpenLayers.Handler.RegularPolygon,
                          {'displayClass': 'olControlDrawFeaturePolygon',
                           handlerOptions: {sides: 4, irregular: true}}));
-                }               
+                }
             }
-            
+
         if (geometry_type === 'Point' || geometry_type === 'Collection') {
             panelControls.push(new OpenLayers.Control.DrawFeature(vlayer,
                      OpenLayers.Handler.Point,
                      {'displayClass': 'olControlDrawFeaturePoint'}));
-        }  
-        
+        }
 
-        
+
+
         if (geometry_type === 'Path' || geometry_type === 'Collection') {
             panelControls.push(new OpenLayers.Control.DrawFeature(vlayer,
                      OpenLayers.Handler.Path,
                      {'displayClass': 'olControlDrawFeaturePath'}));
-        }  
-        
-        if ((geometry_type === 'Polygon' || geometry_type === 'Collection') && 
+        }
+
+        if ((geometry_type === 'Polygon' || geometry_type === 'Collection') &&
             restrictRectangle) {
             var controlModifyFeature = new OpenLayers.Control.ModifyFeature(vlayer,
                     {'displayClass': 'olControlModifyFeature',
@@ -257,7 +257,7 @@ geoformalchemy.init_map = function (
         panelControls.push(controlModifyFeature);
         panelControls.push(controlDragFeature);
     }
-    
+
     map = new OpenLayers.Map('map_' + field_name, {theme: null});
 
     $('#map_' + field_name).resizable({
@@ -265,7 +265,7 @@ geoformalchemy.init_map = function (
             map.updateSize();
         }
     });
-    
+
     var toolbar = new OpenLayers.Control.Panel({
         displayClass: 'olControlEditingToolbar',
         defaultControl: panelControls[0]
@@ -282,8 +282,8 @@ geoformalchemy.init_map = function (
             features = [features];
         }
         vlayer.addFeatures(features, {'silent': true});
-        
-        /* OpenLayers creates an array of features when the WKT string 
+
+        /* OpenLayers creates an array of features when the WKT string
          * represents a GeometryCollection. To get the centroid of all
          * features, we have to create a 'real' GeometryCollection.
          */
@@ -292,9 +292,9 @@ geoformalchemy.init_map = function (
             geometry_collection.addComponents(features[i].geometry);
         }
         var centroid = geometry_collection.getCentroid();
-        
+
         map.setCenter(new OpenLayers.LonLat(centroid.x, centroid.y), zoom);
     } else {
         map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
-    }   
+    }
 };

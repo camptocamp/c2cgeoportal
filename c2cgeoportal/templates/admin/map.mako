@@ -3,7 +3,7 @@
 # no field options were set, e.g. with:
 #
 # Place = FieldSet(model.places.Place)
-# Place.the_geom.set(options=[('zoom', 12), ..]) 
+# Place.the_geom.set(options=[('zoom', 12), ..])
 
 options = {}
 options['zoom'] = 4
@@ -32,17 +32,17 @@ options['image_remove_feature_off'] = get_current_request().static_url('c2cgeopo
     right: 10px;
 }
 
-.olControlEditingToolbar .olControlModifyFeatureItemActive { 
+.olControlEditingToolbar .olControlModifyFeatureItemActive {
     background-image: url("${image_select_feature_on or options['image_select_feature_on']}");
 }
-.olControlEditingToolbar .olControlModifyFeatureItemInactive { 
+.olControlEditingToolbar .olControlModifyFeatureItemInactive {
     background-image: url("${image_select_feature_off or options['image_select_feature_off']}");
 }
 
-.olControlEditingToolbar .olControlDeleteFeatureItemActive { 
+.olControlEditingToolbar .olControlDeleteFeatureItemActive {
     background-image: url("${image_remove_feature_on or options['image_remove_feature_on']}");
 }
-.olControlEditingToolbar .olControlDeleteFeatureItemInactive { 
+.olControlEditingToolbar .olControlDeleteFeatureItemInactive {
     background-image: url("${image_remove_feature_off or options['image_remove_feature_off']}");
 }
 

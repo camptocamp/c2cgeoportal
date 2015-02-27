@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2014, Camptocamp SA
+# Copyright (c) 2014-2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,19 +33,20 @@
 Revision ID: 3f89a7d71a5e
 Revises: 20137477bd02
 Create Date: 2014-12-18 10:27:52.263992
-
 """
+
+from alembic import op, context
+from sqlalchemy import types
 
 # revision identifiers, used by Alembic.
 revision = '3f89a7d71a5e'
 down_revision = '20137477bd02'
 
-from alembic import op, context
-from sqlalchemy import types
 
 def upgrade():
-    schema='%s_static' % context.get_context().config.get_main_option('schema')
+    schema = '%s_static' % context.get_context().config.get_main_option('schema')
     op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
+
 
 def downgrade():
     pass
