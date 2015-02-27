@@ -21,8 +21,6 @@ Version 1.6
     cp /tmp/{{project}}/deploy/hooks/post-restore-code deploy/hooks
     chmod +x deploy/hooks/post-restore-code
 
-    git add alembic.ini.in deploy/hooks/post-restore-code
-
     rm -rf /tmp/{{project}}
 
 2. Removes the deprecated files:

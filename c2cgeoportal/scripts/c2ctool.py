@@ -86,7 +86,7 @@ To have some help on a command type:
         print(usage)
         exit()
 
-    if sys.argv[1] == 'help':
+    if sys.argv[1] == "help":
         if len(sys.argv) > 2:
             parser = _fill_arguments(sys.argv[2])
             parser.print_help()
@@ -97,9 +97,9 @@ To have some help on a command type:
     parser = _fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
 
-    if sys.argv[1] == 'upgrade':
+    if sys.argv[1] == "upgrade":
         upgrade(options)
-    elif sys.argv[1] == 'deploy':
+    elif sys.argv[1] == "deploy":
         deploy(options)
     else:
         print("Unknown command")
@@ -109,32 +109,32 @@ def _fill_arguments(command):
     parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
     parser.add_argument(
         "--no-cleanall",
-        description="Run clean instead of cleanall",
+        help="Run clean instead of cleanall",
         default="cleanall",
         action="store_const",
         const="clean",
         dest="clean",
     )
-    if command == 'help':
+    if command == "help":
         parser.add_argument(
-            'command', metavar='COMMAND', help='The command'
+            "command", metavar="COMMAND", help="The command"
         )
-    elif command == 'upgrade':
+    elif command == "upgrade":
         parser.add_argument(
-            'file', metavar='MAKEFILE', help='The makefile used to build', default=None
-        )
-        parser.add_argument(
-            '--step', type=int, help=argparse.SUPPRESS, default=0
+            "file", metavar="MAKEFILE", help="The makefile used to build", default=None
         )
         parser.add_argument(
-            'version', metavar='VERSION', help='Upgrade to version'
-        )
-    elif command == 'deploy':
-        parser.add_argument(
-            'host', metavar='HOST', help='The destination host'
+            "--step", type=int, help=argparse.SUPPRESS, default=0
         )
         parser.add_argument(
-            '--components',
+            "version", metavar="VERSION", help="Upgrade to version"
+        )
+    elif command == "deploy":
+        parser.add_argument(
+            "host", metavar="HOST", help="The destination host"
+        )
+        parser.add_argument(
+            "--components",
             help="Restrict component to update. [databases,files,code]. default to all",
             default=None
         )
@@ -163,28 +163,28 @@ def _print_step(options, step, intro="To continue type:"):
 
 def _get_project(options):
     check_call(["make", "-f", options.file, "project.yaml"])
-    if not path.isfile('project.yaml'):
+    if not path.isfile("project.yaml"):
         print("Unable to find the required 'project.yaml' file.")
         exit(1)
 
-    return load(file('project.yaml', 'r'))
+    return load(file("project.yaml", "r"))
 
 
 def _test_checkers(project):
     http = httplib2.Http()
     for check_type in ["", "type=all"]:
         resp, content = http.request(
-            "http://localhost%s%s" % (project['checker_path'], check_type),
-            method='GET',
+            "http://localhost%s%s" % (project["checker_path"], check_type),
+            method="GET",
             headers={
-                "Host": project['host']
+                "Host": project["host"]
             }
         )
         if resp.status < 200 or resp.status >= 300:
             print(_color_bar)
             print("Checker error:")
             print("Open `http://%s%s%s` for more informations." % (
-                project['host'], project['checker_path'], check_type
+                project["host"], project["checker_path"], check_type
             ))
             return False
     return True
@@ -240,13 +240,13 @@ def upgrade(options):
                 )
                 exit(1)
 
-        if path.split(path.realpath('.'))[1] != project['project_folder']:
+        if path.split(path.realpath("."))[1] != project["project_folder"]:
             print("Your project isn't in the right folder!")
             print("It should be in folder '%s' instead of folder '%s'." % (
-                project['project_folder'], path.split(path.realpath('.'))[1]
+                project["project_folder"], path.split(path.realpath("."))[1]
             ))
 
-        check_call(['git', 'status'])
+        check_call(["git", "status"])
         print()
         print(_color_bar)
         print(
@@ -268,29 +268,27 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        if len(check_output(['git', 'status', '-z']).strip()) != 0:
+        if len(check_output(["git", "status", "-z"]).strip()) != 0:
             print(_color_bar)
             print(_colorize("The pull isn't fast forward.", RED))
             print(_colorize("Please solve the rebase and run it again.", YELLOW))
             exit(1)
 
-        check_call(['git', 'submodule', 'foreach', 'git', 'fetch'])
-        check_call(['git', 'submodule', 'foreach', 'git', 'checkout', options.version])
+        check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
         check_call([
-            'git', 'submodule', 'foreach', 'git', 'reset',
-            '--hard', options.version
+            "git", "submodule", "foreach", "git", "reset",
+            "--hard", "origin/%s" % options.version
         ])
-        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'sync'])
-        check_call(['git', 'submodule', 'foreach', 'git', 'submodule', 'update', '--init'])
-        if path.exists(".build"):
-            check_call([
-                'wget',
-                'http://raw.github.com/camptocamp/c2cgeoportal/%s/'
-                'c2cgeoportal/scaffolds/update/CONST_versions.txt'
-                % options.version, '-O', 'CONST_versions.txt'
-            ])
-            check_call(['make', '-f', options.file, options.clean])
-            check_call(['make', '-f', options.file, '.build/requirements.timestamp'])
+        check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
+        check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
+        check_call([
+            "wget",
+            "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
+            "c2cgeoportal/scaffolds/update/CONST_versions.txt"
+            % options.version, "-O", "CONST_versions.txt"
+        ])
+        check_call(["make", "-f", options.file, options.clean])
+        check_call(["make", "-f", options.file, ".build/requirements.timestamp"])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
@@ -298,7 +296,7 @@ def upgrade(options):
         ])
 
         diff_file = open("changelog.diff", "w")
-        check_call(['git', 'diff', 'CONST_CHANGELOG.txt'], stdout=diff_file)
+        check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
         diff_file.close()
 
         print()
@@ -314,16 +312,16 @@ def upgrade(options):
             print("The makefile is missing")
             exit(1)
 
-        if path.isfile('changelog.diff'):
+        if path.isfile("changelog.diff"):
             unlink("changelog.diff")
 
-        check_call(['make', '-f', options.file, options.clean])
-        check_call(['make', '-f', options.file, 'build'])
+        check_call(["make", "-f", options.file, options.clean])
+        check_call(["make", "-f", options.file, "build"])
 
         alembic_cfg = Config("alembic.ini")
         command.upgrade(alembic_cfg, "head")
 
-        check_call(['sudo', '/usr/sbin/apache2ctl', 'graceful'])
+        check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
 
         print()
         print(_color_bar)
@@ -337,8 +335,8 @@ def upgrade(options):
             _print_step(options, 3, intro="Correct them then type:")
             exit(1)
 
-        check_call(['git', 'add', '-A'])
-        check_call(['git', 'commit', '-m', 'Upgrade to GeoMapFish %s' % options.version])
+        check_call(["git", "add", "-A"])
+        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % options.version])
 
 
 def deploy(options):
@@ -347,8 +345,8 @@ def deploy(options):
         print(_colorize("Correct them and run again", RED))
         exit(1)
 
-    check_call(['sudo', '-u', 'deploy', 'deploy', '-r', 'deploy/deploy.cfg', options.host])
-    check_call(['make', '-f', options.file, 'build'])
+    check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", options.host])
+    check_call(["make", "-f", options.file, "build"])
 
 
 if __name__ == "__main__":  # pragma: no cover

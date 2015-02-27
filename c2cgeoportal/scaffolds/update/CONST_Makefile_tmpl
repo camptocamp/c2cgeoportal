@@ -240,9 +240,9 @@ C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VAR
 
 # Apache
 APACHE_VHOST ?= $(PACKAGE)
-APACHE_CONF_DIR ?= /var/www/vhost/$(APACHE_VHOST)/conf
+APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 CONF_FILES = $(shell ls -1 apache/*.conf)
-PY_FILES = $(shell -type f -name '*.py' -print)
+PY_FILES = $(shell find c2cgeoportal -type f -name '*.py' -print)
 
 
 .PHONY: help
@@ -251,16 +251,16 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo "- build					Build and configure the project"
-	@echo "- checks					Perform a number of checks on the code"
-	@echo "- serve					Run the development server (pserve)"
-	@echo "- clean					Remove generated files"
-	@echo "- cleanall				Remove all the build artefacts"
+	@echo "- build			Build and configure the project"
+	@echo "- checks			Perform a number of checks on the code"
+	@echo "- serve			Run the development server (Pserve)"
+	@echo "- clean			Remove generated files"
+	@echo "- cleanall		Remove all the build artefacts"
 	@echo
 	@echo "Utility targets:"
 	@echo
-	@echo "- update					Update the project (GIT, node, pip)"
-	@echo "- update-git-submodules	Update the GIT submodules"
+	@echo "- update			Update the project (Git, Node, Pip)"
+	@echo "- update-git-submodules	Update the Git submodules"
 	@echo "- update-node-modules	Update node modules (using --force)"
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
@@ -268,15 +268,15 @@ endif
 	@echo
 	@echo "Secondary targets:"
 	@echo
-	@echo "- build-cgxp				Build the javascript and the css for cgxp"
-	@echo "- build-ngeo				Build the javascript and the css for ngeo"
-	@echo "- build-server			Build the files required by the server"
-	@echo "- compile-js-catalog		Compile the angular translation catalog"
-	@echo "- compile-py-catalog		Compile the angular translation catalog"
-	@echo "- flake8					Run flake8 checker on the Python code"
-	@echo "- lint-ngeo				Check the JavaScript code with linters for ngeo"
-	@echo "- template-clean		 	Clean the template file"
-	@echo "- template-generate		Generate the template file"
+	@echo "- build-cgxp		Build the javascript and the css for cgxp"
+	@echo "- build-ngeo		Build the javascript and the css for ngeo"
+	@echo "- build-server		Build the files required by the server"
+	@echo "- compile-js-catalog	Compile the Angular translation catalog"
+	@echo "- compile-py-catalog	Compile the Python translation catalog"
+	@echo "- flake8			Run Flake8 checker on the Python code"
+	@echo "- lint-ngeo		Check the JavaScript code with linters for ngeo"
+	@echo "- template-clean	 	Clean the template file"
+	@echo "- template-generate	Generate the template file"
 ifdef SECONDARY_HELP
 	@echo $(SECONDARY_HELP)
 endif
@@ -300,6 +300,9 @@ clean: template-clean
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
+	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: flake8
 flake8: .build/venv/bin/flake8
@@ -657,5 +660,6 @@ apache: .build/apache.timestamp
 $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
-.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf .build/requirements.timestamp
 	sudo /usr/sbin/apache2ctl graceful
+	touch $@
