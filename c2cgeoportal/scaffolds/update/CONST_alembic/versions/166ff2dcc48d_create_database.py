@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2014, Camptocamp SA
+# Copyright (c) 2014-2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 """create database
 
 Revision ID: 166ff2dcc48d
 Revises: 415746eb9f6
 Create Date: 2014-10-24 11:43:23.886123
-
 """
-
-# revision identifiers, used by Alembic.
-revision = '166ff2dcc48d'
-down_revision = None
 
 try:
     from hashlib import sha1
@@ -50,6 +44,10 @@ from alembic import op, context
 from sqlalchemy import ForeignKey, Column, Table, MetaData
 from sqlalchemy.types import Integer, Boolean, Unicode, String, Float, \
     UserDefinedType, DateTime
+
+# revision identifiers, used by Alembic.
+revision = '166ff2dcc48d'
+down_revision = None
 
 
 class TsVector(UserDefinedType):
@@ -94,9 +92,12 @@ def upgrade():
         Column('readwrite', Boolean, default=False),
         schema=schema,
     )
-    op.execute("SELECT AddGeometryColumn('%(schema)s', 'restrictionarea', 'area', %(srid)s, 'POLYGON', 2)" % {
-        'schema': schema, 'srid': srid
-    })
+    op.execute(
+        "SELECT AddGeometryColumn('%(schema)s', 'restrictionarea', "
+        "'area', %(srid)s, 'POLYGON', 2)" % {
+            'schema': schema, 'srid': srid
+        }
+    )
     op.create_table(
         'shorturl',
         Column('id', Integer, primary_key=True),
@@ -116,9 +117,12 @@ def upgrade():
         Column('description', Unicode),
         schema=schema,
     )
-    op.execute("SELECT AddGeometryColumn('%(schema)s', 'role', 'extent', %(srid)s, 'POLYGON', 2)" % {
-        'schema': schema, 'srid': srid
-    })
+    op.execute(
+        "SELECT AddGeometryColumn('%(schema)s', 'role', "
+        "'extent', %(srid)s, 'POLYGON', 2)" % {
+            'schema': schema, 'srid': srid
+        }
+    )
     role = Table(
         'role', MetaData(),
         Column('name', Unicode, unique=True, nullable=False),
@@ -187,9 +191,12 @@ def upgrade():
         Column('params', Unicode, nullable=True),
         schema=schema,
     )
-    op.execute("SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', %(srid)s, 'GEOMETRY', 2)" % {
-        'schema': schema, 'srid': srid
-    })
+    op.execute(
+        "SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', "
+        "%(srid)s, 'GEOMETRY', 2)" % {
+            'schema': schema, 'srid': srid
+        }
+    )
     op.create_index(
         'tsearch_ts_idx', 'tsearch', ['ts'],
         schema=schema, postgresql_using='gin'
