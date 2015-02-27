@@ -14,4 +14,3 @@ ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
    SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
    #SetEnv MS_MAPFILE_PATTERN "^${directory}/mapserver/c2cgeoportal.map$"
 </Location>
-

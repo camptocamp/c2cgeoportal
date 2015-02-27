@@ -2828,4 +2828,3 @@ Added a colorpicker to the redlining tool.
 In the jsbuild/app.cfg, CGXP/plugins/Redlining.js should be replaced by
 CGXP/widgets/RedliningColorPicker.js for the new colorpicker or by
 CGXP/widgets/RedliningCombo.js to have the old combobox.
-

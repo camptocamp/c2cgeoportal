@@ -23,4 +23,3 @@ geoformalchemy.init_map(
     ${base_layer or options['base_layer'] | n},
     '${wkt}'
 );
-
