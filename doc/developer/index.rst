@@ -14,12 +14,13 @@ Content:
 .. toctree::
     :maxdepth: 1
 
-    development_procedure
-    server_side
-    webservices
-    client_side
+    transifex
     debugging
-    build_release
+    webservices
     principles
+    server_side
+    client_side
+    build_release
     python_packaging
+    development_procedure
     documentation_infrastructure
