@@ -262,6 +262,9 @@ help:
 	@echo "- update					Update the project (GIT, node, pip)"
 	@echo "- update-git-submodules	Update the GIT submodules"
 	@echo "- update-node-modules	Update node modules (using --force)"
+ifdef UTILITY_HELP
+	@echo $(UTILITY_HELP)
+endif
 	@echo
 	@echo "Secondary targets:"
 	@echo
@@ -274,6 +277,9 @@ help:
 	@echo "- lint-ngeo				Check the JavaScript code with linters for ngeo"
 	@echo "- template-clean		 	Clean the template file"
 	@echo "- template-generate		Generate the template file"
+ifdef SECONDARY_HELP
+	@echo $(SECONDARY_HELP)
+endif
 	@echo
 
 .PHONY: build
