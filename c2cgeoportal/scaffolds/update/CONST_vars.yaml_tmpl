@@ -55,7 +55,7 @@ vars:
     dbpassword_replication: to_be_defined
     enable_admin_interface: True
 
-    directory: pwd
+    directory: pwd | tr -d '\n'
     python_path: __import__('distutils').sysconfig.get_python_lib()
 
     # Authentication settings
@@ -234,6 +234,7 @@ vars:
         print_center_lat: to be defined
         print_scale: 10000
         fulltextsearch: text to search
+        lang_files: [ngeo, cgxp, cgxp-api]
 
     # Check collector configuration
     check_collector:
@@ -248,10 +249,14 @@ vars:
               display: Edit page
             - name: checker_edit_js
               display: Edit script
+            - name: checker_theme_errors
+              display: Errors in the themes
             - name: checker_api
               display: API
             - name: checker_xapi
               display: Extended API
+            - name: checker_lang_files
+              display: Language files
             - name: checker_printcapabilities
               display: Print capabilities
             - name: checker_pdf
@@ -290,5 +295,3 @@ interpreted:
     - development
     bash:
     - directory
-    yaml:
-    - directory # to trim
