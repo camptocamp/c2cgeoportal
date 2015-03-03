@@ -17,7 +17,7 @@ http-parser==0.8.3
 httplib2==0.9
 isodate==0.5.1
 Jinja2==2.7.3
-js.jqgrid==4.3.1.post1
+js.jqgrid==4.1.0
 js.jquery==1.7.1
 js.jquery-form==3.9
 js.jquery-jgrowl==1.2.5.post1
