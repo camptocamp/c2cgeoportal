@@ -94,7 +94,7 @@ class TestLoopTheme(TestCase):
         curdir = os.path.dirname(os.path.abspath(__file__))
         mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
         ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
-        request.registry.settings['mapserv_url'] = ms_url
+        request.registry.settings["mapserverproxy"] = {"mapserv_url": ms_url}
         request.user = None
         entry = Entry(request)
 

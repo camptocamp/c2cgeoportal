@@ -45,21 +45,21 @@ class MapservProxy(Proxy):
 
     def __init__(self, request):
         Proxy.__init__(self, request)
-        self.settings = request.registry.settings.get('wfs', {})
+        self.settings = request.registry.settings.get("mapserverproxy", {})
 
     def _get_wms_url(self):
-        return self.request.registry.settings.get("external_mapserv_url") if \
+        return self.settings.get("external_mapserv_url") if \
             self.external else \
-            self.request.registry.settings.get("mapserv_url")
+            self.settings.get("mapserv_url")
 
     def _get_wfs_url(self):
-        internal_url = self.request.registry.settings.get(
+        internal_url = self.settings.get(
             "mapserv_wfs_url",
-            self.request.registry.settings.get("mapserv_url")
+            self.settings.get("mapserv_url")
         )
-        external_url = self.request.registry.settings.get(
+        external_url = self.settings.get(
             "external_mapserv_wfs_url",
-            self.request.registry.settings.get("external_mapserv_url")
+            self.settings.get("external_mapserv_url")
         )
         return external_url if self.external else internal_url
 
@@ -178,7 +178,7 @@ class MapservProxy(Proxy):
                 content, role_id, self.lower_params.get('service') == 'wms',
                 self._get_wms_url(),
                 self.request.headers,
-                self.request.registry.settings.get('proxies', None)
+                self.settings.get('proxies', None)
             )
 
         content_type = None
