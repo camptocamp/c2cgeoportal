@@ -11,6 +11,7 @@
 /apache/application.wsgi
 /deploy/deploy.cfg
 /alembic.ini
+/alembic_static.ini
 /development.ini
 /production.ini
 /project.yaml

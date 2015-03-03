@@ -62,7 +62,7 @@ def _get_db_functionality(name, role):
 
 def get_functionality(name, config, request):
     result = []
-    if request.user:
+    if request.user is not None and request.user.role is not None:
         result = _get_db_functionality(name, request.user.role)
     if len(result) == 0:
         result = _get_config_functionality(name, request.user is not None, config)

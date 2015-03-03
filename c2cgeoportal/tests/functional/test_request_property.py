@@ -24,7 +24,7 @@ class TestRequestProperty(TestCase):
             username=u'__test_user', password=u'__test_user', role=r
         )
 
-        DBSession.add(u)
+        DBSession.add_all([u, r])
         transaction.commit()
 
     def tearDown(self):  # noqa

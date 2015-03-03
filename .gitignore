@@ -1,9 +1,11 @@
 *~
 *.pyc
+*.pyo
 /c2cgeoportal/static/build
 /c2cgeoportal/tests/functional/c2cgeoportal_test.map
 /c2cgeoportal/tests/functional/test.ini
 /c2cgeoportal/tests/functional/alembic.ini
+/c2cgeoportal/tests/functional/alembic_static.ini
 /c2cgeoportal/tests/testegg/production.ini
 /c2cgeoportal/locale/c2cgeoportal.pot
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo

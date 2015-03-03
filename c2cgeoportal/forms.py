@@ -549,7 +549,6 @@ Role = FieldSet(models.Role)
 Role.name.set(metadata=dict(mandatory='')).required()
 Role.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Role.restrictionareas.set(renderer=CheckBoxSet)
-Role.users.set(readonly=True)
 Role.extent.set(label=_(u'Extent'), options=[
     ('map_srid', 3857),
     ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
@@ -562,7 +561,6 @@ field_order = [
     Role.description,
     Role.functionalities,
     Role.restrictionareas,
-    Role.users,
     Role.extent
 ]
 Role.configure(include=field_order)
@@ -574,7 +572,7 @@ User.append(password)
 field_order = [
     User.username.validate(unique_validator).with_metadata(mandatory=''),
     password,
-    User.role
+    User.role_name
 ]
 if hasattr(User, 'parent_role'):  # pragma: no cover
     field_order.append(User.parent_role)
@@ -669,13 +667,12 @@ field_order = [
     Role.description,
     RoleGrid.functionalities,
     RoleGrid.restrictionareas,
-    RoleGrid.users
 ]
 RoleGrid.configure(include=field_order)
 
 # UserGrid
 UserGrid = Grid(models.User)
-field_order = [User.username, User.role]
+field_order = [User.username, User.role_name]
 if hasattr(UserGrid, 'parent_role'):  # pragma: no cover
-    field_order.append(User.parent_role)
+    field_order.append(User.parent_role_name)
 UserGrid.configure(include=field_order)

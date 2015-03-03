@@ -312,7 +312,6 @@ def get_user_from_request(request):
     exist in the database.
     """
     from c2cgeoportal.models import DBSession, User
-    from sqlalchemy.orm import joinedload
 
     if not hasattr(request, '_user'):
         request._user = None
@@ -321,7 +320,6 @@ def get_user_from_request(request):
             # We know we will need the role object of the
             # user so we use joined loading
             request._user = DBSession.query(User) \
-                .options(joinedload(User.role)) \
                 .filter_by(username=username) \
                 .first()
 

@@ -30,7 +30,7 @@
 """create database
 
 Revision ID: 166ff2dcc48d
-Revises: 415746eb9f6
+Revises:
 Create Date: 2014-10-24 11:43:23.886123
 """
 

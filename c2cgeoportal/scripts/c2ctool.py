@@ -318,8 +318,8 @@ def upgrade(options):
         check_call(["make", "-f", options.file, options.clean])
         check_call(["make", "-f", options.file, "build"])
 
-        alembic_cfg = Config("alembic.ini")
-        command.upgrade(alembic_cfg, "head")
+        command.upgrade(Config("alembic.ini"), "head")
+        command.upgrade(Config("alembic_static.ini"), "head")
 
         check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
 

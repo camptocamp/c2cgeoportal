@@ -222,15 +222,15 @@ endif
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 
 # Templates
-TEMPLATE_EXCLUDE += .build CONST_alembic/script.py.mako print/templates
+TEMPLATE_EXCLUDE += .build print/templates \
+	CONST_alembic/main/script.py.mako CONST_alembic/static/script.py.mako
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
-CONFIG_VARS += sqlalchemy.url auth_replication_enabled \
-	sqlalchemy_replication.url schema parentschema enable_admin_interface pyramid_closure \
+CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers \
 	available_locale_names cache admin_interface functionalities external_themes_url \
 	external_mapserv_url raster shortener mapserv_url hide_capabilities use_security_metadata \

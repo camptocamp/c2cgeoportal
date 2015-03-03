@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2014, Camptocamp SA
+# Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ Create Date: ${create_date}
 """
 
 from alembic import op
-import sqlalchemy as sa
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.
@@ -45,8 +44,16 @@ down_revision = "${down_revision}"
 
 
 def upgrade():
-    ${upgrades if upgrades else "pass"}
+    schema = context.get_context().config.get_main_option("schema")
+    staticschems = schema + "_static"
+    parentschema = context.get_context().config.get_main_option("parentschema")
+
+    ${upgrades if upgrades else "# Instructions"}
 
 
 def downgrade():
-    ${downgrades if downgrades else "pass"}
+    schema = context.get_context().config.get_main_option("schema")
+    staticschems = schema + "_static"
+    parentschema = context.get_context().config.get_main_option("parentschema")
+
+    ${downgrades if downgrades else "# Instructions"}

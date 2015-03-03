@@ -52,13 +52,6 @@ We put the short URL table in a separate schema postfixed with ``_static``
 then the deploy configuration set in the previous point also fix this case.
 
 
-New passwords
-~~~~~~~~~~~~~
-
-We are able to replicate the password,
-see :ref:`integrator_password_replication`.
-
-
 Administration interface
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
