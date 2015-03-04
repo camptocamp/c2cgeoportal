@@ -8,16 +8,18 @@ Version 1.6
 
     .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
 
-    cp /tmp/{{project}}/alembic.ini.in .
-    cp /tmp/{{project}}/.jshintrc .
     cp /tmp/{{project}}/.gitignore .
+    cp /tmp/{{project}}/.jshintrc .
     cp /tmp/{{project}}/{{package}}.mk .
     cp /tmp/{{project}}/README.rst .
+    cp /tmp/{{project}}/alembic.ini.in .
+    cp /tmp/{{project}}/alembic_static.ini.in .
     cp /tmp/{{project}}/build.json .
+    cp /tmp/{{project}}/development.ini.mako .
     cp /tmp/{{project}}/lingua.cfg .
     cp /tmp/{{project}}/package.json .
-    cp /tmp/{{project}}/development.ini.mako .
     cp /tmp/{{project}}/production.ini.mako .
+    cp /tmp/{{project}}/vars_{{package}}.yaml .
     cp /tmp/{{project}}/deploy/hooks/post-restore-code deploy/hooks
     chmod +x deploy/hooks/post-restore-code
 
