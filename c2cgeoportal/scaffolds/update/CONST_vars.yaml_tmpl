@@ -159,10 +159,18 @@ vars:
     # this application is a child application in a parent/child
     # architecture.
     external_themes_url:
-    external_mapserv_url:
-    # If the WFS service is different from the WMS service, uncomment and set the
-    # external_mapserv_wfs_url parameter
-    #external_mapserv_wfs_url:
+
+    mapserverproxy:
+        # URL to internal MapServer instance
+        mapserv_url: http://localhost/{instanceid}/mapserv
+        # If the WFS service is different from the WMS service, uncomment and set the
+        # mapserv_wfs_url parameter
+        #mapserv_wfs_url:
+
+        external_mapserv_url:
+        # If the WFS service is different from the WMS service, uncomment and set the
+        # external_mapserv_wfs_url parameter
+        #external_mapserv_wfs_url:
 
     servers:
 
@@ -174,12 +182,6 @@ vars:
     shortener:
         # The base of created URL
         base_url:  http://{host}{apache_entry_point}s/
-
-    # URL to internal MapServer instance
-    mapserv_url: http://localhost/{instanceid}/mapserv
-    # If the WFS service is different from the WMS service, uncomment and set the
-    # mapserv_wfs_url parameter
-    #mapserv_wfs_url:
 
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
@@ -210,12 +212,6 @@ vars:
     #proxies:
     #    http: http://someproxy
 
-    wfs:
-        # Set to True so that MapserverProxy limits the number of features
-        # returned by a WFS GetFeature request:
-        enable_limit_featurecollection: True
-        # Max number of features returned by a WFS GetFeature request:
-        maxfeatures: 200
 
     # Checker configuration
     checker:

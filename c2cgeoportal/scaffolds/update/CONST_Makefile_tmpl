@@ -233,8 +233,8 @@ VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
 CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers \
 	available_locale_names cache admin_interface functionalities external_themes_url \
-	external_mapserv_url raster shortener mapserv_url hide_capabilities use_security_metadata \
-	print_url tiles_url checker check_collector wfs default_max_age jsbuild package srid
+	raster shortener hide_capabilities use_security_metadata mapserverproxy \
+	print_url tiles_url checker check_collector default_max_age jsbuild package srid
 ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} DEVELOPMENT=${DEVELOPMENT} PACKAGE=${PACKAGE}
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
 

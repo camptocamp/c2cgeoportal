@@ -239,7 +239,7 @@ class TestEntryView(TestCase):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url, **kwargs: \
-            request.registry.settings['mapserv_url']
+            request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.interface_name = 'main'
         request.params = params
 
@@ -468,11 +468,11 @@ class TestEntryView(TestCase):
 
         # mapfile error
         request.params = {}
-        request.registry.settings["mapserv_url"] = mapserv_url + "?map=not_a_mapfile"
-        log.info(request.registry.settings["mapserv_url"])
+        request.registry.settings["mapserverproxy"]["mapserv_url"] = mapserv_url + "?map=not_a_mapfile"
+        log.info(request.registry.settings["mapserverproxy"]["mapserv_url"])
         from c2cgeoportal import caching
         caching.invalidate_region()
-        log.info(type(request.registry.settings["mapserv_url"]))
+        log.info(type(request.registry.settings["mapserverproxy"]["mapserv_url"]))
         themes, errors = entry._themes(None, "main")
         self.assertEquals(errors, set([
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
@@ -492,10 +492,8 @@ class TestEntryView(TestCase):
             "version": "2"
         }
         themes = entry.themes()
-        print themes
         self.assertEquals(len(themes["themes"]), 1)
         layers = [l["name"] for l in themes["themes"][0]["children"][0]["children"]]
-        print layers
         self.assertTrue("__test_public_layer2" in layers)
         self.assertFalse("__test_private_layer2" in layers)
 
@@ -515,8 +513,8 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        request.registry.settings.update({
-            'external_mapserv_url': request.registry.settings['mapserv_url'],
+        request.registry.settings["mapserverproxy"].update({
+            "external_mapserv_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
         })
         entry = Entry(request)
 
@@ -540,8 +538,8 @@ class TestEntryView(TestCase):
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
-        request.registry.settings['external_mapserv_url'] = \
-            request.registry.settings['mapserv_url']
+        request.registry.settings["mapserverproxy"]["external_mapserv_url"] = \
+            request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.params = {
             'permalink_themes': 'my_themes',
         }
@@ -573,9 +571,12 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj()
         request.current_route_url = lambda **kwargs: 'http://example.com/current/view'
-        mapserv = request.registry.settings['mapserv_url']
+        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            'external_mapserv_url': mapserv,
+            "mapserverproxy": {
+                "mapserv_url": mapserv,
+                "external_mapserv_url": mapserv,
+            },
             'layers_enum': {
                 'layer_test': {
                     'attributes': {
@@ -648,9 +649,12 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import User
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings['mapserv_url']
+        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            'external_mapserv_url': mapserv,
+            "mapserverproxy": {
+                "mapserv_url": mapserv,
+                "external_mapserv_url": mapserv,
+            },
             'layers_enum': {
                 'layer_test': {
                     'attributes': {
@@ -695,8 +699,10 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: 'http://example.com/dummy/static/url'
         request.route_url = lambda url, **kwargs: mapserv
         request.registry.settings = {
-            'mapserv_url': mapserv,
-            'external_mapserv_url': mapserv,
+            "mapserverproxy": {
+                "mapserv_url": mapserv,
+                "external_mapserv_url": mapserv,
+            },
             'default_max_age': 76,
             'layers_enum': {
                 'layer_test': {
@@ -726,9 +732,12 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import User
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings['mapserv_url']
+        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            'external_mapserv_url': mapserv,
+            "mapserverproxy": {
+                "mapserv_url": mapserv,
+                "external_mapserv_url": mapserv,
+            },
             'layers_enum': {
                 'layer_test': {
                     'attributes': {
@@ -760,11 +769,14 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings['mapserv_url']
+        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            'external_mapserv_url': mapserv,
-            'mapserv_wfs_url': mapserv,
-            'external_mapserv_wfs_url': mapserv,
+            "mapserverproxy": {
+                "mapserv_url": mapserv,
+                "external_mapserv_url": mapserv,
+                "mapserv_wfs_url": mapserv,
+                "external_mapserv_wfs_url": mapserv,
+            },
             'layers_enum': {
                 'layer_test': {
                     'attributes': {

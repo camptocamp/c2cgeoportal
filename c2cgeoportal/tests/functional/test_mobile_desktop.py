@@ -119,7 +119,7 @@ class TestMobileDesktop(TestCase):
         request = create_dummy_request()
         request.static_url = lambda url: '/dummy/static/url'
         request.route_url = lambda url, **kwargs: \
-            request.registry.settings['mapserv_url']
+            request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.params = params
 
         return Entry(request)

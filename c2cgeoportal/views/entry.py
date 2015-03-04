@@ -71,6 +71,7 @@ class Entry(object):
         self.request = request
         init_cache_control(request, "entry")
         self.settings = request.registry.settings
+        self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.debug = "debug" in request.params
         self.lang = get_locale_name(request)
 
@@ -540,7 +541,7 @@ class Entry(object):
     def _wms_layers(self):
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url']
+            self.mapserver_settings["mapserv_url"]
         )
         if len(wms_errors) > 0:
             return [], wms_errors
@@ -665,21 +666,21 @@ class Entry(object):
         return children, errors
 
     def _get_wfs_url(self):
-        if 'mapserv_wfs_url' in self.request.registry.settings and \
-                self.request.registry.settings['mapserv_wfs_url']:
-            return self.request.registry.settings['mapserv_wfs_url']
-        return self.request.registry.settings['mapserv_url']
+        if "mapserv_wfs_url" in self.mapserver_settings and \
+                self.mapserver_settings["mapserv_wfs_url"]:
+            return self.mapserver_settings["mapserv_wfs_url"]
+        return self.mapserver_settings["mapserv_url"]
 
     def _internal_wfs_types(self, role_id):
         return self._wfs_types(self._get_wfs_url(), role_id)
 
     def _get_external_wfs_url(self):
-        if 'external_mapserv_wfs_url' in self.request.registry.settings and \
-                self.request.registry.settings['external_mapserv_wfs_url']:
-            return self.request.registry.settings['external_mapserv_wfs_url']
-        if 'external_mapserv_url' in self.request.registry.settings and \
-                self.request.registry.settings['external_mapserv_url']:
-            return self.request.registry.settings['external_mapserv_url']
+        if "external_mapserv_wfs_url" in self.mapserver_settings and \
+                self.mapserver_settings["external_mapserv_wfs_url"]:
+            return self.mapserver_settings["external_mapserv_wfs_url"]
+        if "external_mapserv_url" in self.mapserver_settings and \
+                self.mapserver_settings["external_mapserv_url"]:
+            return self.mapserver_settings["external_mapserv_url"]
         return None
 
     def _external_wfs_types(self, role_id):
@@ -825,9 +826,9 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _get_layers_enum(self):
         layers_enum = {}
-        if 'layers_enum' in self.request.registry.settings:
+        if "layers_enum" in self.settings:
             for layer_name, layer in \
-                    self.request.registry.settings['layers_enum'].items():
+                    self.settings["layers_enum"].items():
                 layer_enum = {}
                 layers_enum[layer_name] = layer_enum
                 for attribute in layer['attributes'].keys():
@@ -1098,15 +1099,15 @@ class Entry(object):
 
     @view_config(route_name='apijs', renderer='api/api.js')
     def apijs(self):
-        self.request.response.headers['Cache-Control'] = 'no-cache'
+        self.request.response.headers["Cache-Control"] = "no-cache"
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'])
+            self.mapserver_settings["mapserv_url"])
         if len(wms_errors) > 0:  # pragma: no cover
-            raise HTTPBadGateway('\n'.join(wms_errors))
+            raise HTTPBadGateway("\n".join(wms_errors))
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
-        cache_version = self.settings.get('cache_version', None)
+        cache_version = self.settings.get("cache_version", None)
         d = {
             'lang': self.lang,
             'debug': self.debug,
@@ -1122,7 +1123,7 @@ class Entry(object):
     def xapijs(self):
         self.request.response.headers['Cache-Control'] = 'no-cache'
         wms, wms_errors = self._wms_getcap(
-            self.request.registry.settings['mapserv_url'])
+            self.mapserver_settings["mapserv_url"])
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
