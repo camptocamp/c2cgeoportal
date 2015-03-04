@@ -51,8 +51,7 @@ class TestGetURL(TestCase):
         request.static_url = static_url
 
         self.assertEquals(get_url("static://pr:st/icon.png", request), "http://server.org/pr:st/icon.png")
-        self.assertEquals(get_url("static://st/icon.png", request), "http://server.org/st:static/icon.png")
-        self.assertEquals(get_url("static:///icon.png", request), "http://server.org/my_project:static/icon.png")
+        self.assertEquals(get_url("static:///icon.png", request), "http://server.org/c2cgeoportal:project/icon.png")
         self.assertEquals(get_url("config://srv/icon.png", request), "https://example.com/test/icon.png?")
         self.assertEquals(get_url("config://srv2/icon.png", request, '/icon2.png'), "/icon2.png")
         self.assertEquals(get_url("http://example.com/icon.png", request), "http://example.com/icon.png")

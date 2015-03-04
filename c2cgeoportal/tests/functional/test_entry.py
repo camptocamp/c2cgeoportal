@@ -909,7 +909,7 @@ class TestEntryView(TestCase):
             'type': 'internal WMS',
             'imageType': 'image/png',
             'style': 'my-style',
-            'kml': '/dummy/static/test_layer:static/tiwms.kml',
+            'kml': '/dummy/static/c2cgeoportal:project/tiwms.kml',
             'legend': True,
             'legendImage': '/dummy/static/legend:static/tiwms-legend.png',
             'isLegendExpanded': False,
@@ -938,7 +938,7 @@ class TestEntryView(TestCase):
         self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation), ({
             'id': 20,
             'name': 'test external WMS',
-            'icon': '/dummy/static/test_layer:static/tewms.png',
+            'icon': '/dummy/static/c2cgeoportal:project/tewms.png',
             'isChecked': False,
             'type': 'external WMS',
             'url': 'http://example.com',
