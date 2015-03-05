@@ -12,19 +12,18 @@ Content:
    requirements
    create_application
    install_application
+   upgrade_application
    make
    features
-   wmstime
-   backend
    tilegeneration
-   customize_ui
-   extend_data_model
+   functionality
+   raster
+   mobile
    internationalization
-   upgrade_application
+   cluster
+   backend
+   checker
    deploy
    authentication
-   mobile
-   raster
-   functionality
-   checker
+   extend_data_model
    caching
