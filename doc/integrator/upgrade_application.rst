@@ -22,7 +22,6 @@ Easy updating an application code
 
    make -f <makefile> update
    make -f <makefile> build
-   sudo /usr/sbin/apache2ctl graceful
 
 Where ``<makefile>`` is your user make file (``<user>.mk``).
 
