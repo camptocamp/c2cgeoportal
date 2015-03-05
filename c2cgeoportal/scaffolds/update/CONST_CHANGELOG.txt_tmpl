@@ -12,8 +12,8 @@ Version 1.6
     cp /tmp/{{project}}/.jshintrc .
     cp /tmp/{{project}}/{{package}}.mk .
     cp /tmp/{{project}}/README.rst .
-    cp /tmp/{{project}}/alembic.ini.in .
-    cp /tmp/{{project}}/alembic_static.ini.in .
+    cp /tmp/{{project}}/alembic.ini.mako .
+    cp /tmp/{{project}}/alembic_static.ini.mako .
     cp /tmp/{{project}}/build.json .
     cp /tmp/{{project}}/development.ini.mako .
     cp /tmp/{{project}}/lingua.cfg .
