@@ -49,6 +49,7 @@ help:
 	@echo "- checks		Perform a number of checks on the code"
 	@echo "- clean 		Remove generated files"
 	@echo "- cleanall 	Remove all the build artefacts"
+	@echo "- transifex-sync Synchronize the localisation with Transifex"
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
@@ -106,6 +107,10 @@ flake8: .build/venv/bin/flake8
 	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 
+.PHONY: transifex-sync
+transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot
+	.build/venv/bin/tx push --source
+	.build/venv/bin/tx pull --all --force
 
 # Templates
 
@@ -114,13 +119,13 @@ $(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
 %: %.mako
 	$(C2C_TEMPLATE_CMD) --engine template --files $<
 
-c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/dev-requirements.timestamp
+c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/requirements.timestamp
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SRC_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
-c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeoportal.pot .build/dev-requirements.timestamp
+c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeoportal.pot .build/dev-requirements.timestamp
 	touch $@
 	msgmerge --update $@ $<
 

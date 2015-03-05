@@ -12,3 +12,4 @@ JSTools
 c2c.cssmin
 Sphinx
 sphinx-prompt
+transifex-client
