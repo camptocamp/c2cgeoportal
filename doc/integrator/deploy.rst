@@ -42,8 +42,6 @@ wanted schema, by setting the following configuration in the
     names = ${db}.${schema},${db}.<readonly_geodata_schema>
     use_schema = true
 
-And use deploy version >= 0.3.3.
-
 
 Shortened URLs
 ~~~~~~~~~~~~~~
@@ -113,8 +111,8 @@ On the destination host we just need that the schema postfixed with
 ``_static`` already exists.
 
 
-Easy deploy (experimental)
---------------------------
+Do the deploy
+-------------
 
 First of all be sure that the application on the source server work well!
 
@@ -140,8 +138,8 @@ Where ``<host>`` is your destination host that you configured in the
 ``deploy/deploy.cfg`` file, e.g. ``demo``, ``prod``.
 
 
-To deploy from dev to demo
---------------------------
+To deploy from dev to demo (advanced version)
+---------------------------------------------
 
 Build on the dev server:
 
@@ -164,8 +162,8 @@ Deploy to the demo server:
 **Test on the demo server**
 
 
-To deploy from demo to prod
----------------------------
+To deploy from demo to prod (advanced version)
+----------------------------------------------
 
 **Test on the demo server**
 
