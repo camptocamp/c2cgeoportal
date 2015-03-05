@@ -242,7 +242,7 @@ C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VAR
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 CONF_FILES = $(shell ls -1 apache/*.conf)
-PY_FILES = $(shell find c2cgeoportal -type f -name '*.py' -print)
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 
 .PHONY: help
