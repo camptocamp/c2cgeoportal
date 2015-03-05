@@ -53,7 +53,7 @@ BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_
 
 # Requirements
 
-EGGS_DEPENDENTIES += .build/venv.timestamp setup.py CONST_versions.txt CONST_requirements.txt
+EGGS_DEPENDENTIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt CONST_requirements.txt
 REQUIREMENTS += -r CONST_requirements.txt
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
@@ -606,11 +606,11 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 
 # Venv
 
-.build/dev-requirements.timestamp: .build/venv.timestamp CONST_dev-requirements.txt
+.build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(DEV_REQUIREMENTS) $(PIP_REDIRECT)
 	touch $@
 
-.build/venv.timestamp:
+.build/venv.timestamp-noclean:
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
