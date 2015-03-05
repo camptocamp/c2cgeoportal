@@ -136,6 +136,13 @@ Version 1.6
 13. Remove your Apache configuration file, probably in
     `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
 
+14. Notes on database changes:
+    * In prevision of GeoMapFish 2.0 some tables were added and some fields updated.
+    * Table ``user`` has been moved to schema ``main_static`` in order to store all
+      data modified by the web application in the same schema.
+      As a result the passwords no longer need to be synchronised among the various instances
+      of the application and the password replication tool has been removed.
+
 
 Version 1.5.3
 =============
