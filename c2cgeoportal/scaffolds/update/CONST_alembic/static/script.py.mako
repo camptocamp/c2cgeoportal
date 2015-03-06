@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
@@ -27,7 +28,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 """${message}
 
 Revision ID: ${up_revision}
@@ -35,8 +35,7 @@ Revises: ${down_revision}
 Create Date: ${create_date}
 """
 
-from alembic import op
-${imports if imports else ""}
+from alembic import op, context
 
 # revision identifiers, used by Alembic.
 revision = "${up_revision}"
