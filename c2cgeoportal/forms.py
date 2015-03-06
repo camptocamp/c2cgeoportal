@@ -456,6 +456,10 @@ LayerExternalWMS.restrictionareas.set(renderer=CheckBoxSet)
 # LayerWMTS
 LayerWMTS = FieldSet(models.LayerWMTS)
 LayerWMTS.configure(exclude=[LayerWMTS.parents_relation])
+LayerWMTS.image_type.set(
+    renderer=SelectFieldRenderer,
+    options=image_type_options
+)
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
 LayerWMTS.ui_metadata.set(readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
