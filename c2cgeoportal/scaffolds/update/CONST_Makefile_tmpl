@@ -337,10 +337,11 @@ template-clean:
 	rm -f $(TEMPLATE_FILES:.in=)
 	rm -f $(MAKO_FILES:.mako=)
 	rm -f $(JINJA_FILES:.jinja=)
+	rm -f .build/config-*.timestamp
 	rm -f .build/config.yaml
 
 .PHONY: template-generate
-template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
+template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config-$(INSTANCE_ID).timestamp
 
 $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template $(VARS_DEPENDS)
 
@@ -367,8 +368,10 @@ endif
 
 .build/venv/bin/c2c-template: .build/dev-requirements.timestamp
 
-.build/config.yaml: .build/venv/bin/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
+.build/config-$(INSTANCE_ID).timestamp: .build/venv/bin/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
+	rm -f .build/config-*.timestamp | true
 	$(C2C_TEMPLATE_CMD) --get-config $@ $(CONFIG_VARS)
+	touch $@
 
 # server localisation
 
@@ -415,7 +418,7 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
 	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
 
-$(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config.yaml
+$(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
 	mkdir -p $(dir $@)
 	.build/venv/bin/db2pot
 	msguniq $@ -o $@
