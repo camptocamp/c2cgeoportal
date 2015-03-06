@@ -36,3 +36,8 @@ To disable the OGC proxy, set ``ogcproxy_enable`` to ``false`` in your
 ``vars_<project>.yaml`` file.
 
 Default: ``true``
+
+In the ``viewer.js`` files you should also remove the ``OpenLayers.ProxyHost`` configuration.
+
+This implies that all external WMS services (from the database and from the WMS browser) should
+have the CORS headers (`enable-cors.org <http://enable-cors.org/server.html>`_).
