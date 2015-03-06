@@ -217,7 +217,7 @@ class Checker(object):  # pragma: no cover
         _url = self.request.route_url("themes")
         h = Http()
         for interface, in DBSession.query(Interface.name).all():
-            interface_url = _url + "%s?interface=%s" % (_url, interface)
+            interface_url = "%s?version=2&amp;interface=%s" % (_url, interface)
 
             log.info("Checker for theme: %s" % interface_url)
             interface_url = interface_url.replace(
@@ -226,21 +226,23 @@ class Checker(object):  # pragma: no cover
             )
             headers = {"host": self.request.environ.get("HTTP_HOST")}
 
-            resp, content = h.request(_url, headers=headers)
+            resp, content = h.request(interface_url, headers=headers)
 
             if resp.status != httplib.OK:
                 self.set_status(resp.status, resp.reason)
-                return content
+                return self.make_response(content)
 
             result = loads(content)
 
-            if len(result.errors) != 0:
+            if len(result["errors"]) != 0:
                 self.set_status(500, "Theme with error")
 
-                return "Theme with error for interface '%s'\n%s" % (
+                return self.make_response("Theme with error for interface '%s'\n%s" % (
                     Interface.name,
-                    "\n".join(result.errors)
-                )
+                    "\n".join(result["errors"])
+                ))
+
+        return self.make_response("OK")
 
     @view_config(route_name="checker_lang_files")
     def checker_lang_files(self):
@@ -249,13 +251,13 @@ class Checker(object):  # pragma: no cover
         if self.request.registry.settings["default_locale_name"] not in available_locale_names:
             self.set_status(500, "default_locale_name not in available_locale_names")
 
-            return (
+            return self.make_response((
                 "Your `default_locale_names` '%s' is not in your "
                 "`available_locale_names` '%s'" % (
                     self.request.registry.settings["default_locale_name"],
                     ", ".join(available_locale_names)
                 )
-            )
+            ))
 
         result = []
         for _type in self.settings.get("lang_files", []):
@@ -280,11 +282,13 @@ class Checker(object):  # pragma: no cover
                     )
                 else:
                     self.set_status(500, "Unknown lang_files")
-                    return (
+                    return self.make_response((
                         "Your language type value '%s' isn't valid, "
                         "available values [cgxp, cgxp-api, ngeo]" % (
                             _type
                         )
-                    )
+                    ))
                 result.append(self.testurl(_url))
-        return self.make_response("\n\n".join(result))
+        return self.make_response(
+            "OK" if len(result) == 0 else "\n\n".join(result)
+        )

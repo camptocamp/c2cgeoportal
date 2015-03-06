@@ -24,6 +24,7 @@ Features that require additional steps (most of the time):
 .. toctree::
    :maxdepth: 1
 
+   customize_ui
    fulltext_search
    querier
    editing
@@ -31,5 +32,6 @@ Features that require additional steps (most of the time):
    https
    api
    shortener
+   wmstime
    intranet
    security
