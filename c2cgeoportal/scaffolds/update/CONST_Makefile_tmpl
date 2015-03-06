@@ -237,11 +237,15 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	print_url tiles_url checker check_collector default_max_age jsbuild package srid
 ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} DEVELOPMENT=${DEVELOPMENT} PACKAGE=${PACKAGE}
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
+MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 # Apache
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
-CONF_FILES = $(shell ls -1 apache/*.conf)
+CONF_FILES_IN = $(shell ls -1 apache/*.conf.in)
+CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako)
+CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja)
+CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 
@@ -338,7 +342,7 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
 
-$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template $(VARS_DEPENDS)
 
 %: %.in
 ifeq ($(origin VARS_FILE), undefined)
@@ -363,7 +367,7 @@ endif
 
 .build/venv/bin/c2c-template: .build/dev-requirements.timestamp
 
-.build/config.yaml: .build/venv/bin/c2c-template ${VARS_DEPENDS}
+.build/config.yaml: .build/venv/bin/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
 	$(C2C_TEMPLATE_CMD) --get-config $@ $(CONFIG_VARS)
 
 # server localisation
