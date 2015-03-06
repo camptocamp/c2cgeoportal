@@ -38,18 +38,18 @@ SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
 
 .PHONY: help
 help:
-	@echo "Usage: make <target>"
+	@echo "Usage: $(MAKE) <target>"
 	@echo
 	@echo "Main targets:"
 	@echo
 	@echo "- build 		Build and configure the project"
-	@echo "- buildall	Build, check and test the project"
-	@echo "- doc 		Build the project documentation"
+	@echo "- buildall		Build, check and test the project"
+	@echo "- doc 			Build the project documentation"
 	@echo "- tests 		Perform a number of tests on the code"
 	@echo "- checks		Perform a number of checks on the code"
 	@echo "- clean 		Remove generated files"
-	@echo "- cleanall 	Remove all the build artefacts"
-	@echo "- transifex-sync Synchronize the localisation with Transifex"
+	@echo "- cleanall 		Remove all the build artefacts"
+	@echo "- transifex-sync	Synchronize the localisation with Transifex"
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
