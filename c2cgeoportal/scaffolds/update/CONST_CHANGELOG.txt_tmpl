@@ -10,6 +10,8 @@ Version 1.6
 
     cp /tmp/{{project}}/.gitignore .
     cp /tmp/{{project}}/.jshintrc .
+    cp /tmp/{{project}}/.travis.yml .
+    cp /tmp/{{project}}/travis.mk .
     cp /tmp/{{project}}/{{package}}.mk .
     cp /tmp/{{project}}/README.rst .
     cp /tmp/{{project}}/alembic.ini.in .

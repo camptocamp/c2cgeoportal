@@ -78,6 +78,7 @@ OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)/static/js -type f -name '*.js')
 APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
+APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static/js -type f -name '*.html')
 LESS_FILES = $(shell find $(PACKAGE)/static/less -type f -name '*.less' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
 
@@ -432,7 +433,10 @@ $(PACKAGE)/locale/%/LC_MESSAGES/%/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACK
 
 $(OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js
 	mkdir -p $(dir $@)
-	awk 'FNR==1{print ""}1' $(addprefix node_modules/, jquery/dist/jquery.min.js angular/angular.min.js angular-gettext/dist/angular-gettext.min.js angular-animate/angular-animate.min.js bootstrap/dist/js/bootstrap.min.js) .build/build.js > $@
+	awk 'FNR==1{print ""}1' $(addprefix node_modules/, \
+		jquery/dist/jquery.min.js angular/angular.min.js angular-gettext/dist/angular-gettext.min.js \
+		angular-animate/angular-animate.min.js bootstrap/dist/js/bootstrap.min.js proj4/dist/proj4.js \
+		) .build/build.js > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
 $(OUTPUT_DIR)/build.min.css: $(LESS_FILES) .build/node_modules.timestamp
@@ -443,8 +447,17 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	./node_modules/.bin/lessc $(PACKAGE)/static/less/$(PACKAGE).less $@
 
-.build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) .build/externs/angular-1.3.js .build/externs/angular-1.3-q.js .build/externs/angular-1.3-http-promise.js .build/externs/jquery-1.9.js .build/node_modules.timestamp
+.build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
+		.build/templatecache.js \
+		.build/externs/angular-1.3.js \
+		.build/externs/angular-1.3-q.js \
+		.build/externs/angular-1.3-http-promise.js \
+		.build/externs/jquery-1.9.js \
+		.build/node_modules.timestamp
 	node tasks/build.js $< $@
+
+.build/templatecache.js: templatecache.mako.js
+	.build/venv/bin/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.3.js:
 	mkdir -p $(dir $@)
