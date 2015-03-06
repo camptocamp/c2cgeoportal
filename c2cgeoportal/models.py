@@ -592,14 +592,16 @@ class LayerInternalWMS(Layer):
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), label=_(u'Image type'))  # for WMS
+        native_enum=False), label=_(u"Image type")
+    )
     style = Column(Unicode, label=_(u'Style'))
     time_mode = Column(Enum(
         "disabled",
         "single",
         "range",
         native_enum=False), default="disabled", nullable=False,
-        label=_(u'Time mode'))
+        label=_(u"Time mode")
+    )
 
     def __init__(self, name=u'', public=True, icon=u''):
         Layer.__init__(self, name=name, public=public)
@@ -654,6 +656,11 @@ class LayerWMTS(Layer):
     layer = Column(Unicode, label=_(u'Layer'))
     style = Column(Unicode, label=_(u'Style'))
     matrix_set = Column(Unicode, label=_(u'Matrix set'))
+    image_type = Column(Enum(
+        "image/jpeg",
+        "image/png",
+        native_enum=False), label=_(u"Image type")
+    )
 
     def __init__(self, name=u'', public=True):
         Layer.__init__(self, name=name, public=public)
