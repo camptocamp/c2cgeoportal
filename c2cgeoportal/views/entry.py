@@ -285,7 +285,7 @@ class Entry(object):
             c = DBSession.query(RestrictionArea) \
                 .filter(RestrictionArea.roles.any(
                     Role.id == self.request.user.role.id)) \
-                .filter(RestrictionArea.layers.any(LayerV1.id == layer.id)) \
+                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
                 .filter(RestrictionArea.readwrite.is_(True)) \
                 .count()
             if c > 0:
