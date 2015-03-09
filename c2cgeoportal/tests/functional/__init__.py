@@ -152,7 +152,9 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
         }
     }, *args, **kargs)
     request.registry.settings.update(additional_settings)
-    request.registry.settings['geometry_validation'] = True
+    request.registry.settings["layers"] = {
+        "geometry_validation": True
+    }
     request.headers['Host'] = host
     request.user = None
     request.interface_name = 'main'

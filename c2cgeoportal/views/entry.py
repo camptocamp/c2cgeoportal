@@ -826,9 +826,9 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _get_layers_enum(self):
         layers_enum = {}
-        if "layers_enum" in self.settings:
+        if "enum" in self.settings.get("layers", {}):
             for layer_name, layer in \
-                    self.settings["layers_enum"].items():
+                    self.settings["layers"]["enum"].items():
                 layer_enum = {}
                 layers_enum[layer_name] = layer_enum
                 for attribute in layer['attributes'].keys():

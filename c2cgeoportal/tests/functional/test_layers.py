@@ -754,12 +754,14 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(public=True)
         tablename = "table_%d" % layer_id
         settings = {
-            'layers_enum': {
-                'layer_test': {
-                    'table': tablename,
-                    'attributes': {
-                        'label': {
-                            'column_name': 'name'
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "table": tablename,
+                        "attributes": {
+                            "label": {
+                                "column_name": "name"
+                            }
                         }
                     }
                 }
@@ -789,13 +791,15 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(public=True, attr_list=True)
         tablename = "table_%d" % layer_id
         settings = {
-            'layers_enum': {
-                'layer_test': {
-                    'table': tablename,
-                    'attributes': {
-                        'label': {
-                            'column_name': 'name',
-                            'separator': ','
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "table": tablename,
+                        "attributes": {
+                            "label": {
+                                "column_name": "name",
+                                "separator": ","
+                            }
                         }
                     }
                 }

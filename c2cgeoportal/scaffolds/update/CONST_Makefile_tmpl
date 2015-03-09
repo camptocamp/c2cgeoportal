@@ -232,7 +232,7 @@ JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
 CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
-	node_modules_path closure_library_path default_locale_name servers \
+	node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities external_themes_url \
 	raster shortener hide_capabilities use_security_metadata mapserverproxy \
 	print_url tiles_url checker check_collector default_max_age jsbuild package srid
