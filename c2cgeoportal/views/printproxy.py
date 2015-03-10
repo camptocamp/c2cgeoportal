@@ -69,6 +69,8 @@ class PrintProxy(Proxy):  # pragma: no cover
             del headers['content-length']
         if 'transfer-encoding' in headers:
             del headers['transfer-encoding']
+        headers["Access-Control-Allow-Origin"] = "*"
+        headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
 
         pretty = self.request.params.get('pretty', 'false') == 'true'
         response = Response(
@@ -183,7 +185,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             "%s/report.%s" % (
                 self.config['print_url'],
                 self.request.matchdict.get('format')
-            )
+            ),
         )
 
     @view_config(route_name='printproxy_status')
@@ -194,7 +196,7 @@ class PrintProxy(Proxy):  # pragma: no cover
             "%s/status/%s.json" % (
                 self.config['print_url'],
                 self.request.matchdict.get('ref')
-            )
+            ),
         )
 
     @view_config(route_name='printproxy_report_get')
@@ -205,5 +207,5 @@ class PrintProxy(Proxy):  # pragma: no cover
             "%s/report/%s" % (
                 self.config['print_url'],
                 self.request.matchdict.get('ref')
-            )
+            ),
         )
