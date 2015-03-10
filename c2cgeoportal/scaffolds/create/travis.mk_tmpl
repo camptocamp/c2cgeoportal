@@ -1,0 +1,3 @@
+INSTANCE_ID = travis
+
+include {{package}}.mk
