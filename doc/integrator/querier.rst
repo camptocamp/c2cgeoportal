@@ -12,18 +12,19 @@ The web service configuration is done in the ``vars_<project>.yaml`` file:
 
 .. code:: yaml
 
-    layers_enum:
-        dbsession: "<session name>"
-        "<layer_name>":
+    layers:
+        enum:
             dbsession: "<session name>"
-            table: "<[schema.]table name>"
-            attributes:
-                "<attribute name>":
-                    table: "<[schema.]table name>"
-                    column_name: "<column name>"
-                    separator: ","
+            "<layer_name>":
+                dbsession: "<session name>"
+                table: "<[schema.]table name>"
+                attributes:
+                    "<attribute name>":
+                        table: "<[schema.]table name>"
+                        column_name: "<column name>"
+                        separator: ","
 
-The ``dbsession: "<session name>"`` in the ``layers_enum`` is just a shortcut
+The ``dbsession: "<session name>"`` in the ``enum`` is just a shortcut
 if almost of the session are similar in the layers. If the dbsession isn't
 defined we use the main DB session.
 
@@ -39,12 +40,13 @@ Simple example:
 
 .. code:: yaml
 
-    layers_enum:
-        mapserver_layer:
-            table: geodata.table
-            attributes:
-                type:
-                country:
+    layers
+        enum:
+            mapserver_layer:
+                table: geodata.table
+                attributes:
+                    type:
+                    country:
 
 Make sure that the ``cgxp_querier`` plugin has the attribute ``attributeURLs``
 the ``viewer.js``:

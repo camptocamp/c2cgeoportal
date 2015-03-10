@@ -577,10 +577,12 @@ class TestEntryView(TestCase):
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
             },
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }
@@ -655,10 +657,12 @@ class TestEntryView(TestCase):
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
             },
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }
@@ -703,11 +707,13 @@ class TestEntryView(TestCase):
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
             },
-            'default_max_age': 76,
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "default_max_age": 76,
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }
@@ -738,10 +744,12 @@ class TestEntryView(TestCase):
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
             },
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }
@@ -777,10 +785,12 @@ class TestEntryView(TestCase):
                 "mapserv_wfs_url": mapserv,
                 "external_mapserv_wfs_url": mapserv,
             },
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }
@@ -806,10 +816,12 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj()
         request.registry.settings.update({
-            'layers_enum': {
-                'layer_test': {
-                    'attributes': {
-                        'label': None
+            "layers": {
+                "enum": {
+                    "layer_test": {
+                        "attributes": {
+                            "label": None
+                        }
                     }
                 }
             }

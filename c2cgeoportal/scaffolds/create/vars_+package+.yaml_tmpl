@@ -62,6 +62,9 @@ vars:
         available_in_templates:
         - default_basemap
 
+    layers:
+        geometry_validation: True
+
     # For base layers
     tiles_url:
     - http://a.tiles.${host}/${instanceid}/tiles

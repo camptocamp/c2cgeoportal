@@ -285,7 +285,7 @@ class Entry(object):
             c = DBSession.query(RestrictionArea) \
                 .filter(RestrictionArea.roles.any(
                     Role.id == self.request.user.role.id)) \
-                .filter(RestrictionArea.layers.any(LayerV1.id == layer.id)) \
+                .filter(RestrictionArea.layers.any(Layer.id == layer.id)) \
                 .filter(RestrictionArea.readwrite.is_(True)) \
                 .count()
             if c > 0:
@@ -826,9 +826,9 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _get_layers_enum(self):
         layers_enum = {}
-        if "layers_enum" in self.settings:
+        if "enum" in self.settings.get("layers", {}):
             for layer_name, layer in \
-                    self.settings["layers_enum"].items():
+                    self.settings["layers"]["enum"].items():
                 layer_enum = {}
                 layers_enum[layer_name] = layer_enum
                 for attribute in layer['attributes'].keys():
