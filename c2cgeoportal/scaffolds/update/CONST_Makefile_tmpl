@@ -680,6 +680,6 @@ apache: .build/apache.timestamp
 $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
-.build/apache.timestamp: $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf .build/requirements.timestamp
+.build/apache.timestamp: .build/config-$(INSTANCE_ID).timestamp $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf .build/requirements.timestamp
 	sudo /usr/sbin/apache2ctl graceful
 	touch $@
