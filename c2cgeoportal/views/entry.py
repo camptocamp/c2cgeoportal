@@ -272,7 +272,7 @@ class Entry(object):
                         time.merge_extent(extent)
                         # The time mode comes from the layer group
                         time.merge_mode(layer.time_mode)
-        except:  # pragma no cover
+        except ValueError:  # pragma no cover
             errors.add(
                 "Error while handling time for layer '%s' : '%s'"
                 % (layer.name, sys.exc_info()[1])
