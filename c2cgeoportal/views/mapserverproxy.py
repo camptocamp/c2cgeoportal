@@ -196,4 +196,4 @@ class MapservProxy(Proxy):
             "Access-Control-Allow-Origin": "*",
         }
 
-        return self._build_responce(resp, content, cache, "mapserver", headers)
+        return self._build_response(resp, content, cache, "mapserver", headers)
