@@ -141,6 +141,10 @@ Version 1.6
       As a result the passwords no longer need to be synchronised among the various instances
       of the application and the password replication tool has been removed.
 
+15. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
+
+    + .build/venv/bin/alembic -c alembic_static.ini upgrade head
+
 
 Version 1.5.3
 =============
