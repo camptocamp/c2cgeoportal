@@ -294,6 +294,7 @@ def upgrade(options):
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
             "../%s" % project["project_folder"], "package=%s" % project["project_package"]
         ])
+        check_call(["make", "-f", options.file, options.clean])
 
         diff_file = open("changelog.diff", "w")
         check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
@@ -315,7 +316,6 @@ def upgrade(options):
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
 
-        check_call(["make", "-f", options.file, options.clean])
         check_call(["make", "-f", options.file, "build"])
 
         command.upgrade(Config("alembic.ini"), "head")
