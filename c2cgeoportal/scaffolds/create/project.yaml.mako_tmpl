@@ -3,4 +3,5 @@ project_package: {{package}}
 host: <host>
 checker_path: /${instanceid}/wsgi/check_collector?
 template_vars:
+    srid: {{srid}}
     mobile_application_title: {{mobile_application_title}}

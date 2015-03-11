@@ -31,6 +31,7 @@
 from os import path, unlink
 import re
 import sys
+import shutil
 import argparse
 import httplib2
 from yaml import load
@@ -294,6 +295,13 @@ def upgrade(options):
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
             "../%s" % project["project_folder"], "package=%s" % project["project_package"]
         ])
+        check_call([
+            "%s/pcreate" % _get_bin(), "-s", "c2cgeoportal_create",
+            "/tmp/%s" % project["project_folder"],
+            "package=%s" % project["project_package"],
+            "mobile_application_title=%s" % project["template_vars"]["mobile_application_title"],
+            "srid=%s" % project["template_vars"].get("srid", 21781),
+        ])
         check_call(["make", "-f", options.file, options.clean])
 
         diff_file = open("changelog.diff", "w")
@@ -315,6 +323,8 @@ def upgrade(options):
 
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
+        if path.exists("/tmp/%s" % project["project_folder"]):
+            shutil.rmtree("/tmp/%s" % project["project_folder"])
 
         check_call(["make", "-f", options.file, "build"])
 
