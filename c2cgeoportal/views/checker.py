@@ -214,10 +214,19 @@ class Checker(object):  # pragma: no cover
     def themes_errors(self):
         from c2cgeoportal.models import DBSession, Interface
 
+        settings = self.settings.get("themes", {})
+
         _url = self.request.route_url("themes")
         h = Http()
+        default_params = settings.get("default", {}).get("params", {})
         for interface, in DBSession.query(Interface.name).all():
-            interface_url = "%s?version=2&amp;interface=%s" % (_url, interface)
+            params = {}
+            params.update(default_params)
+            params.update(settings.get(interface, {}).get("params", {}))
+            params["interface"] = interface
+            interface_url = "%s?%s" % (
+                _url, "&amp;".join(params.items())
+            )
 
             log.info("Checker for theme: %s" % interface_url)
             interface_url = interface_url.replace(
