@@ -12,4 +12,5 @@ JSTools
 c2c.cssmin
 Sphinx
 sphinx-prompt
+alabaster
 transifex-client
