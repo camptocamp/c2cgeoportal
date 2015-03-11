@@ -129,7 +129,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request(params=params)
-        request.responce = Response()
+        request.response = Response()
         request.user = None
         if username:
             request.user = DBSession.query(User) \

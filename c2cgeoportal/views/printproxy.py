@@ -117,7 +117,7 @@ class PrintProxy(Proxy):  # pragma: no cover
     @view_config(route_name='printproxy_create')
     def create(self):
         """ Create PDF. """
-        return self._proxy_responce(
+        return self._proxy_response(
             "print",
             "%screate.json" % (
                 self.config['print_url']
@@ -180,7 +180,7 @@ class PrintProxy(Proxy):  # pragma: no cover
     @view_config(route_name='printproxy_report_create')
     def report_create(self):
         """ Create PDF. """
-        return self._proxy_responce(
+        return self._proxy_response(
             "print",
             "%s/report.%s" % (
                 self.config['print_url'],
@@ -191,7 +191,7 @@ class PrintProxy(Proxy):  # pragma: no cover
     @view_config(route_name='printproxy_status')
     def status(self):
         """ PDF status. """
-        return self._proxy_responce(
+        return self._proxy_response(
             "print",
             "%s/status/%s.json" % (
                 self.config['print_url'],
@@ -202,7 +202,7 @@ class PrintProxy(Proxy):  # pragma: no cover
     @view_config(route_name='printproxy_report_get')
     def report_get(self):
         """ Get the PDF. """
-        return self._proxy_responce(
+        return self._proxy_response(
             "print",
             "%s/report/%s" % (
                 self.config['print_url'],

@@ -158,7 +158,7 @@ class Proxy:
     def _proxy_cache(self, *args, **kwargs):  # pragma: no cover
         return self._proxy(*args, cache=True, **kwargs)
 
-    def _proxy_responce(
+    def _proxy_response(
         self, service_name, url, headers=None, headers_update={}, add_cors=True, **kwargs
     ):  # pragma: no cover
         cache = kwargs.get("cache", False)
@@ -167,11 +167,11 @@ class Proxy:
         else:
             resp, content = self._proxy(url, **kwargs)
 
-        return self._build_responce(
+        return self._build_response(
             resp, content, cache, service_name, headers_update=headers_update, add_cors=add_cors
         )
 
-    def _build_responce(
+    def _build_response(
         self, resp, content, cache, service_name, headers=None, headers_update={}, add_cors=True
     ):
         headers = dict(resp) if headers is None else headers
