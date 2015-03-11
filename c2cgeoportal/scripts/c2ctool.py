@@ -31,6 +31,7 @@
 from os import path, unlink
 import re
 import sys
+import shutil
 import argparse
 import httplib2
 from yaml import load
@@ -281,19 +282,25 @@ def upgrade(options):
         ])
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
-        check_call([
-            "wget",
-            "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
-            "c2cgeoportal/scaffolds/update/CONST_versions.txt"
-            % options.version, "-O", "CONST_versions.txt"
-        ])
         check_call(["make", "-f", options.file, options.clean])
-        check_call(["make", "-f", options.file, ".build/requirements.timestamp"])
+        check_call(["make", "-f", options.file, ".build/venv.timestamp"])
+        if options.version == "master":
+            check_call([".build/venv/bin/pip", "install", "--upgrade", "--pre", "c2cgeoportal"])
+        else:
+            check_call([".build/venv/bin/pip", "install", "c2cgeoportal==%s" % options.version])
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
             "../%s" % project["project_folder"], "package=%s" % project["project_package"]
         ])
+        check_call([
+            "%s/pcreate" % _get_bin(), "-s", "c2cgeoportal_create",
+            "/tmp/%s" % project["project_folder"],
+            "package=%s" % project["project_package"],
+            "mobile_application_title=%s" % project["template_vars"]["mobile_application_title"],
+            "srid=%s" % project["template_vars"].get("srid", 21781),
+        ])
+        check_call(["make", "-f", options.file, options.clean])
 
         diff_file = open("changelog.diff", "w")
         check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
@@ -314,8 +321,9 @@ def upgrade(options):
 
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
+        if path.exists("/tmp/%s" % project["project_folder"]):
+            shutil.rmtree("/tmp/%s" % project["project_folder"])
 
-        check_call(["make", "-f", options.file, options.clean])
         check_call(["make", "-f", options.file, "build"])
 
         command.upgrade(Config("alembic.ini"), "head")

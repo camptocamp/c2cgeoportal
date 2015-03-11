@@ -221,6 +221,10 @@ vars:
         print_scale: 10000
         fulltextsearch: text to search
         lang_files: [ngeo, cgxp, cgxp-api]
+        themes:
+            default:
+                params:
+                    version: 2
 
     # Check collector configuration
     check_collector:

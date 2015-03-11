@@ -6,8 +6,6 @@ Version 1.6
 
 1. Get the new and heavily modified files:
 
-    .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
-
     cp /tmp/{{project}}/.gitignore .
     cp /tmp/{{project}}/.jshintrc .
     cp /tmp/{{project}}/.travis.yml .
@@ -24,8 +22,6 @@ Version 1.6
     cp /tmp/{{project}}/vars_{{package}}.yaml .
     cp /tmp/{{project}}/deploy/hooks/post-restore-code deploy/hooks
     chmod +x deploy/hooks/post-restore-code
-
-    rm -rf /tmp/{{project}}
 
 2. Removes the deprecated files:
 
@@ -144,6 +140,10 @@ Version 1.6
       data modified by the web application in the same schema.
       As a result the passwords no longer need to be synchronised among the various instances
       of the application and the password replication tool has been removed.
+
+15. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
+
+    + .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 
 Version 1.5.3
