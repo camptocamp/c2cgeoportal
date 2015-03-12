@@ -48,7 +48,12 @@ do
     fi
 
     # install or update Sphinx
-    ./env/bin/pip install Sphinx==1.1.3 sphinx-prompt==0.2.2
+    if [ -e requirements.txt ]
+    then
+        ./env/bin/pip install -r requirements.txt
+    else
+        ./env/bin/pip install Sphinx==1.1.3 sphinx-prompt==0.2.2
+    fi
 
     make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
 

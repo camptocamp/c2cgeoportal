@@ -10,7 +10,5 @@ flake8-copyright
 c2c.template>=1.0.1dev3
 JSTools
 c2c.cssmin
-Sphinx
-sphinx-prompt
-alabaster
 transifex-client
+-r doc/requirements.txt
