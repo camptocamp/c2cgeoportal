@@ -349,6 +349,8 @@ event.listen(TreeItem, 'after_delete', cache_invalidate_cb, propagate=True)
 
 # association table LayerGroup <> TreeItem
 class LayergroupTreeitem(Base):
+    __label__ = _(u'Tree links order')
+    __plural__ = _(u'Tree links order')
     __tablename__ = 'layergroup_treeitem'
     __table_args__ = {'schema': _schema}
     __acl__ = [
