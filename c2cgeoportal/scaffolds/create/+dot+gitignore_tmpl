@@ -3,6 +3,7 @@
 .*.swp
 /.build
 /{{package}}.egg-info
+/jsbuild/app.cfg
 /node_modules
 /apache/README.txt
 /apache/frontend.conf
