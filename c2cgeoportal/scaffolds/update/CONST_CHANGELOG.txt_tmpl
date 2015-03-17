@@ -47,7 +47,7 @@ Version 1.6
    - The `development.ini.in`, `production.ini.in` files will be replaced by
      the `development.ini.mako`, `production.ini.mako` files. If you lost
      something it should probably be moved in the `{{package}}.yaml` file.
-   - The `print/template/print.makoi.in` file should be moved to
+   - The `print/template/print.mako.in` file should be moved to
      `print.yaml.mako`.
    - The build environments (`<user>.mk` files) must be recreated again.
      For multi project mode have a look on the documentation:
@@ -100,25 +100,7 @@ Version 1.6
    Remove the no more needed `_query=url_params` argument of the
    `static_url` calls.
 
-8. In the mapfile add the following lines to all restricted layers:
-
-    VALIDATION
-        ${mapserver_layer_validation}
-    END
-
-9. Remove the deprecated versioning table:
-
-    sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
-
-10. For non Apt/Dpkg based OS, disable the package checking:
-    In the ``buildout.cfg`` section ``[buildout]`` add:
-
-        parts -=
-            test-packages
-            test-packages-mobile
-            test-packages-tilecloud-chain
-
-11. In the `{{package}}/templates/*.js` files do the following change:
+8. In the `{{package}}/templates/*.js` files do the following change:
 
     -<% json_extent = user.role.json_extent if user else None %>
     -% if json_extent:
@@ -126,6 +108,24 @@ Version 1.6
     +<% bounds = user.role.bounds if user else None %>
     +% if bounds:
     +    var INITIAL_EXTENT = ${dumps(bounds)};
+
+9. In the mapfile add the following lines to all restricted layers:
+
+    VALIDATION
+        ${mapserver_layer_validation}
+    END
+
+10. Remove the deprecated versioning table:
+
+    sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
+
+11. For non Apt/Dpkg based OS, disable the package checking:
+    In the ``buildout.cfg`` section ``[buildout]`` add:
+
+        parts -=
+            test-packages
+            test-packages-mobile
+            test-packages-tilecloud-chain
 
 12. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
 
