@@ -176,9 +176,10 @@ Ext.onReady(function() {
 % endif
         {
             ptype: "cgxp_print",
+            toggleGroup: "maptools",
             legendPanelId: "legendPanel",
             featureProvider: "featuresProvider",
-            outputTarget: "left-panel",
+            outputTarget: "center.tbar",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
             printProviderConfig: ${dumps(url_role_params)|n},
@@ -187,7 +188,24 @@ Ext.onReady(function() {
                 defaults: {
                     anchor:'100%'
                 },
-                autoFit: true
+                autoFit: true,
+                fieldsExtraClientConfiguration: {
+                    "A4 portrait": {
+                        "title": {
+                            fieldAttributes: {
+                                fieldLabel: "${_("Name")}",
+                                emptyText: "${_("Name")}"
+                            }
+                        },
+                        "comments": {
+                            useTextArea: true,
+                            fieldAttributes: {
+                                fieldLabel: "${_("Description")}",
+                                emptyText: "${_("Description")}"
+                            }
+                        }
+                    }
+                }
             }
         },
         {
