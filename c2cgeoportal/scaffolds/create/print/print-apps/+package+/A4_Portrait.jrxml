@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Baselland_A4_Portrait" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+    <parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+    <parameter name="title" class="java.lang.String"/>
+    <parameter name="comments" class="java.lang.String"/>
+    <parameter name="mapSubReport" class="java.lang.String"/>
+    <parameter name="legend" class="net.sf.jasperreports.engine.data.JRTableModelDataSource"/>
+    <parameter name="legendSubReport" class="java.lang.String"/>
+    <parameter name="scalebarSubReport" class="java.lang.String"/>
+    <parameter name="northArrowSubReport" class="java.lang.String"/>
+    <field name="title" class="java.lang.String"/>
+    <field name="table" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
+    <field name="tableSubReport" class="java.lang.String"/>
+    <title>
+        <band height="700">
+            <textField>
+                <reportElement x="0" y="0" width="455" height="20"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+            </textField>
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="455" y="0" width="100" height="20"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="20" width="555" height="38"/>
+                <textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
+            </textField>
+            <subreport>
+                <reportElement mode="Transparent" x="0" y="58" width="554" height="634" backcolor="#FFFFFF"/>
+                <subreportExpression><![CDATA[$P{mapSubReport}]]></subreportExpression>
+            </subreport>
+            <subreport>
+                <reportElement x="200" y="200" width="200" height="200"/>
+                <subreportExpression><![CDATA[$P{northArrowSubReport}]]></subreportExpression>
+            </subreport>
+            <subreport>
+                <reportElement x="0" y="240" width="230" height="40"/>
+                <subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
+            </subreport>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="26" splitType="Stretch">
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="455" y="0" width="100" height="20"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="0" width="455" height="20"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <detail>
+        <band height="65" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="555" height="23"/>
+                <textElement>
+                    <font size="16" isBold="true" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+            </textField>
+            <subreport>
+                <reportElement x="0" y="23" width="555" height="42"/>
+                <dataSourceExpression><![CDATA[$F{table}]]></dataSourceExpression>
+                <subreportExpression><![CDATA[$F{tableSubReport}]]></subreportExpression>
+            </subreport>
+            <break>
+                <reportElement x="0" y="64" width="100" height="1"/>
+            </break>
+        </band>
+    </detail>
+    <summary>
+        <band height="65" splitType="Stretch">
+            <subreport>
+                <reportElement mode="Transparent" x="0" y="0" width="554" height="65" backcolor="#FFFFFF"/>
+                <dataSourceExpression><![CDATA[$P{legend}]]></dataSourceExpression>
+                <subreportExpression><![CDATA[$P{legendSubReport}]]></subreportExpression>
+            </subreport>
+        </band>
+    </summary>
+</jasperReport>

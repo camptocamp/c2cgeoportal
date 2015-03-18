@@ -1,49 +1,45 @@
-pdfConfig: !pdfConfig
-  compressed: false
-  author: "Mapfish Print"
-  subject: "Mapfish Print"
-  creator: "Mapfish Print"
-  keywords: ["legend", "table", "tablelist", "map"]
-
 throwErrorOnExtraParameters: true
 
 templates:
-  A4 portrait: !template
-    pdfConfig: !pdfConfig
-      title: "A4 Portrait"
-    reportTemplate: report.jrxml
-    tableData: jrDataSource
-    attributes:
-      name: !string {}
-      description: !string {}
-      map: !map
-        maxDpi: 400
-        dpiSuggestions: [72, 91, 128, 254, 300, 400]
-        width: 400
-        height: 200
-      legend: !legend {}
-      datasource: !datasource
+    A4 portrait: !template
+        reportTemplate: A4_Portrait.jrxml
+        tableData: jrDataSource
         attributes:
-          displayName: !string {}
-          table: !table {}
-      scalebar: !scalebar
-        width: 230
-        height: 40
-    processors:
-    - !restrictUris
-      matchers:
-      - !localMatch
-        port : 9876
-        pathRegex : /.+
-    - !reportBuilder # compile all reports in current directory
-      directory: '.'
-    - !createMap {}
-    - !createScalebar {}
-    - !prepareLegend # create a datasource for the report with the 'legend' attribute
-      template: legend.jrxml
-    - !prepareTable
-    - !createDataSource
-      reportTemplate: table.jrxml
-      reportKey: reportTemplate
-      processors:
-      - !prepareTable {}
+            title: !string {}
+            comments: !string {}
+            legend: !legend {}
+            northArrow: !northArrow
+                size: 200
+                default:
+                    graphic: "north.svg"
+            scalebar: !scalebar
+                width: 230
+                height: 40
+            map: !map
+                maxDpi: 254
+                dpiSuggestions: [254]
+                zoomLevels: !zoomLevels
+                    scales: [5000, 10000, 25000, 50000, 100000, 500000]
+                width: 554
+                height: 662
+            datasource: !datasource
+                attributes:
+                    title: !string {}
+                    table: !table {}
+
+        processors:
+        - !reportBuilder # compile all reports in current directory
+            directory: '.'
+        - !prepareLegend
+            template: legend.jrxml
+        - !createNorthArrow {}
+        - !createScalebar {}
+        - !createMap {}
+        - !createDataSource
+            processors:
+            - !prepareTable
+                dynamic: true
+                columns:
+                    icon: !urlImage
+                        urlExtractor: (.*)
+                        urlGroup: 1

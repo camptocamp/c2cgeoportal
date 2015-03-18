@@ -204,12 +204,15 @@ PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 ifeq ($(PRINT_VERSION), 3)
 PRINT_BASE_WAR ?= print-servlet.war
-PRINT_INPUT += print-apps
+PRINT_INPUT += print-apps WEB-INF
 PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/joda-time-1.6.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
+	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
+	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
+	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml
+
 PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
 ifeq ($(PRINT_VERSION), 2)

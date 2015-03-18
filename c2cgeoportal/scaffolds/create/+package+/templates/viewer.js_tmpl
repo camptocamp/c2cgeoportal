@@ -143,6 +143,7 @@ Ext.onReady(function() {
             ptype: "cgxp_layertree",
             id: "layertree",
             events: EVENTS,
+            showRestrictedContentWarning: true,
             outputConfig: {
                 header: false,
                 flex: 1,
@@ -175,9 +176,10 @@ Ext.onReady(function() {
 % endif
         {
             ptype: "cgxp_print",
+            toggleGroup: "maptools",
             legendPanelId: "legendPanel",
             featureProvider: "featuresProvider",
-            outputTarget: "left-panel",
+            outputTarget: "center.tbar",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
             printProviderConfig: ${dumps(url_role_params)|n},
@@ -186,7 +188,24 @@ Ext.onReady(function() {
                 defaults: {
                     anchor:'100%'
                 },
-                autoFit: true
+                autoFit: true,
+                fieldsExtraClientConfiguration: {
+                    "A4 portrait": {
+                        "title": {
+                            fieldAttributes: {
+                                fieldLabel: "${_("Name")}",
+                                emptyText: "${_("Name")}"
+                            }
+                        },
+                        "comments": {
+                            useTextArea: true,
+                            fieldAttributes: {
+                                fieldLabel: "${_("Description")}",
+                                emptyText: "${_("Description")}"
+                            }
+                        }
+                    }
+                }
             }
         },
         {
@@ -310,12 +329,13 @@ Ext.onReady(function() {
         map: {
             id: "app-map", // id needed to reference map in portalConfig above
             xtype: 'cgxp_mappanel',
+            projection: "EPSG:{{srid}}",
+            units: "m",
+            projectionCodes: [{{srid}}, 4326],
             extent: INITIAL_EXTENT,
             maxExtent: RESTRICTED_EXTENT,
             restrictedExtent: RESTRICTED_EXTENT,
             stateId: "map",
-            projection: new OpenLayers.Projection("EPSG:{{srid}}"),
-            units: "m",
             resolutions: [1000,500,250,100,50,20,10,5,2.5,1,0.5,0.25,0.1,0.05],
             controls: [
                 new OpenLayers.Control.Navigation(),
