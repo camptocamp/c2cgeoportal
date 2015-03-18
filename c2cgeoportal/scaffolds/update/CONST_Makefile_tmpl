@@ -53,7 +53,7 @@ BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_
 
 # Requirements
 
-EGGS_DEPENDENTIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt CONST_requirements.txt
+EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt CONST_requirements.txt
 REQUIREMENTS += -r CONST_requirements.txt
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
@@ -646,7 +646,7 @@ test-packages-ngeo: .build/test-packages-ngeo.timestamp
 		'pip>=6' 'setuptools>=12'
 	touch $@
 
-.build/requirements.timestamp: $(EGGS_DEPENDENTIES)
+.build/requirements.timestamp: $(EGGS_DEPENDENCIES)
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS) $(PIP_REDIRECT)
 	touch $@
 
