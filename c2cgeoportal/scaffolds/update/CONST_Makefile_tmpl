@@ -225,6 +225,16 @@ PRINT_REQUIREMENT += $(addprefix, $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 
+# Apache
+APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
+APACHE_VHOST ?= $(PACKAGE)
+APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
+CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
+CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
+CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
+CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+
 # Templates
 TEMPLATE_EXCLUDE += .build print/templates \
 	CONST_alembic/main/script.py.mako CONST_alembic/static/script.py.mako
@@ -239,18 +249,12 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	available_locale_names cache admin_interface functionalities external_themes_url \
 	raster shortener hide_capabilities use_security_metadata mapserverproxy \
 	print_url tiles_url checker check_collector default_max_age jsbuild package srid
-ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} DEVELOPMENT=${DEVELOPMENT} PACKAGE=${PACKAGE}
+ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
+	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
+	DEVELOPMENT=${DEVELOPMENT} \
+	PACKAGE=${PACKAGE}
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
-
-# Apache
-APACHE_VHOST ?= $(PACKAGE)
-APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
-CONF_FILES_IN = $(shell ls -1 apache/*.conf.in)
-CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako)
-CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja)
-CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
-PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
 
 .PHONY: help
