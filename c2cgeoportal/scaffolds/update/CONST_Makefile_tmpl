@@ -229,9 +229,9 @@ PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
-CONF_FILES_IN = $(shell ls -1 apache/*.conf.in)
-CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako)
-CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja)
+CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
+CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
+CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
