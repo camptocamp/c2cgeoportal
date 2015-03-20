@@ -40,7 +40,7 @@ need to use a relatively large value for the ``MAXSIZE`` parameter (of the
 
 MapFish Print also supports map rotations. This implies specific requirements:
 
-* The ``MAP`` and all the ``LAYERS`` should have a ``PROJECTION``. For
+* The ``MAP`` and all the ``LAYER``s should have a ``PROJECTION``. For
   example::
 
       PROJECTION
@@ -177,7 +177,7 @@ This area is specified in the administration interface while defining the
    Using an restriction area on a big layer or defining a too complex area
    may slow down the application.
 
-To define a restricted layer in the mapfile the ``DATA`` property of the
+To define a restricted layer in the Mapfile the ``DATA`` property of the
 ``LAYER`` should look like this::
 
     DATA "the_geom FROM
@@ -364,10 +364,10 @@ interface with for instance the following value for the given role:
 
 
 Legend
-------------------
+------
 
 Legend text configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Mapserver allows different forms of legends.
 
@@ -399,6 +399,12 @@ Mapserver allows different forms of legends.
         END
     END
 
+
+Performance improvement
+-----------------------
+
+Adding an ``EXTENT`` parameter to the ``LAYER`` section may significantly improve the performances
+because it saves MapServer from computing the extent of all layer features.
 
 
 Note about ECW
