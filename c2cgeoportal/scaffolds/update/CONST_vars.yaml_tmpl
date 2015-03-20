@@ -9,7 +9,7 @@ vars:
     # the Unix user under which the modwsgi daemon processes are executed.
     modwsgi_user: www-data
     # url-path where the instance must respond.
-    apache_entry_point: /{instanceid}/
+    apache_entry_point: APACHE_ENTRY_POINT
     # database user
     dbuser: www-data
     # database password
@@ -282,6 +282,7 @@ interpreted:
     - python_path
     environment:
     - instanceid
+    - apache_entry_point
     - development
     bash:
     - directory
