@@ -93,7 +93,7 @@ MAP
         NAME 'layer_name'
         TYPE POLYGON
         TEMPLATE fooOnlyForWMSGetFeatureInfo # For GetFeatureInfo
-        EXTENT 620000 218000 690000 278000
+        EXTENT 420000 30000 900000 350000
         CONNECTIONTYPE postgis
         PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
         CONNECTION "${mapserver_connection}"
