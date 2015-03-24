@@ -10,8 +10,9 @@ mako.directories = {{package}}:templates
     c2cgeoportal:templates
 app.cfg = %(here)s/config.yaml
 # Authentication settings
-authtkt_cookie_name = auth_tkt_${instanceid}
 authtkt_secret = ${authtkt_secret}
+authtkt_cookie_name = ${authtkt_cookie_name}
+authtkt_timeout = ${authtkt_timeout}
 # Database information
 sqlalchemy.url = postgresql://${dbuser}:${dbpassword}@${dbhost}:${dbport}/${db}
 auth_replication_enabled = ${vars:enable_auth_replication}
