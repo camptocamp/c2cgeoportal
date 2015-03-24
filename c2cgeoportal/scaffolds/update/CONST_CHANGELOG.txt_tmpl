@@ -1,6 +1,24 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.5.4
+=============
+
+1. By default the authentication cookie expires after 86400 seconds (1 day).
+   You may override this value by adding an `authtkt_timeout` parameter 
+   in your `buildout.cfg` file. For instance:
+
+    # One week
+    authtkt_timeout: 604800
+
+   Also edit `production.ini.in` and `development.ini.in` like this:
+
+     authtkt_secret = ${authtkt_secret}
+    -authtkt_cookie_name = auth_tkt_${instanceid}
+    +authtkt_cookie_name = ${authtkt_cookie_name}
+    +authtkt_timeout = ${authtkt_timeout}
+
+
 Version 1.5.3
 =============
 

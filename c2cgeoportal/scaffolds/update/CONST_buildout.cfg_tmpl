@@ -45,8 +45,10 @@ instanceid = override_me
 modwsgi_user = www-data
 # url-path where the instance must respond.
 apache-entry-point = /${vars:instanceid}/
-# cookie session secret
+# Authentication settings
 authtkt_secret = __import__('uuid').uuid4().hex
+authtkt_cookie_name = auth_tkt_${vars:instanceid}
+authtkt_timeout = 86400
 # database user
 dbuser = www-data
 # database password
