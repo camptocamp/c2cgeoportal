@@ -283,11 +283,19 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
         check_call(["make", "-f", options.file, options.clean])
-        check_call(["make", "-f", options.file, ".build/venv.timestamp"])
+        check_call(["make", "-f", options.file, ".build/venv.timestamp-noclean"])
+
+        pip_cmd = [
+            ".build/venv/bin/pip", "install",
+            "--trusted-host", "pypi.camptocamp.net",
+            "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
+            "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
+        ]
         if options.version == "master":
-            check_call([".build/venv/bin/pip", "install", "--upgrade", "--pre", "c2cgeoportal"])
+            pip_cmd += ["--upgrade", "--pre", "c2cgeoportal"]
         else:
-            check_call([".build/venv/bin/pip", "install", "c2cgeoportal==%s" % options.version])
+            pip_cmd += ["c2cgeoportal==%s" % options.version]
+        check_call(pip_cmd)
 
         check_call([
             "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
