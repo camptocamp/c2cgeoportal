@@ -55,29 +55,33 @@ class PrintProxy(Proxy):  # pragma: no cover
     def _get_capabilities_proxy(self, filter_, *args, **kwargs):
         resp, content = self._proxy(*args, **kwargs)
 
-        try:
-            capabilities = json.loads(content)
-        except JSONDecodeError as e:
-            # log and raise
-            log.error("Unable to parse capabilities.")
-            log.exception(e)
-            log.error(content)
-            return HTTPBadGateway(content)
+        if self.request.method == "GET":
+            try:
+                capabilities = json.loads(content)
+            except JSONDecodeError as e:
+                # log and raise
+                log.error("Unable to parse capabilities.")
+                log.exception(e)
+                log.error(content)
+                return HTTPBadGateway(content)
+
+            pretty = self.request.params.get('pretty', 'false') == 'true'
+            content = json.dumps(
+                capabilities, separators=None if pretty else (',', ':'),
+                indent=4 if pretty else None
+            )
+        else:
+            content = ""
 
         headers = dict(resp)
         if 'content-length' in headers:
             del headers['content-length']
         if 'transfer-encoding' in headers:
             del headers['transfer-encoding']
-        headers["Access-Control-Allow-Origin"] = "*"
-        headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+        self._add_cors(headers)
 
-        pretty = self.request.params.get('pretty', 'false') == 'true'
         response = Response(
-            json.dumps(
-                capabilities, separators=None if pretty else (',', ':'),
-                indent=4 if pretty else None
-            ),
+            content,
             status=resp.status, headers=headers,
         )
         init_cache_control(self.request, "print")
@@ -99,10 +103,14 @@ class PrintProxy(Proxy):  # pragma: no cover
         params = dict(self.request.params)
         query_string = urllib.urlencode(params)
 
-        return self._info(templates, query_string)
+        return self._info(
+            templates,
+            query_string,
+            self.request.method,
+        )
 
     @cache_region.cache_on_arguments()
-    def _info(self, templates, query_string):
+    def _info(self, templates, query_string, method):
         # get URL
         _url = self.config['print_url'] + 'info.json'
 
@@ -162,10 +170,14 @@ class PrintProxy(Proxy):  # pragma: no cover
         params = dict(self.request.params)
         query_string = urllib.urlencode(params)
 
-        return self._capabilities(templates, query_string)
+        return self._capabilities(
+            templates,
+            query_string,
+            self.request.method,
+        )
 
     @cache_region.cache_on_arguments()
-    def _capabilities(self, templates, query_string):
+    def _capabilities(self, templates, query_string, method):
         # get URL
         _url = self.config['print_url'] + '/capabilities.json'
 

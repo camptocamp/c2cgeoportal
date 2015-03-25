@@ -155,7 +155,7 @@ class Proxy:
         return resp, content
 
     @cache_region.cache_on_arguments()
-    def _proxy_cache(self, *args, **kwargs):  # pragma: no cover
+    def _proxy_cache(self, method, *args, **kwargs):  # pragma: no cover
         return self._proxy(*args, cache=True, **kwargs)
 
     def _proxy_response(
@@ -163,7 +163,11 @@ class Proxy:
     ):  # pragma: no cover
         cache = kwargs.get("cache", False)
         if cache is True:
-            resp, content = self._proxy_cache(url, **kwargs)
+            resp, content = self._proxy_cache(
+                url,
+                self.request.method,
+                **kwargs
+            )
         else:
             resp, content = self._proxy(url, **kwargs)
 
@@ -171,16 +175,16 @@ class Proxy:
             resp, content, cache, service_name, headers_update=headers_update, add_cors=add_cors
         )
 
+    def _add_cors(self, headers):
+        headers.update({
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
+        })
+
     def _build_response(
         self, resp, content, cache, service_name, headers=None, headers_update={}, add_cors=True
     ):
         headers = dict(resp) if headers is None else headers
-
-        if add_cors:
-            headers.update({
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "X-Requested-With, Content-Type",
-            })
 
         if "content-length" in headers:  # pragma: no cover
             del headers["content-length"]
@@ -188,6 +192,9 @@ class Proxy:
             del headers["transfer-encoding"]
         if "content-location" in headers:  # pragma: no cover
             del headers["content-location"]
+
+        if add_cors:
+            self._add_cors(headers)
 
         headers.update(headers_update)
 
