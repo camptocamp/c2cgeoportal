@@ -283,7 +283,7 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
         check_call(["make", "-f", options.file, options.clean])
-        check_call(["make", "-f", options.file, ".build/venv.timestamp"])
+        check_call(["make", "-f", options.file, ".build/venv.timestamp-noclean"])
         if options.version == "master":
             check_call([".build/venv/bin/pip", "install", "--upgrade", "--pre", "c2cgeoportal"])
         else:
