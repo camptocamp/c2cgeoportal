@@ -66,6 +66,7 @@ MAP
     LAYER
         NAME "testpoint_unprotected"
         GROUP "testpoint_group"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -101,6 +102,7 @@ MAP
     LAYER
         NAME "testpoint_protected"
         GROUP "testpoint_group"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -138,6 +140,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected_query_with_collect"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -216,6 +219,7 @@ MAP
     LAYER
         NAME "testpoint_column_restriction"
         TYPE POINT
+        EXTENT -180 -90 180 90
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
@@ -256,6 +260,7 @@ MAP
     LAYER
         NAME "test_wmsfeatures"
         GROUP "test_wmsfeaturesgroup"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -294,6 +299,7 @@ MAP
 
     LAYER
         NAME "test_wmstime"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -325,6 +331,7 @@ MAP
 
     LAYER
         NAME "test_wmstime2"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
