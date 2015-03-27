@@ -116,6 +116,14 @@ def _fill_arguments(command):
         const="clean",
         dest="clean",
     )
+    parser.add_argument(
+        "--windows",
+        help="Use the windows c2cgeoportal package",
+        default="c2cgeoportal",
+        action="store_const",
+        const="c2cgeoportal-win",
+        dest="package",
+    )
     if command == "help":
         parser.add_argument(
             "command", metavar="COMMAND", help="The command"
@@ -213,11 +221,11 @@ def upgrade(options):
                 exit(1)
 
             headers, _ = http.request(
-                "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-%s.tar.gz" %
-                options.version, "HEAD"
+                "http://pypi.camptocamp.net/internal-pypi/index/%s-%s.tar.gz" %
+                options.version, options.package, "HEAD"
             )
             if headers.status != 200:
-                print("This c2cgeoportal egg does not exist.")
+                print("This %s egg does not exist." % options.package)
                 exit(1)
 
             url = (
@@ -230,7 +238,7 @@ def upgrade(options):
                 print(url)
                 exit(1)
             first_line = content.split()[0]
-            if not first_line.startswith("c2cgeoportal=="):
+            if not first_line.startswith("%s==" % options.package):
                 print("The first line of the version isn't about c2cgeoportal")
                 print(first_line)
                 exit(1)
@@ -292,9 +300,9 @@ def upgrade(options):
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
         ]
         if options.version == "master":
-            pip_cmd += ["--upgrade", "--pre", "c2cgeoportal"]
+            pip_cmd += ["--upgrade", "--pre", options.package]
         else:
-            pip_cmd += ["c2cgeoportal==%s" % options.version]
+            pip_cmd += ["%s==%s" % (options.package, options.version)]
         check_call(pip_cmd)
 
         check_call([
