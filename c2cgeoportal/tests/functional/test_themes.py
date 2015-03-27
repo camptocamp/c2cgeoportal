@@ -67,6 +67,7 @@ class TestThemesView(TestCase):
         layer_v1.interfaces = [main]
         layer_v1.ui_metadata = [UIMetadata('test', 'v1')]
         layer_internal_wms = LayerInternalWMS(name=u'__test_layer_internal_wms', public=True)
+        layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
         layer_internal_wms.ui_metadata = [UIMetadata('test', 'internal_wms')]
         layer_external_wms = LayerExternalWMS(name=u'__test_layer_external_wms', public=True)
