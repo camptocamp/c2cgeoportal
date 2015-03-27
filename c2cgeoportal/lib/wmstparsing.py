@@ -43,9 +43,25 @@ class TimeInformation(object):
     def __init__(self):
         self.extent = None
         self.mode = None
+        self.layer = None
+
+    def merge(self, layer, extent, mode):
+        layer_apply = \
+            self.layer == layer or \
+            (not self.has_time() and extent is not None)
+
+        self.merge_extent(extent)
+        self.merge_mode(mode)
+
+        if layer_apply:
+            layer["time"] = self.to_dict()
+            self.layer = layer
+        elif self.layer is not None:
+            del self.layer["time"]
+            self.layer = None
 
     def merge_extent(self, extent):
-        if self.extent:
+        if self.extent is not None:
             self.extent.merge(extent)
         else:
             self.extent = extent
@@ -56,7 +72,8 @@ class TimeInformation(object):
                 if self.mode != mode:
                     raise ValueError(
                         "Could not mix time mode '%s' and '%s'"
-                        % (mode, self.mode))
+                        % (mode, self.mode)
+                    )
             else:
                 self.mode = mode
 
