@@ -233,7 +233,7 @@ class Entry(object):
 
             if layer.layer_type == "internal WMS":
                 self._fill_internal_wms(l, layer, wms, wms_layers, errors)
-                errors |= self._merge_time(time, layer, wms, wms_layers)
+                errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
@@ -242,7 +242,7 @@ class Entry(object):
             l["type"] = "internal WMS"
             l["layers"] = layer.layer
             self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2)
-            errors |= self._merge_time(time, layer, wms, wms_layers)
+            errors |= self._merge_time(time, l, layer, wms, wms_layers)
         elif isinstance(layer, LayerExternalWMS):
             l["type"] = "external WMS"
             l["layers"] = layer.layer
@@ -253,28 +253,32 @@ class Entry(object):
 
         return l, errors
 
-    def _merge_time(self, time, layer, wms, wms_layers):
+    def _merge_time(self, time, l, layer, wms, wms_layers):
         errors = set()
+        wmslayer = layer.name if isinstance(layer, LayerV1) else layer.layer
         try:
-            if layer.name in wms_layers:
-                wms_layer_obj = wms[layer.name]
+            if wmslayer in wms_layers:
+                wms_layer_obj = wms[wmslayer]
 
                 if wms_layer_obj.timepositions:
-                    extent = parse_extent(wms_layer_obj.timepositions,
-                                          wms_layer_obj.defaulttimeposition)
-                    time.merge_extent(extent)
-                    time.merge_mode(layer.time_mode)
+                    extent = parse_extent(
+                        wms_layer_obj.timepositions,
+                        wms_layer_obj.defaulttimeposition
+                    )
+                    time.merge(l, extent, layer.time_mode)
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
-                        extent = parse_extent(child_layer.timepositions,
-                                              child_layer.defaulttimeposition)
-                        time.merge_extent(extent)
+                        extent = parse_extent(
+                            child_layer.timepositions,
+                            child_layer.defaulttimeposition
+                        )
                         # The time mode comes from the layer group
-                        time.merge_mode(layer.time_mode)
+                        time.merge(l, extent, layer.time_mode)
+
         except ValueError:  # pragma no cover
             errors.add(
-                "Error while handling time for layer '%s' : '%s'"
+                "Error while handling time for layer '%s': %s"
                 % (layer.name, sys.exc_info()[1])
             )
 
@@ -336,9 +340,10 @@ class Entry(object):
             if layer.max_resolution is not None:
                 l['maxResolutionHint'] = layer.max_resolution
 
+        wmslayer = layer.name if version == 1 else layer.layer
         # now look at what's in the WMS capabilities doc
-        if layer.name in wms_layers:
-            wms_layer_obj = wms[layer.name]
+        if wmslayer in wms_layers:
+            wms_layer_obj = wms[wmslayer]
             metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
             if len(metadata_urls) > 0:
                 l['metadataUrls'] = metadata_urls
@@ -353,7 +358,7 @@ class Entry(object):
                 l['queryable'] = wms_layer_obj.queryable
         else:
             errors.add(
-                "The layer '%s' is not defined in WMS capabilities" % layer.name
+                "The layer '%s' is not defined in WMS capabilities" % wmslayer
             )
 
     def _fill_external_wms(self, l, layer, errors, version=1):
@@ -647,8 +652,8 @@ class Entry(object):
                 errors |= gp_errors
 
                 if gp is not None:
-                    if time.has_time():  # pragma: nocover
-                        gp.update({"time": time.to_dict()})
+                    if time.has_time() and time.layer is None:
+                        gp["time"] = time.to_dict()
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
@@ -660,8 +665,6 @@ class Entry(object):
                     l, l_errors = self._layer(
                         item, time=time, wms=wms, wms_layers=wms_layers
                     )
-                    if time.has_time():  # pragma: nocover
-                        l.update({"time": time.to_dict()})
                     errors |= l_errors
                     children.append(l)
         return children, errors

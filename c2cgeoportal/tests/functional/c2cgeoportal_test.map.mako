@@ -66,6 +66,7 @@ MAP
     LAYER
         NAME "testpoint_unprotected"
         GROUP "testpoint_group"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -101,6 +102,7 @@ MAP
     LAYER
         NAME "testpoint_protected"
         GROUP "testpoint_group"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -138,6 +140,7 @@ MAP
 
     LAYER
         NAME "testpoint_protected_query_with_collect"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -216,6 +219,7 @@ MAP
     LAYER
         NAME "testpoint_column_restriction"
         TYPE POINT
+        EXTENT -180 -90 180 90
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
@@ -256,6 +260,7 @@ MAP
     LAYER
         NAME "test_wmsfeatures"
         GROUP "test_wmsfeaturesgroup"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
@@ -294,12 +299,13 @@ MAP
 
     LAYER
         NAME "test_wmstime"
+        GROUP "test_wmstimegroup"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
-        GROUP "test_wmstimegroup"
         METADATA
             "wms_title" "time"
             "wms_srs" "epsg:21781"
@@ -325,12 +331,13 @@ MAP
 
     LAYER
         NAME "test_wmstime2"
+        GROUP "test_wmstimegroup"
+        EXTENT -180 -90 180 90
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
         DATA "the_geom from main.testpoint using unique id using srid=21781"
-        GROUP "test_wmstimegroup"
         METADATA
             "wms_title" "time"
             "wms_srs" "epsg:21781"
