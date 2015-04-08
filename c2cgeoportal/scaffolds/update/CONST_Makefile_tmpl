@@ -212,6 +212,7 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml
+TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 
 PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
@@ -663,7 +664,13 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) /tmp/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf /tmp/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r /tmp/$(PRINT_WAR)
+ifneq ($(TOMCAT_SERVICE_COMMAND),)
+	$(TOMCAT_SERVICE_COMMAND) stop
+endif
 	mv /tmp/$(PRINT_WAR) $(PRINT_OUTPUT)
+ifneq ($(TOMCAT_SERVICE_COMMAND),)
+	$(TOMCAT_SERVICE_COMMAND) start
+endif
 
 print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
 	mkdir -p $(dir $@)
