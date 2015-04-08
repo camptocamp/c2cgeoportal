@@ -7,10 +7,10 @@ Any c2cgeoportal projet created with the ``c2cgeoportal_create`` and
 ``c2cgeoportal_update`` scaffolds comes with a `Sencha Touch
 <http://www.sencha.com/products/touch/>`_ based mobile application.
 
-The mobile application is available at the URLs ``/mobile_dev/`` and
-``/mobile/``. Do not forget the trailing slash! The first URL should be used
+The mobile application is available at the URLs ``<instance_id>/wsgi/mobile_dev/`` and
+``<instance_id>/wsgi/mobile/``. Do not forget the trailing slash! The first URL should be used
 during development, as non-minified resources are used. The second URL is for
-production.
+production. The second URL is for production as well as its alias ``<apache_entry_point>/mobile``.
 
 This application includes the following features:
 
@@ -119,9 +119,9 @@ installed on the build machine. (See above.)
     You would add this in ``<package>.mk``, or any make configuration file
     that extends ``<package>.mk``.
 
+Once built the mobile application should be available on ``<instance_id>/wsgi/mobile_dev/`` and
+``<instance_id>/wsgi/mobile/`` in the browser.
 
-Once built the mobile application should be available on ``/mobile_dev/`` and
-``/mobile/`` in the browser, where ``/`` is the root of the WSGI application.
 
 Configuring the map and the layers
 ----------------------------------
