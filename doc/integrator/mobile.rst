@@ -138,14 +138,6 @@ Theme
 The list of themes and layers shown in the mobile application is dynamically
 generated. See :ref:`administrator_guide`.
 
-UI strings translations
------------------------
-
-The overlay selector uses the layer names (as defined in the ``allLayers``
-array of overlays) as translation keys. To add your translations edit
-``static/mobile/config.js`` and populate the ``OpenLayers.Lang.<code>`` objects
-as necessary.
-
 Raster service
 --------------
 
