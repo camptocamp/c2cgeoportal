@@ -65,7 +65,7 @@ class Profile(Raster):
 
         response = Response(result, cache_control="no-cache", headers={
             'Content-Type': 'text/csv; charset=utf-8',
-            'Content-Disposition': 'attachment; filename="profil.csv"'
+            'Content-Disposition': 'attachment; filename="profile.csv"'
         })
         return response
 
