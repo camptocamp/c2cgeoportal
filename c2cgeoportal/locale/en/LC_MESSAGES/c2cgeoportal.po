@@ -379,6 +379,10 @@ msgid ""
 "themes."
 msgstr ""
 
+#: c2cgeoportal/views/profile.py:64
+msgid "distance"
+msgstr ""
+
 #~ msgid "Loading message"
 #~ msgstr "Loading..."
 
