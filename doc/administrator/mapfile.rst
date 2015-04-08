@@ -406,6 +406,29 @@ Performance improvement
 Adding an ``EXTENT`` parameter to the ``LAYER`` section may significantly improve the performances
 because it saves MapServer from computing the extent of all layer features.
 
+Prepare raster files
+~~~~~~~~~~~~~~~~~~~~
+
+To have good performance you should have tiled files with overview, and probably
+a tileindex, you can doing these steps:
+
+Convert your rasters in tiled GeoTIFF:
+
+.. code::
+
+  gdal_translate -of GTiff -co "TILED=YES" -co "TFW=YES" <filename_in.tif> <filename_out.tif>
+
+Then build overviews for your rasters
+
+.. code::
+
+  gdaladdo -r average filename.tif 2 4 8 16
+
+You can generate a shapefile indexing all your rasters
+
+.. code::
+
+  gdaltindex filename_index.shp raster/*.tif
 
 Note about ECW
 --------------
