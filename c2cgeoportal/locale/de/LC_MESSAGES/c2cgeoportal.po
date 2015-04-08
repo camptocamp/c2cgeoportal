@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GeoMapFish\n"
-"PO-Revision-Date: 2015-03-16 16:36+0000\n"
+"PO-Revision-Date: 2015-04-08 14:57+0000\n"
 "Last-Translator: Stéphane Brunner <stephane.brunner@camptocamp.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/geomapfish/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -377,4 +377,8 @@ msgstr "Testen des i18n"
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover the "
 "themes."
+msgstr ""
+
+#: ./c2cgeoportal/views/profile.py:64
+msgid "distance"
 msgstr ""
