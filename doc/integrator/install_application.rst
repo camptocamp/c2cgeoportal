@@ -311,6 +311,7 @@ populate the application tables, and directly set the version (details later):
 .. prompt:: bash
 
     .build/venv/bin/alembic upgrade head
+    .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 Your application is now fully set up and the last thing to do is to configure
 apache so that it will serve your WSGI c2cgeoportal application. So you just
