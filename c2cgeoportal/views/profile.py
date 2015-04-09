@@ -29,14 +29,18 @@
 
 
 import math
+import geojson
 from decimal import Decimal
 
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPNotFound
+from pyramid.i18n import TranslationStringFactory
 
-import geojson
 from c2cgeoportal.views.raster import Raster
+
+
+_ = TranslationStringFactory("c2cgeoportal")
 
 
 class Profile(Raster):
@@ -57,7 +61,7 @@ class Profile(Raster):
         """answers to /profile.csv"""
         layers, points = self._compute_points()
 
-        result = "distance," + ','.join(layers) + ",x,y"
+        result = _("distance") + "," + ",".join(layers) + ",x,y"
         template = ','.join('%s' for l in layers)
         for point in points:
             r = template % tuple((str(point['values'][l]) for l in layers))
@@ -65,7 +69,7 @@ class Profile(Raster):
 
         response = Response(result, cache_control="no-cache", headers={
             'Content-Type': 'text/csv; charset=utf-8',
-            'Content-Disposition': 'attachment; filename="profil.csv"'
+            'Content-Disposition': 'attachment; filename="profile.csv"'
         })
         return response
 
