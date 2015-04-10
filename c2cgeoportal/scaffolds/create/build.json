@@ -20,6 +20,7 @@
       "node_modules/ngeo/externs/angular-gettext.js",
       "node_modules/ngeo/externs/d3.js",
       "node_modules/ngeo/externs/twbootstrap.js",
+      "node_modules/ngeo/externs/typeahead.js",
       ".build/externs/angular-1.3.js",
       ".build/externs/angular-1.3-q.js",
       ".build/externs/angular-1.3-http-promise.js",
@@ -62,7 +63,6 @@
       "missingGetCssName",
       "missingProperties",
       "missingProvide",
-      "missingRequire",
       "missingReturn",
       "newCheckTypes",
       "nonStandardJsDocs",
@@ -75,7 +75,8 @@
       "visibility"
     ],
     "jscomp_off": [
-      "unknownDefines"
+      "unknownDefines",
+      "missingRequire"
     ],
     "extra_annotation_name": [
       "api", "observable"

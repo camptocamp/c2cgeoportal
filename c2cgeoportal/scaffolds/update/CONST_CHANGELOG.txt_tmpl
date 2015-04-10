@@ -185,7 +185,7 @@ Version 1.6
 
     + .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
-17. In the <package>/subscribers.py, <package>/model.py, <package>/form.py do the following changes:
+17. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` do the following changes:
 
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")

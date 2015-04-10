@@ -18,6 +18,7 @@
 /project.yaml
 /print/config.yaml
 /print/WEB-INF/lib/*.jar
+/print/WEB-INF/classes/logback.xml
 /mapserver/c2cgeoportal.map
 /deploy/hooks/post-restore-database
 /{{package}}/static/build/
