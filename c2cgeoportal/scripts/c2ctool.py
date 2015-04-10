@@ -290,8 +290,24 @@ def upgrade(options):
         ])
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
-        check_call(["make", "-f", options.file, options.clean])
-        check_call(["make", "-f", options.file, ".build/venv.timestamp-noclean"])
+
+        check_call([
+            "wget",
+            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
+            "%s/c2cgeoportal/scaffolds/update/CONST_requirements.txt" % options.version,
+            "-O", "CONST_requirements.txt"
+        ])
+        check_call([
+            "wget",
+            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
+            "%s/c2cgeoportal/scaffolds/update/CONST_versions.txt" % options.version,
+            "-O", "CONST_versions.txt"
+        ])
+        check_call([
+            ".build/venv/bin/pip", "install",
+            "--trusted-host", "pypi.camptocamp.net",
+            "-r", "CONST_requirements.txt"
+        ])
 
         pip_cmd = [
             ".build/venv/bin/pip", "install",
@@ -321,6 +337,8 @@ def upgrade(options):
         diff_file = open("changelog.diff", "w")
         check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
         diff_file.close()
+
+        check_call(["make", "-f", options.file, ".build/requirements.timestamp"])
 
         print()
         print(_color_bar)
