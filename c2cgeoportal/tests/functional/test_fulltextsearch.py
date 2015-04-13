@@ -51,50 +51,50 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.models import FullTextSearch, User, Role
         from c2cgeoportal.models import DBSession
 
-        user1 = User(username=u'__test_user1', password=u'__test_user1')
-        role1 = Role(name=u'__test_role1', description=u'__test_role1')
+        user1 = User(username=u"__test_user1", password=u"__test_user1")
+        role1 = Role(name=u"__test_role1", description=u"__test_role1")
         user1.role_name = role1.name
 
-        user2 = User(username=u'__test_user2', password=u'__test_user2')
-        role2 = Role(name=u'__test_role2', description=u'__test_role2')
+        user2 = User(username=u"__test_user2", password=u"__test_user2")
+        role2 = Role(name=u"__test_role2", description=u"__test_role2")
         user2.role_name = role2.name
 
         entry1 = FullTextSearch()
-        entry1.label = 'label1'
-        entry1.layer_name = 'layer1'
-        entry1.ts = func.to_tsvector('french', 'soleil travail')
+        entry1.label = "label1"
+        entry1.layer_name = "layer1"
+        entry1.ts = func.to_tsvector("french", "soleil travail")
         entry1.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry1.public = True
 
         entry2 = FullTextSearch()
-        entry2.label = 'label2'
-        entry2.layer_name = 'layer2'
-        entry2.ts = func.to_tsvector('french', 'pluie semaine')
+        entry2.label = "label2"
+        entry2.layer_name = "layer2"
+        entry2.ts = func.to_tsvector("french", "pluie semaine")
         entry2.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry2.public = False
 
         entry3 = FullTextSearch()
-        entry3.label = 'label3'
-        entry3.layer_name = 'layer3'
-        entry3.ts = func.to_tsvector('french', 'vent neige')
+        entry3.label = "label3"
+        entry3.layer_name = "layer3"
+        entry3.ts = func.to_tsvector("french", "vent neige")
         entry3.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry3.public = False
         entry3.role = role2
 
         entry4 = FullTextSearch()
-        entry4.label = 'label4'
-        entry4.layer_name = 'layer1'
-        entry4.ts = func.to_tsvector('french', 'soleil travail')
+        entry4.label = "label4"
+        entry4.layer_name = "layer1"
+        entry4.ts = func.to_tsvector("french", "soleil travail")
         entry4.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry4.public = True
 
         entry5 = FullTextSearch()
-        entry5.label = 'label5'
-        entry5.layer_name = 'layer1'
-        entry5.ts = func.to_tsvector('french', 'params')
+        entry5.label = "label5"
+        entry5.layer_name = "layer1"
+        entry5.ts = func.to_tsvector("french", "params")
         entry5.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry5.public = True
-        entry5.params = {'floor': 5}
+        entry5.params = {"floor": 5}
 
         DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5])
         transaction.commit()
@@ -106,22 +106,22 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.models import FullTextSearch, User, Role
         from c2cgeoportal.models import DBSession
 
-        DBSession.query(User).filter(User.username == '__test_user1').delete()
-        DBSession.query(User).filter(User.username == '__test_user2').delete()
+        DBSession.query(User).filter(User.username == "__test_user1").delete()
+        DBSession.query(User).filter(User.username == "__test_user2").delete()
 
         DBSession.query(FullTextSearch).filter(
-            FullTextSearch.label == 'label1').delete()
+            FullTextSearch.label == "label1").delete()
         DBSession.query(FullTextSearch).filter(
-            FullTextSearch.label == 'label2').delete()
+            FullTextSearch.label == "label2").delete()
         DBSession.query(FullTextSearch).filter(
-            FullTextSearch.label == 'label3').delete()
+            FullTextSearch.label == "label3").delete()
         DBSession.query(FullTextSearch).filter(
-            FullTextSearch.label == 'label4').delete()
+            FullTextSearch.label == "label4").delete()
         DBSession.query(FullTextSearch).filter(
-            FullTextSearch.label == 'label5').delete()
+            FullTextSearch.label == "label5").delete()
 
-        DBSession.query(Role).filter(Role.name == '__test_role1').delete()
-        DBSession.query(Role).filter(Role.name == '__test_role2').delete()
+        DBSession.query(Role).filter(Role.name == "__test_role1").delete()
+        DBSession.query(Role).filter(Role.name == "__test_role2").delete()
 
         transaction.commit()
 
@@ -142,7 +142,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request()
-        del(request.registry.settings['default_locale_name'])
+        del(request.registry.settings["default_locale_name"])
 
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -154,7 +154,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request()
-        request.registry.settings['default_locale_name'] = 'it'
+        request.registry.settings["default_locale_name"] = "it"
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
@@ -175,7 +175,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='text', limit='bad')
+            params=dict(query="text", limit="bad")
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -187,7 +187,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='text', partitionlimit='bad')
+            params=dict(query="text", partitionlimit="bad")
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -199,14 +199,14 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='tra sol', limit=1)
+            params=dict(query="tra sol", limit=1)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties['label'], 'label1')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer1')
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
 
     @attr(toobig_limit=True)
     def test_toobig_limit(self):
@@ -214,16 +214,16 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='tra sol', limit=2000)
+            params=dict(query="tra sol", limit=2000)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties['label'], 'label1')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer1')
-        self.assertEqual(response.features[1].properties['label'], 'label4')
-        self.assertEqual(response.features[1].properties['layer_name'], 'layer1')
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        self.assertEqual(response.features[1].properties["label"], "label4")
+        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
     @attr(toobig_partitionlimit=True)
     def test_toobig_partitionlimit(self):
@@ -231,16 +231,16 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='tra sol', partitionlimit=2000)
+            params=dict(query="tra sol", partitionlimit=2000)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties['label'], 'label1')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer1')
-        self.assertEqual(response.features[1].properties['label'], 'label4')
-        self.assertEqual(response.features[1].properties['layer_name'], 'layer1')
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        self.assertEqual(response.features[1].properties["label"], "label4")
+        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
     @attr(match=True)
     def test_match(self):
@@ -248,23 +248,23 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='tra sol', limit=40)
+            params=dict(query="tra sol", limit=40)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties['label'], 'label1')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer1')
-        self.assertEqual(response.features[1].properties['label'], 'label4')
-        self.assertEqual(response.features[1].properties['layer_name'], 'layer1')
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        self.assertEqual(response.features[1].properties["label"], "label4")
+        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
     @attr(nomatch=True)
     def test_nomatch(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
-        request = self._create_dummy_request(params=dict(query='foo'))
+        request = self._create_dummy_request(params=dict(query="foo"))
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
@@ -276,7 +276,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='pl sem', limit=40)
+            params=dict(query="pl sem", limit=40)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -289,15 +289,15 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='pl sem', limit=40),
-            username=u'__test_user1'
+            params=dict(query="pl sem", limit=40),
+            username=u"__test_user1"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties['label'], 'label2')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer2')
+        self.assertEqual(response.features[0].properties["label"], "label2")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer2")
 
     @attr(private_with_role_nomatch=True)
     def test_private_with_role_nomatch(self):
@@ -305,8 +305,8 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='ven nei', limit=40),
-            username=u'__test_user1'
+            params=dict(query="ven nei", limit=40),
+            username=u"__test_user1"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -319,15 +319,15 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='ven nei', limit=40),
-            username=u'__test_user2'
+            params=dict(query="ven nei", limit=40),
+            username=u"__test_user2"
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties['label'], 'label3')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer3')
+        self.assertEqual(response.features[0].properties["label"], "label3")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer3")
 
     @attr(match_partitionlimit=True)
     def test_match_partitionlimit(self):
@@ -335,14 +335,14 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='tra sol', limit=40, partitionlimit=1)
+            params=dict(query="tra sol", limit=40, partitionlimit=1)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties['label'], 'label1')
-        self.assertEqual(response.features[0].properties['layer_name'], 'layer1')
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
 
     @attr(params=True)
     def test_params(self):
@@ -350,11 +350,11 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(query='params', limit=10)
+            params=dict(query="params", limit=10)
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties['label'], 'label5')
-        self.assertEqual(response.features[0].properties['params'], {'floor': 5})
+        self.assertEqual(response.features[0].properties["label"], "label5")
+        self.assertEqual(response.features[0].properties["params"], {"floor": 5})

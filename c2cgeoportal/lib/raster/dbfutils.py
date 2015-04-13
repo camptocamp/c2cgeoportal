@@ -50,44 +50,44 @@ def dbfreader(f):
     # See DBF format spec at:
     #     http://www.pgts.com.au/download/public/xbase.htm#DBF_STRUCT
 
-    numrec, lenheader = struct.unpack('<xxxxLH22x', f.read(32))
+    numrec, lenheader = struct.unpack("<xxxxLH22x", f.read(32))
     numfields = (lenheader - 33) // 32
 
     fields = []
     for fieldno in xrange(numfields):
-        name, typ, size, deci = struct.unpack('<11sc4xBB14x', f.read(32))
-        name = name.replace('\0', '')       # eliminate NULs from string
+        name, typ, size, deci = struct.unpack("<11sc4xBB14x", f.read(32))
+        name = name.replace("\0", "")       # eliminate NULs from string
         fields.append((name, typ, size, deci))
     yield [field[0] for field in fields]
     yield [tuple(field[1:]) for field in fields]
 
     terminator = f.read(1)
-    assert terminator == '\r'
+    assert terminator == "\r"
 
-    fields.insert(0, ('DeletionFlag', 'C', 1, 0))
-    fmt = ''.join(['%ds' % fieldinfo[2] for fieldinfo in fields])
+    fields.insert(0, ("DeletionFlag", "C", 1, 0))
+    fmt = "".join(["%ds" % fieldinfo[2] for fieldinfo in fields])
     fmtsiz = struct.calcsize(fmt)
     for i in xrange(numrec):
         record = struct.unpack(fmt, f.read(fmtsiz))
-        if record[0] != ' ':
+        if record[0] != " ":
             continue                        # deleted record
         result = []
         for (name, typ, size, deci), value in itertools.izip(fields, record):
-            if name == 'DeletionFlag':
+            if name == "DeletionFlag":
                 continue
             if typ == "N":
-                value = value.replace('\0', '').lstrip()
-                if value == '':
+                value = value.replace("\0", "").lstrip()
+                if value == "":
                     value = 0
                 elif deci:
                     value = decimal.Decimal(value)
                 else:
                     value = int(value)
-            elif typ == 'D':
+            elif typ == "D":
                 y, m, d = int(value[:4]), int(value[4:6]), int(value[6:8])
                 value = datetime.date(y, m, d)
-            elif typ == 'L':
-                value = (value in 'YyTt' and 'T') or (value in 'NnFf' and 'F') or '?'
+            elif typ == "L":
+                value = (value in "YyTt" and "T") or (value in "NnFf" and "F") or "?"
             result.append(value)
         yield result
 
@@ -118,33 +118,33 @@ def dbfwriter(f, fieldnames, fieldspecs, records):
     numfields = len(fieldspecs)
     lenheader = numfields * 32 + 33
     lenrecord = sum(field[1] for field in fieldspecs) + 1
-    hdr = struct.pack('<BBBBLHH20x', ver, yr, mon, day, numrec, lenheader,
+    hdr = struct.pack("<BBBBLHH20x", ver, yr, mon, day, numrec, lenheader,
                       lenrecord)
     f.write(hdr)
 
     # field specs
     for name, (typ, size, deci) in itertools.izip(fieldnames, fieldspecs):
-        name = name.ljust(11, '\x00')
-        fld = struct.pack('<11sc4xBB14x', name, typ, size, deci)
+        name = name.ljust(11, "\x00")
+        fld = struct.pack("<11sc4xBB14x", name, typ, size, deci)
         f.write(fld)
 
     # terminator
-    f.write('\r')
+    f.write("\r")
 
     # records
     for record in records:
-        f.write(' ')                        # deletion flag
+        f.write(" ")                        # deletion flag
         for (typ, size, deci), value in itertools.izip(fieldspecs, record):
             if typ == "N":
-                value = str(value).rjust(size, ' ')
-            elif typ == 'D':
-                value = value.strftime('%Y%m%d')
-            elif typ == 'L':
+                value = str(value).rjust(size, " ")
+            elif typ == "D":
+                value = value.strftime("%Y%m%d")
+            elif typ == "L":
                 value = str(value)[0].upper()
             else:
-                value = str(value)[:size].ljust(size, ' ')
+                value = str(value)[:size].ljust(size, " ")
             assert len(value) == size
             f.write(value)
 
         # End of file
-    f.write('\x1A')
+    f.write("\x1A")

@@ -67,16 +67,16 @@ def get_private_layers():
 @cache_region.cache_on_arguments()
 def _wms_structure(wms_url, host):
     params = (
-        ('SERVICE', 'WMS'),
-        ('VERSION', '1.1.1'),
-        ('REQUEST', 'GetCapabilities'),
+        ("SERVICE", "WMS"),
+        ("VERSION", "1.1.1"),
+        ("REQUEST", "GetCapabilities"),
     )
 
     url = urlparse(wms_url)
     wms_url = "%s://%s%s?%s%s%s" % (
         url.scheme, url.hostname, url.path, url.query,
         "&" if len(url.query) > 0 else "",
-        '&'.join(['='.join(p) for p in params])
+        "&".join(["=".join(p) for p in params])
     )
 
     log.info("Get WMS GetCapabilities for URL: %s" % wms_url)
@@ -84,10 +84,10 @@ def _wms_structure(wms_url, host):
     # forward request to target (without Host Header)
     http = httplib2.Http()
     headers = dict()
-    if url.hostname == 'localhost' and host is not None:  # pragma: no cover
-        headers['Host'] = host
+    if url.hostname == "localhost" and host is not None:  # pragma: no cover
+        headers["Host"] = host
     try:
-        resp, content = http.request(wms_url, method='GET', headers=headers)
+        resp, content = http.request(wms_url, method="GET", headers=headers)
     except:  # pragma: no cover
         raise HTTPBadGateway("Unable to GetCapabilities from wms_url %s" % wms_url)
 
@@ -131,10 +131,10 @@ def enable_proxies(proxies):  # pragma: no cover
         full_uri = urljoin(base or "", source)
 
         # Convert StringIO to string
-        if hasattr(full_uri, 'getvalue'):
+        if hasattr(full_uri, "getvalue"):
             full_uri = full_uri.getvalue()
 
-        if not full_uri.startswith('http:'):
+        if not full_uri.startswith("http:"):
             args = (source,) if base is None else (source, base)
             return old_prepare_input_source(*args)
 
@@ -154,7 +154,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    wms_structure = _wms_structure(wms_url, headers.get('Host', None))
+    wms_structure = _wms_structure(wms_url, headers.get("Host", None))
     tmp_private_layers = list(get_private_layers())
     for name in get_protected_layers(role_id):
         tmp_private_layers.remove(name)
@@ -167,13 +167,13 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
 
     parser = sax.make_parser()
     result = StringIO()
-    downstream_handler = XMLGenerator(result, 'utf-8')
+    downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler, private_layers,
-        u'Layer' if wms else u'FeatureType'
+        u"Layer" if wms else u"FeatureType"
     )
     filter_handler.parse(StringIO(content))
-    return unicode(result.getvalue(), 'utf-8')
+    return unicode(result.getvalue(), "utf-8")
 
 
 class _Layer:
@@ -200,7 +200,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def _complete_text_node(self):
         if self._accumulator:
-            self._downstream.characters(''.join(self._accumulator))
+            self._downstream.characters("".join(self._accumulator))
             self._accumulator = []
 
     def _do(self, action):
@@ -233,7 +233,7 @@ class _CapabilitiesFilter(XMLFilterBase):
                 ))
             else:
                 self.layers_path.append(_Layer())
-        elif name == 'Name' and len(self.layers_path) != 0:
+        elif name == "Name" and len(self.layers_path) != 0:
             self.in_name = True
 
         self._do(lambda: self._downstream.startElement(name, attrs))
@@ -243,7 +243,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         if name == self.tag_name:
             self.layers_path.pop()
-        elif name == 'Name':
+        elif name == "Name":
             self.in_name = False
 
     def startElementNS(self, name, qname, attrs):  # pragma: nocover  # noqa
@@ -265,7 +265,7 @@ class _CapabilitiesFilter(XMLFilterBase):
             else:
                 self.layers_path[-1].self_hidden = True
 
-        self._do(lambda: self._accumulator.append(text.encode('utf-8')))
+        self._do(lambda: self._accumulator.append(text.encode("utf-8")))
 
     def ignorableWhitespace(self, ws):  # pragma: nocover  # noqa
         self._do(lambda: self._accumulator.append(ws))

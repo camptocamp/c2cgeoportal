@@ -17,10 +17,10 @@ class TestGroupsFinder(TestCase):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
-        r = Role(name=u'__test_role')
+        r = Role(name=u"__test_role")
         u = User(
-            username=u'__test_user',
-            password=u'__test_user',
+            username=u"__test_user",
+            password=u"__test_user",
             role=r
         )
 
@@ -35,17 +35,17 @@ class TestGroupsFinder(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username=u'__test_user').delete()
-        DBSession.query(Role).filter_by(name=u'__test_role').delete()
+        DBSession.query(User).filter_by(username=u"__test_user").delete()
+        DBSession.query(Role).filter_by(name=u"__test_role").delete()
         transaction.commit()
 
     @attr(group_finder=True)
     def test_it(self):
         from c2cgeoportal.resources import defaultgroupsfinder
-        self.config.testing_securitypolicy(u'__test_user')
+        self.config.testing_securitypolicy(u"__test_user")
         request = self._create_request()
-        roles = defaultgroupsfinder(u'__test_user', request)
-        self.assertEqual(roles, [u'__test_role'])
+        roles = defaultgroupsfinder(u"__test_user", request)
+        self.assertEqual(roles, [u"__test_role"])
 
     def _create_request(self):
         from pyramid.request import Request
@@ -53,7 +53,7 @@ class TestGroupsFinder(TestCase):
         request = Request({})
         request.set_property(
             get_user_from_request,
-            name='user',
+            name="user",
             reify=True
         )
         return request

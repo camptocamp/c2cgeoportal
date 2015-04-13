@@ -19,9 +19,9 @@ class TestRequestProperty(TestCase):
         import transaction
         from c2cgeoportal.models import DBSession, User, Role
 
-        r = Role(name=u'__test_role')
+        r = Role(name=u"__test_role")
         u = User(
-            username=u'__test_user', password=u'__test_user', role=r
+            username=u"__test_user", password=u"__test_user", role=r
         )
 
         DBSession.add_all([u, r])
@@ -35,8 +35,8 @@ class TestRequestProperty(TestCase):
 
         transaction.commit()
 
-        DBSession.query(User).filter_by(username=u'__test_user').delete()
-        DBSession.query(Role).filter_by(name=u'__test_role').delete()
+        DBSession.query(User).filter_by(username=u"__test_user").delete()
+        DBSession.query(Role).filter_by(name=u"__test_role").delete()
         transaction.commit()
 
     @attr(request_no_auth=True)
@@ -46,10 +46,10 @@ class TestRequestProperty(TestCase):
 
     @attr(request_auth=True)
     def test_request_auth(self):
-        self.config.testing_securitypolicy(u'__test_user')
+        self.config.testing_securitypolicy(u"__test_user")
         request = self._create_request()
-        self.assertEqual(request.user.username, u'__test_user')
-        self.assertEqual(request.user.role.name, u'__test_role')
+        self.assertEqual(request.user.username, u"__test_user")
+        self.assertEqual(request.user.role.name, u"__test_role")
 
     @attr(right_auth=True)
     def test_request_right_auth(self):
@@ -59,7 +59,7 @@ class TestRequestProperty(TestCase):
         from c2cgeoportal.lib.authentication import create_authentication
 
         request = DummyRequest(headers={
-            'Authorization': 'Basic ' + base64.b64encode('__test_user:__test_user').replace('\n', '')
+            "Authorization": "Basic " + base64.b64encode("__test_user:__test_user").replace("\n", "")
         })
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
@@ -67,10 +67,10 @@ class TestRequestProperty(TestCase):
             "authtkt_secret": "123",
         })
         request.set_property(
-            get_user_from_request, name='user', reify=True
+            get_user_from_request, name="user", reify=True
         )
 
-        self.assertEqual(request.user.username, u'__test_user')
+        self.assertEqual(request.user.username, u"__test_user")
 
     @attr(wrong_auth=True)
     def test_request_wrong_auth(self):
@@ -80,7 +80,7 @@ class TestRequestProperty(TestCase):
         from c2cgeoportal.lib.authentication import create_authentication
 
         request = DummyRequest(headers={
-            'Authorization': 'Basic ' + base64.b64encode('__test_user:__wrong_pass').replace('\n', '')
+            "Authorization": "Basic " + base64.b64encode("__test_user:__wrong_pass").replace("\n", "")
         })
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
@@ -88,7 +88,7 @@ class TestRequestProperty(TestCase):
             "authtkt_secret": "123",
         })
         request.set_property(
-            get_user_from_request, name='user', reify=True
+            get_user_from_request, name="user", reify=True
         )
 
         self.assertEqual(request.user, None)
@@ -103,22 +103,22 @@ class TestRequestProperty(TestCase):
                 pass
 
             u = User()
-            u.username = u'__foo'
+            u.username = u"__foo"
             u.role = Role()
-            u.role.name = u'__bar'
+            u.role.name = u"__bar"
             return u
 
-        self.config.testing_securitypolicy(u'__test_user')
+        self.config.testing_securitypolicy(u"__test_user")
         request = self._create_request()
-        request.set_property(setter, name='user', reify=True)
-        self.assertEqual(request.user.username, u'__foo')
-        self.assertEqual(request.user.role.name, u'__bar')
+        request.set_property(setter, name="user", reify=True)
+        self.assertEqual(request.user.username, u"__foo")
+        self.assertEqual(request.user.role.name, u"__bar")
 
     def _create_request(self):
         from pyramid.request import Request
         from c2cgeoportal import get_user_from_request
         request = Request({})
         request.set_property(
-            get_user_from_request, name='user'
+            get_user_from_request, name="user"
         )
         return request

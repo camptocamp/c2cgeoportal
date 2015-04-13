@@ -77,38 +77,38 @@ class TestReflection(TestCase):
         Base = declarative_base(bind=engine)  # noqa
         session = sessionmaker(bind=engine)()
         postgis_version = session.execute(func.postgis_version()).scalar()
-        management = postgis_version.startswith('1.')
+        management = postgis_version.startswith("1.")
 
         if self._tables is None:
             self._tables = []
 
         ctable = Table(
-            '%s_child' % tablename, Base.metadata,
-            Column('id', types.Integer, primary_key=True),
-            Column('name', types.Unicode),
-            schema='public'
+            "%s_child" % tablename, Base.metadata,
+            Column("id", types.Integer, primary_key=True),
+            Column("name", types.Unicode),
+            schema="public"
         )
         ctable.create()
         self._tables.append(ctable)
 
         ptable = Table(
             tablename, Base.metadata,
-            Column('id', types.Integer, primary_key=True),
+            Column("id", types.Integer, primary_key=True),
             Column(
-                'child1_id', types.Integer,
-                ForeignKey('public.%s_child.id' % tablename)
+                "child1_id", types.Integer,
+                ForeignKey("public.%s_child.id" % tablename)
             ),
             Column(
-                'child2_id', types.Integer,
-                ForeignKey('public.%s_child.id' % tablename)
+                "child2_id", types.Integer,
+                ForeignKey("public.%s_child.id" % tablename)
             ),
-            Column('point', Geometry("POINT", management=management)),
-            Column('linestring', Geometry("LINESTRING", management=management)),
-            Column('polygon', Geometry("POLYGON", management=management)),
-            Column('multipoint', Geometry("MULTIPOINT", management=management)),
-            Column('multilinestring', Geometry("MULTILINESTRING", management=management)),
-            Column('multipolygon', Geometry("MULTIPOLYGON", management=management)),
-            schema='public'
+            Column("point", Geometry("POINT", management=management)),
+            Column("linestring", Geometry("LINESTRING", management=management)),
+            Column("polygon", Geometry("POLYGON", management=management)),
+            Column("multipoint", Geometry("MULTIPOINT", management=management)),
+            Column("multilinestring", Geometry("MULTILINESTRING", management=management)),
+            Column("multipolygon", Geometry("MULTIPOLYGON", management=management)),
+            schema="public"
         )
         ptable.create()
         self._tables.append(ptable)
@@ -121,7 +121,7 @@ class TestReflection(TestCase):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self.assertRaises(NoSuchTableError, get_class, 'nonexisting')
+        self.assertRaises(NoSuchTableError, get_class, "nonexisting")
         self.assertEquals(c2cgeoportal.lib.dbreflection._class_cache, {})
 
     @attr(get_class=True)
@@ -130,13 +130,13 @@ class TestReflection(TestCase):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self._create_table('table_a')
-        modelclass = get_class('table_a')
+        self._create_table("table_a")
+        modelclass = get_class("table_a")
 
         # test the class
-        self.assertEquals(modelclass.__name__, 'Table_a')
-        self.assertEquals(modelclass.__table__.name, 'table_a')
-        self.assertEquals(modelclass.__table__.schema, 'public')
+        self.assertEquals(modelclass.__name__, "Table_a")
+        self.assertEquals(modelclass.__table__.name, "table_a")
+        self.assertEquals(modelclass.__table__.schema, "public")
 
         self.assertTrue(isinstance(modelclass.point.type, Geometry))
         self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
@@ -147,56 +147,56 @@ class TestReflection(TestCase):
 
         # test the Table object
         table = modelclass.__table__
-        self.assertTrue('id' in table.c)
-        self.assertTrue('child1_id' in table.c)
-        self.assertTrue('child2_id' in table.c)
-        self.assertTrue('point' in table.c)
-        self.assertTrue('linestring' in table.c)
-        self.assertTrue('polygon' in table.c)
-        self.assertTrue('multipoint' in table.c)
-        self.assertTrue('multilinestring' in table.c)
-        self.assertTrue('multipolygon' in table.c)
-        col_child1_id = table.c['child1_id']
-        self.assertEqual(col_child1_id.name, 'child1_id')
-        col_child2_id = table.c['child2_id']
-        self.assertEqual(col_child2_id.name, 'child2_id')
-        col_point = table.c['point']
-        self.assertEqual(col_point.name, 'point')
+        self.assertTrue("id" in table.c)
+        self.assertTrue("child1_id" in table.c)
+        self.assertTrue("child2_id" in table.c)
+        self.assertTrue("point" in table.c)
+        self.assertTrue("linestring" in table.c)
+        self.assertTrue("polygon" in table.c)
+        self.assertTrue("multipoint" in table.c)
+        self.assertTrue("multilinestring" in table.c)
+        self.assertTrue("multipolygon" in table.c)
+        col_child1_id = table.c["child1_id"]
+        self.assertEqual(col_child1_id.name, "child1_id")
+        col_child2_id = table.c["child2_id"]
+        self.assertEqual(col_child2_id.name, "child2_id")
+        col_point = table.c["point"]
+        self.assertEqual(col_point.name, "point")
         self.assertEqual(col_point.type.geometry_type, "POINT")
-        col_linestring = table.c['linestring']
-        self.assertEqual(col_linestring.name, 'linestring')
+        col_linestring = table.c["linestring"]
+        self.assertEqual(col_linestring.name, "linestring")
         self.assertEqual(col_linestring.type.geometry_type, "LINESTRING")
-        col_polygon = table.c['polygon']
-        self.assertEqual(col_polygon.name, 'polygon')
+        col_polygon = table.c["polygon"]
+        self.assertEqual(col_polygon.name, "polygon")
         self.assertEqual(col_polygon.type.geometry_type, "POLYGON")
-        col_multipoint = table.c['multipoint']
-        self.assertEqual(col_multipoint.name, 'multipoint')
+        col_multipoint = table.c["multipoint"]
+        self.assertEqual(col_multipoint.name, "multipoint")
         self.assertEqual(col_multipoint.type.geometry_type, "MULTIPOINT")
-        col_multilinestring = table.c['multilinestring']
-        self.assertEqual(col_multilinestring.name, 'multilinestring')
+        col_multilinestring = table.c["multilinestring"]
+        self.assertEqual(col_multilinestring.name, "multilinestring")
         self.assertEqual(col_multilinestring.type.geometry_type, "MULTILINESTRING")
-        col_multipolygon = table.c['multipolygon']
-        self.assertEqual(col_multipolygon.name, 'multipolygon')
+        col_multipolygon = table.c["multipolygon"]
+        self.assertEqual(col_multipolygon.name, "multipolygon")
         self.assertEqual(col_multipolygon.type.geometry_type, "MULTIPOLYGON")
 
         # the class should now be in the cache
         self.assertTrue(
-            ('public', 'table_a', None) in
+            ("public", "table_a", None) in
             c2cgeoportal.lib.dbreflection._class_cache
         )
-        _modelclass = get_class('table_a')
+        _modelclass = get_class("table_a")
         self.assertTrue(_modelclass is modelclass)
 
     @attr(get_class_dotted_notation=True)
     def test_get_class_dotted_notation(self):
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self._create_table('table_b')
-        modelclass = get_class('public.table_b')
+        self._create_table("table_b")
+        modelclass = get_class("public.table_b")
 
-        self.assertEquals(modelclass.__name__, 'Table_b')
-        self.assertEquals(modelclass.__table__.name, 'table_b')
-        self.assertEquals(modelclass.__table__.schema, 'public')
+        self.assertEquals(modelclass.__name__, "Table_b")
+        self.assertEquals(modelclass.__table__.name, "table_b")
+        self.assertEquals(modelclass.__table__.schema, "public")
 
     @attr(mixing_get_class_and_queries=True)
     def test_mixing_get_class_and_queries(self):
@@ -207,12 +207,12 @@ class TestReflection(TestCase):
         from sqlalchemy import text
         import transaction
 
-        self._create_table('table_c')
+        self._create_table("table_c")
 
-        DBSession.execute(text('SELECT id FROM table_c'))
+        DBSession.execute(text("SELECT id FROM table_c"))
 
-        modelclass = get_class('table_c')
-        self.assertEquals(modelclass.__name__, 'Table_c')
+        modelclass = get_class("table_c")
+        self.assertEquals(modelclass.__name__, "Table_c")
 
         # This commits the transaction created by DBSession.execute. This
         # is required here in the test because tearDown does table.drop,
@@ -224,12 +224,12 @@ class TestReflection(TestCase):
         import c2cgeoportal.lib.dbreflection
         from c2cgeoportal.lib.dbreflection import get_class
 
-        self._create_table('table_d')
-        get_class('table_d', exclude_properties='foo,bar')
+        self._create_table("table_d")
+        get_class("table_d", exclude_properties="foo,bar")
 
         # the class should now be in the cache
         self.assertTrue(
-            ('public', 'table_d', 'foo,bar') in
+            ("public", "table_d", "foo,bar") in
             c2cgeoportal.lib.dbreflection._class_cache
         )
 
@@ -251,7 +251,7 @@ class TestXSDSequenceCallback(TestCase):
         Base = declarative_base(bind=engine)  # noqa
 
         class Child(Base):
-            __tablename__ = 'child'
+            __tablename__ = "child"
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
 
@@ -259,20 +259,20 @@ class TestXSDSequenceCallback(TestCase):
                 self.name = name
 
         class Parent(Base):
-            __tablename__ = 'parent'
+            __tablename__ = "parent"
             id = Column(types.Integer, primary_key=True)
-            child1_id = Column(types.Integer, ForeignKey('child.id'))
-            child2_id = Column(types.Integer, ForeignKey('child.id'))
+            child1_id = Column(types.Integer, ForeignKey("child.id"))
+            child2_id = Column(types.Integer, ForeignKey("child.id"))
             child1_ = relationship(Child, primaryjoin=(child1_id == Child.id))
-            child1 = _AssociationProxy('child1_', 'name')
+            child1 = _AssociationProxy("child1_", "name")
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _AssociationProxy('child2_', 'name')
+            child2 = _AssociationProxy("child2_", "name")
 
         Child.__table__.create()
         Parent.__table__.create()
         self._tables = [Parent.__table__, Child.__table__]
 
-        DBSession.add_all([Child('foo'), Child('bar')])
+        DBSession.add_all([Child("foo"), Child("bar")])
         transaction.commit()
         self.metadata = Base.metadata
         self.cls = Parent
@@ -291,7 +291,7 @@ class TestXSDSequenceCallback(TestCase):
         from c2cgeoportal.lib.dbreflection import _xsd_sequence_callback
         from papyrus.xsd import tag
         tb = TreeBuilder()
-        with tag(tb, 'xsd:sequence') as tb:
+        with tag(tb, "xsd:sequence") as tb:
             _xsd_sequence_callback(tb, self.cls)
         e = tb.close()
         self.assertEqual(

@@ -39,13 +39,13 @@ from alembic import op, context
 from sqlalchemy import types
 
 # revision identifiers, used by Alembic.
-revision = '3f89a7d71a5e'
+revision = "3f89a7d71a5e"
 down_revision = None
 
 
 def upgrade():
-    schema = '%s_static' % context.get_context().config.get_main_option('schema')
-    op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
+    schema = "%s_static" % context.get_context().config.get_main_option("schema")
+    op.alter_column("shorturl", "url", type_=types.Unicode, schema=schema)
 
 
 def downgrade():

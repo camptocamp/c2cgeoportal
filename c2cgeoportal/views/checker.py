@@ -46,7 +46,7 @@ class Checker(object):  # pragma: no cover
 
     def __init__(self, request):
         self.request = request
-        self.settings = self.request.registry.settings['checker']
+        self.settings = self.request.registry.settings["checker"]
 
     def set_status(self, code, text):
         if int(code) >= self.status_int:
@@ -63,9 +63,9 @@ class Checker(object):  # pragma: no cover
 
         log.info("Checker for url: %s" % url)
 
-        url = url.replace(self.request.environ.get('SERVER_NAME'), 'localhost')
+        url = url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
         headers = {
-            'Host': self.request.environ.get('HTTP_HOST'),
+            "Host": self.request.environ.get("HTTP_HOST"),
             "Cache-Control": "no-cache",
         }
 
@@ -76,113 +76,113 @@ class Checker(object):  # pragma: no cover
             self.set_status(resp.status, resp.reason)
             return url + "<br/>" + content
 
-        return 'OK'
+        return "OK"
 
-    @view_config(route_name='checker_main')
+    @view_config(route_name="checker_main")
     def main(self):
-        _url = self.request.route_url('home')
+        _url = self.request.route_url("home")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_viewer')
+    @view_config(route_name="checker_viewer")
     def viewer(self):
-        _url = self.request.route_url('viewer')
+        _url = self.request.route_url("viewer")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_edit')
+    @view_config(route_name="checker_edit")
     def edit(self):
-        _url = self.request.route_url('edit')
+        _url = self.request.route_url("edit")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_edit_js')
+    @view_config(route_name="checker_edit_js")
     def edit_js(self):
-        _url = self.request.route_url('edit.js')
+        _url = self.request.route_url("edit.js")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_api')
+    @view_config(route_name="checker_api")
     def api_js(self):
-        _url = self.request.route_url('apijs')
+        _url = self.request.route_url("apijs")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_xapi')
+    @view_config(route_name="checker_xapi")
     def xapi_js(self):
-        _url = self.request.route_url('xapijs')
+        _url = self.request.route_url("xapijs")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_printcapabilities')
+    @view_config(route_name="checker_printcapabilities")
     def printcapabilities(self):
-        _url = self.request.route_url('printproxy_info')
+        _url = self.request.route_url("printproxy_info")
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_pdf')
+    @view_config(route_name="checker_pdf")
     def pdf(self):
         return self.make_response(self._pdf())
 
     def _pdf(self):
         body = {
-            'comment': 'Foobar',
-            'title': 'Bouchon',
-            'units': 'm',
-            'srs': "EPSG:%i" % self.request.registry.settings['srid'],
-            'dpi': 254,
-            'layers': [],
-            'layout': self.settings['print_template'],
-            'pages': [{
-                'center': [self.settings['print_center_lon'], self.settings['print_center_lat']],
-                'col0': '',
-                'rotation': 0,
-                'scale': self.settings['print_scale'],
-                'table': {
-                    'columns': ["col0"],
-                    'data': [{
-                        'col0': ''
+            "comment": "Foobar",
+            "title": "Bouchon",
+            "units": "m",
+            "srs": "EPSG:%i" % self.request.registry.settings["srid"],
+            "dpi": 254,
+            "layers": [],
+            "layout": self.settings["print_template"],
+            "pages": [{
+                "center": [self.settings["print_center_lon"], self.settings["print_center_lat"]],
+                "col0": "",
+                "rotation": 0,
+                "scale": self.settings["print_scale"],
+                "table": {
+                    "columns": ["col0"],
+                    "data": [{
+                        "col0": ""
                     }]
                 }
             }]
         }
         body = dumps(body)
 
-        _url = self.request.route_url('printproxy_create') + \
-            '?url=' + self.request.route_url('printproxy')
+        _url = self.request.route_url("printproxy_create") + \
+            "?url=" + self.request.route_url("printproxy")
         h = Http()
 
         log.info("Checker for printproxy request (create): %s" % _url)
-        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost")
+        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
         headers = {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Host': self.request.environ.get('HTTP_HOST')
+            "Content-Type": "application/json;charset=utf-8",
+            "Host": self.request.environ.get("HTTP_HOST")
         }
-        resp, content = h.request(_url, 'POST', headers=headers, body=body)
+        resp, content = h.request(_url, "POST", headers=headers, body=body)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
-            return 'Failed creating PDF: ' + content
+            return "Failed creating PDF: " + content
 
         log.info("Checker for printproxy pdf (retrieve): %s" % _url)
         json = loads(content)
-        _url = json['getURL'].replace(self.request.environ.get('SERVER_NAME'), "localhost")
-        headers = {'Host': self.request.environ.get('HTTP_HOST')}
+        _url = json["getURL"].replace(self.request.environ.get("SERVER_NAME"), "localhost")
+        headers = {"Host": self.request.environ.get("HTTP_HOST")}
         resp, content = h.request(_url, headers=headers)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
-            return 'Failed retrieving PDF: ' + content
+            return "Failed retrieving PDF: " + content
 
-        return 'OK'
+        return "OK"
 
-    @view_config(route_name='checker_fts')
+    @view_config(route_name="checker_fts")
     def fts(self):
         return self.make_response(self._fts())
 
     def _fts(self):
-        _url = '%s?query=%s&limit=1' % (
-            self.request.route_url('fulltextsearch'),
-            self.settings['fulltextsearch']
+        _url = "%s?query=%s&limit=1" % (
+            self.request.route_url("fulltextsearch"),
+            self.settings["fulltextsearch"]
         )
         h = Http()
 
         log.info("Checker for fulltextsearch: %s" % _url)
-        _url = _url.replace(self.request.environ.get('SERVER_NAME'), "localhost")
-        headers = {'host': self.request.environ.get('HTTP_HOST')}
+        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
+        headers = {"host": self.request.environ.get("HTTP_HOST")}
 
         resp, content = h.request(_url, headers=headers)
 
@@ -192,21 +192,21 @@ class Checker(object):  # pragma: no cover
 
         result = loads(content)
 
-        if len(result['features']) == 0:
+        if len(result["features"]) == 0:
             self.set_status(httplib.BAD_REQUEST, httplib.responses[httplib.BAD_REQUEST])
-            return 'No result'
+            return "No result"
 
-        return 'OK'
+        return "OK"
 
-    @view_config(route_name='checker_wmscapabilities')
+    @view_config(route_name="checker_wmscapabilities")
     def wmscapabilities(self):
-        _url = self.request.route_url('mapserverproxy')
+        _url = self.request.route_url("mapserverproxy")
         _url += "?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
         return self.make_response(self.testurl(_url))
 
-    @view_config(route_name='checker_wfscapabilities')
+    @view_config(route_name="checker_wfscapabilities")
     def wfscapabilities(self):
-        _url = self.request.route_url('mapserverproxy')
+        _url = self.request.route_url("mapserverproxy")
         _url += "?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities"
         return self.make_response(self.testurl(_url))
 

@@ -61,51 +61,51 @@ class TestshortenerView(TestCase):
         from c2cgeoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
-            return 'https://example.com/s/' + kw['ref']
+            return "https://example.com/s/" + kw["ref"]
 
         request = DummyRequest()
         request.user = None
-        request.host = 'example.com:443'
-        request.server_name = 'example.com'
+        request.host = "example.com:443"
+        request.server_name = "example.com"
         request.route_url = route_url
         shortener = Shortener(request)
 
         request.params = {
-            'url': 'https://example.com/hi'
+            "url": "https://example.com/hi"
         }
         result = shortener.create()
-        index = result['short_url'].rfind('/')
+        index = result["short_url"].rfind("/")
         self.assertEqual(
-            result['short_url'][:index],
-            'https://example.com/s'
+            result["short_url"][:index],
+            "https://example.com/s"
         )
 
         request.params = {}
         request.matchdict = {
-            'ref': result['short_url'][index + 1:]
+            "ref": result["short_url"][index + 1:]
         }
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
-        self.assertEqual(result.location, 'https://example.com/hi')
+        self.assertEqual(result.location, "https://example.com/hi")
 
         request.params = {}
         request.matchdict = {
-            'ref': 'AAAAAA'
+            "ref": "AAAAAA"
         }
         self.assertRaises(HTTPNotFound, shortener.get)
 
         request.params = {
-            'url': 'https://example.com/short/truite'
+            "url": "https://example.com/short/truite"
         }
         result = shortener.create()
-        self.assertEqual(result['short_url'], 'https://example.com/s/truite')
+        self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
         request.params = {}
         request.matchdict = {}
         self.assertRaises(HTTPBadRequest, shortener.create)
 
         request.params = {
-            'url': 'https://other-site.com/hi'
+            "url": "https://other-site.com/hi"
         }
         self.assertRaises(HTTPBadRequest, shortener.create)
 
@@ -116,19 +116,19 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = 'example.com:443'
-        request.server_name = 'example.com'
-        request.registry.settings['shortener'] = {
-            'base_url': 'http://my_host/my_short/'
+        request.host = "example.com:443"
+        request.server_name = "example.com"
+        request.registry.settings["shortener"] = {
+            "base_url": "http://my_host/my_short/"
         }
         shortener = Shortener(request)
 
         request.params = {
-            'url': 'https://example.com/hi'
+            "url": "https://example.com/hi"
         }
         result = shortener.create()
-        index = result['short_url'].rfind('/')
+        index = result["short_url"].rfind("/")
         self.assertEqual(
-            result['short_url'][:index],
-            'http://my_host/my_short'
+            result["short_url"][:index],
+            "http://my_host/my_short"
         )

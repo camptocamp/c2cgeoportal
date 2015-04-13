@@ -43,32 +43,32 @@ class CheckerCollector(object):  # pragma: no cover
     def __init__(self, request):
         self.status_int = httplib.OK
         self.request = request
-        self.settings = request.registry.settings['check_collector']
+        self.settings = request.registry.settings["check_collector"]
 
     # Method called by the sysadmins to make sure that our app work well.
     # Then this name must not change.
-    @view_config(route_name='check_collector')
+    @view_config(route_name="check_collector")
     def check_collector(self):
         body = ""
         disabled = self.settings["disabled"]
         start0 = time()
 
-        for host in self.settings['hosts']:
+        for host in self.settings["hosts"]:
             params = self.request.params
-            if 'host' not in params or host['display'] == params['host']:
-                check_type = params['type'] if 'type' in params else \
-                    host['type'] if 'type' in host else 'default'
-                checks = self.settings['check_type'][check_type]
-                body += "<h2>%s</h2>" % host['display']
+            if "host" not in params or host["display"] == params["host"]:
+                check_type = params["type"] if "type" in params else \
+                    host["type"] if "type" in host else "default"
+                checks = self.settings["check_type"][check_type]
+                body += "<h2>%s</h2>" % host["display"]
 
                 start1 = time()
                 for check in checks:
                     if check["name"] in disabled:
                         continue
                     start2 = time()
-                    res, err = self._testurl("%s/%s" % (host['url'], check['name']))
+                    res, err = self._testurl("%s/%s" % (host["url"], check["name"]))
                     body += "<p>%s: %s (%0.4fs)</p>" % \
-                        (check['display'], res, time() - start2)
+                        (check["display"], res, time() - start2)
                     if err:
                         body += "%s<hr/>" % err
                 body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
@@ -82,7 +82,7 @@ class CheckerCollector(object):  # pragma: no cover
 
         urlfragments = urlparse(url)
         localurl = "%s://localhost%s" % (urlfragments.scheme, urlfragments.path)
-        headers = {'Host': urlfragments.netloc}
+        headers = {"Host": urlfragments.netloc}
 
         resp, content = h.request(localurl, headers=headers)
 

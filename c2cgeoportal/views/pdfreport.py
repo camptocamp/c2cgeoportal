@@ -47,28 +47,28 @@ class PdfReport:  # pragma: no cover
 
     def __init__(self, request):
         self.request = request
-        self.config = self.request.registry.settings.get('pdfreport', {})
+        self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
         """ Get created PDF. """
-        url = self.config['print_url'] + "/print/buildreport.pdf"
+        url = self.config["print_url"] + "/print/buildreport.pdf"
         http = httplib2.Http()
         h = dict(self.request.headers)
         h["Content-Type"] = "application/json"
-        if urlparse(url).hostname != 'localhost':
-            h.pop('Host')
+        if urlparse(url).hostname != "localhost":
+            h.pop("Host")
         try:
             resp, content = http.request(
-                url, method='POST', headers=h, body=dumps(spec)
+                url, method="POST", headers=h, body=dumps(spec)
             )
         except:
             return HTTPBadGateway()
 
         headers = {}
-        if 'content-type' in resp:
-            headers['content-type'] = resp['content-type']
-        if 'content-disposition' in resp:
-            headers['content-disposition'] = resp['content-disposition']
+        if "content-type" in resp:
+            headers["content-type"] = resp["content-type"]
+        if "content-disposition" in resp:
+            headers["content-disposition"] = resp["content-disposition"]
         return Response(
             content, status=resp.status, headers=headers
         )
@@ -80,12 +80,12 @@ class PdfReport:  # pragma: no cover
             config = self.config.get("defaults", {}).get(name, default)
         return config
 
-    @view_config(route_name='pdfreport', renderer="json")
+    @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
-        id = self.request.matchdict['id']
-        self.layername = self.request.matchdict['layername']
+        id = self.request.matchdict["id"]
+        self.layername = self.request.matchdict["layername"]
 
-        if self._get_config('check_credentials', True):
+        if self._get_config("check_credentials", True):
             # check user credentials
             role_id = None if self.request.user is None else \
                 self.request.user.role.id
@@ -95,28 +95,28 @@ class PdfReport:  # pragma: no cover
                     self.layername not in get_protected_layers(role_id):
                 raise HTTPForbidden
 
-        show_map = self._get_config('show_map', True)
+        show_map = self._get_config("show_map", True)
         if show_map:
-            srs = self._get_config('srs')
+            srs = self._get_config("srs")
             if srs is None:
                 raise HTTPInternalServerError(
-                    'Missing "srs" in service configuration'
+                    "Missing 'srs' in service configuration"
                 )
             params = {
-                'service': 'WFS',
-                'version': '1.0.0',
-                'request': 'GetFeature',
-                'typeName': self.layername,
-                'featureid': self.layername + "." + id,
-                'srsName': srs
+                "service": "WFS",
+                "version": "1.0.0",
+                "request": "GetFeature",
+                "typeName": self.layername,
+                "featureid": self.layername + "." + id,
+                "srsName": srs
             }
 
-            mapserv_url = self.request.route_url('mapserverproxy')
+            mapserv_url = self.request.route_url("mapserverproxy")
             vector_request_url = mapserv_url + "?" \
                 + "&".join(["%s=%s" % i for i in params.items()])
 
-            backgroundlayers = self._get_config('backgroundlayers', '""')
-            imageformat = self._get_config('imageformat', 'image/png')
+            backgroundlayers = self._get_config("backgroundlayers", '""')
+            imageformat = self._get_config("imageformat", "image/png")
         else:
             srs = mapserv_url = vector_request_url = imageformat = ""
             backgroundlayers = '""'
@@ -169,11 +169,11 @@ class PdfReport:  # pragma: no cover
                     }]
                 }
         spec = dumps(spec_template) % {
-            'layername': self.layername, 'id': id, 'srs': srs,
-            'mapserv_url': mapserv_url,
-            'vector_request_url': vector_request_url,
-            'imageformat': imageformat,
-            'backgroundlayers': backgroundlayers
+            "layername": self.layername, "id": id, "srs": srs,
+            "mapserv_url": mapserv_url,
+            "vector_request_url": vector_request_url,
+            "imageformat": imageformat,
+            "backgroundlayers": backgroundlayers
         }
 
         return self._do_print(loads(spec))

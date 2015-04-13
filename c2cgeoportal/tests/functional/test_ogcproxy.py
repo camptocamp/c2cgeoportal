@@ -41,18 +41,18 @@ class TestOgcproxyView(TestCase):
     @attr(nourl=True)
     def test_nourl(self):
         request = testing.DummyRequest()
-        request.scheme = 'http'
+        request.scheme = "http"
         response = ogcproxy(request)
         self.assertEqual(response.status_int, 400)
 
     @attr(badurl=True)
     def test_badurl(self):
         request = testing.DummyRequest()
-        request.scheme = 'http'
-        request.params['url'] = 'http:/toto'
+        request.scheme = "http"
+        request.params["url"] = "http:/toto"
         response = ogcproxy(request)
         self.assertEqual(response.status_int, 400)
 
-        request.params['url'] = 'ftp://toto'
+        request.params["url"] = "ftp://toto"
         response = ogcproxy(request)
         self.assertEqual(response.status_int, 400)

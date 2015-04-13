@@ -46,12 +46,12 @@ def keygen_function(namespace, fn):
     """
 
     if namespace is None:
-        namespace = '%s:%s' % (fn.__module__, fn.__name__)
+        namespace = "%s:%s" % (fn.__module__, fn.__name__)
     else:  # pragma: nocover
-        namespace = '%s:%s|%s' % (fn.__module__, fn.__name__, namespace)
+        namespace = "%s:%s|%s" % (fn.__module__, fn.__name__, namespace)
 
     args = inspect.getargspec(fn)
-    has_self = args[0] and args[0][0] in ('self', 'cls')
+    has_self = args[0] and args[0][0] in ("self", "cls")
 
     def generate_key(*args, **kw):
         if kw:  # pragma: nocover
@@ -60,7 +60,7 @@ def keygen_function(namespace, fn):
         parts = [namespace]
         if has_self:
             self_ = args[0]
-            if hasattr(self_, 'request'):
+            if hasattr(self_, "request"):
                 parts.append(self_.request.application_url)
             args = args[1:]
         parts.append(" ".join(map(compat.text_type, args)))
@@ -75,8 +75,8 @@ def init_region(conf, region=None):
     cache_region = make_region(function_key_generator=keygen_function)
     kwargs = dict(
         (k, conf[k]) for k in
-        ('arguments', 'expiration_time') if k in conf)
-    cache_region.configure(conf['backend'], **kwargs)
+        ("arguments", "expiration_time") if k in conf)
+    cache_region.configure(conf["backend"], **kwargs)
     _regions[region] = cache_region
     return cache_region
 

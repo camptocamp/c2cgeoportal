@@ -47,15 +47,15 @@ class Raster(object):
     def __init__(self, request):
         self.request = request
         request.response.cache_control.no_cache = True
-        self.rasters = self.request.registry.settings['raster']
+        self.rasters = self.request.registry.settings["raster"]
 
-    @view_config(route_name='raster', renderer='decimaljson')
+    @view_config(route_name="raster", renderer="decimaljson")
     def raster(self):
-        lon = float(self.request.params['lon'])
-        lat = float(self.request.params['lat'])
-        if 'layers' in self.request.params:
+        lon = float(self.request.params["lon"])
+        lat = float(self.request.params["lat"])
+        if "layers" in self.request.params:
             rasters = {}
-            layers = self.request.params['layers'].split(',')
+            layers = self.request.params["layers"].split(",")
             for layer in layers:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
@@ -74,17 +74,17 @@ class Raster(object):
     def _get_raster_value(self, layer, ref, lon, lat):
         if ref in self._rasters:
             raster = self._rasters[ref]
-        elif 'type' not in layer or layer['type'] == 'shp_index':
-            raster = GeoRaster(layer['file'])
+        elif "type" not in layer or layer["type"] == "shp_index":
+            raster = GeoRaster(layer["file"])
             self._rasters[ref] = raster
         else:
             raise HTTPInternalServerError(
-                "Bad raster type '%s' for raster layer '%s'"
-                % (layer['type'], ref))  # pragma: no cover
+                'Bad raster type "%s" for raster layer "%s"'
+                % (layer["type"], ref))  # pragma: no cover
 
         result = raster.get_value(lon, lat)
-        if 'round' in layer:
-            result = self._round(result, layer['round'])
+        if "round" in layer:
+            result = self._round(result, layer["round"])
         elif result is not None:
             result = Decimal(str(result))
 

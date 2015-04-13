@@ -51,7 +51,7 @@ class TestEchoView(TestCase):
         from c2cgeoportal.views import echo
 
         request = testing.DummyRequest()
-        request.method = 'POST'
+        request.method = "POST"
 
         response = echo.echo(request)
         self.assertEquals(response.status_int, 400)
@@ -61,19 +61,19 @@ class TestEchoView(TestCase):
         from c2cgeoportal.views import echo
         from webob import Request
 
-        request = Request.blank('/')
-        request.method = 'POST'
+        request = Request.blank("/")
+        request.method = "POST"
         request.content_type = 'multipart/form-data; boundary="foobar"'
-        request.body = '''\
+        request.body = """
 --foobar
 Content-Disposition: form-data; name="file"; filename="a file name"
 Content-Type: text/html
 
 some content with non-ASCII chars ç à é
 --foobar--
-'''
+"""
 
         response = echo.echo(request)
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.content_type, 'text/html')
+        self.assertEquals(response.content_type, "text/html")
         self.assertEquals(response.body, '{"filename":"a file name","data":"c29tZSBjb250ZW50IHdpdGggbm9uLUFTQ0lJIGNoYXJzIMOnIMOgIMOp","success":true}')  # noqa

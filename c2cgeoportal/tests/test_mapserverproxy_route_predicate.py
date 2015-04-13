@@ -33,7 +33,7 @@ def test_hide_capabilities_unset():
     from pyramid.threadlocal import get_current_registry
     from pyramid.request import Request
 
-    request = Request.blank('/test')
+    request = Request.blank("/test")
     request.registry = get_current_registry()
     request.registry.settings = {}
     ret = mapserverproxy_route_predicate(None, request)
@@ -45,10 +45,10 @@ def test_hide_capabilities_set_no_request_param():
     from pyramid.threadlocal import get_current_registry
     from pyramid.request import Request
 
-    request = Request.blank('/test')
+    request = Request.blank("/test")
     request.registry = get_current_registry()
     request.registry.settings = {
-        'hide_capabilities': True
+        "hide_capabilities": True
     }
     ret = mapserverproxy_route_predicate(None, request)
     assert ret is True
@@ -59,10 +59,10 @@ def test_hide_capabilities_set_not_get_capabilities_request():
     from pyramid.threadlocal import get_current_registry
     from pyramid.request import Request
 
-    request = Request.blank('/test?REQUEST=GetMap')
+    request = Request.blank("/test?REQUEST=GetMap")
     request.registry = get_current_registry()
     request.registry.settings = {
-        'hide_capabilities': True
+        "hide_capabilities": True
     }
     ret = mapserverproxy_route_predicate(None, request)
     assert ret is True
@@ -73,10 +73,10 @@ def test_hide_capabilities_set_get_capabilities_request():
     from pyramid.threadlocal import get_current_registry
     from pyramid.request import Request
 
-    request = Request.blank('/test?REQUEST=GetCapabilities')
+    request = Request.blank("/test?REQUEST=GetCapabilities")
     request.registry = get_current_registry()
     request.registry.settings = {
-        'hide_capabilities': True
+        "hide_capabilities": True
     }
     ret = mapserverproxy_route_predicate(None, request)
     assert ret is False

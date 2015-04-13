@@ -40,40 +40,40 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    'pyramid<=1.6.99,>=1.6.0.dev',
-    'pyramid_multiauth',
-    'pyramid_mako',
-    'pyramid_chameleon',
-    'psycopg2',
-    'alembic',
-    'GeoAlchemy2',
-    'SQLAHelper',
-    'pyramid_tm',
-    'papyrus>=2.0.dev1',
-    'papyrus_ogcproxy>=0.2.dev1',
-    'pyramid_formalchemy>=0.4.3',
-    'fa.jquery>=0.9.5',
-    'js.jqgrid==4.1.0',
-    'js.jquery==1.7.1',
+    "pyramid<=1.6.99,>=1.6.0.dev",
+    "pyramid_multiauth",
+    "pyramid_mako",
+    "pyramid_chameleon",
+    "psycopg2",
+    "alembic",
+    "GeoAlchemy2",
+    "SQLAHelper",
+    "pyramid_tm",
+    "papyrus>=2.0.dev1",
+    "papyrus_ogcproxy>=0.2.dev1",
+    "pyramid_formalchemy>=0.4.3",
+    "fa.jquery>=0.9.5",
+    "js.jqgrid==4.1.0",
+    "js.jquery==1.7.1",
     # The version 1.10.3 have an issue with the 'jump to' combobox of the
     # admin interface
-    'js.jqueryui==1.8.24',
-    'FormAlchemy<=1.5',
-    'GeoFormAlchemy2>=2.0.dev2',
-    'OWSLib>=0.6.0',
-    'dogpile.cache',
-    'Paste',
-    'PasteDeploy',
-    'PasteScript',
+    "js.jqueryui==1.8.24",
+    "FormAlchemy<=1.5",
+    "GeoFormAlchemy2>=2.0.dev2",
+    "OWSLib>=0.6.0",
+    "dogpile.cache",
+    "Paste",
+    "PasteDeploy",
+    "PasteScript",
     # Needed by the production.ini
-    'waitress',
+    "waitress",
     # WMST support
-    'isodate',
-    'JSTools',
-    'couchdbkit',  # missing dependency of formalchemy
-    'pyramid_closure',
-    'lingua',
-    'PyYAML',
+    "isodate",
+    "JSTools",
+    "couchdbkit",  # missing dependency of formalchemy
+    "pyramid_closure",
+    "lingua",
+    "PyYAML",
 ]
 
 setup_requires = [
@@ -83,9 +83,9 @@ tests_require = install_requires + [
 ]
 
 setup(
-    name='c2cgeoportal',
-    version='1.6.0',
-    description='c2cgeoportal',
+    name="c2cgeoportal",
+    version="1.6.0",
+    description="c2cgeoportal",
     long_description=README,
     classifiers=[
         "Programming Language :: Python",
@@ -93,10 +93,10 @@ setup(
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
-    author='Camptocamp',
-    author_email='info@camptocamp.com',
-    url='http://www.camptocamp.com/geospatial-solutions',
-    keywords='web gis geoportail c2cgeoportal geocommune pyramid',
+    author="Camptocamp",
+    author_email="info@camptocamp.com",
+    url="http://www.camptocamp.com/geospatial-solutions",
+    keywords="web gis geoportail c2cgeoportal geocommune pyramid",
     packages=find_packages(exclude=["*.tests", "*.tests.*"]),
     include_package_data=True,
     zip_safe=False,
@@ -105,18 +105,18 @@ setup(
     tests_require=tests_require,
     test_suite="c2cgeoportal",
     entry_points={
-        'console_scripts': [
-            'print_tpl = c2cgeoportal.scripts.print_tpl:main',
-            'manage_users = c2cgeoportal.scripts.manage_users:main',
-            'c2ctool = c2cgeoportal.scripts.c2ctool:main',
-            'db2pot = c2cgeoportal.scripts.db2pot:main',
+        "console_scripts": [
+            "print_tpl = c2cgeoportal.scripts.print_tpl:main",
+            "manage_users = c2cgeoportal.scripts.manage_users:main",
+            "c2ctool = c2cgeoportal.scripts.c2ctool:main",
+            "db2pot = c2cgeoportal.scripts.db2pot:main",
         ],
-        'pyramid.scaffold': [
-            'c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate',
-            'c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate',
+        "pyramid.scaffold": [
+            "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
+            "c2cgeoportal_update = c2cgeoportal.scaffolds:TemplateUpdate",
         ],
-        'fanstatic.libraries': [
-            'admin = c2cgeoportal.forms:fanstatic_lib',
+        "fanstatic.libraries": [
+            "admin = c2cgeoportal.forms:fanstatic_lib",
         ],
     }
 )

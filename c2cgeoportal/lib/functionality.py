@@ -39,10 +39,10 @@ def _get_config_functionality(name, registered, config):
 
     if registered:
         result = get_setting(
-            config, ('functionalities', 'registered', name))
+            config, ("functionalities", "registered", name))
     if result is None:
         result = get_setting(
-            config, ('functionalities', 'anonymous', name))
+            config, ("functionalities", "anonymous", name))
 
     if result is None:
         result = []
@@ -72,13 +72,13 @@ def get_functionality(name, config, request):
 def get_mapserver_substitution_params(request):
     params = {}
     mss = get_functionality(
-        'mapserver_substitution', request.registry.settings, request
+        "mapserver_substitution", request.registry.settings, request
     )
     if mss:
         for s in mss:
-            index = s.find('=')
+            index = s.find("=")
             if index > 0:
-                attribute = 's_' + s[:index]
+                attribute = "s_" + s[:index]
                 value = s[index + 1:]
                 if attribute in params:
                     params[attribute] += "," + value

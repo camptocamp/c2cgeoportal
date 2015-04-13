@@ -33,7 +33,7 @@ from pyramid.config import Configurator
 def main(global_config, **settings):
     config = Configurator(settings=settings)
 
-    config.include('c2cgeoportal')
+    config.include("c2cgeoportal")
 
     # scan view decorator for adding routes
     config.scan()

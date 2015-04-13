@@ -33,9 +33,9 @@ from unittest import TestCase
 
 def setUpModule():  # noqa
     import c2cgeoportal
-    c2cgeoportal.schema = 'main'
+    c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
-    c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
+    c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
 
 
 class TestEntryView(TestCase):
@@ -44,8 +44,8 @@ class TestEntryView(TestCase):
         from pyramid import testing
         testing.setUp(
             settings={
-                'default_locale_name': 'fr',
-                'default_max_age': 1000,
+                "default_locale_name": "fr",
+                "default_max_age": 1000,
             }
         )
 
@@ -56,28 +56,28 @@ class TestEntryView(TestCase):
         renderer = DecimalJSON()(None)
         request = DummyRequest()
         request.user = None
-        system = {'request': request}
+        system = {"request": request}
 
         self.assertEquals(
-            renderer({'a': Decimal('3.3')}, system),
+            renderer({"a": Decimal("3.3")}, system),
             '{"a": 3.3}'
         )
-        self.assertEquals(request.response.content_type, 'application/json')
+        self.assertEquals(request.response.content_type, "application/json")
 
-        request.params = {'callback': 'abc'}
+        request.params = {"callback": "abc"}
         self.assertEquals(
-            renderer({'a': Decimal('3.3')}, system),
+            renderer({"a": Decimal("3.3")}, system),
             'abc({"a": 3.3});'
         )
-        self.assertEquals(request.response.content_type, 'text/javascript')
+        self.assertEquals(request.response.content_type, "text/javascript")
 
-        renderer = DecimalJSON(jsonp_param_name='cb')(None)
-        request.params = {'cb': 'def'}
+        renderer = DecimalJSON(jsonp_param_name="cb")(None)
+        request.params = {"cb": "def"}
         self.assertEquals(
-            renderer({'a': Decimal('3.3')}, system),
+            renderer({"a": Decimal("3.3")}, system),
             'def({"a": 3.3});'
         )
-        self.assertEquals(request.response.content_type, 'text/javascript')
+        self.assertEquals(request.response.content_type, "text/javascript")
 
     def test__get_child_layers_info_with_scalehint(self):
         import math
@@ -92,18 +92,18 @@ class TestEntryView(TestCase):
             pass
 
         child_layer_1 = Layer()
-        child_layer_1.name = 'layer_1'
+        child_layer_1.name = "layer_1"
         child_layer_1.scaleHint = {
-            'min': 1 * math.sqrt(2),
-            'max': 2 * math.sqrt(2)
+            "min": 1 * math.sqrt(2),
+            "max": 2 * math.sqrt(2)
         }
         child_layer_1.layers = []
 
         child_layer_2 = Layer()
-        child_layer_2.name = 'layer_2'
+        child_layer_2.name = "layer_2"
         child_layer_2.scaleHint = {
-            'min': 3 * math.sqrt(2),
-            'max': 4 * math.sqrt(2)
+            "min": 3 * math.sqrt(2),
+            "max": 4 * math.sqrt(2)
         }
         child_layer_2.layers = []
 
@@ -113,13 +113,13 @@ class TestEntryView(TestCase):
         child_layers_info = entry._get_child_layers_info(layer)
 
         expected = [{
-            'name': 'layer_1',
-            'minResolutionHint': 1.0,
-            'maxResolutionHint': 2.0
+            "name": "layer_1",
+            "minResolutionHint": 1.0,
+            "maxResolutionHint": 2.0
         }, {
-            'name': 'layer_2',
-            'minResolutionHint': 3.0,
-            'maxResolutionHint': 4.0
+            "name": "layer_2",
+            "minResolutionHint": 3.0,
+            "maxResolutionHint": 4.0
         }]
         self.assertEqual(child_layers_info, expected)
 
@@ -131,28 +131,28 @@ class TestEntryView(TestCase):
         request.user = None
         entry = Entry(request)
 
-        request.path = '/for_test'
+        request.path = "/for_test"
         expected = {
-            'lang': 'fr',
-            'came_from': '/for_test',
+            "lang": "fr",
+            "came_from": "/for_test",
         }
         self.assertEqual(entry.loginform403(), expected)
 
         request.params = {
-            'came_from': '/for_a_second_test',
+            "came_from": "/for_a_second_test",
         }
         entry = Entry(request)
         expected = {
-            'lang': 'fr',
-            'came_from': '/for_a_second_test',
+            "lang": "fr",
+            "came_from": "/for_a_second_test",
         }
         self.assertEqual(entry.loginform(), expected)
 
         entry = Entry(request)
         request.params = {}
         expected = {
-            'lang': 'fr',
-            'came_from': '/',
+            "lang": "fr",
+            "came_from": "/",
         }
         self.assertEqual(entry.loginform(), expected)
 
@@ -168,12 +168,12 @@ class TestEntryView(TestCase):
             pass
 
         child_layer_1 = Layer()
-        child_layer_1.name = 'layer_1'
+        child_layer_1.name = "layer_1"
         child_layer_1.scaleHint = None
         child_layer_1.layers = []
 
         child_layer_2 = Layer()
-        child_layer_2.name = 'layer_2'
+        child_layer_2.name = "layer_2"
         child_layer_2.scaleHint = None
         child_layer_2.layers = []
 
@@ -183,8 +183,8 @@ class TestEntryView(TestCase):
         child_layers_info = entry._get_child_layers_info(layer)
 
         expected = [{
-            'name': 'layer_1'
+            "name": "layer_1"
         }, {
-            'name': 'layer_2',
+            "name": "layer_2",
         }]
         self.assertEqual(child_layers_info, expected)

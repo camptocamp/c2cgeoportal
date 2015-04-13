@@ -52,15 +52,15 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup, Interface
 
-        main = Interface(name=u'main')
+        main = Interface(name=u"main")
 
-        layer = LayerV1(name=u'__test_layer', public=True)
+        layer = LayerV1(name=u"__test_layer", public=True)
         layer.interfaces = [main]
 
-        layer_group = LayerGroup(name=u'__test_layer_group')
+        layer_group = LayerGroup(name=u"__test_layer_group")
         layer_group.children = [layer, layer_group]
 
-        theme = Theme(name=u'__test_theme')
+        theme = Theme(name=u"__test_theme")
         theme.children = [layer, layer_group]
         theme.interfaces = [main]
 
@@ -73,7 +73,7 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup
 
-        for t in DBSession.query(Theme).filter(Theme.name == '__test_theme').all():
+        for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
         for layergroup in DBSession.query(LayerGroup).all():
             DBSession.delete(layergroup)  # pragma: nocover
@@ -87,12 +87,12 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal.views.entry import Entry, cache_region
 
         request = testing.DummyRequest()
-        request.headers['Host'] = host
-        request.static_url = lambda url: 'http://example.com/dummy/static/url'
+        request.headers["Host"] = host
+        request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url: mapserv_url
         request.client_addr = None
         curdir = os.path.dirname(os.path.abspath(__file__))
-        mapfile = os.path.join(curdir, 'c2cgeoportal_test.map')
+        mapfile = os.path.join(curdir, "c2cgeoportal_test.map")
         ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
         request.registry.settings["mapserverproxy"] = {"mapserv_url": ms_url}
         request.user = None
@@ -100,8 +100,8 @@ class TestLoopTheme(TestCase):
 
         cache_region.invalidate()
         themes = entry.themes()
-        self.assertEquals([t['name'] for t in themes], [u'__test_theme'])
+        self.assertEquals([t["name"] for t in themes], [u"__test_theme"])
 
         cache_region.invalidate()
-        themes, errors = entry._themes(None, u'main')
+        themes, errors = entry._themes(None, u"main")
         self.assertEquals(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)

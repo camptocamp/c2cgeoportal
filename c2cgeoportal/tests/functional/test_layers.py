@@ -54,13 +54,13 @@ class TestLayers(TestCase):
         self.metadata = None
         self.layer_ids = []
 
-        self.role = Role(name=u'__test_role')
+        self.role = Role(name=u"__test_role")
         self.user = User(
-            username=u'__test_user',
-            password=u'__test_user',
+            username=u"__test_user",
+            password=u"__test_user",
             role=self.role
         )
-        self.main = Interface(name=u'main')
+        self.main = Interface(name=u"main")
 
         DBSession.add(self.user)
         DBSession.add(self.role)
@@ -82,19 +82,19 @@ class TestLayers(TestCase):
             DBSession.delete(treeitem)
 
         DBSession.query(User).filter(
-            User.username == u'__test_user'
+            User.username == u"__test_user"
         ).delete()
         r = DBSession.query(Role).filter(
-            Role.name == u'__test_role'
+            Role.name == u"__test_role"
         ).one()
         r.restrictionareas = []
         DBSession.delete(r)
         DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == u'__test_ra'
+            RestrictionArea.name == u"__test_ra"
         ).delete()
 
         DBSession.query(Interface).filter(
-            Interface.name == u'main'
+            Interface.name == u"main"
         ).delete()
 
         if self._tables is not None:
@@ -130,48 +130,48 @@ class TestLayers(TestCase):
         tablename = "table_%d" % id
 
         table = Table(
-            '%s_child' % tablename, self.metadata,
-            Column('id', types.Integer, primary_key=True),
-            Column('name', types.Unicode),
-            schema='public'
+            "%s_child" % tablename, self.metadata,
+            Column("id", types.Integer, primary_key=True),
+            Column("name", types.Unicode),
+            schema="public"
         )
         table.create()
         self._tables.append(table)
 
-        ins = table.insert().values(name=u'c1é')
+        ins = table.insert().values(name=u"c1é")
         c1_id = engine.connect().execute(ins).inserted_primary_key[0]
-        ins = table.insert().values(name=u'c2é')
+        ins = table.insert().values(name=u"c2é")
         c2_id = engine.connect().execute(ins).inserted_primary_key[0]
 
         table = Table(
             tablename, self.metadata,
-            Column('id', types.Integer, primary_key=True),
-            Column('child_id', types.Integer,
-                   ForeignKey('public.%s_child.id' % tablename)),
-            Column('name', types.Unicode),
-            Column('geom', Geometry("POINT", srid=21781, management=management)),
-            schema='public'
+            Column("id", types.Integer, primary_key=True),
+            Column("child_id", types.Integer,
+                   ForeignKey("public.%s_child.id" % tablename)),
+            Column("name", types.Unicode),
+            Column("geom", Geometry("POINT", srid=21781, management=management)),
+            schema="public"
         )
         table.create()
         self._tables.append(table)
 
         ins = table.insert().values(
             child_id=c1_id,
-            name='foo',
-            geom=WKTElement('POINT(5 45)', 21781)
+            name="foo",
+            geom=WKTElement("POINT(5 45)", 21781)
         )
         engine.connect().execute(ins).inserted_primary_key[0]
         ins = table.insert().values(
             child_id=c2_id,
-            name='bar',
-            geom=WKTElement('POINT(6 46)', 21781)
+            name="bar",
+            geom=WKTElement("POINT(6 46)", 21781)
         )
         engine.connect().execute(ins).inserted_primary_key[0]
         if attr_list:
             ins = table.insert().values(
                 child_id=c2_id,
-                name='aaa,bbb,foo',
-                geom=WKTElement('POINT(6 46)', 21781)
+                name="aaa,bbb,foo",
+                geom=WKTElement("POINT(6 46)", 21781)
             )
             engine.connect().execute(ins).inserted_primary_key[0]
 
@@ -182,18 +182,18 @@ class TestLayers(TestCase):
         layer.interface = [self.main]
 
         if exclude_properties:
-            layer.exclude_properties = 'name'
+            layer.exclude_properties = "name"
 
         DBSession.add(layer)
 
         if not public:
             ra = RestrictionArea()
-            ra.name = u'__test_ra'
+            ra.name = u"__test_ra"
             ra.layers = [layer]
             ra.roles = [self.role]
             ra.readwrite = True
             if not none_area:
-                poly = 'POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))'
+                poly = "POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))"
                 ra.area = WKTElement(poly, srid=21781)
             DBSession.add(ra)
 
@@ -205,7 +205,7 @@ class TestLayers(TestCase):
     def _get_request(self, layerid, username=None):
         from c2cgeoportal.models import DBSession, User
         request = create_dummy_request()
-        request.matchdict = {'layer_id': str(layerid)}
+        request.matchdict = {"layer_id": str(layerid)}
         if username is not None:
             request.user = DBSession.query(User).filter_by(
                 username=username
@@ -223,8 +223,8 @@ class TestLayers(TestCase):
         collection = Layers(request).read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(
-            [f.properties['child'] for f in collection.features],
-            [u'c1é', u'c2é'],
+            [f.properties["child"] for f in collection.features],
+            [u"c1é", u"c2é"],
         )
 
     @attr(read_many_no_auth=True)
@@ -244,12 +244,12 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
+        request = self._get_request(layer_id, username=u"__test_user")
 
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEquals([f.properties['child'] for f in collection.features], [u'c1é'])
+        self.assertEquals([f.properties["child"] for f in collection.features], [u"c1é"])
 
     @attr(layers_read_many=True)
     @attr(layers_read_many_layer_not_found=True)
@@ -258,7 +258,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         self._create_layer()
-        request = self._get_request(10000, username=u'__test_user')
+        request = self._get_request(10000, username=u"__test_user")
 
         layers = Layers(request)
         self.assertRaises(HTTPNotFound, layers.read_many)
@@ -273,14 +273,14 @@ class TestLayers(TestCase):
         layer_id2 = self._create_layer()
         layer_id3 = self._create_layer()
 
-        layer_ids = '%d,%d,%d' % (layer_id1, layer_id2, layer_id3)
-        request = self._get_request(layer_ids, username=u'__test_user')
+        layer_ids = "%d,%d,%d" % (layer_id1, layer_id2, layer_id3)
+        request = self._get_request(layer_ids, username=u"__test_user")
 
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(
-            [f.properties['__layer_id__'] for f in collection.features],
+            [f.properties["__layer_id__"] for f in collection.features],
             [layer_id1, layer_id2, layer_id3],
         )
 
@@ -291,14 +291,14 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(public=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         feature = layers.read_one()
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], u'c1é')
+        self.assertEquals(feature.properties["name"], "foo")
+        self.assertEquals(feature.properties["child"], u"c1é")
 
     @attr(read_one_public_notfound=True)
     def test_read_one_public_notfound(self):
@@ -307,7 +307,7 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(public=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 10000
+        request.matchdict["feature_id"] = 10000
 
         layers = Layers(request)
         feature = layers.read_one()
@@ -320,7 +320,7 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
@@ -331,8 +331,8 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 2
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 2
 
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
@@ -343,15 +343,15 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         feature = layers.read_one()
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], u'c1é')
+        self.assertEquals(feature.properties["name"], "foo")
+        self.assertEquals(feature.properties["child"], u"c1é")
 
     @attr(count=True)
     def test_count(self):
@@ -371,7 +371,7 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
-        request.method = 'POST'
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
@@ -382,8 +382,8 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.method = 'POST'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
@@ -394,8 +394,8 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.method = 'POST'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         collection = layers.create()
@@ -407,14 +407,14 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.method = 'POST'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
         layers = Layers(request)
         response = layers.create()
         self.assertEquals(request.response.status_int, 400)
-        self.assertTrue('validation_error' in response)
-        self.assertEquals(response['validation_error'], 'Too few points in geometry component[5 45]')
+        self.assertTrue("validation_error" in response)
+        self.assertEquals(response["validation_error"], "Too few points in geometry component[5 45]")
 
     @attr(update_no_auth=True)
     def test_update_no_auth(self):
@@ -423,8 +423,8 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
@@ -435,9 +435,9 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
@@ -448,9 +448,9 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 2
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 2
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
@@ -460,45 +460,45 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         feature = layers.update()
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, u'c2é')
+        self.assertEquals(feature.name, "foobar")
+        self.assertEquals(feature.child, u"c2é")
 
     @attr(update_validation_fails=True)
     def test_update_validation_fails(self):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
         layers = Layers(request)
         response = layers.update()
         self.assertEquals(request.response.status_int, 400)
-        self.assertTrue('validation_error' in response)
-        self.assertEquals(response['validation_error'], 'Too few points in geometry component[5 45]')
+        self.assertTrue("validation_error" in response)
+        self.assertEquals(response["validation_error"], "Too few points in geometry component[5 45]")
 
     @attr(update_validation_fails_simple=True)
     def test_update_validation_fails_simple(self):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'  # noqa
         layers = Layers(request)
         response = layers.update()
         self.assertEquals(request.response.status_int, 400)
-        self.assertTrue('validation_error' in response)
-        self.assertEquals(response['validation_error'], 'Not simple')
+        self.assertTrue("validation_error" in response)
+        self.assertEquals(response["validation_error"], "Not simple")
 
     @attr(delete_no_auth=True)
     def test_delete_no_auth(self):
@@ -507,8 +507,8 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 2
-        request.method = 'DELETE'
+        request.matchdict["feature_id"] = 2
+        request.method = "DELETE"
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
@@ -518,9 +518,9 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 2
-        request.method = 'DELETE'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 2
+        request.method = "DELETE"
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
@@ -529,9 +529,9 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'DELETE'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "DELETE"
         layers = Layers(request)
         response = layers.delete()
         self.assertEquals(response.status_int, 204)
@@ -552,24 +552,24 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer()
-        request = self._get_request(layer_id, username=u'__test_user')
+        request = self._get_request(layer_id, username=u"__test_user")
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertEquals(cls.__table__.name, 'table_%d' % layer_id)
-        self.assertTrue(hasattr(cls, 'name'))
-        self.assertTrue('child' in cls.__dict__)
+        self.assertEquals(cls.__table__.name, "table_%d" % layer_id)
+        self.assertTrue(hasattr(cls, "name"))
+        self.assertTrue("child" in cls.__dict__)
 
     @attr(metadata_exclude_properties=True)
     def test_metadata_exclude_properties(self):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(exclude_properties=True)
-        request = self._get_request(layer_id, username=u'__test_user')
+        request = self._get_request(layer_id, username=u"__test_user")
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertFalse(hasattr(cls, 'name'))
+        self.assertFalse(hasattr(cls, "name"))
 
     # # # With None area # # #
     @attr(read_public_none_area=True)
@@ -584,8 +584,8 @@ class TestLayers(TestCase):
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(
-            [f.properties['child'] for f in collection.features],
-            [u'c1é', u'c2é'],
+            [f.properties["child"] for f in collection.features],
+            [u"c1é", u"c2é"],
         )
 
     @attr(read_many_no_auth_none_area=True)
@@ -605,14 +605,14 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
-        request = self._get_request(layer_id, username=u'__test_user')
+        request = self._get_request(layer_id, username=u"__test_user")
 
         layers = Layers(request)
         collection = layers.read_many()
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
-        self.assertEquals(collection.features[0].properties['child'], u'c1é')
-        self.assertEquals(collection.features[1].properties['child'], u'c2é')
+        self.assertEquals(collection.features[0].properties["child"], u"c1é")
+        self.assertEquals(collection.features[1].properties["child"], u"c2é")
 
     @attr(read_one_public_none_area=True)
     def test_read_one_public_none_area(self):
@@ -621,14 +621,14 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(public=True, none_area=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         feature = layers.read_one()
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], u'c1é')
+        self.assertEquals(feature.properties["name"], "foo")
+        self.assertEquals(feature.properties["child"], u"c1é")
 
     @attr(read_one_no_auth_none_area=True)
     def test_read_one_no_auth_none_area(self):
@@ -637,7 +637,7 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
@@ -648,15 +648,15 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
 
         layers = Layers(request)
         feature = layers.read_one()
         self.assertTrue(isinstance(feature, Feature))
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.properties['name'], 'foo')
-        self.assertEquals(feature.properties['child'], u'c1é')
+        self.assertEquals(feature.properties["name"], "foo")
+        self.assertEquals(feature.properties["child"], u"c1é")
 
     @attr(count_none_area=True)
     def test_count_none_area(self):
@@ -676,7 +676,7 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
-        request.method = 'POST'
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
@@ -687,8 +687,8 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.method = 'POST'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
         layers = Layers(request)
         collection = layers.create()
@@ -702,8 +702,8 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
@@ -713,15 +713,15 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'PUT'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
         request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
         layers = Layers(request)
         feature = layers.update()
         self.assertEquals(feature.id, 1)
-        self.assertEquals(feature.name, 'foobar')
-        self.assertEquals(feature.child, u'c2é')
+        self.assertEquals(feature.name, "foobar")
+        self.assertEquals(feature.child, u"c2é")
 
     @attr(delete_no_auth_none_area=True)
     def test_delete_no_auth_none_area(self):
@@ -730,8 +730,8 @@ class TestLayers(TestCase):
 
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
-        request.matchdict['feature_id'] = 2
-        request.method = 'DELETE'
+        request.matchdict["feature_id"] = 2
+        request.method = "DELETE"
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
@@ -740,9 +740,9 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
-        request = self._get_request(layer_id, username=u'__test_user')
-        request.matchdict['feature_id'] = 1
-        request.method = 'DELETE'
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "DELETE"
         layers = Layers(request)
         response = layers.delete()
         self.assertEquals(response.status_int, 204)
@@ -770,17 +770,17 @@ class TestLayers(TestCase):
 
         request = self._get_request(layer_id)
         request.registry.settings.update(settings)
-        request.matchdict['layer_name'] = 'layer_test'
-        request.matchdict['field_name'] = 'label'
+        request.matchdict["layer_name"] = "layer_test"
+        request.matchdict["field_name"] = "label"
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
         self.assertEquals(response, {
-            'items': [{
-                'label': 'bar',
-                'value': 'bar'
+            "items": [{
+                "label": "bar",
+                "value": "bar"
             }, {
-                'label': 'foo',
-                'value': 'foo'
+                "label": "foo",
+                "value": "foo"
             }]
         })
 
@@ -808,23 +808,23 @@ class TestLayers(TestCase):
 
         request = self._get_request(layer_id)
         request.registry.settings.update(settings)
-        request.matchdict['layer_name'] = 'layer_test'
-        request.matchdict['field_name'] = 'label'
+        request.matchdict["layer_name"] = "layer_test"
+        request.matchdict["field_name"] = "label"
 
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
         self.assertEquals(response, {
-            'items': [{
-                'label': u'aaa',
-                'value': u'aaa'
+            "items": [{
+                "label": u"aaa",
+                "value": u"aaa"
             }, {
-                'label': u'bar',
-                'value': u'bar'
+                "label": u"bar",
+                "value": u"bar"
             }, {
-                'label': u'bbb',
-                'value': u'bbb'
+                "label": u"bbb",
+                "value": u"bbb"
             }, {
-                'label': u'foo',
-                'value': u'foo'
+                "label": u"foo",
+                "value": u"foo"
             }]
         })

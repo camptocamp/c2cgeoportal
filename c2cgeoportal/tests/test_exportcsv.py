@@ -43,17 +43,17 @@ class TestExportCSVView(TestCase):
 
         response = echo(request)
         request.params = {
-            'csv': '12,34'
+            "csv": "12,34"
         }
         self.assertEqual(type(response), HTTPBadRequest)
 
-        request.method = 'POST'
+        request.method = "POST"
         request.params = {}
         response = echo(request)
         self.assertEqual(type(response), HTTPBadRequest)
 
         request.params = {
-            'csv': u'éà,èç'
+            "csv": u"éà,èç"
         }
         response = echo(request)
-        self.assertEqual(response.body, codecs.BOM_UTF8 + u'éà,èç'.encode('UTF-8'))
+        self.assertEqual(response.body, codecs.BOM_UTF8 + u"éà,èç".encode("UTF-8"))

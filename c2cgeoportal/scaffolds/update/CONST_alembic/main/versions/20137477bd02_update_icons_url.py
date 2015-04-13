@@ -37,12 +37,12 @@ Create Date: 2014-12-10 17:50:36.176587
 from alembic import op, context
 
 # revision identifiers, used by Alembic.
-revision = '20137477bd02'
-down_revision = '1d5d4abfebd1'
+revision = "20137477bd02"
+down_revision = "1d5d4abfebd1"
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = context.get_context().config.get_main_option("schema")
 
     updates = [
         "UPDATE %(schema)s.%(table)s SET %(column)s = 'static:///' || %(column)s "
@@ -68,7 +68,7 @@ def upgrade():
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+    schema = context.get_context().config.get_main_option("schema")
 
     updates = [
         "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 11) "

@@ -110,37 +110,37 @@ def _xsd_sequence_callback(tb, cls):
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, p.value_attr))
         attrs = {}
-        attrs['minOccurs'] = str(0)
-        attrs['nillable'] = 'true'
-        attrs['name'] = k
-        with tag(tb, 'xsd:element', attrs) as tb:
-            with tag(tb, 'xsd:simpleType') as tb:
-                with tag(tb, 'xsd:restriction',
-                         {'base': 'xsd:string'}) as tb:
+        attrs["minOccurs"] = str(0)
+        attrs["nillable"] = "true"
+        attrs["name"] = k
+        with tag(tb, "xsd:element", attrs) as tb:
+            with tag(tb, "xsd:simpleType") as tb:
+                with tag(tb, "xsd:restriction",
+                         {"base": "xsd:string"}) as tb:
                     for value, in query:
-                        with tag(tb, 'xsd:enumeration', {'value': value}):
+                        with tag(tb, "xsd:enumeration", {"value": value}):
                             pass
 
 
 def _column_reflect_listener(inspector, table, column_info, engine):
-    if isinstance(column_info['type'], Geometry):  # pragma: nocover
+    if isinstance(column_info["type"], Geometry):  # pragma: nocover
         query = engine.execute(
             sql.text(SQL_GEOMETRY_COLUMNS),
             table_schema=table.schema,
             table_name=table.name,
-            geometry_column=column_info['name']
+            geometry_column=column_info["name"]
         )
         results = query.fetchall()
         if len(results) == 1:
-            column_info['type'].geometry_type = results[0][1]
-            column_info['type'].srid = int(results[0][0])
+            column_info["type"].geometry_type = results[0][1]
+            column_info["type"].srid = int(results[0][0])
 
 
 def _get_schema(tablename):
-    if '.' in tablename:
-        schema, tablename = tablename.split('.', 1)
+    if "." in tablename:
+        schema, tablename = tablename.split(".", 1)
     else:
-        schema = 'public'
+        schema = "public"
 
     return tablename, schema
 
@@ -161,7 +161,7 @@ def get_table(tablename, schema=None, session=None):
     # create table and reflect it
     with warnings.catch_warnings():
         warnings.filterwarnings(
-            'ignore',
+            "ignore",
             "Did not recognize type 'geometry' of column",
             SAWarning)
         table = Table(
@@ -170,7 +170,7 @@ def get_table(tablename, schema=None, session=None):
             autoload=True,
             autoload_with=engine,
             listeners=[(
-                'column_reflect',
+                "column_reflect",
                 functools.partial(
                     _column_reflect_listener,
                     engine=engine
@@ -208,14 +208,14 @@ def get_class(tablename, session=None, exclude_properties=None):
 def _create_class(table, exclude_properties=None):
 
     if isinstance(exclude_properties, basestring):
-        exclude_properties = [p.strip() for p in exclude_properties.split(',')]
+        exclude_properties = [p.strip() for p in exclude_properties.split(",")]
 
     cls = type(
         str(table.name.capitalize()),
         (GeoInterface, Base),
         dict(
             __table__=table,
-            __mapper_args__={'exclude_properties': exclude_properties}
+            __mapper_args__={"exclude_properties": exclude_properties}
         ),
     )
 
@@ -231,28 +231,28 @@ def _add_association_proxy(cls, col):
         raise NotImplementedError
 
     fk = next(iter(col.foreign_keys))
-    child_tablename, child_pk = fk.target_fullname.rsplit('.', 1)
+    child_tablename, child_pk = fk.target_fullname.rsplit(".", 1)
     child_cls = get_class(child_tablename)
 
     try:
-        proxy = col.name[0:col.name.rindex('_id')]
+        proxy = col.name[0:col.name.rindex("_id")]
     except ValueError:  # pragma: no cover
-        proxy = col.name + '_'
+        proxy = col.name + "_"
 
     # The following is a workaround for a bug in the geojson lib. The
     # geojson lib indeed treats properties named "type" specifically
     # (this is a GeoJSON keyword), and produces a UnicodeEncodeError
     # if the property includes non-ascii characters.
-    if proxy == 'type':
-        proxy = 'type_'  # pragma: no cover
+    if proxy == "type":
+        proxy = "type_"  # pragma: no cover
 
-    rel = proxy + '_'
+    rel = proxy + "_"
     primaryjoin = (getattr(cls, col.name) == getattr(child_cls, child_pk))
     relationship_ = relationship(child_cls, primaryjoin=primaryjoin,
-                                 lazy='immediate')
+                                 lazy="immediate")
     setattr(cls, rel, relationship_)
 
-    setattr(cls, proxy, _AssociationProxy(rel, 'name'))
+    setattr(cls, proxy, _AssociationProxy(rel, "name"))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]

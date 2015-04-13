@@ -66,7 +66,7 @@ def run_migrations_offline():  # pragma: nocover
     context.configure(
         url=url,
         target_metadata=target_metadata,
-        version_table_schema=config.get_main_option('version_table_schema'),
+        version_table_schema=config.get_main_option("version_table_schema"),
     )
 
     with context.begin_transaction():
@@ -82,14 +82,14 @@ def run_migrations_online():
     """
     engine = engine_from_config(
         config.get_section(config.config_ini_section),
-        prefix='sqlalchemy.',
+        prefix="sqlalchemy.",
         poolclass=pool.NullPool)
 
     connection = engine.connect()
     context.configure(
         connection=connection,
         target_metadata=target_metadata,
-        version_table_schema=config.get_main_option('version_table_schema'),
+        version_table_schema=config.get_main_option("version_table_schema"),
     )
 
     try:

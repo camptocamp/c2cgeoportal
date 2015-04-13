@@ -52,11 +52,11 @@ class Tile(object):
 
 class BTTile(Tile):
     def get_value(self, x, y):
-        file = open(self.filename, 'rb')
-        if not hasattr(self, 'cols'):
+        file = open(self.filename, "rb")
+        if not hasattr(self, "cols"):
             file.seek(10)
             (self.cols, self.rows, self.dataSize, self.floatingPoint) = \
-                unpack('<LLhh', file.read(12))
+                unpack("<LLhh", file.read(12))
             self.resolution_x = (self.max_x - self.min_x) / self.cols
             self.resolution_y = (self.max_y - self.min_y) / self.rows
 
@@ -86,14 +86,14 @@ class GeoRaster:
         if dir == "":
             dir = "."
         for shape in shp_records:
-            filename = shape['dbf_data']['location'].rstrip()
+            filename = shape["dbf_data"]["location"].rstrip()
             tile_class = None
             if filename.endswith(".bt"):
                 tile_class = BTTile
             if not filename.startswith("/"):
-                filename = dir + '/' + filename
-            geo = shape['shp_data']
-            tile = tile_class(geo['xmin'], geo['ymin'], geo['xmax'], geo['ymax'], filename)
+                filename = dir + "/" + filename
+            geo = shape["shp_data"]
+            tile = tile_class(geo["xmin"], geo["ymin"], geo["xmax"], geo["ymax"], filename)
             self.tiles.append(tile)
 
     def get_value(self, x, y):

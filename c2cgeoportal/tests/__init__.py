@@ -37,9 +37,9 @@ from pyramid.testing import DummyRequest
 def create_dummy_request(additional_settings={}, *args, **kargs):
     request = DummyRequest(*args, **kargs)
     request.registry.settings = {
-        'available_locale_names': ['en', 'fr', 'de'],
-        'default_locale_name': 'fr',
-        'default_max_age': 1000,
+        "available_locale_names": ["en", "fr", "de"],
+        "default_locale_name": "fr",
+        "default_max_age": 1000,
     }
     request.registry.settings.update(additional_settings)
     return request

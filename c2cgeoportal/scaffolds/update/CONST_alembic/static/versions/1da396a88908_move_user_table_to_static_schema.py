@@ -39,30 +39,30 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Integer, String, Unicode, Boolean
 
 # revision identifiers, used by Alembic.
-revision = '1da396a88908'
-down_revision = '3f89a7d71a5e'
+revision = "1da396a88908"
+down_revision = "3f89a7d71a5e"
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
-    parentschema = context.get_context().config.get_main_option('parentschema')
+    schema = context.get_context().config.get_main_option("schema")
+    staticschema = schema + "_static"
+    parentschema = context.get_context().config.get_main_option("parentschema")
 
     engine = op.get_bind().engine
     if op.get_context().dialect.has_table(
-        engine, 'user', schema=staticschema
+        engine, "user", schema=staticschema
     ):  # pragma: nocover
         return
 
     op.create_table(
-        'user',
-        Column('type', String(10), nullable=False),
-        Column('id', Integer, primary_key=True),
-        Column('username', Unicode, unique=True, nullable=False),
-        Column('password', Unicode, nullable=False),
-        Column('email', Unicode, nullable=False),
-        Column('is_password_changed', Boolean, default=False),
-        Column('role_name', String),
+        "user",
+        Column("type", String(10), nullable=False),
+        Column("id", Integer, primary_key=True),
+        Column("username", Unicode, unique=True, nullable=False),
+        Column("password", Unicode, nullable=False),
+        Column("email", Unicode, nullable=False),
+        Column("is_password_changed", Boolean, default=False),
+        Column("role_name", String),
         schema=staticschema,
     )
     parent_column = ""
@@ -70,8 +70,8 @@ def upgrade():
     parent_join = ""
     if parentschema is not None and parentschema is not "":  # pragma: nocover
         op.add_column(
-            'user',
-            Column('parent_role_name', String),
+            "user",
+            Column("parent_role_name", String),
             schema=staticschema
         )
         parent_column = ", parent_role_name"
@@ -98,23 +98,23 @@ def upgrade():
         }
     )
 
-    op.drop_table('user', schema=schema)
+    op.drop_table("user", schema=schema)
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
-    parentschema = context.get_context().config.get_main_option('parentschema')
+    schema = context.get_context().config.get_main_option("schema")
+    staticschema = schema + "_static"
+    parentschema = context.get_context().config.get_main_option("parentschema")
 
     op.create_table(
-        'user',
-        Column('type', String(10), nullable=False),
-        Column('id', Integer, primary_key=True),
-        Column('username', Unicode, unique=True, nullable=False),
-        Column('password', Unicode, nullable=False),
-        Column('email', Unicode, nullable=False),
-        Column('is_password_changed', Boolean, default=False),
-        Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
+        "user",
+        Column("type", String(10), nullable=False),
+        Column("id", Integer, primary_key=True),
+        Column("username", Unicode, unique=True, nullable=False),
+        Column("password", Unicode, nullable=False),
+        Column("email", Unicode, nullable=False),
+        Column("is_password_changed", Boolean, default=False),
+        Column("role_id", Integer, ForeignKey(schema + ".role.id"), nullable=False),
         schema=schema,
     )
     parent_column = ""
@@ -122,8 +122,8 @@ def downgrade():
     parent_join = ""
     if parentschema is not None and parentschema is not "":  # pragma: nocover
         op.add_column(
-            'user',
-            Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),
+            "user",
+            Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")),
             schema=schema
         )
         parent_column = ", parent_role_id"
@@ -150,4 +150,4 @@ def downgrade():
         }
     )
 
-    op.drop_table('user', schema=staticschema)
+    op.drop_table("user", schema=staticschema)

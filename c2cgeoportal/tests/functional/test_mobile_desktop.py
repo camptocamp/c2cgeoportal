@@ -51,42 +51,42 @@ class TestMobileDesktop(TestCase):
 
         from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface, LayerGroup
 
-        main = Interface(name=u'main')
-        mobile = Interface(name=u'mobile')
+        main = Interface(name=u"main")
+        mobile = Interface(name=u"mobile")
 
-        layer = LayerV1(name=u'__test_layer')
+        layer = LayerV1(name=u"__test_layer")
         layer.interfaces = [main, mobile]
 
-        mobile_only_layer = LayerV1(name=u'__test_mobile_only_layer')
+        mobile_only_layer = LayerV1(name=u"__test_mobile_only_layer")
         mobile_only_layer.interfaces = [mobile]
 
-        desktop_only_layer = LayerV1(name=u'__test_desktop_only_layer')
+        desktop_only_layer = LayerV1(name=u"__test_desktop_only_layer")
         desktop_only_layer.interfaces = [main]
 
-        group = LayerGroup(name=u'__test_layer_group')
+        group = LayerGroup(name=u"__test_layer_group")
         group.children = [layer, mobile_only_layer, desktop_only_layer]
-        theme = Theme(name=u'__test_theme')
+        theme = Theme(name=u"__test_theme")
         theme.children = [group]
         theme.interfaces = [main, mobile]
 
-        mobile_only_group = LayerGroup(name=u'__test_mobile_only_layer_group')
+        mobile_only_group = LayerGroup(name=u"__test_mobile_only_layer_group")
         mobile_only_group.children = [layer]
-        mobile_only_theme = Theme(name=u'__test_mobile_only_theme')
+        mobile_only_theme = Theme(name=u"__test_mobile_only_theme")
         mobile_only_theme.children = [mobile_only_group]
         mobile_only_theme.interfaces = [mobile]
 
-        desktop_only_group = LayerGroup(name=u'__test_desktop_only_layer_group')
+        desktop_only_group = LayerGroup(name=u"__test_desktop_only_layer_group")
         desktop_only_group.children = [layer]
-        desktop_only_theme = Theme(name=u'__test_desktop_only_theme')
+        desktop_only_theme = Theme(name=u"__test_desktop_only_theme")
         desktop_only_theme.children = [desktop_only_group]
         desktop_only_theme.interfaces = [main]
 
         # the following theme should not appear in the list of themes on desktop
         # nor on mobile
         # It should be accessible by explicitely loading it in mobile though
-        mobile_private_group = LayerGroup(name=u'__test_mobile_private_layer_group')
+        mobile_private_group = LayerGroup(name=u"__test_mobile_private_layer_group")
         mobile_private_group.children = [layer]
-        mobile_private_theme = Theme(name=u'__test_mobile_private_theme')
+        mobile_private_theme = Theme(name=u"__test_mobile_private_theme")
         mobile_private_theme.children = [mobile_private_group]
 
         DBSession.add_all([
@@ -108,7 +108,7 @@ class TestMobileDesktop(TestCase):
         for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: nocover
         DBSession.query(Interface).filter(
-            Interface.name == 'main'
+            Interface.name == "main"
         ).delete()
 
         transaction.commit()
@@ -117,7 +117,7 @@ class TestMobileDesktop(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = create_dummy_request()
-        request.static_url = lambda url: '/dummy/static/url'
+        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: \
             request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.params = params
@@ -127,15 +127,15 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_themes=True)
     def test_mobile_themes(self):
         entry = self._create_entry_obj()
-        entry.request.interface_name = 'mobile'
+        entry.request.interface_name = "mobile"
         response_vars = entry.mobileconfig()
 
         self.assertEqual(
-            [t['name'] for t in response_vars['themes']],
+            [t["name"] for t in response_vars["themes"]],
             [u"__test_theme", u"__test_mobile_only_theme"]
         )
         self.assertEqual(
-            response_vars['themes'],
+            response_vars["themes"],
             [{
                 "name": u"__test_theme",
                 "icon": u"",
@@ -157,17 +157,17 @@ class TestMobileDesktop(TestCase):
     @attr(mobile_private_theme=True)
     def test_mobile_private_theme(self):
         entry = self._create_entry_obj()
-        entry.request.interface_name = 'mobile'
+        entry.request.interface_name = "mobile"
         response_vars = entry.mobileconfig()
-        entry.request.registry.settings['functionalities'] = {
-            'anonymous': {
-                'mobile_default_theme': u'__test_mobile_private_theme'
+        entry.request.registry.settings["functionalities"] = {
+            "anonymous": {
+                "mobile_default_theme": u"__test_mobile_private_theme"
             }
         }
         response_vars = entry.mobileconfig()
 
         self.assertEqual(
-            response_vars['themes'],
+            response_vars["themes"],
             [{
                 "name": u"__test_theme",
                 "icon": u"",
@@ -199,14 +199,14 @@ class TestMobileDesktop(TestCase):
         response_vars = entry.get_cgxp_viewer_vars()
 
         import json
-        themes = json.loads(response_vars['themes'])
+        themes = json.loads(response_vars["themes"])
         self.assertEqual(
-            set([t['name'] for t in themes]),
-            set([u'__test_desktop_only_theme', u'__test_theme']),
+            set([t["name"] for t in themes]),
+            set([u"__test_desktop_only_theme", u"__test_theme"]),
         )
-        theme = [t for t in themes if t['name'] == u'__test_theme']
-        layers = theme[0]['children'][0]['children']
+        theme = [t for t in themes if t["name"] == u"__test_theme"]
+        layers = theme[0]["children"][0]["children"]
         self.assertEqual(
-            set([l['name'] for l in layers]),
-            set([u'__test_layer', u'__test_desktop_only_layer']),
+            set([l["name"] for l in layers]),
+            set([u"__test_layer", u"__test_desktop_only_layer"]),
         )
