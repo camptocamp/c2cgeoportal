@@ -740,10 +740,10 @@ class Entry(object):
 
         cache_version = self._get_cache_version()
         url_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         url_role_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         if self.request.user is not None:
             url_role_params['role'] = self.request.user.role.name
@@ -772,10 +772,10 @@ class Entry(object):
     def _get_home_vars(self):
         cache_version = self._get_cache_version()
         extra_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         url_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         if self.lang:
             extra_params['lang'] = self.lang
@@ -863,6 +863,9 @@ class Entry(object):
             'cache_version': cache_version
         }
         extra_params['cache_version'] = cache_version
+        if self.request.user is not None:
+            extra_params["user"] = self.request.user.username
+            extra_params["role"] = self.request.user.role.name
 
         def enc(vals):
             return (vals[0], vals[1].encode('utf8'))
@@ -992,7 +995,7 @@ class Entry(object):
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
-            'url_params': {'version': cache_version} if cache_version else {},
+            "url_params": {"cache_version": cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -1011,7 +1014,7 @@ class Entry(object):
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
-            'url_params': {'version': cache_version} if cache_version else {},
+            "url_params": {"cache_version": cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
