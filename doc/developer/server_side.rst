@@ -35,7 +35,7 @@ of an existing c2cgeoportal application. Here's how:
 
     include <package>.mk
 
-* Uninstall the regular c2cgeoportal egg from the viretual environment:
+* Uninstall the regular c2cgeoportal egg from the virtual environment:
 
   .. prompt:: bash
 
