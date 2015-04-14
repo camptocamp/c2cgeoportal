@@ -18,6 +18,10 @@ Version 1.5.4
     +authtkt_cookie_name = ${authtkt_cookie_name}
     +authtkt_timeout = ${authtkt_timeout}
 
+2. In the `viewer.js` file, in the `cgxp_querier` plugin add the following attribute:
+
+    describeFeatureTypeParams: ${dumps(url_role_params) | n}
+
 
 Version 1.5.3
 =============
