@@ -847,10 +847,10 @@ class Entry(object):
     def get_cgxp_index_vars(self, templates_params=None):
         cache_version = get_cache_version()
         extra_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         url_params = {
-            'version': cache_version
+            "cache_version": cache_version
         }
         if self.lang:
             extra_params['lang'] = self.lang
@@ -947,7 +947,7 @@ class Entry(object):
         self.request.response.headers['Cache-Control'] = 'no-cache'
 
         url_params = {
-            'version': get_cache_version()
+            'cache_version': get_cache_version()
         }
 
         if self.request.user is not None:  # pragma: nocover
@@ -984,6 +984,9 @@ class Entry(object):
             'cache_version': cache_version
         }
         extra_params['cache_version'] = cache_version
+        if self.request.user is not None:
+            extra_params["user"] = self.request.user.username
+            extra_params["role"] = self.request.user.role.name
 
         def enc(vals):
             return (vals[0], vals[1].encode('utf8'))
@@ -1116,7 +1119,7 @@ class Entry(object):
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
-            'url_params': {'version': cache_version} if cache_version else {},
+            "url_params": {"cache_version": cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'
@@ -1136,7 +1139,7 @@ class Entry(object):
             'lang': self.lang,
             'debug': self.debug,
             'queryable_layers': json.dumps(queryable_layers),
-            'url_params': {'version': cache_version} if cache_version else {},
+            "url_params": {"cache_version": cache_version} if cache_version else {},
             'tiles_url': json.dumps(self.settings.get("tiles_url")),
         }
         self.request.response.content_type = 'application/javascript'

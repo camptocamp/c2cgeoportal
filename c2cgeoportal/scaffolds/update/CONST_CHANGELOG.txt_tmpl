@@ -191,6 +191,28 @@ Version 1.6
     +... = TranslationStringFactory("{{package}}-server")
 
 
+Version 1.5.4
+=============
+
+1. By default the authentication cookie expires after 86400 seconds (1 day).
+   You may override this value by adding an `authtkt_timeout` parameter 
+   in your `buildout.cfg` file. For instance:
+
+    # One week
+    authtkt_timeout: 604800
+
+   Also edit `production.ini.in` and `development.ini.in` like this:
+
+     authtkt_secret = ${authtkt_secret}
+    -authtkt_cookie_name = auth_tkt_${instanceid}
+    +authtkt_cookie_name = ${authtkt_cookie_name}
+    +authtkt_timeout = ${authtkt_timeout}
+
+2. In the `viewer.js` file, in the `cgxp_querier` plugin add the following attribute:
+
+    describeFeatureTypeParams: ${dumps(url_role_params) | n}
+
+
 Version 1.5.3
 =============
 

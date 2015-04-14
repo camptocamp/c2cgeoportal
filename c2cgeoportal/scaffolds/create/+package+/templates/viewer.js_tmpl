@@ -171,7 +171,8 @@ Ext.onReady(function() {
             maxFeatures: ${wfs_settings.get('maxfeatures', 200)},
             srsName: 'EPSG:{{srid}}',
             featureTypes: ["query_layer"],
-            attributeURLs: ${queryer_attribute_urls | n}
+            attributeURLs: ${queryer_attribute_urls | n},
+            describeFeatureTypeParams: ${dumps(url_role_params) | n}
         },
 % endif
         {
@@ -182,7 +183,7 @@ Ext.onReady(function() {
             outputTarget: "center.tbar",
             printURL: "${request.route_url('printproxy', path='')}",
             mapserverURL: "${request.route_url('mapserverproxy', path='')}",
-            printProviderConfig: ${dumps(url_role_params)|n},
+            printProviderConfig: ${dumps(url_role_params) | n},
             options: {
                 labelAlign: 'top',
                 defaults: {
