@@ -782,7 +782,7 @@ class TestEntryView(TestCase):
         )
         self.assertEquals(
             set(result['extra_params'].keys()),
-            set(['lang', 'user', 'version']),
+            set(['lang', 'user', 'cache_version']),
         )
         self.assertEquals(result['extra_params']['lang'], 'fr')
         self.assertEquals(result['extra_params']['user'], 'a user')
