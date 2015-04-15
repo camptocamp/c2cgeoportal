@@ -177,8 +177,8 @@ CSS_XAPI_FILES += \
 	$(PACKAGE)/static/lib/cgxp/gxp/src/theme/all.css \
 	$(PACKAGE)/static/lib/cgxp/core/src/theme/all.css \
 	$(PACKAGE)/static/css/proj-map.css \
-	$(PACKAGE)/static/css/proj-widgets.css \
-CSS_XAPI_OUTPUT = $(PACKAGE)/static/xapi.css
+	$(PACKAGE)/static/css/proj-widgets.css
+CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
 
 VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAGE)/views
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
