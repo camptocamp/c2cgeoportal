@@ -581,6 +581,7 @@ class TestEntryView(TestCase):
         result2 = entry.mobile()
         self.assertEquals(result2["url_params"], result["url_params"])
         self.assertEquals(result2["extra_params"], result["extra_params"])
+        self.assertEquals(result2["extra_user_params"], result["extra_user_params"])
 
     @attr(auth_mobile_cache_version=True)
     def test_auth_mobile_cache_version(self):
@@ -591,7 +592,8 @@ class TestEntryView(TestCase):
         request.current_route_url = lambda **kwargs: "http://example.com/current/view"
         result = entry.mobile()
         self.assertRegexpMatches(result["url_params"], "cache_version=[0-9a-f]*")
-        self.assertRegexpMatches(result["extra_params"], "role=__test_role1&user=__test_user1&cache_version=[0-9a-f]*")
+        self.assertRegexpMatches(result["extra_params"], "role=__test_role1&cache_version=[0-9a-f]*")
+        self.assertRegexpMatches(result["extra_user_params"], "role=__test_role1&user=__test_user1&cache_version=[0-9a-f]*")
 
         result2 = entry.mobile()
         self.assertEquals(result2["url_params"], result["url_params"])
@@ -629,8 +631,8 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "extra_params", "url_params",
-                "mobile_url", "no_redirect"
+                "lang", "debug", "extra_params", "extra_user_params",
+                "mobile_url", "no_redirect",
             ])
         )
         result = entry.get_cgxp_viewer_vars()
@@ -638,7 +640,7 @@ class TestEntryView(TestCase):
             "lang", "tiles_url", "debug",
             "serverError", "themes", "external_themes", "functionality",
             "WFSTypes", "externalWFSTypes", "user", "queryer_attribute_urls",
-            "url_params", "url_role_params"
+            "version_params", "version_role_params", "version_role_user_params",
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],
@@ -647,19 +649,17 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "functionality", "user",
-            "queryer_attribute_urls", "url_params"
+            "debug", "functionality", "queryer_attribute_urls", "cache_version",
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "functionality", "user",
-            "queryer_attribute_urls", "url_params", "permalink_themes"
+            "debug", "functionality", "queryer_attribute_urls", "permalink_themes", "cache_version",
         ]))
 
         result = entry.mobile()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "came_from", "url_params", "extra_params"])
+            set(["lang", "came_from", "url_params", "extra_params", "extra_user_params"])
         )
 
         result = entry.apijs()
@@ -680,7 +680,7 @@ class TestEntryView(TestCase):
     @attr(auth_home=True)
     def test_auth_home(self):
         from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import User
+        from c2cgeoportal.models import User, Role
 
         request = self._create_request_obj()
         mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
@@ -702,20 +702,28 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = User()
         request.user.username = "a user"
+        request.user.role_name = "a role"
+        request.user._cached_role = Role()
+        request.user._cached_role.name = "a role"
+        request.user._cached_role_name = "a role"
 
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "url_params", "extra_params", "mobile_url", "no_redirect"
+                "lang", "debug", "extra_params", "extra_user_params", "mobile_url", "no_redirect"
             ])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "user", "cache_version"])
+            set(["lang", "role", "cache_version"])
+        )
+        self.assertEquals(
+            set(result["extra_user_params"].keys()),
+            set(["lang", "user", "role", "cache_version"])
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
-        self.assertEquals(result["extra_params"]["user"], "a user")
+        self.assertEquals(result["extra_params"]["role"], "a role")
         self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
 
     @attr(entry_points_version=True)
@@ -757,17 +765,17 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "extra_params", "url_params",
+                "lang", "debug", "extra_params", "extra_user_params",
                 "mobile_url", "no_redirect"
             ])
         )
-        self.assertRegexpMatches(result["url_params"]["cache_version"], "[0-9a-f]*")
         self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
+        self.assertRegexpMatches(result["extra_user_params"]["cache_version"], "[0-9a-f]*")
 
     @attr(entry_points_wfs=True)
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import User
+        from c2cgeoportal.models import User, Role
 
         request = self._create_request_obj()
         mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
@@ -789,20 +797,28 @@ class TestEntryView(TestCase):
         entry = Entry(request)
         request.user = User()
         request.user.username = "a user"
+        request.user.role_name = "a role"
+        request.user._cached_role = Role()
+        request.user._cached_role.name = "a role"
+        request.user._cached_role_name = "a role"
 
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "extra_params", "url_params", "mobile_url", "no_redirect"
+                "lang", "debug", "extra_params", "extra_user_params", "mobile_url", "no_redirect"
             ])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "user", "cache_version"]),
+            set(["lang", "role", "cache_version"]),
+        )
+        self.assertEquals(
+            set(result["extra_user_params"].keys()),
+            set(["lang", "user", "role", "cache_version"]),
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
-        self.assertEquals(result["extra_params"]["user"], "a user")
+        self.assertEquals(result["extra_params"]["role"], "a role")
 
     @attr(entry_points_wfs_url=True)
     def test_entry_points_wfs_url(self):
@@ -835,7 +851,7 @@ class TestEntryView(TestCase):
             set(result.keys()),
             set(
                 [
-                    "lang", "debug", "extra_params", "url_params",
+                    "lang", "debug", "extra_params", "extra_user_params",
                     "mobile_url", "no_redirect"
                 ]
             )
@@ -864,12 +880,10 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(
-                [
-                    "lang", "debug", "extra_params", "url_params",
-                    "mobile_url", "no_redirect"
-                ]
-            )
+            set([
+                "lang", "debug", "extra_params", "extra_user_params",
+                "mobile_url", "no_redirect"
+            ])
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -886,8 +900,9 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "url_params", "mobile_url", "permalink_themes",
-                "no_redirect", "extra_params", "debug"
+                "lang", "mobile_url", "permalink_themes",
+                "no_redirect", "debug",
+                "extra_params", "extra_user_params",
             ])
         )
         self.assertEquals(
@@ -906,8 +921,8 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "url_params", "mobile_url", "permalink_themes",
-                "no_redirect", "extra_params", "debug"
+                "lang", "mobile_url", "permalink_themes", "no_redirect", "debug",
+                "extra_params", "extra_user_params",
             ])
         )
         self.assertEquals(

@@ -847,34 +847,58 @@ class Entry(object):
                     )
         return layers_enum
 
-    def get_cgxp_index_vars(self, templates_params=None):
+    def _get_cache_params_vars(self):
+        cache_version = get_cache_version()
+        version_params = {
+            "cache_version": cache_version,
+        }
+        version_role_params = {
+            "cache_version": cache_version,
+        }
+        version_role_user_params = {
+            "cache_version": cache_version,
+        }
+        if self.request.user is not None and self.request.user.role is not None:
+            version_role_params["role"] = self.request.user.role.name
+            version_role_user_params.update({
+                "role": self.request.user.role.name,
+                "user": self.request.user.username,
+            })
+        return {
+            "version_params": version_params,
+            "version_role_params": version_role_params,
+            "version_role_user_params": version_role_user_params,
+        }
+
+    def get_cgxp_index_vars(self, templates_params={}):
         cache_version = get_cache_version()
         extra_params = {
-            "cache_version": cache_version
-        }
-        url_params = {
-            "cache_version": cache_version
+            "cache_version": cache_version,
         }
         if self.lang:
             extra_params["lang"] = self.lang
+        if self.request.user is not None and self.request.user.role is not None:
+            extra_params["role"] = self.request.user.role.name.encode("utf-8")
+
+        # specific permalink_themes handling
+        if "permalink_themes" in templates_params:
+            extra_params["permalink_themes"] = templates_params["permalink_themes"]
+
+        extra_user_params = {}
+        extra_user_params.update(extra_params)
+        if self.request.user is not None and self.request.user.role is not None:
+            extra_user_params["user"] = self.request.user.username.encode("utf-8")
 
         d = {
             "lang": self.lang,
             "debug": self.debug,
-            "url_params": url_params,
-            "extra_params": extra_params
+            "no_redirect": self.request.params.get("no_redirect") is not None,
+            "extra_params": extra_params,
+            "extra_user_params": extra_user_params,
         }
 
-        if self.request.user is not None:
-            d["extra_params"]["user"] = self.request.user.username.encode("utf-8")
-
         # general templates_params handling
-        if templates_params is not None:
-            d.update(templates_params)
-
-        # specific permalink_themes handling
-        if "permalink_themes" in d:
-            extra_params["permalink_themes"] = d["permalink_themes"]
+        d.update(templates_params)
 
         # check if route to mobile app exists
         try:
@@ -882,19 +906,17 @@ class Entry(object):
         except:  # pragma: no cover
             d["mobile_url"] = None
 
-        d["no_redirect"] = self.request.params.get("no_redirect") is not None
         self.request.response.headers["Cache-Control"] = "no-cache"
         self.request.response.headers["Vary"] = "Accept-Language"
 
         return d
 
     def get_cgxp_permalinktheme_vars(self):
-        # recover themes from url route
-        themes = self.request.matchdict["themes"]
-        d = {}
-        d["permalink_themes"] = themes
         # call home with extra params
-        return self.get_cgxp_index_vars(d)
+        return self.get_cgxp_index_vars({
+            # recover themes from url route
+            "permalink_themes": self.request.matchdict["themes"]
+        })
 
     def get_cgxp_viewer_vars(self):
         role_id = None if self.request.user is None or self.request.user.role is None else \
@@ -910,17 +932,9 @@ class Entry(object):
         external_themes, add_errors = self._external_themes(interface)
         errors |= add_errors
 
-        cache_version = get_cache_version()
-        url_params = {
-            "version": cache_version
-        }
-        url_role_params = {
-            "version": cache_version
-        }
-        if self.request.user is not None and self.request.user.role is not None:
-            url_role_params["role"] = self.request.user.role.name
-
         d = {
+            "lang": self.lang,
+            "debug": self.debug,
             "themes": json.dumps(themes),
             "user": self.request.user,
             "WFSTypes": json.dumps(wfs_types),
@@ -929,18 +943,15 @@ class Entry(object):
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
             "functionality": self._functionality(),
             "queryer_attribute_urls": json.dumps(self._get_layers_enum()),
-            "url_params": url_params,
-            "url_role_params": url_role_params,
             "serverError": json.dumps(list(errors)),
         }
+
+        d.update(self._get_cache_params_vars())
 
         # handle permalink_themes
         permalink_themes = self.request.params.get("permalink_themes")
         if permalink_themes:
             d["permalink_themes"] = json.dumps(permalink_themes.split(","))
-
-        d["lang"] = self.lang
-        d["debug"] = self.debug
 
         self.request.response.content_type = "application/javascript"
         self.request.response.headers["Vary"] = "Accept-Language"
@@ -949,20 +960,11 @@ class Entry(object):
     def get_ngeo_index_vars(self, vars={}):
         self.request.response.headers["Cache-Control"] = "no-cache"
 
-        url_params = {
-            "cache_version": get_cache_version()
-        }
-
-        if self.request.user is not None:  # pragma: nocover
-            # For the cache
-            url_params["role"] = self.request.user.role.name
-
         vars.update({
             "debug": self.debug,
-            "url_params": url_params,
-            "user": self.request.user,
             "functionality": self._functionality(),
             "queryer_attribute_urls": self._get_layers_enum(),
+            "cache_version": get_cache_version()
         })
         return vars
 
@@ -987,9 +989,13 @@ class Entry(object):
             "cache_version": cache_version
         }
         extra_params["cache_version"] = cache_version
-        if self.request.user is not None:
-            extra_params["user"] = self.request.user.username
+
+        extra_user_params = {}
+        extra_user_params.update(extra_params)
+        if self.request.user is not None and self.request.user.role is not None:
             extra_params["role"] = self.request.user.role.name
+            extra_user_params["user"] = self.request.user.username
+            extra_user_params["role"] = self.request.user.role.name
 
         def enc(vals):
             return (vals[0], vals[1].encode("utf8"))
@@ -999,6 +1005,7 @@ class Entry(object):
             "came_from": came_from,
             "url_params": urllib.urlencode(dict(map(enc, url_params.items()))),
             "extra_params": urllib.urlencode(dict(map(enc, extra_params.items()))),
+            "extra_user_params": urllib.urlencode(dict(map(enc, extra_user_params.items()))),
         }
 
     def flatten_layers(self, theme):

@@ -99,6 +99,8 @@ Version 1.6
     +% if bounds:
     +    var INITIAL_EXTENT = ${dumps(bounds)};
 
+    replace `url_role_params` by `version_role_params` in all the file.
+
 8. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
