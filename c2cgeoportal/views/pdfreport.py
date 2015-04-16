@@ -27,11 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from pyramid.view import view_config
-from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadGateway, HTTPForbidden, \
-    HTTPInternalServerError
-
+import logging
 import httplib2
 from urlparse import urlparse
 from json import dumps, loads
@@ -39,7 +35,13 @@ from json import dumps, loads
 from c2cgeoportal.lib.filter_capabilities import get_protected_layers, \
     get_private_layers
 
-import logging
+from pyramid.view import view_config
+from pyramid.response import Response
+from pyramid.httpexceptions import HTTPBadGateway, HTTPForbidden, \
+    HTTPInternalServerError
+
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+
 log = logging.getLogger(__name__)
 
 
@@ -65,19 +67,25 @@ class PdfReport:  # pragma: no cover
             return HTTPBadGateway()
 
         headers = {}
-        if "content-type" in resp:
-            headers["content-type"] = resp["content-type"]
         if "content-disposition" in resp:
             headers["content-disposition"] = resp["content-disposition"]
-        return Response(
-            content, status=resp.status, headers=headers
+        return set_common_headers(
+            self.request, "pdfreport", NO_CACHE,
+            response=Response(
+                content, status=resp.status, headers=headers
+            ),
+            content_type=resp.get("content-type")
         )
 
     def _get_config(self, name, default=None):
-        config = self.config.get("layers", {}). \
-            get(self.layername, {}).get(name)
+        config = self.config. \
+            get("layers", {}). \
+            get(self.layername, {}). \
+            get(name)
         if config is None:
-            config = self.config.get("defaults", {}).get(name, default)
+            config = self.config. \
+                get("defaults", {}). \
+                get(name, default)
         return config
 
     @view_config(route_name="pdfreport", renderer="json")

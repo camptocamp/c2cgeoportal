@@ -38,7 +38,8 @@ from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.lib.caching import get_region, init_cache_control
+from c2cgeoportal.lib.caching import get_region, \
+    set_common_headers, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.views.proxy import Proxy
 
@@ -73,19 +74,10 @@ class PrintProxy(Proxy):  # pragma: no cover
         else:
             content = ""
 
-        headers = dict(resp)
-        if "content-length" in headers:
-            del headers["content-length"]
-        if "transfer-encoding" in headers:
-            del headers["transfer-encoding"]
-        self._add_cors(headers)
-
-        response = Response(
-            content,
-            status=resp.status, headers=headers,
+        return self._build_response(
+            resp, content, PRIVATE_CACHE, "print",
+            add_cors=True,
         )
-        init_cache_control(self.request, "print")
-        return response
 
     ##########
     # # V2 # #
@@ -146,12 +138,13 @@ class PrintProxy(Proxy):  # pragma: no cover
             headers["content-type"] = resp["content-type"]
         if "content-disposition" in resp:
             headers["content-disposition"] = resp["content-disposition"]
-        # Pragma and Cache-Control headers because of ie 8 bug:
-        # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
-        # del response.headers["Pragma"]
-        # del response.headers["Cache-Control"]
-        return Response(
-            content, status=resp.status, headers=headers
+
+        return set_common_headers(
+            self.request, "print", NO_CACHE,
+            response=Response(
+                content, status=resp.status, headers=headers
+            ),
+            add_cors=True
         )
 
     ##########

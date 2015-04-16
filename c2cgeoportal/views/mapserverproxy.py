@@ -32,7 +32,7 @@ import logging
 
 from pyramid.view import view_config
 
-from c2cgeoportal.lib.caching import get_region
+from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal.views.proxy import Proxy
@@ -112,7 +112,6 @@ class MapservProxy(Proxy):
         # we want the browser to cache GetLegendGraphic and
         # DescribeFeatureType requests
         use_cache = False
-        public_cache = False
 
         if method == "GET":
             # For GET requests, params are added only if the self.request
@@ -120,17 +119,12 @@ class MapservProxy(Proxy):
             if "request" not in self.lower_params:
                 params = {}  # pragma: no cover
             else:
-                use_cache = (
-                    self.lower_params["request"] == u"getcapabilities"
-                ) or (
-                    self.lower_params["request"] == u"getlegendgraphic"
-                ) or (
-                    self.lower_params["request"] == u"describelayer"
-                ) or (
-                    self.lower_params["request"] == u"describefeaturetype"
-                )
-
-                public_cache = self.lower_params["request"] == u"getlegendgraphic"
+                use_cache = self.lower_params["request"] in [
+                    u"getcapabilities",
+                    u"getlegendgraphic",
+                    u"describelayer",
+                    u"describefeaturetype",
+                ]
 
                 # no user_id and role_id or cached queries
                 if use_cache and "user_id" in params:
@@ -146,20 +140,29 @@ class MapservProxy(Proxy):
             # POST means WFS
             _url = self._get_wfs_url()
 
+        cache_control = PRIVATE_CACHE
+        if method == "GET" and self.lower_params["service"] == u"wms":
+            if self.lower_params["request"] in [u"getmap", u"getfeatureinfo"]:
+                cache_control = NO_CACHE
+            elif self.lower_params["request"] == u"getlegendgraphic":
+                cache_control = PUBLIC_CACHE
+        elif method == "GET" and self.lower_params["service"] == u"wfs":
+            if self.lower_params["request"] == u"getfeature":
+                cache_control = NO_CACHE
+        elif method != "GET":
+            cache_control = NO_CACHE
+
         role_id = None if self.user is None else \
             self.user.parent_role.id if self.external else self.user.role.id
         response = self._proxy_callback(
+            role_id, cache_control,
             url=_url, params=params, cache=use_cache,
-            headers=self._get_headers(), body=self.request.body, role_id=role_id
+            headers=self._get_headers(), body=self.request.body
         )
-        if self.user is not None and use_cache and not public_cache:
-            response.cache_control.public = False
-            response.cache_control.private = True
         return response
 
-    def _proxy_callback(self, role_id, *args, **kwargs):
+    def _proxy_callback(self, role_id, cache_control, *args, **kwargs):
         params = kwargs.get("params", {})
-        cache = kwargs.get("cache", False)
         callback = params.get("callback", None)
         if callback is not None:
             del params["callback"]
@@ -174,7 +177,7 @@ class MapservProxy(Proxy):
             )
 
         content_type = None
-        if callback:
+        if callback is not None:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string
             content = unicode(content.decode("utf8"))
@@ -183,9 +186,7 @@ class MapservProxy(Proxy):
         else:
             content_type = resp["content-type"]
 
-        headers = {
-            "Content-Type": content_type,
-            "Access-Control-Allow-Origin": "*",
-        }
-
-        return self._build_response(resp, content, cache, "mapserver", headers)
+        return self._build_response(
+            resp, content, cache_control, "mapserver",
+            content_type=content_type
+        )

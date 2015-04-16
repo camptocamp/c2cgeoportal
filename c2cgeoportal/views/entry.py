@@ -51,7 +51,7 @@ from owslib.wms import WebMapService
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
-    init_cache_control  # , set_common_headers, NO_CACHE
+    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
@@ -72,7 +72,6 @@ class Entry(object):
 
     def __init__(self, request):
         self.request = request
-        init_cache_control(request, "entry")
         self.settings = request.registry.settings
         self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.debug = "debug" in request.params
@@ -906,8 +905,7 @@ class Entry(object):
         except:  # pragma: no cover
             d["mobile_url"] = None
 
-        self.request.response.headers["Cache-Control"] = "no-cache"
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(self.request, "cgxp_index", NO_CACHE)
 
         return d
 
@@ -953,12 +951,15 @@ class Entry(object):
         if permalink_themes:
             d["permalink_themes"] = json.dumps(permalink_themes.split(","))
 
-        self.request.response.content_type = "application/javascript"
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(
+            self.request, "cgxp_viewer", PRIVATE_CACHE,
+            vary=True, content_type="application/javascript",
+        )
+
         return d
 
     def get_ngeo_index_vars(self, vars={}):
-        self.request.response.headers["Cache-Control"] = "no-cache"
+        set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
         vars.update({
             "debug": self.debug,
@@ -980,7 +981,7 @@ class Entry(object):
         """
         View callable for the mobile application"s index.html file.
         """
-        self.request.response.headers["Cache-Control"] = "no-cache"
+        set_common_headers(self.request, "sencha_index", NO_CACHE)
 
         extra_params = dict(self.request.params)
         came_from = self.request.current_route_url(_query=extra_params)
@@ -999,7 +1000,6 @@ class Entry(object):
 
         def enc(vals):
             return (vals[0], vals[1].encode("utf8"))
-        self.request.response.headers["Vary"] = "Accept-Language"
         return {
             "lang": self.lang,
             "came_from": came_from,
@@ -1103,8 +1103,11 @@ class Entry(object):
                     "layers": theme["layers"],
                 })
 
-        self.request.response.content_type = "application/javascript"
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(
+            self.request, "sencha_config", PRIVATE_CACHE,
+            vary=True, content_type="application/javascript",
+        )
+
         return {
             "lang": self.lang,
             "themes": themes_,
@@ -1116,7 +1119,6 @@ class Entry(object):
 
     @view_config(route_name="apijs", renderer="api/api.js")
     def apijs(self):
-        self.request.response.headers["Cache-Control"] = "no-cache"
         wms, wms_errors = self._wms_getcap(
             self.mapserver_settings["mapserv_url"])
         if len(wms_errors) > 0:  # pragma: no cover
@@ -1125,41 +1127,46 @@ class Entry(object):
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
         cache_version = self.settings.get("cache_version", None)
-        d = {
+
+        set_common_headers(
+            self.request, "apijs", NO_CACHE,
+            content_type="application/javascript",
+        )
+
+        return {
             "lang": self.lang,
             "debug": self.debug,
             "queryable_layers": json.dumps(queryable_layers),
             "url_params": {"cache_version": cache_version} if cache_version else {},
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
         }
-        self.request.response.content_type = "application/javascript"
-        self.request.response.headers["Vary"] = "Accept-Language"
-        return d
 
     @view_config(route_name="xapijs", renderer="api/xapi.js")
     def xapijs(self):
-        self.request.response.headers["Cache-Control"] = "no-cache"
         wms, wms_errors = self._wms_getcap(
             self.mapserver_settings["mapserv_url"])
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
         cache_version = self.settings.get("cache_version", None)
-        d = {
+
+        set_common_headers(
+            self.request, "xapijs", NO_CACHE,
+            content_type="application/javascript",
+        )
+
+        return {
             "lang": self.lang,
             "debug": self.debug,
             "queryable_layers": json.dumps(queryable_layers),
             "url_params": {"cache_version": cache_version} if cache_version else {},
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
         }
-        self.request.response.content_type = "application/javascript"
-        self.request.response.headers["Vary"] = "Accept-Language"
-        return d
 
     @view_config(route_name="apihelp", renderer="api/apihelp.html")
     def apihelp(self):
-        self.request.response.headers["Cache-Control"] = "no-cache"
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(self.request, "apihelp", NO_CACHE)
+
         return {
             "lang": self.lang,
             "debug": self.debug,
@@ -1167,8 +1174,8 @@ class Entry(object):
 
     @view_config(route_name="xapihelp", renderer="api/xapihelp.html")
     def xapihelp(self):
-        self.request.response.headers["Cache-Control"] = "no-cache"
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(self.request, "xapihelp", NO_CACHE)
+
         return {
             "lang": self.lang,
             "debug": self.debug,
@@ -1193,6 +1200,8 @@ class Entry(object):
         export_themes = sets in ["all", "themes"]
         export_group = group is not None and sets in ["all", "group"]
         export_background = background_layers_group is not None and sets in ["all", "background"]
+
+        set_common_headers(self.request, "themes", PRIVATE_CACHE)
 
         result = {}
         all_errors = set()
@@ -1233,7 +1242,9 @@ class Entry(object):
     def loginform403(self):
         if self.request.authenticated_userid:
             return HTTPForbidden()  # pragma: no cover
-        self.request.response.headers["Vary"] = "Accept-Language"
+
+        set_common_headers(self.request, "loginform403", NO_CACHE)
+
         return {
             "lang": self.lang,
             "came_from": self.request.path,
@@ -1241,7 +1252,8 @@ class Entry(object):
 
     @view_config(route_name="loginform", renderer="login.html")
     def loginform(self):
-        self.request.response.headers["Vary"] = "Accept-Language"
+        set_common_headers(self.request, "loginform", PUBLIC_CACHE, vary=True)
+
         return {
             "lang": self.lang,
             "came_from": self.request.params.get("came_from") or "/",
@@ -1264,10 +1276,10 @@ class Entry(object):
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
             else:
-                response = Response(
-                    "true", headers=headers, cache_control="no-cache"
+                return set_common_headers(
+                    self.request, "login", NO_CACHE,
+                    response=Response("true", headers=headers),
                 )
-                return response
         else:
             return HTTPUnauthorized("bad credentials")
 
@@ -1285,11 +1297,15 @@ class Entry(object):
             self.request.user.id
         ))
 
-        return Response("true", headers=headers, cache_control="no-cache")
+        return set_common_headers(
+            self.request, "logout", NO_CACHE,
+            response=Response("true", headers=headers),
+        )
 
     @view_config(route_name="loginchange", renderer="json")
     def loginchange(self):
-        self.request.response.cache_control.no_cache = True
+        set_common_headers(self.request, "loginchange", NO_CACHE)
+
         new_password = self.request.params.get("newPassword", None)
         new_password_confirm = self.request.params.get("confirmNewPassword", None)
         if new_password is None or new_password_confirm is None:
@@ -1328,8 +1344,6 @@ class Entry(object):
         return password
 
     def _loginresetpassword(self):
-        # set_common_headers(self.request, "entry", NO_CACHE)
-
         username = self.request.params["login"]
         try:
             user = DBSession.query(User).filter(User.username == username).one()
@@ -1352,6 +1366,8 @@ class Entry(object):
 
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
+        set_common_headers(self.request, "loginresetpassword", NO_CACHE)
+
         user, username, password = self._loginresetpassword()
         settings = self.request.registry.settings["reset_password"]
         send_email(
