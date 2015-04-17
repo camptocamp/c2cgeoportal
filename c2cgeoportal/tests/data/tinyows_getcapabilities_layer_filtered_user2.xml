@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WFS_Capabilities xmlns="http://www.opengis.net/wfs" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" version="1.1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" updateSequence="0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wfs   http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+ <ows:ServiceIdentification>
+  <ows:Title>TinyOWS Server - Test</ows:Title>
+  <ows:ServiceType>WFS</ows:ServiceType>
+  <ows:ServiceTypeVersion>1.0.0,1.1.0</ows:ServiceTypeVersion>
+ </ows:ServiceIdentification>
+ <ows:ServiceProvider>
+  <ows:ProviderName>TinyOWS Server</ows:ProviderName>
+  <ows:ProviderSite xlink:href="http://www.tinyows.org/"></ows:ProviderSite>
+  <ows:ServiceContact>
+   <ows:ContactInfo>
+    <ows:Address>
+    <ows:ElectronicMailAddress>tinyows-users@lists.maptools.org</ows:ElectronicMailAddress>
+    </ows:Address>
+   </ows:ContactInfo>
+  </ows:ServiceContact>
+ </ows:ServiceProvider>
+ <ows:OperationsMetadata>
+  <ows:Operation name="GetCapabilities">
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+     </ows:HTTP>
+    </ows:DCP>
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+     </ows:HTTP>
+    </ows:DCP>
+  <ows:Parameter name="AcceptVersions">
+  <ows:Value>1.1.0</ows:Value>
+  <ows:Value>1.0.0</ows:Value>
+  </ows:Parameter>
+  <ows:Parameter name="AcceptFormats">
+  <ows:Value>text/xml</ows:Value>
+  </ows:Parameter>
+  <ows:Parameter name="Sections">
+  <ows:Value>ServiceIdentification</ows:Value>
+  <ows:Value>ServiceProvider</ows:Value>
+  <ows:Value>OperationsMetadata</ows:Value>
+  <ows:Value>FeatureTypeList</ows:Value>
+  <ows:Value>ServesGMLObjectTypeList</ows:Value>
+  <ows:Value>SupportsGMLObjectTypeList</ows:Value>
+  </ows:Parameter>
+   </ows:Operation>
+   <ows:Operation name="DescribeFeatureType">
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+     </ows:HTTP>
+    </ows:DCP>
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+     </ows:HTTP>
+    </ows:DCP>
+  <ows:Parameter name="outputFormat">
+  <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+  <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+  </ows:Parameter>
+   </ows:Operation>
+   <ows:Operation name="GetFeature">
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+     </ows:HTTP>
+    </ows:DCP>
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+     </ows:HTTP>
+    </ows:DCP>
+  <ows:Parameter name="resultType">
+  <ows:Value>results</ows:Value>
+  <ows:Value>hits</ows:Value>
+  </ows:Parameter>
+  <ows:Parameter name="outputFormat">
+  <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+  <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+  <ows:Value>application/json</ows:Value>
+  </ows:Parameter>
+   </ows:Operation>
+   <ows:Operation name="Transaction">
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+     </ows:HTTP>
+    </ows:DCP>
+    <ows:DCP>
+     <ows:HTTP>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+     </ows:HTTP>
+    </ows:DCP>
+    <ows:Parameter name="inputFormat">
+     <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+    </ows:Parameter>
+    <ows:Parameter name="idgen">
+     <ows:Value>GenerateNew</ows:Value>
+     <ows:Value>UseExisting</ows:Value>
+    </ows:Parameter>
+   </ows:Operation>
+   <ows:Constraint name="LocalTraverseXLinkScope">
+    <ows:Value>0</ows:Value>
+   </ows:Constraint>
+   <ows:Constraint name="RemoteTraverseXLinkScope">
+    <ows:Value>0</ows:Value>
+   </ows:Constraint>
+ </ows:OperationsMetadata>
+ <FeatureTypeList>
+  <Operations>
+   <Operation>Query</Operation>
+   <Operation>Insert</Operation>
+   <Operation>Update</Operation>
+   <Operation>Delete</Operation>
+  </Operations>
+  
+  
+  
+ </FeatureTypeList>
+ <SupportsGMLObjectTypeList>
+  <GMLObjectType>
+   <Name>gml:AbstractGMLFeatureType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:PointType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:LineStringType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:PolygonType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:MultiPointType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:MultiLineStringType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+  <GMLObjectType>
+   <Name>gml:MultiPolygonType</Name>
+   <OutputFormats>
+    <Format>text/xml; subtype=gml/2.1.2</Format>
+    <Format>text/xml; subtype=gml/3.1.1</Format>
+   </OutputFormats>
+  </GMLObjectType>
+ </SupportsGMLObjectTypeList>
+<ogc:Filter_Capabilities>
+ <ogc:Spatial_Capabilities>
+  <ogc:GeometryOperands>
+   <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:Triangle</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:PolyhedralSurface</ogc:GeometryOperand>
+   <ogc:GeometryOperand>gml:Tin</ogc:GeometryOperand>
+  </ogc:GeometryOperands>
+  <ogc:SpatialOperators>
+  <ogc:SpatialOperator name="Disjoint"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Equals"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="DWithin"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Beyond"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Intersects"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Touches"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Crosses"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Within"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Contains"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Overlaps"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="BBOX"></ogc:SpatialOperator>
+ </ogc:SpatialOperators>
+ </ogc:Spatial_Capabilities>
+ <ogc:Scalar_Capabilities>
+  <ogc:LogicalOperators></ogc:LogicalOperators>
+  <ogc:ComparisonOperators>
+   <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+   <ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+  </ogc:ComparisonOperators>
+  <ogc:ArithmeticOperators>
+   <ogc:SimpleArithmetic></ogc:SimpleArithmetic>
+   <ogc:Functions>
+    <ogc:FunctionNames>
+     <ogc:FunctionName nArgs="1">abs</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">acos</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">asin</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">atan</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">avg</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">cbrt</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">ceil</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">ceiling</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">cos</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">cot</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">count</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">degrees</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">exp</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">floor</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">length</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">ln</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">log</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">min</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">max</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">radians</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">round</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">sin</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">sqrt</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">tan</ogc:FunctionName>
+     <ogc:FunctionName nArgs="1">trunc</ogc:FunctionName>
+    </ogc:FunctionNames>
+   </ogc:Functions>
+  </ogc:ArithmeticOperators>
+ </ogc:Scalar_Capabilities>
+ <ogc:Id_Capabilities>
+  <ogc:EID></ogc:EID>
+  <ogc:FID></ogc:FID>
+ </ogc:Id_Capabilities>
+</ogc:Filter_Capabilities>
+</WFS_Capabilities>
