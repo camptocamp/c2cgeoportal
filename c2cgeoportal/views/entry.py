@@ -35,6 +35,9 @@ import json
 import sys
 
 from urlparse import urlparse
+from random import Random
+from math import sqrt
+from xml.dom.minidom import parseString
 
 from pyramid.view import view_config
 from pyramid.i18n import get_locale_name, TranslationStringFactory
@@ -42,18 +45,18 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget
 from pyramid.response import Response
+from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
-from xml.dom.minidom import parseString
-from math import sqrt
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
-    init_cache_control
+    init_cache_control  # , set_common_headers, NO_CACHE
 from c2cgeoportal.lib.functionality import get_functionality, \
     get_mapserver_substitution_params
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
-from c2cgeoportal.models import DBSession, Role, \
+from c2cgeoportal.lib.email_ import send_email
+from c2cgeoportal.models import DBSession, User, Role, \
     Theme, LayerGroup, RestrictionArea, Interface, \
     Layer, LayerV1, LayerInternalWMS, LayerExternalWMS, LayerWMTS
 
@@ -1292,15 +1295,65 @@ class Entry(object):
         if not self.request.user:
             raise HTTPUnauthorized("bad credentials")
         if new_password != new_password_confirm:
-            raise HTTPBadRequest("the new password and the new password \
-                   confirmation don't match")
+            raise HTTPBadRequest(
+                "The new password and the new password "
+                "confirmation don't match"
+            )
 
         u = self.request.user
         u._set_password(new_password)
         u.is_password_changed = True
         DBSession.flush()
-        log.info("password changed for user: %s" % self.request.user.username)
+        log.info("Password changed for user: %s" % self.request.user.username)
 
         return {
             "success": "true"
+        }
+
+    def generate_password(self):
+        allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        rand = Random()
+
+        password = ""
+        for i in range(8):
+            password += rand.choice(allchars)
+
+        return password
+
+    def _loginresetpassword(self):
+        # set_common_headers(self.request, "entry", NO_CACHE)
+
+        username = self.request.params["login"]
+        try:
+            user = DBSession.query(User).filter(User.username == username).one()
+        except NoResultFound:  # pragma: no cover
+            return {
+                "success": False,
+                "error": _("The user '%s' doesn't exist.") % username,
+            }
+
+        if user.email is None or user.email == "":  # pragma: no cover
+            return {
+                "success": False,
+                "error": _("User '%s' has no registered email address.") % username,
+            }
+
+        password = self.generate_password()
+        user.set_temp_password(password)
+
+        return user, username, password
+
+    @view_config(route_name="loginresetpassword", renderer="json")
+    def loginresetpassword(self):  # pragma: no cover
+        user, username, password = self._loginresetpassword()
+        settings = self.request.registry.settings["reset_password"]
+        send_email(
+            settings["email_from"], [user.email],
+            settings["email_body"].format(user=username, password=password).encode("utf-8"),
+            settings["email_subject"],
+            settings["smtp_server"],
+        )
+
+        return {
+            "success": True
         }

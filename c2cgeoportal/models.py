@@ -191,10 +191,16 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(
         Unicode, unique=True, nullable=False,
-        label=_(u"Username"))
+        label=_(u"Username")
+    )
     _password = Column(
         "password", Unicode, nullable=False,
-        label=_(u"Password"))
+        label=_(u"Password")
+    )
+    temp_password = Column(
+        "temp_password", Unicode, nullable=True,
+        label=_(u"Password")
+    )
     email = Column(Unicode, nullable=False, label=_(u"E-mail"))
     is_password_changed = Column(Boolean, default=False, label=_(u"PasswordChanged"))
 
@@ -254,6 +260,10 @@ class User(Base):
         """encrypts password on the fly."""
         self._password = self.__encrypt_password(password)
 
+    def set_temp_password(self, password):
+        """encrypts password on the fly."""
+        self.temp_password = self.__encrypt_password(password)
+
     def __encrypt_password(self, password):
         """Hash the given password with SHA1."""
         return sha1(password.encode("utf8")).hexdigest()
@@ -267,7 +277,17 @@ class User(Base):
         need to match against the (possibly) encrypted one in the database.
         @type password: string
         """
-        return self._password == self.__encrypt_password(passwd)
+        if self._password == self.__encrypt_password(passwd):
+            return True
+        if \
+                self.temp_password is not None and \
+                self.temp_password != "" and \
+                self.temp_password == self.__encrypt_password(passwd):
+            self._password = self.temp_password
+            self.temp_password = None
+            self.is_password_changed = True
+            return True
+        return False
 
     password = property(_get_password, _set_password)
 
