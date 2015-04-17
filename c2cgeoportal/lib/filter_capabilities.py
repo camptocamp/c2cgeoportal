@@ -45,7 +45,8 @@ from sqlalchemy import distinct
 
 from owslib.wms import WebMapService
 
-from c2cgeoportal.lib import caching, get_protected_layers_query
+from c2cgeoportal.lib import caching, get_protected_layers_query, \
+    get_writable_layers_query
 from c2cgeoportal.models import DBSession, Layer
 
 cache_region = caching.get_region()
@@ -62,6 +63,12 @@ def get_protected_layers(role_id):
 def get_private_layers():
     q = DBSession.query(Layer.name).filter(Layer.public.is_(False))
     return [r for r, in q.all()]
+
+
+@cache_region.cache_on_arguments()
+def get_writable_layers(role_id):
+    q = get_writable_layers_query(role_id, distinct(Layer.name))
+    return set([r for r, in q.all()])
 
 
 @cache_region.cache_on_arguments()
@@ -169,11 +176,32 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler, private_layers,
-        u"Layer" if wms else u"FeatureType"
+        parser, downstream_handler,
+        u"Layer" if wms else u"FeatureType",
+        layers_blacklist=private_layers
     )
     filter_handler.parse(StringIO(content))
     return unicode(result.getvalue(), "utf-8")
+
+
+def filter_wfst_capabilities(content, role_id, wfs_url, headers, proxies):
+
+    if proxies:  # pragma: no cover
+        enable_proxies(proxies)
+
+    writable_layers = get_writable_layers(role_id)
+
+    parser = sax.make_parser()
+    result = StringIO()
+    downstream_handler = XMLGenerator(result, 'utf-8')
+    filter_handler = _CapabilitiesFilter(
+        parser, downstream_handler,
+        u'FeatureType',
+        layers_whitelist=writable_layers
+    )
+    filter_handler.parse(StringIO(content))
+    filtered_content = unicode(result.getvalue(), 'utf-8')
+    return filtered_content
 
 
 class _Layer:
@@ -185,15 +213,29 @@ class _Layer:
 
 class _CapabilitiesFilter(XMLFilterBase):
     """
-    SAX filter to ensure that contiguous white space nodes are
-    delivered merged into a single node
+    SAX filter to show only the allowed layers in a GetCapabilities request.
+    The filter removes elements of type `tag_name` where the `name`
+    attribute is part of the set `layers_blacklist` (when `layers_blacklist`
+    is given) or is not part of the set `layers_whitelist` (when
+    `layers_whitelist` is given).
     """
 
-    def __init__(self, upstream, downstream, private_layers, tag_name):
+    def __init__(
+            self, upstream, downstream, tag_name,
+            layers_blacklist=None, layers_whitelist=None):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator = []
-        self.private_layers = private_layers
+
+        assert layers_blacklist is not None or layers_whitelist is not None, \
+            'either layers_blacklist OR layers_whitelist must be set'
+        assert not (
+            layers_blacklist is not None and
+            layers_whitelist is not None), \
+            'only either layers_blacklist OR layers_whitelist can be set'
+        self.layers_blacklist = layers_blacklist
+        self.layers_whitelist = layers_whitelist
+
         self.layers_path = []
         self.in_name = False
         self.tag_name = tag_name
@@ -252,10 +294,18 @@ class _CapabilitiesFilter(XMLFilterBase):
     def endElementNS(self, name, qname):  # pragma: nocover  # noqa
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
+    def _keep_layer(self, layer_name):
+        return (
+            self.layers_blacklist is not None and
+            layer_name not in self.layers_blacklist) or (
+            self.layers_whitelist is not None and
+            layer_name in self.layers_whitelist)
+
     def characters(self, text):
         if self.in_name and len(self.layers_path) != 0 and not \
                 self.layers_path[-1].self_hidden is True:
-            if text not in self.private_layers:
+            layer_name = normalize_typename(text)
+            if self._keep_layer(layer_name):
                 for layer in self.layers_path:
                     layer.hidden = False
                     for action in layer.accumul:
@@ -263,6 +313,7 @@ class _CapabilitiesFilter(XMLFilterBase):
                         action()
                     layer.accumul = []
             else:
+                # remove layer
                 self.layers_path[-1].self_hidden = True
 
         self._do(lambda: self._accumulator.append(text.encode("utf-8")))
@@ -275,3 +326,26 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def skippedEntity(self, name):  # pragma: no cover  # noqa
         self._downstream.skippedEntity(name)
+
+
+def normalize_tag(tag):
+    """
+    Drops the namespace from a tag and converts to lower case.
+    e.g. '{http://....}TypeName' -> 'TypeName'
+    """
+    normalized = tag
+    if len(tag) >= 3:
+        if tag[0] == '{':
+            normalized = tag[1:].split('}')[1]
+    return normalized.lower()
+
+
+def normalize_typename(typename):
+    """
+    Drops the namespace from a type name and converts to lower case.
+    e.g. 'tows:parks' -> 'parks'
+    """
+    normalized = typename
+    if ':' in typename:
+        normalized = typename.split(':')[1]
+    return normalized.lower()

@@ -78,9 +78,7 @@ class MapservProxy(Proxy):
         if "user_id" in params:  # pragma: no cover
             del params["user_id"]
 
-        self.lower_params = dict(
-            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
-        )
+        self.lower_params = self._get_lower_params(params)
 
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
@@ -158,12 +156,6 @@ class MapservProxy(Proxy):
             response.cache_control.public = False
             response.cache_control.private = True
         return response
-
-    def _get_headers(self):
-        headers = self.request.headers
-        if "Cookie" in headers:  # pragma: no cover
-            headers.pop("Cookie")
-        return headers
 
     def _proxy_callback(self, role_id, *args, **kwargs):
         params = kwargs.get("params", {})

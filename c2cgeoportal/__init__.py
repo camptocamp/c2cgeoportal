@@ -457,6 +457,11 @@ def includeme(config):
         custom_predicates=(mapserverproxy_route_predicate,),
         pregenerator=MultiDomainPregenerator())
 
+    # add route to the tinyows proxy
+    config.add_route(
+        'tinyowsproxy', '/tinyows_proxy',
+        pregenerator=MultiDomainPregenerator())
+
     # add routes to csv view
     config.add_route("csvecho", "/csv")
 
