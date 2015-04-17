@@ -34,6 +34,10 @@ Ext.onReady(function() {
 
     var WMTS_OPTIONS = {
         url: ${tiles_url | n},
+        getURL: function() {
+            var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
+            return url + "?${'&'.join(['%s=%s' % p for p in version_params.items()])}";
+        },
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
         buffer: 0,
@@ -74,7 +78,8 @@ Ext.onReady(function() {
         tools: [{
             ptype: 'cgxp_editing',
             layerTreeId: 'layertree',
-            layersURL: "${request.route_url('layers_root')}"
+            layersURL: "${request.route_url('layers_root')}",
+            metadataParams: ${dumps(version_role_params) | n}
         },
         {
             ptype: 'cgxp_themeselector',
