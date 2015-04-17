@@ -60,13 +60,13 @@
 </%doc>
     <script type="text/javascript">
         var App = {};
-        App.searchUrl = "${request.route_url('fulltextsearch', path='')}";
-        App.wmsUrl = "${request.route_url('mapserverproxy', path='')}";
-        App.rasterUrl = "${request.route_url('raster', path='')}";
-        App.loginUrl = "${request.route_url('login', path='')}";
-        App.logoutUrl = "${request.route_url('logout', path='')}";
+        App.searchUrl = "${request.route_url('fulltextsearch')}";
+        App.wmsUrl = "${request.route_url('mapserverproxy')}";
+        App.rasterUrl = "${request.route_url('raster')}";
+        App.loginUrl = "${request.route_url('login')}";
+        App.logoutUrl = "${request.route_url('logout')}";
         App.cameFrom = "${came_from}";
-        App.desktopAppUrl = "${request.route_url('home', path='', _query={'no_redirect':''})}";
+        App.desktopAppUrl = "${request.route_url('home', _query={'no_redirect':''})}";
     </script>
     <script type="text/javascript" src="openlayers-mobile.js?${url_params}"></script>
     <script type="text/javascript" src="config.js?${extra_params}"></script>

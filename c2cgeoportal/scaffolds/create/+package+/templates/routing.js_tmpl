@@ -81,7 +81,7 @@ Ext.onReady(function() {
                 }
             },
             searchOptions: {
-                url: "${request.route_url('fulltextsearch', path='')}",
+                url: "${request.route_url('fulltextsearch')}",
             },
             outputTarget: 'left-panel'
         },

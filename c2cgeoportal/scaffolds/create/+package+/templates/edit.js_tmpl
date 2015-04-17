@@ -114,7 +114,7 @@ Ext.onReady(function() {
             ptype: "cgxp_permalink",
             id: "permalink",
             actionTarget: "map.tbar",
-            shortenerCreateURL: "${request.route_url('shortener_create', path='')}"
+            shortenerCreateURL: "${request.route_url('shortener_create')}"
         },
         {
             ptype: "cgxp_menushortcut",
@@ -127,8 +127,8 @@ Ext.onReady(function() {
     % if user:
             username: "${user.username}",
     % endif
-            loginURL: "${request.route_url('login', path='')}",
-            logoutURL: "${request.route_url('logout', path='')}"
+            loginURL: "${request.route_url('login')}",
+            logoutURL: "${request.route_url('logout')}"
         },
         {
             ptype: "cgxp_mapopacityslider",

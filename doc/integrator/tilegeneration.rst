@@ -241,10 +241,10 @@ to access to them by using that in ``WMTS_OPTION``:
 .. code:: javascript
 
     url: [
-        '${request.route_url('<view>', path='', subdomain='s1')}',
-        '${request.route_url('<view>', path='', subdomain='s2')}',
-        '${request.route_url('<view>', path='', subdomain='s3')}',
-        '${request.route_url('<view>', path='', subdomain='s4')}'
+        '${request.route_url('<view>', subdomain='s1')}',
+        '${request.route_url('<view>', subdomain='s2')}',
+        '${request.route_url('<view>', subdomain='s3')}',
+        '${request.route_url('<view>', subdomain='s4')}'
     ]
 
 With ``<view>`` the name of the view that serve the tiles.

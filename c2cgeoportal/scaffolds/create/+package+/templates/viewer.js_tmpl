@@ -155,7 +155,7 @@ Ext.onReady(function() {
 % endif
                 defaultThemes: ["default_theme_to_load"],
                 uniqueTheme: true,
-                wmsURL: "${request.route_url('mapserverproxy', path='')}",
+                wmsURL: "${request.route_url('mapserverproxy')}",
                 wmsOptions: {
                     ratio: (Ext.isChrome && Ext.isWindows) ? 1 : 1.5
                 }
@@ -167,7 +167,7 @@ Ext.onReady(function() {
             ptype: "cgxp_querier",
             outputTarget: "left-panel",
             events: EVENTS,
-            mapserverproxyURL: "${request.route_url('mapserverproxy', path='')}",
+            mapserverproxyURL: "${request.route_url('mapserverproxy')}",
             maxFeatures: ${wfs_settings.get('maxfeatures', 200)},
             srsName: 'EPSG:{{srid}}',
             featureTypes: ["query_layer"],
@@ -181,8 +181,8 @@ Ext.onReady(function() {
             legendPanelId: "legendPanel",
             featureProvider: "featuresProvider",
             outputTarget: "center.tbar",
-            printURL: "${request.route_url('printproxy', path='')}",
-            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            printURL: "${request.route_url('printproxy')}",
+            mapserverURL: "${request.route_url('mapserverproxy')}",
             printProviderConfig: ${dumps(version_role_params) | n},
             options: {
                 labelAlign: 'top',
@@ -239,7 +239,7 @@ Ext.onReady(function() {
             ptype: "cgxp_permalink",
             id: "permalink",
             actionTarget: "center.tbar",
-            shortenerCreateURL: "${request.route_url('shortener_create', path='')}"
+            shortenerCreateURL: "${request.route_url('shortener_create')}"
         },
         {
             ptype: "cgxp_measure",
@@ -254,13 +254,13 @@ Ext.onReady(function() {
             toggleGroup: "maptools",
             events: EVENTS,
             themes: THEMES,
-            mapserverURL: "${request.route_url('mapserverproxy', path='')}",
+            mapserverURL: "${request.route_url('mapserverproxy')}",
             WFSTypes: ${WFSTypes | n},
             enableWMTSLayers: false
         },
         {
             ptype: "cgxp_fulltextsearch",
-            url: "${request.route_url('fulltextsearch', path='')}",
+            url: "${request.route_url('fulltextsearch')}",
             layerTreeId: "layertree",
             actionTarget: "center.tbar"
         },
@@ -300,9 +300,9 @@ Ext.onReady(function() {
             username: "${user.username}",
             isPasswordChanged: ${"true" if user.is_password_changed else "false"},
 % endif
-            loginURL: "${request.route_url('login', path='')}",
-            loginChangeURL: "${request.route_url('loginchange', path='')}",
-            logoutURL: "${request.route_url('logout', path='')}",
+            loginURL: "${request.route_url('login')}",
+            loginChangeURL: "${request.route_url('loginchange')}",
+            logoutURL: "${request.route_url('logout')}",
             enablePasswordChange: true,
             forcePasswordChange: true,
             permalinkId: "permalink"
