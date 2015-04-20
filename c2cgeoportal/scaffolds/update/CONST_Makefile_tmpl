@@ -235,6 +235,7 @@ CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
 # Templates
 TEMPLATE_EXCLUDE += .build print/templates \
@@ -667,6 +668,7 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
 	$(TOMCAT_SERVICE_COMMAND) stop
 endif
+	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	mv /tmp/$(PRINT_WAR) $(PRINT_OUTPUT)
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
 	$(TOMCAT_SERVICE_COMMAND) start
@@ -699,6 +701,12 @@ apache: .build/apache.timestamp
 $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
-.build/apache.timestamp: .build/config-$(INSTANCE_ID).timestamp $(CONF_FILES) $(PY_FILES) $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf .build/requirements.timestamp
+.build/apache.timestamp: \
+		.build/config-$(INSTANCE_ID).timestamp \
+		$(CONF_FILES) \
+		$(PY_FILES) \
+		$(TEMPLATES_FILES) \
+		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
+		.build/requirements.timestamp
 	sudo /usr/sbin/apache2ctl graceful
 	touch $@
