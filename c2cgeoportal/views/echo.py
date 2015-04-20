@@ -45,7 +45,7 @@ def json_base64_encode(filename, file):
     yield '","success":true}'
 
 
-@view_config(route_name='echo')
+@view_config(route_name="echo")
 def echo(request):
     """
     Echo an uploaded file back to the client as an text/html document so it can
@@ -58,14 +58,14 @@ def echo(request):
     See:
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload
     """
-    if request.method != 'POST':
+    if request.method != "POST":
         return HTTPBadRequest()
     try:
-        file = request.POST['file']
+        file = request.POST["file"]
     except KeyError:
         return HTTPBadRequest()
     response = Response()
     response.app_iter = json_base64_encode(file.filename, file.file)
-    response.content_type = 'text/html'
+    response.content_type = "text/html"
     response.cache_control.no_cache = True
     return response

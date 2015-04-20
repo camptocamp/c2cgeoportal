@@ -50,36 +50,36 @@ class Profile(Raster):
         request.response.cache_control = "no-cache"
         Raster.__init__(self, request)
 
-    @view_config(route_name='profile.json', renderer='decimaljson')
+    @view_config(route_name="profile.json", renderer="decimaljson")
     def json(self):
         """answers to /profile.json"""
         layer, points = self._compute_points()
-        return {'profile': points}
+        return {"profile": points}
 
-    @view_config(route_name='profile.csv')
+    @view_config(route_name="profile.csv")
     def csv(self):
         """answers to /profile.csv"""
         layers, points = self._compute_points()
 
         result = _("distance") + "," + ",".join(layers) + ",x,y"
-        template = ','.join('%s' for l in layers)
+        template = ",".join("%s" for l in layers)
         for point in points:
-            r = template % tuple((str(point['values'][l]) for l in layers))
-            result += '\n%s,%s,%d,%d' % (str(point['dist']), r, point['x'], point['y'])
+            r = template % tuple((str(point["values"][l]) for l in layers))
+            result += "\n%s,%s,%d,%d" % (str(point["dist"]), r, point["x"], point["y"])
 
         response = Response(result, cache_control="no-cache", headers={
-            'Content-Type': 'text/csv; charset=utf-8',
-            'Content-Disposition': 'attachment; filename="profile.csv"'
+            "Content-Type": "text/csv; charset=utf-8",
+            "Content-Disposition": 'attachment; filename="profile.csv"'
         })
         return response
 
     def _compute_points(self):
         """Compute the alt=fct(dist) array"""
-        geom = geojson.loads(self.request.params['geom'], object_hook=geojson.GeoJSON.to_instance)
+        geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
 
-        if 'layers' in self.request.params:
+        if "layers" in self.request.params:
             rasters = {}
-            layers = self.request.params['layers'].split(',')
+            layers = self.request.params["layers"].split(",")
             for layer in layers:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
@@ -92,7 +92,7 @@ class Profile(Raster):
 
         dist = 0
         prev_coord = None
-        coords = self._create_points(geom.coordinates, int(self.request.params['nbPoints']))
+        coords = self._create_points(geom.coordinates, int(self.request.params["nbPoints"]))
         for coord in coords:
             if prev_coord is not None:
                 dist += self._dist(prev_coord, coord)
@@ -109,12 +109,12 @@ class Profile(Raster):
 
             if has_one:
                 # 10cm accuracy is enough for distances
-                rounded_dist = Decimal(str(dist)).quantize(Decimal('0.1'))
+                rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
                 points.append({
-                    'dist': rounded_dist,
-                    'values': values,
-                    'x': coord[0],
-                    'y': coord[1]
+                    "dist": rounded_dist,
+                    "values": values,
+                    "x": coord[0],
+                    "y": coord[1]
                 })
             prev_coord = coord
 

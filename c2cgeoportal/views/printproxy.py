@@ -65,19 +65,19 @@ class PrintProxy(Proxy):  # pragma: no cover
                 log.error(content)
                 return HTTPBadGateway(content)
 
-            pretty = self.request.params.get('pretty', 'false') == 'true'
+            pretty = self.request.params.get("pretty", "false") == "true"
             content = json.dumps(
-                capabilities, separators=None if pretty else (',', ':'),
+                capabilities, separators=None if pretty else (",", ":"),
                 indent=4 if pretty else None
             )
         else:
             content = ""
 
         headers = dict(resp)
-        if 'content-length' in headers:
-            del headers['content-length']
-        if 'transfer-encoding' in headers:
-            del headers['transfer-encoding']
+        if "content-length" in headers:
+            del headers["content-length"]
+        if "transfer-encoding" in headers:
+            del headers["transfer-encoding"]
         self._add_cors(headers)
 
         response = Response(
@@ -91,12 +91,12 @@ class PrintProxy(Proxy):  # pragma: no cover
     # # V2 # #
     ##########
 
-    @view_config(route_name='printproxy_info')
+    @view_config(route_name="printproxy_info")
     def info(self):
         """ Get print capabilities. """
 
         templates = get_functionality(
-            'print_template', self.config, self.request
+            "print_template", self.config, self.request
         )
 
         # get query string
@@ -112,44 +112,44 @@ class PrintProxy(Proxy):  # pragma: no cover
     @cache_region.cache_on_arguments()
     def _info(self, templates, query_string, method):
         # get URL
-        _url = self.config['print_url'] + 'info.json'
+        _url = self.config["print_url"] + "info.json"
 
         def _filter(capabilities):
-            capabilities['layouts'] = list(
-                layout for layout in capabilities['layouts'] if
-                layout['name'] in templates)
+            capabilities["layouts"] = list(
+                layout for layout in capabilities["layouts"] if
+                layout["name"] in templates)
             return capabilities
 
         return self._get_capabilities_proxy(_filter, _url)
 
-    @view_config(route_name='printproxy_create')
+    @view_config(route_name="printproxy_create")
     def create(self):
         """ Create PDF. """
         return self._proxy_response(
             "print",
             "%screate.json" % (
-                self.config['print_url']
+                self.config["print_url"]
             )
         )
 
-    @view_config(route_name='printproxy_get')
+    @view_config(route_name="printproxy_get")
     def get(self):
         """ Get created PDF. """
 
         resp, content = self._proxy("%s%s.printout" % (
-            self.config['print_url'],
-            self.request.matchdict.get('file')
+            self.config["print_url"],
+            self.request.matchdict.get("file")
         ))
 
         headers = {}
-        if 'content-type' in resp:
-            headers['content-type'] = resp['content-type']
-        if 'content-disposition' in resp:
-            headers['content-disposition'] = resp['content-disposition']
+        if "content-type" in resp:
+            headers["content-type"] = resp["content-type"]
+        if "content-disposition" in resp:
+            headers["content-disposition"] = resp["content-disposition"]
         # Pragma and Cache-Control headers because of ie 8 bug:
         # http://support.microsoft.com/default.aspx?scid=KB;EN-US;q316431
-        # del response.headers['Pragma']
-        # del response.headers['Cache-Control']
+        # del response.headers["Pragma"]
+        # del response.headers["Cache-Control"]
         return Response(
             content, status=resp.status, headers=headers
         )
@@ -158,12 +158,12 @@ class PrintProxy(Proxy):  # pragma: no cover
     # # V3 # #
     ##########
 
-    @view_config(route_name='printproxy_capabilities')
+    @view_config(route_name="printproxy_capabilities")
     def capabilities(self):
         """ Get print capabilities. """
 
         templates = get_functionality(
-            'print_template', self.config, self.request
+            "print_template", self.config, self.request
         )
 
         # get query string
@@ -179,45 +179,45 @@ class PrintProxy(Proxy):  # pragma: no cover
     @cache_region.cache_on_arguments()
     def _capabilities(self, templates, query_string, method):
         # get URL
-        _url = self.config['print_url'] + '/capabilities.json'
+        _url = self.config["print_url"] + "/capabilities.json"
 
         def _filter(capabilities):
-            capabilities['layouts'] = list(
-                layout for layout in capabilities['layouts'] if
-                layout['name'] in templates)
+            capabilities["layouts"] = list(
+                layout for layout in capabilities["layouts"] if
+                layout["name"] in templates)
             return capabilities
 
         return self._get_capabilities_proxy(_filter, _url)
 
-    @view_config(route_name='printproxy_report_create')
+    @view_config(route_name="printproxy_report_create")
     def report_create(self):
         """ Create PDF. """
         return self._proxy_response(
             "print",
             "%s/report.%s" % (
-                self.config['print_url'],
-                self.request.matchdict.get('format')
+                self.config["print_url"],
+                self.request.matchdict.get("format")
             ),
         )
 
-    @view_config(route_name='printproxy_status')
+    @view_config(route_name="printproxy_status")
     def status(self):
         """ PDF status. """
         return self._proxy_response(
             "print",
             "%s/status/%s.json" % (
-                self.config['print_url'],
-                self.request.matchdict.get('ref')
+                self.config["print_url"],
+                self.request.matchdict.get("ref")
             ),
         )
 
-    @view_config(route_name='printproxy_report_get')
+    @view_config(route_name="printproxy_report_get")
     def report_get(self):
         """ Get the PDF. """
         return self._proxy_response(
             "print",
             "%s/report/%s" % (
-                self.config['print_url'],
-                self.request.matchdict.get('ref')
+                self.config["print_url"],
+                self.request.matchdict.get("ref")
             ),
         )

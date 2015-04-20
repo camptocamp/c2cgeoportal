@@ -46,55 +46,55 @@ class FullTextSearchView(object):
     def __init__(self, request):
         self.request = request
         init_cache_control(request, "fulltextsearch")
-        self.settings = request.registry.settings.get('fulltextsearch', {})
-        if 'languages' in self.settings:  # pragma: nocover
-            self.languages = self.settings['languages']
+        self.settings = request.registry.settings.get("fulltextsearch", {})
+        if "languages" in self.settings:  # pragma: nocover
+            self.languages = self.settings["languages"]
         else:
             self.languages = {
-                'fr': 'french',
-                'en': 'english',
-                'de': 'german',
+                "fr": "french",
+                "en": "english",
+                "de": "german",
             }
 
-    @view_config(route_name='fulltextsearch', renderer='geojson')
+    @view_config(route_name="fulltextsearch", renderer="geojson")
     def fulltextsearch(self):
 
         try:
-            lang = self.request.registry.settings['default_locale_name']
+            lang = self.request.registry.settings["default_locale_name"]
         except KeyError:
             return HTTPInternalServerError(
-                detail='default_locale_name not defined in settings')
+                detail="default_locale_name not defined in settings")
         try:
             lang = self.languages[lang]
         except KeyError:
             return HTTPInternalServerError(
-                detail='%s not defined in languages' % lang)
+                detail="%s not defined in languages" % lang)
 
-        if 'query' not in self.request.params:
-            return HTTPBadRequest(detail='no query')
-        query = self.request.params.get('query')
+        if "query" not in self.request.params:
+            return HTTPBadRequest(detail="no query")
+        query = self.request.params.get("query")
 
-        maxlimit = self.settings.get('maxlimit', 200)
+        maxlimit = self.settings.get("maxlimit", 200)
 
         try:
             limit = int(self.request.params.get(
-                'limit',
-                self.settings.get('defaultlimit', 30)))
+                "limit",
+                self.settings.get("defaultlimit", 30)))
         except ValueError:
-            return HTTPBadRequest(detail='limit value is incorrect')
+            return HTTPBadRequest(detail="limit value is incorrect")
         if limit > maxlimit:
             limit = maxlimit
 
         try:
-            partitionlimit = int(self.request.params.get('partitionlimit', 0))
+            partitionlimit = int(self.request.params.get("partitionlimit", 0))
         except ValueError:
-            return HTTPBadRequest(detail='partitionlimit value is incorrect')
+            return HTTPBadRequest(detail="partitionlimit value is incorrect")
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms = '&'.join(re.sub("'", "''", w) + ':*' for w in query.split(' ') if w != '')
+        terms = "&".join(re.sub("'", "''", w) + ":*" for w in query.split(" ") if w != "")
         _filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
-            {'tsvector': 'ts', 'lang': lang, 'terms': terms}
+            {"tsvector": "ts", "lang": lang, "terms": terms}
 
         if self.request.user is None or self.request.user.role is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
@@ -119,9 +119,9 @@ class FullTextSearchView(object):
         # so the effect on at least the one-word-results is therefore stronger).
         rank = "ts_rank_cd(%(tsvector)s, " \
             "to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % {
-                'tsvector': 'ts',
-                'lang': lang,
-                'terms': terms
+                "tsvector": "ts",
+                "lang": lang,
+                "terms": terms
             }
 
         if partitionlimit:
@@ -131,7 +131,7 @@ class FullTextSearchView(object):
                 .over(
                     partition_by=FullTextSearch.layer_name,
                     order_by=(desc(rank), FullTextSearch.label)) \
-                .label('row_number')
+                .label("row_number")
             subq = DBSession.query(FullTextSearch) \
                 .add_columns(row_number).filter(_filter).subquery()
             query = DBSession.query(subq.c.id, subq.c.label, subq.c.params,

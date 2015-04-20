@@ -52,34 +52,34 @@ def main():  # pragma: no cover
 
 Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
-User can be created if it doesn\'t exist yet."""
+User can be created if it doesn't exist yet."""
 
     parser = OptionParser(usage)
     parser.add_option(
-        '-i', '--app-config', default='production.ini',
-        dest='app_config',
-        help='The application .ini config file (optional, default is '
-        'production.ini)'
+        "-i", "--app-config", default="production.ini",
+        dest="app_config",
+        help="The application .ini config file (optional, default is "
+        "'production.ini')"
     )
     parser.add_option(
-        '-n', '--app-name', default="app", dest='app_name',
-        help='The application name (optional, default is "app")'
+        "-n", "--app-name", default="app", dest="app_name",
+        help="The application name (optional, default is 'app')"
     )
     parser.add_option(
-        '-p', '--password',
-        help='Set password (if not set, username is used as password'
+        "-p", "--password",
+        help="Set password (if not set, username is used as password"
     )
     parser.add_option(
-        '-c', '--create', action="store_true", default=False,
-        help='Create user if it doesni\'t already exist'
+        "-c", "--create", action="store_true", default=False,
+        help="Create user if it doesn't already exist"
     )
     parser.add_option(
-        '-r', '--rolename', default='role_admin',
-        help='The role name which must exist in the database'
+        "-r", "--rolename", default="role_admin",
+        help="The role name which must exist in the database"
     )
     parser.add_option(
-        '-e', '--email', default=None,
-        help='The user email'
+        "-e", "--email", default=None,
+        help="The user email"
     )
 
     (options, args) = parser.parse_args()
@@ -91,16 +91,16 @@ User can be created if it doesn\'t exist yet."""
     app_config = options.app_config
     app_name = options.app_name
 
-    if app_name is None and '#' in app_config:
-        app_config, app_name = app_config.split('#', 1)
+    if app_name is None and "#" in app_config:
+        app_config, app_name = app_config.split("#", 1)
     if not os.path.isfile(app_config):
-        parser.error('Can\'t find config file: %s' % app_config)
+        parser.error("Can't find config file: %s" % app_config)
 
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
 
     # Ignores pyramid deprecation warnings
-    warnings.simplefilter('ignore', DeprecationWarning)
+    warnings.simplefilter("ignore", DeprecationWarning)
 
     get_app(app_config, name=app_name)
 
@@ -110,7 +110,7 @@ User can be created if it doesn\'t exist yet."""
     print "\n"
 
     # check that User and Role exist in model
-    model_list = ['User', 'Role']
+    model_list = ["User", "Role"]
     for model in model_list:
         try:
             getattr(models, model)
@@ -119,36 +119,36 @@ User can be created if it doesn\'t exist yet."""
 
     # check that user exists
     sess = models.DBSession()
-    query = sess.query(models.User).filter_by(username=u'%s' % username)
+    query = sess.query(models.User).filter_by(username=u"%s" % username)
 
     result = query.count()
     if result == 0:
         if not options.create:
-            # if doesn't exist and no -c option, throw error
-            raise StandardError('User %s doesn\'t exist in database' % username)
+            # if doesn"t exist and no -c option, throw error
+            raise StandardError("User %s doesn't exist in database" % username)
         else:
-            print 'User %s doesn\'t exist in database, creating' % username
-            # if doesn't exist and -c option, create user
+            print "User %s doesn't exist in database, creating" % username
+            # if doesn"t exist and -c option, create user
 
             password = options.password if options.password is not None else username
             email = options.email if options.email is not None else username
 
             # get roles
             query_role = sess.query(models.Role).filter(
-                models.Role.name == u'%s' % options.rolename)
+                models.Role.name == u"%s" % options.rolename)
 
             if query_role.count() == 0:
                 # role not found in db?
                 raise StandardError(
-                    'Role matching %s doesn\'t exist in database' %
+                    "Role matching %s doesn't exist in database" %
                     options.rolename)
 
             role = query_role.first()
 
             user = models.User(
-                username=u'%s' % username,
-                password=u'%s' % password,
-                email=u'%s' % email,
+                username=u"%s" % username,
+                password=u"%s" % password,
+                email=u"%s" % email,
                 role=role
             )
             sess.add(user)
@@ -163,7 +163,7 @@ User can be created if it doesn\'t exist yet."""
 
         if options.password is not None:
             print "Password set to: %s" % password
-            user.password = u'%s' % password
+            user.password = u"%s" % password
 
         if options.email is not None:
             user.email = options.email

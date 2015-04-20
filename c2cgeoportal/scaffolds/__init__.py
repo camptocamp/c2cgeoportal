@@ -56,18 +56,18 @@ class BaseTemplate(Template):  # pragma: no cover
 
         self._set_package_in_vars(command, vars)
 
-        if vars['package'] == 'site':
+        if vars["package"] == "site":
             raise ValueError(
-                'Sorry, you may not name your package "site". '
-                'The package name "site" has a special meaning in '
-                'Python.  Please name it anything except "site".')
+                "Sorry, you may not name your package 'site'. "
+                "The package name 'site' has a special meaning in "
+                "Python.  Please name it anything except 'site'.")
 
-        package_logger = vars['package']
-        if package_logger == 'root':
+        package_logger = vars["package"]
+        if package_logger == "root":
             # Rename the app logger in the rare case a project
-            # is named 'root'
-            package_logger = 'app'
-        vars['package_logger'] = package_logger
+            # is named "root"
+            package_logger = "app"
+        vars["package_logger"] = package_logger
 
         return ret
 
@@ -76,9 +76,9 @@ class BaseTemplate(Template):  # pragma: no cover
         Set the package into the vars dict.
         """
         for arg in command.args:
-            m = re.match('package=(\w+)', arg)
+            m = re.match("package=(\w+)", arg)
             if m:
-                vars['package'] = m.group(1)
+                vars["package"] = m.group(1)
                 break
 
     def out(self, msg):
@@ -86,8 +86,8 @@ class BaseTemplate(Template):  # pragma: no cover
 
 
 class TemplateCreate(BaseTemplate):  # pragma: no cover
-    _template_dir = 'create'
-    summary = 'Template used to create a c2cgeoportal project'
+    _template_dir = "create"
+    summary = "Template used to create a c2cgeoportal project"
 
     def pre(self, command, output_dir, vars):
         """
@@ -104,7 +104,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        self.out('Welcome to c2cgeoportal!')
+        self.out("Welcome to c2cgeoportal!")
         return BaseTemplate.post(self, command, output_dir, vars)
 
     def _set_mobile_title_in_vars(self, command, vars):
@@ -113,16 +113,16 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         """
         mobile_title = None
         for arg in command.args:
-            m = re.match('mobile_application_title=(.+)', arg)
+            m = re.match("mobile_application_title=(.+)", arg)
             if m:
                 mobile_title = m.group(1)
                 break
 
         if mobile_title is None:
-            prompt = 'The mobile application title:'
+            prompt = "The mobile application title:"
             mobile_title = input_(prompt).strip()
 
-        vars['mobile_application_title'] = mobile_title
+        vars["mobile_application_title"] = mobile_title
 
     def _set_srid_in_vars(self, command, vars):
         """
@@ -130,24 +130,24 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         """
         srid = None
         for arg in command.args:
-            m = re.match('srid=(\d+)', arg)
+            m = re.match("srid=(\d+)", arg)
             if m:
                 srid = m.group(1)
                 break
         if srid is None:
-            prompt = 'Spatial Reference System Identifier ' \
-                     '(e.g. 21781): '
+            prompt = "Spatial Reference System Identifier " \
+                     "(e.g. 21781): "
             srid = input_(prompt).strip()
         try:
-            vars['srid'] = int(srid)
+            vars["srid"] = int(srid)
         except ValueError:
             raise ValueError(
-                'Specified SRID is not an integer')
+                "Specified SRID is not an integer")
 
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
-    _template_dir = 'update'
-    summary = 'Template used to update a c2cgeoportal project'
+    _template_dir = "update"
+    summary = "Template used to update a c2cgeoportal project"
 
     def pre(self, command, output_dir, vars):
         """
@@ -156,12 +156,12 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         """
 
         # Init defaults
-        vars['mobile_application_title'] = "Geoportal Mobile Application"
+        vars["mobile_application_title"] = "Geoportal Mobile Application"
 
-        if path.exists('project.yaml'):
-            project = load(file('project.yaml', 'r'))
-            if 'template_vars' in project:
-                for key, value in project['template_vars'].items():
+        if path.exists("project.yaml"):
+            project = load(file("project.yaml", "r"))
+            if "template_vars" in project:
+                for key, value in project["template_vars"].items():
                     vars[key] = value
 
         return BaseTemplate.pre(self, command, output_dir, vars)

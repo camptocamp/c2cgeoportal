@@ -63,20 +63,20 @@ class MapservProxy(Proxy):
         )
         return external_url if self.external else internal_url
 
-    @view_config(route_name='mapserverproxy')
+    @view_config(route_name="mapserverproxy")
     def proxy(self):
 
         self.user = self.request.user
         self.external = bool(self.request.params.get("EXTERNAL", None))
 
-        # params hold the parameters we're going to send to MapServer
+        # params hold the parameters we"re going to send to MapServer
         params = dict(self.request.params)
 
         # reset possible value of role_id and user_id
-        if 'role_id' in params:  # pragma: no cover
-            del params['role_id']
-        if 'user_id' in params:  # pragma: no cover
-            del params['user_id']
+        if "role_id" in params:  # pragma: no cover
+            del params["role_id"]
+        if "user_id" in params:  # pragma: no cover
+            del params["user_id"]
 
         self.lower_params = dict(
             (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
@@ -91,16 +91,16 @@ class MapservProxy(Proxy):
             # send layer_name, but MapServer shouldn't use the DATA
             # string for GetLegendGraphic.
 
-            params['role_id'] = self.user.parent_role.id if self.external else self.user.role.id
+            params["role_id"] = self.user.parent_role.id if self.external else self.user.role.id
 
             # In some application we want to display the features owned by a user
             # than we need his id.
             if not self.external:
-                params['user_id'] = self.user.id  # pragma: nocover
+                params["user_id"] = self.user.id  # pragma: nocover
 
         # don't allows direct variable substitution
         for k in params.keys():
-            if k[:2].capitalize() == 'S_':
+            if k[:2].capitalize() == "S_":
                 log.warning("Direct substitution not allowed (%s=%s)." %
                             (k, params[k]))
                 del params[k]
@@ -119,28 +119,28 @@ class MapservProxy(Proxy):
         if method == "GET":
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
-            if 'request' not in self.lower_params:
+            if "request" not in self.lower_params:
                 params = {}  # pragma: no cover
             else:
                 use_cache = (
-                    self.lower_params['request'] == u'getcapabilities'
+                    self.lower_params["request"] == u"getcapabilities"
                 ) or (
-                    self.lower_params['request'] == u'getlegendgraphic'
+                    self.lower_params["request"] == u"getlegendgraphic"
                 ) or (
-                    self.lower_params['request'] == u'describelayer'
+                    self.lower_params["request"] == u"describelayer"
                 ) or (
-                    self.lower_params['request'] == u'describefeaturetype'
+                    self.lower_params["request"] == u"describefeaturetype"
                 )
 
-                public_cache = self.lower_params['request'] == u'getlegendgraphic'
+                public_cache = self.lower_params["request"] == u"getlegendgraphic"
 
                 # no user_id and role_id or cached queries
-                if use_cache and 'user_id' in params:
-                    del params['user_id']
-                if use_cache and 'role_id' in params:
-                    del params['role_id']
+                if use_cache and "user_id" in params:
+                    del params["user_id"]
+                if use_cache and "role_id" in params:
+                    del params["role_id"]
 
-            if 'service' in self.lower_params and self.lower_params['service'] == u'wfs':
+            if "service" in self.lower_params and self.lower_params["service"] == u"wfs":
                 _url = self._get_wfs_url()
             else:
                 _url = self._get_wms_url()
@@ -161,33 +161,33 @@ class MapservProxy(Proxy):
 
     def _get_headers(self):
         headers = self.request.headers
-        if 'Cookie' in headers:  # pragma: no cover
-            headers.pop('Cookie')
+        if "Cookie" in headers:  # pragma: no cover
+            headers.pop("Cookie")
         return headers
 
     def _proxy_callback(self, role_id, *args, **kwargs):
-        params = kwargs.get('params', {})
-        cache = kwargs.get('cache', False)
-        callback = params.get('callback', None)
+        params = kwargs.get("params", {})
+        cache = kwargs.get("cache", False)
+        callback = params.get("callback", None)
         if callback is not None:
-            del params['callback']
+            del params["callback"]
         resp, content = self._proxy(*args, **kwargs)
 
-        if self.lower_params.get('request') == 'getcapabilities':
+        if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
-                content, role_id, self.lower_params.get('service') == 'wms',
+                content, role_id, self.lower_params.get("service") == "wms",
                 self._get_wms_url(),
                 self.request.headers,
-                self.settings.get('proxies', None)
+                self.settings.get("proxies", None)
             )
 
         content_type = None
         if callback:
             content_type = "application/javascript"
             # escape single quotes in the JavaScript string
-            content = unicode(content.decode('utf8'))
-            content = content.replace(u"'", ur"\'")
-            content = u"%s('%s');" % (callback, u' '.join(content.splitlines()))
+            content = unicode(content.decode("utf8"))
+            content = content.replace(u"'", u"\\'")
+            content = u"%s('%s');" % (callback, u" ".join(content.splitlines()))
         else:
             content_type = resp["content-type"]
 

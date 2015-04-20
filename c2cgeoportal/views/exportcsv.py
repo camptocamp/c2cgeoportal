@@ -32,34 +32,34 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 import codecs
 
-default_csv_extension = 'csv'
+default_csv_extension = "csv"
 
-default_csv_encoding = 'UTF-8'
+default_csv_encoding = "UTF-8"
 
 
-@view_config(route_name='csvecho')
+@view_config(route_name="csvecho")
 def echo(request):
-    if request.method != 'POST':
-        return HTTPBadRequest('Wrong method')
+    if request.method != "POST":
+        return HTTPBadRequest("Wrong method")
 
-    csv = request.params.get('csv', None)
+    csv = request.params.get("csv", None)
     if csv is None:
-        return HTTPBadRequest('csv parameter is required')
+        return HTTPBadRequest("csv parameter is required")
 
     request.response.cache_control.no_cache = True
 
-    csv_extension = request.params.get('csv_extension', default_csv_extension)
-    csv_encoding = request.params.get('csv_encoding', default_csv_encoding)
-    name = request.params.get('name', 'export')
+    csv_extension = request.params.get("csv_extension", default_csv_extension)
+    csv_encoding = request.params.get("csv_encoding", default_csv_encoding)
+    name = request.params.get("name", "export")
 
     res = request.response
-    content = ''
+    content = ""
     if csv_encoding == default_csv_encoding:
         content += codecs.BOM_UTF8
     content += csv.encode(csv_encoding)
     res.body = content
-    res.headerlist = [('Content-type', 'text/csv')]
+    res.headerlist = [("Content-type", "text/csv")]
     res.charset = csv_encoding.encode(csv_encoding)
-    res.content_disposition = 'attachment; filename=%s.%s' % \
-        (name.replace(' ', '_'), csv_extension)
+    res.content_disposition = "attachment; filename=%s.%s" % \
+        (name.replace(" ", "_"), csv_extension)
     return res

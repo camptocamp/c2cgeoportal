@@ -47,15 +47,15 @@ def get_url(url, request, default=None, errors=None):
         return url
 
     obj = urlparse(url)
-    if obj.scheme == 'static':
+    if obj.scheme == "static":
         netloc = obj.netloc
         if netloc == "":
             netloc = "c2cgeoportal:project"
 
         return request.static_url(netloc + obj.path)
 
-    if obj.scheme == 'config':
-        server = request.registry.settings.get('servers', {}).get(obj.netloc, None)
+    if obj.scheme == "config":
+        server = request.registry.settings.get("servers", {}).get(obj.netloc, None)
         if server is None:
             if default is None and errors is not None:
                 errors.append("The server '%s' isn't found in the config" % obj.netloc)
@@ -101,16 +101,16 @@ def get_protected_layers_query(role_id, what=None, version=1):
 @implementer(IRoutePregenerator)
 class MultiDomainPregenerator:  # pragma: no cover
     def __call__(self, request, elements, kw):
-        if 'subdomain' in kw:
-            if 'subdomain_url_template' in request.registry.settings:
+        if "subdomain" in kw:
+            if "subdomain_url_template" in request.registry.settings:
                 subdomain_url_template = \
-                    request.registry.settings['subdomain_url_template']
+                    request.registry.settings["subdomain_url_template"]
             else:
-                subdomain_url_template = 'http://%(sub)s.%(host)s'
+                subdomain_url_template = "http://%(sub)s.%(host)s"
 
-            kw['_app_url'] = subdomain_url_template % {
-                'sub': kw['subdomain'],
-                'host': request.host,
+            kw["_app_url"] = subdomain_url_template % {
+                "sub": kw["subdomain"],
+                "host": request.host,
             } + request.script_name
         return elements, kw
 
@@ -123,13 +123,13 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
             if path.startswith(spec):
                 subpath = path[len(spec):]
                 if WIN:
-                    subpath = subpath.replace('\\', '/')  # windows
+                    subpath = subpath.replace("\\", "/")  # windows
                 if cachebust:
                     subpath, kw = cachebust(subpath, kw)
                 if url is None:
-                    kw['subpath'] = subpath
-                    if 'subdomains' in request.registry.settings:
-                        subdomains = request.registry.settings['subdomains']
+                    kw["subpath"] = subpath
+                    if "subdomains" in request.registry.settings:
+                        subdomains = request.registry.settings["subdomains"]
                         return request.route_url(
                             route_name,
                             subdomain=subdomains[hash(subpath) % len(subdomains)],
@@ -139,10 +139,10 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                 else:
                     subpath = quote(subpath)
                     return urljoin(url, subpath)
-        raise ValueError('No static URL definition matching %s' % path)
+        raise ValueError("No static URL definition matching %s" % path)
 
     def add(self, config, name, spec, **extra):
-        if 'pregenerator' not in extra:
-            extra['pregenerator'] = MultiDomainPregenerator()
+        if "pregenerator" not in extra:
+            extra["pregenerator"] = MultiDomainPregenerator()
         return super(MultiDomainStaticURLInfo, self) \
             .add(config, name, spec, **extra)

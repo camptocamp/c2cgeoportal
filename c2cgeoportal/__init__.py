@@ -57,30 +57,30 @@ formalchemy_available_metadata = []
 
 
 class DecimalJSON:
-    def __init__(self, jsonp_param_name='callback'):
+    def __init__(self, jsonp_param_name="callback"):
         self.jsonp_param_name = jsonp_param_name
 
     def __call__(self, info):
         def _render(value, system):
             ret = json.dumps(value, use_decimal=True)
-            request = system.get('request')
+            request = system.get("request")
             if request is not None:
                 callback = request.params.get(self.jsonp_param_name)
                 if callback is None:
-                    request.response.content_type = 'application/json'
+                    request.response.content_type = "application/json"
                 else:
-                    request.response.content_type = 'text/javascript'
-                    ret = '%(callback)s(%(json)s);' % {
-                        'callback': callback,
-                        'json': ret
+                    request.response.content_type = "text/javascript"
+                    ret = "%(callback)s(%(json)s);" % {
+                        "callback": callback,
+                        "json": ret
                     }
             return ret
         return _render
 
-INTERFACE_TYPE_CGXP = 'cgxp'
-INTERFACE_TYPE_SENCHA_TOUCH = 'senchatouch'
-INTERFACE_TYPE_NGEO = 'ngeo'
-INTERFACE_TYPE_NGEO_CATALOGUE = 'ngeo'
+INTERFACE_TYPE_CGXP = "cgxp"
+INTERFACE_TYPE_SENCHA_TOUCH = "senchatouch"
+INTERFACE_TYPE_NGEO = "ngeo"
+INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
 
 def add_interface(
@@ -90,18 +90,18 @@ def add_interface(
         if interface_name is None:
             add_interface_cgxp(
                 config,
-                interface_name='main',
-                route_names=('home', 'viewer'),
-                routes=('/', '/viewer.js'),
-                renderers=('index.html', 'viewer.js'),
+                interface_name="main",
+                route_names=("home", "viewer"),
+                routes=("/", "/viewer.js"),
+                renderers=("index.html", "viewer.js"),
             )
         else:
             add_interface_cgxp(
                 config,
                 interface_name=interface_name,
-                route_names=(interface_name, interface_name + '.js'),
-                routes=('/%s' % interface_name, '/%s.js' % interface_name),
-                renderers=('/%s.html' % interface_name, '/%s.js' % interface_name),
+                route_names=(interface_name, interface_name + ".js"),
+                routes=("/%s" % interface_name, "/%s.js" % interface_name),
+                renderers=("/%s.html" % interface_name, "/%s.js" % interface_name),
             )
 
     elif interface_type == INTERFACE_TYPE_SENCHA_TOUCH:
@@ -111,23 +111,23 @@ def add_interface(
         if interface_name is None:
             add_interface_ngeo(
                 config,
-                interface_name='main',
-                route_name='home',
-                route='/',
-                renderer='index.html',
+                interface_name="main",
+                route_name="home",
+                route="/",
+                renderer="index.html",
             )
         else:
             add_interface_ngeo(
                 config,
                 interface_name=interface_name,
                 route_name=interface_name,
-                route='/%s' % interface_name,
-                renderer='/%s.html' % interface_name,
+                route="/%s" % interface_name,
+                renderer="/%s.html" % interface_name,
             )
 
 
 def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: nocover
-    # Cannot be at the header to don't load the model too early
+    # Cannot be at the header to don"t load the model too early
     from c2cgeoportal.views.entry import Entry
 
     def add_interface(f):
@@ -140,38 +140,38 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_cgxp_index_vars',
+        attr="get_cgxp_index_vars",
         route_name=route_names[0],
         renderer=renderers[0]
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        '%stheme' % route_names[0],
-        '%s%stheme/*themes' % (routes[0], '' if routes[0][-1] == '/' else '/')
+        "%stheme" % route_names[0],
+        "%s%stheme/*themes" % (routes[0], "" if routes[0][-1] == "/" else "/")
     )
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_cgxp_permalinktheme_vars',
-        route_name='%stheme' % route_names[0],
+        attr="get_cgxp_permalinktheme_vars",
+        route_name="%stheme" % route_names[0],
         renderer=renderers[0]
     )
     config.add_route(route_names[1], routes[1])
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_cgxp_viewer_vars',
+        attr="get_cgxp_viewer_vars",
         route_name=route_names[1],
         renderer=renderers[1]
     )
 
 
 def add_interface_senchatouch(config, interface_name, package=None):  # pragma: nocover
-    # Cannot be at the header to don't load the model too early
+    # Cannot be at the header to don"t load the model too early
     from c2cgeoportal.views.entry import Entry
 
     if package is None:
-        package = config.get_settings()['package']
+        package = config.get_settings()["package"]
 
     def add_interface(f):
         def new_f(root, request):
@@ -179,58 +179,58 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
             return f(root, request)
         return new_f
 
-    interface_name = 'mobile' if interface_name is None else interface_name
-    config.add_route('mobile_index_dev', '/mobile_dev/')
+    interface_name = "mobile" if interface_name is None else interface_name
+    config.add_route("mobile_index_dev", "/mobile_dev/")
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='mobile',
-        renderer='%(package)s:static/mobile/index.html' % {
-            'package': package
+        attr="mobile",
+        renderer="%(package)s:static/mobile/index.html" % {
+            "package": package
         },
-        route_name='mobile_index_dev'
+        route_name="mobile_index_dev"
     )
-    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+    config.add_route("mobile_config_dev", "/mobile_dev/config.js")
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='mobileconfig',
-        renderer='%(package)s:static/mobile/config.js' % {
-            'package': package
+        attr="mobileconfig",
+        renderer="%(package)s:static/mobile/config.js" % {
+            "package": package
         },
-        route_name='mobile_config_dev'
+        route_name="mobile_config_dev"
     )
     config.add_static_view(
-        name='%s_dev' % interface_name,
-        path='%(package)s:static/mobile' % {
-            'package': package
+        name="%s_dev" % interface_name,
+        path="%(package)s:static/mobile" % {
+            "package": package
         },
     )
 
-    config.add_route('mobile_index_prod', '/mobile/')
+    config.add_route("mobile_index_prod", "/mobile/")
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='mobile',
-        renderer='%(package)s:static/mobile/build/production/App/index.html' % {
-            'package': package
+        attr="mobile",
+        renderer="%(package)s:static/mobile/build/production/App/index.html" % {
+            "package": package
         },
-        route_name='mobile_index_prod'
+        route_name="mobile_index_prod"
     )
-    config.add_route('mobile_config_prod', '/mobile/config.js')
+    config.add_route("mobile_config_prod", "/mobile/config.js")
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='mobileconfig',
-        renderer='%(package)s:static/mobile/build/production/App/config.js' % {
-            'package': package
+        attr="mobileconfig",
+        renderer="%(package)s:static/mobile/build/production/App/config.js" % {
+            "package": package
         },
-        route_name='mobile_config_prod'
+        route_name="mobile_config_prod"
     )
     config.add_static_view(
         name=interface_name,
-        path='%(package)s:static/mobile/build/production/App' % {
-            'package': package
+        path="%(package)s:static/mobile/build/production/App" % {
+            "package": package
         },
     )
 
@@ -249,25 +249,25 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_ngeo_index_vars',
+        attr="get_ngeo_index_vars",
         route_name=route_name,
         renderer=renderer
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        '%stheme' % route_name,
-        '%s%stheme/*themes' % (route, '' if route[-1] == '/' else '/')
+        "%stheme" % route_name,
+        "%s%stheme/*themes" % (route, "" if route[-1] == "/" else "/")
     )
     config.add_view(
         Entry,
         decorator=add_interface,
-        attr='get_ngeo_permalinktheme_vars',
-        route_name='%stheme' % route_name,
+        attr="get_ngeo_permalinktheme_vars",
+        route_name="%stheme" % route_name,
         renderer=renderer
     )
 
-    config.add_static_view('node_modules', config.get_settings().get('node_modules_path'))
-    config.add_static_view('closure', config.get_settings().get('closure_library_path'))
+    config.add_static_view("node_modules", config.get_settings().get("node_modules_path"))
+    config.add_static_view("closure", config.get_settings().get("closure_library_path"))
 
 
 def add_admin_interface(config):
@@ -306,7 +306,7 @@ def _add_static_view(config, name, path):
 
 
 def locale_negotiator(request):
-    lang = request.params.get('lang')
+    lang = request.params.get("lang")
     if lang is None:
         # if best_match returns None then Pyramid will use what's defined in
         # the default_locale_name configuration variable
@@ -323,7 +323,7 @@ def get_user_from_request(request):
     """
     from c2cgeoportal.models import DBSession, User
 
-    if not hasattr(request, '_user'):
+    if not hasattr(request, "_user"):
         request._user = None
         username = request.authenticated_userid
         if username is not None:
@@ -348,7 +348,7 @@ def set_user_validator(config, user_validator):
     """
     def register():
         config.registry.validate_user = user_validator
-    config.action('user_validator', register)
+    config.action("user_validator", register)
 
 
 def default_user_validator(request, username, password):
@@ -364,10 +364,10 @@ def ogcproxy_route_predicate(info, request):
     We do not want the OGC proxy to be used to reach the app's
     mapserv script. We just return False if the url includes
     "mapserv". It is rather drastic, but works for us. """
-    url = request.params.get('url')
+    url = request.params.get("url")
     if url is None:
         return False
-    if url.find('mapserv') > 0:
+    if url.find("mapserv") > 0:
         return False
     return True
 
@@ -376,13 +376,13 @@ def mapserverproxy_route_predicate(info, request):
     """ Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to
     return 404s on GetCapabilities requests."""
-    hide_capabilities = request.registry.settings.get('hide_capabilities')
+    hide_capabilities = request.registry.settings.get("hide_capabilities")
     if not hide_capabilities:
         return True
     params = dict(
         (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
     )
-    return 'request' not in params or params['request'] != u'getcapabilities'
+    return "request" not in params or params["request"] != u"getcapabilities"
 
 
 def includeme(config):
@@ -403,15 +403,15 @@ def includeme(config):
     global formalchemy_available_functionalities
     global formalchemy_available_metadata
 
-    config.set_request_property(get_user_from_request, name='user')
+    config.set_request_property(get_user_from_request, name="user")
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
-    config.add_translation_dirs('c2cgeoportal:locale/')
+    config.add_translation_dirs("c2cgeoportal:locale/")
 
     # initialize database
     engine = sqlalchemy.engine_from_config(
         settings,
-        'sqlalchemy.')
+        "sqlalchemy.")
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
 
@@ -419,19 +419,19 @@ def includeme(config):
     dbreflection.init(engine)
 
     # dogpile.cache configuration
-    caching.init_region(settings['cache'])
+    caching.init_region(settings["cache"])
     caching.invalidate_region()
 
     # bind the mako renderer to other file extensions
-    add_mako_renderer(config, '.html')
-    add_mako_renderer(config, '.js')
-    config.include('pyramid_chameleon')
+    add_mako_renderer(config, ".html")
+    add_mako_renderer(config, ".js")
+    config.include("pyramid_chameleon")
 
     # add the "geojson" renderer
-    config.add_renderer('geojson', GeoJSON())
+    config.add_renderer("geojson", GeoJSON())
 
     # add decimal json renderer
-    config.add_renderer('decimaljson', DecimalJSON())
+    config.add_renderer("decimaljson", DecimalJSON())
 
     # add the "xsd" renderer
     config.add_renderer("xsd", XSD(
@@ -440,156 +440,156 @@ def includeme(config):
 
     # add the set_user_validator directive, and set a default user
     # validator
-    config.add_directive('set_user_validator', set_user_validator)
+    config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
     if settings.get("ogcproxy_enable", True):
         # add an OGCProxy view
         config.add_route(
-            'ogcproxy', '/ogcproxy',
+            "ogcproxy", "/ogcproxy",
             custom_predicates=(ogcproxy_route_predicate,)
         )
-        config.add_view('papyrus_ogcproxy.views:ogcproxy', route_name='ogcproxy')
+        config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
     # add routes to the mapserver proxy
     config.add_route(
-        'mapserverproxy', '/mapserv_proxy',
+        "mapserverproxy", "/mapserv_proxy",
         custom_predicates=(mapserverproxy_route_predicate,),
         pregenerator=MultiDomainPregenerator())
 
     # add routes to csv view
-    config.add_route('csvecho', '/csv')
+    config.add_route("csvecho", "/csv")
 
     # add routes to the echo service
-    config.add_route('echo', '/echo')
+    config.add_route("echo", "/echo")
 
     # add routes to the entry view class
-    config.add_route('loginform', '/login.html')
-    config.add_route('login', '/login')
-    config.add_route('logout', '/logout')
-    config.add_route('loginchange', '/loginchange')
-    config.add_route('testi18n', '/testi18n.html')
-    config.add_route('apijs', '/api.js')
-    config.add_route('xapijs', '/xapi.js')
-    config.add_route('apihelp', '/apihelp.html')
-    config.add_route('xapihelp', '/xapihelp.html')
-    config.add_route('themes', '/themes')
-    config.add_route('invalidate', '/invalidate')
+    config.add_route("loginform", "/login.html")
+    config.add_route("login", "/login")
+    config.add_route("logout", "/logout")
+    config.add_route("loginchange", "/loginchange")
+    config.add_route("testi18n", "/testi18n.html")
+    config.add_route("apijs", "/api.js")
+    config.add_route("xapijs", "/xapi.js")
+    config.add_route("apihelp", "/apihelp.html")
+    config.add_route("xapihelp", "/xapihelp.html")
+    config.add_route("themes", "/themes")
+    config.add_route("invalidate", "/invalidate")
 
     # checker routes, Checkers are web services to test and assess that
     # the application is correctly functioning.
     # These web services are used by tools like (nagios).
-    config.add_route('checker_main', '/checker_main')
-    config.add_route('checker_viewer', '/checker_viewer')
-    config.add_route('checker_edit', '/checker_edit')
-    config.add_route('checker_edit_js', '/checker_edit_js')
-    config.add_route('checker_api', '/checker_api')
-    config.add_route('checker_xapi', '/checker_xapi')
-    config.add_route('checker_lang_files', '/checker_lang_files')
-    config.add_route('checker_printcapabilities', '/checker_printcapabilities')
-    config.add_route('checker_pdf', '/checker_pdf')
-    config.add_route('checker_fts', '/checker_fts')
-    config.add_route('checker_wmscapabilities', '/checker_wmscapabilities')
-    config.add_route('checker_wfscapabilities', '/checker_wfscapabilities')
-    config.add_route('checker_theme_errors', '/checker_theme_errors')
+    config.add_route("checker_main", "/checker_main")
+    config.add_route("checker_viewer", "/checker_viewer")
+    config.add_route("checker_edit", "/checker_edit")
+    config.add_route("checker_edit_js", "/checker_edit_js")
+    config.add_route("checker_api", "/checker_api")
+    config.add_route("checker_xapi", "/checker_xapi")
+    config.add_route("checker_lang_files", "/checker_lang_files")
+    config.add_route("checker_printcapabilities", "/checker_printcapabilities")
+    config.add_route("checker_pdf", "/checker_pdf")
+    config.add_route("checker_fts", "/checker_fts")
+    config.add_route("checker_wmscapabilities", "/checker_wmscapabilities")
+    config.add_route("checker_wfscapabilities", "/checker_wfscapabilities")
+    config.add_route("checker_theme_errors", "/checker_theme_errors")
     # collector
-    config.add_route('check_collector', '/check_collector')
+    config.add_route("check_collector", "/check_collector")
 
     # print proxy routes
-    config.add_route('printproxy', '/printproxy')
-    config.add_route('printproxy_info', '/printproxy/info.json')
-    config.add_route('printproxy_create', '/printproxy/create.json')
-    config.add_route('printproxy_get', '/printproxy/{file}.printout')
+    config.add_route("printproxy", "/printproxy")
+    config.add_route("printproxy_info", "/printproxy/info.json")
+    config.add_route("printproxy_create", "/printproxy/create.json")
+    config.add_route("printproxy_get", "/printproxy/{file}.printout")
     # V3
-    config.add_route('printproxy_capabilities', '/printproxy/capabilities.json')
-    config.add_route('printproxy_report_create', '/printproxy/report.{format}')
-    config.add_route('printproxy_status', '/printproxy/status/{ref}.json')
-    config.add_route('printproxy_report_get', '/printproxy/report/{ref}')
+    config.add_route("printproxy_capabilities", "/printproxy/capabilities.json")
+    config.add_route("printproxy_report_create", "/printproxy/report.{format}")
+    config.add_route("printproxy_status", "/printproxy/status/{ref}.json")
+    config.add_route("printproxy_report_get", "/printproxy/report/{ref}")
 
     # full text search routes
-    config.add_route('fulltextsearch', '/fulltextsearch')
+    config.add_route("fulltextsearch", "/fulltextsearch")
 
     # Access to raster data
-    config.add_route('raster', '/raster')
-    config.add_route('profile.csv', '/profile.csv')
-    config.add_route('profile.json', '/profile.json')
+    config.add_route("raster", "/raster")
+    config.add_route("profile.csv", "/profile.csv")
+    config.add_route("profile.json", "/profile.json")
 
     # shortener
-    config.add_route('shortener_create', '/short/create')
-    config.add_route('shortener_get', '/short/{ref}')
+    config.add_route("shortener_create", "/short/create")
+    config.add_route("shortener_get", "/short/{ref}")
 
     # PDF report tool
-    config.add_route('pdfreport', '/pdfreport/{layername}/{id}')
+    config.add_route("pdfreport", "/pdfreport/{layername}/{id}")
 
     # add routes for the "layers" web service
     config.add_route(
-        'layers_count', '/layers/{layer_id:\\d+}/count',
-        request_method='GET')
+        "layers_count", "/layers/{layer_id:\\d+}/count",
+        request_method="GET")
     config.add_route(
-        'layers_metadata', '/layers/{layer_id:\\d+}/md.xsd',
-        request_method='GET')
+        "layers_metadata", "/layers/{layer_id:\\d+}/md.xsd",
+        request_method="GET")
     config.add_route(
-        'layers_read_many',
-        '/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}',
-        request_method='GET')  # supports URLs like /layers/1,2,3
+        "layers_read_many",
+        "/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}",
+        request_method="GET")  # supports URLs like /layers/1,2,3
     config.add_route(
-        'layers_read_one', '/layers/{layer_id:\\d+}/{feature_id}',
-        request_method='GET')
+        "layers_read_one", "/layers/{layer_id:\\d+}/{feature_id}",
+        request_method="GET")
     config.add_route(
-        'layers_create', '/layers/{layer_id:\\d+}',
-        request_method='POST')
+        "layers_create", "/layers/{layer_id:\\d+}",
+        request_method="POST")
     config.add_route(
-        'layers_update', '/layers/{layer_id:\\d+}/{feature_id}',
-        request_method='PUT')
+        "layers_update", "/layers/{layer_id:\\d+}/{feature_id}",
+        request_method="PUT")
     config.add_route(
-        'layers_delete', '/layers/{layer_id:\\d+}/{feature_id}',
-        request_method='DELETE')
+        "layers_delete", "/layers/{layer_id:\\d+}/{feature_id}",
+        request_method="DELETE")
     config.add_route(
-        'layers_enumerate_attribute_values',
-        '/layers/{layer_name}/values/{field_name}',
-        request_method='GET')
+        "layers_enumerate_attribute_values",
+        "/layers/{layer_name}/values/{field_name}",
+        request_method="GET")
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
-    config.add_route('layers_root', '/layers/')
+    config.add_route("layers_root", "/layers/")
 
     # pyramid_formalchemy's configuration
-    config.include('pyramid_formalchemy')
-    config.include('fa.jquery')
+    config.include("pyramid_formalchemy")
+    config.include("fa.jquery")
 
     # define the srid, schema and parentschema
     # as global variables to be usable in the model
-    srid = settings['srid']
-    schema = settings['schema']
-    parentschema = settings['parentschema']
+    srid = settings["srid"]
+    schema = settings["schema"]
+    parentschema = settings["parentschema"]
     formalchemy_default_zoom = get_setting(
         settings,
-        ('admin_interface', 'map_zoom'), formalchemy_default_zoom)
+        ("admin_interface", "map_zoom"), formalchemy_default_zoom)
     formalchemy_default_x = get_setting(
         settings,
-        ('admin_interface', 'map_x'), formalchemy_default_x)
+        ("admin_interface", "map_x"), formalchemy_default_x)
     formalchemy_default_y = get_setting(
         settings,
-        ('admin_interface', 'map_y'), formalchemy_default_y)
+        ("admin_interface", "map_y"), formalchemy_default_y)
     formalchemy_available_functionalities = get_setting(
         settings,
-        ('admin_interface', 'available_functionalities'),
+        ("admin_interface", "available_functionalities"),
         formalchemy_available_functionalities)
     formalchemy_available_metadata = get_setting(
         settings,
-        ('admin_interface', 'available_metadata'),
+        ("admin_interface", "available_metadata"),
         formalchemy_available_metadata)
 
-    config.add_route('checker_all', '/checker_all')
+    config.add_route("checker_all", "/checker_all")
 
     # scan view decorator for adding routes
-    config.scan(ignore='c2cgeoportal.tests')
+    config.scan(ignore="c2cgeoportal.tests")
 
     config.registry.registerUtility(
         MultiDomainStaticURLInfo(), IStaticURLInfo)
 
     # add the static view (for static resources)
-    _add_static_view(config, 'static', 'c2cgeoportal:static')
-    _add_static_view(config, 'project', 'c2cgeoportal:project')
+    _add_static_view(config, "static", "c2cgeoportal:static")
+    _add_static_view(config, "project", "c2cgeoportal:project")
 
     add_admin_interface(config)
     add_static_view(config)

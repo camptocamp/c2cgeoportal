@@ -36,11 +36,11 @@ from email.Utils import formatdate
 
 def send_email(from_addr, to_addrs, body, subject, smtp_server):  # pragma: no cover
     msg = MIMEMultipart()
-    msg['From'] = from_addr
-    msg['To'] = ', '.join(to_addrs)
-    msg['Date'] = formatdate(localtime=True)
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain', 'utf-8'))
+    msg["From"] = from_addr
+    msg["To"] = ", ".join(to_addrs)
+    msg["Date"] = formatdate(localtime=True)
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain", "utf-8"))
     smtp = smtplib.SMTP(smtp_server)
     smtp.sendmail(from_addr, to_addrs, msg.as_string())
     smtp.close()

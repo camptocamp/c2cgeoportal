@@ -43,25 +43,25 @@ mapserv_url = None
 db_url = None
 
 curdir = os.path.dirname(os.path.abspath(__file__))
-configfile = os.path.realpath(os.path.join(curdir, 'test.ini'))
+configfile = os.path.realpath(os.path.join(curdir, "test.ini"))
 
 if os.path.exists(configfile):
     cfg = ConfigParser()
     cfg.read(configfile)
-    db_url = cfg.get('test', 'sqlalchemy.url')
-    mapserv_url = urlparse(cfg.get('test', 'mapserv.url'))
+    db_url = cfg.get("test", "sqlalchemy.url")
+    mapserv_url = urlparse(cfg.get("test", "mapserv.url"))
     host = mapserv_url.hostname
-    mapserv_url = urljoin('http://localhost/', mapserv_url.path)
+    mapserv_url = urljoin("http://localhost/", mapserv_url.path)
 
-c2cgeoportal.caching.init_region({'backend': 'dogpile.cache.memory'})
+c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
 
 
 def set_up_common():
-    c2cgeoportal.schema = 'main'
+    c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
-    # part hasn't been executed) then db_url is None
+    # part hasn"t been executed) then db_url is None
     if db_url is None:  # pragma: nocover
         return
 
@@ -81,14 +81,14 @@ def set_up_common():
     import alembic.config
     import sys
     sys.argv = [
-        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic.ini', 'upgrade', 'head'
+        "alembic", "-c", "c2cgeoportal/tests/functional/alembic.ini", "upgrade", "head"
     ]
     try:
         alembic.config.main()
     except SystemExit:  # alembic call the exit method!
         pass
     sys.argv = [
-        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic_static.ini', 'upgrade', 'head'
+        "alembic", "-c", "c2cgeoportal/tests/functional/alembic_static.ini", "upgrade", "head"
     ]
     try:
         alembic.config.main()
@@ -116,14 +116,14 @@ def tear_down_common():
     import alembic.config
     import sys
     sys.argv = [
-        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic_static.ini', 'downgrade', 'base'
+        "alembic", "-c", "c2cgeoportal/tests/functional/alembic_static.ini", "downgrade", "base"
     ]
     try:
         alembic.config.main()
     except SystemExit:  # alembic call the exit method!
         pass
     sys.argv = [
-        'alembic', '-c', 'c2cgeoportal/tests/functional/alembic.ini', 'downgrade', 'base'
+        "alembic", "-c", "c2cgeoportal/tests/functional/alembic.ini", "downgrade", "base"
     ]
     try:
         alembic.config.main()
@@ -140,24 +140,24 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     from c2cgeoportal import default_user_validator
     mapfile = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        'c2cgeoportal_test.map'
+        "c2cgeoportal_test.map"
     )
     mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
     request = tests.create_dummy_request({
         "mapserverproxy": {"mapserv_url": mapserv},
-        'functionalities': {
-            'registered': {},
-            'anonymous': {},
-            'available_in_templates': []
+        "functionalities": {
+            "registered": {},
+            "anonymous": {},
+            "available_in_templates": []
         }
     }, *args, **kargs)
     request.registry.settings.update(additional_settings)
     request.registry.settings["layers"] = {
         "geometry_validation": True
     }
-    request.headers['Host'] = host
+    request.headers["Host"] = host
     request.user = None
-    request.interface_name = 'main'
+    request.interface_name = "main"
     request.registry.validate_user = default_user_validator
     request.client_addr = None
     return request

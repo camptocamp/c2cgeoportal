@@ -57,30 +57,30 @@ from c2cgeoportal import (
 )
 
 __all__ = [
-    'Functionality', 'User', 'Role', 'LayerGroup', 'Theme',
-    'LayerV1', 'LayerInternalWMS', 'LayerExternalWMS', 'LayerWMTS',
-    'RestrictionArea', 'Interface', 'UIMetadata', 'WMTSDimension',
-    'LayerV1Grid', 'LayerGroupGrid', 'ThemeGrid',
-    'LayerInternalWMSGrid', 'LayerExternalWMSGrid', 'LayerWMTSGrid',
-    'FunctionalityGrid', 'RestrictionAreaGrid', 'RoleGrid', 'UserGrid',
-    'InterfaceGrid', 'UIMetadataGrid', 'WMTSDimensionGrid'
+    "Functionality", "User", "Role", "LayerGroup", "Theme",
+    "LayerV1", "LayerInternalWMS", "LayerExternalWMS", "LayerWMTS",
+    "RestrictionArea", "Interface", "UIMetadata", "WMTSDimension",
+    "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
+    "LayerInternalWMSGrid", "LayerExternalWMSGrid", "LayerWMTSGrid",
+    "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid", "UserGrid",
+    "InterfaceGrid", "UIMetadataGrid", "WMTSDimensionGrid"
 ]
 
 
 log = logging.getLogger(__name__)
-_ = TranslationStringFactory('c2cgeoportal')
+_ = TranslationStringFactory("c2cgeoportal")
 
-fa_config.encoding = 'utf-8'
+fa_config.encoding = "utf-8"
 fa_config.engine = TemplateEngine()
 
-fanstatic_lib = Library('admin', 'static')
+fanstatic_lib = Library("admin", "static")
 admin_js = Resource(
     fanstatic_lib,
-    'build/admin/admin.js',
+    "build/admin/admin.js",
     depends=[fanstatic_resources.jqueryui])
 admin_css = Resource(
     fanstatic_lib,
-    'build/admin/admin.css',
+    "build/admin/admin.css",
     depends=[fanstatic_resources.fa_uiadmin_css])
 
 # HACK to invoke fanstatic to inject a script which content is dynamic:
@@ -93,14 +93,14 @@ set_resource_file_existence_checking(False)
 
 def get_fanstatic_resources(request):  # pragma: no cover
     global olimgpath_js
-    olimgpath = request.static_url('c2cgeoportal:static/lib/openlayers/img/')
+    olimgpath = request.static_url("c2cgeoportal:static/lib/openlayers/img/")
 
     def olimgpath_renderer(url):
         return '<script>OpenLayers.ImgPath="%s";</script>' % olimgpath
     if olimgpath_js is None:
         olimgpath_js = Resource(
             fanstatic_lib,
-            'whatever.js',
+            "whatever.js",
             renderer=olimgpath_renderer,
             depends=[admin_js])
 
@@ -148,7 +148,7 @@ def unique_validator(value, f):  # pragma: no cover
     query = f.query(f.model.__class__)
     query = query.filter_by(**{f.name: f.value})
     if f.parent._bound_pk is None and query.first():
-        raise ValidationError(_(u'Duplicate record'))
+        raise ValidationError(_(u"Duplicate record"))
 
 
 class PyramidGeometryFieldRenderer(GeometryFieldRenderer):  # pragma: no cover
@@ -159,8 +159,8 @@ class PyramidGeometryFieldRenderer(GeometryFieldRenderer):  # pragma: no cover
     def get_templates(self):
         if self.__templates is None:
             self.__templates = TemplateLookup(
-                [os.path.join(os.path.dirname(__file__), 'templates', 'admin')],
-                input_encoding='utf-8', output_encoding='utf-8')
+                [os.path.join(os.path.dirname(__file__), "templates", "admin")],
+                input_encoding="utf-8", output_encoding="utf-8")
         return self.__templates
 
 
@@ -176,7 +176,7 @@ class DblPasswordField(Field):  # pragma: no cover
 
         def passwords_match(value, field):
             value1 = field.renderer.params.getone(field.renderer.name)
-            value2 = field.renderer.params.getone(field.renderer.name + '_confirm')
+            value2 = field.renderer.params.getone(field.renderer.name + "_confirm")
             if value1 != value2:
                 raise ValidationError(_("Passwords do not match"))
         self.validators.append(passwords_match)
@@ -189,7 +189,7 @@ class DblPasswordField(Field):  # pragma: no cover
     def render(self):
         return (
             password_field(self.renderer.name, value="") +
-            password_field(self.renderer.name + '_confirm', value=""))
+            password_field(self.renderer.name + "_confirm", value=""))
 
 
 class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
@@ -223,16 +223,16 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
             });
         </script>
         <ul id="%(id)s" class="checkboxtree">
-        """ % {'id': self.dom_id, 'opt': opt}
+        """ % {"id": self.dom_id, "opt": opt}
         result += self.render_tree()
-        result += '</ul>'
+        result += "</ul>"
         return result
 
 
 class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
     def __init__(
-            self, attribute, dom_id='layer_tree',
+            self, attribute, dom_id="layer_tree",
             auto_check=True, only_internal_wms=True):
         super(SimpleLayerCheckBoxTreeSet, self).__init__(attribute, dom_id, auto_check)
         self._rendered_id = []
@@ -258,9 +258,9 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result = "<li>"
         if self.auto_check:
             result += '<input type="checkbox"></input>'
-        result += "<label>%(label)s</label>" % {'label': item.name}
+        result += "<label>%(label)s</label>" % {"label": item.name}
         result += self.render_children(item, depth)
-        result += '</li>'
+        result += "</li>"
         return result
 
     def is_checked(self, item, final_item):
@@ -290,18 +290,18 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             <input type="checkbox" id="%(id)s" name="%(name)s" value="%(value)s"%(add)s></input>
             <label>%(label)s</label>
             """ % {
-            'id': '%s_%i' % (self.name, self.i),
+            "id": "%s_%i" % (self.name, self.i),
             # adds -second to fields (layer) that appears two time to
-            # don't save them twice (=> integrity error).
-            'name': self.name + ("-second" if final_item.id in self._rendered_id else ""),
-            'value': final_item.id,
-            'add': ' checked="checked"' if self.is_checked(item, final_item) else "",
-            'label': final_item.name
+            # don"t save them twice (=> integrity error).
+            "name": self.name + ("-second" if final_item.id in self._rendered_id else ""),
+            "value": final_item.id,
+            "add": ' checked="checked"' if self.is_checked(item, final_item) else "",
+            "label": final_item.name
         }
         self._rendered_id.append(final_item.id)
         self.i += 1
         result += self.render_children(final_item, depth)
-        result += '</li>'
+        result += "</li>"
         return result
 
     def render_tree(self):
@@ -319,7 +319,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += "<li>"
             if self.auto_check:
                 result += '<input type="checkbox"></input>'
-            result += "<label>%(name)s</label>" % {'name': _('Unlinked layers')}
+            result += "<label>%(name)s</label>" % {"name": _("Unlinked layers")}
             result += "<ul>"
 
             while len(self.layer_group) > 0:
@@ -328,7 +328,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
                 result += self.render_item(self.layer.pop(0), 2)
 
             result += "</ul>"
-            result += '</li>'
+            result += "</li>"
         return result
 
     def stringify_value(self, item, **kargs):
@@ -352,7 +352,7 @@ class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover
 class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
     def __init__(self, attribute):
         super(FunctionalityCheckBoxTreeSet, self).__init__(
-            attribute, dom_id='tree_func', auto_collapsed=False)
+            attribute, dom_id="tree_func", auto_collapsed=False)
 
     def render_tree(self):
         query = models.DBSession.query(models.Functionality)
@@ -360,12 +360,12 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         query = query.order_by(models.Functionality.value)
         functionalities = query.all()
         i = 0
-        prev_name = u''
+        prev_name = u""
         result = u""
         for functionality in functionalities:
             if prev_name != functionality.name:
-                if prev_name != u'':
-                    result += '</ul></li>\n'
+                if prev_name != u"":
+                    result += "</ul></li>\n"
                 prev_name = functionality.name
                 result += \
                     '<li><input type="checkbox" style="display:none"></input>' \
@@ -373,13 +373,13 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += \
                 '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
                 '</input><label>%s</label></li>\n' % (
-                    '%s_%i' % (self.name, i),
+                    "%s_%i" % (self.name, i),
                     self.name,
                     functionality.id,
                     ' checked="checked"' if self._is_checked(functionality.id) else "",
                     functionality.value)
             i += 1
-        result += '</ul></li>'
+        result += "</ul></li>"
         return result
 
 ##############################################################################
@@ -482,21 +482,21 @@ class ChildrenAttributeField(AttributeField):
 LayerGroup = FieldSet(models.LayerGroup)
 LayerGroup.configure(exclude=[LayerGroup.parents_relation, LayerGroup.children_relation])
 LayerGroup.append(ChildrenAttributeField(
-    manager_of_class(models.LayerGroup)['children_relation'], LayerGroup,
+    manager_of_class(models.LayerGroup)["children_relation"], LayerGroup,
 ))
 LayerGroup.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 LayerGroup.ui_metadata.set(readonly=True)
 
 # LayergroupTreeitem
 LayergroupTreeitem = FieldSet(models.LayergroupTreeitem)
-LayergroupTreeitem.ordering.set(metadata=dict(mandatory='')).required()
+LayergroupTreeitem.ordering.set(metadata=dict(mandatory="")).required()
 
 # Theme
 Theme = FieldSet(models.Theme)
 Theme.configure(exclude=[Theme.parents_relation, Theme.children_relation])
-Theme.ordering.set(metadata=dict(mandatory='')).required()
+Theme.ordering.set(metadata=dict(mandatory="")).required()
 Theme.append(ChildrenAttributeField(
-    manager_of_class(models.Theme)['children_relation'], Theme
+    manager_of_class(models.Theme)["children_relation"], Theme
 ))
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
@@ -509,7 +509,7 @@ Functionality = FieldSet(models.Functionality)
 Functionality.name.set(
     renderer=SelectFieldRenderer,
     options=[(f, f) for f in formalchemy_available_functionalities])
-Functionality.value.set(metadata=dict(mandatory='')).required()
+Functionality.value.set(metadata=dict(mandatory="")).required()
 
 # Interface
 Interface = FieldSet(models.Interface)
@@ -520,23 +520,23 @@ UIMetadata = FieldSet(models.UIMetadata)
 UIMetadata.name.set(
     renderer=SelectFieldRenderer,
     options=[(m, m) for m in formalchemy_available_metadata])
-UIMetadata.value.set(metadata=dict(mandatory='')).required()
+UIMetadata.value.set(metadata=dict(mandatory="")).required()
 
 # WMTSDimension
 WMTSDimension = FieldSet(models.WMTSDimension)
-WMTSDimension.value.set(metadata=dict(mandatory='')).required()
+WMTSDimension.value.set(metadata=dict(mandatory="")).required()
 
 # RestrictionArea
 RestrictionArea = FieldSet(models.RestrictionArea)
-RestrictionArea.name.set(metadata=dict(mandatory='')).required()
+RestrictionArea.name.set(metadata=dict(mandatory="")).required()
 RestrictionArea.layers.set(renderer=SimpleLayerCheckBoxTreeSet)
 RestrictionArea.roles.set(renderer=CheckBoxSet)
-RestrictionArea.area.set(label=_(u'Restriction area'), options=[
-    ('map_srid', 3857),
-    ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
-    ('zoom', formalchemy_default_zoom),
-    ('default_lon', formalchemy_default_x),
-    ('default_lat', formalchemy_default_y)
+RestrictionArea.area.set(label=_(u"Restriction area"), options=[
+    ("map_srid", 3857),
+    ("base_layer", 'new OpenLayers.Layer.OSM("OSM")'),
+    ("zoom", formalchemy_default_zoom),
+    ("default_lon", formalchemy_default_x),
+    ("default_lat", formalchemy_default_y)
 ])
 field_order = [
     RestrictionArea.name,
@@ -550,15 +550,15 @@ RestrictionArea.configure(include=field_order)
 
 # Role
 Role = FieldSet(models.Role)
-Role.name.set(metadata=dict(mandatory='')).required()
+Role.name.set(metadata=dict(mandatory="")).required()
 Role.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Role.restrictionareas.set(renderer=CheckBoxSet)
-Role.extent.set(label=_(u'Extent'), options=[
-    ('map_srid', 3857),
-    ('base_layer', 'new OpenLayers.Layer.OSM("OSM")'),
-    ('zoom', formalchemy_default_zoom),
-    ('default_lon', formalchemy_default_x),
-    ('default_lat', formalchemy_default_y)
+Role.extent.set(label=_(u"Extent"), options=[
+    ("map_srid", 3857),
+    ("base_layer", 'new OpenLayers.Layer.OSM("OSM")'),
+    ("zoom", formalchemy_default_zoom),
+    ("default_lon", formalchemy_default_x),
+    ("default_lat", formalchemy_default_y)
 ])
 field_order = [
     Role.name,
@@ -574,14 +574,14 @@ User = FieldSet(models.User)
 password = DblPasswordField(User, User._password)
 User.append(password)
 field_order = [
-    User.username.validate(unique_validator).with_metadata(mandatory=''),
+    User.username.validate(unique_validator).with_metadata(mandatory=""),
     password,
     User.role_name
 ]
-if hasattr(User, 'parent_role'):  # pragma: no cover
+if hasattr(User, "parent_role"):  # pragma: no cover
     field_order.append(User.parent_role)
 field_order.extend([
-    User.email.with_metadata(mandatory='')
+    User.email.with_metadata(mandatory="")
 ])
 User.configure(include=field_order)
 
@@ -677,6 +677,6 @@ RoleGrid.configure(include=field_order)
 # UserGrid
 UserGrid = Grid(models.User)
 field_order = [User.username, User.role_name]
-if hasattr(UserGrid, 'parent_role'):  # pragma: no cover
+if hasattr(UserGrid, "parent_role"):  # pragma: no cover
     field_order.append(User.parent_role_name)
 UserGrid.configure(include=field_order)

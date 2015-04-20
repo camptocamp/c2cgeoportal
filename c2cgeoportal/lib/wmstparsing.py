@@ -256,9 +256,9 @@ def _parse_date(date):
     The returned datetime always has a timezone (default to UTC)
     """
     resolutions = {
-        'year': '%Y',
-        'month': '%Y-%m',
-        'day': '%Y-%m-%d',
+        "year": "%Y",
+        "month": "%Y-%m",
+        "day": "%Y-%m-%d",
     }
 
     for resolution, pattern in resolutions.items():
@@ -272,7 +272,7 @@ def _parse_date(date):
         dt = isodate.parse_datetime(date)
         if not dt.tzinfo:
             dt = dt.replace(tzinfo=isodate.UTC)
-        return 'second', dt
+        return "second", dt
     except:
         raise ValueError("Invalid date format '%s'" % date)
 
@@ -281,7 +281,7 @@ def _format_date(date):
     assert isinstance(date, datetime.datetime)
     str = isodate.datetime_isoformat(date)
     if not date.tzinfo:
-        str += 'Z'
+        str += "Z"
     return str
 
 
@@ -298,8 +298,8 @@ def _parse_duration(duration):
 
     # casting years and months to int as isodate might return a float
     return (
-        int(duration.years) if hasattr(duration, 'years') else 0,
-        int(duration.months) if hasattr(duration, 'months') else 0,
+        int(duration.years) if hasattr(duration, "years") else 0,
+        int(duration.months) if hasattr(duration, "months") else 0,
         duration.days,
         duration.seconds,
     )

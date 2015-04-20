@@ -104,6 +104,14 @@ flake8: .build/venv/bin/flake8
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA"
+	.build/venv/bin/flake8 \
+		--ignore=E712 \
+		--max-complexity=20 \
+		--max-line-length=100 \
+		--copyright-check \
+		--copyright-min-file-size=1 \
+		--copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" \
+		travis/quote
 	find $(VALIDATE_TEMPLATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 

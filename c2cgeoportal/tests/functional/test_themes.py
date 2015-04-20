@@ -59,52 +59,52 @@ class TestThemesView(TestCase):
             LayerV1, LayerInternalWMS, LayerExternalWMS, LayerWMTS, \
             UIMetadata, WMTSDimension
 
-        main = Interface(name=u'main')
-        mobile = Interface(name=u'mobile')
-        min_levels = Interface(name=u'min_levels')
+        main = Interface(name=u"main")
+        mobile = Interface(name=u"mobile")
+        min_levels = Interface(name=u"min_levels")
 
-        layer_v1 = LayerV1(name=u'__test_layer_v1', public=True)
+        layer_v1 = LayerV1(name=u"__test_layer_v1", public=True)
         layer_v1.interfaces = [main]
-        layer_v1.ui_metadata = [UIMetadata('test', 'v1')]
-        layer_internal_wms = LayerInternalWMS(name=u'__test_layer_internal_wms', public=True)
+        layer_v1.ui_metadata = [UIMetadata("test", "v1")]
+        layer_internal_wms = LayerInternalWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
-        layer_internal_wms.ui_metadata = [UIMetadata('test', 'internal_wms')]
-        layer_external_wms = LayerExternalWMS(name=u'__test_layer_external_wms', public=True)
+        layer_internal_wms.ui_metadata = [UIMetadata("test", "internal_wms")]
+        layer_external_wms = LayerExternalWMS(name=u"__test_layer_external_wms", public=True)
         layer_external_wms.interfaces = [main]
-        layer_external_wms.ui_metadata = [UIMetadata('test', 'external_wms')]
-        layer_wmts = LayerWMTS(name=u'__test_layer_wmts', public=True)
+        layer_external_wms.ui_metadata = [UIMetadata("test", "external_wms")]
+        layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
-        layer_wmts.ui_metadata = [UIMetadata('test', 'wmts')]
-        layer_wmts.dimensions = [WMTSDimension('year', '2015')]
+        layer_wmts.ui_metadata = [UIMetadata("test", "wmts")]
+        layer_wmts.dimensions = [WMTSDimension("year", "2015")]
 
-        layer_group_1 = LayerGroup(name=u'__test_layer_group_1')
+        layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
         layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
-        layer_group_1.ui_metadata = [UIMetadata('test', 'group_1')]
+        layer_group_1.ui_metadata = [UIMetadata("test", "group_1")]
 
-        layer_group_2 = LayerGroup(name=u'__test_layer_group_2')
+        layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
         layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_3 = LayerGroup(name=u'__test_layer_group_3')
+        layer_group_3 = LayerGroup(name=u"__test_layer_group_3")
         layer_group_3.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_4 = LayerGroup(name=u'__test_layer_group_4')
+        layer_group_4 = LayerGroup(name=u"__test_layer_group_4")
         layer_group_4.children = [layer_group_2]
 
-        theme = Theme(name=u'__test_theme')
+        theme = Theme(name=u"__test_theme")
         theme.interfaces = [main, mobile]
-        theme.ui_metadata = [UIMetadata('test', 'theme')]
+        theme.ui_metadata = [UIMetadata("test", "theme")]
         theme.children = [
             layer_group_1, layer_group_2
         ]
-        theme_layer = Theme(name=u'__test_theme_layer')
+        theme_layer = Theme(name=u"__test_theme_layer")
         theme_layer.interfaces = [min_levels]
         theme_layer.children = [
             layer_internal_wms
         ]
 
-        functionality1 = Functionality(name=u'test_name', value=u'test_value_1')
-        functionality2 = Functionality(name=u'test_name', value=u'test_value_2')
+        functionality1 = Functionality(name=u"test_name", value=u"test_value_1")
+        functionality2 = Functionality(name=u"test_name", value=u"test_value_2")
         theme.functionalities = [functionality1, functionality2]
 
         DBSession.add_all([theme, theme_layer])
@@ -128,7 +128,7 @@ class TestThemesView(TestCase):
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(Interface).filter(
-            Interface.name == 'main'
+            Interface.name == "main"
         ).delete()
 
         transaction.commit()
@@ -139,7 +139,7 @@ class TestThemesView(TestCase):
 
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
-        request.static_url = lambda url: '/dummy/static/url'
+        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: \
             request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.params = params
@@ -151,7 +151,7 @@ class TestThemesView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _only_name(self, item, attribute='name'):
+    def _only_name(self, item, attribute="name"):
         result = {}
 
         if attribute in item:
@@ -166,7 +166,7 @@ class TestThemesView(TestCase):
 
     def _get_filtered_errors(self, themes):
         prog = re.compile("^The layer '[a-z_]*' is not defined in WMS capabilities$")
-        return set([e for e in themes['errors'] if prog.match(e) is None])
+        return set([e for e in themes["errors"] if prog.match(e) is None])
 
     @attr(version=True)
     @attr(order=True)
@@ -193,7 +193,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['themes']],
+            [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -230,7 +230,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['group']),
+            self._only_name(themes["group"]),
             {
                 "name": u"__test_layer_group_3",
                 # order is important
@@ -252,7 +252,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['group']),
+            self._only_name(themes["group"]),
             {
                 "name": u"__test_layer_group_4",
                 "children": [{
@@ -304,7 +304,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['themes']],
+            [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": u"__test_theme_layer",
                 "children": [{
@@ -326,7 +326,7 @@ class TestThemesView(TestCase):
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
         ]))
         self.assertEquals(
-            [self._only_name(t) for t in themes['themes']],
+            [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -360,7 +360,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t) for t in themes['themes']],
+            [self._only_name(t) for t in themes["themes"]],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -386,7 +386,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(t, 'metadata') for t in themes['themes']],
+            [self._only_name(t, "metadata") for t in themes["themes"]],
             [{
                 "metadata": {
                     u"test": u"theme",
@@ -439,7 +439,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            self._only_name(themes['group'], 'dimensions'),
+            self._only_name(themes["group"], "dimensions"),
             {
                 # order is important
                 "children": [{
@@ -460,7 +460,7 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            [self._only_name(e) for e in themes['background_layers']],
+            [self._only_name(e) for e in themes["background_layers"]],
             # order is important
             [{
                 "name": u"__test_layer_wmts"

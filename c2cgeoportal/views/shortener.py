@@ -50,11 +50,11 @@ class Shortener(object):
     def __init__(self, request):
         self.request = request
         request.response.cache_control.no_cache = True
-        self.settings = request.registry.settings.get('shortener', {})
+        self.settings = request.registry.settings.get("shortener", {})
 
-    @view_config(route_name='shortener_get')
+    @view_config(route_name="shortener_get")
     def get(self):
-        ref = self.request.matchdict['ref']
+        ref = self.request.matchdict["ref"]
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
 
         if len(short_urls) != 1:
@@ -65,33 +65,33 @@ class Shortener(object):
 
         return HTTPFound(location=short_urls[0].url)
 
-    @view_config(route_name='shortener_create', renderer='json')
+    @view_config(route_name="shortener_create", renderer="json")
     def create(self):
 
-        if 'url' not in self.request.params:
-            raise HTTPBadRequest('The parameter url is required')
+        if "url" not in self.request.params:
+            raise HTTPBadRequest("The parameter url is required")
 
-        url = self.request.params['url']
+        url = self.request.params["url"]
 
         # Check that it is an internal URL...
         uri_parts = urlparse(url)
         hostname = uri_parts.hostname
-        paths = uri_parts.path.split('/')
+        paths = uri_parts.path.split("/")
         if hostname != self.request.server_name:
             raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
                 hostname, self.request.host
             ))
 
         shortened = False
-        if (len(paths) > 1 and paths[-2] == 'short'):
+        if (len(paths) > 1 and paths[-2] == "short"):
             ref = paths[-1]
             shortened = True
 
         tries = 0
         while not shortened:
-            ref = ''.join(
+            ref = "".join(
                 random.choice(string.ascii_letters + string.digits)
-                for i in range(self.settings.get('length', 4))
+                for i in range(self.settings.get("length", 4))
             )
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
             if len(test_url) == 0:
@@ -104,7 +104,7 @@ class Shortener(object):
 
         user_email = self.request.user.email \
             if self.request.user is not None else None
-        email = self.request.params.get('email')
+        email = self.request.params.get("email")
         if not shortened:
             short_url = Shorturl()
             short_url.url = url
@@ -115,29 +115,29 @@ class Shortener(object):
 
             DBSession.add(short_url)
 
-        if 'base_url' in self.settings:
-            s_url = self.settings['base_url'] + ref
+        if "base_url" in self.settings:
+            s_url = self.settings["base_url"] + ref
         else:
-            s_url = self.request.route_url('shortener_get', ref=ref)
+            s_url = self.request.route_url("shortener_get", ref=ref)
 
         email = email or user_email
 
         if \
                 email is not None and \
-                'email_from' in self.settings and \
-                'email_subject' in self.settings and \
-                'email_body' in self.settings and \
-                'smtp_server' in self.settings:  # pragma: no cover
-            text = self.settings['email_body'] % {
-                'full_url': url,
-                'short_url': s_url,
+                "email_from" in self.settings and \
+                "email_subject" in self.settings and \
+                "email_body" in self.settings and \
+                "smtp_server" in self.settings:  # pragma: no cover
+            text = self.settings["email_body"] % {
+                "full_url": url,
+                "short_url": s_url,
             }
             send_email(
-                self.settings['email_from'],
+                self.settings["email_from"],
                 [email],
-                text.encode('utf-8'),
-                self.settings['email_subject'],
-                self.settings['smtp_server'],
+                text.encode("utf-8"),
+                self.settings["email_subject"],
+                self.settings["smtp_server"],
             )
 
-        return {'short_url': s_url}
+        return {"short_url": s_url}

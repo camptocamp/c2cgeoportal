@@ -12,27 +12,27 @@ class TestDecimalJSON(TestCase):
     def test_decimal(self):
         renderer = self._call_fut()
         value = {
-            'str': 'an str',
-            'int': 1,
-            'dec': decimal.Decimal('1.2')
+            "str": "an str",
+            "int": 1,
+            "dec": decimal.Decimal("1.2")
         }
         request = testing.DummyRequest()
-        result = renderer(value, {'request': request})
+        result = renderer(value, {"request": request})
         self.assertEqual(
             result, '{"int": 1, "dec": 1.2, "str": "an str"}')
         self.assertEqual(request.response.content_type,
-                         'application/json')
+                         "application/json")
 
     def test_jsonp(self):
         renderer = self._call_fut()
         value = {
-            'str': 'an str',
-            'int': 1,
-            'dec': decimal.Decimal('1.2')
+            "str": "an str",
+            "int": 1,
+            "dec": decimal.Decimal("1.2")
         }
         request = testing.DummyRequest()
-        request.params['callback'] = 'jsonp_cb'
-        result = renderer(value, {'request': request})
+        request.params["callback"] = "jsonp_cb"
+        result = renderer(value, {"request": request})
         self.assertEqual(
             result, 'jsonp_cb({"int": 1, "dec": 1.2, "str": "an str"});')
-        self.assertEqual(request.response.content_type, 'text/javascript')
+        self.assertEqual(request.response.content_type, "text/javascript")

@@ -51,19 +51,19 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
-        user1 = User(username=u'__test_user1', password=u'__test_user1')
-        role1 = Role(name=u'__test_role1', description=u'__test_role1')
+        user1 = User(username=u"__test_user1", password=u"__test_user1")
+        role1 = Role(name=u"__test_role1", description=u"__test_role1")
         user1.role_name = role1.name
-        user1.email = u'Tarenpion'
+        user1.email = u"Tarenpion"
 
-        main = Interface(name=u'main')
+        main = Interface(name=u"main")
 
-        layer1 = LayerV1(u'testpoint_group', public=False)
+        layer1 = LayerV1(u"testpoint_group", public=False)
         layer1.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea(u'__test_ra1', u'', [layer1], [role1], area)
+        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer1], [role1], area)
 
         DBSession.add_all([user1, role1, layer1, restricted_area1])
         DBSession.flush()
@@ -74,22 +74,22 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
-        DBSession.query(User).filter(User.username == '__test_user1').delete()
+        DBSession.query(User).filter(User.username == "__test_user1").delete()
 
         ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == '__test_ra1'
+            RestrictionArea.name == "__test_ra1"
         ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
 
-        r = DBSession.query(Role).filter(Role.name == '__test_role1').one()
+        r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'testpoint_group').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_group").all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
-            Interface.name == 'main'
+            Interface.name == "main"
         ).delete()
 
         transaction.commit()
@@ -100,7 +100,7 @@ class TestMapserverproxyViewGroup(TestCase):
         request = create_dummy_request({
             "mapserverproxy": {"mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
-                'c2cgeoportal_test.map'
+                "c2cgeoportal_test.map"
             ))}
         })
         request.user = None if username is None else \
@@ -113,22 +113,22 @@ class TestMapserverproxyViewGroup(TestCase):
 
         request = self._create_getcap_request()
         request.params.update(dict(
-            service='wms', version='1.1.1', request='getcapabilities',
+            service="wms", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find('<Name>testpoint_protected</Name>') > 0)
-        self.assertFalse((response.body).find('<Name>testpoint_unprotected</Name>') > 0)
-        self.assertFalse((response.body).find('<Name>testpoint_group</Name>') > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
 
-        request = self._create_getcap_request(username=u'__test_user1')
+        request = self._create_getcap_request(username=u"__test_user1")
         request.params.update(dict(
-            service='wms', version='1.1.1', request='getcapabilities',
+            service="wms", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.find('<Name>testpoint_protected</Name>') > 0)
-        self.assertTrue((response.body).find('<Name>testpoint_unprotected</Name>') > 0)
-        self.assertTrue((response.body).find('<Name>testpoint_group</Name>') > 0)
+        self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertTrue((response.body).find("<Name>testpoint_group</Name>") > 0)
 
     @attr(getcapabilities=True)
     def test_wfs_get_capabilities(self):
@@ -136,19 +136,19 @@ class TestMapserverproxyViewGroup(TestCase):
 
         request = self._create_getcap_request()
         request.params.update(dict(
-            service='wfs', version='1.1.1', request='getcapabilities',
+            service="wfs", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
 
-        self.assertFalse((response.body).find('<Name>testpoint_protected</Name>') > 0)
-        self.assertFalse((response.body).find('<Name>testpoint_unprotected</Name>') > 0)
-        self.assertFalse((response.body).find('<Name>testpoint_group</Name>') > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
 
-        request = self._create_getcap_request(username=u'__test_user1')
+        request = self._create_getcap_request(username=u"__test_user1")
         request.params.update(dict(
-            service='wfs', version='1.1.1', request='getcapabilities',
+            service="wfs", version="1.1.1", request="getcapabilities",
         ))
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.body.find('<Name>testpoint_protected</Name>') > 0)
-        self.assertTrue((response.body).find('<Name>testpoint_unprotected</Name>') > 0)
-        self.assertFalse((response.body).find('<Name>testpoint_group</Name>') > 0)
+        self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)

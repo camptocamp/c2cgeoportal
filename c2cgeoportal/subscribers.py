@@ -34,12 +34,12 @@ from pyramid.events import subscriber, BeforeRender, NewRequest
 
 @subscriber(BeforeRender)
 def add_renderer_globals(event):
-    request = event.get('request')
+    request = event.get("request")
     if request:
-        event['_'] = request.translate
-        event['localizer'] = request.localizer
+        event["_"] = request.translate
+        event["localizer"] = request.localizer
 
-tsf = TranslationStringFactory('c2cgeoportal')
+tsf = TranslationStringFactory("c2cgeoportal")
 
 
 @subscriber(NewRequest)
