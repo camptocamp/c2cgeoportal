@@ -225,7 +225,7 @@ class Checker(object):  # pragma: no cover
             params.update(settings.get(interface, {}).get("params", {}))
             params["interface"] = interface
             interface_url = "%s?%s" % (
-                _url, "&amp;".join(params.items())
+                _url, "&amp;".join(["%s=%s" % item for item in params.items()])
             )
 
             log.info("Checker for theme: %s" % interface_url)

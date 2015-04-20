@@ -334,6 +334,7 @@ Ext.define('App.controller.Main', {
                         transparent: true
                     }, {
                         singleTile: true,
+                        maxExtent: App.map.baseLayer.maxExtent,
                         // list of available layers
                         allLayers: t.allLayers
                     }
