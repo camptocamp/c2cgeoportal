@@ -44,7 +44,7 @@ down_revision = "${down_revision}"
 
 def upgrade():
     schema = context.get_context().config.get_main_option("schema")
-    staticschems = schema + "_static"
+    staticschema = schema + "_static"
     parentschema = context.get_context().config.get_main_option("parentschema")
 
     ${upgrades if upgrades else "# Instructions"}
@@ -52,7 +52,7 @@ def upgrade():
 
 def downgrade():
     schema = context.get_context().config.get_main_option("schema")
-    staticschems = schema + "_static"
+    staticschema = schema + "_static"
     parentschema = context.get_context().config.get_main_option("parentschema")
 
     ${downgrades if downgrades else "# Instructions"}
