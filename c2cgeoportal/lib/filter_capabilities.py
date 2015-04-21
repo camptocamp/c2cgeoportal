@@ -184,7 +184,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     return unicode(result.getvalue(), "utf-8")
 
 
-def filter_wfst_capabilities(content, role_id, wfs_url, headers, proxies):
+def filter_wfst_capabilities(content, role_id, wfs_url, proxies):
 
     if proxies:  # pragma: no cover
         enable_proxies(proxies)

@@ -132,6 +132,12 @@ class TinyOWSProxy(Proxy):
         writable_layers = get_writable_layers(self.role_id)
         return typenames.issubset(writable_layers)
 
+    def _get_headers(self):
+        headers = Proxy._get_headers(self)
+        if self.settings.get("tinyows_host", "") != "":
+            headers['Host'] = self.settings.get("tinyows_host")
+        return headers
+
     def _proxy_callback(self, operation, role_id, *args, **kwargs):
         cache = kwargs.get('cache', False)
         resp, content = self._proxy(*args, **kwargs)
@@ -140,7 +146,6 @@ class TinyOWSProxy(Proxy):
             content = filter_wfst_capabilities(
                 content, role_id,
                 self._get_wfs_url(),
-                self.request.headers,
                 self.settings.get('proxies', None)
             )
 
