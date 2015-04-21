@@ -430,7 +430,7 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
 
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
-	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
+	node tools/extract-messages.js $(APP_HTML_FILES) > $@
 
 $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
 	mkdir -p $(dir $@)
@@ -444,7 +444,7 @@ $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node tasks/compile-catalog $< > $@
+	node tools/compile-catalog $< > $@
 
 $(PACKAGE)/locale/%/LC_MESSAGES/%/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 	mkdir -p $(dir $@)
@@ -479,7 +479,7 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 		.build/externs/angular-1.3-http-promise.js \
 		.build/externs/jquery-1.9.js \
 		.build/node_modules.timestamp
-	node tasks/build.js $< $@
+	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
 .build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
 	.build/venv/bin/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
