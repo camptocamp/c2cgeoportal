@@ -51,38 +51,38 @@ class TinyOWSProxy(Proxy):
         Proxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
-        assert self.settings.get('tinyows_url', ''), \
-            'tinyowsproxy.tinyows_url must be set'
-        assert self.settings.get('online_resource', ''), \
-            'tinyowsproxy.online_resource must be set'
-        assert self.settings.get('proxy_online_resource', ''), \
-            'tinyowsproxy.proxy_online_resource must be set'
+        assert self.settings.get("tinyows_url", ""), \
+            "tinyowsproxy.tinyows_url must be set"
+        assert self.settings.get("online_resource", ""), \
+            "tinyowsproxy.online_resource must be set"
+        assert self.settings.get("proxy_online_resource", ""), \
+            "tinyowsproxy.proxy_online_resource must be set"
 
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
 
-    @view_config(route_name='tinyowsproxy')
+    @view_config(route_name="tinyowsproxy")
     def proxy(self):
         self.user = self.request.user
 
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required",
-                headers=[("WWW-Authenticate", "Basic realm=\"TinyOWS\"")])
+                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')])
         self.role_id = None if self.user is None else self.user.role.id
 
         # params hold the parameters we're going to send to TinyOWS
         params = dict(self.request.params)
         self.lower_params = self._get_lower_params(params)
 
-        operation = self.lower_params.get('request', None)
+        operation = self.lower_params.get("request", None)
         typenames = \
-            set([normalize_typename(self.lower_params.get('typename'))]) \
-            if 'typename' in self.lower_params \
+            set([normalize_typename(self.lower_params.get("typename"))]) \
+            if "typename" in self.lower_params \
             else set()
 
         method = self.request.method
-        if method == 'POST':
+        if method == "POST":
             try:
                 (operation, typenames_post) = \
                     self._parse_body(self.request.body)
@@ -90,28 +90,28 @@ class TinyOWSProxy(Proxy):
                 log.error("Error while parsing POST request body")
                 log.exception(e)
                 raise HTTPBadRequest(
-                    'Error parsing the request (see logs for more details)')
+                    "Error parsing the request (see logs for more details)")
 
             typenames = typenames.union(typenames_post)
 
-        if operation is None or operation == '':
-            operation = 'getcapabilities'
+        if operation is None or operation == "":
+            operation = "getcapabilities"
 
-        if operation == 'describefeaturetype':
+        if operation == "describefeaturetype":
             # for DescribeFeatureType we require that exactly one type-name
             # is given, otherwise we would have to filter the result
             if len(typenames) != 1:
                 raise HTTPBadRequest(
-                    'Exactly one type-name must be given for ' +
-                    'DescribeFeatureType requests')
+                    "Exactly one type-name must be given for " +
+                    "DescribeFeatureType requests")
 
         if not self._is_allowed(typenames):
             raise HTTPForbidden(
-                'No access rights for at least one of the given type-names')
+                "No access rights for at least one of the given type-names")
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
-        use_cache = method == 'GET' and operation in \
-            (u'getcapabilities', u'describefeaturetype')
+        use_cache = method == "GET" and operation in \
+            (u"getcapabilities", u"describefeaturetype")
 
         response = self._proxy_callback(
             operation=operation,
@@ -135,24 +135,24 @@ class TinyOWSProxy(Proxy):
     def _get_headers(self):
         headers = Proxy._get_headers(self)
         if self.settings.get("tinyows_host", "") != "":
-            headers['Host'] = self.settings.get("tinyows_host")
+            headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
     def _proxy_callback(self, operation, role_id, *args, **kwargs):
-        cache = kwargs.get('cache', False)
+        cache = kwargs.get("cache", False)
         resp, content = self._proxy(*args, **kwargs)
 
-        if operation == 'getcapabilities':
+        if operation == "getcapabilities":
             content = filter_wfst_capabilities(
                 content, role_id,
                 self._get_wfs_url(),
-                self.settings.get('proxies', None)
+                self.settings.get("proxies", None)
             )
 
         content = self._filter_urls(
             content,
-            self.settings.get('online_resource'),
-            self.settings.get('proxy_online_resource'))
+            self.settings.get("online_resource"),
+            self.settings.get("proxy_online_resource"))
 
         headers = {
             "Content-Type": resp["content-type"],
@@ -176,11 +176,11 @@ class TinyOWSProxy(Proxy):
         typenames = set()
         for child in xml:
             tag = normalize_tag(child.tag)
-            if tag == 'typename':
+            if tag == "typename":
                 typenames.add(child.text)
-            elif tag in ('query', 'lock', 'update', 'delete'):
-                typenames.add(child.get('typeName'))
-            elif tag == 'insert':
+            elif tag in ("query", "lock", "update", "delete"):
+                typenames.add(child.get("typeName"))
+            elif tag == "insert":
                 for insert_child in child:
                     typenames.add(normalize_tag(insert_child.tag))
 

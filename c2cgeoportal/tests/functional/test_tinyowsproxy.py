@@ -48,10 +48,10 @@ def _create_dummy_request(username=None):
     from c2cgeoportal.models import DBSession, User
 
     request = create_dummy_request({
-        'tinyowsproxy': {
-            'tinyows_url': 'http://localhost/tinyows',
-            'online_resource': 'http://domain.com/tinyows_proxy',
-            'proxy_online_resource': 'http://domain.com/tinyows'
+        "tinyowsproxy": {
+            "tinyows_url": "http://localhost/tinyows",
+            "online_resource": "http://domain.com/tinyows_proxy",
+            "proxy_online_resource": "http://domain.com/tinyows"
         }
     })
     request.user = None if username is None else \
@@ -61,50 +61,50 @@ def _create_dummy_request(username=None):
 
 @attr(functional=True)
 class TestTinyOWSProxyView(TestCase):
-    data_base = 'c2cgeoportal/tests/data/'
+    data_base = "c2cgeoportal/tests/data/"
     capabilities_response_file = \
-        data_base + 'tinyows_getcapabilities_layer.xml'
+        data_base + "tinyows_getcapabilities_layer.xml"
     capabilities_response_filtered_file1 = \
-        data_base + 'tinyows_getcapabilities_layer_filtered_user1.xml'
+        data_base + "tinyows_getcapabilities_layer_filtered_user1.xml"
     capabilities_response_filtered_file2 = \
-        data_base + 'tinyows_getcapabilities_layer_filtered_user2.xml'
+        data_base + "tinyows_getcapabilities_layer_filtered_user2.xml"
     capabilities_request_file = \
-        data_base + 'tinyows_getcapabilities_request.xml'
+        data_base + "tinyows_getcapabilities_request.xml"
     describefeaturetype_request_file = \
-        data_base + 'tinyows_describefeaturetype_request.xml'
+        data_base + "tinyows_describefeaturetype_request.xml"
     describefeaturetype_request_multiple_file = \
-        data_base + 'tinyows_describefeaturetype_request_multiple.xml'
+        data_base + "tinyows_describefeaturetype_request_multiple.xml"
 
     def setUp(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
-        user1 = User(username=u'__test_user1', password=u'__test_user1')
-        role1 = Role(name=u'__test_role1', description=u'__test_role1')
+        user1 = User(username=u"__test_user1", password=u"__test_user1")
+        role1 = Role(name=u"__test_role1", description=u"__test_role1")
         user1.role_name = role1.name
-        user1.email = u'Tarenpion'
+        user1.email = u"Tarenpion"
 
-        user2 = User(username=u'__test_user2', password=u'__test_user2')
-        role2 = Role(name=u'__test_role2', description=u'__test_role2')
+        user2 = User(username=u"__test_user2", password=u"__test_user2")
+        role2 = Role(name=u"__test_role2", description=u"__test_role2")
         user2.role_name = role2.name
-        user2.email = u'Tarenpion'
+        user2.email = u"Tarenpion"
 
-        main = Interface(name=u'main')
+        main = Interface(name=u"main")
 
-        layer1 = LayerV1(u'layer_1', public=False)
+        layer1 = LayerV1(u"layer_1", public=False)
         layer1.interfaces = [main]
-        layer2 = LayerV1(u'layer_2', public=False)
+        layer2 = LayerV1(u"layer_2", public=False)
         layer2.interfaces = [main]
-        layer3 = LayerV1(u'layer_3', public=False)
+        layer3 = LayerV1(u"layer_3", public=False)
         layer3.interfaces = [main]
 
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea(u'__test_ra1', u'', [layer1, layer2], [role1], area, readwrite=True)
+        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer1, layer2], [role1], area, readwrite=True)
 
         area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
         area = WKTElement(area, srid=21781)
-        restricted_area2 = RestrictionArea(u'__test_ra2', u'', [layer1, layer2, layer3], [role2], area)
+        restricted_area2 = RestrictionArea(u"__test_ra2", u"", [layer1, layer2, layer3], [role2], area)
 
         DBSession.add_all([
             user1, user2, role1, role2,
@@ -118,37 +118,37 @@ class TestTinyOWSProxyView(TestCase):
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
-        DBSession.query(User).filter(User.username == '__test_user1').delete()
-        DBSession.query(User).filter(User.username == '__test_user2').delete()
+        DBSession.query(User).filter(User.username == "__test_user1").delete()
+        DBSession.query(User).filter(User.username == "__test_user2").delete()
 
         ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == '__test_ra1'
+            RestrictionArea.name == "__test_ra1"
         ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
         ra = DBSession.query(RestrictionArea).filter(
-            RestrictionArea.name == '__test_ra2'
+            RestrictionArea.name == "__test_ra2"
         ).one()
         ra.roles = []
         ra.layers = []
         DBSession.delete(ra)
 
-        r = DBSession.query(Role).filter(Role.name == '__test_role1').one()
+        r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         r.functionalities = []
         DBSession.delete(r)
-        r = DBSession.query(Role).filter(Role.name == '__test_role2').one()
+        r = DBSession.query(Role).filter(Role.name == "__test_role2").one()
         r.functionalities = []
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'layer_1').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_1").all():
             DBSession.delete(layer)  # pragma: nocover
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'layer_2').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_2").all():
             DBSession.delete(layer)
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == 'layer_3').all():
+        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_3").all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
-            Interface.name == 'main'
+            Interface.name == "main"
         ).delete()
 
         transaction.commit()
@@ -166,7 +166,7 @@ class TestTinyOWSProxyView(TestCase):
                 pass
             resp = FakeResponse()
             resp.status = status
-            resp['content-type'] = "application/xml"
+            resp["content-type"] = "application/xml"
 
             return resp, content
 
@@ -184,7 +184,7 @@ class TestTinyOWSProxyView(TestCase):
 
     @attr(functional=True)
     def test_proxy_get_capabilities_user1(self):
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         proxy = self.get_fake_proxy_(
             request,
             load_file(TestTinyOWSProxyView.capabilities_response_file),
@@ -194,11 +194,11 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         self.assertEquals(filtered, response.body)
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_get_capabilities_user2(self):
-        request = _create_dummy_request(username=u'__test_user2')
+        request = _create_dummy_request(username=u"__test_user2")
         proxy = self.get_fake_proxy_(
             request,
             load_file(TestTinyOWSProxyView.capabilities_response_file),
@@ -208,13 +208,13 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file2)
         self.assertEquals(filtered, response.body)
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_get_capabilities_get(self):
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
-            service='wfs', version='1.1.0', request='GetCapabilities'
+            service="wfs", version="1.1.0", request="GetCapabilities"
         ))
 
         proxy = self.get_fake_proxy_(
@@ -226,11 +226,11 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         self.assertEquals(filtered, response.body)
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_get_capabilities_post(self):
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
         request.body = load_file(
             TestTinyOWSProxyView.capabilities_request_file)
@@ -244,13 +244,13 @@ class TestTinyOWSProxyView(TestCase):
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
         self.assertEquals(filtered, response.body)
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_get_capabilities_post_invalid_body(self):
         from pyramid.httpexceptions import HTTPBadRequest
 
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
         request.body = "This is not XML"
 
@@ -259,25 +259,25 @@ class TestTinyOWSProxyView(TestCase):
 
     @attr(functional=True)
     def test_proxy_describe_feature_type_get(self):
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
-            service='wfs', version='1.1.0', request='DescribeFeatureType',
-            typename='tows:layer_1'
+            service="wfs", version="1.1.0", request="DescribeFeatureType",
+            typename="tows:layer_1"
         ))
 
         proxy = self.get_fake_proxy_(request, "unfiltered response", 200)
 
         response = proxy.proxy()
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_describe_feature_type_invalid_layer(self):
         from pyramid.httpexceptions import HTTPForbidden
 
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
-            service='wfs', version='1.1.0', request='DescribeFeatureType',
-            typename='tows:layer_3'
+            service="wfs", version="1.1.0", request="DescribeFeatureType",
+            typename="tows:layer_3"
         ))
 
         proxy = self.get_fake_proxy_(request, "", None)
@@ -285,7 +285,7 @@ class TestTinyOWSProxyView(TestCase):
 
     @attr(functional=True)
     def test_proxy_describe_feature_type_post(self):
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
         request.body = load_file(
             TestTinyOWSProxyView.describefeaturetype_request_file)
@@ -293,13 +293,13 @@ class TestTinyOWSProxyView(TestCase):
         proxy = self.get_fake_proxy_(request, "unfiltered response", 200)
 
         response = proxy.proxy()
-        self.assertEquals('200 OK', response.status)
+        self.assertEquals("200 OK", response.status)
 
     @attr(functional=True)
     def test_proxy_describe_feature_type_post_multiple_types(self):
         from pyramid.httpexceptions import HTTPBadRequest
 
-        request = _create_dummy_request(username=u'__test_user1')
+        request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
         request.body = load_file(
             TestTinyOWSProxyView.describefeaturetype_request_multiple_file)
@@ -310,21 +310,21 @@ class TestTinyOWSProxyView(TestCase):
 
 @attr(functional=True)
 class TestTinyOWSProxyViewNoDb(TestCase):
-    data_base = 'c2cgeoportal/tests/data/'
+    data_base = "c2cgeoportal/tests/data/"
     capabilities_request_file = \
-        data_base + 'tinyows_getcapabilities_request.xml'
+        data_base + "tinyows_getcapabilities_request.xml"
     describefeature_request_file = \
-        data_base + 'tinyows_describefeaturetype_request.xml'
+        data_base + "tinyows_describefeaturetype_request.xml"
     getfeature_request_file = \
-        data_base + 'tinyows_getfeature_request.xml'
+        data_base + "tinyows_getfeature_request.xml"
     lockfeature_request_file = \
-        data_base + 'tinyows_lockfeature_request.xml'
+        data_base + "tinyows_lockfeature_request.xml"
     transaction_update_request_file = \
-        data_base + 'tinyows_transaction_update_request.xml'
+        data_base + "tinyows_transaction_update_request.xml"
     transaction_delete_request_file = \
-        data_base + 'tinyows_transaction_delete_request.xml'
+        data_base + "tinyows_transaction_delete_request.xml"
     transaction_insert_request_file = \
-        data_base + 'tinyows_transaction_insert_request.xml'
+        data_base + "tinyows_transaction_insert_request.xml"
 
     def test_parse_body_getcapabilities(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -337,7 +337,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('getcapabilities', operation)
+        self.assertEquals("getcapabilities", operation)
         self.assertEquals(set(), typename)
 
     def test_parse_body_describefeaturetype(self):
@@ -351,8 +351,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('describefeaturetype', operation)
-        self.assertEquals(set(['layer_1']), typename)
+        self.assertEquals("describefeaturetype", operation)
+        self.assertEquals(set(["layer_1"]), typename)
 
     def test_parse_body_getfeature(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -365,8 +365,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('getfeature', operation)
-        self.assertEquals(set(['parks']), typename)
+        self.assertEquals("getfeature", operation)
+        self.assertEquals(set(["parks"]), typename)
 
     def test_parse_body_lockfeature(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -379,8 +379,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('lockfeature', operation)
-        self.assertEquals(set(['parks']), typename)
+        self.assertEquals("lockfeature", operation)
+        self.assertEquals(set(["parks"]), typename)
 
     def test_parse_body_transaction_update(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -393,8 +393,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('transaction', operation)
-        self.assertEquals(set(['parks']), typename)
+        self.assertEquals("transaction", operation)
+        self.assertEquals(set(["parks"]), typename)
 
     def test_parse_body_transaction_delete(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -407,8 +407,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('transaction', operation)
-        self.assertEquals(set(['parks']), typename)
+        self.assertEquals("transaction", operation)
+        self.assertEquals(set(["parks"]), typename)
 
     def test_parse_body_transaction_insert(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
@@ -421,5 +421,5 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         proxy = TinyOWSProxy(request)
         (operation, typename) = proxy._parse_body(request.body)
-        self.assertEquals('transaction', operation)
-        self.assertEquals(set(['parks']), typename)
+        self.assertEquals("transaction", operation)
+        self.assertEquals(set(["parks"]), typename)

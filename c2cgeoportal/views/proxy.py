@@ -219,6 +219,6 @@ class Proxy:
 
     def _get_headers(self):
         headers = self.request.headers
-        if 'Cookie' in headers:  # pragma: no cover
-            headers.pop('Cookie')
+        if "Cookie" in headers:  # pragma: no cover
+            headers.pop("Cookie")
         return headers

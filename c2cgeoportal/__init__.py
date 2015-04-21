@@ -459,7 +459,7 @@ def includeme(config):
 
     # add route to the tinyows proxy
     config.add_route(
-        'tinyowsproxy', '/tinyows_proxy',
+        "tinyowsproxy", "/tinyows_proxy",
         pregenerator=MultiDomainPregenerator())
 
     # add routes to csv view

@@ -44,33 +44,33 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 @attr(functional=True)
 class TestFilterCapabilities(TestCase):
-    capabilities_file = 'c2cgeoportal/tests/data/tinyows_getcapabilities.xml'
+    capabilities_file = "c2cgeoportal/tests/data/tinyows_getcapabilities.xml"
 
     def test_capabilities_filter_featuretype(self):
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
         filtered_xml = self._filter_xml(
-            xml, u'FeatureType', layers_whitelist)
+            xml, u"FeatureType", layers_whitelist)
 
-        self.assertTrue('<Name>tows:parks</Name>' not in filtered_xml)
+        self.assertTrue("<Name>tows:parks</Name>" not in filtered_xml)
 
     def test_capabilities_filter_featuretype_private_layer(self):
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
-        layers_whitelist.add('parks')
-        filtered_xml = self._filter_xml(xml, u'FeatureType', layers_whitelist)
+        layers_whitelist.add("parks")
+        filtered_xml = self._filter_xml(xml, u"FeatureType", layers_whitelist)
 
-        self.assertTrue('<Name>tows:parks</Name>' in filtered_xml)
+        self.assertTrue("<Name>tows:parks</Name>" in filtered_xml)
 
     def _filter_xml(self, xml, tag_name, layers_whitelist):
         from c2cgeoportal.lib.filter_capabilities import _CapabilitiesFilter
 
         parser = sax.make_parser()
         result = StringIO()
-        downstream_handler = XMLGenerator(result, 'utf-8')
+        downstream_handler = XMLGenerator(result, "utf-8")
         filter_handler = _CapabilitiesFilter(
             parser, downstream_handler,
             tag_name, layers_whitelist=layers_whitelist
         )
         filter_handler.parse(StringIO(xml))
-        return unicode(result.getvalue(), 'utf-8')
+        return unicode(result.getvalue(), "utf-8")

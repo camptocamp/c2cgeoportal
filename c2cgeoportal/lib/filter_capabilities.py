@@ -193,14 +193,14 @@ def filter_wfst_capabilities(content, role_id, wfs_url, proxies):
 
     parser = sax.make_parser()
     result = StringIO()
-    downstream_handler = XMLGenerator(result, 'utf-8')
+    downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler,
-        u'FeatureType',
+        u"FeatureType",
         layers_whitelist=writable_layers
     )
     filter_handler.parse(StringIO(content))
-    filtered_content = unicode(result.getvalue(), 'utf-8')
+    filtered_content = unicode(result.getvalue(), "utf-8")
     return filtered_content
 
 
@@ -228,11 +228,11 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._accumulator = []
 
         assert layers_blacklist is not None or layers_whitelist is not None, \
-            'either layers_blacklist OR layers_whitelist must be set'
+            "either layers_blacklist OR layers_whitelist must be set"
         assert not (
             layers_blacklist is not None and
             layers_whitelist is not None), \
-            'only either layers_blacklist OR layers_whitelist can be set'
+            "only either layers_blacklist OR layers_whitelist can be set"
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 
@@ -335,8 +335,8 @@ def normalize_tag(tag):
     """
     normalized = tag
     if len(tag) >= 3:
-        if tag[0] == '{':
-            normalized = tag[1:].split('}')[1]
+        if tag[0] == "{":
+            normalized = tag[1:].split("}")[1]
     return normalized.lower()
 
 
@@ -346,6 +346,6 @@ def normalize_typename(typename):
     e.g. 'tows:parks' -> 'parks'
     """
     normalized = typename
-    if ':' in typename:
-        normalized = typename.split(':')[1]
+    if ":" in typename:
+        normalized = typename.split(":")[1]
     return normalized.lower()
