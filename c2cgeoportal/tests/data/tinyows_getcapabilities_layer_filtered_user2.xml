@@ -114,9 +114,6 @@
    <Operation>Update</Operation>
    <Operation>Delete</Operation>
   </Operations>
-  
-  
-  
  </FeatureTypeList>
  <SupportsGMLObjectTypeList>
   <GMLObjectType>

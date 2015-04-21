@@ -193,6 +193,7 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
+        response.body = response.body.replace("  \n", "")
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
@@ -207,6 +208,7 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file2)
+        response.body = response.body.replace("  \n", "")
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
@@ -225,6 +227,7 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
+        response.body = response.body.replace("  \n", "")
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
@@ -243,6 +246,7 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         filtered = load_file(
             TestTinyOWSProxyView.capabilities_response_filtered_file1)
+        response.body = response.body.replace("  \n", "")
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 

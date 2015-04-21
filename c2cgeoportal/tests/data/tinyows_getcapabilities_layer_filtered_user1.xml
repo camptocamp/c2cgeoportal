@@ -126,7 +126,6 @@
    <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
     <ows:WGS84BoundingBox> <ows:LowerCorner>-48.888249 17.815912</ows:LowerCorner> <ows:UpperCorner>6.591136 46.527381</ows:UpperCorner> </ows:WGS84BoundingBox>
   </FeatureType>
-  
  </FeatureTypeList>
  <SupportsGMLObjectTypeList>
   <GMLObjectType>
