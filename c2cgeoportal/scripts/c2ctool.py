@@ -155,10 +155,7 @@ def _fill_arguments(command):
 
 
 def _get_bin():
-    if path.exists(".build"):
-        return ".build/venv/bin"
-    else:
-        return "./buildout/bin"
+    return ".build/venv/bin"
 
 
 def _print_step(options, step, intro="To continue type:"):
