@@ -12,11 +12,11 @@
     "externs": [
       "node_modules/openlayers/externs/bingmaps.js",
       "node_modules/openlayers/externs/closure-compiler.js",
+      "node_modules/openlayers/externs/esrijson.js",
       "node_modules/openlayers/externs/geojson.js",
       "node_modules/openlayers/externs/proj4js.js",
       "node_modules/openlayers/externs/tilejson.js",
       "node_modules/openlayers/externs/topojson.js",
-      "node_modules/openlayers/externs/vbarray.js",
       "node_modules/ngeo/externs/angular-gettext.js",
       "node_modules/ngeo/externs/d3.js",
       "node_modules/ngeo/externs/twbootstrap.js",
