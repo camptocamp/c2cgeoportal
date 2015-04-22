@@ -76,7 +76,7 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
 .. warning::
 
-    Acctually the editing widn't work well with many ediable layers.
+    Actually, the editing doesn't work well with many editable layers.
 
 
 Configuring security
