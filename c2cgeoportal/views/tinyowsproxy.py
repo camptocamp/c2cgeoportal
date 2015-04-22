@@ -51,12 +51,8 @@ class TinyOWSProxy(Proxy):
         Proxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
-        assert self.settings.get("tinyows_url", ""), \
+        assert self.settings.get("tinyows_url", "") != "", \
             "tinyowsproxy.tinyows_url must be set"
-        assert self.settings.get("online_resource", ""), \
-            "tinyowsproxy.online_resource must be set"
-        assert self.settings.get("proxy_online_resource", ""), \
-            "tinyowsproxy.proxy_online_resource must be set"
 
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
@@ -134,7 +130,7 @@ class TinyOWSProxy(Proxy):
 
     def _get_headers(self):
         headers = Proxy._get_headers(self)
-        if self.settings.get("tinyows_host", "") != "":
+        if "tinyows_host" in self.settings:
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
@@ -151,8 +147,8 @@ class TinyOWSProxy(Proxy):
 
         content = self._filter_urls(
             content,
-            self.settings.get("online_resource"),
-            self.settings.get("proxy_online_resource"))
+            self.settings.get("online_resource", ""),
+            self.settings.get("proxy_online_resource", ""))
 
         headers = {
             "Content-Type": resp["content-type"],
@@ -162,7 +158,10 @@ class TinyOWSProxy(Proxy):
         return self._build_response(resp, content, cache, "tinyows", headers)
 
     def _filter_urls(self, content, online_resource, proxy_online_resource):
-        return content.replace(online_resource, proxy_online_resource)
+        if online_resource != "" and proxy_online_resource != "":
+            return content.replace(online_resource, proxy_online_resource)
+        else:
+            return content
 
     def _parse_body(self, body):
         """
