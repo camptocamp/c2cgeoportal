@@ -34,6 +34,7 @@ from nose.plugins.attrib import attr
 import transaction
 import os
 import json
+import urllib
 from geoalchemy2 import WKTElement
 from pyramid import testing
 from owslib.wms import WebMapService
@@ -565,6 +566,7 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response["permalink_themes"], '["my_themes"]')
 
+
     @attr(mobile_cache_version=True)
     def test_mobile_cache_version(self):
         from c2cgeoportal.views.entry import Entry
@@ -581,7 +583,6 @@ class TestEntryView(TestCase):
         result2 = entry.mobile()
         self.assertEquals(result2["url_params"], result["url_params"])
         self.assertEquals(result2["extra_params"], result["extra_params"])
-        self.assertEquals(result2["extra_user_params"], result["extra_user_params"])
 
     @attr(auth_mobile_cache_version=True)
     def test_auth_mobile_cache_version(self):
@@ -593,11 +594,26 @@ class TestEntryView(TestCase):
         result = entry.mobile()
         self.assertRegexpMatches(result["url_params"], "cache_version=[0-9a-f]*")
         self.assertRegexpMatches(result["extra_params"], "role=__test_role1&cache_version=[0-9a-f]*")
-        self.assertRegexpMatches(result["extra_user_params"], "role=__test_role1&user=__test_user1&cache_version=[0-9a-f]*")
 
         result2 = entry.mobile()
         self.assertEquals(result2["url_params"], result["url_params"])
         self.assertEquals(result2["extra_params"], result["extra_params"])
+
+    @attr(auth_mobile=True)
+    def test_auth_mobile(self):
+        from c2cgeoportal.views.entry import Entry
+
+        request = self._create_request_obj(username=u"__test_user1")
+        request.params = {
+            u"test": u"éàè"
+        }
+        entry = Entry(request)
+        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
+        result = entry.mobile()
+        self.assertRegexpMatches(
+            result["extra_params"],
+            "test=" + urllib.quote("éàè") + "&role=__test_role1&cache_version=[0-9a-f]*"
+        )
 
     @attr(entry_points=True)
     def test_entry_points(self):
@@ -630,17 +646,14 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "debug", "extra_params", "extra_user_params",
-                "mobile_url", "no_redirect",
-            ])
+            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
         result = entry.get_cgxp_viewer_vars()
         self.assertEquals(set(result.keys()), set([
             "lang", "tiles_url", "debug",
             "serverError", "themes", "external_themes", "functionality",
             "WFSTypes", "externalWFSTypes", "user", "queryer_attribute_urls",
-            "version_params", "version_role_params", "version_role_user_params",
+            "version_role_params",
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],
@@ -649,17 +662,17 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "functionality", "queryer_attribute_urls", "cache_version",
+            "debug", "functionality", "queryer_attribute_urls",
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "functionality", "queryer_attribute_urls", "permalink_themes", "cache_version",
+            "debug", "functionality", "queryer_attribute_urls", "permalink_themes",
         ]))
 
         result = entry.mobile()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "came_from", "url_params", "extra_params", "extra_user_params"])
+            set(["lang", "came_from", "url_params", "extra_params"])
         )
 
         result = entry.apijs()
@@ -710,21 +723,13 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "debug", "extra_params", "extra_user_params", "mobile_url", "no_redirect"
-            ])
+            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "role", "cache_version"])
-        )
-        self.assertEquals(
-            set(result["extra_user_params"].keys()),
-            set(["lang", "user", "role", "cache_version"])
+            set(["lang"])
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
-        self.assertEquals(result["extra_params"]["role"], "a role")
-        self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
 
     @attr(entry_points_version=True)
     def test_entry_points_version(self):
@@ -764,13 +769,8 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "debug", "extra_params", "extra_user_params",
-                "mobile_url", "no_redirect"
-            ])
+            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
-        self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
-        self.assertRegexpMatches(result["extra_user_params"]["cache_version"], "[0-9a-f]*")
 
     @attr(entry_points_wfs=True)
     def test_entry_points_wfs(self):
@@ -806,19 +806,14 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "extra_params", "extra_user_params", "mobile_url", "no_redirect"
+                "lang", "debug", "extra_params", "mobile_url", "no_redirect"
             ])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "role", "cache_version"]),
-        )
-        self.assertEquals(
-            set(result["extra_user_params"].keys()),
-            set(["lang", "user", "role", "cache_version"]),
+            set(["lang"]),
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
-        self.assertEquals(result["extra_params"]["role"], "a role")
 
     @attr(entry_points_wfs_url=True)
     def test_entry_points_wfs_url(self):
@@ -849,12 +844,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(
-                [
-                    "lang", "debug", "extra_params", "extra_user_params",
-                    "mobile_url", "no_redirect"
-                ]
-            )
+            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -880,10 +870,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set([
-                "lang", "debug", "extra_params", "extra_user_params",
-                "mobile_url", "no_redirect"
-            ])
+            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -901,17 +888,15 @@ class TestEntryView(TestCase):
             set(result.keys()),
             set([
                 "lang", "mobile_url", "permalink_themes",
-                "no_redirect", "debug",
-                "extra_params", "extra_user_params",
+                "no_redirect", "debug", "extra_params",
             ])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "permalink_themes", "cache_version"])
+            set(["lang", "permalink_themes"])
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
         self.assertEquals(result["extra_params"]["permalink_themes"], ["theme"])
-        self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
         self.assertEquals(result["permalink_themes"], ["theme"])
 
         request.matchdict = {
@@ -921,17 +906,15 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "mobile_url", "permalink_themes", "no_redirect", "debug",
-                "extra_params", "extra_user_params",
+                "lang", "mobile_url", "permalink_themes", "no_redirect", "debug", "extra_params"
             ])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
-            set(["lang", "permalink_themes", "cache_version"])
+            set(["lang", "permalink_themes"])
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
         self.assertEquals(result["extra_params"]["permalink_themes"], ["theme1", "theme2"])
-        self.assertRegexpMatches(result["extra_params"]["cache_version"], "[0-9a-f]*")
         self.assertEquals(result["permalink_themes"], ["theme1", "theme2"])
 
     @attr(layer=True)
@@ -975,8 +958,9 @@ class TestEntryView(TestCase):
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
             "isChecked": True,
-            "icon": "/dummy/route/mapserverproxy?SERVICE=WMS&VERSION=1.1.1&"
-            "REQUEST=GetLegendGraphic&LAYER=test internal WMS&FORMAT=image/png&TRANSPARENT=TRUE&RULE=rule",
+            "icon": "/dummy/route/mapserverproxy?"
+            "LAYER=test internal WMS&SERVICE=WMS&FORMAT=image/png&"
+            "REQUEST=GetLegendGraphic&RULE=rule&VERSION=1.1.1&TRANSPARENT=TRUE",
             "type": "internal WMS",
             "imageType": "image/png",
             "style": "my-style",
