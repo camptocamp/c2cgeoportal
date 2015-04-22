@@ -29,7 +29,7 @@
 
 
 import re
-from urlparse import urlparse, urljoin
+from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
 
 from pyramid.interfaces import IRoutePregenerator, \
@@ -46,7 +46,7 @@ def get_url(url, request, default=None, errors=None):
     if re.match("^[a-z]*://", url) is None:
         return url
 
-    obj = urlparse(url)
+    obj = urlsplit(url)
     if obj.scheme == "static":
         netloc = obj.netloc
         if netloc == "":
@@ -65,6 +65,22 @@ def get_url(url, request, default=None, errors=None):
 
     else:
         return url
+
+
+def add_url_params(url, params):
+    return add_spliturl_params(urlsplit(url), params)
+
+
+def add_spliturl_params(spliturl, params):
+    query = []
+    if spliturl.query != "":
+        query.append(spliturl.query)
+    query.extend(["%s=%s" % param for param in params.items()])
+
+    return urlunsplit((
+        spliturl.scheme, spliturl.netloc, spliturl.path,
+        "&".join(query), spliturl.fragment
+    ))
 
 
 def get_setting(settings, path, default=None):
@@ -112,9 +128,14 @@ def get_writable_layers_query(role_id, what=None, version=1):
 
 
 @implementer(IRoutePregenerator)
-class MultiDomainPregenerator:  # pragma: no cover
+class C2CPregenerator:  # pragma: no cover
+    def __init__(self, subdomain=False, version=True, role=False):
+        self.subdomain = subdomain
+        self.version = version
+        self.role = role
+
     def __call__(self, request, elements, kw):
-        if "subdomain" in kw:
+        if self.subdomain and "subdomain" in kw:
             if "subdomain_url_template" in request.registry.settings:
                 subdomain_url_template = \
                     request.registry.settings["subdomain_url_template"]
@@ -125,6 +146,17 @@ class MultiDomainPregenerator:  # pragma: no cover
                 "sub": kw["subdomain"],
                 "host": request.host,
             } + request.script_name
+
+        query = kw.get("_query", {})
+
+        if self.version:
+            from c2cgeoportal.lib.cacheversion import get_cache_version
+            query["cache_version"] = get_cache_version()
+
+        if self.role and request.user and request.user.role:
+            query["role"] = request.user.role.id
+
+        kw["_query"] = query
         return elements, kw
 
 
@@ -146,7 +178,8 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                         return request.route_url(
                             route_name,
                             subdomain=subdomains[hash(subpath) % len(subdomains)],
-                            **kw)
+                            **kw
+                        )
                     else:
                         return request.route_url(route_name, **kw)
                 else:
@@ -156,6 +189,6 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
 
     def add(self, config, name, spec, **extra):
         if "pregenerator" not in extra:
-            extra["pregenerator"] = MultiDomainPregenerator()
+            extra["pregenerator"] = C2CPregenerator(subdomain=True, version=False)
         return super(MultiDomainStaticURLInfo, self) \
             .add(config, name, spec, **extra)

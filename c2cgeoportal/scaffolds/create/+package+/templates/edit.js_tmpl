@@ -1,13 +1,13 @@
 Ext.onReady(function() {
     // Ext global settings
-    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif') | n}";
     Ext.QuickTips.init();
 
     // OpenLayers global settings
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.DOTS_PER_INCH = 96;
-    OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
-    OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+    OpenLayers.ProxyHost = "${request.route_url('ogcproxy') | n}?url=";
+    OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
     OpenLayers.Lang.setCode("${lang}");
 
     // GeoExt global settings
@@ -36,7 +36,7 @@ Ext.onReady(function() {
         url: ${tiles_url | n},
         getURL: function() {
             var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
-            return url + "?${'&'.join(['%s=%s' % p for p in version_params.items()])}";
+            return url + "?${'&'.join(['%s=%s' % p for p in version_params.items()]) | n}";
         },
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
@@ -78,7 +78,7 @@ Ext.onReady(function() {
         tools: [{
             ptype: 'cgxp_editing',
             layerTreeId: 'layertree',
-            layersURL: "${request.route_url('layers_root')}",
+            layersURL: "${request.route_url('layers_root') | n}",
             metadataParams: ${dumps(version_role_params) | n}
         },
         {
@@ -111,7 +111,7 @@ Ext.onReady(function() {
                 layout: 'fit',
                 autoScroll: true,
                 themes: THEMES,
-                wmsURL: '${request.route_url('mapserverproxy')}'
+                wmsURL: '${request.route_url('mapserverproxy') | n}'
             },
             outputTarget: 'left-panel'
         },
@@ -119,7 +119,7 @@ Ext.onReady(function() {
             ptype: "cgxp_permalink",
             id: "permalink",
             actionTarget: "map.tbar",
-            shortenerCreateURL: "${request.route_url('shortener_create')}"
+            shortenerCreateURL: "${request.route_url('shortener_create') | n}"
         },
         {
             ptype: "cgxp_menushortcut",
@@ -132,8 +132,8 @@ Ext.onReady(function() {
     % if user:
             username: "${user.username}",
     % endif
-            loginURL: "${request.route_url('login')}",
-            logoutURL: "${request.route_url('logout')}"
+            loginURL: "${request.route_url('login') | n}",
+            logoutURL: "${request.route_url('logout') | n}"
         },
         {
             ptype: "cgxp_mapopacityslider",

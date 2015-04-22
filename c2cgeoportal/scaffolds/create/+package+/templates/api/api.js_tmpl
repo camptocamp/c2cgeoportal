@@ -37,7 +37,7 @@ document.write('<link rel="stylesheet" type="text/css" href="'
 
         OpenLayers.Number.thousandsSeparator = ' ';
         OpenLayers.DOTS_PER_INCH = 96;
-        OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+        OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
         OpenLayers.Lang.setCode("${lang}");
 
         OpenLayers.inherit({{package}}.Map, cgxp.api.Map);
@@ -50,7 +50,7 @@ document.write('<link rel="stylesheet" type="text/css" href="'
         return new {{package}}.Map(config);
     }
 
-    this.wmsURL = "${request.route_url('mapserverproxy')}";
+    this.wmsURL = "${request.route_url('mapserverproxy') | n}";
     this.queryableLayers = ${queryable_layers|n};
     return cgxp.api.Map.call(this, config);
 };
