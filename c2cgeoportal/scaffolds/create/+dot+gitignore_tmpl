@@ -9,6 +9,7 @@
 /apache/frontend.conf
 /apache/mapserver.conf
 /apache/wsgi.conf
+/apache/tinyows.conf
 /apache/application.wsgi
 /deploy/deploy.cfg
 /alembic.ini
@@ -20,6 +21,7 @@
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml
 /mapserver/c2cgeoportal.map
+/mapserver/tinyows.xml
 /deploy/hooks/post-restore-database
 /{{package}}/static/build/
 /{{package}}/locale/*/LC_MESSAGES/*.mo

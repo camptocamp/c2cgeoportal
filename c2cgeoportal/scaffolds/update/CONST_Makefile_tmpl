@@ -251,7 +251,7 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities external_themes_url \
 	raster shortener hide_capabilities use_security_metadata mapserverproxy \
-	print_url tiles_url checker check_collector default_max_age jsbuild package srid
+	tinyowsproxy print_url tiles_url checker check_collector default_max_age jsbuild package srid
 ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
 	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
 	DEVELOPMENT=${DEVELOPMENT} \
