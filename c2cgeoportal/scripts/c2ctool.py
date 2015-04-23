@@ -194,6 +194,7 @@ def upgrade(options):
     package = "c2cgeoportal"
     venv_bin = ".build/venv/bin"
     if options.windows:
+        options.clean = "clean"
         package = "c2cgeoportal-win"
         venv_bin = ".build/venv/Scripts"
 
