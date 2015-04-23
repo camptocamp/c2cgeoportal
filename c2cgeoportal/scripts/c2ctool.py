@@ -286,24 +286,6 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        check_call([
-            "wget",
-            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
-            "%s/c2cgeoportal/scaffolds/update/CONST_requirements.txt" % options.version,
-            "-O", "CONST_requirements.txt"
-        ])
-        check_call([
-            "wget",
-            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
-            "%s/c2cgeoportal/scaffolds/update/CONST_versions.txt" % options.version,
-            "-O", "CONST_versions.txt"
-        ])
-        check_call([
-            ".build/venv/bin/pip", "install",
-            "--trusted-host", "pypi.camptocamp.net",
-            "-r", "CONST_requirements.txt"
-        ])
-
         pip_cmd = [
             "%s/pip" % venv_bin, "install",
             "--trusted-host", "pypi.camptocamp.net",
