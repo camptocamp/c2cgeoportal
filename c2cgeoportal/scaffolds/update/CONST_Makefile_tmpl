@@ -214,8 +214,10 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
+ifneq ($(TOMCAT_SERVICE_COMMAND),)
 TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
 TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
+endif
 
 PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
