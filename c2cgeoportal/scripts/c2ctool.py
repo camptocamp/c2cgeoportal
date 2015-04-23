@@ -208,7 +208,7 @@ def upgrade(options):
 
             http = httplib2.Http()
             headers, _ = http.request(
-                "https://github.com/camptocamp/c2cgeoportal/tree/%s" %
+                "https://github.com/camptocamp/CGXP/tree/%s" %
                 options.version, "HEAD"
             )
             if headers.status != 200:
