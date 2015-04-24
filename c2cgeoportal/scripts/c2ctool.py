@@ -119,10 +119,6 @@ def _fill_arguments(command):
     parser.add_argument(
         "--windows",
         help="Use the windows c2cgeoportal package",
-        default="c2cgeoportal",
-        action="store_const",
-        const="c2cgeoportal-win",
-        dest="package",
     )
     if command == "help":
         parser.add_argument(
@@ -154,17 +150,10 @@ def _fill_arguments(command):
     return parser
 
 
-def _get_bin():
-    if path.exists(".build"):
-        return ".build/venv/bin"
-    else:
-        return "./buildout/bin"
-
-
-def _print_step(options, step, intro="To continue type:"):
+def _print_step(options, step, venv_bin, intro="To continue type:"):
     print(intro)
     print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
-        "%s/c2ctool" % _get_bin(),
+        "%s/c2ctool" % venv_bin,
         options.file if options.file is not None else "<user.mk>",
         options.version, step
     ))
@@ -202,6 +191,13 @@ def _test_checkers(project):
 def upgrade(options):
     project = _get_project(options)
 
+    package = "c2cgeoportal"
+    venv_bin = ".build/venv/bin"
+    if options.windows:
+        options.clean = "clean"
+        package = "c2cgeoportal-win"
+        venv_bin = ".build/venv/Scripts"
+
     if options.step == 0:
         if options.version != "master":
             if re.match("^[0-9].[0-9]+.[0-9]$", options.version) is None:
@@ -213,7 +209,7 @@ def upgrade(options):
 
             http = httplib2.Http()
             headers, _ = http.request(
-                "https://github.com/camptocamp/c2cgeoportal/tree/%s" %
+                "https://github.com/camptocamp/CGXP/tree/%s" %
                 options.version, "HEAD"
             )
             if headers.status != 200:
@@ -262,7 +258,7 @@ def upgrade(options):
             "Here is the output of 'git status'. Please make sure to commit all your changes "
             "before going further. All uncommited changes will be lost."
         )
-        _print_step(options, 1)
+        _print_step(options, 1, venv_bin)
 
     elif options.step == 1:
         check_call(["git", "reset", "--hard"])
@@ -291,42 +287,25 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        check_call([
-            "wget",
-            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
-            "%s/c2cgeoportal/scaffolds/update/CONST_requirements.txt" % options.version,
-            "-O", "CONST_requirements.txt"
-        ])
-        check_call([
-            "wget",
-            "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/"
-            "%s/c2cgeoportal/scaffolds/update/CONST_versions.txt" % options.version,
-            "-O", "CONST_versions.txt"
-        ])
-        check_call([
-            ".build/venv/bin/pip", "install",
-            "--trusted-host", "pypi.camptocamp.net",
-            "-r", "CONST_requirements.txt"
-        ])
-
         pip_cmd = [
-            ".build/venv/bin/pip", "install",
+            "%s/pip" % venv_bin, "install",
             "--trusted-host", "pypi.camptocamp.net",
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
         ]
         if options.version == "master":
-            pip_cmd += ["--upgrade", "--pre", options.package]
+            check_call("%s/pip" % venv_bin, "uninstall", package)
+            pip_cmd += ["--pre", package]
         else:
-            pip_cmd += ["%s==%s" % (options.package, options.version)]
+            pip_cmd += ["%s==%s" % (package, options.version)]
         check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % _get_bin(), "--interactive", "-s", "c2cgeoportal_update",
+            "%s/pcreate" % venv_bin, "--interactive", "-s", "c2cgeoportal_update",
             "../%s" % project["project_folder"], "package=%s" % project["project_package"]
         ])
         check_call([
-            "%s/pcreate" % _get_bin(), "-s", "c2cgeoportal_create",
+            "%s/pcreate" % venv_bin, "-s", "c2cgeoportal_create",
             "/tmp/%s" % project["project_folder"],
             "package=%s" % project["project_package"],
             "mobile_application_title=%s" % project["template_vars"]["mobile_application_title"],
@@ -346,7 +325,7 @@ def upgrade(options):
             "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file"
             " (listed in the `changelog.diff` file)."
         )
-        _print_step(options, 2)
+        _print_step(options, 2, venv_bin)
 
     elif options.step == 2:
         if options.file is None:
@@ -370,11 +349,11 @@ def upgrade(options):
         print("The upgrade is nearly done, now you should:")
         print("- Test your application.")
 
-        _print_step(options, 3, intro="Then to commit your changes type:")
+        _print_step(options, 3, venv_bin, intro="Then to commit your changes type:")
 
     elif options.step == 3:
         if not _test_checkers(project):
-            _print_step(options, 3, intro="Correct them then type:")
+            _print_step(options, 3, venv_bin, intro="Correct them then type:")
             exit(1)
 
         check_call(["git", "add", "-A"])

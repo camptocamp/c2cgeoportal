@@ -40,10 +40,8 @@ PasteScript==1.7.5
 Pillow==2.7.0
 polib==1.0.6
 postmarkup==1.2.2
-psycopg2==2.6
 Pygments==2.0.2
 pyproj==1.9.4
-#pyramid==1.5.2
 pyramid-chameleon==0.3
 pyramid-formalchemy==0.4.4
 pyramid-mako==1.0.2
@@ -55,7 +53,6 @@ PyYAML==3.11
 repoze.lru==0.6
 requests==2.5.1
 restkit==4.2.2
-Shapely==1.5.6
 simplejson==3.6.5
 six==1.9.0
 socketpool==0.5.3

@@ -52,9 +52,9 @@ endif
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 # Requirements
-
-EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt CONST_requirements.txt
-REQUIREMENTS += -r CONST_requirements.txt
+CONST_REQUIREMENT ?= CONST_requirements.txt
+EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt $(CONST_REQUIREMENT)
+REQUIREMENTS += -r $(CONST_REQUIREMENT)
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'

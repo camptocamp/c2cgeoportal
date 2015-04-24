@@ -29,6 +29,9 @@ Where ``<makefile>`` is your user make file (``<user>.mk``).
 Easy upgrading an application
 -----------------------------
 
+In the ``setup.py`` be sure that you don't specify a ``c2cgeoportal`` version
+that it don't allow to install the new ``c2cgeoportal`` egg.
+
 .. prompt:: bash
 
    .build/venv/bin/c2ctool upgrade <makefile> <target_version>
@@ -62,13 +65,29 @@ the ``<package>`` is the package name,
 and the ``<host>`` is the host to use for the Apache VirtualHost.
 
 
-Add ``project.yaml`` in the ``.gitignore`` file.
+Add ``/project.yaml`` and ``/.build`` in the ``.gitignore`` file.
 
 Get the right version of the egg:
 
 .. prompt:: bash
 
-   ./buildout/bin/easy_install --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal c2cgeoportal==<egg_version>
+    mkdir .build
+    virtualenv --setuptools --no-site-packages .build/venv
+    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi 'pip>=6' 'setuptools>=12'
+    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
+        --trusted-host pypi.camptocamp.net --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
+        https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure \
+        https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid \
+        c2cgeoportal==<egg_version>
+
+Gets the new required files from the c2cgeoportal templates:
+
+.. prompt:: bash
+
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
+   cp /tmp/<project>/CONST_* /tmp/<project>/<package>.mk  vars_<project>.yaml .
+   rm /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
@@ -81,11 +100,20 @@ Create your own ``<user>.mk``:
 
    include <package>.mk
 
+In the ``setup.py`` have a dependency on c2cgeoportal like this ``c2cgeoportal>=1.6.0.dev``.
+
+Add all your new files in git and commit them:
+
+.. prompt:: bash
+
+    git add project.yaml.mako CONST_* <package>.mk vars_<project>.yaml <user>.mk
+    git commit -m "Initialize the upgrade to 1.6"
+
 Start the c2ctool upgrade:
 
 .. prompt:: bash
 
-   ./buildout/bin/c2ctool upgrade <makefile> <target_version>
+   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
