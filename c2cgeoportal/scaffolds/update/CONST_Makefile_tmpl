@@ -214,6 +214,10 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
+ifneq ($(TOMCAT_SERVICE_COMMAND),)
+TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
+TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
+endif
 
 PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
@@ -231,6 +235,7 @@ PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
+APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
 CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
@@ -427,7 +432,7 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
 
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
-	node tasks/extract-messages.js $(APP_HTML_FILES) > $@
+	node tools/extract-messages.js $(APP_HTML_FILES) > $@
 
 $(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
 	mkdir -p $(dir $@)
@@ -441,7 +446,7 @@ $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node tasks/compile-catalog $< > $@
+	node tools/compile-catalog $< > $@
 
 $(PACKAGE)/locale/%/LC_MESSAGES/%/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 	mkdir -p $(dir $@)
@@ -476,9 +481,9 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 		.build/externs/angular-1.3-http-promise.js \
 		.build/externs/jquery-1.9.js \
 		.build/node_modules.timestamp
-	node tasks/build.js $< $@
+	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
-.build/templatecache.js: templatecache.mako.js
+.build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
 	.build/venv/bin/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.3.js:
@@ -666,13 +671,13 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) /tmp/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf /tmp/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r /tmp/$(PRINT_WAR)
-ifneq ($(TOMCAT_SERVICE_COMMAND),)
-	$(TOMCAT_SERVICE_COMMAND) stop
+ifneq ($(TOMCAT_STOP_COMMAND),)
+	$(TOMCAT_STOP_COMMAND)
 endif
 	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	mv /tmp/$(PRINT_WAR) $(PRINT_OUTPUT)
-ifneq ($(TOMCAT_SERVICE_COMMAND),)
-	$(TOMCAT_SERVICE_COMMAND) start
+ifneq ($(TOMCAT_START_COMMAND),)
+	$(TOMCAT_START_COMMAND)
 endif
 
 print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
@@ -709,5 +714,5 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 		.build/requirements.timestamp
-	sudo /usr/sbin/apache2ctl graceful
+	$(APACHE_GRACEFUL)
 	touch $@
