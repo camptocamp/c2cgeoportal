@@ -239,7 +239,7 @@ APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
 CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
-CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
+CONF_FILES = $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
