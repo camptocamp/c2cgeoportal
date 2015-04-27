@@ -1,4 +1,5 @@
-PYTHON_VERSION = $(shell .build/venv/bin/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
+VENV_BIN ?= .build/venv/bin
+PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
 
 # Don't minify the js / css, ...
@@ -16,7 +17,7 @@ TILECLOUD_CHAIN ?= TRUE
 # Used print version
 PRINT_VERSION ?= 3
 
-PIP_CMD ?= .build/venv/bin/pip
+PIP_CMD ?= $(VENV_BIN)/pip
 PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
 
 ifeq ($(CGXP), TRUE)
@@ -239,7 +240,7 @@ APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
 CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
-CONF_FILES = $(shell ls -1 apache/*.conf) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
+CONF_FILES = $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
@@ -261,7 +262,7 @@ ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
 	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
 	DEVELOPMENT=${DEVELOPMENT} \
 	PACKAGE=${PACKAGE}
-C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
+C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 
@@ -325,8 +326,8 @@ cleanall: clean
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: flake8
-flake8: .build/venv/bin/flake8
-	.build/venv/bin/flake8 $(PACKAGE)
+flake8: $(VENV_BIN)/flake8
+	$(VENV_BIN)/flake8 $(PACKAGE)
 
 .PHONY: build-server
 build-server: template-generate compile-py-catalog $(SERVER_LOCALISATION_FILES)
@@ -335,11 +336,11 @@ build-server: template-generate compile-py-catalog $(SERVER_LOCALISATION_FILES)
 build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
-lint-ngeo: .build/venv/bin/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
+lint-ngeo: $(VENV_BIN)/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
 
 .PHONY: serve
 serve: build development.ini
-	.build/venv/bin/pserve --reload --monitor-restart development.ini
+	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
 
 .PHONY: update-node-modules
 update-node-modules:
@@ -359,7 +360,7 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config-$(INSTANCE_ID).timestamp
 
-$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): .build/venv/bin/c2c-template $(VARS_DEPENDS)
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template $(VARS_DEPENDS)
 
 %: %.in
 ifeq ($(origin VARS_FILE), undefined)
@@ -382,16 +383,16 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
-.build/venv/bin/c2c-template: .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-template: .build/dev-requirements.timestamp
 
-.build/config-$(INSTANCE_ID).timestamp: .build/venv/bin/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
+.build/config-$(INSTANCE_ID).timestamp: $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
 	rm -f .build/config-*.timestamp | true
 	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
 	touch $@
 
 # server localisation
 
-.build/venv/bin/pot-create: .build/requirements.timestamp
+$(VENV_BIN)/pot-create: .build/requirements.timestamp
 
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
@@ -399,8 +400,8 @@ compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 # to don't delete them
 .SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
 
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) .build/venv/bin/pot-create lingua.cfg
-	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
+$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) $(VENV_BIN)/pot-create lingua.cfg
+	$(VENV_BIN)/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
 	# removes the allways changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
@@ -426,7 +427,7 @@ build-ngeo: \
 .PHONY: compile-js-catalog
 compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 
-.build/venv/bin/db2pot: .build/requirements.timestamp
+$(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
@@ -434,9 +435,9 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) .build/node_modules.timestamp
 	node tools/extract-messages.js $(APP_HTML_FILES) > $@
 
-$(PACKAGE)/locale/$(PACKAGE)-db.pot: .build/venv/bin/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
+$(PACKAGE)/locale/$(PACKAGE)-db.pot: $(VENV_BIN)/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
 	mkdir -p $(dir $@)
-	.build/venv/bin/db2pot
+	$(VENV_BIN)/db2pot
 	msguniq $@ -o $@
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: $(PACKAGE)/locale/$(PACKAGE)-js.pot $(PACKAGE)/locale/$(PACKAGE)-db.pot
@@ -484,7 +485,7 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
 .build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
-	.build/venv/bin/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
+	$(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.3.js:
 	mkdir -p $(dir $@)
@@ -523,7 +524,7 @@ endif
 
 .build/gjslint.timestamp: $(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	.build/venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $?
+	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $?
 	touch $@
 
 .build/jshint.timestamp: $(APP_JS_FILES)
@@ -534,7 +535,7 @@ endif
 
 # Git
 
-.build/venv/bin/jsbuild: .build/dev-requirements.timestamp
+$(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
 
 .PHONY: update
 update:
@@ -563,42 +564,42 @@ update-git-submodules:
 
 # CGXP build
 
-.build/venv/bin/cssmin: .build/dev-requirements.timestamp
+$(VENV_BIN)/cssmin: .build/dev-requirements.timestamp
 
-.build/venv/bin/jsbuild: .build/dev-requirements.timestamp
+$(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
 
 $(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
-	.build/venv/bin/jsbuild \
+	$(VENV_BIN)/jsbuild \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD
 	mkdir -p $(dir $@)
-	.build/venv/bin/jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
+	$(VENV_BIN)/jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
 
-$(CSS_BASE_OUTPUT): .build/venv/bin/cssmin \
+$(CSS_BASE_OUTPUT): $(VENV_BIN)/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_BASE_FILES)
-	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
+	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
-$(CSS_API_OUTPUT): .build/venv/bin/cssmin \
+$(CSS_API_OUTPUT): $(VENV_BIN)/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_API_FILES)
-	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
+	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
-$(CSS_XAPI_OUTPUT): .build/venv/bin/cssmin \
+$(CSS_XAPI_OUTPUT): $(VENV_BIN)/cssmin \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	.git/modules/$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_XAPI_FILES)
-	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
+	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
 # Sencha touch
 
 .PHONY: sencha-touch
 sencha-touch: $(PACKAGE)/static/mobile/build/production/App/app.js
 
-$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) .build/venv/bin/jsbuild
-	.build/venv/bin/jsbuild $(JSBUILD_MOBILE_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(JSBUILD_MOBILE_OUTPUT_DIR)
+$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) $(VENV_BIN)/jsbuild
+	$(VENV_BIN)/jsbuild $(JSBUILD_MOBILE_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(JSBUILD_MOBILE_OUTPUT_DIR)
 
 $(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FILES) \
 	$(PACKAGE)/static/mobile/custom.scss $(MOBILE_APP_JS_FILES)
@@ -608,41 +609,41 @@ $(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FI
 
 # Check packages
 
-.build/venv/bin/c2c-versions: .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-versions: .build/dev-requirements.timestamp
 
 .PHONY: test-packages
 test-packages: .build/test-packages.timestamp
 
-.build/test-packages.timestamp: .build/venv/bin/c2c-versions CONST_packages.yaml
-	.build/venv/bin/c2c-versions CONST_packages.yaml main
+.build/test-packages.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml main
 	touch $@
 
 .PHONY: test-packages-mobile
 test-packages-mobile: .build/test-packages-mobile.timestamp
 
-.build/test-packages-mobile.timestamp: .build/venv/bin/c2c-versions CONST_packages.yaml
-	.build/venv/bin/c2c-versions CONST_packages.yaml mobile
+.build/test-packages-mobile.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml mobile
 	touch $@
 
 .PHONY: test-packages-tilecloud-chain
 test-packages-tilecloud-chain: .build/test-packages-tilecloud-chain.timestamp
 
-.build/test-packages-tilecloud-chain.timestamp: .build/venv/bin/c2c-versions CONST_packages.yaml
-	.build/venv/bin/c2c-versions CONST_packages.yaml tilecloud-chain
+.build/test-packages-tilecloud-chain.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml tilecloud-chain
 	touch $@
 
 .PHONY: test-packages-ngeo
 test-packages-ngeo: .build/test-packages-ngeo.timestamp
 
-.build/test-packages-ngeo.timestamp: .build/venv/bin/c2c-versions CONST_packages.yaml
-	.build/venv/bin/c2c-versions CONST_packages.yaml ngeo
+.build/test-packages-ngeo.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml ngeo
 	touch $@
 
 # Check
 
-.build/venv/bin/gjslint: .build/dev-requirements.timestamp
+$(VENV_BIN)/gjslint: .build/dev-requirements.timestamp
 
-.build/venv/bin/flake8: .build/dev-requirements.timestamp
+$(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 
 # Venv
 

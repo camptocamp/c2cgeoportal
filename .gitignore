@@ -11,5 +11,6 @@
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
 /c2cgeoportal.egg-info
 /.build
+/.eggs
 /.coverage
 /coverage.xml
