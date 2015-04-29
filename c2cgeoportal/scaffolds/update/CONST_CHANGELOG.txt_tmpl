@@ -23,17 +23,7 @@ Version 1.6
     cp /tmp/{{project}}/deploy/hooks/post-restore-code deploy/hooks
     chmod +x deploy/hooks/post-restore-code
 
-2. Removes the deprecated files:
-
-    git rm -r {{package}}/CONST_migration
-    git rm -r {{package}}/static/build
-    git rm config.yaml
-    git rm bootstrep.py
-    git rm -r *buildout*
-    git rm development.ini.in production.ini.in
-    git rm versions.cfg
-
-3. Starting from version 1.6 we use a new build system based on Make that will change
+2. Starting from version 1.6 we use a new build system based on Make that will change
    many of your habits, information are given at:
    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/make.html
 
@@ -53,13 +43,13 @@ Version 1.6
      For multi project mode have a look on the documentation:
      http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html
 
-4. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
+3. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
    `[extract_messages]`, `[init_catalog]`, `[update_catalog]` sections.
 
-5. In the `setup.py` file you should remove the `message_extractors`
+4. In the `setup.py` file you should remove the `message_extractors`
    argument.
 
-6. In the {{package}}/__init__.py file do the following changes:
+5. In the {{package}}/__init__.py file do the following changes:
 
     -from c2cgeoportal import locale_negotiator
     +from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
@@ -88,7 +78,7 @@ Version 1.6
     Remove the activation of the checkers (now done directly in c2cgeoportal):
     - config.add_route('checker_all', '/checker_all')
 
-7. In the `{{package}}/templates/*.html` files you should do the following
+6. In the `{{package}}/templates/*.html` files you should do the following
    changes:
 
    - jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
@@ -100,7 +90,7 @@ Version 1.6
    Remove the no more needed `_query=url_params` argument of the
    `static_url` calls.
 
-8. In the `{{package}}/templates/*.js` files do the following change:
+7. In the `{{package}}/templates/*.js` files do the following change:
 
     -<% json_extent = user.role.json_extent if user else None %>
     -% if json_extent:
@@ -109,17 +99,17 @@ Version 1.6
     +% if bounds:
     +    var INITIAL_EXTENT = ${dumps(bounds)};
 
-9. In the mapfile add the following lines to all restricted layers:
+8. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
         ${mapserver_layer_validation}
     END
 
-10. Remove the deprecated versioning table:
+9. Remove the deprecated versioning table:
 
     sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
 
-11. For non Apt/Dpkg based OS, disable the package checking:
+10. For non Apt/Dpkg based OS, disable the package checking:
     In the ``buildout.cfg`` section ``[buildout]`` add:
 
         parts -=
@@ -127,11 +117,11 @@ Version 1.6
             test-packages-mobile
             test-packages-tilecloud-chain
 
-12. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
+11. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
 
     +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
-13. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
+12. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
 
     Add the following lines in the start of the file:
         <%
@@ -171,31 +161,44 @@ Version 1.6
         root =
             ${"\n    ".join(root)}
 
-14. Remove your Apache configuration file, probably in
+13. Remove your Apache configuration file, probably in
     `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
 
-15. Notes on database changes:
+14. Notes on database changes:
     * In prevision of GeoMapFish 2.0 some tables were added and some fields updated.
     * Table ``user`` has been moved to schema ``main_static`` in order to store all
       data modified by the web application in the same schema.
       As a result the passwords no longer need to be synchronised among the various instances
       of the application and the password replication tool has been removed.
 
-16. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
+15. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
 
     + .build/venv/bin/alembic -c alembic_static.ini upgrade head
+
+16. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
+    `apache-entry-point` by `apache_entry_point`
 
 17. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` do the following changes:
 
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
+18. Remove the deprecated files:
+
+    git rm -r {{package}}/CONST_migration
+    git rm -r {{package}}/static/build
+    git rm config.yaml
+    git rm bootstrep.py
+    git rm -r *buildout*
+    git rm development.ini.in production.ini.in
+    git rm versions.cfg
+
 
 Version 1.5.4
 =============
 
 1. By default the authentication cookie expires after 86400 seconds (1 day).
-   You may override this value by adding an `authtkt_timeout` parameter 
+   You may override this value by adding an `authtkt_timeout` parameter
    in your `buildout.cfg` file. For instance:
 
     # One week
