@@ -90,11 +90,11 @@ class Proxy:
         if not cache:
             headers["Cache-Control"] = "no-cache"
 
-        if method in ["POST", "PUT"] and body is None:  # pragma: nocover
+        if method in ("POST", "PUT") and body is None:  # pragma: nocover
             body = StringIO(self.request.body)
 
         try:
-            if method in ["POST", "PUT"]:
+            if method in ("POST", "PUT"):
                 resp, content = http.request(
                     url, method=method, body=body, headers=headers
                 )
@@ -116,7 +116,7 @@ class Proxy:
             log.error("--- Exception ---")
             log.exception(e)
 
-            if method in ["POST", "PUT"]:
+            if method in ("POST", "PUT"):
                 log.error("--- With body ---")
                 if hasattr(body, "read"):
                     body.reset()

@@ -467,7 +467,8 @@ def includeme(config):
     # add route to the tinyows proxy
     config.add_route(
         "tinyowsproxy", "/tinyows_proxy",
-        pregenerator=MultiDomainPregenerator())
+        pregenerator=C2CPregenerator(role=True),
+    )
 
     # add routes to csv view
     config.add_route("csvecho", "/csv")

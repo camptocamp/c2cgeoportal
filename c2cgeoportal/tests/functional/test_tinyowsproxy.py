@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2014, Camptocamp SA
+# Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -264,10 +264,9 @@ class TestTinyOWSProxyView(TestCase):
     @attr(functional=True)
     def test_proxy_describe_feature_type_get(self):
         request = _create_dummy_request(username=u"__test_user1")
-        settings = request.registry.settings.get("tinyowsproxy")
-        settings["online_resource"] = ""
-        settings["proxy_online_resource"] = ""
-        settings["tinyows_host"] = "demo.gmf.org"
+        request.registry.settings["tinyowsproxy"] = {
+            "tinyows_host": "demo.gmf.org"
+        }
         request.params.update(dict(
             service="wfs", version="1.1.0", request="DescribeFeatureType",
             typename="tows:layer_1"

@@ -171,7 +171,7 @@ class C2cTool:
 
     def test_checkers(self):
         http = httplib2.Http()
-        for check_type in ["", "type=all"]:
+        for check_type in ("", "type=all"):
             resp, content = http.request(
                 "http://localhost%s%s" % (self.project["checker_path"], check_type),
                 method="GET",

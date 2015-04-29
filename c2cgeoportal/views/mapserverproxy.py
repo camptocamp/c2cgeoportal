@@ -119,12 +119,12 @@ class MapservProxy(Proxy):
             if "request" not in self.lower_params:
                 params = {}  # pragma: no cover
             else:
-                use_cache = self.lower_params["request"] in [
+                use_cache = self.lower_params["request"] in (
                     u"getcapabilities",
                     u"getlegendgraphic",
                     u"describelayer",
                     u"describefeaturetype",
-                ]
+                )
 
                 # no user_id and role_id or cached queries
                 if use_cache and "user_id" in params:
@@ -142,7 +142,7 @@ class MapservProxy(Proxy):
 
         cache_control = PRIVATE_CACHE
         if method == "GET" and self.lower_params["service"] == u"wms":
-            if self.lower_params["request"] in [u"getmap", u"getfeatureinfo"]:
+            if self.lower_params["request"] in (u"getmap", u"getfeatureinfo"):
                 cache_control = NO_CACHE
             elif self.lower_params["request"] == u"getlegendgraphic":
                 cache_control = PUBLIC_CACHE
