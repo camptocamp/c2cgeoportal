@@ -46,6 +46,14 @@ And follow the instructions.
 Easy upgrading an application from 1.5 to 1.6
 ---------------------------------------------
 
+Before upgrading your project, it is recommended to create a new
+branch and to push it to the remote repository:
+
+.. prompt:: bash
+
+   git checkout -b <project-branch>
+   git push origin <project-branch>
+
 Create a ``project.yaml.mako`` file that contains:
 
 .. code::
@@ -65,7 +73,7 @@ the ``<package>`` is the package name,
 and the ``<host>`` is the host to use for the Apache VirtualHost.
 
 
-Add ``/project.yaml`` and ``/.build`` in the ``.gitignore`` file.
+Add ``/project.yaml`` and ``/.build`` to the ``.gitignore`` file.
 
 Get the right version of the egg:
 
@@ -86,8 +94,8 @@ Gets the new required files from the c2cgeoportal templates:
 
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
-   cp /tmp/<project>/CONST_* /tmp/<project>/<package>.mk  vars_<project>.yaml .
-   rm /tmp/<project>
+   cp -r /tmp/<project>/CONST_* /tmp/<project>/<package>.mk  /tmp/<project>/vars_<package>.yaml .
+   rm -fr /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
@@ -113,6 +121,7 @@ Start the c2ctool upgrade:
 
 .. prompt:: bash
 
+   make -f <makefile> project.yaml
    .build/venv/bin/c2ctool upgrade <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),

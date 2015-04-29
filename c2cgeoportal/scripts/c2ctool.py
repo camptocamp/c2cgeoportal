@@ -294,7 +294,7 @@ def upgrade(options):
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
         ]
         if options.version == "master":
-            check_call("%s/pip" % venv_bin, "uninstall", package)
+            check_call(["%s/pip" % venv_bin, "uninstall", package])
             pip_cmd += ["--pre", package]
         else:
             pip_cmd += ["%s==%s" % (package, options.version)]
