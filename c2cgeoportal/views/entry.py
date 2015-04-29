@@ -780,7 +780,7 @@ class Entry(object):
             "interface": interface
         }
 
-        if ext_url[-1] not in ["?", "&"]:
+        if ext_url[-1] not in ("?", "&"):
             ext_url += "?"
         ext_url += "&".join([
             "=".join(p) for p in url_params.items()
@@ -1156,9 +1156,9 @@ class Entry(object):
         group = self.request.params.get("group", None)
         background_layers_group = self.request.params.get("background", None)
 
-        export_themes = sets in ["all", "themes"]
-        export_group = group is not None and sets in ["all", "group"]
-        export_background = background_layers_group is not None and sets in ["all", "background"]
+        export_themes = sets in ("all", "themes")
+        export_group = group is not None and sets in ("all", "group")
+        export_background = background_layers_group is not None and sets in ("all", "background")
 
         set_common_headers(self.request, "themes", PRIVATE_CACHE)
 

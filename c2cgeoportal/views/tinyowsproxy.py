@@ -32,13 +32,11 @@ import logging
 
 from pyramid.view import view_config
 from xml.etree import ElementTree
-from pyramid.httpexceptions import (
-    HTTPForbidden, HTTPBadRequest, HTTPUnauthorized)
+from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest, HTTPUnauthorized
 
-from c2cgeoportal.lib.caching import get_region
-from c2cgeoportal.lib.filter_capabilities import (
-    filter_wfst_capabilities, normalize_tag, normalize_typename,
-    get_writable_layers)
+from c2cgeoportal.lib.caching import get_region, NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal.lib.filter_capabilities import filter_wfst_capabilities, \
+    normalize_tag, normalize_typename, get_writable_layers
 from c2cgeoportal.views.proxy import Proxy
 
 cache_region = get_region()
@@ -51,8 +49,10 @@ class TinyOWSProxy(Proxy):
         Proxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
-        assert self.settings.get("tinyows_url", "") != "", \
+        assert(
+            "tinyows_url" not in self.settings,
             "tinyowsproxy.tinyows_url must be set"
+        )
 
     def _get_wfs_url(self):
         return self.settings.get("tinyows_url")
@@ -64,14 +64,15 @@ class TinyOWSProxy(Proxy):
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required",
-                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')])
+                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
+            )
         self.role_id = None if self.user is None else self.user.role.id
 
         # params hold the parameters we're going to send to TinyOWS
         params = dict(self.request.params)
         self.lower_params = self._get_lower_params(params)
 
-        operation = self.lower_params.get("request", None)
+        operation = self.lower_params.get("request")
         typenames = \
             set([normalize_typename(self.lower_params.get("typename"))]) \
             if "typename" in self.lower_params \
@@ -98,26 +99,24 @@ class TinyOWSProxy(Proxy):
             # is given, otherwise we would have to filter the result
             if len(typenames) != 1:
                 raise HTTPBadRequest(
-                    "Exactly one type-name must be given for " +
-                    "DescribeFeatureType requests")
+                    "Exactly one type-name must be given for "
+                    "DescribeFeatureType requests"
+                )
 
         if not self._is_allowed(typenames):
             raise HTTPForbidden(
-                "No access rights for at least one of the given type-names")
+                "No access rights for at least one of the given type-names"
+            )
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
-        use_cache = method == "GET" and operation in \
-            (u"getcapabilities", u"describefeaturetype")
+        use_cache = method == "GET" and operation in (u"getcapabilities", u"describefeaturetype")
+        cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
         response = self._proxy_callback(
-            operation=operation,
+            operation, self.role_id, cache_control,
             url=self._get_wfs_url(), params=params, cache=use_cache,
             headers=self._get_headers(), body=self.request.body,
-            role_id=self.role_id
         )
-        if use_cache:
-            response.cache_control.public = False
-            response.cache_control.private = True
         return response
 
     def _is_allowed(self, typenames):
@@ -134,31 +133,28 @@ class TinyOWSProxy(Proxy):
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation, role_id, *args, **kwargs):
-        cache = kwargs.get("cache", False)
+    def _proxy_callback(self, operation, role_id, cache_control, *args, **kwargs):
         resp, content = self._proxy(*args, **kwargs)
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(
                 content, role_id,
                 self._get_wfs_url(),
-                self.settings.get("proxies", None)
+                self.settings.get("proxies")
             )
 
         content = self._filter_urls(
             content,
-            self.settings.get("online_resource", ""),
-            self.settings.get("proxy_online_resource", ""))
+            self.settings.get("online_resource"),
+            self.settings.get("proxy_online_resource")
+        )
 
-        headers = {
-            "Content-Type": resp["content-type"],
-            "Access-Control-Allow-Origin": "*",
-        }
-
-        return self._build_response(resp, content, cache, "tinyows", headers)
+        return self._build_response(
+            resp, content, cache_control, "tinyows"
+        )
 
     def _filter_urls(self, content, online_resource, proxy_online_resource):
-        if online_resource != "" and proxy_online_resource != "":
+        if online_resource is not None and proxy_online_resource is not None:
             return content.replace(online_resource, proxy_online_resource)
         else:
             return content
