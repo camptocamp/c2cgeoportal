@@ -172,6 +172,9 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         parser, downstream_handler, private_layers,
         u'Layer' if wms else u'FeatureType'
     )
+    # skip inclusion of DTDs
+    parser.setFeature(sax.handler.feature_external_ges, False)
+    parser.setFeature(sax.handler.feature_external_pes, False)
     filter_handler.parse(StringIO(content))
     return unicode(result.getvalue(), 'utf-8')
 
