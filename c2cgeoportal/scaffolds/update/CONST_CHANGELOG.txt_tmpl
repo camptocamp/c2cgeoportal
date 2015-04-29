@@ -39,14 +39,14 @@ Version 1.6
 
    Main things to do:
    - Move your old `config.yaml` and your `vars` section of the old
-     `buildout.cfg` file to the new `{{package}}.yaml` file.
+     `buildout.cfg` file to the new `vars_{{package}}.yaml` file.
    - Move your special task from your old `buildout.cfg` file to your new
      `{{package}}.mk` file
    - The `README.rst`, `.gitignore` files will be overwritten.
      Please make sure to back your changes up before proceeding.
    - The `development.ini.in`, `production.ini.in` files will be replaced by
      the `development.ini.mako`, `production.ini.mako` files. If you lost
-     something it should probably be moved in the `{{package}}.yaml` file.
+     something it should probably be moved in the `vars_{{package}}.yaml` file.
    - The `print/template/print.mako.in` file should be moved to
      `print.yaml.mako`.
    - The build environments (`<user>.mk` files) must be recreated again.
