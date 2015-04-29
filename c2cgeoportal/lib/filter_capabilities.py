@@ -180,6 +180,9 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
         u"Layer" if wms else u"FeatureType",
         layers_blacklist=private_layers
     )
+    # skip inclusion of DTDs
+    parser.setFeature(sax.handler.feature_external_ges, False)
+    parser.setFeature(sax.handler.feature_external_pes, False)
     filter_handler.parse(StringIO(content))
     return unicode(result.getvalue(), "utf-8")
 
