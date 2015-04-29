@@ -43,3 +43,8 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     }
     request.registry.settings.update(additional_settings)
     return request
+
+
+def load_file(file_name):
+    with open(file_name) as file:
+        return file.read()

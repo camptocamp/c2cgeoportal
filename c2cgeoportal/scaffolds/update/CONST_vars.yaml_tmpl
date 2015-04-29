@@ -172,6 +172,21 @@ vars:
         # external_mapserv_wfs_url parameter
         #external_mapserv_wfs_url:
 
+    tinyowsproxy:
+        # URL to internal TinyOWS instance
+        tinyows_url: http://localhost/{instanceid}/tinyows
+
+        # If the `online_resource` url in the TinyOWS configuration is not set
+        # to the TinyOWS proxy url (e.g. when the service is also used without
+        # the proxy), the proxy can replace the original `online_resource`
+        # url with the proxy url.
+        # proxy_online_resource: http://{host}/{instanceid}/tinyows_proxy
+        # online_resource: http://localhost/{instanceid}/tinyows
+
+        # When running a c2cgeoportal appl. in debug mode (with `make serve`)
+        # the host has to be set explicitly in a vhost environment.
+        # tinyows_host: {host}
+
     servers:
 
     # The "raster web services" configuration. See the "raster"

@@ -211,3 +211,14 @@ class Proxy:
             response.cache_control.no_cache = True
 
         return response
+
+    def _get_lower_params(self, params):
+        return dict(
+            (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
+        )
+
+    def _get_headers(self):
+        headers = self.request.headers
+        if "Cookie" in headers:  # pragma: no cover
+            headers.pop("Cookie")
+        return headers

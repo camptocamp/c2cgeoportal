@@ -77,7 +77,7 @@ def get_setting(settings, path, default=None):
     return value if value else default
 
 
-def get_protected_layers_query(role_id, what=None, version=1):
+def _get_layers_query(role_id, what=None, version=1):
     from c2cgeoportal.models import DBSession, LayerV1, \
         Layer, RestrictionArea, Role, layer_ra, role_ra, \
         LayerInternalWMS, LayerExternalWMS, LayerWMTS
@@ -95,7 +95,20 @@ def get_protected_layers_query(role_id, what=None, version=1):
         (role_ra, role_ra.c.restrictionarea_id == RestrictionArea.id),
         (Role, Role.id == role_ra.c.role_id))
     q = q.filter(Role.id == role_id)
+
+    return q
+
+
+def get_protected_layers_query(role_id, what=None, version=1):
+    from c2cgeoportal.models import Layer
+    q = _get_layers_query(role_id, what, version)
     return q.filter(Layer.public.is_(False))
+
+
+def get_writable_layers_query(role_id, what=None, version=1):
+    from c2cgeoportal.models import RestrictionArea
+    q = _get_layers_query(role_id, what, version)
+    return q.filter(RestrictionArea.readwrite.is_(True))
 
 
 @implementer(IRoutePregenerator)
