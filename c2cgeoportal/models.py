@@ -567,6 +567,11 @@ class LayerV1(Layer):
         "range",
         native_enum=False), default="disabled", nullable=False,
         label=_(u"Time mode"))
+    time_widget = Column(Enum(
+        "slider",
+        "datepicker",
+        native_enum=False), default="slider", nullable=True,
+        label=_(u"Time widget"))
 
     def __init__(
         self, name=u"", public=True, icon=u"",
@@ -604,6 +609,11 @@ class LayerInternalWMS(Layer):
         native_enum=False), default="disabled", nullable=False,
         label=_(u"Time mode")
     )
+    time_widget = Column(Enum(
+        "slider",
+        "datepicker",
+        native_enum=False), default="slider", nullable=True,
+        label=_(u"Time widget"))
 
     def __init__(self, name=u"", public=True, icon=u""):
         Layer.__init__(self, name=name, public=public)
@@ -636,6 +646,11 @@ class LayerExternalWMS(Layer):
         "range",
         native_enum=False), default="disabled", nullable=False,
         label=_(u"Time mode"))
+    time_widget = Column(Enum(
+        "slider",
+        "datepicker",
+        native_enum=False), default="slider", nullable=True,
+        label=_(u"Time widget"))
 
     def __init__(self, name=u"", public=True):
         Layer.__init__(self, name=name, public=public)
