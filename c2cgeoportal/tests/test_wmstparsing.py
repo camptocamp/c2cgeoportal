@@ -212,3 +212,9 @@ class TestTimeInformation(TestCase):
         ti = TimeInformation()
         ti.merge_mode("single")
         self.assertRaises(ValueError, ti.merge_mode, "range")
+
+    def test_merge_different_widgets(self):
+        from c2cgeoportal.lib.wmstparsing import TimeInformation
+        ti = TimeInformation()
+        ti.merge_widget("single")
+        self.assertRaises(ValueError, ti.merge_widget, "datepicker")

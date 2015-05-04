@@ -87,6 +87,7 @@ class TestThemesTimeView(TestCase):
         layer_wms_group = LayerInternalWMS(name=u"__test_layer_time_group", public=True)
         layer_wms_group.layer = "test_wmstimegroup"
         layer_wms_group.time_mode = "range"
+        layer_wms_group.time_widget = "datepicker"
         layer_wms_group.interfaces = [main]
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
@@ -174,7 +175,8 @@ class TestThemesTimeView(TestCase):
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
                         "mode": u"single",
-                        "resolution": "year"
+                        "resolution": "year",
+                        "widget": "slider"
                     },
                     "children": [{
                         "name": u"__test_layer_time_1",
@@ -192,7 +194,8 @@ class TestThemesTimeView(TestCase):
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
                             "mode": u"single",
-                            "resolution": "year"
+                            "resolution": "year",
+                            "widget": "slider"
                         },
                     }]
                 }, {
@@ -204,7 +207,8 @@ class TestThemesTimeView(TestCase):
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
                         "mode": u"single",
-                        "resolution": "year"
+                        "resolution": "year",
+                        "widget": "slider"
                     },
                     "children": [{
                         "name": u"__test_layer_time_1",
@@ -224,7 +228,8 @@ class TestThemesTimeView(TestCase):
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
                             "mode": u"range",
-                            "resolution": "year"
+                            "resolution": "year",
+                            "widget": "datepicker"
                         },
                     }]
                 }]
