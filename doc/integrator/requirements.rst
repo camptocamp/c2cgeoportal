@@ -58,22 +58,51 @@ to change it set the ``PRINT_OUTPUT`` value in the makefile.
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For Git look at GitHub's `Set Up Git page
-<http://help.github.com/win-set-up-git/>`_. You won't need to set up SSH
-keys, so you only need to follow the first section of this page.
+GeoMapFish can be used under Windows, but you will need to install Cygwin
+and some additional stuff for Python.
 
-Once Git is installed use Git Bash for all the shell commands provided in
-this documentation. You'll need to make sure the Turtoise, Python, and Java
-folders are defined in your system ``PATH``. For example if you have Python installed under
-``C:\Python26`` you can use ``export PATH=$PATH:/c/Python26`` to add Python
-to your ``PATH``.
+We assume that Python 2.7 is used.
 
-You need to install the ``psycopg2`` Python package in the main Python
-environment (e.g. ``C:\Python26``). Use an installer (``.exe``) from the
-`Stickpeople Project
-<http://www.stickpeople.com/projects/python/win-psycopg/>`_.
+Once Python is installed, you should add two folders to your ``path`` environment
+variable:
 
-When you download and configure Apache be sure that modules ``header_module``,
-``expire_module`` and ``rewrite_module`` are uncommented. You must also download
-and add modules ``mod_wsgi`` (http://modwsgi.readthedocs.org/) and ``mod_fcgid``
-(https://httpd.apache.org/mod_fcgid/).
+* ``C:\path_to_python\Python27``
+* ``C:\path_to_python\Python27\Scripts``
+
+Python
+^^^^^^
+
+* Install Microsoft Visual C++ Compiler for Python 2.7 (http://aka.ms/vcpython27)
+* Install pip, go to https://pip.pypa.io/en/latest/installing.html and download get-pip.py
+* Open a batch console (cmd), and run ``python get-pip.py``
+* Once done, run ``pip install virtualenv``
+
+Cygwin
+^^^^^^
+
+* Go to https://cygwin.com/
+* In the download section, download the installer corresponding to your system
+* Run the downloaded installer
+* Choose an install folder not containing any space or weird characters (like parentheses)
+
+When installing Cygwin, please make sure to install the following non-default packages:
+
+* ``make`` from the ``devel`` folder
+* ``gettext-devel`` from the ``devel`` folder
+* ``wget`` from the ``web`` folder
+
+Cygwin should *always* be run in administrator mode. To configure that:
+
+* Go to the Windows start menu
+* Right-click the Cygwin Terminal program icon
+* Open its properties
+* Under the ``Compatibility`` tab, check the ``Run this program as an administrator``
+
+Configure Git
+^^^^^^^^^^^^^
+
+Cygwin comes with its own git package. It might be a really good idea to configure
+Cygwin's git for Windows. To do so:
+
+* Open a Cygwin bash
+* Run ``git config core.autocrlf true``
