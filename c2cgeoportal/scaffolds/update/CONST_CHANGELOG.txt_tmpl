@@ -39,8 +39,8 @@ Version 1.6
      something it should probably be moved in the `vars_{{package}}.yaml` file.
    - The `print/template/print.mako.in` file should be moved to
      `print.yaml.mako`.
-   - The build environments (`<user>.mk` files) must be recreated again.
-     For multi project mode have a look on the documentation:
+   - The build environments (`<user>.mk` files) must be recreated.
+     For multi project mode have a look at the documentation:
      http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html
 
 3. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
@@ -54,7 +54,7 @@ Version 1.6
     -from c2cgeoportal import locale_negotiator
     +from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
 
-    - mobile view configuration ...
+    Replace the mobile view configuration by the following lines:
     + add_interface(config)
     + add_interface(config, 'edit')
     + add_interface(config, 'routing')
@@ -187,8 +187,8 @@ Version 1.6
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build
-    git rm config.yaml
-    git rm bootstrep.py
+    git rm config.yaml.in
+    git rm bootstrap.py
     git rm -r *buildout*
     git rm development.ini.in production.ini.in
     git rm versions.cfg
