@@ -64,8 +64,6 @@ WHITE = 7
 def _colorize(text, color):
     return "\x1b[01;3%im%s\x1b[0m" % (color, text)
 
-_color_bar = _colorize("=================================================================", GREEN)
-
 
 def main():  # pragma: no cover
     """
@@ -98,10 +96,11 @@ To have some help on a command type:
     parser = _fill_arguments(sys.argv[1])
     options = parser.parse_args(sys.argv[2:])
 
+    c2ctool = C2cTool(options)
     if sys.argv[1] == "upgrade":
-        upgrade(options)
+        c2ctool.upgrade()
     elif sys.argv[1] == "deploy":
-        deploy(options)
+        c2ctool.deploy()
     else:
         print("Unknown command")
 
@@ -150,67 +149,81 @@ def _fill_arguments(command):
     return parser
 
 
-def _print_step(options, step, venv_bin, intro="To continue type:"):
-    print(intro)
-    print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
-        "%s/c2ctool" % venv_bin,
-        options.file if options.file is not None else "<user.mk>",
-        options.version, step
-    ))
+class C2cTool:
 
+    color_bar = _colorize("================================================================", GREEN)
 
-def _get_project(options):
-    check_call(["make", "-f", options.file, "project.yaml"])
-    if not path.isfile("project.yaml"):
-        print("Unable to find the required 'project.yaml' file.")
-        exit(1)
+    def print_step(self, step, intro="To continue type:"):
+        print(intro)
+        print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
+            "%s/c2ctool" % self.venv_bin,
+            self.options.file if self.options.file is not None else "<user.mk>",
+            self.options.version, step
+        ))
 
-    return load(file("project.yaml", "r"))
+    def get_project(self):
+        check_call(["make", "-f", self.options.file, "project.yaml"])
+        if not path.isfile("project.yaml"):
+            print("Unable to find the required 'project.yaml' file.")
+            exit(1)
 
+        return load(file("project.yaml", "r"))
 
-def _test_checkers(project):
-    http = httplib2.Http()
-    for check_type in ["", "type=all"]:
-        resp, content = http.request(
-            "http://localhost%s%s" % (project["checker_path"], check_type),
-            method="GET",
-            headers={
-                "Host": project["host"]
-            }
-        )
-        if resp.status < 200 or resp.status >= 300:
-            print(_color_bar)
-            print("Checker error:")
-            print("Open `http://%s%s%s` for more informations." % (
-                project["host"], project["checker_path"], check_type
-            ))
-            return False
-    return True
+    def test_checkers(self):
+        http = httplib2.Http()
+        for check_type in ["", "type=all"]:
+            resp, content = http.request(
+                "http://localhost%s%s" % (self.project["checker_path"], check_type),
+                method="GET",
+                headers={
+                    "Host": self.project["host"]
+                }
+            )
+            if resp.status < 200 or resp.status >= 300:
+                print(self.color_bar)
+                print("Checker error:")
+                print("Open `http://%s%s%s` for more informations." % (
+                    self.project["host"], self.project["checker_path"], check_type
+                ))
+                return False
+        return True
 
+    def __init__(self, options):
+        self.options = options
+        self.project = self.get_project()
 
-def upgrade(options):
-    project = _get_project(options)
+    def upgrade(self):
+        self.package = "c2cgeoportal"
+        self.venv_bin = ".build/venv/bin"
+        if self.options.windows:
+            self.options.clean = "clean"
+            self.package = "c2cgeoportal-win"
+            self.venv_bin = ".build/venv/Scripts"
 
-    package = "c2cgeoportal"
-    venv_bin = ".build/venv/bin"
-    if options.windows:
-        options.clean = "clean"
-        package = "c2cgeoportal-win"
-        venv_bin = ".build/venv/Scripts"
+        if self.options.step == 0:
+            self.step0()
+        elif self.options.step == 1:
+            self.step1()
+        elif self.options.step == 2:
+            self.step2()
+        elif self.options.step == 3:
+            self.step3()
+        elif self.options.step == 4:
+            self.step4()
 
-    if options.step == 0:
-        if options.version != "master":
-            if re.match("^[0-9].[0-9]+.[0-9]$", options.version) is None:
+    def step0(self):
+        if self.options.version != "master":
+            if re.match("^[0-9].[0-9]+.[0-9]$", self.options.version) is None:
                 print(
                     "The version is wrong, should be 'master' or [0-9].[0-9]+.[0-9]). Found '%s'." %
-                    options.version
+                    self.options.version
                 )
                 exit(1)
 
             http = httplib2.Http()
             headers, _ = http.request(
                 "https://github.com/camptocamp/CGXP/tree/%s" %
-                options.version, "HEAD"
+                self.options.version, "HEAD"
             )
             if headers.status != 200:
                 print("This CGXP tag does not exist.")
@@ -218,15 +231,15 @@ def upgrade(options):
 
             headers, _ = http.request(
                 "http://pypi.camptocamp.net/internal-pypi/index/%s-%s.tar.gz" %
-                options.version, options.package, "HEAD"
+                self.options.version, self.options.package, "HEAD"
             )
             if headers.status != 200:
-                print("This %s egg does not exist." % options.package)
+                print("This %s egg does not exist." % self.options.package)
                 exit(1)
 
             url = (
                 "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
-                "c2cgeoportal/scaffolds/update/CONST_versions.txt" % options.version
+                "c2cgeoportal/scaffolds/update/CONST_versions.txt" % self.options.version
             )
             headers, content = http.request(url)
             if headers.status != 200:
@@ -234,33 +247,33 @@ def upgrade(options):
                 print(url)
                 exit(1)
             first_line = content.split()[0]
-            if not first_line.startswith("%s==" % options.package):
+            if not first_line.startswith("%s==" % self.options.package):
                 print("The first line of the version isn't about c2cgeoportal")
                 print(first_line)
                 exit(1)
-            if first_line[14:] != options.version:
+            if first_line[14:] != self.options.version:
                 print(
                     "The c2cgeoportal version is wrong. Expected '%s' but found '%s'." %
-                    (options.version, first_line[14:])
+                    (self.options.version, first_line[14:])
                 )
                 exit(1)
 
-        if path.split(path.realpath("."))[1] != project["project_folder"]:
+        if path.split(path.realpath("."))[1] != self.project["project_folder"]:
             print("Your project isn't in the right folder!")
             print("It should be in folder '%s' instead of folder '%s'." % (
-                project["project_folder"], path.split(path.realpath("."))[1]
+                self.project["project_folder"], path.split(path.realpath("."))[1]
             ))
 
         check_call(["git", "status"])
         print()
-        print(_color_bar)
+        print(self.color_bar)
         print(
             "Here is the output of 'git status'. Please make sure to commit all your changes "
             "before going further. All uncommited changes will be lost."
         )
-        _print_step(options, 1, venv_bin)
+        self.print_step(1)
 
-    elif options.step == 1:
+    def step1(self):
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "-f", "-d"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
@@ -274,7 +287,7 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
-            print(_color_bar)
+            print(self.color_bar)
             print(_colorize("The pull isn't fast forward.", RED))
             print(_colorize("Please solve the rebase and run it again.", YELLOW))
             exit(1)
@@ -282,62 +295,63 @@ def upgrade(options):
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
         check_call([
             "git", "submodule", "foreach", "git", "reset",
-            "--hard", "origin/%s" % options.version
+            "--hard", "origin/%s" % self.options.version
         ])
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         pip_cmd = [
-            "%s/pip" % venv_bin, "install",
+            "%s/pip" % self.venv_bin, "install",
             "--trusted-host", "pypi.camptocamp.net",
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
         ]
-        if options.version == "master":
-            check_call(["%s/pip" % venv_bin, "uninstall", package])
-            pip_cmd += ["--pre", package]
+        if self.options.version == "master":
+            check_call(["%s/pip" % self.venv_bin, "uninstall", self.package])
+            pip_cmd += ["--pre", self.package]
         else:
-            pip_cmd += ["%s==%s" % (package, options.version)]
+            pip_cmd += ["%s==%s" % (self.package, self.options.version)]
         check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % venv_bin, "--interactive", "-s", "c2cgeoportal_update",
-            "../%s" % project["project_folder"], "package=%s" % project["project_package"]
+            "%s/pcreate" % self.venv_bin, "--interactive", "-s", "c2cgeoportal_update",
+            "../%s" % self.project["project_folder"], "package=%s" % self.project["project_package"]
         ])
         check_call([
-            "%s/pcreate" % venv_bin, "-s", "c2cgeoportal_create",
-            "/tmp/%s" % project["project_folder"],
-            "package=%s" % project["project_package"],
-            "mobile_application_title=%s" % project["template_vars"]["mobile_application_title"],
-            "srid=%s" % project["template_vars"].get("srid", 21781),
+            "%s/pcreate" % self.venv_bin, "-s", "c2cgeoportal_create",
+            "/tmp/%s" % self.project["project_folder"],
+            "package=%s" % self.project["project_package"],
+            "mobile_application_title=%s" %
+            self.project["template_vars"]["mobile_application_title"],
+            "srid=%s" % self.project["template_vars"].get("srid", 21781),
         ])
-        check_call(["make", "-f", options.file, options.clean])
+        check_call(["make", "-f", self.options.file, self.options.clean])
 
         diff_file = open("changelog.diff", "w")
         check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
         diff_file.close()
 
-        check_call(["make", "-f", options.file, ".build/requirements.timestamp"])
+        check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
 
         print()
-        print(_color_bar)
+        print(self.color_bar)
         print(
             "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file"
             " (listed in the `changelog.diff` file)."
         )
-        _print_step(options, 2, venv_bin)
+        self.print_step(2)
 
-    elif options.step == 2:
-        if options.file is None:
+    def step2(self):
+        if self.options.file is None:
             print("The makefile is missing")
             exit(1)
 
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
-        if path.exists("/tmp/%s" % project["project_folder"]):
-            shutil.rmtree("/tmp/%s" % project["project_folder"])
+        if path.exists("/tmp/%s" % self.project["project_folder"]):
+            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
 
-        check_call(["make", "-f", options.file, "build"])
+        check_call(["make", "-f", self.options.file, "build"])
 
         command.upgrade(Config("alembic.ini"), "head")
         command.upgrade(Config("alembic_static.ini"), "head")
@@ -345,15 +359,15 @@ def upgrade(options):
         check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
 
         print()
-        print(_color_bar)
+        print(self.color_bar)
         print("The upgrade is nearly done, now you should:")
         print("- Test your application.")
 
-        _print_step(options, 3, venv_bin)
+        self.print_step(3)
 
-    elif options.step == 3:
-        if not _test_checkers(project):
-            _print_step(options, 3, venv_bin, intro="Correct them then type:")
+    def step3(self):
+        if not self.test_checkers():
+            self.print_step(3, intro="Correct them then type:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
@@ -363,27 +377,25 @@ def upgrade(options):
         check_call(["git", "status"])
 
         print()
-        print(_color_bar)
+        print(self.color_bar)
         print("We will commit all the above files!")
         print(
             "It the there is some files that shouldn't be commited you should "
             "add them in the `.gitignore` file and lunch the step 3 again."
         )
 
-        _print_step(options, 4, venv_bin, intro="Then to commit your changes type:")
+        self.print_step(4, intro="Then to commit your changes type:")
 
-    elif options.step == 4:
-        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % options.version])
+    def step4(self):
+        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % self.options.version])
 
+    def deploy(self):
+        if not self.test_checkers():
+            print(_colorize("Correct them and run again", RED))
+            exit(1)
 
-def deploy(options):
-    project = _get_project(options)
-    if not _test_checkers(project):
-        print(_colorize("Correct them and run again", RED))
-        exit(1)
-
-    check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", options.host])
-    check_call(["make", "-f", options.file, "build"])
+        check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])
+        check_call(["make", "-f", self.options.file, "build"])
 
 
 if __name__ == "__main__":  # pragma: no cover
