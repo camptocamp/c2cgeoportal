@@ -349,14 +349,30 @@ def upgrade(options):
         print("The upgrade is nearly done, now you should:")
         print("- Test your application.")
 
-        _print_step(options, 3, venv_bin, intro="Then to commit your changes type:")
+        _print_step(options, 3, venv_bin)
 
     elif options.step == 3:
         if not _test_checkers(project):
             _print_step(options, 3, venv_bin, intro="Correct them then type:")
             exit(1)
 
+        # Required to remove from the Git stage the ignored file when we lunch the step again
+        check_call(["git", "reset", "--mixed"])
+
         check_call(["git", "add", "-A"])
+        check_call(["git", "status"])
+
+        print()
+        print(_color_bar)
+        print("We will commit all the above files!")
+        print(
+            "It the there is some files that shouldn't be commited you should "
+            "add them in the `.gitignore` file and lunch the step 3 again."
+        )
+
+        _print_step(options, 4, venv_bin, intro="Then to commit your changes type:")
+
+    elif options.step == 4:
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % options.version])
 
 
