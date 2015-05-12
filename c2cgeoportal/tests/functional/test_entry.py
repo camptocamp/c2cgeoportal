@@ -62,6 +62,7 @@ class TestEntryView(TestCase):
 
         role1 = Role(name=u"__test_role1")
         user1 = User(username=u"__test_user1", password=u"__test_user1", role=role1)
+        user1.email = "__test_user1@example.com"
 
         role2 = Role(name=u"__test_role2", extent=WKTElement(
             "POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781
@@ -214,8 +215,7 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(
             username=u"__test_user1"
         ).one()
-        entry = Entry(request)
-        response = entry.logout()
+        response = Entry(request).logout()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.body, "true")
 
@@ -224,8 +224,25 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(
             username=u"__test_user1"
         ).one()
+        response = Entry(request).logout()
+        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.body, "true")
+
+    @attr(login=True)
+    def test_reset_password(self):
+        from c2cgeoportal.views.entry import Entry
+
+        request = self._create_request_obj(params={
+            "login": u"__test_user1",
+        })
         entry = Entry(request)
-        response = entry.logout()
+        user, username, password = entry._loginresetpassword()
+
+        request = self._create_request_obj(params={
+            "login": username,
+            "password": password,
+        })
+        response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.body, "true")
 

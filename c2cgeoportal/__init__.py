@@ -473,6 +473,7 @@ def includeme(config):
     config.add_route("login", "/login")
     config.add_route("logout", "/logout")
     config.add_route("loginchange", "/loginchange")
+    config.add_route("loginresetpassword", "/loginresetpassword")
     config.add_route("testi18n", "/testi18n.html")
     config.add_route("apijs", "/api.js")
     config.add_route("xapijs", "/xapi.js")

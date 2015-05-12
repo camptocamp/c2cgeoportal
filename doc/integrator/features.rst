@@ -29,9 +29,10 @@ Features that require additional steps (most of the time):
    querier
    editing
    print
-   https
    api
+   https
    shortener
+   reset_password
    wmstime
    intranet
    security

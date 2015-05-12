@@ -3,8 +3,6 @@
 JavaScript API
 ==============
 
-*New in c2cgeoportal 1.2.*
-
 Any c2cgeoportal application exposes a JavaScript API. This API can be used in
 third-party applications, like CMS applications. A c2cgeoportal application
 actually exposes two JavaScript APIs: the *Simple* API, and the *Extended* API.
