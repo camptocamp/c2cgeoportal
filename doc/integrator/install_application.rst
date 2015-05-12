@@ -167,8 +167,32 @@ In the ``<package>.mk`` add::
 Windows Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Some changes in the apache wsgi and mapserver configurations are required to make
-c2cgeoportal work on Windows.
+Some Python modules cannot currently be installed through the Python Package
+Index (pypi) and they have to be downloaded manually and stored. This is
+because these packages use DLLs and binaries which would have to be compiled
+using a C compiler.
+
+Furthermore, some changes in the apache wsgi and mapserver configurations are
+required to make c2cgeoportal work on Windows.
+
+Python Wheels
+^^^^^^^^^^^^^
+
+You should create a "wheels" folder at the root folder of your project.
+
+Then, go to http://www.lfd.uci.edu/~gohlke/pythonlibs/, search and download the
+following packages:
+
+* Psycopg2
+* Shapely
+* Pillow
+
+If your project is configured for Windows, then ``make`` will expect this folder
+to exist and contain these wheels.
+
+To be sure to use the right version of these packages, open the
+``CONST_requirements.txt`` file modify the versions of these three packages
+according to the file you have downloaded.
 
 apache/wsgi.conf.mako
 ^^^^^^^^^^^^^^^^^^^^^

@@ -37,7 +37,6 @@ papyrus-ogcproxy==0.2.dev1
 Paste==1.7.5.1
 PasteDeploy==1.5.2
 PasteScript==1.7.5
-Pillow==2.7.0
 polib==1.0.6
 postmarkup==1.2.2
 Pygments==2.0.2
