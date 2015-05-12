@@ -94,8 +94,11 @@ Gets the new required files from the c2cgeoportal templates:
 
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
-   cp -r /tmp/<project>/CONST_* /tmp/<project>/<package>.mk  /tmp/<project>/vars_<package>.yaml .
-   rm -fr /tmp/<project>
+   cp /tmp/<project>/CONST_Makefile /tmp/<project>/CONST_requirements-windows.txt \
+        /tmp/<project>/CONST_dev-requirements.txt /tmp/<project>/CONST_requirements.txt \
+        /tmp/<project>/CONST_packages.yaml /tmp/<project>/CONST_versions.txt \
+        /tmp/<project>/CONST_vars.yaml_tmpl /tmp/<project>/<package>.mk  vars_<project>.yaml .
+   rm -rf /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
