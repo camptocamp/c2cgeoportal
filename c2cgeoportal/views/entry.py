@@ -268,7 +268,7 @@ class Entry(object):
                         wms_layer_obj.timepositions,
                         wms_layer_obj.defaulttimeposition
                     )
-                    time.merge(l, extent, layer.time_mode)
+                    time.merge(l, extent, layer.time_mode, layer.time_widget)
 
                 for child_layer in wms_layer_obj.layers:
                     if child_layer.timepositions:
@@ -277,7 +277,7 @@ class Entry(object):
                             child_layer.defaulttimeposition
                         )
                         # The time mode comes from the layer group
-                        time.merge(l, extent, layer.time_mode)
+                        time.merge(l, extent, layer.time_mode, layer.time_widget)
 
         except ValueError:  # pragma no cover
             errors.add(

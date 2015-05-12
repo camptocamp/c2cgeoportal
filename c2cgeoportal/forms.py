@@ -399,6 +399,10 @@ time_options = [
     ("value", _("value")),
     ("range", _("range")),
 ]
+time_widget_options = [
+    ("slider", _("slider")),
+    ("datepicker", _("datepicker")),
+]
 
 # Layer V1
 LayerV1 = FieldSet(models.LayerV1)
@@ -419,6 +423,10 @@ LayerV1.time_mode.set(
     renderer=SelectFieldRenderer,
     options=time_options,
 )
+LayerV1.time_widget.set(
+    renderer=SelectFieldRenderer,
+    options=time_widget_options,
+)
 LayerV1.interfaces.set(renderer=CheckBoxSet)
 LayerV1.ui_metadata.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
@@ -434,6 +442,10 @@ LayerInternalWMS.time_mode.set(
     renderer=SelectFieldRenderer,
     options=time_options,
 )
+LayerInternalWMS.time_widget.set(
+    renderer=SelectFieldRenderer,
+    options=time_widget_options,
+)
 LayerInternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerInternalWMS.ui_metadata.set(readonly=True)
 LayerInternalWMS.restrictionareas.set(renderer=CheckBoxSet)
@@ -448,6 +460,10 @@ LayerExternalWMS.image_type.set(
 LayerExternalWMS.time_mode.set(
     renderer=SelectFieldRenderer,
     options=time_options,
+)
+LayerExternalWMS.time_widget.set(
+    renderer=SelectFieldRenderer,
+    options=time_widget_options,
 )
 LayerExternalWMS.interfaces.set(renderer=CheckBoxSet)
 LayerExternalWMS.ui_metadata.set(readonly=True)

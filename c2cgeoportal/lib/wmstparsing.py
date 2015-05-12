@@ -39,19 +39,22 @@ class TimeInformation(object):
     * ``extent`` A time extent instance (``TimeExtentValue`` or
                  ``TimeExtentInterval``)
     * ``mode`` The layer mode ("single", "range" or "disabled")
+    * ``widget`` The layer mode ("slider" (default) or "datepicker")
     """
     def __init__(self):
         self.extent = None
         self.mode = None
+        self.widget = None
         self.layer = None
 
-    def merge(self, layer, extent, mode):
+    def merge(self, layer, extent, mode, widget):
         layer_apply = \
             self.layer == layer or \
             (not self.has_time() and extent is not None)
 
         self.merge_extent(extent)
         self.merge_mode(mode)
+        self.merge_widget(widget)
 
         if layer_apply:
             layer["time"] = self.to_dict()
@@ -77,6 +80,18 @@ class TimeInformation(object):
             else:
                 self.mode = mode
 
+    def merge_widget(self, widget):
+        widget = "slider" if not widget else widget
+
+        if self.widget:
+            if self.widget != widget:
+                raise ValueError(
+                    "Could not mix time widget '%s' and '%s'"
+                    % (widget, self.widget)
+                )
+        else:
+            self.widget = widget
+
     def has_time(self):
         return self.extent is not None
 
@@ -84,6 +99,7 @@ class TimeInformation(object):
         if self.has_time():
             time = self.extent.to_dict()
             time["mode"] = self.mode
+            time["widget"] = self.widget
             return time
         else:
             return None

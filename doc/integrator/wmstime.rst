@@ -5,8 +5,8 @@ WMSTime Layer
 
 c2cgeoportal supports `WMS Time layers <http://mapserver.org/ogc/wms_time.html>`_.
 
-When the time is enabled for a layer group, a slider is added to this group in
-the layer tree which enables changing the layer time.
+When the time is enabled for a layer group, a time widget (a slider or datepicker)
+is added to this group in the layer tree which enables changing the layer time.
 
 Configuration
 -------------
@@ -59,29 +59,36 @@ Some examples for the interval definition:
 * An interval of one year: ``P1Y``
 * An interval of six months: ``P6M``
 
+For more information please refer to the `MapServer documentation
+<http://mapserver.org/ogc/wms_time.html>`_.
+
 Admin interface
 ~~~~~~~~~~~~~~~
 
 Most of the configuration is done in the mapfile as described in the above
-section. However the slider time mode must be configured via the admin
-interface.
+section. However the time widget must be configured via the admin interface.
+Two different widget types are available: A time slider and a datepicker
+widget. The preferred widget can be selected in the admin interface (field
+``Time widget``).
 
-The slider time mode is one of:
+Besides, the time mode can be changed. The time mode is one of:
 
 * ``single``
 * ``range``
 * ``disabled``
 
-The ``single`` mode is used to display a slider with a single thumb. The WMS
-Time layer will display data that are relative to the time selected by the
-thumb.
+The ``single`` mode displays a widget to select a single time or date. For a
+slider widget, a slider with a single thumb will be displayed. If datepicker is
+selected as widget, a single datepicker will be shown to select a single date.
+The WMS Time layer will display data that is relative to the selected time or date.
 
-The ``range`` mode is used to display a slider with two thumbs. In such a case,
-the layer will display data that are relative to the range defined by the two
-thumbs.
+The ``range`` mode displays a widget to select a time range. For a slider widget,
+a slider with two thumbs is shown. For the datepicker widget, two datepicker
+fields are displayed to select the start and end date.
+In mode ``range`` the layer will display data that is relative to the defined range.
 
-The ``disabled`` mode allows hidding the slider. No time parameter will be sent
-to the GetMap request in such a case.
+The ``disabled`` mode hides the time widget. No time parameter will be sent
+to the GetMap request in this case.
 
 Merging configurations
 ----------------------
@@ -94,12 +101,12 @@ Time layers of the same group.
 Some of those limitations apply to the mapfile:
 
 * The WMS Time layers of a same group must all be configured with either a
-  list of discrete values or an interval. It is not possible to mix the 2
+  list of discrete values or an interval. It is not possible to mix the two
   different types of definition within the same group,
 * If the WMS Time layers of a group use the ``min/max/interval``, they must
   all use the same interval.
 
 There is also a limitation that applies to the admin interface: all the WMS Time
-layers of a group should be configured to use the same time mode (``single`` or
-``range``) except for layers with time mode ``disabled`` that can be mixed
+layers of a group should be configured to use the same widget and the same time mode
+(``single`` or ``range``) except for layers with time mode ``disabled`` that can be mixed
 within others.

@@ -1196,6 +1196,7 @@ class TestEntryView(TestCase):
             "maxValue": "2010-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
             "mode": "single",
+            "widget": "slider",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,
         })
@@ -1210,6 +1211,7 @@ class TestEntryView(TestCase):
         layer_t2.is_legend_expanded = False
         layer_t2.public = True
         layer_t2.time_mode = "single"
+        layer_t2.time_widget = "slider"
         time = TimeInformation()
         entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time)
         self.assertEqual(time.to_dict(), {
@@ -1218,6 +1220,7 @@ class TestEntryView(TestCase):
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2015-01-01T00:00:00Z",
             "mode": "single",
+            "widget": "slider",
             "minDefValue": "2015-01-01T00:00:00Z",
             "maxDefValue": None,
         })
@@ -1233,6 +1236,7 @@ class TestEntryView(TestCase):
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
             "mode": "single",
+            "widget": "slider",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,
         })
@@ -1247,6 +1251,7 @@ class TestEntryView(TestCase):
         layer.is_legend_expanded = False
         layer.public = True
         layer.time_mode = "single"
+        layer.time_widget = "datepicker"
         time = TimeInformation()
         entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time)
         self.assertEqual(time.to_dict(), {
@@ -1255,6 +1260,7 @@ class TestEntryView(TestCase):
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
             "mode": "single",
+            "widget": "datepicker",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,
         })
