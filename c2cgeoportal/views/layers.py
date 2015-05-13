@@ -49,7 +49,8 @@ from shapely.geos import TopologicalError
 
 from papyrus.protocol import Protocol, create_filter
 
-from c2cgeoportal.lib.caching import get_region, init_cache_control
+from c2cgeoportal.lib.caching import get_region, \
+    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.dbreflection import get_class, get_table
 from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, Role
 
@@ -60,7 +61,6 @@ class Layers(object):
 
     def __init__(self, request):
         self.request = request
-        init_cache_control(request, "layers")
         self.settings = request.registry.settings.get("layers", {})
         self.layers_enum_config = self.settings.get("enum", None)
 
@@ -171,6 +171,8 @@ class Layers(object):
 
     @view_config(route_name="layers_read_many", renderer="geojson")
     def read_many(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         features = []
         for layer in self._get_layers_for_request():
             for f in self._proto_read(layer).features:
@@ -181,6 +183,8 @@ class Layers(object):
 
     @view_config(route_name="layers_read_one", renderer="geojson")
     def read_one(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         layer = self._get_layer_for_request()
         protocol = self._get_protocol_for_layer(layer)
         feature_id = self.request.matchdict.get("feature_id", None)
@@ -213,11 +217,15 @@ class Layers(object):
 
     @view_config(route_name="layers_count", renderer="string")
     def count(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         protocol = self._get_protocol_for_request()
         return protocol.count(self.request)
 
     @view_config(route_name="layers_create", renderer="geojson")
     def create(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         if self.request.user is None:
             raise HTTPForbidden()
 
@@ -257,6 +265,8 @@ class Layers(object):
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         if self.request.user is None:
             raise HTTPForbidden()
 
@@ -316,6 +326,8 @@ class Layers(object):
 
     @view_config(route_name="layers_delete")
     def delete(self):
+        set_common_headers(self.request, "layers", NO_CACHE)
+
         if self.request.user is None:
             raise HTTPForbidden()
 
@@ -344,6 +356,8 @@ class Layers(object):
 
     @view_config(route_name="layers_metadata", renderer="xsd")
     def metadata(self):
+        set_common_headers(self.request, "layers", PRIVATE_CACHE)
+
         layer = self._get_layer_for_request()
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
@@ -359,6 +373,8 @@ class Layers(object):
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
+        set_common_headers(self.request, "layers", PUBLIC_CACHE)
+
         if self.layers_enum_config is None:  # pragma: no cover
             raise HTTPInternalServerError("Missing configuration")
         general_dbsession_name = self.layers_enum_config.get("dbsession", "dbsession")

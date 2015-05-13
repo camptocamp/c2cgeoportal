@@ -337,7 +337,7 @@ To be able to use sub domain in a view we should configure the route as this::
 
 And use the ``route_url`` with an additional argument ``subdomain``::
 
-    request.route_url('<name>', path='', subdomain='<subdomain>')}",
+    request.route_url('<name>', subdomain='<subdomain>')}",
 
 Code
 ----

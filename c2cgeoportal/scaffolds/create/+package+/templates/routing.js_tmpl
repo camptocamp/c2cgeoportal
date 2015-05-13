@@ -1,13 +1,13 @@
 Ext.onReady(function() {
     // Ext global settings
-    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif')}";
+    Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif') | n}";
     Ext.QuickTips.init();
 
     // OpenLayers global settings
     OpenLayers.Number.thousandsSeparator = ' ';
     OpenLayers.DOTS_PER_INCH = 96;
-    OpenLayers.ProxyHost = "${request.route_url('ogcproxy')}?url=";
-    OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+    OpenLayers.ProxyHost = "${request.route_url('ogcproxy') | n}?url=";
+    OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
     OpenLayers.Lang.setCode("${lang}");
 
     // GeoExt global settings
@@ -26,6 +26,10 @@ Ext.onReady(function() {
 
     var WMTS_OPTIONS = {
         url: ${tiles_url | n},
+        getURL: function() {
+            var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
+            return url + "?${'&'.join(['%s=%s' % p for p in version_params.items()]) | n}";
+        },
         displayInLayerSwitcher: false,
         requestEncoding: 'REST',
         buffer: 0,
@@ -81,7 +85,7 @@ Ext.onReady(function() {
                 }
             },
             searchOptions: {
-                url: "${request.route_url('fulltextsearch', path='')}",
+                url: "${request.route_url('fulltextsearch') | n}",
             },
             outputTarget: 'left-panel'
         },

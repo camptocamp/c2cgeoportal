@@ -35,6 +35,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPNotFound
 
 from c2cgeoportal.lib.raster.georaster import GeoRaster
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 
 log = logging.getLogger(__name__)
 
@@ -46,7 +47,6 @@ class Raster(object):
 
     def __init__(self, request):
         self.request = request
-        request.response.cache_control.no_cache = True
         self.rasters = self.request.registry.settings["raster"]
 
     @view_config(route_name="raster", renderer="decimaljson")
@@ -69,6 +69,9 @@ class Raster(object):
             result[ref] = self._get_raster_value(
                 rasters[ref], ref, lon, lat)
 
+        set_common_headers(
+            self.request, "raster", NO_CACHE
+        )
         return result
 
     def _get_raster_value(self, layer, ref, lon, lat):

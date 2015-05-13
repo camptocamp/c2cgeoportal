@@ -31,7 +31,7 @@
 import logging
 import httplib2
 from StringIO import StringIO
-from urlparse import urlparse, urljoin
+from urlparse import urlsplit, urljoin
 from urllib import urlopen
 
 from xml import sax
@@ -46,7 +46,7 @@ from sqlalchemy import distinct
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import caching, get_protected_layers_query, \
-    get_writable_layers_query
+    get_writable_layers_query, add_url_params
 from c2cgeoportal.models import DBSession, Layer
 
 cache_region = caching.get_region()
@@ -73,18 +73,12 @@ def get_writable_layers(role_id):
 
 @cache_region.cache_on_arguments()
 def _wms_structure(wms_url, host):
-    params = (
-        ("SERVICE", "WMS"),
-        ("VERSION", "1.1.1"),
-        ("REQUEST", "GetCapabilities"),
-    )
-
-    url = urlparse(wms_url)
-    wms_url = "%s://%s%s?%s%s%s" % (
-        url.scheme, url.hostname, url.path, url.query,
-        "&" if len(url.query) > 0 else "",
-        "&".join(["=".join(p) for p in params])
-    )
+    url = urlsplit(wms_url)
+    wms_url = add_url_params(wms_url, {
+        "SERVICE": "WMS",
+        "VERSION": "1.1.1",
+        "REQUEST": "GetCapabilities",
+    })
 
     log.info("Get WMS GetCapabilities for URL: %s" % wms_url)
 

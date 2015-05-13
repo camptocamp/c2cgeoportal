@@ -40,6 +40,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal.models import DBSession, Shorturl
 from c2cgeoportal.lib.email_ import send_email
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,6 @@ class Shortener(object):
 
     def __init__(self, request):
         self.request = request
-        request.response.cache_control.no_cache = True
         self.settings = request.registry.settings.get("shortener", {})
 
     @view_config(route_name="shortener_get")
@@ -63,6 +63,9 @@ class Shortener(object):
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
 
+        set_common_headers(
+            self.request, "shortner", NO_CACHE
+        )
         return HTTPFound(location=short_urls[0].url)
 
     @view_config(route_name="shortener_create", renderer="json")
@@ -140,4 +143,7 @@ class Shortener(object):
                 self.settings["smtp_server"],
             )
 
+        set_common_headers(
+            self.request, "shortner", NO_CACHE
+        )
         return {"short_url": s_url}

@@ -90,26 +90,45 @@ Version 1.6
    Remove the no more needed `_query=url_params` argument of the
    `static_url` calls.
 
-7. In the `{{package}}/templates/*.js` files do the following change:
+7. In the `{{package}}/templates/*.js` files do the following changes:
 
-    -<% json_extent = user.role.json_extent if user else None %>
-    -% if json_extent:
-    -    var INITIAL_EXTENT = ${json_extent};
-    +<% bounds = user.role.bounds if user else None %>
-    +% if bounds:
-    +    var INITIAL_EXTENT = ${dumps(bounds)};
+    - <% json_extent = user.role.json_extent if user else None %>
+    - % if json_extent:
+    -     var INITIAL_EXTENT = ${json_extent};
+    + <% bounds = user.role.bounds if user else None %>
+    + % if bounds:
+    +     var INITIAL_EXTENT = ${dumps(bounds)};
 
-8. In the mapfile add the following lines to all restricted layers:
+    replace `url_role_params` by `version_role_params` in all the file.
+
+    in the WMTS_OPTIONS add the following lines:
+
+    + getURL: function() {
+    +     var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
+    +     return url + "?${"&".join(["%s=%s" % p for p in version_params.items()]) | }";
+    + },
+
+9. In the `{{package}}/templates/*.js`, `{{package}}/templates/api/*.js`,
+    `{{package}}/static/mobile/config.js`, `{{package}}/static/mobile/index.html`
+    files add ` | n` after all the `static_url` and `route_url` call, like:
+    - "${request.static_url('...')}"
+    + "${request.static_url('...') | n}"
+
+10. In the `{{package}}/templates/edit.js` file
+    add the following attribute to the `cgxp_editing` plugin:
+    + metadataParams: ${dumps(version_role_params) | n}
+
+11. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
         ${mapserver_layer_validation}
     END
 
-9. Remove the deprecated versioning table:
+12. Remove the deprecated versioning table:
 
     sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
 
-10. For non Apt/Dpkg based OS, disable the package checking:
+13. For non Apt/Dpkg based OS, disable the package checking:
     In the ``buildout.cfg`` section ``[buildout]`` add:
 
         parts -=
@@ -117,11 +136,11 @@ Version 1.6
             test-packages-mobile
             test-packages-tilecloud-chain
 
-11. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
+14. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
 
     +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
 
-12. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
+15. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
 
     Add the following lines in the start of the file:
         <%
@@ -161,29 +180,29 @@ Version 1.6
         root =
             ${"\n    ".join(root)}
 
-13. Remove your Apache configuration file, probably in
+16. Remove your Apache configuration file, probably in
     `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
 
-14. Notes on database changes:
+17. Notes on database changes:
     * In prevision of GeoMapFish 2.0 some tables were added and some fields updated.
     * Table ``user`` has been moved to schema ``main_static`` in order to store all
       data modified by the web application in the same schema.
       As a result the passwords no longer need to be synchronised among the various instances
       of the application and the password replication tool has been removed.
 
-15. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
+18. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
 
     + .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
-16. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
+18. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
     `apache-entry-point` by `apache_entry_point`
 
-17. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` do the following changes:
+19. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` do the following changes:
 
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
-18. Remove the deprecated files:
+20. Remove the deprecated files:
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build

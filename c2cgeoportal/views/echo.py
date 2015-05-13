@@ -34,6 +34,8 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
 
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+
 
 def json_base64_encode(filename, file):
     """
@@ -66,6 +68,7 @@ def echo(request):
         return HTTPBadRequest()
     response = Response()
     response.app_iter = json_base64_encode(file.filename, file.file)
-    response.content_type = "text/html"
-    response.cache_control.no_cache = True
-    return response
+    return set_common_headers(
+        request, "echo", NO_CACHE,
+        response=response, content_type="text/html"
+    )

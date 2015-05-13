@@ -27,7 +27,7 @@ This file defines the GXP viewer and its plugins for the Extended API.
             {
                 ptype: "cgxp_fulltextsearch",
                 actionTarget: "map.tbar",
-                url: "${request.route_url('fulltextsearch', path='')}"
+                url: "${request.route_url('fulltextsearch') | n}"
             },
             {
                 ptype: "cgxp_menushortcut",

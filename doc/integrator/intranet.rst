@@ -120,7 +120,7 @@ This page lists the changes that must be applied to add such a functionality.
    .. code:: python
 
        <%
-       mapserverProxyUrl = request.route_url('mapserverproxy', path='')
+       mapserverProxyUrl = request.route_url('mapserverproxy')
        if 'anonymous' in request.params:
            mapserverProxyUrl += '?anonymous'
        %>
@@ -129,7 +129,7 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: python
 
-       ${request.route_url('mapserverproxy', path='')}
+       ${request.route_url('mapserverproxy')}
 
    or
 

@@ -97,24 +97,51 @@ def invalidate_region(region=None):
     return get_region(region).invalidate()
 
 
-def init_cache_control(request, service_name, private=None, response=None):
+NO_CACHE = 0
+PUBLIC_CACHE = 1
+PRIVATE_CACHE = 2
+
+
+def set_common_headers(
+        request, service_name, cache,
+        response=None, add_cors=False, vary=False, content_type=None):
     if response is None:
         response = request.response
 
-    if private is None:
+    if cache == NO_CACHE:
+        response.cache_control.no_cache = True
+    elif cache == PUBLIC_CACHE:
+        response.cache_control.public = True
+    elif cache == PRIVATE_CACHE:
         if request.user is not None:
             response.cache_control.private = True
+        else:
+            response.cache_control.public = True
     else:  # pragma: nocover
-        response.cache_control.private = private
-    response.cache_control.public = not response.cache_control.private
+        raise "Invalid cache type"
 
-    max_age = request.registry.settings["default_max_age"]
+    if cache != NO_CACHE:
+        max_age = request.registry.settings["default_max_age"]
 
-    settings = request.registry.settings.get("cache_control", {})
-    if service_name in settings and "max_age" in settings[service_name]:
-        max_age = settings[service_name]["max_age"]
+        settings = request.registry.settings.get("cache_control", {})
+        if service_name in settings and "max_age" in settings[service_name]:
+            max_age = settings[service_name]["max_age"]
 
-    if max_age != 0:
-        response.cache_control.max_age = max_age
-    else:
-        response.cache_control.no_cache = True
+        if max_age != 0:
+            response.cache_control.max_age = max_age
+        else:
+            response.cache_control.no_cache = True
+
+    if add_cors:
+        response.headers.update({
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
+        })
+
+    if vary:
+        response.headers["Vary"] = "Accept-Language"
+
+    if content_type is not None:
+        response.content_type = content_type
+
+    return response

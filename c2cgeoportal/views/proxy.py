@@ -39,7 +39,8 @@ from urlparse import urlparse, parse_qs
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway, HTTPInternalServerError
 
-from c2cgeoportal.lib.caching import get_region, init_cache_control
+from c2cgeoportal.lib.caching import get_region, \
+    set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 
 log = logging.getLogger(__name__)
 cache_region = get_region()
@@ -89,11 +90,11 @@ class Proxy:
         if not cache:
             headers["Cache-Control"] = "no-cache"
 
-        if method in ["POST", "PUT"] and body is None:  # pragma: nocover
+        if method in ("POST", "PUT") and body is None:  # pragma: nocover
             body = StringIO(self.request.body)
 
         try:
-            if method in ["POST", "PUT"]:
+            if method in ("POST", "PUT"):
                 resp, content = http.request(
                     url, method=method, body=body, headers=headers
                 )
@@ -115,7 +116,7 @@ class Proxy:
             log.error("--- Exception ---")
             log.exception(e)
 
-            if method in ["POST", "PUT"]:
+            if method in ("POST", "PUT"):
                 log.error("--- With body ---")
                 if hasattr(body, "read"):
                     body.reset()
@@ -159,7 +160,8 @@ class Proxy:
         return self._proxy(*args, cache=True, **kwargs)
 
     def _proxy_response(
-        self, service_name, url, headers=None, headers_update={}, add_cors=True, **kwargs
+        self, service_name, url,
+        headers=None, headers_update={}, add_cors=True, public=False, **kwargs
     ):  # pragma: no cover
         cache = kwargs.get("cache", False)
         if cache is True:
@@ -171,18 +173,15 @@ class Proxy:
         else:
             resp, content = self._proxy(url, **kwargs)
 
+        cache_control = (PUBLIC_CACHE if public else PRIVATE_CACHE) if cache else NO_CACHE
         return self._build_response(
-            resp, content, cache, service_name, headers_update=headers_update, add_cors=add_cors
+            resp, content, cache_control, service_name,
+            headers_update=headers_update, add_cors=add_cors
         )
 
-    def _add_cors(self, headers):
-        headers.update({
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
-        })
-
     def _build_response(
-        self, resp, content, cache, service_name, headers=None, headers_update={}, add_cors=True
+        self, resp, content, cache_control, service_name,
+        headers=None, headers_update={}, add_cors=True, content_type=None
     ):
         headers = dict(resp) if headers is None else headers
 
@@ -193,24 +192,16 @@ class Proxy:
         if "content-location" in headers:  # pragma: no cover
             del headers["content-location"]
 
-        if add_cors:
-            self._add_cors(headers)
-
         headers.update(headers_update)
 
         response = Response(content, status=resp.status, headers=headers)
 
-        if cache is True:
-            init_cache_control(
-                self.request,
-                service_name,
-                response=response
-            )
-            response.cache_control.public = True
-        else:
-            response.cache_control.no_cache = True
-
-        return response
+        return set_common_headers(
+            self.request, service_name, cache_control,
+            response=response,
+            add_cors=add_cors,
+            content_type=content_type,
+        )
 
     def _get_lower_params(self, params):
         return dict(

@@ -38,6 +38,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 
 from c2cgeoportal.views.raster import Raster
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -47,13 +48,15 @@ class Profile(Raster):
 
     def __init__(self, request):
         self.request = request
-        request.response.cache_control = "no-cache"
         Raster.__init__(self, request)
 
     @view_config(route_name="profile.json", renderer="decimaljson")
     def json(self):
         """answers to /profile.json"""
         layer, points = self._compute_points()
+        set_common_headers(
+            self.request, "profile", NO_CACHE,
+        )
         return {"profile": points}
 
     @view_config(route_name="profile.csv")
@@ -67,11 +70,12 @@ class Profile(Raster):
             r = template % tuple((str(point["values"][l]) for l in layers))
             result += "\n%s,%s,%d,%d" % (str(point["dist"]), r, point["x"], point["y"])
 
-        response = Response(result, cache_control="no-cache", headers={
-            "Content-Type": "text/csv; charset=utf-8",
-            "Content-Disposition": 'attachment; filename="profile.csv"'
-        })
-        return response
+        return set_common_headers(
+            self.request, "profile", NO_CACHE,
+            response=Response(result, headers={
+                "Content-Disposition": 'attachment; filename="profile.csv"',
+            }), content_type="text/csv; charset=utf-8", vary=True
+        )
 
     def _compute_points(self):
         """Compute the alt=fct(dist) array"""

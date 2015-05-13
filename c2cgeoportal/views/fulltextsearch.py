@@ -38,14 +38,14 @@ from sqlalchemy import func, desc, or_, and_
 from geoalchemy2.shape import to_shape
 
 from c2cgeoportal.models import DBSession, FullTextSearch
-from c2cgeoportal.lib.caching import init_cache_control
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 
 
 class FullTextSearchView(object):
 
     def __init__(self, request):
         self.request = request
-        init_cache_control(request, "fulltextsearch")
+        set_common_headers(request, "fulltextsearch", NO_CACHE)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         if "languages" in self.settings:  # pragma: nocover
             self.languages = self.settings["languages"]

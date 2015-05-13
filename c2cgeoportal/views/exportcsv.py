@@ -28,13 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.httpexceptions import HTTPBadRequest
-from pyramid.view import view_config
 import codecs
 
-default_csv_extension = "csv"
+from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.view import view_config
 
-default_csv_encoding = "UTF-8"
+from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+
+DEFAULT_CSV_EXTENSION = "csv"
+DEFAULT_CSV_ENCODING = "UTF-8"
 
 
 @view_config(route_name="csvecho")
@@ -48,18 +50,21 @@ def echo(request):
 
     request.response.cache_control.no_cache = True
 
-    csv_extension = request.params.get("csv_extension", default_csv_extension)
-    csv_encoding = request.params.get("csv_encoding", default_csv_encoding)
+    csv_extension = request.params.get("csv_extension", DEFAULT_CSV_EXTENSION)
+    csv_encoding = request.params.get("csv_encoding", DEFAULT_CSV_ENCODING)
     name = request.params.get("name", "export")
 
-    res = request.response
+    response = request.response
     content = ""
-    if csv_encoding == default_csv_encoding:
+    if csv_encoding == DEFAULT_CSV_ENCODING:
         content += codecs.BOM_UTF8
     content += csv.encode(csv_encoding)
-    res.body = content
-    res.headerlist = [("Content-type", "text/csv")]
-    res.charset = csv_encoding.encode(csv_encoding)
-    res.content_disposition = "attachment; filename=%s.%s" % \
-        (name.replace(" ", "_"), csv_extension)
-    return res
+    request.response.body = content
+    response.charset = csv_encoding.encode(csv_encoding)
+    response.content_disposition = "attachment; filename=%s.%s" % (
+        name.replace(" ", "_"), csv_extension
+    )
+    return set_common_headers(
+        request, "csvecho", NO_CACHE,
+        content_type="text/csv"
+    )

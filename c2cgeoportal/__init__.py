@@ -41,7 +41,7 @@ from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
-    MultiDomainPregenerator, MultiDomainStaticURLInfo
+    C2CPregenerator, MultiDomainStaticURLInfo
 
 
 # used by (sql|form)alchemy
@@ -156,7 +156,10 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
         route_name="%stheme" % route_names[0],
         renderer=renderers[0]
     )
-    config.add_route(route_names[1], routes[1])
+    config.add_route(
+        route_names[1], routes[1],
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -217,7 +220,10 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
         route_name="mobile_index_prod"
     )
-    config.add_route("mobile_config_prod", "/mobile/config.js")
+    config.add_route(
+        "mobile_config_prod", "/mobile/config.js",
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -455,12 +461,14 @@ def includeme(config):
     config.add_route(
         "mapserverproxy", "/mapserv_proxy",
         custom_predicates=(mapserverproxy_route_predicate,),
-        pregenerator=MultiDomainPregenerator())
+        pregenerator=C2CPregenerator(role=True),
+    )
 
     # add route to the tinyows proxy
     config.add_route(
         "tinyowsproxy", "/tinyows_proxy",
-        pregenerator=MultiDomainPregenerator())
+        pregenerator=C2CPregenerator(role=True),
+    )
 
     # add routes to csv view
     config.add_route("csvecho", "/csv")
@@ -479,7 +487,10 @@ def includeme(config):
     config.add_route("xapijs", "/xapi.js")
     config.add_route("apihelp", "/apihelp.html")
     config.add_route("xapihelp", "/xapihelp.html")
-    config.add_route("themes", "/themes")
+    config.add_route(
+        "themes", "/themes",
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_route("invalidate", "/invalidate")
 
     # checker routes, Checkers are web services to test and assess that
@@ -503,11 +514,17 @@ def includeme(config):
 
     # print proxy routes
     config.add_route("printproxy", "/printproxy")
-    config.add_route("printproxy_info", "/printproxy/info.json")
+    config.add_route(
+        "printproxy_info", "/printproxy/info.json",
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_route("printproxy_create", "/printproxy/create.json")
     config.add_route("printproxy_get", "/printproxy/{file}.printout")
     # V3
-    config.add_route("printproxy_capabilities", "/printproxy/capabilities.json")
+    config.add_route(
+        "printproxy_capabilities", "/printproxy/capabilities.json",
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_route("printproxy_report_create", "/printproxy/report.{format}")
     config.add_route("printproxy_status", "/printproxy/status/{ref}.json")
     config.add_route("printproxy_report_get", "/printproxy/report/{ref}")
@@ -533,7 +550,9 @@ def includeme(config):
         request_method="GET")
     config.add_route(
         "layers_metadata", "/layers/{layer_id:\\d+}/md.xsd",
-        request_method="GET")
+        request_method="GET",
+        pregenerator=C2CPregenerator(role=True),
+    )
     config.add_route(
         "layers_read_many",
         "/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}",
@@ -553,7 +572,9 @@ def includeme(config):
     config.add_route(
         "layers_enumerate_attribute_values",
         "/layers/{layer_name}/values/{field_name}",
-        request_method="GET")
+        request_method="GET",
+        pregenerator=C2CPregenerator(),
+    )
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route("layers_root", "/layers/")

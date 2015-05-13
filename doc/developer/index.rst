@@ -17,6 +17,7 @@ Content:
     transifex
     debugging
     webservices
+    cache
     principles
     server_side
     client_side
