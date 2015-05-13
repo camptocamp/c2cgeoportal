@@ -36,6 +36,8 @@ from httplib2 import Http
 from json import dumps, loads
 import logging
 
+from c2cgeoportal.lib import add_url_params
+
 log = logging.getLogger(__name__)
 
 
@@ -141,8 +143,9 @@ class Checker(object):  # pragma: no cover
         }
         body = dumps(body)
 
-        _url = self.request.route_url("printproxy_create") + \
-            "?url=" + self.request.route_url("printproxy")
+        _url = add_url_params(self.request.route_url("printproxy_create"), {
+            "url": self.request.route_url("printproxy"),
+        })
         h = Http()
 
         log.info("Checker for printproxy request (create): %s" % _url)
@@ -174,10 +177,10 @@ class Checker(object):  # pragma: no cover
         return self.make_response(self._fts())
 
     def _fts(self):
-        _url = "%s?query=%s&limit=1" % (
-            self.request.route_url("fulltextsearch"),
-            self.settings["fulltextsearch"]
-        )
+        _url = add_url_params(self.request.route_url("fulltextsearch"), {
+            "query": self.settings["fulltextsearch"],
+            "limit": "1",
+        })
         h = Http()
 
         log.info("Checker for fulltextsearch: %s" % _url)
@@ -200,14 +203,20 @@ class Checker(object):  # pragma: no cover
 
     @view_config(route_name="checker_wmscapabilities")
     def wmscapabilities(self):
-        _url = self.request.route_url("mapserverproxy")
-        _url += "?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+        _url = add_url_params(self.request.route_url("mapserverproxy"), {
+            "SERVICE": "WMS",
+            "VERSION": "1.1.1",
+            "REQUEST": "GetCapabilities",
+        })
         return self.make_response(self.testurl(_url))
 
     @view_config(route_name="checker_wfscapabilities")
     def wfscapabilities(self):
-        _url = self.request.route_url("mapserverproxy")
-        _url += "?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities"
+        _url = add_url_params(self.request.route_url("mapserverproxy"), {
+            "SERVICE": "WFS",
+            "VERSION": "1.1.0",
+            "REQUEST": "GetCapabilities",
+        })
         return self.make_response(self.testurl(_url))
 
     @view_config(route_name="checker_theme_errors")
@@ -224,9 +233,7 @@ class Checker(object):  # pragma: no cover
             params.update(default_params)
             params.update(settings.get(interface, {}).get("params", {}))
             params["interface"] = interface
-            interface_url = "%s?%s" % (
-                _url, "&amp;".join(["%s=%s" % item for item in params.items()])
-            )
+            interface_url = add_url_params(_url, params)
 
             log.info("Checker for theme: %s" % interface_url)
             interface_url = interface_url.replace(
