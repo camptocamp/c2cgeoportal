@@ -35,7 +35,7 @@ import shutil
 import argparse
 import httplib2
 from yaml import load
-from subprocess import check_call
+from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
@@ -280,7 +280,14 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "-f", "-d"])
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        check_call(["git", "pull", "--rebase", "origin", branch])
+        try:
+            check_call(["git", "pull", "--rebase", "origin", branch])
+        except CalledProcessError:
+            print(self.color_bar)
+            print(_colorize("The pull (rebase) failed.", RED))
+            print(_colorize("Please solve the rebase and run the step again.", YELLOW))
+            exit(1)
+
         check_call(["git", "submodule", "sync"])
         check_call(["git", "submodule", "update", "--init"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
@@ -289,7 +296,7 @@ class C2cTool:
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
             print(self.color_bar)
             print(_colorize("The pull isn't fast forward.", RED))
-            print(_colorize("Please solve the rebase and run it again.", YELLOW))
+            print(_colorize("Please solve the rebase and run the step again.", YELLOW))
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
