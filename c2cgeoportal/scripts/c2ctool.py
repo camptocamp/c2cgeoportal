@@ -321,7 +321,7 @@ class C2cTool:
         check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % self.venv_bin, "--interactive", "-s", "c2cgeoportal_update",
+            "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
             "../%s" % self.project["project_folder"], "package=%s" % self.project["project_package"]
         ])
         check_call([
