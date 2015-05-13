@@ -314,7 +314,7 @@ class C2cTool:
             "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
         ]
         if self.options.version == "master":
-            check_call(["%s/pip" % self.venv_bin, "uninstall", self.package])
+            check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", self.package])
             pip_cmd += ["--pre", self.package]
         else:
             pip_cmd += ["%s==%s" % (self.package, self.options.version)]
