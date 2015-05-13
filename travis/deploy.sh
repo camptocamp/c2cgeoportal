@@ -42,7 +42,8 @@ then
     cd -
     echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
     echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i "s/name='c2cgeoportal'/name='c2cgeoportal-win'/g" setup.py
+    sed -i 's/name="c2cgeoportal",/name="c2cgeoportal-win",/g' setup.py
+    git diff
 
     if [ ${FINAL} == true ]
     then
