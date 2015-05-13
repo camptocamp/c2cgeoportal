@@ -98,6 +98,13 @@ Cygwin should *always* be run in administrator mode. To configure that:
 * Open its properties
 * Under the ``Compatibility`` tab, check the ``Run this program as an administrator``
 
+To avoid file permission problems between Windows and Cygwin, edit Cygwin's
+``/etc/fstab`` file to disable ACLs like this:
+
+.. prompt:: bash
+
+    none /cygdrive cygdrive binary,noacl,posix=0,user 0 0
+
 Configure Git
 ^^^^^^^^^^^^^
 
