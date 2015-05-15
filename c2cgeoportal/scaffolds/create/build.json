@@ -84,7 +84,8 @@
     "compilation_level": "ADVANCED",
     "warning_level": "VERBOSE",
     "generate_exports": true,
-    "output_wrapper": "(function(){%output%})();",
+    "language_in": "ECMASCRIPT5_STRICT",
+    "output_wrapper": "(function(){%output%}).call(window);",
     "use_types_for_optimization": true,
     "manage_closure_dependencies": true
   }
