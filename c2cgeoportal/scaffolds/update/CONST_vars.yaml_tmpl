@@ -243,7 +243,7 @@ vars:
 
     # Check collector configuration
     check_collector:
-        disabled: []
+        disabled: [checker_printcapabilities, checker_pdf]
         check_type:
             all:
             - name: checker_main
@@ -266,6 +266,10 @@ vars:
               display: Print capabilities
             - name: checker_pdf
               display: Print PDF
+            - name: checker_print3capabilities
+              display: Print capabilities
+            - name: checker_pdf3
+              display: Print PDF
             - name: checker_fts
               display: FullTextSearch
             - name: checker_wmscapabilities
@@ -279,7 +283,7 @@ vars:
               display: Viewer script
             - name: checker_api
               display: API
-            - name: checker_printcapabilities
+            - name: checker_print3capabilities
               display: Print capabilities
             - name: checker_fts
               display: FullTextSearch

@@ -35,6 +35,7 @@ import httplib
 from httplib2 import Http
 from json import dumps, loads
 import logging
+from time import sleep
 
 from c2cgeoportal.lib import add_url_params
 
@@ -115,6 +116,11 @@ class Checker(object):  # pragma: no cover
         _url = self.request.route_url("printproxy_info")
         return self.make_response(self.testurl(_url))
 
+    @view_config(route_name="checker_print3capabilities")
+    def print3capabilities(self):
+        _url = self.request.route_url("printproxy_capabilities")
+        return self.make_response(self.testurl(_url))
+
     @view_config(route_name="checker_pdf")
     def pdf(self):
         return self.make_response(self._pdf())
@@ -169,6 +175,56 @@ class Checker(object):  # pragma: no cover
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed retrieving PDF: " + content
+
+        return "OK"
+
+    @view_config(route_name="checker_pdf3")
+    def pdf3(self):
+        return self.make_response(self._pdf3())
+
+    def _pdf3(self):
+        body = dumps(self.settings["print_spec"])
+
+        _url = self.request.route_url("printproxy_report_create", format="pdf")
+        h = Http()
+
+        log.info("Checker for printproxy request (create): %s" % _url)
+        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
+        headers = {
+            "Content-Type": "application/json;charset=utf-8",
+            "Host": self.request.environ.get("HTTP_HOST")
+        }
+        resp, content = h.request(_url, "POST", headers=headers, body=body)
+
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
+            return "Failed creating the print job: " + content
+
+        job = loads(content)
+        _url = self.request.route_url("printproxy_status", ref=job["ref"])
+        log.info("Checker for printproxy pdf status: %s" % _url)
+        headers = {"Host": self.request.environ.get("HTTP_HOST")}
+        done = False
+        while not done:
+            sleep(1)
+            resp, content = h.request(_url, headers=headers)
+            if resp.status != httplib.OK:
+                self.set_status(resp.status, resp.reason)
+                return "Failed get the status: " + content
+
+            status = loads(content)
+            print status
+            if "error" in status:
+                return "Faild to do the printing: %s" % status["error"]
+            done = status["done"]
+
+        _url = self.request.route_url("printproxy_report_get", ref=job["ref"])
+        log.info("Checker for printproxy pdf retrieve: %s" % _url)
+        resp, content = h.request(_url, headers=headers)
+
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
+            return "Failed to get the PDF: " + content
 
         return "OK"
 
