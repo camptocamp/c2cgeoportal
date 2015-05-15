@@ -17,9 +17,9 @@
 /development.ini
 /production.ini
 /project.yaml
-/print/config.yaml
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml
+/print/print-apps/{{package}}/config.yaml
 /mapserver/c2cgeoportal.map
 /mapserver/tinyows.xml
 /deploy/hooks/post-restore-database
