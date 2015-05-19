@@ -505,6 +505,8 @@ def includeme(config):
     config.add_route("checker_lang_files", "/checker_lang_files")
     config.add_route("checker_printcapabilities", "/checker_printcapabilities")
     config.add_route("checker_pdf", "/checker_pdf")
+    config.add_route("checker_print3capabilities", "/checker_print3capabilities")
+    config.add_route("checker_pdf3", "/checker_pdf3")
     config.add_route("checker_fts", "/checker_fts")
     config.add_route("checker_wmscapabilities", "/checker_wmscapabilities")
     config.add_route("checker_wfscapabilities", "/checker_wfscapabilities")
