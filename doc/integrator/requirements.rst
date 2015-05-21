@@ -113,3 +113,21 @@ Cygwin's git for Windows. To do so:
 
 * Open a Cygwin bash
 * Run ``git config core.autocrlf true``
+
+Print
+^^^^^^
+
+If using MapFish Print v3 (thus defining ``PRINT_VERSION ?= 3`` in your
+makefile), then you should define the service name of your Tomcat server. In
+your makefile, define the following variables:
+
+.. prompt:: bash
+
+    PRINT_TMP = .
+    TOMCAT_START_COMMAND = net START Tomcat7
+    TOMCAT_STOP_COMMAND = net STOP Tomcat7
+
+The first line disables the tmp folder, which is not working on Windows.
+The next two lines define the commands to start and stop your Tomcat service
+(here it would be ``Tomcat7``). On Windows, these commands differ from the one
+used on Linux.
