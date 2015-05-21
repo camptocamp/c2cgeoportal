@@ -64,7 +64,7 @@
         App.wmsUrl = "${request.route_url('mapserverproxy') | n}";
         App.rasterUrl = "${request.route_url('raster') | n}";
         App.loginUrl = "${request.route_url('login') | n}";
-        App.logoutUrl = "${request.route_url('logout' | n)}";
+        App.logoutUrl = "${request.route_url('logout') | n}";
         App.cameFrom = "${came_from | n}";
         App.desktopAppUrl = "${request.route_url('home', _query={'no_redirect':''}) | n}";
     </script>
