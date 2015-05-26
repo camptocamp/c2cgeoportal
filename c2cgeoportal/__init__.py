@@ -529,6 +529,10 @@ def includeme(config):
     )
     config.add_route("printproxy_report_create", "/printproxy/report.{format}")
     config.add_route("printproxy_status", "/printproxy/status/{ref}.json")
+    config.add_route(
+        "printproxy_cancel", "/printproxy/cancel/{ref}",
+        request_method="DELETE",
+    )
     config.add_route("printproxy_report_get", "/printproxy/report/{ref}")
 
     # full text search routes
