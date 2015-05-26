@@ -3,25 +3,30 @@ throwErrorOnExtraParameters: true
 templates:
     A4 portrait: !template
         reportTemplate: A4_Portrait.jrxml
-        tableData: jrDataSource
         attributes:
-            title: !string {}
-            comments: !string {}
+            title: !string
+                default: ""
+            comments: !string
+                default: ""
+            debug: !integer
+                default: 0
             legend: !legend {}
             northArrow: !northArrow
-                size: 200
+                size: 40
                 default:
-                    graphic: "north.svg"
+                    graphic: "file:///north.svg"
             scalebar: !scalebar
-                width: 230
-                height: 40
+                width: 150
+                height: 20
+                default:
+                     fontSize: 8
             map: !map
                 maxDpi: 254
                 dpiSuggestions: [254]
                 zoomLevels: !zoomLevels
-                    scales: [5000, 10000, 25000, 50000, 100000, 500000]
-                width: 554
-                height: 662
+                    scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
+                width: 555
+                height: 675
             datasource: !datasource
                 attributes:
                     title: !string {}
@@ -30,6 +35,21 @@ templates:
         processors:
         - !reportBuilder # compile all reports in current directory
             directory: '.'
+        - !configureHttpRequests
+            httpProcessors:
+            - !mapUri
+                mapping:
+                    ([htps])://${host}/(.*): "$1://127.0.0.1/$2"
+            - !useHttpForHttps
+                hosts:
+                - ${host}
+                portMapping:
+                    443: 80
+            - !forwardHeaders
+                headers:
+                - Cookie
+                - Host
+                - Referrer
         - !prepareLegend
             template: legend.jrxml
         - !createNorthArrow {}
