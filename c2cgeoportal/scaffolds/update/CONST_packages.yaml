@@ -31,7 +31,6 @@ main:
         version: 2.2
     libapache2-mod-wsgi: 3.3
     libpq-dev: 9.1
-    python-dev: 2.7
     gcc:
         cmd: gcc --version | head -n 1 | awk '{{print $4}}'
         version: 4.6
@@ -42,6 +41,7 @@ main:
 mobile:
     sencha:
         cmd: sencha help 2> /dev/null | grep 'Sencha Cmd' | head -n 1 | awk '{{print $3}}' | sed 's/^v//'
+        version: 4.0
     ruby-compass: 0 # just present
 
 tilecloud-chain:
