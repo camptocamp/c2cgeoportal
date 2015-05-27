@@ -60,8 +60,6 @@ def echo(request):
     See:
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload
     """
-    if request.method != "POST":
-        return HTTPBadRequest()
     try:
         file = request.POST["file"]
     except KeyError:

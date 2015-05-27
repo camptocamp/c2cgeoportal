@@ -204,6 +204,17 @@ class PrintProxy(Proxy):  # pragma: no cover
             ),
         )
 
+    @view_config(route_name="printproxy_cancel")
+    def cancel(self):
+        """ PDF cancel. """
+        return self._proxy_response(
+            "print",
+            "%s/cancel/%s" % (
+                self.config["print_url"],
+                self.request.matchdict.get("ref")
+            ),
+        )
+
     @view_config(route_name="printproxy_report_get")
     def report_get(self):
         """ Get the PDF. """

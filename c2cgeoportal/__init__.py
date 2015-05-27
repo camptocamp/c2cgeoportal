@@ -136,7 +136,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
             return f(root, request)
         return new_f
 
-    config.add_route(route_names[0], routes[0])
+    config.add_route(route_names[0], routes[0], request_method="GET")
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -147,7 +147,8 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "%stheme" % route_names[0],
-        "%s%stheme/*themes" % (routes[0], "" if routes[0][-1] == "/" else "/")
+        "%s%stheme/*themes" % (routes[0], "" if routes[0][-1] == "/" else "/"),
+        request_method="GET",
     )
     config.add_view(
         Entry,
@@ -158,6 +159,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     )
     config.add_route(
         route_names[1], routes[1],
+        request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_view(
@@ -183,7 +185,7 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         return new_f
 
     interface_name = "mobile" if interface_name is None else interface_name
-    config.add_route("mobile_index_dev", "/mobile_dev/")
+    config.add_route("mobile_index_dev", "/mobile_dev/", request_method="GET")
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -193,7 +195,7 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
         route_name="mobile_index_dev"
     )
-    config.add_route("mobile_config_dev", "/mobile_dev/config.js")
+    config.add_route("mobile_config_dev", "/mobile_dev/config.js", request_method="GET")
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -210,7 +212,7 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
     )
 
-    config.add_route("mobile_index_prod", "/mobile/")
+    config.add_route("mobile_index_prod", "/mobile/", request_method="GET")
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -222,6 +224,7 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
     )
     config.add_route(
         "mobile_config_prod", "/mobile/config.js",
+        request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_view(
@@ -251,7 +254,7 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
             return f(root, request)
         return new_f
 
-    config.add_route(route_name, route)
+    config.add_route(route_name, route, request_method="GET")
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -262,7 +265,8 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "%stheme" % route_name,
-        "%s%stheme/*themes" % (route, "" if route[-1] == "/" else "/")
+        "%s%stheme/*themes" % (route, "" if route[-1] == "/" else "/"),
+        request_method="GET",
     )
     config.add_view(
         Entry,
@@ -471,85 +475,116 @@ def includeme(config):
     )
 
     # add routes to csv view
-    config.add_route("csvecho", "/csv")
+    config.add_route("csvecho", "/csv", request_method="POST")
 
     # add routes to the echo service
-    config.add_route("echo", "/echo")
+    config.add_route("echo", "/echo", request_method="POST")
 
     # add routes to the entry view class
-    config.add_route("loginform", "/login.html")
-    config.add_route("login", "/login")
-    config.add_route("logout", "/logout")
-    config.add_route("loginchange", "/loginchange")
-    config.add_route("loginresetpassword", "/loginresetpassword")
-    config.add_route("testi18n", "/testi18n.html")
-    config.add_route("apijs", "/api.js")
-    config.add_route("xapijs", "/xapi.js")
-    config.add_route("apihelp", "/apihelp.html")
-    config.add_route("xapihelp", "/xapihelp.html")
+    config.add_route("loginform", "/login.html", request_method="GET")
+    config.add_route("login", "/login", request_method="GET")
+    config.add_route("logout", "/logout", request_method="GET")
+    config.add_route("loginchange", "/loginchange", request_method="GET")
+    config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")
+    config.add_route("testi18n", "/testi18n.html", request_method="GET")
+    config.add_route("apijs", "/api.js", request_method="GET")
+    config.add_route("xapijs", "/xapi.js", request_method="GET")
+    config.add_route("apihelp", "/apihelp.html", request_method="GET")
+    config.add_route("xapihelp", "/xapihelp.html", request_method="GET")
     config.add_route(
         "themes", "/themes",
+        request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
-    config.add_route("invalidate", "/invalidate")
+    config.add_route("invalidate", "/invalidate", request_method="GET")
 
     # checker routes, Checkers are web services to test and assess that
     # the application is correctly functioning.
     # These web services are used by tools like (nagios).
-    config.add_route("checker_main", "/checker_main")
-    config.add_route("checker_viewer", "/checker_viewer")
-    config.add_route("checker_edit", "/checker_edit")
-    config.add_route("checker_edit_js", "/checker_edit_js")
-    config.add_route("checker_api", "/checker_api")
-    config.add_route("checker_xapi", "/checker_xapi")
-    config.add_route("checker_lang_files", "/checker_lang_files")
-    config.add_route("checker_printcapabilities", "/checker_printcapabilities")
-    config.add_route("checker_pdf", "/checker_pdf")
-    config.add_route("checker_print3capabilities", "/checker_print3capabilities")
-    config.add_route("checker_pdf3", "/checker_pdf3")
-    config.add_route("checker_fts", "/checker_fts")
-    config.add_route("checker_wmscapabilities", "/checker_wmscapabilities")
-    config.add_route("checker_wfscapabilities", "/checker_wfscapabilities")
-    config.add_route("checker_theme_errors", "/checker_theme_errors")
+    config.add_route("checker_main", "/checker_main", request_method="GET")
+    config.add_route("checker_viewer", "/checker_viewer", request_method="GET")
+    config.add_route("checker_edit", "/checker_edit", request_method="GET")
+    config.add_route("checker_edit_js", "/checker_edit_js", request_method="GET")
+    config.add_route("checker_api", "/checker_api", request_method="GET")
+    config.add_route("checker_xapi", "/checker_xapi", request_method="GET")
+    config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
+    config.add_route(
+        "checker_printcapabilities", "/checker_printcapabilities",
+        request_method="GET",
+    )
+    config.add_route("checker_pdf", "/checker_pdf", request_method="GET")
+    config.add_route(
+        "checker_print3capabilities", "/checker_print3capabilities",
+        request_method="GET",
+    )
+    config.add_route("checker_pdf3", "/checker_pdf3", request_method="GET")
+    config.add_route("checker_fts", "/checker_fts", request_method="GET")
+    config.add_route("checker_wmscapabilities", "/checker_wmscapabilities", request_method="GET")
+    config.add_route("checker_wfscapabilities", "/checker_wfscapabilities", request_method="GET")
+    config.add_route("checker_theme_errors", "/checker_theme_errors", request_method="GET")
     # collector
-    config.add_route("check_collector", "/check_collector")
+    config.add_route("check_collector", "/check_collector", request_method="GET")
 
     # print proxy routes
-    config.add_route("printproxy", "/printproxy")
+    config.add_route("printproxy", "/printproxy", request_method="HEAD")
     config.add_route(
         "printproxy_info", "/printproxy/info.json",
+        request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
-    config.add_route("printproxy_create", "/printproxy/create.json")
-    config.add_route("printproxy_get", "/printproxy/{file}.printout")
+    config.add_route(
+        "printproxy_create", "/printproxy/create.json",
+        request_method="POST",
+    )
+    config.add_route(
+        "printproxy_get", "/printproxy/{file}.printout",
+        request_method="GET",
+    )
     # V3
     config.add_route(
         "printproxy_capabilities", "/printproxy/capabilities.json",
+        request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_route("printproxy_report_create", "/printproxy/report.{format}")
     config.add_route("printproxy_status", "/printproxy/status/{ref}.json")
-    config.add_route("printproxy_report_get", "/printproxy/report/{ref}")
+    config.add_route(
+        "printproxy_report_create", "/printproxy/report.{format}",
+        request_method="POST",
+    )
+    config.add_route(
+        "printproxy_status", "/printproxy/status/{ref}.json",
+        request_method="GET",
+    )
+    config.add_route(
+        "printproxy_cancel", "/printproxy/cancel/{ref}",
+        request_method="DELETE",
+    )
+    config.add_route(
+        "printproxy_report_get", "/printproxy/report/{ref}",
+        request_method="GET",
+    )
 
     # full text search routes
     config.add_route("fulltextsearch", "/fulltextsearch")
 
     # Access to raster data
-    config.add_route("raster", "/raster")
-    config.add_route("profile.csv", "/profile.csv")
-    config.add_route("profile.json", "/profile.json")
+    config.add_route("raster", "/raster", request_method="GET")
+    config.add_route("profile.csv", "/profile.csv", request_method="POST")
+    config.add_route("profile.json", "/profile.json", request_method="POST")
 
     # shortener
-    config.add_route("shortener_create", "/short/create")
-    config.add_route("shortener_get", "/short/{ref}")
+    config.add_route("shortener_create", "/short/create", request_method="GET")
+    config.add_route("shortener_get", "/short/{ref}", request_method="GET")
 
     # PDF report tool
-    config.add_route("pdfreport", "/pdfreport/{layername}/{id}")
+    config.add_route("pdfreport", "/pdfreport/{layername}/{id}", request_method="GET")
 
     # add routes for the "layers" web service
     config.add_route(
         "layers_count", "/layers/{layer_id:\\d+}/count",
-        request_method="GET")
+        request_method="GET"
+    )
     config.add_route(
         "layers_metadata", "/layers/{layer_id:\\d+}/md.xsd",
         request_method="GET",
@@ -579,7 +614,7 @@ def includeme(config):
     )
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
-    config.add_route("layers_root", "/layers/")
+    config.add_route("layers_root", "/layers/", request_method="HEAD")
 
     # pyramid_formalchemy's configuration
     config.include("pyramid_formalchemy")
@@ -608,7 +643,7 @@ def includeme(config):
         ("admin_interface", "available_metadata"),
         formalchemy_available_metadata)
 
-    config.add_route("checker_all", "/checker_all")
+    config.add_route("checker_all", "/checker_all", request_method="GET")
 
     # scan view decorator for adding routes
     config.scan(ignore="c2cgeoportal.tests")

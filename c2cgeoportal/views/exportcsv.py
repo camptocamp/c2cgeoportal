@@ -41,9 +41,6 @@ DEFAULT_CSV_ENCODING = "UTF-8"
 
 @view_config(route_name="csvecho")
 def echo(request):
-    if request.method != "POST":
-        return HTTPBadRequest("Wrong method")
-
     csv = request.params.get("csv", None)
     if csv is None:
         return HTTPBadRequest("csv parameter is required")
