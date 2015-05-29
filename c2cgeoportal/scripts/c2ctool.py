@@ -213,9 +213,10 @@ class C2cTool:
 
     def step0(self):
         if self.options.version != "master":
-            if re.match("^[0-9].[0-9]+.[0-9]$", self.options.version) is None:
+            if re.match("^[0-9].[0-9]+.[0-9](rc[0-9])?$", self.options.version) is None:
                 print(
-                    "The version is wrong, should be 'master' or [0-9].[0-9]+.[0-9]). Found '%s'." %
+                    "The version is wrong, should be 'master' or "
+                    "[0-9].[0-9]+.[0-9](rc[0-9])?). Found '%s'." %
                     self.options.version
                 )
                 exit(1)
