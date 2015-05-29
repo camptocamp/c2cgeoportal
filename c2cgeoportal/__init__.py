@@ -546,8 +546,6 @@ def includeme(config):
         request_method="GET",
         pregenerator=C2CPregenerator(role=True),
     )
-    config.add_route("printproxy_report_create", "/printproxy/report.{format}")
-    config.add_route("printproxy_status", "/printproxy/status/{ref}.json")
     config.add_route(
         "printproxy_report_create", "/printproxy/report.{format}",
         request_method="POST",
