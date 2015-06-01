@@ -40,7 +40,8 @@ do
     git reset --hard
     git clean -f -d
     git checkout --force ${VERSION}
-    git pull origin ${VERSION}
+    git fetch
+    git reset --hard origin/${VERSION}
 
     # create a virtual env if none exists already
     if [[ ! -d env ]]; then
