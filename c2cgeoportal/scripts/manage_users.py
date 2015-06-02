@@ -154,16 +154,18 @@ User can be created if it doesn't exist yet."""
             sess.add(user)
             transaction.commit()
 
-            print "User %s created with password %s and role %s" % \
+            print(
+                "User %s created with password %s and role %s" %
                 (username, password, options.rolename)
+            )
 
     else:
         # if user exists (assuming username are unique)
         user = query.first()
 
         if options.password is not None:
-            print "Password set to: %s" % password
-            user.password = u"%s" % password
+            print("Password set to: %s" % options.password)
+            user.password = u"%s" % options.password
 
         if options.email is not None:
             user.email = options.email
