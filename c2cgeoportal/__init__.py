@@ -136,7 +136,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
             return f(root, request)
         return new_f
 
-    config.add_route(route_names[0], routes[0], request_method="GET")
+    config.add_route(route_names[0], routes[0])
     config.add_view(
         Entry,
         decorator=add_interface,
@@ -148,7 +148,6 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     config.add_route(
         "%stheme" % route_names[0],
         "%s%stheme/*themes" % (routes[0], "" if routes[0][-1] == "/" else "/"),
-        request_method="GET",
     )
     config.add_view(
         Entry,
@@ -482,7 +481,7 @@ def includeme(config):
 
     # add routes to the entry view class
     config.add_route("loginform", "/login.html", request_method="GET")
-    config.add_route("login", "/login", request_method="GET")
+    config.add_route("login", "/login", request_method="POST")
     config.add_route("logout", "/logout", request_method="GET")
     config.add_route("loginchange", "/loginchange", request_method="GET")
     config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")
