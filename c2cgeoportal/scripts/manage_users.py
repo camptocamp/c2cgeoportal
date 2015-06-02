@@ -107,7 +107,7 @@ User can be created if it doesn't exist yet."""
     # must be done only once we have loaded the project config
     from c2cgeoportal import models
 
-    print "\n"
+    print("\n")
 
     # check that User and Role exist in model
     model_list = ["User", "Role"]
@@ -115,7 +115,7 @@ User can be created if it doesn't exist yet."""
         try:
             getattr(models, model)
         except AttributeError:
-            print "models.%s not found" % model
+            print("models.%s not found" % model)
 
     # check that user exists
     sess = models.DBSession()
@@ -125,10 +125,10 @@ User can be created if it doesn't exist yet."""
     if result == 0:
         if not options.create:
             # if doesn"t exist and no -c option, throw error
-            raise StandardError("User %s doesn't exist in database" % username)
+            raise Exception("User %s doesn't exist in database" % username)
         else:
-            print "User %s doesn't exist in database, creating" % username
-            # if doesn"t exist and -c option, create user
+            print("User %s doesn't exist in database, creating" % username)
+            # if doesn't exist and -c option, create user
 
             password = options.password if options.password is not None else username
             email = options.email if options.email is not None else username
@@ -139,7 +139,7 @@ User can be created if it doesn't exist yet."""
 
             if query_role.count() == 0:
                 # role not found in db?
-                raise StandardError(
+                raise Exception(
                     "Role matching %s doesn't exist in database" %
                     options.rolename)
 
@@ -173,7 +173,7 @@ User can be created if it doesn't exist yet."""
         sess.add(user)
         transaction.commit()
 
-        print "Password resetted for user %s" % username
+        print("Password resetted for user %s" % username)
 
 if __name__ == "__main__":  # pragma: no cover
     main()
