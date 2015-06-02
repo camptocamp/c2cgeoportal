@@ -92,7 +92,7 @@ vars:
                     projection: "EPSG:21781"
                     dpi: 254
                     rotation: 0
-                    center: [542000, 154000]
+                    center: [600000, 200000]
                     scale: 100000
                     longitudeFirst: true
                     layers: []

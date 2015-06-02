@@ -202,7 +202,28 @@ Version 1.6
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
-20. Remove the deprecated files:
+20. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
+
+    checker:
+        ...
+        print_spec:
+            layout: "A4 portrait"
+            outputFormat: "pdf"
+            attributes:
+                title: ""
+                comments: ""
+                datasource: []
+                map:
+                    projection: "EPSG:21781"
+                    dpi: 254
+                    rotation: 0
+                    center: [600000, 200000]
+                    scale: 100000
+                    longitudeFirst: true
+                    layers: []
+                legend: {}
+
+21. Remove the deprecated files:
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build
