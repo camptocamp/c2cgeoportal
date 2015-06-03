@@ -316,7 +316,7 @@ in a ``.mako`` file).
      are placed in the VALIDATION block instead of the METADATA one.
      The validation pattern uses a slightly different metadata name::
 
-        METADATA
+        VALIDATION
             "default_s_<variable>" "<default_value>"
             "s_<variable>" "<validation_pattern>"
         END
