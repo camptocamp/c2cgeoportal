@@ -145,6 +145,9 @@ class Functionality(Base):
     def __unicode__(self):
         return "%s - %s" % (self.name or u"", self.value or u"")  # pragma: nocover
 
+event.listen(Functionality, "after_update", cache_invalidate_cb)
+event.listen(Functionality, "after_delete", cache_invalidate_cb)
+
 # association table role <> functionality
 role_functionality = Table(
     "role_functionality", Base.metadata,
@@ -329,6 +332,10 @@ class Role(Base):
         if self.extent is None:
             return None
         return to_shape(self.extent).bounds
+
+event.listen(Role.functionalities, "set", cache_invalidate_cb)
+event.listen(Role.functionalities, "append", cache_invalidate_cb)
+event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 
 class TreeItem(Base):
@@ -519,6 +526,10 @@ class Theme(TreeGroup):
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
+
+event.listen(Theme.functionalities, "set", cache_invalidate_cb)
+event.listen(Theme.functionalities, "append", cache_invalidate_cb)
+event.listen(Theme.functionalities, "remove", cache_invalidate_cb)
 
 
 class Layer(TreeItem):
