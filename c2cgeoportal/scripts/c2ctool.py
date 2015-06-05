@@ -117,7 +117,14 @@ def _fill_arguments(command):
     )
     parser.add_argument(
         "--windows",
+        action="store_true",
         help="Use the windows c2cgeoportal package",
+    )
+    parser.add_argument(
+        "--git-remote",
+        metavar="GITREMOTE",
+        help="Specify the remote branch",
+        default="origin",
     )
     if command == "help":
         parser.add_argument(
@@ -155,8 +162,11 @@ class C2cTool:
 
     def print_step(self, step, intro="To continue type:"):
         print(intro)
-        print(_colorize("%s upgrade %s %s --step %i", YELLOW) % (
+        print(_colorize("%s upgrade %s%s%s %s --step %i", YELLOW) % (
             "%s/c2ctool" % self.venv_bin,
+            "--windows " if self.options.windows else "",
+            "--git-remote " + self.options.git_remote + " "
+            if self.options.git_remote != "origin" else "",
             self.options.file if self.options.file is not None else "<user.mk>",
             self.options.version, step
         ))
@@ -275,6 +285,7 @@ class C2cTool:
         self.print_step(1)
 
     def step1(self):
+
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "-f", "-d"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
@@ -282,7 +293,7 @@ class C2cTool:
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
         try:
-            check_call(["git", "pull", "--rebase", "origin", branch])
+            check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
         except CalledProcessError:
             print(self.color_bar)
             print(_colorize("The pull (rebase) failed.", RED))
@@ -308,18 +319,18 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
-        pip_cmd = [
-            "%s/pip" % self.venv_bin, "install",
-            "--trusted-host", "pypi.camptocamp.net",
-            "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
-            "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal-win",
-        ]
-        if self.options.version == "master":
-            check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", self.package])
-            pip_cmd += ["--pre", self.package]
-        else:
-            pip_cmd += ["%s==%s" % (self.package, self.options.version)]
-        check_call(pip_cmd)
+        if not self.options.windows:
+            pip_cmd = [
+                "%s/pip" % self.venv_bin, "install",
+                "--trusted-host", "pypi.camptocamp.net",
+                "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
+            ]
+            if self.options.version == "master":
+                check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", self.package])
+                pip_cmd += ["--pre", self.package]
+            else:
+                pip_cmd += ["%s==%s" % (self.package, self.options.version)]
+            check_call(pip_cmd)
 
         check_call([
             "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
@@ -344,7 +355,7 @@ class C2cTool:
         print()
         print(self.color_bar)
         print(
-            "Do manual migration steps based on what’s in the CONST_CHANGELOG.txt file"
+            "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
             " (listed in the `changelog.diff` file)."
         )
         self.print_step(2)
@@ -364,18 +375,23 @@ class C2cTool:
         command.upgrade(Config("alembic.ini"), "head")
         command.upgrade(Config("alembic_static.ini"), "head")
 
-        check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
+        if not self.options.windows:
+            check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
 
         print()
         print(self.color_bar)
         print("The upgrade is nearly done, now you should:")
         print("- Test your application.")
 
+        if self.options.windows:
+            print("You are running on Windows, please restart your Apache server,")
+            print("because we can not do that automatically.")
+
         self.print_step(3)
 
     def step3(self):
         if not self.test_checkers():
-            self.print_step(3, intro="Correct them then type:")
+            self.print_step(3, intro="Correct them, then type:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
@@ -389,8 +405,8 @@ class C2cTool:
         print(self.color_bar)
         print("We will commit all the above files!")
         print(
-            "It the there is some files that shouldn't be commited you should "
-            "add them in the `.gitignore` file and lunch the step 3 again."
+            "If there are some files which should not be commited, then you should "
+            "add them into the `.gitignore` file and launch step 3 again."
         )
 
         self.print_step(4, intro="Then to commit your changes type:")
