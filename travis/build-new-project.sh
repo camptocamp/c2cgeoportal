@@ -8,6 +8,8 @@ cp travis/build.mk /tmp/test/travis.mk
 
 cd /tmp/test/
 
+sed -e 's@^c2cgeoportal==.*$@/home/travis/build/camptocamp/c2cgeoportal@' -i CONST_requirements.txt
+
 git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
 git init
