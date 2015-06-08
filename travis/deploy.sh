@@ -29,7 +29,7 @@ then
         exit 1
     fi
     DEPLOY=true
-    BUILD_TAG=rc`echo ${TAG} | awk -Frc '{print $2}'`
+    BUILD_TAG=rc`echo ${TRAVIS_TAG} | awk -Frc '{print $2}'`
 fi
 
 if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
@@ -43,11 +43,16 @@ then
 
     set -x
 
-    if [ ${FINAL} == true ]
+    if [ ${BUILD_TAG} != false ]
     then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
     else
-        .build/venv/bin/python setup.py sdist upload -r c2c-internal
+    if [ ${FINAL} == true ]
+        then
+            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+        else
+            .build/venv/bin/python setup.py sdist upload -r c2c-internal
+        fi
     fi
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
