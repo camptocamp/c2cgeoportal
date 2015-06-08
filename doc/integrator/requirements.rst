@@ -123,7 +123,7 @@ your makefile, define the following variables:
 
 .. prompt:: bash
 
-    PRINT_TMP = .
+    PRINT_TMP = tmp
     TOMCAT_START_COMMAND = net START Tomcat7
     TOMCAT_STOP_COMMAND = net STOP Tomcat7
 
