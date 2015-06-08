@@ -305,7 +305,7 @@ Then renaming them back after the restoration.
 
 First rename all the conflicting items:
 
-   .. prompt:: sql
+   .. code:: sql
 
       ALTER INDEX layer_pkey RENAME TO layertmp_pkey;
       ALTER TABLE layer ADD CONSTRAINT layertmp_id_fkey FOREIGN KEY (id) REFERENCES treeitem(id);
@@ -330,7 +330,7 @@ it in your Postgis 2.x database (exemple using Postgres 9.1, Postgis 2.1):
 
 Once restored, set the original names back:
 
-   .. prompt:: sql
+   .. code:: sql
 
       ALTER TABLE layertmp RENAME TO layer;
       ALTER INDEX layertmp_pkey RENAME TO layer_pkey;
