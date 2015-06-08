@@ -28,13 +28,49 @@ Where ``<makefile>`` is your user make file (``<user>.mk``).
 
 Easy upgrading an application
 -----------------------------
+.. note:: For Windows:
 
-In the ``setup.py`` be sure that you don't specify a ``c2cgeoportal`` version
-that it don't allow to install the new ``c2cgeoportal`` egg.
+    If you are using Windows, you will have to execute some steps prior
+    to the instructions hereunder:
+
+    * Uninstall manually the old c2cgeoportal egg:
+
+        ``.build/venv/Scripts/pip uninstall c2cgeoportal-win``
+
+    * Clean / remove the generated files:
+
+        ``make -f <makefile> clean``
+
+    * Change the version in ``setup.py`` to the version you wish to install
+    * Build your application:
+
+        ``make -f <makefile> build``
+
+    *  Put your modifications under git revision:
+
+        ``git add setup.py``
+
+        ``git commit -m "Upgrade c2cgeoportal version"``
+
+        ``git push <remote> <branch>``
+
+    * Follow the Windows instructions hereunder
+
+If you are using Linux, in the ``setup.py`` be sure not to specify a
+``c2cgeoportal`` version, because it will prevent the installation of the new
+``c2cgeoportal`` egg.
+
+On Linux, run:
 
 .. prompt:: bash
 
    .build/venv/bin/c2ctool upgrade <makefile> <target_version>
+
+On Windows, run:
+
+.. prompt:: bash
+
+   .build/venv/bin/c2ctool upgrade --windows <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
