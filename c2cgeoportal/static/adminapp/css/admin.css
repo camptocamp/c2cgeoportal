@@ -49,7 +49,7 @@ h1#header div.breadcrumb {
     font-size: 14px;
     margin-right: 15px;
     margin-top: 6px;
-    width: auto;
+    width: 80px;
 }
 h1#header div.breadcrumb a {
     font-size: 22px;
