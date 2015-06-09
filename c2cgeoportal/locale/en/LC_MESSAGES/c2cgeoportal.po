@@ -2,8 +2,6 @@
 # Copyright (C) 2011 ORGANIZATION
 # This file is distributed under the same license as the c2cgeoportal
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
-#
 msgid ""
 msgstr ""
 "MIME-Version: 1.0\n"
