@@ -33,7 +33,7 @@ vars:
     # mapserver visible area
     mapserver_join_area: ra.area
     # mapserver join close
-    mapserver_join_where: 'rra.role_id: %role_id% AND rra.restrictionarea_id: ra.id AND lra.restrictionarea_id: ra.id AND lra.layer_id: la.id AND la.name:'
+    mapserver_join_where: 'rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
     # mapserver metadata for validation
     mapserver_layer_metadata: ""
     mapserver_layer_validation:
