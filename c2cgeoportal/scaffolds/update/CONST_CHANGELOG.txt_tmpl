@@ -202,7 +202,13 @@ Version 1.6
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
-20. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
+20. In the `{{package}}/subscribers.py` file do the following change:
+
+    - return localizer.translate(tsf2(localizer.translate(tsf1(string))))
+    + result = localizer.translate(tsf1(string))
+    + return localizer.translate(tsf2(string)) if result == string else result
+
+21. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
 
     checker:
         ...
@@ -223,7 +229,7 @@ Version 1.6
                     layers: []
                 legend: {}
 
-21. Remove the deprecated files:
+22. Remove the deprecated files:
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build
