@@ -124,8 +124,8 @@ class FullTextSearch(GeoInterface, Base):
 
 
 class Functionality(Base):
-    __label__ = _(u"functionality")
-    __plural__ = _(u"functionalitys")
+    __label__ = _(u"Functionality")
+    __plural__ = _(u"Functionalities")
     __tablename__ = "functionality"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -178,8 +178,8 @@ theme_functionality = Table(
 
 
 class User(Base):
-    __label__ = _(u"user")
-    __plural__ = _(u"users")
+    __label__ = _(u"User")
+    __plural__ = _(u"Users")
     __tablename__ = "user"
     __table_args__ = {"schema": _schema + "_static"}
     __acl__ = [
@@ -205,7 +205,7 @@ class User(Base):
         label=_(u"Password")
     )
     email = Column(Unicode, nullable=False, label=_(u"E-mail"))
-    is_password_changed = Column(Boolean, default=False, label=_(u"PasswordChanged"))
+    is_password_changed = Column(Boolean, default=False, label=_(u"Password Changed"))
 
     role_name = Column(String, label=_(u"Role"))
 
@@ -235,7 +235,7 @@ class User(Base):
 
     if _parentschema is not None and _parentschema != "":  # pragma: no cover
         # parent role relationship
-        parent_role_name = Column(String, label=_(u"Parent role"))
+        parent_role_name = Column(String, label=_(u"Parent Role"))
 
         @property
         def parent_role(self):
@@ -299,8 +299,8 @@ class User(Base):
 
 
 class Role(Base):
-    __label__ = _(u"role")
-    __plural__ = _(u"roles")
+    __label__ = _(u"Role")
+    __plural__ = _(u"Roles")
     __tablename__ = "role"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -453,8 +453,8 @@ class TreeGroup(TreeItem):
 
 
 class LayerGroup(TreeGroup):
-    __label__ = _(u"layergroup")
-    __plural__ = _(u"layergroups")
+    __label__ = _(u"Layer Group")
+    __plural__ = _(u"Layer Groups")
     __tablename__ = "layergroup"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -494,8 +494,8 @@ restricted_role_theme = Table(
 
 
 class Theme(TreeGroup):
-    __label__ = _(u"theme")
-    __plural__ = _(u"themes")
+    __label__ = _(u"Theme")
+    __plural__ = _(u"Themes")
     __tablename__ = "theme"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -549,8 +549,8 @@ class Layer(TreeItem):
 
 
 class LayerV1(Layer):
-    __label__ = _(u"layer")
-    __plural__ = _(u"layers")
+    __label__ = _(u"Layer")
+    __plural__ = _(u"Layers")
     __tablename__ = "layerv1"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -743,8 +743,8 @@ layer_ra = Table(
 
 
 class RestrictionArea(Base):
-    __label__ = _(u"restrictionarea")
-    __plural__ = _(u"restrictionareas")
+    __label__ = _(u"Restriction Area")
+    __plural__ = _(u"Restriction Areas")
     __tablename__ = "restrictionarea"
     __table_args__ = {"schema": _schema}
     __acl__ = [
@@ -902,8 +902,8 @@ class WMTSDimension(Base):
 
 if _parentschema is not None and _parentschema != "":  # pragma: no cover
     class ParentRole(Base):
-        __label__ = _(u"parentrole")
-        __plural__ = _(u"parentroles")
+        __label__ = _(u"Parent Role")
+        __plural__ = _(u"Parent Roles")
         __tablename__ = "role"
         __table_args__ = {"schema": _parentschema}
         __acl__ = [
