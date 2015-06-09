@@ -185,12 +185,26 @@ class Proxy:
     ):
         headers = dict(resp) if headers is None else headers
 
-        if "content-length" in headers:  # pragma: no cover
-            del headers["content-length"]
-        if "transfer-encoding" in headers:  # pragma: no cover
-            del headers["transfer-encoding"]
-        if "content-location" in headers:  # pragma: no cover
-            del headers["content-location"]
+        # Hop-by-hop Headers are not supported by WSGI
+        # See:
+        # https://www.python.org/dev/peps/pep-3333/#other-http-features
+        # chapter 13.5.1 at http://www.faqs.org/rfcs/rfc2616.html
+        for header in [
+                "connection",
+                "keep-alive",
+                "proxy-authenticate",
+                "proxy-authorization",
+                "te",
+                "trailers",
+                "transfer-encoding",
+                "upgrade"
+        ]:  # pragma: no cover
+            if header in headers:
+                del headers[header]
+        # Other problematic headers
+        for header in ["content-length", "content-location"]:  # pragma: no cover
+            if header in headers:
+                del headers[header]
 
         headers.update(headers_update)
 
