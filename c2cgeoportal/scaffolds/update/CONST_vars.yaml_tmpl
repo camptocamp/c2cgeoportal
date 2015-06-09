@@ -47,7 +47,7 @@ vars:
     waitress_port: 5000
     enable_admin_interface: True
 
-    directory: pwd | tr -d '\n'
+    directory: __import__('os').getcwd()
     python_path: __import__('distutils').sysconfig.get_python_lib()
 
     # Authentication settings
@@ -295,9 +295,8 @@ interpreted:
     python:
     - authtkt.secret
     - python_path
+    - directory
     environment:
     - instanceid
     - apache_entry_point
     - development
-    bash:
-    - directory

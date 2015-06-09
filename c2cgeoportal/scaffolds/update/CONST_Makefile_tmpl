@@ -672,14 +672,26 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+ifeq ($(VENV_BIN), .build/venv/bin)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
+else
+	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
+	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+endif
+
 ifneq ($(TOMCAT_STOP_COMMAND),)
 	$(TOMCAT_STOP_COMMAND)
 endif
 	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
-	mv /tmp/$(PRINT_WAR) $(PRINT_OUTPUT)
+ifeq ($(VENV_BIN), .build/venv/bin)
+	mv $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+else
+	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
+endif
 ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
 endif
