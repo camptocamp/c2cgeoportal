@@ -270,36 +270,36 @@ MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
 .PHONY: help
 help:
-	@echo "Usage: make <target>"
+	@echo  "Usage: make <target>"
 	@echo
-	@echo "Main targets:"
+	@echo  "Main targets:"
 	@echo
-	@echo "- build			Build and configure the project"
-	@echo "- checks			Perform a number of checks on the code"
-	@echo "- serve			Run the development server (Pserve)"
-	@echo "- clean			Remove generated files"
-	@echo "- cleanall		Remove all the build artefacts"
+	@echo  "- build			Build and configure the project"
+	@echo  "- checks		Perform a number of checks on the code"
+	@echo  "- serve			Run the development server (Pserve)"
+	@echo  "- clean			Remove generated files"
+	@echo  "- cleanall		Remove all the build artefacts"
 	@echo
 	@echo "Utility targets:"
 	@echo
-	@echo "- update			Update the project (Git, Node, Pip)"
-	@echo "- update-git-submodules	Update the Git submodules"
-	@echo "- update-node-modules	Update node modules (using --force)"
+	@echo  "- update		Update the project (Git, Node, Pip)"
+	@echo  "- update-git-submodules	Update the Git submodules"
+	@echo  "- update-node-modules	Update node modules (using --force)"
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
 endif
 	@echo
-	@echo "Secondary targets:"
+	@echo  "Secondary targets:"
 	@echo
-	@echo "- build-cgxp		Build the javascript and the css for cgxp"
-	@echo "- build-ngeo		Build the javascript and the css for ngeo"
-	@echo "- build-server		Build the files required by the server"
-	@echo "- compile-js-catalog	Compile the Angular translation catalog"
-	@echo "- compile-py-catalog	Compile the Python translation catalog"
-	@echo "- flake8			Run Flake8 checker on the Python code"
-	@echo "- lint-ngeo		Check the JavaScript code with linters for ngeo"
-	@echo "- template-clean	 	Clean the template file"
-	@echo "- template-generate	Generate the template file"
+	@echo  "- build-cgxp		Build the javascript and the css for cgxp"
+	@echo  "- build-ngeo		Build the javascript and the css for ngeo"
+	@echo  "- build-server		Build the files required by the server"
+	@echo  "- compile-js-catalog	Compile the Angular translation catalog"
+	@echo  "- compile-py-catalog	Compile the Python translation catalog"
+	@echo  "- flake8		Run Flake8 checker on the Python code"
+	@echo  "- lint-ngeo		Check the JavaScript code with linters for ngeo"
+	@echo  "- template-clean	Clean the template file"
+	@echo  "- template-generate	Generate the template file"
 ifdef SECONDARY_HELP
 	@echo $(SECONDARY_HELP)
 endif
