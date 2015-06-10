@@ -19,8 +19,51 @@ list of options the plugin can receive.
 
 *The main viewer includes a Print plugin by default.*
 
-MapFish Print configuration
----------------------------
+Using MapFish Print v3
+----------------------
+
+Migration from the v2
+~~~~~~~~~~~~~~~~~~~~~
+
+Start the migration by instantiating the default template:
+
+.. prompt:: bash
+
+   cd <project_root>
+   cp -r print ~
+   git rm -r print
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
+   mv /tmp/<project>/print .
+   rm -rf /tmp/<project>
+
+Then in ``~/print`` you will have a backup of the old template, and in the ``print`` folder you will have the new print configuration.
+
+In the ``<package>.mk`` you should remove the ``PRINT_VERSION = 2`` (it's ``3`` by default).
+
+In the concerned viewer javascript files, in the ``cgxp_print`` plugin add the following lines:
+
+.. code:: javascript
+
+   version: 3,
+   encodeLayer: {},
+   encodeExternalLayer: {},
+   additionalAttributes: []
+
+Template configuration
+~~~~~~~~~~~~~~~~~~~~~~
+
+All print-related files are located in the ``print/`` folder, and the files related to the template in the
+``print/print-apps/<package>`` folder.
+
+The main configuration file is ``print/print-apps/<package>/config.yaml``.
+
+* `MapFish print documntation <http://mapfish.github.io/mapfish-print-doc/>`_
+* `Startup with Jasper Reports <http://mapfish.github.io/mapfish-print-doc/#/jasperReports>`_
+
+
+MapFish Print v2 configuration
+------------------------------
 
 All print-related files are located in the ``print/`` folder.
 
@@ -107,7 +150,7 @@ The ``print.yaml.mako`` has the "header" part and includes the wanted templates.
 
 
 Using one printserver in a set of site
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------
 
 For memory issue we can use only one print server for a set of site.
 
