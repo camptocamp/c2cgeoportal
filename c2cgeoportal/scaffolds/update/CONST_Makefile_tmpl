@@ -95,7 +95,7 @@ JSBUILD_ARGS = $(if ifeq($(DEVELOPMENT), ‘TRUE’),-u,)
 ifeq ($(DEVELOPMENT), FALSE)
 	CSSMIN_ARGS += --compress
 endif
-CSS_BASE_FILES += \
+DEFAULT_CSS_BASE_FILES += \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/ext-all.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
 	$(PACKAGE)/static/lib/cgxp/openlayers/theme/default/style.css \
@@ -111,14 +111,24 @@ CSS_BASE_FILES += \
 	$(PACKAGE)/static/css/proj.css \
 	$(PACKAGE)/static/css/proj-map.css \
 	$(PACKAGE)/static/css/proj-widgets.css
+ifdef CSS_BASE_FILES
+CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES) $(CSS_BASE_FILES)
+else
+CSS_BASE_FILES := $(DEFAULT_CSS_BASE_FILES)
+endif
 CSS_BASE_OUTPUT = $(OUTPUT_DIR)/app.css
 
-CSS_API_FILES += \
+DEFAULT_CSS_API_FILES += \
 	$(PACKAGE)/static/lib/cgxp/openlayers/theme/default/style.css \
 	$(PACKAGE)/static/css/proj-map.css
+ifdef CSS_API_FILES
+CSS_API_FILES := $(DEFAULT_CSS_API_FILES) $(CSS_API_FILES)
+else
+CSS_API_FILES := $(DEFAULT_CSS_API_FILES)
+endif
 CSS_API_OUTPUT = $(OUTPUT_DIR)/api.css
 
-CSS_XAPI_FILES += \
+DEFAULT_CSS_XAPI_FILES += \
 	$(PACKAGE)/static/lib/cgxp/core/src/theme/reset.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/visual/editor.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/visual/pivotgrid.css \
@@ -179,6 +189,11 @@ CSS_XAPI_FILES += \
 	$(PACKAGE)/static/lib/cgxp/core/src/theme/all.css \
 	$(PACKAGE)/static/css/proj-map.css \
 	$(PACKAGE)/static/css/proj-widgets.css
+ifdef CSS_XAPI_FILES
+CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES) $(CSS_XAPI_FILES)
+else
+CSS_XAPI_FILES := $(DEFAULT_CSS_XAPI_FILES)
+endif
 CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
 
 VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAGE)/views
