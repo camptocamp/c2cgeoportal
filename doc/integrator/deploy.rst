@@ -126,7 +126,7 @@ Go into your project directory:
 
 .. prompt:: bash
 
-   cd /var/www/<your_vhost>/private/<your_project>
+   cd /var/www/vhost/<project_vhost>/private/<project>
 
 Deploy your project:
 
@@ -146,7 +146,7 @@ Build on the dev server:
 .. prompt:: bash
 
   ssh -A <dev_server> # SSH agent forward is needed
-  cd /var/www/<your_vhost>/private/<your_project>
+  cd /var/www/vhost/<project_vhost>/private/<project>
   git pull origin master # update the code
   make -f main.mk build # configure c2cgeoportal
 
@@ -172,7 +172,7 @@ Deploy on the prod server:
 .. prompt:: bash
 
   ssh -A <demo_server> # SSH agent forward is needed
-  cd /var/www/<your_vhost>/private/<your_project>
+  cd /var/www/vhost/<project_vhost>/private/<project>
   cd deploy
   sudo -u deploy deploy -r deploy.cfg prod
 
