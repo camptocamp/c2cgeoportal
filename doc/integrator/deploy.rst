@@ -1,10 +1,50 @@
 .. _integrator_deploy:
 
-Deploy the application
-======================
+=============================
+Infrastructure and Deployment
+=============================
 
-Important notes
----------------
+Infrastructure
+==============
+
+There are three kinds of environments available for GeoMapFish applications
+in Camptocamp's infrastructure:
+
+* A user environment for the personal tests and development.
+* A shared environment where more than one user should be able to build
+  the application.
+* A production environment.
+
+User environment
+~~~~~~~~~~~~~~~~
+
+Located in the home directory of a user, who is the only one that may access it.
+
+Shared environement
+~~~~~~~~~~~~~~~~~~~
+
+Located in ``/var/www/vhost/<project_vhost>/private/<project>``.
+
+Only user ``sigdev`` may access this environment.  Developers must then prefix
+all the commands on this environment by ``sudo -u sigdev``.
+For instance to update the application:
+
+.. prompt:: bash
+
+    sudo -u sigdev make -f demo.mk update
+    sudo -u sigdev make -f demo.mk build
+
+Production environment
+~~~~~~~~~~~~~~~~~~~~~~
+
+To deploy the application to the production environment,
+one must use the ``deploy`` tool from a clean shared environment.
+
+See below.
+
+
+Deployment
+==========
 
 When we deploy an application we:
 
@@ -81,7 +121,7 @@ Get help with the command line ``deploy --help``.
 
 
 Make configuration
-----------------------
+-------------------
 
 To use specific parameter values on the ``<target>`` server (for instance for
 ``host``), create dedicated ``<target>.mk`` files that will contain

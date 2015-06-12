@@ -147,14 +147,6 @@ OpenLayers and GeoExt.
     don't need GXP's submodules. CGXP indeed has its own submodules for
     OpenLayers and GeoExt.
 
-.. important::
-
-    If you want other people than you to be able to run ``make`` from an
-    application clone created by you then you need to change the application
-    directory's permissions using ``chmod -R g+w``.  You certainly want to do
-    that if the application has been cloned in a shared directory like
-    ``/var/www/<vhost>/private``.
-
 Non Apt/Dpkg based OS Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
