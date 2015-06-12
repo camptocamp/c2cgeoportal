@@ -307,7 +307,7 @@ Then follow the sections in the install application guide:
     except the 'Get the application source tree' chapter.
 
 
-Create a multi instance project
+Create a multi-instance project
 -------------------------------
 
 In some cases we want to create applications based on very similar code and settings.
@@ -319,17 +319,17 @@ the project.
 This procedure will deal with:
 
 * One folder per instance ``mapfile/<instance>``.
-* One configuration file for all the project ``vars_<project>.yaml``.
+* One configuration file for the project ``vars_<project>.yaml``.
 * One configuration file for each instance ``vars_<instance>.yaml``.
-* One make file for all the project ``<project>.mk``.
+* One make file for the project ``<project>.mk``.
 * One make file for each instance ``<instance>.mk``.
-* One Makefile generator for each developer and server ``<user>.mk.jinja``.
+* One Makefile generator for each developer and server ``<user>.mk``.
 * One additional CSS file for each instance ``<package>/static/css/proj_<instance>.css``.
 
 Create the project
 ..................
 
-1. Configure the instances in thee ``vars_<package>.yaml`` as follow:
+1. Configure the instances in ``vars_<project>.yaml`` as follows:
 
   .. code:: yaml
 
@@ -338,14 +338,12 @@ Create the project
         ...
         instance: INSTANCE
 
-        external_themes_url: http://{host}/{parent_instanceid}/wsgi/themes
-        external_mapserv_url: http://{host}/{parent_instanceid}/mapserv
+        external_themes_url: http://${host}/${parent_instanceid}/wsgi/themes
+        external_mapserv_url: http://${host}/${parent_instanceid}/mapserv
 
-        tiles_url: http://{host}/{parent_instanceid}/tiles
+        tiles_url: http://${host}/${parent_instanceid}/tiles
 
-        instances:
-        - instance: a name
-        ...
+    ...
 
     interpreted:
         environment:
@@ -355,66 +353,63 @@ Create the project
 
     .. code:: make
 
+        INSTANCE_ID = <instance>
         INSTANCE = <instance>
-        VARS_FILE = vars_$(INSTANCE).yaml
-        include <package>.mk
+        VARS_FILE = vars_<instance>.yaml
+        CSS_CUSTOM_FILES = <package>/static/css/proj-<instance>.css
 
-3. In ``<project>.mk`` add a task to generate the make files:
+        include <project>.mk
 
-.. code:: make
-
-    ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
-
-    %_<an_instance>.mk: %.mk.jinja $(VARS_FILES)
-        $(C2C_TEMPLATE_CMD) --files-builder $< $*_{instance}.mk $(VARS_FILE)
-
-4. Define the developer templates as follows (``<user>.mk.jinja``):
+3. Define the developer templates as follows (``<user>.mk``):
 
 .. code:: make
 
-    INSTANCE = {{instance}}
-    INSTANCE_ID = <user>_{{instance}}
+    INSTANCE_ID = <user>_<instance>
     DEVELOPMENT = TRUE
-    include {{instance}}.mk
 
-5. Define the host templates as follows (``main.mk.jinja``,
-   ``demo.mk.jinja``, ``prod.mk.jinja``):
+    include <instance>.mk
+
+4. Define the host templates as follows (``main.mk``,
+   ``demo.mk``, ``prod.mk``):
 
 .. code::
 
-    INSTANCE = {{instance}}
-    INSTANCE_ID = {{instance}}
-    include {{instance}}.mk
+    INSTANCE_ID = <instance>
+    include <instance>.mk
 
-6. Create a ``<instance>.yaml`` file with:
+5. Create the ``vars_<instance>.yaml`` files with:
 
 .. code::
 
     extends: vars_<project>.yaml
 
     vars:
+        db: <instance_db>
+
+        # custom instance-specific variables
         page_title: <title>
+        initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
+        restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
 
-        viewer:
-            initial_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-            restricted_extent: [<min_x>, <min_y>, <max_x>, <max_y>]
-            default_themes:
-            - <theme>
-            feature_types:
-            - <feature>
-
+        # overwrite project settings
         functionalities:
             anonymous:
                 print_template:
                 - <template>
 
-7. In the ``<package>.mk`` add the additional CSS:
+6. Add the custom variables to the configuration variables in ``<project>.mk``
+so that they are passed on to the templates:
 
 .. code::
 
-   CSS_BASE_FILES += <package>/static/css/proj_$(INSTANCE).css
+    ...
+    CONFIG_VARS += page_title initial_extent restricted_extent
+    ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 
-8. In the ``<package>/templates/index.html`` file do the following changes:
+    include CONST_Makefile
+
+
+7. In the ``<package>/templates/index.html`` file do the following changes:
 
 .. code:: diff
 
@@ -426,10 +421,13 @@ Create the project
    -        <title><project> Geoportal Application</title>
    +        <title>${request.registry.settings['page_title']}</title>
 
+        % if debug:
+            ...
             <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj-widgets.css')}" />
    +        <link rel="stylesheet" type="text/css" href="${request.static_url('<package>:static/css/proj_%s.css' % request.registry.settings['instance'])}" />
+        % else:
 
-9. Create the instance CSS file ``<package>/static/css/proj_<instance>.css``:
+8. Create the instance CSS file ``<package>/static/css/proj-<instance>.css``:
 
 .. code:: css
 
@@ -443,25 +441,37 @@ Create the project
        height: <height>px;
    }
 
-10. In the files ``<package>/templates/api/mapconfig.js``,
+9. In the files ``<package>/templates/api/mapconfig.js``,
     ``<package>/templates/viewer.js`` and ``<package>/templates/edit.js``
-    define the ``WMTS_OPTIONS`` url as follows:
+    set the map extents as follows:
 
 .. code:: javascript
 
-   var WMTS_OPTIONS = {
-       url: '${tiles_url}',
-       ...
-    }
+        <%
+        from json import dumps
+        ...
+    +   initial_extent = request.registry.settings.get('initial_extent')
+    +   restricted_extent = request.registry.settings.get('restricted_extent')
+        %>
 
-11. In ``apache/mapserver.conf.mako`` file do the following change:
+        ...
+    -   var INITIAL_EXTENT = [...];
+    +   var INITIAL_EXTENT = ${dumps(initial_extent)};
+        ...
+
+        ...
+    -   var RESTRICTED_EXTENT = [...];
+    +   var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
+
+
+10. In ``apache/mapserver.conf.mako`` file do the following change:
 
 .. code:: diff
 
    -   SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
    +   SetEnv MS_MAPFILE ${directory}/mapserver/${instance}/c2cgeoportal.map
 
-12. Edit ``deploy/deploy.cfg.mako`` as follows:
+11. Edit ``deploy/deploy.cfg.mako`` as follows:
 
 .. code:: diff
 
@@ -479,12 +489,6 @@ Create the project
    +dest = /var/www/vhosts/<project>/conf/${instance}.conf
    +content = Include /var/www/vhosts/<project>/private/${instance}/apache/*.conf
 
-19. In ``.gitignore`` add the following lines:
-
-.. code::
-
-   /*_*.mk
-
 Result
 ......
 
@@ -494,11 +498,11 @@ Now you can configure the application at instance level in the following places:
 * ``<instance>.mk``
 * ``mandant/static/images/<instance>_banner_right.png``
 * ``mandant/static/images/<instance>_banner_left.png``
-* ``mandant/static/css/proj_<instance>.css``
+* ``mandant/static/css/proj-<instance>.css``
 * ``vars_<instance>.yaml``
 
 Then run the make command with the ``.mk`` file for the instance you want to setup:
 
 .. prompt:: bash
 
-    make <user>_<instance>.mk build
+    make -f <user>_<instance>.mk build

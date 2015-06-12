@@ -110,7 +110,8 @@ CSS_BASE_FILES += \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/examples/ux/css/Spinner.css \
 	$(PACKAGE)/static/css/proj.css \
 	$(PACKAGE)/static/css/proj-map.css \
-	$(PACKAGE)/static/css/proj-widgets.css
+	$(PACKAGE)/static/css/proj-widgets.css \
+	$(CSS_CUSTOM_FILES)
 CSS_BASE_OUTPUT = $(OUTPUT_DIR)/app.css
 
 CSS_API_FILES += \
