@@ -54,7 +54,9 @@ Easy upgrading an application
 
         ``git push <remote> <branch>``
 
-    * Follow the Windows instructions hereunder
+    * Follow the Windows instructions hereunder, note that you will have to use
+      ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
+      commands
 
 If you are using Linux, in the ``setup.py`` be sure not to specify a
 ``c2cgeoportal`` version, because it will prevent the installation of the new
@@ -70,7 +72,7 @@ On Windows, run:
 
 .. prompt:: bash
 
-   .build/venv/bin/c2ctool upgrade --windows <makefile> <target_version>
+   .build/venv/Scripts/c2ctool upgrade --windows <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
