@@ -241,11 +241,12 @@ class C2cTool:
                 exit(1)
 
             headers, _ = http.request(
-                "http://pypi.camptocamp.net/internal-pypi/index/%s-%s.tar.gz" %
-                self.options.version, self.options.package, "HEAD"
+                "http://pypi.camptocamp.net/internal-pypi/index/%s-%s.tar.gz" % (
+                    self.package, self.options.version
+                )
             )
             if headers.status != 200:
-                print("This %s egg does not exist." % self.options.package)
+                print("This %s egg does not exist." % self.package)
                 exit(1)
 
             url = (
