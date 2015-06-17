@@ -388,7 +388,8 @@ class C2cTool:
         check_call(["git", "reset", "--mixed"])
 
         check_call(["git", "add", "-A"])
-        check_call(["git", "add", "%s/static/lib/cgxp" % self.project["project_package"]])
+        if path.exists("%s/static/lib/cgxp" % self.project["project_package"]):
+            check_call(["git", "add", "%s/static/lib/cgxp" % self.project["project_package"]])
         check_call(["git", "status"])
 
         print()
