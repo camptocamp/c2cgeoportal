@@ -258,17 +258,6 @@ class C2cTool:
                 print("Failed downloading the c2cgeoportal CONST_versions.txt file.")
                 print(url)
                 exit(1)
-            first_line = content.split()[0]
-            if not first_line.startswith("%s==" % self.options.package):
-                print("The first line of the version isn't about c2cgeoportal")
-                print(first_line)
-                exit(1)
-            if first_line[14:] != self.options.version:
-                print(
-                    "The c2cgeoportal version is wrong. Expected '%s' but found '%s'." %
-                    (self.options.version, first_line[14:])
-                )
-                exit(1)
 
         if path.split(path.realpath("."))[1] != self.project["project_folder"]:
             print("Your project isn't in the right folder!")
