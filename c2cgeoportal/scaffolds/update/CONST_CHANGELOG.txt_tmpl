@@ -197,18 +197,30 @@ Version 1.6
 18. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
     `apache-entry-point` by `apache_entry_point`
 
-19. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` do the following changes:
+19. In your `apache/frontend.conf.mako` or `apache/frontend.conf.in` file in the
+    `<LocationMatch /${instanceid}/wsgi/>` section,
+    add the following  mimetypes to the existing list:
+
+    ... application/vnd.ogc.wms_xml application/vnd.ogc.gml application/vnd.ogc.se_xml
+
+    and in the `<LocationMatch /${vars:instanceid}/tiles/>` section,
+    add the following lines:
+
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/xml
+    Header add Access-Control-Allow-Headers "X-Requested-With, Content-Type"
+
+20. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` files do the following changes:
 
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
-20. In the `{{package}}/subscribers.py` file do the following change:
+21. In the `{{package}}/subscribers.py` file do the following change:
 
     - return localizer.translate(tsf2(localizer.translate(tsf1(string))))
     + result = localizer.translate(tsf1(string))
     + return localizer.translate(tsf2(string)) if result == string else result
 
-21. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
+22. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
 
     checker:
         ...
@@ -229,7 +241,7 @@ Version 1.6
                     layers: []
                 legend: {}
 
-22. Remove the deprecated files:
+23. Remove the deprecated files:
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build
