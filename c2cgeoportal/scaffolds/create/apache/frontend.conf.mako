@@ -9,6 +9,7 @@
 </LocationMatch>
 
 <LocationMatch /${instanceid}/tiles/>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/xml
     Header set Access-Control-Allow-Origin "*"
     Header merge Cache-Control "public"
 </LocationMatch>
