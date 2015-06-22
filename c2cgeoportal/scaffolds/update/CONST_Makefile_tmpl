@@ -206,7 +206,7 @@ SENCHA_CMD ?= sencha-cmd
 JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
 JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
 JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
-MOBILE_APP_JS_FILES = $(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/app.js $(shell find $(PACKAGE)/static/mobile/app -type f -name '*.js')
+MOBILE_APP_JS_FILES = $(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/app.js $(shell find $(PACKAGE)/static/mobile/app -type f -name '*.js' 2> /dev/null)
 
 # Documentation
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
