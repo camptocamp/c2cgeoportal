@@ -542,20 +542,20 @@ def includeme(config):
     # V3
     config.add_route(
         "printproxy_capabilities", "/printproxy/capabilities.json",
-        request_method="GET",
+        request_method=("GET", "OPTIONS"),
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_route(
         "printproxy_report_create", "/printproxy/report.{format}",
-        request_method="POST",
+        request_method=("POST", "OPTIONS"),
     )
     config.add_route(
         "printproxy_status", "/printproxy/status/{ref}.json",
-        request_method="GET",
+        request_method=("GET", "OPTIONS"),
     )
     config.add_route(
         "printproxy_cancel", "/printproxy/cancel/{ref}",
-        request_method="DELETE",
+        request_method=("DELETE", "OPTIONS"),
     )
     config.add_route(
         "printproxy_report_get", "/printproxy/report/{ref}",
