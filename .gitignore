@@ -1,6 +1,7 @@
 *~
 *.pyc
 *.pyo
+*.class
 /c2cgeoportal/static/build
 /c2cgeoportal/tests/functional/c2cgeoportal_test.map
 /c2cgeoportal/tests/functional/test.ini
@@ -16,3 +17,6 @@
 /.coverage
 /coverage.xml
 /.tx/geomapfish.c2cgeoportal/
+/gatling/.classpath
+/gatling/.project
+/gatling/.cache-main
