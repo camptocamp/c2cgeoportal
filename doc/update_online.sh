@@ -25,7 +25,7 @@ BUILDBASEDIR=/var/www/vhosts/docs.camptocamp.net/htdocs/c2cgeoportal
 
 git fetch
 
-for VERSION in master 1.4 1.5
+for VERSION in master 1.4 1.5 1.6
 do
 
     # BUILDDIR is where the HTML files are generated
