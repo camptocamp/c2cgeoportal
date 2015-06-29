@@ -149,7 +149,7 @@ Create your own ``<user>.mk``:
 
    include <package>.mk
 
-In the ``setup.py`` have a dependency on c2cgeoportal like this ``c2cgeoportal>=1.6.0.dev``.
+In the ``setup.py`` have a dependency on c2cgeoportal like this ``c2cgeoportal>=2.0.0.dev``.
 
 Add all your new files in git and commit them:
 
