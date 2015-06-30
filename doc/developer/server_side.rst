@@ -41,11 +41,17 @@ of an existing c2cgeoportal application. Here's how:
 
     .build/venv/bin/pip uninstall c2cgeoportal
 
+* Remove/comment the following line in the CONST_requirements.txt file:
+
+  .. code:: make
+
+    c2cgeoportal==1.6.0
+
 * Build your application application:
 
   .. prompt:: bash
 
-    make -f <user>.mk build
+    rm .build/requirements.timestamp && make -f <user>.mk build
 
 
 Tests
