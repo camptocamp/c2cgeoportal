@@ -12,6 +12,7 @@ env:
   - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
 
 before_install:
+- git fetch
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get install -y --force-yes aptitude
 - sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
@@ -45,6 +46,7 @@ install:
 - .build/venv/bin/flake8 --version
 
 script:
+- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 - find /tmp/test/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
 - find /tmp/test/setup.py /tmp/test/test/*.py /tmp/test/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
