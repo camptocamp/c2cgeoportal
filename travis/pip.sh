@@ -10,9 +10,20 @@ fi
 
 .build/venv/bin/pip ${ARGS} $* | grep '^Collecting '
 
-if [ ${PIPESTATUS[0]} -ne 0 ]
+if [ ${PIPESTATUS[0]} -eq 0 ]
 then
-    cat /tmp/pip.log
-    exit 1
+    exit 0
 fi
-exit 0
+
+for N in {1..10}
+do
+    echo RETRY...
+    .build/venv/bin/pip ${ARGS} $* | grep '^Collecting '
+
+    if [ ${PIPESTATUS[0]} -eq 0 ]
+    then
+        exit 0
+    fi
+done
+cat /tmp/pip.log
+exit 1
