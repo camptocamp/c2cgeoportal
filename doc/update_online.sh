@@ -45,7 +45,7 @@ do
 
     # create a virtual env if none exists already
     if [[ ! -d env ]]; then
-        virtualenv env
+        /usr/bin/virtualenv env
     fi
 
     # install or update Sphinx
