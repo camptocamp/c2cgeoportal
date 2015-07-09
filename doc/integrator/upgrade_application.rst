@@ -118,7 +118,7 @@ Get the right version of the egg:
 .. prompt:: bash
 
     mkdir .build
-    virtualenv --setuptools --no-site-packages .build/venv
+    /usr/bin/virtualenv --setuptools --no-site-packages .build/venv
     .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi 'pip>=6' 'setuptools>=12'
     .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
         --trusted-host pypi.camptocamp.net --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
