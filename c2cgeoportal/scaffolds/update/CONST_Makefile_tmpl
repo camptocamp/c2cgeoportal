@@ -1,3 +1,4 @@
+VIRTUALENV_CMD ?= /usr/bin/virtualenv
 VENV_BIN ?= .build/venv/bin
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
@@ -673,7 +674,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 
 .build/venv.timestamp-noclean:
 	mkdir -p $(dir $@)
-	virtualenv --setuptools --no-site-packages .build/venv
+	$(VIRTUALENV_CMD) --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
 		'pip>=6' 'setuptools>=12'

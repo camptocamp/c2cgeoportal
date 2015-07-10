@@ -7,6 +7,7 @@ C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
 DEVELOPPEMENT ?= FALSE
 
+VIRTUALENV_CMD ?= /usr/bin/virtualenv
 PIP_CMD ?= .build/venv/bin/pip
 PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
 
@@ -155,7 +156,7 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
-	virtualenv --setuptools --no-site-packages .build/venv
+	$(VIRTUALENV_CMD) --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
 		'pip>=6' 'setuptools>=12' $(PIP_REDIRECT)
