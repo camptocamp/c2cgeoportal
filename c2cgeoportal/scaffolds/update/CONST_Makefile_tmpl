@@ -566,6 +566,7 @@ update:
 	git submodule foreach git submodule update --init
 ifeq ($(NGEO), TRUE)
 	npm install --force
+	touch .build/node_modules.timestamp
 endif
 
 .PHONY: update-git-submodules
