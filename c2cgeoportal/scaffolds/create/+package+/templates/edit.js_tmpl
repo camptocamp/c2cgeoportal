@@ -1,3 +1,6 @@
+<%
+from json import dumps
+%>
 Ext.onReady(function() {
     // Ext global settings
     Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif') | n}";
