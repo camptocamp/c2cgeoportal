@@ -65,11 +65,7 @@ Server
 
 #. Run make to compile all the .po files to .mo::
 
-    make -f <user>.mk build install po2mo
-
-#. Finally don't forget to restart apache::
-
-    sudo /usr/sbin/apache2ctl graceful
+    make -f <user>.mk build
 
 When you add a new message repeat all steps but replace the step 2. by::
 
