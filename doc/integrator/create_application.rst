@@ -323,7 +323,7 @@ This procedure will deal with:
 * One configuration file for each instance ``vars_<instance>.yaml``.
 * One make file for the project ``<project>.mk``.
 * One make file for each instance ``<instance>.mk``.
-* One Makefile generator for each developer and server ``<user>.mk.jinja``.
+* One Makefile generator for each developer and server ``<user>.mk._jinja``.
 * One additional CSS file for each instance ``<package>/static/css/proj-<instance>.css``.
 
 Create the project
@@ -368,10 +368,10 @@ Create the project
     ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 
     .PHONY: user_mk
-    user_mk: .build/dev-requirements.timestamp
-        $(C2C_TEMPLATE_CMD) --files-builder ${ENV}.mk.jinja ${ENV}_{instance}.mk instances
+    user_mk: .build/dev-requirements.timestamp ${ENV}.mk._jinja
+        $(C2C_TEMPLATE_CMD) --engine jinja --files-builder ${ENV}.mk._jinja ${ENV}_{instance}.mk instances
 
-4. Define the developer templates as follows (``<user>.mk.jinja``):
+4. Define the developer templates as follows (``<user>.mk._jinja``):
 
 .. code:: make
 
@@ -380,8 +380,8 @@ Create the project
     DEVELOPMENT = TRUE
     include {{instance}}.mk
 
-5. Define the host templates as follows (``main.mk.jinja``,
-   ``demo.mk.jinja``, ``prod.mk.jinja``):
+5. Define the host templates as follows (``main.mk._jinja``,
+   ``demo.mk._jinja``, ``prod.mk._jinja``):
 
 .. code::
 
