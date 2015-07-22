@@ -385,12 +385,6 @@ Test and commit
 
     make -f <user>.mk build
 
-* Reload Apache configuration:
-
-  .. prompt:: bash
-
-    sudo /usr/sbin/apache2ctl graceful
-
 * Test your application.
 
 * Test the checker at `http://<application base>/wsgi/check_collector?type=all`.

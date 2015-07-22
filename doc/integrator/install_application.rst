@@ -246,9 +246,9 @@ user, which is the Apache user. In RHEL 6, there's no user ``www-data``, and
 the Apache user is ``apache``. To accomodate that edit ``vars_<project>.yaml`` and
 set ``modwsgi_user`` to ``apache`` in the ``[vars]`` section::
 
-    [vars]
-    ...
-    modwsgi_user = apache
+    vars:
+        ...
+        modwsgi_user: apache
 
 
 Also, by default, the path to Tomcat's ``webapps`` directory is
@@ -272,9 +272,9 @@ apache2ctl
 ~~~~~~~~~~
 
 On RedHat the commands hasn't the '2'!
-Then to graceful apache do::
+Then in your ``<package>.mk`` add::
 
-    /usr/sbin/apachectl graceful
+    APACHE_GRACEFUL = /usr/sbin/apachectl graceful
 
 .. _integrator_install_application_install_application:
 
@@ -328,25 +328,6 @@ populate the application tables, and directly set the version (details later):
 
     .build/venv/bin/alembic upgrade head
     .build/venv/bin/alembic -c alembic_static.ini upgrade head
-
-Your application is now fully set up and the last thing to do is to configure
-apache so that it will serve your WSGI c2cgeoportal application. So you just
-have to include the application apache configuration available in the
-``apache`` directory. On servers managed by Camptocamp, add a ``.conf`` file in
-``/var/www[/vhost]/<vhostname>/conf/`` (``[/vhost]`` means that the vhost folder
-is optional, ``<vhostname>`` is a folder that should already exist (created by
-the system administrator), that corresponds to the virtual host)
-with the following content::
-
-    Include /<project_path>/apache/*.conf
-
-where ``<project_path>`` is the path to your project.
-
-Reload apache configuration and you're done:
-
-.. prompt:: bash
-
-    sudo /usr/sbin/apache2ctl graceful
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>``.
