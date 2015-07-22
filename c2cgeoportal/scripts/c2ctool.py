@@ -303,9 +303,13 @@ class C2cTool:
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
         check_call([
-            "git", "submodule", "foreach", "git", "reset",
-            "--hard", "origin/%s" % self.options.version
+            "git", "submodule", "foreach", "git", "checkout", self.options.version
         ])
+        if self.options.version == "master":
+            check_call([
+                "git", "submodule", "foreach", "git", "reset",
+                "--hard", "origin/master"
+            ])
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
