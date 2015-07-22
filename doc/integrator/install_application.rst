@@ -271,7 +271,7 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 apache2ctl
 ~~~~~~~~~~
 
-On RedHat the commands hasn't the '2'!
+On RedHat the command hasn't the '2'!
 Then in your ``<package>.mk`` add::
 
     APACHE_GRACEFUL = /usr/sbin/apachectl graceful
