@@ -71,7 +71,7 @@ class Basic extends Simulation {
     def getBbox(width: Int, height: Int)(x: Int, y: Int, resolution: Double): String = {
         val x2 = x + width * resolution
         val y2 = y + height * resolution
-        "%d,%d,%f,%f".format(x, y, x2, y2)
+        s"${x},${y},${x2},${y2}"
     }
     val common_bbox = getBbox(img_width, img_height)_
 
@@ -96,23 +96,21 @@ class Basic extends Simulation {
                 "lon" -> randX.toString,
                 "lat" -> randY.toString,
                 "query" -> random.nextString(random.nextInt(5) + 1).foldLeft("") { (s, i) => s + fts_choises.charAt(random.nextInt(fts_choises.length))},
-                "coordinates" -> "[[%d,%d],[%d,%d]]".format(
-                    randX, randY, randX, randY
-                )
+                "coordinates" -> s"[[${randX},${randY}],[${randX},${randY}]]"
             )
 
             map ++ resolutions.map(resolution =>
-               ("BBOX_%.3f".format(resolution), common_bbox(randX, randY, resolution))
+               (f"BBOX_$resolution%.3f", common_bbox(randX, randY, resolution))
             ).toMap
         }
     }
 
     val httpProtocol = http
-        .baseURL("http://" + host)
-        .inferHtmlResources(WhiteList("http://" + host + "/*"), BlackList())
+        .baseURL(s"http://${host}")
+        .inferHtmlResources(WhiteList(s"http://${host}/*"), BlackList())
         .acceptHeader("image/png,image/*;q=0.8,*/*;q=0.5")
         .acceptEncodingHeader("gzip, deflate")
-        .acceptLanguageHeader(lang + ";q=0.5")
+        .acceptLanguageHeader(s"${lang};q=0.5")
         .connection("keep-alive")
         .contentTypeHeader("application/x-www-form-urlencoded; charset=UTF-8")
         .userAgentHeader("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0")
@@ -134,7 +132,7 @@ class Basic extends Simulation {
 
     val headers_18 = Map("Accept" -> "*/*")
 
-    val uri = "http://" + host + "/"
+    val uri = s"http://${host}/"
 
     val scn1 = scenario("BasicSimulation")
         .feed(defaults_feeder)
