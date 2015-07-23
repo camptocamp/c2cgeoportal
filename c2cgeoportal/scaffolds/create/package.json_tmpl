@@ -14,7 +14,7 @@
     "angular-gettext-tools": "1.0.4",
     "bootstrap": "^3.3.0",
     "font-awesome": "4.2.0",
-    "jquery": "^1.9.1",
+    "jquery": "1.11.3",
     "jshint": "~2.5.1",
     "less": "~1.7.5",
     "ngeo": "camptocamp/ngeo#master",
