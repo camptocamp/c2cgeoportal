@@ -262,6 +262,7 @@ TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
 # Templates
 TEMPLATE_EXCLUDE += .build print/templates \
+	templatecache.js.mako \
 	CONST_alembic/main/script.py.mako \
 	CONST_alembic/static/script.py.mako \
 	$(PACKAGE)/static/lib
@@ -504,7 +505,7 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 		.build/node_modules.timestamp
 	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
-.build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
+.build/templatecache.js: templatecache.js.mako $(APP_PARTIALS_FILES)
 	$(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.4.js:
