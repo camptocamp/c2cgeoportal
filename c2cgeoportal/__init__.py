@@ -481,7 +481,7 @@ def includeme(config):
 
     # add routes to the entry view class
     config.add_route("loginform", "/login.html", request_method="GET")
-    config.add_route("login", "/login", request_method="POST")
+    config.add_route("login", "/login", request_method=("GET", "POST"))
     config.add_route("logout", "/logout", request_method="GET")
     config.add_route("loginchange", "/loginchange", request_method="POST")
     config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")

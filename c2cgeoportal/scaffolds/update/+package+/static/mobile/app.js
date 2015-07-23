@@ -34,7 +34,9 @@ Ext.application({
         'Ext.TitleBar', // required at least for the Picker
         'Ext.JSON',
         'Ext.ActionSheet',
-        'Ext.TitleBar' // required at least for the Picker
+        'Ext.TitleBar',// required at least for the Picker
+        'App.overrides.PaintMonitor',
+        'App.overrides.SizeMonitor'
     ],
 
     views: ['Main', 'Layers', 'Themes', 'Search', 'Query', 'Settings', 'LoginForm'],

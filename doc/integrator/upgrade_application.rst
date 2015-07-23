@@ -119,7 +119,7 @@ Get the right version of the egg:
 
     mkdir .build
     virtualenv --setuptools --no-site-packages .build/venv
-    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi 'pip>=6' 'setuptools>=12'
+    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi 'pip>=7' 'setuptools>=12'
     .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
         --trusted-host pypi.camptocamp.net --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
         https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure \
@@ -384,12 +384,6 @@ Test and commit
   .. prompt:: bash
 
     make -f <user>.mk build
-
-* Reload Apache configuration:
-
-  .. prompt:: bash
-
-    sudo /usr/sbin/apache2ctl graceful
 
 * Test your application.
 
