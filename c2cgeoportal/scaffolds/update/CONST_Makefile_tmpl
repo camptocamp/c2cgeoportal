@@ -497,9 +497,9 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 
 .build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		.build/templatecache.js \
-		.build/externs/angular-1.3.js \
-		.build/externs/angular-1.3-q.js \
-		.build/externs/angular-1.3-http-promise.js \
+		.build/externs/angular-1.4.js \
+		.build/externs/angular-1.4-q_templated.js \
+		.build/externs/angular-1.4-http-promise_templated.js \
 		.build/externs/jquery-1.9.js \
 		.build/node_modules.timestamp
 	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
@@ -507,19 +507,19 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 .build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
 	$(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
-.build/externs/angular-1.3.js:
+.build/externs/angular-1.4.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.3.js
+	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4.js
 	touch $@
 
-.build/externs/angular-1.3-q.js:
+.build/externs/angular-1.4-q_templated.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.3-q.js
+	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-q_templated.js
 	touch $@
 
-.build/externs/angular-1.3-http-promise.js:
+.build/externs/angular-1.4-http-promise_templated.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.3-http-promise.js
+	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-http-promise_templated.js
 	touch $@
 
 .build/externs/jquery-1.9.js:
