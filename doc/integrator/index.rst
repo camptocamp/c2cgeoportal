@@ -9,6 +9,7 @@ Content:
 .. toctree::
    :maxdepth: 2
 
+   preparative_work
    requirements
    create_application
    install_application
