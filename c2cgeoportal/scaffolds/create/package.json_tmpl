@@ -15,7 +15,7 @@
     "bootstrap": "^3.3.0",
     "font-awesome": "4.2.0",
     "jquery": "1.11.3",
-    "jshint": "~2.5.1",
+    "jshint": "2.8.0",
     "less": "~1.7.5",
     "ngeo": "camptocamp/ngeo#master",
     "nomnom": "~1.6.2",
