@@ -10,6 +10,7 @@ Content:
    :maxdepth: 2
 
    requirements
+   preparative_work
    create_application
    install_application
    upgrade_application
