@@ -80,7 +80,7 @@ NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/
 APP_JS_FILES = $(shell find $(PACKAGE)/static/js -type f -name '*.js')
 APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
 APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static/js -type f -name '*.html')
-LESS_FILES = $(shell find $(PACKAGE)/static/less -type f -name '*.less' 2> /dev/null)
+LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
 
 # CGXP
@@ -490,11 +490,11 @@ $(OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js
 
 $(OUTPUT_DIR)/build.min.css: $(LESS_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	./node_modules/.bin/lessc --clean-css $(PACKAGE)/static/less/$(PACKAGE).less $@
+	./node_modules/.bin/lessc --clean-css $(PACKAGE)/static-ngeo/less/$(PACKAGE).less $@
 
 $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	./node_modules/.bin/lessc $(PACKAGE)/static/less/$(PACKAGE).less $@
+	./node_modules/.bin/lessc $(PACKAGE)/static-ngeo/less/$(PACKAGE).less $@
 
 .build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		.build/templatecache.js \
