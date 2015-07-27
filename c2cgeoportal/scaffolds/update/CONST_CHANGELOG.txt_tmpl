@@ -6,7 +6,7 @@ Version 2.0.0
 1. If you use ngeo you will need the `templatecache.js.mako` file at the root of
    your project:
 
-    ./buildout/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+    .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
     cp /tmp/{{project}}/templatecache.js.mako .
 
 Version 1.6
