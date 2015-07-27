@@ -77,9 +77,9 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 # ngeo
 OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
-APP_JS_FILES = $(shell find $(PACKAGE)/static/js -type f -name '*.js')
+APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.js')
 APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
-APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static/js -type f -name '*.html')
+APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.html')
 LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
 
