@@ -295,7 +295,13 @@ def add_static_view(config):
     _add_static_view(config, "proj", "%s:static" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
-        override_with="%s:static/" % config.get_settings()["package"]
+        override_with="%s:static/" % package
+    )
+    # Add the ngeo static view
+    _add_static_view(config, "proj-ngeo", "%s:static-ngeo" % package)
+    config.override_asset(
+        to_override="c2cgeoportal:project/",
+        override_with="%s:static-ngeo/" % package
     )
     config.add_static_view(
         name=package,
