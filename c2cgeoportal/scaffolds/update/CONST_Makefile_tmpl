@@ -704,6 +704,7 @@ endif
 ifneq ($(TOMCAT_STOP_COMMAND),)
 	$(TOMCAT_STOP_COMMAND)
 endif
+	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 ifeq ($(VENV_BIN), .build/venv/bin)
 	mv $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
