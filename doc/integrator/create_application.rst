@@ -531,25 +531,8 @@ have set either in the main ``<package>.mk`` or a ``<user>.mk``
 
 The files can have either the extension ``.in`` or ``.mako``
 
-.in
-...
-
-If you use ``.in``, the variables are simply replaced and a file without the
-``.in`` extension is generated.
-
-**Syntax**
-
-In ``.in`` files, the variable replacement syntax is as follows::
-
-  ${<variablename>}
-
-for example:
-
-* ``${instanceid}``
-* ``${directory}``
-
-.mako
-.....
+.mako (recommanded)
+...................
 
 If you use ``.mako``, you can also use all the possibilites allowed by the Mako
 templating system, such as for loops, conditions, sub-templates, etc.
@@ -562,4 +545,22 @@ The result is also a file without the .mako.
 
 **Syntax**
 
-In ``.mako`` files, the variable replacement syntax is the same as in .in files.
+In ``.mako`` files, the variable replacement syntax is as follows::
+
+  ${<variablename>}
+
+for example:
+
+* ``${instanceid}``
+* ``${directory}``
+
+.in (deprecated, for backward compatibility)
+............................................
+
+If you use ``.in``, the variables are simply replaced and a file without the
+``.in`` extension is generated.
+
+**Syntax**
+
+In ``.in`` files, the variable replacement syntax is the same as in ``.mako`` files.
+But we can get only the non structured variable.
