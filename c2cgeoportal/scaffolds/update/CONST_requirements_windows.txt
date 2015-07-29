@@ -4,7 +4,7 @@
 wheels/psycopg2-2.5.5-cp27-none-win32.whl
 wheels/Shapely-1.5.7-cp27-none-win32.whl
 wheels/Pillow-2.8.1-cp27-none-win32.whl
--e git+https://github.com/Pylons/pyramid@1e02bbfc0df09259bf207112acf019c8dba44a90#egg=pyramid
+-e git+https://github.com/Pylons/pyramid@1e02bbfc0df09259bf207112acf019c8dba44a90#egg=pyramid>=1.6.dev
 -e git+https://github.com/camptocamp/pyramid_closure@819bc43420b3cd924d8698c5a9606592c19dbb15#egg=pyramid_closure
 c2cgeoportal-win==1.6.0
 -e .
