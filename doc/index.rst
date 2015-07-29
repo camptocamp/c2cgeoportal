@@ -21,7 +21,7 @@ application, and does the initial setup. *Developer* is the person who
 produces code for c2cgeoportal itself.
 
 The c2cgeoportal project is composed of two software components: CGXP, a JS
-library based on `Boundless GXP <http://github.com/boundless/GXP>`_, and
+library based on `Boundless GXP <https://github.com/boundlessgeo/gxp>`_, and
 c2cgeoportal, a Python library for the Pyramid web framework. So c2cgeoportal
 applications are Pyramid applications with user interfaces based on ExtJS and
 OpenLayers.
