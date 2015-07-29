@@ -2,7 +2,7 @@
 
 from pyramid.config import Configurator
 from c2cgeoportal import locale_negotiator, add_interface, \
-    INTERFACE_TYPE_SENCHA_TOUCH
+    INTERFACE_TYPE_SENCHA_TOUCH, INTERFACE_TYPE_NGEO
 from c2cgeoportal.lib.authentication import create_authentication
 from {{package}}.resources import Root
 
@@ -28,5 +28,6 @@ def main(global_config, **settings):
     add_interface(config, "edit")
     add_interface(config, "routing")
     add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
+    add_interface(config, "ngeo", INTERFACE_TYPE_NGEO)
 
     return config.make_wsgi_app()
