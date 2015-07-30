@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="\{\{mainCtrl.lang\}\}" ng-app="app" ng-controller="MainController as mainCtrl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+% if debug:
+    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.css')}" type="text/css">
+% else:
+    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.min.css')}" type="text/css">
+% endif
+  <head>
+  <body>
+    <app-map app-map-map="::mainCtrl.map"></app-map>
+
+    <script src="${request.static_url('{{package}}:static-ngeo/build/build.js')}"></script>
+  </body>
+</html>
