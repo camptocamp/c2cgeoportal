@@ -77,6 +77,12 @@ vars:
     # The used sub domain for the static resources
     subdomains: [s1, s2, s3]
 
+    fulltextsearch:
+        languages:
+            fr: french
+            en: english
+            de: german
+
     # Checker configuration
     checker:
         fulltextsearch: text to search

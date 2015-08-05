@@ -114,13 +114,18 @@ class FullTextSearch(GeoInterface, Base):
 
     id = Column(Integer, primary_key=True)
     label = Column(Unicode)
-    layer_name = Column(Unicode)
+    layer_name = Column(Unicode)  # Deprecated in v2
     role_id = Column(Integer, ForeignKey(_schema + ".role.id"), nullable=True)
     role = relationship("Role")
+    interface_id = Column(Integer, ForeignKey(_schema + ".interface.id"), nullable=True)
+    interface = relationship("Interface")
+    lang = Column(String(2), nullable=True)
     public = Column(Boolean, server_default="true")
     ts = Column(TsVector)
     the_geom = Column(Geometry("GEOMETRY", srid=_srid, management=management))
     params = Column(JSONEncodedDict, nullable=True)
+    actions = Column(JSONEncodedDict, nullable=True)
+    from_theme = Column(Boolean, server_default="false")
 
 
 class Functionality(Base):
@@ -347,7 +352,7 @@ class TreeItem(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, label=_(u"Name"))
-    metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # shouldn't be used in V3
+    metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # shouldn't be used in V2
 
     @property
     def parents(self):  # pragma: nocover
@@ -548,7 +553,7 @@ class Layer(TreeItem):
         self.public = public
 
 
-class LayerV1(Layer):
+class LayerV1(Layer):  # Deprecated in v2
     __label__ = _(u"Layer")
     __plural__ = _(u"Layers")
     __tablename__ = "layerv1"
@@ -864,9 +869,10 @@ class UIMetadata(Base):
     )
     item = relationship("TreeItem", backref="ui_metadata")
 
-    def __init__(self, name="", value=""):
+    def __init__(self, name="", value="", item=None):
         self.name = name
         self.value = value
+        self.item = item
 
     def __unicode__(self):  # pragma: nocover
         return self.name or u""
@@ -892,9 +898,10 @@ class WMTSDimension(Base):
     )
     layer = relationship("LayerWMTS", backref="dimensions")
 
-    def __init__(self, name="", value=""):
+    def __init__(self, name="", value="", layer=None):
         self.name = name
         self.value = value
+        self.layer = layer
 
     def __unicode__(self):  # pragma: nocover
         return self.name or u""

@@ -92,6 +92,15 @@ Here's another example where rows from a ``SELECT`` are inserted:
     be ``fr``. In other words c2cgeoportal assumes that the database language
     and the application's default language match.
 
+Populate with the themes
+------------------------
+
+A script is available to fill the full-text search table, for more information type:
+
+.. prompt:: bash
+
+   .build/venv/bin/theme2fts --help
+
 Security
 --------
 
@@ -142,6 +151,42 @@ Query string ``floor=1`` is then automatically appended to all WMS requests.
 
 See `FloorSlider <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FloorSlider.html>`_
 for more information.
+
+Actions
+-------
+
+The ``actions`` column contains a JSON with an array of actions like:
+
+.. code:: json
+
+    {
+        "action": "add_layer",
+        "data": "<the_layer_name>"
+    }
+
+.. code:: json
+
+    {
+        "action": "add_group",
+        "data": "<the_group_name>"
+    }
+
+.. code:: json
+
+    {
+        "action": "add_theme",
+        "data": "<the_theme_name>"
+    }
+
+Interface
+---------
+
+If the ``interface_id`` column contains a value it means that the result is only for an interface.
+
+Lang
+----
+
+If the ``lang`` column contains a value it means that the result is only for a language.
 
 Configuration
 -------------
