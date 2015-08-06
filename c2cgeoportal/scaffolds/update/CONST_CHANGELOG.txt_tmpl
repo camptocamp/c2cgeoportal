@@ -12,7 +12,34 @@ Version 2.0.0
 Version 1.6
 ===========
 
-1. Get the new and heavily modified files:
+1. Warning about .in and .mako files
+
+   In c2cgeoportal 1.6, the .in are globally replaced by .mako
+
+   .in STILL WORK!
+
+   You can keep the .in, the system is backward compatible,
+   or you can choose to replace your .in by .mako, to stick to c2cgeoportal
+   evolution.
+
+   .mako offer more flexibility, so it is advised to replace the .in
+   by .mako
+
+   Please note the following syntax change:
+
+   a variable named ${vars:<varname>} in a .in will be written ${<varname>} in
+   a .mako
+
+   Also, in all the CHANGELOG points specifying both .in/.mako files, it means
+   you need to modify the file you have (either the .in or the .mako), you MUST
+   NOT have both files.
+
+2. Follow the instructions explained in this documentation chapter:
+    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/upgrade_application.html#easy-upgrading-an-application-from-1-5-to-1-6
+
+3. Get the new and heavily modified files:
+
+    at that point, the following folder should exist: /tmp/{{project}}/
 
     cp /tmp/{{project}}/.gitignore .
     cp /tmp/{{project}}/.jshintrc .
@@ -29,9 +56,10 @@ Version 1.6
     cp /tmp/{{project}}/production.ini.mako .
     cp /tmp/{{project}}/vars_{{package}}.yaml .
     cp /tmp/{{project}}/deploy/hooks/post-restore-code deploy/hooks
+    cp /tmp/{{project}}/apache/application.wsgi.mako apache/
     chmod +x deploy/hooks/post-restore-code
 
-2. Starting from version 1.6 we use a new build system based on Make that will change
+4. Starting from version 1.6 we use a new build system based on Make that will change
    many of your habits, information are given at:
    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/make.html
 
@@ -46,23 +74,25 @@ Version 1.6
      the `development.ini.mako`, `production.ini.mako` files. If you lost
      something it should probably be moved in the `vars_{{package}}.yaml` file.
    - The `print/template/print.mako.in` file should be moved to
-     `print.yaml.mako`.
+     `print/print.yaml.mako`.
    - The build environments (`<user>.mk` files) must be recreated.
      For multi project mode have a look at the documentation:
      http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html
 
-3. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
+5. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
    `[extract_messages]`, `[init_catalog]`, `[update_catalog]` sections.
 
-4. In the `setup.py` file you should remove the `message_extractors`
+6. In the `setup.py` file you should remove the `message_extractors`
    argument.
 
-5. In the {{package}}/__init__.py file do the following changes:
+7. In the {{package}}/__init__.py file do the following changes:
 
     -from c2cgeoportal import locale_negotiator
     +from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
 
-    Replace the mobile view configuration by the following lines:
+    Replace all the mobile view configuration (all the `config.add_route ...`,
+    `config.add_view ...` under the line "# mobile views and routes") by the
+    following lines:
     + add_interface(config)
     + add_interface(config, 'edit')
     + add_interface(config, 'routing')
@@ -86,7 +116,7 @@ Version 1.6
     Remove the activation of the checkers (now done directly in c2cgeoportal):
     - config.add_route('checker_all', '/checker_all')
 
-6. In the `{{package}}/templates/*.html` files you should do the following
+8. In the `{{package}}/templates/*.html` files you should do the following
    changes:
 
    - jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
@@ -98,7 +128,7 @@ Version 1.6
    Remove the no more needed `_query=url_params` argument of the
    `static_url` calls.
 
-7. In the `{{package}}/templates/*.js` files do the following changes:
+9. In the `{{package}}/templates/*.js` files do the following changes:
 
     - <% json_extent = user.role.json_extent if user else None %>
     - % if json_extent:
@@ -116,27 +146,27 @@ Version 1.6
     +     return url + "?${"&".join(["%s=%s" % p for p in version_params.items()]) | }";
     + },
 
-8. In the `{{package}}/templates/*.js`, `{{package}}/templates/api/*.js`,
+10. In the `{{package}}/templates/*.js`, `{{package}}/templates/api/*.js`,
     `{{package}}/static/mobile/config.js`, `{{package}}/static/mobile/index.html`
     files add ` | n` after all the `static_url` and `route_url` call, like:
     - "${request.static_url('...')}"
     + "${request.static_url('...') | n}"
 
-9. In the `{{package}}/templates/edit.js` file
+11. In the `{{package}}/templates/edit.js` file
     add the following attribute to the `cgxp_editing` plugin:
     + metadataParams: ${dumps(version_role_params) | n}
 
-10. In the mapfile add the following lines to all restricted layers:
+12. In the mapfile add the following lines to all restricted layers:
 
     VALIDATION
         ${mapserver_layer_validation}
     END
 
-11. Remove the deprecated versioning table:
+13. Remove the deprecated versioning table:
 
-    sudo -u postgres psql -c "DROP TABLE version_<schema>" <database>
+    sudo -u postgres psql -c "DROP TABLE version_{{package}}" <database>
 
-12. For non Apt/Dpkg based OS, disable the package checking:
+14. For non Apt/Dpkg based OS, disable the package checking:
     In the ``buildout.cfg`` section ``[buildout]`` add:
 
         parts -=
@@ -144,11 +174,11 @@ Version 1.6
             test-packages-mobile
             test-packages-tilecloud-chain
 
-13. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
+15. In the `{{package}}/static/mobile/config.js` add the following line at the top of the file:
 
-    +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/')}";
+    +OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
 
-14. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
+16. Move the `jsbuild/app.cfg` file to `jsbuild/app.cfg.mako`.
 
     Add the following lines in the start of the file:
         <%
@@ -188,47 +218,51 @@ Version 1.6
         root =
             ${"\n    ".join(root)}
 
-15. Remove your Apache configuration file, probably in
+17. Remove your Apache configuration file, probably in
     `/var/www/vhost/{{project}}/conf`. Now it will be automatically created.
 
-16. Notes on database changes:
+    To define a customized path, set the variables APACHE_VHOST and/or
+    APACHE_CONF_DIR in your `<user>.mk` file.
+
+18. Notes on database changes:
     * In prevision of GeoMapFish 2.0 some tables were added and some fields updated.
     * Table ``user`` has been moved to schema ``main_static`` in order to store all
       data modified by the web application in the same schema.
       As a result the passwords no longer need to be synchronised among the various instances
       of the application and the password replication tool has been removed.
 
-17. Add at the end of the `deploy/hooks/post-restore-database.mako` file the following line:
+19. Add at the end of the `deploy/hooks/post-restore-database.mako` or
+    `deploy/hooks/post-restore-database.in` file the following line:
 
     + .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
-18. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
+20. In your `apache/wsgi.conf.mako` or `apache/wsgi.conf.in` file replace all the
     `apache-entry-point` by `apache_entry_point`
 
-19. In your `apache/frontend.conf.mako` or `apache/frontend.conf.in` file in the
+21. In your `apache/frontend.conf.mako` or `apache/frontend.conf.in` file in the
     `<LocationMatch /${instanceid}/wsgi/>` section,
     add the following  mimetypes to the existing list:
 
     ... application/vnd.ogc.wms_xml application/vnd.ogc.gml application/vnd.ogc.se_xml
 
-    and in the `<LocationMatch /${vars:instanceid}/tiles/>` section,
+    and in the `<LocationMatch /${instanceid}/tiles/>` section,
     add the following lines:
 
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/xml
     Header add Access-Control-Allow-Headers "X-Requested-With, Content-Type"
 
-20. In the `{{package}}/subscribers.py`, `{{package}}/model.py`, `{{package}}/form.py` files do the following changes:
+22. In the `{{package}}/subscribers.py`, `{{package}}/models.py`, `{{package}}/forms.py` files do the following changes:
 
     -... = TranslationStringFactory('{{package}}')
     +... = TranslationStringFactory("{{package}}-server")
 
-21. In the `{{package}}/subscribers.py` file do the following change:
+23. In the `{{package}}/subscribers.py` file do the following change:
 
     - return localizer.translate(tsf2(localizer.translate(tsf1(string))))
     + result = localizer.translate(tsf1(string))
     + return localizer.translate(tsf2(string)) if result == string else result
 
-22. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
+24. Add the `print_spec` in the `checker` config `vars_{{package}}.yaml` file:
 
     checker:
         ...
@@ -249,7 +283,7 @@ Version 1.6
                     layers: []
                 legend: {}
 
-23. Remove the deprecated files:
+25. Remove the deprecated files:
 
     git rm -r {{package}}/CONST_migration
     git rm -r {{package}}/static/build
@@ -258,6 +292,12 @@ Version 1.6
     git rm -r *buildout*
     git rm development.ini.in production.ini.in
     git rm versions.cfg
+
+26. In your `apache/wsgi.conf.in` or `apache/wsgi.conf.mako` file, do the
+    following change:
+
+    - WSGIScriptAlias /${vars:instanceid}/wsgi ${buildout:directory/buildout/parts/modwsgi/wsgi}
+    + WSGIScriptAlias /${instanceid}/wsgi ${directory}/apache/application.wsgi
 
 
 Version 1.5.4

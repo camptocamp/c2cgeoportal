@@ -15,7 +15,6 @@
 
     // GeoMapfish dependencies
     "angular": "1.4.3",
-    "angular-animate": "1.4.3",
     "angular-gettext": "2.1.0",
     "angular-gettext-tools": "2.1.2",
     "bootstrap": "^3.3.0",

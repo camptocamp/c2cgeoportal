@@ -53,20 +53,21 @@ Makefile config variables
 
 The following variables may be set in the makefiles:
 
-* ``DEVELOPMENT``: if ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
-  ``development.ini`` pyramid config file is used, defaults to ``FALSE``.
-* ``LANGUAGES``: the list of available languages.
-* ``CGXP``: ``TRUE`` to build the CGXP interface, defaults to ``TRUE``.
-* ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
-* ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
-* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
-* ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
-* ``PRE_RULES``: predefine some build rules, default is empty.
-* ``POST_RULES``: postdefine some build rules, default is empty.
-* ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
-* ``INSTANCE_ID``: The WSGI instance id (should be unique on a server).
 * ``APACHE_ENTRY_POINT``: The apache entry point, defaults to ``/$(INSTANCE_ID)/``.
 * ``APACHE_VHOST``: The vhost folder name in ``/var/www/vhost``.
+* ``CGXP``: ``TRUE`` to build the CGXP interface, defaults to ``TRUE``.
+* ``CONFIG_VARS``: The list of parameters read from the project yaml configuration file.
+* ``DEVELOPMENT``: if ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
+  ``development.ini`` pyramid config file is used, defaults to ``FALSE``.
+* ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
+* ``INSTANCE_ID``: The WSGI instance id (should be unique on a server).
+* ``LANGUAGES``: the list of available languages.
+* ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
+* ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
+* ``POST_RULES``: postdefine some build rules, default is empty.
+* ``PRE_RULES``: predefine some build rules, default is empty.
+* ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
+* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
 
 
 Custom rules

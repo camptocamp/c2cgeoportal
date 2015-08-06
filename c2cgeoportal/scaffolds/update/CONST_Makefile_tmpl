@@ -83,6 +83,15 @@ APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
 APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.html')
 LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
+NGEO_LIBS_JS_FILES += \
+	node_modules/jquery/dist/jquery.min.js \
+	node_modules/angular/angular.min.js \
+	node_modules/angular-gettext/dist/angular-gettext.min.js \
+	node_modules/bootstrap/dist/js/bootstrap.min.js \
+	node_modules/proj4/dist/proj4.js \
+	node_modules/d3/d3.min.js \
+	node_modules/typeahead.js/dist/typeahead.bundle.min.js
+NGEO_PROJECT_LIBS_JS_FILES ?=
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell find $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -229,16 +238,16 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
-	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml
+	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
+	$(shell find $(PRINT_BASE_DIR)/print-apps)
 PRINT_TMP ?= /tmp
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
 TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
 TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
 endif
-
-PRINT_REQUIREMENT += $(shell find $(PRINT_BASE_DIR)/print-apps 2> /dev/null)
 endif
+
 ifeq ($(PRINT_VERSION), 2)
 PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 PRINT_INPUT_LS ?= config.yaml WEB-INF/classes/log4j.properties
@@ -247,6 +256,7 @@ PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/n
 PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
 PRINT_REQUIREMENT += $(addprefix, $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
+
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 
 # Apache
@@ -338,14 +348,14 @@ clean: template-clean
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
+	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: cleanall
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
-	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
-	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
@@ -480,18 +490,9 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	msgmerge --update $@ $<
 
-$(APP_OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js
+$(APP_OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)
-	awk 'FNR==1{print ""}1' $(addprefix node_modules/, \
-		jquery/dist/jquery.min.js \
-		angular/angular.min.js \
-		angular-gettext/dist/angular-gettext.min.js \
-		angular-animate/angular-animate.min.js \
-		bootstrap/dist/js/bootstrap.min.js \
-		proj4/dist/proj4.js \
-		d3/d3.min.js \
-		typeahead.js/dist/typeahead.bundle.min.js \
-		) .build/build.js > $@
+	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) .build/build.js > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
 $(APP_OUTPUT_DIR)/build.min.css: $(LESS_FILES) .build/node_modules.timestamp
@@ -710,6 +711,7 @@ endif
 ifneq ($(TOMCAT_STOP_COMMAND),)
 	$(TOMCAT_STOP_COMMAND)
 endif
+	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 ifeq ($(VENV_BIN), .build/venv/bin)
 	mv $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
