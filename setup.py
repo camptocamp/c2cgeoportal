@@ -113,6 +113,7 @@ setup(
             "manage_users = c2cgeoportal.scripts.manage_users:main",
             "c2ctool = c2cgeoportal.scripts.c2ctool:main",
             "db2pot = c2cgeoportal.scripts.db2pot:main",
+            "themev1tov2 = c2cgeoportal.scripts.themev1tov2:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",
