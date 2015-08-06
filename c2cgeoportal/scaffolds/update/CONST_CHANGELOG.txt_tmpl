@@ -13,6 +13,8 @@ Version 1.6.2
     LayerWMTS.__acl__ = [DENY_ALL]
     WMTSDimension.__acl__ = [DENY_ALL]
 
+2. If you still use version 2 of the print the `.war` file should be updated to the latest version.
+
 
 Version 1.6
 ===========
