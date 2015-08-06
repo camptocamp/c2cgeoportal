@@ -35,7 +35,7 @@ Revises: ${down_revision}
 Create Date: ${create_date}
 """
 
-from alembic import op
+from alembic import op, context
 
 # revision identifiers, used by Alembic.
 revision = "${up_revision}"
