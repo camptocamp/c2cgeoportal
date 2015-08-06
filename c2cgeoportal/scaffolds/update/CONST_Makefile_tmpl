@@ -749,6 +749,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		$(PY_FILES) \
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
-		.build/requirements.timestamp
+		.build/requirements.timestamp \
+		$(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(APACHE_GRACEFUL)
 	touch $@
