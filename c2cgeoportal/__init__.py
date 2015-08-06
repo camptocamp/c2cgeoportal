@@ -429,6 +429,7 @@ def includeme(config):
         "sqlalchemy.")
     sqlahelper.add_engine(engine)
     config.include(pyramid_tm.includeme)
+    config.include("pyramid_closure")
 
     # initialize the dbreflection module
     dbreflection.init(engine)

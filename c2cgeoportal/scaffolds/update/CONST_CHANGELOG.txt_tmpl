@@ -9,6 +9,11 @@ Version 2.0.0
     .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
     cp /tmp/{{project}}/templatecache.js.mako .
 
+2. pyramid_closure include:
+
+   If your project's main function includes config.include('pyramid_closure'),
+   remove it, as c2cgeoportal now takes care of including pyramid_closure.
+
 Version 1.6
 ===========
 
