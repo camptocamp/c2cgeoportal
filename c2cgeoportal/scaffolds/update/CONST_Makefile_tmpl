@@ -11,7 +11,7 @@ CGXP ?= TRUE
 # Enable sencha touch build
 MOBILE ?= TRUE
 # Enable ngeo build
-NGEO ?= FALSE
+NGEO ?= TRUE
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
 # Used print version
