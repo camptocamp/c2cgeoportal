@@ -47,14 +47,7 @@ class FullTextSearchView(object):
         self.request = request
         set_common_headers(request, "fulltextsearch", NO_CACHE)
         self.settings = request.registry.settings.get("fulltextsearch", {})
-        if "languages" in self.settings:  # pragma: nocover
-            self.languages = self.settings["languages"]
-        else:
-            self.languages = {
-                "fr": "french",
-                "en": "english",
-                "de": "german",
-            }
+        self.languages = self.settings.get("languages", {})
 
     @view_config(route_name="fulltextsearch", renderer="geojson")
     def fulltextsearch(self):

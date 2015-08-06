@@ -187,6 +187,12 @@ vars:
         # the host has to be set explicitly in a vhost environment.
         # tinyows_host: {host}
 
+    fulltextsearch:
+        languages:
+            fr: french
+            en: english
+            de: german
+
     servers:
 
     # The "raster web services" configuration. See the "raster"
