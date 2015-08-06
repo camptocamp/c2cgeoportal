@@ -893,9 +893,14 @@ class Entry(object):
         external_themes, add_errors = self._external_themes(interface)
         errors |= add_errors
 
+        version_params = {
+            "cache_version": get_cache_version()
+        }
         version_role_params = {
             "cache_version": get_cache_version()
         }
+        if role_id is not None:
+            version_role_params["user"] = role_id
 
         d = {
             "lang": self.lang,
@@ -909,7 +914,8 @@ class Entry(object):
             "functionality": self._functionality(),
             "queryer_attribute_urls": json.dumps(self._get_layers_enum()),
             "serverError": json.dumps(list(errors)),
-            "version_role_params": version_role_params
+            "version_params": version_params,
+            "version_role_params": version_role_params,
         }
 
         # handle permalink_themes
