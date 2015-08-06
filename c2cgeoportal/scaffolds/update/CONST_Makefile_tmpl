@@ -338,6 +338,7 @@ clean: template-clean
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
+	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: cleanall
 cleanall: clean
@@ -345,7 +346,6 @@ cleanall: clean
 	rm -rf node_modules
 	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
-	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
