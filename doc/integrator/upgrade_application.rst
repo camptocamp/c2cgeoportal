@@ -148,6 +148,8 @@ Gets the new required files from the c2cgeoportal templates:
         /tmp/<project>/CONST_vars.yaml \
         /tmp/<project>/<package>.mk \
         /tmp/<project>/vars_<project>.yaml .
+   mkdir -p print/WEB-INF/classes
+   cp /tmp/<project>/print/WEB-INF/classes/logback.xml.mako print/WEB-INF/classes
    rm -rf /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
