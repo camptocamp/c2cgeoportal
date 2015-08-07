@@ -113,6 +113,18 @@ Version 1.6.2
 3. In the `{{package}}/__init__.py` file remove all the `config.add_settings({ ... })`, they should be in the `vars_*.yaml` files.
 
 
+   In the `vars_*.yaml` file, the `closure_library_path` configuration variable and the entry in the `interpreted`
+   section can be removed:
+
+     closure_library_path: 'process.stdout.write(require("openlayers/node_modules/closure-util").getLibraryPath())'
+
+     node:
+        vars:
+        - closure_library_path
+        cmd: ["node", "-e"]
+
+   It is now directly defined in the CONST_vars.yaml file.
+
 Version 1.6
 ===========
 
