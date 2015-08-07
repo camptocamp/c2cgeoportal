@@ -1,8 +1,10 @@
 #!/bin/bash -ex
 
-# create fake vhosts
-sudo mkdir -p /var/www/vhosts/test/conf
-sudo chmod g+w,o+w /var/www/vhosts/test/conf
+sudo a2enmod headers
+sudo a2enmod rewrite
+sudo a2enmod wsgi
+sudo /usr/sbin/apachectl restart
+sudo chmod g+w,o+w /etc/apache2/sites-enabled/
 
 cp travis/build.mk /tmp/testgeomapfish/travis.mk
 
@@ -37,14 +39,5 @@ echo "Build complete"
 
 git add testgeomapfish/locale/*/LC_MESSAGES/testgeomapfish-server.po
 git commit -m "Add location"
-
-sudo touch /etc/apache2/sites-enabled/test.conf
-sudo chmod 666 /etc/apache2/sites-enabled/test.conf
-echo "Include /tmp/testgeomapfish/apache/*.conf" > /etc/apache2/sites-enabled/test.conf
-
-sudo a2enmod headers
-sudo a2enmod rewrite
-sudo a2enmod wsgi
-sudo /usr/sbin/apachectl restart
 
 cd -
