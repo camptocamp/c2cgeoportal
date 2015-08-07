@@ -19,7 +19,7 @@ git commit -q -m "Initial commit"
 
 sudo chmod 777 /var/lib/tomcat7/webapps
 
-make -f travis.mk clean
+make -f travis.mk cleanall
 make -f travis.mk build
 
 echo "Build complete"
