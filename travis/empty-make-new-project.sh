@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-cd /tmp/test/
+cd /tmp/testgeomapfish/
 
 RESULT=$(make $* 2>&1 | tail -n +4)
 

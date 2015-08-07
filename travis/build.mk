@@ -11,4 +11,4 @@ PIP_CMD = /home/travis/build/camptocamp/c2cgeoportal/travis/pip.sh
 
 TOMCAT_SERVICE_COMMAND =
 
-include test.mk
+include testgeomapfish.mk

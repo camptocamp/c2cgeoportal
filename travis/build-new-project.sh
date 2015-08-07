@@ -4,9 +4,9 @@
 sudo mkdir -p /var/www/vhosts/test/conf
 sudo chmod g+w,o+w /var/www/vhosts/test/conf
 
-cp travis/build.mk /tmp/test/travis.mk
+cp travis/build.mk /tmp/testgeomapfish/travis.mk
 
-cd /tmp/test/
+cd /tmp/testgeomapfish/
 
 sed -e 's@^c2cgeoportal==.*$@/home/travis/build/camptocamp/c2cgeoportal@' -i CONST_requirements.txt
 
@@ -14,7 +14,7 @@ git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
 git init
 git add -A
-git submodule add https://github.com/camptocamp/cgxp.git test/static/lib/cgxp
+git submodule add https://github.com/camptocamp/cgxp.git testgeomapfish/static/lib/cgxp
 git commit -q -m "Initial commit"
 
 sudo chmod 777 /var/lib/tomcat7/webapps
@@ -24,7 +24,7 @@ make -f travis.mk build
 
 echo "Build complete"
 
-git add test/locale/*/LC_MESSAGES/test-server.po
+git add testgeomapfish/locale/*/LC_MESSAGES/testgeomapfish-server.po
 git commit -m "Add location"
 
 sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO "www-data"' geomapfish
@@ -38,7 +38,7 @@ sudo -u postgres psql -c 'GRANT ALL ON SCHEMA main_static TO "www-data"' geomapf
 
 sudo touch /etc/apache2/sites-enabled/test.conf
 sudo chmod 666 /etc/apache2/sites-enabled/test.conf
-echo "Include /tmp/test/apache/*.conf" > /etc/apache2/sites-enabled/test.conf
+echo "Include /tmp/testgeomapfish/apache/*.conf" > /etc/apache2/sites-enabled/test.conf
 
 sudo a2enmod headers
 sudo a2enmod rewrite
