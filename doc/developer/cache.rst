@@ -14,7 +14,7 @@ For some service we also set the header ``Vary`` to ``Accept-Language``
 to have one cache per language.
 
 Server side
-===========
+-----------
 
 On the server side we set the ``Cache-Control`` header with a different value
 depending on the cache type.
@@ -26,7 +26,7 @@ depending on the cache type.
 The ``max-age`` is configurable in a ``vars`` file in the ``default_max_age`` attribute.
 
 Client side
-===========
+-----------
 
 On the client side we will add some attribute in the URL parameters to
 force to have the right version of the cache.
@@ -42,10 +42,10 @@ and ``version_role_user_params`` that help you to create the right url.
 With ``ngeo`` interface you have the ``cache_version`` variable.
 
 Service list
-============
+------------
 
 No cache
---------
+~~~~~~~~
 
  * cgxp_index
  * ngeo index
@@ -80,14 +80,14 @@ No cache
  * shortener
 
 Public cache
-------------
+~~~~~~~~~~~~
 
  * login form
  * layers/enumerate_attribute_values
  * WMS/GetLegendGraphic
 
 Private cache
--------------
+~~~~~~~~~~~~~
 
  * cgxp viewer
  * mobile config

@@ -1,5 +1,9 @@
 .. _integrator_preparative_work:
 
+============================================================
+Configuring Windows tools required to connect to our servers
+============================================================
+
 Creating a SSH Key with Windows
 ===============================
 
