@@ -162,13 +162,10 @@ class C2cTool:
 
     def print_step(self, step, intro="To continue type:"):
         print(intro)
-        print(_colorize("%s upgrade %s%s%s %s --step %i", YELLOW) % (
-            "%s/c2ctool" % self.venv_bin,
-            "--windows " if self.options.windows else "",
-            "--git-remote " + self.options.git_remote + " "
-            if self.options.git_remote != "origin" else "",
+        print(_colorize("VERSION=%s make -f %s upgrade%i", YELLOW) % (
+            self.options.version,
             self.options.file if self.options.file is not None else "<user.mk>",
-            self.options.version, step
+            step
         ))
 
     def get_project(self):
