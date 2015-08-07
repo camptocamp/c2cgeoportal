@@ -11,4 +11,9 @@ PIP_CMD = /home/travis/build/camptocamp/c2cgeoportal/travis/pip.sh
 
 TOMCAT_SERVICE_COMMAND =
 
+# TODO remove it ...
+testgeomapfish/static-ngeo/build/locale/%/testgeomapfish.json:
+	mkdir -p $(dir $@)
+	touch $@
+
 include testgeomapfish.mk
