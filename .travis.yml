@@ -37,9 +37,9 @@ install:
 - travis/pip.sh install tilecloud_chain
 - .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
 - diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
-- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App" > /dev/null
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test > /dev/null
-- cp -r .build /tmp/test/
+- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App" > /dev/null
+- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null
+- cp -r .build /tmp/testgeomapfish/
 - travis/build-new-project.sh
 - make -f travis.mk build
 - sudo /usr/sbin/apache2ctl graceful
@@ -48,13 +48,13 @@ install:
 script:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
-- find /tmp/test/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
-- find /tmp/test/setup.py /tmp/test/test/*.py /tmp/test/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
-- find /tmp/test/setup.py /tmp/test/test/*.py /tmp/test/test/views -name \*.py | xargs travis/quote
+- find /tmp/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
+- find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
+- find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs travis/quote
 # Actually don't work on travis see:
 # https://travis-ci.org/camptocamp/c2cgeoportal/jobs/48455036#L5312
 #- travis/test-new-project.sh
-- travis/status.sh /tmp/test/
+- travis/status.sh /tmp/testgeomapfish/
 - travis/empty-make-new-project.sh
 - travis/empty-make.sh -f travis.mk build
 - make -f travis.mk doc

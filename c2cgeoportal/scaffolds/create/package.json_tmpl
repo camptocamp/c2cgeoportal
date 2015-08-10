@@ -5,15 +5,9 @@
   "scripts": {},
   "license": "BSD",
   "dependencies": {
-    // Project dependencies
-
-    // GeoMapfish dependencies
     "async": "~0.2.10"
   },
   "devDependencies": {
-    // Project dependencies
-
-    // GeoMapfish dependencies
     "angular": "1.4.3",
     "angular-gettext": "2.1.0",
     "angular-gettext-tools": "2.1.2",
