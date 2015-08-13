@@ -126,7 +126,7 @@ Get the right version of the egg:
         https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid \
         c2cgeoportal==<egg_version>
 
-Gets the new required files from the c2cgeoportal templates:
+Get the new required files from the c2cgeoportal templates:
 
 .. prompt:: bash
 
@@ -135,7 +135,7 @@ Gets the new required files from the c2cgeoportal templates:
    cp /tmp/<project>/CONST_Makefile /tmp/<project>/CONST_requirements_windows.txt \
         /tmp/<project>/CONST_dev-requirements.txt /tmp/<project>/CONST_requirements.txt \
         /tmp/<project>/CONST_packages.yaml /tmp/<project>/CONST_versions.txt \
-        /tmp/<project>/CONST_vars.yaml_tmpl /tmp/<project>/<package>.mk  /tmp/<project>/vars_<project>.yaml .
+        /tmp/<project>/CONST_vars.yaml /tmp/<project>/<package>.mk  /tmp/<project>/vars_<project>.yaml .
    rm -rf /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
@@ -149,7 +149,7 @@ Create your own ``<user>.mk``:
 
    include <package>.mk
 
-In the ``setup.py`` have a dependency on c2cgeoportal like this ``c2cgeoportal``.
+In the ``setup.py`` file make sure that ``c2cgeoportal`` is listed in the ``install_requires`` parameter.
 
 Add all your new files in git and commit them:
 
