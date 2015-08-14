@@ -241,8 +241,8 @@ Do manual migration steps based on what's in the
 `CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 
-Upgrading c2cgeoportal (advance version)
-----------------------------------------
+Upgrading c2cgeoportal (advanced version)
+-----------------------------------------
 
 Upgrading an application to a new release of c2cgeoportal requires several
 steps:
