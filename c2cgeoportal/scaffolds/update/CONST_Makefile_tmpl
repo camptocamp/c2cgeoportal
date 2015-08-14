@@ -228,6 +228,7 @@ SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESS
 PRINT_BASE_DIR ?= print
 PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
+PRINT_TMP ?= /tmp
 ifeq ($(PRINT_VERSION), 3)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
@@ -239,7 +240,6 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell find $(PRINT_BASE_DIR)/print-apps)
-PRINT_TMP ?= /tmp
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
 TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
