@@ -11,7 +11,7 @@
     <title translate>The {{project}} Web GIS</title>
   <head>
   <body>
-    <app-map app-map-map="::mainCtrl.map"></app-map>
+    <gmf-map gmf-map-map="mainCtrl.map"></gmf-map>
 
     <script src="${request.static_url('{{package}}:static-ngeo/build/build.js')}"></script>
   </body>

@@ -10,4 +10,4 @@
 goog.provide('app_main');
 
 goog.require('app.MainController');
-goog.require('app.mapDirective');
+goog.require('gmf.mapDirective');
