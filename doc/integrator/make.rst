@@ -27,7 +27,7 @@ Default is:
     include CONST_Makefile
 
 
-And the ``<user>.mk`` contains the user-specific configi (mainly the
+And the ``<user>.mk`` contains the user-specific config (mainly the
 ``INSTANCE_ID`` config), and should look like:
 
 .. code:: makefile
