@@ -545,12 +545,19 @@ class TestEntryView(TestCase):
             ])
         )
 
-        result = '["testpoint_unprotected", "testpoint_protected", ' \
-            '"testpoint_protected_query_with_collect", ' \
-            '"testpoint_substitution", "testpoint_column_restriction", ' \
-            '"test_wmsfeatures", "test_wmstime", "test_wmstime2"]'
-        self.assertEquals(response["WFSTypes"], result)
-        self.assertEquals(response["externalWFSTypes"], result)
+        result = [
+            "testpoint_unprotected",
+            "testpoint_protected",
+            "testpoint_protected_2",
+            "testpoint_protected_query_with_collect",
+            "testpoint_substitution",
+            "testpoint_column_restriction",
+            "test_wmsfeatures",
+            "test_wmstime",
+            "test_wmstime2"
+        ]
+        self.assertEquals(json.loads(response["WFSTypes"]), result)
+        self.assertEquals(json.loads(response["externalWFSTypes"]), result)
 
     @attr(permalink_themes=True)
     def test_permalink_themes(self):

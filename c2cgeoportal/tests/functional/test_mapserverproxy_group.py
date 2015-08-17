@@ -61,11 +61,14 @@ class TestMapserverproxyViewGroup(TestCase):
         layer1 = LayerV1(u"testpoint_group", public=False)
         layer1.interfaces = [main]
 
+        layer2 = LayerV1(u"testpoint_protected_2", public=False)
+        layer2.interfaces = [main]
+
         area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
         area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer1], [role1], area)
+        restricted_area1 = RestrictionArea(u"__test_ra1", u"", [layer1, layer2], [role1], area)
 
-        DBSession.add_all([user1, role1, layer1, restricted_area1])
+        DBSession.add_all([user1, role1, layer1, layer2, restricted_area1])
         DBSession.flush()
 
         transaction.commit()
@@ -86,7 +89,9 @@ class TestMapserverproxyViewGroup(TestCase):
         r = DBSession.query(Role).filter(Role.name == "__test_role1").one()
         DBSession.delete(r)
 
-        for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_group").all():
+        for layer in DBSession.query(LayerV1).filter(
+                LayerV1.name.in_(["testpoint_group", "testpoint_protected_2"])
+        ).all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
             Interface.name == "main"
@@ -118,8 +123,12 @@ class TestMapserverproxyViewGroup(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        self.assertFalse((response.body).find("<Name>testpoint_protected_2</Name>") > 0)
+        # testpoint_group is not public so even unprotected layers are hidden:
         self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
         self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
+        # testpoint_group_2 is a standard group containing only protected layers
+        self.assertFalse((response.body).find("<Name>testpoint_group_2</Name>") > 0)
 
         request = self._create_getcap_request(username=u"__test_user1")
         request.params.update(dict(
@@ -127,8 +136,10 @@ class TestMapserverproxyViewGroup(TestCase):
         ))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
+        self.assertTrue(response.body.find("<Name>testpoint_protected_2</Name>") > 0)
         self.assertTrue((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
         self.assertTrue((response.body).find("<Name>testpoint_group</Name>") > 0)
+        self.assertTrue((response.body).find("<Name>testpoint_group_2</Name>") > 0)
 
     @attr(getcapabilities=True)
     def test_wfs_get_capabilities(self):
@@ -141,6 +152,7 @@ class TestMapserverproxyViewGroup(TestCase):
         response = MapservProxy(request).proxy()
 
         self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)
+        # testpoint_group is not public so even unprotected layers are hidden:
         self.assertFalse((response.body).find("<Name>testpoint_unprotected</Name>") > 0)
         self.assertFalse((response.body).find("<Name>testpoint_group</Name>") > 0)
 
