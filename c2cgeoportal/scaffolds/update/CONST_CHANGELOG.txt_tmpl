@@ -14,6 +14,19 @@ Version 2.0.0
    If your project's main function includes config.include('pyramid_closure'),
    remove it, as c2cgeoportal now takes care of including pyramid_closure.
 
+Version 1.6.2
+=============
+
+1. In the `{{project}}/models.py` add the following lines:
+
+    from pyramid.security import DENY_ALL
+
+    LayerInternalWMS.__acl__ = [DENY_ALL]
+    LayerExternalWMS.__acl__ = [DENY_ALL]
+    LayerWMTS.__acl__ = [DENY_ALL]
+    WMTSDimension.__acl__ = [DENY_ALL]
+
+
 Version 1.6
 ===========
 
