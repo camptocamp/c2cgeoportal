@@ -206,6 +206,8 @@ class _Layer:
         self.accumul = []
         self.hidden = True
         self.self_hidden = self_hidden
+        self.has_children = False
+        self.children_nb = 0
 
 
 class _CapabilitiesFilter(XMLFilterBase):
@@ -236,6 +238,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         self.layers_path = []
         self.in_name = False
         self.tag_name = tag_name
+        self.level = 0
 
     def _complete_text_node(self):
         if self._accumulator:
@@ -243,11 +246,20 @@ class _CapabilitiesFilter(XMLFilterBase):
             self._accumulator = []
 
     def _do(self, action):
-        if len(self.layers_path) != 0 and self.layers_path[-1].hidden:
+        if len(self.layers_path) != 0:
             self.layers_path[-1].accumul.append(action)
         else:
             self._complete_text_node()
             action()
+
+    def _add_child(self, layer):
+        if not layer.hidden and not (
+                layer.has_children and layer.children_nb == 0
+        ):
+            for action in layer.accumul:
+                self._complete_text_node()
+                action()
+            layer.accumul = []
 
     def setDocumentLocator(self, locator):  # noqa
         self._downstream.setDocumentLocator(locator)
@@ -266,12 +278,21 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def startElement(self, name, attrs):  # noqa
         if name == self.tag_name:
-            if len(self.layers_path) > 1:
-                self.layers_path.append(_Layer(
-                    self.layers_path[-1].self_hidden
-                ))
-            else:
-                self.layers_path.append(_Layer())
+            self.level += 1
+            parent_layer = None
+            if len(self.layers_path) > 0:
+                parent_layer = self.layers_path[-1]
+                parent_layer.has_children = True
+                parent_layer.children_nb += 1
+            layer = _layer(
+                parent_layer.self_hidden
+            ) if len(self.layers_path) > 1 else _Layer()
+            self.layers_path.append(layer)
+
+            if parent_layer is not None:
+                parent_layer.accumul.append(
+                    lambda: self._add_child(layer)
+                )
         elif name == "Name" and len(self.layers_path) != 0:
             self.in_name = True
 
@@ -281,6 +302,11 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
+            self.level -= 1
+            if self.level == 0 and not self.layers_path[0].hidden:
+                for action in self.layers_path[0].accumul:
+                    self._complete_text_node()
+                    action()
             self.layers_path.pop()
         elif name == "Name":
             self.in_name = False
@@ -305,13 +331,11 @@ class _CapabilitiesFilter(XMLFilterBase):
             if self._keep_layer(layer_name):
                 for layer in self.layers_path:
                     layer.hidden = False
-                    for action in layer.accumul:
-                        self._complete_text_node()
-                        action()
-                    layer.accumul = []
             else:
                 # remove layer
                 self.layers_path[-1].self_hidden = True
+                if len(self.layers_path) > 1:
+                    self.layers_path[-2].children_nb -= 1
 
         self._do(lambda: self._accumulator.append(text.encode("utf-8")))
 
