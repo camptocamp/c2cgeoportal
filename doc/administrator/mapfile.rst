@@ -322,7 +322,7 @@ in a ``.mako`` file).
         END
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
-insert the variable value.
+insert the variable value, but not at the start of a line (to avoid escape issues).
 
 Then in the administration interface, create a ``functionality`` named
 ``mapserver_substitution`` with the value: ``<variable>=<value>``.
