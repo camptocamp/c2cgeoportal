@@ -26,7 +26,7 @@
 /{{package}}/static/build/
 /{{package}}/static-ngeo/build/
 /{{package}}/locale/*/LC_MESSAGES/*.mo
-/{{package}}/locale/{{package}}-server.pot
+/{{package}}/locale/{{package}}-*.pot
 /{{package}}/static/mobile/resources/sass/.sass-cache
 /{{package}}/static/mobile/resources/css/app.css
 /{{package}}/static/mobile/archive/
