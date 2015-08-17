@@ -21,8 +21,6 @@ git commit -q -m "Initial commit"
 
 sudo chmod 777 /var/lib/tomcat7/webapps
 
-make -f travis.mk cleanall
-
 sudo -u postgres psql -c 'GRANT SELECT ON TABLE spatial_ref_sys TO "www-data"' geomapfish
 sudo -u postgres psql -c 'GRANT ALL ON TABLE geometry_columns TO "www-data"' geomapfish
 sudo -u postgres psql -c "CREATE SCHEMA main;" geomapfish
