@@ -284,7 +284,7 @@ class _CapabilitiesFilter(XMLFilterBase):
                 parent_layer = self.layers_path[-1]
                 parent_layer.has_children = True
                 parent_layer.children_nb += 1
-            layer = _layer(
+            layer = _Layer(
                 parent_layer.self_hidden
             ) if len(self.layers_path) > 1 else _Layer()
             self.layers_path.append(layer)
