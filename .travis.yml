@@ -18,7 +18,6 @@ before_install:
 - sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
 - sudo apt-get update
 - sudo aptitude install -y apache2 facter libapache2-mod-wsgi tomcat7 deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
-- dpkg -l | grep postgis
 - sudo -u postgres psql --version
 
 - sudo -u postgres createdb -E UTF8 -T template0 template_postgis
