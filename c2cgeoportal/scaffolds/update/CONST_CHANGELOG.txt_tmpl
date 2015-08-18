@@ -222,7 +222,7 @@ Version 1.6
         ]
         %>
 
-    Replace all the root section by:
+    Replace all the root sections (for all built files) by:
 
         root =
             ${"\n    ".join(root)}
