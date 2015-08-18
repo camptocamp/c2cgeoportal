@@ -125,7 +125,7 @@ transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoport
 $(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
 
 %: %.mako
-	$(C2C_TEMPLATE_CMD) --engine template --files $<
+	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/requirements.timestamp
 	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SRC_FILES)

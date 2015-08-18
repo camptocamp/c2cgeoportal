@@ -144,8 +144,8 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost}"
-        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${vars:mapserver_join_tables} WHERE ST_Contains(${vars:mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${vars:mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from (SELECT tp.* FROM main.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.the_geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
             "wms_srs" "epsg:21781"
@@ -155,7 +155,7 @@ MAP
             "gml_geometries" "the_geom"
             "gml_the_geom_type" "point"
 
-            ${vars:mapserver_layer_metadata}
+            ${mapserver_layer_metadata}
         END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
