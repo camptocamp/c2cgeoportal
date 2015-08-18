@@ -4,7 +4,7 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 1.6.2
 =============
 
-1. In the `{{project}}/models.py` add the following lines:
+1. In the `{{package}}/models.py` add the following lines:
 
     from pyramid.security import DENY_ALL
 
