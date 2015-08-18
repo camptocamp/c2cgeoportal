@@ -90,8 +90,8 @@ branch and to push it to the remote repository:
 
 .. prompt:: bash
 
-   git checkout -b <project-branch>
-   git push origin <project-branch>
+   git checkout -b 1.6
+   git push origin 1.6
 
 Create a ``project.yaml.mako`` file that contains:
 
@@ -102,6 +102,7 @@ Create a ``project.yaml.mako`` file that contains:
    host: <host>
    checker_path: /${instanceid}/wsgi/check_collector?
    template_vars:
+        srid: <srid>
         mobile_application_title: 'Geoportal Mobile Application'
 
 Where ``<folder>`` is the last element of the folder e.g. for
@@ -109,7 +110,9 @@ Where ``<folder>`` is the last element of the folder e.g. for
 
 the ``<package>`` is the package name,
 
-and the ``<host>`` is the host to use for the Apache VirtualHost.
+the ``<host>`` is the host to use for the Apache VirtualHost,
+
+and the ``<srid>`` is the SRID of the project (e.g. 21781).
 
 
 Add ``/project.yaml`` and ``/.build`` to the ``.gitignore`` file.
@@ -131,6 +134,8 @@ Get the right version of the egg:
         https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid \
         c2cgeoportal==<egg_version>
 
+Where ``<egg_version>`` can be *1.6.0* for the first stable version.
+
 Gets the new required files from the c2cgeoportal templates:
 
 .. prompt:: bash
@@ -147,12 +152,10 @@ Gets the new required files from the c2cgeoportal templates:
         /tmp/<project>/CONST_versions.txt \
         /tmp/<project>/CONST_vars.yaml \
         /tmp/<project>/<package>.mk \
-        /tmp/<project>/vars_<project>.yaml .
+        /tmp/<project>/vars_<package>.yaml .
    mkdir -p print/WEB-INF/classes
    cp /tmp/<project>/print/WEB-INF/classes/logback.xml.mako print/WEB-INF/classes
    rm -rf /tmp/<project>
-
-Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
 Create your own ``<user>.mk``:
 
@@ -170,7 +173,8 @@ Add all your new files in git and commit them:
 .. prompt:: bash
 
    git add project.yaml.mako CONST_* <package>.mk \
-        vars_<project>.yaml <user>.mk
+        vars_<package>.yaml <user>.mk .gitignore
+   git rm project.yaml
    git commit -m "Initialize the upgrade to 1.6"
 
 Start the c2ctool upgrade:
