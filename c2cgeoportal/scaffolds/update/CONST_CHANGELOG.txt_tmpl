@@ -148,7 +148,7 @@ Version 1.6
 
     + getURL: function() {
     +     var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
-    +     return url + "?${"&".join(["%s=%s" % p for p in version_params.items()]) | }";
+    +     return url + "?${'&'.join(["%s=%s" % p for p in version_role_params.items()]) | n}";
     + },
 
 10. In the `{{package}}/templates/*.js`, `{{package}}/templates/api/*.js`,
