@@ -315,6 +315,7 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         if not self.options.windows:
+            check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
             pip_cmd = [
                 "%s/pip" % self.venv_bin, "install",
                 "--trusted-host", "pypi.camptocamp.net",

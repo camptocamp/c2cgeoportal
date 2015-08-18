@@ -72,7 +72,8 @@ On Windows, run:
 
 .. prompt:: bash
 
-   .build/venv/Scripts/c2ctool upgrade --windows <makefile> <target_version>
+   .build/venv/Scripts/c2ctool upgrade --windows <makefile> \
+        <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
@@ -117,11 +118,15 @@ Get the right version of the egg:
 
 .. prompt:: bash
 
-    mkdir .build
-    virtualenv --setuptools --no-site-packages .build/venv
-    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi 'pip>=7' 'setuptools>=12'
-    .build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
-        --trusted-host pypi.camptocamp.net --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
+   mkdir .build
+   virtualenv --setuptools --no-site-packages .build/venv
+   .build/venv/bin/pip install \
+        --index-url http://pypi.camptocamp.net/pypi \
+        'pip>=7' 'setuptools>=12'
+   .build/venv/bin/pip install \
+        --index-url http://pypi.camptocamp.net/pypi \
+        --trusted-host pypi.camptocamp.net \
+        --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
         https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure \
         https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid \
         c2cgeoportal==<egg_version>
@@ -130,12 +135,21 @@ Gets the new required files from the c2cgeoportal templates:
 
 .. prompt:: bash
 
-   .build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/<project> package=<package> srid=-1
-   .build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/<project> package=<package>
-   cp /tmp/<project>/CONST_Makefile /tmp/<project>/CONST_requirements_windows.txt \
-        /tmp/<project>/CONST_dev-requirements.txt /tmp/<project>/CONST_requirements.txt \
-        /tmp/<project>/CONST_packages.yaml /tmp/<project>/CONST_versions.txt \
-        /tmp/<project>/CONST_vars.yaml_tmpl /tmp/<project>/<package>.mk  /tmp/<project>/vars_<project>.yaml .
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_create \
+        /tmp/<project> package=<package> srid=-1
+   .build/venv/bin/pcreate --interactive -s c2cgeoportal_update \
+        /tmp/<project> package=<package>
+   cp /tmp/<project>/CONST_Makefile \
+        /tmp/<project>/CONST_requirements_windows.txt \
+        /tmp/<project>/CONST_dev-requirements.txt \
+        /tmp/<project>/CONST_requirements.txt \
+        /tmp/<project>/CONST_packages.yaml \
+        /tmp/<project>/CONST_versions.txt \
+        /tmp/<project>/CONST_vars.yaml \
+        /tmp/<project>/<package>.mk \
+        /tmp/<project>/vars_<project>.yaml .
+   mkdir -p print/WEB-INF/classes
+   cp /tmp/<project>/print/WEB-INF/classes/logback.xml.mako print/WEB-INF/classes
    rm -rf /tmp/<project>
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
@@ -155,14 +169,16 @@ Add all your new files in git and commit them:
 
 .. prompt:: bash
 
-    git add project.yaml.mako CONST_* <package>.mk vars_<project>.yaml <user>.mk
-    git commit -m "Initialize the upgrade to 1.6"
+   git add project.yaml.mako CONST_* <package>.mk \
+        vars_<project>.yaml <user>.mk
+   git commit -m "Initialize the upgrade to 1.6"
 
 Start the c2ctool upgrade:
 
 .. prompt:: bash
 
-   make -f <makefile> project.yaml
+   rm -rf .build/*
+   make -f <makefile> project.yaml .build/requirements.timestamp
    .build/venv/bin/c2ctool upgrade <makefile> <target_version>
 
 Where ``<makefile>`` is your user make file (``<user>.mk``),
