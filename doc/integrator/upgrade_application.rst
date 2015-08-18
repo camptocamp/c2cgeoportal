@@ -241,8 +241,8 @@ Do manual migration steps based on what's in the
 `CHANGELOG <https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst>`_.
 
 
-Upgrading c2cgeoportal (advance version)
-----------------------------------------
+Upgrading c2cgeoportal (advanced version)
+-----------------------------------------
 
 Upgrading an application to a new release of c2cgeoportal requires several
 steps:
@@ -365,10 +365,10 @@ First rename all the conflicting items:
 
    .. code:: sql
 
-      ALTER INDEX layer_pkey RENAME TO layertmp_pkey;
-      ALTER TABLE layer ADD CONSTRAINT layertmp_id_fkey FOREIGN KEY (id) REFERENCES treeitem(id);
-      ALTER TABLE layer DROP CONSTRAINT layer_id_fkey;
-      ALTER TABLE layer RENAME TO layertmp;
+      ALTER INDEX <schema_name>.layer_pkey RENAME TO <schema_name>.layertmp_pkey;
+      ALTER TABLE <schema_name>.layer ADD CONSTRAINT <schema_name>.layertmp_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
+      ALTER TABLE <schema_name>.layer DROP CONSTRAINT <schema_name>.layer_id_fkey;
+      ALTER TABLE <schema_name>.layer RENAME TO <schema_name>.layertmp;
 
 .. note::
   We can't rename a foreign key, we have to create a new one before removing the
@@ -379,8 +379,8 @@ it in your Postgis 2.x database (exemple using Postgres 9.1, Postgis 2.1):
 
     .. prompt:: bash
 
-       createdb -T template_postgis <database_name>
-       perl /usr/share/Postgresql/9.1/contrib/Postgis-2.1/postgis_restore.pl -v <dump_name>.dump | psql <database_name>
+       sudo -u postgres createdb -T template_postgis <database_name>
+       perl /usr/share/Postgresql/9.1/contrib/Postgis-2.1/postgis_restore.pl -v <dump_name>.dump | sudo -u postgres psql <database_name>
 
 .. note::
   If you dont have a template_postgis database, you need to add Postgis support
@@ -390,10 +390,10 @@ Once restored, set the original names back:
 
    .. code:: sql
 
-      ALTER TABLE layertmp RENAME TO layer;
-      ALTER INDEX layertmp_pkey RENAME TO layer_pkey;
-      ALTER TABLE layer ADD CONSTRAINT layer_id_fkey FOREIGN KEY (id) REFERENCES treeitem(id);
-      ALTER TABLE layer DROP CONSTRAINT layertmp_id_fkey;
+      ALTER TABLE <schema_name>.layertmp RENAME TO <schema_name>.layer;
+      ALTER INDEX <schema_name>.layertmp_pkey RENAME TO <schema_name>.layer_pkey;
+      ALTER TABLE <schema_name>.layer ADD CONSTRAINT <schema_name>.layer_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
+      ALTER TABLE <schema_name>.layer DROP CONSTRAINT <schema_name>.layertmp_id_fkey;
 
 
 Test and commit
