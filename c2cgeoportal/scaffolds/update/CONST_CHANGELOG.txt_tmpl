@@ -73,8 +73,8 @@ Version 1.6
    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/make.html
 
    Main things to do:
-   - Move your old `config.yaml` and your `vars` section of the old
-     `buildout.cfg` file to the new `vars_{{package}}.yaml` file.
+   - Move your old `config.yaml` and your `[vars]` section of the old
+     `buildout.cfg` file to the new `vars_{{package}}.yaml` file in the `vars:` parameter.
    - Move your special task from your old `buildout.cfg` file to your new
      `{{package}}.mk` file
    - The `README.rst`, `.gitignore` files will be overwritten.
