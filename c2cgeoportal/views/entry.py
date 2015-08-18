@@ -1031,7 +1031,10 @@ class Entry(object):
         user = self.request.user
 
         role_id = None if user is None else user.role.id
-        themes, errors = self._themes(role_id, interface, False)
+        # get the list of themes available for mobile
+        themes, errors = self._themes(role_id, interface, False, 1, False, 0)
+        if len(errors) > 0:  # pragma: no cover
+            log.error("Error in mobile theme:\n%s" % "\n".join(errors))
 
         for t in themes:
             self.flatten_layers(t)
@@ -1049,9 +1052,7 @@ class Entry(object):
             "username": user.username if user else ""
         }
 
-        # get the list of themes available for mobile
         themes_ = []
-        themes, errors = self._themes(role_id, interface, False)
         for theme in themes:
             # mobile theme or hidden theme explicitely loaded
             if theme["in_mobile_viewer"] or theme["name"] == theme_name:
