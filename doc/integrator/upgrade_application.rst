@@ -136,7 +136,7 @@ Get the right version of the egg:
 
 Where ``<egg_version>`` can be *1.6.0* for the first stable version.
 
-Gets the new required files from the c2cgeoportal templates:
+Get the new required files from the c2cgeoportal templates:
 
 .. prompt:: bash
 
@@ -166,7 +166,7 @@ Create your own ``<user>.mk``:
 
    include <package>.mk
 
-In the ``setup.py`` have a dependency on c2cgeoportal like this ``c2cgeoportal``.
+In the ``setup.py`` file make sure that ``c2cgeoportal`` is listed in the ``install_requires`` parameter.
 
 Add all your new files in git and commit them:
 
