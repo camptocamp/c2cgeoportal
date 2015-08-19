@@ -659,7 +659,7 @@ class TestEntryView(TestCase):
             "lang", "tiles_url", "debug",
             "serverError", "themes", "external_themes", "functionality",
             "WFSTypes", "externalWFSTypes", "user", "queryer_attribute_urls",
-            "version_role_params",
+            "version_role_params", "version_params",
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],

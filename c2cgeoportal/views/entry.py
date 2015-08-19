@@ -893,9 +893,14 @@ class Entry(object):
         external_themes, add_errors = self._external_themes(interface)
         errors |= add_errors
 
+        version_params = {
+            "cache_version": get_cache_version()
+        }
         version_role_params = {
             "cache_version": get_cache_version()
         }
+        if role_id is not None:
+            version_role_params["user"] = role_id
 
         d = {
             "lang": self.lang,
@@ -909,7 +914,8 @@ class Entry(object):
             "functionality": self._functionality(),
             "queryer_attribute_urls": json.dumps(self._get_layers_enum()),
             "serverError": json.dumps(list(errors)),
-            "version_role_params": version_role_params
+            "version_params": version_params,
+            "version_role_params": version_role_params,
         }
 
         # handle permalink_themes
@@ -1031,7 +1037,10 @@ class Entry(object):
         user = self.request.user
 
         role_id = None if user is None else user.role.id
-        themes, errors = self._themes(role_id, interface, False)
+        # get the list of themes available for mobile
+        themes, errors = self._themes(role_id, interface, False, 1, False, 0)
+        if len(errors) > 0:  # pragma: no cover
+            log.error("Error in mobile theme:\n%s" % "\n".join(errors))
 
         for t in themes:
             self.flatten_layers(t)
@@ -1049,9 +1058,7 @@ class Entry(object):
             "username": user.username if user else ""
         }
 
-        # get the list of themes available for mobile
         themes_ = []
-        themes, errors = self._themes(role_id, interface, False)
         for theme in themes:
             # mobile theme or hidden theme explicitely loaded
             if theme["in_mobile_viewer"] or theme["name"] == theme_name:

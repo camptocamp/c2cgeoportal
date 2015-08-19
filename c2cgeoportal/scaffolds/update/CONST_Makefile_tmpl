@@ -229,6 +229,12 @@ SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESS
 PRINT_BASE_DIR ?= print
 PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
+PRINT_TMP ?= /tmp
+TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
+ifneq ($(TOMCAT_SERVICE_COMMAND),)
+TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
+TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
+endif
 ifeq ($(PRINT_VERSION), 3)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
@@ -240,12 +246,6 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell find $(PRINT_BASE_DIR)/print-apps)
-PRINT_TMP ?= /tmp
-TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
-ifneq ($(TOMCAT_SERVICE_COMMAND),)
-TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
-TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
-endif
 endif
 
 ifeq ($(PRINT_VERSION), 2)
@@ -314,6 +314,7 @@ help:
 	@echo  "- update		Update the project (Git, Node, Pip)"
 	@echo  "- update-git-submodules	Update the Git submodules"
 	@echo  "- update-node-modules	Update node modules (using --force)"
+	@echo  "- upgrade		Launch the upgrade process"
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
 endif
@@ -756,6 +757,30 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		$(PY_FILES) \
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
-		.build/requirements.timestamp
+		.build/requirements.timestamp \
+		$(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(APACHE_GRACEFUL)
 	touch $@
+
+UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
+UPGRADE_ARGS ?=
+
+.PHONY: upgrade
+upgrade: .build/requirements.timestamp project.yaml
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION}
+
+.PHONY: upgrade1
+upgrade1: .build/requirements.timestamp project.yaml
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
+
+.PHONY: upgrade2
+upgrade2: .build/requirements.timestamp project.yaml
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 2
+
+.PHONY: upgrade3
+upgrade3: .build/requirements.timestamp project.yaml
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 3
+
+.PHONY: upgrade4
+upgrade4: .build/requirements.timestamp project.yaml
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 4

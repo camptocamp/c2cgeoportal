@@ -312,6 +312,7 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         if not self.options.windows:
+            check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
             pip_cmd = [
                 "%s/pip" % self.venv_bin, "install",
                 "--trusted-host", "pypi.camptocamp.net",
@@ -406,6 +407,16 @@ class C2cTool:
 
     def step4(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % self.options.version])
+
+        print()
+        print(self.color_bar)
+        print()
+        print(_colorize("Congratulations your upgrade is a success.", GREEN))
+        print()
+        branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
+        print("Now all your files will be commited, you should do a git push %s %s." % (
+            self.options.git_remote, branch
+        ))
 
     def deploy(self):
         if not self.test_checkers():

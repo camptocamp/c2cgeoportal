@@ -17,7 +17,7 @@ Version 2.0.0
 Version 1.6.2
 =============
 
-1. In the `{{project}}/models.py` add the following lines:
+1. In the `{{package}}/models.py` add the following lines:
 
     from pyramid.security import DENY_ALL
 
@@ -25,6 +25,10 @@ Version 1.6.2
     LayerExternalWMS.__acl__ = [DENY_ALL]
     LayerWMTS.__acl__ = [DENY_ALL]
     WMTSDimension.__acl__ = [DENY_ALL]
+
+2. If you still use version 2 of the print the `.war` file should be updated to the latest version.
+
+3. In the `{{package}}/__init.py`` file remove all the `config.add_settings({ ... })`, they should be in the `vars_*.yaml` files.
 
 
 Version 1.6
@@ -82,8 +86,8 @@ Version 1.6
    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/make.html
 
    Main things to do:
-   - Move your old `config.yaml` and your `vars` section of the old
-     `buildout.cfg` file to the new `vars_{{package}}.yaml` file.
+   - Move your old `config.yaml` and your `[vars]` section of the old
+     `buildout.cfg` file to the new `vars_{{package}}.yaml` file in the `vars:` parameter.
    - Move your special task from your old `buildout.cfg` file to your new
      `{{package}}.mk` file
    - The `README.rst`, `.gitignore` files will be overwritten.
@@ -161,7 +165,7 @@ Version 1.6
 
     + getURL: function() {
     +     var url = OpenLayers.Layer.WMTS.prototype.getURL.apply(this, arguments);
-    +     return url + "?${"&".join(["%s=%s" % p for p in version_params.items()]) | }";
+    +     return url + "?${'&'.join(["%s=%s" % p for p in version_params.items()]) | n}";
     + },
 
 10. In the `{{package}}/templates/*.js`, `{{package}}/templates/api/*.js`,
@@ -231,7 +235,7 @@ Version 1.6
         ]
         %>
 
-    Replace all the root section by:
+    Replace all the root sections (for all built files) by:
 
         root =
             ${"\n    ".join(root)}
