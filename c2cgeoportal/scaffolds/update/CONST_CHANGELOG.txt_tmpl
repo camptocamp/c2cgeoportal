@@ -14,6 +14,7 @@ Version 1.6.2
     WMTSDimension.__acl__ = [DENY_ALL]
 
 2. If you still use version 2 of the print the `.war` file should be updated to the latest version.
+   Get the `.war` from here: http://pypi.camptocamp.net/print-servlet-2.1-SNAPSHOT-IMG-MAGICK-daeea96d2d3b33d6ccf02fe62d81b9c7aa2574a2.war.
 
 3. In the `{{package}}/__init__.py` file remove all the `config.add_settings({ ... })`, they should be in the `vars_*.yaml` files.
 
