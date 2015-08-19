@@ -264,6 +264,7 @@ class C2cTool:
             print("It should be in folder '%s' instead of folder '%s'." % (
                 self.project["project_folder"], path.split(path.realpath("."))[1]
             ))
+            exit(1)
 
         check_call(["git", "status"])
         print()
