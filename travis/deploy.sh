@@ -49,9 +49,9 @@ then
     else
     if [ ${FINAL} == true ]
         then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
         else
-            .build/venv/bin/python setup.py sdist upload -r c2c-internal
+            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
         fi
     fi
 
@@ -69,9 +69,9 @@ then
     else
         if [ ${FINAL} == true ]
         then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
         else
-            .build/venv/bin/python setup.py sdist upload -r c2c-internal
+            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
         fi
     fi
 fi
