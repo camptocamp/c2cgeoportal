@@ -82,7 +82,6 @@ class TestLoopTheme(TestCase):
 
         transaction.commit()
 
-    @attr(loop_theme=True)
     def test_theme(self):
         from c2cgeoportal.views.entry import Entry, cache_region
 

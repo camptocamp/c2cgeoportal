@@ -112,7 +112,6 @@ class TestMapserverproxyViewGroup(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
-    @attr(getcapabilities=True)
     def test_wms_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -141,7 +140,6 @@ class TestMapserverproxyViewGroup(TestCase):
         self.assertTrue((response.body).find("<Name>testpoint_group</Name>") > 0)
         self.assertTrue((response.body).find("<Name>testpoint_group_2</Name>") > 0)
 
-    @attr(getcapabilities=True)
     def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 

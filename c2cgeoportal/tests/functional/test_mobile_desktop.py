@@ -41,7 +41,6 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
-@attr(MobileDesktop=True)
 class TestMobileDesktop(TestCase):
 
     def setUp(self):  # noqa
@@ -124,7 +123,6 @@ class TestMobileDesktop(TestCase):
 
         return Entry(request)
 
-    @attr(mobile_themes=True)
     def test_mobile_themes(self):
         entry = self._create_entry_obj()
         entry.request.interface_name = "mobile"
@@ -154,7 +152,6 @@ class TestMobileDesktop(TestCase):
             }]
         )
 
-    @attr(mobile_private_theme=True)
     def test_mobile_private_theme(self):
         entry = self._create_entry_obj()
         entry.request.interface_name = "mobile"
@@ -193,7 +190,6 @@ class TestMobileDesktop(TestCase):
             }]
         )
 
-    @attr(desktop_layers=True)
     def test_desktop_layers(self):
         entry = self._create_entry_obj()
         response_vars = entry.get_cgxp_viewer_vars()

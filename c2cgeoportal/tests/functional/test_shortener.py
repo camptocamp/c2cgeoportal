@@ -39,7 +39,6 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
-@attr(shortener=True)
 class TestshortenerView(TestCase):
 
     def setUp(self):  # noqa
@@ -53,7 +52,6 @@ class TestshortenerView(TestCase):
         DBSession.query(Shorturl).delete()
         transaction.commit()
 
-    @attr(shortener=True)
     def test_shortener(self):
         from pyramid.testing import DummyRequest
         from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
@@ -109,7 +107,6 @@ class TestshortenerView(TestCase):
         }
         self.assertRaises(HTTPBadRequest, shortener.create)
 
-    @attr(shortener_baseurl=True)
     def test_shortener_baseurl(self):
         from pyramid.testing import DummyRequest
         from c2cgeoportal.views.shortener import Shortener

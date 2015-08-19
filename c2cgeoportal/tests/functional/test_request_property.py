@@ -10,7 +10,6 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
-@attr(request_property=True)
 class TestRequestProperty(TestCase):
 
     def setUp(self):  # noqa
@@ -39,19 +38,16 @@ class TestRequestProperty(TestCase):
         DBSession.query(Role).filter_by(name=u"__test_role").delete()
         transaction.commit()
 
-    @attr(request_no_auth=True)
     def test_request_no_auth(self):
         request = self._create_request()
         self.assertEqual(request.user, None)
 
-    @attr(request_auth=True)
     def test_request_auth(self):
         self.config.testing_securitypolicy(u"__test_user")
         request = self._create_request()
         self.assertEqual(request.user.username, u"__test_user")
         self.assertEqual(request.user.role.name, u"__test_role")
 
-    @attr(right_auth=True)
     def test_request_right_auth(self):
         from pyramid.testing import DummyRequest
         from c2cgeoportal import get_user_from_request
@@ -72,7 +68,6 @@ class TestRequestProperty(TestCase):
 
         self.assertEqual(request.user.username, u"__test_user")
 
-    @attr(wrong_auth=True)
     def test_request_wrong_auth(self):
         from pyramid.testing import DummyRequest
         from c2cgeoportal import get_user_from_request
@@ -93,7 +88,6 @@ class TestRequestProperty(TestCase):
 
         self.assertEqual(request.user, None)
 
-    @attr(request_auth_overwritten_property=True)
     def test_request_auth_overwritten_property(self):
         def setter(request):
             class User(object):

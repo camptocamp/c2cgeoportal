@@ -174,7 +174,6 @@ class TestTinyOWSProxyView(TestCase):
 
         return proxy
 
-    @attr(functional=True)
     def test_proxy_not_auth(self):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPUnauthorized
@@ -182,7 +181,6 @@ class TestTinyOWSProxyView(TestCase):
         request = _create_dummy_request()
         self.assertRaises(HTTPUnauthorized, TinyOWSProxy(request).proxy)
 
-    @attr(functional=True)
     def test_proxy_get_capabilities_user1(self):
         request = _create_dummy_request(username=u"__test_user1")
         proxy = self.get_fake_proxy_(
@@ -197,7 +195,6 @@ class TestTinyOWSProxyView(TestCase):
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_get_capabilities_user2(self):
         request = _create_dummy_request(username=u"__test_user2")
         proxy = self.get_fake_proxy_(
@@ -212,7 +209,6 @@ class TestTinyOWSProxyView(TestCase):
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_get_capabilities_get(self):
         request = _create_dummy_request(username=u"__test_user1")
         request.params.update(dict(
@@ -231,7 +227,6 @@ class TestTinyOWSProxyView(TestCase):
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_get_capabilities_post(self):
         request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
@@ -250,7 +245,6 @@ class TestTinyOWSProxyView(TestCase):
         self.assertEquals(filtered, response.body)
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_get_capabilities_post_invalid_body(self):
         from pyramid.httpexceptions import HTTPBadRequest
 
@@ -261,7 +255,6 @@ class TestTinyOWSProxyView(TestCase):
         proxy = self.get_fake_proxy_(request, "", None)
         self.assertRaises(HTTPBadRequest, proxy.proxy)
 
-    @attr(functional=True)
     def test_proxy_describe_feature_type_get(self):
         request = _create_dummy_request(username=u"__test_user1")
         request.registry.settings["tinyowsproxy"] = {
@@ -277,7 +270,6 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_describe_feature_type_invalid_layer(self):
         from pyramid.httpexceptions import HTTPForbidden
 
@@ -290,7 +282,6 @@ class TestTinyOWSProxyView(TestCase):
         proxy = self.get_fake_proxy_(request, "", None)
         self.assertRaises(HTTPForbidden, proxy.proxy)
 
-    @attr(functional=True)
     def test_proxy_describe_feature_type_post(self):
         request = _create_dummy_request(username=u"__test_user1")
         request.method = "POST"
@@ -302,7 +293,6 @@ class TestTinyOWSProxyView(TestCase):
         response = proxy.proxy()
         self.assertEquals("200 OK", response.status)
 
-    @attr(functional=True)
     def test_proxy_describe_feature_type_post_multiple_types(self):
         from pyramid.httpexceptions import HTTPBadRequest
 

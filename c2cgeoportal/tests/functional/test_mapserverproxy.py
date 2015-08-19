@@ -256,7 +256,6 @@ class TestMapserverproxyView(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
-    @attr(functional=True)
     def test_get_legend_graphic(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -273,7 +272,6 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.cache_control.public)
         self.assertEqual(response.cache_control.max_age, 1000)
 
-    @attr(GetLegendGraphic_custom_nocache=True)
     def test_getlegendgraphic_custom_nocache(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -569,8 +567,6 @@ class TestMapserverproxyView(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
-    @attr(getcapabilities=True)
-    @attr(wms_getcapabilities=True)
     def test_wms_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -589,8 +585,6 @@ class TestMapserverproxyView(TestCase):
         response = MapservProxy(request).proxy()
         self.assertTrue(response.body.find("<Name>testpoint_protected</Name>") > 0)
 
-    @attr(getcapabilities=True)
-    @attr(wfs_getcapabilities=True)
     def test_wfs_get_capabilities(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -721,7 +715,6 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(unicode(response.body.decode("utf-8")).find(u"éàè") < 0)
         self.assertTrue(unicode(response.body.decode("utf-8")).find(u"123") > 0)
 
-    @attr(get_feature_feature_id_get=True)
     def test_get_feature_feature_id_get(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
@@ -835,7 +828,6 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(response.body != "")
         self.assertEqual(str(response.cache_control), "no-cache")
 
-    @attr(substitution=True)
     def test_substitution(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 

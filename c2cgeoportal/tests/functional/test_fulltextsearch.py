@@ -136,7 +136,6 @@ class TestFulltextsearchView(TestCase):
                 .filter_by(username=username).one()
         return request
 
-    @attr(no_default_laguage=True)
     def test_no_default_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -148,7 +147,6 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
 
-    @attr(unknown_laguage=True)
     def test_unknown_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -159,7 +157,6 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
 
-    @attr(badrequest_noquery=True)
     def test_badrequest_noquery(self):
         from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -169,7 +166,6 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
-    @attr(badrequest_limit=True)
     def test_badrequest_limit(self):
         from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -181,7 +177,6 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
-    @attr(badrequest_partitionlimit=True)
     def test_badrequest_partitionlimit(self):
         from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -193,7 +188,6 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
-    @attr(limit=True)
     def test_limit(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -208,7 +202,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "label1")
         self.assertEqual(response.features[0].properties["layer_name"], "layer1")
 
-    @attr(toobig_limit=True)
     def test_toobig_limit(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -225,7 +218,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[1].properties["label"], "label4")
         self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
-    @attr(toobig_partitionlimit=True)
     def test_toobig_partitionlimit(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -242,7 +234,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[1].properties["label"], "label4")
         self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
-    @attr(match=True)
     def test_match(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -259,7 +250,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[1].properties["label"], "label4")
         self.assertEqual(response.features[1].properties["layer_name"], "layer1")
 
-    @attr(nomatch=True)
     def test_nomatch(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -270,7 +260,6 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 0)
 
-    @attr(private_nomatch=True)
     def test_private_nomatch(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -283,7 +272,6 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 0)
 
-    @attr(private_match=True)
     def test_private_match(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -299,7 +287,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "label2")
         self.assertEqual(response.features[0].properties["layer_name"], "layer2")
 
-    @attr(private_with_role_nomatch=True)
     def test_private_with_role_nomatch(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -313,7 +300,6 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, FeatureCollection))
         self.assertEqual(len(response.features), 0)
 
-    @attr(private_with_role_match=True)
     def test_private_with_role_match(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -329,7 +315,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "label3")
         self.assertEqual(response.features[0].properties["layer_name"], "layer3")
 
-    @attr(match_partitionlimit=True)
     def test_match_partitionlimit(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
@@ -344,7 +329,6 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "label1")
         self.assertEqual(response.features[0].properties["layer_name"], "layer1")
 
-    @attr(params=True)
     def test_params(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
