@@ -8,9 +8,11 @@ sudo chmod g+w,o+w /etc/apache2/sites-enabled/
 
 cp travis/build.mk /tmp/testgeomapfish/travis.mk
 
+GIT_FOLDER=`pwd`
+
 cd /tmp/testgeomapfish/
 
-sed -e 's@^c2cgeoportal==.*$@/home/travis/build/camptocamp/c2cgeoportal@' -i CONST_requirements.txt
+sed -e "s@^c2cgeoportal.=.*\$@-e ${GIT_FOLDER}@" -i CONST_requirements.txt
 
 git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
