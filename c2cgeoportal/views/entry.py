@@ -118,20 +118,28 @@ class Entry(object):
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.add(
-                "GetCapabilities from url %s return the error: %i %s" %
+            error = "GetCapabilities from URL %s return the error: %i %s" % \
                 (url, resp.status, resp.reason)
-            )
+            errors.add(error)
+            log.exception(error)
+            return None, errors
+
+        if resp.get("content-type").split(";")[0].strip() != \
+                "application/vnd.ogc.wms_xml":
+            error = "GetCapabilities from URL %s returns a wrong Content-Type: %s\n%s" % \
+                (url, resp.get("content-type"), content)
+            errors.add(error)
+            log.exception(error)
             return None, errors
 
         try:
             wms = WebMapService(None, xml=content)
-        except AttributeError:
+        except:  # pragma: no cover
             error = _(
                 "WARNING! an error occured while trying to "
                 "read the mapfile and recover the themes."
             )
-            error = "%s\nurl: %s\nxml:\n%s" % (error, url, content)
+            error = "%s\nURL: %s\n%s" % (error, url, content)
             errors.add(error)
             log.exception(error)
         return wms, errors
