@@ -268,20 +268,22 @@ steps:
         git clean -f -d
 
 2. Now, to update the application's other dependencies,
-   get the ``version.cfg`` file:
+   get the ``versions`` file:
 
    .. prompt:: bash
 
        wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
+       wget https://raw.github.com/camptocamp/c2cgeoportal/<version>/c2cgeoportal/scaffolds/update/CONST_requirements.txt -O CONST_requirements.txt
 
    Replace ``<version>`` by a version number (branch) or release number (tag).
    To get the last dev version, replace ``<version>`` by ``master``.
 
-   For example to get the ``versions.cfg`` file of version 1.5, type:
+   For example to get the ``versions`` file of version 1.6, type:
 
    .. prompt:: bash
 
-       wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.6/c2cgeoportal/scaffolds/update/CONST_versions.txt -O CONST_versions.txt
+       wget https://raw.github.com/camptocamp/c2cgeoportal/1.6/c2cgeoportal/scaffolds/update/CONST_requirements.txt -O CONST_requirements.txt
 
 3. Execute ``make`` to get the new ``c2cgeoportal`` version:
 
