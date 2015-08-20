@@ -70,7 +70,6 @@ endif
 OUTPUT_DIR = $(PACKAGE)/static/build
 
 # Git
-
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
@@ -210,7 +209,6 @@ VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAG
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
 
 # Sencha touch
-
 SENCHA_CMD ?= sencha-cmd
 
 JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
@@ -433,14 +431,34 @@ compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 # to don't delete them
 .SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
 
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) $(VENV_BIN)/pot-create lingua.cfg
-	$(VENV_BIN)/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
-	# removes the allways changed date line
+$(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) $(VENV_BIN)/pot-create lingua-server.cfg
+	$(VENV_BIN)/pot-create -c lingua-server.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
+	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
-$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot .build/dev-requirements.timestamp
+$(PACKAGE)/locale/$(PACKAGE)-client.pot: \
+		$(SERVER_LOCALISATION_SOURCES_FILES) \
+		$(VENV_BIN)/pot-create lingua-client.cfg \
+		$(APP_HTML_FILES) \
+		$(APP_JS_FILES) \
+		$(APP_PARTIALS_FILES) \
+		development.ini \
+		.build/config-$(INSTANCE_ID).timestamp
+	$(VENV_BIN)/pot-create -c lingua-client.cfg -o $@ development.ini $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES)
+	# removes the always changed date line
+	sed -i '/^"POT-Creation-Date: /d' $@
+	sed -i '/^"PO-Revision-Date: /d' $@
+
+$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot
 	mkdir -p $(dir $@)
+	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
+	touch $@
+	msgmerge --update $@ $<
+
+$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
+	mkdir -p $(dir $@)
+	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch $@
 	msgmerge --update $@ $<
 
@@ -468,28 +486,11 @@ $(VENV_BIN)/db2pot: .build/requirements.timestamp
 $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 	cp $< $@
 
-$(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES) .build/node_modules.timestamp
-	mkdir -p $(dir $@)
-	node tools/extract-messages.js $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES) > $@
-
-$(PACKAGE)/locale/$(PACKAGE)-db.pot: $(VENV_BIN)/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
-	mkdir -p $(dir $@)
-	$(VENV_BIN)/db2pot
-	msguniq $@ -o $@
-
-$(PACKAGE)/locale/$(PACKAGE)-client.pot: $(PACKAGE)/locale/$(PACKAGE)-js.pot $(PACKAGE)/locale/$(PACKAGE)-db.pot
-	msgcat $^ > $@
-
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(APP_OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node tools/compile-catalog $< > $@
-
-$(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
-	mkdir -p $(dir $@)
-	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
-	msgmerge --update $@ $<
 
 $(APP_OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)

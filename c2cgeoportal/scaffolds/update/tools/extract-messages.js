@@ -20,7 +20,16 @@ function main(inputs) {
       if (err) {
         throw new Error(err);
       }
-      process.stdout.write(extractor.toString());
+      var messages = [];
+      for (var msgstr in extractor.strings) {
+        var msg = extractor.strings[msgstr];
+        var contexts = Object.keys(msg).sort();
+        for (var context in contexts) {
+            messages.push([context, msgstr])
+        }
+      }
+
+      process.stdout.write(JSON.stringify(messages));
     }
   );
 }
