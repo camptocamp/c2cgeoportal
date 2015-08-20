@@ -85,6 +85,12 @@ And follow the instructions.
 Easy upgrading an application from 1.5 to 1.6
 ---------------------------------------------
 
+.. warning::
+
+    Make sure that your database uses PostGIS 2. To migrate
+    a PostGIS 1.5 database to PostGIS 2, please follow the
+    `instructions <upgrade_application.html#migrating-database-to-postgis-2-x>`_.
+
 Before upgrading your project, it is recommended to create a new
 branch and to push it to the remote repository:
 
