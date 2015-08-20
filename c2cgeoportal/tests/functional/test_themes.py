@@ -46,7 +46,6 @@ log = logging.getLogger(__name__)
 
 
 @attr(functional=True)
-@attr(themes=True)
 class TestThemesView(TestCase):
 
     def setUp(self):  # noqa
@@ -168,8 +167,6 @@ class TestThemesView(TestCase):
         prog = re.compile("^The layer '[a-z_]*' is not defined in WMS capabilities$")
         return set([e for e in themes["errors"] if prog.match(e) is None])
 
-    @attr(version=True)
-    @attr(order=True)
     def test_version(self):
         entry = self._create_entry_obj()
         themes = entry.themes()
@@ -220,7 +217,6 @@ class TestThemesView(TestCase):
             }]
         )
 
-    @attr(group=True)
     def test_group(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -269,7 +265,6 @@ class TestThemesView(TestCase):
             }
         )
 
-    @attr(min_levels=True)
     def test_min_levels(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -294,7 +289,6 @@ class TestThemesView(TestCase):
             u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
         ]))
 
-    @attr(theme_layer=True)
     def test_theme_layer(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -313,7 +307,6 @@ class TestThemesView(TestCase):
             }]
         )
 
-    @attr(catalogue=True)
     def test_catalogue(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -350,7 +343,6 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
 
-    @attr(tinterface=True)
     def test_interface(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -377,7 +369,6 @@ class TestThemesView(TestCase):
             }]
         )
 
-    @attr(metadata=True)
     def test_metadata(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -429,7 +420,6 @@ class TestThemesView(TestCase):
             }]
         )
 
-    @attr(dimensions=True)
     def test_dimensions(self):
         entry = self._create_entry_obj(params={
             "version": "2",
@@ -450,7 +440,6 @@ class TestThemesView(TestCase):
             }
         )
 
-    @attr(background=True)
     def test_background(self):
         entry = self._create_entry_obj(params={
             "version": "2",

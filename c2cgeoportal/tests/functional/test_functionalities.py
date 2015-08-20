@@ -37,7 +37,6 @@ from c2cgeoportal.tests.functional import (  # noqa
 
 
 @attr(functional=True)
-@attr(Functionalities=True)
 class TestFunctionalities(TestCase):
 
     def setUp(self):  # noqa
@@ -103,7 +102,6 @@ class TestFunctionalities(TestCase):
 
         transaction.commit()
 
-    @attr(functionalities=True)
     def test_functionalities(self):
         from c2cgeoportal.tests.functional import create_dummy_request
         from c2cgeoportal.models import DBSession, User
@@ -180,7 +178,6 @@ class TestFunctionalities(TestCase):
         self.assertEquals(get_functionality("__test_s", settings, request2), ["db"])
         self.assertEquals(get_functionality("__test_a", settings, request2), ["db1", "db2"])
 
-    @attr(web_client_functionalities=True)
     def test_web_client_functionalities(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.tests.functional import mapserv_url, create_dummy_request

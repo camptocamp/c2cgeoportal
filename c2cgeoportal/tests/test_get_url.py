@@ -29,11 +29,9 @@
 
 
 from unittest import TestCase
-from nose.plugins.attrib import attr
 from c2cgeoportal.tests import create_dummy_request
 
 
-@attr(get_url=True)
 class TestGetURL(TestCase):
 
     def test_get_url(self):

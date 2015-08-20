@@ -49,7 +49,6 @@ log = logging.getLogger(__name__)
 
 
 @attr(functional=True)
-@attr(entry=True)
 class TestEntryView(TestCase):
 
     def setUp(self):  # noqa
@@ -168,7 +167,6 @@ class TestEntryView(TestCase):
     # login/logout tests
     #
 
-    @attr(login=True)
     def test_login(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -196,7 +194,6 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 401)
 
-    @attr(logout_no_auth=True)
     def test_logout_no_auth(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -207,7 +204,6 @@ class TestEntryView(TestCase):
         response = entry.logout()
         self.assertEquals(response.status_int, 404)
 
-    @attr(logout=True)
     def test_logout(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -229,7 +225,6 @@ class TestEntryView(TestCase):
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.body, "true")
 
-    @attr(login=True)
     def test_reset_password(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -272,14 +267,12 @@ class TestEntryView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    @attr(index_no_auth=True)
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
         response = entry.get_cgxp_viewer_vars()
         assert "__test_public_layer" in response["themes"]
         assert "__test_private_layer" not in response["themes"]
 
-    @attr(index_auth_no_edit_permission=True)
     def test_index_auth_no_edit_permission(self):
         import json
 
@@ -310,7 +303,6 @@ class TestEntryView(TestCase):
             if layer["name"] == "__test_public_layer"
         ], [False])
 
-    @attr(index_auth_edit_permission=True)
     def test_index_auth_edit_permission(self):
         import json
 
@@ -352,14 +344,12 @@ class TestEntryView(TestCase):
             if layer["name"] == "__test_public_layer"
         ], [False])
 
-    @attr(mobileconfig_no_auth_no_theme=True)
     def test_mobileconfig_no_auth_no_theme(self):
         entry = self._create_entry_obj()
         response = entry.mobileconfig()
 
         self.assertEqual(response["themes"], [])
 
-    @attr(mobileconfig_no_auth_theme=True)
     def test_mobileconfig_no_auth_theme(self):
         entry = self._create_entry_obj(params={"theme": u"__test_theme"})
         entry.request.interface_name = "mobile"
@@ -383,7 +373,6 @@ class TestEntryView(TestCase):
             {"username": ""}
         )
 
-    @attr(mobileconfig_no_auth_default_theme=True)
     def test_mobileconfig_no_auth_default_theme(self):
         entry = self._create_entry_obj()
         entry.request.interface_name = "mobile"
@@ -398,7 +387,6 @@ class TestEntryView(TestCase):
         layers = theme["allLayers"]
         self.assertEqual(len(layers), 3)
 
-    @attr(mobileconfig_wmsgroup=True)
     def test_mobileconfig_wmsgroup(self):
         entry = self._create_entry_obj(params={"theme": u"__test_theme"})
         entry.request.interface_name = "mobile"
@@ -424,7 +412,6 @@ class TestEntryView(TestCase):
             }]
         )
 
-    @attr(mobileconfig_auth_theme=True)
     def test_mobileconfig_auth_theme(self):
         entry = self._create_entry_obj(
             params={"theme": u"__test_theme"}, username=u"__test_user1"
@@ -453,7 +440,6 @@ class TestEntryView(TestCase):
             {"username": "__test_user1"}
         )
 
-    @attr(theme=True)
     def test_theme(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -498,7 +484,6 @@ class TestEntryView(TestCase):
             u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
         ]))
 
-    @attr(themev2=True)
     def test_themev2(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -526,7 +511,6 @@ class TestEntryView(TestCase):
         self.assertTrue("__test_public_layer2" in layers)
         self.assertTrue("__test_private_layer2" in layers)
 
-    @attr(wfs_types=True)
     def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -559,7 +543,6 @@ class TestEntryView(TestCase):
         self.assertEquals(json.loads(response["WFSTypes"]), result)
         self.assertEquals(json.loads(response["externalWFSTypes"]), result)
 
-    @attr(permalink_themes=True)
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
@@ -573,7 +556,6 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response["permalink_themes"], '["my_themes"]')
 
-    @attr(mobile_cache_version=True)
     def test_mobile_cache_version(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -590,7 +572,6 @@ class TestEntryView(TestCase):
         self.assertEquals(result2["url_params"], result["url_params"])
         self.assertEquals(result2["extra_params"], result["extra_params"])
 
-    @attr(auth_mobile_cache_version=True)
     def test_auth_mobile_cache_version(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -605,7 +586,6 @@ class TestEntryView(TestCase):
         self.assertEquals(result2["url_params"], result["url_params"])
         self.assertEquals(result2["extra_params"], result["extra_params"])
 
-    @attr(auth_mobile=True)
     def test_auth_mobile(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -621,7 +601,6 @@ class TestEntryView(TestCase):
             "test=" + urllib.quote("éàè") + "&role=__test_role1&cache_version=[0-9a-f]*"
         )
 
-    @attr(entry_points=True)
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -696,7 +675,6 @@ class TestEntryView(TestCase):
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(["lang", "debug"]))
 
-    @attr(auth_home=True)
     def test_auth_home(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User, Role
@@ -737,7 +715,6 @@ class TestEntryView(TestCase):
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
 
-    @attr(entry_points_version=True)
     def test_entry_points_version(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -778,7 +755,6 @@ class TestEntryView(TestCase):
             set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
         )
 
-    @attr(entry_points_wfs=True)
     def test_entry_points_wfs(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User, Role
@@ -821,7 +797,6 @@ class TestEntryView(TestCase):
         )
         self.assertEquals(result["extra_params"]["lang"], "fr")
 
-    @attr(entry_points_wfs_url=True)
     def test_entry_points_wfs_url(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -854,7 +829,6 @@ class TestEntryView(TestCase):
         )
         result = entry.get_cgxp_viewer_vars()
 
-    @attr(entry_points_noexternal=True)
     def test_entry_points_noexternal(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -880,7 +854,6 @@ class TestEntryView(TestCase):
         )
         result = entry.get_cgxp_viewer_vars()
 
-    @attr(permalink_theme=True)
     def test_permalink_theme(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
@@ -923,7 +896,6 @@ class TestEntryView(TestCase):
         self.assertEquals(result["extra_params"]["permalink_themes"], ["theme1", "theme2"])
         self.assertEquals(result["permalink_themes"], ["theme1", "theme2"])
 
-    @attr(layer=True)
     def test_layer(self):
         import httplib2
         from c2cgeoportal.views.entry import Entry
@@ -1383,7 +1355,6 @@ class TestEntryView(TestCase):
             "Error '%s' more than one time in errors:\n%r" % (error, errors),
         )
 
-    @attr(layer_internalwms=True)
     def test_internalwms(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import LayerV1, LayerGroup
@@ -1477,7 +1448,6 @@ class TestEntryView(TestCase):
         _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, set())
 
-    @attr(loginchange=True)
     def test_loginchange(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import User
@@ -1516,7 +1486,6 @@ class TestEntryView(TestCase):
         self.assertEqual(request.user.is_password_changed, True)
         self.assertEqual(request.user._password, unicode(sha1("1234").hexdigest()))
 
-    @attr(json_extent=True)
     def test_json_extent(self):
         from c2cgeoportal.models import DBSession, Role
 
