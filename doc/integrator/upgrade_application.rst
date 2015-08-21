@@ -41,7 +41,8 @@ Easy upgrading an application
 
         ``make -f <makefile> clean``
 
-    * Change the version in ``setup.py`` to the version you wish to install
+    * Change the version in ``setup.py`` and ``CONST_requirements_windows.txt``
+      to the version you wish to install.
     * Build your application:
 
         ``make -f <makefile> build``
@@ -49,6 +50,8 @@ Easy upgrading an application
     *  Put your modifications under git revision:
 
         ``git add setup.py``
+
+        ``git add CONST_requirements_windows.txt``
 
         ``git commit -m "Upgrade c2cgeoportal version"``
 
