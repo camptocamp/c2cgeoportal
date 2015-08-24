@@ -8,6 +8,7 @@
 % else:
     <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.min.css')}" type="text/css">
 % endif
+    <title translate>The {{project}} Web GIS</title>
   <head>
   <body>
     <app-map app-map-map="::mainCtrl.map"></app-map>
