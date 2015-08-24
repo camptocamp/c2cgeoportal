@@ -3,6 +3,7 @@
 sudo a2enmod headers
 sudo a2enmod rewrite
 sudo a2enmod wsgi
+sudo a2enmod fcgid
 sudo /usr/sbin/apachectl restart
 sudo chmod g+w,o+w /etc/apache2/sites-enabled/
 
