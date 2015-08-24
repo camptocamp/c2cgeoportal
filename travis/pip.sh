@@ -8,7 +8,7 @@ then
     ARGS="${ARGS} --cache-dir /tmp/pip-cache"
 fi
 
-.build/venv/bin/pip ${ARGS} $* | grep '^Collecting '
+.build/venv/bin/pip ${ARGS} $* | grep '^\(Collecting\|  Downloading\) '
 
 if [ ${PIPESTATUS[0]} -eq 0 ]
 then
@@ -18,7 +18,7 @@ fi
 for N in {1..10}
 do
     echo RETRY...
-    .build/venv/bin/pip ${ARGS} $* | grep '^Collecting '
+    .build/venv/bin/pip ${ARGS} $* | grep '^\(Collecting\|  Downloading\) '
 
     if [ ${PIPESTATUS[0]} -eq 0 ]
     then

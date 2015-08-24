@@ -79,7 +79,7 @@ command:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
 
 As you can see the name of a development distribution includes a ``dev``
 *pre-release* tag and a date *post-release* tag. This is by convention.
@@ -101,7 +101,7 @@ distributions* specific options are required on the command line:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+    .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
 
 The important note of the previous section applies here too, obviously.
 

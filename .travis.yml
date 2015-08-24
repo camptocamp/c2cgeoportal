@@ -12,7 +12,6 @@ env:
   - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
 
 before_install:
-- git fetch
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get install -y --force-yes aptitude
 - sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
