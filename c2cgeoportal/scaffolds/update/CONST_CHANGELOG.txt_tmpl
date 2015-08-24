@@ -1,5 +1,6 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+
 Version 2.0.0
 =============
 
@@ -13,6 +14,10 @@ Version 2.0.0
 
    If your project's main function includes config.include('pyramid_closure'),
    remove it, as c2cgeoportal now takes care of including pyramid_closure.
+
+3. To migrate your theme from version 1 to version 2 a script is available.
+   Use `.build/venv/bin/themev1tov2 --help` for more information.
+
 
 Version 1.6.2
 =============

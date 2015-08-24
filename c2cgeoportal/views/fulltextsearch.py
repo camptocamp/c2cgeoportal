@@ -37,8 +37,11 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy import func, desc, or_, and_
 from geoalchemy2.shape import to_shape
 
-from c2cgeoportal.models import DBSession, FullTextSearch
-from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+from c2cgeoportal import locale_negotiator
+from c2cgeoportal.models import DBSession, FullTextSearch, Interface
+from c2cgeoportal.lib.caching import get_region, set_common_headers, NO_CACHE
+
+cache_region = get_region()
 
 
 class FullTextSearchView(object):
@@ -47,25 +50,18 @@ class FullTextSearchView(object):
         self.request = request
         set_common_headers(request, "fulltextsearch", NO_CACHE)
         self.settings = request.registry.settings.get("fulltextsearch", {})
-        if "languages" in self.settings:  # pragma: nocover
-            self.languages = self.settings["languages"]
-        else:
-            self.languages = {
-                "fr": "french",
-                "en": "english",
-                "de": "german",
-            }
+        self.languages = self.settings.get("languages", {})
+
+    @cache_region.cache_on_arguments()
+    def _get_interface_id(self, interface):
+        return DBSession.query(Interface).filter_by(name=interface).one().id
 
     @view_config(route_name="fulltextsearch", renderer="geojson")
     def fulltextsearch(self):
+        lang = locale_negotiator(self.request)
 
         try:
-            lang = self.request.registry.settings["default_locale_name"]
-        except KeyError:
-            return HTTPInternalServerError(
-                detail="default_locale_name not defined in settings")
-        try:
-            lang = self.languages[lang]
+            language = self.languages[lang]
         except KeyError:
             return HTTPInternalServerError(
                 detail="%s not defined in languages" % lang)
@@ -94,7 +90,7 @@ class FullTextSearchView(object):
 
         terms = "&".join(re.sub("'", "''", w) + ":*" for w in query.split(" ") if w != "")
         _filter = "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % \
-            {"tsvector": "ts", "lang": lang, "terms": terms}
+            {"tsvector": "ts", "lang": language, "terms": terms}
 
         if self.request.user is None or self.request.user.role is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
@@ -108,6 +104,21 @@ class FullTextSearchView(object):
                 )
             )
 
+        if "interface" in self.request.params:
+            _filter = and_(_filter, or_(
+                FullTextSearch.interface_id.is_(None),
+                FullTextSearch.interface_id == self._get_interface_id(
+                    self.request.params["interface"]
+                )
+            ))
+        else:
+            _filter = and_(_filter, FullTextSearch.interface_id.is_(None))
+
+        _filter = and_(_filter, or_(
+            FullTextSearch.lang.is_(None),
+            FullTextSearch.lang == lang,
+        ))
+
         # The numbers used in ts_rank_cd() below indicate a normalization method.
         # Several normalization methods can be combined using |.
         # 2 divides the rank by the document length
@@ -120,22 +131,23 @@ class FullTextSearchView(object):
         rank = "ts_rank_cd(%(tsvector)s, " \
             "to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % {
                 "tsvector": "ts",
-                "lang": lang,
+                "lang": language,
                 "terms": terms
             }
 
         if partitionlimit:
             # Here we want to partition the search results based on
             # layer_name and limit each partition.
-            row_number = func.row_number() \
-                .over(
-                    partition_by=FullTextSearch.layer_name,
-                    order_by=(desc(rank), FullTextSearch.label)) \
-                .label("row_number")
+            row_number = func.row_number().over(
+                partition_by=FullTextSearch.layer_name,
+                order_by=(desc(rank), FullTextSearch.label)
+            ).label("row_number")
             subq = DBSession.query(FullTextSearch) \
                 .add_columns(row_number).filter(_filter).subquery()
-            query = DBSession.query(subq.c.id, subq.c.label, subq.c.params,
-                                    subq.c.layer_name, subq.c.the_geom)
+            query = DBSession.query(
+                subq.c.id, subq.c.label, subq.c.params, subq.c.layer_name,
+                subq.c.the_geom, subq.c.actions
+            )
             query = query.filter(subq.c.row_number <= partitionlimit)
         else:
             query = DBSession.query(FullTextSearch).filter(_filter)
@@ -147,15 +159,27 @@ class FullTextSearchView(object):
 
         features = []
         for o in objs:
+            properties = {
+                "label": o.label,
+            }
+            if o.layer_name is not None:
+                properties["layer_name"] = o.layer_name
+            if o.params is not None:
+                properties["params"] = o.params
+            if o.actions is not None:
+                properties["actions"] = o.actions
+
             if o.the_geom is not None:
-                properties = {
-                    "label": o.label,
-                    "layer_name": o.layer_name,
-                    "params": o.params,
-                }
                 geom = to_shape(o.the_geom)
-                feature = Feature(id=o.id, geometry=geom,
-                                  properties=properties, bbox=geom.bounds)
+                feature = Feature(
+                    id=o.id, geometry=geom,
+                    properties=properties, bbox=geom.bounds
+                )
+                features.append(feature)
+            else:
+                feature = Feature(
+                    id=o.id, properties=properties
+                )
                 features.append(feature)
 
         # TODO: add callback function if provided in self.request, else return geojson

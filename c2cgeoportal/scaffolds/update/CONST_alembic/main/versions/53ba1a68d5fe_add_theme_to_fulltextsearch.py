@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
@@ -28,27 +27,48 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Add theme to FullTextSearch
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 53ba1a68d5fe
+Revises: 5109242131ce
+Create Date: 2015-08-05 14:43:30.889188
 """
 
 from alembic import op, context
+from sqlalchemy import Column, Integer, ForeignKey, Boolean, String
+from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
 # revision identifiers, used by Alembic.
-revision = "${up_revision}"
-down_revision = "${down_revision}"
+revision = "53ba1a68d5fe"
+down_revision = "5109242131ce"
 
 
 def upgrade():
     schema = context.get_context().config.get_main_option("schema")
 
-    ${upgrades if upgrades else "# Instructions"}
+    op.add_column("tsearch", Column(
+        "interface_id", Integer,
+        ForeignKey(schema + ".interface.id"),
+        nullable=True
+    ), schema=schema)
+    op.add_column("tsearch", Column("lang", String(2), nullable=True), schema=schema)
+    op.add_column("tsearch", Column("actions", JSONEncodedDict, nullable=True), schema=schema)
+    op.add_column("tsearch", Column("from_theme", Boolean, server_default="false"), schema=schema)
+
+    op.create_index(
+        "tsearch_search_index",
+        table_name="tsearch",
+        columns=["ts", "public", "role_id", "interface_id", "lang"],
+        schema=schema
+    )
 
 
 def downgrade():
     schema = context.get_context().config.get_main_option("schema")
 
-    ${downgrades if downgrades else "# Instructions"}
+    op.drop_index("tsearch_search_index", schema=schema)
+
+    op.drop_column("tsearch", "interface_id", schema=schema)
+    op.drop_column("tsearch", "lang", schema=schema)
+    op.drop_column("tsearch", "actions", schema=schema)
+    op.drop_column("tsearch", "from_theme", schema=schema)

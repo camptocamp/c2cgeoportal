@@ -34,6 +34,7 @@
 import os
 from ConfigParser import ConfigParser
 from urlparse import urlparse, urljoin
+from webob.acceptparse import Accept
 
 import c2cgeoportal
 from c2cgeoportal import tests
@@ -151,6 +152,7 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
             "available_in_templates": []
         }
     }, *args, **kargs)
+    request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
     request.registry.settings["layers"] = {
         "geometry_validation": True

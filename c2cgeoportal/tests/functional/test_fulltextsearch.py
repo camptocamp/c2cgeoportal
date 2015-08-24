@@ -48,7 +48,7 @@ class TestFulltextsearchView(TestCase):
         import transaction
         from sqlalchemy import func
         from geoalchemy2 import WKTElement
-        from c2cgeoportal.models import FullTextSearch, User, Role
+        from c2cgeoportal.models import FullTextSearch, User, Role, Interface
         from c2cgeoportal.models import DBSession
 
         user1 = User(username=u"__test_user1", password=u"__test_user1")
@@ -90,20 +90,25 @@ class TestFulltextsearchView(TestCase):
 
         entry5 = FullTextSearch()
         entry5.label = "label5"
-        entry5.layer_name = "layer1"
         entry5.ts = func.to_tsvector("french", "params")
-        entry5.the_geom = WKTElement("POINT(-90 -45)", 21781)
         entry5.public = True
         entry5.params = {"floor": 5}
+        entry5.actions = [{"action": "add_layer", "data": "layer1"}]
 
-        DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5])
+        entry6 = FullTextSearch()
+        entry6.label = "label6"
+        entry6.ts = func.to_tsvector("french", "params")
+        entry6.interface = Interface("main")
+        entry6.public = True
+
+        DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5, entry6])
         transaction.commit()
 
     def tearDown(self):  # noqa
         testing.tearDown()
 
         import transaction
-        from c2cgeoportal.models import FullTextSearch, User, Role
+        from c2cgeoportal.models import FullTextSearch, User, Role, Interface
         from c2cgeoportal.models import DBSession
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
@@ -119,6 +124,11 @@ class TestFulltextsearchView(TestCase):
             FullTextSearch.label == "label4").delete()
         DBSession.query(FullTextSearch).filter(
             FullTextSearch.label == "label5").delete()
+        DBSession.query(FullTextSearch).filter(
+            FullTextSearch.label == "label6").delete()
+
+        DBSession.query(Interface).filter(
+            Interface.name == "main").delete()
 
         DBSession.query(Role).filter(Role.name == "__test_role1").delete()
         DBSession.query(Role).filter(Role.name == "__test_role2").delete()
@@ -128,7 +138,15 @@ class TestFulltextsearchView(TestCase):
     def _create_dummy_request(self, username=None, params=None):
         from c2cgeoportal.models import DBSession, User
 
-        request = create_dummy_request(params=params)
+        request = create_dummy_request({
+            "fulltextsearch": {
+                "languages": {
+                    "fr": "french",
+                    "en": "english",
+                    "de": "german",
+                }
+            }
+        }, params=params)
         request.response = Response()
         request.user = None
         if username:
@@ -139,9 +157,11 @@ class TestFulltextsearchView(TestCase):
     def test_no_default_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
+        from webob.acceptparse import Accept
 
         request = self._create_dummy_request()
         del(request.registry.settings["default_locale_name"])
+        request.accept_language = Accept("es")
 
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
@@ -150,9 +170,11 @@ class TestFulltextsearchView(TestCase):
     def test_unknown_laguage(self):
         from pyramid.httpexceptions import HTTPInternalServerError
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
+        from webob.acceptparse import Accept
 
         request = self._create_dummy_request()
         request.registry.settings["default_locale_name"] = "it"
+        request.accept_language = Accept("es")
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPInternalServerError))
@@ -329,7 +351,7 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "label1")
         self.assertEqual(response.features[0].properties["layer_name"], "layer1")
 
-    def test_params(self):
+    def test_params_actions(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.fulltextsearch import FullTextSearchView
 
@@ -342,3 +364,16 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(len(response.features), 1)
         self.assertEqual(response.features[0].properties["label"], "label5")
         self.assertEqual(response.features[0].properties["params"], {"floor": 5})
+        self.assertEqual(response.features[0].properties["actions"], [{"action": "add_layer", "data": "layer1"}])
+
+    def test_interface(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(
+            params=dict(query="params", limit=10, interface="main")
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        self.assertEqual(set([feature.properties["label"] for feature in response.features]), set(["label5", "label6"]))
