@@ -64,7 +64,8 @@ And follow the instructions.
 
         ``make -f <makefile> clean``
 
-    * Change the version in ``setup.py`` to the version you wish to install
+    * Change the version in ``setup.py`` and ``CONST_requirements_windows.txt``
+      to the version you wish to install.
     * Build your application:
 
         ``make -f <makefile> build``
@@ -72,6 +73,8 @@ And follow the instructions.
     *  Put your modifications under git revision:
 
         ``git add setup.py``
+
+        ``git add CONST_requirements_windows.txt``
 
         ``git commit -m "Upgrade c2cgeoportal version"``
 
