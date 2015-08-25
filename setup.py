@@ -123,5 +123,9 @@ setup(
         "fanstatic.libraries": [
             "admin = c2cgeoportal.forms:fanstatic_lib",
         ],
+        "lingua.extractors": [
+            "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",
+            "geomapfish-angular = c2cgeoportal.lib.lingua_extractor:GeoMapfishAngularExtractor",
+        ],
     }
 )
