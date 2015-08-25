@@ -29,14 +29,14 @@ before_install:
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
 
 install:
-- make -f travis.mk c2c-egg c2cgeoportal/static/build/admin/admin.js c2cgeoportal/static/build/admin/admin.css
+- make -f travis.mk c2c-egg
 - travis/pip.sh install tilecloud_chain
 - .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
 - diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
+- make -f travis.mk build
 - .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App" > /dev/null
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null
 - travis/build-new-project.sh
-- make -f travis.mk build
 - sudo /usr/sbin/apache2ctl graceful
 
 script:
