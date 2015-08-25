@@ -216,7 +216,7 @@ Commit and push on the main repository:
 
 .. prompt:: bash
 
-    git commit -m "initial commit of <project>"
+    git commit -m "Initial commit of <project>"
     git push origin master
 
 To add a project in a new repository
@@ -244,7 +244,7 @@ Commit and push on the main repository:
 
 .. prompt:: bash
 
-    git commit -m "initial commit"
+    git commit -m "Initial commit"
     git push origin master
 
 Configure the application
