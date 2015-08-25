@@ -289,3 +289,28 @@ Result
 
 The 'Content-Type' header is 'text/csv',
 and the data contains the given 'csv' data.
+
+Geometry processing
+===================
+
+This service provides geometry processing (currently only one)
+
+Difference
+----------
+
+URL: ``.../difference``
+
+Method: ``POST``
+
+Data:
+
+.. code:: json
+
+   {
+       "geometries": [<geomA>, <geomB>]
+   }
+
+Where ``<geomA>`` is a GeoJSON geometry to extrude,
+and the ``<geomB>`` is the geometry used to do the extrude.
+
+Result: the new ``GeoJSON`` geometry.
