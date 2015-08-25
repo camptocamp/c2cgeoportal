@@ -74,14 +74,29 @@ Custom rules
 ------------
 
 In the ``<package>.mk`` file we can create some other rules.
-Here is a simple example that copies a file:
+Here is a simple example that creates the `apache/mapcache.xml` file
+and removes it on the `clean` rule:
 
 .. code:: makefile
 
-    DESTINATION_FILE = <destination file>
-    PRE_RULES = $(DESTINATION_FILE)
+    PRE_RULES = apache/mapcache.xml
 
-    $(DESTINATION_FILE): <source file>
-        cp $< $@
+    apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+        $(VENV_BIN)/generate_controller --mapcache
+
+    clean: project-clean
+    .PHONY: project-clean
+    project-clean:
+        rm -f apache/mapcache.xml
+
+``tilegeneration/config.yaml`` and ``.build/dev-requirements.timestamp`` are the files
+that must be built to run the current rule.
+
+``$(VENV_BIN)/generate_controller --mapcache`` is the command that generates the wanted file.
+
+.. note::
+
+   The ``.build/*.timestamp`` files are not really required  but they are flags
+   indicating that an other rule is correctly done.
 
 Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html>`_.
