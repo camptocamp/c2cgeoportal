@@ -1,6 +1,18 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.3
+=============
+
+1. To use the MapFish print v3 protocol from the CGXP client add the following config
+   lines in the `cgxp_print` plugin in the `{{package}}/templates/viewer.js` file:
+
+    + version: 3,
+    + encodeLayer: {},
+    + encodeExternalLayer: {},
+    + additionalAttributes: [],
+
+
 Version 1.6.2
 =============
 

@@ -188,6 +188,10 @@ Ext.onReady(function() {
             printURL: "${request.route_url('printproxy') | n}",
             mapserverURL: "${request.route_url('mapserverproxy') | n}",
             printProviderConfig: ${dumps(version_role_params) | n},
+            version: 3,
+            encodeLayer: {},
+            encodeExternalLayer: {},
+            additionalAttributes: [],
             options: {
                 labelAlign: 'top',
                 defaults: {
