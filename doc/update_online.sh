@@ -40,12 +40,13 @@ do
     git reset --hard
     git clean -f -d
     git checkout --force ${VERSION}
-    git fetch
     git reset --hard origin/${VERSION}
 
     # create a virtual env if none exists already
     if [[ ! -d env ]]; then
-        virtualenv env
+        virtualenv --setuptools env
+        ./env/bin/pip install 'pip>=7' 'setuptools>=18'
+        ./env/bin/pip install 'wheel>=0.24'
     fi
 
     # install or update Sphinx
