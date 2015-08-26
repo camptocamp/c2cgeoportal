@@ -37,7 +37,6 @@ do
     fi
 
     # reset local changes and get the latest files
-    git reset --hard
     git clean -f -d
     git checkout --force ${VERSION}
     git reset --hard origin/${VERSION}
@@ -66,8 +65,9 @@ do
 done
 
 # have the right script to run it on the next time
-git checkout --force master
-git pull origin master
 git reset --hard
+git clean -f -d
+git checkout --force master
+git reset --hard origin/master
 
 exit 0
