@@ -4,18 +4,27 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.0.0
 =============
 
-1. If you use ngeo you will need the `templatecache.js.mako` file at the root of
-   your project:
+1. Get the new and heavily modified files for ngeo integration:
 
-    .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/{{project}} package={{package}}
+    at that point, the following folder should exist: /tmp/{{project}}/
+
+    cp /tmp/{{project}}/.jshintrc .
+    cp /tmp/{{project}}/build.json .
+    cp /tmp/{{project}}/package.json .
     cp /tmp/{{project}}/templatecache.js.mako .
+    cp /tmp/{{project}}/lingua-client.cfg .
+    cp /tmp/{{project}}/lingua-server.cfg .
 
-2. pyramid_closure include:
+2. Remove the no longer used files:
 
-   If your project's main function includes config.include('pyramid_closure'),
-   remove it, as c2cgeoportal now takes care of including pyramid_closure.
+    git rm -r lingua.cfg
 
-3. To migrate your theme from version 1 to version 2 a script is available.
+3. pyramid_closure include:
+
+   If your project's main function includes `config.include('pyramid_closure')`,
+   remove it, as c2cgeoportal now takes care of including `pyramid_closure`.
+
+4. To migrate your theme from version 1 to version 2 a script is available.
    Use `.build/venv/bin/themev1tov2 --help` for more information.
 
 
