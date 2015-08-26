@@ -71,7 +71,7 @@ MAP
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "http://${host}/${instanceid}/wsgi/mapserv_proxy"
-            "wms_srs" "epsg:21781"
+            "wms_srs" "EPSG:21781"
             "wms_encoding" "UTF-8"
             "wms_enable_request" "*"
             "wfs_enable_request" "!*"
@@ -105,7 +105,7 @@ MAP
         #DATA "geometrie FROM (SELECT geo.geom as geom FROM geodata.table AS geo) AS foo USING UNIQUE gid USING srid=21781"
         METADATA
             "wms_title" "layer_name" # For WMS
-            "wms_srs" "epsg:21781" # For WMS
+            "wms_srs" "EPSG:21781" # For WMS
 
             "wfs_enable_request" "*" # Enable WFS for this layer
             "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)

@@ -153,7 +153,7 @@ Go to your new project:
     chmod +x deploy/hooks/post-restore-database.mako
     chmod +x deploy/hooks/post-restore-code
 
-In the ``CONST_versions.txt`` file make sure that c2cgeoportal version is set:
+In the ``CONST_requirements.txt`` file make sure that c2cgeoportal version is set:
 
 .. code::
 
@@ -164,6 +164,8 @@ In the ``CONST_versions.txt`` file make sure that c2cgeoportal version is set:
    .. code::
 
       c2cgeoportal-win = <version>
+
+      in the ``CONST_requirements_windows.txt``
 
 With ``<version>`` the egg version you want to use, normally it should be the same
 number as the ``tag`` you use to checkout ``c2cgeoportal``.
@@ -214,7 +216,7 @@ Commit and push on the main repository:
 
 .. prompt:: bash
 
-    git commit -m "initial commit of <project>"
+    git commit -m "Initial commit of <project>"
     git push origin master
 
 To add a project in a new repository
@@ -242,7 +244,7 @@ Commit and push on the main repository:
 
 .. prompt:: bash
 
-    git commit -m "initial commit"
+    git commit -m "Initial commit"
     git push origin master
 
 Configure the application

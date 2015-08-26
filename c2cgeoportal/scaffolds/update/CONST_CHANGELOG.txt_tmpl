@@ -1,6 +1,46 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.3
+=============
+
+1. To use the MapFish print v3 protocol from the CGXP client add the following config
+   lines in the `cgxp_print` plugin in the `{{package}}/templates/viewer.js` file:
+
+    + version: 3,
+    + encodeLayer: {},
+    + encodeExternalLayer: {},
+    + additionalAttributes: [],
+
+2. In all `mapserver/*.map` or `mapserver/*.map.mako` files, convert all SRS
+   codes in METADATA sections to uppercase.
+
+   Lowercase SRS codes may cause incompatibility problems with some client
+   tools including CGXP WMSBrowser plugin.
+
+   Exemple:
+
+    METADATA
+        ...
+        "wms_srs" "epsg:21781 epsg:3857"
+        ...
+    END
+
+   should be converted to:
+
+    METADATA
+        ...
+        "wms_srs" "EPSG:21781 EPSG:3857"
+        ...
+    END
+
+   Note that “epsg” has to be in lowercase when used in the PROJ4 ‘init’ directive.
+
+    PROJECTION
+        "init=epsg:21781"
+    END
+
+
 Version 1.6.2
 =============
 
