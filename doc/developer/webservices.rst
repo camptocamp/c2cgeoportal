@@ -8,6 +8,8 @@ Webservices documentation
 Theme webservice
 ================
 
+URL: ``.../themes``
+
 Parameters
 ----------
 
@@ -149,6 +151,7 @@ WMTS layer:
 Full Text Search
 ================
 
+URL: ``.../fulltextsearch``
 
 Parameters
 ----------
@@ -166,8 +169,36 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 
 
+Raster
+======
+
+URL: ``.../raster``
+
+Parameters
+----------
+
+* ``lon``: The longitude.
+* ``lat``: The latitude.
+* ``layers``: The raster layers we want to query.
+* ``callback``: Function name to do the callback.
+
+Result
+------
+
+.. code:: json
+
+   {
+       "<layer>": <value>,
+       ...
+   }
+
+
 Digital Elevation Model
 =======================
+
+URL: ``.../profile.csv`` or ``.../profile.json``
+
+Method ``POST``
 
 Parameters
 ----------
@@ -186,15 +217,22 @@ A JSON or a CSV file, with 'dist', 'value', 'x', 'y'.
 Shortener
 =========
 
+Create
+------
+
+URL: ``.../short/create``
+
+Method ``POST``
+
 Parameters
-----------
+``````````
 
 * ``url``: URL to shorten.
 * ``email``: Email address to send a message to.
 * ``callback``: Function name to do the callback.
 
 Result
-------
+``````
 
 .. code:: json
 
@@ -202,12 +240,21 @@ Result
         "short_url": <the short URL>
     }
 
+Get
+---
+
+URL: ``short/<ref>``
+
+Result: code: 302, redirect to the original URL.
+
 
 Echo
 ====
 
 This service returns a file containing data submitted in the POST request as the "file" field.
 This is used to be able to get the data in the client from a file select by the user.
+
+URL: ``.../echo``
 
 Result
 ------
@@ -227,6 +274,8 @@ Export CSV
 
 This service returns a file containing data submitted in the POST request as the "csv" field.
 This is used to be able to get as a download file csv data build on the client.
+
+URL: ``.../csv``
 
 Parameters
 ----------
