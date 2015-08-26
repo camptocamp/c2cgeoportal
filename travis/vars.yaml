@@ -1,0 +1,10 @@
+extends: vars_testgeomapfish.yaml
+
+vars:
+    host: localhost
+
+    check_collector:
+        disabled: [checker_print3capabilities, checker_pdf3, checker_fts]
+
+update_paths:
+- check_collector.disabled
