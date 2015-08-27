@@ -16,7 +16,8 @@
 /.eggs
 /.coverage
 /coverage.xml
-/.tx/geomapfish.c2cgeoportal/
+/.tx/config
+/.tx/geomapfish.c2cgeoportal-*/
 /gatling/.classpath
 /gatling/.project
 /gatling/.cache-main

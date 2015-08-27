@@ -1,9 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[geomapfish.c2cgeoportal]
+[geomapfish.c2cgeoportal-${git_branch.strip().replace(".", "_")}]
 source_file = c2cgeoportal/locale/c2cgeoportal.pot
 source_lang = en
 trans.de = c2cgeoportal/locale/de/LC_MESSAGES/c2cgeoportal.po
 trans.fr = c2cgeoportal/locale/fr/LC_MESSAGES/c2cgeoportal.po
-trans.es = c2cgeoportal/locale/es/LC_MESSAGES/c2cgeoportal.po
