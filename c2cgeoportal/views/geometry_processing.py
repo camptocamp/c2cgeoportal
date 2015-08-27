@@ -30,7 +30,7 @@
 
 from geojson import loads
 from shapely.geometry import asShape
-from geoalchemy2.shape import from_shape
+from geoalchemy2.shape import from_shape, to_shape
 from pyramid.view import view_config
 from sqlalchemy import func
 from pyramid.httpexceptions import HTTPBadRequest
@@ -55,7 +55,7 @@ class GeometryProcessing(object):
             }
             """)
 
-        return DBSession.query(func.ST_Difference(
+        return to_shape(DBSession.query(func.ST_Difference(
             from_shape(asShape(body["geometries"][0])),
             from_shape(asShape(body["geometries"][1]))
-        )).scalar()
+        )).scalar())
