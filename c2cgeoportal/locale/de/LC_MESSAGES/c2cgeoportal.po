@@ -1,13 +1,12 @@
-# SOME DESCRIPTIVE TITLE
-# This file is distributed under the same license as the PACKAGE package.
+# GeoMapfish server translation
+# This file is distributed under the same license as the c2cgeoportal package.
 # Translators:
 # Elisabeth Leu <elisabeth.leu@camptocamp.com>, 2015
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
 # Stéphane Brunner <stephane.brunner@camptocamp.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GeoMapFish\n"
-"PO-Revision-Date: 2015-08-26 16:18+0000\n"
+"PO-Revision-Date: 2015-08-27 09:47+0000\n"
 "Last-Translator: Stéphane Brunner <stephane.brunner@camptocamp.com>\n"
 "Language-Team: German (http://www.transifex.com/camptocamp/geomapfish/language/de/)\n"
 "MIME-Version: 1.0\n"
