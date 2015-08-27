@@ -42,7 +42,6 @@ from c2cgeoportal.tests.functional import (  # noqa
 class TestGeometryProcessing(TestCase):
 
     def test_difference(self):
-        from geoalchemy2.shape import to_shape
         from shapely.geometry import Polygon
         from c2cgeoportal.views.geometry_processing import GeometryProcessing
 
@@ -53,6 +52,6 @@ class TestGeometryProcessing(TestCase):
         geom_ops = GeometryProcessing(request)
         geom = geom_ops.difference()
         self.assertEquals(
-            to_shape(geom),
+            geom,
             Polygon([(0, 0), (0, 4), (4, 4), (4, 3), (2, 3), (2, 1), (4, 1), (4, 0), (0, 0)])
         )
