@@ -14,7 +14,7 @@ components installed on your system:
 * **Apache** >= 2.2
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1, with library (``libpq-dev``)
 * **MapServer** 7.0 or **QGIS**-mapserver 2.2 and upper
-* **MapCache** >= 1.0.0
+* **MapCache** >= 1.0.0 with memcached support
 * **TinyOWS** >= 1.1.0
 * **ImageMagick**
 * **GCC** GNU Compiler Collection >= 4.6
@@ -22,8 +22,8 @@ components installed on your system:
 * **libproj** >= 4.7
 * **gettext** >= 0.18
 
-For CGXP
-~~~~~~~~
+For mobile
+~~~~~~~~~~
 
 * **Sencha** Command
 * **Compass**
@@ -34,7 +34,7 @@ For ngeo
 * **node** >= 0.10
 * **npm** >= 1.3
 
-Required apache modules
+Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``mod_expires``
