@@ -145,7 +145,7 @@ To create the ``main`` and ``main_static`` schema:
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
 
-Now edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
+If you don't use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
 
 ``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
@@ -157,7 +157,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
     On Camptocamp servers ``mapserv`` is usually not available on the
     ``localhost`` virtual host. One option involves creating a specific script
     alias for ``mapserv``, for example by adding something like the following
-    to your ``/var/www/<virtual_host_name>/conf/<your_login>.conf`` file:
+    to your ``/var/www/<virtual_host_name>/conf/mapserv.conf`` file:
 
     .. code::
 
