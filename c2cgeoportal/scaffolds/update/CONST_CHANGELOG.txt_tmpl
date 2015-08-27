@@ -19,12 +19,17 @@ Version 2.0.0
 
     git rm -r lingua.cfg
 
-3. pyramid_closure include:
+3. In the `vars_{{package}}.yaml` file:
 
-   If your project's main function includes `config.include('pyramid_closure')`,
-   remove it, as c2cgeoportal now takes care of including `pyramid_closure`.
+   * Remove the `vars.checker.lang_files` parameter to use the default value
+     that checks the ngeo language files.
 
-4. To migrate your theme from version 1 to version 2 a script is available.
+4. In the `{{package}}/__init__.py` file:
+
+   * If your project's main function includes `config.include("pyramid_closure")`,
+     remove it, as c2cgeoportal now takes care of including `pyramid_closure`.
+
+5. To migrate your theme from version 1 to version 2 a script is available.
    Use `.build/venv/bin/themev1tov2 --help` for more information.
 
 
