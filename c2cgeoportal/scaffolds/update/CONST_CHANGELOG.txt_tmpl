@@ -12,7 +12,25 @@ Version 1.6.3
     + encodeExternalLayer: {},
     + additionalAttributes: [],
 
-2. In all `mapserver/*.map` or `mapserver/*.map.mako` files, convert all SRS
+2. To still use Mapfish Print v2 you should:
+
+    * In the `vars_{{package}}.yaml` file, add the following variable
+
+      print_url: http://localhost:8080/print-{instanceid}/pdf/
+
+    * add in the `check_collector` variable the following variable:
+
+        check_collector:
+      +     disabled: [checker_print3capabilities, checker_pdf3]
+
+    * Add the following line in your {{package}}.mk file:
+
+      PRINT_VERSION = 2
+
+    * Be sure that you moved your file `print/templates/print.mako.in`
+      to `print/config.yaml.mako` and do the requirement changes.
+
+3. In all `mapserver/*.map` or `mapserver/*.map.mako` files, convert all SRS
    codes in METADATA sections to uppercase.
 
    Lowercase SRS codes may cause incompatibility problems with some client
@@ -39,6 +57,10 @@ Version 1.6.3
     PROJECTION
         "init=epsg:21781"
     END
+
+4. In all `mapserver/*.map` or `mapserver/*.map.mako` files, adding an EXTENT to all
+   LAYER definitions will be a great performance improvement, see:
+   http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
 
 
 Version 1.6.2
