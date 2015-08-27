@@ -1,12 +1,12 @@
-# SOME DESCRIPTIVE TITLE
-# This file is distributed under the same license as the PACKAGE package.
+# GeoMapfish server translation
+# This file is distributed under the same license as the c2cgeoportal package.
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: GeoMapFish\n"
-"PO-Revision-Date: 2015-06-09 10:40+0000\n"
+"PO-Revision-Date: 2015-06-10 07:57+0000\n"
 "Last-Translator: Stéphane Brunner <stephane.brunner@camptocamp.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/geomapfish/language/es/)\n"
+"Language-Team: Spanish (http://www.transifex.com/camptocamp/geomapfish/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -79,27 +79,27 @@ msgid "Unlinked layers"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:127
-msgid "functionality"
+msgid "Functionality"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:128
-msgid "functionalitys"
+msgid "Functionalities"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:181
-msgid "user"
+msgid "User"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:182
-msgid "users"
+msgid "Users"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:302
-msgid "role"
+#: ./c2cgeoportal/models.py:302 ./c2cgeoportal/models.py:210
+msgid "Role"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:303
-msgid "roles"
+msgid "Roles"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:379 ./c2cgeoportal/models.py:380
@@ -107,27 +107,28 @@ msgid "Tree links order"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:456
-msgid "layergroup"
+msgid "Layer Group"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:457
-msgid "layergroups"
+msgid "Layer Groups"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:497
-msgid "theme"
+msgid "Theme"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:498
-msgid "themes"
+msgid "Themes"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:552
-msgid "layer"
+#: ./c2cgeoportal/models.py:552 ./c2cgeoportal/models.py:704
+msgid "Layer"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:553
-msgid "layers"
+#: ./c2cgeoportal/models.py:553 ./c2cgeoportal/models.py:629
+#: ./c2cgeoportal/models.py:667
+msgid "Layers"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:617
@@ -155,11 +156,11 @@ msgid "WMTS layers"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:746
-msgid "restrictionarea"
+msgid "Restriction Area"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:747
-msgid "restrictionareas"
+msgid "Restriction Areas"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:817
@@ -186,12 +187,12 @@ msgstr ""
 msgid "WMTS dimensions"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:905
-msgid "parentrole"
+#: ./c2cgeoportal/models.py:905 ./c2cgeoportal/models.py:238
+msgid "Parent Role"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:906
-msgid "parentroles"
+msgid "Parent Roles"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:136 ./c2cgeoportal/models.py:311
@@ -219,11 +220,7 @@ msgid "E-mail"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:208
-msgid "PasswordChanged"
-msgstr ""
-
-#: ./c2cgeoportal/models.py:210
-msgid "Role"
+msgid "Password Changed"
 msgstr ""
 
 #: ./c2cgeoportal/models.py:312 ./c2cgeoportal/models.py:757
@@ -360,24 +357,12 @@ msgstr ""
 msgid "Time widget"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:629 ./c2cgeoportal/models.py:667
-msgid "Layers"
-msgstr ""
-
 #: ./c2cgeoportal/models.py:703
 msgid "GetCapabilities URL"
 msgstr ""
 
-#: ./c2cgeoportal/models.py:704
-msgid "Layer"
-msgstr ""
-
 #: ./c2cgeoportal/models.py:758
 msgid "Read-write mode"
-msgstr ""
-
-#: ./c2cgeoportal/models.py:238
-msgid "Parent role"
 msgstr ""
 
 #: ./c2cgeoportal/views/entry.py:83
@@ -390,12 +375,12 @@ msgid ""
 "themes."
 msgstr ""
 
-#: ./c2cgeoportal/views/entry.py:1318
+#: ./c2cgeoportal/views/entry.py:1325
 #, c-format
 msgid "User '%s' has no registered email address."
 msgstr ""
 
-#: ./c2cgeoportal/views/entry.py:1312
+#: ./c2cgeoportal/views/entry.py:1319
 #, c-format
 msgid "The user '%s' doesn't exist."
 msgstr ""

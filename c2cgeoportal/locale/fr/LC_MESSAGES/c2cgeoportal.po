@@ -1,15 +1,14 @@
-# SOME DESCRIPTIVE TITLE
-# This file is distributed under the same license as the PACKAGE package.
+# GeoMapfish server translation
+# This file is distributed under the same license as the c2cgeoportal package.
 # Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2011
 # Jacolin <yjacolin@free.fr>, 2015
 # Stéphane Brunner <stephane.brunner@camptocamp.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GeoMapFish\n"
-"PO-Revision-Date: 2015-06-09 10:34+0000\n"
-"Last-Translator: Jacolin <yjacolin@free.fr>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/geomapfish/language/fr/)\n"
+"PO-Revision-Date: 2015-08-27 09:47+0000\n"
+"Last-Translator: Stéphane Brunner <stephane.brunner@camptocamp.com>\n"
+"Language-Team: French (http://www.transifex.com/camptocamp/geomapfish/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,27 +81,27 @@ msgid "Unlinked layers"
 msgstr "Couches non liées"
 
 #: ./c2cgeoportal/models.py:127
-msgid "functionality"
+msgid "Functionality"
 msgstr "Fonctionnalité"
 
 #: ./c2cgeoportal/models.py:128
-msgid "functionalitys"
+msgid "Functionalities"
 msgstr "Fonctionnalités"
 
 #: ./c2cgeoportal/models.py:181
-msgid "user"
+msgid "User"
 msgstr "Utilisateur"
 
 #: ./c2cgeoportal/models.py:182
-msgid "users"
+msgid "Users"
 msgstr "Utilisateurs"
 
-#: ./c2cgeoportal/models.py:302
-msgid "role"
+#: ./c2cgeoportal/models.py:302 ./c2cgeoportal/models.py:210
+msgid "Role"
 msgstr "Rôle"
 
 #: ./c2cgeoportal/models.py:303
-msgid "roles"
+msgid "Roles"
 msgstr "Rôles"
 
 #: ./c2cgeoportal/models.py:379 ./c2cgeoportal/models.py:380
@@ -110,27 +109,28 @@ msgid "Tree links order"
 msgstr "Ordre des liens de l'arbre"
 
 #: ./c2cgeoportal/models.py:456
-msgid "layergroup"
+msgid "Layer Group"
 msgstr "Groupe de couches"
 
 #: ./c2cgeoportal/models.py:457
-msgid "layergroups"
+msgid "Layer Groups"
 msgstr "Groupes de couches"
 
 #: ./c2cgeoportal/models.py:497
-msgid "theme"
+msgid "Theme"
 msgstr "Thème"
 
 #: ./c2cgeoportal/models.py:498
-msgid "themes"
+msgid "Themes"
 msgstr "Thèmes"
 
-#: ./c2cgeoportal/models.py:552
-msgid "layer"
+#: ./c2cgeoportal/models.py:552 ./c2cgeoportal/models.py:704
+msgid "Layer"
 msgstr "Couche"
 
-#: ./c2cgeoportal/models.py:553
-msgid "layers"
+#: ./c2cgeoportal/models.py:553 ./c2cgeoportal/models.py:629
+#: ./c2cgeoportal/models.py:667
+msgid "Layers"
 msgstr "Couches"
 
 #: ./c2cgeoportal/models.py:617
@@ -158,11 +158,11 @@ msgid "WMTS layers"
 msgstr "Couches WMTS"
 
 #: ./c2cgeoportal/models.py:746
-msgid "restrictionarea"
+msgid "Restriction Area"
 msgstr "Aire de restriction"
 
 #: ./c2cgeoportal/models.py:747
-msgid "restrictionareas"
+msgid "Restriction Areas"
 msgstr "Aires de restriction"
 
 #: ./c2cgeoportal/models.py:817
@@ -189,12 +189,12 @@ msgstr "Dimension WMTS"
 msgid "WMTS dimensions"
 msgstr "Dimensions WMTS"
 
-#: ./c2cgeoportal/models.py:905
-msgid "parentrole"
+#: ./c2cgeoportal/models.py:905 ./c2cgeoportal/models.py:238
+msgid "Parent Role"
 msgstr "Rôle parent"
 
 #: ./c2cgeoportal/models.py:906
-msgid "parentroles"
+msgid "Parent Roles"
 msgstr "Rôles parent"
 
 #: ./c2cgeoportal/models.py:136 ./c2cgeoportal/models.py:311
@@ -222,12 +222,8 @@ msgid "E-mail"
 msgstr "E-mail"
 
 #: ./c2cgeoportal/models.py:208
-msgid "PasswordChanged"
+msgid "Password Changed"
 msgstr "Mot de passe modifié"
-
-#: ./c2cgeoportal/models.py:210
-msgid "Role"
-msgstr "Rôle"
 
 #: ./c2cgeoportal/models.py:312 ./c2cgeoportal/models.py:757
 #: ./c2cgeoportal/models.py:827 ./c2cgeoportal/models.py:859
@@ -363,25 +359,13 @@ msgstr "Mode temporel"
 msgid "Time widget"
 msgstr "Widget temporel"
 
-#: ./c2cgeoportal/models.py:629 ./c2cgeoportal/models.py:667
-msgid "Layers"
-msgstr "Couches"
-
 #: ./c2cgeoportal/models.py:703
 msgid "GetCapabilities URL"
 msgstr "URL des spécifications"
 
-#: ./c2cgeoportal/models.py:704
-msgid "Layer"
-msgstr "Couche"
-
 #: ./c2cgeoportal/models.py:758
 msgid "Read-write mode"
 msgstr "Mode lecture écriture"
-
-#: ./c2cgeoportal/models.py:238
-msgid "Parent role"
-msgstr "Rôle parent"
 
 #: ./c2cgeoportal/views/entry.py:83
 msgid "title i18n"
@@ -393,12 +377,12 @@ msgid ""
 "themes."
 msgstr "ATTENTION ! Une erreur s'est produite en essayant de lire le mapfile  et de récupérer les thèmes."
 
-#: ./c2cgeoportal/views/entry.py:1318
+#: ./c2cgeoportal/views/entry.py:1325
 #, c-format
 msgid "User '%s' has no registered email address."
 msgstr "L'utilisateur '%s' n'a pas d'adresse mail enregistré."
 
-#: ./c2cgeoportal/views/entry.py:1312
+#: ./c2cgeoportal/views/entry.py:1319
 #, c-format
 msgid "The user '%s' doesn't exist."
 msgstr "L'utilisateur '%s' n'existe pas."

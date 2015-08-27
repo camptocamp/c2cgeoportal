@@ -141,12 +141,16 @@ class MapservProxy(Proxy):
             _url = self._get_wfs_url()
 
         cache_control = PRIVATE_CACHE
-        if method == "GET" and self.lower_params["service"] == u"wms":
+        if method == "GET" and \
+                "service" in self.lower_params and \
+                self.lower_params["service"] == u"wms":
             if self.lower_params["request"] in (u"getmap", u"getfeatureinfo"):
                 cache_control = NO_CACHE
             elif self.lower_params["request"] == u"getlegendgraphic":
                 cache_control = PUBLIC_CACHE
-        elif method == "GET" and self.lower_params["service"] == u"wfs":
+        elif method == "GET" and \
+                "service" in self.lower_params and \
+                self.lower_params["service"] == u"wfs":
             if self.lower_params["request"] == u"getfeature":
                 cache_control = NO_CACHE
         elif method != "GET":

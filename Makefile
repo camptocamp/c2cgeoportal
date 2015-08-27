@@ -42,14 +42,14 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo "- build 		Build and configure the project"
-	@echo "- buildall		Build, check and test the project"
-	@echo "- doc 			Build the project documentation"
-	@echo "- tests 		Perform a number of tests on the code"
-	@echo "- checks		Perform a number of checks on the code"
-	@echo "- clean 		Remove generated files"
-	@echo "- cleanall 		Remove all the build artefacts"
-	@echo "- transifex-sync	Synchronize the localisation with Transifex"
+	@echo  "- build 		Build and configure the project"
+	@echo  "- buildall		Build, check and test the project"
+	@echo  "- doc 			Build the project documentation"
+	@echo  "- tests 		Perform a number of tests on the code"
+	@echo  "- checks		Perform a number of checks on the code"
+	@echo  "- clean 		Remove generated files"
+	@echo  "- cleanall 		Remove all the build artefacts"
+	@echo  "- transifex-sync	Synchronize the localisation with Transifex"
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
@@ -116,9 +116,14 @@ flake8: .build/venv/bin/flake8
 	find $(VALIDATE_PY_TEST_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 --ignore=E501
 
 .PHONY: transifex-sync
-transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot
+transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot .tx/config
 	.build/venv/bin/tx push --source
 	.build/venv/bin/tx pull --all --force
+
+.PHONY: transifex-init
+transifex-init: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot .tx/config
+	.build/venv/bin/tx push --source
+	.build/venv/bin/tx push --translations --force --no-interactive
 
 # Templates
 

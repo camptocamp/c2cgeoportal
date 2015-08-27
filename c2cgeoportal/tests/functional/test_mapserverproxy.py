@@ -256,6 +256,13 @@ class TestMapserverproxyView(TestCase):
             DBSession.query(User).filter_by(username=username).one()
         return request
 
+    def test_no_params(self):
+        from c2cgeoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_dummy_request()
+        response = MapservProxy(request).proxy()
+        self.assertEqual(response.status_code, 200)
+
     def test_get_legend_graphic(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 

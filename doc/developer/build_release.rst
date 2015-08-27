@@ -1,7 +1,7 @@
 .. _developer_build_release:
 
-Build a new release
-===================
+Create a new release
+====================
 
 Vocabulary
 ----------
@@ -125,6 +125,15 @@ Push your changes:
 .. prompt:: bash
 
     git push origin master
+
+Create a new Transifex resource:
+
+    * Go to URL: https://www.transifex.com/camptocamp/geomapfish/content/
+    * Click on "Add a resource"
+    * Select the ``.pot`` file
+    * The name should be something like "c2cgeoportal-1_6" (with the right version)
+    * Click on "Create a resource"
+    * Run `make transifex-init`
 
 Then continue by creating the release.
 
