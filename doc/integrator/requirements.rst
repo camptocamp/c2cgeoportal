@@ -45,6 +45,12 @@ Required Apache modules
 * ``mod_wsgi``
 * ``mod_mapcache``
 
+Conflicting Apache modules
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``mod_php*``
+
+
 Print
 ~~~~~
 
