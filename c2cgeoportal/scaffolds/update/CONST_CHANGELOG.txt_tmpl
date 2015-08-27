@@ -58,6 +58,10 @@ Version 1.6.3
         "init=epsg:21781"
     END
 
+4. In all `mapserver/*.map` or `mapserver/*.map.mako` files, adding an EXTENT to all
+   LAYER definitions will be a great performance improvement, see:
+   http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
+
 
 Version 1.6.2
 =============
