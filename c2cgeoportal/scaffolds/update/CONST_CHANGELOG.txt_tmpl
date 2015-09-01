@@ -28,7 +28,7 @@ Version 1.6.3
       PRINT_VERSION = 2
 
     * Be sure that you moved your file `print/templates/print.mako.in`
-      to `print/config.yaml.mako` and do the requirement changes.
+      to `print/config.yaml.mako` and did the required changes.
 
 3. In all `mapserver/*.map` or `mapserver/*.map.mako` files, convert all SRS
    codes in METADATA sections to uppercase.
@@ -146,7 +146,10 @@ Version 1.6
      the `development.ini.mako`, `production.ini.mako` files. If you lost
      something it should probably be moved in the `vars_{{package}}.yaml` file.
    - The `print/template/print.mako.in` file should be moved to
-     `print/print.yaml.mako`.
+     `print/config.yaml.mako`. The paths provided in `print/config.yaml.mako`
+     must be adapted accordingly. For instance:
+     `<%include file="/A4_portrait.mako" />` should be changed to
+     `<%include file="templates/A4_portrait.mako" />`.
    - The build environments (`<user>.mk` files) must be recreated.
      For multi project mode have a look at the documentation:
      http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html
