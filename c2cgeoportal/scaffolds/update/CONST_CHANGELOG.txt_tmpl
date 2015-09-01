@@ -97,10 +97,11 @@ Version 1.6
    .mako offer more flexibility, so it is advised to replace the .in
    by .mako
 
-   Please note the following syntax change:
+   Please note the following syntax changes:
 
-   a variable named ${vars:<varname>} in a .in will be written ${<varname>} in
-   a .mako
+   - a variable named ${vars:<varname>} in a .in will be written ${<varname>} in
+   a .mako.
+   - ${buildout:directory} must be replaced by ${directory}.
 
    Also, in all the CHANGELOG points specifying both .in/.mako files, it means
    you need to modify the file you have (either the .in or the .mako), you MUST
