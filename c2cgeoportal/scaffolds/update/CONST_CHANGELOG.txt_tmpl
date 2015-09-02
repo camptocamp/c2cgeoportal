@@ -62,6 +62,14 @@ Version 1.6.3
    LAYER definitions will be a great performance improvement, see:
    http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
 
+5. In `vars_{{package}}.yaml` file add `admin_interface` key in `update_paths`:
+
+      update_paths:
+      - authtkt
+      - checker
+      - check_collector.hosts
+    + - admin_interface
+
 
 Version 1.6.2
 =============

@@ -121,3 +121,4 @@ update_paths:
 - authtkt
 - checker
 - check_collector.hosts
+- admin_interface
