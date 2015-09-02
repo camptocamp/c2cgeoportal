@@ -62,6 +62,20 @@ Version 1.6.3
    LAYER definitions will be a great performance improvement, see:
    http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
 
+5. In `vars_*.yaml` files where `admin_interface` section is overridden:
+
+    * Add `available_metadata` subsection:
+
+        vars:
+            ...
+
+            admin_interface:
+                ...
+
+      +         # The list of available variable names for the `UI metadatas` form.
+      +         available_metadata:
+      +         - copy_to
+
 
 Version 1.6.2
 =============
