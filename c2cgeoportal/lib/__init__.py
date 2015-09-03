@@ -149,12 +149,16 @@ class C2CPregenerator:  # pragma: no cover
 
         query = kw.get("_query", {})
 
+        cacheburst = ''
         if self.version:
             from c2cgeoportal.lib.cacheversion import get_cache_version
-            query["cache_version"] = get_cache_version()
+            cacheburst = get_cache_version()
 
         if self.role and request.user and request.user.role:
-            query["role"] = request.user.role.id
+            cacheburst += str(request.user.role.id)
+
+        if cacheburst != '':
+            query['cacheburst'] = cacheburst
 
         kw["_query"] = query
         return elements, kw
