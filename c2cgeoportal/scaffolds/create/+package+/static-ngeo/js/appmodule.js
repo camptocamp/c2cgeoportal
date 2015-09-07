@@ -5,10 +5,14 @@
  */
 goog.provide('app');
 
-goog.require('ngeo');
+/**
+ * This goog.require is needed because gmfModule.name is defined in 'gmf'.
+ * @suppress {extraRequire}
+ */
+goog.require('gmf');
 
 
 /**
  * @type {!angular.Module}
  */
-app.module = angular.module('app', [ngeoModule.name, 'gettext']);
+app.module = angular.module('app', [gmfModule.name, 'gettext']);
