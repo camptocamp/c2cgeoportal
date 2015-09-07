@@ -252,7 +252,7 @@ PRINT_INPUT_LS ?= config.yaml WEB-INF/classes/log4j.properties
 PRINT_INPUT_FIND ?= *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf
 PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
 PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
-PRINT_REQUIREMENT += $(addprefix, $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
+PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
 
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
