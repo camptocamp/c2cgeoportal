@@ -9,7 +9,7 @@
   import re
   import os
   _partials = {}
-  for partial in partials.split(' '):
+  for partial in partials.split():
       f = file(partial)
       content = unicode(f.read().decode('utf8'))
       content = re.sub(r'>\s*<' , '><', content)
