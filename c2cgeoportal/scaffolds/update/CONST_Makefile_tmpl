@@ -294,6 +294,8 @@ ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
+# Disabling Make built-in rules to speed up execution time
+.SUFFIXES:
 
 .PHONY: help
 help:
