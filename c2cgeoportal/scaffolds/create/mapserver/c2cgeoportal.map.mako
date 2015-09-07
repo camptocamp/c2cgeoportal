@@ -23,7 +23,7 @@ MAP
     EXTENT 420000 30000 900000 350000 ##
     UNITS METERS
 
-    # RESOLUTION and DEFRESOLUTION default to 72. If you
+    # RESOLUTION and DEFRESOLUTION default to 96. If you
     # change RESOLUTION to some other value, also change
     # DEFRESOLUTION. See
     # http://mapserver.org/development/rfc/ms-rfc-55.html
@@ -108,7 +108,7 @@ MAP
             "wms_srs" "EPSG:21781" # For WMS
 
             "wfs_enable_request" "*" # Enable WFS for this layer
-            "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QuerryBuilder)
+            "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
             "ows_geom_type" "polygon" # For returning geometries in GetFeatureInfo
             "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
 
