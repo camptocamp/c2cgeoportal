@@ -5,8 +5,11 @@
  */
 goog.provide('app');
 
+/**
+ * This goog.require is needed because gmfModule.name is defined in 'gmf'.
+ * @suppress {extraRequire}
+ */
 goog.require('gmf');
-goog.require('ngeo');
 
 
 /**
