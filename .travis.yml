@@ -11,6 +11,7 @@ env:
   - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
 
 before_install:
+- openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get remove -y --force-yes python-zope.interface
 - sudo apt-get install -y --force-yes aptitude
