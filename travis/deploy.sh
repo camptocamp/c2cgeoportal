@@ -34,24 +34,27 @@ fi
 
 if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
 then
-    echo "[distutils]" > ~/.pypirc
-    echo "index-servers = c2c-internal" >> ~/.pypirc
-    echo "[c2c-internal]" >> ~/.pypirc
-    echo "username:${PIP_USERNAME}" >> ~/.pypirc
-    echo "password:${PIP_PASSWORD}" >> ~/.pypirc
-    echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
-
     set -x
 
     if [ ${BUILD_TAG} != false ]
     then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" bdist_wheel
     else
     if [ ${FINAL} == true ]
         then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
+            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel
         else
-            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
+            .build/venv/bin/python setup.py bdist_wheel
         fi
     fi
+
+    git checkout gh-pages
+    mv dist/*.whl .
+    pip install magnum-pi
+    makeindex .
+    git add *.whl
+    git add index
+    git commit -m "Deploy the revision ${TRAVIS_COMMIT}"
 fi
+
+git push origin gh-pages
