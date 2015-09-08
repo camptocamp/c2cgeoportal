@@ -80,7 +80,7 @@ vars:
     pyramid_closure:
         roots_with_prefix:
         - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
-        - ["{package}:static/js", "{directory}/{package}/static/js"]
+        - ["{package}:static-ngeo/js", "{directory}/{package}/static-ngeo/js"]
         - ["{node_modules_path}/openlayers", "{node_modules_path}/openlayers"]
         - ["{node_modules_path}/ngeo/src", "{node_modules_path}/ngeo/src"]
 
@@ -306,3 +306,7 @@ interpreted:
     - instanceid
     - apache_entry_point
     - development
+    node:
+        vars:
+        - closure_library_path
+        cmd: ["node", "-e"]
