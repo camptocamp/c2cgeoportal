@@ -483,9 +483,6 @@ compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 
 $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
-$(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
-	cp $< $@
-
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 $(APP_OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
