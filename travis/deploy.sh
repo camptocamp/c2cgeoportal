@@ -1,12 +1,14 @@
 #!/bin/bash -e
 
 DEPLOY=false
+DOC=false
 FINAL=false
 BUILD_TAG=false # for rc
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
     DEPLOY=true
+    DOC=true
 fi
 
 if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]]
@@ -55,6 +57,14 @@ then
     git add *.whl
     git add index
     git commit -m "Deploy the revision ${TRAVIS_COMMIT}"
+fi
+if [ ${DOC} == true ]
+then
+    git checkout gh-pages
+    mkdir ${TRAVIS_BRANCH}
+    mv doc/_build/html/* ${TRAVIS_BRANCH}
+    git add ${TRAVIS_BRANCH}
+    git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
 fi
 
 git push origin gh-pages
