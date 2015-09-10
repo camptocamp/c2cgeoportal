@@ -454,13 +454,13 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAG
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch $@
-	msgmerge --update $@ $<
+	msgmerge --backup=none --update $@ $<
 
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch $@
-	msgmerge --update $@ $<
+	msgmerge --backup=none --update $@ $<
 
 %.mo: %.po
 	msgfmt -o $@ $<
