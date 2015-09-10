@@ -80,7 +80,6 @@ vars:
     # Checker configuration
     checker:
         fulltextsearch: text to search
-        lang_files: [cgxp, cgxp-api]
         print_spec:
             layout: "A4 portrait"
             outputFormat: "pdf"
