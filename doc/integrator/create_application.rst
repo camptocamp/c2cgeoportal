@@ -141,11 +141,6 @@ Go to your new project:
 
     cd ../<project>
 
-.. note:: For Windows:
-
-   A special egg is available for Windows. It may be used by replacing
-   ``'c2cgeoportal'`` by ``'c2cgeoportal-win'`` in  the ``setup.py`` file.
-
 ``pcreate`` doesn't conserve file permission, so restore it manually:
 
 .. prompt:: bash
@@ -158,14 +153,6 @@ In the ``CONST_requirements.txt`` file make sure that c2cgeoportal version is se
 .. code::
 
    c2cgeoportal = <version>
-
-.. note:: For Windows:
-
-   .. code::
-
-      c2cgeoportal-win = <version>
-
-      in the ``CONST_requirements_windows.txt``
 
 With ``<version>`` the egg version you want to use, normally it should be the same
 number as the ``tag`` you use to checkout ``c2cgeoportal``.
@@ -181,10 +168,6 @@ number as the ``tag`` you use to checkout ``c2cgeoportal``.
     served by the parent instance. Parent and child instances share
     the same database, but use dedicated schemas within that database.
 
-.. note:: For Windows:
-
-    The ``<project>/static/mobile/touch.tar.gz`` archive must be uncompressed
-    and then removed.
 
 Put the application under revision control
 ------------------------------------------

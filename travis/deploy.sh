@@ -54,24 +54,4 @@ then
             .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
         fi
     fi
-
-    cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
-    tar -czf touch.tar.gz touch
-    cd -
-    echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
-    echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i 's/name="c2cgeoportal",/name="c2cgeoportal-win",/g' setup.py
-    git diff
-
-    if [ ${BUILD_TAG} != false ]
-    then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
-    else
-        if [ ${FINAL} == true ]
-        then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
-        else
-            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
-        fi
-    fi
 fi

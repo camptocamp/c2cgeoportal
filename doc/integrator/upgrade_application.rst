@@ -58,13 +58,13 @@ And follow the instructions.
 
     * Uninstall manually the old c2cgeoportal egg:
 
-        ``.build/venv/Scripts/pip uninstall c2cgeoportal-win``
+        ``.build/venv/Scripts/pip uninstall c2cgeoportal``
 
     * Clean / remove the generated files:
 
         ``make -f <makefile> clean``
 
-    * Change the version in ``setup.py`` and ``CONST_requirements_windows.txt``
+    * Change the version in ``setup.py`` and ``CONST_requirements.txt``
       to the version you wish to install.
     * Build your application:
 
@@ -74,7 +74,7 @@ And follow the instructions.
 
         ``git add setup.py``
 
-        ``git add CONST_requirements_windows.txt``
+        ``git add CONST_requirements.txt``
 
         ``git commit -m "Upgrade c2cgeoportal version"``
 
