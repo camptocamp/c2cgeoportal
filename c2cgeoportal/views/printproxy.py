@@ -68,7 +68,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
             pretty = self.request.params.get("pretty", "false") == "true"
             content = json.dumps(
-                capabilities, separators=None if pretty else (",", ":"),
+                filter_(capabilities), separators=None if pretty else (",", ":"),
                 indent=4 if pretty else None
             )
         else:
