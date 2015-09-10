@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Query builder (Querier) &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Editing" href="editing.html" />
+    <link rel="prev" title="Full-text search" href="fulltext_search.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="editing.html" title="Editing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fulltext_search.html" title="Full-text search"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="query-builder-querier">
+<span id="integrator-querier"></span><h1>Query builder (Querier)<a class="headerlink" href="#query-builder-querier" title="Permalink to this headline">¶</a></h1>
+<p>In the Query builder interface, instead of the standard text field,
+it is possible to display combos providing the available values of
+the attributes. The values are automatically retrieved using a
+web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">dinstinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
+<p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>layers:
+    enum:
+        dbsession: &quot;&lt;session name&gt;&quot;
+        &quot;&lt;layer_name&gt;&quot;:
+            dbsession: &quot;&lt;session name&gt;&quot;
+            table: &quot;&lt;[schema.]table name&gt;&quot;
+            attributes:
+                &quot;&lt;attribute name&gt;&quot;:
+                    table: &quot;&lt;[schema.]table name&gt;&quot;
+                    column_name: &quot;&lt;column name&gt;&quot;
+                    separator: &quot;,&quot;
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> in the <code class="docutils literal"><span class="pre">enum</span></code> is just a shortcut
+if almost of the session are similar in the layers. If the dbsession isn&#8217;t
+defined we use the main DB session.</p>
+<p>The <code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> in the layer is just a shortcut
+if almost of the attribute of the layer are in the same table.
+Each attributes requires a table.</p>
+<p>If the <code class="docutils literal"><span class="pre">column_name</span></code> isn&#8217;t defined we use the attribute name.</p>
+<p>If the <code class="docutils literal"><span class="pre">separator</span></code> is defined we consider the column as a list of values.</p>
+<p>Simple example:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>layers
+    enum:
+        mapserver_layer:
+            table: geodata.table
+            attributes:
+                type:
+                country:
+</pre></div>
+</div>
+<p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
+the <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fulltext_search.html"
+                        title="previous chapter">Full-text search</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="editing.html"
+                        title="next chapter">Editing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/querier.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      
+      |
+      <a href="../_sources/integrator/querier.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
