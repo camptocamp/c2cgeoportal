@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.min.css')}" type="text/css">
 % endif
     <title translate>The {{project}} Web GIS</title>
-  <head>
+  </head>
   <body>
     <gmf-map gmf-map-map="mainCtrl.map"></gmf-map>
 
