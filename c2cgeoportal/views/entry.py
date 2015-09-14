@@ -40,7 +40,7 @@ from xml.dom.minidom import parseString
 from urlparse import urlsplit
 
 from pyramid.view import view_config
-from pyramid.i18n import get_locale_name, TranslationStringFactory
+from pyramid.i18n import TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
     HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget
@@ -75,7 +75,7 @@ class Entry(object):
         self.settings = request.registry.settings
         self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.debug = "debug" in request.params
-        self.lang = get_locale_name(request)
+        self.lang = request.locale_name
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
