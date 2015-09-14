@@ -942,6 +942,7 @@ class Entry(object):
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
         vars.update({
+            "lang": self.lang,
             "debug": self.debug,
             "functionality": self._functionality(),
             "queryer_attribute_urls": self._get_layers_enum(),
