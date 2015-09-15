@@ -14,6 +14,8 @@ MOBILE ?= TRUE
 NGEO ?= FALSE
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
+# Use deploy
+DEPLOY ?= TRUE
 # Used print version
 PRINT_VERSION ?= 3
 
@@ -35,6 +37,9 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 # Make rules
 
 DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
+ifeq ($(DEPLOY), TRUE)
+DEFAULT_BUILD_RULES += test-packages-deploy
+endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
@@ -639,6 +644,13 @@ test-packages: .build/test-packages.timestamp
 
 .build/test-packages.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml main
+	touch $@
+
+.PHONY: test-packages-deploy
+test-packages-deploy: .build/test-packages-deploy.timestamp
+
+.build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml deploy
 	touch $@
 
 .PHONY: test-packages-mobile
