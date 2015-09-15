@@ -70,6 +70,12 @@ Version 1.6.3
       - check_collector.hosts
     + - admin_interface
 
+6. In the `{{package}}/templates/index.html`, `{{package}}/templates/edit.html`
+   and `{{package}}/templates/routing.html` do the following changes to use IE11 when available :
+
+      - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
+      + <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE11">
+
 
 Version 1.6.2
 =============
