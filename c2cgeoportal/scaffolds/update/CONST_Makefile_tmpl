@@ -479,7 +479,6 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 .PHONY: build-ngeo
 build-ngeo: \
 	$(APP_OUTPUT_DIR)/build.js \
-	$(APP_OUTPUT_DIR)/build.css \
 	$(APP_OUTPUT_DIR)/build.min.css \
 	compile-js-catalog
 
@@ -505,10 +504,6 @@ $(APP_OUTPUT_DIR)/build.js: .build/node_modules.timestamp .build/build.js $(NGEO
 $(APP_OUTPUT_DIR)/build.min.css: $(LESS_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	./node_modules/.bin/lessc $(LESS_ARGS) $(PACKAGE)/static-ngeo/less/$(PACKAGE).less $@
-
-$(APP_OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
-	mkdir -p $(dir $@)
-	./node_modules/.bin/lessc $(PACKAGE)/static-ngeo/less/$(PACKAGE).less $@
 
 .build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		.build/templatecache.js \
