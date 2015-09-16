@@ -1,6 +1,13 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.5
+=============
+
+1. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
+   See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
+
+
 Version 1.6.3
 =============
 

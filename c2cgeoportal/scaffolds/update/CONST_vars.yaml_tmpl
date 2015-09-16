@@ -215,6 +215,9 @@ vars:
     # For print proxy
     print_url: http://localhost:8080/print-{instanceid}/print/{package}
 
+    pdfreport:
+        print_url: http://localhost:8080/print-{instanceid}/print/{package}
+
     # For base layers
     tiles_url:
     - http://a.tiles.{host}/{instanceid}/tiles
