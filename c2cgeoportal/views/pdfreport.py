@@ -53,7 +53,7 @@ class PdfReport:  # pragma: no cover
 
     def _do_print(self, spec):
         """ Get created PDF. """
-        url = self.config["print_url"] + "/print/buildreport.pdf"
+        url = self.config["print_url"] + "/buildreport.pdf"
         http = httplib2.Http()
         h = dict(self.request.headers)
         h["Content-Type"] = "application/json"

@@ -127,7 +127,7 @@ transifex-init: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoport
 
 # Templates
 
-$(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_DEPENDS}
+$(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_FILES}
 
 %: %.mako
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<

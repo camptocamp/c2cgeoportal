@@ -5,7 +5,7 @@
         <meta name="Content-Language" content="${lang}" />
         <meta name="keywords" content="{{package}}, geoportal">
         <meta name="description" content="{{package}} Geoportal Application.">
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE11;">
 % if not no_redirect and mobile_url is not None:
         <script>
             if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {

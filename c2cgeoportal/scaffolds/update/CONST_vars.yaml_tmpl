@@ -235,7 +235,7 @@ vars:
     # Checker configuration
     checker:
         fulltextsearch: text to search
-        lang_files: [ngeo, cgxp, cgxp-api]
+        lang_files: [cgxp, cgxp-api]
         themes:
             default:
                 params:
