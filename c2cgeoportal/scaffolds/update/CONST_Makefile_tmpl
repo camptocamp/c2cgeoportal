@@ -753,7 +753,8 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 		.build/requirements.timestamp \
-		$(PRINT_OUTPUT)/$(PRINT_WAR)
+		$(PRINT_OUTPUT)/$(PRINT_WAR) \
+		development.ini production.ini
 	$(APACHE_GRACEFUL)
 	touch $@
 
