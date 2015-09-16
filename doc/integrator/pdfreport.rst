@@ -12,69 +12,46 @@ and `Jasper Reports <http://community.jaspersoft.com/project/jasperreports-libra
 The webservice is called using the following URL schema:
 ``http://<host>/<instanceid>/wsgi/pdfreport/<layername>/<featureid>``.
 
-Prerequisites
--------------
-
-To make queries to the database directly from the Jasper Reports, additional ``.jar`` files
-must be added to the MapFish Print directory:
-
-.. code-block:: bash
-
-    cd print
-    mkdir WEB-INF/lib
-    cd WEB-INF/lib
-    wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download -O jasperreports-functions-5.5.0.jar
-    wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
-    wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
-
-Edit the ``buildout.cfg`` file and add ``WEB-INF/lib/*.jar`` to the ``input`` list 
-of the ```[pdf-report]`` part:
-
-.. code::
-
-      input = ${print-war:basewar}
-          config.yaml
-          WEB-INF/mapfish-print-printer-factory.xml
-          WEB-INF/classes/logback.xml
-    +     WEB-INF/lib/*.jar
-          *.jrxml
-          *.tif
-          *.bmp
-          *.jpg
-          *.jpeg
-          *.gif
-          *.png
 
 Configuration
 -------------
 
-The service is configured in the main ``config.yaml.in`` file of the project
+The service is configured in the main ``vars_<package>.yaml`` file of the project
 as in the following example:
 
 .. code-block:: yaml
 
-    pdfreport:
-        print_url: http://localhost:8080/print-c2cgeoportal-${vars:instanceid} 
-        defaults:
-            show_map: True
-            check_credentials: False
-            backgroundlayers: "grp_ly_tilegenerierung_landeskarte"
-            imageformat: "image/png"
-            srs: "EPSG:21781"
-        layers: 
-            ly_a020_belastete_standorte_point: 
-                backgroundlayers: "grp_ly_tilegenerierung_landeskarte,ly_a020_belastete_standorte_point"
-                imageformat: "image/jpeg"
-            some_template_with_no_map:
-                show_map: False
-                spec_template: {
-                    "layout": "some_template_name",
-                    "outputFormat": "pdf",
-                    "attributes": {
-                        "paramID": "%(id)s"
-                    }
-                }
-            
+    vars:
+        ...
+        pdfreport:
+            defaults:
+                check_credentials: False
+                srs: EPSG:21781
+                map:
+                    backgroundlayers: [grp_ly_tilegenerierung_landeskarte]
+                    imageformat: image/png
+            layers:
+                ly_a020_belastete_standorte_point:
+                    map:
+                        backgroundlayers:
+                            - grp_ly_tilegenerierung_landeskarte
+                            - ly_a020_belastete_standorte_point
+                        imageformat: image/jpeg
+                some_template_with_no_map:
+                    spec:
+                        layout: some_template_name
+                        outputFormat: pdf
+                        attributes:
+                            paramID: "%(id)s"
+                some_template_with_multi_map:
+                    maps:
+                        - backgroundlayers:
+                            - grp_ly_tilegenerierung_landeskarte
+                        - backgroundlayers:
+                            - ly_a020_belastete_standorte_point
+    update_paths:
+        - pdfreport
+
 
 with the following parameters:
 
@@ -84,7 +61,6 @@ with the following parameters:
 
 ``defaults`` and ``layers``-specific parameters are:
 
-* ``show_map``: boolean, wether a map is embedded in the report. Defaults to ``True``.
 * ``check_credentials``: boolean, wether layer credentials are checked before generating the report. Defaults to ``True``.
 * ``srs``: projection code (required when showing the map).
 * ``backgroundlayers``: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes ("). Defaults to ``""``.
@@ -109,7 +85,7 @@ If no ``spec_template`` is provided, the following template is used:
                     "zoomType": "center",
                     "layer": "vector",
                     "minScale": 25000
-                },  
+                },
                 "layers": [{
                     "type": "gml",
                     "name": "vector",
@@ -123,9 +99,9 @@ If no ``spec_template`` is provided, the following template is used:
                                 "strokeWidth": 1,
                                 "type": "point",
                                 "pointRadius": 10
-                            }]  
-                        }   
-                    },  
+                            }]
+                        }
+                    },
                     "opacity": 1,
                     "url": "%(vector_request_url)s"
                 }, {
@@ -135,9 +111,9 @@ If no ``spec_template`` is provided, the following template is used:
                     "serverType": "mapserver",
                     "layers": ["%(backgroundlayers)s"],
                     "imageFormat": "%(imageformat)s"
-                }]  
-            }   
-        }   
+                }]
+            }
+        }
     }
 
 Variables may be inserted using the ``%(<variable name>)s`` syntax. The following
