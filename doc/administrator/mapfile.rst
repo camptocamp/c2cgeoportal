@@ -299,27 +299,15 @@ by using variable substitution. For instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
 available `here <http://mapserver.org/cgi/runsub.html#parameters-supported>`_.
 
-To define variables, edit the matching ``MAP``/``LAYER``/``METADATA``
-section in the mapfile and add::
+To define variables, edit the matching ``MAP``/``LAYER``/``VALIDATION``
+section in the MapFile and add::
 
     "default_s_<variable>" "<default_value>"
-    "s_<variable>_validation_pattern" "<validation_pattern>"
+    "s_<variable>" "<validation_pattern>"
 
 The ``validation_pattern`` is a regular expression used to validate the
 argument. For example if you only want lowercase characters and commas,
-use ``^[a-z,]*$$`` (the double '$' is needed since we are
-in a ``.mako`` file).
-
-.. note::
-
-     For MapServer 6.4.0 and above, the default value and the pattern definition
-     are placed in the VALIDATION block instead of the METADATA one.
-     The validation pattern uses a slightly different metadata name::
-
-        VALIDATION
-            "default_s_<variable>" "<default_value>"
-            "s_<variable>" "<validation_pattern>"
-        END
+use ``^[a-z,]*$``.
 
 Now in ``LAYER`` place ``%s_<variable>%`` where you want to
 insert the variable value, but not at the start of a line (to avoid escape issues).

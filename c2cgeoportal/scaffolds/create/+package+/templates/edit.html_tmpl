@@ -5,7 +5,7 @@
         <meta name="Content-Language" content="${lang}" />
         <meta name="keywords" content="{{package}}, mapfish, editor, geoportal">
         <meta name="description" content="{{package}} Geoportal Editor.">
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE11;">
         <title>{{package}} Geoportal Editor</title>
         <link rel="shortcut icon" type="image/x-icon" href="${request.static_url('{{package}}:static/images/favicon.ico')}">
 

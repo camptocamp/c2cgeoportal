@@ -123,6 +123,10 @@ vars:
         map_y: 5860000
         map_zoom: 10
 
+    # The list of available variable names for the `UI metadatas` form.
+        available_metadata:
+        - copy_to
+
     # The list of functionalities that can be configured
     # through the admin interface.
         available_functionalities:
@@ -237,7 +241,7 @@ vars:
     # Checker configuration
     checker:
         fulltextsearch: text to search
-        lang_files: [ngeo, cgxp, cgxp-api]
+        lang_files: [cgxp, cgxp-api]
         themes:
             default:
                 params:

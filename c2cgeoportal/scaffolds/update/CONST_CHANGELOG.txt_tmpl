@@ -50,7 +50,7 @@ Version 1.6.3
 
       print_url: http://localhost:8080/print-{instanceid}/pdf/
 
-    * add in the `check_collector` variable the following variable:
+    * Add also in the `check_collector` variable the following variable:
 
         check_collector:
       +     disabled: [checker_print3capabilities, checker_pdf3]
@@ -60,7 +60,7 @@ Version 1.6.3
       PRINT_VERSION = 2
 
     * Be sure that you moved your file `print/templates/print.mako.in`
-      to `print/config.yaml.mako` and do the requirement changes.
+      to `print/config.yaml.mako` and did the required changes.
 
 3. In all `mapserver/*.map` or `mapserver/*.map.mako` files, convert all SRS
    codes in METADATA sections to uppercase.
@@ -94,6 +94,22 @@ Version 1.6.3
    LAYER definitions will be a great performance improvement, see:
    http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
 
+5. In `vars_{{package}}.yaml` file add `admin_interface` key in `update_paths`:
+
+      update_paths:
+      - authtkt
+      - checker
+      - check_collector.hosts
+    + - admin_interface
+
+6. In the `{{package}}/templates/index.html`, `{{package}}/templates/edit.html`
+   and `{{package}}/templates/routing.html` do the following changes to use IE11 when available :
+
+      - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
+      + <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE11">
+
+7. Remove the `lang_files` from the `vars/checker` in the file `vars_{{package}}.yaml`.
+
 
 Version 1.6.2
 =============
@@ -108,7 +124,11 @@ Version 1.6.2
     WMTSDimension.__acl__ = [DENY_ALL]
 
 2. If you still use version 2 of the print the `.war` file should be updated to the latest version.
-   Get the `.war` from here: http://pypi.camptocamp.net/print-servlet-2.1-SNAPSHOT-IMG-MAGICK-daeea96d2d3b33d6ccf02fe62d81b9c7aa2574a2.war.
+
+   cd print
+   wget http://pypi.camptocamp.net/print-servlet-2.1-SNAPSHOT-IMG-MAGICK-daeea96d2d3b33d6ccf02fe62d81b9c7aa2574a2.war
+   mv print-servlet-2.1-SNAPSHOT-IMG-MAGICK-daeea96d2d3b33d6ccf02fe62d81b9c7aa2574a2.war print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
+   touch print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 
 3. In the `{{package}}/__init__.py` file remove all the `config.add_settings({ ... })`, they should be in the `vars_*.yaml` files.
 
@@ -141,10 +161,11 @@ Version 1.6
    .mako offer more flexibility, so it is advised to replace the .in
    by .mako
 
-   Please note the following syntax change:
+   Please note the following syntax changes:
 
-   a variable named ${vars:<varname>} in a .in will be written ${<varname>} in
-   a .mako
+   - a variable named ${vars:<varname>} in a .in will be written ${<varname>} in
+   a .mako.
+   - ${buildout:directory} must be replaced by ${directory}.
 
    Also, in all the CHANGELOG points specifying both .in/.mako files, it means
    you need to modify the file you have (either the .in or the .mako), you MUST
@@ -190,7 +211,10 @@ Version 1.6
      the `development.ini.mako`, `production.ini.mako` files. If you lost
      something it should probably be moved in the `vars_{{package}}.yaml` file.
    - The `print/template/print.mako.in` file should be moved to
-     `print/print.yaml.mako`.
+     `print/config.yaml.mako`. The paths provided in `print/config.yaml.mako`
+     must be adapted accordingly. For instance:
+     `<%include file="/A4_portrait.mako" />` should be changed to
+     `<%include file="templates/A4_portrait.mako" />`.
    - The build environments (`<user>.mk` files) must be recreated.
      For multi project mode have a look at the documentation:
      http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html

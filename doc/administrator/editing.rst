@@ -99,3 +99,28 @@ administration interface.
 Binding restriction areas and layers together can be done from either the
 ``Restriction Area`` objects or the ``Layer`` objects in the admin interface.
 Likewise for binding roles and restriction areas.
+
+
+Enabling `Copy to` functionality
+--------------------------------
+
+In the ``edit`` interface, you can give the user the possibility to copy
+features from one layer (source layer) to another layer (destination layer).
+
+In the ``admin`` interface, open the ``UI metadatas`` list and add a new record:
+
+    * Name: Select ``copy_to``.
+    * Value: Enter the list of choices for destination layer, as mapserver
+      layer names, separated by commas.
+    * Item: Select the source layer.
+
+Exemple:
+
+    * Name: ``copy_to``
+    * Value: ``polygon2,polygon3,polygon4``
+    * Item: ``polygon``
+
+.. note::
+
+   * Source and destination layers must have the same geometry type.
+   * Only the geometry will be copied, the attributes will not be.
