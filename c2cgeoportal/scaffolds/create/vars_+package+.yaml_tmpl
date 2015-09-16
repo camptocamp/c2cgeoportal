@@ -30,13 +30,6 @@ vars:
         map_y: 5860000
         map_zoom: 10
 
-        # The list of functionalities that can be configured
-        # through the admin interface.
-        available_functionalities:
-        - default_basemap
-        - print_template
-        - mapserver_substitution
-
     functionalities:
         # Functionalities that are accessible to anonymous
         # users.

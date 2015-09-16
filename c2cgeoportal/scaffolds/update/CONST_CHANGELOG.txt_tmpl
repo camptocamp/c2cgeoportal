@@ -110,6 +110,15 @@ Version 1.6.3
 
 7. Remove the `lang_files` from the `vars/checker` in the file `vars_{{package}}.yaml`.
 
+8. If in your `vars_{{package}}.yaml` file you have the following `available_functionalities` they can be removed:
+
+        # The list of functionalities that can be configured
+        # through the admin interface.
+        available_functionalities:
+        - default_basemap
+        - print_template
+        - mapserver_substitution
+
 
 Version 1.6.2
 =============
