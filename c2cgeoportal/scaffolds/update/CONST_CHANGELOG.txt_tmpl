@@ -76,6 +76,8 @@ Version 1.6.3
       - <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE10">
       + <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9; IE=EmulateIE11">
 
+7. Remove the `lang_files` from the `vars/checker` in the file `vars_{{package}}.yaml`.
+
 
 Version 1.6.2
 =============
