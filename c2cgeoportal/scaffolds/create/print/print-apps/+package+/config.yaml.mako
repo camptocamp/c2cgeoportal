@@ -49,7 +49,7 @@ templates:
                 headers:
                 - Cookie
                 - Host
-                - Referrer
+                - Referer
         - !prepareLegend
             template: legend.jrxml
         - !createNorthArrow {}
