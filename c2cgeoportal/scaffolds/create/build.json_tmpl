@@ -17,6 +17,7 @@
       "node_modules/openlayers/externs/proj4js.js",
       "node_modules/openlayers/externs/tilejson.js",
       "node_modules/openlayers/externs/topojson.js",
+      "node_modules/ngeo/contribs/gmf/externs/gmfx.js",
       "node_modules/ngeo/externs/angular-gettext.js",
       "node_modules/ngeo/externs/d3.js",
       "node_modules/ngeo/externs/twbootstrap.js",
