@@ -28,70 +28,107 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-import httplib2
-from urlparse import urlparse
 from json import dumps, loads
 
 from c2cgeoportal.lib.filter_capabilities import get_protected_layers, \
     get_private_layers
 
 from pyramid.view import view_config
-from pyramid.response import Response
-from pyramid.httpexceptions import HTTPBadGateway, HTTPForbidden, \
-    HTTPInternalServerError
+from pyramid.httpexceptions import HTTPForbidden, HTTPInternalServerError
 
-from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+from c2cgeoportal.lib.caching import NO_CACHE
+from c2cgeoportal.views.proxy import Proxy
 
 log = logging.getLogger(__name__)
 
 
-class PdfReport:  # pragma: no cover
+class PdfReport(Proxy):  # pragma: no cover
 
     def __init__(self, request):
-        self.request = request
+        Proxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
-        """ Get created PDF. """
-        url = self.config["print_url"] + "/buildreport.pdf"
-        http = httplib2.Http()
-        h = dict(self.request.headers)
-        h["Content-Type"] = "application/json"
-        if urlparse(url).hostname != "localhost":
-            h.pop("Host")
-        try:
-            resp, content = http.request(
-                url, method="POST", headers=h, body=dumps(spec)
-            )
-        except:
-            return HTTPBadGateway()
+        """ Create and get report PDF. """
 
-        headers = {}
-        if "content-disposition" in resp:
-            headers["content-disposition"] = resp["content-disposition"]
-        return set_common_headers(
-            self.request, "pdfreport", NO_CACHE,
-            response=Response(
-                content, status=resp.status, headers=headers
+        resp, content = self._proxy(
+            "%s/buildreport.pdf" % (
+                self.config["print_url"],
             ),
-            content_type=resp.get("content-type")
+            method="POST",
+            body=dumps(spec),
+            headers={
+                "Content-Type": "application/json"
+            }
+        )
+
+        return self._build_response(
+            resp, content, NO_CACHE, "pdfreport",
         )
 
     def _get_config(self, name, default=None):
-        config = self.config. \
-            get("layers", {}). \
-            get(self.layername, {}). \
-            get(name)
+        config = self.layer_config.get(name)
         if config is None:
             config = self.config. \
                 get("defaults", {}). \
                 get(name, default)
         return config
 
+    def _get_map_config(self, name, map_config, default=None):
+        config = map_config.get(name)
+        if config is None:
+            config = self.config. \
+                get("defaults", {}). \
+                get("map", {}). \
+                get(name, default)
+        return config
+
+    def _build_map(self, mapserv_url, vector_request_url, srs, map_config):
+        backgroundlayers = self._get_map_config("backgroundlayers", [])
+        imageformat = self._get_map_config("imageformat", "image/png")
+        return {
+            "projection": srs,
+            "dpi": 254,
+            "rotation": 0,
+            "bbox": [0, 0, 1000000, 1000000],
+            "zoomToFeatures": {
+                "zoomType": self._get_map_config("zoomType", "extent"),
+                "layer": "vector",
+                "minScale": self._get_map_config("minScale", 1000),
+            },
+            "layers": [{
+                "type": "gml",
+                "name": "vector",
+                "style": {
+                    "version": "2",
+                    "[1 > 0]": self._get_map_config("style", {
+                        "fillColor": "red",
+                        "fillOpacity": 0.2,
+                        "symbolizers": [{
+                            "strokeColor": "red",
+                            "strokeWidth": 1,
+                            "type": "point",
+                            "pointRadius": 10
+                        }]
+                    })
+                },
+                "opacity": 1,
+                "url": vector_request_url
+            }, {
+                "baseURL": mapserv_url,
+                "opacity": 1,
+                "type": "WMS",
+                "serverType": "mapserver",
+                "layers": backgroundlayers,
+                "imageFormat": imageformat
+            }]
+        }
+
     @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
         id = self.request.matchdict["id"]
         self.layername = self.request.matchdict["layername"]
+        self.layer_config = self.config.get("layers", {}).get(self.layername, {})
 
         if self._get_config("check_credentials", True):
             # check user credentials
@@ -103,85 +140,54 @@ class PdfReport:  # pragma: no cover
                     self.layername not in get_protected_layers(role_id):
                 raise HTTPForbidden
 
-        show_map = self._get_config("show_map", True)
-        if show_map:
-            srs = self._get_config("srs")
-            if srs is None:
-                raise HTTPInternalServerError(
-                    "Missing 'srs' in service configuration"
-                )
-            params = {
+        srs = self._get_config("srs")
+        if srs is None:
+            raise HTTPInternalServerError(
+                "Missing 'srs' in service configuration"
+            )
+
+        mapserv_url = self.request.route_url("mapserverproxy")
+        vector_request_url = "%s?%s" % (
+            mapserv_url,
+            "&".join(["%s=%s" % i for i in {
                 "service": "WFS",
                 "version": "1.0.0",
                 "request": "GetFeature",
                 "typeName": self.layername,
                 "featureid": self.layername + "." + id,
                 "srsName": srs
-            }
+            }.items()])
+        )
 
-            mapserv_url = self.request.route_url("mapserverproxy")
-            vector_request_url = mapserv_url + "?" \
-                + "&".join(["%s=%s" % i for i in params.items()])
-
-            backgroundlayers = self._get_config("backgroundlayers", '""')
-            imageformat = self._get_config("imageformat", "image/png")
-        else:
-            srs = mapserv_url = vector_request_url = imageformat = ""
-            backgroundlayers = '""'
-
-        spec_template = self._get_config("spec_template")
-        if spec_template is None:
-            spec_template = {
-                "layout": "%(layername)s",
+        spec = self._get_config("spec")
+        if spec is None:
+            spec = {
+                "layout": self.layername,
                 "outputFormat": "pdf",
                 "attributes": {
-                    "paramID": "%(id)s"
+                    "paramID": id
                 }
             }
-            if show_map:
-                spec_template["attributes"]["map"] = {
-                    "projection": "%(srs)s",
-                    "dpi": 254,
-                    "rotation": 0,
-                    "bbox": [0, 0, 1000000, 1000000],
-                    "zoomToFeatures": {
-                        "zoomType": "center",
-                        "layer": "vector",
-                        "minScale": 25000
-                    },
-                    "layers": [{
-                        "type": "gml",
-                        "name": "vector",
-                        "style": {
-                            "version": "2",
-                            "[1 > 0]": {
-                                "fillColor": "red",
-                                "fillOpacity": 0.2,
-                                "symbolizers": [{
-                                    "strokeColor": "red",
-                                    "strokeWidth": 1,
-                                    "type": "point",
-                                    "pointRadius": 10
-                                }]
-                            }
-                        },
-                        "opacity": 1,
-                        "url": "%(vector_request_url)s"
-                    }, {
-                        "baseURL": "%(mapserv_url)s",
-                        "opacity": 1,
-                        "type": "WMS",
-                        "serverType": "mapserver",
-                        "layers": ["%(backgroundlayers)s"],
-                        "imageFormat": "%(imageformat)s"
-                    }]
-                }
-        spec = dumps(spec_template) % {
-            "layername": self.layername, "id": id, "srs": srs,
-            "mapserv_url": mapserv_url,
-            "vector_request_url": vector_request_url,
-            "imageformat": imageformat,
-            "backgroundlayers": backgroundlayers
-        }
+            map_config = self.layer_config.get("map")
+            if map_config is not None:
+                spec["attributes"]["map"] = self._build_map(
+                    mapserv_url, vector_request_url, srs, map_config
+                )
 
-        return self._do_print(loads(spec))
+            maps_config = self.layer_config.get("maps")
+            if maps_config is not None:
+                spec["attributes"]["maps"] = []
+                for map_config in maps_config:
+                    spec["attributes"]["maps"].append(self._build_map(
+                        mapserv_url, vector_request_url, srs, map_config
+                    ))
+        else:
+            spec = loads(dumps(spec) % {
+                "layername": self.layername,
+                "id": id,
+                "srs": srs,
+                "mapserv_url": mapserv_url,
+                "vector_request_url": vector_request_url,
+            })
+
+        return self._do_print(spec)
