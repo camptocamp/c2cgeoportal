@@ -89,11 +89,25 @@ Version 1.6.3
         - mapserver_substitution
 
 9. In the Mapfish print v3 configuration do the following change ([htps] => https?):
-    httpProcessors:
-    - !mapUri
-        mapping:
-   -        ([htps])://${host}/(.*): "$1://127.0.0.1/$2"
-   +        (https?)://${host}/(.*): "$1://127.0.0.1/$2"
+
+    - !configureHttpRequests
+        httpProcessors:
+        - !mapUri
+            mapping:
+   -            ([htps])://${host}/(.*): "$1://127.0.0.1/$2"
+   +            (https?)://${host}/(.*): "$1://127.0.0.1/$2"
+
+10. In the Mapfish print v3 configuration do the following change:
+
+    - !configureHttpRequests
+        httpProcessors:
+        ...
+        - !forwardHeaders
+            headers:
+            - Cookie
+            - Host
+   -        - Referrer
+   +        - Referer
 
 
 Version 1.6.2
