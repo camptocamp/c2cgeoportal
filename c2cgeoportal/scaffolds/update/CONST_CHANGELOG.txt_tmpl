@@ -87,6 +87,12 @@ Version 1.6.3
         - default_basemap
         - print_template
         - mapserver_substitution
+9. In the `{{package}}/tempates/viewer.js` file in the `cgxp_print` plugin
+   remove the following lines if you use Mapfish Print v3:
+
+   - encodeLayer: {},
+   - encodeExternalLayer: {},
+   - additionalAttributes: [],
 
 
 Version 1.6.2
