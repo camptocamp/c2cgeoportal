@@ -311,8 +311,8 @@ help:
 	@echo
 	@echo "Utility targets:"
 	@echo
-	@echo  "- update		Update the project (Git, Node, Pip)"
-	@echo  "- update-git-submodules	Update the Git submodules"
+	@echo  "- update		Update and clean the project (Git, Node, Pip)"
+	@echo  "- update-git-submodules	Update and clean the Git submodules"
 	@echo  "- update-node-modules	Update node modules (using --force)"
 	@echo  "- upgrade		Launch the upgrade process"
 ifdef UTILITY_HELP
@@ -564,10 +564,13 @@ $(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
 .PHONY: update
 update:
 	git pull --rebase $(GIT_REMOTE) $(GIT_BRANCH)
+	git clean -fd
 	git submodule sync
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
+	git submodule foreach git clean -fd
+	git submodule foreach git submodule foreach git clean -fd
 ifeq ($(NGEO), TRUE)
 	npm install --force
 	touch .build/node_modules.timestamp
@@ -579,6 +582,8 @@ update-git-submodules:
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
+	git submodule foreach git clean -fd
+	git submodule foreach git submodule foreach git clean -fd
 
 $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD
 	if [ -e $@ ]; then touch $@; else git submodule foreach git submodule update --init; fi
