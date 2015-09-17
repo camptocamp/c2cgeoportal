@@ -39,7 +39,7 @@ templates:
             httpProcessors:
             - !mapUri
                 mapping:
-                    ([htps])://${host}/(.*): "$1://127.0.0.1/$2"
+                    (https?)://${host}/(.*): "$1://127.0.0.1/$2"
             - !useHttpForHttps
                 hosts:
                 - ${host}
