@@ -406,6 +406,51 @@ Once restored, set the original names back:
       ALTER TABLE <schema_name>.layer ADD CONSTRAINT <schema_name>.layer_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
       ALTER TABLE <schema_name>.layer DROP CONSTRAINT <schema_name>.layertmp_id_fkey;
 
+Edition
++++++++
+
+If you migrate editable tables, you need to modify the geometry data types to
+match Postgis 2 new Typmod.
+
+Example for a layer with ``Point`` geometries and a 21781 projection:
+
+   .. code:: sql
+
+      ALTER TABLE my_table ALTER COLUMN geom SET DATA TYPE geometry(Point, 21781);
+
+To help doing it on several tables at once, here is a function and an example
+of usage:
+
+   .. code:: sql
+
+      CREATE OR REPLACE FUNCTION migrategeomtopostgis2(_tablename text, _geomcolumn text, _geomtype text, _srid int) RETURNS void AS $$
+      DECLARE
+      _cleangeomtype text;
+      BEGIN
+      _cleangeomtype := initcap(lower(_geomtype));
+      EXECUTE ' ALTER TABLE ' || _tablename || ' ALTER COLUMN ' || _geomcolumn || ' SET DATA TYPE geometry(' || _cleangeomtype || ', ' || _srid || ')';
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_dims_geom ';
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_geotype_geom ';
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_srid_geom ';
+      END
+      $$
+      LANGUAGE PLPGSQL;
+
+      select migrategeomtopostgis2(f_table_schema || '.' || f_table_name, f_geometry_column, type, srid) from geometry_columns where f_table_schema IN ('schema1','schema2','schema3');
+
+Where ``schemaX`` are the names of the schemas where the tables you want to
+convert are.
+
+You need to create the ``migrategeomtopostgis2`` function first (simply copy
+and input the function definition above in your terminal), then execute the
+``select`` (adapted to your need).
+
+If the following constraints dont exist, ``enforce_dims_geom``,
+``enforce_geotype_geom`` or ``enforce_srid_geom``, the query will output some
+``NOTICE``, which may mean you have used other names for your constraints, so you
+should have a look at the corresponding tables and remove the constraints
+manually.
+
 
 Test and commit
 ---------------
