@@ -754,6 +754,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 .build/apache.timestamp: \
 		.build/config-$(INSTANCE_ID).timestamp \
 		$(CONF_FILES) \
+		apache/application.wsgi \
 		$(PY_FILES) \
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
