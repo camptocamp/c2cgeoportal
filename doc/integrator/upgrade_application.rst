@@ -376,10 +376,10 @@ First rename all the conflicting items:
 
    .. code:: sql
 
-      ALTER INDEX <schema_name>.layer_pkey RENAME TO <schema_name>.layertmp_pkey;
-      ALTER TABLE <schema_name>.layer ADD CONSTRAINT <schema_name>.layertmp_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
-      ALTER TABLE <schema_name>.layer DROP CONSTRAINT <schema_name>.layer_id_fkey;
-      ALTER TABLE <schema_name>.layer RENAME TO <schema_name>.layertmp;
+      ALTER INDEX <schema_name>.layer_pkey RENAME TO layertmp_pkey;
+      ALTER TABLE <schema_name>.layer ADD CONSTRAINT layertmp_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
+      ALTER TABLE <schema_name>.layer DROP CONSTRAINT layer_id_fkey;
+      ALTER TABLE <schema_name>.layer RENAME TO layertmp;
 
 .. note::
   We can't rename a foreign key, we have to create a new one before removing the
