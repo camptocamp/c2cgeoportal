@@ -115,6 +115,22 @@ Version 1.6.3
    -        - Referrer
    +        - Referer
 
+11. In the `apache/application.wsgi.mako` add the following lines:
+
+     import site
+    +import sys
+    +import re
+
+     site.addsitedir("${python_path}")
+
+    +# Remove site packages
+    +regex = re.compile("^/usr/lib/python.\../dist-packages$")
+    +sys.path = [p for p in sys.path if regex.match(p) is None]
+    +
+     from pyramid.paster import get_app, setup_logging
+
+     configfile = "${directory}/${'development' if development == 'TRUE' else 'production'}.ini"
+
 
 Version 1.6.2
 =============
