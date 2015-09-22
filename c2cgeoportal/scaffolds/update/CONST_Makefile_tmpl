@@ -348,8 +348,8 @@ clean: template-clean
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
-	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: cleanall
@@ -699,6 +699,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+# If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
@@ -712,10 +713,12 @@ endif
 ifneq ($(TOMCAT_STOP_COMMAND),)
 	$(TOMCAT_STOP_COMMAND)
 endif
-	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+# If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
-	mv $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) cp $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	rm -f $(PRINT_TMP)/$(PRINT_WAR)
 else
 	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
 	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
