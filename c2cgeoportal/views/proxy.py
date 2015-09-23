@@ -82,10 +82,12 @@ class Proxy:
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
+
         if headers is None:  # pragma: nocover
             headers = dict(self.request.headers)
-            if parsed_url.hostname != "localhost":
-                headers.pop("Host")
+
+        if parsed_url.hostname != "localhost":  # pragma: nocover
+            headers.pop("Host")
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
