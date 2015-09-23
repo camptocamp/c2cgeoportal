@@ -944,6 +944,7 @@ class Entry(object):
         vars.update({
             "lang": self.lang,
             "debug": self.debug,
+            "user": self.request.user,
             "functionality": self._functionality(),
             "queryer_attribute_urls": self._get_layers_enum(),
         })
