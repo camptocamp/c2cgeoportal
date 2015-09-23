@@ -574,6 +574,9 @@ def includeme(config):
     config.add_route("shortener_create", "/short/create", request_method="POST")
     config.add_route("shortener_get", "/short/{ref}", request_method="GET")
 
+    # Geometry processing
+    config.add_route("difference", "/difference", request_method="POST")
+
     # PDF report tool
     config.add_route("pdfreport", "/pdfreport/{layername}/{id}", request_method="GET")
 
