@@ -1,10 +1,17 @@
+## -*- coding: utf-8 -*-
+<%
+   settings = request.registry.settings
+   node_modules_path = settings.get('node_modules_path')
+   closure_library_path = settings.get('closure_library_path')
+%>\
 <!DOCTYPE html>
 <html lang="\{\{mainCtrl.lang\}\}" ng-app="app" ng-controller="MainController as mainCtrl">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 % if debug:
-    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.css')}" type="text/css">
+    <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/{{package}}.less')}" type="text/css">
+    <script src="${request.static_url('%s/less/dist/less.min.js' % node_modules_path)}"></script>
 % else:
     <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.min.css')}" type="text/css">
 % endif
