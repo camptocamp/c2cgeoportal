@@ -104,7 +104,7 @@ class Proxy:
                 )
         except Exception as e:  # pragma: nocover
             log.error(
-                "Error '%s' while getting the URL:\n%s\nMethode: %s." %
+                "Error '%s' while getting the URL:\n%s\nMethod: %s." %
                 (sys.exc_info()[0], url, method)
             )
 
