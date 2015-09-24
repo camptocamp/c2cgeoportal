@@ -7,21 +7,14 @@
 
 DATABASES=$@
 
-## Uncomment the following lines if you want to vacuum the databases after the
-## restore. In most cases this is not needed because we are working with
-## read-only databases.
+# Apache must be stopped to prevent database connection during
+# databases / tables restore.
+sudo apache2ctl stop
 
-# for b in $DATABASES
-# do
-#   psql -c "VACUUM ANALYZE;" $b
-# done
 
 # The following line works only with Postgres 9.3 and upper.
 # otherwise the schema should be create manually
-# psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
-
-# The workaround is to ignore the error
-psql -c 'CREATE SCHEMA ${schema}_static;' ${db} 2> /dev/null || true
+psql -c 'CREATE SCHEMA IF NOT EXISTS ${schema}_static;' ${db}
 
 psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
     id serial PRIMARY KEY,
