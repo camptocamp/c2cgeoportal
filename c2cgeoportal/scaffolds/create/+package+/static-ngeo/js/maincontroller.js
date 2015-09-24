@@ -8,6 +8,7 @@
  */
 goog.provide('app.MainController');
 
+goog.require('app');
 goog.require('ol.Map');
 goog.require('ol.View');
 goog.require('ol.layer.Tile');
