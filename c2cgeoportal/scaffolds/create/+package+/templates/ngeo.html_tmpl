@@ -20,6 +20,23 @@
   <body>
     <gmf-map gmf-map-map="mainCtrl.map"></gmf-map>
 
+% if debug:
+    <script>
+      window.CLOSURE_BASE_PATH = '';
+      window.CLOSURE_NO_DEPS = true;
+    </script>
+    <script src="${request.static_url('%s/jquery/dist/jquery.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/angular/angular.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/angular-gettext/dist/angular-gettext.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/bootstrap/dist/js/bootstrap.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/proj4/dist/proj4-src.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/d3/d3.min.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
+    <script src="${request.route_url('deps.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/js/main.js')}"></script>
+% else:
     <script src="${request.static_url('{{package}}:static-ngeo/build/build.js')}"></script>
+% endif
   </body>
 </html>
