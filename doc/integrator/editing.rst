@@ -34,3 +34,16 @@ Limitations
 -----------
 
 At the moment only fields of type ``datetime`` and ``date`` are supported. ``time`` is NOT supported.
+
+Validation
+----------
+
+Checking the validity of a geometry may be enabled using the following
+configuration in ``vars_<project>.yaml``:
+
+.. code:: yaml
+
+   vars:
+       ...
+       layers:
+           geometry_validation: True
