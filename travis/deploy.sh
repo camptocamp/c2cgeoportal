@@ -1,12 +1,14 @@
 #!/bin/bash -e
 
 DEPLOY=false
+DOC=false
 FINAL=false
 BUILD_TAG=false # for rc
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
     DEPLOY=true
+    DOC=true
 fi
 
 if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]]
@@ -34,44 +36,35 @@ fi
 
 if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
 then
-    echo "[distutils]" > ~/.pypirc
-    echo "index-servers = c2c-internal" >> ~/.pypirc
-    echo "[c2c-internal]" >> ~/.pypirc
-    echo "username:${PIP_USERNAME}" >> ~/.pypirc
-    echo "password:${PIP_PASSWORD}" >> ~/.pypirc
-    echo "repository:http://pypi.camptocamp.net/internal-pypi/simple" >> ~/.pypirc
-
     set -x
 
     if [ ${BUILD_TAG} != false ]
     then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" bdist_wheel
     else
     if [ ${FINAL} == true ]
         then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
+            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel
         else
-            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
+            .build/venv/bin/python setup.py bdist_wheel
         fi
     fi
 
-    cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
-    tar -czf touch.tar.gz touch
-    cd -
-    echo "include c2cgeoportal/scaffolds/update/+package+/static/mobile/touch.tar.gz" >> MANIFEST.in
-    echo "prune c2cgeoportal/scaffolds/update/+package+/static/mobile/touch" >> MANIFEST.in
-    sed -i 's/name="c2cgeoportal",/name="c2cgeoportal-win",/g' setup.py
-    git diff
-
-    if [ ${BUILD_TAG} != false ]
-    then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
-    else
-        if [ ${FINAL} == true ]
-        then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel upload -r c2c-internal
-        else
-            .build/venv/bin/python setup.py bdist_wheel upload -r c2c-internal
-        fi
-    fi
+    git checkout gh-pages
+    mv dist/*.whl .
+    pip install magnum-pi
+    makeindex .
+    git add *.whl
+    git add index
+    git commit -m "Deploy the revision ${TRAVIS_COMMIT}"
 fi
+if [ ${DOC} == true ]
+then
+    git checkout gh-pages
+    mkdir ${TRAVIS_BRANCH}
+    mv doc/_build/html/* ${TRAVIS_BRANCH}
+    git add ${TRAVIS_BRANCH}
+    git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
+fi
+
+git push origin gh-pages

@@ -18,6 +18,7 @@ Version 2.0.0
 2. Remove the no longer used files:
 
     git rm -r lingua.cfg
+    git rm -r CONST_requirements_windows.txt
 
 3. In the `vars_{{package}}.yaml` file:
 

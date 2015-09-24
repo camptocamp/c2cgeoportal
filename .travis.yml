@@ -11,6 +11,7 @@ env:
   - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
 
 before_install:
+- openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get remove -y --force-yes python-zope.interface
 - sudo apt-get install -y --force-yes aptitude
@@ -71,10 +72,8 @@ script:
 - travis/status.sh
 # verify c2cgeoportal version
 - if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
 
 after_failure:

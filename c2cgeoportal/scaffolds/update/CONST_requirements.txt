@@ -1,5 +1,5 @@
 --index-url http://pypi.camptocamp.net/pypi
---find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+--find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 -r CONST_versions.txt
 psycopg2==2.6.1
 Shapely==1.5.6

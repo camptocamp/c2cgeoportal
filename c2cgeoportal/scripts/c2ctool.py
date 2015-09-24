@@ -204,7 +204,6 @@ class C2cTool:
         self.venv_bin = ".build/venv/bin"
         if self.options.windows:
             self.options.clean = "clean"
-            self.package = "c2cgeoportal-win"
             self.venv_bin = ".build/venv/Scripts"
 
         if self.options.step == 0:
