@@ -154,7 +154,7 @@ Ext.define("App.view.Main", {
      * mapContainer - {<DOMElement>}
      */
     addQueryControls: function(mapContainer) {
-        if (App.queryMode == 'click') {
+        if (["click", "both"].indexOf(App.queryMode) !== -1) {
             var self = this;
             OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
                 autoActivate: true,
@@ -170,6 +170,7 @@ Ext.define("App.view.Main", {
                             }
                         },
                         {
+                            pixelTolerance: 5,
                             'single': true
                         }
                     );
@@ -177,7 +178,8 @@ Ext.define("App.view.Main", {
             });
 
             this.getMap().addControl(new OpenLayers.Control.Click({}));
-        } else {
+        }
+        if (["longpress", "both"].indexOf(App.queryMode) !== -1) {
             mapContainer.on('longpress', function(event, node) {
                 var map = this.getMap();
                 var el = Ext.get(map.div);

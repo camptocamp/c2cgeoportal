@@ -22,7 +22,7 @@ try {
 
     App.WFSTypes = jsonFormat.read('${dumps(wfs_types) | n}');
 
-    // Query mode. Can be either 'click' or 'longpress'
+    // Query mode. Can be either "click", "longpress", "both" or "none"
     App.queryMode = 'longpress';
 
     App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
