@@ -52,7 +52,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
         try:
             messages = loads(message_str)
             return [Message(
-                None, message, None, [], u"", u"", (context, 1)
+                None, message, None, [], u"", u"", context.split(":")
             ) for context, message in messages]
         except:
             print("An error occurred")
