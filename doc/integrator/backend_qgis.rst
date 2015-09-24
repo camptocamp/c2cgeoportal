@@ -3,8 +3,8 @@
 Specific configuration for QGIS mapserver
 =========================================
 
-WFS namespace
--------------
+Viewer configuration
+--------------------
 
 In the ``<package>/templates/viewer.js`` file, define the url of the WFS service
 which will be used to get the namespace required to parse the WFS response,
@@ -17,6 +17,14 @@ Change the DPI value to use the same as in the server::
 
     - OpenLayers.DOTS_PER_INCH = 92;
     + OpenLayers.DOTS_PER_INCH = 2.54 / 100 / 0.00028;
+
+In the ``cgxp_print`` plugin add the following configuration:
+
+.. code:: javascript
+
+   encodeLayer: { useNativeAngle: true, serverType: 'qgis' }
+   encodeExternalLayer: { useNativeAngle: true, serverType: 'qgis' }
+
 
 Apache configuration
 --------------------
