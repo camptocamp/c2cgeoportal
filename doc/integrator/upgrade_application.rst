@@ -401,10 +401,10 @@ Once restored, set the original names back:
 
    .. code:: sql
 
-      ALTER TABLE <schema_name>.layertmp RENAME TO <schema_name>.layer;
-      ALTER INDEX <schema_name>.layertmp_pkey RENAME TO <schema_name>.layer_pkey;
-      ALTER TABLE <schema_name>.layer ADD CONSTRAINT <schema_name>.layer_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
-      ALTER TABLE <schema_name>.layer DROP CONSTRAINT <schema_name>.layertmp_id_fkey;
+      ALTER TABLE <schema_name>.layertmp RENAME TO layer;
+      ALTER INDEX <schema_name>.layertmp_pkey RENAME TO layer_pkey;
+      ALTER TABLE <schema_name>.layer ADD CONSTRAINT layer_id_fkey FOREIGN KEY (id) REFERENCES <schema_name>.treeitem(id);
+      ALTER TABLE <schema_name>.layer DROP CONSTRAINT layertmp_id_fkey;
 
 Edition
 +++++++
