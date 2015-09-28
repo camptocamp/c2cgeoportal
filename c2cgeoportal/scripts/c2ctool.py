@@ -184,7 +184,6 @@ class C2cTool:
         ))
 
     def get_project(self):
-        check_call(["make", "-f", self.options.file, "project.yaml"])
         if not path.isfile("project.yaml"):
             print("Unable to find the required 'project.yaml' file.")
             exit(1)
