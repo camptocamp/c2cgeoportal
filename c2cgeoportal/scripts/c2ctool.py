@@ -375,8 +375,6 @@ class C2cTool:
 
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
-        if path.exists("/tmp/%s" % self.project["project_folder"]):
-            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
 
         check_call(["make", "-f", self.options.file, "build"])
 
@@ -402,7 +400,10 @@ class C2cTool:
             self.print_step(3, intro="Correct them, then type:")
             exit(1)
 
-        # Required to remove from the Git stage the ignored file when we launch the step again
+        if path.exists("/tmp/%s" % self.project["project_folder"]):
+            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
+
+        # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
         check_call(["git", "add", "-A"])
