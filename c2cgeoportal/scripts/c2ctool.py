@@ -60,9 +60,9 @@ MAGENTA = 5
 CYAN = 6
 WHITE = 7
 
-DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+DEFAULT_INDEX_URL = "https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
-    "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+    "https://camptocamp.github.io/c2cgeoportal/%\(package\)-%\(version\)-py2.py3-none-any.whl"
 
 
 def _colorize(text, color):
@@ -177,8 +177,7 @@ class C2cTool:
 
     def print_step(self, step, intro="To continue type:"):
         print(intro)
-        print(_colorize("VERSION=%s make -f %s upgrade%i", YELLOW) % (
-            self.options.version,
+        print(_colorize("make -f %s upgrade%i", YELLOW) % (
             self.options.file if self.options.file is not None else "<user.mk>",
             step
         ))
