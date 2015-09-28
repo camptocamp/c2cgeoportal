@@ -35,6 +35,7 @@
     <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
     <script src="${request.route_url('deps.js')}"></script>
     <script src="${request.static_url('{{package}}:static-ngeo/js/main.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/build/templatecache.js')}"></script>
 % else:
     <script src="${request.static_url('{{package}}:static-ngeo/build/build.js')}"></script>
 % endif
