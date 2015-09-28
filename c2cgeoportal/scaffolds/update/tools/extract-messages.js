@@ -24,9 +24,8 @@ function main(inputs) {
       for (var msgstr in extractor.strings) {
         var msg = extractor.strings[msgstr];
         var contexts = Object.keys(msg).sort();
-        for (var context in contexts) {
-            messages.push([context, msgstr])
-        }
+        var ref = msg[contexts]['references'].join(', ')
+        messages.push([ref, msgstr])
       }
 
       process.stdout.write(JSON.stringify(messages));
