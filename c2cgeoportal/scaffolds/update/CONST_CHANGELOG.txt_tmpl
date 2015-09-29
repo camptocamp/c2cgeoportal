@@ -131,6 +131,18 @@ Version 1.6.3
 
      configfile = "${directory}/${'development' if development == 'TRUE' else 'production'}.ini"
 
+12. On deploy the post-restore-code will be moved to pre-restore-code and deeply modified.
+    If you did not modify it you can just copy the new version with the following:
+
+    mv deploy/hooks/post-restore-code deploy/hooks/pre-restore-code
+    cp /tmp/{{project}}/deploy/hooks/pre-restore-code deploy/hooks
+    chmod +x deploy/hooks/pre-restore-code
+
+    and the `.gitignore` file should also be adapted:
+
+    - /deploy/hooks/post-restore-database
+    + /deploy/hooks/pre-restore-database
+
 
 Version 1.6.2
 =============
