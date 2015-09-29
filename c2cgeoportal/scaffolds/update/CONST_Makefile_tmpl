@@ -774,20 +774,20 @@ UPGRADE_ARGS ?=
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION}
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1
 upgrade1: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
 upgrade2: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 2
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
 upgrade3: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 3
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 3
 
 .PHONY: upgrade4
 upgrade4: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 4
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
