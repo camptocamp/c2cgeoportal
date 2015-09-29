@@ -188,3 +188,21 @@ Push your changes:
 
    When you push a tag with the pattern `^[0-9].[0-9]+.[0-9]$` a new release
    will automatically be created on Travis CI.
+
+Post release tasks
+------------------
+
+When a new release or a new version is done you should do the following tasks:
+
+ * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
+   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+ * Upgrade the demo in your home folder with ``c2ctool``.
+ * Update the demo on the main folder with:
+
+   .. prompt: bash
+
+      sudo -u sigdev make -f demo.mk update
+      sudo -u sigdev make -f demo.mk build
+
+ * Test the demo.
+ * Sent a release email to the ``geomapfish@googlegroups.com`` and ``geospatial@lists.camptocamp.com`` mailing lists.
