@@ -189,15 +189,15 @@ either expressed or implied, of the FreeBSD Project.
         };
 
         change("url", fields);
-        change("imageType", fields);
+        change("image_type", fields);
         change("style", fields);
         change("dimensions", fields);
-        change("matrixSet", fields);
-        change("wmsUrl", fields);
-        change("wmsLayers", fields);
-        change("queryLayers", fields);
-        change("isSingleTile", fields);
-        change("legendRule", fields);
+        change("matrix_set", fields);
+        change("wms_url", fields);
+        change("wms_layers", fields);
+        change("query_layers", fields);
+        change("is_single_tile", fields);
+        change("legend_rule", fields);
 
         enablePrivateOption = state == "internal WMS" || state == "WMTS"
         var e = $.fn.adminapp.findField("public",  [el.id]);
@@ -281,7 +281,7 @@ $(document).ready(function(){
     }
 
     // attach event on Layer.public to show/hide restrictionareas
-    var lt = $.fn.adminapp.findSelect('layerType');
+    var lt = $.fn.adminapp.findSelect('layer_type');
     //Select('layerType');
     if (lt.length > 0) {
         // restrictionareas
@@ -314,8 +314,8 @@ $(document).ready(function(){
         }
     }
 
-    var wmsi = $.fn.adminapp.findField('isInternalWMS')
-    var bl = $.fn.adminapp.findField('isBaseLayer')
+    var wmsi = $.fn.adminapp.findField('is_internal_wms')
+    var bl = $.fn.adminapp.findField('is_base_layer')
     if (wmsi.length > 0 && bl.length > 0) {
         $.fn.adminapp.bindEventOnLayerGroup(wmsi, bl);
         // init state

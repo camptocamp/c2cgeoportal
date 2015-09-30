@@ -238,26 +238,32 @@ on RedHat Enterprise Linux (RHEL) 6.
     is the name of the Apache virtual host, and ``<username>`` is your Unix
     login name.
 
-vars_<project>.xaml
+vars_<project>.yaml
 ^^^^^^^^^^^^^^^^^^^
 
 By default, ``mod_wsgi`` processes are executed under the ``www-data`` Unix
 user, which is the Apache user. In RHEL 6, there's no user ``www-data``, and
-the Apache user is ``apache``. To accomodate that edit ``vars_<project>.yaml`` and
-set ``modwsgi_user`` to ``apache`` in the ``[vars]`` section::
+the Apache user is ``apache``. ``vars_<project>.yaml`` Should then
+set ``modwsgi_user`` to ``apache`` in the ``vars:`` section::
 
     vars:
         ...
         modwsgi_user: apache
 
+<project>.mk
+~~~~~~~~~~~~
 
-Also, by default, the path to Tomcat's ``webapps`` directory is
-``/srv/tomcat/tomcat1/webapps``. On RHEL 6, Tomcat is located in
-``/var/lib/tomcat6/``. To accomodate that the ``output`` path of the
-``[print-war]`` part should be changed::
+Configure some ``<package>.mk`` RedHat specifics::
 
-    [print-war]
-    output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${instanceid}.war
+    # Service base command for Tomcat on RedHat
+    TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
+    # Command prefix to acces to the webapp folder
+    TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
+    # Graceful command for RedHat
+    APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
+    # Test packages are designed for Debian. They must be disabled by adding the following
+    # line to ``<package>.mk``::
+    DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
 
 apache/mapserver.conf.mako
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -268,13 +274,6 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 
     ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
 
-apache2ctl
-~~~~~~~~~~
-
-On RedHat the command hasn't the '2'!
-Then in your ``<package>.mk`` add::
-
-    APACHE_GRACEFUL = /usr/sbin/apachectl graceful
 
 .. _integrator_install_application_install_application:
 

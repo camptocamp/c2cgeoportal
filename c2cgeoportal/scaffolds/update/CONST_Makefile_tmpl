@@ -302,6 +302,8 @@ ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
+# Disabling Make built-in rules to speed up execution time
+.SUFFIXES:
 
 .PHONY: help
 help:
@@ -317,8 +319,8 @@ help:
 	@echo
 	@echo "Utility targets:"
 	@echo
-	@echo  "- update		Update the project (Git, Node, Pip)"
-	@echo  "- update-git-submodules	Update the Git submodules"
+	@echo  "- update		Update and clean the project (Git, Node, Pip)"
+	@echo  "- update-git-submodules	Update and clean the Git submodules"
 	@echo  "- update-node-modules	Update node modules (using --force)"
 	@echo  "- upgrade		Launch the upgrade process"
 ifdef UTILITY_HELP
@@ -355,8 +357,8 @@ clean: template-clean
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
-	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: cleanall
@@ -571,10 +573,13 @@ $(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
 .PHONY: update
 update:
 	git pull --rebase $(GIT_REMOTE) $(GIT_BRANCH)
+	git clean -fd
 	git submodule sync
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
+	git submodule foreach git clean -fd
+	git submodule foreach git submodule foreach git clean -fd
 ifeq ($(NGEO), TRUE)
 	npm install --force
 	touch .build/node_modules.timestamp
@@ -586,6 +591,8 @@ update-git-submodules:
 	git submodule update
 	git submodule foreach git submodule sync
 	git submodule foreach git submodule update --init
+	git submodule foreach git clean -fd
+	git submodule foreach git submodule foreach git clean -fd
 
 $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/%/HEAD: $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD
 	if [ -e $@ ]; then touch $@; else git submodule foreach git submodule update --init; fi
@@ -709,6 +716,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+# If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
@@ -722,10 +730,12 @@ endif
 ifneq ($(TOMCAT_STOP_COMMAND),)
 	$(TOMCAT_STOP_COMMAND)
 endif
-	rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+# If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
-	mv $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) cp $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	rm -f $(PRINT_TMP)/$(PRINT_WAR)
 else
 	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
 	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
@@ -764,11 +774,13 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 .build/apache.timestamp: \
 		.build/config-$(INSTANCE_ID).timestamp \
 		$(CONF_FILES) \
+		apache/application.wsgi \
 		$(PY_FILES) \
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 		.build/requirements.timestamp \
-		$(PRINT_OUTPUT)/$(PRINT_WAR)
+		$(PRINT_OUTPUT)/$(PRINT_WAR) \
+		development.ini production.ini
 	$(APACHE_GRACEFUL)
 	touch $@
 
@@ -777,20 +789,20 @@ UPGRADE_ARGS ?=
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION}
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1
 upgrade1: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
 upgrade2: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 2
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
 upgrade3: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 3
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 3
 
 .PHONY: upgrade4
 upgrade4: .build/requirements.timestamp project.yaml
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${VERSION} --step 4
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
