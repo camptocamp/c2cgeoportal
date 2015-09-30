@@ -21,7 +21,7 @@
 /print/print-apps/{{package}}/config.yaml
 /mapserver/c2cgeoportal.map
 /mapserver/tinyows.xml
-/deploy/hooks/post-restore-database
+/deploy/hooks/pre-restore-database
 /{{package}}/static/build/
 /{{package}}/static-ngeo/build/
 /{{package}}/locale/*/LC_MESSAGES/*.mo

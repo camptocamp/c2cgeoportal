@@ -40,10 +40,7 @@ Version 1.6.3
 1. To use the MapFish print v3 protocol from the CGXP client add the following config
    lines in the `cgxp_print` plugin in the `{{package}}/templates/viewer.js` file:
 
-    + version: 3,
-    + encodeLayer: {},
-    + encodeExternalLayer: {},
-    + additionalAttributes: [],
+    + version: 3
 
 2. To still use Mapfish Print v2 you should:
 
@@ -111,8 +108,68 @@ Version 1.6.3
 
 7. Remove the `lang_files` from the `vars/checker` in the file `vars_{{package}}.yaml`.
 
-8. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
-   See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
+8. If in your `vars_{{package}}.yaml` file you have the following `available_functionalities` they can be removed
+   because they are the default settings:
+
+        # The list of functionalities that can be configured
+        # through the admin interface.
+        available_functionalities:
+        - default_basemap
+        - print_template
+        - mapserver_substitution
+
+9. In the Mapfish print v3 configuration do the following change ([htps] => https?):
+
+    - !configureHttpRequests
+        httpProcessors:
+        - !mapUri
+            mapping:
+   -            ([htps])://${host}/(.*): "$1://127.0.0.1/$2"
+   +            (https?)://${host}/(.*): "$1://127.0.0.1/$2"
+
+10. In the Mapfish print v3 configuration do the following change:
+
+    - !configureHttpRequests
+        httpProcessors:
+        ...
+        - !forwardHeaders
+            headers:
+            - Cookie
+            - Host
+   -        - Referrer
+   +        - Referer
+
+11. In the `apache/application.wsgi.mako` add the following lines:
+
+     import site
+    +import sys
+    +import re
+
+     site.addsitedir("${python_path}")
+
+    +# Remove site packages
+    +regex = re.compile("^/usr/lib/python.\../dist-packages$")
+    +sys.path = [p for p in sys.path if regex.match(p) is None]
+    +
+     from pyramid.paster import get_app, setup_logging
+
+     configfile = "${directory}/${'development' if development == 'TRUE' else 'production'}.ini"
+
+12. On deploy the post-restore-code will be moved to pre-restore-code and deeply modified.
+    If you did not modify it you can just copy the new version with the following:
+
+    mv deploy/hooks/post-restore-code deploy/hooks/pre-restore-code
+    cp /tmp/{{project}}/deploy/hooks/pre-restore-code deploy/hooks
+    chmod +x deploy/hooks/pre-restore-code
+
+    and the `.gitignore` file should also be adapted:
+
+    - /deploy/hooks/post-restore-database
+    + /deploy/hooks/pre-restore-database
+
+
+11. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
+    See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
 
 
 Version 1.6.2

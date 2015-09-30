@@ -82,10 +82,12 @@ class Proxy:
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
+
         if headers is None:  # pragma: nocover
             headers = dict(self.request.headers)
-            if parsed_url.hostname != "localhost":
-                headers.pop("Host")
+
+        if parsed_url.hostname != "localhost":  # pragma: nocover
+            headers.pop("Host")
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
@@ -104,7 +106,7 @@ class Proxy:
                 )
         except Exception as e:  # pragma: nocover
             log.error(
-                "Error '%s' while getting the URL:\n%s\nMethode: %s." %
+                "Error '%s' while getting the URL:\n%s\nMethod: %s." %
                 (sys.exc_info()[0], url, method)
             )
 
@@ -124,7 +126,7 @@ class Proxy:
                 else:
                     log.error(body)
 
-            raise HTTPBadGateway("See logs for detail")
+            raise HTTPBadGateway("Error on backend<hr>%s<hr>See logs for detail" % content)
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
             log.error(

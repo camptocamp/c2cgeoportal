@@ -61,7 +61,7 @@ install_requires = [
     # The version 1.10.3 have an issue with the 'jump to' combobox of the
     # admin interface
     "js.jqueryui==1.8.24",
-    "FormAlchemy<=1.5",
+    "FormAlchemy",
     "GeoFormAlchemy2>=2.0.dev2",
     "OWSLib>=0.6.0",
     "dogpile.cache",

@@ -126,6 +126,17 @@ def _fill_arguments(command):
         help="Specify the remote branch",
         default="origin",
     )
+    parser.add_argument(
+        "--index-url",
+        help="An alternate camptocamp python package index URL",
+        default="http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+    )
+    parser.add_argument(
+        "--c2cgeoportal-url",
+        help="An alternate c2cgeoportal egg/wheel URL (with arguments %(package) %(version)s)",
+        default="http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+    )
+
     if command == "help":
         parser.add_argument(
             "command", metavar="COMMAND", help="The command"
@@ -237,9 +248,10 @@ class C2cTool:
                 exit(1)
 
             headers, _ = http.request(
-                "http://pypi.camptocamp.net/internal-pypi/index/%s-%s.tar.gz" % (
-                    self.package, self.options.version
-                )
+                self.options.c2cgeoportal_url % {
+                    "package": self.package,
+                    "version": self.options.version
+                }
             )
             if headers.status != 200:
                 print("This %s egg does not exist." % self.package)
@@ -316,7 +328,7 @@ class C2cTool:
             pip_cmd = [
                 "%s/pip" % self.venv_bin, "install",
                 "--trusted-host", "pypi.camptocamp.net",
-                "--find-links", "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal",
+                "--find-links", self.options.index_url,
             ]
             if self.options.version == "master":
                 check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", self.package])
