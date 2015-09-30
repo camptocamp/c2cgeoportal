@@ -172,16 +172,21 @@ class C2cTool:
     color_bar = _colorize("================================================================", GREEN)
 
     def print_step(self, step, intro="To continue type:"):
+        index_url = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
         print(intro)
-        print(_colorize("%s upgrade %s%s%s %s --step %i", YELLOW) % (
+        print(_colorize("%s upgrade %s%s %s --step %i", YELLOW) % (
             "%s/c2ctool" % self.venv_bin,
-            "--windows " if self.options.windows else "",
-            "--git-remote " + self.options.git_remote + " "
-            if self.options.git_remote != "origin" else "",
-            "--index-url " + self.options.index_url + " "
-            if self.options.index_url != "origin" else "",
-            "--c2cgeoportal-url " + self.options.c2cgeoportal_url + " "
-            if self.options.c2cgeoportal_url != "origin" else "",
+
+            "".join([
+                "--windows " if self.options.windows else "",
+                "--git-remote " + self.options.git_remote + " "
+                if self.options.git_remote != "origin" else "",
+                "--index-url " + self.options.index_url + " "
+                if self.options.index_url != index_url else "",
+                "--c2cgeoportal-url " + self.options.c2cgeoportal_url + " "
+                if self.options.c2cgeoportal_url != index_url else "",
+            ]),
+
             self.options.file if self.options.file is not None else "<user.mk>",
             self.options.version, step
         ))
