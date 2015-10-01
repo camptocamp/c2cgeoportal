@@ -27,12 +27,22 @@ Located in ``/var/www/vhost/<project_vhost>/private/<project>``.
 
 Only user ``sigdev`` may access this environment.  Developers must then prefix
 all the commands on this environment by ``sudo -u sigdev``.
+
+To be able to access to GitHub you should use the https protocol.
+
 For instance to update the application:
 
 .. prompt:: bash
 
     sudo -u sigdev make -f demo.mk update
     sudo -u sigdev make -f demo.mk build
+
+.. note::
+
+   If you need to access to GitHub by using the ssh protocol you
+   should add the sigdev key located in ``/var/sig/.ssh/id_rsa.pub``
+   as a deploy key of your project.
+
 
 Production environment
 ~~~~~~~~~~~~~~~~~~~~~~
