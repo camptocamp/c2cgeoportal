@@ -399,7 +399,7 @@ class C2cTool:
             self.print_step(3, intro="Correct them, then type:")
             exit(1)
 
-        # Required to remove from the Git stage the ignored file when we lunch the step again
+        # Required to remove from the Git stage the ignored file when we launch the step again
         check_call(["git", "reset", "--mixed"])
 
         check_call(["git", "add", "-A"])
