@@ -60,6 +60,10 @@ MAGENTA = 5
 CYAN = 6
 WHITE = 7
 
+DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+DEFAULT_C2CGEOPORTAL_URL = \
+    "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+
 
 def _colorize(text, color):
     return "\x1b[01;3%im%s\x1b[0m" % (color, text)
@@ -129,12 +133,12 @@ def _fill_arguments(command):
     parser.add_argument(
         "--index-url",
         help="An alternate camptocamp python package index URL",
-        default="http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+        default=DEFAULT_INDEX_URL
     )
     parser.add_argument(
         "--c2cgeoportal-url",
         help="An alternate c2cgeoportal egg/wheel URL (with arguments %(package) %(version)s)",
-        default="http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+        default=DEFAULT_C2CGEOPORTAL_URL
     )
 
     if command == "help":
@@ -172,19 +176,18 @@ class C2cTool:
     color_bar = _colorize("================================================================", GREEN)
 
     def print_step(self, step, intro="To continue type:"):
-        index_url = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
         print(intro)
         print(_colorize("%s upgrade %s%s %s --step %i", YELLOW) % (
             "%s/c2ctool" % self.venv_bin,
 
             "".join([
                 "--windows " if self.options.windows else "",
-                "--git-remote " + self.options.git_remote + " "
+                "--git-remote %s " % self.options.git_remote
                 if self.options.git_remote != "origin" else "",
-                "--index-url " + self.options.index_url + " "
-                if self.options.index_url != index_url else "",
-                "--c2cgeoportal-url " + self.options.c2cgeoportal_url + " "
-                if self.options.c2cgeoportal_url != index_url else "",
+                "--index-url '%s' " % self.options.index_url
+                if self.options.index_url != DEFAULT_INDEX_URL else "",
+                "--c2cgeoportal-url '%s' " % self.options.c2cgeoportal_url
+                if self.options.c2cgeoportal_url != DEFAULT_C2CGEOPORTAL_URL else "",
             ]),
 
             self.options.file if self.options.file is not None else "<user.mk>",
