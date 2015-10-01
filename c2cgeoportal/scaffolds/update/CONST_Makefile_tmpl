@@ -512,7 +512,7 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 
 $(OUTPUT_DIR)/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
 	mkdir -p $(dir $@)
-	$(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
+	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.3.js:
 	mkdir -p $(dir $@)
