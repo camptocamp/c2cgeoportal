@@ -7,6 +7,12 @@ Version 1.6.5
 1. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
    See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
 
+2. If you use ngeo in your project edit `build.json`, located at the root of the project, and change the
+   `templatecache.js` line:
+
+     - ".build/templatecache.js"
+     + "{{package}}/static/build/templatecache.js"
+
 
 Version 1.6.3
 =============

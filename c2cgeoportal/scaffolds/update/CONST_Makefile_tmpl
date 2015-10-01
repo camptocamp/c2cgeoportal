@@ -502,7 +502,7 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 	./node_modules/.bin/lessc $(PACKAGE)/static/less/$(PACKAGE).less $@
 
 .build/build.js: build.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		.build/templatecache.js \
+		$(OUTPUT_DIR)/templatecache.js \
 		.build/externs/angular-1.3.js \
 		.build/externs/angular-1.3-q.js \
 		.build/externs/angular-1.3-http-promise.js \
@@ -510,7 +510,8 @@ $(OUTPUT_DIR)/build.css: $(LESS_FILES) .build/node_modules.timestamp
 		.build/node_modules.timestamp
 	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
-.build/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
+$(OUTPUT_DIR)/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES)
+	mkdir -p $(dir $@)
 	$(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
 
 .build/externs/angular-1.3.js:

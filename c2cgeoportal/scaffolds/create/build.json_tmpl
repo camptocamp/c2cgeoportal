@@ -4,7 +4,7 @@
     "node_modules/openlayers/build/ol.ext/**/*.js",
     "node_modules/ngeo/src/**/*.js",
     "{{package}}/static/js/**/*.js",
-    ".build/templatecache.js"
+    "{{package}}/static/build/templatecache.js"
   ],
   "compile": {
     "closure_entry_point": "app_main",
