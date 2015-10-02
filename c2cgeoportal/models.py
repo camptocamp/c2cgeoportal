@@ -646,8 +646,9 @@ class LayerInternalWMS(Layer):
         native_enum=False), default="slider", nullable=True,
         label=_(u"Time widget"))
 
-    def __init__(self, name=u"", public=True, icon=u""):
+    def __init__(self, name=u"", layer=u"", public=True, icon=u""):
         Layer.__init__(self, name=name, public=public)
+        self.layer = layer
 
 
 class LayerExternalWMS(Layer):

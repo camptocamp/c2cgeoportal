@@ -80,7 +80,7 @@ class MapservProxy(Proxy):
 
         self.lower_params = self._get_lower_params(params)
 
-        if self.user is not None:
+        if self.user is not None and not self.settings["geoserver"]:
             # We have a user logged in. We need to set group_id and
             # possible layer_name in the params. We set layer_name
             # when either QUERY_PARAMS or LAYERS is set in the
@@ -156,12 +156,19 @@ class MapservProxy(Proxy):
         elif method != "GET":
             cache_control = NO_CACHE
 
-        role_id = None if self.user is None else \
-            self.user.parent_role.id if self.external else self.user.role.id
+        role = None if self.user is None else \
+            self.user.parent_role if self.external else self.user.role
+
+        headers = self._get_headers()
+        # Add headers for Geoserver
+        if self.settings["geoserver"] and self.user is not None:
+            headers["sec-username"] = self.user.username
+            headers["sec-roles"] = role.name
+
         response = self._proxy_callback(
-            role_id, cache_control,
+            role.id if role is not None else None, cache_control,
             url=_url, params=params, cache=use_cache,
-            headers=self._get_headers(), body=self.request.body
+            headers=headers, body=self.request.body
         )
         return response
 

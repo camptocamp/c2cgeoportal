@@ -395,4 +395,100 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "__test_public_layer"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_srs" "epsg:21781"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "__test_private_layer"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_srs" "epsg:21781"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "__test_public_layer_bis"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_srs" "epsg:21781"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "__test_private_layer_bis"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_srs" "epsg:21781"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END
