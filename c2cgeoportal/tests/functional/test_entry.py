@@ -84,6 +84,9 @@ class TestEntryView(TestCase):
         public_layer2 = LayerInternalWMS(name=u"__test_public_layer2", public=True)
         public_layer2.interfaces = [main, mobile]
 
+        public_layer3 = LayerInternalWMS(name=u"__test_public_layer_bis", public=True)
+        public_layer3.interfaces = [main, mobile]
+
         private_layer2 = LayerInternalWMS(name=u"__test_private_layer2", public=False)
         private_layer2.interfaces = [main, mobile]
 
@@ -99,7 +102,7 @@ class TestEntryView(TestCase):
         group = LayerGroup(name=u"__test_layer_group")
         group.children = [
             public_layer, private_layer, layer_group, layer_wmsgroup,
-            public_layer2, private_layer2
+            public_layer2, public_layer3, private_layer2
         ]
         theme = Theme(name=u"__test_theme")
         theme.children = [group]
@@ -124,7 +127,7 @@ class TestEntryView(TestCase):
         )
 
         DBSession.add_all([
-            user1, user2, public_layer, private_layer, public_layer2, private_layer2
+            user1, user2, public_layer, private_layer, public_layer2, public_layer3, private_layer2
         ])
 
         transaction.commit()
@@ -466,6 +469,7 @@ class TestEntryView(TestCase):
         layers = [l["name"] for l in themes[0]["children"][0]["children"]]
         self.assertTrue("__test_public_layer" in layers)
         self.assertFalse("__test_private_layer" in layers)
+        self.assertEquals(themes["errors"], [])
 
         # autenticated on parent
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
@@ -474,6 +478,7 @@ class TestEntryView(TestCase):
         layers = [l["name"] for l in themes[0]["children"][0]["children"]]
         self.assertTrue("__test_public_layer" in layers)
         self.assertTrue("__test_private_layer" in layers)
+        self.assertEquals(themes["errors"], [])
 
         # autenticated
         request.params = {}
@@ -483,6 +488,7 @@ class TestEntryView(TestCase):
         layers = [l["name"] for l in themes[0]["children"][0]["children"]]
         self.assertTrue("__test_public_layer" in layers)
         self.assertTrue("__test_private_layer" in layers)
+        self.assertEquals(themes["errors"], [])
 
         # mapfile error
         request.params = {}
@@ -490,7 +496,6 @@ class TestEntryView(TestCase):
         log.info(request.registry.settings["mapserverproxy"]["mapserv_url"])
         from c2cgeoportal import caching
         caching.invalidate_region()
-        log.info(type(request.registry.settings["mapserverproxy"]["mapserv_url"]))
         themes, errors = entry._themes(None, "main")
         self.assertEquals(errors, set([
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
@@ -514,6 +519,7 @@ class TestEntryView(TestCase):
         layers = [l["name"] for l in themes["themes"][0]["children"][0]["children"]]
         self.assertTrue("__test_public_layer2" in layers)
         self.assertFalse("__test_private_layer2" in layers)
+        self.assertEquals(themes["errors"], [])
 
         # autenticated
         request.params = {
@@ -525,6 +531,7 @@ class TestEntryView(TestCase):
         layers = [l["name"] for l in themes["themes"][0]["children"][0]["children"]]
         self.assertTrue("__test_public_layer2" in layers)
         self.assertTrue("__test_private_layer2" in layers)
+        self.assertEquals(themes["errors"], [])
 
     @attr(wfs_types=True)
     def test_wfs_types(self):
@@ -632,6 +639,7 @@ class TestEntryView(TestCase):
             "mapserverproxy": {
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
+                "geoserver": False,
             },
             "layers": {
                 "enum": {
@@ -707,6 +715,7 @@ class TestEntryView(TestCase):
             "mapserverproxy": {
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
+                "geoserver": False,
             },
             "layers": {
                 "enum": {
@@ -757,6 +766,7 @@ class TestEntryView(TestCase):
             "mapserverproxy": {
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
+                "geoserver": False,
             },
             "default_max_age": 76,
             "layers": {
@@ -789,6 +799,7 @@ class TestEntryView(TestCase):
             "mapserverproxy": {
                 "mapserv_url": mapserv,
                 "external_mapserv_url": mapserv,
+                "geoserver": False,
             },
             "layers": {
                 "enum": {
@@ -833,6 +844,7 @@ class TestEntryView(TestCase):
                 "external_mapserv_url": mapserv,
                 "mapserv_wfs_url": mapserv,
                 "external_mapserv_wfs_url": mapserv,
+                "geoserver": False,
             },
             "layers": {
                 "enum": {

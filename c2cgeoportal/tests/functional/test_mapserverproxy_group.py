@@ -103,10 +103,13 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
-            "mapserverproxy": {"mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "c2cgeoportal_test.map"
-            ))}
+            "mapserverproxy": {
+                "mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "c2cgeoportal_test.map"
+                )),
+                "geoserver": False,
+            }
         })
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
