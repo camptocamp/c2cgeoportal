@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="create_application.html" title="Create a new application"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Integrator Guide"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -69,7 +53,7 @@ components installed on your system:</p>
 <li><strong>Apache</strong> &gt;= 2.2</li>
 <li><strong>PostgreSQL</strong> &gt;= 9.1/<strong>PostGIS</strong> &gt;= 2.1, with library (<code class="docutils literal"><span class="pre">libpq-dev</span></code>)</li>
 <li><strong>MapServer</strong> 7.0 or <strong>QGIS</strong>-mapserver 2.2 and upper</li>
-<li><strong>MapCache</strong> &gt;= 1.0.0</li>
+<li><strong>MapCache</strong> &gt;= 1.0.0 with memcached support</li>
 <li><strong>TinyOWS</strong> &gt;= 1.1.0</li>
 <li><strong>ImageMagick</strong></li>
 <li><strong>GCC</strong> GNU Compiler Collection &gt;= 4.6</li>
@@ -77,8 +61,8 @@ components installed on your system:</p>
 <li><strong>libproj</strong> &gt;= 4.7</li>
 <li><strong>gettext</strong> &gt;= 0.18</li>
 </ul>
-<div class="section" id="for-cgxp">
-<h2>For CGXP<a class="headerlink" href="#for-cgxp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="for-mobile">
+<h2>For mobile<a class="headerlink" href="#for-mobile" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><strong>Sencha</strong> Command</li>
 <li><strong>Compass</strong></li>
@@ -92,7 +76,7 @@ components installed on your system:</p>
 </ul>
 </div>
 <div class="section" id="required-apache-modules">
-<h2>Required apache modules<a class="headerlink" href="#required-apache-modules" title="Permalink to this headline">¶</a></h2>
+<h2>Required Apache modules<a class="headerlink" href="#required-apache-modules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">mod_expires</span></code></li>
 <li><code class="docutils literal"><span class="pre">mod_headers</span></code></li>
@@ -101,6 +85,12 @@ components installed on your system:</p>
 <li><code class="docutils literal"><span class="pre">mod_rewrite</span></code></li>
 <li><code class="docutils literal"><span class="pre">mod_wsgi</span></code></li>
 <li><code class="docutils literal"><span class="pre">mod_mapcache</span></code></li>
+</ul>
+</div>
+<div class="section" id="conflicting-apache-modules">
+<h2>Conflicting Apache modules<a class="headerlink" href="#conflicting-apache-modules" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">mod_php*</span></code></li>
 </ul>
 </div>
 <div class="section" id="print">
@@ -164,10 +154,11 @@ variable:</p>
 </ul>
 <p>To avoid file permission problems between Windows and Cygwin, edit Cygwin&#8217;s
 <code class="docutils literal"><span class="pre">/etc/fstab</span></code> file to disable ACLs like this:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">none /cygdrive cygdrive binary,noacl,posix<span class="o">=</span>0,user <span class="m">0</span> 0</span>
+</style><span class="prompt1">none /cygdrive cygdrive binary,noacl,posix<span class="o">=</span>0,user <span class="m">0</span> 0</span>
 </pre></div>
 <div class="section" id="configure-git">
 <h3>Configure Git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h3>
@@ -183,12 +174,9 @@ Cygwin&#8217;s git for Windows. To do so:</p>
 <p>If using MapFish Print v3 (thus defining <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">?=</span> <span class="pre">3</span></code> in your
 makefile), then you should define the service name of your Tomcat server. In
 your makefile, define the following variables:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nv">PRINT_TMP</span> <span class="o">=</span> tmp</span>
-<span class="prompt"><span class="nv">TOMCAT_START_COMMAND</span> <span class="o">=</span> net START Tomcat7</span>
-<span class="prompt"><span class="nv">TOMCAT_STOP_COMMAND</span> <span class="o">=</span> net STOP Tomcat7</span>
+<pre class="highlight"><span class="prompt1"><span class="nv">PRINT_TMP</span> <span class="o">=</span> tmp</span>
+<span class="prompt1"><span class="nv">TOMCAT_START_COMMAND</span> <span class="o">=</span> net START Tomcat7</span>
+<span class="prompt1"><span class="nv">TOMCAT_STOP_COMMAND</span> <span class="o">=</span> net STOP Tomcat7</span>
 </pre><p>The first line disables the tmp folder, which is not working on Windows.
 The next two lines define the commands to start and stop your Tomcat service
 (here it would be <code class="docutils literal"><span class="pre">Tomcat7</span></code>). On Windows, these commands differ from the one
@@ -209,9 +197,10 @@ used on Linux.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Requirements</a><ul>
-<li><a class="reference internal" href="#for-cgxp">For CGXP</a></li>
+<li><a class="reference internal" href="#for-mobile">For mobile</a></li>
 <li><a class="reference internal" href="#for-ngeo">For ngeo</a></li>
-<li><a class="reference internal" href="#required-apache-modules">Required apache modules</a></li>
+<li><a class="reference internal" href="#required-apache-modules">Required Apache modules</a></li>
+<li><a class="reference internal" href="#conflicting-apache-modules">Conflicting Apache modules</a></li>
 <li><a class="reference internal" href="#print">Print</a></li>
 <li><a class="reference internal" href="#additional-notes-for-windows-users">Additional notes for Windows users</a><ul>
 <li><a class="reference internal" href="#python">Python</a></li>
@@ -223,13 +212,17 @@ used on Linux.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Integrator Guide</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="create_application.html"
-                        title="next chapter">Create a new application</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Integrator Guide</a></li>
+      <li>Next: <a href="create_application.html" title="next chapter">Create a new application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -259,16 +252,16 @@ used on Linux.</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/requirements.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

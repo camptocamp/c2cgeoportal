@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="client_side.html" title="Client-side development"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="principles.html" title="Principles"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -70,15 +54,16 @@ user home directory. Than checkout the submodules, build c2cgeoportal,
 and go back to your project directory:</p>
 </dd>
 </dl>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt"><span class="nb">cd</span> ~</span>
-<span class="prompt">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
-<span class="prompt"><span class="nb">cd </span>c2cgeoportal</span>
-<span class="prompt">git submodule update --init</span>
-<span class="prompt">make build</span>
-<span class="prompt"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
+</style><span class="prompt1"><span class="nb">cd</span> ~</span>
+<span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
+<span class="prompt1">git submodule update --init</span>
+<span class="prompt1">make build</span>
+<span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
 </pre><p>You can now check out your development branch if necessary.</p>
 </li>
 <li><p class="first">Edit your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> to have something like this:</p>
@@ -92,10 +77,7 @@ and go back to your project directory:</p>
 </pre>
 </li>
 <li><p class="first">Uninstall the regular c2cgeoportal egg from the virtual environment:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/pip uninstall c2cgeoportal</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/pip uninstall c2cgeoportal</span>
 </pre></li>
 <li><p class="first">Remove/comment the following line in the CONST_requirements.txt file:</p>
 <div class="code make highlight-python"><div class="highlight"><pre>c2cgeoportal==1.6.0
@@ -103,10 +85,7 @@ and go back to your project directory:</p>
 </div>
 </li>
 <li><p class="first">Build your application application:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">rm .build/requirements.timestamp <span class="o">&amp;&amp;</span> make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1">rm .build/requirements.timestamp <span class="o">&amp;&amp;</span> make -f &lt;user&gt;.mk build</span>
 </pre></li>
 </ul>
 </div>
@@ -119,16 +98,10 @@ code, and a make environment for it. So do that first, as described below.</p>
 <div class="section" id="install-c2cgeportal-from-source">
 <h4>Install c2cgeportal from source<a class="headerlink" href="#install-c2cgeportal-from-source" title="Permalink to this headline">¶</a></h4>
 <p>Check out c2cgeoportal from GitHub:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 </pre><p>Change into the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory and initialize the submodules:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd </span>c2cgeoportal</span>
-<span class="prompt">git submodule update --init</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
+<span class="prompt1">git submodule update --init</span>
 </pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require a PostGIS database and a MapServer installation that can access
@@ -137,11 +110,8 @@ the test mapfile <code class="docutils literal"><span class="pre">c2cgeoportal/t
 <div class="section" id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run the unit tests do this:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make build</span>
-<span class="prompt">.build/venv/bin/python setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
+<pre class="highlight"><span class="prompt1">make build</span>
+<span class="prompt1">.build/venv/bin/python setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
 </pre></div>
 <div class="section" id="functional-tests">
 <h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
@@ -151,42 +121,30 @@ installed. Make sure this is the case before proceeding.</p>
 and a schema named <code class="docutils literal"><span class="pre">main</span></code> into it.</p>
 <p>To create the database use the following command if you have a PostGIS database
 template at your disposal:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createdb -T template_postgis c2cgeoportal_test</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis c2cgeoportal_test</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If you don&#8217;t have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
-<span class="prompt">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
+<span class="prompt1">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
        -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql</span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
        -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql</span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
        -c <span class="s1">&#39;GRANT ALL ON geometry_columns TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
        -c <span class="s1">&#39;GRANT SELECT ON spatial_ref_sys TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
 database.</p>
 </div>
 <p>If you don&#8217;t have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createuser -P www-data</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
 </pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code> and <code class="docutils literal"><span class="pre">main_static</span></code> schema:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
-<span class="prompt">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
 </pre><p>If you don&#8217;t use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
@@ -213,28 +171,16 @@ configured for the virtual host in
 <p>Once done with the editing of <code class="docutils literal"><span class="pre">vars.yaml</span></code>, run <code class="docutils literal"><span class="pre">make</span></code>
 to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/test.ini</span></code> and
 <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make build</span>
+<pre class="highlight"><span class="prompt1">make build</span>
 </pre><p>You can now run the functional tests with this:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/python setup.py nosetests -a functional</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests -a functional</span>
 </pre></div>
 <div class="section" id="all-tests">
 <h4>All tests<a class="headerlink" href="#all-tests" title="Permalink to this headline">¶</a></h4>
 <p>To run all the tests do this:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make tests</span>
+<pre class="highlight"><span class="prompt1">make tests</span>
 </pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/python setup.py nosetests --where <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests --where <span class="se">\</span>
     c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
 </pre></div>
 </div>
@@ -257,23 +203,14 @@ the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/upda
 <div class="section" id="submodules">
 <h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
 <p>Go to the OpenLayers folder:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd </span>c2cgeoportal/static/lib/openlayers/</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>c2cgeoportal/static/lib/openlayers/</span>
 </pre><p>Get the new revision of OpenLayers:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git fetch</span>
-<span class="prompt">git checkout release-&lt;version&gt;</span>
+<pre class="highlight"><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout release-&lt;version&gt;</span>
 </pre><p>Then you can commit it:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd</span> -</span>
-<span class="prompt">git add c2cgeoportal/static/lib/openlayers/</span>
-<span class="prompt">git commit -m <span class="s2">&quot;update OpenLayers to &lt;version&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> -</span>
+<span class="prompt1">git add c2cgeoportal/static/lib/openlayers/</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;update OpenLayers to &lt;version&gt;&quot;</span></span>
 </pre></div>
 </div>
 <div class="section" id="database">
@@ -307,10 +244,7 @@ or updated when this scaffold is applied. So developers who modify the
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts to the
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, as opposed to the application.</p>
 <p>Add a new script call from the application&#8217;s root directory:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/alembic revision -m <span class="s2">&quot;&lt;Explicite name&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic revision -m <span class="s2">&quot;&lt;Explicite name&gt;&quot;</span></span>
 </pre><p>This will generate the migration script in
 <code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
 You should <em>NOT</em> commit the script in this directory because this migration
@@ -323,10 +257,7 @@ this directory.</p>
 <p>The scripts should not fail if it is run again. See:
 <a class="reference external" href="http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
 <p>Then customize the migration to suit your needs, test it:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/alembic upgrade head</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic upgrade head</span>
 </pre><p>Once you have tested it, move it to the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template, in
 <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_mlembic/versions/</span></code>.</p>
 <dl class="docutils">
@@ -362,10 +293,7 @@ this directory.</p>
 <h3>Coding style<a class="headerlink" href="#coding-style" title="Permalink to this headline">¶</a></h3>
 <p>Please read <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">http://www.python.org/dev/peps/pep-0008/</a>.</p>
 <p>And run validation:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make checks</span>
+<pre class="highlight"><span class="prompt1">make checks</span>
 </pre></div>
 </div>
 <div class="section" id="dependencies">
@@ -432,13 +360,17 @@ this directory.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="principles.html"
-                        title="previous chapter">Principles</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="client_side.html"
-                        title="next chapter">Client-side development</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="principles.html" title="previous chapter">Principles</a></li>
+      <li>Next: <a href="client_side.html" title="next chapter">Client-side development</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -468,16 +400,16 @@ this directory.</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/developer/server_side.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

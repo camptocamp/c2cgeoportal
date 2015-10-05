@@ -33,24 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="tilegeneration.html" title="TileGeneration"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="security.html" title="Security"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Integrator Guide</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -65,60 +48,40 @@ advanced PDF reports about a given feature.</p>
 and <a class="reference external" href="http://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
 <p>The webservice is called using the following URL schema:
 <code class="docutils literal"><span class="pre">http://&lt;host&gt;/&lt;instanceid&gt;/wsgi/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
-<div class="section" id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
-<p>To make queries to the database directly from the Jasper Reports, additional <code class="docutils literal"><span class="pre">.jar</span></code> files
-must be added to the MapFish Print directory:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>print
-mkdir WEB-INF/lib
-<span class="nb">cd </span>WEB-INF/lib
-wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download -O jasperreports-functions-5.5.0.jar
-wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
-wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
-</pre></div>
-</div>
-<p>Edit the <code class="docutils literal"><span class="pre">buildout.cfg</span></code> file and add <code class="docutils literal"><span class="pre">WEB-INF/lib/*.jar</span></code> to the <code class="docutils literal"><span class="pre">input</span></code> list
-of the <code class="docutils literal"><span class="pre">`[pdf-report]</span></code> part:</p>
-<div class="code highlight-python"><div class="highlight"><pre>  input = ${print-war:basewar}
-      config.yaml
-      WEB-INF/mapfish-print-printer-factory.xml
-      WEB-INF/classes/logback.xml
-+     WEB-INF/lib/*.jar
-      *.jrxml
-      *.tif
-      *.bmp
-      *.jpg
-      *.jpeg
-      *.gif
-      *.png
-</pre></div>
-</div>
-</div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The service is configured in the main <code class="docutils literal"><span class="pre">config.yaml.in</span></code> file of the project
+<p>The service is configured in the main <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file of the project
 as in the following example:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">pdfreport</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">print_url</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://localhost:8080/print-c2cgeoportal-${vars:instanceid}</span>
-    <span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">show_map</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
-        <span class="l-Scalar-Plain">check_credentials</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
-        <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span> <span class="s">&quot;grp_ly_tilegenerierung_landeskarte&quot;</span>
-        <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="s">&quot;image/png&quot;</span>
-        <span class="l-Scalar-Plain">srs</span><span class="p-Indicator">:</span> <span class="s">&quot;EPSG:21781&quot;</span>
-    <span class="l-Scalar-Plain">layers</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p-Indicator">:</span>
-            <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span> <span class="s">&quot;grp_ly_tilegenerierung_landeskarte,ly_a020_belastete_standorte_point&quot;</span>
-            <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="s">&quot;image/jpeg&quot;</span>
-        <span class="l-Scalar-Plain">some_template_with_no_map</span><span class="p-Indicator">:</span>
-            <span class="l-Scalar-Plain">show_map</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
-            <span class="l-Scalar-Plain">spec_template</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
-                <span class="s">&quot;layout&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;some_template_name&quot;</span><span class="p-Indicator">,</span>
-                <span class="s">&quot;outputFormat&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;pdf&quot;</span><span class="p-Indicator">,</span>
-                <span class="s">&quot;attributes&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
-                    <span class="s">&quot;paramID&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
-                <span class="p-Indicator">}</span>
-            <span class="p-Indicator">}</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">vars</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">...</span>
+    <span class="l-Scalar-Plain">pdfreport</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">check_credentials</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
+            <span class="l-Scalar-Plain">srs</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">EPSG:21781</span>
+            <span class="l-Scalar-Plain">map</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p-Indicator">]</span>
+                <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">image/png</span>
+        <span class="l-Scalar-Plain">layers</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">map</span><span class="p-Indicator">:</span>
+                    <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
+                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+                    <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">image/jpeg</span>
+            <span class="l-Scalar-Plain">some_template_with_no_map</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
+                    <span class="l-Scalar-Plain">layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">some_template_name</span>
+                    <span class="l-Scalar-Plain">outputFormat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">pdf</span>
+                    <span class="l-Scalar-Plain">attributes</span><span class="p-Indicator">:</span>
+                        <span class="l-Scalar-Plain">paramID</span><span class="p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
+            <span class="l-Scalar-Plain">some_template_with_multi_map</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">maps</span><span class="p-Indicator">:</span>
+                    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
+                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
+                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+<span class="l-Scalar-Plain">update_paths</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">pdfreport</span>
 </pre></div>
 </div>
 <p>with the following parameters:</p>
@@ -129,7 +92,6 @@ as in the following example:</p>
 </ul>
 <p><code class="docutils literal"><span class="pre">defaults</span></code> and <code class="docutils literal"><span class="pre">layers</span></code>-specific parameters are:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">show_map</span></code>: boolean, wether a map is embedded in the report. Defaults to <code class="docutils literal"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">check_credentials</span></code>: boolean, wether layer credentials are checked before generating the report. Defaults to <code class="docutils literal"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
 <li><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (&#8221;). Defaults to <code class="docutils literal"><span class="pre">&quot;&quot;</span></code>.</li>
@@ -213,19 +175,24 @@ variables values are passed to the template:</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">PDF Reporting</a><ul>
-<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
 <li><a class="reference internal" href="#configuration-of-the-reports">Configuration of the reports</a></li>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="security.html"
-                        title="previous chapter">Security</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="tilegeneration.html"
-                        title="next chapter">TileGeneration</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="security.html" title="previous chapter">Security</a></li>
+      <li>Next: <a href="tilegeneration.html" title="next chapter">TileGeneration</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -255,16 +222,16 @@ variables values are passed to the template:</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/pdfreport.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

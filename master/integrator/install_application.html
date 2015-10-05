@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="upgrade_application.html" title="Upgrading a GeoMapFish application"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="create_application.html" title="Create a new application"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -98,27 +82,22 @@ layers</em>), where joining user/role tables to PostGIS layer tables is necessar
 <div class="section" id="create-the-database">
 <span id="integrator-install-application-create-database"></span><h3>Create the database<a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h3>
 <p>To create the database you can use:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">sudo -u postgres createdb &lt;db_name&gt; -T template_postgis</span>
+</style><span class="prompt1">sudo -u postgres createdb &lt;db_name&gt; -T template_postgis</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> replaced by the actual database name.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>if you don&#8217;t have the template_postgis you can use:</p>
 <p>with Postgres &gt;= 9.1 and PostGIS &gt;= 2.1:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with older versions:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql</span>
-<span class="prompt">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql</span>
+<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql</span>
 </pre><p class="last">Note that the path of the postgis scripts and the template name can
 differ on your host.</p>
 </div>
@@ -127,11 +106,8 @@ differ on your host.</p>
 <span id="integrator-install-application-create-schema"></span><h3>Create the schema<a class="headerlink" href="#create-the-schema" title="Permalink to this headline">¶</a></h3>
 <p>Each parent or child needs two application-specific schemas,
 then to create it use:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></code> replaced by the actual database name,
 and schema name (&#8216;main&#8217; by default), respectively.</p>
 </div>
@@ -141,19 +117,13 @@ and schema name (&#8216;main&#8217; by default), respectively.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>It the user doesn&#8217;t already exist in your database, create it first:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres createuser -P &lt;db_user&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P &lt;db_user&gt;</span>
 </pre></div>
 <p>Give the rights to the user:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE spatial_ref_sys TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON TABLE geometry_columns TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE spatial_ref_sys TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON TABLE geometry_columns TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you don&#8217;t use the www-data user for Apache replace it by the right user.</p>
@@ -166,18 +136,12 @@ and schema name (&#8216;main&#8217; by default), respectively.</p>
 <h3>Get the application source tree<a class="headerlink" href="#get-the-application-source-tree" title="Permalink to this headline">¶</a></h3>
 <p>If Git is used for the application use the following command to get the
 application source tree:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git clone git@github.com:camptocamp/&lt;my_project&gt;.git &lt;my_project&gt;</span>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/&lt;my_project&gt;.git &lt;my_project&gt;</span>
 </pre><p>c2cgeoportal applications include a Git submodule for CGXP. The following
 commands should be used to download CGXP and its dependencies:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd</span> &lt;my_project&gt;</span>
-<span class="prompt">git submodule update --init</span>
-<span class="prompt">git submodule foreach git submodule update --init</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;my_project&gt;</span>
+<span class="prompt1">git submodule update --init</span>
+<span class="prompt1">git submodule foreach git submodule update --init</span>
 </pre><p>The <code class="docutils literal"><span class="pre">foreach</span></code> command aims to init and update CGXP&#8217;s own submodules, for GXP,
 OpenLayers and GeoExt.</p>
 <div class="admonition note">
@@ -267,25 +231,32 @@ in <code class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost&gt
 is the name of the Apache virtual host, and <code class="docutils literal"><span class="pre">&lt;username&gt;</span></code> is your Unix
 login name.</p>
 </div>
-<div class="section" id="vars-project-xaml">
-<h4>vars_&lt;project&gt;.xaml<a class="headerlink" href="#vars-project-xaml" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="vars-project-yaml">
+<h4>vars_&lt;project&gt;.yaml<a class="headerlink" href="#vars-project-yaml" title="Permalink to this headline">¶</a></h4>
 <p>By default, <code class="docutils literal"><span class="pre">mod_wsgi</span></code> processes are executed under the <code class="docutils literal"><span class="pre">www-data</span></code> Unix
 user, which is the Apache user. In RHEL 6, there&#8217;s no user <code class="docutils literal"><span class="pre">www-data</span></code>, and
-the Apache user is <code class="docutils literal"><span class="pre">apache</span></code>. To accomodate that edit <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> and
-set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> to <code class="docutils literal"><span class="pre">apache</span></code> in the <code class="docutils literal"><span class="pre">[vars]</span></code> section:</p>
+the Apache user is <code class="docutils literal"><span class="pre">apache</span></code>. <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> Should then
+set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> to <code class="docutils literal"><span class="pre">apache</span></code> in the <code class="docutils literal"><span class="pre">vars:</span></code> section:</p>
 <div class="highlight-python"><div class="highlight"><pre>vars:
     ...
     modwsgi_user: apache
 </pre></div>
 </div>
-<p>Also, by default, the path to Tomcat&#8217;s <code class="docutils literal"><span class="pre">webapps</span></code> directory is
-<code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/webapps</span></code>. On RHEL 6, Tomcat is located in
-<code class="docutils literal"><span class="pre">/var/lib/tomcat6/</span></code>. To accomodate that the <code class="docutils literal"><span class="pre">output</span></code> path of the
-<code class="docutils literal"><span class="pre">[print-war]</span></code> part should be changed:</p>
-<div class="highlight-python"><div class="highlight"><pre>[print-war]
-output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${instanceid}.war
-</pre></div>
 </div>
+</div>
+<div class="section" id="project-mk">
+<h3>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h3>
+<p>Configure some <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> RedHat specifics:</p>
+<div class="highlight-python"><div class="highlight"><pre># Service base command for Tomcat on RedHat
+TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
+# Command prefix to acces to the webapp folder
+TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
+# Graceful command for RedHat
+APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
+# Test packages are designed for Debian. They must be disabled by adding the following
+# line to ``&lt;package&gt;.mk``::
+DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
+</pre></div>
 </div>
 <div class="section" id="id1">
 <h4>apache/mapserver.conf.mako<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
@@ -295,14 +266,6 @@ output = /var/lib/tomcat6/webapps/print-c2cgeoportal-${instanceid}.war
 <div class="highlight-python"><div class="highlight"><pre>ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="apache2ctl">
-<h3>apache2ctl<a class="headerlink" href="#apache2ctl" title="Permalink to this headline">¶</a></h3>
-<p>On RedHat the command hasn&#8217;t the &#8216;2&#8217;!
-Then in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add:</p>
-<div class="highlight-python"><div class="highlight"><pre>APACHE_GRACEFUL = /usr/sbin/apachectl graceful
-</pre></div>
 </div>
 </div>
 <div class="section" id="integrator-install-application-install-application">
@@ -324,16 +287,10 @@ configuration:</p>
 choice or something like <code class="docutils literal"><span class="pre">&lt;user&gt;-&lt;sub-project&gt;</span></code> in case of parent/children project.</p>
 </div>
 <p>Add it to Git:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add &lt;user&gt;.mk</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Add user build file&quot;</span></span>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Add user build file&quot;</span></span>
 </pre><p>Then you can build and install the application with the command:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
 </pre><p>This previous command will do many things like:</p>
 <blockquote>
 <div><ul class="simple">
@@ -345,11 +302,8 @@ choice or something like <code class="docutils literal"><span class="pre">&lt;us
 </div></blockquote>
 <p>Once the application is built and installed, you now have to create and
 populate the application tables, and directly set the version (details later):</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/alembic upgrade head</span>
-<span class="prompt">.build/venv/bin/alembic -c alembic_static.ini upgrade head</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic upgrade head</span>
+<span class="prompt1">.build/venv/bin/alembic -c alembic_static.ini upgrade head</span>
 </pre><p>Your application should be available at:
 <code class="docutils literal"><span class="pre">http://&lt;hostname&gt;/&lt;instanceid&gt;</span></code>.</p>
 <p>Where the <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host,
@@ -387,24 +341,30 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
 </ul>
 </li>
 <li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a><ul>
-<li><a class="reference internal" href="#vars-project-xaml">vars_&lt;project&gt;.xaml</a></li>
+<li><a class="reference internal" href="#vars-project-yaml">vars_&lt;project&gt;.yaml</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a><ul>
 <li><a class="reference internal" href="#id1">apache/mapserver.conf.mako</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#apache2ctl">apache2ctl</a></li>
 <li><a class="reference internal" href="#integrator-install-application-install-application">Install the application</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="create_application.html"
-                        title="previous chapter">Create a new application</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="upgrade_application.html"
-                        title="next chapter">Upgrading a GeoMapFish application</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="create_application.html" title="previous chapter">Create a new application</a></li>
+      <li>Next: <a href="upgrade_application.html" title="next chapter">Upgrading a GeoMapFish application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -434,16 +394,16 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/install_application.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

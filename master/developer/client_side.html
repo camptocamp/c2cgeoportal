@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="build_release.html" title="Create a new release"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="server_side.html" title="Server-side development"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -67,12 +51,13 @@ JavaScript library. This library is on GitHub:
 <h3>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
 <p>To run the CGXP tests start by cloning the repository, and updating its
 submodules (for GXP, OpenLayers, etc.):</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">git clone https://github.com/camptocamp/cgxp</span>
-<span class="prompt"><span class="nb">cd </span>cgxp</span>
-<span class="prompt">git submodule update --init</span>
+</style><span class="prompt1">git clone https://github.com/camptocamp/cgxp</span>
+<span class="prompt1"><span class="nb">cd </span>cgxp</span>
+<span class="prompt1">git submodule update --init</span>
 </pre><p>Now open the Jasmine Spec Runner file (<code class="docutils literal"><span class="pre">core/tests/SpecRunner.html</span></code>) in your
 browser. The tests should automatically run (and pass!).</p>
 </div>
@@ -106,31 +91,22 @@ be added in <code class="docutils literal"><span class="pre">core/tests/spec/scr
 <div class="section" id="link">
 <h3>link<a class="headerlink" href="#link" title="Permalink to this headline">¶</a></h3>
 <p>Use ngeo in dev mode:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git clone git@github.com:camptocamp/ngeo.git</span>
-<span class="prompt"><span class="nb">cd </span>ngeo</span>
-<span class="prompt">npm config <span class="nb">set </span>prefix ~/.npm</span>
-<span class="prompt">npm link</span>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/ngeo.git</span>
+<span class="prompt1"><span class="nb">cd </span>ngeo</span>
+<span class="prompt1">npm config <span class="nb">set </span>prefix ~/.npm</span>
+<span class="prompt1">npm link</span>
 </pre><p>The <cite>npm config set</cite> command tells npm to use the local folder to store the npm
 packages instead of a system folder.</p>
 <p>then:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd</span> &lt;your-project&gt;</span>
-<span class="prompt">npm link ngeo</span>
-<span class="prompt">make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;your-project&gt;</span>
+<span class="prompt1">npm link ngeo</span>
+<span class="prompt1">make -f &lt;user&gt;.mk build</span>
 </pre></div>
 <div class="section" id="unlink">
 <h3>unlink<a class="headerlink" href="#unlink" title="Permalink to this headline">¶</a></h3>
 <p>Use packaged npm, production mode:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd</span> &lt;your-project&gt;</span>
-<span class="prompt">npm unlink ngeo</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;your-project&gt;</span>
+<span class="prompt1">npm unlink ngeo</span>
 </pre></div>
 </div>
 </div>
@@ -164,13 +140,17 @@ packages instead of a system folder.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="server_side.html"
-                        title="previous chapter">Server-side development</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="build_release.html"
-                        title="next chapter">Create a new release</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="server_side.html" title="previous chapter">Server-side development</a></li>
+      <li>Next: <a href="build_release.html" title="next chapter">Create a new release</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -200,16 +180,16 @@ packages instead of a system folder.</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/developer/client_side.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="python_packaging.html" title="Python Packaging"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="client_side.html" title="Client-side development"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -74,44 +58,33 @@ the first bug fix release, and <code class="docutils literal"><span class="pre">
 <div class="section" id="new-version">
 <h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
 <p>For each version we create a new branch (at least at the final release):</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">git checkout master</span>
-<span class="prompt">git pull origin master</span>
-<span class="prompt">git checkout -b &lt;version&gt;</span>
+</style><span class="prompt1">git checkout master</span>
+<span class="prompt1">git pull origin master</span>
+<span class="prompt1">git checkout -b &lt;version&gt;</span>
 </pre><p>Go back on master:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout master</span>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
 </pre><p>Add the version in the doc generator by editing the
 <code class="docutils literal"><span class="pre">core/src/doc/update_online.sh</span></code> file and add the new <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code>
 in the <code class="docutils literal"><span class="pre">for</span> <span class="pre">VERSION</span> <span class="pre">in</span></code> loop.</p>
 <p>Commit your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add core/src/doc/update_online.sh</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Generate documentation for version &lt;version&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">git add core/src/doc/update_online.sh</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Generate documentation for version &lt;version&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git push origin master</span>
-<span class="prompt">git push origin &lt;version&gt;</span>
+<pre class="highlight"><span class="prompt1">git push origin master</span>
+<span class="prompt1">git push origin &lt;version&gt;</span>
 </pre><p>Then continue by creating the release.</p>
 </div>
 <div class="section" id="new-release">
 <h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
 <p>Tag the new CGXP release:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout &lt;version&gt;</span>
-<span class="prompt">git pull origin &lt;version&gt;</span>
-<span class="prompt">git tag &lt;release&gt;</span>
-<span class="prompt">git push origin &lt;release&gt;</span>
+<pre class="highlight"><span class="prompt1">git checkout &lt;version&gt;</span>
+<span class="prompt1">git pull origin &lt;version&gt;</span>
+<span class="prompt1">git tag &lt;release&gt;</span>
+<span class="prompt1">git push origin &lt;release&gt;</span>
 </pre></div>
 </div>
 <div class="section" id="c2cgeoportal">
@@ -119,44 +92,26 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <div class="section" id="id1">
 <h3>New version<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout master</span>
-<span class="prompt">git pull origin master</span>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
+<span class="prompt1">git pull origin master</span>
 </pre><p>Edit the <code class="docutils literal"><span class="pre">doc/integrator/update_application.rst</span></code> file to change the default version.</p>
 <p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
 <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_requirements.txt</span></code>.</p>
 <p>Add and commit the changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add doc/integrator/update_application.rst <span class="se">\</span>
+<pre class="highlight"><span class="prompt1">git add doc/integrator/update_application.rst <span class="se">\</span>
     c2cgeoportal/scaffolds/update/CONST_requirements.txt</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Update the default downloaded version.cfg&quot;</span></span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Update the default downloaded version.cfg&quot;</span></span>
 </pre><p>For each version we create a new branch (at the latest at the final release):</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout -b &lt;version&gt;</span>
-<span class="prompt">git push origin &lt;version&gt;</span>
+<pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
+<span class="prompt1">git push origin &lt;version&gt;</span>
 </pre><p>Go back to the master branch:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout master</span>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
 </pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;version</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
 <p>Commit your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add setup.py</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">git add setup.py</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git push origin master</span>
+<pre class="highlight"><span class="prompt1">git push origin master</span>
 </pre><p>Create a new Transifex resource:</p>
 <blockquote>
 <div><ul class="simple">
@@ -173,45 +128,60 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <div class="section" id="id2">
 <h3>New release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git checkout &lt;version&gt;</span>
-<span class="prompt">git pull origin &lt;version&gt;</span>
+<pre class="highlight"><span class="prompt1">git checkout &lt;version&gt;</span>
+<span class="prompt1">git pull origin &lt;version&gt;</span>
 </pre><p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
 <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_requirements.txt</span></code>.</p>
 <p>Verify that the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> is correct
 (as the <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code>).</p>
 <p>Commit your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
 </pre><p>Tag the new release:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git tag &lt;release&gt;</span>
+<pre class="highlight"><span class="prompt1">git tag &lt;release&gt;</span>
 </pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;release</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
 <p>Commit your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add setup.py</span>
-<span class="prompt">git commit -m <span class="s2">&quot;Start release &lt;release + 1&gt;&quot;</span></span>
+<pre class="highlight"><span class="prompt1">git add setup.py</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Start release &lt;release + 1&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git push origin &lt;version&gt;</span>
-<span class="prompt">git push origin &lt;release&gt;</span>
+<pre class="highlight"><span class="prompt1">git push origin &lt;version&gt;</span>
+<span class="prompt1">git push origin &lt;release&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When you push a tag with the pattern <cite>^[0-9].[0-9]+.[0-9]$</cite> a new release
 will automatically be created on Travis CI.</p>
 </div>
 </div>
+</div>
+<div class="section" id="post-release-tasks">
+<h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
+<p>When a new release or a new version is done you should do the following tasks:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
+to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</li>
+<li>Regenerate the pypi&#8217;s index:</li>
+</ul>
+</div></blockquote>
+<pre class="highlight"><span class="prompt1">ssh admin@c2cpc19.camptocamp.com</span>
+<span class="prompt1">curl <span class="s1">&#39;http://pypi.camptocamp.net/internal-pypi/regenerate-index&#39;</span> --data <span class="s1">&#39;&#39;</span> <span class="se">\</span>
+    --max-time 1000</span>
+</pre><p>Then:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</li>
+<li>Update the demo on the main folder with:</li>
+</ul>
+</div></blockquote>
+<pre class="highlight"><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
+<span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
+</pre><p>Then:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Test the demo.</li>
+<li>Sent a release email to the <code class="docutils literal"><span class="pre">geomapfish&#64;googlegroups.com</span></code> and <code class="docutils literal"><span class="pre">geospatial&#64;lists.camptocamp.com</span></code> mailing lists.</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
@@ -238,16 +208,21 @@ will automatically be created on Travis CI.</p>
 <li><a class="reference internal" href="#id2">New release</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#post-release-tasks">Post release tasks</a></li>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="client_side.html"
-                        title="previous chapter">Client-side development</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="python_packaging.html"
-                        title="next chapter">Python Packaging</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="client_side.html" title="previous chapter">Client-side development</a></li>
+      <li>Next: <a href="python_packaging.html" title="next chapter">Python Packaging</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -277,16 +252,16 @@ will automatically be created on Travis CI.</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/developer/build_release.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

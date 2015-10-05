@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="functionality.html" title="Customizing the Application using Functionalities"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pdfreport.html" title="PDF Reporting"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -94,10 +78,11 @@ since it is the only system that offers automatic deletion of the expired tiles.
 <p>To use it you should have MapCache and Memcached installed on your computer.
 And Memcached should listen on port 11211.</p>
 <p>To clear/flush Memcached cache, use the following command:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt"><span class="nb">echo</span> <span class="s2">&quot;flush_all&quot;</span> <span class="p">|</span> /bin/netcat -q <span class="m">2</span> 127.0.0.1 11211</span>
+</style><span class="prompt1"><span class="nb">echo</span> <span class="s2">&quot;flush_all&quot;</span> <span class="p">|</span> /bin/netcat -q <span class="m">2</span> 127.0.0.1 11211</span>
 </pre><p>See the <a class="reference external" href="https://github.com/sbrunner/tilecloud-chain#configure-mapcache">TileCloud-chain documentation for more details</a></p>
 </div>
 <div class="section" id="id2">
@@ -112,22 +97,13 @@ EC2, SQS, SNS.</p>
 <h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">Build the project:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">make -f &lt;user&gt;.mk build</span>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
 </pre></li>
 <li><p class="first">Install the base template template:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></li>
 <li><p class="first">Add configuration to Git:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">git add tilegeneration</span>
+<pre class="highlight"><span class="prompt1">git add tilegeneration</span>
 </pre></li>
 </ul>
 </div>
@@ -152,24 +128,15 @@ Sub-level of <code class="docutils literal"><span class="pre">layers</span></cod
 </li>
 <li><p class="first">We can drop the empty tiles with an hash comparison,
 tilecloud-chain has a tool to help us:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
 </pre><p>We consider that the first tile of the max zoom is empty.
 Than copy past the result in the layer config.</p>
 </li>
 <li><p class="first">If you need it you can generate the WMTS capabilities file:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_controller --generate_wmts_capabilities</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --generate_wmts_capabilities</span>
 </pre></li>
 <li><p class="first">And an OpenLayers test page:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_controller --openlayers-test</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --openlayers-test</span>
 </pre></li>
 </ul>
 <p>If you generate the tiles locally you don&#8217;t need all the configuration
@@ -180,34 +147,19 @@ AWS generation.</p>
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
 <p>This package offers two commands lines, one to generate the tiles locally,
 see help:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_tiles --help</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles --help</span>
 </pre><p>one to generate the tiles using AWS, see help:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_controller --help</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --help</span>
 </pre><p>Before start a tile generation on S3 measure the cost:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_controller --cost</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_controller --cost</span>
 </pre><p>If you setup all the default options you can generate the tiles by
 using the command:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/generate_tiles</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/generate_tiles</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
-<span class="prompt"><span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
+<span class="prompt1"><span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
 </pre><p class="last">If you forget it you will get an explicit message.</p>
 </div>
 </div>
@@ -312,13 +264,17 @@ subdomain_url_template: http://%(sub)s.${host}
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pdfreport.html"
-                        title="previous chapter">PDF Reporting</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="functionality.html"
-                        title="next chapter">Customizing the Application using Functionalities</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="pdfreport.html" title="previous chapter">PDF Reporting</a></li>
+      <li>Next: <a href="functionality.html" title="next chapter">Customizing the Application using Functionalities</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -348,16 +304,16 @@ subdomain_url_template: http://%(sub)s.${host}
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/tilegeneration.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

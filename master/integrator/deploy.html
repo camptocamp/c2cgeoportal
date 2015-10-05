@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="authentication.html" title="Authentication"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="checker.html" title="Automated check"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -78,11 +62,12 @@ the application.</li>
 <p>Only user <code class="docutils literal"><span class="pre">sigdev</span></code> may access this environment.  Developers must then prefix
 all the commands on this environment by <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">-u</span> <span class="pre">sigdev</span></code>.
 For instance to update the application:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">sudo -u sigdev make -f demo.mk update</span>
-<span class="prompt">sudo -u sigdev make -f demo.mk build</span>
+</style><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
+<span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
 </pre></div>
 <div class="section" id="production-environment">
 <h3>Production environment<a class="headerlink" href="#production-environment" title="Permalink to this headline">¶</a></h3>
@@ -183,53 +168,35 @@ is required in the <code class="docutils literal"><span class="pre">apache_entry
 <h4>Do the deploy<a class="headerlink" href="#do-the-deploy" title="Permalink to this headline">¶</a></h4>
 <p>First of all be sure that the application on the source server work well!</p>
 <p>Connect to your server using your SSH agent:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">ssh -A &lt;dev_server&gt;</span>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt;</span>
 </pre><p>Go into your project directory:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
 </pre><p>Deploy your project:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/c2ctool deploy &lt;host&gt;</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/c2ctool deploy &lt;host&gt;</span>
 </pre><p>Where <code class="docutils literal"><span class="pre">&lt;host&gt;</span></code> is your destination host that you configured in the
 <code class="docutils literal"><span class="pre">deploy/deploy.cfg</span></code> file, e.g. <code class="docutils literal"><span class="pre">demo</span></code>, <code class="docutils literal"><span class="pre">prod</span></code>.</p>
 </div>
 <div class="section" id="to-deploy-from-dev-to-demo-advanced-version">
 <h4>To deploy from dev to demo (advanced version)<a class="headerlink" href="#to-deploy-from-dev-to-demo-advanced-version" title="Permalink to this headline">¶</a></h4>
 <p>Build on the dev server:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">ssh -A &lt;dev_server&gt; <span class="c"># SSH agent forward is needed</span></span>
-<span class="prompt"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
-<span class="prompt">git pull origin master <span class="c"># update the code</span></span>
-<span class="prompt">make -f main.mk build <span class="c"># configure c2cgeoportal</span></span>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt; <span class="c"># SSH agent forward is needed</span></span>
+<span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+<span class="prompt1">git pull origin master <span class="c"># update the code</span></span>
+<span class="prompt1">make -f main.mk build <span class="c"># configure c2cgeoportal</span></span>
 </pre><p><strong>Test on the dev server</strong></p>
 <p>Deploy to the demo server:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt"><span class="nb">cd </span>deploy</span>
-<span class="prompt">sudo -u deploy deploy -r deploy.cfg demo</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>deploy</span>
+<span class="prompt1">sudo -u deploy deploy -r deploy.cfg demo</span>
 </pre><p><strong>Test on the demo server</strong></p>
 </div>
 <div class="section" id="to-deploy-from-demo-to-prod-advanced-version">
 <h4>To deploy from demo to prod (advanced version)<a class="headerlink" href="#to-deploy-from-demo-to-prod-advanced-version" title="Permalink to this headline">¶</a></h4>
 <p><strong>Test on the demo server</strong></p>
 <p>Deploy on the prod server:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">ssh -A &lt;demo_server&gt; <span class="c"># SSH agent forward is needed</span></span>
-<span class="prompt"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
-<span class="prompt"><span class="nb">cd </span>deploy</span>
-<span class="prompt">sudo -u deploy deploy -r deploy.cfg prod</span>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;demo_server&gt; <span class="c"># SSH agent forward is needed</span></span>
+<span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
+<span class="prompt1"><span class="nb">cd </span>deploy</span>
+<span class="prompt1">sudo -u deploy deploy -r deploy.cfg prod</span>
 </pre><p><strong>Test on the prod server</strong></p>
 </div>
 </div>
@@ -271,13 +238,17 @@ is required in the <code class="docutils literal"><span class="pre">apache_entry
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="checker.html"
-                        title="previous chapter">Automated check</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="authentication.html"
-                        title="next chapter">Authentication</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="checker.html" title="previous chapter">Automated check</a></li>
+      <li>Next: <a href="authentication.html" title="next chapter">Authentication</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -307,16 +278,16 @@ is required in the <code class="docutils literal"><span class="pre">apache_entry
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/deploy.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

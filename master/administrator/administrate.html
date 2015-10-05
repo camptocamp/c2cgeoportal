@@ -33,23 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="editing.html" title="Editing"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="mapfile.html" title="Mapfile configuration"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Administrator Guide</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -214,15 +198,22 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
 <div class="section" id="url">
 <h2>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
 <p>In the admin interface we can use in all the URL the following special schema:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">static</span></code>: to use a static route,</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">static</span></code>: to use a static route,
-* &#8216;static:///icon.png&#8217; will get the URL of the &#8216;static&#8217; static route of the project.
-* &#8216;static://c2cgeoportal/icon.png&#8217; will get the URL of the &#8216;static&#8217; static route of &#8216;c2cgeoportal&#8217;.
-* &#8216;static://prj:img/icon.png&#8217; will get the URL of the &#8216;img&#8217; static route of &#8216;prj&#8217;.</li>
-<li><code class="docutils literal"><span class="pre">config</span></code>: to get the server name from the url,
-if we use &#8216;config://my_server/icon.png&#8217;, with the config:
-<cite>servers: { &#8220;my_server&#8221;: &#8220;http://example.com/test&#8221; }</cite>
-we will get the URL: &#8216;<a class="reference external" href="http://example.com/test/icon.png">http://example.com/test/icon.png</a>&#8216;</li>
+<li><code class="docutils literal"><span class="pre">static:///icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">static</span></code> static route of the project.</li>
+<li><code class="docutils literal"><span class="pre">static://c2cgeoportal/icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">static</span></code> static route of <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">static://prj:img/icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">img</span></code> static route of <code class="docutils literal"><span class="pre">prj</span></code>.</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">config</span></code>: to get the server name from the URL, with the config from the <code class="docutils literal"><span class="pre">vars</span></code> file:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>servers:
+   my_server: http://example.com/test
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">config://my_server/icon.png</span></code> will be transformed into
+the URL <code class="docutils literal"><span class="pre">http://example.com/test/icon.png</span></code>.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -252,13 +243,17 @@ we will get the URL: &#8216;<a class="reference external" href="http://example.c
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="mapfile.html"
-                        title="previous chapter">Mapfile configuration</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="editing.html"
-                        title="next chapter">Editing</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="mapfile.html" title="previous chapter">Mapfile configuration</a></li>
+      <li>Next: <a href="editing.html" title="next chapter">Editing</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -288,16 +283,16 @@ we will get the URL: &#8216;<a class="reference external" href="http://example.c
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/administrator/administrate.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

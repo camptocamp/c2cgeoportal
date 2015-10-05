@@ -33,24 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="querier.html" title="Query builder (Querier)"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="customize_ui.html" title="Customize the UI"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Integrator Guide</a> &raquo;</li>
-          <li class="nav-item nav-item-2"><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -79,10 +62,11 @@ the application-specific schema.</p>
 <code class="docutils literal"><span class="pre">create_db</span></code> command line (see the section
 <a class="reference internal" href="install_application.html#integrator-install-application"><span>Install an existing application</span></a>).</p>
 <p>If you did want to create the table manually you&#8217;d use the following commands:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch ( \</span>
+</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch ( \</span>
 <span class="s2">    id SERIAL PRIMARY KEY, \</span>
 <span class="s2">    layer_name TEXT, \</span>
 <span class="s2">    label TEXT, \</span>
@@ -90,14 +74,11 @@ the application-specific schema.</p>
 <span class="s2">    params TEXT, \</span>
 <span class="s2">    role_id INTEGER REFERENCES &lt;schema_name&gt;.role, \</span>
 <span class="s2">    ts TSVECTOR);&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;SELECT AddGeometryColumn(&#39;&lt;schema_name&gt;&#39;, &#39;tsearch&#39;, &#39;the_geom&#39;, &lt;srid&gt;, &#39;GEOMETRY&#39;, 2);&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE INDEX tsearch_ts_idx ON &lt;schema_name&gt;.tsearch USING gin(ts);&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;SELECT AddGeometryColumn(&#39;&lt;schema_name&gt;&#39;, &#39;tsearch&#39;, &#39;the_geom&#39;, &lt;srid&gt;, &#39;GEOMETRY&#39;, 2);&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE INDEX tsearch_ts_idx ON &lt;schema_name&gt;.tsearch USING gin(ts);&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;srid&gt;</span></code>, and <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code>  substituted as appropriate.</p>
 <p>Also make sure that the db user can <code class="docutils literal"><span class="pre">SELECT</span></code> in the <code class="docutils literal"><span class="pre">tsearch</span></code> table:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE &lt;schema_name&gt;.tsearch TO &quot;&lt;db_user&gt;&quot;;&#39;</span> &lt;db_name&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE &lt;schema_name&gt;.tsearch TO &quot;&lt;db_user&gt;&quot;;&#39;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;db_user&gt;</span></code>, and <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> substituded as appropriately.</p>
 </div>
 <div class="section" id="populate-the-full-text-search-table">
@@ -135,10 +116,7 @@ and the application&#8217;s default language match.</p>
 <div class="section" id="populate-with-the-themes">
 <h2>Populate with the themes<a class="headerlink" href="#populate-with-the-themes" title="Permalink to this headline">¶</a></h2>
 <p>A script is available to fill the full-text search table, for more information type:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">.build/venv/bin/theme2fts --help</span>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/theme2fts --help</span>
 </pre></div>
 <div class="section" id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
@@ -230,10 +208,7 @@ To make it accent-insensitive Postgres&#8217;s
 <a class="reference external" href="http://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
 can be used.</p>
 <p>First connect to the database:</p>
-<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
-  content: "$ ";
-}
-</style><span class="prompt">sudo -u postgres psql -d &lt;database&gt;</span>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d &lt;database&gt;</span>
 </pre><p>For that we need the Postgres unaccent extension and dictionary:</p>
 <div class="code sql highlight-python"><div class="highlight"><pre>CREATE EXTENSION unaccent;
 </pre></div>
@@ -294,13 +269,19 @@ configuration is named &#8216;french&#8217;.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="customize_ui.html"
-                        title="previous chapter">Customize the UI</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="querier.html"
-                        title="next chapter">Query builder (Querier)</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="customize_ui.html" title="previous chapter">Customize the UI</a></li>
+      <li>Next: <a href="querier.html" title="next chapter">Query builder (Querier)</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -330,16 +311,16 @@ configuration is named &#8216;french&#8217;.</p>
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="../_sources/integrator/fulltext_search.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     
     <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 
