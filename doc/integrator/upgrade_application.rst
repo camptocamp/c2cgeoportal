@@ -429,9 +429,9 @@ of usage:
       BEGIN
       _cleangeomtype := initcap(lower(_geomtype));
       EXECUTE ' ALTER TABLE ' || _tablename || ' ALTER COLUMN ' || _geomcolumn || ' SET DATA TYPE geometry(' || _cleangeomtype || ', ' || _srid || ')';
-      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_dims_geom ';
-      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_geotype_geom ';
-      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_srid_geom ';
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_dims_' || _geomcolumn;
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_geotype_' || _geomcolumn;
+      EXECUTE ' ALTER TABLE ' || _tablename || ' DROP CONSTRAINT IF EXISTS enforce_srid_' || _geomcolumn;
       END
       $$
       LANGUAGE PLPGSQL;
@@ -445,11 +445,22 @@ You need to create the ``migrategeomtopostgis2`` function first (simply copy
 and input the function definition above in your terminal), then execute the
 ``select`` (adapted to your need).
 
-If the following constraints dont exist, ``enforce_dims_geom``,
-``enforce_geotype_geom`` or ``enforce_srid_geom``, the query will output some
-``NOTICE``, which may mean you have used other names for your constraints, so you
-should have a look at the corresponding tables and remove the constraints
-manually.
+If the following constraints do not exist, ``enforce_dims_<geometry_column>``,
+``enforce_geotype_<geometry_column>`` or ``enforce_srid_<geometry_column>``,
+the query will output some ``NOTICE``, which may mean you have used other
+names for your constraints, so you should have a look at the corresponding
+tables and remove the constraints manually.
+
+If you have created views depending on the modified table, you need to drop
+and recreate all the related views.
+
+Here are some helper queries to generate .sql files containing the views DROP
+and CREATE SQL queries:
+
+   .. code:: sql
+
+      copy ( select 'CREATE OR REPLACE VIEW ' || schemaname || '.' || viewname || ' AS ' || regexp_replace(definition,E'[\\n\\r]+', ' ', 'g') from pg_catalog.pg_views where schemaname IN ('schema1','schema2','schema3') ) to '/tmp/view_create.sql';
+      copy ( select 'DROP VIEW ' || schemaname || '.' || viewname || ' CASCADE;' from pg_catalog.pg_views where schemaname IN ('schema1','schema2','schema3') ) to '/tmp/view_drop.sql';
 
 
 Test and commit
