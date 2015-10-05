@@ -58,6 +58,15 @@ then
     fi
 fi
 
+if [ ${DO_TAG} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
+then
+    echo == Add tag ==
+
+    TAG_NAME=0.0.`git show-ref --head --hash -`
+    git tag ${TAG_NAME}
+    git push origin ${TAG_NAME}
+fi
+
 if [ ${DOC} == true ]
 then
     echo == Build the doc ==
@@ -72,13 +81,4 @@ then
     git add ${TRAVIS_BRANCH}
     git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
     git push origin gh-pages
-fi
-
-if [ ${DO_TAG} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
-then
-    echo == Add tag ==
-
-    TAG_NAME=0.0.`git show-ref --head --hash -`
-    git tag ${TAG_NAME}
-    git push origin ${TAG_NAME}
 fi
