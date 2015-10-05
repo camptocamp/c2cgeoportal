@@ -204,7 +204,10 @@ class TestFunctionalities(TestCase):
                 },
                 "available_in_templates": ["__test_s", "__test_a"],
             },
-            "mapserverproxy": {"mapserv_url": mapserv_url},
+            "mapserverproxy": {
+                "mapserv_url": mapserv_url,
+                "geoserver": False,
+            },
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)

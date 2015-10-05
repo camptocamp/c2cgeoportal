@@ -246,7 +246,10 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
-            "mapserverproxy": {"mapserv_url": mapserv_url},
+            "mapserverproxy": {
+                "mapserv_url": mapserv_url,
+                "geoserver": False,
+            },
         })
         request.params = {"map": os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -565,10 +568,13 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
-            "mapserverproxy": {"mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "c2cgeoportal_test.map"
-            ))}
+            "mapserverproxy": {
+                "mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "c2cgeoportal_test.map"
+                )),
+                "geoserver": False,
+            }
         })
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
@@ -771,7 +777,10 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings.update({
-            "mapserverproxy": {"mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"]},
+            "mapserverproxy": {
+                "mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
+                "geoserver": False,
+            },
         })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
@@ -794,7 +803,10 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings.update({
-            "mapserverproxy": {"external_mapserv_url": request.registry.settings["mapserverproxy"]["mapserv_url"]},
+            "mapserverproxy": {
+                "external_mapserv_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
+                "geoserver": False,
+            },
         })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
@@ -817,7 +829,10 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings.update({
-            "mapserverproxy": {"external_mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"]},
+            "mapserverproxy": {
+                "external_mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
+                "geoserver": False,
+            },
         })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
@@ -926,3 +941,15 @@ class TestMapserverproxyView(TestCase):
         ))
         # just pass in the log messagse
         response = MapservProxy(request).proxy()
+
+    def test_geoserver(self):
+        from c2cgeoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_getcap_request()
+        request.settings["mapserverproxy"]["geoserver"] = True
+        request.params.update(dict(
+            service="wms", version="1.1.1", request="getcapabilities",
+        ))
+        response = MapservProxy(request).proxy()
+
+        self.assertFalse((response.body).find("<Name>testpoint_protected</Name>") > 0)

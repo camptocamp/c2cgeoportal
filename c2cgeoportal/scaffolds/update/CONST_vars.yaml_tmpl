@@ -177,6 +177,9 @@ vars:
         # external_mapserv_wfs_url parameter
         #external_mapserv_wfs_url:
 
+        # Using Geoserver as backend?
+        geoserver: false
+
     tinyowsproxy:
         # URL to internal TinyOWS instance
         tinyows_url: http://localhost/{instanceid}/tinyows
