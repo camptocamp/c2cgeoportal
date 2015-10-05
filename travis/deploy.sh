@@ -67,6 +67,7 @@ then
     git checkout gh-pages
 
     mkdir -p ${TRAVIS_BRANCH}
+    rm -rf master/*
     mv doc/_build/html/* ${TRAVIS_BRANCH}
     git add ${TRAVIS_BRANCH}
     git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
