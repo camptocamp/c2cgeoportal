@@ -36,6 +36,7 @@ from pyramid.interfaces import IStaticURLInfo
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
+import mimetypes
 
 from papyrus.renderers import GeoJSON, XSD
 import simplejson as json
@@ -108,22 +109,24 @@ def add_interface(
         add_interface_senchatouch(config, interface_name, **kwargs)
 
     elif interface_type == INTERFACE_TYPE_NGEO:
-        if interface_name is None:
-            add_interface_ngeo(
-                config,
-                interface_name="main",
-                route_name="home",
-                route="/",
-                renderer="index.html",
-            )
-        else:
+        if interface_name is None or interface_name == "main":
+            interface_name = "main"
             add_interface_ngeo(
                 config,
                 interface_name=interface_name,
-                route_name=interface_name,
-                route="/%s" % interface_name,
+                route_name="root",
+                route="/",
                 renderer="/%s.html" % interface_name,
             )
+        route = "/%s" % interface_name
+
+        add_interface_ngeo(
+            config,
+            interface_name=interface_name,
+            route_name=interface_name,
+            route=route,
+            renderer="/%s.html" % interface_name,
+        )
 
 
 def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: nocover
@@ -242,6 +245,8 @@ def add_interface_senchatouch(config, interface_name, package=None):  # pragma: 
         },
     )
 
+ngeo_static_init = False
+
 
 def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: nocover
     # Cannot be at the header to don't load the model too early
@@ -275,8 +280,30 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         renderer=renderer
     )
 
+    global ngeo_static_init
+    if not ngeo_static_init:
+        add_static_view_ngeo(config)
+        ngeo_static_init = True
+
+
+def add_static_view_ngeo(config):  # pragma: nocover
+    """ Add the project static view for ngeo """
+    package = config.get_settings()["package"]
+    _add_static_view(config, "proj-ngeo", "%s:static-ngeo" % package)
+    config.override_asset(
+        to_override="c2cgeoportal:project/",
+        override_with="%s:static-ngeo/" % package
+    )
+    config.add_static_view(
+        name=package,
+        path="%s:static" % package,
+        cache_max_age=int(config.get_settings()["default_max_age"])
+    )
+
     config.add_static_view("node_modules", config.get_settings().get("node_modules_path"))
     config.add_static_view("closure", config.get_settings().get("closure_library_path"))
+
+    mimetypes.add_type("text/css", ".less")
 
 
 def add_admin_interface(config):
@@ -290,23 +317,12 @@ def add_admin_interface(config):
 
 
 def add_static_view(config):
-    """ Add the project static view """
+    """ Add the project static view for CGXP """
     package = config.get_settings()["package"]
     _add_static_view(config, "proj", "%s:static" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
         override_with="%s:static/" % package
-    )
-    # Add the ngeo static view
-    _add_static_view(config, "proj-ngeo", "%s:static-ngeo" % package)
-    config.override_asset(
-        to_override="c2cgeoportal:project/",
-        override_with="%s:static-ngeo/" % package
-    )
-    config.add_static_view(
-        name=package,
-        path="%s:static" % package,
-        cache_max_age=int(config.get_settings()["default_max_age"])
     )
 
 
