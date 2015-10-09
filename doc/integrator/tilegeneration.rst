@@ -189,10 +189,10 @@ In the ``vars_<project>.yaml`` define ``tiles_url`` to something like, for S3 us
 .. code:: yaml
 
     tiles_url:
-    - http://a.tiles.${host}/
-    - http://b.tiles.${host}/
-    - http://c.tiles.${host}/
-    - http://d.tiles.${host}/
+    - http://a.tiles.{host}/
+    - http://b.tiles.{host}/
+    - http://c.tiles.{host}/
+    - http://d.tiles.{host}/
 
 The configuration of the ``tiles`` vhost will be done by the sysadmins.
 
@@ -257,4 +257,4 @@ the following:
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${host}
+    subdomain_url_template: http://%(sub)s.{host}

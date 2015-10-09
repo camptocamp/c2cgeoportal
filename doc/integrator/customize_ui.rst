@@ -227,7 +227,7 @@ the following:
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${host}
+    subdomain_url_template: http://%(sub)s.{host}
 
 
 Advanced configuration examples
