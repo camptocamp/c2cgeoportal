@@ -60,15 +60,22 @@ the application.</li>
 <h3>Shared environement<a class="headerlink" href="#shared-environement" title="Permalink to this headline">¶</a></h3>
 <p>Located in <code class="docutils literal"><span class="pre">/var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span></code>.</p>
 <p>Only user <code class="docutils literal"><span class="pre">sigdev</span></code> may access this environment.  Developers must then prefix
-all the commands on this environment by <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">-u</span> <span class="pre">sigdev</span></code>.
-For instance to update the application:</p>
+all the commands on this environment by <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">-u</span> <span class="pre">sigdev</span></code>.</p>
+<p>To be able to access to GitHub you should use the https protocol.</p>
+<p>For instance to update the application:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
 <span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
-</pre></div>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you need to access to GitHub by using the ssh protocol you
+should add the sigdev key located in <code class="docutils literal"><span class="pre">/var/sig/.ssh/id_rsa.pub</span></code>
+as a deploy key of your project.</p>
+</div>
+</div>
 <div class="section" id="production-environment">
 <h3>Production environment<a class="headerlink" href="#production-environment" title="Permalink to this headline">¶</a></h3>
 <p>To deploy the application to the production environment,
