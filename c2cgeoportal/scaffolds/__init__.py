@@ -162,6 +162,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
             project = load(file("project.yaml", "r"))
             if "template_vars" in project:
                 for key, value in project["template_vars"].items():
-                    vars[key] = value
+                    vars[key] = value.encode("utf-8")
 
         return BaseTemplate.pre(self, command, output_dir, vars)

@@ -8,7 +8,7 @@
     "async": "~0.2.10"
   },
   "devDependencies": {
-    "angular": "1.4.3",
+    "angular": "1.4.7",
     "angular-gettext": "2.1.0",
     "angular-gettext-tools": "2.1.2",
     "bootstrap": "^3.3.0",

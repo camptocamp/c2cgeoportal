@@ -60,6 +60,10 @@ MAGENTA = 5
 CYAN = 6
 WHITE = 7
 
+DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+DEFAULT_C2CGEOPORTAL_URL = \
+    "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+
 
 def _colorize(text, color):
     return "\x1b[01;3%im%s\x1b[0m" % (color, text)
@@ -129,12 +133,12 @@ def _fill_arguments(command):
     parser.add_argument(
         "--index-url",
         help="An alternate camptocamp python package index URL",
-        default="http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+        default=DEFAULT_INDEX_URL
     )
     parser.add_argument(
         "--c2cgeoportal-url",
         help="An alternate c2cgeoportal egg/wheel URL (with arguments %(package) %(version)s)",
-        default="http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+        default=DEFAULT_C2CGEOPORTAL_URL
     )
 
     if command == "help":
