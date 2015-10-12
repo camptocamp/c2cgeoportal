@@ -4,7 +4,7 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.0.0
 =============
 
-This changelog consider that you don't actually use an ngeo interface and you
+This changelog considers that you don't currently use an ngeo interface and you
 replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:

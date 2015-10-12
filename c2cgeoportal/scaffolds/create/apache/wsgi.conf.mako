@@ -20,15 +20,11 @@ WSGIPassAuthorization On
 
 
 % for interface in interfaces:
-% if interface == "main":
 <%
-path = apache_entry_point
+path = apache_entry_point \
+    if interface == "main" \
+    else "%s%s/" % (apache_entry_point, interface)
 %>
-% else:
-<%
-path = "%s%s/" % (apache_entry_point, interface)
-%>
-% endif
 RewriteRule ^${path}?$ /${instanceid}/wsgi/${interface} [PT]
 RewriteRule ^${path}theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
 % endfor

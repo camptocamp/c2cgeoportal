@@ -9,7 +9,7 @@ LANGUAGES ?= en fr de
 # Enable CGXP build
 CGXP ?= TRUE
 # Enable sencha touch build
-MOBILE ?= TRUE
+MOBILE ?= FALSE
 # Enable ngeo build
 NGEO ?= TRUE
 # Use TileCloud chain
