@@ -24,7 +24,6 @@ replace your sencha touch interface by an ngeo interface.
 2. Remove the no longer used files:
 
     git rm lingua.cfg
-    git rm -r CONST_requirements_windows.txt
     git rm -r {{package}}/static/mobile/
 
 3. In the `vars_{{package}}.yaml` file:
