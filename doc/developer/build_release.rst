@@ -85,7 +85,7 @@ Checkout the code:
 Edit the ``doc/integrator/update_application.rst`` file to change the default version.
 
 Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_requirements.txt``.
+``c2cgeoportal/scaffolds/update/CONST_versions.txt``.
 
 
 Add and commit the changes:
@@ -93,7 +93,7 @@ Add and commit the changes:
 .. prompt:: bash
 
     git add doc/integrator/update_application.rst \
-        c2cgeoportal/scaffolds/update/CONST_requirements.txt
+        c2cgeoportal/scaffolds/update/CONST_versions.txt
     git commit -m "Update the default downloaded version.cfg"
 
 For each version we create a new branch (at the latest at the final release):
@@ -146,7 +146,7 @@ Checkout the code:
     git pull origin <version>
 
 Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_requirements.txt``.
+``c2cgeoportal/scaffolds/update/CONST_versions.txt``.
 
 Verify that the version in the ``setup.py`` is correct
 (as the ``<release>``).
@@ -155,7 +155,7 @@ Commit your changes:
 
 .. prompt:: bash
 
-    git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt
+    git add setup.py c2cgeoportal/scaffolds/update/CONST_versions.txt
     git commit -m "Do release <release>"
 
 Tag the new release:
