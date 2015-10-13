@@ -862,7 +862,13 @@ class UIMetadata(Base):
         "item_id", Integer,
         ForeignKey(_schema + ".treeitem.id"), nullable=False
     )
-    item = relationship("TreeItem", backref="ui_metadata")
+    item = relationship(
+        "TreeItem",
+        backref=backref(
+            "ui_metadata",
+            cascade="save-update,merge,delete",
+        ),
+    )
 
     def __init__(self, name="", value=""):
         self.name = name
@@ -890,7 +896,13 @@ class WMTSDimension(Base):
         "layer_id", Integer,
         ForeignKey(_schema + ".layer_wmts.id"), nullable=False
     )
-    layer = relationship("LayerWMTS", backref="dimensions")
+    layer = relationship(
+        "LayerWMTS",
+        backref=backref(
+            "dimensions",
+            cascade="save-update,merge,delete",
+        ),
+    )
 
     def __init__(self, name="", value=""):
         self.name = name
