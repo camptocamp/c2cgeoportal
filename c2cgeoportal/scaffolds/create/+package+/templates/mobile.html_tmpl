@@ -5,20 +5,20 @@
    closure_library_path = settings.get('closure_library_path')
 %>\
 <!DOCTYPE html>
-<html lang="\{\{mainCtrl.lang\}\}" ng-app="app" ng-controller="MainController as mainCtrl">
+<html lang="\{\{mobileCtrl.lang\}\}" ng-app="app" ng-controller="MobileController as mobileCtrl">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 % if debug:
-    <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/{{package}}.less')}" type="text/css">
+    <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/mobile.less')}" type="text/css">
     <script src="${request.static_url('%s/less/dist/less.min.js' % node_modules_path)}"></script>
 % else:
-    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/build.min.css')}" type="text/css">
+    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/mobile.min.css')}" type="text/css">
 % endif
-    <title translate>The {{project}} Web GIS</title>
+    <title translate>The {{project}} mobile Web GIS</title>
   </head>
   <body>
-    <gmf-map gmf-map-map="mainCtrl.map"></gmf-map>
+    <gmf-map gmf-map-map="mobileCtrl.map"></gmf-map>
 
 % if debug:
     <script>
@@ -34,10 +34,10 @@
     <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % node_modules_path)}"></script>
     <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
     <script src="${request.route_url('deps.js')}"></script>
-    <script src="${request.static_url('{{package}}:static-ngeo/js/main.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
     <script src="${request.static_url('{{package}}:static-ngeo/build/templatecache.js')}"></script>
 % else:
-    <script src="${request.static_url('{{package}}:static-ngeo/build/build.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/build/mobile.js')}"></script>
 % endif
   </body>
 </html>

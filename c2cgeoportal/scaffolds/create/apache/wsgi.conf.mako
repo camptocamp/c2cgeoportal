@@ -18,16 +18,22 @@ RewriteEngine on
 # http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
 WSGIPassAuthorization On
 
+
+% for interface in interfaces:
+<%
+path = apache_entry_point \
+    if interface == "main" \
+    else "%s%s/" % (apache_entry_point, interface)
+%>
+RewriteRule ^${path}?$ /${instanceid}/wsgi/${interface} [PT]
+RewriteRule ^${path}theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
+% endfor
+
 RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/ [PT]
 RewriteRule ^${apache_entry_point}api.js$ /${instanceid}/wsgi/api.js [PT]
 RewriteRule ^${apache_entry_point}xapi.js$ /${instanceid}/wsgi/xapi.js [PT]
 RewriteRule ^${apache_entry_point}apihelp.html$ /${instanceid}/wsgi/apihelp.html [PT]
 RewriteRule ^${apache_entry_point}xapihelp.html$ /${instanceid}/wsgi/xapihelp.html [PT]
-RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/theme/$1 [PT]
-RewriteRule ^${apache_entry_point}routing/?$ /${instanceid}/wsgi/routing [PT]
-RewriteRule ^${apache_entry_point}edit/?$ /${instanceid}/wsgi/edit [PT]
-RewriteRule ^${apache_entry_point}mobile$ ${apache_entry_point}mobile/ [R]
-RewriteRule ^${apache_entry_point}mobile/(.*)$ /${instanceid}/wsgi/mobile/$1 [PT]
 RewriteRule ^${apache_entry_point}admin/?$ /${instanceid}/wsgi/admin/ [PT]
 RewriteRule ^${apache_entry_point}search$ /${instanceid}/wsgi/fulltextsearch [PT]
 RewriteRule ^${apache_entry_point}s/(.*)$ /${instanceid}/wsgi/short/$1 [PT]

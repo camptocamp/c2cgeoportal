@@ -1,12 +1,12 @@
 /**
  * @fileoverview This file defines the controller class for the application's
- * main controller (created using "ng-controller" in the page).
+ * mobile controller (created using "ng-controller" in the page).
  *
  * In particular, this controller creates the OpenLayers map, and makes it
  * available in the controller for use from other parts (directives) of the
  * application. It also defines the behavior of elements of the HTML page.
  */
-goog.provide('app.MainController');
+goog.provide('app.MobileController');
 
 goog.require('app');
 goog.require('ol.Map');
@@ -20,7 +20,7 @@ goog.require('ol.source.OSM');
  * @export
  * @ngInject
  */
-app.MainController = function() {
+app.MobileController = function() {
 
   /**
    * @type {string}
@@ -44,4 +44,4 @@ app.MainController = function() {
     })
   });
 };
-app.module.controller('MainController', app.MainController);
+app.module.controller('MobileController', app.MobileController);

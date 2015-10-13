@@ -96,6 +96,13 @@ vars:
     - fr
     - de
 
+    # All the application interfaces (except Sencha touch), used to create the apache rewrite rules
+    interfaces:
+    - main
+    - mobile
+    - edit
+    - routing
+
     # The dogpile.cache configuration.
     #
     # Do not touch if unsure.
