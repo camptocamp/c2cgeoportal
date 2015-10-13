@@ -587,6 +587,17 @@ Role.configure(include=field_order)
 
 # User
 User = FieldSet(models.User)
+
+
+def _get_roles(parent):  # pragma: no cover
+    return [
+        (role.name, role.name)
+        for role in parent.session.query(models.Role).all()
+    ]
+User.role_name.set(
+    renderer=SelectFieldRenderer,
+    options=_get_roles,
+)
 password = DblPasswordField(User, User._password)
 User.append(password)
 field_order = [
