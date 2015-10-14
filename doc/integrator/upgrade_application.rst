@@ -29,6 +29,23 @@ Where ``<makefile>`` is your user make file (``<user>.mk``).
 Easy upgrading an application
 -----------------------------
 
+.. note::
+
+   To upgrade from version 1.6 to version 2.0 you should update the
+   ``CONST_requirement.txt`` file::
+
+   .. code:: diff
+
+      \- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+      + --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
+
+   And run:
+
+   .. prompt:: bash
+
+      export UPGRADE_ARGS='--index-url https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal --c2cgeoportal-url https://github.com/camptocamp/c2cgeoportal/releases/download/%\(version\)/%\(package\)-%\(version\)-py2.py3-none-any.whl'
+
+
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
 
@@ -37,13 +54,14 @@ add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
 .. note:: For Windows:
 
-   You should add ``UPGRADE_ARGS ?= --windows`` in your ``<package>.mk`` file.
+   You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
 
 Than just run:
 
 .. prompt:: bash
 
-   VERSION=<target_version> make -f <makefile> upgrade
+   export VERSION=<target_version>
+   make -f <makefile> upgrade
 
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to

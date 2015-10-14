@@ -60,9 +60,9 @@ MAGENTA = 5
 CYAN = 6
 WHITE = 7
 
-DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
+DEFAULT_INDEX_URL = "https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
-    "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+    "https://camptocamp.github.io/c2cgeoportal/%\(package\)-%\(version\)-py2.py3-none-any.whl"
 
 
 def _colorize(text, color):
@@ -177,14 +177,12 @@ class C2cTool:
 
     def print_step(self, step, intro="To continue type:"):
         print(intro)
-        print(_colorize("VERSION=%s make -f %s upgrade%i", YELLOW) % (
-            self.options.version,
+        print(_colorize("make -f %s upgrade%i", YELLOW) % (
             self.options.file if self.options.file is not None else "<user.mk>",
             step
         ))
 
     def get_project(self):
-        check_call(["make", "-f", self.options.file, "project.yaml"])
         if not path.isfile("project.yaml"):
             print("Unable to find the required 'project.yaml' file.")
             exit(1)
@@ -376,8 +374,6 @@ class C2cTool:
 
         if path.isfile("changelog.diff"):
             unlink("changelog.diff")
-        if path.exists("/tmp/%s" % self.project["project_folder"]):
-            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
 
         check_call(["make", "-f", self.options.file, "build"])
 
@@ -403,7 +399,10 @@ class C2cTool:
             self.print_step(3, intro="Correct them, then type:")
             exit(1)
 
-        # Required to remove from the Git stage the ignored file when we launch the step again
+        if path.exists("/tmp/%s" % self.project["project_folder"]):
+            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
+
+        # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
         check_call(["git", "add", "-A"])
