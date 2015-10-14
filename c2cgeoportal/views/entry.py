@@ -91,10 +91,14 @@ class Entry(object):
         if sparams:  # pragma: no cover
             url += urllib.urlencode(sparams) + "&"
 
-        return self._wms_getcap_cached(url)
+        return self._wms_getcap_cached(
+            url, self._get_role_id() if self.mapserver_settings["geoserver"] else None
+        )
 
     @cache_region.cache_on_arguments()
-    def _wms_getcap_cached(self, url):
+    def _wms_getcap_cached(self, url, role_id):
+        """ role_id is just for cache """
+
         errors = set()
         wms = None
 
@@ -108,11 +112,19 @@ class Entry(object):
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
-        h = dict(self.request.headers)
+        headers = dict(self.request.headers)
+
+        role = None if self.request.user is None else self.request.user.role
+
+        # Add headers for Geoserver
+        if self.mapserver_settings["geoserver"] and self.request.user is not None:
+            headers["sec-username"] = self.request.user.username
+            headers["sec-roles"] = role.name
+
         if urlsplit(url).hostname != "localhost":  # pragma: no cover
-            h.pop("Host")
+            headers.pop("Host")
         try:
-            resp, content = http.request(url, method="GET", headers=h)
+            resp, content = http.request(url, method="GET", headers=headers)
         except:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url %s" % url)
             return None, errors
@@ -233,7 +245,8 @@ class Entry(object):
                 l["legendImage"] = get_url(layer.legend_image, self.request, errors=errors)
 
             if layer.layer_type == "internal WMS":
-                self._fill_internal_wms(l, layer, wms, wms_layers, errors)
+                if not self._fill_internal_wms(l, layer, wms, wms_layers, errors):
+                    return None, set()
                 errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
@@ -242,7 +255,8 @@ class Entry(object):
         elif isinstance(layer, LayerInternalWMS):
             l["type"] = "internal WMS"
             l["layers"] = layer.layer
-            self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2)
+            if not self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2):
+                return None, set()
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
         elif isinstance(layer, LayerExternalWMS):
             l["type"] = "external WMS"
@@ -355,9 +369,13 @@ class Entry(object):
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
-            errors.add(
-                "The layer '%s' is not defined in WMS capabilities" % wmslayer
-            )
+            if self.mapserver_settings["geoserver"]:
+                return False
+            else:
+                errors.add(
+                    "The layer '%s' is not defined in WMS capabilities" % wmslayer
+                )
+        return True
 
     def _fill_external_wms(self, l, layer, errors, version=1):
         self._fill_wms(l, layer, version=version)
@@ -499,12 +517,13 @@ class Entry(object):
                             self._is_internal_wms(tree_item)):
                         l, l_errors = self._layer(tree_item, **kwargs)
                         errors |= l_errors
-                        if depth < min_levels:
-                            errors.add("The Layer '%s' is under indented (%i/%i)." % (
-                                path + "/" + tree_item.name, depth, min_levels
-                            ))
-                        else:
-                            children.append(l)
+                        if l is not None:
+                            if depth < min_levels:
+                                errors.add("The Layer '%s' is under indented (%i/%i)." % (
+                                    path + "/" + tree_item.name, depth, min_levels
+                                ))
+                            else:
+                                children.append(l)
                     else:
                         errors.add(
                             "Layer '%s' cannot be in the group '%s' (internal/external mix)." %
@@ -542,7 +561,9 @@ class Entry(object):
         return [l.name for l in query.all()]
 
     @cache_region.cache_on_arguments()
-    def _wms_layers(self):
+    def _wms_layers(self, role_id):
+        """ role_id is just for cache """
+
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
             self.mapserver_settings["mapserv_url"]
@@ -564,7 +585,9 @@ class Entry(object):
         """
         errors = set()
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers()
+        wms, wms_layers = self._wms_layers(
+            role_id if self.mapserver_settings["geoserver"] else None
+        )
 
         themes = DBSession.query(Theme)
         themes = themes.filter(Theme.public.is_(True))
@@ -664,7 +687,8 @@ class Entry(object):
                         item, time=time, wms=wms, wms_layers=wms_layers
                     )
                     errors |= l_errors
-                    children.append(l)
+                    if l is not None:
+                        children.append(l)
         return children, errors
 
     def _get_wfs_url(self):
@@ -879,10 +903,12 @@ class Entry(object):
             "permalink_themes": self.request.matchdict["themes"]
         })
 
-    def get_cgxp_viewer_vars(self):
-        role_id = None if self.request.user is None or self.request.user.role is None else \
+    def _get_role_id(self):
+        return None if self.request.user is None or self.request.user.role is None else \
             self.request.user.role.id
 
+    def get_cgxp_viewer_vars(self):
+        role_id = self._get_role_id()
         interface = self.request.interface_name
 
         themes, errors = self._themes(role_id, interface)
@@ -1198,7 +1224,9 @@ class Entry(object):
     def _get_group(self, group, role_id, interface, version):
         time = TimeInformation()
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers()
+        wms, wms_layers = self._wms_layers(
+            role_id if self.mapserver_settings["geoserver"] else None
+        )
         lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
         return self._group(
             lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers, version=version
