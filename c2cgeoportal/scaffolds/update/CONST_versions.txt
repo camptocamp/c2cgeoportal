@@ -6,7 +6,7 @@ Chameleon==2.22
 couchdbkit==0.6.5
 dogpile.cache==0.5.6
 dogpile.core==0.4.1
-fa.jquery==0.9.5
+https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 fanstatic==0.16
 https://github.com/camptocamp/formalchemy/archive/1da70d8a906af08d49d6a0fd858cfea6c20afacb.zip#egg=FormAlchemy
 GeoAlchemy2==0.2.4
