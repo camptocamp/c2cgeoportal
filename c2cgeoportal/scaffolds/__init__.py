@@ -31,6 +31,7 @@
 import re
 from os import path
 from yaml import load
+from six import string_types
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
@@ -162,6 +163,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
             project = load(file("project.yaml", "r"))
             if "template_vars" in project:
                 for key, value in project["template_vars"].items():
-                    vars[key] = value.encode("utf-8")
+                    if isinstance(value, string_types):
+                        vars[key] = value.encode("utf-8")
 
         return BaseTemplate.pre(self, command, output_dir, vars)
