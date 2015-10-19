@@ -209,6 +209,8 @@ def _create_class(table, exclude_properties=None):
 
     if isinstance(exclude_properties, basestring):
         exclude_properties = [p.strip() for p in exclude_properties.split(",")]
+    elif exclude_properties is None:
+        exclude_properties = []
 
     cls = type(
         str(table.name.capitalize()),
@@ -220,7 +222,7 @@ def _create_class(table, exclude_properties=None):
     )
 
     for col in table.columns:
-        if col.foreign_keys:
+        if col.foreign_keys and col.name not in exclude_properties:
             _add_association_proxy(cls, col)
 
     return cls
