@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
@@ -28,27 +27,45 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Move exclude_properties from LayerV1 to Layer
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 32527659d57b
+Revises: 5109242131ce
+Create Date: 2015-10-19 16:31:24.894791
 """
 
 from alembic import op, context
+from sqlalchemy import Column
+from sqlalchemy.types import Unicode
 
 # revision identifiers, used by Alembic.
-revision = "${up_revision}"
-down_revision = "${down_revision}"
+revision = "32527659d57b"
+down_revision = "5109242131ce"
 
 
 def upgrade():
     schema = context.get_context().config.get_main_option("schema")
 
-    ${upgrades if upgrades else "# Instructions"}
+    op.add_column("layer", Column("exclude_properties", Unicode), schema=schema)
+    op.execute(
+        "UPDATE %(schema)s.layer as l1 SET exclude_properties = l2.exclude_properties "
+        "FROM %(schema)s.layerv1 as l2 "
+        "WHERE l1.id = l2.id" % {
+            "schema": schema
+        }
+    )
+    op.drop_column("layerv1", "exclude_properties", schema=schema)
 
 
 def downgrade():
     schema = context.get_context().config.get_main_option("schema")
 
-    ${downgrades if downgrades else "# Instructions"}
+    op.add_column("layerv1", Column("exclude_properties", Unicode), schema=schema)
+    op.execute(
+        "UPDATE %(schema)s.layerv1 as l1 SET exclude_properties = l2.exclude_properties "
+        "FROM %(schema)s.layer as l2 "
+        "WHERE l1.id = l2.id" % {
+            "schema": schema
+        }
+    )
+    op.drop_column("layer", "exclude_properties", schema=schema)
