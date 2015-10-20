@@ -43,7 +43,7 @@ ifeq ($(DEPLOY), TRUE)
 DEFAULT_BUILD_RULES += test-packages-deploy
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
+DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/mapcache.xml apache/tiles.conf
 endif
 ifeq ($(MOBLE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
@@ -238,6 +238,7 @@ SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESS
 PRINT_BASE_DIR ?= print
 PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
+PRINT_OUTPUT_WAR =
 PRINT_TMP ?= /tmp
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
@@ -245,6 +246,7 @@ TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
 TOMCAT_START_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) start
 endif
 ifeq ($(PRINT_VERSION), 3)
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
 PRINT_REQUIREMENT += \
@@ -258,6 +260,7 @@ PRINT_REQUIREMENT += \
 endif
 
 ifeq ($(PRINT_VERSION), 2)
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
 PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
@@ -355,6 +358,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 .PHONY: clean
 clean: template-clean
 	rm -f .build/*.timestamp
+	rm -f apache/mapcache.xml apache/tiles.conf
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
@@ -769,6 +773,13 @@ print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
 	touch $@
 
+# Tile cloud chain
+apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --generate-mapcache-config
+
+apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --generate-apache-config
+
 # Apache config
 .PHONY: apache
 apache: .build/apache.timestamp
@@ -784,11 +795,12 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		$(TEMPLATES_FILES) \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 		.build/requirements.timestamp \
-		$(PRINT_OUTPUT)/$(PRINT_WAR) \
+		$(PRINT_OUTPUT_WAR) \
 		development.ini production.ini
 	$(APACHE_GRACEFUL)
 	touch $@
 
+# Upgrade
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
 UPGRADE_ARGS ?=
 

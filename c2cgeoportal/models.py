@@ -547,6 +547,7 @@ class Layer(TreeItem):
     )
     public = Column(Boolean, default=True, label=_(u"Public"))
     geo_table = Column(Unicode, label=_(u"Related Postgres table"))
+    exclude_properties = Column(Unicode, label=_(u"Attributes to exclude"))
 
     def __init__(self, name=u"", public=True):
         TreeItem.__init__(self, name=name)
@@ -596,7 +597,6 @@ class LayerV1(Layer):  # Deprecated in v2
     disclaimer = Column(Unicode, label=_(u"Disclaimer"))
     # data attribute field in which application can find a human identifiable name or number
     identifier_attribute_field = Column(Unicode, label=_(u"Identifier attribute field"))
-    exclude_properties = Column(Unicode, label=_(u"Attributes to exclude"))
     time_mode = Column(Enum(
         "disabled",
         "single",
@@ -651,8 +651,9 @@ class LayerInternalWMS(Layer):
         native_enum=False), default="slider", nullable=True,
         label=_(u"Time widget"))
 
-    def __init__(self, name=u"", public=True, icon=u""):
+    def __init__(self, name=u"", layer=u"", public=True, icon=u""):
         Layer.__init__(self, name=name, public=public)
+        self.layer = layer
 
 
 class LayerExternalWMS(Layer):
@@ -867,7 +868,13 @@ class UIMetadata(Base):
         "item_id", Integer,
         ForeignKey(_schema + ".treeitem.id"), nullable=False
     )
-    item = relationship("TreeItem", backref="ui_metadata")
+    item = relationship(
+        "TreeItem",
+        backref=backref(
+            "ui_metadata",
+            cascade="save-update,merge,delete",
+        ),
+    )
 
     def __init__(self, name="", value="", item=None):
         self.name = name
@@ -896,7 +903,13 @@ class WMTSDimension(Base):
         "layer_id", Integer,
         ForeignKey(_schema + ".layer_wmts.id"), nullable=False
     )
-    layer = relationship("LayerWMTS", backref="dimensions")
+    layer = relationship(
+        "LayerWMTS",
+        backref=backref(
+            "dimensions",
+            cascade="save-update,merge,delete",
+        ),
+    )
 
     def __init__(self, name="", value="", layer=None):
         self.name = name

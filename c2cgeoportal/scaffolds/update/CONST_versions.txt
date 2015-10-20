@@ -7,7 +7,7 @@ Chameleon==2.22
 couchdbkit==0.6.5
 dogpile.cache==0.5.6
 dogpile.core==0.4.1
-fa.jquery==0.9.5
+https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 fanstatic==0.16
 FormAlchemy==1.4.3
 GeoAlchemy2==0.2.5
@@ -17,7 +17,7 @@ http-parser==0.8.3
 httplib2==0.9.1
 isodate==0.5.4
 Jinja2==2.8
-js.jqgrid==4.1.0
+js.jqgrid==4.4.4
 js.jquery==1.7.1
 js.jquery-form==3.9
 js.jquery-jgrowl==1.4.2

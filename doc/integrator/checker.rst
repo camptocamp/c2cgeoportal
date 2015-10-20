@@ -77,7 +77,7 @@ To add a host:
         check_collector:
             hosts:
             - display: Child
-              url: http://${host}/child/wsgi
+              url: http://{host}/child/wsgi
 
     update_paths:
     - check_collector.hosts

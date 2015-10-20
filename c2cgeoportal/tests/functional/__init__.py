@@ -145,7 +145,10 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     )
     mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
     request = tests.create_dummy_request({
-        "mapserverproxy": {"mapserv_url": mapserv},
+        "mapserverproxy": {
+            "mapserv_url": mapserv,
+            "geoserver": False,
+        },
         "functionalities": {
             "registered": {},
             "anonymous": {},
