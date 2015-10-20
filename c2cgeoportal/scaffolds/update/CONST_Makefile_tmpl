@@ -38,7 +38,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
+DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/mapcache.xml apache/tiles.conf
 endif
 ifeq ($(MOBLE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
@@ -349,6 +349,7 @@ checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 .PHONY: clean
 clean: template-clean
 	rm -f .build/*.timestamp
+	rm -f apache/mapcache.xml apache/tiles.conf
 	rm -rf $(OUTPUT_DIR)/
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
@@ -753,6 +754,13 @@ print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
 	touch $@
 
+# Tile cloud chain
+apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --generate-mapcache-config
+
+apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --generate-apache-config
+
 # Apache config
 .PHONY: apache
 apache: .build/apache.timestamp
@@ -773,6 +781,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	$(APACHE_GRACEFUL)
 	touch $@
 
+# Upgrade
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
 UPGRADE_ARGS ?=
 
