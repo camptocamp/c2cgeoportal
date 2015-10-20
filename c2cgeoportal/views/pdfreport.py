@@ -151,11 +151,12 @@ class PdfReport(Proxy):  # pragma: no cover
             mapserv_url,
             "&".join(["%s=%s" % i for i in {
                 "service": "WFS",
-                "version": "1.0.0",
+                "version": "1.1.0",
+                "outputformat": "gml3",
                 "request": "GetFeature",
                 "typeName": self.layername,
                 "featureid": self.layername + "." + id,
-                "srsName": srs
+                "srsName": "epsg:" + str(srs)
             }.items()])
         )
 
