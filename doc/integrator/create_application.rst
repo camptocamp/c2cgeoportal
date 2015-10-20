@@ -265,15 +265,15 @@ Don't miss to add your changes to git:
 
    and replace the lines::
 
-		<!-- <property name="cmd">
-			<value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
-		</property> -->
+        <!-- <property name="cmd">
+            <value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
+        </property> -->
 
    by those ones::
 
-		<property name="cmd">
-			<value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
-		</property>
+        <property name="cmd">
+            <value>C:\Program Files\ImageMagick-6.7.8-Q16\convert</value>
+        </property>
 
    with the right path to ``convert``.
 
