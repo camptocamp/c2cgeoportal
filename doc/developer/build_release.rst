@@ -190,27 +190,22 @@ Post release tasks
 
 When a new release or a new version is done you should do the following tasks:
 
- * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
-   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
- * Regenerate the pypi's index:
+* Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
+  to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+* Regenerate the pypi's index:
 
-.. prompt:: bash
+  .. prompt:: bash
 
-   ssh admin@c2cpc19.camptocamp.com
    curl 'http://pypi.camptocamp.net/internal-pypi/regenerate-index' --data '' \
        --max-time 1000
 
-Then:
+* Upgrade the demo in your home folder with ``c2ctool``.
+* Update the demo on the main folder with:
 
- * Upgrade the demo in your home folder with ``c2ctool``.
- * Update the demo on the main folder with:
-
-.. prompt:: bash
+  .. prompt:: bash
 
     sudo -u sigdev make -f demo.mk update
     sudo -u sigdev make -f demo.mk build
 
-Then:
-
- * Test the demo.
- * Sent a release email to the ``geomapfish@googlegroups.com`` and ``geospatial@lists.camptocamp.com`` mailing lists.
+* Test the demo.
+* Sent a release email to the ``geomapfish@googlegroups.com`` and ``geospatial@lists.camptocamp.com`` mailing lists.
