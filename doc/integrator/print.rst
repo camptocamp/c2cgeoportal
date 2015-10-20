@@ -169,8 +169,7 @@ by the templating. Than we should do:
 
   .. code:: make
 
-    PRINT2 = FALSE
-    PRINT3 = FALSE
+    PRINT_VERSION = NONE
 
 * Point to the parent print server by editing the following lines
   in the ``vars_<package>.yaml`` file:
@@ -181,7 +180,7 @@ by the templating. Than we should do:
         ...
         # For print proxy
         # This value mean that we use the parent print server
-        print_url: http://{host}:8080/print-c2cgeoportal-{parent_instanceid}/pdf/
+        print_url: http://{host}:8080/print-{parent_instanceid}/pdf/
 
 * If needed set the print templates used by anonymous user by adding the
   following in the application configuration (``vars_<package>.yaml``):
@@ -201,3 +200,8 @@ by the templating. Than we should do:
    In the user vars of children project,
    the ``parent_instanceid`` should be defined
    to make working the pair in the user dev environment.
+
+.. note::
+
+   This system works for print v2 but must be adapted for
+   print v3 (although that's the same idea).
