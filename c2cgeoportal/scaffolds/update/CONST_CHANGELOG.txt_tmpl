@@ -1,6 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.6
+=============
+
+1. Now the files `apache/mapcache.xml` and `apache/tiles.conf` will be generated automatically,
+   then you can remove your custom build rules. To disable it set in your Makefile:
+   `TILECLOUD_CHAIN ?= FALSE`.
+
+
 Version 1.6.5
 =============
 
