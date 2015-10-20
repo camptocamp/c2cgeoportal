@@ -542,6 +542,7 @@ class Layer(TreeItem):
     )
     public = Column(Boolean, default=True, label=_(u"Public"))
     geo_table = Column(Unicode, label=_(u"Related Postgres table"))
+    exclude_properties = Column(Unicode, label=_(u"Attributes to exclude"))
 
     def __init__(self, name=u"", public=True):
         TreeItem.__init__(self, name=name)
@@ -591,7 +592,6 @@ class LayerV1(Layer):
     disclaimer = Column(Unicode, label=_(u"Disclaimer"))
     # data attribute field in which application can find a human identifiable name or number
     identifier_attribute_field = Column(Unicode, label=_(u"Identifier attribute field"))
-    exclude_properties = Column(Unicode, label=_(u"Attributes to exclude"))
     time_mode = Column(Enum(
         "disabled",
         "single",
