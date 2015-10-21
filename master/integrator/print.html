@@ -185,8 +185,7 @@ removing the <code class="docutils literal"><span class="pre">print</span></code
 </pre></li>
 <li><p class="first">Deactivate the print compilation by adding the following lines
 in the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span class="n">PRINT2</span> <span class="o">=</span> <span class="n">FALSE</span>
-<span class="n">PRINT3</span> <span class="o">=</span> <span class="n">FALSE</span>
+<div class="code make highlight-python"><div class="highlight"><pre><span class="n">PRINT_VERSION</span> <span class="o">=</span> <span class="n">NONE</span>
 </pre></div>
 </div>
 </li>
@@ -196,7 +195,7 @@ in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yam
     ...
     # For print proxy
     # This value means that we use the parent print server
-    print_url: http://{host}:8080/print-c2cgeoportal-{parent_instanceid}/pdf/
+    print_url: http://{host}:8080/print-{parent_instanceid}/pdf/
 </pre></div>
 </div>
 </li>
@@ -217,6 +216,11 @@ following in the application configuration (<code class="docutils literal"><span
 <p class="first admonition-title">Note</p>
 <p class="last">In the user vars of children projects, the <code class="docutils literal"><span class="pre">parent_instanceid</span></code> should be
 defined so that it works in the user dev environment.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This system works for print v2 but must be adapted for
+print v3 (although that&#8217;s the same idea).</p>
 </div>
 </div>
 </div>

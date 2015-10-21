@@ -174,10 +174,10 @@ using the command:</p>
 </div></blockquote>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
 <div class="code yaml highlight-python"><div class="highlight"><pre>tiles_url:
-- http://a.tiles.${host}/
-- http://b.tiles.${host}/
-- http://c.tiles.${host}/
-- http://d.tiles.${host}/
+- http://a.tiles.{host}/
+- http://b.tiles.{host}/
+- http://c.tiles.{host}/
+- http://d.tiles.{host}/
 </pre></div>
 </div>
 <p>The configuration of the <code class="docutils literal"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
@@ -232,7 +232,7 @@ the sub domain on only one of them you can define in the <code class="docutils l
 the following:</p>
 <div class="code yaml highlight-python"><div class="highlight"><pre># The URL template used to generate the sub domain URL
 # %(sub)s will be replaced by the sub domain value.
-subdomain_url_template: http://%(sub)s.${host}
+subdomain_url_template: http://%(sub)s.{host}
 </pre></div>
 </div>
 </div>

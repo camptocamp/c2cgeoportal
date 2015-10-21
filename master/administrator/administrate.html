@@ -62,8 +62,9 @@ throw the <code class="docutils literal"><span class="pre">Restriction</span> <s
 <li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas through which the user can see the layer.</li>
 <li><code class="docutils literal"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></code>: the related postgres table,
 used by the <a class="reference internal" href="editing.html#administrator-editing"><span>Editing</span></a>.</li>
-<li><code class="docutils literal"><span class="pre">Attributes</span> <span class="pre">to</span> <span class="pre">exclude</span></code>: the list of attributes that shouldn&#8217;t appear in
-the <a class="reference internal" href="editing.html#administrator-editing"><span>Editing</span></a> so that they cannot be modified by end user.</li>
+<li><code class="docutils literal"><span class="pre">Attributes</span> <span class="pre">to</span> <span class="pre">exclude</span></code>: the list of attributes (database columns) that shouldn&#8217;t appear in
+the <a class="reference internal" href="editing.html#administrator-editing"><span>Editing</span></a> so that they cannot be modified by the end user.
+For enumerable attributes (foreign key), the column name should end with &#8216;_id&#8217;.</li>
 <li><code class="docutils literal"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
 <li><code class="docutils literal"><span class="pre">UI</span> <span class="pre">Metadata</span></code>: Additional metadata used by the UI.</li>
 </ul>

@@ -102,27 +102,28 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
-Here is a simple example that creates the <cite>apache/mapcache.xml</cite> file
+Here is a simple example that creates the
+<cite>/var/sig/tiles/1.0.0/WMTSCapabilities.xml</cite> file
 and removes it on the <cite>clean</cite> rule:</p>
-<div class="code makefile highlight-python"><div class="highlight"><pre>PRE_RULES = apache/mapcache.xml
+<div class="code makefile highlight-python"><div class="highlight"><pre>PRE_RULES = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
 
-apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
-    $(VENV_BIN)/generate_controller --mapcache
+/var/sig/tiles/1.0.0/WMTSCapabilities.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+    $(VENV_BIN)/generate_controller --capabilities
 
 clean: project-clean
 .PHONY: project-clean
 project-clean:
-    rm -f apache/mapcache.xml
+    rm -f /var/sig/tiles/1.0.0/WMTSCapabilities.xml
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code> and <code class="docutils literal"><span class="pre">.build/dev-requirements.timestamp</span></code> are the files
 that must be built to run the current rule.</p>
-<p><code class="docutils literal"><span class="pre">$(VENV_BIN)/generate_controller</span> <span class="pre">--mapcache</span></code> is the command that generates the wanted file.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">.build/*.timestamp</span></code> files are not really required  but they are flags
-indicating that an other rule is correctly done.</p>
+<p><code class="docutils literal"><span class="pre">$(VENV_BIN)/generate_controller</span> <span class="pre">--capabilities</span></code> is the command that generates the wanted file.</p>
 </div>
+<div class="section" id="note">
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">.build/*.timestamp</span></code> files are not really required  but they are flags
+indicating that an other rule is correctly done.</p>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
 </div>
 </div>
@@ -143,6 +144,7 @@ indicating that an other rule is correctly done.</p>
 <li><a class="reference internal" href="#vars-files">Vars files</a></li>
 <li><a class="reference internal" href="#makefile-config-variables">Makefile config variables</a></li>
 <li><a class="reference internal" href="#custom-rules">Custom rules</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
 </ul>
 </li>
 </ul>

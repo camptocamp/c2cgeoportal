@@ -96,4 +96,4 @@ in section ``template_vars``:
 
 .. code:: yaml
 
-   mobile_application_title: "${_('GeoMapFish Mobile Application')}"
+   mobile_application_title: "{_('GeoMapFish Mobile Application')}"

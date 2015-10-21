@@ -220,13 +220,13 @@ get it:</p>
 <span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
 </pre><p>and replace the lines:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
-        &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
+    &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt; --&gt;
 </pre></div>
 </div>
 <p>by those ones:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;property name=&quot;cmd&quot;&gt;
-        &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
+    &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt;
 </pre></div>
 </div>
@@ -273,10 +273,10 @@ the project.</p>
     ...
     instance: INSTANCE
 
-    external_themes_url: http://${host}/${parent_instanceid}/wsgi/themes
-    external_mapserv_url: http://${host}/${parent_instanceid}/mapserv
+    external_themes_url: http://{host}/{parent_instanceid}/wsgi/themes
+    external_mapserv_url: http://{host}/{parent_instanceid}/mapserv
 
-    tiles_url: http://${host}/${parent_instanceid}/tiles
+    tiles_url: http://{host}/{parent_instanceid}/tiles
 
     instances:
     - instance: a name
