@@ -31,7 +31,7 @@
 import functools
 import warnings
 
-from sqlalchemy import Table, sql, MetaData
+from sqlalchemy import Table, sql, MetaData, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.exc import SAWarning
@@ -165,7 +165,7 @@ def get_table(tablename, schema=None, session=None):
             "Did not recognize type 'geometry' of column",
             SAWarning)
         table = Table(
-            tablename, metadata,
+            tablename, metadata, PrimaryKeyConstraint('id'),
             schema=schema,
             autoload=True,
             autoload_with=engine,
