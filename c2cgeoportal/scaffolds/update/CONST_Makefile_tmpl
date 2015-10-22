@@ -758,7 +758,7 @@ print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
 	$(VENV_BIN)/generate_controller --generate-mapcache-config
 
-apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+apache/tiles.conf: tilegeneration/config.yaml .build/dev-requirements.timestamp
 	$(VENV_BIN)/generate_controller --generate-apache-config
 
 # Apache config
