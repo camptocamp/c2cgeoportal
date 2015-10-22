@@ -120,23 +120,29 @@ def set_common_headers(
     else:  # pragma: nocover
         raise "Invalid cache type"
 
-    if cache != NO_CACHE:
-        max_age = request.registry.settings["default_max_age"]
+    if hasattr(request, "registry"):
+        headers_settings = request.registry.settings.get("headers", {})
+        service_headers_settings = headers_settings.get(service_name)
 
-        settings = request.registry.settings.get("cache_control", {})
-        if service_name in settings and "max_age" in settings[service_name]:
-            max_age = settings[service_name]["max_age"]
+        if cache != NO_CACHE:
+            max_age = request.registry.settings["default_max_age"]
 
-        if max_age != 0:
-            response.cache_control.max_age = max_age
-        else:
-            response.cache_control.no_cache = True
+            if service_headers_settings and \
+                    "cache_control_max_age" in service_headers_settings:
+                max_age = service_headers_settings["cache_control_max_age"]
 
-    if add_cors:
-        response.headers.update({
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
-        })
+            if max_age != 0:
+                response.cache_control.max_age = max_age
+            else:
+                response.cache_control.no_cache = True
+
+        if add_cors and service_headers_settings and \
+                "access_control_allow_origin" in service_headers_settings:
+            cors = service_headers_settings["access_control_allow_origin"]
+            response.headers.update({
+                "Access-Control-Allow-Origin": cors,
+                "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
+            })
 
     if vary:
         response.headers["Vary"] = "Accept-Language"

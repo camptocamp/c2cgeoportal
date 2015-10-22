@@ -966,7 +966,7 @@ class Entry(object):
         return d
 
     def get_ngeo_index_vars(self, vars={}):
-        set_common_headers(self.request, "ngeo_index", NO_CACHE)
+        set_common_headers(self.request, "ngeo_index", NO_CACHE, add_cors=True)
 
         vars.update({
             "lang": self.lang,
@@ -1204,7 +1204,7 @@ class Entry(object):
         export_group = group is not None and sets in ("all", "group")
         export_background = background_layers_group is not None and sets in ("all", "background")
 
-        set_common_headers(self.request, "themes", PRIVATE_CACHE)
+        set_common_headers(self.request, "themes", PRIVATE_CACHE, add_cors=True)
 
         result = {}
         all_errors = set()
@@ -1284,6 +1284,7 @@ class Entry(object):
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
                     response=Response("true", headers=headers),
+                    add_cors=True
                 )
         else:
             return HTTPUnauthorized("bad credentials")
@@ -1305,11 +1306,12 @@ class Entry(object):
         return set_common_headers(
             self.request, "logout", NO_CACHE,
             response=Response("true", headers=headers),
+            add_cors=True
         )
 
     @view_config(route_name="loginchange", renderer="json")
     def loginchange(self):
-        set_common_headers(self.request, "loginchange", NO_CACHE)
+        set_common_headers(self.request, "loginchange", NO_CACHE, add_cors=True)
 
         new_password = self.request.params.get("newPassword", None)
         new_password_confirm = self.request.params.get("confirmNewPassword", None)
@@ -1371,7 +1373,9 @@ class Entry(object):
 
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
-        set_common_headers(self.request, "loginresetpassword", NO_CACHE)
+        set_common_headers(
+            self.request, "loginresetpassword", NO_CACHE, add_cors=True
+        )
 
         user, username, password = self._loginresetpassword()
         settings = self.request.registry.settings["reset_password"]
