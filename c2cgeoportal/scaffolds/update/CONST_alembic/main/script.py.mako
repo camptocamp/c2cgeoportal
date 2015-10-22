@@ -45,12 +45,12 @@ depends_on = ${repr(depends_on)}
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
-    ${upgrades if upgrades else "# Instructions"}
+    ${upgrades if upgrades else '# Instructions'}
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
-    ${downgrades if downgrades else "# Instructions"}
+    ${downgrades if downgrades else '# Instructions'}

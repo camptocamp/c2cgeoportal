@@ -45,16 +45,16 @@ depends_on = ${repr(depends_on)}
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
-    staticschema = schema + "_static"
-    parentschema = context.get_context().config.get_main_option("parentschema")
+    schema = context.get_context().config.get_main_option('schema')
+    staticschema = schema + '_static'
+    parentschema = context.get_context().config.get_main_option('parentschema')
 
-    ${upgrades if upgrades else "# Instructions"}
+    ${upgrades if upgrades else '# Instructions'}
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
-    staticschema = schema + "_static"
-    parentschema = context.get_context().config.get_main_option("parentschema")
+    schema = context.get_context().config.get_main_option('schema')
+    staticschema = schema + '_static'
+    parentschema = context.get_context().config.get_main_option('parentschema')
 
-    ${downgrades if downgrades else "# Instructions"}
+    ${downgrades if downgrades else '# Instructions'}

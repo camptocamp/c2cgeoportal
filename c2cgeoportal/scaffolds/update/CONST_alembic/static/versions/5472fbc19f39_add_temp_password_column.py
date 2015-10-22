@@ -39,21 +39,21 @@ from sqlalchemy import Column, Unicode
 
 
 # revision identifiers, used by Alembic.
-revision = "5472fbc19f39"
-down_revision = "1da396a88908"
+revision = '5472fbc19f39'
+down_revision = '1da396a88908'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
-    staticschema = schema + "_static"
+    schema = context.get_context().config.get_main_option('schema')
+    staticschema = schema + '_static'
 
     # Instructions
-    op.add_column("user", Column("temp_password", Unicode), schema=staticschema)
+    op.add_column('user', Column('temp_password', Unicode), schema=staticschema)
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
-    staticschema = schema + "_static"
+    schema = context.get_context().config.get_main_option('schema')
+    staticschema = schema + '_static'
 
     # Instructions
-    op.drop_column("user", "temp_password", schema=staticschema)
+    op.drop_column('user', 'temp_password', schema=staticschema)
