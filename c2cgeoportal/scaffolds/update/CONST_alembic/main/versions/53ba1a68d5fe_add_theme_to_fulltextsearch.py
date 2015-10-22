@@ -30,7 +30,7 @@
 """Add theme to FullTextSearch
 
 Revision ID: 53ba1a68d5fe
-Revises: 32527659d57b
+Revises: 5109242131ce
 Create Date: 2015-08-05 14:43:30.889188
 """
 
@@ -40,7 +40,7 @@ from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
 # revision identifiers, used by Alembic.
 revision = "53ba1a68d5fe"
-down_revision = "32527659d57b"
+down_revision = "5109242131ce"
 
 
 def upgrade():
