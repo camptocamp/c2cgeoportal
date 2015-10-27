@@ -40,7 +40,7 @@ DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) b
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/mapcache.xml apache/tiles.conf
 endif
-ifeq ($(MOBLE), TRUE)
+ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
 ifeq ($(NGEO), TRUE)
