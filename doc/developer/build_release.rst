@@ -154,6 +154,9 @@ Update the version of c2cgeoportal to ``<release>`` in
 Verify that the version in the ``setup.py`` is correct
 (as the ``<release>``).
 
+Release w.x.y(.z)
+~~~~~~~~~~~~~~~~~
+
 Commit your changes:
 
 .. prompt:: bash
@@ -184,10 +187,26 @@ Push your changes:
     git push origin <version>
     git push origin <release>
 
-.. note::
+Rc or dev w.x.y.(rc|dev)z
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   When you push a tag with the pattern `^[0-9].[0-9]+.[0-9]$` a new release
-   will automatically be created on Travis CI.
+In this case we don't commit the version changes in the branch.
+
+Commit, tag and push your changes:
+
+.. prompt:: bash
+
+    git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt \
+        c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt
+    git commit -m "Do release <release>"
+    git tag <release>
+    git push origin <release>
+
+Notes about Travis
+~~~~~~~~~~~~~~~~~~
+
+When you push a tag with the pattern ``^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$``
+a new release will automatically be created on Travis CI.
 
 Post release tasks
 ------------------
