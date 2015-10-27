@@ -85,7 +85,8 @@ Checkout the code:
 Edit the ``doc/integrator/update_application.rst`` file to change the default version.
 
 Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_versions.txt``.
+``c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl``
+(``REQUIREMENTS ?= c2cgeoportal==<release>``).
 
 
 Add and commit the changes:
@@ -93,7 +94,7 @@ Add and commit the changes:
 .. prompt:: bash
 
     git add doc/integrator/update_application.rst \
-        c2cgeoportal/scaffolds/update/CONST_versions.txt
+        c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl
     git commit -m "Update the default downloaded version.cfg"
 
 For each version we create a new branch (at the latest at the final release):
