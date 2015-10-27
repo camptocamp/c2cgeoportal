@@ -1,15 +1,14 @@
 #!/bin/bash -e
 
 DEPLOY=false
-FINAL=false
-BUILD_TAG=false # for rc
+FINAL=false # including rc and called dev releases
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
     DEPLOY=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.[0-9]+)?$ ]]
 then
     if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
@@ -20,17 +19,17 @@ then
     FINAL=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+)$ ]]
 then
-    VERSION=`echo ${TRAVIS_TAG} | awk -Frc '{print $1}'`
-    if [ ${VERSION} != $(python setup.py -V) ]
+    if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
         echo "The tag name doesn't match with the egg version."
         exit 1
     fi
     DEPLOY=true
-    BUILD_TAG=rc`echo ${TRAVIS_TAG} | awk -Frc '{print $2}'`
+    FINAL=true
 fi
+
 
 if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
 then
@@ -43,16 +42,11 @@ then
 
     set -x
 
-    if [ ${BUILD_TAG} != false ]
-    then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
-    else
     if [ ${FINAL} == true ]
-        then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
-        else
-            .build/venv/bin/python setup.py sdist upload -r c2c-internal
-        fi
+    then
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
+    else
+        .build/venv/bin/python setup.py sdist upload -r c2c-internal
     fi
 
     cd c2cgeoportal/scaffolds/update/+package+/static/mobile/
@@ -63,15 +57,10 @@ then
     sed -i 's/name="c2cgeoportal",/name="c2cgeoportal-win",/g' setup.py
     git diff
 
-    if [ ${BUILD_TAG} != false ]
+    if [ ${FINAL} == true ]
     then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" sdist upload -r c2c-internal
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
     else
-        if [ ${FINAL} == true ]
-        then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist upload -r c2c-internal
-        else
-            .build/venv/bin/python setup.py sdist upload -r c2c-internal
-        fi
+        .build/venv/bin/python setup.py sdist upload -r c2c-internal
     fi
 fi
