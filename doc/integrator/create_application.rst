@@ -64,7 +64,6 @@ Then you should checkout the branch or tag of the version you want to install:
 .. prompt:: bash
 
     git checkout <branch|tag>
-    git submodule update --init
 
 ``<branch|tag>`` can be ``1.4`` for the latest version of the 1.4 branch,
 ``1.4.0`` for the first stable 1.4 version.
@@ -190,7 +189,6 @@ Add the CGXP submodule:
 .. prompt:: bash
 
     git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp -b <version>
-    git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
 Branches are available starting at version ``1.3``.
@@ -218,7 +216,6 @@ Add the CGXP submodule:
 .. prompt:: bash
 
     git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp -b <version>
-    git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
 Branches are available starting at version ``1.3``.
