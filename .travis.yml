@@ -68,12 +68,21 @@ script:
 - git checkout c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 - travis/status.sh
 # verify c2cgeoportal version
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+$ ]] ; then VERSION=TRAVIS_TAG
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+)$ ]] ; then VERSION=`echo ${TRAVIS_TAG} | sed 's/\(\.rc[0-9]\+\|\.dev[0-9]\+\)$//'`
+
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.rc[0-9]+$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.rc[0-9]+$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.rc[0-9]+$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.dev[0-9]+$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.dev[0-9]+$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+#- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+.dev[0-9]+$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
+- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
 
 after_failure:
 - .build/venv/bin/python setup.py nosetests
