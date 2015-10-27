@@ -192,13 +192,6 @@ When a new release or a new version is done you should do the following tasks:
 
  * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
    to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
- * Regenerate the pypi's index:
-
-.. prompt:: bash
-
-   ssh admin@c2cpc19.camptocamp.com
-   curl 'http://pypi.camptocamp.net/internal-pypi/regenerate-index' --data '' \
-       --max-time 1000
 
 Then:
 
