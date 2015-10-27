@@ -63,6 +63,7 @@ WHITE = 7
 DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
     "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
+VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+|\.[0-9]+)?$"
 
 
 def _colorize(text, color):
@@ -245,15 +246,7 @@ class C2cTool:
             self.step4()
 
     def step0(self):
-        if self.options.version != "master":
-            if re.match("^[0-9].[0-9]+.[0-9](rc[0-9])?$", self.options.version) is None:
-                print(
-                    "The version is wrong, should be 'master' or "
-                    "[0-9].[0-9]+.[0-9](rc[0-9])?). Found '%s'." %
-                    self.options.version
-                )
-                exit(1)
-
+        if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
             headers, _ = http.request(
                 "https://github.com/camptocamp/CGXP/tree/%s" %
@@ -277,7 +270,7 @@ class C2cTool:
                 "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
                 "c2cgeoportal/scaffolds/update/CONST_versions.txt" % self.options.version
             )
-            headers, content = http.request(url)
+            headers, _ = http.request(url)
             if headers.status != 200:
                 print("Failed downloading the c2cgeoportal CONST_versions.txt file.")
                 print(url)
@@ -300,6 +293,7 @@ class C2cTool:
         self.print_step(1)
 
     def step1(self):
+        notes = []
 
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "-f", "-d"])
@@ -327,15 +321,18 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        check_call([
-            "git", "submodule", "foreach", "git", "reset", "--hard",
-            "origin/master" if self.options.version == "master" else self.options.version, "--"
-        ])
-        if self.options.version == "master":
+        if self.options.version == "master" or \
+                re.match(VERSION_RE, self.options.version) is not None:
             check_call([
-                "git", "submodule", "foreach", "git", "reset",
-                "--hard", "origin/master"
+                "git", "submodule", "foreach", "git", "reset", "--hard",
+                "origin/%s" % self.options.version, "--"
             ])
+        else:
+            notes.append(
+                "We can't define the cgxp revision, than you should manually do:\n"
+                "git submodule foreach git reset --hard <revision>"
+            )
+
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
@@ -375,6 +372,7 @@ class C2cTool:
 
         print()
         print(self.color_bar)
+        print("\n".join(notes))
         print(
             "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
             " (listed in the `changelog.diff` file)."
