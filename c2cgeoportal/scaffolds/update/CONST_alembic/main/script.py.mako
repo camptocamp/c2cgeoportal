@@ -38,17 +38,19 @@ Create Date: ${create_date}
 from alembic import op, context
 
 # revision identifiers, used by Alembic.
-revision = "${up_revision}"
-down_revision = "${down_revision}"
+revision = ${repr(up_revision)}
+down_revision = ${repr(down_revision)}
+branch_labels = ${repr(branch_labels)}
+depends_on = ${repr(depends_on)}
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
-    ${upgrades if upgrades else "# Instructions"}
+    ${upgrades if upgrades else '# Instructions'}
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
-    ${downgrades if downgrades else "# Instructions"}
+    ${downgrades if downgrades else '# Instructions'}

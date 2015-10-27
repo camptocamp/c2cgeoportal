@@ -27,48 +27,23 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add theme to FullTextSearch
+"""Merge 1.6 and master branches
 
-Revision ID: 53ba1a68d5fe
-Revises: 5109242131ce
-Create Date: 2015-08-05 14:43:30.889188
+Revision ID: 1418cb05921b
+Revises: ('32527659d57b', '53ba1a68d5fe')
+Create Date: 2015-10-22 09:56:49.165417
 """
 
-from alembic import op, context
-from sqlalchemy import Column, Integer, ForeignKey, Boolean, String
-from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
-
 # revision identifiers, used by Alembic.
-revision = '53ba1a68d5fe'
-down_revision = '5109242131ce'
+revision = '1418cb05921b'
+down_revision = ('32527659d57b', '53ba1a68d5fe')
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    op.add_column('tsearch', Column(
-        'interface_id', Integer,
-        ForeignKey(schema + '.interface.id'),
-        nullable=True
-    ), schema=schema)
-    op.add_column('tsearch', Column('lang', String(2), nullable=True), schema=schema)
-    op.add_column('tsearch', Column('actions', JSONEncodedDict, nullable=True), schema=schema)
-    op.add_column('tsearch', Column('from_theme', Boolean, server_default='false'), schema=schema)
-
-    op.create_index(
-        'tsearch_search_index',
-        table_name='tsearch',
-        columns=['ts', 'public', 'role_id', 'interface_id', 'lang'],
-        schema=schema
-    )
+    pass
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    op.drop_index('tsearch_search_index', schema=schema)
-
-    op.drop_column('tsearch', 'interface_id', schema=schema)
-    op.drop_column('tsearch', 'lang', schema=schema)
-    op.drop_column('tsearch', 'actions', schema=schema)
-    op.drop_column('tsearch', 'from_theme', schema=schema)
+    pass
