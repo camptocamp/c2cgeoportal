@@ -94,7 +94,6 @@ span.prompt1:before {
 <span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
 </pre><p>Then you should checkout the branch or tag of the version you want to install:</p>
 <pre class="highlight"><span class="prompt1">git checkout &lt;branch<span class="p">|</span>tag&gt;</span>
-<span class="prompt1">git submodule update --init</span>
 </pre><p><code class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.4</span></code> for the latest version of the 1.4 branch,
 <code class="docutils literal"><span class="pre">1.4.0</span></code> for the first stable 1.4 version.</p>
 <p>Build c2cgeoportal:</p>
@@ -145,13 +144,7 @@ Following this rule is important for easier updates.</p>
 </pre><p><code class="docutils literal"><span class="pre">pcreate</span></code> doesn&#8217;t conserve file permission, so restore it manually:</p>
 <pre class="highlight"><span class="prompt1">chmod +x deploy/hooks/post-restore-database.mako</span>
 <span class="prompt1">chmod +x deploy/hooks/post-restore-code</span>
-</pre><p>In the <code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code> file make sure that c2cgeoportal version is set:</p>
-<div class="code highlight-python"><div class="highlight"><pre>c2cgeoportal = &lt;version&gt;
-</pre></div>
-</div>
-<p>With <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> the egg version you want to use, normally it should be the same
-number as the <code class="docutils literal"><span class="pre">tag</span></code> you use to checkout <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
-<div class="admonition note">
+</pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If this application is a child of a parent/child architecture you should
 fill the <code class="docutils literal"><span class="pre">parent_schema</span></code> and the <code class="docutils literal"><span class="pre">parent_instanceid</span></code> in the
@@ -173,7 +166,6 @@ control (Git preferably).</p>
 <span class="prompt1">git add &lt;package&gt;/</span>
 </pre><p>Add the CGXP submodule:</p>
 <pre class="highlight"><span class="prompt1">git submodule add git@github.com:camptocamp/cgxp.git &lt;project&gt;/&lt;package&gt;/static/lib/cgxp -b &lt;version&gt;</span>
-<span class="prompt1">git submodule foreach git submodule update --init</span>
 </pre><p><code class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;version&gt;</span></code> forces to use the CGXP branch <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code>.
 Branches are available starting at version <code class="docutils literal"><span class="pre">1.3</span></code>.</p>
 <p>Commit and push on the main repository:</p>
@@ -188,7 +180,6 @@ Branches are available starting at version <code class="docutils literal"><span 
 <span class="prompt1">git remote add origin git@github.com:camptocamp/&lt;project&gt;.git</span>
 </pre><p>Add the CGXP submodule:</p>
 <pre class="highlight"><span class="prompt1">git submodule add https://github.com/camptocamp/cgxp.git &lt;package&gt;/static/lib/cgxp -b &lt;version&gt;</span>
-<span class="prompt1">git submodule foreach git submodule update --init</span>
 </pre><p><code class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;version&gt;</span></code> forces to use the CGXP branch <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code>.
 Branches are available starting at version <code class="docutils literal"><span class="pre">1.3</span></code>.</p>
 <p>Commit and push on the main repository:</p>

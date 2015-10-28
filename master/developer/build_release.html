@@ -96,10 +96,11 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <span class="prompt1">git pull origin master</span>
 </pre><p>Edit the <code class="docutils literal"><span class="pre">doc/integrator/update_application.rst</span></code> file to change the default version.</p>
 <p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
-<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.txt</span></code>.</p>
+<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span></code>
+(<code class="docutils literal"><span class="pre">REQUIREMENTS</span> <span class="pre">?=</span> <span class="pre">c2cgeoportal==&lt;release&gt;</span></code>).</p>
 <p>Add and commit the changes:</p>
 <pre class="highlight"><span class="prompt1">git add doc/integrator/update_application.rst <span class="se">\</span>
-    c2cgeoportal/scaffolds/update/CONST_versions.txt</span>
+    c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Update the default downloaded version.cfg&quot;</span></span>
 </pre><p>For each version we create a new branch (at the latest at the final release):</p>
 <pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
@@ -160,13 +161,9 @@ will automatically be created on Travis CI.</p>
 <div><ul class="simple">
 <li>Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
 to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</li>
-<li>Regenerate the pypi&#8217;s index:</li>
 </ul>
 </div></blockquote>
-<pre class="highlight"><span class="prompt1">ssh admin@c2cpc19.camptocamp.com</span>
-<span class="prompt1">curl <span class="s1">&#39;http://pypi.camptocamp.net/internal-pypi/regenerate-index&#39;</span> --data <span class="s1">&#39;&#39;</span> <span class="se">\</span>
-    --max-time 1000</span>
-</pre><p>Then:</p>
+<p>Then:</p>
 <blockquote>
 <div><ul class="simple">
 <li>Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</li>
