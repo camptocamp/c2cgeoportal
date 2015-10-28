@@ -13,3 +13,4 @@ user other backends.
 
    backend_qgis
    backend_arcgis
+   backend_geoserver
