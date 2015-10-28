@@ -38,7 +38,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/mapcache.xml apache/tiles.conf
+DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/tiles.conf
 endif
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
@@ -758,7 +758,7 @@ print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
 	$(VENV_BIN)/generate_controller --generate-mapcache-config
 
-apache/tiles.conf: tilegeneration/config.yaml .build/dev-requirements.timestamp
+apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml .build/dev-requirements.timestamp
 	$(VENV_BIN)/generate_controller --generate-apache-config
 
 # Apache config
