@@ -59,13 +59,13 @@ vars:
 
     # For base layers
     tiles_url:
-    - http://a.tiles.${host}/${instanceid}/tiles
-    - http://b.tiles.${host}/${instanceid}/tiles
-    - http://c.tiles.${host}/${instanceid}/tiles
+    - http://a.tiles.{host}/{instanceid}/tiles
+    - http://b.tiles.{host}/{instanceid}/tiles
+    - http://c.tiles.{host}/{instanceid}/tiles
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.${host}
+    subdomain_url_template: http://%(sub)s.{host}
 
     # The used sub domain for the static resources
     subdomains: [s1, s2, s3]
@@ -99,7 +99,7 @@ vars:
     check_collector:
         hosts: []
         # - display: Child:
-        #   url: http://${host}/child/wsgi
+        #   url: http://{host}/child/wsgi
 
     reset_password:
         # Used to send a confirmation email

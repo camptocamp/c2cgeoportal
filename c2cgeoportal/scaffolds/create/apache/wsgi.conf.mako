@@ -24,6 +24,7 @@ WSGIPassAuthorization On
 path = apache_entry_point \
     if interface == "main" \
     else "%s%s/" % (apache_entry_point, interface)
+interface = "" if interface == "main" else interface
 %>
 RewriteRule ^${path}?$ /${instanceid}/wsgi/${interface} [PT]
 RewriteRule ^${path}theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
