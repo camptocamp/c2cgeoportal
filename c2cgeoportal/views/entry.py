@@ -778,8 +778,9 @@ class Entry(object):
                 name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
                     name_value = name.childNodes[0].data
-                    # ignore namespace
-                    if name_value.find(":") >= 0:  # pragma nocover
+                    # ignore namespace when not using geoserver
+                    if name_value.find(":") >= 0 and \
+                            not self.mapserver_settings["geoserver"]:  # pragma nocover
                         name_value = name_value.split(":")[1]
                     featuretypes.append(name_value)
                 else:  # pragma nocover
