@@ -805,6 +805,13 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
 UPGRADE_ARGS ?=
 
+$(UPGRADE_MAKE_FILE):
+	@echo "The file '$(UPGRADE_MAKE_FILE)' can't be found,"
+	@echo "this probably mean that you Makefile isn't named '<instanceid>.mk'."
+	@echo "To solve this you can rename your Makefile or add in your Makefile"
+	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
+	exit 1
+
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}

@@ -294,6 +294,11 @@ configuration:
 
 .. note::
 
+   For technical simplification the file should be named ``<instanceid>.mk``
+   in other words ``<instanceid>`` should have the same value as ``<user>``.
+
+.. note::
+
     The ``<instanceid>`` should be unique on the server, the username is a good
     choice or something like ``<user>-<sub-project>`` in case of parent/children project.
 
