@@ -67,18 +67,27 @@ then
     git push origin ${TAG_NAME}
 fi
 
+echo == Build the doc ==
+if [ ${DOC} == false ]
+then
+    TRAVIS_BRANCH=master
+fi
+
+git checkout c2cgeoportal/locale/*/LC_MESSAGES/*.po
+git fetch origin gh-pages:gh-pages
+git checkout gh-pages
+
+mkdir -p ${TRAVIS_BRANCH}
+rm -rf ${TRAVIS_BRANCH}/*
+mv doc/_build/html/* ${TRAVIS_BRANCH}
+
 if [ ${DOC} == true ]
 then
-    echo == Build the doc ==
-
-    git checkout c2cgeoportal/locale/*/LC_MESSAGES/*.po
-    git fetch origin gh-pages:gh-pages
-    git checkout gh-pages
-
-    mkdir -p ${TRAVIS_BRANCH}
-    rm -rf master/*
-    mv doc/_build/html/* ${TRAVIS_BRANCH}
     git add ${TRAVIS_BRANCH}
     git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
     git push origin gh-pages
+else
+    git status
+    git checkout ${TRAVIS_BRANCH}/searchindex.js
+    git diff
 fi
