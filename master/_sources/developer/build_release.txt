@@ -191,20 +191,19 @@ Post release tasks
 
 When a new release or a new version is done you should do the following tasks:
 
- * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
-   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+* Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
+  to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+* Upgrade the demo in your home folder with ``c2ctool``.
+* Update the demo on the main folder with:
 
-Then:
-
- * Upgrade the demo in your home folder with ``c2ctool``.
- * Update the demo on the main folder with:
-
-.. prompt:: bash
+  .. prompt:: bash
 
     sudo -u sigdev make -f demo.mk update
     sudo -u sigdev make -f demo.mk build
 
-Then:
-
- * Test the demo.
- * Sent a release email to the ``geomapfish@googlegroups.com`` and ``geospatial@lists.camptocamp.com`` mailing lists.
+* Test the demo.
+* Move all the open issues to a new milestone and close the current milestone
+  in `cgxp <https://github.com/camptocamp/cgxp/milestones>`
+  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`.
+* Send a release email to the ``geomapfish@googlegroups.com``
+  and ``geospatial@lists.camptocamp.com`` mailing lists.

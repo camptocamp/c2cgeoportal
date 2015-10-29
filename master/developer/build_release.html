@@ -157,28 +157,26 @@ will automatically be created on Travis CI.</p>
 <div class="section" id="post-release-tasks">
 <h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
 <p>When a new release or a new version is done you should do the following tasks:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
-to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</li>
-</ul>
-</div></blockquote>
-<p>Then:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</li>
-<li>Update the demo on the main folder with:</li>
-</ul>
-</div></blockquote>
+<ul>
+<li><p class="first">Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
+to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</p>
+</li>
+<li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</p>
+</li>
+<li><p class="first">Update the demo on the main folder with:</p>
 <pre class="highlight"><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
 <span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
-</pre><p>Then:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Test the demo.</li>
-<li>Sent a release email to the <code class="docutils literal"><span class="pre">geomapfish&#64;googlegroups.com</span></code> and <code class="docutils literal"><span class="pre">geospatial&#64;lists.camptocamp.com</span></code> mailing lists.</li>
+</pre></li>
+<li><p class="first">Test the demo.</p>
+</li>
+<li><p class="first">Move all the open issues to a new milestone and close the current milestone
+in <cite>cgxp &lt;https://github.com/camptocamp/cgxp/milestones&gt;</cite>
+and in <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;</cite>.</p>
+</li>
+<li><p class="first">Send a release email to the <code class="docutils literal"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
+and <code class="docutils literal"><span class="pre">geospatial&#64;lists.camptocamp.com</span></code> mailing lists.</p>
+</li>
 </ul>
-</div></blockquote>
 </div>
 </div>
 

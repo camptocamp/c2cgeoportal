@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Specific Backend Documentation &mdash; c2cgeoportal  documentation</title>
+    <title>Specific configuration for GeoServer &mdash; c2cgeoportal  documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,9 +25,9 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
-    <link rel="up" title="Integrator Guide" href="index.html" />
-    <link rel="next" title="Specific configuration for QGIS mapserver" href="backend_qgis.html" />
-    <link rel="prev" title="Create a cluster" href="cluster.html" />
+    <link rel="up" title="Specific Backend Documentation" href="backend.html" />
+    <link rel="next" title="Automated check" href="checker.html" />
+    <link rel="prev" title="Specific configuration for Arcgis" href="backend_arcgis.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
@@ -40,17 +40,23 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="specific-backend-documentation">
-<span id="integrator-backend"></span><h1>Specific Backend Documentation<a class="headerlink" href="#specific-backend-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This section describes the specificities required by some specific backend.</p>
-<p>By defaut C2cgeoportal is configured to use Mapserver, but it is possible to
-user other backends.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="backend_qgis.html">Specific configuration for QGIS mapserver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="backend_arcgis.html">Specific configuration for Arcgis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="backend_geoserver.html">Specific configuration for GeoServer</a></li>
-</ul>
+  <div class="section" id="specific-configuration-for-geoserver">
+<span id="integrator-backend-geoserver"></span><h1>Specific configuration for GeoServer<a class="headerlink" href="#specific-configuration-for-geoserver" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="viewer-configuration">
+<h2>Viewer configuration<a class="headerlink" href="#viewer-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, make sure no namespace is added for WFS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="n">undefined</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="application-configuration">
+<h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define in the <code class="docutils literal"><span class="pre">vars</span></code> section:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>mapserverproxy:
+    mapserv_url: http://your.geoserver/geoserver/wms
+    geoserver: true
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -62,13 +68,24 @@ user other backends.</p>
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
-            </a></p><div class="relations">
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Specific configuration for GeoServer</a><ul>
+<li><a class="reference internal" href="#viewer-configuration">Viewer configuration</a></li>
+<li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
-      <li>Previous: <a href="cluster.html" title="previous chapter">Create a cluster</a></li>
-      <li>Next: <a href="backend_qgis.html" title="next chapter">Specific configuration for QGIS mapserver</a></li>
+  <li><a href="backend.html">Specific Backend Documentation</a><ul>
+      <li>Previous: <a href="backend_arcgis.html" title="previous chapter">Specific configuration for Arcgis</a></li>
+      <li>Next: <a href="checker.html" title="next chapter">Automated check</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -76,7 +93,7 @@ user other backends.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/backend.txt"
+      <li><a href="../_sources/integrator/backend_geoserver.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -105,7 +122,7 @@ user other backends.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
-      <a href="../_sources/integrator/backend.txt"
+      <a href="../_sources/integrator/backend_geoserver.txt"
           rel="nofollow">Page source</a>
     </div>
 

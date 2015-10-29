@@ -48,13 +48,6 @@
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).</p>
 <p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
 </div>
-<div class="section" id="enable-disable-layer-s-in-the-wms-getcapability">
-<h2>Enable / Disable layer(s) in the WMS GetCapability<a class="headerlink" href="#enable-disable-layer-s-in-the-wms-getcapability" title="Permalink to this headline">¶</a></h2>
-<p>To hide protected layers from the WMS GetCapabilities, set <code class="docutils literal"><span class="pre">use_security_metadata</span></code> to <code class="docutils literal"><span class="pre">true</span></code> in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>.</p>
-<p>Be careful that too many protected layers will cause an error because Apache has a
-8190 characters hard limit for GET query length.</p>
-<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
-</div>
 <div class="section" id="enable-disable-the-admin-interface">
 <h2>Enable / Disable the admin interface<a class="headerlink" href="#enable-disable-the-admin-interface" title="Permalink to this headline">¶</a></h2>
 <p>To disable the admin interface, set <code class="docutils literal"><span class="pre">enable_admin_interface</span></code> to <code class="docutils literal"><span class="pre">false</span></code>
@@ -85,7 +78,6 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
   <ul>
 <li><a class="reference internal" href="#">Security</a><ul>
 <li><a class="reference internal" href="#enable-disable-wms-getcapability">Enable / Disable WMS GetCapability</a></li>
-<li><a class="reference internal" href="#enable-disable-layer-s-in-the-wms-getcapability">Enable / Disable layer(s) in the WMS GetCapability</a></li>
 <li><a class="reference internal" href="#enable-disable-the-admin-interface">Enable / Disable the admin interface</a></li>
 <li><a class="reference internal" href="#enable-disable-the-ogc-proxy">Enable / Disable the OGC proxy</a></li>
 </ul>
