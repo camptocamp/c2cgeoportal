@@ -60,6 +60,8 @@ script:
 - make -f travis.mk checks
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
