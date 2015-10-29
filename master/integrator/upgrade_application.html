@@ -68,12 +68,10 @@ span.prompt1:before {
 <p class="first admonition-title">Note</p>
 <p>To upgrade from version 1.6 to version 2.0 you should update the
 <code class="docutils literal"><span class="pre">CONST_requirement.txt</span></code> file:</p>
-<div class="highlight-python"><div class="highlight"><pre>.. code:: diff
+<div class="code diff highlight-python"><div class="highlight"><pre>\- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
++ --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 </pre></div>
 </div>
-<blockquote>
-<div>- &#8211;find-links <a class="reference external" href="http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal">http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal</a>
-+ &#8211;find-links <a class="reference external" href="https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal">https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal</a></div></blockquote>
 <p>And run:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">UPGRADE_ARGS</span><span class="o">=</span><span class="s1">&#39;--index-url https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal --c2cgeoportal-url https://github.com/camptocamp/c2cgeoportal/releases/download/%\(version\)/%\(package\)-%\(version\)-py2.py3-none-any.whl&#39;</span></span>
 </pre></div>
