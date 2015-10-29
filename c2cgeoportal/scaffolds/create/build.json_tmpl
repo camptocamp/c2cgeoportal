@@ -82,6 +82,7 @@
     ],
     "angular_pass": true,
     "compilation_level": "ADVANCED",
+    "export_local_property_definitions": true,
     "warning_level": "VERBOSE",
     "generate_exports": true,
     "language_in": "ECMASCRIPT5_STRICT",
