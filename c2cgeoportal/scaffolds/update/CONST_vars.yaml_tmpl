@@ -324,3 +324,8 @@ interpreted:
     - instanceid
     - apache_entry_point
     - development
+    node:
+        vars:
+        - closure_library_path
+        cmd: ["node", "-e"]
+        ignore_error: true
