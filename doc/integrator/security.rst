@@ -11,16 +11,6 @@ the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
 
 Default: ``false``
 
-Enable / Disable layer(s) in the WMS GetCapability
---------------------------------------------------
-
-To hide protected layers from the WMS GetCapabilities, set ``use_security_metadata`` to ``true`` in your ``vars_<project>.yaml``.
-
-Be careful that too many protected layers will cause an error because Apache has a
-8190 characters hard limit for GET query length.
-
-Default: ``false``
-
 Enable / Disable the admin interface
 ------------------------------------
 
