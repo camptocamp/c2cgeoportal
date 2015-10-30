@@ -392,29 +392,28 @@ template-clean:
 	rm -f $(TEMPLATE_FILES:.in=)
 	rm -f $(MAKO_FILES:.mako=)
 	rm -f $(JINJA_FILES:.jinja=)
-	rm -f .build/config-*.timestamp
 	rm -f .build/config.yaml
 
 .PHONY: template-generate
-template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config-$(INSTANCE_ID).timestamp
+template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
 
 $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template $(VARS_DEPENDS)
 
-%: %.in
+%: %.in $(INSTANCE_ID_MARKER)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine template --files $<
 
-%: %.mako
+%: %.mako $(INSTANCE_ID_MARKER)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
 endif
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
-%: %.jinja
+%: %.jinja $(INSTANCE_ID_MARKER)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
 	exit 1
@@ -423,10 +422,8 @@ endif
 
 $(VENV_BIN)/c2c-template: .build/dev-requirements.timestamp
 
-.build/config-$(INSTANCE_ID).timestamp: $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
-	rm -f .build/config-*.timestamp | true
+.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
 	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
-	touch $@
 
 # server localisation
 
@@ -473,7 +470,7 @@ $(PACKAGE)/closure/%.py: $(CLOSURE_LIBRARY_PATH)/closure/bin/build/%.py
 $(PACKAGE)/locale/$(PACKAGE)-js.pot: $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES) .build/node_modules.timestamp
 	node tools/extract-messages.js $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES) > $@
 
-$(PACKAGE)/locale/$(PACKAGE)-db.pot: $(VENV_BIN)/db2pot development.ini .build/config-$(INSTANCE_ID).timestamp
+$(PACKAGE)/locale/$(PACKAGE)-db.pot: $(VENV_BIN)/db2pot development.ini .build/config.yaml
 	mkdir -p $(dir $@)
 	$(VENV_BIN)/db2pot
 	msguniq $@ -o $@
@@ -769,7 +766,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
 .build/apache.timestamp: \
-		.build/config-$(INSTANCE_ID).timestamp \
+		.build/config.yaml \
 		$(CONF_FILES) \
 		apache/application.wsgi \
 		$(PY_FILES) \
@@ -784,6 +781,12 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 # Upgrade
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
 UPGRADE_ARGS ?=
+
+# instance id marker
+INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
+$(INSTANCE_ID_MARKER):
+	rm -f .build/instanceid-*.timestamp | true
+	touch $@
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
