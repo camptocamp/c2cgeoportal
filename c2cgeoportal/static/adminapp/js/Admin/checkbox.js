@@ -44,7 +44,7 @@ either expressed or implied, of the FreeBSD Project.
         list = fieldList.filter("[id]");
         // find els with id containing searched str
         list = list.filter(function(index) {
-            if (this.id.indexOf(str) > -1) {
+            if (this.id.indexOf("-" + str) > -1) {
                 return this;
             }
         });
