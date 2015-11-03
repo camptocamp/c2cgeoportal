@@ -35,6 +35,9 @@ Ext.onReady(function() {
     // Server errors (if any)
     var serverError = ${serverError | n};
 
+    // Used to transmit event through the application
+    var EVENTS = new Ext.util.Observable();
+
     var WMTS_OPTIONS = {
         url: ${tiles_url | n},
         getURL: function() {

@@ -166,6 +166,8 @@ include =
     OpenLayers/Control/OverviewMap.js
     OpenLayers/Control/NavigationHistory.js
     OpenLayers/Layer/Vector.js
+    OpenLayers/Layer/WMTS.js
+    OpenLayers/Layer/WMS.js
     OpenLayers/Renderer/SVG.js
     OpenLayers/Renderer/VML.js
     plugins/OLSource.js #GXP

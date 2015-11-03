@@ -36,7 +36,7 @@ Ext.onReady(function() {
     // Server errors (if any)
     var serverError = ${serverError | n};
 
-    // Used to transmit event throw the application
+    // Used to transmit event through the application
     var EVENTS = new Ext.util.Observable();
 
     var WMTS_OPTIONS = {
@@ -157,7 +157,7 @@ Ext.onReady(function() {
 % if permalink_themes:
                 permalinkThemes: ${permalink_themes | n},
 % endif
-                defaultThemes: ["default_theme_to_load"],
+                //defaultThemes: ["default_theme_to_load"],
                 uniqueTheme: true,
                 wmsURL: "${request.route_url('mapserverproxy') | n}",
                 wmsOptions: {
