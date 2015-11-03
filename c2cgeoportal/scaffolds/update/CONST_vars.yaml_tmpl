@@ -310,6 +310,11 @@ vars:
           url: http://{host}/{instanceid}/wsgi
           type: main
 
+    # What web page is authorized to use the API
+    authorized_referers:
+    - http://{host}/{instanceid}
+    - https://{host}/{instanceid}
+
 interpreted:
     python:
     - authtkt.secret

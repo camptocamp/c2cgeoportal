@@ -353,25 +353,51 @@ def locale_negotiator(request):
     return lang
 
 
-def get_user_from_request(request):
-    """ Return the User object for the request.
-
-    Return ``None`` if user is anonymous or if it does not
-    exist in the database.
+def _match_url_start(ref, val):
     """
-    from c2cgeoportal.models import DBSession, User
+    Checks that the val URL starts like the ref URL.
+    """
+    ref_parts = ref.rstrip("/").split("/")
+    val_parts = val.rstrip("/").split("/")[0:len(ref_parts)]
+    return ref_parts == val_parts
 
-    if not hasattr(request, "_user"):
-        request._user = None
-        username = request.authenticated_userid
-        if username is not None:
-            # We know we will need the role object of the
-            # user so we use joined loading
-            request._user = DBSession.query(User) \
-                .filter_by(username=username) \
-                .first()
 
-    return request._user
+def _is_valid_referer(referer, settings):
+    if referer:
+        list = settings.get("authorized_referers", [])
+        return any(_match_url_start(x, referer) for x in list)
+    else:
+        return False
+
+
+def _create_get_user_from_request(settings):
+    def get_user_from_request(request):
+        """ Return the User object for the request.
+
+        Return ``None`` if:
+        * user is anonymous
+        * it does not exist in the database
+        * the referer is invalid
+        """
+        from c2cgeoportal.models import DBSession, User
+
+        if not _is_valid_referer(request.referer, settings):
+            log.warning("Invalid referer for %s: %s", request.path_qs,
+                        repr(request.referer))
+            return None
+
+        if not hasattr(request, "_user"):
+            request._user = None
+            username = request.authenticated_userid
+            if username is not None:
+                # We know we will need the role object of the
+                # user so we use joined loading
+                request._user = DBSession.query(User) \
+                    .filter_by(username=username) \
+                    .first()
+
+        return request._user
+    return get_user_from_request
 
 
 def set_user_validator(config, user_validator):
@@ -464,7 +490,8 @@ def includeme(config):
     global formalchemy_available_functionalities
     global formalchemy_available_metadata
 
-    config.set_request_property(get_user_from_request, name="user")
+    config.add_request_method(_create_get_user_from_request(settings),
+                              name="user", property=True)
 
     # configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal:locale/")

@@ -5,7 +5,8 @@ from unittest import TestCase
 
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
-    set_up_common as setUpModule
+    set_up_common as setUpModule,
+    add_user_property
 )
 
 
@@ -50,7 +51,6 @@ class TestRequestProperty(TestCase):
 
     def test_request_right_auth(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal import get_user_from_request
         from c2cgeoportal import default_user_validator
         from c2cgeoportal.lib.authentication import create_authentication
 
@@ -62,15 +62,12 @@ class TestRequestProperty(TestCase):
             "authtkt_cookie_name": "__test",
             "authtkt_secret": "123",
         })
-        request.set_property(
-            get_user_from_request, name="user", reify=True
-        )
+        add_user_property(request)
 
         self.assertEqual(request.user.username, u"__test_user")
 
     def test_request_wrong_auth(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal import get_user_from_request
         from c2cgeoportal import default_user_validator
         from c2cgeoportal.lib.authentication import create_authentication
 
@@ -82,9 +79,7 @@ class TestRequestProperty(TestCase):
             "authtkt_cookie_name": "__test",
             "authtkt_secret": "123",
         })
-        request.set_property(
-            get_user_from_request, name="user", reify=True
-        )
+        add_user_property(request)
 
         self.assertEqual(request.user, None)
 
@@ -110,9 +105,6 @@ class TestRequestProperty(TestCase):
 
     def _create_request(self):
         from pyramid.request import Request
-        from c2cgeoportal import get_user_from_request
         request = Request({})
-        request.set_property(
-            get_user_from_request, name="user"
-        )
+        add_user_property(request)
         return request

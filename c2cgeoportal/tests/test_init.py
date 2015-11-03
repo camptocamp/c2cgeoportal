@@ -31,6 +31,8 @@
 from unittest import TestCase
 from pyramid import testing
 
+import c2cgeoportal
+
 
 class TestIncludeme(TestCase):
 
@@ -50,7 +52,6 @@ class TestIncludeme(TestCase):
             })
 
     def test_set_user_validator_directive(self):
-        import c2cgeoportal
         self.config.include(c2cgeoportal.includeme)
         self.failUnless(
             self.config.set_user_validator.im_func.__docobj__ is
@@ -58,13 +59,11 @@ class TestIncludeme(TestCase):
         )
 
     def test_default_user_validator(self):
-        import c2cgeoportal
         self.config.include(c2cgeoportal.includeme)
         self.assertEqual(self.config.registry.validate_user,
                          c2cgeoportal.default_user_validator)
 
     def test_user_validator_overwrite(self):
-        import c2cgeoportal
         self.config.include(c2cgeoportal.includeme)
 
         def custom_validator(username, password):
@@ -72,3 +71,57 @@ class TestIncludeme(TestCase):
         self.config.set_user_validator(custom_validator)
         self.assertEqual(self.config.registry.validate_user,
                          custom_validator)
+
+
+class TestReferer(TestCase):
+    """
+    Check that accessing something with a bad HTTP referer is equivalent to a
+    not authenticated query.
+    """
+    BASE1 = "http://example.com/app"
+    BASE2 = "http://friend.com/app2"
+    SETTINGS = {"authorized_referers": [
+        BASE1,
+        BASE2
+    ]}
+    USER = "toto"
+
+    def _get_user(self, to, ref):
+        class MockRequest(object):
+            def __init__(self, to, ref):
+                self.path_qs = to
+                self.referer = ref
+                self._user = TestReferer.USER
+        get_user = c2cgeoportal._create_get_user_from_request(self.SETTINGS)
+        return get_user(MockRequest(to=to, ref=ref))
+
+    def test_match_url(self):
+        def match(ref, val, expected):
+            self.assertEqual(c2cgeoportal._match_url_start(ref, val), expected)
+
+        match("http://example.com/app/", "http://example.com/app", True)
+        match("http://example.com/app", "http://example.com/app/", True)
+        match("http://example.com/app", "http://example.com/app/x/y", True)
+        match("http://example.com", "http://example.com/app/x/y", True)
+        match("http://example.com", "http://other.com", False)
+        match("http://example.com", "https://example.com", False)
+        match("http://example.com/app", "http://example.com/", False)
+        match("http://example.com", "http://example.com.bad.org/app/x/y", False)
+
+    def test_positive(self):
+        self.assertEqual(
+            self._get_user(to=self.BASE1 + "/1", ref=self.BASE1), self.USER)
+        self.assertEqual(
+            self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"),
+            self.USER)
+        self.assertEqual(
+            self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"),
+            self.USER)
+
+    def test_no_ref(self):
+        self.assertIsNone(self._get_user(to=self.BASE1, ref=None))
+        self.assertIsNone(self._get_user(to=self.BASE1, ref=""))
+
+    def test_bad_ref(self):
+        self.assertIsNone(self._get_user(to=self.BASE1,
+                                         ref="http://bad.com/hacker"))
