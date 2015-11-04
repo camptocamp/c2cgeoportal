@@ -40,7 +40,7 @@ DEFAULT_CSV_ENCODING = "UTF-8"
 
 
 @view_config(route_name="csvecho")
-def echo(request):
+def exportcsv(request):
     csv = request.params.get("csv", None)
     if csv is None:
         return HTTPBadRequest("csv parameter is required")
@@ -64,4 +64,42 @@ def echo(request):
     return set_common_headers(
         request, "csvecho", NO_CACHE,
         content_type="text/csv"
+    )
+
+
+_CONTENT_TYPES = {
+    "gpx": "application/gpx",
+    "kml": "application/vnd.google-earth.kml+xml",
+}
+
+
+@view_config(route_name="exportgpxkml")
+def exportgpxkml(request):
+    """
+    View used to export a GPX or KML document.
+    """
+
+    fmt = request.params.get("format")
+    if fmt is None:
+        return HTTPBadRequest("format parameter is required")
+    if fmt not in _CONTENT_TYPES:
+        return HTTPBadRequest("format is not supported")
+
+    name = request.params.get("name")
+    if name is None:
+        return HTTPBadRequest("name parameter is required")
+
+    doc = request.params.get("doc")
+    if doc is None:
+        return HTTPBadRequest("doc parameter is required")
+
+    charset = "utf-8"
+    response = request.response
+    response.body = doc.encode(charset)
+    response.charset = charset
+    response.content_disposition = ("attachment; filename=%s.%s"
+                                    % (name.replace(" ", "_"), fmt))
+    return set_common_headers(
+        request, "exportgpxkml", NO_CACHE,
+        content_type=_CONTENT_TYPES[fmt]
     )

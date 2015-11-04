@@ -476,6 +476,9 @@ def includeme(config):
     # add routes to csv view
     config.add_route("csvecho", "/csv", request_method="POST")
 
+    # add route to the export GPX/KML view
+    config.add_route("exportgpxkml", "/exportgpxkml")
+
     # add routes to the echo service
     config.add_route("echo", "/echo", request_method="POST")
 
