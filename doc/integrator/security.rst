@@ -44,4 +44,16 @@ Add or modify the structure like that:
 
     headers:
         <service_name>:
-            access-control-allow-origin: "<domain1>, <domain2>, ..."
+            access_control_allow_origin: ["<domain1>", "<domain2>", ...]
+            access_control_max_age: 3600
+
+A ``"*"`` can be included in ``access_control_allow_origin`` to allow everybody to
+access, but no credentials will be passed in the case.
+
+Available services are:
+
+- login
+- layers
+- print
+- profile
+- raster

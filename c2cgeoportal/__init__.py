@@ -56,6 +56,11 @@ formalchemy_default_y = 5860000
 formalchemy_available_functionalities = []
 formalchemy_available_metadata = []
 
+# Header predicate to accept only JSON content
+# OL/cgxp are not setting the correct content type for JSON. We have to accept
+# XML as well even though JSON is actually send.
+JSON_CONTENT_TYPE = "Content-Type:application/(?:json|xml)"
+
 
 class DecimalJSON:
     def __init__(self, jsonp_param_name="callback"):
@@ -416,6 +421,19 @@ def mapserverproxy_route_predicate(info, request):
     return "request" not in params or params["request"] != u"getcapabilities"
 
 
+def add_cors_route(config, pattern, service):
+    """
+    Add the OPTIONS route and view need for services supporting CORS.
+    """
+    def view(request):  # pragma: nocover
+        from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
+        return set_common_headers(request, service, NO_CACHE, add_cors=True)
+
+    name = pattern + "_options"
+    config.add_route(name, pattern, request_method="OPTIONS")
+    config.add_view(view, route_name=name)
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -507,9 +525,13 @@ def includeme(config):
 
     # add routes to the entry view class
     config.add_route("loginform", "/login.html", request_method="GET")
+    add_cors_route(config, "/login", "login")
     config.add_route("login", "/login", request_method=("GET", "POST"))
+    add_cors_route(config, "/logout", "login")
     config.add_route("logout", "/logout", request_method="GET")
+    add_cors_route(config, "/loginchange", "login")
     config.add_route("loginchange", "/loginchange", request_method="POST")
+    add_cors_route(config, "/loginresetpassword", "login")
     config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
     config.add_route("apijs", "/api.js", request_method="GET")
@@ -566,33 +588,37 @@ def includeme(config):
         request_method="GET",
     )
     # V3
+    add_cors_route(config, "/printproxy/*all", "print")
     config.add_route(
         "printproxy_capabilities", "/printproxy/capabilities.json",
-        request_method=("GET", "OPTIONS"),
-        pregenerator=C2CPregenerator(role=True),
+        request_method="GET", pregenerator=C2CPregenerator(role=True),
     )
     config.add_route(
         "printproxy_report_create", "/printproxy/report.{format}",
-        request_method=("POST", "OPTIONS"),
+        request_method="POST", header=JSON_CONTENT_TYPE
     )
     config.add_route(
         "printproxy_status", "/printproxy/status/{ref}.json",
-        request_method=("GET", "OPTIONS"),
+        request_method="GET"
     )
     config.add_route(
         "printproxy_cancel", "/printproxy/cancel/{ref}",
-        request_method=("DELETE", "OPTIONS"),
+        request_method="DELETE"
     )
     config.add_route(
         "printproxy_report_get", "/printproxy/report/{ref}",
-        request_method="GET",
+        request_method="GET"
     )
 
     # full text search routes
+    add_cors_route(config, "/fulltextsearch", "fulltextsearch")
     config.add_route("fulltextsearch", "/fulltextsearch")
 
     # Access to raster data
+    add_cors_route(config, "/raster", "raster")
     config.add_route("raster", "/raster", request_method="GET")
+
+    add_cors_route(config, "/profile.{ext}", "profile")
     config.add_route("profile.csv", "/profile.csv", request_method="POST")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
@@ -607,6 +633,7 @@ def includeme(config):
     config.add_route("pdfreport", "/pdfreport/{layername}/{id}", request_method="GET")
 
     # add routes for the "layers" web service
+    add_cors_route(config, "/layers/*all", "layers")
     config.add_route(
         "layers_count", "/layers/{layer_id:\\d+}/count",
         request_method="GET"
@@ -625,10 +652,10 @@ def includeme(config):
         request_method="GET")
     config.add_route(
         "layers_create", "/layers/{layer_id:\\d+}",
-        request_method="POST")
+        request_method="POST", header=JSON_CONTENT_TYPE)
     config.add_route(
         "layers_update", "/layers/{layer_id:\\d+}/{feature_id}",
-        request_method="PUT")
+        request_method="PUT", header=JSON_CONTENT_TYPE)
     config.add_route(
         "layers_delete", "/layers/{layer_id:\\d+}/{feature_id}",
         request_method="DELETE")
