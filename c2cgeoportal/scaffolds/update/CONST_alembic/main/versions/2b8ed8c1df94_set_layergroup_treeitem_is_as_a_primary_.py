@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2014, Camptocamp SA
+# Copyright (c) 2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,33 +27,34 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Set layergroup_treeitem.is as a primary key
 
-from unittest import TestCase
-import codecs
+Revision ID: 2b8ed8c1df94
+Revises: 26a8c51827c6
+Create Date: 2015-10-29 16:11:24.760733
+"""
+
+from alembic import op, context
+
+# revision identifiers, used by Alembic.
+revision = "2b8ed8c1df94"
+down_revision = "32527659d57b"
+branch_labels = ("1.6",)
+depends_on = None
 
 
-class TestExportCSVView(TestCase):
+def upgrade():
+    schema = context.get_context().config.get_main_option("schema")
 
-    def test_echo(self):
-        from pyramid.testing import DummyRequest
-        from pyramid.httpexceptions import HTTPBadRequest
-        from c2cgeoportal.views.exportcsv import echo
+    op.create_primary_key(
+        "layergroup_treeitem_pkey", "layergroup_treeitem", ["id"],
+        schema=schema
+    )
 
-        request = DummyRequest()
 
-        response = echo(request)
-        request.params = {
-            "csv": "12,34"
-        }
-        self.assertEqual(type(response), HTTPBadRequest)
+def downgrade():
+    schema = context.get_context().config.get_main_option("schema")
 
-        request.method = "POST"
-        request.params = {}
-        response = echo(request)
-        self.assertEqual(type(response), HTTPBadRequest)
-
-        request.params = {
-            "csv": u"éà,èç"
-        }
-        response = echo(request)
-        self.assertEqual(response.body, codecs.BOM_UTF8 + u"éà,èç".encode("UTF-8"))
+    op.drop_constraint(
+        "layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema
+    )

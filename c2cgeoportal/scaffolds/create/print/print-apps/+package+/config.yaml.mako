@@ -8,8 +8,8 @@ templates:
                 default: ""
             comments: !string
                 default: ""
-            debug: !integer
-                default: 0
+            debug: !boolean
+                default: false
             legend: !legend {}
             northArrow: !northArrow
                 size: 40

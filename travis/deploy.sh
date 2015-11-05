@@ -3,7 +3,7 @@
 DO_TAG=false
 DEPLOY=false
 DOC=false
-FINAL=false
+FINAL=false # including rc and called dev releases
 BUILD_TAG=false # for rc
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
@@ -12,7 +12,7 @@ then
     DOC=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.[0-9]+)?$ ]]
 then
     if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
@@ -23,21 +23,21 @@ then
     FINAL=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+)$ ]]
 then
-    VERSION=`echo ${TRAVIS_TAG} | awk -Frc '{print $1}'`
-    if [ ${VERSION} != $(python setup.py -V) ]
+    if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
         echo "The tag name doesn't match with the egg version."
         exit 1
     fi
     DEPLOY=true
-    BUILD_TAG=rc`echo ${TRAVIS_TAG} | awk -Frc '{print $2}'`
+    FINAL=true
 fi
 if [[ ${TRAVIS_TAG} =~ ^0.0.[0-9a-f]*$ ]]
 then
     DEPLOY=true
 fi
+
 
 if [ ${DEPLOY} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
 then
@@ -45,16 +45,11 @@ then
 
     set -x
 
-    if [ ${BUILD_TAG} != false ]
-    then
-        .build/venv/bin/python setup.py egg_info --no-date --tag-build "${BUILD_TAG}" bdist_wheel
-    else
     if [ ${FINAL} == true ]
-        then
-            .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel
-        else
-            .build/venv/bin/python setup.py bdist_wheel
-        fi
+    then
+        .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel
+    else
+        .build/venv/bin/python setup.py bdist_wheel
     fi
 fi
 

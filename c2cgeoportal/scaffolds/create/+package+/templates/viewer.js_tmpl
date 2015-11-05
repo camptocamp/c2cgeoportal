@@ -259,24 +259,7 @@ Ext.onReady(function() {
                 defaults: {
                     anchor:'100%'
                 },
-                autoFit: true,
-                fieldsExtraClientConfiguration: {
-                    "A4 portrait": {
-                        "title": {
-                            fieldAttributes: {
-                                fieldLabel: "${_("Name")}",
-                                emptyText: "${_("Name")}"
-                            }
-                        },
-                        "comments": {
-                            useTextArea: true,
-                            fieldAttributes: {
-                                fieldLabel: "${_("Description")}",
-                                emptyText: "${_("Description")}"
-                            }
-                        }
-                    }
-                }
+                autoFit: true
             }
         },
         {

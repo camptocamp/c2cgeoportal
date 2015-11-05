@@ -203,6 +203,8 @@ vars:
         # tinyows_host: {host}
 
     fulltextsearch:
+        defaultlimit: 30
+        maxlimit: 200
         languages:
             fr: french
             en: english
