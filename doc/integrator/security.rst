@@ -57,3 +57,4 @@ Available services are:
 - print
 - profile
 - raster
+- error

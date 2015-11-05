@@ -27,11 +27,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
+import logging
 import yaml
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
+from pyramid.httpexceptions import HTTPException
 
 import sqlalchemy
 import sqlahelper
@@ -44,6 +45,7 @@ from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
 
+log = logging.getLogger(__name__)
 
 # used by (sql|form)alchemy
 srid = None
@@ -434,6 +436,16 @@ def add_cors_route(config, pattern, service):
     config.add_view(view, route_name=name)
 
 
+def error_handler(http_exception, request):  # pragma: nocover
+    """
+    View callable for handling all the exceptions that are not already handled.
+    """
+    log.warning("%s returned status code %s", request.url,
+                http_exception.status_code)
+    return caching.set_common_headers(request, "error", caching.NO_CACHE,
+                                      http_exception, vary=True, add_cors=True)
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -710,3 +722,7 @@ def includeme(config):
 
     add_admin_interface(config)
     add_static_view(config)
+
+    # Handles the other HTTP errors raised by the views. Without that,
+    # the client receives a status=200 without content.
+    config.add_view(error_handler, context=HTTPException)
