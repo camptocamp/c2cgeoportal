@@ -14,7 +14,8 @@ GIT_FOLDER=`pwd`
 
 cd /tmp/testgeomapfish/
 
-sed -e "s@^c2cgeoportal.=.*\$@-e ${GIT_FOLDER}@" -i CONST_versions.txt
+echo "REQUIREMENTS = -e ${GIT_FOLDER}" | cat - travis.mk > travis.mk.new
+mv travis.mk.new travis.mk
 
 git config --global user.name "Travis"
 git config --global user.email "travis@example.com"
