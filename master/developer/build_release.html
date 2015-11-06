@@ -134,7 +134,11 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 </pre><p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
 <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.txt</span></code>.</p>
 <p>Verify that the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> is correct
-(as the <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code>).</p>
+(as the <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code>, required when we create a release candidate
+or a development release).</p>
+</div>
+<div class="section" id="release-w-x-y-z">
+<h3>Release w.x.y(.z)<a class="headerlink" href="#release-w-x-y-z" title="Permalink to this headline">¶</a></h3>
 <p>Commit your changes:</p>
 <pre class="highlight"><span class="prompt1">git add setup.py c2cgeoportal/scaffolds/update/CONST_versions.txt</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
@@ -147,11 +151,21 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 </pre><p>Push your changes:</p>
 <pre class="highlight"><span class="prompt1">git push origin &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;release&gt;</span>
-</pre><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When you push a tag with the pattern <cite>^[0-9].[0-9]+.[0-9]$</cite> a new release
-will automatically be created on Travis CI.</p>
-</div>
+</pre></div>
+<div class="section" id="release-candidate-or-development-w-x-y-rc-dev-z">
+<h3>Release candidate or development w.x.y.(rc|dev)z<a class="headerlink" href="#release-candidate-or-development-w-x-y-rc-dev-z" title="Permalink to this headline">¶</a></h3>
+<p>In this case we don&#8217;t commit the version changes in the branch.</p>
+<p>Commit, tag and push your changes:</p>
+<pre class="highlight"><span class="prompt1">git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt <span class="se">\</span>
+    c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
+<span class="prompt1">git tag &lt;release&gt;</span>
+<span class="prompt1">git push origin &lt;release&gt;</span>
+</pre></div>
+<div class="section" id="notes-about-travis">
+<h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
+<p>When you push a tag with the pattern <code class="docutils literal"><span class="pre">^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$</span></code>
+a new release will automatically be created on Travis CI.</p>
 </div>
 </div>
 <div class="section" id="post-release-tasks">
@@ -160,6 +174,19 @@ will automatically be created on Travis CI.</p>
 <ul>
 <li><p class="first">Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
 to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
+<div class="highlight-python"><div class="highlight"><pre>``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads``
+``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads``
+</pre></div>
+</div>
+<p>If yes create the merge with:</p>
+<div class="highlight-python"><div class="highlight"><pre>``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge -m &quot;Merge &lt;src branch&gt; and &lt;dst branch&gt; branches&quot; --branch-label &lt;dst branch&gt; &lt;rev 1&gt; &lt;rev 2&gt;``
+</pre></div>
+</div>
+<p class="last">And finally add the new file.</p>
+</div>
 </li>
 <li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</p>
 </li>
@@ -201,6 +228,9 @@ and <code class="docutils literal"><span class="pre">geospatial&#64;lists.campto
 <li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
 <li><a class="reference internal" href="#id1">New version</a></li>
 <li><a class="reference internal" href="#id2">New release</a></li>
+<li><a class="reference internal" href="#release-w-x-y-z">Release w.x.y(.z)</a></li>
+<li><a class="reference internal" href="#release-candidate-or-development-w-x-y-rc-dev-z">Release candidate or development w.x.y.(rc|dev)z</a></li>
+<li><a class="reference internal" href="#notes-about-travis">Notes about Travis</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#post-release-tasks">Post release tasks</a></li>

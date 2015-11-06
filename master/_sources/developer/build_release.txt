@@ -150,7 +150,11 @@ Update the version of c2cgeoportal to ``<release>`` in
 ``c2cgeoportal/scaffolds/update/CONST_versions.txt``.
 
 Verify that the version in the ``setup.py`` is correct
-(as the ``<release>``).
+(as the ``<release>``, required when we create a release candidate
+or a development release).
+
+Release w.x.y(.z)
+~~~~~~~~~~~~~~~~~
 
 Commit your changes:
 
@@ -181,10 +185,26 @@ Push your changes:
     git push origin <version>
     git push origin <release>
 
-.. note::
+Release candidate or development w.x.y.(rc|dev)z
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   When you push a tag with the pattern `^[0-9].[0-9]+.[0-9]$` a new release
-   will automatically be created on Travis CI.
+In this case we don't commit the version changes in the branch.
+
+Commit, tag and push your changes:
+
+.. prompt:: bash
+
+    git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt \
+        c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt
+    git commit -m "Do release <release>"
+    git tag <release>
+    git push origin <release>
+
+Notes about Travis
+~~~~~~~~~~~~~~~~~~
+
+When you push a tag with the pattern ``^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$``
+a new release will automatically be created on Travis CI.
 
 Post release tasks
 ------------------
@@ -193,6 +213,20 @@ When a new release or a new version is done you should do the following tasks:
 
 * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+
+  .. note::
+
+     On ``c2cgeoportal`` merge see if an alembic merge should be done::
+
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads``
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads``
+
+     If yes create the merge with::
+
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge -m "Merge <src branch> and <dst branch> branches" --branch-label <dst branch> <rev 1> <rev 2>``
+
+     And finally add the new file.
+
 * Upgrade the demo in your home folder with ``c2ctool``.
 * Update the demo on the main folder with:
 

@@ -244,8 +244,10 @@ or updated when this scaffold is applied. So developers who modify the
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts to the
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, as opposed to the application.</p>
 <p>Add a new script call from the application&#8217;s root directory:</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic revision -m <span class="s2">&quot;&lt;Explicite name&gt;&quot;</span></span>
-</pre><p>This will generate the migration script in
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic revision --branch-label &lt;branch&gt; -m <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+</pre><p>Where <code class="docutils literal"><span class="pre">&lt;branch&gt;</span></code> is the branch on witch we will merge, usually <code class="docutils literal"><span class="pre">master</span></code> but
+it can also be something like <code class="docutils literal"><span class="pre">2.0</span></code>.</p>
+<p>This will generate the migration script in
 <code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
 You should <em>NOT</em> commit the script in this directory because this migration
 script should be shared with all c2cgeoportal projects.
