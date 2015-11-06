@@ -27,34 +27,23 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Set layergroup_treeitem.is as a primary key
+"""Merge 1.6 and master branches
 
-Revision ID: 2b8ed8c1df94
-Revises: 26a8c51827c6
-Create Date: 2015-10-29 16:11:24.760733
+Revision ID: a4f1aac9bda
+Revises: ('2b8ed8c1df94', '1418cb05921b')
+Create Date: 2015-11-06 13:36:43.368700
 """
 
-from alembic import op, context
-
 # revision identifiers, used by Alembic.
-revision = '2b8ed8c1df94'
-down_revision = '32527659d57b'
-branch_labels = ('1.6',)
+revision = 'a4f1aac9bda'
+down_revision = ('2b8ed8c1df94', '1418cb05921b')
+branch_labels = ('master',)
 depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    op.create_primary_key(
-        'layergroup_treeitem_pkey', 'layergroup_treeitem', ['id'],
-        schema=schema
-    )
+    pass
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    op.drop_constraint(
-        'layergroup_treeitem_pkey', 'layergroup_treeitem', schema=schema
-    )
+    pass

@@ -213,6 +213,20 @@ When a new release or a new version is done you should do the following tasks:
 
 * Merge the release changes (on ``cgxp`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``1.6`` => ``2.0``, ``2.0`` => ``master``.
+
+  .. note::
+
+     On ``c2cgeoportal`` merge see if an alembic merge should be done::
+
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads``
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads``
+
+     If yes create the merge with::
+
+        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge -m "Merge <src branch> and <dst branch> branches" --branch-label <dst branch> <rev 1> <rev 2>``
+
+     And finally add the new file.
+
 * Upgrade the demo in your home folder with ``c2ctool``.
 * Update the demo on the main folder with:
 
