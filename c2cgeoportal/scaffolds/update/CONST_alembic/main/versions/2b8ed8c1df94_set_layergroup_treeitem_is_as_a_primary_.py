@@ -37,24 +37,24 @@ Create Date: 2015-10-29 16:11:24.760733
 from alembic import op, context
 
 # revision identifiers, used by Alembic.
-revision = "2b8ed8c1df94"
-down_revision = "32527659d57b"
-branch_labels = ("1.6",)
+revision = '2b8ed8c1df94'
+down_revision = '32527659d57b'
+branch_labels = ('1.6',)
 depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
     op.create_primary_key(
-        "layergroup_treeitem_pkey", "layergroup_treeitem", ["id"],
+        'layergroup_treeitem_pkey', 'layergroup_treeitem', ['id'],
         schema=schema
     )
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
     op.drop_constraint(
-        "layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema
+        'layergroup_treeitem_pkey', 'layergroup_treeitem', schema=schema
     )
