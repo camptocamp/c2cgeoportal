@@ -40,6 +40,8 @@ install:
 - cp /tmp/testgeomapfish/project.yaml.mako project.yaml
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null # on upgrade
 - rm project.yaml
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
 - travis/build-new-project.sh
 - sudo /usr/sbin/apache2ctl graceful
 
@@ -66,8 +68,6 @@ script:
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 - travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
