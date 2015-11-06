@@ -297,7 +297,10 @@ Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    .build/venv/bin/alembic revision -m "<Explicite name>"
+    .build/venv/bin/alembic revision --branch-label <branch> -m "<Explicit name>"
+
+Where ``<branch>`` is the branch on witch we will merge, usually ``master`` but
+it can also be something like ``2.0``.
 
 This will generate the migration script in
 ``CONST_alembic/versions/xxx_<Explicite_name>.py``

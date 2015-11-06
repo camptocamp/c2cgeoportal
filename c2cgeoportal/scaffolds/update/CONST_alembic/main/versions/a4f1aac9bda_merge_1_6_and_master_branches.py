@@ -34,8 +34,6 @@ Revises: ('2b8ed8c1df94', '1418cb05921b')
 Create Date: 2015-11-06 13:36:43.368700
 """
 
-from alembic import op, context
-
 # revision identifiers, used by Alembic.
 revision = 'a4f1aac9bda'
 down_revision = ('2b8ed8c1df94', '1418cb05921b')
@@ -44,12 +42,8 @@ depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    # Instructions
+    pass
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    # Instructions
+    pass
