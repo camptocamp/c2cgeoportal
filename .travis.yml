@@ -35,10 +35,10 @@ install:
 - .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
 - diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
 - make -f travis.mk build
-- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App éàè"
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test > /dev/null # on create
-- cp /tmp/test/project.yaml.mako project.yaml
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test > /dev/null # on upgrade
+- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè"
+- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null # on create
+- cp /tmp/testgeomapfish/project.yaml.mako project.yaml
+- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null # on upgrade
 - rm project.yaml
 - travis/build-new-project.sh
 - sudo /usr/sbin/apache2ctl graceful
@@ -64,14 +64,10 @@ script:
 - make -f travis.mk doc
 - make -f travis.mk checks
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
-<<<<<<< HEAD
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 - travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
-=======
-- travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
->>>>>>> origin/1.6
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
@@ -80,16 +76,8 @@ script:
 - git checkout c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 - travis/status.sh
 # verify c2cgeoportal version
-<<<<<<< HEAD
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_versions.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_versions.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9].[0-9]+.0rc[0-9]$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
-=======
-- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal== c2cgeoportal/scaffolds/update/CONST_requirements.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep c2cgeoportal-win== c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt|awk -F '==' '{{print $2}}'` = ${TRAVIS_TAG} ; fi
+- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `grep "REQUIREMENTS ?= 'c2cgeoportal==" c2cgeoportal/scaffolds/update/CONST_Makefile|awk -F '==' '{{print $2}}'` = "${TRAVIS_TAG}'" ; fi
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]|\.[0-9]+)?$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
->>>>>>> origin/1.6
 
 after_failure:
 - .build/venv/bin/python setup.py nosetests
