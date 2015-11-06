@@ -286,7 +286,6 @@ TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
 # Templates
 TEMPLATE_EXCLUDE += .build print/templates \
-	templatecache.js.mako \
 	CONST_alembic/main/script.py.mako \
 	CONST_alembic/static/script.py.mako \
 	$(PACKAGE)/static/lib
