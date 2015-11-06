@@ -8,13 +8,12 @@
 <%
   import re
   import os
+  import htmlmin
   _partials = {}
   for partial in partials.split():
       f = file(partial)
       content = unicode(f.read().decode('utf8'))
-      content = re.sub(r'>\s*<' , '><', content)
-      content = re.sub(r'\s\s+', ' ', content)
-      content = re.sub(r'\n', '', content)
+      content = htmlmin.minify(content, remove_comments=True)
       content = re.sub(r"'", "\\'", content)
       dirname, filename = os.path.split(partial)
       subdirname = os.path.basename(dirname.rstrip(os.sep))
