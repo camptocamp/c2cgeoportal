@@ -163,14 +163,14 @@ either expressed or implied, of the FreeBSD Project.
         var state = el.value;
         var fields = [];
         if (state == "internal WMS") {
-            fields = ["legendRule"];
+            fields = ["legend_rule"];
         }
         else if (state == "external WMS") {
-            fields = ["url", "style", "imageType", "legendRule", "isSingleTile"];
+            fields = ["url", "style", "image_type", "legend_rule", "is_single_tile"];
         }
         else if (state == "WMTS") {
-            fields = ["url", "style", "dimensions", "matrixSet", "wmsUrl",
-                      "wmsLayers", "queryLayers"];
+            fields = ["url", "style", "dimensions", "matrixSet", "wms_url",
+                      "wms_layers", "query_layers"];
         }
 
         var change = function(field, fields) {
