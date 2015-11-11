@@ -31,3 +31,30 @@ In the ``viewer.js`` files you should also remove the ``OpenLayers.ProxyHost`` c
 
 This implies that all external WMS services (from the database and from the WMS browser) should
 have the CORS headers (`enable-cors.org <http://enable-cors.org/server.html>`_).
+
+Access to services by external servers
+--------------------------------------
+
+By default, only localhost can access c2c's services.
+To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your ``vars_<project>.yaml`` file.
+
+Add or modify the structure like that:
+
+.. code:: yaml
+
+    headers:
+        <service_name>:
+            access_control_allow_origin: ["<domain1>", "<domain2>", ...]
+            access_control_max_age: 3600
+
+A ``"*"`` can be included in ``access_control_allow_origin`` to allow everybody to
+access, but no credentials will be passed in the case.
+
+Available services are:
+
+- login
+- layers
+- print
+- profile
+- raster
+- error

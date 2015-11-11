@@ -63,6 +63,29 @@ in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.ya
 <p>This implies that all external WMS services (from the database and from the WMS browser) should
 have the CORS headers (<a class="reference external" href="http://enable-cors.org/server.html">enable-cors.org</a>).</p>
 </div>
+<div class="section" id="access-to-services-by-external-servers">
+<h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Permalink to this headline">¶</a></h2>
+<p>By default, only localhost can access c2c&#8217;s services.
+To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
+<p>Add or modify the structure like that:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>headers:
+    &lt;service_name&gt;:
+        access_control_allow_origin: [&quot;&lt;domain1&gt;&quot;, &quot;&lt;domain2&gt;&quot;, ...]
+        access_control_max_age: 3600
+</pre></div>
+</div>
+<p>A <code class="docutils literal"><span class="pre">&quot;*&quot;</span></code> can be included in <code class="docutils literal"><span class="pre">access_control_allow_origin</span></code> to allow everybody to
+access, but no credentials will be passed in the case.</p>
+<p>Available services are:</p>
+<ul class="simple">
+<li>login</li>
+<li>layers</li>
+<li>print</li>
+<li>profile</li>
+<li>raster</li>
+<li>error</li>
+</ul>
+</div>
 </div>
 
 
@@ -80,6 +103,7 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
 <li><a class="reference internal" href="#enable-disable-wms-getcapability">Enable / Disable WMS GetCapability</a></li>
 <li><a class="reference internal" href="#enable-disable-the-admin-interface">Enable / Disable the admin interface</a></li>
 <li><a class="reference internal" href="#enable-disable-the-ogc-proxy">Enable / Disable the OGC proxy</a></li>
+<li><a class="reference internal" href="#access-to-services-by-external-servers">Access to services by external servers</a></li>
 </ul>
 </li>
 </ul>

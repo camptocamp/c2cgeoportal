@@ -48,11 +48,11 @@
 <p>To change this value for all the application change in the
 <code class="docutils literal"><span class="pre">production.ini.in</span></code> file the <code class="docutils literal"><span class="pre">default_max_age</span></code> value. <code class="docutils literal"><span class="pre">0</span></code> will mean <code class="docutils literal"><span class="pre">no-cache</span></code>.
 The specified value is in seconds.</p>
-<p>To change this value for a specific service add the following stricture in the
+<p>To change this value for a specific service add the following structure in the
 <code class="docutils literal"><span class="pre">config.yaml.in</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>cache_control:
-    &quot;&lt;service_name&gt;&quot;:
-        &quot;max_age&quot;: &lt;max_age&gt;
+<div class="code yaml highlight-python"><div class="highlight"><pre>headers:
+    &lt;service_name&gt;:
+        cache_control_max_age: &lt;max_age&gt;
 </pre></div>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">&lt;service_name&gt;</span></code> can be: <code class="docutils literal"><span class="pre">entry</span></code>, <code class="docutils literal"><span class="pre">fulltextsearch</span></code>, <code class="docutils literal"><span class="pre">mapserver</span></code>,
