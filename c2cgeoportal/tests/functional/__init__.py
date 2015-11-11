@@ -166,3 +166,17 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
     request.registry.validate_user = default_user_validator
     request.client_addr = None
     return request
+
+
+def add_user_property(request):
+    """
+    Add the "user" property to the given request.
+    Disable referer checking.
+    """
+    from c2cgeoportal import _create_get_user_from_request
+    request.referer = "http://example.com/app"
+    request.set_property(
+        _create_get_user_from_request({"authorized_referers": [request.referer]}),
+        name="user",
+        reify=True
+    )

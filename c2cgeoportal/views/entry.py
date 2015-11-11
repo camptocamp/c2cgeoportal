@@ -959,7 +959,7 @@ class Entry(object):
             d["permalink_themes"] = json.dumps(permalink_themes.split(","))
 
         set_common_headers(
-            self.request, "cgxp_viewer", PRIVATE_CACHE,
+            self.request, "cgxp_viewer", NO_CACHE,
             vary=True, content_type="application/javascript",
         )
 

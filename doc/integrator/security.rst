@@ -58,3 +58,17 @@ Available services are:
 - profile
 - raster
 - error
+
+Authorized referers
+-------------------
+
+To mitigate `CSRF <https://en.wikipedia.org/wiki/Cross-site_request_forgery>`_
+attacks, the server validates the referer against a list of authorized referers.
+
+By default, only the pages coming from the server are allowed. You can change
+that list by adding an ``authorized_referers`` list in your
+``vars_<project>.yaml`` file.
+
+This solution is not the most secure (some people have browser extensions that
+reset the referer), but that is the easiest to implement with all our different
+JS frameworks.
