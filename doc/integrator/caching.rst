@@ -12,14 +12,14 @@ To change this value for all the application change in the
 ``production.ini.in`` file the ``default_max_age`` value. ``0`` will mean ``no-cache``.
 The specified value is in seconds.
 
-To change this value for a specific service add the following stricture in the
+To change this value for a specific service add the following structure in the
 ``config.yaml.in``:
 
 .. code:: yaml
 
-    cache_control:
-        "<service_name>":
-            "max_age": <max_age>
+    headers:
+        <service_name>:
+            cache_control_max_age: <max_age>
 
 Where ``<service_name>`` can be: ``entry``, ``fulltextsearch``, ``mapserver``,
 ``print`` or ``layers`` (editing).

@@ -55,7 +55,7 @@ class Profile(Raster):
         """answers to /profile.json"""
         layer, points = self._compute_points()
         set_common_headers(
-            self.request, "profile", NO_CACHE,
+            self.request, "profile", NO_CACHE, add_cors=True
         )
         return {"profile": points}
 
@@ -74,7 +74,7 @@ class Profile(Raster):
             self.request, "profile", NO_CACHE,
             response=Response(result, headers={
                 "Content-Disposition": 'attachment; filename="profile.csv"',
-            }), content_type="text/csv; charset=utf-8", vary=True
+            }), add_cors=True, content_type="text/csv; charset=utf-8", vary=True
         )
 
     def _compute_points(self):

@@ -287,9 +287,10 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings.update({
-            "cache_control": {
+            "headers": {
                 "mapserver": {
-                    "max_age": 0
+                    "cache_control_max_age": 0,
+                    "access_control_allow_origin": "*"
                 }
             }
         })

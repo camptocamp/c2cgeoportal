@@ -29,10 +29,12 @@
 
 
 import inspect
+import logging
 
 from dogpile.cache import compat
 from dogpile.cache.region import make_region
 
+log = logging.getLogger(__name__)
 _regions = {}
 
 
@@ -101,10 +103,65 @@ NO_CACHE = 0
 PUBLIC_CACHE = 1
 PRIVATE_CACHE = 2
 
+CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
+
+
+def set_cors_headers(service_headers_settings, request, service_name,
+                     credentials, response):
+    """
+    Handle CORS requests, as specified in http://www.w3.org/TR/cors/
+    """
+    if "Origin" not in request.headers:
+        return  # Not a CORS request if this header is missing
+    origin = request.headers["Origin"]
+
+    if not service_headers_settings or \
+            "access_control_allow_origin" not in service_headers_settings:
+        log.warning("CORS query not configured for service=%s", service_name)
+        return
+
+    preflight = request.method == "OPTIONS"
+    if preflight and "Access-Control-Request-Method" not in request.headers:
+        log.warning("CORS preflight query missing the " +
+                    "Access-Control-Request-Method header", service_name)
+        return
+
+    allowed_origins = service_headers_settings["access_control_allow_origin"]
+    if origin not in allowed_origins:
+        if "*" in allowed_origins:
+            origin = "*"
+            credentials = False  # Force no credentials
+        else:
+            log.warning("CORS query not allowed for origin=%s, service=%s", origin,
+                        service_name)
+            return
+
+    response.headers.update({
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": CORS_METHODS
+    })
+
+    if preflight:
+        max_age = service_headers_settings.get("access_control_max_age", 3600)
+        response.headers["Access-Control-Max-Age"] = str(max_age)
+
+    if credentials:
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    requested_headers = \
+        request.headers.get("Access-Control-Request-Headers", False)
+    if requested_headers:
+        # For the moment, we allow all requested headers
+        response.headers["Access-Control-Allow-Headers"] = requested_headers
+
+    # If we start using headers in responses, we'll have to add
+    # Access-Control-Expose-Headers
+
 
 def set_common_headers(
         request, service_name, cache,
-        response=None, add_cors=False, vary=False, content_type=None):
+        response=None, credentials=True, add_cors=False, vary=False,
+        content_type=None):
     if response is None:
         response = request.response
 
@@ -120,23 +177,25 @@ def set_common_headers(
     else:  # pragma: nocover
         raise "Invalid cache type"
 
-    if cache != NO_CACHE:
-        max_age = request.registry.settings["default_max_age"]
+    if hasattr(request, "registry"):
+        headers_settings = request.registry.settings.get("headers", {})
+        service_headers_settings = headers_settings.get(service_name)
 
-        settings = request.registry.settings.get("cache_control", {})
-        if service_name in settings and "max_age" in settings[service_name]:
-            max_age = settings[service_name]["max_age"]
+        if cache != NO_CACHE:
+            max_age = request.registry.settings["default_max_age"]
 
-        if max_age != 0:
-            response.cache_control.max_age = max_age
-        else:
-            response.cache_control.no_cache = True
+            if service_headers_settings and \
+                    "cache_control_max_age" in service_headers_settings:
+                max_age = service_headers_settings["cache_control_max_age"]
 
-    if add_cors:
-        response.headers.update({
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "X-Requested-With, Content-Type"
-        })
+            if max_age != 0:
+                response.cache_control.max_age = max_age
+            else:
+                response.cache_control.no_cache = True
+
+        if add_cors:
+            set_cors_headers(service_headers_settings, request, service_name,
+                             credentials, response)
 
     if vary:
         response.headers["Vary"] = "Accept-Language"
