@@ -63,7 +63,7 @@ WHITE = 7
 DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
     "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
-VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+|\.[0-9]+)?$"
+VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
 
 
 def _colorize(text, color):
@@ -321,11 +321,15 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        if self.options.version == "master" or \
-                re.match(VERSION_RE, self.options.version) is not None:
+        if self.options.version == "master":
             check_call([
                 "git", "submodule", "foreach", "git", "reset", "--hard",
                 "origin/%s" % self.options.version, "--"
+            ])
+        elif re.match(VERSION_RE, self.options.version) is not None:
+            check_call([
+                "git", "submodule", "foreach", "git", "reset", "--hard",
+                self.options.version, "--"
             ])
         else:
             notes.append(
