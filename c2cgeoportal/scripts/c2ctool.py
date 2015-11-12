@@ -63,7 +63,7 @@ WHITE = 7
 DEFAULT_INDEX_URL = "http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
     "http://pypi.camptocamp.net/internal-pypi/index/%(package)s-%(version)s.tar.gz"
-VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+|\.[0-9]+)?$"
+VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
 
 
 def _colorize(text, color):

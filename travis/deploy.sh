@@ -19,7 +19,7 @@ then
     FINAL=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.rc[0-9]+|\.dev[0-9]+)$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+)$ ]]
 then
     if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
