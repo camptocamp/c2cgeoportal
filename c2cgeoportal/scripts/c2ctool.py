@@ -321,11 +321,15 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        if self.options.version == "master" or \
-                re.match(VERSION_RE, self.options.version) is not None:
+        if self.options.version == "master":
             check_call([
                 "git", "submodule", "foreach", "git", "reset", "--hard",
                 "origin/%s" % self.options.version, "--"
+            ])
+        elif re.match(VERSION_RE, self.options.version) is not None:
+            check_call([
+                "git", "submodule", "foreach", "git", "reset", "--hard",
+                self.options.version, "--"
             ])
         else:
             notes.append(
