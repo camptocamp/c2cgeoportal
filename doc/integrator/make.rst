@@ -44,6 +44,14 @@ Vars files
 The project variables are set in the ``vars_<package>.yaml`` file,
 which extends the default ``CONST_vars.yaml``.
 
+To make such variables available to the python code, for instance using
+
+.. code:: python
+
+    request.registry.settings.get('some_config_var')
+
+they must be listed in the makefile as well using ``CONFIG_VARS`` (see below).
+
 For more information see the
 `c2c.template <https://github.com/sbrunner/c2c.template>`_ documentation.
 
