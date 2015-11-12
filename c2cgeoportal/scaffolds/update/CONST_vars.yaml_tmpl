@@ -413,6 +413,10 @@ vars:
     headers:
         login: &default-headers
             access_control_max_age: 3600
+        index: *default-headers
+        config: *default-headers
+        api: *default-headers
+        themes: *default-headers
         mapserver:
             <<: *default-headers
             access_control_allow_origin: "*"
