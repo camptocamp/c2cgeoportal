@@ -458,7 +458,7 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		$(APP_JS_FILES) \
 		$(APP_PARTIALS_FILES) \
 		development.ini \
-		.build/config-$(INSTANCE_ID).timestamp
+		.build/config.yaml
 	$(VENV_BIN)/pot-create -c lingua-client.cfg -o $@ development.ini $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
