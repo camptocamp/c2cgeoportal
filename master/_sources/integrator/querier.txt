@@ -6,7 +6,7 @@ Query builder (Querier)
 In the Query builder interface, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
-web service that does a ``SELECT dinstinct(<column>) FROM <table>``.
+web service that does a ``SELECT distinct(<column>) FROM <table>``.
 
 The web service configuration is done in the ``vars_<project>.yaml`` file:
 
@@ -24,17 +24,17 @@ The web service configuration is done in the ``vars_<project>.yaml`` file:
                         column_name: "<column name>"
                         separator: ","
 
-The ``dbsession: "<session name>"`` in the ``enum`` is just a shortcut
-if almost of the session are similar in the layers. If the dbsession isn't
-defined we use the main DB session.
+``dbsession: "<session name>"`` at the ``enum`` level is a shortcut that
+may be used if almost all the layers use the same ``dbsession``. It may be
+overridden for each layer. If omitted, the main DB session is used.
 
-The ``table: "<[schema.]table name>"`` in the layer is just a shortcut
-if almost of the attribute of the layer are in the same table.
-Each attributes requires a table.
+``table: "<[schema.]table name>"`` may be used at the layer level as a the default
+table where following attributes may be found. It can be overridden at the
+attribute level. ``table`` is a mandatory parameter.
 
-If the ``column_name`` isn't defined we use the attribute name.
+If ``column_name`` is not defined, the attribute name is used.
 
-If the ``separator`` is defined we consider the column as a list of values.
+If ``separator`` is defined, the column is considered as a list of values.
 
 Simple example:
 
@@ -49,7 +49,7 @@ Simple example:
                     country:
 
 Make sure that the ``cgxp_querier`` plugin has the attribute ``attributeURLs``
-the ``viewer.js``:
+in the ``viewer.js`` file:
 
 .. code: javascript
 

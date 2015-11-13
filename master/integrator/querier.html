@@ -45,7 +45,7 @@
 <p>In the Query builder interface, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
-web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">dinstinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
+web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
 <p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
 <div class="code yaml highlight-python"><div class="highlight"><pre>layers:
     enum:
@@ -60,14 +60,14 @@ web service that does a <code class="docutils literal"><span class="pre">SELECT<
                     separator: &quot;,&quot;
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> in the <code class="docutils literal"><span class="pre">enum</span></code> is just a shortcut
-if almost of the session are similar in the layers. If the dbsession isn&#8217;t
-defined we use the main DB session.</p>
-<p>The <code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> in the layer is just a shortcut
-if almost of the attribute of the layer are in the same table.
-Each attributes requires a table.</p>
-<p>If the <code class="docutils literal"><span class="pre">column_name</span></code> isn&#8217;t defined we use the attribute name.</p>
-<p>If the <code class="docutils literal"><span class="pre">separator</span></code> is defined we consider the column as a list of values.</p>
+<p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum</span></code> level is a shortcut that
+may be used if almost all the layers use the same <code class="docutils literal"><span class="pre">dbsession</span></code>. It may be
+overridden for each layer. If omitted, the main DB session is used.</p>
+<p><code class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></code> may be used at the layer level as a the default
+table where following attributes may be found. It can be overridden at the
+attribute level. <code class="docutils literal"><span class="pre">table</span></code> is a mandatory parameter.</p>
+<p>If <code class="docutils literal"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
+<p>If <code class="docutils literal"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
 <p>Simple example:</p>
 <div class="code yaml highlight-python"><div class="highlight"><pre>layers
     enum:
@@ -79,7 +79,7 @@ Each attributes requires a table.</p>
 </pre></div>
 </div>
 <p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
-the <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
+in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
 </div>
 
 
