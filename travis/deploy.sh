@@ -45,6 +45,7 @@ then
 
     set -x
 
+    .build/venv/bin/pip install wheel
     if [ ${FINAL} == true ]
     then
         .build/venv/bin/python setup.py egg_info --no-date --tag-build "" bdist_wheel

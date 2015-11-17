@@ -718,7 +718,6 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
 		'pip>=7' 'setuptools>=12'
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) wheel $(PIP_REDIRECT)
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
