@@ -328,6 +328,7 @@ help:
 	@echo  "- update		Update and clean the project (Git, Node, Pip)"
 	@echo  "- update-git-submodules	Update and clean the Git submodules"
 	@echo  "- update-node-modules	Update node modules (using --force)"
+	@echo  "- upgrade-db		Upgrade the database to the latest version"
 	@echo  "- upgrade		Launch the upgrade process"
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
@@ -394,6 +395,14 @@ serve: build development.ini
 update-node-modules:
 	npm install --force
 	touch .build/node_modules.timestamp
+
+$(VENV_BIN)/alembic: .build/dev-requirements.timestamp
+
+.PHONY: upgrade-db
+upgrade-db: alembic.ini alembic_static.ini $(VENV_BIN)/alembic
+	$(VENV_BIN)/alembic -c alembic.ini upgrade head
+	$(VENV_BIN)/alembic -c alembic_static.ini upgrade head
+
 
 # Templates
 

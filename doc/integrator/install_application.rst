@@ -134,8 +134,6 @@ commands should be used to download CGXP and its dependencies:
 .. prompt:: bash
 
     cd <my_project>
-    git submodule update --init
-    git submodule foreach git submodule update --init
 
 The ``foreach`` command aims to init and update CGXP's own submodules, for GXP,
 OpenLayers and GeoExt.
@@ -309,6 +307,12 @@ Add it to Git:
     git add <user>.mk
     git commit -m "Add user build file"
 
+Create the application tables, and directly set the version (details later):
+
+.. prompt:: bash
+
+    make -f <user>.mk upgrade-db
+
 Then you can build and install the application with the command:
 
 .. prompt:: bash
@@ -324,14 +328,6 @@ This previous command will do many things like:
   * build the javascript and css resources into compressed files,
 
   * compile the translation files.
-
-Once the application is built and installed, you now have to create and
-populate the application tables, and directly set the version (details later):
-
-.. prompt:: bash
-
-    .build/venv/bin/alembic upgrade head
-    .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 Your application should be available at:
 ``http://<hostname>/<instanceid>``.
