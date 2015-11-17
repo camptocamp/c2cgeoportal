@@ -163,6 +163,7 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
+		--trusted-host pypi.camptocamp.net \
 		'pip>=7' 'setuptools>=12' $(PIP_REDIRECT)
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) wheel $(PIP_REDIRECT)
 	touch $@
