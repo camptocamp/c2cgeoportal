@@ -56,8 +56,9 @@ from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
     "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
-    "LayerV1", "LayerInternalWMS", "LayerExternalWMS", "LayerWMTS",
-    "Interface", "UIMetadata", "WMTSDimension", "LayergroupTreeitem"
+    "LayerV1", "ServerOGC",
+    "LayerWMS", "LayerWMTS", "Interface", "UIMetadata", "WMTSDimension",
+    "LayergroupTreeitem"
 ]
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -618,25 +619,64 @@ class LayerV1(Layer):  # Deprecated in v2
         self.layer_type = layer_type
 
 
-class LayerInternalWMS(Layer):
-    __label__ = _(u"Internal WMS layer")
-    __plural__ = _(u"Internal WMS layers")
-    __tablename__ = "layer_internal_wms"
+class ServerOGC(Base):
+    __label__ = _(u"Server OGC")
+    __plural__ = _(u"Servers OGC")
+    __tablename__ = "server_ogc"
     __table_args__ = {"schema": _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
     ]
-    __mapper_args__ = {"polymorphic_identity": "l_int_wms"}
+
+    id = Column(
+        Integer, primary_key=True
+    )
+    name = Column(Unicode, label=_(u"Name"))
+    description = Column(Unicode, label=_(u"Description"))
+    url = Column(Unicode, label=_(u"Base URL"))
+    url_wfs = Column(Unicode, label=_(u"WFS URL"))
+    type = Column(Unicode, label=_(u"Server type"))
+    image_type = Column(Enum(
+        "image/jpeg",
+        "image/png",
+        native_enum=False), label=_(u"Image type"))
+    auth = Column(Unicode, label=_(u"Authentication type"))
+    wfs_support = Column(Boolean, label=_(u"WFS support"))
+    is_single_tile = Column(Boolean, label=_(u"Single tile"))
+
+    def __init__(self, name="", description=None, url=None, url_wfs=None, type=u"mapserver",
+                 image_type="image/png", auth=None, wfs_support=False, is_single_tile=False):
+        self.name = name
+        self.description = description
+        self.url = url
+        self.url_wfs = url_wfs
+        self.type = type
+        self.image_type = image_type
+        self.auth = auth
+        self.wfs_support = wfs_support
+        self.is_single_tile = is_single_tile
+
+    def __unicode__(self):
+        return self.name or u""  # pragma: nocover
+
+
+class LayerWMS(Layer):
+    __label__ = _(u"WMS layer")
+    __plural__ = _(u"WMS layers")
+    __tablename__ = "layer_wms"
+    __table_args__ = {"schema": _schema}
+    __acl__ = [
+        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
+    ]
+    __mapper_args__ = {"polymorphic_identity": "l_wms"}
 
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    layer = Column(Unicode, label=_(u"Layers"))
-    image_type = Column(Enum(
-        "image/jpeg",
-        "image/png",
-        native_enum=False), label=_(u"Image type")
+    server_ogc_id = Column(
+        Integer, ForeignKey(_schema + ".server_ogc.id"), nullable=False
     )
+    layer = Column(Unicode, label=_(u"WMS layer name"))
     style = Column(Unicode, label=_(u"Style"))
     time_mode = Column(Enum(
         "disabled",
@@ -651,46 +691,14 @@ class LayerInternalWMS(Layer):
         native_enum=False), default="slider", nullable=True,
         label=_(u"Time widget"))
 
+    # relationship with ServerOGC
+    server_ogc = relationship(
+        "ServerOGC"
+    )
+
     def __init__(self, name=u"", layer=u"", public=True, icon=u""):
         Layer.__init__(self, name=name, public=public)
         self.layer = layer
-
-
-class LayerExternalWMS(Layer):
-    __label__ = _(u"External WMS layer")
-    __plural__ = _(u"External WMS layers")
-    __tablename__ = "layer_external_wms"
-    __table_args__ = {"schema": _schema}
-    __acl__ = [
-        (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
-    ]
-    __mapper_args__ = {"polymorphic_identity": "l_ext_wms"}
-
-    id = Column(
-        Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
-    )
-    url = Column(Unicode, label=_(u"Base URL"))
-    layer = Column(Unicode, label=_(u"Layers"))
-    image_type = Column(Enum(
-        "image/jpeg",
-        "image/png",
-        native_enum=False), label=_(u"Image type"))
-    style = Column(Unicode, label=_(u"Style"))
-    is_single_tile = Column(Boolean, label=_(u"Single tile"))
-    time_mode = Column(Enum(
-        "disabled",
-        "single",
-        "range",
-        native_enum=False), default="disabled", nullable=False,
-        label=_(u"Time mode"))
-    time_widget = Column(Enum(
-        "slider",
-        "datepicker",
-        native_enum=False), default="slider", nullable=True,
-        label=_(u"Time widget"))
-
-    def __init__(self, name=u"", public=True):
-        Layer.__init__(self, name=name, public=public)
 
 
 class LayerWMTS(Layer):

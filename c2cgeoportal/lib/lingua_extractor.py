@@ -74,12 +74,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
         self.env = bootstrap(filename)
 
         from c2cgeoportal.models import Theme, LayerGroup, \
-            LayerInternalWMS, LayerExternalWMS, LayerWMTS
+            LayerWMS, LayerWMTS
 
         self._import(Theme, messages)
         self._import(LayerGroup, messages)
-        self._import(LayerInternalWMS, messages)
-        self._import(LayerExternalWMS, messages)
+        self._import(LayerWMS, messages)
         self._import(LayerWMTS, messages)
 
         return messages

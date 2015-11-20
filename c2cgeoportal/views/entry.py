@@ -58,7 +58,7 @@ from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
     Theme, LayerGroup, RestrictionArea, Interface, \
-    Layer, LayerV1, LayerInternalWMS, LayerExternalWMS, LayerWMTS
+    Layer, LayerV1, LayerWMS, LayerWMTS
 
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -165,7 +165,7 @@ class Entry(object):
             q = DBSession.query(LayerV1)
         else:
             q = DBSession.query(Layer).with_polymorphic(
-                [LayerInternalWMS, LayerExternalWMS, LayerWMTS]
+                [LayerWMS, LayerWMTS]
             )
 
         q = q.filter(Layer.public.is_(True))
@@ -219,7 +219,7 @@ class Entry(object):
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
-    def _layer(self, layer, wms, wms_layers, time):
+    def _layer(self, layer, wms, wms_layers, time, role_id):
         errors = set()
         l = {
             "id": layer.id,
@@ -260,16 +260,13 @@ class Entry(object):
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
                 self._fill_wmts(l, layer, wms, wms_layers, errors)
-        elif isinstance(layer, LayerInternalWMS):
-            l["type"] = "internal WMS"
+        elif isinstance(layer, LayerWMS):
+            l["type"] = "WMS"
             l["layers"] = layer.layer
-            if not self._fill_internal_wms(l, layer, wms, wms_layers, errors, version=2):
+            if not self._fill_wms(l, layer, errors, role_id):
                 return None, set()
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
-        elif isinstance(layer, LayerExternalWMS):
-            l["type"] = "external WMS"
-            l["layers"] = layer.layer
-            self._fill_external_wms(l, layer, errors, version=2)
+
         elif isinstance(layer, LayerWMTS):
             l["type"] = "WMTS"
             self._fill_wmts(l, layer, wms, wms_layers, errors, version=2)
@@ -318,7 +315,47 @@ class Entry(object):
             if c > 0:
                 l["editable"] = True
 
-    def _fill_wms(self, l, layer, version=1):
+    def _fill_wms(self, l, layer, errors, role_id):
+        wms, wms_layers = self._wms_layers(role_id, layer.server_ogc)
+
+        l["imageType"] = layer.server_ogc.image_type
+        if layer.style:  # pragma: no cover
+            l["style"] = layer.style
+
+        # now look at what's in the WMS capabilities doc
+        if layer.layer in wms_layers:
+            wms_layer_obj = wms[layer.layer]
+            metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
+            if len(metadata_urls) > 0:  # pragma: no cover
+                l["metadataUrls"] = metadata_urls
+            resolutions = self._get_layer_resolution_hint(wms_layer_obj)
+            if resolutions[0] <= resolutions[1]:
+                if "minResolutionHint" not in l:
+                    l["minResolutionHint"] = float("%0.2f" % resolutions[0])
+                if "maxResolutionHint" not in l:
+                    l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
+            l["childLayers"] = self._get_child_layers_info(wms_layer_obj)
+            if hasattr(wms_layer_obj, "queryable"):
+                l["queryable"] = wms_layer_obj.queryable
+        else:
+            if self.mapserver_settings["geoserver"]:
+                return False
+            else:
+                errors.add(
+                    "The layer '%s' (%s) is not defined in WMS capabilities" %
+                    (layer.layer, layer.name)
+                )
+
+        l["url"] = get_url(layer.server_ogc.url, self.request, errors=errors)
+        l["isSingleTile"] = layer.server_ogc.is_single_tile
+
+        l["wfsSupport"] = layer.server_ogc.wfs_support
+        l["urlWfs"] = layer.server_ogc.url_wfs
+        l["serverType"] = layer.server_ogc.type
+
+        return True
+
+    def _fill_wms_v1(self, l, layer, version=1):
         l["imageType"] = layer.image_type
         if version == 1 and layer.legend_rule:
             l["icon"] = add_url_params(self.request.route_url("mapserverproxy"), {
@@ -346,7 +383,7 @@ class Entry(object):
             })
 
     def _fill_internal_wms(self, l, layer, wms, wms_layers, errors, version=1):
-        self._fill_wms(l, layer, version=version)
+        self._fill_wms_v1(l, layer, version=version)
 
         if version == 1:
             self._fill_legend_rule_query_string(
@@ -386,7 +423,7 @@ class Entry(object):
         return True
 
     def _fill_external_wms(self, l, layer, errors, version=1):
-        self._fill_wms(l, layer, version=version)
+        self._fill_wms_v1(l, layer, version=version)
         if version == 1:
             self._fill_legend_rule_query_string(l, layer, layer.url)
 
@@ -484,12 +521,30 @@ class Entry(object):
 
     def _is_internal_wms(self, layer):
         return \
-            isinstance(layer, LayerInternalWMS) or \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
+
+    def _get_layer_identifiers(self, group):
+        """Recurse on all children to get unique identifier for each child."""
+        identifier = []
+
+        # recurse on children
+        if isinstance(group, LayerGroup) and group.children > 0:
+            for tree_item in group.children:
+                child_identifier = self._get_layer_identifiers(tree_item)
+                identifier = identifier + child_identifier
+
+        if isinstance(group, LayerWMS):
+            identifier.append(group.server_ogc_id)
+
+        if isinstance(group, LayerWMTS):
+            # add 2 different values to force the mixed state
+            identifier = identifier + ["wmts1", "wmts2"]
+
+        return identifier
 
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, version=1, **kwargs
+        catalogue=True, role_id=None, version=1, **kwargs
     ):
         children = []
         errors = set()
@@ -509,7 +564,7 @@ class Entry(object):
                     gp, gp_errors = self._group(
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
-                        catalogue=catalogue, version=version, **kwargs
+                        catalogue=catalogue, role_id=role_id, version=version, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -521,9 +576,11 @@ class Entry(object):
                     )
             elif self._layer_included(tree_item, version):
                 if (tree_item.name in layers):
-                    if (catalogue or group.is_internal_wms ==
-                            self._is_internal_wms(tree_item)):
-                        l, l_errors = self._layer(tree_item, **kwargs)
+                    if (catalogue or not isinstance(tree_item, LayerV1) or
+                        (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
+                            self._is_internal_wms(tree_item))):
+
+                        l, l_errors = self._layer(tree_item, role_id=role_id, **kwargs)
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
@@ -544,6 +601,7 @@ class Entry(object):
                 "name": group.name,
                 "children": children,
                 "metadata": {},
+                "mixed": False,
             }
             if version == 1:
                 g.update({
@@ -551,6 +609,13 @@ class Entry(object):
                     "isInternalWMS": group.is_internal_wms,
                     "isBaseLayer": group.is_base_layer,
                 })
+            else:
+                # check if mixed content
+                identifier = self._get_layer_identifiers(group)
+                # Use set() to remove duplicates
+                if len(set(identifier)) > 1:
+                    g["mixed"] = True
+
             for metadata in group.ui_metadata:
                 g["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
             if version == 1 and group.metadata_url:
@@ -569,11 +634,12 @@ class Entry(object):
         return [l.name for l in query.all()]
 
     @cache_region.cache_on_arguments()
-    def _wms_layers(self, role_id):
+    def _wms_layers(self, role_id, server_ogc=None):
         """ role_id is just for cache """
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
+            server_ogc.url if server_ogc and server_ogc.url else
             self.mapserver_settings["mapserv_url"]
         )
         if len(wms_errors) > 0:
@@ -594,7 +660,7 @@ class Entry(object):
         errors = set()
         layers = self._layers(role_id, version, interface)
         wms, wms_layers = self._wms_layers(
-            role_id if self.mapserver_settings["geoserver"] else None
+            role_id if self.mapserver_settings["geoserver"] else None, None
         )
 
         themes = DBSession.query(Theme)
@@ -616,7 +682,7 @@ class Entry(object):
         export_themes = []
         for theme in themes.all():
             children, children_errors = self._get_children(
-                theme, layers, wms, wms_layers, version, catalogue, min_levels
+                theme, layers, wms, wms_layers, version, catalogue, min_levels, role_id
             )
             errors |= children_errors
 
@@ -667,7 +733,8 @@ class Entry(object):
         }
 
     @cache_region.cache_on_arguments()
-    def _get_children(self, theme, layers, wms, wms_layers, version, catalogue, min_levels):
+    def _get_children(self, theme, layers, wms, wms_layers, version, catalogue,
+                      min_levels, role_id):
         children = []
         errors = set()
         for item in theme.children:
@@ -676,7 +743,8 @@ class Entry(object):
                 gp, gp_errors = self._group(
                     "%s/%s" % (theme.name, item.name),
                     item, layers, time=time, wms=wms, wms_layers=wms_layers,
-                    version=version, catalogue=catalogue, min_levels=min_levels
+                    role_id=role_id, version=version, catalogue=catalogue,
+                    min_levels=min_levels
                 )
                 errors |= gp_errors
 
@@ -692,7 +760,7 @@ class Entry(object):
                 elif item.name in layers:
                     time = TimeInformation()
                     l, l_errors = self._layer(
-                        item, time=time, wms=wms, wms_layers=wms_layers
+                        item, time=time, wms=wms, wms_layers=wms_layers, role_id=role_id
                     )
                     errors |= l_errors
                     if l is not None:
@@ -1236,11 +1304,12 @@ class Entry(object):
         time = TimeInformation()
         layers = self._layers(role_id, version, interface)
         wms, wms_layers = self._wms_layers(
-            role_id if self.mapserver_settings["geoserver"] else None
+            role_id if self.mapserver_settings["geoserver"] else None, None
         )
         lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
         return self._group(
-            lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers, version=version
+            lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers,
+            role_id=role_id, version=version
         )
 
     @view_config(context=HTTPForbidden, renderer="login.html")

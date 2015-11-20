@@ -491,4 +491,28 @@ MAP
             END
         END
     END
+
+    LAYER
+        NAME "__test_layer_internal_wms"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        METADATA
+            "wms_srs" "epsg:21781"
+        END
+        PROJECTION
+           "init=epsg:21781"
+        END
+        FEATURE
+          WKT "POINT(0 0)"
+        END
+        CLASS
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
 END

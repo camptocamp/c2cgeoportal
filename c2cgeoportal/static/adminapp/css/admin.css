@@ -95,3 +95,6 @@ form input[type="checkbox"].disabledinput {
     filter  : alpha(opacity=50); /* IE<9 */
     cursor  : default;
 }
+label {
+    white-space: nowrap;
+}

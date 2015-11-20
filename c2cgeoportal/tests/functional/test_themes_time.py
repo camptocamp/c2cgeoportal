@@ -68,27 +68,30 @@ class TestThemesTimeView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerInternalWMS
+            Theme, LayerGroup, Interface, LayerWMS, ServerOGC
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         main = Interface(name=u"main")
 
-        layer_wms_1 = LayerInternalWMS(name=u"__test_layer_time_1", public=True)
+        layer_wms_1 = LayerWMS(name=u"__test_layer_time_1", public=True)
         layer_wms_1.layer = "test_wmstime"
         layer_wms_1.time_mode = "single"
         layer_wms_1.interfaces = [main]
+        layer_wms_1.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
 
-        layer_wms_2 = LayerInternalWMS(name=u"__test_layer_time_2", public=True)
+        layer_wms_2 = LayerWMS(name=u"__test_layer_time_2", public=True)
         layer_wms_2.layer = "test_wmstime2"
         layer_wms_2.time_mode = "single"
         layer_wms_2.interfaces = [main]
+        layer_wms_2.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
 
-        layer_wms_group = LayerInternalWMS(name=u"__test_layer_time_group", public=True)
+        layer_wms_group = LayerWMS(name=u"__test_layer_time_group", public=True)
         layer_wms_group.layer = "test_wmstimegroup"
         layer_wms_group.time_mode = "range"
         layer_wms_group.time_widget = "datepicker"
         layer_wms_group.interfaces = [main]
+        layer_wms_group.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
         layer_group_1.children = [layer_wms_1, layer_wms_2]

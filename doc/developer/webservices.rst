@@ -22,6 +22,11 @@ Parameters
 * ``min_levels``: minimum number of group levels that's required, default is ``1``.
 * ``role``: role name, not used by the server but it's required for the cache management.
 
+Requests examples:
+
+* themes?version=2
+* themes?version=2&background=background
+* themes?version=2&group=Transport
 
 Result in v2
 ------------
@@ -61,7 +66,8 @@ Group:
 
     {
         "name": <name>,
-        "ui_metadata": {
+        "mixed": true/false,
+        "metadata": {
             <name>: <value>
         },
         "children": [<items>]
@@ -74,24 +80,40 @@ Layer:
 
     {
         "name": <name>,
-        "type": "internal WMS/external WMS/WMTS",
-        "ui_metadata": {
+        "type": "WMS/WMTS",
+        "metadata": {
             <name>: <value>
         }
     }
 
 
-Internal WMS Layer:
+WMS Layer:
 
 .. code:: json
 
     {
-        "layer": <wms_layers>,
-        "image_type": "image/png",
-        "style": <style>,
-        "queryable": 0/1,
+
+        "layers": <wms_layers>,
+        "name": <name in tree>,
         "minResolutionHint": <minResolutionHint>,
         "maxResolutionHint": <maxResolutionHint>,
+        "url": <wms server url>/null,
+        "url_wfs": <wfs server url>/null,
+        "wfs_support": true/false,
+        "isSingleTile": true/false,
+        "queryable": 0/1,
+        "id": ​734,
+        "imageType": "image/jpeg",
+        "style": <style>,
+        "serverType": <value>,
+        "metadata": {
+            "identifier_attribute_field": "display_name",
+            "disclaimer": "© les contributeurs d’OpenStreetMap",
+            "legend": "true",
+            "legend_rule": "Arrêts de bus",
+            "max_resolution": <value>,
+            "min_resolution": <value>
+        },
         "metadataUrls": {
             "url": <url>,
             "type": "TC211/FGDC",
@@ -110,26 +132,6 @@ Internal WMS Layer:
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
         }]
-    }
-
-
-External WMS Layer:
-
-.. code:: json
-
-    {
-        "url": <wms_server_url>,
-        "layer": <wms_layers>,
-        "image_type": "image/png",
-        "style": <style>,
-        "is_single_tile": true/false,
-        "time": {
-            "mode": "value/range",
-            "interval": [year, mounth, day, secound],
-            "resolution": "year/mounth/day/secound",
-            "minValue": <minValue>,
-            "maxValue": <maxValue>
-        }
     }
 
 
