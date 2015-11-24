@@ -1,43 +1,112 @@
-## -*- coding: utf-8 -*-
-<%
-   settings = request.registry.settings
-   node_modules_path = settings.get('node_modules_path')
-   closure_library_path = settings.get('closure_library_path')
-%>\
 <!DOCTYPE html>
-<html lang="\{\{mobileCtrl.lang\}\}" ng-app="app" ng-controller="MobileController as mobileCtrl">
+<html ng-app='app'>
   <head>
+    <title translate>Mobile Application</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-% if debug:
-    <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/mobile.less')}" type="text/css">
-    <script src="${request.static_url('%s/less/dist/less.min.js' % node_modules_path)}"></script>
-% else:
-    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/mobile.min.css')}" type="text/css">
-% endif
-    <title translate>The {{project}} mobile Web GIS</title>
+    <meta name="viewport"
+          content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="../../build/mobile.css" type="text/css">
+    <style>
+    #desc {
+      display: none;
+    }
+    </style>
   </head>
-  <body>
-    <gmf-map gmf-map-map="mobileCtrl.map"></gmf-map>
-
-% if debug:
+  <body ng-controller="MobileController as mainCtrl"
+        ng-class="{'nav-is-visible': mainCtrl.navIsVisible(),
+                   'nav-left-is-visible': mainCtrl.leftNavIsVisible(),
+                   'nav-right-is-visible': mainCtrl.rightNavIsVisible()}">
+    <main>
+      <gmf-map gmf-map-map="mainCtrl.map"></gmf-map>
+      <button class="nav-trigger nav-left-trigger"
+        ng-click="mainCtrl.toggleLeftNavVisibility()">
+      </button>
+      <div class="search">
+        <gmf-search gmf-search-map="mainCtrl.map"
+                    gmf-search-datasources="mainCtrl.searchDatasources"
+                    gmf-search-clearbutton="true">
+        </gmf-search>
+      </div>
+      <button class="nav-trigger nav-right-trigger"
+        ng-click="mainCtrl.toggleRightNavVisibility()">
+      </button>
+      <div class="overlay" ng-click="mainCtrl.hideNav()"></div>
+    </main>
+    <nav class="nav-left" gmf-nav>
+      <header>
+        <a class="go-back" href="#"></a>
+      </header>
+      <!-- main menu -->
+      <div class="active slide">
+        <ul>
+          <li>
+            <a href="#background" data-toggle="slide-in">Background</a>
+            <a href="#data" data-toggle="slide-in">Data</a>
+          </li>
+        </ul>
+        <hr>
+        <ul>
+          <li>
+            <a href="#">Login</a>
+          </li>
+        </ul>
+        <p class="text-center">
+          <b>Put your logo here</b>
+        </p>
+      </div>
+      <div id="background" class="slide" data-header-title="Background">
+        <span>Background</span>
+      </div>
+      <div id="data" class="slide" data-header-title="Data">
+        <ul>
+          <li>
+            <a href="#themes" data-toggle="slide-in">Themes</a>
+          </li>
+        </ul>
+      </div>
+      <div id="themes" class="slide" data-header-title="Themes">
+        <span>Themes</span>
+      </div>
+    </nav>
+    <nav class="nav-right" gmf-nav>
+      <header>
+        <a class="go-back" href="#"></a>
+      </header>
+      <!-- main menu -->
+      <div class="active slide">
+        <ul>
+          <li>
+            <a href="#measure-tools" data-toggle="slide-in">Measure tools</a>
+          </li>
+        </ul>
+      </div>
+      <div id="measure-tools" class="slide" data-header-title="Measure tools">
+        <ul>
+          <li>
+            <a href="#">Length</a>
+            <a href="#">Area</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <p id="desc">This example is a mobile application based on ngeo and gmf components.</p>
+    <script src="../../../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../../../node_modules/angular/angular.js"></script>
+    <script src="../../../../node_modules/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js" type="text/javascript"></script>
+    <script src="/@?main=mobile/js/mobile.js"></script>
+    <script src="../../../../utils/watchwatchers.js"></script>
     <script>
-      window.CLOSURE_BASE_PATH = '';
-      window.CLOSURE_NO_DEPS = true;
+      (function() {
+         var module = angular.module('app');
+         var serverVars = {
+           searchDatasourcesUrls: {
+             gmfDemo2: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch?query=%QUERY'
+           }
+         };
+         module.constant('serverVars', serverVars);
+       })();
     </script>
-    <script src="${request.static_url('%s/jquery/dist/jquery.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/angular/angular.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/angular-gettext/dist/angular-gettext.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/bootstrap/dist/js/bootstrap.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/proj4/dist/proj4-src.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/d3/d3.min.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
-    <script src="${request.route_url('deps.js')}"></script>
-    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
-    <script src="${request.static_url('{{package}}:static-ngeo/build/templatecache.js')}"></script>
-% else:
-    <script src="${request.static_url('{{package}}:static-ngeo/build/mobile.js')}"></script>
-% endif
   </body>
 </html>
