@@ -25,3 +25,4 @@ Content:
     python_packaging
     development_procedure
     documentation_infrastructure
+    ngeo
