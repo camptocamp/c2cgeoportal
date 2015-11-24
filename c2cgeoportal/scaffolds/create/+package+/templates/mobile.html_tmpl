@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html ng-app='app'>
+<html ng-app='{{package}}' lang="\{\{mobileCtrl.lang\}\}" ng-app="app" ng-controller="MobileController as mainCtrl">
   <head>
     <title translate>Mobile Application</title>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="../../build/mobile.css" type="text/css">
+% if debug:
+    <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/mobile.less')}" type="text/css">
+% else:
+    <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/mobile.css')}" type="text/css">
+% endif
     <style>
     #desc {
       display: none;
     }
     </style>
   </head>
-  <body ng-controller="MobileController as mainCtrl"
-        ng-class="{'nav-is-visible': mainCtrl.navIsVisible(),
+  <body ng-class="{'nav-is-visible': mainCtrl.navIsVisible(),
                    'nav-left-is-visible': mainCtrl.leftNavIsVisible(),
                    'nav-right-is-visible': mainCtrl.rightNavIsVisible()}">
     <main>
@@ -91,18 +93,29 @@
       </div>
     </nav>
     <p id="desc">This example is a mobile application based on ngeo and gmf components.</p>
-    <script src="../../../../node_modules/jquery/dist/jquery.js"></script>
-    <script src="../../../../node_modules/angular/angular.js"></script>
-    <script src="../../../../node_modules/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js" type="text/javascript"></script>
-    <script src="/@?main=mobile/js/mobile.js"></script>
-    <script src="../../../../utils/watchwatchers.js"></script>
+% if debug:
+    <script src="${request.static_url('%s/jquery/dist/jquery.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/angular/angular.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/angular-gettext/dist/angular-gettext.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/bootstrap/dist/js/bootstrap.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/proj4/dist/proj4-src.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/d3/d3.min.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
+    <script src="${request.route_url('deps.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/build/templatecache.js')}"></script>
+    <script src="${request.static_url('%s/utils/watchwatchers.js' % closure_library_path)}"></script>
+    <script src="${request.static_url('%s/less/dist/less.min.js' % node_modules_path)}"></script>
+% else:
+    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
+% endif
     <script>
       (function() {
-         var module = angular.module('app');
+         var module = angular.module('{{package}}');
          var serverVars = {
-           searchDatasourcesUrls: {
-             gmfDemo2: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch?query=%QUERY'
+           serviceUrls: {
+             fulltextsearch: '${request.route_url('fulltextsearch', _query={'query':'%QUERY'}) | n}'
            }
          };
          module.constant('serverVars', serverVars);

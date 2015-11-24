@@ -7,10 +7,10 @@
  * This file includes `goog.require`'s for all the components/directives used
  * by the HTML page and the controller to provide the configuration.
  */
-goog.provide('app.MobileController');
-goog.provide('app_mobile');
+goog.provide('{{package}}.MobileController');
+goog.provide('{{package}}_mobile');
 
-goog.require('app');
+goog.require('{{package}}');
 goog.require('gmf.mapDirective');
 goog.require('gmf.mobileNavDirective');
 goog.require('gmf.proj.EPSG21781');
@@ -33,19 +33,19 @@ goog.require('ol.source.OSM');
  * @ngInject
  * @export
  */
-app.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
+{{package}}.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
 
   /**
    * @type {Array.<gmfx.SearchDirectiveDatasource>}
    * @export
    */
   this.searchDatasources = [{
-    datasetTitle: 'From demo 2.0',
+    datasetTitle: '{{project}}',
     labelKey: 'label',
     groupsKey: 'layer_name',
     groupValues: ['osm'],
     projection: 'EPSG:21781',
-    url: serverVars['searchDatasourcesUrls']['gmfDemo2']
+    url: serverVars['serviceUrls']['fulltextsearch']
   }];
 
   /**
@@ -88,7 +88,7 @@ app.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
 /**
  * @export
  */
-app.MobileController.prototype.toggleLeftNavVisibility = function() {
+{{package}}.MobileController.prototype.toggleLeftNavVisibility = function() {
   this.leftNavVisible = !this.leftNavVisible;
 };
 
@@ -96,7 +96,7 @@ app.MobileController.prototype.toggleLeftNavVisibility = function() {
 /**
  * @export
  */
-app.MobileController.prototype.toggleRightNavVisibility = function() {
+{{package}}.MobileController.prototype.toggleRightNavVisibility = function() {
   this.rightNavVisible = !this.rightNavVisible;
 };
 
@@ -105,7 +105,7 @@ app.MobileController.prototype.toggleRightNavVisibility = function() {
  * Hide both navigation menus.
  * @export
  */
-app.MobileController.prototype.hideNav = function() {
+{{package}}.MobileController.prototype.hideNav = function() {
   this.leftNavVisible = this.rightNavVisible = false;
 };
 
@@ -115,7 +115,7 @@ app.MobileController.prototype.hideNav = function() {
  * otherwise false.
  * @export
  */
-app.MobileController.prototype.navIsVisible = function() {
+{{package}}.MobileController.prototype.navIsVisible = function() {
   return this.leftNavVisible || this.rightNavVisible;
 };
 
@@ -125,7 +125,7 @@ app.MobileController.prototype.navIsVisible = function() {
  * otherwise false.
  * @export
  */
-app.MobileController.prototype.leftNavIsVisible = function() {
+{{package}}.MobileController.prototype.leftNavIsVisible = function() {
   return this.leftNavVisible;
 };
 
@@ -135,9 +135,9 @@ app.MobileController.prototype.leftNavIsVisible = function() {
  * otherwise false.
  * @export
  */
-app.MobileController.prototype.rightNavIsVisible = function() {
+{{package}}.MobileController.prototype.rightNavIsVisible = function() {
   return this.rightNavVisible;
 };
 
 
-app.module.controller('MobileController', app.MobileController);
+{{package}}.module.controller('MobileController', {{package}}.MobileController);
