@@ -13,7 +13,7 @@ URL: ``.../themes``
 Parameters
 ----------
 
-* ``version``: ``1`` or ``2 ``, API version, default is ``1``.
+* ``version``: ``1`` or ``2``, API version, default is ``1``.
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
 * ``background_layers_group``: parent group of background layers to get.
