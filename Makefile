@@ -164,7 +164,6 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
 		'pip>=7' 'setuptools>=12' $(PIP_REDIRECT)
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) wheel $(PIP_REDIRECT)
 	touch $@
 
 .build/requirements.timestamp: .build/venv.timestamp setup.py \

@@ -11,4 +11,5 @@ c2c.template>=1.2.dev
 JSTools
 c2c.cssmin
 transifex-client
+alembic
 -r doc/requirements.txt
