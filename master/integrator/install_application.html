@@ -140,8 +140,6 @@ application source tree:</p>
 </pre><p>c2cgeoportal applications include a Git submodule for CGXP. The following
 commands should be used to download CGXP and its dependencies:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;my_project&gt;</span>
-<span class="prompt1">git submodule update --init</span>
-<span class="prompt1">git submodule foreach git submodule update --init</span>
 </pre><p>The <code class="docutils literal"><span class="pre">foreach</span></code> command aims to init and update CGXP&#8217;s own submodules, for GXP,
 OpenLayers and GeoExt.</p>
 <div class="admonition note">
@@ -294,6 +292,8 @@ choice or something like <code class="docutils literal"><span class="pre">&lt;us
 <p>Add it to Git:</p>
 <pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Add user build file&quot;</span></span>
+</pre><p>Create the application tables, and directly set the version (details later):</p>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk upgrade-db</span>
 </pre><p>Then you can build and install the application with the command:</p>
 <pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
 </pre><p>This previous command will do many things like:</p>
@@ -305,11 +305,7 @@ choice or something like <code class="docutils literal"><span class="pre">&lt;us
 <li>compile the translation files.</li>
 </ul>
 </div></blockquote>
-<p>Once the application is built and installed, you now have to create and
-populate the application tables, and directly set the version (details later):</p>
-<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic upgrade head</span>
-<span class="prompt1">.build/venv/bin/alembic -c alembic_static.ini upgrade head</span>
-</pre><p>Your application should be available at:
+<p>Your application should be available at:
 <code class="docutils literal"><span class="pre">http://&lt;hostname&gt;/&lt;instanceid&gt;</span></code>.</p>
 <p>Where the <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host,
 and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</span></code> is the value you provided before.</p>
