@@ -2,7 +2,6 @@
 
 travis/doindex.py > ~/index.html
 
-git checkout c2cgeoportal/locale/*/LC_MESSAGES/*.po
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
