@@ -17,7 +17,7 @@ replace your sencha touch interface by an ngeo interface.
     cp /tmp/{{project}}/templatecache.mako.js .
     cp /tmp/{{project}}/lingua-client.cfg .
     cp /tmp/{{project}}/lingua-server.cfg .
-    cp /tmp/{{project}}/apache/wsgi.conf apache/
+    cp /tmp/{{project}}/apache/wsgi.conf.mako apache/
     cp /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
     cp /tmp/{{project}}/{{package}}/templates/mobile.html {{package}}/templates/
 
