@@ -32,7 +32,7 @@ Easy upgrading an application
 .. note::
 
    To upgrade from version 1.6 to version 2.0 you should update the
-   ``CONST_requirement.txt`` file:
+   ``CONST_requirements.txt`` file:
 
    .. code:: diff
 
