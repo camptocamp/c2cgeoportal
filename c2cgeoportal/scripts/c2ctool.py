@@ -39,6 +39,7 @@ from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
 from alembic import command
+from c2cgeoportal.lib.bashcolor import colorize, GREEN, YELLOW, RED
 
 try:
     from subprocess import check_output
@@ -51,23 +52,10 @@ except ImportError:
         out, err = p.communicate()
         return out
 
-BLACK = 0
-RED = 1
-GREEN = 2
-YELLOW = 3
-BLUE = 4
-MAGENTA = 5
-CYAN = 6
-WHITE = 7
-
 DEFAULT_INDEX_URL = "https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
     "https://camptocamp.github.io/c2cgeoportal/%(package)s-%(version)s-py2.py3-none-any.whl"
 VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
-
-
-def _colorize(text, color):
-    return "\x1b[01;3%im%s\x1b[0m" % (color, text)
 
 
 def main():  # pragma: no cover
@@ -79,9 +67,9 @@ def main():  # pragma: no cover
 
 Available commands:
 
-""" + _colorize("help", GREEN) + """: show this page
-""" + _colorize("upgrade", GREEN) + """: upgrade the application to a new version
-""" + _colorize("deploy", GREEN) + """: deploy the application to a server
+""" + colorize("help", GREEN) + """: show this page
+""" + colorize("upgrade", GREEN) + """: upgrade the application to a new version
+""" + colorize("deploy", GREEN) + """: deploy the application to a server
 
 To have some help on a command type:
 {prog} help [command]""".format(prog=sys.argv[0])
@@ -174,11 +162,11 @@ def _fill_arguments(command):
 
 class C2cTool:
 
-    color_bar = _colorize("================================================================", GREEN)
+    color_bar = colorize("================================================================", GREEN)
 
     def print_step(self, step, intro="To continue type:"):
         print(intro)
-        print(_colorize("make -f %s upgrade%i", YELLOW) % (
+        print(colorize("make -f %s upgrade%i", YELLOW) % (
             self.options.file if self.options.file is not None else "<user.mk>",
             step
         ))
@@ -291,8 +279,8 @@ class C2cTool:
             check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
         except CalledProcessError:
             print(self.color_bar)
-            print(_colorize("The pull (rebase) failed.", RED))
-            print(_colorize("Please solve the rebase and run the step again.", YELLOW))
+            print(colorize("The pull (rebase) failed.", RED))
+            print(colorize("Please solve the rebase and run the step again.", YELLOW))
             exit(1)
 
         check_call(["git", "submodule", "sync"])
@@ -302,8 +290,8 @@ class C2cTool:
 
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
             print(self.color_bar)
-            print(_colorize("The pull isn't fast forward.", RED))
-            print(_colorize("Please solve the rebase and run the step again.", YELLOW))
+            print(colorize("The pull isn't fast forward.", RED))
+            print(colorize("Please solve the rebase and run the step again.", YELLOW))
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
@@ -428,7 +416,7 @@ class C2cTool:
         print()
         print(self.color_bar)
         print()
-        print(_colorize("Congratulations your upgrade is a success.", GREEN))
+        print(colorize("Congratulations your upgrade is a success.", GREEN))
         print()
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
         print("Now all your files will be commited, you should do a git push %s %s." % (
@@ -437,7 +425,7 @@ class C2cTool:
 
     def deploy(self):
         if not self.test_checkers():
-            print(_colorize("Correct them and run again", RED))
+            print(colorize("Correct them and run again", RED))
             exit(1)
 
         check_call(["sudo", "-u", "deploy", "deploy", "-r", "deploy/deploy.cfg", self.options.host])
