@@ -526,7 +526,13 @@ $(PACKAGE)/static-ngeo/fonts/%: node_modules/ngeo/contribs/gmf/fonts/%
 	mkdir -p $(dir $@)
 	cp $< $@
 
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
+ node_modules/ngeo/node_modules: .build/node_modules.timestamp
+	mkdir -p $@
+	ln -s ../../opnelayers $@
+	ln -s ../../bootstrap $@
+	touch $@
+
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	./node_modules/.bin/lessc $< $@
 
