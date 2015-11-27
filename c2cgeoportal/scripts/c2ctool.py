@@ -258,7 +258,7 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "status"])
-        print()
+        print("")
         print(self.color_bar)
         print(
             "Here is the output of 'git status'. Please make sure to commit all your changes "
@@ -348,7 +348,7 @@ class C2cTool:
 
         check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
 
-        print()
+        print("")
         print(self.color_bar)
         print("\n".join(notes))
         print(
@@ -373,7 +373,7 @@ class C2cTool:
         if not self.options.windows:
             check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
 
-        print()
+        print("")
         print(self.color_bar)
         print("The upgrade is nearly done, now you should:")
         print("- Test your application.")
@@ -400,7 +400,7 @@ class C2cTool:
             check_call(["git", "add", "%s/static/lib/cgxp" % self.project["project_package"]])
         check_call(["git", "status"])
 
-        print()
+        print("")
         print(self.color_bar)
         print("We will commit all the above files!")
         print(
@@ -413,11 +413,11 @@ class C2cTool:
     def step4(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % self.options.version])
 
-        print()
+        print("")
         print(self.color_bar)
-        print()
+        print("")
         print(colorize("Congratulations your upgrade is a success.", GREEN))
-        print()
+        print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
         print("Now all your files will be commited, you should do a git push %s %s." % (
             self.options.git_remote, branch
