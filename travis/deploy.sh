@@ -69,6 +69,7 @@ then
     TRAVIS_BRANCH=master
 fi
 
+GIT_REV=`git log | head -n 1 | awk '{{print $2}}'`
 git checkout c2cgeoportal/locale/*/LC_MESSAGES/*.po
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
@@ -87,3 +88,6 @@ else
     git checkout ${TRAVIS_BRANCH}/searchindex.js
     git diff
 fi
+
+# back to the original branch
+git checkout ${GIT_REV}
