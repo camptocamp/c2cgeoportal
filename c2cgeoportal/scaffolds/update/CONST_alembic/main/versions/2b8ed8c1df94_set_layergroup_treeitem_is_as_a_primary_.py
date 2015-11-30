@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Set layergroup_treeitem.is as a primary key
+"""Set layergroup_treeitem.id as a primary key
 
 Revision ID: 2b8ed8c1df94
 Revises: 26a8c51827c6
