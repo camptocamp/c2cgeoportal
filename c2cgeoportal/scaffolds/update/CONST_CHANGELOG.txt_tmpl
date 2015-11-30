@@ -1,6 +1,18 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.7
+=============
+
+1. To be able to update the static schema on deploy, we must have the latest
+   Alembic upgrade script and for that the new `restore_order` parameter must be
+   added to the `main` block in the `deploy/deploy.cfg.mako` file:
+
+   [main]
+  +# to update the static schema, we need to deploy the code first
+  +restore_order = code,database,files
+
+
 Version 1.6.6
 =============
 
