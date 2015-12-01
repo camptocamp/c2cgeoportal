@@ -15,7 +15,7 @@ main:
         cmd: sudo -u postgres psql template_postgis -c "select PostGIS_lib_version();" -At
         #cmd: dpkg -l | grep postgis | grep ^ii | awk '{{print $3}}' | head -n 1
         version: 2.0
-    deploy: 0.4
+    deploy: 0.4.8
     java:
         cmd: java -version 2>&1 | grep 'java version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
         version: 1.7.0
