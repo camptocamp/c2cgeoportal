@@ -1266,8 +1266,8 @@ class Entry(object):
 
     @view_config(route_name="login")
     def login(self):
-        login = self.request.params.get("login", None)
-        password = self.request.params.get("password", None)
+        login = self.request.POST.get("login", None)
+        password = self.request.POST.get("password", None)
         if not (login and password):
             return HTTPBadRequest(
                 "'login' and 'password' should be "
@@ -1316,8 +1316,8 @@ class Entry(object):
         set_common_headers(self.request, "login", NO_CACHE,
                            add_cors=True)
 
-        new_password = self.request.params.get("newPassword", None)
-        new_password_confirm = self.request.params.get("confirmNewPassword", None)
+        new_password = self.request.POST.get("newPassword", None)
+        new_password_confirm = self.request.POST.get("confirmNewPassword", None)
         if new_password is None or new_password_confirm is None:
             raise HTTPBadRequest(
                 "'newPassword' and 'confirmNewPassword' should be "
@@ -1354,7 +1354,7 @@ class Entry(object):
         return password
 
     def _loginresetpassword(self):
-        username = self.request.params["login"]
+        username = self.request.POST["login"]
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover

@@ -3,6 +3,8 @@ project = {{package}}
 
 [main]
 hookdir = %(here)s/hooks/
+# to update the static schema, we need to deploy the code first
+restore_order = code,database,files
 
 [files]
 active = false

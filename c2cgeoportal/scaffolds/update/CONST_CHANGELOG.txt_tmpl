@@ -62,12 +62,28 @@ replace your sencha touch interface by an ngeo interface.
    +          "cache_control_max_age": <max_age>
 
 
+Version 1.6.7
+=============
+
+1. To be able to update the static schema on deploy, we must have the latest
+   Alembic upgrade script and for that the new `restore_order` parameter must be
+   added to the `main` block in the `deploy/deploy.cfg.mako` file:
+
+   [main]
+  +# to update the static schema, we need to deploy the code first
+  +restore_order = code,database,files
+
+
 Version 1.6.6
 =============
 
-1. Now the files `apache/mapcache.xml` and `apache/tiles.conf` will be generated automatically,
-   then you can remove your custom build rules. To disable it set in your Makefile:
-   `TILECLOUD_CHAIN ?= FALSE`.
+1. Now the files `apache/mapcache.xml` and `apache/tiles.conf` are generated automatically,
+   then you can remove your custom build rules.
+
+   If you don't use tilecloud-chain and you don't have a `tilegeneration/config.yaml` configuration
+   file, you must disable it by setting the following parameter in your Makefile:
+
+   `TILECLOUD_CHAIN ?= FALSE`
 
 
 Version 1.6.5

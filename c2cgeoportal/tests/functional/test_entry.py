@@ -177,15 +177,16 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj(params={
+            "came_from": "/came_from",
+        }, POST={
             "login": u"__test_user1",
             "password": u"__test_user1",
-            "came_from": "/came_from",
         })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 302)
         self.assertEquals(response.headers["Location"], "/came_from")
 
-        request = self._create_request_obj(params={
+        request = self._create_request_obj(POST={
             "login": u"__test_user1",
             "password": u"__test_user1",
         })
@@ -193,7 +194,7 @@ class TestEntryView(TestCase):
         self.assertEquals(response.status_int, 200)
         self.assertEquals(response.body, "true")
 
-        request = self._create_request_obj(params={
+        request = self._create_request_obj(POST={
             "login": u"__test_user1",
             "password": u"bad password",
         })
@@ -234,13 +235,13 @@ class TestEntryView(TestCase):
     def test_reset_password(self):
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(params={
+        request = self._create_request_obj(POST={
             "login": u"__test_user1",
         })
         entry = Entry(request)
         user, username, password = entry._loginresetpassword()
 
-        request = self._create_request_obj(params={
+        request = self._create_request_obj(POST={
             "login": username,
             "password": password,
         })
@@ -1557,7 +1558,8 @@ class TestEntryView(TestCase):
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
         request = self._create_request_obj(params={
-            "lang": "en",
+            "lang": "en"
+        }, POST={
             "newPassword": "1234",
             "confirmNewPassword": "12345",
         })
@@ -1570,7 +1572,8 @@ class TestEntryView(TestCase):
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
         request = self._create_request_obj(params={
-            "lang": "en",
+            "lang": "en"
+        }, POST={
             "newPassword": "1234",
             "confirmNewPassword": "1234"
         })
