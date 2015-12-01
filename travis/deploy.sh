@@ -70,7 +70,6 @@ then
 fi
 
 GIT_REV=`git log | head -n 1 | awk '{{print $2}}'`
-git checkout c2cgeoportal/locale/*/LC_MESSAGES/*.po
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
@@ -80,12 +79,12 @@ mv doc/_build/html/* ${TRAVIS_BRANCH}
 
 if [ ${DOC} == true ]
 then
-    git add ${TRAVIS_BRANCH}
+    git add --all ${TRAVIS_BRANCH}
     git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
     git push origin gh-pages
 else
+    git checkout master/searchindex.js
     git status
-    git checkout ${TRAVIS_BRANCH}/searchindex.js
     git diff
 fi
 
