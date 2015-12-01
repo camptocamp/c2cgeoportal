@@ -216,14 +216,20 @@ When a new release or a new version is done you should do the following tasks:
 
   .. note::
 
-     On ``c2cgeoportal`` merge see if an alembic merge should be done::
+     On ``c2cgeoportal`` merge see if an alembic merge should be done:
 
-        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads``
-        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads``
+     .. prompt:: bash
 
-     If yes create the merge with::
+        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
+        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
 
-        ``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge -m "Merge <src branch> and <dst branch> branches" --branch-label <dst branch> <rev 1> <rev 2>``
+     If yes create the merge with:
+
+     .. prompt:: bash
+
+        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge \
+                -m "Merge <src branch> and <dst branch> branches" \
+                --branch-label <dst branch> <rev 1> <rev 2>
 
      And finally add the new file.
 
