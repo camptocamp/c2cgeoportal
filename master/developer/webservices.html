@@ -48,10 +48,10 @@
 <div class="section" id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">version</span></code>: <code class="docutils literal"><span class="pre">1</span></code> or <code class="docutils literal"><span class="pre">2</span> <span class="pre">``,</span> <span class="pre">API</span> <span class="pre">version,</span> <span class="pre">default</span> <span class="pre">is</span> <span class="pre">``1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">version</span></code>: <code class="docutils literal"><span class="pre">1</span></code> or <code class="docutils literal"><span class="pre">2</span></code>, API version, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">sets</span></code>: kind of data we want to get, can be <code class="docutils literal"><span class="pre">all</span></code>, <code class="docutils literal"><span class="pre">themes</span></code>, <code class="docutils literal"><span class="pre">group</span></code>
 or <code class="docutils literal"><span class="pre">background_layers</span></code>, default is <code class="docutils literal"><span class="pre">all</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">background_layers_group</span></code>: parent group of background layers to get.</li>
+<li><code class="docutils literal"><span class="pre">background</span></code>: parent group of background layers to get.</li>
 <li><code class="docutils literal"><span class="pre">group</span></code>: the group to get.</li>
 <li><code class="docutils literal"><span class="pre">catalog</span></code>: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>, different error reporting for catalog mode, default is <code class="docutils literal"><span class="pre">false</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">min_levels</span></code>: minimum number of group levels that&#8217;s required, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
@@ -161,6 +161,43 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 }
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="login">
+<h3>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
+<p>Used to login in the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../login</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+<li><code class="docutils literal"><span class="pre">password</span></code></li>
+<li><code class="docutils literal"><span class="pre">came_from</span></code> the URL where we will redirect after a success</li>
+</ul>
+</div>
+<div class="section" id="logout">
+<h3>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h3>
+<p>Used to log out of the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../logout</span></code></p>
+</div>
+<div class="section" id="change-password">
+<h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
+<p>Used to change the user password.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginchange</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">newPassword</span></code></li>
+<li><code class="docutils literal"><span class="pre">confirmNewPassword</span></code></li>
+</ul>
+</div>
+<div class="section" id="generate-a-new-password">
+<h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
+<p>Used when the user lost his password.</p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+</ul>
 </div>
 </div>
 <div class="section" id="full-text-search">
@@ -322,6 +359,13 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 <li><a class="reference internal" href="#theme-webservice">Theme webservice</a><ul>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 <li><a class="reference internal" href="#result-in-v2">Result in v2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#login">Login</a></li>
+<li><a class="reference internal" href="#logout">Logout</a></li>
+<li><a class="reference internal" href="#change-password">Change password</a></li>
+<li><a class="reference internal" href="#generate-a-new-password">Generate a new password</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#full-text-search">Full Text Search</a><ul>
