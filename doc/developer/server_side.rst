@@ -53,6 +53,17 @@ of an existing c2cgeoportal application. Here's how:
 
     rm .build/requirements.timestamp && make -f <user>.mk build
 
+.. note:: Print performance issue
+
+   When restarting the print server frequently, performance issues may randomly be observed.
+   This is done in random number generation.
+
+   To improve the performances you should add in the ``/srv/tomcat/tomcat1/bin/setenv-local.sh`` file:
+
+   .. code:: bash
+
+      export ADD_JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
+
 
 Tests
 -----
