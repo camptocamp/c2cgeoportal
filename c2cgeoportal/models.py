@@ -439,7 +439,7 @@ class TreeGroup(TreeItem):
         return [c.item for c in self.children_relation]
 
     def _set_children(self, children):
-        for child in self.children_relation:  # pragma: nocover
+        for child in self.children_relation:
             if child.item not in children:
                 self._sa_instance_state.session.delete(child)
         for index, child in enumerate(children):
