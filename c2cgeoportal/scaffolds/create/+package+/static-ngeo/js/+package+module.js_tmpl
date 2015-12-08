@@ -11,4 +11,10 @@ goog.require('gmf');
 /**
  * @type {!angular.Module}
  */
-{{package}}.module = angular.module('{{package}}', [gmfModule.name]);
+var {{package}}Module = angular.module('{{package}}', [gmfModule.name]);
+
+/**
+ * The default template based URL, used as it by the template cache.
+ * @type {string}
+ */
+{{package}}.baseTemplateUrl = '{{package}}';

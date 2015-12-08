@@ -5,7 +5,7 @@
     "node_modules/ngeo/src/**/*.js",
     "node_modules/ngeo/contribs/gmf/**/*.js",
     "{{package}}/static-ngeo/js/**/*.js",
-    "{{package}}/static-ngeo/build/templatecache.js"
+    ".build/templatecache.js"
   ],
   "compile": {
     "closure_entry_point": "app_${interface}",
