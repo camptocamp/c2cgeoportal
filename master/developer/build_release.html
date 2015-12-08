@@ -177,15 +177,13 @@ to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>On <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
-<div class="highlight-python"><div class="highlight"><pre>``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads``
-``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads``
-</pre></div>
-</div>
-<p>If yes create the merge with:</p>
-<div class="highlight-python"><div class="highlight"><pre>``.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge -m &quot;Merge &lt;src branch&gt; and &lt;dst branch&gt; branches&quot; --branch-label &lt;dst branch&gt; &lt;rev 1&gt; &lt;rev 2&gt;``
-</pre></div>
-</div>
-<p class="last">And finally add the new file.</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads</span>
+<span class="prompt1">.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads</span>
+</pre><p>If yes create the merge with:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini merge <span class="se">\</span>
+        -m <span class="s2">&quot;Merge &lt;src branch&gt; and &lt;dst branch&gt; branches&quot;</span> <span class="se">\</span>
+        --branch-label &lt;dst branch&gt; &lt;rev 1&gt; &lt;rev 2&gt;</span>
+</pre><p class="last">And finally add the new file.</p>
 </div>
 </li>
 <li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</p>
@@ -276,7 +274,7 @@ and <code class="docutils literal"><span class="pre">geospatial&#64;lists.campto
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
