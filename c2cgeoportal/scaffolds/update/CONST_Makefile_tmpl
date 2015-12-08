@@ -692,7 +692,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
-		'pip>=7' 'setuptools>=12'
+		'pip>=6,<7' 'setuptools>=12'
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
