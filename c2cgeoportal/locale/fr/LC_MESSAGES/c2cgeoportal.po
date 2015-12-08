@@ -375,12 +375,12 @@ msgstr "Test de l’i18n"
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover the "
 "themes."
-msgstr "ATTENTION ! Une erreur s’est produite en essayant de lire le mapfile  et de récupérer les thèmes."
+msgstr "ATTENTION ! Une erreur s’est produite en essayant de lire le mapfile et de récupérer les thèmes."
 
 #: ./c2cgeoportal/views/entry.py:1325
 #, c-format
 msgid "User '%s' has no registered email address."
-msgstr "L’utilisateur '%s' n’a pas d’adresse mail enregistré."
+msgstr "L’utilisateur '%s' n’a pas d’adresse email enregistrée."
 
 #: ./c2cgeoportal/views/entry.py:1319
 #, c-format
