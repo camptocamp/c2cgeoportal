@@ -347,6 +347,7 @@ class TreeItem(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, label=_(u"Name"))
+    description = Column(Unicode, label=_(u"Description"))
     metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # shouldn't be used in V3
 
     @property
@@ -386,6 +387,7 @@ class LayergroupTreeitem(Base):
 
     # required by formalchemy
     id = Column(Integer, primary_key=True)
+    description = Column(Unicode, label=_(u"Description"))
     treegroup_id = Column(
         Integer, ForeignKey(_schema + ".treegroup.id")
     )
@@ -437,14 +439,16 @@ class TreeGroup(TreeItem):
         return [c.item for c in self.children_relation]
 
     def _set_children(self, children):
-        for child in self.children_relation:  # pragma: nocover
-            self._sa_instance_state.session.delete(child)
-        if len(children) == 0 or isinstance(children[0], LayergroupTreeitem):  # pragma: nocover
-            self.children_relation = children
-        else:
-            self.children_relation = [
-                LayergroupTreeitem(self, item, index) for index, item in enumerate(children)
-            ]
+        for child in self.children_relation:
+            if child.item not in children:
+                self._sa_instance_state.session.delete(child)
+        for index, child in enumerate(children):
+            current = [c for c in self.children_relation if c.item == child]
+            if len(current) == 1:
+                current[0].ordering = index * 10
+            else:
+                LayergroupTreeitem(self, child, index * 10)
+        self.children_relation.sort(key=lambda child: child.ordering)
 
     children = property(_get_children, _set_children)
 
