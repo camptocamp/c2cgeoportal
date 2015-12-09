@@ -106,7 +106,7 @@ msgstr "Rôles"
 
 #: ./c2cgeoportal/models.py:379 ./c2cgeoportal/models.py:380
 msgid "Tree links order"
-msgstr "Ordre des liens de l'arbre"
+msgstr "Ordre des liens de l’arbre"
 
 #: ./c2cgeoportal/models.py:456
 msgid "Layer Group"
@@ -175,11 +175,11 @@ msgstr "Interfaces"
 
 #: ./c2cgeoportal/models.py:848
 msgid "UI metadata"
-msgstr "Métadonnée d'interface utilisateur"
+msgstr "Métadonnée d’interface utilisateur"
 
 #: ./c2cgeoportal/models.py:849
 msgid "UI metadatas"
-msgstr "Métadonnées d'Interface Utilisateur"
+msgstr "Métadonnées d’Interface Utilisateur"
 
 #: ./c2cgeoportal/models.py:876
 msgid "WMTS dimension"
@@ -211,7 +211,7 @@ msgstr "Valeur"
 
 #: ./c2cgeoportal/models.py:197
 msgid "Username"
-msgstr "Nom d'utilisateur"
+msgstr "Nom d’utilisateur"
 
 #: ./c2cgeoportal/models.py:201 ./c2cgeoportal/models.py:205
 msgid "Password"
@@ -278,7 +278,7 @@ msgstr "URL de base"
 #: ./c2cgeoportal/models.py:576 ./c2cgeoportal/models.py:633
 #: ./c2cgeoportal/models.py:671 ./c2cgeoportal/models.py:710
 msgid "Image type"
-msgstr "Type d'image"
+msgstr "Type d’image"
 
 #: ./c2cgeoportal/models.py:577 ./c2cgeoportal/models.py:635
 #: ./c2cgeoportal/models.py:672 ./c2cgeoportal/models.py:705
@@ -369,23 +369,23 @@ msgstr "Mode lecture écriture"
 
 #: ./c2cgeoportal/views/entry.py:83
 msgid "title i18n"
-msgstr "Test de l'i18n"
+msgstr "Test de l’i18n"
 
 #: ./c2cgeoportal/views/entry.py:130
 msgid ""
 "WARNING! an error occured while trying to read the mapfile and recover the "
 "themes."
-msgstr "ATTENTION ! Une erreur s'est produite en essayant de lire le mapfile  et de récupérer les thèmes."
+msgstr "ATTENTION ! Une erreur s’est produite en essayant de lire le mapfile et de récupérer les thèmes."
 
 #: ./c2cgeoportal/views/entry.py:1325
 #, c-format
 msgid "User '%s' has no registered email address."
-msgstr "L'utilisateur '%s' n'a pas d'adresse mail enregistré."
+msgstr "L’utilisateur '%s' n’a pas d’adresse email enregistrée."
 
 #: ./c2cgeoportal/views/entry.py:1319
 #, c-format
 msgid "The user '%s' doesn't exist."
-msgstr "L'utilisateur '%s' n'existe pas."
+msgstr "L’utilisateur '%s' n’existe pas."
 
 #: ./c2cgeoportal/views/profile.py:67
 msgid "distance"
