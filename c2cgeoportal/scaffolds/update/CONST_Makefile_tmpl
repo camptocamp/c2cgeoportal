@@ -90,7 +90,9 @@ OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.js')
 APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
-APP_PARTIALS_FILES := $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.html')
+NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html)
+GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null | "")
+APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null | "")
 LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
 NGEO_LIBS_JS_FILES += \
@@ -467,10 +469,10 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		$(VENV_BIN)/pot-create lingua-client.cfg \
 		$(APP_HTML_FILES) \
 		$(APP_JS_FILES) \
-		$(APP_PARTIALS_FILES) \
+		$(APP_DIRECTIVES_PARTIALS_FILES) \
 		development.ini \
 		.build/config.yaml
-	$(VENV_BIN)/pot-create -c lingua-client.cfg -o $@ development.ini $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_PARTIALS_FILES)
+	$(VENV_BIN)/pot-create -c lingua-client.cfg -o $@ development.ini $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
@@ -525,7 +527,7 @@ $(APP_OUTPUT_DIR)/%.min.css: $(LESS_FILES) .build/node_modules.timestamp
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" build.mako.json > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		$(APP_OUTPUT_DIR)/templatecache.js \
+		.build/templatecache.js \
 		.build/externs/angular-1.4.js \
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
@@ -533,9 +535,16 @@ $(APP_OUTPUT_DIR)/%.min.css: $(LESS_FILES) .build/node_modules.timestamp
 		.build/node_modules.timestamp
 	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
 
-$(APP_OUTPUT_DIR)/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES) .build/dev-requirements.timestamp
+node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
+
+.build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js .build/dev-requirements.timestamp \
+		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
-	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "partials=$(APP_PARTIALS_FILES)" $< > $@
+	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
+		--var "app=$(PACKAGE)" \
+		--var "partials=$(addprefix ngeo:,$(NGEO_DIRECTIVES_PARTIALS_FILES)) \
+		$(addprefix gmf:,$(GMF_DIRECTIVES_PARTIALS_FILES)) \
+		$(addprefix $(PACKAGE):,$(APP_DIRECTIVES_PARTIALS_FILES))" $< > $@
 
 .build/externs/angular-1.4.js:
 	mkdir -p $(dir $@)
