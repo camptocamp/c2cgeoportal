@@ -35,21 +35,45 @@ templates:
         processors:
         - !reportBuilder # compile all reports in current directory
             directory: '.'
-        - !configureHttpRequests
+        - !configureHttpRequests &configureHttpRequests
             httpProcessors:
             - !mapUri
+                matchers:
+                - !dnsMatch
+                    host: ${host}
                 mapping:
                     (https?)://${host}/(.*): "$1://127.0.0.1/$2"
-            - !useHttpForHttps
-                hosts:
-                - ${host}
-                portMapping:
-                    443: 80
+            - !useHttpForhttps
+                matchers:
+                - !localMatch
             - !forwardHeaders
+                matchers:
+                - !localMatch
                 headers:
                 - Cookie
                 - Host
+            - !forwardHeaders
+                headers:
                 - Referer
+            - !restrictUris
+                matchers:
+                - !localMatch
+                  pathRegex : ^/${instanceid}/wsgi/mapserv_proxy.+$
+                - !localMatch
+                  reject: true
+                - !ipMatch
+                  ip : 10.0.0.0
+                  mask : 255.0.0.0
+                  reject: true
+                - !ipMatch
+                  ip : 172.16.0.0
+                  mask : 255.240.0.0
+                  reject: true
+                - !ipMatch
+                  ip : 192.168.0.0
+                  mask : 255.255.0.0
+                  reject: true
+                - !acceptAll
         - !prepareLegend
             template: legend.jrxml
         - !createNorthArrow {}
