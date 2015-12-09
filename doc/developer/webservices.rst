@@ -171,6 +171,42 @@ Used to log out of the application.
 
 URL: ``.../logout``
 
+User informations
+-----------------
+
+Used to get the user informations.
+
+URL: ``.../loginuser``
+
+Annoymous result
+````````````````
+
+.. code:: json
+
+   {
+       "functionality": {
+           "<functionnality_name>": ["functionnality_value"],
+           ...
+       }
+   }
+
+Connected result
+````````````````
+
+.. code:: json
+
+   {
+       "userneme": "<username>",
+       "is_password_changed": "True"/"False", # If false the user should change his password
+       "role_name": "<role_name>",
+       "role_id": <role_id>
+       "functionality": {
+           "<functionnality_name>": ["functionnality_value"],
+           ...
+       }
+   }
+
+
 Change password
 ---------------
 

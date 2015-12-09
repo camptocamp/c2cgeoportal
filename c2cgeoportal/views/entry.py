@@ -1311,6 +1311,21 @@ class Entry(object):
             add_cors=True
         )
 
+    @view_config(route_name="loginuser", renderer="json")
+    def loginuser(self):
+        set_common_headers(self.request, "loginuser", NO_CACHE)
+
+        result = {
+            "username": self.request.user.username,
+            "is_password_changed": self.request.user.is_password_changed,
+            "role_name": self.request.user.role_name,
+            "role_id": self.request.user.role.id
+        } if self.request.user else {}
+
+        result["functionalities"] = self._functionality()
+
+        return result
+
     @view_config(route_name="loginchange", renderer="json")
     def loginchange(self):
         set_common_headers(self.request, "login", NO_CACHE,

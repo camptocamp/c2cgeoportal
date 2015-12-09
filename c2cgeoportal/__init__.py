@@ -572,6 +572,7 @@ def includeme(config):
     config.add_route("loginchange", "/loginchange", request_method="POST")
     add_cors_route(config, "/loginresetpassword", "login")
     config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")
+    config.add_route("loginuser", "/loginuser", request_method="GET")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
     config.add_route("apijs", "/api.js", request_method="GET")
     config.add_route("xapijs", "/xapi.js", request_method="GET")
