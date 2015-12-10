@@ -76,7 +76,7 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
 .. warning::
 
-    Actually, the editing doesn't work well with many editable layers.
+    The editing is limited to 30 editable layers per user.
 
 
 Configuring security
