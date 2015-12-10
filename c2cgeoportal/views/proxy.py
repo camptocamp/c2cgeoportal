@@ -96,6 +96,8 @@ class Proxy:
             body = StringIO(self.request.body)
 
         try:
+            # fix encoding issue with IE
+            url = url.encode("UTF8")
             if method in ("POST", "PUT"):
                 resp, content = http.request(
                     url, method=method, body=body, headers=headers
