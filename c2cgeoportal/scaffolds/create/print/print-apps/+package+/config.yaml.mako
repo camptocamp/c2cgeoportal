@@ -27,12 +27,12 @@ templates:
                     scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
                 width: 555
                 height: 675
-            datasource: !datasource
+            datasource: !datasource &datasource
                 attributes:
                     title: !string {}
                     table: !table {}
 
-        processors:
+        processors: &processors
         - !reportBuilder # compile all reports in current directory
             directory: '.'
         - !configureHttpRequests &configureHttpRequests
@@ -87,3 +87,32 @@ templates:
                     icon: !urlImage
                         urlExtractor: (.*)
                         urlGroup: 1
+
+#    A4 landscape: !template
+#        reportTemplate: A4_Landscape.jrxml
+#        attributes: &attributes
+#            title: !string
+#                default: ""
+#            comments: !string
+#                default: ""
+#            debug: !boolean
+#                default: false
+#            legend: !legend {}
+#            northArrow: !northArrow
+#                size: 40
+#                default:
+#                    graphic: "file:///north.svg"
+#            scalebar: !scalebar
+#                width: 150
+#                height: 20
+#                default:
+#                     fontSize: 8
+#            map: !map
+#                maxDpi: 254
+#                dpiSuggestions: [254]
+#                zoomLevels: !zoomLevels
+#                    scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
+#                width: 555
+#                height: 675
+#            datasource: !datasource *datasource
+#        processors: *processors
