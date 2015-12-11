@@ -12,6 +12,20 @@ Version 1.6.7
   +# to update the static schema, we need to deploy the code first
   +restore_order = code,database,files
 
+2. Add the following lines in your `jsbuild/app.cfg.mako` file to get the french and german
+   translation for some of the print panel strings:
+
+      [lang-fr.js]
+      ...
+      include =
+      ...
+     +    locale/SimplePrint-fr.js
+
+      [lang-de.js]
+      ...
+      include =
+      ...
+     +    locale/SimplePrint-de.js
 
 Version 1.6.6
 =============
