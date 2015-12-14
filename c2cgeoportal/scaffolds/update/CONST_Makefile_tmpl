@@ -740,7 +740,7 @@ print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
-	wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar -O $@
+	wget http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar -O $@
 	touch $@
 
 print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
