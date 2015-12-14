@@ -15,10 +15,18 @@ MOBILE ?= FALSE
 NGEO ?= TRUE
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
-# Use deploy
-DEPLOY ?= TRUE
 # Used print version
 PRINT_VERSION ?= 3
+# Enable Docker target
+DOCKER ?= FALSE
+DOCKER_TAG ?= latest
+# Use deploy
+ifeq ($(DOCKER), FALSE)
+DEPLOY ?= TRUE
+else
+DEPLOY ?= FALSE
+INSTANCE_ID =
+endif
 
 PIP_CMD ?= $(VENV_BIN)/pip
 PIP_VERSION ?= pip>=6
@@ -77,10 +85,16 @@ ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
 ifeq ($(CGXP), TRUE)
-DEV_REQUIREMENTS += JSTools 'c2c.cssmin>=0.7dev6'
+REQUIREMENTS += JSTools
+DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
+endif
+ifeq ($(DOCKER), FALSE)
+TEST_PACKAGES = main
+else
+TEST_PACKAGES = docker
 endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
@@ -109,7 +123,9 @@ NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
 APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null)
 LESS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
-NGEO_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
+NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
+NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
+NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
@@ -294,7 +310,9 @@ PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR
 PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
 
+ifeq ($(DOCKER), FALSE)
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
+endif
 
 # Apache
 APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
@@ -575,7 +593,11 @@ $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS
 
 # to don't delete them
 .SECONDARY: $(NGEO_FONTS)
-$(PACKAGE)/static-ngeo/fonts/%: node_modules/ngeo/contribs/gmf/fonts/%
+$(PACKAGE)/static-ngeo/fonts/gmf%: node_modules/ngeo/contribs/gmf/fonts/gmf%
+	mkdir -p $(dir $@)
+	cp $< $@
+
+$(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fonts/fontawesome-webfont.%
 	mkdir -p $(dir $@)
 	cp $< $@
 
@@ -742,7 +764,8 @@ $(VENV_BIN)/c2c-versions: .build/dev-requirements.timestamp
 test-packages: .build/test-packages.timestamp
 
 .build/test-packages.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml main
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml common
+	$(VENV_BIN)/c2c-versions CONST_packages.yaml $(TEST_PACKAGES)
 	touch $@
 
 .PHONY: test-packages-deploy
@@ -798,6 +821,11 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 # Print
 
 .PHONY: print
+ifeq ($(DOCKER), TRUE)
+print: $(MAKO_FILES) print/Dockerfile $(PRINT_REQUIREMENT)
+	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
+
+else  # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
@@ -831,6 +859,7 @@ endif
 ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
 endif
+endif # !DOCKER
 
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	mkdir -p $(dir $@)
@@ -857,6 +886,28 @@ apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml .build/dev-req
 
 # Apache config
 .PHONY: apache
+ifeq ($(DOCKER), TRUE)
+apache: mapserver_docker wsgi_docker
+
+.PHONY: mapserver_docker
+mapserver_docker: mapserver/Dockerfile $(MAKO_FILES) mapserver/mapserver.map
+	docker build -t $(DOCKER_BASE)_mapserver:$(DOCKER_TAG) mapserver
+
+mapserver/mapserver.map: mapserver/c2cgeoportal.map
+	echo 'INCLUDE "c2cgeoportal.map"' > $@
+
+.PHONY: wsgi_docker
+wsgi_docker: requirements.txt .whiskey/action_hooks/pre-build
+	docker build -t $(DOCKER_BASE)_wsgi:$(DOCKER_TAG) .
+	rm requirements.txt
+
+.PHONY: requirements.txt
+requirements.txt:
+	rm -f $@
+	for line in $(REQUIREMENTS) ; do echo $$line >> $@; done   # one requirement one line
+	sed -e ':a;N;$$!ba;s/-\([re]\)\n/-\1 /g' -i requirements.txt  # put "-r blah" on a single line
+
+else
 apache: .build/apache.timestamp
 
 $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
@@ -874,6 +925,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		development.ini production.ini
 	$(APACHE_GRACEFUL)
 	touch $@
+endif
 
 # instance id marker
 INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
@@ -914,3 +966,11 @@ upgrade3: .build/requirements.timestamp project.yaml
 .PHONY: upgrade4
 upgrade4: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
+
+ifeq ($(DOCKER), TRUE)
+.PHONY: push_docker
+push_docker:
+	docker push $(DOCKER_BASE)_print:$(DOCKER_TAG)
+	docker push $(DOCKER_BASE)_wsgi:$(DOCKER_TAG)
+	docker push $(DOCKER_BASE)_mapserver:$(DOCKER_TAG)
+endif

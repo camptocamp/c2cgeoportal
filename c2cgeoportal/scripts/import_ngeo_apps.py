@@ -33,7 +33,7 @@ from json import loads, dumps
 from argparse import ArgumentParser
 
 
-def main():  # pragma: no cover
+def main():
     """
     Import the ngeo apps files
     """

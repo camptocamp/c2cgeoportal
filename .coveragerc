@@ -3,4 +3,4 @@ source = c2cgeoportal
 omit =
     */tests/*
     c2cgeoportal/lib/raster/*
-    c2cgeoportal/scripts/c2ctool.py
+    c2cgeoportal/scripts/*

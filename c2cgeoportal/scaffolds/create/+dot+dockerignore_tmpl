@@ -1,0 +1,13 @@
+*
+!.build/config.yaml
+!.whiskey
+!{{package}}
+!{{package}}.egg-info
+!apache/application.wsgi
+!requirements.txt
+!CONST_requirements.txt
+!CONST_versions.txt
+!setup.cfg
+!setup.py
+!development.ini
+!production.ini

@@ -351,8 +351,10 @@ vars:
 
     # What web page is authorized to use the API
     authorized_referers:
-    - http://{host}/{instanceid}
-    - https://{host}/{instanceid}
+    - "http://{host}/{instanceid}"
+    - "https://{host}/{instanceid}"
+    - "http://{host}:8480/{instanceid}"
+    - "https://{host}:8480/{instanceid}"
 
 interpreted:
     python:

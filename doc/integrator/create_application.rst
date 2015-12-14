@@ -140,13 +140,6 @@ Go to your new project:
 
     cd ../<project>
 
-``pcreate`` doesn't conserve file permission, so restore it manually:
-
-.. prompt:: bash
-
-    chmod +x deploy/hooks/post-restore-database.mako
-    chmod +x deploy/hooks/post-restore-code
-
 .. note::
 
     If this application is a child of a parent/child architecture you should
@@ -199,10 +192,10 @@ Add the project:
 .. prompt:: bash
 
     git init
-    git add *
+    git add .
     git remote add origin git@github.com:camptocamp/<project>.git
 
-Add the CGXP submodule:
+If you plan to use CGXP, add the CGXP submodule:
 
 .. prompt:: bash
 
