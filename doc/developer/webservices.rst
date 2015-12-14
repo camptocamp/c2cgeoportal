@@ -164,12 +164,24 @@ Parameters (post form):
 * ``password``
 * ``came_from`` the URL where we will redirect after a success
 
+Result HTTP code::
+
+ * 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
+ * 302 Found: Success -> redirect on came_from.
+ * 400 Bad request: Missing login or password.
+ * 401 Unauthorised: Wrong login.
+
 Logout
 ------
 
 Used to log out of the application.
 
 URL: ``.../logout``
+
+Result HTTP code::
+
+ * 200 Success: Success.
+ * 404 Not Found: Not login.
 
 User informations
 -----------------
@@ -178,8 +190,12 @@ Used to get the user informations.
 
 URL: ``.../loginuser``
 
-Annoymous result
-````````````````
+Result HTTP code::
+
+ * 200 Success: Success.
+
+Annoymous JSON result
+`````````````````````
 
 .. code:: json
 
@@ -190,8 +206,10 @@ Annoymous result
        }
    }
 
-Connected result
-````````````````
+.. _developer_webservices_auth_connected:
+
+Connected JSON result
+`````````````````````
 
 .. code:: json
 
@@ -219,6 +237,22 @@ Parameters (post form):
 * ``newPassword``
 * ``confirmNewPassword``
 
+Result HTTP code::
+
+ * 200 Success: Success.
+ * 400 Bad request: Missing newPassword or confirmNewPassword or the booth password don't match.
+ * 401 Unauthorised: Not login.
+
+JSON result
+```````````
+
+.. code:: json
+
+   {
+       "success": "true"
+   }
+
+
 Generate a new password
 -----------------------
 
@@ -227,6 +261,28 @@ Used when the user lost his password.
 Parameters (post form):
 
 * ``login``
+
+Result HTTP code::
+
+ * 200 Success: Success.
+
+Success JSON result
+```````````````````
+
+.. code:: json
+
+   {
+       "success": "true"
+   }
+
+Failure JSON result
+```````````````````
+.. code:: json
+
+   {
+       "success": "false"
+       "error": "<the error>"
+   }
 
 
 Full Text Search
