@@ -1264,7 +1264,7 @@ class Entry(object):
             "came_from": self.request.params.get("came_from") or "/",
         }
 
-    @view_config(route_name="login")
+    @view_config(route_name="login", renderer="json")
     def login(self):
         login = self.request.POST.get("login", None)
         password = self.request.POST.get("password", None)
@@ -1284,7 +1284,7 @@ class Entry(object):
                 headers.append(("Content-Type", "text/json"))
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
-                    response=Response("true", headers=headers),
+                    response=Response(self._user(), headers=headers),
                     add_cors=True
                 )
         else:
@@ -1311,10 +1311,7 @@ class Entry(object):
             add_cors=True
         )
 
-    @view_config(route_name="loginuser", renderer="json")
-    def loginuser(self):
-        set_common_headers(self.request, "loginuser", NO_CACHE)
-
+    def _user(self):
         result = {
             "username": self.request.user.username,
             "is_password_changed": self.request.user.is_password_changed,
@@ -1325,6 +1322,12 @@ class Entry(object):
         result["functionalities"] = self._functionality()
 
         return result
+
+    @view_config(route_name="loginuser", renderer="json")
+    def loginuser(self):
+        set_common_headers(self.request, "login", NO_CACHE)
+
+        return self._user()
 
     @view_config(route_name="loginchange", renderer="json")
     def loginchange(self):
