@@ -57,6 +57,12 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">min_levels</span></code>: minimum number of group levels that&#8217;s required, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">role</span></code>: role name, not used by the server but it&#8217;s required for the cache management.</li>
 </ul>
+<p>Requests examples:</p>
+<ul class="simple">
+<li>themes?version=2</li>
+<li>themes?version=2&amp;background=background</li>
+<li>themes?version=2&amp;group=Transport</li>
+</ul>
 </div>
 <div class="section" id="result-in-v2">
 <h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
@@ -86,7 +92,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <p>Group:</p>
 <div class="code json highlight-python"><div class="highlight"><pre>{
     &quot;name&quot;: &lt;name&gt;,
-    &quot;ui_metadata&quot;: {
+    &quot;mixed&quot;: true/false,
+    &quot;metadata&quot;: {
         &lt;name&gt;: &lt;value&gt;
     },
     &quot;children&quot;: [&lt;items&gt;]
@@ -96,21 +103,37 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <p>Layer:</p>
 <div class="code json highlight-python"><div class="highlight"><pre>{
     &quot;name&quot;: &lt;name&gt;,
-    &quot;type&quot;: &quot;internal WMS/external WMS/WMTS&quot;,
-    &quot;ui_metadata&quot;: {
+    &quot;type&quot;: &quot;WMS/WMTS&quot;,
+    &quot;metadata&quot;: {
         &lt;name&gt;: &lt;value&gt;
     }
 }
 </pre></div>
 </div>
-<p>Internal WMS Layer:</p>
+<p>WMS Layer:</p>
 <div class="code json highlight-python"><div class="highlight"><pre>{
-    &quot;layer&quot;: &lt;wms_layers&gt;,
-    &quot;image_type&quot;: &quot;image/png&quot;,
-    &quot;style&quot;: &lt;style&gt;,
-    &quot;queryable&quot;: 0/1,
+
+    &quot;layers&quot;: &lt;wms_layers&gt;,
+    &quot;name&quot;: &lt;name in tree&gt;,
     &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
     &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;,
+    &quot;url&quot;: &lt;wms server url&gt;/null,
+    &quot;url_wfs&quot;: &lt;wfs server url&gt;/null,
+    &quot;wfs_support&quot;: true/false,
+    &quot;isSingleTile&quot;: true/false,
+    &quot;queryable&quot;: 0/1,
+    &quot;id&quot;: ​734,
+    &quot;imageType&quot;: &quot;image/jpeg&quot;,
+    &quot;style&quot;: &lt;style&gt;,
+    &quot;serverType&quot;: &lt;value&gt;,
+    &quot;metadata&quot;: {
+        &quot;identifier_attribute_field&quot;: &quot;display_name&quot;,
+        &quot;disclaimer&quot;: &quot;© les contributeurs d’OpenStreetMap&quot;,
+        &quot;legend&quot;: &quot;true&quot;,
+        &quot;legend_rule&quot;: &quot;Arrêts de bus&quot;,
+        &quot;max_resolution&quot;: &lt;value&gt;,
+        &quot;min_resolution&quot;: &lt;value&gt;
+    },
     &quot;metadataUrls&quot;: {
         &quot;url&quot;: &lt;url&gt;,
         &quot;type&quot;: &quot;TC211/FGDC&quot;,
@@ -129,23 +152,6 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
         &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
         &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;
     }]
-}
-</pre></div>
-</div>
-<p>External WMS Layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
-    &quot;url&quot;: &lt;wms_server_url&gt;,
-    &quot;layer&quot;: &lt;wms_layers&gt;,
-    &quot;image_type&quot;: &quot;image/png&quot;,
-    &quot;style&quot;: &lt;style&gt;,
-    &quot;is_single_tile&quot;: true/false,
-    &quot;time&quot;: {
-        &quot;mode&quot;: &quot;value/range&quot;,
-        &quot;interval&quot;: [year, mounth, day, secound],
-        &quot;resolution&quot;: &quot;year/mounth/day/secound&quot;,
-        &quot;minValue&quot;: &lt;minValue&gt;,
-        &quot;maxValue&quot;: &lt;maxValue&gt;
-    }
 }
 </pre></div>
 </div>
