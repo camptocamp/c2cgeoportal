@@ -58,12 +58,11 @@ from c2cgeoportal import (
 
 __all__ = [
     "Functionality", "User", "Role", "LayerGroup", "Theme",
-    "LayerV1", "LayerInternalWMS", "LayerExternalWMS", "LayerWMTS",
-    "RestrictionArea", "Interface", "UIMetadata", "WMTSDimension",
-    "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
-    "LayerInternalWMSGrid", "LayerExternalWMSGrid", "LayerWMTSGrid",
-    "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid", "UserGrid",
-    "InterfaceGrid", "UIMetadataGrid", "WMTSDimensionGrid"
+    "LayerV1", "ServerOGC", "LayerWMS",
+    "LayerWMTS", "RestrictionArea", "Interface", "UIMetadata",
+    "WMTSDimension", "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
+    "LayerWMTSGrid", "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid",
+    "UserGrid", "InterfaceGrid", "UIMetadataGrid", "WMTSDimensionGrid"
 ]
 
 
@@ -431,43 +430,28 @@ LayerV1.interfaces.set(renderer=CheckBoxSet)
 LayerV1.ui_metadata.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
-# LayerInternalWMS
-LayerInternalWMS = FieldSet(models.LayerInternalWMS)
-LayerInternalWMS.configure(exclude=[LayerInternalWMS.parents_relation])
-LayerInternalWMS.image_type.set(
+# ServerOGC
+ServerOGC = FieldSet(models.ServerOGC)
+ServerOGC.image_type.set(
     renderer=SelectFieldRenderer,
     options=image_type_options,
 )
-LayerInternalWMS.time_mode.set(
-    renderer=SelectFieldRenderer,
-    options=time_options,
-)
-LayerInternalWMS.time_widget.set(
-    renderer=SelectFieldRenderer,
-    options=time_widget_options,
-)
-LayerInternalWMS.interfaces.set(renderer=CheckBoxSet)
-LayerInternalWMS.ui_metadata.set(readonly=True)
-LayerInternalWMS.restrictionareas.set(renderer=CheckBoxSet)
 
-# LayerExternalWMS
-LayerExternalWMS = FieldSet(models.LayerExternalWMS)
-LayerExternalWMS.configure(exclude=[LayerExternalWMS.parents_relation])
-LayerExternalWMS.image_type.set(
-    renderer=SelectFieldRenderer,
-    options=image_type_options,
-)
-LayerExternalWMS.time_mode.set(
+# LayerWMS
+LayerWMS = FieldSet(models.LayerWMS)
+LayerWMS.configure(exclude=[LayerWMS.parents_relation])
+LayerWMS.time_mode.set(
     renderer=SelectFieldRenderer,
     options=time_options,
 )
-LayerExternalWMS.time_widget.set(
+LayerWMS.time_widget.set(
     renderer=SelectFieldRenderer,
     options=time_widget_options,
 )
-LayerExternalWMS.interfaces.set(renderer=CheckBoxSet)
-LayerExternalWMS.ui_metadata.set(readonly=True)
-LayerExternalWMS.restrictionareas.set(renderer=CheckBoxSet)
+LayerWMS.interfaces.set(renderer=CheckBoxSet)
+LayerWMS.ui_metadata.set(readonly=True)
+LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
+LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
 
 # LayerWMTS
 LayerWMTS = FieldSet(models.LayerWMTS)
@@ -631,24 +615,6 @@ field_order = [
     LayerV1.identifier_attribute_field
 ]
 LayerV1Grid.configure(include=field_order)
-
-# LayerInternalWMSGrid
-LayerInternalWMSGrid = Grid(models.LayerInternalWMS)
-field_order = [
-    LayerInternalWMS.name,
-    LayerInternalWMS.public,
-    LayerInternalWMS.layer
-]
-LayerInternalWMSGrid.configure(include=field_order)
-
-# LayerExternalWMSGrid
-LayerExternalWMSGrid = Grid(models.LayerExternalWMS)
-field_order = [
-    LayerExternalWMS.name,
-    LayerExternalWMS.public,
-    LayerExternalWMS.layer
-]
-LayerExternalWMSGrid.configure(include=field_order)
 
 # LayerWMTSGrid
 LayerWMTSGrid = Grid(models.LayerWMTS)

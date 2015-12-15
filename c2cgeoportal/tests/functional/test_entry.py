@@ -58,7 +58,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
-            LayerInternalWMS
+            LayerWMS, ServerOGC
 
         role1 = Role(name=u"__test_role1")
         user1 = User(username=u"__test_user1", password=u"__test_user1", role=role1)
@@ -80,17 +80,20 @@ class TestEntryView(TestCase):
         private_layer.geo_table = "a_schema.a_geo_table"
         private_layer.interfaces = [main, mobile]
 
-        public_layer2 = LayerInternalWMS(
+        public_layer2 = LayerWMS(
             name=u"__test_public_layer2", layer=u"__test_public_layer_bis", public=True)
         public_layer2.interfaces = [main, mobile]
+        public_layer2.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
 
-        private_layer2 = LayerInternalWMS(
+        private_layer2 = LayerWMS(
             name=u"__test_private_layer2", layer=u"__test_private_layer_bis", public=False)
         private_layer2.interfaces = [main, mobile]
+        private_layer2.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
 
-        public_layer_not_mapfile = LayerInternalWMS(
+        public_layer_not_mapfile = LayerWMS(
             name=u"__test_public_layer_not_mapfile", layer=u"__test_public_layer_not_in_mapfile", public=True)
         public_layer_not_mapfile.interfaces = [main, mobile]
+        public_layer_not_mapfile.server_ogc = ServerOGC(name="__test_server_ogc", url="internal_url", image_type="image/jpeg")
 
         layer_in_group = LayerV1(name=u"__test_layer_in_group")
         layer_in_group.interfaces = [main, mobile]
@@ -520,8 +523,9 @@ class TestEntryView(TestCase):
             u"__test_public_layer_not_mapfile",
             u"__test_public_layer2",
         ]))
+
         self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities"
         ]))
 
         # autenticated
@@ -538,7 +542,7 @@ class TestEntryView(TestCase):
             u"__test_private_layer2",
         ]))
         self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities"
         ]))
 
     def test_theme_geoserver(self):
@@ -629,7 +633,9 @@ class TestEntryView(TestCase):
             "__test_private_layer",
             "__test_public_layer_bis",
             "__test_private_layer_bis",
+            "__test_layer_internal_wms",
         ])
+
         self.assertEquals(set(json.loads(response["WFSTypes"])), result)
         self.assertEquals(set(json.loads(response["externalWFSTypes"])), result)
 
@@ -1026,7 +1032,8 @@ class TestEntryView(TestCase):
         layer.identifier_attribute_field = "name"
         layer.geo_table = "tiwms"
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation()), ({
+
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
@@ -1063,7 +1070,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation), ({
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation, role_id=None), ({
             "id": 20,
             "name": "test external WMS",
             "icon": "/dummy/static/c2cgeoportal:project/tewms.png",
@@ -1096,7 +1103,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1127,7 +1134,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1155,7 +1162,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1181,7 +1188,7 @@ class TestEntryView(TestCase):
         layer.is_legend_expanded = False
         layer.metadata_url = "http://example.com/wmsfeatures.metadata"
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": u"test no 2D",
             "isChecked": False,
@@ -1224,7 +1231,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": u"test_wmsfeaturesgroup",
             "type": "internal WMS",
@@ -1261,7 +1268,7 @@ class TestEntryView(TestCase):
         layer_t1.public = True
         layer_t1.time_mode = "single"
         time = TimeInformation()
-        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time)
+        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1285,7 +1292,7 @@ class TestEntryView(TestCase):
         layer_t2.time_mode = "single"
         layer_t2.time_widget = "slider"
         time = TimeInformation()
-        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time)
+        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1325,7 +1332,7 @@ class TestEntryView(TestCase):
         layer.time_mode = "single"
         layer.time_widget = "datepicker"
         time = TimeInformation()
-        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time)
+        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1347,7 +1354,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1377,7 +1384,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation()), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1414,6 +1421,7 @@ class TestEntryView(TestCase):
         layer.public = True
         group1.children = [group2]
         group2.children = [layer]
+
         self.assertEqual(entry._group("", group1, [layer.name], wms=None, wms_layers=[], time=TimeInformation()), ({
             "id": 11,
             "isExpanded": False,
@@ -1421,6 +1429,7 @@ class TestEntryView(TestCase):
             "name": "block",
             "isBaseLayer": False,
             "metadata": {},
+            "mixed": False,
             "children": [{
                 "id": 12,
                 "isExpanded": False,
@@ -1429,6 +1438,7 @@ class TestEntryView(TestCase):
                 "isBaseLayer": False,
                 "metadataURL": "http://example.com/group.metadata",
                 "metadata": {},
+                "mixed": False,
                 "children": [{
                     "name": "test layer in group",
                     "id": 20,

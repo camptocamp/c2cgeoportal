@@ -55,7 +55,7 @@ class TestThemesView(TestCase):
 
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Functionality, Interface, \
-            LayerV1, LayerInternalWMS, LayerExternalWMS, LayerWMTS, \
+            LayerV1, ServerOGC, LayerWMS, LayerWMTS, \
             UIMetadata, WMTSDimension
 
         main = Interface(name=u"main")
@@ -65,13 +65,21 @@ class TestThemesView(TestCase):
         layer_v1 = LayerV1(name=u"__test_layer_v1", public=True)
         layer_v1.interfaces = [main]
         layer_v1.ui_metadata = [UIMetadata("test", "v1")]
-        layer_internal_wms = LayerInternalWMS(name=u"__test_layer_internal_wms", public=True)
+
+        server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/jpeg")
+        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="internal_url", image_type="image/jpeg")
+
+        layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
         layer_internal_wms.ui_metadata = [UIMetadata("test", "internal_wms")]
-        layer_external_wms = LayerExternalWMS(name=u"__test_layer_external_wms", public=True)
+        layer_internal_wms.server_ogc = server_ogc_internal
+
+        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.ui_metadata = [UIMetadata("test", "external_wms")]
+        layer_external_wms.server_ogc = server_ogc_external
+
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
         layer_wmts.ui_metadata = [UIMetadata("test", "wmts")]
@@ -164,7 +172,7 @@ class TestThemesView(TestCase):
         return result
 
     def _get_filtered_errors(self, themes):
-        prog = re.compile("^The layer '[a-z_]*' is not defined in WMS capabilities$")
+        prog = re.compile("^The layer '' \(__test_layer_external_wms\) is not defined in WMS capabilities$")
         return set([e for e in themes["errors"] if prog.match(e) is None])
 
     def test_version(self):
@@ -282,11 +290,11 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set([
             u"The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
-            u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_1' (internal/external mix).",
-            u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_1' (internal/external mix).",
-            u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_2' (internal/external mix).",
+            u"The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
+            u"The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
             u"The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
-            u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
+            u"The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
+            u"The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
         ]))
 
     def test_theme_layer(self):
@@ -312,12 +320,9 @@ class TestThemesView(TestCase):
             "version": "2",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set([
-            u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_1' (internal/external mix).",
-            u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_1' (internal/external mix).",
-            u"Layer '__test_layer_wmts' cannot be in the group '__test_layer_group_2' (internal/external mix).",
-            u"Layer '__test_layer_external_wms' cannot be in the group '__test_layer_group_2' (internal/external mix).",
-        ]))
+
+        self.assertEquals(self._get_filtered_errors(themes), set([]))
+
         self.assertEquals(
             [self._only_name(t) for t in themes["themes"]],
             [{
@@ -326,13 +331,34 @@ class TestThemesView(TestCase):
                     "name": u"__test_layer_group_1",
                     "children": [{
                         "name": u"__test_layer_internal_wms"
+                    }, {
+                        "name": u"__test_layer_external_wms"
+                    }, {
+                        "name": u"__test_layer_wmts"
                     }]
                 }, {
                     "name": u"__test_layer_group_2",
                     "children": [{
+                        "name": u"__test_layer_wmts"
+                    }, {
                         "name": u"__test_layer_internal_wms"
+                    }, {
+                        "name": u"__test_layer_external_wms"
                     }]
                 }]
+            }]
+        )
+
+        self.assertEquals(
+            [self._only_name(t, "mixed") for t in themes["themes"]],
+            [{
+                "children": [{
+                    "children": [{}, {}, {}],
+                    "mixed": True
+                }, {
+                    "children": [{}, {}, {}],
+                    "mixed": True}
+                ]
             }]
         )
 
