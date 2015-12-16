@@ -180,19 +180,24 @@ For logging in ``c2cgeoportal`` validates the user credentials
 table. If a c2cgeoportal application should work with another user information
 source, like LDAP, another *client validation* mechanism should be set up.
 ``c2cgeoportal`` provides a specific ``Configurator`` function for that, namely
-``set_user_validator``. Here's an example::
+``set_user_validator`` which allow to register a custom validator.
+Here's an example:
 
-    def user_validator(request, username, password):
+.. code:: python
+
+    def custom_user_validator(request, username, password):
         from pyramid_ldap import get_ldap_connector
         connector = get_ldap_connector(request)
         data = connector.authenticate(username, password)
         if data is not None:
             return data[0]
         return None
+    ...
+    config.set_user_validator(custom_user_validator)
 
 The validator function is passed three arguments: ``request``, ``username``,
-and ``password``. The function should return the user name if the credentials
-are valid, and ``None`` otherwise.
+and ``password``. The function should return a string containing all the data
+you want to keep if the credentials are valid, and ``None`` otherwise.
 
 In this example the `pyramid_ldap package
 <http://docs.pylonsproject.org/projects/pyramid_ldap/en/latest/>`_ is used as
@@ -200,9 +205,11 @@ the user information source.
 
 User validators can obviously be chained. For example, a user validator
 function that queries the ``user`` database table if the user does not exist in
-LDAP would look like this::
+LDAP would look like this:
 
-    def user_validator(request, username, password):
+.. code:: python
+
+    def custom_user_validator(request, username, password):
         from c2cgeoportal import default_user_validator
         from pyramid_ldap import get_ldap_connector
         connector = get_ldap_connector(request)
@@ -210,3 +217,128 @@ LDAP would look like this::
         if data is not None:
             return data[0]
         return default_user_validator(request, username, password)
+
+Custom user validation - LDAP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
+
+.. code:: python
+
+    # -*- coding: utf-8 -*-
+
+    from pyramid.config import Configurator
+    # LDAP
+    # required to get the LDAP user data from the request
+    from pyramid.security import authenticated_userid
+    # get_user_from_request also needed for the same reason
+    from c2cgeoportal import locale_negotiator, add_interface, \
+        INTERFACE_TYPE_SENCHA_TOUCH, get_user_from_request
+    # END LDAP
+    from c2cgeoportal.lib.authentication import create_authentication
+    from yourproject.resources import Root
+
+    import logging
+
+    # LDAP
+    # dependencies
+    import ldap
+    from json import dumps, loads
+    # END LDAP
+
+    log = logging.getLogger(__name__)
+
+    # LDAP
+    # authenticate on LDAP and return cleaned user data
+    def custom_user_validator(request, username, password):
+        from c2cgeoportal import default_user_validator
+        from pyramid_ldap import get_ldap_connector
+        connector = get_ldap_connector(request)
+        data = connector.authenticate(username, password)
+
+        if data is not None:
+            log.debug('user %s found in ldap' % username)
+            log.debug(pp.pformat(data[1]))
+            user = {'username': data[1]['uid'][0], 'role': data[1]['roles'][0]}
+            return dumps(user)
+
+        log.debug("user %s not found in ldap, searching locally" % username)
+        return default_user_validator(request, username, password)
+
+    # get custom user data from request and link with existing c2cgeoportal
+    # role in your project
+    def custom_get_user_from_request(request):
+
+        class O(object):
+            pass
+
+        from c2cgeoportal.models import DBSession, Role
+
+        user = get_user_from_request(request)
+        if user is None:
+            log.debug("user is not authenticated or is a ldap user")
+            identity = authenticated_userid(request)
+            if identity is not None:
+                identity = loads(identity)
+                user = O()
+                user.username = identity['username']
+                user.functionalities = []
+                user.is_password_changed = True
+                user.role = DBSession.query(Role).filter_by(name=identity['role']).one()
+                user.id = -1
+
+        return user
+    # END LDAP
+
+    def main(global_config, **settings):
+        """ This function returns a Pyramid WSGI application.
+        """
+        config = Configurator(
+            root_factory=Root, settings=settings,
+            locale_negotiator=locale_negotiator,
+            authentication_policy=create_authentication(settings)
+        )
+
+        config.include("c2cgeoportal")
+
+        # LDAP
+        # dependencies
+        config.include('pyramid_ldap')
+
+        # LDAP config
+        config.ldap_setup(
+            'ldap://ldap.server.host',
+            bind='CN=ldap user,CN=Users,DC=example,DC=com',
+            passwd='ld@pu5er'
+        )
+
+        config.ldap_set_login_query(
+            base_dn='CN=Users,DC=example,DC=com',
+            filter_tmpl='(uid=%(login)s)',
+            scope = ldap.SCOPE_ONELEVEL,
+            )
+
+        config.ldap_set_groups_query(
+            base_dn='CN=Users,DC=example,DC=com',
+            filter_tmpl='(&(objectCategory=group)(member=%(userdn)s))',
+            scope = ldap.SCOPE_SUBTREE,
+            cache_period = 600,
+            )
+        # END LDAP
+
+        # scan view decorator for adding routes
+        config.scan()
+
+        # add the interfaces
+        add_interface(config)
+        add_interface(config, "edit")
+        add_interface(config, "routing")
+        add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
+
+        # LDAP
+        # register the customized function
+        config.set_user_validator(custom_user_validator)
+        config.add_request_method(custom_get_user_from_request, 'user', reify=True)
+        # END LDAP
+
+        return config.make_wsgi_app()

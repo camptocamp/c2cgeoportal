@@ -257,6 +257,12 @@ Add in ``vars_<project>.yaml``:
         - layer_1
         - layer_2
 
+Add in your project Makefile ``<package>.mk``:
+
+.. code:: makefile
+
+   CONFIG_VARS += viewer
+
 And in ``viewer.js``:
 
 .. code:: javascript

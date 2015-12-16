@@ -88,6 +88,16 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">rm .build/requirements.timestamp <span class="o">&amp;&amp;</span> make -f &lt;user&gt;.mk build</span>
 </pre></li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Print performance issue</p>
+<p>When restarting the print server frequently, performance issues may randomly be observed.
+This is done in random number generation.</p>
+<p>To improve the performances you should add in the <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/bin/setenv-local.sh</span></code> file:</p>
+<div class="code bash last highlight-python"><div class="highlight"><pre>export ADD_JAVA_OPTS=&quot;-Djava.security.egd=file:/dev/./urandom&quot;
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>

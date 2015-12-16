@@ -256,6 +256,10 @@ Add in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yam
     - layer_2
 </pre></div>
 </div>
+<p>Add in your project Makefile <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>:</p>
+<div class="code makefile highlight-python"><div class="highlight"><pre><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
+</pre></div>
+</div>
 <p>And in <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
 <div class="code javascript highlight-python"><div class="highlight"><pre>&lt;%
 from json import dumps
