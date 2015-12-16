@@ -181,11 +181,58 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">password</span></code></li>
 <li><code class="docutils literal"><span class="pre">came_from</span></code> the URL where we will redirect after a success</li>
 </ul>
+<p>Result HTTP code:</p>
+<div class="highlight-python"><div class="highlight"><pre>* 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
+* 302 Found: Success -&gt; redirect on came_from.
+* 400 Bad request: Missing login or password.
+* 401 Unauthorised: Wrong login.
+</pre></div>
+</div>
 </div>
 <div class="section" id="logout">
 <h3>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h3>
 <p>Used to log out of the application.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../logout</span></code></p>
+<p>Result HTTP code:</p>
+<div class="highlight-python"><div class="highlight"><pre>* 200 Success: Success.
+* 404 Not Found: Not login.
+</pre></div>
+</div>
+</div>
+<div class="section" id="user-informations">
+<h3>User informations<a class="headerlink" href="#user-informations" title="Permalink to this headline">¶</a></h3>
+<p>Used to get the user informations.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginuser</span></code></p>
+<p>Result HTTP code:</p>
+<div class="highlight-python"><div class="highlight"><pre>* 200 Success: Success.
+</pre></div>
+</div>
+<div class="section" id="annoymous-json-result">
+<h4>Annoymous JSON result<a class="headerlink" href="#annoymous-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre>{
+    &quot;functionality&quot;: {
+        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
+        ...
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="connected-json-result">
+<span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre>{
+    &quot;userneme&quot;: &quot;&lt;username&gt;&quot;,
+    &quot;is_password_changed&quot;: &quot;True&quot;/&quot;False&quot;, # If false the user should change his password
+    &quot;role_name&quot;: &quot;&lt;role_name&gt;&quot;,
+    &quot;role_id&quot;: &lt;role_id&gt;
+    &quot;functionality&quot;: {
+        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
+        ...
+    }
+}
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="change-password">
 <h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
@@ -196,6 +243,20 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">newPassword</span></code></li>
 <li><code class="docutils literal"><span class="pre">confirmNewPassword</span></code></li>
 </ul>
+<p>Result HTTP code:</p>
+<div class="highlight-python"><div class="highlight"><pre>* 200 Success: Success.
+* 400 Bad request: Missing newPassword or confirmNewPassword or the booth password don&#39;t match.
+* 401 Unauthorised: Not login.
+</pre></div>
+</div>
+<div class="section" id="json-result">
+<h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;success&quot;</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="generate-a-new-password">
 <h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
@@ -204,6 +265,27 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">login</span></code></li>
 </ul>
+<p>Result HTTP code:</p>
+<div class="highlight-python"><div class="highlight"><pre>* 200 Success: Success.
+</pre></div>
+</div>
+<div class="section" id="success-json-result">
+<h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;success&quot;</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="failure-json-result">
+<h4>Failure JSON result<a class="headerlink" href="#failure-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre>{
+    &quot;success&quot;: &quot;false&quot;
+    &quot;error&quot;: &quot;&lt;the error&gt;&quot;
+}
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="full-text-search">
@@ -370,8 +452,20 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 <li><a class="reference internal" href="#authentication">Authentication</a><ul>
 <li><a class="reference internal" href="#login">Login</a></li>
 <li><a class="reference internal" href="#logout">Logout</a></li>
-<li><a class="reference internal" href="#change-password">Change password</a></li>
-<li><a class="reference internal" href="#generate-a-new-password">Generate a new password</a></li>
+<li><a class="reference internal" href="#user-informations">User informations</a><ul>
+<li><a class="reference internal" href="#annoymous-json-result">Annoymous JSON result</a></li>
+<li><a class="reference internal" href="#connected-json-result">Connected JSON result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#change-password">Change password</a><ul>
+<li><a class="reference internal" href="#json-result">JSON result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generate-a-new-password">Generate a new password</a><ul>
+<li><a class="reference internal" href="#success-json-result">Success JSON result</a></li>
+<li><a class="reference internal" href="#failure-json-result">Failure JSON result</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#full-text-search">Full Text Search</a><ul>
