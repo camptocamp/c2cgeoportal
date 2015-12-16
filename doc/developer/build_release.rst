@@ -220,16 +220,23 @@ When a new release or a new version is done you should do the following tasks:
 
      .. prompt:: bash
 
-        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
-        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
+        .build/venv/bin/alembic \
+            -c c2cgeoportal/tests/functional/alembic.ini \
+            heads
+        .build/venv/bin/alembic \
+            -c c2cgeoportal/tests/functional/alembic_static.ini \
+            heads
 
      If yes create the merge with:
 
      .. prompt:: bash
 
-        .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic[_static].ini merge \
-                -m "Merge <src branch> and <dst branch> branches" \
-                --branch-label <dst branch> <rev 1> <rev 2>
+        .build/venv/bin/alembic \
+            -c c2cgeoportal/tests/functional/alembic[_static].ini \
+            merge -m "Merge <src> and <dst> branches" \
+            <rev 1> <rev 2>
+
+     Remove the import and replace the core od the methode by ``pass`` in the generated file.
 
      And finally add the new file.
 
