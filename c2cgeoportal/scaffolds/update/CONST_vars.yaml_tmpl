@@ -254,6 +254,7 @@ vars:
     #proxies:
     #    http: http://someproxy
 
+    headers:
 
     # Checker configuration
     checker:
