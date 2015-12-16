@@ -46,191 +46,13 @@
 <h2>Integrate demo apps in c2cgeoportal scaffold<a class="headerlink" href="#integrate-demo-apps-in-c2cgeoportal-scaffold" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="copy-files">
 <h3>Copy Files<a class="headerlink" href="#copy-files" title="Permalink to this headline">¶</a></h3>
-<p>Copy the following files from ngeo:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">contribs/gmf/apps/mobile/index.html</span></code></li>
-<li><code class="docutils literal"><span class="pre">contribs/gmf/apps/mobile/js/appmodule.js</span></code></li>
-<li><code class="docutils literal"><span class="pre">contribs/gmf/apps/mobile/js/mobile.js</span></code></li>
-</ul>
-</div></blockquote>
-<p>In the c2cgeoportal scaffold</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl</span></code></li>
-<li><code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/appmodule.js_tmpl</span></code></li>
-<li><code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/mobile.js_tmpl</span></code></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="some-replacements">
-<h3>Some replacements<a class="headerlink" href="#some-replacements" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>app =&gt; {{package}}</li>
-<li>nodes files path</li>
-<li>direct service URL =&gt; pyramid <code class="docutils literal"><span class="pre">route_url</span></code></li>
-</ul>
-<p>In details:</p>
-<div class="code diff highlight-python"><div class="highlight"><pre>c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/appmodule.js
-@@ -3,7 +3,7 @@
-  * application&#39;s main namespace. And it defines the application&#39;s Angular
-  * module.
-  */
--goog.provide(&#39;app&#39;);
-+goog.provide(&#39;{{package}}&#39;);
-
- goog.require(&#39;gmf&#39;);
-
-@@ -11,4 +11,4 @@ goog.require(&#39;gmf&#39;);
- /**
-  * @type {!angular.Module}
-  */
--app.module = angular.module(&#39;app&#39;, [gmfModule.name]);
-+{{package}}.module = angular.module(&#39;{{package}}&#39;, [gmfModule.name]);
-
-
-c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/mobile.js
-@@ -7,10 +7,10 @@
-  * This file includes `goog.require`&#39;s for all the components/directives used
-  * by the HTML page and the controller to provide the configuration.
-  */
--goog.provide(&#39;app.MobileController&#39;);
--goog.provide(&#39;app_mobile&#39;);
-+goog.provide(&#39;{{package}}.MobileController&#39;);
-+goog.provide(&#39;{{package}}_mobile&#39;);
-
--goog.require(&#39;app&#39;);
-+goog.require(&#39;{{package}}&#39;);
- goog.require(&#39;gmf.mapDirective&#39;);
- goog.require(&#39;gmf.mobileNavDirective&#39;);
- goog.require(&#39;gmf.proj.EPSG21781&#39;);
-@@ -33,7 +33,7 @@ goog.require(&#39;ol.source.OSM&#39;);
-  * @ngInject
-  * @export
-  */
--app.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
-+{{package}}.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
-
-   /**
-    * @type {Array.&lt;gmfx.SearchDirectiveDatasource&gt;}
-@@ -88,7 +88,7 @@ app.MobileController = function(ngeoFeatureOverlayMgr, serverVars) {
- /**
-  * @export
-  */
--app.MobileController.prototype.toggleLeftNavVisibility = function() {
-+{{package}}.MobileController.prototype.toggleLeftNavVisibility = function() {
-   this.leftNavVisible = !this.leftNavVisible;
- };
-
-@@ -96,7 +96,7 @@ app.MobileController.prototype.toggleLeftNavVisibility = function() {
- /**
-  * @export
-  */
--app.MobileController.prototype.toggleRightNavVisibility = function() {
-+{{package}}.MobileController.prototype.toggleRightNavVisibility = function() {
-   this.rightNavVisible = !this.rightNavVisible;
- };
-
-@@ -105,7 +105,7 @@ app.MobileController.prototype.toggleRightNavVisibility = function() {
-  * Hide both navigation menus.
-  * @export
-  */
--app.MobileController.prototype.hideNav = function() {
-+{{package}}.MobileController.prototype.hideNav = function() {
-   this.leftNavVisible = this.rightNavVisible = false;
- };
-
-@@ -115,7 +115,7 @@ app.MobileController.prototype.hideNav = function() {
-  * otherwise false.
-  * @export
-  */
--app.MobileController.prototype.navIsVisible = function() {
-+{{package}}.MobileController.prototype.navIsVisible = function() {
-   return this.leftNavVisible || this.rightNavVisible;
- };
-
-@@ -125,7 +125,7 @@ app.MobileController.prototype.navIsVisible = function() {
-  * otherwise false.
-  * @export
-  */
--app.MobileController.prototype.leftNavIsVisible = function() {
-+{{package}}.MobileController.prototype.leftNavIsVisible = function() {
-   return this.leftNavVisible;
- };
-
-@@ -135,9 +135,9 @@ app.MobileController.prototype.leftNavIsVisible = function() {
-  * otherwise false.
-  * @export
-  */
--app.MobileController.prototype.rightNavIsVisible = function() {
-+{{package}}.MobileController.prototype.rightNavIsVisible = function() {
-   return this.rightNavVisible;
- };
-
-
--app.module.controller(&#39;MobileController&#39;, app.MobileController);
-+{{package}}.module.controller(&#39;MobileController&#39;, {{package}}.MobileController);
-
-
-c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
-@@ -1,5 +1,5 @@
- &lt;!DOCTYPE html&gt;
--&lt;html lang=&quot;{{mobileCtrl.lang}}&quot; ng-app=&quot;app&quot; ng-controller=&quot;MobileController as mainCtrl&quot;&gt;
-+&lt;html lang=&quot;\{\{mobileCtrl.lang\}\}&quot; ng-app=&quot;{{package}}&quot; ng-controller=&quot;MobileController as mainCtrl&quot;&gt;
-   &lt;head&gt;
-     &lt;title&gt;Mobile Application&lt;/title&gt;
-     &lt;meta charset=&quot;utf-8&quot;&gt;
-     &lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no, width=device-width&quot;&gt;
-     &lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;
--    &lt;link rel=&quot;stylesheet&quot; href=&quot;../../build/mobile.css&quot; type=&quot;text/css&quot;&gt;
-+% if debug:
-+    &lt;link rel=&quot;stylesheet/less&quot; href=&quot;${request.static_url(&#39;{{package}}:static-ngeo/less/mobile.less&#39;)}&quot; type=&quot;text/css&quot;&gt;
-+% else:
-+    &lt;link rel=&quot;stylesheet&quot; href=&quot;${request.static_url(&#39;{{package}}:static-ngeo/build/mobile.css&#39;)}&quot; type=&quot;text/css&quot;&gt;
-+% endif
-     &lt;style&gt;
-     #desc {
-       display: none;
-@@ -91,15 +91,19 @@
-       &lt;/div&gt;
-     &lt;/nav&gt;
-     &lt;p id=&quot;desc&quot;&gt;This example is a mobile application based on ngeo and gmf components.&lt;/p&gt;
--    &lt;script src=&quot;../../../../node_modules/jquery/dist/jquery.js&quot;&gt;&lt;/script&gt;
--    &lt;script src=&quot;../../../../node_modules/angular/angular.js&quot;&gt;&lt;/script&gt;
--    &lt;script src=&quot;../../../../node_modules/typeahead.js/dist/typeahead.bundle.js&quot;&gt;&lt;/script&gt;
--    &lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
--    &lt;script src=&quot;/@?main=mobile/js/mobile.js&quot;&gt;&lt;/script&gt;
--    &lt;script src=&quot;../../../../utils/watchwatchers.js&quot;&gt;&lt;/script&gt;
-+% if debug:
-+    &lt;script src=&quot;${request.static_url(&#39;%s/jquery/dist/jquery.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/angular/angular.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/angular-gettext/dist/angular-gettext.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/bootstrap/dist/js/bootstrap.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/proj4/dist/proj4-src.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/d3/d3.min.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/typeahead.js/dist/typeahead.bundle.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/closure/goog/base.js&#39; % closure_library_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.route_url(&#39;deps.js&#39;)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;{{package}}:static-ngeo/js/mobile.js&#39;)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;{{package}}:static-ngeo/build/templatecache.js&#39;)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/utils/watchwatchers.js&#39; % closure_library_path)}&quot;&gt;&lt;/script&gt;
-+    &lt;script src=&quot;${request.static_url(&#39;%s/less/dist/less.min.js&#39; % node_modules_path)}&quot;&gt;&lt;/script&gt;
-+% else:
-+    &lt;script src=&quot;${request.static_url(&#39;{{package}}:static-ngeo/js/mobile.js&#39;)}&quot;&gt;&lt;/script&gt;
-+% endif
-     &lt;script&gt;
-       (function() {
--         var module = angular.module(&#39;app&#39;);
-+         var module = angular.module(&#39;{{package}}&#39;);
-          var serverVars = {
-            serviceUrls: {
--             fulltextsearch: &#39;http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch?query=%QUERY&#39;
-+             fulltextsearch: &#39;${request.route_url(&#39;fulltextsearch&#39;, _query={&#39;query&#39;:&#39;%QUERY&#39;}) | n}&#39;
-            }
-          };
-          module.constant(&#39;serverVars&#39;, serverVars);
-</pre></div>
-</div>
+<p>We have an automatic task for this:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">make import-ngeo-app</span>
+</pre><p>The major part is in the script <code class="docutils literal"><span class="pre">c2cgeoportal/scripts/import_ngeo_apps.py</span></code>.</p>
 </div>
 </div>
 </div>
@@ -249,7 +71,6 @@ c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 <li><a class="reference internal" href="#">ngeo</a><ul>
 <li><a class="reference internal" href="#integrate-demo-apps-in-c2cgeoportal-scaffold">Integrate demo apps in c2cgeoportal scaffold</a><ul>
 <li><a class="reference internal" href="#copy-files">Copy Files</a></li>
-<li><a class="reference internal" href="#some-replacements">Some replacements</a></li>
 </ul>
 </li>
 </ul>
