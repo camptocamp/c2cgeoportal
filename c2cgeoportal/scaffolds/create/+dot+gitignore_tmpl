@@ -22,10 +22,11 @@
 /mapserver/c2cgeoportal.map
 /mapserver/tinyows.xml
 /deploy/hooks/pre-restore-database
-/{{package}}/static/build/
-/{{package}}/static-ngeo/build/
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot
+/{{package}}/static-ngeo/build/
+/{{package}}/static-ngeo/fonts/gmf-icons.*
+/{{package}}/static/build/
 /{{package}}/static/mobile/resources/sass/.sass-cache
 /{{package}}/static/mobile/resources/css/app.css
 /{{package}}/static/mobile/archive/

@@ -34,12 +34,14 @@ import subprocess
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
+from sqlalchemy.exc import ProgrammingError
 
 from lingua.extractors import Extractor
 from lingua.extractors import Message
 from pyramid.paster import bootstrap
 
 from c2cgeoportal.lib import add_url_params
+from c2cgeoportal.lib.bashcolor import colorize, RED
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
@@ -55,8 +57,8 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
                 None, message, None, [], u"", u"", context.split(":")
             ) for context, message in messages]
         except:
-            print("An error occurred")
-            print(message_str)
+            print(colorize("An error occurred", RED))
+            print(colorize(message_str, RED))
             print("------")
             raise
 
@@ -73,13 +75,17 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
 
         self.env = bootstrap(filename)
 
-        from c2cgeoportal.models import Theme, LayerGroup, \
-            LayerWMS, LayerWMTS
+        try:
+            from c2cgeoportal.models import Theme, LayerGroup, \
+                LayerWMS, LayerWMTS
 
-        self._import(Theme, messages)
-        self._import(LayerGroup, messages)
-        self._import(LayerWMS, messages)
-        self._import(LayerWMTS, messages)
+            self._import(Theme, messages)
+            self._import(LayerGroup, messages)
+            self._import(LayerWMS, messages)
+            self._import(LayerWMTS, messages)
+        except ProgrammingError as e:
+            print(colorize("ERROR: The database is probably not up to date", RED))
+            print(colorize(e, RED))
 
         return messages
 

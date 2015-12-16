@@ -85,7 +85,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 APP_OUTPUT_DIR =  $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
 NGEO_OUTPUT_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
-	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .min.css, $(NGEO_INTERFACES)))
+	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.js')
@@ -94,6 +94,7 @@ NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null | "")
 APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null | "")
 LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
+NGEO_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
 NGEO_LIBS_JS_FILES += \
 	node_modules/jquery/dist/jquery.min.js \
@@ -519,9 +520,21 @@ $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS
 	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
-$(APP_OUTPUT_DIR)/%.min.css: $(LESS_FILES) .build/node_modules.timestamp
+# to don't delete them
+.SECONDARY: $(NGEO_FONTS)
+$(PACKAGE)/static-ngeo/fonts/%: node_modules/ngeo/contribs/gmf/fonts/%
 	mkdir -p $(dir $@)
-	./node_modules/.bin/lessc $(LESS_ARGS) $(PACKAGE)/static-ngeo/less/$*.less $@
+	cp $< $@
+
+ node_modules/ngeo/node_modules: .build/node_modules.timestamp
+	mkdir -p $@
+	ln -s ../../opnelayers $@
+	ln -s ../../bootstrap $@
+	touch $@
+
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
+	mkdir -p $(dir $@)
+	./node_modules/.bin/lessc $< $@
 
 .build/%.json: build.mako.json
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" build.mako.json > $@

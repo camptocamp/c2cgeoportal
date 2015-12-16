@@ -22,7 +22,7 @@
     "openlayers": "git://github.com/openlayers/ol3#master",
     "proj4": "2.3.6",
     "phantomjs": "~1.9.7-5",
-    "typeahead.js": "~0.10.5",
+    "typeahead.js": "~0.11.1",
     "temp": "~0.7.0",
     "walk": "~2.3.3",
     "d3": "3.5.5"
