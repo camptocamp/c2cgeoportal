@@ -112,6 +112,7 @@ setup(
             "db2pot = c2cgeoportal.scripts.db2pot:main",
             "themev1tov2 = c2cgeoportal.scripts.themev1tov2:main",
             "theme2fts = c2cgeoportal.scripts.theme2fts:main",
+            "import_ngeo_apps = c2cgeoportal.scripts.import_ngeo_apps:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",

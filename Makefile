@@ -36,6 +36,11 @@ SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(shell find c2cgeoportal/scripts -name "*.py" -print)
 
+APPS += mobile
+APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
+APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
+APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
+
 .PHONY: help
 help:
 	@echo "Usage: $(MAKE) <target>"
@@ -53,10 +58,11 @@ help:
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
-		c2c-egg \
-		$(JSBUILD_ADMIN_OUTPUT_FILES) \
-		$(CSS_ADMIN_OUTPUT) \
-		$(MO_FILES)
+	c2c-egg \
+	$(JSBUILD_ADMIN_OUTPUT_FILES) \
+	$(CSS_ADMIN_OUTPUT) \
+	$(MO_FILES) \
+	$(APPS_HTML_FILES) $(APPS_JS_FILES)
 
 .PHONY: buildall
 buildall: build doc tests checks
@@ -77,6 +83,8 @@ clean:
 	rm -f c2cgeoportal/locale/*.pot
 	rm -rf c2cgeoportal/static/build
 	rm -f $(MAKO_FILES:.mako=)
+	rm -rf ngeo
+	rm -f $(APPS_HTML_FILES) $(APPS_JS_FILES)
 
 .PHONY: cleanall
 cleanall: clean
@@ -124,6 +132,27 @@ transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoport
 transifex-init: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot .tx/config
 	.build/venv/bin/tx push --source
 	.build/venv/bin/tx push --translations --force --no-interactive
+
+# Import ngeo templates
+
+.PHONY: import-ngeo-apps
+import-ngeo-apps: $(APPS_HTML_FILES) $(APPS_JS_FILES)
+
+ngeo: NGEO_GIT_ARGS ?= --branch=master
+ngeo:
+	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
+
+ngeo/contribs/gmf/apps/%/index.html: ngeo
+	touch $@
+
+ngeo/contribs/gmf/apps/%/js/mobile.js: ngeo
+	touch $@
+
+$(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp
+	.build/venv/bin/import_ngeo_apps --html $< $@
+
+$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/mobile.js .build/requirements.timestamp
+	.build/venv/bin/import_ngeo_apps --js $< $@
 
 # Templates
 
