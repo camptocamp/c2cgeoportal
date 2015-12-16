@@ -195,7 +195,7 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.body, "true")
+        self.assertEquals(response.body, {"functionalities": {}})
 
         request = self._create_request_obj(POST={
             "login": u"__test_user1",
@@ -250,7 +250,7 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.body, "true")
+        self.assertEquals(response.body, {"functionalities": {}})
 
     #
     # viewer view tests

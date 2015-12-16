@@ -156,6 +156,71 @@ class TestEntryView(TestCase):
         }
         self.assertEqual(entry.loginform(), expected)
 
+        request.registry.settings = {
+            "functionalities": {
+                "anonymous": {
+                    "func": ["anon"],
+                    "toto": "titi"
+                },
+                "registered": {
+                    "func": ["reg"]
+                },
+                "available_in_templates": ["func"]
+            }
+        }
+        entry = Entry(request)
+        expected = {
+            "functionalities": {
+                "func": ["anon"]
+            }
+        }
+        self.assertEqual(entry.loginuser(), expected)
+
+        class G:
+            id = 123
+
+            def __init__(self, name, functionalities):
+                self.name = name
+                self.functionalities = functionalities
+
+        class U:
+            username = "__test_user"
+            is_password_changed = True
+
+            def __init__(self, role="__test_role", functionalities=[]):
+                self.role_name = role
+                self.role = G(role, functionalities)
+
+        request.user = U()
+        entry = Entry(request)
+        expected = {
+            "username": "__test_user",
+            "is_password_changed": True,
+            "role_name": "__test_role",
+            "role_id": 123,
+            "functionalities": {
+                "func": ["reg"]
+            }
+        }
+        self.assertEqual(entry.loginuser(), expected)
+
+        class F:
+            name = "func"
+            value = "user"
+
+        request.user = U("__test_role2", [F()])
+        entry = Entry(request)
+        expected = {
+            "username": "__test_user",
+            "is_password_changed": True,
+            "role_name": "__test_role2",
+            "role_id": 123,
+            "functionalities": {
+                "func": ["user"]
+            }
+        }
+        self.assertEqual(entry.loginuser(), expected)
+
     def test__get_child_layers_info_without_scalehint(self):
         from pyramid.testing import DummyRequest
         from c2cgeoportal.views.entry import Entry
