@@ -1342,8 +1342,9 @@ class Entry(object):
                 "'login' and 'password' should be "
                 "available in request params"
             )  # pragma nocover
-        if self.request.registry.validate_user(self.request, login, password):
-            headers = remember(self.request, login)
+        user = self.request.registry.validate_user(self.request, login, password)
+        if user is not None:
+            headers = remember(self.request, user)
             log.info("User '%s' logged in." % login)
 
             came_from = self.request.params.get("came_from")

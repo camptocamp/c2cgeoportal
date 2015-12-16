@@ -9,68 +9,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: c2cgeoportal/forms.py:394
-msgid "image/jpeg"
-msgstr ""
-
-#: c2cgeoportal/forms.py:395
-msgid "image/png"
-msgstr ""
-
-#: c2cgeoportal/forms.py:398
-msgid "disabled"
-msgstr ""
-
-#: c2cgeoportal/forms.py:399
-msgid "value"
-msgstr ""
-
-#: c2cgeoportal/forms.py:400
-msgid "range"
-msgstr ""
-
-#: c2cgeoportal/forms.py:403
-msgid "slider"
-msgstr ""
-
-#: c2cgeoportal/forms.py:404
-msgid "datepicker"
-msgstr ""
-
-#: c2cgeoportal/forms.py:550
-msgid "Restriction area"
-msgstr ""
-
-#: c2cgeoportal/forms.py:572
-msgid "Extent"
-msgstr ""
-
 #: c2cgeoportal/forms.py:151
 msgid "Duplicate record"
-msgstr ""
-
-#: c2cgeoportal/forms.py:413
-msgid "internal WMS"
-msgstr ""
-
-#: c2cgeoportal/forms.py:414
-msgid "external WMS"
-msgstr ""
-
-#: c2cgeoportal/forms.py:415
-msgid "WMTS"
-msgstr ""
-
-#: c2cgeoportal/forms.py:416
-msgid "no 2D"
 msgstr ""
 
 #: c2cgeoportal/forms.py:181
 msgid "Passwords do not match"
 msgstr ""
 
-#: c2cgeoportal/forms.py:322
+#: c2cgeoportal/forms.py:327
 msgid "Unlinked layers"
+msgstr ""
+
+#: c2cgeoportal/forms.py:397
+msgid "image/jpeg"
+msgstr ""
+
+#: c2cgeoportal/forms.py:398
+msgid "image/png"
+msgstr ""
+
+#: c2cgeoportal/forms.py:401
+msgid "disabled"
+msgstr ""
+
+#: c2cgeoportal/forms.py:402
+msgid "value"
+msgstr ""
+
+#: c2cgeoportal/forms.py:403
+msgid "range"
+msgstr ""
+
+#: c2cgeoportal/forms.py:406
+msgid "slider"
+msgstr ""
+
+#: c2cgeoportal/forms.py:407
+msgid "datepicker"
+msgstr ""
+
+#: c2cgeoportal/forms.py:416
+msgid "internal WMS"
+msgstr ""
+
+#: c2cgeoportal/forms.py:417
+msgid "external WMS"
+msgstr ""
+
+#: c2cgeoportal/forms.py:418
+msgid "WMTS"
+msgstr ""
+
+#: c2cgeoportal/forms.py:419
+msgid "no 2D"
+msgstr ""
+
+#: c2cgeoportal/forms.py:553
+msgid "Restriction area"
+msgstr ""
+
+#: c2cgeoportal/forms.py:575
+msgid "Extent"
 msgstr ""
 
 #: c2cgeoportal/models.py:127
@@ -79,115 +79,6 @@ msgstr ""
 
 #: c2cgeoportal/models.py:128
 msgid "Functionalities"
-msgstr ""
-
-#: c2cgeoportal/models.py:181
-msgid "User"
-msgstr ""
-
-#: c2cgeoportal/models.py:182
-msgid "Users"
-msgstr ""
-
-#: c2cgeoportal/models.py:302 c2cgeoportal/models.py:210
-msgid "Role"
-msgstr ""
-
-#: c2cgeoportal/models.py:303
-msgid "Roles"
-msgstr ""
-
-#: c2cgeoportal/models.py:379 c2cgeoportal/models.py:380
-msgid "Tree links order"
-msgstr ""
-
-#: c2cgeoportal/models.py:456
-msgid "Layer Group"
-msgstr ""
-
-#: c2cgeoportal/models.py:457
-msgid "Layer Groups"
-msgstr ""
-
-#: c2cgeoportal/models.py:497
-msgid "Theme"
-msgstr ""
-
-#: c2cgeoportal/models.py:498
-msgid "Themes"
-msgstr ""
-
-#: c2cgeoportal/models.py:553 c2cgeoportal/models.py:705
-msgid "Layer"
-msgstr ""
-
-#: c2cgeoportal/models.py:554 c2cgeoportal/models.py:629
-#: c2cgeoportal/models.py:668
-msgid "Layers"
-msgstr ""
-
-#: c2cgeoportal/models.py:617
-msgid "Internal WMS layer"
-msgstr ""
-
-#: c2cgeoportal/models.py:618
-msgid "Internal WMS layers"
-msgstr ""
-
-#: c2cgeoportal/models.py:655
-msgid "External WMS layer"
-msgstr ""
-
-#: c2cgeoportal/models.py:656
-msgid "External WMS layers"
-msgstr ""
-
-#: c2cgeoportal/models.py:692
-msgid "WMTS layer"
-msgstr ""
-
-#: c2cgeoportal/models.py:693
-msgid "WMTS layers"
-msgstr ""
-
-#: c2cgeoportal/models.py:747
-msgid "Restriction Area"
-msgstr ""
-
-#: c2cgeoportal/models.py:748
-msgid "Restriction Areas"
-msgstr ""
-
-#: c2cgeoportal/models.py:818
-msgid "Interface"
-msgstr ""
-
-#: c2cgeoportal/models.py:819
-msgid "Interfaces"
-msgstr ""
-
-#: c2cgeoportal/models.py:849
-msgid "UI metadata"
-msgstr ""
-
-#: c2cgeoportal/models.py:850
-msgid "UI metadatas"
-msgstr ""
-
-#: c2cgeoportal/models.py:883
-msgid "WMTS dimension"
-msgstr ""
-
-#: c2cgeoportal/models.py:884
-msgid "WMTS dimensions"
-msgstr ""
-
-#: c2cgeoportal/models.py:918 c2cgeoportal/models.py:238
-msgid "Parent Role"
-msgstr ""
-
-#: c2cgeoportal/models.py:919
-msgid "Parent Roles"
 msgstr ""
 
 #: c2cgeoportal/models.py:136 c2cgeoportal/models.py:311
@@ -200,6 +91,14 @@ msgstr ""
 #: c2cgeoportal/models.py:137 c2cgeoportal/models.py:859
 #: c2cgeoportal/models.py:893
 msgid "Value"
+msgstr ""
+
+#: c2cgeoportal/models.py:181
+msgid "User"
+msgstr ""
+
+#: c2cgeoportal/models.py:182
+msgid "Users"
 msgstr ""
 
 #: c2cgeoportal/models.py:197
@@ -218,6 +117,18 @@ msgstr ""
 msgid "Password Changed"
 msgstr ""
 
+#: c2cgeoportal/models.py:210 c2cgeoportal/models.py:302
+msgid "Role"
+msgstr ""
+
+#: c2cgeoportal/models.py:238 c2cgeoportal/models.py:918
+msgid "Parent Role"
+msgstr ""
+
+#: c2cgeoportal/models.py:303
+msgid "Roles"
+msgstr ""
+
 #: c2cgeoportal/models.py:312 c2cgeoportal/models.py:758
 #: c2cgeoportal/models.py:828 c2cgeoportal/models.py:860
 #: c2cgeoportal/models.py:894
@@ -226,6 +137,18 @@ msgstr ""
 
 #: c2cgeoportal/models.py:350
 msgid "Metadata URL"
+msgstr ""
+
+#: c2cgeoportal/models.py:379 c2cgeoportal/models.py:380
+msgid "Tree links order"
+msgstr ""
+
+#: c2cgeoportal/models.py:456
+msgid "Layer Group"
+msgstr ""
+
+#: c2cgeoportal/models.py:457
+msgid "Layer Groups"
 msgstr ""
 
 #: c2cgeoportal/models.py:468
@@ -238,6 +161,14 @@ msgstr ""
 
 #: c2cgeoportal/models.py:471
 msgid "Group of base layers"
+msgstr ""
+
+#: c2cgeoportal/models.py:497
+msgid "Theme"
+msgstr ""
+
+#: c2cgeoportal/models.py:498
+msgid "Themes"
 msgstr ""
 
 #: c2cgeoportal/models.py:509
@@ -258,6 +189,15 @@ msgstr ""
 
 #: c2cgeoportal/models.py:545
 msgid "Attributes to exclude"
+msgstr ""
+
+#: c2cgeoportal/models.py:553 c2cgeoportal/models.py:705
+msgid "Layer"
+msgstr ""
+
+#: c2cgeoportal/models.py:554 c2cgeoportal/models.py:629
+#: c2cgeoportal/models.py:668
+msgid "Layers"
 msgstr ""
 
 #: c2cgeoportal/models.py:565
@@ -352,12 +292,72 @@ msgstr ""
 msgid "Time widget"
 msgstr ""
 
+#: c2cgeoportal/models.py:617
+msgid "Internal WMS layer"
+msgstr ""
+
+#: c2cgeoportal/models.py:618
+msgid "Internal WMS layers"
+msgstr ""
+
+#: c2cgeoportal/models.py:655
+msgid "External WMS layer"
+msgstr ""
+
+#: c2cgeoportal/models.py:656
+msgid "External WMS layers"
+msgstr ""
+
+#: c2cgeoportal/models.py:692
+msgid "WMTS layer"
+msgstr ""
+
+#: c2cgeoportal/models.py:693
+msgid "WMTS layers"
+msgstr ""
+
 #: c2cgeoportal/models.py:704
 msgid "GetCapabilities URL"
 msgstr ""
 
+#: c2cgeoportal/models.py:747
+msgid "Restriction Area"
+msgstr ""
+
+#: c2cgeoportal/models.py:748
+msgid "Restriction Areas"
+msgstr ""
+
 #: c2cgeoportal/models.py:759
 msgid "Read-write mode"
+msgstr ""
+
+#: c2cgeoportal/models.py:818
+msgid "Interface"
+msgstr ""
+
+#: c2cgeoportal/models.py:819
+msgid "Interfaces"
+msgstr ""
+
+#: c2cgeoportal/models.py:849
+msgid "UI metadata"
+msgstr ""
+
+#: c2cgeoportal/models.py:850
+msgid "UI metadatas"
+msgstr ""
+
+#: c2cgeoportal/models.py:883
+msgid "WMTS dimension"
+msgstr ""
+
+#: c2cgeoportal/models.py:884
+msgid "WMTS dimensions"
+msgstr ""
+
+#: c2cgeoportal/models.py:919
+msgid "Parent Roles"
 msgstr ""
 
 #: c2cgeoportal/views/profile.py:67
@@ -374,12 +374,12 @@ msgid ""
 "themes."
 msgstr ""
 
-#: c2cgeoportal/views/entry.py:1353
-#, c-format
-msgid "User '%s' has no registered email address."
-msgstr ""
-
-#: c2cgeoportal/views/entry.py:1347
+#: c2cgeoportal/views/entry.py:1348
 #, c-format
 msgid "The user '%s' doesn't exist."
+msgstr ""
+
+#: c2cgeoportal/views/entry.py:1354
+#, c-format
+msgid "User '%s' has no registered email address."
 msgstr ""

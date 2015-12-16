@@ -6,6 +6,8 @@ vars:
     # the package name
     package: {{package}}
 
+    srid: -1
+
     # the Unix user under which the modwsgi daemon processes are executed.
     modwsgi_user: www-data
     # url-path where the instance must respond.
@@ -215,6 +217,12 @@ vars:
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
     raster:
+
+    # Used by enumeration in the query builder
+    layers:
+
+    # Used to send an email on password reset
+    reset_password:
 
     # The shortner base configuration
     shortener:

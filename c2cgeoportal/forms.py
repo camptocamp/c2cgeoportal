@@ -263,7 +263,10 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         return result
 
     def is_checked(self, item, final_item):
-        return self._is_checked(final_item.id)
+        return final_item.id in self.values
+
+    def build_values(self):
+        self.values = [int(v) for v in self.value]
 
     def render_item(self, item, depth):
         final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
@@ -304,6 +307,8 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         return result
 
     def render_tree(self):
+        self.build_values()
+
         self.layer = models.DBSession.query(models.Layer).all()
         self.layer_group = models.DBSession.query(models.LayerGroup).all()
         themes = models.DBSession.query(models.Theme). \
@@ -330,14 +335,12 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += "</li>"
         return result
 
-    def stringify_value(self, item, **kargs):
-        final_item = item.item if isinstance(item, models.LayergroupTreeitem) else item
-        return super(SimpleLayerCheckBoxTreeSet, self).stringify_value(final_item, **kargs)
-
 
 class LayerCheckBoxTreeSet(SimpleLayerCheckBoxTreeSet):  # pragma: no cover
-    def is_checked(self, item, finalitem):
-        return self._is_checked(item.id)
+    def build_values(self):
+        values = models.DBSession.query(models.LayergroupTreeitem) \
+            .filter(models.LayergroupTreeitem.id.in_([int(v) for v in self.value])).all()
+        self.values = [v.item.id for v in values]
 
 
 class TreeItemCheckBoxTreeSet(LayerCheckBoxTreeSet):  # pragma: no cover

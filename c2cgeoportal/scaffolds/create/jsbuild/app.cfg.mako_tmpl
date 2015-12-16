@@ -249,6 +249,7 @@ include =
     ux/locale/StreetViewPanel-fr.js
     locale/fr.js #GXP
     CGXP/locale/fr.js
+    locale/SimplePrint-fr.js
 exclude =
     OpenLayers/Lang.js
 
@@ -269,6 +270,7 @@ include =
     ux/locale/StreetViewPanel-de.js
     locale/de.js #GXP
     CGXP/locale/de.js
+    locale/SimplePrint-de.js
 exclude =
     OpenLayers/Lang.js
 

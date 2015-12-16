@@ -416,8 +416,11 @@ def set_user_validator(config, user_validator):
 
 
 def default_user_validator(request, username, password):
-    """ Validate the username/password. This is c2cgeoportal's
-    default user validator. """
+    """
+    Validate the username/password. This is c2cgeoportal's
+    default user validator.
+    Return none if we are anonymous, the string to remember otherwise.
+    """
     from c2cgeoportal.models import DBSession, User
     user = DBSession.query(User).filter_by(username=username).first()
     return username if user and user.validate_password(password) else None

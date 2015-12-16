@@ -63,6 +63,8 @@ script:
 - travis/status.sh /tmp/testgeomapfish/
 - travis/empty-make-new-project.sh
 - travis/empty-make.sh -f travis.mk build
+- cp travis/empty-vars.mk /tmp/test/
+- travis/run-on.sh /tmp/test/ 'make -f empty-vars.mk .build/config.yaml'
 - make -f travis.mk doc
 - make -f travis.mk checks
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini

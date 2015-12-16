@@ -273,6 +273,33 @@ class TestThemesView(TestCase):
             }
         )
 
+    def test_group_update(self):
+        from c2cgeoportal.models import DBSession, LayerGroup
+        layer_group_3 = DBSession.query(LayerGroup).filter(LayerGroup.name == u"__test_layer_group_3").one()
+        layer_group_3.children = layer_group_3.children[:-1]
+        transaction.commit()
+
+        entry = self._create_entry_obj(params={
+            "version": "2",
+            "group": "__test_layer_group_3",
+            "catalogue": "true",
+        })
+        themes = entry.themes()
+        self.assertEquals(self._get_filtered_errors(themes), set())
+        self.assertEquals(
+            self._only_name(themes["group"]),
+            {
+                "name": u"__test_layer_group_3",
+                # order is important
+                "children": [{
+                    "name": u"__test_layer_wmts"
+                }, {
+                    "name": u"__test_layer_internal_wms"
+                }]
+            }
+        )
+
+    @attr(min_levels=True)
     def test_min_levels(self):
         entry = self._create_entry_obj(params={
             "version": "2",

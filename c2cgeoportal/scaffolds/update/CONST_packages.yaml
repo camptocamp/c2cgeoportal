@@ -38,7 +38,7 @@ main:
         version: 0.18
 
 deploy:
-    deploy: 0.4
+    deploy: 0.4.8
 
 mobile:
     sencha:
