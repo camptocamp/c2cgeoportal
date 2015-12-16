@@ -27,32 +27,23 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add description column in the tree
+"""Merge 1.6 and master branches
 
-Revision ID: 22e6dfb556de
-Revises: 2b8ed8c1df94
-Create Date: 2015-12-04 13:44:42.475652
+Revision ID: 29f2a32859ec
+Revises: ('22e6dfb556de', '116b9b79fc4d')
+Create Date: 2015-12-16 14:10:56.704614
 """
 
-from alembic import op, context
-from sqlalchemy import Column, Unicode
-
 # revision identifiers, used by Alembic.
-revision = '22e6dfb556de'
-down_revision = '2b8ed8c1df94'
+revision = '29f2a32859ec'
+down_revision = ('22e6dfb556de', '116b9b79fc4d')
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    # Instructions
-    op.add_column('layergroup_treeitem', Column('description', Unicode), schema=schema)
-    op.add_column('treeitem', Column('description', Unicode), schema=schema)
+    pass
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
-
-    # Instructions
-    op.drop_column('layergroup_treeitem', 'description', schema=schema)
-    op.drop_column('treeitem', 'description', schema=schema)
+    pass
