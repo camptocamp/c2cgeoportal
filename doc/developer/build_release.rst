@@ -236,7 +236,7 @@ When a new release or a new version is done you should do the following tasks:
             merge -m "Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 
-     Remove the import and replace the core od the methode by ``pass`` in the generated file.
+     Remove the import and replace the core of the method by ``pass`` in the generated file.
 
      And finally add the new file.
 

@@ -38,21 +38,21 @@ from alembic import op, context
 from sqlalchemy import Column, Unicode
 
 # revision identifiers, used by Alembic.
-revision = "22e6dfb556de"
-down_revision = "2b8ed8c1df94"
+revision = '22e6dfb556de'
+down_revision = '2b8ed8c1df94'
 
 
 def upgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
     # Instructions
-    op.add_column("layergroup_treeitem", Column("description", Unicode), schema=schema)
-    op.add_column("treeitem", Column("description", Unicode), schema=schema)
+    op.add_column('layergroup_treeitem', Column('description', Unicode), schema=schema)
+    op.add_column('treeitem', Column('description', Unicode), schema=schema)
 
 
 def downgrade():
-    schema = context.get_context().config.get_main_option("schema")
+    schema = context.get_context().config.get_main_option('schema')
 
     # Instructions
-    op.drop_column("layergroup_treeitem", "description", schema=schema)
-    op.drop_column("treeitem", "description", schema=schema)
+    op.drop_column('layergroup_treeitem', 'description', schema=schema)
+    op.drop_column('treeitem', 'description', schema=schema)
