@@ -519,22 +519,22 @@ $(OUTPUT_DIR)/templatecache.js: templatecache.mako.js $(APP_PARTIALS_FILES) .bui
 
 .build/externs/angular-1.4.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4.js
+	wget --max-redirect=0 -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4.js
 	touch $@
 
 .build/externs/angular-1.4-q_templated.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-q_templated.js
+	wget --max-redirect=0 -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-q_templated.js
 	touch $@
 
 .build/externs/angular-1.4-http-promise_templated.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-http-promise_templated.js
+	wget --max-redirect=0 -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-http-promise_templated.js
 	touch $@
 
 .build/externs/jquery-1.9.js:
 	mkdir -p $(dir $@)
-	wget -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jquery-1.9.js
+	wget --max-redirect=0 -O $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jquery-1.9.js
 	touch $@
 
 package.json:
@@ -740,7 +740,7 @@ print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
-	wget http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar -O $@
+	wget --max-redirect=0 http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar -O $@
 	touch $@
 
 print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
@@ -750,7 +750,7 @@ print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
-	wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
+	wget --max-redirect=0 https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar -O $@
 	touch $@
 
 # Tile cloud chain
