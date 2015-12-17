@@ -65,14 +65,20 @@ def check_quote(string, filename, no, error):
 
 
 def check_line(line, filename, no, error):
-    line = re.sub("\\\\\\\\", "___escape___", line)
-    line = re.sub("\\\\'", "___escaped_quote___", line)
-    line = re.sub('\\\\"', "___escaped_double_quote___", line)
+    line = re.sub(r"\\\\", "___escape___", line)
+    line = re.sub(r"\\'", "___escaped_quote___", line)
+    line = re.sub(r'\\"', "___escaped_double_quote___", line)
 
     quote = line.find("'")
     double_quote = line.find('"')
+    comment = line.find("#")
 
     if quote == -1 and double_quote == -1:
+        return error
+
+    if comment != -1 and \
+            (comment < quote or quote == -1) and \
+            (comment < double_quote or double_quote == -1):
         return error
 
     if quote == -1 or (double_quote != -1 and double_quote < quote):
@@ -135,9 +141,6 @@ def main():
                     if end_with_escape:
                         line = re.match(r'(.*)\\', last_line).group(1) + line
                         no = last_line_no
-
-                    if line.find("#") >= 0:
-                        line = line[0:line.find("#") + 1]
 
                     if line.find('"""') != -1:
                         if line.find('"""', line.find('"""') + 3) == -1:
