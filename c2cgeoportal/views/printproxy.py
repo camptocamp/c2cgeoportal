@@ -76,7 +76,6 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         return self._build_response(
             resp, content, PRIVATE_CACHE, "print",
-            add_cors=True,
         )
 
     ##########
@@ -144,7 +143,6 @@ class PrintProxy(Proxy):  # pragma: no cover
             response=Response(
                 content, status=resp.status, headers=headers
             ),
-            add_cors=True
         )
 
     ##########

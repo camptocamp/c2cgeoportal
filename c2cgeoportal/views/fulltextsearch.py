@@ -48,7 +48,7 @@ class FullTextSearchView(object):
 
     def __init__(self, request):
         self.request = request
-        set_common_headers(request, "fulltextsearch", NO_CACHE, add_cors=True)
+        set_common_headers(request, "fulltextsearch", NO_CACHE)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
 

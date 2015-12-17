@@ -70,7 +70,7 @@ class Raster(object):
                 rasters[ref], ref, lon, lat)
 
         set_common_headers(
-            self.request, "raster", NO_CACHE, add_cors=True
+            self.request, "raster", NO_CACHE
         )
         return result
 
