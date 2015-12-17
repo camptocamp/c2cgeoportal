@@ -61,15 +61,16 @@ def main():  # pragma: no cover
             data = re.sub(r"ng-{{package}}", r"ng-app", data)
             # back for mobile-web-app-capable
             data = re.sub(
-                r"{{package}}le-mobile-web-{{package}}-capable",
+                r"mobile-web-{{package}}-capable",
                 r"mobile-web-app-capable", data
             )
             # Styles
             data = re.sub(
                 r'    <link rel="stylesheet.* type="text/css">',
                 r"""% if debug:
-    <link rel="stylesheet/less" href="${request.static_url('%s/ngeo/contribs/gmf/less/font.less' % node_modules_path)}" type="text/css">
+    <link rel="stylesheet/less" href="${request.static_url('%s/ngeo/contribs/gmf/less/font.less' % request.registry.settings['node_modules_path'])}" type="text/css">
     <link rel="stylesheet/less" href="${request.static_url('{{package}}:static-ngeo/less/mobile.less')}" type="text/css">
+    <link rel="stylesheet/less" href="${request.static_url('%s/ngeo/contribs/gmf/less/mobile.less' % request.registry.settings['node_modules_path'])}" type="text/css">
 % else:
     <link rel="stylesheet" href="${request.static_url('{{package}}:static-ngeo/build/mobile.css')}" type="text/css">
 % endif""",  # noqa
@@ -81,21 +82,27 @@ def main():  # pragma: no cover
             data = re.sub(
                 r'    <script .*watchwatchers.js"></script>',
                 r"""% if debug:
-    <script src="${request.static_url('%s/jquery/dist/jquery.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/angular/angular.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/angular-gettext/dist/angular-gettext.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/bootstrap/dist/js/bootstrap.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/proj4/dist/proj4-src.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/d3/d3.min.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % node_modules_path)}"></script>
-    <script src="${request.static_url('%s/closure/goog/base.js' % closure_library_path)}"></script>
+    <script>
+        window.CLOSURE_BASE_PATH = '';
+        window.CLOSURE_NO_DEPS = true;
+    </script>
+    <script src="${request.static_url('%s/jquery/dist/jquery.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/angular/angular.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/angular-gettext/dist/angular-gettext.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/bootstrap/dist/js/bootstrap.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/proj4/dist/proj4-src.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/d3/d3.min.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % request.registry.settings['node_modules_path'])}"></script>
+    <script src="${request.static_url('%s/closure/goog/base.js' % request.registry.settings['closure_library_path'])}"></script>
     <script src="${request.route_url('deps.js')}"></script>
-    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
+    <script>
+        goog.require('{{package}}_mobile');
+    </script>
     <script src="${request.static_url('{{package}}:static-ngeo/build/templatecache.js')}"></script>
-    <script src="${request.static_url('%s/utils/watchwatchers.js' % closure_library_path)}"></script>
-    <script src="${request.static_url('%s/less/dist/less.min.js' % node_modules_path)}"></script>
+    <script src="${request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['closure_library_path'])}"></script>
+    <script src="${request.static_url('%s/less/dist/less.min.js' % request.registry.settings['node_modules_path'])}"></script>
 % else:
-    <script src="${request.static_url('{{package}}:static-ngeo/js/mobile.js')}"></script>
+    <script src="${request.static_url('{{package}}:static-ngeo/build/mobile.js')}"></script>
 % endif""",  # noqa
                 data,
                 count=1,
@@ -104,7 +111,7 @@ def main():  # pragma: no cover
             # Full text search
             data = re.sub(
                 r"fulltextsearch: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch\?query=%QUERY'",  # noqa
-                r"fulltextsearch: '${request.route_url('fulltextsearch', _query={'query':'%QUERY'}) | n}'",  # noqa
+                r"fulltextsearch: '${request.route_url('fulltextsearch') | n}?query=%QUERY'",
                 data,
             )
 
