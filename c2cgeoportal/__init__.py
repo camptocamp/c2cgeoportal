@@ -538,17 +538,18 @@ def includeme(config):
 
     if settings.get("ogcproxy_enable", True):
         # add an OGCProxy view
+        config.add_route_predicate("ogc_server", ogcproxy_route_predicate)
         config.add_route(
             "ogcproxy", "/ogcproxy",
-            custom_predicates=(ogcproxy_route_predicate,)
+            ogc_server=True
         )
         config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
     # add routes to the mapserver proxy
+    config.add_route_predicate("mapserverproxy", mapserverproxy_route_predicate)
     config.add_route(
         "mapserverproxy", "/mapserv_proxy",
-        custom_predicates=(mapserverproxy_route_predicate,),
-        pregenerator=C2CPregenerator(role=True),
+        mapserverproxy=True, pregenerator=C2CPregenerator(role=True),
     )
 
     # add route to the tinyows proxy
