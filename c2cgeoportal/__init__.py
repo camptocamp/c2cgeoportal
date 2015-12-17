@@ -29,18 +29,21 @@
 
 import logging
 import yaml
+import sqlalchemy
+import sqlahelper
+import pyramid_tm
+import mimetypes
+from urlparse import urlsplit
+import simplejson as json
+from socket import gethostbyname, gaierror
+from ipcalc import IP, Network
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
 from pyramid.httpexceptions import HTTPException
 
-import sqlalchemy
-import sqlahelper
-import pyramid_tm
-import mimetypes
-
 from papyrus.renderers import GeoJSON, XSD
-import simplejson as json
+
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
@@ -426,30 +429,59 @@ def default_user_validator(request, username, password):
     return username if user and user.validate_password(password) else None
 
 
-def ogcproxy_route_predicate(info, request):
+class OgcproxyRoutePredicate:
     """ Serve as a custom route predicate function for ogcproxy.
     We do not want the OGC proxy to be used to reach the app's
     mapserv script. We just return False if the url includes
     "mapserv". It is rather drastic, but works for us. """
-    url = request.params.get("url")
-    if url is None:
-        return False
-    if url.find("mapserv") > 0:
-        return False
-    return True
+
+    def __init__(self, val, config):
+        self.private_networks = [
+            Network("127.0.0.0/8"),
+            Network("10.0.0.0/8"),
+            Network("172.16.0.0/12"),
+            Network("192.168.0.0/16"),
+        ]
+
+    def __call__(self, context, request):
+        url = request.params.get("url")
+        if url is None:
+            return False
+
+        parts = urlsplit(url)
+        try:
+            ip = IP(gethostbyname(parts.netloc))
+        except gaierror as e:
+            log.info("Unable to get host name for %s: %s" % (url, e))
+            return False
+        for net in self.private_networks:
+            if ip in net:
+                return False
+        return True
+
+    def phash(self):
+        return ""
 
 
-def mapserverproxy_route_predicate(info, request):
+class MapserverproxyRoutePredicate:
     """ Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to
     return 404s on GetCapabilities requests."""
-    hide_capabilities = request.registry.settings.get("hide_capabilities")
-    if not hide_capabilities:
-        return True
-    params = dict(
-        (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
-    )
-    return "request" not in params or params["request"] != u"getcapabilities"
+
+    def __init__(self, val, config):
+        pass
+
+    def __call__(self, context, request):
+        hide_capabilities = request.registry.settings.get("hide_capabilities")
+        if not hide_capabilities:
+            return True
+        params = dict(
+            (k.lower(), unicode(v).lower()) for k, v in request.params.iteritems()
+        )
+        return "request" not in params or params["request"] != u"getcapabilities"
+
+    def phash(self):
+        return ""
 
 
 def add_cors_route(config, pattern, service):
@@ -538,7 +570,7 @@ def includeme(config):
 
     if settings.get("ogcproxy_enable", True):
         # add an OGCProxy view
-        config.add_route_predicate("ogc_server", ogcproxy_route_predicate)
+        config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
         config.add_route(
             "ogcproxy", "/ogcproxy",
             ogc_server=True
@@ -546,7 +578,7 @@ def includeme(config):
         config.add_view("papyrus_ogcproxy.views:ogcproxy", route_name="ogcproxy")
 
     # add routes to the mapserver proxy
-    config.add_route_predicate("mapserverproxy", mapserverproxy_route_predicate)
+    config.add_route_predicate("mapserverproxy", MapserverproxyRoutePredicate)
     config.add_route(
         "mapserverproxy", "/mapserv_proxy",
         mapserverproxy=True, pregenerator=C2CPregenerator(role=True),
