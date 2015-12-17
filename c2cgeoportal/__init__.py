@@ -336,14 +336,18 @@ def add_static_view(config):
     )
 
 
+CACHE_PATH = []
+
+
 def _add_static_view(config, name, path):
-    from c2cgeoportal.lib.cacheversion import VersionCacheBuster
+    from c2cgeoportal.lib.cacheversion import version_cache_buster
     config.add_static_view(
         name=name,
         path=path,
         cache_max_age=int(config.get_settings()["default_max_age"]),
-        cachebust=VersionCacheBuster()
     )
+    config.add_cache_buster(path, version_cache_buster)
+    CACHE_PATH.append(unicode(name))
 
 
 def locale_negotiator(request):
@@ -546,6 +550,9 @@ def includeme(config):
     # dogpile.cache configuration
     caching.init_region(settings["cache"])
     caching.invalidate_region()
+
+    # Register a tween to get back the cache buster path.
+    config.add_tween("c2cgeoportal.lib.cacheversion.CachebusterTween")
 
     # bind the mako renderer to other file extensions
     add_mako_renderer(config, ".html")

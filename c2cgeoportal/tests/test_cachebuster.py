@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2015, Camptocamp SA
+# Copyright (c) 2011-2014, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,35 +27,32 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
-import uuid
-from urlparse import urljoin
-
+from unittest import TestCase
 from c2cgeoportal import CACHE_PATH
-from c2cgeoportal.lib.caching import get_region
-
-cache_region = get_region()
+from c2cgeoportal.lib.cacheversion import CachebusterTween
 
 
-@cache_region.cache_on_arguments()
-def get_cache_version():
-    """Return a cache version that is regenerate after each cache invalidation"""
-    return uuid.uuid4().hex
+def handler(request):
+    return request
 
 
-def version_cache_buster(request, subpath, kw):  # pragma: nocover
-    return urljoin(get_cache_version() + "/", subpath), kw
+class MyRequest():
+    def __init__(self, path_info):
+        self.path_info = path_info
 
 
-class CachebusterTween:
-    """ Get back the cachebuster URL. """
-    def __init__(self, handler, registry):
-        self.handler = handler
+class TestCacheBuster(TestCase):
 
-    def __call__(self, request):
-        path = request.path_info.split("/")
-        if path[1] in CACHE_PATH:
-            # remove the cache buster
-            path.pop(2)
-            request.path_info = "/" .join(path)
-        return self.handler(request)
+    def test_replace(self):
+        CACHE_PATH.append("test")
+        ctf = CachebusterTween(handler, None)
+        request = MyRequest("/test/123456/build.css")
+        ctf(request)
+        self.assertEqual(request.path_info, "/test/build.css")
+
+    def test_noreplace(self):
+        CACHE_PATH.append("test")
+        ctf = CachebusterTween(handler, None)
+        request = MyRequest("/test2/123456/build.css")
+        ctf(request)
+        self.assertEqual(request.path_info, "/test2/123456/build.css")

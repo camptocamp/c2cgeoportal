@@ -27,56 +27,44 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from unittest import TestCase
 
-def test_hide_capabilities_unset():
-    from c2cgeoportal import mapserverproxy_route_predicate
-    from pyramid.threadlocal import get_current_registry
-    from pyramid.request import Request
+from pyramid.request import Request
+from pyramid.threadlocal import get_current_registry
 
-    request = Request.blank("/test")
-    request.registry = get_current_registry()
-    request.registry.settings = {}
-    ret = mapserverproxy_route_predicate(None, request)
-    assert ret is True
+from c2cgeoportal import MapserverproxyRoutePredicate
 
 
-def test_hide_capabilities_set_no_request_param():
-    from c2cgeoportal import mapserverproxy_route_predicate
-    from pyramid.threadlocal import get_current_registry
-    from pyramid.request import Request
+class TestMapserverproxyRoutePredicate(TestCase):
 
-    request = Request.blank("/test")
-    request.registry = get_current_registry()
-    request.registry.settings = {
-        "hide_capabilities": True
-    }
-    ret = mapserverproxy_route_predicate(None, request)
-    assert ret is True
+    predicate = MapserverproxyRoutePredicate(None, None)
 
+    def test_hide_capabilities_unset(self):
+        request = Request.blank("/test")
+        request.registry = get_current_registry()
+        request.registry.settings = {}
+        self.assertTrue(self.predicate(None, request))
 
-def test_hide_capabilities_set_not_get_capabilities_request():
-    from c2cgeoportal import mapserverproxy_route_predicate
-    from pyramid.threadlocal import get_current_registry
-    from pyramid.request import Request
+    def test_hide_capabilities_set_no_request_param(self):
+        request = Request.blank("/test")
+        request.registry = get_current_registry()
+        request.registry.settings = {
+            "hide_capabilities": True
+        }
+        self.assertTrue(self.predicate(None, request))
 
-    request = Request.blank("/test?REQUEST=GetMap")
-    request.registry = get_current_registry()
-    request.registry.settings = {
-        "hide_capabilities": True
-    }
-    ret = mapserverproxy_route_predicate(None, request)
-    assert ret is True
+    def test_hide_capabilities_set_not_get_capabilities_request(self):
+        request = Request.blank("/test?REQUEST=GetMap")
+        request.registry = get_current_registry()
+        request.registry.settings = {
+            "hide_capabilities": True
+        }
+        self.assertTrue(self.predicate(None, request))
 
-
-def test_hide_capabilities_set_get_capabilities_request():
-    from c2cgeoportal import mapserverproxy_route_predicate
-    from pyramid.threadlocal import get_current_registry
-    from pyramid.request import Request
-
-    request = Request.blank("/test?REQUEST=GetCapabilities")
-    request.registry = get_current_registry()
-    request.registry.settings = {
-        "hide_capabilities": True
-    }
-    ret = mapserverproxy_route_predicate(None, request)
-    assert ret is False
+    def test_hide_capabilities_set_get_capabilities_request(self):
+        request = Request.blank("/test?REQUEST=GetCapabilities")
+        request.registry = get_current_registry()
+        request.registry.settings = {
+            "hide_capabilities": True
+        }
+        self.assertFalse(self.predicate(None, request))

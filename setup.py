@@ -40,7 +40,7 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    "pyramid<=1.6.99,>=1.6.0.dev",
+    "pyramid<=1.6.99,>=1.6b3",
     "pyramid_multiauth",
     "pyramid_mako",
     "pyramid_chameleon",
