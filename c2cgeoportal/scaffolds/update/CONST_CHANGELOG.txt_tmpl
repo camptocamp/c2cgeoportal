@@ -25,13 +25,18 @@ replace your sencha touch interface by an ngeo interface.
 
     git rm lingua.cfg
     git rm -r {{package}}/static/mobile/
+    git rm print/print-servlet.war
 
-3. In the `vars_{{package}}.yaml` file:
+3. Add in the `.gitignore` file:
+
+    + print/print-servlet.war
+
+4. In the `vars_{{package}}.yaml` file:
 
    * Remove the `vars.checker.lang_files` parameter to use the default value
      that checks the ngeo language files.
 
-4. In the `{{package}}/__init__.py` file:
+5. In the `{{package}}/__init__.py` file:
 
    * If your project's main function includes `config.include("pyramid_closure")`,
      remove it, as c2cgeoportal now takes care of including `pyramid_closure`.
@@ -47,10 +52,10 @@ replace your sencha touch interface by an ngeo interface.
      - add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
      + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
-5. To migrate your theme from version 1 to version 2 a script is available.
+6. To migrate your theme from version 1 to version 2 a script is available.
    Use `.build/venv/bin/themev1tov2 --help` for more information.
 
-6. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
+7. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
    rename 'cache_control' to 'headers' and 'max_age' to
    'cache_control_max_age':
 
