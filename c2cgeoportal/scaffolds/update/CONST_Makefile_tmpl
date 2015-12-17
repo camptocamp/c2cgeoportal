@@ -753,6 +753,9 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 .PHONY: print
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
+$(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
+	curl --max-redirs 0 --location --output $@ `cat $<`
+
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 # If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
