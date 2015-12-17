@@ -528,11 +528,11 @@ $(PACKAGE)/static-ngeo/fonts/%: node_modules/ngeo/contribs/gmf/fonts/%
 
  node_modules/ngeo/node_modules: .build/node_modules.timestamp
 	mkdir -p $@
-	ln -s ../../opnelayers $@
+	ln -s ../../openlayers $@
 	ln -s ../../bootstrap $@
 	touch $@
 
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	./node_modules/.bin/lessc $< $@
 
@@ -540,7 +540,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" build.mako.json > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		.build/templatecache.js \
+		$(PACKAGE)/static-ngeo/build/templatecache.js \
 		.build/externs/angular-1.4.js \
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
@@ -550,7 +550,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-.build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js .build/dev-requirements.timestamp \
+$(PACKAGE)/static-ngeo/build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js .build/dev-requirements.timestamp \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \

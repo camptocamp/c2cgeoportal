@@ -149,10 +149,10 @@ ngeo/contribs/gmf/apps/%/js/mobile.js: ngeo
 	touch $@
 
 $(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp
-	.build/venv/bin/import_ngeo_apps --html $< $@
+	.build/venv/bin/import-ngeo-apps --html $* $< $@
 
 $(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/mobile.js .build/requirements.timestamp
-	.build/venv/bin/import_ngeo_apps --js $< $@
+	.build/venv/bin/import-ngeo-apps --js $* $< $@
 
 # Templates
 
