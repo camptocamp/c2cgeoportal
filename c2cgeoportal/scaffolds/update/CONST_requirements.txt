@@ -1,8 +1,8 @@
 --index-url http://pypi.camptocamp.net/pypi
 --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 -r CONST_versions.txt
+Pillow==3.0.0
 psycopg2==2.6.1
-Shapely==1.5.6
-Pillow==2.7.0
+Shapely==1.5.13
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 -e .
