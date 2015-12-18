@@ -11,9 +11,9 @@ service URL with the following configuration:
 
 .. code:: javascript
 
-   loginResetURL:: "${request.route_url('loginresetpassword')}"
+   loginResetPasswordURL: "${request.route_url('loginresetpassword') | n}",
 
-And to generate the required e-mail, in the ``config.yaml`` file, the following configuration:
+And to generate the required e-mail, in the ``vars_<package>.yaml`` file, the following configuration:
 
 .. code:: yaml
 
