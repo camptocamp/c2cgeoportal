@@ -1034,14 +1034,10 @@ class Entry(object):
         return d
 
     def get_ngeo_index_vars(self, vars={}):
-        set_common_headers(self.request, "ngeo_index", NO_CACHE)
+        set_common_headers(self.request, "ngeo_index", PUBLIC_CACHE)
 
         vars.update({
-            "lang": self.lang,
             "debug": self.debug,
-            "user": self.request.user,
-            "functionality": self._functionality(),
-            "queryer_attribute_urls": self._get_layers_enum(),
         })
         return vars
 
