@@ -1218,7 +1218,7 @@ class Entry(object):
         cache_version = self.settings.get("cache_version", None)
 
         set_common_headers(
-            self.request, "xapijs", NO_CACHE,
+            self.request, "apijs", NO_CACHE,
             content_type="application/javascript",
         )
 
@@ -1241,7 +1241,7 @@ class Entry(object):
 
     @view_config(route_name="xapihelp", renderer="api/xapihelp.html")
     def xapihelp(self):
-        set_common_headers(self.request, "xapihelp", NO_CACHE)
+        set_common_headers(self.request, "apihelp", NO_CACHE)
 
         return {
             "lang": self.lang,
@@ -1458,7 +1458,7 @@ class Entry(object):
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
         set_common_headers(
-            self.request, "loginresetpassword", NO_CACHE
+            self.request, "login", NO_CACHE
         )
 
         user, username, password = self._loginresetpassword()
