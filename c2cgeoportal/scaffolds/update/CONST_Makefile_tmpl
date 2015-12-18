@@ -274,6 +274,9 @@ CONF_FILES_IN = $(shell ls -1 apache/*.conf.in 2> /dev/null)
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
 CONF_FILES = $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_IN:.in=) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+CONF_FILES += apache/tiles.conf
+endif
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
