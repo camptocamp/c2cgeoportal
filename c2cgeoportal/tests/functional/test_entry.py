@@ -61,6 +61,7 @@ class TestEntryView(TestCase):
             LayerWMS, ServerOGC
 
         role1 = Role(name=u"__test_role1")
+        role1.id = 999
         user1 = User(username=u"__test_user1", password=u"__test_user1", role=role1)
         user1.email = "__test_user1@example.com"
 
@@ -195,7 +196,13 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.body, {"functionalities": {}})
+        self.assertEquals(json.loads(response.body), {
+            "username": "__test_user1",
+            "is_password_changed": False,
+            "role_name": "__test_role1",
+            "role_id": 999,
+            "functionalities": {},
+        })
 
         request = self._create_request_obj(POST={
             "login": u"__test_user1",
@@ -250,7 +257,13 @@ class TestEntryView(TestCase):
         })
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
-        self.assertEquals(response.body, {"functionalities": {}})
+        self.assertEquals(json.loads(response.body), {
+            "username": "__test_user1",
+            "is_password_changed": True,
+            "role_name": "__test_role1",
+            "role_id": 999,
+            "functionalities": {},
+        })
 
     #
     # viewer view tests
