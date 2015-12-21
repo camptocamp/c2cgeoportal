@@ -1034,14 +1034,10 @@ class Entry(object):
         return d
 
     def get_ngeo_index_vars(self, vars={}):
-        set_common_headers(self.request, "ngeo_index", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "ngeo_index", PUBLIC_CACHE)
 
         vars.update({
-            "lang": self.lang,
             "debug": self.debug,
-            "user": self.request.user,
-            "functionality": self._functionality(),
-            "queryer_attribute_urls": self._get_layers_enum(),
         })
         return vars
 
@@ -1222,7 +1218,7 @@ class Entry(object):
         cache_version = self.settings.get("cache_version", None)
 
         set_common_headers(
-            self.request, "xapijs", NO_CACHE,
+            self.request, "apijs", NO_CACHE,
             content_type="application/javascript",
         )
 
@@ -1245,7 +1241,7 @@ class Entry(object):
 
     @view_config(route_name="xapihelp", renderer="api/xapihelp.html")
     def xapihelp(self):
-        set_common_headers(self.request, "xapihelp", NO_CACHE)
+        set_common_headers(self.request, "apihelp", NO_CACHE)
 
         return {
             "lang": self.lang,
@@ -1272,7 +1268,7 @@ class Entry(object):
         export_group = group is not None and sets in ("all", "group")
         export_background = background_layers_group is not None and sets in ("all", "background")
 
-        set_common_headers(self.request, "themes", PRIVATE_CACHE, add_cors=True)
+        set_common_headers(self.request, "themes", PRIVATE_CACHE)
 
         result = {}
         all_errors = set()
@@ -1355,7 +1351,6 @@ class Entry(object):
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
                     response=Response(self._user(), headers=headers),
-                    add_cors=True
                 )
         else:
             return HTTPUnauthorized("bad credentials")
@@ -1378,7 +1373,6 @@ class Entry(object):
         return set_common_headers(
             self.request, "login", NO_CACHE,
             response=Response("true", headers=headers),
-            add_cors=True
         )
 
     def _user(self):
@@ -1401,8 +1395,7 @@ class Entry(object):
 
     @view_config(route_name="loginchange", renderer="json")
     def loginchange(self):
-        set_common_headers(self.request, "login", NO_CACHE,
-                           add_cors=True)
+        set_common_headers(self.request, "login", NO_CACHE)
 
         new_password = self.request.POST.get("newPassword", None)
         new_password_confirm = self.request.POST.get("confirmNewPassword", None)
@@ -1465,7 +1458,7 @@ class Entry(object):
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
         set_common_headers(
-            self.request, "loginresetpassword", NO_CACHE, add_cors=True
+            self.request, "login", NO_CACHE
         )
 
         user, username, password = self._loginresetpassword()

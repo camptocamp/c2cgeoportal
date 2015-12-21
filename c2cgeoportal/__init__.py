@@ -458,7 +458,7 @@ def add_cors_route(config, pattern, service):
     """
     def view(request):  # pragma: nocover
         from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
-        return set_common_headers(request, service, NO_CACHE, add_cors=True)
+        return set_common_headers(request, service, NO_CACHE)
 
     name = pattern + "_options"
     config.add_route(name, pattern, request_method="OPTIONS")
@@ -471,8 +471,9 @@ def error_handler(http_exception, request):  # pragma: nocover
     """
     log.warning("%s returned status code %s", request.url,
                 http_exception.status_code)
-    return caching.set_common_headers(request, "error", caching.NO_CACHE,
-                                      http_exception, vary=True, add_cors=True)
+    return caching.set_common_headers(
+        request, "error", caching.NO_CACHE, http_exception, vary=True
+    )
 
 
 def includeme(config):

@@ -171,7 +171,7 @@ class Layers(object):
 
     @view_config(route_name="layers_read_many", renderer="geojson")
     def read_many(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         features = []
         for layer in self._get_layers_for_request():
@@ -183,7 +183,7 @@ class Layers(object):
 
     @view_config(route_name="layers_read_one", renderer="geojson")
     def read_one(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         layer = self._get_layer_for_request()
         protocol = self._get_protocol_for_layer(layer)
@@ -217,14 +217,14 @@ class Layers(object):
 
     @view_config(route_name="layers_count", renderer="string")
     def count(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         protocol = self._get_protocol_for_request()
         return protocol.count(self.request)
 
     @view_config(route_name="layers_create", renderer="geojson")
     def create(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -265,7 +265,7 @@ class Layers(object):
 
     @view_config(route_name="layers_update", renderer="geojson")
     def update(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -326,7 +326,7 @@ class Layers(object):
 
     @view_config(route_name="layers_delete")
     def delete(self):
-        set_common_headers(self.request, "layers", NO_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", NO_CACHE)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -356,7 +356,7 @@ class Layers(object):
 
     @view_config(route_name="layers_metadata", renderer="xsd")
     def metadata(self):
-        set_common_headers(self.request, "layers", PRIVATE_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", PRIVATE_CACHE)
 
         layer = self._get_layer_for_request()
         if not layer.public and self.request.user is None:
@@ -373,7 +373,7 @@ class Layers(object):
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
-        set_common_headers(self.request, "layers", PUBLIC_CACHE, add_cors=True)
+        set_common_headers(self.request, "layers", PUBLIC_CACHE)
 
         if self.layers_enum_config is None:  # pragma: no cover
             raise HTTPInternalServerError("Missing configuration")

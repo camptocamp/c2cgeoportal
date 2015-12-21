@@ -254,7 +254,12 @@ vars:
     #proxies:
     #    http: http://someproxy
 
+    # Control the HTTP headers
     headers:
+        ngeo_index:
+            access_control_max_age: 600 # 10 minutes
+        mapserver:
+            access_control_allow_origin: ["*"]
 
     # Checker configuration
     checker:

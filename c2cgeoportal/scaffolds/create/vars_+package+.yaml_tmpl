@@ -115,10 +115,6 @@ vars:
             The GeoMapfish team
         smtp_server: smtp.example.com
 
-    headers:
-        mapserver:
-            access_control_allow_origin: "*"
-
 update_paths:
 - authtkt
 - checker

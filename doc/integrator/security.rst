@@ -52,11 +52,25 @@ access, but no credentials will be passed in the case.
 
 Available services are:
 
-- login
-- layers
+Entry:
+
+- cgxp_index
+- cgxp_viewer
+- ngeo_index
+- sencha_index
+- sencha_config
+- apijs
+- apihelp
+
+Services:
+
+- themes
+- mapserver
 - print
 - profile
 - raster
+- layers
+- login
 - error
 
 Authorized referers

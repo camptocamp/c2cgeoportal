@@ -160,8 +160,7 @@ def set_cors_headers(service_headers_settings, request, service_name,
 
 def set_common_headers(
         request, service_name, cache,
-        response=None, credentials=True, add_cors=False, vary=False,
-        content_type=None):
+        response=None, credentials=True, vary=False, content_type=None):
     if response is None:
         response = request.response
 
@@ -193,9 +192,10 @@ def set_common_headers(
             else:
                 response.cache_control.no_cache = True
 
-        if add_cors:
-            set_cors_headers(service_headers_settings, request, service_name,
-                             credentials, response)
+        set_cors_headers(
+            service_headers_settings, request, service_name,
+            credentials, response
+        )
 
     if vary:
         response.headers["Vary"] = "Accept-Language"
