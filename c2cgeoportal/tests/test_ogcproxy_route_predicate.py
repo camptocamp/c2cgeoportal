@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2014, Camptocamp SA
+# Copyright (c) 2013-2015, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,29 +27,57 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from unittest import TestCase
 
-def test_no_url():
-    from c2cgeoportal import ogcproxy_route_predicate
-    from pyramid.request import Request
+from pyramid.request import Request
 
-    request = Request.blank("/test")
-    ret = ogcproxy_route_predicate(None, request)
-    assert not ret
+from c2cgeoportal import OgcproxyRoutePredicate
 
 
-def test_mapserv_url():
-    from c2cgeoportal import ogcproxy_route_predicate
-    from pyramid.request import Request
+class TestMapserverproxyRoutePredicate(TestCase):
 
-    request = Request.blank("/test?url=http://foo.com/mapserv")
-    ret = ogcproxy_route_predicate(None, request)
-    assert not ret
+    predicate = OgcproxyRoutePredicate(None, None)
 
+    def test_no_url(self):
+        request = Request.blank("/test")
+        self.assertFalse(self.predicate(None, request))
 
-def test_non_mapserv_url():
-    from c2cgeoportal import ogcproxy_route_predicate
-    from pyramid.request import Request
+    def test_invalid(self):
+        request = Request.blank("/test?url=http://123456.com/")
+        self.assertFalse(self.predicate(None, request))
 
-    request = Request.blank("/test?url=http://foo.com/wmts")
-    ret = ogcproxy_route_predicate(None, request)
-    assert ret
+    def test_google(self):
+        request = Request.blank("/test?url=http://google.com/")
+        self.assertTrue(self.predicate(None, request))
+
+    def test_1234(self):
+        request = Request.blank("/test?url=http://1.2.3.4/")
+        self.assertTrue(self.predicate(None, request))
+
+    def test_local(self):
+        request = Request.blank("/test?url=http://127.2.3.4/")
+        self.assertFalse(self.predicate(None, request))
+
+    def test_10(self):
+        request = Request.blank("/test?url=http://10.2.3.4/")
+        self.assertFalse(self.predicate(None, request))
+
+    def test_192_168(self):
+        request = Request.blank("/test?url=http://192.168.3.4/")
+        self.assertFalse(self.predicate(None, request))
+
+    def test_172_16_0_0(self):
+        request = Request.blank("/test?url=http://172.16.0.0/")
+        self.assertFalse(self.predicate(None, request))
+
+    def test_172_31_255_255(self):
+        request = Request.blank("/test?url=http://172.31.255.255/")
+        self.assertFalse(self.predicate(None, request))
+
+    def test_172_15_255_255(self):
+        request = Request.blank("/test?url=http://172.15.255.255/")
+        self.assertTrue(self.predicate(None, request))
+
+    def test_172_32_0_0(self):
+        request = Request.blank("/test?url=http://172.32.0.0/")
+        self.assertTrue(self.predicate(None, request))

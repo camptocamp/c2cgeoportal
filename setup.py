@@ -40,7 +40,7 @@ the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    "pyramid<=1.6.99,>=1.6.0.dev",
+    "pyramid<=1.6.99,>=1.6b3",
     "pyramid_multiauth",
     "pyramid_mako",
     "pyramid_chameleon",
@@ -51,7 +51,7 @@ install_requires = [
     # See: https://github.com/elemoine/papyrus/issues/32
     "geojson<=1.0.9",
     "papyrus==2.0.dev3",
-
+    "ipcalc",
     "papyrus_ogcproxy>=0.2.dev1",
     "pyramid_formalchemy>=0.4.3",
     "fa.jquery>=0.9.5",
