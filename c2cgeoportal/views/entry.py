@@ -38,6 +38,7 @@ from random import Random
 from math import sqrt
 from xml.dom.minidom import parseString
 from urlparse import urlsplit
+from socket import gaierror
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
@@ -1465,13 +1466,20 @@ class Entry(object):
                 "error": error
             }
         settings = self.request.registry.settings["reset_password"]
-        send_email(
-            settings["email_from"], [user.email],
-            settings["email_body"].format(user=username, password=password).encode("utf-8"),
-            settings["email_subject"],
-            settings["smtp_server"],
-        )
+        try:
+            send_email(
+                settings["email_from"], [user.email],
+                settings["email_body"].format(user=username, password=password).encode("utf-8"),
+                settings["email_subject"],
+                settings["smtp_server"],
+            )
 
-        return {
-            "success": True
-        }
+            return {
+                "success": True
+            }
+        except gaierror as e:
+            log.error("Unable to send the email: %s" % e)
+            return {
+                "success": False,
+                "error": _("Unable to send the email ask to the administrator")
+            }
