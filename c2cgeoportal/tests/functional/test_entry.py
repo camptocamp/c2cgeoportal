@@ -249,7 +249,7 @@ class TestEntryView(TestCase):
             "login": u"__test_user1",
         })
         entry = Entry(request)
-        user, username, password = entry._loginresetpassword()
+        user, username, password, error = entry._loginresetpassword()
 
         request = self._create_request_obj(POST={
             "login": username,

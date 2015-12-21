@@ -1442,21 +1442,15 @@ class Entry(object):
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return {
-                "success": False,
-                "error": _("The user '%s' doesn't exist.") % username,
-            }
+            return None, None, None, _("The user '%s' doesn't exist.") % username
 
         if user.email is None or user.email == "":  # pragma: no cover
-            return {
-                "success": False,
-                "error": _("User '%s' has no registered email address.") % username,
-            }
+            return None, None, None, _("User '%s' has no registered email address.") % username,
 
         password = self.generate_password()
         user.set_temp_password(password)
 
-        return user, username, password
+        return user, username, password, None
 
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
@@ -1464,7 +1458,12 @@ class Entry(object):
             self.request, "login", NO_CACHE
         )
 
-        user, username, password = self._loginresetpassword()
+        user, username, password, error = self._loginresetpassword()
+        if error is not None:
+            return {
+                "success": False,
+                "error": error
+            }
         settings = self.request.registry.settings["reset_password"]
         send_email(
             settings["email_from"], [user.email],
