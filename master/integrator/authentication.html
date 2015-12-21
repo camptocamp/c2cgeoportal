@@ -95,7 +95,7 @@ the authentication process is delegated to an outside system. So calls to
 <code class="docutils literal"><span class="pre">pyramid.security.remember</span></code> and <code class="docutils literal"><span class="pre">pyramid.security.forget</span></code>, as done in
 c2cgeoportal&#8217;s <code class="docutils literal"><span class="pre">login</span></code> and <code class="docutils literal"><span class="pre">logout</span></code> views, have no effect.</p>
 <p>With an authentication policy set in the application configuration the user
-name can be obtained by calling <code class="docutils literal"><span class="pre">pyramid.security.unauthenticated_userid</span></code>.
+name can be obtained by calling <code class="docutils literal"><span class="pre">request.unauthenticated_userid</span></code>.
 (This function returns <code class="docutils literal"><span class="pre">None</span></code> if there&#8217;s currently no authenticated user.)
 But c2cgeoportal applications need to also know about the user&#8217;s <em>role</em> to
 work properly.</p>
@@ -138,13 +138,11 @@ Therefore the application should redefine the callback function that adds
 a <code class="docutils literal"><span class="pre">user</span></code> property to the request. This is done by calling the
 <code class="docutils literal"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal"><span class="pre">Configurator</span></code> object.
 You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">unauthenticated_userid</span>
-
-<span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
     <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">pass</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">unauthenticated_userid</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
         <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
@@ -238,8 +236,6 @@ LDAP would look like this:</p>
 
 <span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
 <span class="c"># LDAP</span>
-<span class="c"># required to get the LDAP user data from the request</span>
-<span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">authenticated_userid</span>
 <span class="c"># get_user_from_request also needed for the same reason</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
     <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">,</span> <span class="n">get_user_from_request</span>
@@ -283,10 +279,15 @@ LDAP would look like this:</p>
 
     <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
 
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;_user&#39;</span><span class="p">):</span>
+        <span class="c"># avoid recursive calls from</span>
+        <span class="c"># get_user_from_request -&gt; request.authenticated_userid -&gt; ...</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">_user</span>
+
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;user is not authenticated or is a ldap user&quot;</span><span class="p">)</span>
-        <span class="n">identity</span> <span class="o">=</span> <span class="n">authenticated_userid</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">identity</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
         <span class="k">if</span> <span class="n">identity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">identity</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
@@ -295,6 +296,7 @@ LDAP would look like this:</p>
             <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">identity</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
             <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">user</span>
 
     <span class="k">return</span> <span class="n">user</span>
 <span class="c"># END LDAP</span>

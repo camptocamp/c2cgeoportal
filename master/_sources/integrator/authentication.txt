@@ -67,7 +67,7 @@ the authentication process is delegated to an outside system. So calls to
 c2cgeoportal's ``login`` and ``logout`` views, have no effect.
 
 With an authentication policy set in the application configuration the user
-name can be obtained by calling ``pyramid.security.unauthenticated_userid``.
+name can be obtained by calling ``request.unauthenticated_userid``.
 (This function returns ``None`` if there's currently no authenticated user.)
 But c2cgeoportal applications need to also know about the user's *role* to
 work properly.
@@ -116,13 +116,11 @@ You may for example add to ``__init__.py``:
 
 .. code:: python
 
-    from pyramid.security import unauthenticated_userid
-
     def get_user_from_request(request):
         from c2cgeoportal.models import DBSession, Role
         class O(object):
             pass
-        username = unauthenticated_userid(request)
+        username = request.unauthenticated_userid
         if username is not None:
             user = O()
             user.username = username
@@ -229,8 +227,6 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
 
     from pyramid.config import Configurator
     # LDAP
-    # required to get the LDAP user data from the request
-    from pyramid.security import authenticated_userid
     # get_user_from_request also needed for the same reason
     from c2cgeoportal import locale_negotiator, add_interface, \
         INTERFACE_TYPE_SENCHA_TOUCH, get_user_from_request
@@ -274,10 +270,15 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
 
         from c2cgeoportal.models import DBSession, Role
 
+        if hasattr(request, '_user'):
+            # avoid recursive calls from
+            # get_user_from_request -> request.authenticated_userid -> ...
+            return request._user
+
         user = get_user_from_request(request)
         if user is None:
             log.debug("user is not authenticated or is a ldap user")
-            identity = authenticated_userid(request)
+            identity = request.unauthenticated_userid
             if identity is not None:
                 identity = loads(identity)
                 user = O()
@@ -286,6 +287,7 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
                 user.is_password_changed = True
                 user.role = DBSession.query(Role).filter_by(name=identity['role']).one()
                 user.id = -1
+                request._user = user
 
         return user
     # END LDAP
