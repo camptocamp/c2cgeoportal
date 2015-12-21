@@ -43,7 +43,6 @@ install:
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
 - travis/build-new-project.sh
-- sudo /usr/sbin/apache2ctl graceful
 
 script:
 - uname -a
