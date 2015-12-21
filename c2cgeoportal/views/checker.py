@@ -28,18 +28,37 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.view import view_config
-from pyramid.response import Response
-
 import httplib
+import logging
 from httplib2 import Http
 from json import dumps, loads
-import logging
 from time import sleep
+from urlparse import urlsplit, urlunsplit
+
+from pyramid.view import view_config
+from pyramid.response import Response
 
 from c2cgeoportal.lib import add_url_params
 
 log = logging.getLogger(__name__)
+
+
+def build_url(name, url, request, headers=None):
+    if headers is None:
+        headers = {}
+    headers["Cache-Control"] = "no-cache"
+
+    urlfragments = urlsplit(url)
+    if urlfragments.netloc == request.environ.get("SERVER_NAME"):
+        url_ = urlunsplit((
+            "http", "localhost", urlfragments.path, urlfragments.query, urlfragments.fragment
+        ))
+        headers["Host"] = urlfragments.netloc
+    else:
+        url_ = url
+
+    log.info("%s, URL: %s => %s" % (name, url, url_))
+    return url_, headers
 
 
 class Checker(object):  # pragma: no cover
@@ -62,16 +81,9 @@ class Checker(object):  # pragma: no cover
         )
 
     def testurl(self, url):
+        url, headers = build_url("Check", url, self.request)
+
         h = Http()
-
-        log.info("Checker for url: %s" % url)
-
-        url = url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
-        headers = {
-            "Host": self.request.environ.get("HTTP_HOST"),
-            "Cache-Control": "no-cache",
-        }
-
         resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
@@ -83,43 +95,43 @@ class Checker(object):  # pragma: no cover
 
     @view_config(route_name="checker_main")
     def main(self):
-        _url = self.request.route_url("home")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("home")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_viewer")
     def viewer(self):
-        _url = self.request.route_url("viewer")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("viewer")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_edit")
     def edit(self):
-        _url = self.request.route_url("edit")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("edit")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_edit_js")
     def edit_js(self):
-        _url = self.request.route_url("edit.js")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("edit.js")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_api")
     def api_js(self):
-        _url = self.request.route_url("apijs")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("apijs")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_xapi")
     def xapi_js(self):
-        _url = self.request.route_url("xapijs")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("xapijs")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_printcapabilities")
     def printcapabilities(self):
-        _url = self.request.route_url("printproxy_info")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("printproxy_info")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_print3capabilities")
     def print3capabilities(self):
-        _url = self.request.route_url("printproxy_capabilities")
-        return self.make_response(self.testurl(_url))
+        url = self.request.route_url("printproxy_capabilities")
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_pdf")
     def pdf(self):
@@ -149,28 +161,26 @@ class Checker(object):  # pragma: no cover
         }
         body = dumps(body)
 
-        _url = add_url_params(self.request.route_url("printproxy_create"), {
+        url = add_url_params(self.request.route_url("printproxy_create"), {
             "url": self.request.route_url("printproxy"),
         })
-        h = Http()
-
-        log.info("Checker for printproxy request (create): %s" % _url)
-        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
-        headers = {
+        url, headers = build_url("Check the printproxy request (create)", url, self.request, {
             "Content-Type": "application/json;charset=utf-8",
-            "Host": self.request.environ.get("HTTP_HOST")
-        }
-        resp, content = h.request(_url, "POST", headers=headers, body=body)
+        })
+
+        h = Http()
+        resp, content = h.request(url, "POST", headers=headers, body=body)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed creating PDF: " + content
 
-        log.info("Checker for printproxy pdf (retrieve): %s" % _url)
         json = loads(content)
-        _url = json["getURL"].replace(self.request.environ.get("SERVER_NAME"), "localhost")
-        headers = {"Host": self.request.environ.get("HTTP_HOST")}
-        resp, content = h.request(_url, headers=headers)
+        url, headers = build_url(
+            "Check the printproxy pdf (retrieve)", json["getURL"], self.request
+        )
+
+        resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
@@ -185,42 +195,37 @@ class Checker(object):  # pragma: no cover
     def _pdf3(self):
         body = dumps(self.settings["print_spec"])
 
-        _url = self.request.route_url("printproxy_report_create", format="pdf")
-        h = Http()
-
-        log.info("Checker for printproxy request (create): %s" % _url)
-        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
-        headers = {
+        url = self.request.route_url("printproxy_report_create", format="pdf")
+        url, headers = build_url("Check the printproxy request (create)", url, self.request, {
             "Content-Type": "application/json;charset=utf-8",
-            "Host": self.request.environ.get("HTTP_HOST")
-        }
-        resp, content = h.request(_url, "POST", headers=headers, body=body)
+        })
+
+        h = Http()
+        resp, content = h.request(url, "POST", headers=headers, body=body)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
             return "Failed creating the print job: " + content
 
         job = loads(content)
-        _url = self.request.route_url("printproxy_status", ref=job["ref"])
-        log.info("Checker for printproxy pdf status: %s" % _url)
-        headers = {"Host": self.request.environ.get("HTTP_HOST")}
+        url = self.request.route_url("printproxy_status", ref=job["ref"])
+        url, headers = build_url("Check the printproxy pdf statur", url, self.request)
         done = False
         while not done:
             sleep(1)
-            resp, content = h.request(_url, headers=headers)
+            resp, content = h.request(url, headers=headers)
             if resp.status != httplib.OK:
                 self.set_status(resp.status, resp.reason)
                 return "Failed get the status: " + content
 
             status = loads(content)
-            print status
             if "error" in status:
-                return "Faild to do the printing: %s" % status["error"]
+                return "Failed to do the printing: %s" % status["error"]
             done = status["done"]
 
-        _url = self.request.route_url("printproxy_report_get", ref=job["ref"])
-        log.info("Checker for printproxy pdf retrieve: %s" % _url)
-        resp, content = h.request(_url, headers=headers)
+        url = self.request.route_url("printproxy_report_get", ref=job["ref"])
+        url, headers = build_url("Check the printproxy pdf retrieve", url, self.request)
+        resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
@@ -233,17 +238,14 @@ class Checker(object):  # pragma: no cover
         return self.make_response(self._fts())
 
     def _fts(self):
-        _url = add_url_params(self.request.route_url("fulltextsearch"), {
+        url = add_url_params(self.request.route_url("fulltextsearch"), {
             "query": self.settings["fulltextsearch"],
             "limit": "1",
         })
+        url, headers = build_url("Check the fulltextsearch", url, self.request)
+
         h = Http()
-
-        log.info("Checker for fulltextsearch: %s" % _url)
-        _url = _url.replace(self.request.environ.get("SERVER_NAME"), "localhost")
-        headers = {"host": self.request.environ.get("HTTP_HOST")}
-
-        resp, content = h.request(_url, headers=headers)
+        resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
             self.set_status(resp.status, resp.reason)
@@ -259,21 +261,21 @@ class Checker(object):  # pragma: no cover
 
     @view_config(route_name="checker_wmscapabilities")
     def wmscapabilities(self):
-        _url = add_url_params(self.request.route_url("mapserverproxy"), {
+        url = add_url_params(self.request.route_url("mapserverproxy"), {
             "SERVICE": "WMS",
             "VERSION": "1.1.1",
             "REQUEST": "GetCapabilities",
         })
-        return self.make_response(self.testurl(_url))
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_wfscapabilities")
     def wfscapabilities(self):
-        _url = add_url_params(self.request.route_url("mapserverproxy"), {
+        url = add_url_params(self.request.route_url("mapserverproxy"), {
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
             "REQUEST": "GetCapabilities",
         })
-        return self.make_response(self.testurl(_url))
+        return self.make_response(self.testurl(url))
 
     @view_config(route_name="checker_theme_errors")
     def themes_errors(self):
@@ -281,7 +283,7 @@ class Checker(object):  # pragma: no cover
 
         settings = self.settings.get("themes", {})
 
-        _url = self.request.route_url("themes")
+        url = self.request.route_url("themes")
         h = Http()
         default_params = settings.get("default", {}).get("params", {})
         for interface, in DBSession.query(Interface.name).all():
@@ -289,14 +291,9 @@ class Checker(object):  # pragma: no cover
             params.update(default_params)
             params.update(settings.get(interface, {}).get("params", {}))
             params["interface"] = interface
-            interface_url = add_url_params(_url, params)
+            interface_url = add_url_params(url, params)
 
-            log.info("Checker for theme: %s" % interface_url)
-            interface_url = interface_url.replace(
-                self.request.environ.get("SERVER_NAME"),
-                "localhost"
-            )
-            headers = {"host": self.request.environ.get("HTTP_HOST")}
+            interface_url, headers = build_url("Check the theme", interface_url, self.request)
 
             resp, content = h.request(interface_url, headers=headers)
 
@@ -335,19 +332,19 @@ class Checker(object):  # pragma: no cover
         for _type in self.settings.get("lang_files", []):
             for lang in available_locale_names:
                 if _type == "cgxp":
-                    _url = self.request.static_url(
+                    url = self.request.static_url(
                         "{package}:static/build/lang-{lang}.js".format(
                             package=self.request.registry.settings["package"], lang=lang
                         )
                     )
                 elif _type == "cgxp-api":
-                    _url = self.request.static_url(
+                    url = self.request.static_url(
                         "{package}:static/build/api-lang-{lang}.js".format(
                             package=self.request.registry.settings["package"], lang=lang
                         )
                     )
                 elif _type == "ngeo":
-                    _url = self.request.static_url(
+                    url = self.request.static_url(
                         "{package}:static-ngeo/build/locale/{lang}/{package}.json".format(
                             package=self.request.registry.settings["package"], lang=lang
                         )
@@ -360,7 +357,7 @@ class Checker(object):  # pragma: no cover
                             _type
                         )
                     ))
-                result.append(self.testurl(_url))
+                result.append(self.testurl(url))
         return self.make_response(
             "OK" if len(result) == 0 else "\n\n".join(result)
         )

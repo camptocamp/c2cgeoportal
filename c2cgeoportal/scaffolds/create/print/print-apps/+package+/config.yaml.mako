@@ -42,10 +42,7 @@ templates:
                 - !dnsMatch
                     host: ${host}
                 mapping:
-                    (https?)://${host}/(.*): "$1://127.0.0.1/$2"
-            - !useHttpForHttps
-                matchers:
-                - !localMatch {}
+                    (https?)://${host}/(.*): "http://127.0.0.1/$2"
             - !forwardHeaders
                 matchers:
                 - !localMatch {}

@@ -32,8 +32,7 @@ import re
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
 
-from pyramid.interfaces import IRoutePregenerator, \
-    IStaticURLInfo
+from pyramid.interfaces import IRoutePregenerator, IStaticURLInfo
 from zope.interface import implementer
 from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo

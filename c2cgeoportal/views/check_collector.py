@@ -28,14 +28,17 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
+import httplib
+from httplib2 import Http
 from time import time
 
 from pyramid.view import view_config
 from pyramid.response import Response
 
-import httplib
-from httplib2 import Http
-from urlparse import urlparse
+from c2cgeoportal.views.checker import build_url
+
+log = logging.getLogger(__name__)
 
 
 class CheckerCollector(object):  # pragma: no cover
@@ -78,13 +81,10 @@ class CheckerCollector(object):  # pragma: no cover
         )
 
     def _testurl(self, url):
+        url, headers = build_url("Collect", url, self.request)
+
         h = Http()
-
-        urlfragments = urlparse(url)
-        localurl = "%s://localhost%s" % (urlfragments.scheme, urlfragments.path)
-        headers = {"Host": urlfragments.netloc}
-
-        resp, content = h.request(localurl, headers=headers)
+        resp, content = h.request(url, headers=headers)
 
         if resp.status != httplib.OK:
             self.status_int = max(self.status_int, resp.status)
