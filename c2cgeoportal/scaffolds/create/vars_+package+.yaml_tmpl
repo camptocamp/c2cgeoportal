@@ -109,7 +109,7 @@ vars:
             Hello,
 
             You have asked for an new password,
-            the new generated password is: %s
+            the new generated password is: {password}
 
             Sincerely yours
             The GeoMapfish team
