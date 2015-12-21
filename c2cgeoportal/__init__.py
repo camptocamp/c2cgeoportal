@@ -490,7 +490,7 @@ def includeme(config):
     config.add_route("login", "/login", request_method=("GET", "POST"))
     config.add_route("logout", "/logout", request_method="GET")
     config.add_route("loginchange", "/loginchange", request_method="POST")
-    config.add_route("loginresetpassword", "/loginresetpassword", request_method="GET")
+    config.add_route("loginresetpassword", "/loginresetpassword", request_method="POST")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
     config.add_route("apijs", "/api.js", request_method="GET")
     config.add_route("xapijs", "/xapi.js", request_method="GET")
