@@ -568,7 +568,7 @@ def includeme(config):
     # add routes to the entry view class
     config.add_route("loginform", "/login.html", request_method="GET")
     add_cors_route(config, "/login", "login")
-    config.add_route("login", "/login", request_method=("GET", "POST"))
+    config.add_route("login", "/login", request_method="POST")
     add_cors_route(config, "/logout", "login")
     config.add_route("logout", "/logout", request_method="GET")
     add_cors_route(config, "/loginchange", "login")
