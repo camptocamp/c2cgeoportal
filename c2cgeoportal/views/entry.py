@@ -1329,7 +1329,7 @@ class Entry(object):
             "came_from": self.request.params.get("came_from") or "/",
         }
 
-    @view_config(route_name="login", renderer="json")
+    @view_config(route_name="login")
     def login(self):
         login = self.request.POST.get("login", None)
         password = self.request.POST.get("password", None)
@@ -1350,7 +1350,9 @@ class Entry(object):
                 headers.append(("Content-Type", "text/json"))
                 return set_common_headers(
                     self.request, "login", NO_CACHE,
-                    response=Response(self._user(), headers=headers),
+                    response=Response(json.dumps(self._user(
+                        DBSession.query(User).filter(User.username == user).one()
+                    )), headers=headers),
                 )
         else:
             return HTTPUnauthorized("bad credentials")
@@ -1375,13 +1377,14 @@ class Entry(object):
             response=Response("true", headers=headers),
         )
 
-    def _user(self):
+    def _user(self, user=None):
+        user = self.request.user if user is None else user
         result = {
-            "username": self.request.user.username,
-            "is_password_changed": self.request.user.is_password_changed,
-            "role_name": self.request.user.role_name,
-            "role_id": self.request.user.role.id
-        } if self.request.user else {}
+            "username": user.username,
+            "is_password_changed": user.is_password_changed,
+            "role_name": user.role_name,
+            "role_id": user.role.id
+        } if user else {}
 
         result["functionalities"] = self._functionality()
 
@@ -1439,21 +1442,15 @@ class Entry(object):
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return {
-                "success": False,
-                "error": _("The user '%s' doesn't exist.") % username,
-            }
+            return None, None, None, _("The user '%s' doesn't exist.") % username
 
         if user.email is None or user.email == "":  # pragma: no cover
-            return {
-                "success": False,
-                "error": _("User '%s' has no registered email address.") % username,
-            }
+            return None, None, None, _("User '%s' has no registered email address.") % username,
 
         password = self.generate_password()
         user.set_temp_password(password)
 
-        return user, username, password
+        return user, username, password, None
 
     @view_config(route_name="loginresetpassword", renderer="json")
     def loginresetpassword(self):  # pragma: no cover
@@ -1461,7 +1458,12 @@ class Entry(object):
             self.request, "login", NO_CACHE
         )
 
-        user, username, password = self._loginresetpassword()
+        user, username, password, error = self._loginresetpassword()
+        if error is not None:
+            return {
+                "success": False,
+                "error": error
+            }
         settings = self.request.registry.settings["reset_password"]
         send_email(
             settings["email_from"], [user.email],
