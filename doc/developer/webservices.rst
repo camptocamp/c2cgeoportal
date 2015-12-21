@@ -160,6 +160,8 @@ Used to login in the application.
 
 URL: ``.../login``
 
+Method: ``POST``
+
 Parameters (post form):
 
 * ``login``
@@ -179,6 +181,8 @@ Logout
 Used to log out of the application.
 
 URL: ``.../logout``
+
+Method: ``GET``
 
 Result HTTP code::
 
@@ -234,6 +238,8 @@ Used to change the user password.
 
 URL: ``.../loginchange``
 
+Method: ``POST``
+
 Parameters (post form):
 
 * ``newPassword``
@@ -257,6 +263,10 @@ JSON result
 
 Generate a new password
 -----------------------
+
+URL: ``.../loginresetpassword``
+
+Method: ``POST``
 
 Used when the user lost his password.
 
