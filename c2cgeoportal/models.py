@@ -872,7 +872,7 @@ class UIMetadata(Base):
         "TreeItem",
         backref=backref(
             "ui_metadata",
-            cascade="save-update,merge,delete",
+            cascade="save-update,merge,delete,delete-orphan",
         ),
     )
 
@@ -906,7 +906,7 @@ class WMTSDimension(Base):
         "LayerWMTS",
         backref=backref(
             "dimensions",
-            cascade="save-update,merge,delete",
+            cascade="save-update,merge,delete,delete-orphan",
         ),
     )
 
