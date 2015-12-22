@@ -1401,17 +1401,27 @@ class Entry(object):
     def loginchange(self):
         set_common_headers(self.request, "login", NO_CACHE)
 
+        old_password = self.request.POST.get("oldPassword", None)
         new_password = self.request.POST.get("newPassword", None)
         new_password_confirm = self.request.POST.get("confirmNewPassword", None)
-        if new_password is None or new_password_confirm is None:
+        if new_password is None or new_password_confirm is None or old_password is None:
             raise HTTPBadRequest(
-                "'newPassword' and 'confirmNewPassword' should be "
+                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
                 "available in request params"
             )
 
         # check if loggedin
         if not self.request.user:
             raise HTTPUnauthorized("bad credentials")
+
+        user = self.request.registry.validate_user(
+            self.request, self.request.user.username, old_password
+        )
+        if user is None:
+            raise HTTPBadRequest(
+                "The old password is wrong."
+            )
+
         if new_password != new_password_confirm:
             raise HTTPBadRequest(
                 "The new password and the new password "

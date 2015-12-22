@@ -1566,41 +1566,55 @@ class TestEntryView(TestCase):
         _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
         self.assertEqual(errors, set())
 
-    def test_loginchange(self):
+    def test_loginchange_no_params(self):
+        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
-        from c2cgeoportal.models import User
-        from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
-        try:
-            from hashlib import sha1
-            sha1  # suppress pyflakes warning
-        except ImportError:  # pragma: nocover
-            from sha import new as sha1  # noqa
 
-        request = self._create_request_obj()
+        request = self._create_request_obj(username=u"__test_user1")
         entry = Entry(request)
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
-        request = self._create_request_obj(params={
+    def test_loginchange_wrong_old(self):
+        from pyramid.httpexceptions import HTTPUnauthorized
+        from c2cgeoportal.views.entry import Entry
+
+        request = self._create_request_obj(username=u"__test_user1", params={
             "lang": "en"
         }, POST={
+            "oldPassword": "",
             "newPassword": "1234",
             "confirmNewPassword": "12345",
         })
         entry = Entry(request)
         self.assertRaises(HTTPUnauthorized, entry.loginchange)
 
-        request.user = User()
-        self.assertEquals(request.user.is_password_changed, False)
-        self.assertEquals(request.user._password, unicode(sha1("").hexdigest()))
-        self.assertRaises(HTTPBadRequest, entry.loginchange)
+    def test_loginchange_different(self):
+        from pyramid.httpexceptions import HTTPUnauthorized
+        from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(params={
+        request = self._create_request_obj(username=u"__test_user1", params={
             "lang": "en"
         }, POST={
+            "oldPassword": "__test_user1",
+            "newPassword": "1234",
+            "confirmNewPassword": "12345",
+        })
+        entry = Entry(request)
+        self.assertRaises(HTTPUnauthorized, entry.loginchange)
+
+    def test_loginchange_good_is_password_changed(self):
+        from c2cgeoportal.views.entry import Entry
+        from hashlib import sha1
+
+        request = self._create_request_obj(username=u"__test_user1", params={
+            "lang": "en"
+        }, POST={
+            "oldPassword": "__test_user1",
             "newPassword": "1234",
             "confirmNewPassword": "1234"
         })
-        request.user = User()
+        self.assertEquals(request.user.is_password_changed, False)
+        self.assertEquals(request.user._password, unicode(sha1("").hexdigest()))
         entry = Entry(request)
         self.assertNotEqual(entry.loginchange(), None)
         self.assertEqual(request.user.is_password_changed, True)

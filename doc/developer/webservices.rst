@@ -242,6 +242,7 @@ Method: ``POST``
 
 Parameters (post form):
 
+* ``oldPassword``
 * ``newPassword``
 * ``confirmNewPassword``
 
