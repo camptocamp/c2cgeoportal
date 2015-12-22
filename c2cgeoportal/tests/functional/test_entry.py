@@ -178,6 +178,7 @@ class TestEntryView(TestCase):
     #
 
     def test_login(self):
+        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj(params={
@@ -208,18 +209,18 @@ class TestEntryView(TestCase):
             "login": u"__test_user1",
             "password": u"bad password",
         })
-        response = Entry(request).login()
-        self.assertEquals(response.status_int, 401)
+        entry = Entry(request)
+        self.assertRaises(HTTPBadRequest, entry.login)
 
     def test_logout_no_auth(self):
+        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj(path="/", params={
             "came_from": "/came_from"
         })
         entry = Entry(request)
-        response = entry.logout()
-        self.assertEquals(response.status_int, 404)
+        self.assertRaises(HTTPBadRequest, entry.logout)
 
     def test_logout(self):
         from c2cgeoportal.models import DBSession, User
@@ -1570,12 +1571,14 @@ class TestEntryView(TestCase):
         from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
 
-        request = self._create_request_obj(username=u"__test_user1")
+        request = self._create_request_obj(username=u"__test_user1", params={
+            "lang": "en"
+        }, POST={})
         entry = Entry(request)
         self.assertRaises(HTTPBadRequest, entry.loginchange)
 
     def test_loginchange_wrong_old(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
+        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj(username=u"__test_user1", params={
@@ -1586,10 +1589,10 @@ class TestEntryView(TestCase):
             "confirmNewPassword": "12345",
         })
         entry = Entry(request)
-        self.assertRaises(HTTPUnauthorized, entry.loginchange)
+        self.assertRaises(HTTPBadRequest, entry.loginchange)
 
     def test_loginchange_different(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
+        from pyramid.httpexceptions import HTTPBadRequest
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj(username=u"__test_user1", params={
@@ -1600,7 +1603,7 @@ class TestEntryView(TestCase):
             "confirmNewPassword": "12345",
         })
         entry = Entry(request)
-        self.assertRaises(HTTPUnauthorized, entry.loginchange)
+        self.assertRaises(HTTPBadRequest, entry.loginchange)
 
     def test_loginchange_good_is_password_changed(self):
         from c2cgeoportal.views.entry import Entry
@@ -1614,7 +1617,7 @@ class TestEntryView(TestCase):
             "confirmNewPassword": "1234"
         })
         self.assertEquals(request.user.is_password_changed, False)
-        self.assertEquals(request.user._password, unicode(sha1("").hexdigest()))
+        self.assertEquals(request.user._password, unicode(sha1("__test_user1").hexdigest()))
         entry = Entry(request)
         self.assertNotEqual(entry.loginchange(), None)
         self.assertEqual(request.user.is_password_changed, True)

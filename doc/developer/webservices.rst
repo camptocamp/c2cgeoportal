@@ -172,8 +172,7 @@ Result HTTP code::
 
  * 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
  * 302 Found: Success -> redirect on came_from.
- * 400 Bad request: Missing login or password.
- * 401 Unauthorised: Wrong login.
+ * 400 Bad request: When something wrong.
 
 Logout
 ------
@@ -187,7 +186,7 @@ Method: ``GET``
 Result HTTP code::
 
  * 200 Success: Success.
- * 404 Not Found: Not login.
+ * 400 Bad request: When something wrong.
 
 User informations
 -----------------
@@ -220,7 +219,7 @@ Connected JSON result
 .. code:: json
 
    {
-       "userneme": "<username>",
+       "username": "<username>",
        "is_password_changed": "True"/"False", # If false the user should change his password
        "role_name": "<role_name>",
        "role_id": <role_id>
@@ -249,8 +248,7 @@ Parameters (post form):
 Result HTTP code::
 
  * 200 Success: Success.
- * 400 Bad request: Missing newPassword or confirmNewPassword or the booth password don't match.
- * 401 Unauthorised: Not login.
+ * 400 Bad request: When something wrong.
 
 JSON result
 ```````````
@@ -278,6 +276,7 @@ Parameters (post form):
 Result HTTP code::
 
  * 200 Success: Success.
+ * 400 Bad request: When something wrong.
 
 Success JSON result
 ```````````````````
@@ -286,15 +285,6 @@ Success JSON result
 
    {
        "success": "true"
-   }
-
-Failure JSON result
-```````````````````
-.. code:: json
-
-   {
-       "success": "false"
-       "error": "<the error>"
    }
 
 
