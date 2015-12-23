@@ -38,11 +38,11 @@ from random import Random
 from math import sqrt
 from xml.dom.minidom import parseString
 from urlparse import urlsplit
+from socket import gaierror
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
-    HTTPBadRequest, HTTPUnauthorized, HTTPForbidden, HTTPBadGateway
+from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget
 from pyramid.response import Response
 from sqlalchemy.orm.exc import NoResultFound
@@ -1333,11 +1333,12 @@ class Entry(object):
     def login(self):
         login = self.request.POST.get("login", None)
         password = self.request.POST.get("password", None)
-        if not (login and password):
-            return HTTPBadRequest(
+        if login is None or password is None:  # pragma nocover
+            log.info(
                 "'login' and 'password' should be "
-                "available in request params"
-            )  # pragma nocover
+                "available in request params."
+            )
+            raise HTTPBadRequest("See server logs for details")
         user = self.request.registry.validate_user(self.request, login, password)
         if user is not None:
             headers = remember(self.request, user)
@@ -1355,7 +1356,8 @@ class Entry(object):
                     )), headers=headers),
                 )
         else:
-            return HTTPUnauthorized("bad credentials")
+            log.info("bad credentials for login '%s'." % login)
+            raise HTTPBadRequest("See server logs for details")
 
     @view_config(route_name="logout")
     def logout(self):
@@ -1364,7 +1366,8 @@ class Entry(object):
         # if there's no user to log out, we send a 404 Not Found (which
         # is the status code that applies best here)
         if not self.request.user:
-            return HTTPNotFound()
+            log.info("Logout on non login user.")
+            raise HTTPBadRequest("See server logs for details")
 
         log.info("User '%s' (%i) logging out." % (
             self.request.user.username,
@@ -1400,28 +1403,40 @@ class Entry(object):
     def loginchange(self):
         set_common_headers(self.request, "login", NO_CACHE)
 
+        old_password = self.request.POST.get("oldPassword", None)
         new_password = self.request.POST.get("newPassword", None)
         new_password_confirm = self.request.POST.get("confirmNewPassword", None)
-        if new_password is None or new_password_confirm is None:
-            raise HTTPBadRequest(
-                "'newPassword' and 'confirmNewPassword' should be "
-                "available in request params"
+        if new_password is None or new_password_confirm is None or old_password is None:
+            log.info(
+                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
+                "available in request params."
             )
+            raise HTTPBadRequest("See server logs for details")
 
-        # check if loggedin
-        if not self.request.user:
-            raise HTTPUnauthorized("bad credentials")
+        # check if logged in
+        if not self.request.user:  # pragma nocover
+            log.info("Change password on non login user.")
+            raise HTTPBadRequest("See server logs for details")
+
+        user = self.request.registry.validate_user(
+            self.request, self.request.user.username, old_password
+        )
+        if user is None:
+            log.info("The old password is wrong for user '%s'." % user)
+            raise HTTPBadRequest("See server logs for details")
+
         if new_password != new_password_confirm:
-            raise HTTPBadRequest(
+            log.info(
                 "The new password and the new password "
-                "confirmation don't match"
+                "confirmation don't match for user '%s'." % user
             )
+            raise HTTPBadRequest("See server logs for details")
 
         u = self.request.user
         u._set_password(new_password)
         u.is_password_changed = True
         DBSession.flush()
-        log.info("Password changed for user: %s" % self.request.user.username)
+        log.info("Password changed for user '%s'" % self.request.user.username)
 
         return {
             "success": "true"
@@ -1442,10 +1457,12 @@ class Entry(object):
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return None, None, None, _("The user '%s' doesn't exist.") % username
+            return None, None, None, "The login '%s' doesn't exist." % username
 
         if user.email is None or user.email == "":  # pragma: no cover
-            return None, None, None, _("User '%s' has no registered email address.") % username,
+            return \
+                None, None, None, \
+                "The user '%s' has no registered email address." % user.username,
 
         password = self.generate_password()
         user.set_temp_password(password)
@@ -1460,18 +1477,21 @@ class Entry(object):
 
         user, username, password, error = self._loginresetpassword()
         if error is not None:
-            return {
-                "success": False,
-                "error": error
-            }
+            log.info(error)
+            raise HTTPBadRequest("See server logs for details")
         settings = self.request.registry.settings["reset_password"]
-        send_email(
-            settings["email_from"], [user.email],
-            settings["email_body"].format(user=username, password=password).encode("utf-8"),
-            settings["email_subject"],
-            settings["smtp_server"],
-        )
+        try:
+            send_email(
+                settings["email_from"], [user.email],
+                settings["email_body"].format(user=username, password=password).encode("utf-8"),
+                settings["email_subject"],
+                settings["smtp_server"],
+            )
 
-        return {
-            "success": True
-        }
+            return {
+                "success": True
+            }
+        except gaierror as e:
+            log.error("Unable to send the email.")
+            log.exception(e)
+            raise HTTPBadRequest("See server logs for details")
