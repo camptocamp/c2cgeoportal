@@ -396,7 +396,7 @@ class LayergroupTreeitem(Base):
         backref=backref(
             "children_relation",
             order_by="LayergroupTreeitem.ordering",
-            cascade="save-update,merge,delete",
+            cascade="save-update,merge,delete,delete-orphan",
         ),
         primaryjoin="LayergroupTreeitem.treegroup_id==TreeGroup.id",
     )
@@ -406,7 +406,7 @@ class LayergroupTreeitem(Base):
     item = relationship(
         "TreeItem",
         backref=backref(
-            "parents_relation", cascade="save-update,merge,delete"
+            "parents_relation", cascade="save-update,merge,delete,delete-orphan"
         ),
         primaryjoin="LayergroupTreeitem.treeitem_id==TreeItem.id",
     )
@@ -441,7 +441,8 @@ class TreeGroup(TreeItem):
     def _set_children(self, children):
         for child in self.children_relation:
             if child.item not in children:
-                self._sa_instance_state.session.delete(child)
+                child.item = None
+                child.group = None
         for index, child in enumerate(children):
             current = [c for c in self.children_relation if c.item == child]
             if len(current) == 1:
@@ -871,7 +872,7 @@ class UIMetadata(Base):
         "TreeItem",
         backref=backref(
             "ui_metadata",
-            cascade="save-update,merge,delete",
+            cascade="save-update,merge,delete,delete-orphan",
         ),
     )
 
@@ -905,7 +906,7 @@ class WMTSDimension(Base):
         "LayerWMTS",
         backref=backref(
             "dimensions",
-            cascade="save-update,merge,delete",
+            cascade="save-update,merge,delete,delete-orphan",
         ),
     )
 
