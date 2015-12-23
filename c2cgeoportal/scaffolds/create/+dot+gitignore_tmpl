@@ -16,6 +16,7 @@
 /development.ini
 /production.ini
 /project.yaml
+/.tx/config
 /print/print-servlet.war
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml

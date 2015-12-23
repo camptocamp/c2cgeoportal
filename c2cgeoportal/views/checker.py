@@ -345,7 +345,7 @@ class Checker(object):  # pragma: no cover
                     )
                 elif _type == "ngeo":
                     url = self.request.static_url(
-                        "{package}:static-ngeo/build/locale/{lang}/{package}.json".format(
+                        "{package}:static-ngeo/build/{lang}.json".format(
                             package=self.request.registry.settings["package"], lang=lang
                         )
                     )
