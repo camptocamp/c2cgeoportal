@@ -3,7 +3,6 @@ FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type
 MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
-C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
 DEVELOPPEMENT ?= FALSE
 
@@ -28,17 +27,32 @@ VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
-PO_FILES = $(shell find c2cgeoportal/locale -name "*.po" -print)
-MO_FILES = $(addsuffix .mo,$(basename $(PO_FILES)))
+FULL_VERSION = $(shell python setup.py --version)
+TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
+TX_DEPENDENCIES = .build/venv/bin/tx $(HOME)/.transifexrc .tx/config
+ifeq (,$(wildcard $(HOME)/.transifexrc))
+TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+else
+TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+endif
+L10N_LANGUAGES = fr de
+L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(L10N_LANGUAGES)))
+LANGUAGES = en $(L10N_LANGUAGES)
+PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
+MO_FILES = $(addprefix .build/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
 SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
 	$(shell find c2cgeoportal/lib -name "*.py" -print) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
-	$(shell find c2cgeoportal/scripts -name "*.py" -print)
+	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
 
 APPS += mobile
 APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
 APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
+
+ENVIRONMENT_VARS += TX_VERSION=$(TX_VERSION)
+C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
+
 
 .PHONY: help
 help:
@@ -53,7 +67,7 @@ help:
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- clean 		Remove generated files"
 	@echo  "- cleanall 		Remove all the build artefacts"
-	@echo  "- transifex-sync	Synchronize the localisation with Transifex"
+	@echo  "- transifex-send	Send the localisation to Transifex"
 
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
@@ -128,15 +142,29 @@ flake8: .build/venv/bin/flake8
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 
-.PHONY: transifex-sync
-transifex-sync: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot .tx/config
+# i18n
+$(HOME)/.transifexrc:
+	echo "[https://www.transifex.com]" > $@
+	echo "hostname = https://www.transifex.com" >> $@
+	echo "username = c2c" >> $@
+	echo "password = c2cc2c" >> $@
+	echo "token =" >> $@
+
+.build/venv/bin/tx: .build/dev-requirements.timestamp
+
+.PHONY: transifex-get
+transifex-get: c2cgeoportal/locale/c2cgeoportal.pot $(L10N_PO_FILES)
+
+.PHONY: transifex-send
+transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 	.build/venv/bin/tx push --source
-	.build/venv/bin/tx pull --all --force
+	$(TOUCHBACK_TXRC)
 
 .PHONY: transifex-init
-transifex-init: .build/dev-requirements.timestamp c2cgeoportal/locale/c2cgeoportal.pot .tx/config
+transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 	.build/venv/bin/tx push --source
 	.build/venv/bin/tx push --translations --force --no-interactive
+	$(TOUCHBACK_TXRC)
 
 # Import ngeo templates
 
@@ -166,18 +194,23 @@ $(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_FILES}
 %: %.mako
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
-c2cgeoportal/locale/c2cgeoportal.pot: $(SRC_FILES) .build/requirements.timestamp
-	.build/venv/bin/pot-create -c lingua.cfg -o $@ $(SRC_FILES)
-	# removes the always changed date line
-	sed -i '/^"POT-Creation-Date: /d' $@
-	sed -i '/^"PO-Revision-Date: /d' $@
+c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) .build/requirements.timestamp
+	mkdir -p $(dir $@)
+	.build/venv/bin/pot-create --keyword _ --config $< --output $@ $(SRC_FILES)
 
 c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeoportal.pot .build/dev-requirements.timestamp
+	mkdir -p $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
 
-%.mo: %.po
-	msgfmt -o $@ $<
+c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES) .build/dev-requirements.timestamp
+	mkdir -p $(dir $@)
+	.build/venv/bin/tx pull -l $* --force
+	$(TOUCHBACK_TXRC)
+
+.build/%.mo.timestamp: %.po
+	mkdir -p $(dir $@)
+	msgfmt -o $*.mo $<
 	touch $@
 
 .build/venv/bin/flake8: .build/dev-requirements.timestamp

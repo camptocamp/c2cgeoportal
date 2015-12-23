@@ -82,6 +82,12 @@ Checkout the code:
     git checkout master
     git pull origin master
 
+Get the localisation from Transifex:
+
+.. prompt:: bash
+
+   make transifex-get
+
 Edit the ``doc/integrator/update_application.rst`` file to change the default version.
 
 Update the version of c2cgeoportal to ``<release>`` in

@@ -8,9 +8,6 @@ then
     cd $1
 fi
 
-# Checkout po file to don't failed on them
-git checkout */locale/*/LC_MESSAGES/*.po
-
 status=`git status -s`
 
 if [ "$status" != "" ]
