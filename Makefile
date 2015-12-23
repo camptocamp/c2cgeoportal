@@ -80,6 +80,7 @@ clean:
 	rm -f .build/dev-requirements.timestamp
 	rm -f .build/venv.timestamp
 	rm -f c2cgeoportal/locale/*.pot
+	rm -f c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
 	rm -rf c2cgeoportal/static/build
 	rm -f $(MAKO_FILES:.mako=)
 	rm -rf ngeo
@@ -87,6 +88,7 @@ clean:
 
 .PHONY: cleanall
 cleanall: clean
+	rm -f $(PO_FILES)
 	rm -rf .build
 
 .PHONY: c2c-egg
