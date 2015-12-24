@@ -57,7 +57,7 @@ templates:
                 - !localMatch
                   pathRegex: "^/${instanceid}/wsgi/mapserv_proxy$"
                 - !localMatch
-                  pathRegex: "^/${instanceid}/tiles/"
+                  pathRegex: "/${instanceid}/tiles/.*"
                 - !localMatch
                   reject: true
                 - !ipMatch
