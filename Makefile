@@ -75,7 +75,9 @@ build: $(MAKO_FILES:.mako=) \
 	$(JSBUILD_ADMIN_OUTPUT_FILES) \
 	$(CSS_ADMIN_OUTPUT) \
 	$(MO_FILES) \
-	$(APPS_HTML_FILES) $(APPS_JS_FILES)
+	$(APPS_HTML_FILES) $(APPS_JS_FILES) \
+	c2cgeoportal/scaffolds/update/+dot+tx/config_mako \
+	c2cgeoportal/scaffolds/update/package.json_tmpl
 
 .PHONY: buildall
 buildall: build doc tests checks
@@ -186,6 +188,17 @@ $(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html 
 
 $(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/mobile.js .build/requirements.timestamp
 	.build/venv/bin/import-ngeo-apps --js $* $< $@
+
+ngeo/.tx/config.mako: ngeo
+
+c2cgeoportal/scaffolds/update/+dot+tx/config_mako: ngeo/.tx/config.mako
+	mkdir -p $(dir $@)
+	cp $< $@
+
+ngeo/package.json: ngeo
+
+c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requirements.timestamp
+	.build/venv/bin/import-ngeo-apps --package _ $< $@
 
 # Templates
 
