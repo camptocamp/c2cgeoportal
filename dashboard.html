@@ -80,20 +80,21 @@
               }
             });
 
-            queries.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
-                          'title': "[Error] No step labels"});
-            queries.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
-                          'title': "[Error] No task labels"});
+            var qs = $.extend(true, [], queries);
+            qs.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
+                     'title': "[Error] No step labels"});
+            qs.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
+                     'title': "[Error] No task labels"});
             
             $("#queries").append("<p>" + repo.name + " (" + repo.milestone + ")</p><dl>");
           
             var queries_items = [];
-            $.each(queries, function(key, query) {
+            $.each(qs, function(key, query) {
               queries_items.push(query_link(repo, query));
             });
           
             $("#queries").append("<dt>" + queries_items.join('</dt><dt>') + "</dt></dl>");
-          });
+          }).done();
         });    
       }
       function load(url, github_url) {
