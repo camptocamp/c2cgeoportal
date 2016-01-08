@@ -63,63 +63,77 @@
         return "<a href=\"javascript:load('" + url +"', '"
                + github_url + "');\">" + query.title + "</a>";
       }
+      function set_auth(xhr) {
+        xhr.setRequestHeader('Authorization', 'Basic ' 
+                             + btoa('ybolognini:5790ab4e792ab29a92bd41ae1fb7639bcf130e08'));
+      }
       function load_queries() {
         
         $("#queries").html('');
 
         $.each(repos, function(key, repo) {
-          $.getJSON("https://api.github.com/repos/" + repo.name + "/labels").done(function(data) {
+          $.ajax({
+            type: "GET",
+            url: "https://api.github.com/repos/" + repo.name + "/labels",
+            dataType: 'json',
+            beforeSend: function(xhr) { set_auth(xhr); }
+          }).done(function(data) {
+              var steps = [];
+              var tasks = [];
+              $.each(data, function(key, label) {
+                if (label.color == repo.steps_color) {
+                  steps.push(label.name);
+                } else if (label.color == repo.tasks_color) {
+                  tasks.push(label.name);
+                }
+              });
 
-            var steps = [];
-            var tasks = [];
-            $.each(data, function(key, label) {
-              if (label.color == repo.steps_color) {
-                steps.push(label.name);
-              } else if (label.color == repo.tasks_color) {
-                tasks.push(label.name);
-              }
-            });
-
-            var qs = $.extend(true, [], queries);
-            qs.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
-                     'title': "[Error] No step labels"});
-            qs.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
-                     'title': "[Error] No task labels"});
+              var qs = $.extend(true, [], queries);
+              qs.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
+                       'title': "[Error] No step labels"});
+              qs.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
+                       'title': "[Error] No task labels"});
+              
+              $("#queries").append("<p>" + repo.name + " (" + repo.milestone + ")</p><dl>");
             
-            $("#queries").append("<p>" + repo.name + " (" + repo.milestone + ")</p><dl>");
-          
-            var queries_items = [];
-            $.each(qs, function(key, query) {
-              queries_items.push(query_link(repo, query));
-            });
-          
-            $("#queries").append("<dt>" + queries_items.join('</dt><dt>') + "</dt></dl>");
-          }).done();
-        });    
+              var queries_items = [];
+              $.each(qs, function(key, query) {
+                queries_items.push(query_link(repo, query));
+              });
+            
+              $("#queries").append("<dt>" + queries_items.join('</dt><dt>') + "</dt></dl>");
+            }).done();
+        });
       }
       function load(url, github_url) {
       
         $("#content").html("<p>Retrieving data... See query on <a target=\"_blank\" href=\""
                            + github_url + "\">GitHub</a></p>");
         
-        $.getJSON(url).done(function(data) {
-          var items = [];
-          $.each(data.items, function(key, val) {
-            var labels = [];
-            $.each(val.labels, function(key, label) {
-              labels.push("<span class=\"label\" style=\"color: #" + label.color + "\">" + label.name + "</span>")
-            });
-            var assignee = '';
-            if (val.assignee) {
-              assignee = " @" + val.assignee.login;
-            }
-            items.push("<dt><a target=\"_blank\" href=\"" + val.html_url
-                       + "\">#" + val.number + "</a>: " + val.title 
-                       + " [" + labels.join(' ') + "]" + assignee + "</dt>");
-          });   
-          $("#content").html("<p>" + data.total_count
-                             + " issue(s) found. See query on <a target=\"_blank\" href=\""
-                             + github_url + "\">GitHub</a></p><dl>" + items.join("") + "</dl>");
+        $.ajax({
+          type: "GET",
+          url: url,
+          dataType: 'json',
+          beforeSend: function(xhr) { set_auth(xhr); },
+          success: function(data) {
+            var items = [];
+            $.each(data.items, function(key, val) {
+              var labels = [];
+              $.each(val.labels, function(key, label) {
+                labels.push("<span class=\"label\" style=\"color: #" + label.color + "\">" + label.name + "</span>")
+              });
+              var assignee = '';
+              if (val.assignee) {
+                assignee = " @" + val.assignee.login;
+              }
+              items.push("<dt><a target=\"_blank\" href=\"" + val.html_url
+                         + "\">#" + val.number + "</a>: " + val.title 
+                         + " [" + labels.join(' ') + "]" + assignee + "</dt>");
+            });   
+            $("#content").html("<p>" + data.total_count
+                               + " issue(s) found. See query on <a target=\"_blank\" href=\""
+                               + github_url + "\">GitHub</a></p><dl>" + items.join("") + "</dl>");
+          }
         });
       }
     </script>
