@@ -33,3 +33,25 @@ value of ``request.scheme``. For example::
     % endif
     /* ... */
     };
+
+Loading non https external resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to load non https external resources in your https application, you
+must use the resourceproxy service and add the list of hosts you want to access
+in your project `vars_<project>.yaml` configuration file:
+
+.. code:: yaml
+
+    resourceproxy:
+        # list of urls from which it is safe to load content
+        targets:
+          #exempletargetname: http://www.camptocamp.com/?param1=%s&param2=%s
+          rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&no_immeuble=%s
+
+Then you can access resources by building urls using the following schema:
+``http://<host>/<instanceid>/wsgi/resourceproxy?target=<targetname>&values=(<valueparam1>,...)``.
+
+For example:
+
+``http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&values=(175,2633)``

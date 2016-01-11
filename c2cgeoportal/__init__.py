@@ -622,6 +622,9 @@ def includeme(config):
     # mako templates to get the root of the "layers" web service
     config.add_route("layers_root", "/layers/", request_method="HEAD")
 
+    # Resource proxy (load external url, useful when loading non https content)
+    config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
+
     # pyramid_formalchemy's configuration
     config.include("pyramid_formalchemy")
     config.include("fa.jquery")
