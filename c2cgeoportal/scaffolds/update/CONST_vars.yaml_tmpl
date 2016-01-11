@@ -135,7 +135,17 @@ vars:
 
     # The list of available variable names for the `UI metadatas` form.
         available_metadata:
-        - copy_to
+        - copyTo
+        - legendRule
+        - isLegendExpanded
+        - metadataUrl
+        - disclaimer
+        - isChecked
+        - identifierAttributeField
+        - maxResolution
+        - legend
+        - minResolution
+        - thumbnail
 
     # The list of functionalities that can be configured
     # through the admin interface.
