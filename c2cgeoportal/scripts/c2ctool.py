@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2015, Camptocamp SA
+# Copyright (c) 2014-2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -270,18 +270,22 @@ class C2cTool:
         notes = []
 
         check_call(["git", "reset", "--hard"])
-        check_call(["git", "clean", "-f", "-d"])
+        check_call(["git", "clean", "--force", "-d"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
-        check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "-f", "-d"])
+        check_call(["git", "submodule", "foreach", "--recursive", "git", "clean", "--force", "-d"])
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        try:
-            check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
-        except CalledProcessError:
-            print(self.color_bar)
-            print(colorize("The pull (rebase) failed.", RED))
-            print(colorize("Please solve the rebase and run the step again.", YELLOW))
-            exit(1)
+        # remove all no more existing branches
+        check_call(["git", "update", "origin", "--prune"])
+        branches = check_output(["git", "branch", "--all"]).split("\n")
+        if "  remotes/origin/%s" % branch in branches:
+            try:
+                check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
+            except CalledProcessError:
+                print(self.color_bar)
+                print(colorize("The pull (rebase) failed.", RED))
+                print(colorize("Please solve the rebase and run the step again.", YELLOW))
+                exit(1)
 
         check_call(["git", "submodule", "sync"])
         check_call(["git", "submodule", "update", "--init"])

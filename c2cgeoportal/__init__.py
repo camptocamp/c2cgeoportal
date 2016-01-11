@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2015, Camptocamp SA
+# Copyright (c) 2011-2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -616,6 +616,7 @@ def includeme(config):
     config.add_route("loginchange", "/loginchange", request_method="POST")
     add_cors_route(config, "/loginresetpassword", "login")
     config.add_route("loginresetpassword", "/loginresetpassword", request_method="POST")
+    add_cors_route(config, "/loginuser", "login")
     config.add_route("loginuser", "/loginuser", request_method="GET")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
     config.add_route("apijs", "/api.js", request_method="GET")
@@ -752,6 +753,9 @@ def includeme(config):
     # there's no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route("layers_root", "/layers/", request_method="HEAD")
+
+    # Resource proxy (load external url, useful when loading non https content)
+    config.add_route("resourceproxy", "/resourceproxy", request_method="GET")
 
     # pyramid_formalchemy's configuration
     config.include("pyramid_formalchemy")

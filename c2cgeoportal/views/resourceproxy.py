@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2015-2016, Camptocamp SA
+# Copyright (c) 2011-2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,28 +27,44 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add image format to WMTS layer
 
-Revision ID: 164ac0819a61
-Revises: 20137477bd02
-Create Date: 2015-03-06 09:08:05.754746
-"""
+import logging
 
-from alembic import op, context
-from sqlalchemy import Column, Unicode
+from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPBadRequest
+from c2cgeoportal.views.proxy import Proxy
+from c2cgeoportal.lib.caching import NO_CACHE
 
-# revision identifiers, used by Alembic.
-revision = '164ac0819a61'
-down_revision = '20137477bd02'
+import ast
+
+log = logging.getLogger(__name__)
 
 
-def upgrade():
-    schema = context.get_context().config.get_main_option('schema')
+class ResourceProxy(Proxy):
 
-    op.add_column('layer_wmts', Column('image_type', Unicode(10)), schema=schema)
+    def __init__(self, request):  # pragma: no cover
+        Proxy.__init__(self, request)
+        self.request = request
+        self.settings = request.registry.settings.get("resourceproxy", {})
 
+    @view_config(route_name="resourceproxy")
+    def proxy(self):  # pragma: no cover
+        target = self.request.params.get("target", "")
+        targets = self.settings.get("targets", [])
+        if target in targets:  # pragma: no cover
+            url = targets[target]
+            values = ast.literal_eval(self.request.params.get("values", None))
+            url = url % values
 
-def downgrade():
-    schema = context.get_context().config.get_main_option('schema')
+            resp, content = self._proxy(url=url)
 
-    op.drop_column('layer_wmts', 'image_type', schema=schema)
+            cache_control = NO_CACHE
+            content_type = resp["content-type"]
+
+            return self._build_response(
+                resp, content, cache_control, "externalresource",
+                content_type=content_type
+            )
+        else:  # pragma: no cover
+            log.warning("target url not found: %s" % target)
+            return HTTPBadRequest("url not allowed")

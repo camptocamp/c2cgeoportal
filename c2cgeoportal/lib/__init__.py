@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2015, Camptocamp SA
+# Copyright (c) 2011-2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -152,8 +152,11 @@ class C2CPregenerator:  # pragma: no cover
             from c2cgeoportal.lib.cacheversion import get_cache_version
             query["cache_version"] = get_cache_version()
 
-        if self.role and request.user and request.user.role:
-            query["role"] = request.user.role.id
+        if self.role and request.user:
+            # The templates change if the user is logged in or not. Usually it's
+            # the role that is making a difference, but the username is put in
+            # some JS files. So we add the username to hit different cache entries.
+            query["username"] = request.user.username
 
         kw["_query"] = query
         return elements, kw
