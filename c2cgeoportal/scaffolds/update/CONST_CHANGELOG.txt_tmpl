@@ -72,6 +72,22 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
+8. A new checker has been added to test for javascript error. If you have
+   overridded the checker list in your `vars_{{package}}.yaml` file, you must
+   add it.
+
+    # Check collector configuration
+    check_collector:
+        disabled: [checker_printcapabilities, checker_pdf]
+        check_type:
+            all:
+    ...
+   +         - name: checker_js_generic
+   +           display: PhantomJS generic test
+            main:
+    ...
+   +         - name: checker_js_generic
+   +           display: PhantomJS generic test
 
 Version 1.6.7
 =============

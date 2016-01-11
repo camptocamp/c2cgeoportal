@@ -654,6 +654,7 @@ def includeme(config):
     config.add_route("checker_wmscapabilities", "/checker_wmscapabilities", request_method="GET")
     config.add_route("checker_wfscapabilities", "/checker_wfscapabilities", request_method="GET")
     config.add_route("checker_theme_errors", "/checker_theme_errors", request_method="GET")
+    config.add_route("checker_js_generic", "/checker_js_generic", request_method="GET")
     # collector
     config.add_route("check_collector", "/check_collector", request_method="GET")
 

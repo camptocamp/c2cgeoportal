@@ -310,6 +310,8 @@ vars:
               display: WMS capabilities
             - name: checker_wfscapabilities
               display: WFS capabilities
+            - name: checker_js_generic
+              display: PhantomJS generic test
             main:
             - name: checker_main
               display: Main page
@@ -321,6 +323,8 @@ vars:
               display: Print capabilities
             - name: checker_fts
               display: FullTextSearch
+            - name: checker_js_generic
+              display: PhantomJS generic test
             default: # for children
             - name: checker_viewer
               display: Viewer script
