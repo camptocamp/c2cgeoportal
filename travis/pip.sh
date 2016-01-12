@@ -15,7 +15,7 @@ then
     exit 0
 fi
 
-for N in {1..10}
+for N in {1..3}
 do
     echo RETRY...
     .build/venv/bin/pip ${ARGS} $* | grep '^\(Collecting\|  Downloading\) '
