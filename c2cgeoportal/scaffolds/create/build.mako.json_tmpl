@@ -10,6 +10,8 @@
   "compile": {
     "closure_entry_point": "{{package}}_${interface}",
     "externs": [
+      "node_modules/openlayers/externs/olx.js",
+      "node_modules/openlayers/externs/oli.js",
       "node_modules/openlayers/externs/bingmaps.js",
       "node_modules/openlayers/externs/closure-compiler.js",
       "node_modules/openlayers/externs/esrijson.js",
@@ -18,10 +20,14 @@
       "node_modules/openlayers/externs/tilejson.js",
       "node_modules/openlayers/externs/topojson.js",
       "node_modules/ngeo/contribs/gmf/externs/gmfx.js",
+      "node_modules/ngeo/externs/closure-compiler.js",
+      "node_modules/ngeo/externs/jqueryui.js",
       "node_modules/ngeo/externs/angular-gettext.js",
+      "node_modules/ngeo/externs/ngeox.js",
       "node_modules/ngeo/externs/d3.js",
-      "node_modules/ngeo/externs/twbootstrap.js",
       "node_modules/ngeo/externs/typeahead.js",
+      "node_modules/ngeo/externs/mapfish-print-v3.js",
+      "node_modules/ngeo/externs/twbootstrap.js",
       ".build/externs/angular-1.4.js",
       ".build/externs/angular-1.4-q_templated.js",
       ".build/externs/angular-1.4-http-promise_templated.js",
@@ -36,10 +42,7 @@
       "ol.ENABLE_WEBGL=false"
     ],
     "js": [
-      "{{package}}/static-ngeo/js/${interface}.js",
-      "node_modules/openlayers/externs/olx.js",
-      "node_modules/ngeo/externs/ngeox.js",
-      "node_modules/openlayers/externs/oli.js"
+      "{{package}}/static-ngeo/js/${interface}.js"
     ],
     "jscomp_error": [
       "accessControls",
