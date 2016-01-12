@@ -3,7 +3,7 @@
     "node_modules/openlayers/src/**/*.js",
     "node_modules/openlayers/build/ol.ext/**/*.js",
     "node_modules/ngeo/src/**/*.js",
-    "node_modules/ngeo/contribs/gmf/**/*.js",
+    "node_modules/ngeo/contribs/gmf/src/**/*.js",
     "{{package}}/static-ngeo/js/**/*.js",
     ".build/templatecache.js"
   ],
