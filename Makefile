@@ -8,7 +8,6 @@ C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 DEVELOPPEMENT ?= FALSE
 
 PIP_CMD ?= .build/venv/bin/pip
-PIP_INSTALL_ARGS += install
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
 
@@ -188,18 +187,18 @@ c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po: c2cgeoportal/locale/c2cgeopo
 .build/venv/bin/c2c-cssmin: .build/dev-requirements.timestamp
 
 .build/dev-requirements.timestamp: .build/venv.timestamp dev-requirements.txt
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r dev-requirements.txt $(PIP_REDIRECT)
+	$(PIP_CMD) install -r dev-requirements.txt
 	touch $@
 
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
 	virtualenv --no-site-packages .build/venv
-	$(PIP_CMD) install 'pip>=7' 'setuptools>=12' $(PIP_REDIRECT)
+	$(PIP_CMD) install 'pip>=7' 'setuptools>=12'
 	touch $@
 
 .build/requirements.timestamp: .build/venv.timestamp setup.py \
 		requirements.txt
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r requirements.txt $(PIP_REDIRECT)
+	$(PIP_CMD) install -r requirements.txt
 	touch $@
 
 $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)

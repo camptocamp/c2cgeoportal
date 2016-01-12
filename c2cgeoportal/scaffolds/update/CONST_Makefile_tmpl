@@ -20,7 +20,6 @@ DEPLOY ?= TRUE
 PRINT_VERSION ?= 3
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_INSTALL_ARGS += install
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -732,7 +731,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 # Venv
 
 .build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(DEV_REQUIREMENTS) $(PIP_REDIRECT)
+	$(PIP_CMD) install $(DEV_REQUIREMENTS)
 	touch $@
 
 .build/venv.timestamp-noclean:
@@ -742,7 +741,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
-	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS) $(PIP_REDIRECT)
+	$(PIP_CMD) install $(REQUIREMENTS)
 	touch $@
 
 # Print
