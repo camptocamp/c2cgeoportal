@@ -293,7 +293,7 @@ PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
 
 # Templates
-TEMPLATE_EXCLUDE += .build print/templates \
+TEMPLATE_EXCLUDE += .build node_modules print/templates \
 	CONST_alembic/main/script.py.mako \
 	CONST_alembic/static/script.py.mako \
 	$(PACKAGE)/static/lib
