@@ -20,7 +20,7 @@ DEPLOY ?= TRUE
 PRINT_VERSION ?= 3
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+PIP_INSTALL_ARGS += install
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -737,10 +737,8 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 
 .build/venv.timestamp-noclean:
 	mkdir -p $(dir $@)
-	virtualenv --setuptools --no-site-packages .build/venv
-	$(PIP_CMD) install \
-		--index-url http://pypi.camptocamp.net/pypi \
-		'pip>=6,<7' 'setuptools>=12'
+	virtualenv --no-site-packages .build/venv
+	$(PIP_CMD) install 'pip>=6,<7' 'setuptools>=12'
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
@@ -846,7 +844,7 @@ $(UPGRADE_MAKE_FILE):
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
+	.build/venv/bin/pip install \
 		--find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal \
 		c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
