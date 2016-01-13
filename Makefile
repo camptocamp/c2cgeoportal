@@ -177,11 +177,13 @@ ngeo: NGEO_GIT_ARGS ?= --branch=master
 ngeo:
 	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
 
+.SECONDARY: $(addprefix ngeo/contribs/gmf/apps/, $(addsuffix /index.html, $(APPS)))
 ngeo/contribs/gmf/apps/%/index.html: ngeo
-	touch $@
+	touch --no-create $@
 
+.SECONDARY: $(addprefix ngeo/contribs/gmf/apps/, $(addsuffix /js/mobile.js, $(APPS)))
 ngeo/contribs/gmf/apps/%/js/mobile.js: ngeo
-	touch $@
+	touch --no-create $@
 
 $(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp
 	.build/venv/bin/import-ngeo-apps --html $* $< $@
@@ -195,7 +197,9 @@ c2cgeoportal/scaffolds/update/+dot+tx/config_mako: ngeo/.tx/config.mako
 	mkdir -p $(dir $@)
 	cp $< $@
 
+.SECONDARY: ngeo/package.json
 ngeo/package.json: ngeo
+	touch --no-create $@
 
 c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requirements.timestamp
 	.build/venv/bin/import-ngeo-apps --package _ $< $@

@@ -513,7 +513,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 
 %.mo: %.po
 	msgfmt -o $@ $<
-	touch -c $@
+	touch --no-create $@
 
 # Get l10n from ngeo
 
