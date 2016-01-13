@@ -87,6 +87,7 @@ class TestRequestProperty(TestCase):
         request = DummyRequest(headers={
             "Authorization": "Basic " + base64.b64encode("__test_user:__test_user").replace("\n", "")
         })
+        request.path_info_peek = lambda: "main"
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
             "authtkt_cookie_name": "__test",
@@ -104,6 +105,7 @@ class TestRequestProperty(TestCase):
         request = DummyRequest(headers={
             "Authorization": "Basic " + base64.b64encode("__test_user:__wrong_pass").replace("\n", "")
         })
+        request.path_info_peek = lambda: "main"
         request.registry.validate_user = default_user_validator
         request._get_authentication_policy = lambda: create_authentication({
             "authtkt_cookie_name": "__test",
