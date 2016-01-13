@@ -1,4 +1,3 @@
---index-url http://pypi.camptocamp.net/pypi
 flake8
 pep8-naming
 c2c.template>=1.2.dev

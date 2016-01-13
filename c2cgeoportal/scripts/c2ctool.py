@@ -322,7 +322,6 @@ class C2cTool:
             check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
             pip_cmd = [
                 "%s/pip" % self.venv_bin, "install",
-                "--trusted-host", "pypi.camptocamp.net",
                 "--find-links", self.options.index_url,
             ]
             if self.options.version == "master":

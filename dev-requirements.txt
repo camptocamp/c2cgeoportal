@@ -1,4 +1,3 @@
---index-url http://pypi.camptocamp.net/pypi
 setuptools>=8.0
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 nose

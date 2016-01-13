@@ -1,4 +1,3 @@
---index-url http://pypi.camptocamp.net/pypi
 --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 -r CONST_versions.txt
 Pillow==3.0.0
