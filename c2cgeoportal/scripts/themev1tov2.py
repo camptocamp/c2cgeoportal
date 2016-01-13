@@ -183,29 +183,29 @@ def layer_add_ui_metadata(layer, new_layer, session):  # pragma: nocover
     from c2cgeoportal.models import UIMetadata
 
     if layer.metadata_url is not None:
-        session.add(UIMetadata(u"metadata_url", layer.metadata_url, new_layer))
+        session.add(UIMetadata(u"metadataUrl", layer.metadata_url, new_layer))
     if layer.is_checked is True:
-        session.add(UIMetadata(u"is_checked", u"true", new_layer))
+        session.add(UIMetadata(u"isChecked", u"true", new_layer))
     if layer.icon is not None:
         session.add(UIMetadata(u"icon", layer.icon, new_layer))
     if layer.wms_url is not None:
-        session.add(UIMetadata(u"wms_url", layer.wms_url, new_layer))
+        session.add(UIMetadata(u"wmsUrl", layer.wms_url, new_layer))
     if layer.wms_layers is not None:
-        session.add(UIMetadata(u"wms_layers", layer.wms_layers, new_layer))
+        session.add(UIMetadata(u"wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
-        session.add(UIMetadata(u"query_layers", layer.query_layers, new_layer))
+        session.add(UIMetadata(u"queryLayers", layer.query_layers, new_layer))
     if layer.legend is not None:
         session.add(UIMetadata(u"legend", layer.legend, new_layer))
     if layer.legend_image is not None:
-        session.add(UIMetadata(u"legend_image", layer.legend_image, new_layer))
+        session.add(UIMetadata(u"legendImage", layer.legend_image, new_layer))
     if layer.legend_rule is not None:
-        session.add(UIMetadata(u"legend_rule", layer.legend_rule, new_layer))
+        session.add(UIMetadata(u"legendRule", layer.legend_rule, new_layer))
     if layer.is_legend_expanded is True:
-        session.add(UIMetadata(u"is_legend_expanded", u"true", new_layer))
+        session.add(UIMetadata(u"isLegendExpanded", u"true", new_layer))
     if layer.min_resolution is not None:
-        session.add(UIMetadata(u"min_resolution", layer.min_resolution, new_layer))
+        session.add(UIMetadata(u"minResolution", layer.min_resolution, new_layer))
     if layer.max_resolution is not None:
-        session.add(UIMetadata(u"max_resolution", layer.max_resolution, new_layer))
+        session.add(UIMetadata(u"maxResolution", layer.max_resolution, new_layer))
     if layer.disclaimer is not None:
         session.add(UIMetadata(u"disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
@@ -214,4 +214,4 @@ def layer_add_ui_metadata(layer, new_layer, session):  # pragma: nocover
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(UIMetadata("exclude_properties", layer.exclude_properties, new_layer))
+        session.add(UIMetadata("excludeProperties", layer.exclude_properties, new_layer))
