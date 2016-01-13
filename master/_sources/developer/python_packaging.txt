@@ -3,14 +3,6 @@
 Python Packaging
 ================
 
-Mirror
-------
-
-The mirror is available at this *Python Package Index* (PyPI): http://pypi.camptocamp.net/pypi.
-It's a mirror of the `official PyPI <http://pypi.python.org>`_.
-It is based on `collective.eggproxy <http://pypi.python.org/pypi/collective.eggproxy>`_.
-We use this mirror as a proxy cache for our external dependencies.
-
 Package
 -------
 

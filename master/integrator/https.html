@@ -75,6 +75,23 @@ value of <code class="docutils literal"><span class="pre">request.scheme</span><
 };
 </pre></div>
 </div>
+<div class="section" id="loading-non-https-external-resources">
+<h2>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this headline">¶</a></h2>
+<p>If you want to load non https external resources in your https application, you
+must use the resourceproxy service and add the list of hosts you want to access
+in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>resourceproxy:
+    # list of urls from which it is safe to load content
+    targets:
+      #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
+      rfinfo: http://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&amp;no_immeuble=%s
+</pre></div>
+</div>
+<p>Then you can access resources by building urls using the following schema:
+<code class="docutils literal"><span class="pre">http://&lt;host&gt;/&lt;instanceid&gt;/wsgi/resourceproxy?target=&lt;targetname&gt;&amp;values=(&lt;valueparam1&gt;,...)</span></code>.</p>
+<p>For example:</p>
+<p><code class="docutils literal"><span class="pre">http://geoportail.camptocamp.com/main/wsgi/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
+</div>
 </div>
 
 
@@ -85,7 +102,15 @@ value of <code class="docutils literal"><span class="pre">request.scheme</span><
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
-            </a></p><div class="relations">
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HTTPS</a><ul>
+<li><a class="reference internal" href="#loading-non-https-external-resources">Loading non https external resources</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
@@ -126,7 +151,7 @@ value of <code class="docutils literal"><span class="pre">request.scheme</span><
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
