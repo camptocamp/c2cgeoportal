@@ -122,6 +122,23 @@ def main():  # pragma: no cover
                 count=1,
                 flags=re.DOTALL
             )
+            # i18n
+            data = re.sub(
+                "defaultLang: 'en',",
+                "defaultLang: '${request.settings[\"default_locale_name\"]}',",
+                data,
+            )
+            data = re.sub(
+                "langUrls: {[^}]*},",
+                """langUrls: {
+${ ",".join([
+    "             '${lang}': 'request.static_url('{{package}}:static-ngeo/build/${lang}')}}'"
+    for lang in request.settings["available_locale_names"]
+])}
+           },""",
+                data,
+            )
+
             # Full text search
             data = re.sub(
                 r"fulltextsearch: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch\?query=%QUERY'",  # noqa
