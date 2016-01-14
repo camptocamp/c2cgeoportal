@@ -59,7 +59,12 @@ def main():  # pragma: no cover
             del json_data["repository"]
             del json_data["bugs"]
             json_data["devDependencies"]["ngeo"] = "git://github.com/camptocamp/ngeo#master"
+            del json_data["devDependencies"]["angular-jsdoc"]
+            del json_data["devDependencies"]["jsdoc"]
+            del json_data["devDependencies"]["jsdom"]
+
             data = dumps(json_data, indent=4)
+            data = re.sub(r" +\n", "\n", data)
 
         else:
             data = re.sub(r"{{", r"\\{\\{", data)
