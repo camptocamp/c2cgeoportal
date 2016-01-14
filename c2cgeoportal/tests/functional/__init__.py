@@ -175,6 +175,7 @@ def add_user_property(request):
     """
     from c2cgeoportal import _create_get_user_from_request
     request.referer = "http://example.com/app"
+    request.path_info_peek = lambda: "main"
     request.set_property(
         _create_get_user_from_request({"authorized_referers": [request.referer]}),
         name="user",

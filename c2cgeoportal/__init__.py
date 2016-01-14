@@ -388,7 +388,11 @@ def _create_get_user_from_request(settings):
         """
         from c2cgeoportal.models import DBSession, User
 
-        if not _is_valid_referer(request.referer, settings):
+        # disable the referer check for the admin interface
+        if not (
+                request.path_info_peek() == "admin" and request.referer is None or
+                _is_valid_referer(request.referer, settings)
+        ):
             log.warning("Invalid referer for %s: %s", request.path_qs,
                         repr(request.referer))
             return None

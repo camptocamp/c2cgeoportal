@@ -92,6 +92,10 @@ class TestReferer(TestCase):
                 self.path_qs = to
                 self.referer = ref
                 self._user = TestReferer.USER
+
+            def path_info_peek(self):
+                return "main"
+
         get_user = c2cgeoportal._create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref))
 
