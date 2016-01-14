@@ -396,9 +396,9 @@ cleanall: clean
 		.build/externs/angular-1.4-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) \
-		print/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
+		print/WEB-INF/lib/jasperreports-functions-${JASPERREPORTS_VERSION}.jar \
 		print/WEB-INF/lib/joda-time-1.6.jar \
-		print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
+		print/WEB-INF/lib/jasperreports-fonts-${JASPERREPORTS_VERSION}.jar \
 		print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
 
 .PHONY: flake8
