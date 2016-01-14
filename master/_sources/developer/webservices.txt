@@ -168,11 +168,11 @@ Parameters (post form):
 * ``password``
 * ``came_from`` the URL where we will redirect after a success
 
-Result HTTP code::
+Result HTTP code:
 
- * 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
- * 302 Found: Success -> redirect on came_from.
- * 400 Bad request: When something wrong.
+* 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
+* 302 Found: Success -> redirect on came_from.
+* 400 Bad request: When something wrong.
 
 Logout
 ------
@@ -183,10 +183,10 @@ URL: ``.../logout``
 
 Method: ``GET``
 
-Result HTTP code::
+Result HTTP code:
 
- * 200 Success: Success.
- * 400 Bad request: When something wrong.
+* 200 Success: Success.
+* 400 Bad request: When something wrong.
 
 User informations
 -----------------
@@ -195,9 +195,9 @@ Used to get the user informations.
 
 URL: ``.../loginuser``
 
-Result HTTP code::
+Result HTTP code:
 
- * 200 Success: Success.
+* 200 Success: Success.
 
 Annoymous JSON result
 `````````````````````
@@ -245,10 +245,10 @@ Parameters (post form):
 * ``newPassword``
 * ``confirmNewPassword``
 
-Result HTTP code::
+Result HTTP code:
 
- * 200 Success: Success.
- * 400 Bad request: When something wrong.
+* 200 Success: Success.
+* 400 Bad request: When something wrong.
 
 JSON result
 ```````````
@@ -273,10 +273,10 @@ Parameters (post form):
 
 * ``login``
 
-Result HTTP code::
+Result HTTP code:
 
- * 200 Success: Success.
- * 400 Bad request: When something wrong.
+* 200 Success: Success.
+* 400 Bad request: When something wrong.
 
 Success JSON result
 ```````````````````
