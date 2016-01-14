@@ -15,8 +15,11 @@ vars:
     mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
     fqdn: facter fqdn
     git_branch: git rev-parse --abbrev-ref HEAD
+    tx_version: TX_VERSION
 
 interpreted:
+    environment:
+    - tx_version
     bash:
     - fqdn
     - git_branch

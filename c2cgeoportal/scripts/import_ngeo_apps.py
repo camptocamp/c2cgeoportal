@@ -29,6 +29,7 @@
 
 
 import re
+from json import loads, dumps
 from argparse import ArgumentParser
 
 
@@ -41,6 +42,7 @@ def main():  # pragma: no cover
 
     parser.add_argument('--html', action="store_true", help="Import the html template")
     parser.add_argument('--js', action="store_true", help="Import the javascript controller")
+    parser.add_argument('--package', action="store_true", help="Import the package JSON")
     parser.add_argument('interface', metavar='INTERFACE', help="The interface we import")
     parser.add_argument('src', metavar='SRC', help="The ngeo source file")
     parser.add_argument('dst', metavar='DST', help="The destination file")
@@ -49,9 +51,20 @@ def main():  # pragma: no cover
 
     with open(args.src) as src:
         data = src.read()
-        data = re.sub(r"{{", r"\\{\\{", data)
-        data = re.sub(r"}}", r"\\}\\}", data)
-        data = re.sub("app", "{{package}}", data)
+
+        if args.package:
+            json_data = loads(data)
+            json_data["name"] = "{{package}}"
+            json_data["description"] = "GeoMapfish project"
+            del json_data["repository"]
+            del json_data["bugs"]
+            json_data["devDependencies"]["ngeo"] = "git://github.com/camptocamp/ngeo#master"
+            data = dumps(json_data, indent=4)
+
+        else:
+            data = re.sub(r"{{", r"\\{\\{", data)
+            data = re.sub(r"}}", r"\\}\\}", data)
+            data = re.sub("app", "{{package}}", data)
 
         if args.js:
             # Full text search
@@ -109,6 +122,23 @@ def main():  # pragma: no cover
                 count=1,
                 flags=re.DOTALL
             )
+            # i18n
+            data = re.sub(
+                "defaultLang: 'en',",
+                "defaultLang: '${request.settings[\"default_locale_name\"]}',",
+                data,
+            )
+            data = re.sub(
+                "langUrls: {[^}]*},",
+                """langUrls: {
+${ ",".join([
+    "             '${lang}': 'request.static_url('{{package}}:static-ngeo/build/${lang}')}}'"
+    for lang in request.settings["available_locale_names"]
+])}
+           },""",
+                data,
+            )
+
             # Full text search
             data = re.sub(
                 r"fulltextsearch: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch\?query=%QUERY'",  # noqa

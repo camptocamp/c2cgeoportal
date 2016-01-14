@@ -9,8 +9,11 @@
 /c2cgeoportal/tests/functional/alembic_static.ini
 /c2cgeoportal/tests/testegg/production.ini
 /c2cgeoportal/locale/c2cgeoportal.pot
+/c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
 /c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl.mk
+/c2cgeoportal/scaffolds/update/package.json_tmpl
+/c2cgeoportal/scaffolds/update/+dot+tx/config_mako
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/mobile.js_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal.egg-info

@@ -3,8 +3,13 @@ extends: vars_testgeomapfish.yaml
 vars:
     host: localhost
 
+    authorized_referers:
+    - http://127.0.0.1/{instanceid}
+    - https://127.0.0.1/{instanceid}
+
     check_collector:
         disabled: [checker_print3capabilities, checker_pdf3, checker_fts]
 
 update_paths:
 - check_collector.disabled
+- authorized_referers

@@ -123,7 +123,7 @@ def set_cors_headers(service_headers_settings, request, service_name,
     preflight = request.method == "OPTIONS"
     if preflight and "Access-Control-Request-Method" not in request.headers:
         log.warning("CORS preflight query missing the " +
-                    "Access-Control-Request-Method header", service_name)
+                    "Access-Control-Request-Method header")
         return
 
     allowed_origins = service_headers_settings["access_control_allow_origin"]

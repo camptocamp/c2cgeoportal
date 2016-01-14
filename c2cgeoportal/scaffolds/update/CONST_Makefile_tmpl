@@ -80,11 +80,18 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
+# transifex
+NGEO_TX_VERSION = master
+TX_DEPENDENCIES = $(VENV_BIN)/tx $(HOME)/.transifexrc .tx/config
+ifeq (,$(wildcard $(HOME)/.transifexrc))
+TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+else
+TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+endif
+
 # ngeo
 APP_OUTPUT_DIR =  $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
-NGEO_OUTPUT_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
-	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.js')
@@ -94,7 +101,10 @@ GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src
 APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null)
 LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 NGEO_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
-JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/locale/, $(addsuffix /$(PACKAGE).json, $(LANGUAGES)))
+JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
+NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
+	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
+	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_LIBS_JS_FILES += \
 	node_modules/jquery/dist/jquery.min.js \
 	node_modules/angular/angular.min.js \
@@ -381,6 +391,15 @@ clean: template-clean
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
+	rm -f .build/externs/angular-1.4.js \
+		.build/externs/angular-1.4-q_templated.js \
+		.build/externs/angular-1.4-http-promise_templated.js \
+		.build/externs/jquery-1.9.js
+	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) \
+		print/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
+		print/WEB-INF/lib/joda-time-1.6.jar \
+		print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
+		print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
@@ -495,14 +514,33 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 
 %.mo: %.po
 	msgfmt -o $@ $<
-	touch -c $@
+	touch --no-create $@
+
+# Get l10n from ngeo
+
+$(VENV_BIN)/tx: .build/dev-requirements.timestamp
+
+$(VENV_BIN)/mako-render: .build/dev-requirements.timestamp
+
+$(HOME)/.transifexrc:
+	echo "[https://www.transifex.com]" > $@
+	echo "hostname = https://www.transifex.com" >> $@
+	echo "username = c2c" >> $@
+	echo "password = c2cc2c" >> $@
+	echo "token =" >> $@
+
+.tx/config: .tx/config_mako $(VENV_BIN)/mako-render
+	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
+		--var "git_branch=$(TX_GIT_BRANCH)" $< > $@
+
+.build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
+	$(VENV_BIN)/tx pull -l $* --force
+	$(TOUCHBACK_TXRC)
 
 # ngeo
 
 .PHONY: build-ngeo
-build-ngeo: \
-	$(NGEO_OUTPUT_FILES) \
-	compile-js-catalog
+build-ngeo: $(NGEO_OUTPUT_FILES)
 
 .PHONY: compile-js-catalog
 compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
@@ -514,9 +552,9 @@ $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
-$(APP_OUTPUT_DIR)/locale/%/$(PACKAGE).json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/locale/%/LC_MESSAGES/gmf.po .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node tools/compile-catalog $< > $@
+	node tools/compile-catalog .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)
@@ -539,8 +577,8 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	mkdir -p $(dir $@)
 	./node_modules/.bin/lessc $< $@
 
-.build/%.json: build.mako.json
-	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" build.mako.json > $@
+.build/%.json: build.mako.json $(VENV_BIN)/mako-render
+	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" $< > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		$(PACKAGE)/static-ngeo/build/templatecache.js \
@@ -553,7 +591,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-$(PACKAGE)/static-ngeo/build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js .build/dev-requirements.timestamp \
+$(PACKAGE)/static-ngeo/build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
