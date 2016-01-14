@@ -24,7 +24,11 @@ Features that require additional steps (most of the time):
 .. toctree::
    :maxdepth: 1
 
-   customize_ui
+   interface
+   ngeo
+   cgxp
+   subdomain
+   advanced
    fulltext_search
    querier
    editing
