@@ -361,3 +361,37 @@ class Checker(object):  # pragma: no cover
         return self.make_response(
             "OK" if len(result) == 0 else "\n\n".join(result)
         )
+
+    @view_config(route_name="checker_js_generic")
+    def js_generic(self):
+        from subprocess import check_output, CalledProcessError
+        import os
+        import urllib
+
+        package = self.request.registry.settings["package"]
+
+        base_path = os.path.dirname(os.path.dirname(
+            os.path.abspath(__import__(package).__file__)))
+
+        phantomjs_base_path = "node_modules/phantomjs/bin/phantomjs"
+        executable_path = os.path.join(base_path, phantomjs_base_path)
+
+        checker_config_base_path = "node_modules/ngeo/buildtools/check-example.js"
+        checker_config_path = os.path.join(base_path, checker_config_base_path)
+
+        url = self.request.route_url("mobile")
+        url = "http://dev.camptocamp.com/files/ochriste/test_js_error.html"
+        url = "https://geomapfish-demo.camptocamp.net/och20/"
+
+        args = [executable_path, checker_config_path, url]
+
+        log_message = ""
+        # check_output throws a CalledProcessError if return code is > 0
+        try:
+            check_output(args)
+        except CalledProcessError as e:
+            log_message = e.output
+
+        return self.make_response(
+            "OK" if len(log_message) == 0 else urllib.unquote(log_message)
+        )
