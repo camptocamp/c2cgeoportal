@@ -36,7 +36,7 @@ Easy upgrading an application
 
    .. code:: diff
 
-      \- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+      - --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
       + --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 
    And run:
