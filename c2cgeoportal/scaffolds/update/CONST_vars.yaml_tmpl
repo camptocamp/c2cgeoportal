@@ -361,3 +361,4 @@ interpreted:
         vars:
         - closure_library_path
         cmd: ["node", "-e"]
+        ignore_error: true
