@@ -1,18 +1,16 @@
 #!/bin/bash -e
 
-DO_TAG=false
 DEPLOY=false
 DOC=false
 FINAL=false # including rc and called dev releases
 BUILD_TAG=false # for rc
 
-if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9].[0-9])$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
+if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9]+.[0-9]+)$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
-    DO_TAG=true
     DOC=true
 fi
 
-if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.[0-9]+)?$ ]]
+if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]|\.[0-9]+)?$ ]]
 then
     if [ ${TRAVIS_TAG} != $(python setup.py -V) ]
     then
@@ -52,15 +50,6 @@ then
     else
         .build/venv/bin/python setup.py bdist_wheel
     fi
-fi
-
-if [ ${DO_TAG} == true  ] && [ ${TRAVIS_PYTHON_VERSION} == "2.7" ]
-then
-    echo == Add tag ==
-
-    TAG_NAME=0.0.`git show-ref --head --hash -`
-    git tag ${TAG_NAME}
-    git push origin ${TAG_NAME}
 fi
 
 echo == Build the doc ==
