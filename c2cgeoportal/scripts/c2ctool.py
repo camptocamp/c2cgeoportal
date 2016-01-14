@@ -276,7 +276,7 @@ class C2cTool:
 
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
         # remove all no more existing branches
-        check_call(["git", "update", "origin", "--prune"])
+        check_call(["git", "fetch", "origin", "--prune"])
         branches = check_output(["git", "branch", "--all"]).split("\n")
         if "  remotes/origin/%s" % branch in branches:
             try:
