@@ -86,6 +86,7 @@ else
     git checkout master/searchindex.js
     git status
     git diff
+    git reset --hard
 fi
 
 # back to the original branch
