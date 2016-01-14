@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ngeo &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="CGXP" href="cgxp.html" />
+    <link rel="prev" title="Interfaces" href="interface.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ngeo">
+<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="organisation">
+<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header
+is in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.html</span></code>.</p>
+<p>Where <cite>&lt;interface&gt;</cite> is the interface name or &#8220;index&#8221; for the default interface.</p>
+<p>The viewer (map and all related tools)
+is define in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>.</p>
+<p>Where <cite>&lt;interface&gt;</cite> is the interface name or &#8220;main&#8221; for the default interface.</p>
+<p>And finally the image should be placed in the folder is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/images/</span></code>.</p>
+<p>The style sheet file for all the project is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;package&gt;.less</span></code>.</p>
+<p>The style sheet file for one interface is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span></code>.</p>
+</div>
+</div>
+<div class="section" id="html-file">
+<h1>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h1>
+<p>In this file you can add some blocks like:</p>
+<div class="code html highlight-python"><div class="highlight"><pre>&lt;gmf-authentication id=&quot;login&quot; class=&quot;slide&quot; data-header-title=&quot;Login&quot;&gt;
+&lt;/gmf-authentication&gt;
+</pre></div>
+</div>
+<p>Witch is used to include a directive.</p>
+<p>You can find the available directive in the
+<a class="reference external" href="http://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>
+in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.</p>
+<p>All the directives should provide an example.</p>
+<p>At the end of the file you find something like:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre>&lt;script&gt;
+  (function() {
+     var module = angular.module(&#39;&lt;package&gt;&#39;);
+     var serverVars = {
+         /**
+          * Here the i18n is configured
+          */
+       serviceUrls: {
+         /**
+          * Here you configure the services URL
+          */
+       }
+     };
+     module.constant(&#39;serverVars&#39;, serverVars);
+   })();
+&lt;/script&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="controller-js-file">
+<h1>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h1>
+<p>In the controler you have some lines like:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre>/** @suppress {extraRequire} */
+goog.require(&#39;gmf.authenticationDirective&#39;);
+</pre></div>
+</div>
+<p>This is needed to include the javascript of the used directives.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ngeo</a><ul>
+<li><a class="reference internal" href="#organisation">Organisation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#html-file">HTML file</a></li>
+<li><a class="reference internal" href="#controller-js-file">Controller (js file)</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="interface.html" title="previous chapter">Interfaces</a></li>
+      <li>Next: <a href="cgxp.html" title="next chapter">CGXP</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/ngeo.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/ngeo.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

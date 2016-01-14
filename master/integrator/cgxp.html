@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Customize the UI &mdash; c2cgeoportal  documentation</title>
+    <title>CGXP &mdash; c2cgeoportal  documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
     <link rel="up" title="Additional features" href="features.html" />
-    <link rel="next" title="Full-text search" href="fulltext_search.html" />
-    <link rel="prev" title="Additional features" href="features.html" />
+    <link rel="next" title="Sub domain" href="subdomain.html" />
+    <link rel="prev" title="ngeo" href="ngeo.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -40,29 +40,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="customize-the-ui">
-<span id="integrator-customize-ui"></span><h1>Customize the UI<a class="headerlink" href="#customize-the-ui" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="interfaces">
-<h2>Interfaces<a class="headerlink" href="#interfaces" title="Permalink to this headline">¶</a></h2>
-<p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table listing the
-available interfaces (or pages) of the application.
-The default interfaces are &#8220;main&#8221;, &#8220;mobile&#8221;, &#8220;edit&#8221; and &#8220;routing&#8221;.</p>
-<p>The interfaces are added by the following lines in <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;edit&#39;</span><span class="p">)</span>
-<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;routing&#39;</span><span class="p">)</span>
-<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;mobile&#39;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The used method has the following API:</p>
-<p><code class="docutils literal"><span class="pre">add_interface(config,</span> <span class="pre">interface_name=None,</span> <span class="pre">interface_type=INTERFACE_TYPE_CGXP,</span> <span class="pre">**kwargs)</span></code>:</p>
-<p><code class="docutils literal"><span class="pre">config</span></code> is the application configuration object.</p>
-<p><code class="docutils literal"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal"><span class="pre">interface</span></code> table,
-also used to create the route path.</p>
-<p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>,
-<code class="docutils literal"><span class="pre">INTERFACE_TYPE_SENCHA_TOUCH</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
-<code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
-</div>
+  <div class="section" id="cgxp">
+<span id="integrator-cgxp"></span><h1>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="organisation">
 <h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
 <p>The main page where we can redefine the header
@@ -217,63 +196,6 @@ displayed or hidden at the same time.</p>
 </div>
 </div>
 </div>
-<div class="section" id="sub-domain">
-<h2>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h2>
-<p>If you want to optimize the parallelization of static resource download you
-can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-something like this:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre># The used sub domain for the static resources
-subdommains: [&#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;]
-</pre></div>
-</div>
-<p>Those sub domain should obviously be define in the DNS and in the Apache
-vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-the following:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre># The URL template used to generate the sub domain URL
-# %(sub)s will be replaced by the sub domain value.
-subdomain_url_template: http://%(sub)s.{host}
-</pre></div>
-</div>
-</div>
-<div class="section" id="advanced-configuration-examples">
-<h2>Advanced configuration examples<a class="headerlink" href="#advanced-configuration-examples" title="Permalink to this headline">¶</a></h2>
-<p>We can use the <code class="docutils literal"><span class="pre">functionalities</span></code> or the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> to configure the
-interface. For instance:</p>
-<p>Activate CGXP plugin using an <code class="docutils literal"><span class="pre">authorized_plugins</span></code> functionality:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>% if &#39;my_plugin&#39; in functionality[&#39;authorized_plugins&#39;]:
-{
-    // plugin configuration
-},
-% endif
-</pre></div>
-</div>
-<p>Configure the <code class="docutils literal"><span class="pre">querier</span></code> layer using the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>,
-Add in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>viewer:
-    feature_types:
-    - layer_1
-    - layer_2
-</pre></div>
-</div>
-<p>Add in your project Makefile <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>:</p>
-<div class="code makefile highlight-python"><div class="highlight"><pre><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
-</pre></div>
-</div>
-<p>And in <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>&lt;%
-from json import dumps
-%&gt;
-% if len(request.registry.settings[&#39;viewer&#39;][&#39;feature_types&#39;]) &gt; 0:
-{
-    ptype: &quot;cgxp_querier&quot;,
-    // plugin configuration
-    featureTypes: ${dumps(request.registry.settings[&#39;viewer&#39;][&#39;feature_types&#39;]) | n}
-},
-% endif
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -287,8 +209,7 @@ from json import dumps
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Customize the UI</a><ul>
-<li><a class="reference internal" href="#interfaces">Interfaces</a></li>
+<li><a class="reference internal" href="#">CGXP</a><ul>
 <li><a class="reference internal" href="#organisation">Organisation</a></li>
 <li><a class="reference internal" href="#viewer-js">Viewer.js</a><ul>
 <li><a class="reference internal" href="#portalconfig"><code class="docutils literal"><span class="pre">portalConfig</span></code></a></li>
@@ -300,8 +221,6 @@ from json import dumps
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#sub-domain">Sub domain</a></li>
-<li><a class="reference internal" href="#advanced-configuration-examples">Advanced configuration examples</a></li>
 </ul>
 </li>
 </ul>
@@ -311,8 +230,8 @@ from json import dumps
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="features.html">Additional features</a><ul>
-      <li>Previous: <a href="features.html" title="previous chapter">Additional features</a></li>
-      <li>Next: <a href="fulltext_search.html" title="next chapter">Full-text search</a></li>
+      <li>Previous: <a href="ngeo.html" title="previous chapter">ngeo</a></li>
+      <li>Next: <a href="subdomain.html" title="next chapter">Sub domain</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -321,7 +240,7 @@ from json import dumps
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/customize_ui.txt"
+      <li><a href="../_sources/integrator/cgxp.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -350,7 +269,7 @@ from json import dumps
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
-      <a href="../_sources/integrator/customize_ui.txt"
+      <a href="../_sources/integrator/cgxp.txt"
           rel="nofollow">Page source</a>
     </div>
 
