@@ -736,7 +736,7 @@ endif
 
 print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
 	mkdir -p $(dir $@)
-	curl --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
@@ -744,7 +744,7 @@ print/WEB-INF/lib/joda-time-1.6.jar:
 
 print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
 	mkdir -p $(dir $@)
-	curl --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-fonts-5.5.0.jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-fonts-5.5.0.jar/download
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
