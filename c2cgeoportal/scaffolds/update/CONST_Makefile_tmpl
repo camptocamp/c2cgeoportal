@@ -822,7 +822,7 @@ endif
 
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	mkdir -p $(dir $@)
-	curl --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar/download
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
@@ -830,7 +830,7 @@ print/WEB-INF/lib/joda-time-1.6.jar:
 
 print/WEB-INF/lib/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar:
 	mkdir -p $(dir $@)
-	curl --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar/download
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
