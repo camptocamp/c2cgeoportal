@@ -520,6 +520,12 @@ Interface.configure(include=[Interface.name, Interface.description])
 
 # UIMetadata
 UIMetadata = FieldSet(models.UIMetadata)
+UIMetadata.configure(include=[
+    UIMetadata.item,
+    UIMetadata.name,
+    UIMetadata.value,
+    UIMetadata.description
+])
 UIMetadata.name.set(
     renderer=SelectFieldRenderer,
     options=[(m, m) for m in formalchemy_available_metadata])
