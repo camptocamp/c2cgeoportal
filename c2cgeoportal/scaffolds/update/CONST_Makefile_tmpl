@@ -533,6 +533,9 @@ $(HOME)/.transifexrc:
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
 
+# to don't delete them
+.SECONDARY: $(addprefix .build/locale/, $(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
+
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
