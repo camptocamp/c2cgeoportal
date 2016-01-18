@@ -29,7 +29,7 @@ replace your sencha touch interface by an ngeo interface.
 
 3. Add in the `.gitignore` file:
 
-    + print/print-servlet.war
+    + /print/print-servlet.war
 
 4. In the `vars_{{package}}.yaml` file:
 
