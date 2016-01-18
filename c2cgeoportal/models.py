@@ -889,10 +889,9 @@ class UIMetadata(Base):
         ),
     )
 
-    def __init__(self, name="", value="", item=None):
+    def __init__(self, name="", value=""):
         self.name = name
         self.value = value
-        self.item = item
 
     def __unicode__(self):  # pragma: nocover
         return self.name or u""
