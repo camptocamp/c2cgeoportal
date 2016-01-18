@@ -529,7 +529,7 @@ $(HOME)/.transifexrc:
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.tx/config: .tx/config_mako $(VENV_BIN)/mako-render
+.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
 
