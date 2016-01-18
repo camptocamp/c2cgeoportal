@@ -884,7 +884,7 @@ class UIMetadata(Base):
     item = relationship(
         "TreeItem",
         backref=backref(
-            "ui_metadata",
+            "ui_metadatas",
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )

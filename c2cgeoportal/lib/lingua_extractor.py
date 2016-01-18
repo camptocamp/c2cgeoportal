@@ -116,8 +116,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
             )
 
     def _import_layer_wmts(self, layer, messages):
-        layers = [d.value for d in layer.ui_metadata if d.name == "wms_layer"]
-        url = [d.value for d in layer.ui_metadata if d.name == "wms_url"]
+        layers = [d.value for d in layer.ui_metadatas if d.name == "wms_layer"]
+        url = [d.value for d in layer.ui_metadatas if d.name == "wms_url"]
         if len(url) == 1 and len(layers) >= 1:
             for wms_layer in layers:
                 self._import_layer_attributes(

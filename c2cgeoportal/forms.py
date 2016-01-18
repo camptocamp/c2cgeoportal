@@ -430,7 +430,7 @@ LayerV1.time_widget.set(
     options=time_widget_options,
 )
 LayerV1.interfaces.set(renderer=CheckBoxSet)
-LayerV1.ui_metadata.set(readonly=True)
+LayerV1.ui_metadatas.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
 # ServerOGC
@@ -452,7 +452,7 @@ LayerWMS.time_widget.set(
     options=time_widget_options,
 )
 LayerWMS.interfaces.set(renderer=CheckBoxSet)
-LayerWMS.ui_metadata.set(readonly=True)
+LayerWMS.ui_metadatas.set(readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
 
@@ -464,7 +464,7 @@ LayerWMTS.image_type.set(
     options=image_type_options
 )
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
-LayerWMTS.ui_metadata.set(readonly=True)
+LayerWMTS.ui_metadatas.set(readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
 LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 
@@ -488,7 +488,7 @@ LayerGroup.append(ChildrenAttributeField(
     manager_of_class(models.LayerGroup)["children_relation"], LayerGroup,
 ))
 LayerGroup.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
-LayerGroup.ui_metadata.set(readonly=True)
+LayerGroup.ui_metadatas.set(readonly=True)
 
 # LayergroupTreeitem
 LayergroupTreeitem = FieldSet(models.LayergroupTreeitem)
@@ -504,7 +504,7 @@ Theme.append(ChildrenAttributeField(
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=CheckBoxSet)
-Theme.ui_metadata.set(readonly=True)
+Theme.ui_metadatas.set(readonly=True)
 Theme.restricted_roles.set(renderer=CheckBoxSet)
 
 # Functionality
