@@ -186,13 +186,13 @@ is required in the <code class="docutils literal"><span class="pre">apache_entry
 <div class="section" id="to-deploy-from-dev-to-demo-advanced-version">
 <h4>To deploy from dev to demo (advanced version)<a class="headerlink" href="#to-deploy-from-dev-to-demo-advanced-version" title="Permalink to this headline">¶</a></h4>
 <p>Build on the dev server:</p>
-<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt; <span class="c"># SSH agent forward is needed</span></span>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;dev_server&gt; <span class="c1"># SSH agent forward is needed</span></span>
 <span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
-<span class="prompt1">git pull origin master <span class="c"># update the code</span></span>
-<span class="prompt1">make -f main.mk build <span class="c"># configure c2cgeoportal</span></span>
+<span class="prompt1">git pull origin master <span class="c1"># update the code</span></span>
+<span class="prompt1">make -f main.mk build <span class="c1"># configure c2cgeoportal</span></span>
 </pre><p><strong>Test on the dev server</strong></p>
 <p>Deploy to the demo server:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>deploy</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> deploy</span>
 <span class="prompt1">sudo -u deploy deploy -r deploy.cfg demo</span>
 </pre><p><strong>Test on the demo server</strong></p>
 </div>
@@ -200,9 +200,9 @@ is required in the <code class="docutils literal"><span class="pre">apache_entry
 <h4>To deploy from demo to prod (advanced version)<a class="headerlink" href="#to-deploy-from-demo-to-prod-advanced-version" title="Permalink to this headline">¶</a></h4>
 <p><strong>Test on the demo server</strong></p>
 <p>Deploy on the prod server:</p>
-<pre class="highlight"><span class="prompt1">ssh -A &lt;demo_server&gt; <span class="c"># SSH agent forward is needed</span></span>
+<pre class="highlight"><span class="prompt1">ssh -A &lt;demo_server&gt; <span class="c1"># SSH agent forward is needed</span></span>
 <span class="prompt1"><span class="nb">cd</span> /var/www/vhost/&lt;project_vhost&gt;/private/&lt;project&gt;</span>
-<span class="prompt1"><span class="nb">cd </span>deploy</span>
+<span class="prompt1"><span class="nb">cd</span> deploy</span>
 <span class="prompt1">sudo -u deploy deploy -r deploy.cfg prod</span>
 </pre><p><strong>Test on the prod server</strong></p>
 </div>

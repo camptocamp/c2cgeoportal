@@ -68,12 +68,12 @@ span.prompt1:before {
 <p class="first admonition-title">Note</p>
 <p>To upgrade from version 1.6 to version 2.0 you should update the
 <code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code> file:</p>
-<div class="code diff highlight-python"><div class="highlight"><pre>\- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
+<div class="code diff highlight-python"><div class="highlight"><pre>- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
 + --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
 </pre></div>
 </div>
 <p>And run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">UPGRADE_ARGS</span><span class="o">=</span><span class="s1">&#39;--index-url https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal --c2cgeoportal-url https://github.com/camptocamp/c2cgeoportal/releases/download/%\(version\)/%\(package\)-%\(version\)-py2.py3-none-any.whl&#39;</span></span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">UPGRADE_ARGS</span><span class="o">=</span><span class="s1">&#39;--index-url https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal --c2cgeoportal-url https://github.com/camptocamp/c2cgeoportal/releases/download/%\(version\)/%\(package\)-%\(version\)-py2.py3-none-any.whl&#39;</span></span>
 </pre></div>
 <p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
 because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
@@ -85,7 +85,7 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 <p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
 </div>
 <p>Than just run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
 </pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
 <code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to

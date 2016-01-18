@@ -47,84 +47,84 @@ and the corresponding admin interface configuration
 in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
 <p>For example to add some user details, including a link to a
 new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Used to hide the original user in the admin interface</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
-    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;userdetail&#39;</span><span class="p">)</span>
-    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;userdetails&#39;</span><span class="p">)</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;userdetail&#39;</span>
-    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;userdetail&#39;</span><span class="p">)</span>
+    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;userdetails&#39;</span><span class="p">)</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
     <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
     <span class="p">]</span>
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s">&#39;detailed&#39;</span><span class="p">}</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s">&#39;.user.id&#39;</span><span class="p">),</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
             <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;phone&#39;</span><span class="p">))</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;phone&#39;</span><span class="p">))</span>
 
-    <span class="c"># title</span>
-    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s">&#39;users&#39;</span><span class="p">))</span>
+    <span class="c1"># title</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">,</span> <span class="n">functionalities</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">phone</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">functionalities</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">phone</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="n">User</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">functionalities</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phone</span> <span class="o">=</span> <span class="n">phone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
 
 <span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">)</span>
-    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;titles&#39;</span><span class="p">)</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;title&#39;</span>
-    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__label__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span>
+    <span class="n">__plural__</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;titles&#39;</span><span class="p">)</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
     <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Name&#39;</span><span class="p">))</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Description&#39;</span><span class="p">))</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Name&#39;</span><span class="p">))</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Description&#39;</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">u&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
 
     <span class="k">def</span> <span class="nf">__unicode__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s">u&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s1">u&#39;&#39;</span>
 </pre></div>
 </div>
 <p>And in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Add a field set (form) for the title</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Add a field set (form) for the title</span>
 <span class="n">Title</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
 
-<span class="c"># Add a field set for the user details</span>
+<span class="c1"># Add a field set for the user details</span>
 <span class="n">UserDetail</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">UserDetail</span><span class="p">)</span>
-<span class="c"># Need to hide the password</span>
+<span class="c1"># Need to hide the password</span>
 <span class="n">password</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DblPasswordField</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">_password</span><span class="p">)</span>
 <span class="n">UserDetail</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-<span class="c"># Fix the fields order</span>
+<span class="c1"># Fix the fields order</span>
 <span class="n">fieldOrder</span> <span class="o">=</span> <span class="p">[</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">unique_validator</span><span class="p">)</span>
-                               <span class="o">.</span><span class="n">with_metadata</span><span class="p">(</span><span class="n">mandatory</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span>
+                               <span class="o">.</span><span class="n">with_metadata</span><span class="p">(</span><span class="n">mandatory</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
               <span class="n">password</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">role</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="s">&#39;parent_role&#39;</span><span class="p">):</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="s1">&#39;parent_role&#39;</span><span class="p">):</span>
     <span class="n">fieldOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">parent_role</span><span class="p">)</span>
 <span class="n">fieldOrder</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
         <span class="n">UserDetail</span><span class="o">.</span><span class="n">functionalities</span><span class="o">.</span>
                 <span class="nb">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">FunctionalityCheckBoxTreeSet</span><span class="p">)])</span>
 <span class="n">UserDetail</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">fieldOrder</span><span class="p">)</span>
 
-<span class="c"># Add a grid for the title</span>
+<span class="c1"># Add a grid for the title</span>
 <span class="n">TitleGrid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
 
-<span class="c"># Add a grid for the  user details</span>
+<span class="c1"># Add a grid for the  user details</span>
 <span class="n">UserGrid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">UserDetail</span><span class="p">)</span>
-<span class="c"># Visible fields</span>
+<span class="c1"># Visible fields</span>
 <span class="n">fieldOrder</span> <span class="o">=</span> <span class="p">[</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
               <span class="n">UserDetail</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
               <span class="n">UserDetail</span><span class="o">.</span><span class="n">functionalities</span><span class="p">,</span>
               <span class="n">UserDetail</span><span class="o">.</span><span class="n">role</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserGrid</span><span class="p">,</span> <span class="s">&#39;parent_role&#39;</span><span class="p">):</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">UserGrid</span><span class="p">,</span> <span class="s1">&#39;parent_role&#39;</span><span class="p">):</span>
     <span class="n">fieldOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">parent_role</span><span class="p">)</span>
 <span class="n">UserGrid</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">fieldOrder</span><span class="p">)</span>
 </pre></div>

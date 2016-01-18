@@ -60,7 +60,7 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="nb">cd</span> ~</span>
 <span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
-<span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
+<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 <span class="prompt1">git submodule update --init</span>
 <span class="prompt1">make build</span>
 <span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
@@ -110,7 +110,7 @@ code, and a make environment for it. So do that first, as described below.</p>
 <p>Check out c2cgeoportal from GitHub:</p>
 <pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
 </pre><p>Change into the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory and initialize the submodules:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 <span class="prompt1">git submodule update --init</span>
 </pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
@@ -213,7 +213,7 @@ the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/upda
 <div class="section" id="submodules">
 <h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
 <p>Go to the OpenLayers folder:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">cd </span>c2cgeoportal/static/lib/openlayers/</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal/static/lib/openlayers/</span>
 </pre><p>Get the new revision of OpenLayers:</p>
 <pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout release-&lt;version&gt;</span>
@@ -290,7 +290,7 @@ this directory.</p>
 <p>To be able to use sub domain in a view we should configure the route as this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal.lib</span> <span class="kn">import</span> <span class="n">MultiDomainPregenerator</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
-    <span class="s">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
     <span class="n">pregenerator</span><span class="o">=</span><span class="n">MultiDomainPregenerator</span><span class="p">())</span>
 </pre></div>
 </div>

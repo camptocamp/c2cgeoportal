@@ -52,36 +52,36 @@ and <a class="reference external" href="http://community.jaspersoft.com/project/
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The service is configured in the main <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file of the project
 as in the following example:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">vars</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">...</span>
-    <span class="l-Scalar-Plain">pdfreport</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
-            <span class="l-Scalar-Plain">check_credentials</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">False</span>
-            <span class="l-Scalar-Plain">srs</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">EPSG:21781</span>
-            <span class="l-Scalar-Plain">map</span><span class="p-Indicator">:</span>
-                <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p-Indicator">]</span>
-                <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">image/png</span>
-        <span class="l-Scalar-Plain">layers</span><span class="p-Indicator">:</span>
-            <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p-Indicator">:</span>
-                <span class="l-Scalar-Plain">map</span><span class="p-Indicator">:</span>
-                    <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
-                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
-                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
-                    <span class="l-Scalar-Plain">imageformat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">image/jpeg</span>
-            <span class="l-Scalar-Plain">some_template_with_no_map</span><span class="p-Indicator">:</span>
-                <span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-                    <span class="l-Scalar-Plain">layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">some_template_name</span>
-                    <span class="l-Scalar-Plain">outputFormat</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">pdf</span>
-                    <span class="l-Scalar-Plain">attributes</span><span class="p-Indicator">:</span>
-                        <span class="l-Scalar-Plain">paramID</span><span class="p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
-            <span class="l-Scalar-Plain">some_template_with_multi_map</span><span class="p-Indicator">:</span>
-                <span class="l-Scalar-Plain">maps</span><span class="p-Indicator">:</span>
-                    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
-                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
-                    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">backgroundlayers</span><span class="p-Indicator">:</span>
-                        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
-<span class="l-Scalar-Plain">update_paths</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">pdfreport</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">defaults</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+            <span class="l l-Scalar l-Scalar-Plain">srs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EPSG:21781</span>
+            <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p p-Indicator">]</span>
+                <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
+        <span class="l l-Scalar l-Scalar-Plain">layers</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
+                    <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+                    <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/jpeg</span>
+            <span class="l l-Scalar l-Scalar-Plain">some_template_with_no_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+                    <span class="l l-Scalar l-Scalar-Plain">layout</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">some_template_name</span>
+                    <span class="l l-Scalar l-Scalar-Plain">outputFormat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pdf</span>
+                    <span class="l l-Scalar l-Scalar-Plain">attributes</span><span class="p p-Indicator">:</span>
+                        <span class="l l-Scalar l-Scalar-Plain">paramID</span><span class="p p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">some_template_with_multi_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">maps</span><span class="p p-Indicator">:</span>
+                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+<span class="l l-Scalar l-Scalar-Plain">update_paths</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pdfreport</span>
 </pre></div>
 </div>
 <p>with the following parameters:</p>

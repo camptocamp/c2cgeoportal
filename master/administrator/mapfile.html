@@ -102,10 +102,10 @@ a template:</p>
 <p>This is a fake template, but this is required.</p>
 <p>The <code class="docutils literal"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal"><span class="pre">METADATA</span></code> section. For
 example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;gml_include_items&quot;</span> <span class="s">&quot;all&quot;</span>
-<span class="s">&quot;gml_types&quot;</span> <span class="s">&quot;auto&quot;</span>
-<span class="s">&quot;gml_featureid&quot;</span> <span class="s">&quot;id&quot;</span>
-<span class="s">&quot;wfs_enable_request&quot;</span> <span class="s">&quot;*&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
+<span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
+<span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">gml_include_items</span></code></p>
@@ -151,9 +151,9 @@ GetFeatureInfo.</p>
 <p>The <code class="docutils literal"><span class="pre">gml_include_items</span></code>, <code class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code> and <code class="docutils literal"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal"><span class="pre">LAYER</span></code>. For
 example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;gml_include_items&quot;</span> <span class="s">&quot;all&quot;</span>
-<span class="s">&quot;gml_geometries&quot;</span> <span class="s">&quot;geom&quot;</span>
-<span class="s">&quot;gml_geom_type&quot;</span> <span class="s">&quot;polygon&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
+<span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">gml_include_items</span></code></p>
@@ -313,8 +313,8 @@ attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
 <p>To define variables, edit the matching <code class="docutils literal"><span class="pre">MAP</span></code>/<code class="docutils literal"><span class="pre">LAYER</span></code>/<code class="docutils literal"><span class="pre">VALIDATION</span></code>
 section in the MapFile and add:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s">&quot;&lt;default_value&gt;&quot;</span>
-<span class="s">&quot;s_&lt;variable&gt;&quot;</span> <span class="s">&quot;&lt;validation_pattern&gt;&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
+<span class="s2">&quot;s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">validation_pattern</span></code> is a regular expression used to validate the

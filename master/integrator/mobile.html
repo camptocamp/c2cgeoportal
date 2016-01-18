@@ -91,30 +91,30 @@ mobile app using a version of GeoMapFish older than 1.4.</p>
 <p>The last step involves adding <em>routes</em> and <em>views</em> specific to the mobile
 application. Edit the project&#8217;s <code class="docutils literal"><span class="pre">__init__.py</span></code> file and add the following
 lines before the <code class="docutils literal"><span class="pre">main</span></code> function&#8217;s return statement:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="c"># mobile views and routes</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;mobile_index_dev&#39;</span><span class="p">,</span> <span class="s">&#39;/mobile_dev/&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
-                <span class="n">attr</span><span class="o">=</span><span class="s">&#39;mobile&#39;</span><span class="p">,</span>
-                <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;&lt;package&gt;:static/mobile/index.html&#39;</span><span class="p">,</span>
-                <span class="n">route_name</span><span class="o">=</span><span class="s">&#39;mobile_index_dev&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;mobile_config_dev&#39;</span><span class="p">,</span> <span class="s">&#39;/mobile_dev/config.js&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
-                <span class="n">attr</span><span class="o">=</span><span class="s">&#39;mobileconfig&#39;</span><span class="p">,</span>
-                <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;&lt;package&gt;:static/mobile/config.js&#39;</span><span class="p">,</span>
-                <span class="n">route_name</span><span class="o">=</span><span class="s">&#39;mobile_config_dev&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;mobile_dev&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;package&gt;:static/mobile&#39;</span><span class="p">)</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span class="c1"># mobile views and routes</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;:static/mobile/index.html&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_config_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/config.js&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobileconfig&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;:static/mobile/config.js&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_config_dev&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s1">&#39;mobile_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;package&gt;:static/mobile&#39;</span><span class="p">)</span>
 
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;mobile_index_prod&#39;</span><span class="p">,</span> <span class="s">&#39;/mobile/&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
-                <span class="n">attr</span><span class="o">=</span><span class="s">&#39;mobile&#39;</span><span class="p">,</span>
-                <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;&lt;package&gt;:static/mobile/build/production/App/index.html&#39;</span><span class="p">,</span>
-                <span class="n">route_name</span><span class="o">=</span><span class="s">&#39;mobile_index_prod&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;mobile_config_prod&#39;</span><span class="p">,</span> <span class="s">&#39;/mobile/config.js&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
-                <span class="n">attr</span><span class="o">=</span><span class="s">&#39;mobileconfig&#39;</span><span class="p">,</span>
-                <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;&lt;package&gt;:static/mobile/build/production/App/config.js&#39;</span><span class="p">,</span>
-                <span class="n">route_name</span><span class="o">=</span><span class="s">&#39;mobile_config_prod&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;mobile&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;package&gt;:static/mobile/build/production/App&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_prod&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile/&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;:static/mobile/build/production/App/index.html&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_index_prod&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_config_prod&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile/config.js&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobileconfig&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;:static/mobile/build/production/App/config.js&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_config_prod&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;package&gt;:static/mobile/build/production/App&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal"><span class="pre">&lt;package&gt;</span></code> with the project&#8217;s actual package name.</p>
@@ -198,8 +198,8 @@ file:</p>
 </li>
 <li><p class="first">Define the following new variable:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">crosshair_options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;path&#39;</span><span class="p">:</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ImgPath</span><span class="o">+</span><span class="s">&#39;custom_marker.png&#39;</span><span class="p">,</span>
-    <span class="s">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">]</span>
+    <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ImgPath</span><span class="o">+</span><span class="s1">&#39;custom_marker.png&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">]</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -220,7 +220,7 @@ applying the <code class="docutils literal"><span class="pre">c2cgeoportal_updat
 <h3>Permalink<a class="headerlink" href="#permalink" title="Permalink to this headline">¶</a></h3>
 <p>If a permalink field is needed, just add the following component in the
 Settings view:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s">&#39;map_permalink&#39;</span> <span class="p">}</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -293,7 +293,7 @@ default, <code class="docutils literal"><span class="pre">config.js</span></code
 <p>For the <code class="docutils literal"><span class="pre">Login</span></code> component to work the <code class="docutils literal"><span class="pre">App.info</span></code> JavaScript variable should
 be set. The setting of this variable should be done anywhere in the
 <code class="docutils literal"><span class="pre">config.js</span></code> file, with this:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s">&#39;${info | n}&#39;</span><span class="p">;</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>By default <code class="docutils literal"><span class="pre">config.js</span></code> includes it.</p>

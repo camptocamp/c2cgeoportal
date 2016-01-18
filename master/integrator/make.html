@@ -76,7 +76,7 @@ Default is:</p>
 <p>The project variables are set in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
 which extends the default <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;some_config_var&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>they must be listed in the makefile as well using <code class="docutils literal"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
