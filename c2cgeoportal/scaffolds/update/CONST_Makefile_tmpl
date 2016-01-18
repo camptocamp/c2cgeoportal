@@ -531,7 +531,7 @@ $(HOME)/.transifexrc:
 
 .tx/config: .tx/config_mako $(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "git_branch=$(TX_GIT_BRANCH)" $< > $@
+		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
 
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(VENV_BIN)/tx pull -l $* --force
