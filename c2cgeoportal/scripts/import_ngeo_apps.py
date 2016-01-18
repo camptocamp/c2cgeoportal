@@ -125,7 +125,7 @@ def main():  # pragma: no cover
             # i18n
             data = re.sub(
                 "defaultLang: 'en',",
-                "defaultLang: '${request.settings[\"default_locale_name\"]}',",
+                "defaultLang: '${request.registry.settings[\"default_locale_name\"]}',",
                 data,
             )
             data = re.sub(
@@ -133,7 +133,7 @@ def main():  # pragma: no cover
                 """langUrls: {
 ${ ",".join([
     "             '${lang}': 'request.static_url('{{package}}:static-ngeo/build/${lang}')}}'"
-    for lang in request.settings["available_locale_names"]
+    for lang in request.registry.settings["available_locale_names"]
 ])}
            },""",
                 data,
