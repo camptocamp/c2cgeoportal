@@ -99,7 +99,8 @@ TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOM
 endif
 
 # ngeo
-APP_OUTPUT_DIR =  $(PACKAGE)/static-ngeo/build
+NPM_CMD = node_modules/.bin/npm
+APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
@@ -428,8 +429,8 @@ serve: build development.ini
 	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
 
 .PHONY: update-node-modules
-update-node-modules:
-	npm install --force
+update-node-modules: $(NPM_CMD)
+	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 
 $(VENV_BIN)/alembic: .build/dev-requirements.timestamp
@@ -579,15 +580,13 @@ $(PACKAGE)/static-ngeo/fonts/%: node_modules/ngeo/contribs/gmf/fonts/%
 	mkdir -p $(dir $@)
 	cp $< $@
 
- node_modules/ngeo/node_modules: .build/node_modules.timestamp
-	mkdir -p $@
-	ln -s ../../openlayers $@
-	ln -s ../../bootstrap $@
+node_modules/ngeo/node_modules: .build/node_modules.timestamp
+	ln -s .. $@
 	touch $@
 
 $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	./node_modules/.bin/lessc $< $@
+	node_modules/.bin/lessc $< $@
 
 .build/%.json: build.mako.json $(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" $< > $@
@@ -599,7 +598,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 		.build/externs/angular-1.4-http-promise_templated.js \
 		.build/externs/jquery-1.9.js \
 		.build/node_modules.timestamp
-	./node_modules/openlayers/node_modules/.bin/closure-util build $< $@
+	node_modules/.bin/closure-util build $< $@
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
@@ -636,21 +635,24 @@ else
 	touch $@
 endif
 
-.build/node_modules.timestamp: package.json
+$(NPM_CMD):
+	npm install npm
+
+.build/node_modules.timestamp: package.json $(NPM_CMD)
 	mkdir -p $(dir $@)
 ifeq ($(NGEO), TRUE)
-	npm install
+	$(NPM_CMD) install
 endif
 	touch $@
 
-.build/gjslint.timestamp: $(APP_JS_FILES)
+.build/gjslint.timestamp: .build/node_modules.timestamp $(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $?
+	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out .build/node_modules.timestamp $?)
 	touch $@
 
-.build/jshint.timestamp: $(APP_JS_FILES)
+.build/jshint.timestamp: .build/node_modules.timestamp $(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	./node_modules/.bin/jshint --verbose $?
+	node_modules/.bin/jshint --verbose $(filter-out .build/node_modules.timestamp $?)
 	touch $@
 
 
@@ -669,7 +671,7 @@ update:
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
 ifeq ($(NGEO), TRUE)
-	npm install --force
+	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 endif
 
