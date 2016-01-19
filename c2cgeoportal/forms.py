@@ -35,8 +35,9 @@ from fanstatic import Library, Group, Resource
 from fanstatic.core import set_resource_file_existence_checking
 from pyramid_formalchemy.utils import TemplateEngine
 from formalchemy import config as fa_config
-from formalchemy import FieldSet, Grid
-from formalchemy.fields import Field, CheckBoxSet, SelectFieldRenderer, AttributeField
+from formalchemy import FieldSet, Grid, helpers
+from formalchemy.fields import Field, FieldRenderer, CheckBoxSet, \
+    SelectFieldRenderer, AttributeField
 from formalchemy.validators import ValidationError
 from formalchemy.helpers import password_field
 from geoalchemy2 import Geometry
@@ -456,7 +457,14 @@ LayerWMS.ui_metadatas.set(readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
 
+
 # LayerWMTS
+class RoListRenderer(FieldRenderer):  # pragma: nocover
+    def render_readonly(self, **kwargs):
+        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
+            helpers.literal(value) for value in self.raw_value
+        ]), style="white-space: nowrap;")
+
 LayerWMTS = FieldSet(models.LayerWMTS)
 LayerWMTS.configure(exclude=[LayerWMTS.parents_relation])
 LayerWMTS.image_type.set(
@@ -464,7 +472,7 @@ LayerWMTS.image_type.set(
     options=image_type_options
 )
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
-LayerWMTS.ui_metadatas.set(readonly=True)
+LayerWMTS.ui_metadatas.set(renderer=RoListRenderer, readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
 LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 

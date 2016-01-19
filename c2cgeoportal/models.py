@@ -894,7 +894,7 @@ class UIMetadata(Base):
         self.value = value
 
     def __unicode__(self):  # pragma: nocover
-        return self.name or u""
+        return u"%s: %s" % (self.name or u"", self.value or u"")
 
 
 class WMTSDimension(Base):
