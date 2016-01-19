@@ -1,1 +1,2 @@
 @import "{{package}}.less";
+@import "../../../node_modules/ngeo/contribs/gmf/less/mobile.less";
