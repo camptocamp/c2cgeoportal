@@ -30,6 +30,7 @@ replace your sencha touch interface by an ngeo interface.
 3. Add in the `.gitignore` file:
 
     + /print/print-servlet.war
+    + /.tx/ngeo.gmf-*
 
 4. In the `vars_{{package}}.yaml` file:
 
