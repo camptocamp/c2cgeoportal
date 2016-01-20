@@ -640,6 +640,7 @@ $(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FI
 	$(PACKAGE)/static/mobile/custom.scss $(MOBILE_APP_JS_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
+	mkdir -p $(PACKAGE)/static/mobile/build
 	cd $(PACKAGE)/static/mobile && $(SENCHA_CMD) app build production
 
 # Check packages
