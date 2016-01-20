@@ -148,6 +148,8 @@ OpenLayers and GeoExt.
 Non Apt/Dpkg based OS Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+For example Windows or RedHat.
+
 Disable the package checking:
 
 In the ``<package>.mk`` add::
@@ -165,6 +167,31 @@ using a C compiler.
 Furthermore, some changes in the apache wsgi and mapserver configurations are
 required to make c2cgeoportal work on Windows.
 
+Also, between all the different command interfaces available on Windows (cmd,
+Cygwin, git mingw), only Windows default cmd interface handle paths correctly
+in all stage of the application setup.
+
+Command interface and environment variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Only use Windows default commande interface::
+
+    Start > Run... > cmd
+
+Cygwin and git mingw are not compatible. Powershell is untested.
+
+Complementarily you need to add all the ressource paths to your system PATH
+environment variable, for cygwin, git and node binaries.
+
+Cygwin
+^^^^^^
+
+You must install the following packages:
+
+* make
+* git
+* gettext-devel
+
 Python Wheels
 ^^^^^^^^^^^^^
 
@@ -176,13 +203,14 @@ following packages:
 * Psycopg2
 * Shapely
 * Pillow
+* Pyproj
 
 If your project is configured for Windows, then ``make`` will expect this folder
-to exist and contain these wheels.
+to exist and to contain these wheels.
 
 To be sure to use the right version of these packages, open the
-``CONST_requirements.txt`` file modify the versions of these three packages
-according to the file you have downloaded.
+``CONST_requirements_windows.txt`` file and modify the versions of these
+packages according to the files you have downloaded.
 
 apache/wsgi.conf.mako
 ^^^^^^^^^^^^^^^^^^^^^
@@ -215,6 +243,30 @@ this line under ``MAP`` (use regular slash ``/``) ::
 
     PROJ_LIB" "C:/PATH/TO/ms4w/proj/nad"
 
+<project>.mk
+^^^^^^^^^^^^
+
+The following configuration override must be added to your <project>.mk::
+
+    # Solve conflict between Windows own find command and cygwin find.
+    FIND ?= c:/path/to/cygwin/find.exe
+    # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
+    # You can still install it but you must install Shapely manualy inside
+    # TILECLOUD_CHAIN virtualenv
+    TILECLOUD_CHAIN ?= FALSE
+    # On windows, the virtualenv binary folder is Scripts, not bin.
+    VENV_BIN ?= .build/venv/Scripts
+    # On windows, some python packages are installed from already packaged wheels.
+    CONST_REQUIREMENT ?= CONST_requirements_windows.txt
+    APACHE_VHOST ?= path/to/your/www/folder
+    APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
+    PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
+    # because Windows doesn't like path with //
+    PRINT_TMP ?= tmp
+    TOMCAT_SERVICE_COMMAND ?= path/to/your/Tomcat7/bin/Tomcat7.exe
+    APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n <servicename>
+    # Where <servicename> is the name of the Apache service, look at your
+    # Windows services panel (Start > Search > Services)
 
 RHEL 6 Specific Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

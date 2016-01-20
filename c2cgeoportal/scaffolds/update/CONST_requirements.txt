@@ -3,5 +3,11 @@
 Pillow==3.0.0
 psycopg2==2.6.1
 Shapely==1.5.13
+pyproj==1.9.5.1
+# missing dependency of formalchemy
+couchdbkit==0.6.5
+http-parser==0.8.3
+restkit==4.2.2
+
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 -e .
