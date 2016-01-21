@@ -19,6 +19,8 @@ PRINT_VERSION ?= 3
 
 PIP_CMD ?= $(VENV_BIN)/pip
 PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+PIP_VERSION ?= pip>=6
+SETUPTOOL_VERSION ?= setuptools>=12
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -691,7 +693,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
 		--index-url http://pypi.camptocamp.net/pypi \
-		'pip>=6,<7' 'setuptools>=12'
+		'$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
