@@ -529,9 +529,12 @@ $(HOME)/.transifexrc:
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.tx/config: .tx/config_mako $(VENV_BIN)/mako-render
+.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "git_branch=$(TX_GIT_BRANCH)" $< > $@
+		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
+
+# to don't delete them
+.SECONDARY: $(addprefix .build/locale/, $(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
 
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(VENV_BIN)/tx pull -l $* --force
@@ -581,7 +584,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" $< > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		$(PACKAGE)/static-ngeo/build/templatecache.js \
+		.build/templatecache.js \
 		.build/externs/angular-1.4.js \
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
@@ -591,7 +594,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-$(PACKAGE)/static-ngeo/build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
+.build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \

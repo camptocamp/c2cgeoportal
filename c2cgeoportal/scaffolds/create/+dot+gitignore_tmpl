@@ -17,6 +17,7 @@
 /production.ini
 /project.yaml
 /.tx/config
+/.tx/ngeo.gmf-*
 /print/print-servlet.war
 /print/WEB-INF/lib/*.jar
 /print/WEB-INF/classes/logback.xml

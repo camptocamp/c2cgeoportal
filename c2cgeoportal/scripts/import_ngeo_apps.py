@@ -80,7 +80,7 @@ def main():  # pragma: no cover
             )
             # Styles
             data = re.sub(
-                r'    <link rel="stylesheet.* type="text/css">',
+                r'    <link rel="stylesheet.*/build/mobile.css">',
                 r"""% if debug:
     <link rel="stylesheet/less" href="${{request.static_url('%s/ngeo/contribs/gmf/less/font.less' % request.registry.settings['node_modules_path'])}}" type="text/css">
     <link rel="stylesheet/less" href="${{request.static_url('{{{{package}}}}:static-ngeo/less/{interface}.less')}}" type="text/css">
@@ -113,7 +113,7 @@ def main():  # pragma: no cover
         goog.require('{{{{package}}}}_{interface}');
     </script>
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/templatecache.js')}}"></script>
-    <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['closure_library_path'])}}"></script>
+    <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/less/dist/less.min.js' % request.registry.settings['node_modules_path'])}}"></script>
 % else:
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
@@ -125,16 +125,19 @@ def main():  # pragma: no cover
             # i18n
             data = re.sub(
                 "defaultLang: 'en',",
-                "defaultLang: '${request.settings[\"default_locale_name\"]}',",
+                "defaultLang: '${request.registry.settings[\"default_locale_name\"]}',",
                 data,
             )
             data = re.sub(
                 "langUrls: {[^}]*},",
-                """langUrls: {
-${ ",".join([
-    "             '${lang}': 'request.static_url('{{package}}:static-ngeo/build/${lang}')}}'"
-    for lang in request.settings["available_locale_names"]
-])}
+                r"""langUrls: {
+${ ',\\n'.join([
+    "             '{lang}': '{url}'".format(
+        lang=lang,
+        url=request.static_url('demo:static-ngeo/build/{lang}.json'.format(lang=lang))
+    )
+    for lang in request.registry.settings["available_locale_names"]
+]) | n}
            },""",
                 data,
             )

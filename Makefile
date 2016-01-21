@@ -76,7 +76,7 @@ build: $(MAKO_FILES:.mako=) \
 	$(CSS_ADMIN_OUTPUT) \
 	$(MO_FILES) \
 	$(APPS_HTML_FILES) $(APPS_JS_FILES) \
-	c2cgeoportal/scaffolds/update/+dot+tx/config_mako \
+	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
 	c2cgeoportal/scaffolds/update/package.json_tmpl
 
 .PHONY: buildall
@@ -193,7 +193,7 @@ $(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/mobil
 
 ngeo/.tx/config.mako: ngeo
 
-c2cgeoportal/scaffolds/update/+dot+tx/config_mako: ngeo/.tx/config.mako
+c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
 	mkdir -p $(dir $@)
 	cp $< $@
 
