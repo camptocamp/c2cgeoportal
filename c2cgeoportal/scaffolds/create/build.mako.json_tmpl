@@ -20,6 +20,7 @@
       "node_modules/openlayers/externs/tilejson.js",
       "node_modules/openlayers/externs/topojson.js",
       "node_modules/ngeo/contribs/gmf/externs/gmfx.js",
+      "node_modules/ngeo/contribs/gmf/externs/gmf-themes.js",
       "node_modules/ngeo/externs/closure-compiler.js",
       "node_modules/ngeo/externs/jqueryui.js",
       "node_modules/ngeo/externs/angular-gettext.js",
@@ -82,7 +83,7 @@
       "missingRequire"
     ],
     "extra_annotation_name": [
-      "api", "observable", "ngdoc", "ngname"
+      "api", "observable", "ngdoc", "ngname", "htmlAttribute"
     ],
     "angular_pass": true,
     "compilation_level": "ADVANCED",
