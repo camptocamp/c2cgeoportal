@@ -6,10 +6,6 @@ python:
 services:
 - postgresql
 
-env:
-  global:
-  - secure: "UxpVOfQ9oePIcgRqsFzuVvpcng/syX6snuqw01XjK/3dWwyjhehBL17Yfzsn8NAgsiEdJ7SiTOhb3cfiHNHNX0mzfojPtvcFcGDmHGfH5nIufsGubeck6CErKHFT0uAhJywfPSgi53n0RteiIJAKc0bzaYzoMRG7RUPsvk3HRnE="
-
 before_install:
 - echo ${TRAVIS_TAG}
 - echo ${TRAVIS_BRANCH}
@@ -110,7 +106,7 @@ deploy:
   provider: pypi
   user: sbrunner
   password:
-    secure: Ih+P5fDpPvvr3UwhspEur5ZX8IuccTcMrmsj63cOexhBIpQaPKb7JYDW69n0j0DTCzU0+aFT/rzwDydCgyRuM97Xd3H08ul5gfXptG2gSEvHPRMAzPx7OBY+flkXdGXhWNzaihb/fRvL8+hMdCL8pOUVGwBZv2tEoAk97z/Secc=
+    secure: PP/519WtNL22RsjSypy+PvX1cugSjjJlD3TDJeJQ2zVyvvTLw2l1GLC1CAWznAKPv+8skYMq9DZHUoR2govs0Vs5k3MKslSqF9pC6pWfjWD/weDHrEgNIBsOCjXnwsibyEG0fdkVqwM05axUpioLMRn+kPDnVVvLkyRkrKIlyus=
   skip_cleanup: true
   on:
     tags: true
