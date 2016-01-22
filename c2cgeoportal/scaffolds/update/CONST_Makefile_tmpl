@@ -894,9 +894,7 @@ $(UPGRADE_MAKE_FILE):
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install \
-		--find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal \
-		c2cgeoportal==${VERSION}
+	.build/venv/bin/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1

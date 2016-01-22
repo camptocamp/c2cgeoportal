@@ -95,27 +95,26 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
-- travis/deploy.sh
+- travis/doc.sh
+
+before_deploy:
+- .build/venv/bin/pip install wheel
 
 deploy:
-  provider: releases
-  api_key:
-    secure: hfVa8R7sI/gCL/K5grGaaVuzpt42T09fXqr6Ff18jpubI1onl/jqCWhIP6tvMSiE/AJ9gEqswRzf7YtpyykZmixJuR3tIjZDRzcA/U+Qfr4l2sJipzvvPXbir+HfgWUUK2r97+oHVLTCc+emaXzlOwLv5BuC0xV6uztTD192U8w=
-  file: "`ls dist/*.whl`"
+  provider: pypi
+  user: sbrunner
+  password:
+    secure: Ih+P5fDpPvvr3UwhspEur5ZX8IuccTcMrmsj63cOexhBIpQaPKb7JYDW69n0j0DTCzU0+aFT/rzwDydCgyRuM97Xd3H08ul5gfXptG2gSEvHPRMAzPx7OBY+flkXdGXhWNzaihb/fRvL8+hMdCL8pOUVGwBZv2tEoAk97z/Secc=
   skip_cleanup: true
+  distributions: .build/venv/bin/python setup.py egg_info --no-date --tag-build "" sdist bdist_wheel
   on:
     tags: true
     python: 2.7
+    condition: ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]|\.[0-9]+)?$
 
 after_deploy:
   travis/after_deploy.sh
 
-deploy:
-  provider: pypi
-  distributions: 
-  on: 
-  password:
-    secure: Ih+P5fDpPvvr3UwhspEur5ZX8IuccTcMrmsj63cOexhBIpQaPKb7JYDW69n0j0DTCzU0+aFT/rzwDydCgyRuM97Xd3H08ul5gfXptG2gSEvHPRMAzPx7OBY+flkXdGXhWNzaihb/fRvL8+hMdCL8pOUVGwBZv2tEoAk97z/Secc=
 notifications:
   email:
     on_failure: change
