@@ -84,6 +84,13 @@ typically done using the <a class="reference external" href="http://postgis.net/
 useful for registering already created geometry columns in
 <code class="docutils literal"><span class="pre">geometry_columns</span></code>.</p>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following geometry types are supported:
+POINT, LINESTRING, POLYGON
+The following geometry types are partially supported:
+MULTIPOINT, MULTILINESTRING, MULTIPOLYGON</p>
+</div>
 </li>
 <li><p class="first">If the PostGIS table has a many-to-one relationship to another table
 (typically a dictionary table) there are additional requirements:</p>
@@ -112,7 +119,7 @@ corresponding to this field is <em>Related Postgres table</em> in the admin inte
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Actually, the editing doesn&#8217;t work well with many editable layers.</p>
+<p class="last">It is recommended to limit the editing to 30 editable layers per user.</p>
 </div>
 </div>
 <div class="section" id="configuring-security">

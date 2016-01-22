@@ -48,6 +48,14 @@ To be editable a layer should satisfy the following requirements:
        useful for registering already created geometry columns in
        ``geometry_columns``.
 
+   .. note::
+
+       The following geometry types are supported:
+       POINT, LINESTRING, POLYGON
+       The following geometry types are partially supported:
+       MULTIPOINT, MULTILINESTRING, MULTIPOLYGON
+
+
 6. If the PostGIS table has a many-to-one relationship to another table
    (typically a dictionary table) there are additional requirements:
 
@@ -76,7 +84,7 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
 .. warning::
 
-    Actually, the editing doesn't work well with many editable layers.
+    It is recommended to limit the editing to 30 editable layers per user.
 
 
 Configuring security
