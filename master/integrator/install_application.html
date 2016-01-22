@@ -152,6 +152,7 @@ OpenLayers and GeoExt.</p>
 </div>
 <div class="section" id="non-apt-dpkg-based-os-configuration">
 <h3>Non Apt/Dpkg based OS Configuration<a class="headerlink" href="#non-apt-dpkg-based-os-configuration" title="Permalink to this headline">¶</a></h3>
+<p>For example Windows or RedHat.</p>
 <p>Disable the package checking:</p>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">FALSE</span>
@@ -166,6 +167,28 @@ because these packages use DLLs and binaries which would have to be compiled
 using a C compiler.</p>
 <p>Furthermore, some changes in the apache wsgi and mapserver configurations are
 required to make c2cgeoportal work on Windows.</p>
+<p>Also, between all the different command interfaces available on Windows (cmd,
+Cygwin, git mingw), only Windows default cmd interface handle paths correctly
+in all stage of the application setup.</p>
+<div class="section" id="command-interface-and-environment-variable">
+<h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
+<p>Only use Windows default commande interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
+</pre></div>
+</div>
+<p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
+<p>Complementarily you need to add all the ressource paths to your system PATH
+environment variable, for cygwin, git and node binaries.</p>
+</div>
+<div class="section" id="cygwin">
+<h4>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h4>
+<p>You must install the following packages:</p>
+<ul class="simple">
+<li>make</li>
+<li>git</li>
+<li>gettext-devel</li>
+</ul>
+</div>
 <div class="section" id="python-wheels">
 <h4>Python Wheels<a class="headerlink" href="#python-wheels" title="Permalink to this headline">¶</a></h4>
 <p>You should create a &#8220;wheels&#8221; folder at the root folder of your project.</p>
@@ -175,12 +198,13 @@ following packages:</p>
 <li>Psycopg2</li>
 <li>Shapely</li>
 <li>Pillow</li>
+<li>Pyproj</li>
 </ul>
 <p>If your project is configured for Windows, then <code class="docutils literal"><span class="pre">make</span></code> will expect this folder
-to exist and contain these wheels.</p>
+to exist and to contain these wheels.</p>
 <p>To be sure to use the right version of these packages, open the
-<code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code> file modify the versions of these three packages
-according to the file you have downloaded.</p>
+<code class="docutils literal"><span class="pre">CONST_requirements_windows.txt</span></code> file and modify the versions of these
+packages according to the files you have downloaded.</p>
 </div>
 <div class="section" id="apache-wsgi-conf-mako">
 <h4>apache/wsgi.conf.mako<a class="headerlink" href="#apache-wsgi-conf-mako" title="Permalink to this headline">¶</a></h4>
@@ -207,6 +231,31 @@ WSGIProcessGroup c2cgeoportal:${instanceid}
 <p>You must specify the path to the mapserver&#8217;s epsg file by uncommenting and adapting
 this line under <code class="docutils literal"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal"><span class="pre">/</span></code>)</p>
 <div class="highlight-python"><div class="highlight"><pre>PROJ_LIB&quot; &quot;C:/PATH/TO/ms4w/proj/nad&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="project-mk">
+<h4>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h4>
+<p>The following configuration override must be added to your &lt;project&gt;.mk:</p>
+<div class="highlight-python"><div class="highlight"><pre># Solve conflict between Windows own find command and cygwin find.
+FIND ?= c:/path/to/cygwin/find.exe
+# TILECLOUD_CHAIN require Shapely but doesn&#39;t have a system specific setup.
+# You can still install it but you must install Shapely manualy inside
+# TILECLOUD_CHAIN virtualenv
+TILECLOUD_CHAIN ?= FALSE
+# On windows, the virtualenv binary folder is Scripts, not bin.
+VENV_BIN ?= .build/venv/Scripts
+# On windows, some python packages are installed from already packaged wheels.
+CONST_REQUIREMENT ?= CONST_requirements_windows.txt
+APACHE_VHOST ?= path/to/your/www/folder
+APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
+PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
+# because Windows doesn&#39;t like path with //
+PRINT_TMP ?= tmp
+TOMCAT_SERVICE_COMMAND ?= path/to/your/Tomcat7/bin/Tomcat7.exe
+APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n &lt;servicename&gt;
+# Where &lt;servicename&gt; is the name of the Apache service, look at your
+# Windows services panel (Start &gt; Search &gt; Services)
 </pre></div>
 </div>
 </div>
@@ -242,8 +291,8 @@ set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> 
 </div>
 </div>
 </div>
-<div class="section" id="project-mk">
-<h3>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Configure some <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> RedHat specifics:</p>
 <div class="highlight-python"><div class="highlight"><pre># Service base command for Tomcat on RedHat
 TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
@@ -256,8 +305,8 @@ APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
 DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
 </pre></div>
 </div>
-<div class="section" id="id1">
-<h4>apache/mapserver.conf.mako<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id2">
+<h4>apache/mapserver.conf.mako<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>On RHEL 6 the <code class="docutils literal"><span class="pre">mapserv</span></code> binary is located in <code class="docutils literal"><span class="pre">/usr/libexec/</span></code>. The
 <code class="docutils literal"><span class="pre">mapserver.conf.mako</span></code> Apache config file assumes that <code class="docutils literal"><span class="pre">mapserv</span></code> is located in
 <code class="docutils literal"><span class="pre">/usr/lib/cgi-bin/</span></code>, and should therefore be changed:</p>
@@ -267,7 +316,7 @@ DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages
 </div>
 </div>
 <div class="section" id="integrator-install-application-install-application">
-<span id="id2"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>If it doesn&#8217;t already exist, create a <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file
 (where <code class="docutils literal"><span class="pre">&lt;user&gt;</span></code> is for example your username),
 that will contain your application special
@@ -335,18 +384,21 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
 <li><a class="reference internal" href="#get-the-application-source-tree">Get the application source tree</a></li>
 <li><a class="reference internal" href="#non-apt-dpkg-based-os-configuration">Non Apt/Dpkg based OS Configuration</a></li>
 <li><a class="reference internal" href="#windows-specific-configuration">Windows Specific Configuration</a><ul>
+<li><a class="reference internal" href="#command-interface-and-environment-variable">Command interface and environment variable</a></li>
+<li><a class="reference internal" href="#cygwin">Cygwin</a></li>
 <li><a class="reference internal" href="#python-wheels">Python Wheels</a></li>
 <li><a class="reference internal" href="#apache-wsgi-conf-mako">apache/wsgi.conf.mako</a></li>
 <li><a class="reference internal" href="#apache-mapserver-conf-mako">apache/mapserver.conf.mako</a></li>
 <li><a class="reference internal" href="#mapserver-c2cgeoportal-map-mako">mapserver/c2cgeoportal.map.mako</a></li>
+<li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a><ul>
 <li><a class="reference internal" href="#vars-project-yaml">vars_&lt;project&gt;.yaml</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a><ul>
-<li><a class="reference internal" href="#id1">apache/mapserver.conf.mako</a></li>
+<li><a class="reference internal" href="#id1">&lt;project&gt;.mk</a><ul>
+<li><a class="reference internal" href="#id2">apache/mapserver.conf.mako</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#integrator-install-application-install-application">Install the application</a></li>
