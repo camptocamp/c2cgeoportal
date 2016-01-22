@@ -112,7 +112,7 @@ deploy:
   password:
     secure: Ih+P5fDpPvvr3UwhspEur5ZX8IuccTcMrmsj63cOexhBIpQaPKb7JYDW69n0j0DTCzU0+aFT/rzwDydCgyRuM97Xd3H08ul5gfXptG2gSEvHPRMAzPx7OBY+flkXdGXhWNzaihb/fRvL8+hMdCL8pOUVGwBZv2tEoAk97z/Secc=
   skip_cleanup: true
-  distributions: .build/venv/bin/python setup.py sdist bdist_wheel
+  distributions: python setup.py sdist bdist_wheel
   on:
     tags: true
     python: 2.7
