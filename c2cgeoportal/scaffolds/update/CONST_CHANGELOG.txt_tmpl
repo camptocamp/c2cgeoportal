@@ -90,6 +90,13 @@ replace your sencha touch interface by an ngeo interface.
    +         - name: checker_js_generic
    +           display: PhantomJS generic test
 
+9. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
+
+     <input id="password" name="password" type="password" autocomplete="on"/>
+    +<input id="oldPassword" name="oldPassword" type="password" />
+     <input id="newPassword" name="newPassword" type="password" />
+
+
 Version 1.6.7
 =============
 
