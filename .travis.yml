@@ -36,7 +36,7 @@ install:
 - .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
 - diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
 - make -f travis.mk build
-- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè"
+- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null # on create
 - cp /tmp/testgeomapfish/project.yaml.mako project.yaml
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish > /dev/null # on upgrade
