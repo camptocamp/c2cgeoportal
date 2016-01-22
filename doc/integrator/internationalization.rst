@@ -73,27 +73,3 @@ When you add a new message repeat all steps but replace the step 2. by::
 
 
 `Source from pylondhq <http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization>`_
-
-
-Mobile application
-------------------
-
-It's also possible to translate the mobile application title, for that you should
-add the following line at the top of ``message_extractor`` array:
-
-.. code:: python
-
-   ('static/mobile/index.html', 'mako', {'input_encoding': 'utf-8'}),
-
-Than mark your title as translated:
-
-.. code:: html
-
-   <title>${_('GeoMapFish Mobile Application')}</title>
-
-And don't forget (for the upgrades) to do the same in the ``project.yaml.mako`` file,
-in section ``template_vars``:
-
-.. code:: yaml
-
-   mobile_application_title: "{_('GeoMapFish Mobile Application')}"

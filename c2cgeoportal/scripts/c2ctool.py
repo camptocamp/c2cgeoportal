@@ -339,8 +339,6 @@ class C2cTool:
             "%s/pcreate" % self.venv_bin, "-s", "c2cgeoportal_create",
             "/tmp/%s" % self.project["project_folder"],
             "package=%s" % self.project["project_package"],
-            "mobile_application_title=%s" %
-            self.project["template_vars"]["mobile_application_title"],
             "srid=%s" % self.project["template_vars"].get("srid", 21781),
         ])
         check_call(["make", "-f", self.options.file, self.options.clean])

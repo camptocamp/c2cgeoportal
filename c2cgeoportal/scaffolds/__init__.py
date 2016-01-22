@@ -96,7 +96,6 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         the variables list.
         """
         self._set_srid_in_vars(command, vars)
-        self._set_mobile_title_in_vars(command, vars)
         return BaseTemplate.pre(self, command, output_dir, vars)
 
     def post(self, command, output_dir, vars):
@@ -107,23 +106,6 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
 
         self.out("Welcome to c2cgeoportal!")
         return BaseTemplate.post(self, command, output_dir, vars)
-
-    def _set_mobile_title_in_vars(self, command, vars):
-        """
-        Set the mobile_title into the vars dict.
-        """
-        mobile_title = None
-        for arg in command.args:
-            m = re.match("mobile_application_title=(.+)", arg)
-            if m:
-                mobile_title = m.group(1)
-                break
-
-        if mobile_title is None:
-            prompt = "The mobile application title:"
-            mobile_title = input_(prompt).strip()
-
-        vars["mobile_application_title"] = mobile_title
 
     def _set_srid_in_vars(self, command, vars):
         """
@@ -152,12 +134,8 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
 
     def pre(self, command, output_dir, vars):
         """
-        Overrides the base template, adding the "mobile_application_title" variable to
-        the variables list.
+        Overrides the base template
         """
-
-        # Init defaults
-        vars["mobile_application_title"] = "Geoportal Mobile Application"
 
         if path.exists("project.yaml"):
             project = load(file("project.yaml", "r"))
