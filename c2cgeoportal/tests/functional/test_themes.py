@@ -64,7 +64,7 @@ class TestThemesView(TestCase):
 
         layer_v1 = LayerV1(name=u"__test_layer_v1", public=True)
         layer_v1.interfaces = [main]
-        layer_v1.ui_metadata = [UIMetadata("test", "v1")]
+        layer_v1.ui_metadatas = [UIMetadata("test", "v1")]
 
         server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/jpeg")
         server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="internal_url", image_type="image/jpeg")
@@ -72,22 +72,22 @@ class TestThemesView(TestCase):
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
-        layer_internal_wms.ui_metadata = [UIMetadata("test", "internal_wms")]
+        layer_internal_wms.ui_metadatas = [UIMetadata("test", "internal_wms")]
         layer_internal_wms.server_ogc = server_ogc_internal
 
         layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", public=True)
         layer_external_wms.interfaces = [main]
-        layer_external_wms.ui_metadata = [UIMetadata("test", "external_wms")]
+        layer_external_wms.ui_metadatas = [UIMetadata("test", "external_wms")]
         layer_external_wms.server_ogc = server_ogc_external
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
-        layer_wmts.ui_metadata = [UIMetadata("test", "wmts")]
+        layer_wmts.ui_metadatas = [UIMetadata("test", "wmts")]
         layer_wmts.dimensions = [WMTSDimension("year", "2015")]
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
         layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
-        layer_group_1.ui_metadata = [UIMetadata("test", "group_1")]
+        layer_group_1.ui_metadatas = [UIMetadata("test", "group_1")]
 
         layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
         layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
@@ -100,7 +100,7 @@ class TestThemesView(TestCase):
 
         theme = Theme(name=u"__test_theme")
         theme.interfaces = [main, mobile]
-        theme.ui_metadata = [UIMetadata("test", "theme")]
+        theme.ui_metadatas = [UIMetadata("test", "theme")]
         theme.children = [
             layer_group_1, layer_group_2
         ]

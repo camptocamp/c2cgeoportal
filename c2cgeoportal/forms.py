@@ -35,8 +35,9 @@ from fanstatic import Library, Group, Resource
 from fanstatic.core import set_resource_file_existence_checking
 from pyramid_formalchemy.utils import TemplateEngine
 from formalchemy import config as fa_config
-from formalchemy import FieldSet, Grid
-from formalchemy.fields import Field, CheckBoxSet, SelectFieldRenderer, AttributeField
+from formalchemy import FieldSet, Grid, helpers
+from formalchemy.fields import Field, FieldRenderer, CheckBoxSet, \
+    SelectFieldRenderer, AttributeField
 from formalchemy.validators import ValidationError
 from formalchemy.helpers import password_field
 from geoalchemy2 import Geometry
@@ -430,7 +431,7 @@ LayerV1.time_widget.set(
     options=time_widget_options,
 )
 LayerV1.interfaces.set(renderer=CheckBoxSet)
-LayerV1.ui_metadata.set(readonly=True)
+LayerV1.ui_metadatas.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
 # ServerOGC
@@ -452,11 +453,18 @@ LayerWMS.time_widget.set(
     options=time_widget_options,
 )
 LayerWMS.interfaces.set(renderer=CheckBoxSet)
-LayerWMS.ui_metadata.set(readonly=True)
+LayerWMS.ui_metadatas.set(readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
 
+
 # LayerWMTS
+class RoListRenderer(FieldRenderer):  # pragma: nocover
+    def render_readonly(self, **kwargs):
+        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
+            helpers.literal(value) for value in self.raw_value
+        ]), style="white-space: nowrap;")
+
 LayerWMTS = FieldSet(models.LayerWMTS)
 LayerWMTS.configure(exclude=[LayerWMTS.parents_relation])
 LayerWMTS.image_type.set(
@@ -464,7 +472,7 @@ LayerWMTS.image_type.set(
     options=image_type_options
 )
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
-LayerWMTS.ui_metadata.set(readonly=True)
+LayerWMTS.ui_metadatas.set(renderer=RoListRenderer, readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
 LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 
@@ -488,7 +496,7 @@ LayerGroup.append(ChildrenAttributeField(
     manager_of_class(models.LayerGroup)["children_relation"], LayerGroup,
 ))
 LayerGroup.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
-LayerGroup.ui_metadata.set(readonly=True)
+LayerGroup.ui_metadatas.set(readonly=True)
 
 # LayergroupTreeitem
 LayergroupTreeitem = FieldSet(models.LayergroupTreeitem)
@@ -504,7 +512,7 @@ Theme.append(ChildrenAttributeField(
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=CheckBoxSet)
-Theme.ui_metadata.set(readonly=True)
+Theme.ui_metadatas.set(readonly=True)
 Theme.restricted_roles.set(renderer=CheckBoxSet)
 
 # Functionality
@@ -520,6 +528,12 @@ Interface.configure(include=[Interface.name, Interface.description])
 
 # UIMetadata
 UIMetadata = FieldSet(models.UIMetadata)
+UIMetadata.configure(include=[
+    UIMetadata.item,
+    UIMetadata.name,
+    UIMetadata.value,
+    UIMetadata.description
+])
 UIMetadata.name.set(
     renderer=SelectFieldRenderer,
     options=[(m, m) for m in formalchemy_available_metadata])

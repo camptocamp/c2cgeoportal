@@ -226,7 +226,7 @@ class Entry(object):
             "name": layer.name,
             "metadata": {}
         }
-        for metadata in layer.ui_metadata:
+        for metadata in layer.ui_metadatas:
             l["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
         if layer.geo_table:
             self._fill_editable(l, layer)
@@ -616,7 +616,7 @@ class Entry(object):
                 if len(set(identifier)) > 1:
                     g["mixed"] = True
 
-            for metadata in group.ui_metadata:
+            for metadata in group.ui_metadatas:
                 g["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
@@ -708,7 +708,7 @@ class Entry(object):
                     t.update({
                         "in_mobile_viewer": theme.is_in_interface("mobile"),
                     })
-                for metadata in theme.ui_metadata:
+                for metadata in theme.ui_metadatas:
                     t["metadata"][metadata.name] = get_url(
                         metadata.value, self.request, errors=errors
                     )

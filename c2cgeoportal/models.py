@@ -884,18 +884,17 @@ class UIMetadata(Base):
     item = relationship(
         "TreeItem",
         backref=backref(
-            "ui_metadata",
+            "ui_metadatas",
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )
 
-    def __init__(self, name="", value="", item=None):
+    def __init__(self, name="", value=""):
         self.name = name
         self.value = value
-        self.item = item
 
     def __unicode__(self):  # pragma: nocover
-        return self.name or u""
+        return u"%s: %s" % (self.name or u"", self.value or u"")
 
 
 class WMTSDimension(Base):
