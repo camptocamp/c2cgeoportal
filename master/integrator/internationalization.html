@@ -114,23 +114,6 @@ separated files because of API constraints. Read more at <a class="reference int
 </pre></div>
 </div>
 <p><a class="reference external" href="http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization">Source from pylondhq</a></p>
-<div class="section" id="mobile-application">
-<h3>Mobile application<a class="headerlink" href="#mobile-application" title="Permalink to this headline">¶</a></h3>
-<p>It&#8217;s also possible to translate the mobile application title, for that you should
-add the following line at the top of <code class="docutils literal"><span class="pre">message_extractor</span></code> array:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s1">&#39;static/mobile/index.html&#39;</span><span class="p">,</span> <span class="s1">&#39;mako&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;input_encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">}),</span>
-</pre></div>
-</div>
-<p>Than mark your title as translated:</p>
-<div class="code html highlight-python"><div class="highlight"><pre>&lt;title&gt;${_(&#39;GeoMapFish Mobile Application&#39;)}&lt;/title&gt;
-</pre></div>
-</div>
-<p>And don&#8217;t forget (for the upgrades) to do the same in the <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file,
-in section <code class="docutils literal"><span class="pre">template_vars</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>mobile_application_title: &quot;{_(&#39;GeoMapFish Mobile Application&#39;)}&quot;
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 
@@ -147,10 +130,7 @@ in section <code class="docutils literal"><span class="pre">template_vars</span>
   <ul>
 <li><a class="reference internal" href="#">Internationalization</a><ul>
 <li><a class="reference internal" href="#client">Client</a></li>
-<li><a class="reference internal" href="#server">Server</a><ul>
-<li><a class="reference internal" href="#mobile-application">Mobile application</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#server">Server</a></li>
 </ul>
 </li>
 </ul>
