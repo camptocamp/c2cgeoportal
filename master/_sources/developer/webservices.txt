@@ -288,7 +288,7 @@ Success JSON result
    }
 
 
-Full Text Search
+Full-Text Search
 ================
 
 URL: ``.../fulltextsearch``
@@ -297,7 +297,10 @@ Parameters
 ----------
 
 * ``query``: Text to search.
-* ``callback``: Name of the callback function.
+* ``limit``: The maximum number of results (optional).
+* ``partitionlimit``: The maximum number of results per layer (optional).
+* ``interface``: The used interface (optional).
+* ``callback``: Name of the callback function (optional).
 
 Result
 ------
@@ -307,7 +310,12 @@ A GeoJSON of a feature collection with the properties:
 * ``label``: Text to display.
 * ``layer_name``: Layer to display.
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
+* ``actions``: List of actions.
 
+The `action` is a dictionary with:
+
+* ``action``: the action: (add_theme|add_group|add_layer).
+* ``data``: data needed for the action (actually, the item name).
 
 Raster
 ======

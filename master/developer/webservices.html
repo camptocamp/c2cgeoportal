@@ -285,13 +285,16 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 </div>
 <div class="section" id="full-text-search">
-<h2>Full Text Search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
+<h2>Full-Text Search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal"><span class="pre">.../fulltextsearch</span></code></p>
 <div class="section" id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">query</span></code>: Text to search.</li>
-<li><code class="docutils literal"><span class="pre">callback</span></code>: Name of the callback function.</li>
+<li><code class="docutils literal"><span class="pre">limit</span></code>: The maximum number of results (optional).</li>
+<li><code class="docutils literal"><span class="pre">partitionlimit</span></code>: The maximum number of results per layer (optional).</li>
+<li><code class="docutils literal"><span class="pre">interface</span></code>: The used interface (optional).</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Name of the callback function (optional).</li>
 </ul>
 </div>
 <div class="section" id="result">
@@ -301,6 +304,12 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <li><code class="docutils literal"><span class="pre">label</span></code>: Text to display.</li>
 <li><code class="docutils literal"><span class="pre">layer_name</span></code>: Layer to display.</li>
 <li><code class="docutils literal"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span>Params</span></a> to set.</li>
+<li><code class="docutils literal"><span class="pre">actions</span></code>: List of actions.</li>
+</ul>
+<p>The <cite>action</cite> is a dictionary with:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">action</span></code>: the action: (add_theme|add_group|add_layer).</li>
+<li><code class="docutils literal"><span class="pre">data</span></code>: data needed for the action (actually, the item name).</li>
 </ul>
 </div>
 </div>
@@ -463,7 +472,7 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#full-text-search">Full Text Search</a><ul>
+<li><a class="reference internal" href="#full-text-search">Full-Text Search</a><ul>
 <li><a class="reference internal" href="#id1">Parameters</a></li>
 <li><a class="reference internal" href="#result">Result</a></li>
 </ul>
