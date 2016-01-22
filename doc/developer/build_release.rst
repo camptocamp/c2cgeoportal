@@ -7,15 +7,15 @@ Vocabulary
 ----------
 
 On this page I use the word ``version`` for a major version of MapFish
-Geoportal (1.3), and the word ``release`` for each step in this version
-(1.3rc1, 1.3.0, 1.3.1, ...).
+Geoportal (1.6), and the word ``release`` for each step in this version
+(1.6.0rc1, 1.6.0, 1.6.1, ...).
 
 ``MapFish Geoportal`` is the pack that includes CGXP and c2cgeoportal,
 from start of 2014 both projects will synchronize their major versions.
 
-Then ``<release>`` can be ``1.3rc1`` for the first release candidate
-of the version ``1.3``, ``1.3.0`` for the final release, ``1.3.1`` for
-the first bug fix release, and ``<version>`` can be ``1.3``, ``1.4``, ...
+Then ``<release>`` can be ``1.6.0rc1`` for the first release candidate
+of the version ``1.6.0``, ``1.6.0`` for the final release, ``1.6.1`` for
+the first bug fix release, and ``<version>`` can be ``1.6``, ``2.0``, ...
 
 CGXP
 ----
