@@ -1,6 +1,7 @@
 VENV_BIN ?= .build/venv/bin
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
+FIND ?= find
 
 # Don't minify the js / css, ...
 DEVELOPMENT ?= FALSE
@@ -36,19 +37,25 @@ endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 # Make rules
-
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
+TEST_PACKAGES ?= TRUE
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) build-server apache
+ifeq ($(TEST_PACKAGES), TRUE)
+DEFAULT_BUILD_RULES += test-packages
 ifeq ($(DEPLOY), TRUE)
 DEFAULT_BUILD_RULES += test-packages-deploy
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/tiles.conf
+DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_BUILD_RULES += test-packages-ngeo
+endif
+endif
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+DEFAULT_BUILD_RULES += apache/tiles.conf
 endif
 ifeq ($(PRINT_VERSION), 2)
 DEFAULT_BUILD_RULES += print
@@ -92,14 +99,14 @@ endif
 # ngeo
 APP_OUTPUT_DIR =  $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
-OL_JS_FILES = $(shell find node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
-NGEO_JS_FILES = $(shell find node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
-APP_JS_FILES = $(shell find $(PACKAGE)/static-ngeo/js -type f -name '*.js')
-APP_HTML_FILES = $(shell find $(PACKAGE)/templates -type f -name '*.html')
+OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
+NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
+APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js -type f -name '*.js')
+APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
 APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null)
-LESS_FILES = $(shell find $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
+LESS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 NGEO_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
@@ -116,7 +123,7 @@ NGEO_LIBS_JS_FILES += \
 NGEO_PROJECT_LIBS_JS_FILES ?=
 
 # CGXP
-JSBUILD_MAIN_FILES = $(shell find $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
+JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = jsbuild/app.cfg
 JSBUILD_MAIN_OUTPUT_FILES ?= app.js edit.js routing.js api.js xapi.js
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
@@ -240,13 +247,13 @@ SENCHA_CMD ?= sencha-cmd
 JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
 JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
 JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
-MOBILE_APP_JS_FILES = $(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/app.js $(shell find $(PACKAGE)/static/mobile/app -type f -name '*.js' 2> /dev/null)
+MOBILE_APP_JS_FILES = $(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/app.js $(shell $(FIND) $(PACKAGE)/static/mobile/app -type f -name '*.js' 2> /dev/null)
 
 # Documentation
-SPHINX_FILES = $(shell find doc -name "*.rst" -print)
+SPHINX_FILES = $(shell $(FIND) doc -name "*.rst" -print)
 
 # Server localisation
-SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell find $(PACKAGE)/templates -type f -name '*.html')
+SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-server.mo, $(LANGUAGES)))
 
 # Print
@@ -272,7 +279,7 @@ PRINT_REQUIREMENT += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
-	$(shell find $(PRINT_BASE_DIR)/print-apps)
+	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
 endif
 
 ifeq ($(PRINT_VERSION), 2)
@@ -299,8 +306,8 @@ CONF_FILES = $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_IN:.in=) $(C
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 CONF_FILES += apache/tiles.conf
 endif
-PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
-TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print)
+PY_FILES = $(shell $(FIND) $(PACKAGE) -type f -name '*.py' -print)
+TEMPLATES_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -print)
 
 # Templates
 TEMPLATE_EXCLUDE += .build node_modules print/templates \
@@ -308,9 +315,9 @@ TEMPLATE_EXCLUDE += .build node_modules print/templates \
 	CONST_alembic/static/script.py.mako \
 	$(PACKAGE)/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
-TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
-MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
-JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
+TEMPLATE_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.in" -print)
+MAKO_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.mako" -print)
+JINJA_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
 CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
@@ -792,7 +799,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
-	curl --max-redirs 0 --location --output $@ `cat $<`
+	curl --max-redirs 0 --location --output $@ $(shell cat $<)
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 # If Linux else windows

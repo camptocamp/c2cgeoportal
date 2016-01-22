@@ -71,7 +71,6 @@ install_requires = [
     "waitress",
     # WMST support
     "isodate",
-    "couchdbkit",  # missing dependency of formalchemy
     "pyramid_closure",
     "lingua",
     "PyYAML",
