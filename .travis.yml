@@ -106,7 +106,7 @@ deploy:
   provider: pypi
   user: sbrunner
   password:
-    secure: PP/519WtNL22RsjSypy+PvX1cugSjjJlD3TDJeJQ2zVyvvTLw2l1GLC1CAWznAKPv+8skYMq9DZHUoR2govs0Vs5k3MKslSqF9pC6pWfjWD/weDHrEgNIBsOCjXnwsibyEG0fdkVqwM05axUpioLMRn+kPDnVVvLkyRkrKIlyus=
+    secure: dT4Z3Zk2SGq1BPl+mX2iI0ubK7veSPb1b0fGrKHpvC3gBxuGUDMhtHw5dgopdWWeUhZLzLoPpEZPyCHtJhE2vunGwZfmJXkrqp/yC1meszZpDgBkpRWzx62u/f1+FmUdGPukvlqTfzgl/vJwertPRzX9Y4hanoFIDQvIKnp37Ls=
   skip_cleanup: true
   distributions: sdist bdist_wheel
   on:
