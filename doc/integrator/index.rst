@@ -15,6 +15,7 @@ Content:
    upgrade_application
    windows_tools
    make
+   docker
    features
    tilegeneration
    functionality

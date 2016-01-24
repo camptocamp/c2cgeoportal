@@ -792,7 +792,7 @@ def includeme(config):
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
     # scan view decorator for adding routes
-    config.scan(ignore="c2cgeoportal.tests")
+    config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
 
     config.registry.registerUtility(
         MultiDomainStaticURLInfo(), IStaticURLInfo)

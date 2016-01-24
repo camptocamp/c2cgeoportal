@@ -35,7 +35,7 @@ from argparse import ArgumentParser
 from pyramid.paster import get_app
 
 
-def main():  # pragma: no cover
+def main():
     parser = ArgumentParser(
         prog=sys.argv[0], add_help=True,
         description="Tool used to migrate your old layers from the old structure to the new one.",
@@ -85,7 +85,7 @@ def main():  # pragma: no cover
     transaction.commit()
 
 
-def server_ogc(session):  # pragma: nocover
+def server_ogc(session):
     from c2cgeoportal.models import LayerV1, ServerOGC
 
     servers_v1 = session.query(
@@ -126,7 +126,7 @@ def server_ogc(session):  # pragma: nocover
     transaction.commit()
 
 
-def layer_v1tov2(session, layer):  # pragma: nocover
+def layer_v1tov2(session, layer):
     from c2cgeoportal.models import ServerOGC, LayerWMS, LayerWMTS, \
         LayergroupTreeitem, WMTSDimension
 
@@ -179,7 +179,7 @@ def layer_v1tov2(session, layer):  # pragma: nocover
     session.add(new_layer)
 
 
-def layer_add_ui_metadata(layer, new_layer, session):  # pragma: nocover
+def layer_add_ui_metadata(layer, new_layer, session):
     from c2cgeoportal.models import UIMetadata
 
     if layer.metadata_url is not None:

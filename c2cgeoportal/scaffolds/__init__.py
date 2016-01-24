@@ -29,7 +29,8 @@
 
 
 import re
-from os import path
+import subprocess
+import os
 from yaml import load
 from six import string_types
 
@@ -105,6 +106,10 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         """
 
         self.out("Welcome to c2cgeoportal!")
+        if os.name == 'posix':
+            for file in ("post-restore-code", "pre-restore-database.mako"):
+                dest = os.path.join(output_dir, "deploy/hooks", file)
+                subprocess.check_call(["chmod", "+x", dest])
         return BaseTemplate.post(self, command, output_dir, vars)
 
     def _set_srid_in_vars(self, command, vars):
@@ -137,7 +142,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         Overrides the base template
         """
 
-        if path.exists("project.yaml"):
+        if os.path.exists("project.yaml"):
             project = load(file("project.yaml", "r"))
             if "template_vars" in project:
                 for key, value in project["template_vars"].items():
@@ -145,3 +150,9 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
                         vars[key] = value.encode("utf-8")
 
         return BaseTemplate.pre(self, command, output_dir, vars)
+
+    def post(self, command, output_dir, vars):
+        if os.name == 'posix':
+            dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
+            subprocess.check_call(["chmod", "+x", dest])
+        return BaseTemplate.post(self, command, output_dir, vars)

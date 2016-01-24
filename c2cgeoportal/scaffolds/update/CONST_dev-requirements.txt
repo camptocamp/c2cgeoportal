@@ -2,7 +2,6 @@ flake8
 pep8-naming
 c2c.template>=1.2.dev
 c2c.versions==1.0.0
-pyramid_debugtoolbar
 htmlmin==0.1.10
 alembic==0.7.7
 transifex-client

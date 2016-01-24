@@ -58,7 +58,7 @@ DEFAULT_C2CGEOPORTAL_URL = \
 VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
 
 
-def main():  # pragma: no cover
+def main():
     """
     tool used to help th use in the user tash
     """
@@ -433,5 +433,5 @@ class C2cTool:
         check_call(["make", "-f", self.options.file, "build"])
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()

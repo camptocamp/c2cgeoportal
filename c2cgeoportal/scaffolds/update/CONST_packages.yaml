@@ -1,13 +1,18 @@
 default_cmd: dpkg -l {package} | grep ^ii | awk '{{print $3}}'
 
-main:
-    mapserver:
-        cmd: /usr/lib/cgi-bin/mapserv -v | awk '{{print $3}}'
-        version: 7.0
+common:
     python:
         cmd: /usr/bin/python --version 2>&1 | awk '{{print $2}}'
         version: 2.7
     python-dev: 2.7
+    java:
+        cmd: java -version 2>&1 | grep 'java version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
+        version: 1.7.0
+
+main:
+    mapserver:
+        cmd: /usr/lib/cgi-bin/mapserv -v | awk '{{print $3}}'
+        version: 7.0
     postgres:
         cmd: psql --version | awk '{{print $3}}'
         version: 9.1
@@ -15,9 +20,6 @@ main:
         cmd: sudo -u postgres psql template_postgis -c "select PostGIS_lib_version();" -At
         #cmd: dpkg -l | grep postgis | grep ^ii | awk '{{print $3}}' | head -n 1
         version: 2.0
-    java:
-        cmd: java -version 2>&1 | grep 'java version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
-        version: 1.7.0
     tomcat:
         cmd: /usr/share/tomcat*/bin/version.sh | grep 'Server number' | awk '{{print $3}}'
         version: 6.0
@@ -36,6 +38,14 @@ main:
     gettext:
         cmd: gettext -V | head -n1 | awk '{{print $4}}'
         version: 0.18
+
+docker:
+    docker:
+        cmd: docker --version | awk '{{print $3}}'
+        version: 1.9.1
+    docker-compose:
+        cmd: docker-compose --version | awk '{{print $3}}'
+        version: 1.5.2
 
 deploy:
     deploy: 0.4.8

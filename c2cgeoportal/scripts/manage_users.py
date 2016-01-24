@@ -36,7 +36,7 @@ from pyramid.paster import get_app
 import transaction
 
 
-def main():  # pragma: no cover
+def main():
     """
     Emergency user create and password reset script
     exemple, reset toto password to foobar:
@@ -175,5 +175,5 @@ User can be created if it doesn't exist yet."""
 
         print("Password resetted for user %s" % username)
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()

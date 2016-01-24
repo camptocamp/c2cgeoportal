@@ -37,7 +37,7 @@ from pyramid.paster import get_app
 from sqlalchemy import func
 
 
-def main():  # pragma: no cover
+def main():
     parser = ArgumentParser(
         prog=sys.argv[0], add_help=True,
         description="Tool to fill the tsearch table (Full-Text Search) "
@@ -109,7 +109,7 @@ def main():  # pragma: no cover
     Import(options)
 
 
-class Import:  # pragma: nocover
+class Import:
     def __init__(self, options):
         self.options = options
         self.imported = set()
