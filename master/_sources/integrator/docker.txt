@@ -1,0 +1,103 @@
+Use Docker to deploy your application
+=====================================
+
+Configure your project
+----------------------
+
+Edit the ``<package>.mk`` file and add those lines after the APACHE_VHOST
+line:
+
+.. code:: make
+
+    DOCKER = TRUE
+    DOCKER_BASE = camptocamp/<project_name>
+    JASPERREPORTS_VERSION = 6.1.1
+
+In the private makefiles, don't specify the ``INSTANCE_ID`` (you'll be alone
+in your container).
+
+After that, a ``make -f <xxx.mk> build`` will create Docker images named like
+that:
+
+* camptocamp/<project_name>_wsgi:latest
+* camptocamp/<project_name>_mapserver:latest
+* camptocamp/<project_name>_print:latest
+
+The tag is by default ``latest``, but you can change it by setting the
+``DOCKER_TAG`` Makefile variable.
+
+
+Create a developer composition
+------------------------------
+
+Create a ``docker-compose.yml.mako`` file like that:
+
+.. code:: docker
+
+    #A composition file for integration tests and development
+    print:
+      image: camptocamp/<project_name>_print:latest
+      links:
+      - mapserver
+      #ports:
+      #- 8280:8080
+
+    mapserver:
+      image: camptocamp/<project_name>_mapserver:latest
+      extra_hosts:
+      - "db:${dbhost}"
+      #ports:
+      #- 8380:80
+
+    wsgi:
+      image: camptocamp/<project_name>_wsgi:latest
+      extra_hosts:
+      - "db:${dbhost}"
+      ports:
+      - 8480:80
+
+If you want to host the database on your local machine, you must add a
+``dbhost`` entry pointing to ``172.17.0.1`` (your host address for Docker
+container) in your ``vars_<package>.yaml`` file. Then you need to make sure
+Postgres is configured to listen on that interface and accepts authentication.
+
+
+Run the developer composition
+-----------------------------
+
+.. prompt:: bash
+
+    make -f <xxx.mk> build && docker-compose up
+
+You can then access your application with http://localhost:8480/
+
+
+Run with a local c2cgeoportal
+-----------------------------
+
+If you need to fix bugs in c2cgeoportal or test new features, you need to hack
+the Docker image creation to use your version of c2cgeoportal.
+
+First, you need to move/copy you c2cgeoportal clone into you project root
+directory. That is needed to allow Docker to see those files.
+
+Then, add this line to your ``<package>.mk`` file (before the ``include ...``):
+
+.. code:: make
+
+    TEMPLATE_EXCLUDE = c2cgeoportal
+
+Edit your ``.dockerignore`` file and add those lines at the end:
+
+.. code:: docker
+
+    !c2cgeoportal/c2cgeoportal*
+    !c2cgeoportal/setup.*
+    !c2cgeoportal/requirements.txt
+
+Finally, edit your ``Dockerfile`` and add those lines just before the step #2:
+
+.. code:: docker
+
+    COPY c2cgeoportal /app/c2cgeoportal
+    RUN pip install -e c2cgeoportal
