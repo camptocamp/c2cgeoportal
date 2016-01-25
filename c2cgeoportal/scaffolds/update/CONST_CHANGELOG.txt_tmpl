@@ -49,7 +49,7 @@ Version 1.6.7
             - !restrictUris
                 matchers:
                 - !localMatch
-                  pathRegex: "^/${instanceid}/wsgi/mapserv_proxy$"
+                  pathRegex: "/${instanceid}/wsgi/mapserv_proxy"
                 - !localMatch
                   pathRegex: "/${instanceid}/tiles/.*"
                 - !localMatch

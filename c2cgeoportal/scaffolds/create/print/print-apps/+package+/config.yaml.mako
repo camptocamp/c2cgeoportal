@@ -55,7 +55,7 @@ templates:
             - !restrictUris
                 matchers:
                 - !localMatch
-                  pathRegex: "^/${instanceid}/wsgi/mapserv_proxy$"
+                  pathRegex: "/${instanceid}/wsgi/mapserv_proxy"
                 - !localMatch
                   pathRegex: "/${instanceid}/tiles/.*"
                 - !localMatch
