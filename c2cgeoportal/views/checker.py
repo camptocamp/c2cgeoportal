@@ -219,8 +219,8 @@ class Checker(object):  # pragma: no cover
                 return "Failed get the status: " + content
 
             status = loads(content)
-            print status
             if "error" in status:
+                self.set_status(500, status["error"])
                 return "Failed to do the printing: %s" % status["error"]
             done = status["done"]
 
