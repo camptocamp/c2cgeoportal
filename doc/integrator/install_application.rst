@@ -258,7 +258,7 @@ The following configuration override must be added to your <project>.mk::
     VENV_BIN ?= .build/venv/Scripts
     # On windows, some python packages are installed from already packaged wheels.
     CONST_REQUIREMENT ?= CONST_requirements_windows.txt
-    APACHE_VHOST ?= path/to/your/www/folder
+    APACHE_VHOST ?= your_apache_vhost_folder
     APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
     PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
     # because Windows doesn't like path with //
