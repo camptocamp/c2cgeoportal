@@ -281,7 +281,7 @@ PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 PRINT_OUTPUT_WAR =
 PRINT_TMP ?= /tmp
-JASPERREPORTS_VERSION ?= 5.6.1
+JASPERREPORTS_VERSION ?= 6.1.1
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
 TOMCAT_STOP_COMMAND ?= $(TOMCAT_SERVICE_COMMAND) stop
@@ -291,11 +291,11 @@ ifeq ($(PRINT_VERSION), 3)
 PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
-PRINT_REQUIREMENT += \
+PRINT_EXTRA_LIBS += \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/joda-time-1.6.jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
+	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
+PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
@@ -423,11 +423,7 @@ cleanall: clean
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
-	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) \
-		print/WEB-INF/lib/jasperreports-functions-${JASPERREPORTS_VERSION}.jar \
-		print/WEB-INF/lib/joda-time-1.6.jar \
-		print/WEB-INF/lib/jasperreports-fonts-${JASPERREPORTS_VERSION}.jar \
-		print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar
+	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
@@ -870,10 +866,6 @@ print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
 	curl --max-redirs 0 --location --output $@ http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
-
-print/WEB-INF/lib/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar:
-	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-fonts-$(JASPERREPORTS_VERSION).jar/download
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
