@@ -52,9 +52,9 @@ except ImportError:
         out, err = p.communicate()
         return out
 
-DEFAULT_INDEX_URL = "https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal"
 DEFAULT_C2CGEOPORTAL_URL = \
-    "https://camptocamp.github.io/c2cgeoportal/%(package)s-%(version)s-py2.py3-none-any.whl"
+    "https://pypi.python.org/packages/source/c/c2cgeoportal/" \
+    "c2cgeoportal-%(version)s-py2.py3-none-any.whl"
 VERSION_RE = "^[0-9]+.[0-9]+.[0-9]+(rc[0-9]+|dev[0-9]+|\.[0-9]+)?$"
 
 
@@ -121,13 +121,11 @@ def _fill_arguments(command):
     )
     parser.add_argument(
         "--index-url",
-        help="An alternate camptocamp python package index URL",
-        default=DEFAULT_INDEX_URL
+        help="no more used",
     )
     parser.add_argument(
         "--c2cgeoportal-url",
-        help="An alternate c2cgeoportal egg/wheel URL (with arguments %(package) %(version)s)",
-        default=DEFAULT_C2CGEOPORTAL_URL
+        help="no more used",
     )
 
     if command == "help":
@@ -202,7 +200,6 @@ class C2cTool:
         self.project = self.get_project()
 
     def upgrade(self):
-        self.package = "c2cgeoportal"
         self.venv_bin = ".build/venv/bin"
         if self.options.windows:
             self.options.clean = "clean"
@@ -231,13 +228,12 @@ class C2cTool:
                 exit(1)
 
             headers, _ = http.request(
-                self.options.c2cgeoportal_url % {
-                    "package": self.package,
+                DEFAULT_C2CGEOPORTAL_URL % {
                     "version": self.options.version
                 }
             )
             if headers.status != 200:
-                print("This %s egg does not exist." % self.package)
+                print("The c2cgeoportal wheel does not exist.")
                 exit(1)
 
             url = (
@@ -320,15 +316,12 @@ class C2cTool:
 
         if not self.options.windows:
             check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
-            pip_cmd = [
-                "%s/pip" % self.venv_bin, "install",
-                "--find-links", self.options.index_url,
-            ]
+            pip_cmd = ["%s/pip" % self.venv_bin, "install"]
             if self.options.version == "master":
-                check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", self.package])
-                pip_cmd += ["--pre", self.package]
+                check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", "c2cgeoportal"])
+                pip_cmd += ["--pre", "c2cgeoportal"]
             else:
-                pip_cmd += ["%s==%s" % (self.package, self.options.version)]
+                pip_cmd += ["c2cgeoportal==%s" % (self.options.version)]
             check_call(pip_cmd)
 
         check_call([
