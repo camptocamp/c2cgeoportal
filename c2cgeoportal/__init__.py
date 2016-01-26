@@ -611,6 +611,7 @@ def includeme(config):
     config.add_route("echo", "/echo", request_method="POST")
 
     # add routes to the entry view class
+    config.add_route("base", "/", request_method="HEAD")
     config.add_route("loginform", "/login.html", request_method="GET")
     add_cors_route(config, "/login", "login")
     config.add_route("login", "/login", request_method="POST")
