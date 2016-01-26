@@ -140,13 +140,14 @@ def main():
             )
             # i18n
             data = _sub(
-                "defaultLang: 'en',",
-                "defaultLang: '${request.registry.settings[\"default_locale_name\"]}',",
+                "module.constant\('defaultLang', 'en'\);",
+                "module.constant('defaultLang', "
+                "'${request.registry.settings[\"default_locale_name\"]}');",
                 data,
             )
             data = _sub(
-                "langUrls: {[^}]*},",
-                r"""langUrls: {
+                "module.constant\('langUrls', {[^}]*}\);",
+                r"""module.constant('langUrls', {
 ${ ',\\n'.join([
     "             '{lang}': '{url}'".format(
         lang=lang,
@@ -154,16 +155,31 @@ ${ ',\\n'.join([
     )
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}
-           },""",
+           });""",
                 data,
             )
 
-            # Full text search
-            data = _sub(
-                r"fulltextsearch: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch\?query=%QUERY'",  # noqa
-                r"fulltextsearch: '${request.route_url('fulltextsearch') | n}?query=%QUERY'",
-                data,
-            )
+            # replace routes
+            for constant, url_end, route, query in [
+                ("authenticationBaseUrl", r"", "base", None),
+                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", None),
+                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy", None),
+                ("gmfTreeUrl", r"/themes\?version=2&background=background", "themes", {
+                    "version": 2,
+                    "background": "background"
+                }),
+            ]:
+                route_args = "" if query is None else ", _query=%s" % dumps(query)
+                data = _sub(
+                    r"module.constant\('%s', "
+                    "'https://geomapfish-demo.camptocamp.net/2.0/wsgi%s'\);" % (
+                        constant, url_end
+                    ),
+                    r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
+                        constant, route, route_args
+                    ),
+                    data,
+                )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)
