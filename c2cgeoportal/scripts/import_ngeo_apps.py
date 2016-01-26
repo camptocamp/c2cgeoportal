@@ -82,9 +82,10 @@ def main():
             data = re.sub(r"}}", r"\\}\\}", data)
             data = re.sub("app", "{{package}}", data)
 
-        if args.js:
+# temporary disable ...
+#        if args.js:
             # Full text search
-            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
+#            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
 
         if args.html:
             # back for ng-app
