@@ -51,15 +51,15 @@ class PdfReport(Proxy):  # pragma: no cover
     def _do_print(self, spec):
         """ Create and get report PDF. """
 
+        headers = dict(self.request.headers)
+        headers["Content-Type"] = "application/json"
         resp, content = self._proxy(
             "%s/buildreport.pdf" % (
                 self.config["print_url"],
             ),
             method="POST",
             body=dumps(spec),
-            headers={
-                "Content-Type": "application/json"
-            }
+            headers=headers
         )
 
         return self._build_response(
