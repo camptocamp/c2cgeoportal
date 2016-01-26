@@ -191,8 +191,8 @@ Push your changes:
     git push origin <version>
     git push origin <release>
 
-Release candidate or development w.x.y(rc|dev)z
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release candidate or development w.x.y.(rc|dev)z
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this case we don't commit the version changes in the branch.
 
@@ -209,7 +209,7 @@ Commit, tag and push your changes:
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
-When you push a tag with the pattern ``^[0-9]+.[0-9]+.[0-9]+(dev[0-9]+|rc[0-9]+|\.[0-9]+)$``
+When you push a tag with the pattern ``^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$``
 a new release will automatically be created on Travis CI.
 
 Post release tasks
