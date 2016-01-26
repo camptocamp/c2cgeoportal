@@ -33,6 +33,17 @@ from json import loads, dumps
 from argparse import ArgumentParser
 
 
+def _sub(pattern, repl, string, count=0, flags=0):
+    new_string = re.sub(pattern, repl, string, count=count, flags=flags)
+    if new_string == string:
+        print("Unable to find the pattern:")
+        print(pattern)
+        print("in")
+        print(string)
+        exit(1)
+    return new_string
+
+
 def main():
     """
     Import the ngeo apps files
@@ -64,7 +75,7 @@ def main():
             del json_data["devDependencies"]["jsdom"]
 
             data = dumps(json_data, indent=4)
-            data = re.sub(r" +\n", "\n", data)
+            data = _sub(r" +\n", "\n", data)
 
         else:
             data = re.sub(r"{{", r"\\{\\{", data)
@@ -73,18 +84,18 @@ def main():
 
         if args.js:
             # Full text search
-            data = re.sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
+            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
 
         if args.html:
             # back for ng-app
-            data = re.sub(r"ng-{{package}}", r"ng-app", data)
+            data = _sub(r"ng-{{package}}", r"ng-app", data)
             # back for mobile-web-app-capable
-            data = re.sub(
+            data = _sub(
                 r"mobile-web-{{package}}-capable",
                 r"mobile-web-app-capable", data
             )
             # Styles
-            data = re.sub(
+            data = _sub(
                 r'    <link rel="stylesheet.*/build/mobile.css">',
                 r"""% if debug:
     <link rel="stylesheet/less" href="${{request.static_url('%s/ngeo/contribs/gmf/less/font.less' % request.registry.settings['node_modules_path'])}}" type="text/css">
@@ -98,7 +109,7 @@ def main():
                 flags=re.DOTALL
             )
             # Scripts
-            data = re.sub(
+            data = _sub(
                 r'    <script .*watchwatchers.js"></script>',
                 r"""% if debug:
     <script>
@@ -128,12 +139,12 @@ def main():
                 flags=re.DOTALL
             )
             # i18n
-            data = re.sub(
+            data = _sub(
                 "defaultLang: 'en',",
                 "defaultLang: '${request.registry.settings[\"default_locale_name\"]}',",
                 data,
             )
-            data = re.sub(
+            data = _sub(
                 "langUrls: {[^}]*},",
                 r"""langUrls: {
 ${ ',\\n'.join([
@@ -148,7 +159,7 @@ ${ ',\\n'.join([
             )
 
             # Full text search
-            data = re.sub(
+            data = _sub(
                 r"fulltextsearch: 'http://geomapfish-demo.camptocamp.net/2.0/wsgi/fulltextsearch\?query=%QUERY'",  # noqa
                 r"fulltextsearch: '${request.route_url('fulltextsearch') | n}?query=%QUERY'",
                 data,
