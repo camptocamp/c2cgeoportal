@@ -41,7 +41,7 @@ For instance to update the application:
 
    If you need to access to GitHub by using the ssh protocol you
    should add the sigdev key located in ``/var/sig/.ssh/id_rsa.pub``
-   as a deploy key of your project.
+   as a deploy key of your project (GitHub repo > settings > Deploy keys).
 
 
 Production environment
