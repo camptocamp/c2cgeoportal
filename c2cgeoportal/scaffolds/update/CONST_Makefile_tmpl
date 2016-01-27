@@ -17,8 +17,8 @@ TILECLOUD_CHAIN ?= TRUE
 # Used print version
 PRINT_VERSION ?= 3
 
-PIP_CMD ?= $(VENV_BIN)/pip
-PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
+PIP_CMD ?= $(VENV_BIN)/pip --disable-pip-version-check
+PIP_INSTALL_ARGS += install --no-use-wheel --trusted-host pypi.camptocamp.net
 PIP_VERSION ?= pip>=6
 SETUPTOOL_VERSION ?= setuptools>=12
 
