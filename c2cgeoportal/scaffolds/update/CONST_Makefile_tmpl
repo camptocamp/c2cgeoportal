@@ -246,9 +246,9 @@ PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
 PRINT_BASE_WAR ?= print-servlet.war
 PRINT_INPUT += print-apps WEB-INF
 PRINT_REQUIREMENT += \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-5.5.0.jar \
+	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-functions-5.6.1.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/joda-time-1.6.jar \
-	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-5.5.0.jar \
+	$(PRINT_BASE_DIR)/WEB-INF/lib/jasperreports-fonts-5.6.1.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
@@ -734,17 +734,17 @@ ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
 endif
 
-print/WEB-INF/lib/jasperreports-functions-5.5.0.jar:
+print/WEB-INF/lib/jasperreports-functions-5.6.1.jar:
 	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.6.1/jasperreports-functions-5.6.1.jar/download
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
 	curl --max-redirs 0 --location --output $@ http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
 
-print/WEB-INF/lib/jasperreports-fonts-5.5.0.jar:
+print/WEB-INF/lib/jasperreports-fonts-5.6.1.jar:
 	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-fonts-5.5.0.jar/download
+	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.6.1/jasperreports-fonts-5.6.1.jar/download
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	mkdir -p $(dir $@)
