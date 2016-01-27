@@ -153,7 +153,8 @@ Checkout the code:
     git pull origin <version>
 
 Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_versions.txt``.
+``c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl``
+(``REQUIREMENTS ?= c2cgeoportal==<release>``).
 
 Verify that the version in the ``setup.py`` is correct
 (as the ``<release>``, required when we create a release candidate
@@ -166,7 +167,7 @@ Commit your changes:
 
 .. prompt:: bash
 
-    git add setup.py c2cgeoportal/scaffolds/update/CONST_versions.txt
+    git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl
     git commit -m "Do release <release>"
 
 Tag the new release:
@@ -200,8 +201,7 @@ Commit, tag and push your changes:
 
 .. prompt:: bash
 
-    git add setup.py c2cgeoportal/scaffolds/update/CONST_requirements.txt \
-        c2cgeoportal/scaffolds/update/CONST_requirements_windows.txt
+    git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl \
     git commit -m "Do release <release>"
     git tag <release>
     git push origin <release>
