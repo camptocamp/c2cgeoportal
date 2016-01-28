@@ -177,18 +177,18 @@ ngeo: NGEO_GIT_ARGS ?= --branch=master
 ngeo:
 	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
 
-.SECONDARY: $(addprefix ngeo/contribs/gmf/apps/, $(addsuffix /index.html, $(APPS)))
+.SECONDARY: ngeo/contribs/gmf/apps/%/index.html
 ngeo/contribs/gmf/apps/%/index.html: ngeo
 	touch --no-create $@
 
-.SECONDARY: $(addprefix ngeo/contribs/gmf/apps/, $(addsuffix /js/mobile.js, $(APPS)))
-ngeo/contribs/gmf/apps/%/js/mobile.js: ngeo
+.SECONDARY: ngeo/contribs/gmf/apps/%/js/controller.js
+ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	touch --no-create $@
 
 $(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp
 	.build/venv/bin/import-ngeo-apps --html $* $< $@
 
-$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/mobile.js .build/requirements.timestamp
+$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp
 	.build/venv/bin/import-ngeo-apps --js $* $< $@
 
 ngeo/.tx/config.mako: ngeo
