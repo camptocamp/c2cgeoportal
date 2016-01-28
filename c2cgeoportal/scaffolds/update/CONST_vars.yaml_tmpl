@@ -356,6 +356,15 @@ vars:
     - "http://{host}:8480/{instanceid}"
     - "https://{host}:8480/{instanceid}"
 
+    # Hooks that can be called at different moments in the life of the
+    # application. The value is the full python name
+    # (full.module.path.function_name) of the function to call
+    hooks: {}
+      # after_settings: {{package}}.after_settings_hook
+      #   Called just after the settings have been loaded. Allows to modify
+      #   the settings at runtime (they are constructed at build time).
+      #   The function receives one parameter: the settings object.
+
 interpreted:
     python:
     - authtkt.secret

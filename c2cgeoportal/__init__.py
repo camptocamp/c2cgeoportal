@@ -37,6 +37,7 @@ from urlparse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
 from ipcalc import IP, Network
+import importlib
 
 from pyramid_mako import add_mako_renderer
 from pyramid.interfaces import IStaticURLInfo
@@ -516,6 +517,17 @@ def error_handler(http_exception, request):  # pragma: nocover
     )
 
 
+def call_hook(settings, name, *args, **kwargs):
+    hooks = settings.get("hooks", {})
+    hook = hooks.get(name, None)
+    if hook is None:
+        return
+    parts = hook.split(".")
+    module = importlib.import_module(".".join(parts[0:-1]))
+    function = getattr(module, parts[-1])
+    function(*args, **kwargs)
+
+
 def includeme(config):
     """ This function returns a Pyramid WSGI application.
     """
@@ -523,6 +535,8 @@ def includeme(config):
     # update the settings object from the YAML application config file
     settings = config.get_settings()
     settings.update(yaml.load(file(settings.get("app.cfg"))))
+
+    call_hook(settings, "after_settings", settings)
 
     global srid
     global schema
