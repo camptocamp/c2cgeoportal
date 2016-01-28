@@ -3,6 +3,9 @@
 Query builder (Querier)
 =======================
 
+Configuration
+-------------
+
 In the Query builder interface, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
@@ -58,3 +61,30 @@ in the ``viewer.js`` file:
         attributeURLs: ${queryer_attribute_urls | n},
         ...
     },
+
+Using DB sessions
+-----------------
+
+As explained above, it is possible to get the attributes lists including
+for layers whose data are hosted in external databases, using the
+``dbsession: "<session name>"`` parameter.
+
+Such `DB session objects <http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session>`_
+must be listed in the ``DBSessions`` dictionary created in c2cgeoportal
+models file. Its default value is:
+
+.. code:: python
+
+    DBSessions = {
+        "dbsession": DBSession,
+    }
+
+``DBSession`` being the session object linked to the default database.
+
+You may add your own DB session objects in the application's ``models.py`` file.
+For instance:
+
+.. code:: python
+
+    from c2cgeoportal.models import DBSessions
+    DBSessions['some_db_session_name'] = SomeDbSessionObject
