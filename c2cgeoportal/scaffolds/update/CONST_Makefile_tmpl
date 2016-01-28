@@ -619,7 +619,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var generate_exports=true $< > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		.build/templatecache.js \
+		.build/gmftemplatecache.js \
 		.build/externs/angular-1.4.js \
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
@@ -629,7 +629,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-.build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
+.build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
