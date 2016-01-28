@@ -14,7 +14,7 @@ The viewer should include a ``Print`` plugin for the *print* feature feature to
 be available in the user interface.
 
 See the `Print API doc
-<http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Print.html>`_ for the
+<http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Print.html>`_ for the
 list of options the plugin can receive.
 
 *The main viewer includes a Print plugin by default.*

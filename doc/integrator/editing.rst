@@ -26,7 +26,7 @@ sources and tools are added you will certainly need to edit ``jsbuild/app.cfg``
 and add scripts in the ``[edit.js]`` sections.
 
 See the `Editing API doc
-<http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Editing.html>`_ for the list of
+<http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Editing.html>`_ for the list of
 options the plugin can receive.
 
 
