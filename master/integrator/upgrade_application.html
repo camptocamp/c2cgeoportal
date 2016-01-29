@@ -64,17 +64,6 @@ span.prompt1:before {
 </div>
 <div class="section" id="easy-upgrading-an-application">
 <h2>Easy upgrading an application<a class="headerlink" href="#easy-upgrading-an-application" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>To upgrade from version 1.6 to version 2.0 you should update the
-<code class="docutils literal"><span class="pre">CONST_requirements.txt</span></code> file:</p>
-<div class="code diff highlight-python"><div class="highlight"><pre>- --find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal
-+ --find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal
-</pre></div>
-</div>
-<p>And run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">UPGRADE_ARGS</span><span class="o">=</span><span class="s1">&#39;--index-url https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal --c2cgeoportal-url https://github.com/camptocamp/c2cgeoportal/releases/download/%\(version\)/%\(package\)-%\(version\)-py2.py3-none-any.whl&#39;</span></span>
-</pre></div>
 <p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
 because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
 <p>We considers that your makefile is named <code class="docutils literal"><span class="pre">&lt;instanceid&gt;.mk</span></code>, if it&#8217;s not the case
