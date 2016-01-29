@@ -67,6 +67,12 @@ class Profile(Raster):
         result = _("distance") + "," + ",".join(layers) + ",x,y"
         template = ",".join("%s" for l in layers)
         for point in points:
+            # Handles cases when a layer is undefined, thus when not all raster
+            # have the same geographical coverage
+            for l in layers:
+                if l not in point["values"]:
+                    point["values"][l] = -9999
+
             r = template % tuple((str(point["values"][l]) for l in layers))
             result += "\n%s,%s,%d,%d" % (str(point["dist"]), r, point["x"], point["y"])
 

@@ -40,7 +40,7 @@ to describe the application layout.
 ~~~~~~~~~
 
 Most of the tools used in the application are
-`cgxp.plugins <http://docs.camptocamp.net/cgxp/1.5/lib/plugins.html>`_.
+`cgxp.plugins <http://docs.camptocamp.net/cgxp/1.6/lib/plugins.html>`_.
 
 In most cases code examples to add to the ``viewer.js`` file are available.
 Don't forget to add the plugin files in your ``jsbuild/app.cfg`` file.
@@ -113,19 +113,19 @@ The important points are:
 
 * Booth ``group: 'background'`` are requires by
   `GXP <http://gxp.opengeo.org>`_ (first), and by the
-  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html>`_
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/MapOpacitySlider.html>`_
   (in ``args``).
 * ``mapserverLayers`` is used to know the layers to
-  `print <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Print.html>`_.
+  `print <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Print.html>`_.
   if it's not present the tiles are used.
 * ``queryLayers`` provide information to the
-  `GetFeature <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/GetFeature.html>`_
+  `GetFeature <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/GetFeature.html>`_
   plugin on the background layers. It can also be a coma separated string.
   If it's not present the ``mapserverLayers`` is used.
 * ``ref`` is used by the
-  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html>`_.
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/MapOpacitySlider.html>`_.
 * ``visibility`` should be set to ``false`` to don't download unneeded tiles, the
-  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html>`_
+  `MapOpacitySlider <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/MapOpacitySlider.html>`_
   will manage it.
 * ``transitionEffect``, ``buffer`` provides good value for performance
   and user experience.

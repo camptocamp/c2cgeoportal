@@ -175,7 +175,8 @@ class TestRasterViews(TestCase):
         request.registry.settings = {
             "raster": {
                 "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1}
+                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem4": {"file": "c2cgeoportal/tests/data/dem4.shp", "round": 1}
             }
         }
         profile = Profile(request)
@@ -184,10 +185,10 @@ class TestRasterViews(TestCase):
         request.params["geom"] = '{"type":"LineString",' \
             '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
         response = profile.csv()
-        self.assertEqual(response.body, """distance,dem2,dem,x,y
-0.0,1166,1166,548009,215990
-9.2,1181,1181,548003,215996
-18.4,1181,1181,547996,216003""")
+        self.assertEqual(response.body, """distance,dem4,dem2,dem,x,y
+0.0,-9999,1166,1166,548009,215990
+9.2,-9999,1181,1181,548003,215996
+18.4,1181,1181,1181,547996,216003""")
 
         request.params["layers"] = "dem"
         response = profile.csv()
