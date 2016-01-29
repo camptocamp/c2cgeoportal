@@ -5,6 +5,7 @@
  */
 goog.provide('{{package}}');
 
+/** @suppress {extraRequire} */
 goog.require('gmf');
 
 
