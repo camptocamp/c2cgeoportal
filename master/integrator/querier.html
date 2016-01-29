@@ -42,6 +42,8 @@
             
   <div class="section" id="query-builder-querier">
 <span id="integrator-querier"></span><h1>Query builder (Querier)<a class="headerlink" href="#query-builder-querier" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the Query builder interface, instead of the standard text field,
 it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
@@ -81,6 +83,28 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 <p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
 in the <code class="docutils literal"><span class="pre">viewer.js</span></code> file:</p>
 </div>
+<div class="section" id="using-db-sessions">
+<h2>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h2>
+<p>As explained above, it is possible to get the attributes lists including
+for layers whose data are hosted in external databases, using the
+<code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
+<p>Such <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session objects</a>
+must be listed in the <code class="docutils literal"><span class="pre">DBSessions</span></code> dictionary created in c2cgeoportal
+models file. Its default value is:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dbsession&quot;</span><span class="p">:</span> <span class="n">DBSession</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
+<p>You may add your own DB session objects in the application&#8217;s <code class="docutils literal"><span class="pre">models.py</span></code> file.
+For instance:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSessions</span>
+<span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
+</pre></div>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -90,7 +114,16 @@ in the <code class="docutils literal"><span class="pre">viewer.js</span></code> 
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
-            </a></p><div class="relations">
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Query builder (Querier)</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#using-db-sessions">Using DB sessions</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
