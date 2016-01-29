@@ -74,6 +74,8 @@ def main():
             del json_data["devDependencies"]["jsdoc"]
             del json_data["devDependencies"]["jsdom"]
 
+            del json_data["scripts"]
+
             data = dumps(json_data, indent=4)
             data = _sub(r" +\n", "\n", data)
 

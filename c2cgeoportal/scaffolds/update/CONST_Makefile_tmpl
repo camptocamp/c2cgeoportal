@@ -606,11 +606,20 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $< $@
 
-.build/%.json: build.mako.json $(VENV_BIN)/mako-render
-	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render --var "interface=$*" $< > $@
+node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
+
+.build/%.json: node_modules/ngeo/buildtools/mako_build.json \
+		$(VENV_BIN)/mako-render
+	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
+		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
+		--var src_set=contribs_gmf \
+		--var entry_point=$(PACKAGE)_$* \
+		--var js=$(PACKAGE)/static-ngeo/js/$*.js \
+		--var ngeo_folder=node_modules/ngeo/ \
+		--var generate_exports=true $< > $@
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		.build/templatecache.js \
+		.build/gmftemplatecache.js \
 		.build/externs/angular-1.4.js \
 		.build/externs/angular-1.4-q_templated.js \
 		.build/externs/angular-1.4-http-promise_templated.js \
@@ -620,7 +629,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-.build/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
+.build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
