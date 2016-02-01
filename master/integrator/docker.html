@@ -125,6 +125,38 @@ RUN pip install -e c2cgeoportal
 </pre></div>
 </div>
 </div>
+<div class="section" id="make-your-docker-images-configurable-from-the-composition">
+<h2>Make your Docker images configurable from the composition<a class="headerlink" href="#make-your-docker-images-configurable-from-the-composition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wsgi">
+<h3>WSGI<a class="headerlink" href="#wsgi" title="Permalink to this headline">¶</a></h3>
+<p>To make the DB connection used by your WSGI configurable from the
+composition, you can add this in your <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>hooks:
+  after_setup: {{package}}.after_setup_hook
+</pre></div>
+</div>
+<p>Then, in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file, add this function:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">after_settings_hook</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+    <span class="n">DB_KEY</span> <span class="o">=</span> <span class="s2">&quot;sqlalchemy.url&quot;</span>
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="n">DB_KEY</span><span class="p">]</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SQLALCHEMY_URL&quot;</span><span class="p">,</span> <span class="n">orig</span><span class="p">)</span>
+    <span class="n">settings</span><span class="p">[</span><span class="n">DB_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+</pre></div>
+</div>
+<p>By setting the <code class="docutils literal"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
+for the wsgi image, you&#8217;ll be able to change the DB connection used.</p>
+</div>
+<div class="section" id="mapserver">
+<h3>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
+<p>The created <code class="docutils literal"><span class="pre">mapserver/Dockerfile</span></code> file installs a hook to make the setup of
+the DB possible. Just set the <code class="docutils literal"><span class="pre">DB_CONNECTION</span></code> environment variable to
+something like that:</p>
+<div class="code docker highlight-python"><div class="highlight"><pre>environment:
+  DB_CONNECTION: user=www-data password=toto dbname=geoacordaDev host=db
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -143,6 +175,11 @@ RUN pip install -e c2cgeoportal
 <li><a class="reference internal" href="#create-a-developer-composition">Create a developer composition</a></li>
 <li><a class="reference internal" href="#run-the-developer-composition">Run the developer composition</a></li>
 <li><a class="reference internal" href="#run-with-a-local-c2cgeoportal">Run with a local c2cgeoportal</a></li>
+<li><a class="reference internal" href="#make-your-docker-images-configurable-from-the-composition">Make your Docker images configurable from the composition</a><ul>
+<li><a class="reference internal" href="#wsgi">WSGI</a></li>
+<li><a class="reference internal" href="#mapserver">Mapserver</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
