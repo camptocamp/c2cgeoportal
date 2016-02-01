@@ -154,7 +154,7 @@ class Import:
         from c2cgeoportal.models import FullTextSearch
 
         key = (
-            item.name if self.option.name else item.id,
+            item.name if self.options.name else item.id,
             interface.id,
             role.id if role is not None else None
         )
