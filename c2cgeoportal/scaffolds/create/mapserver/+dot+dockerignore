@@ -1,2 +1,4 @@
+.dockerignore
 *.mako
+include/*.mako
 Dockerfile

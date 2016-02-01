@@ -26,6 +26,7 @@
 /mapserver/c2cgeoportal.map
 /mapserver/mapserver.map
 /mapserver/tinyows.xml
+/mapserver/replace_db.sh
 /deploy/hooks/pre-restore-database
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot

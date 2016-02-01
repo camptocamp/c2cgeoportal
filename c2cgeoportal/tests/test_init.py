@@ -129,3 +129,30 @@ class TestReferer(TestCase):
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(to=self.BASE1,
                                          ref="http://bad.com/hacker"))
+
+
+def hook(tracer):
+    tracer["called"] = True
+
+
+class TestHooks(TestCase):
+    settings = {
+        "hooks": {
+            "test": "c2cgeoportal.tests.test_init.hook",
+            "bad": "c2cgeoportal.not_here"
+        }
+    }
+
+    def test_existing(self):
+        tracer = {"called": False}
+        c2cgeoportal.call_hook(self.settings, "test", tracer)
+        self.assertTrue(tracer["called"])
+
+    def test_no_hook(self):
+        c2cgeoportal.call_hook(self.settings, "test2")
+
+    def test_no_hooks(self):
+        c2cgeoportal.call_hook({}, "test")
+
+    def test_bad_hook(self):
+        self.assertRaises(AttributeError, c2cgeoportal.call_hook, self.settings, "bad")

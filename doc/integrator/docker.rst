@@ -101,3 +101,43 @@ Finally, edit your ``Dockerfile`` and add those lines just before the step #2:
 
     COPY c2cgeoportal /app/c2cgeoportal
     RUN pip install -e c2cgeoportal
+
+
+Make your Docker images configurable from the composition
+---------------------------------------------------------
+
+WSGI
+....
+
+To make the DB connection used by your WSGI configurable from the
+composition, you can add this in your ``vars_<package>.yaml`` file:
+
+.. code:: yaml
+
+    hooks:
+      after_setup: {{package}}.after_setup_hook
+
+Then, in your ``<package>/__init__.py`` file, add this function:
+
+.. code:: python
+
+    def after_settings_hook(settings):
+        DB_KEY = "sqlalchemy.url"
+        orig = settings[DB_KEY]
+        new = os.environ.get("SQLALCHEMY_URL", orig)
+        settings[DB_KEY] = new
+
+By setting the ``SQLALCHEMY_URL`` environment variable in your composition
+for the wsgi image, you'll be able to change the DB connection used.
+
+Mapserver
+.........
+
+The created ``mapserver/Dockerfile`` file installs a hook to make the setup of
+the DB possible. Just set the ``DB_CONNECTION`` environment variable to
+something like that:
+
+.. code:: docker
+
+    environment:
+      DB_CONNECTION: user=www-data password=toto dbname=geoacordaDev host=db
