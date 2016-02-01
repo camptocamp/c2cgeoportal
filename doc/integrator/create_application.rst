@@ -150,7 +150,7 @@ Go to your new project:
 
 .. prompt:: bash
 
-    chmod +x deploy/hooks/post-restore-database.mako
+    chmod +x deploy/hooks/pre-restore-database.mako
     chmod +x deploy/hooks/post-restore-code
 
 In the ``CONST_requirements.txt`` file make sure that c2cgeoportal version is set:
