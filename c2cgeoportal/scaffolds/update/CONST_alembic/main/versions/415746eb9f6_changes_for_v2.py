@@ -47,9 +47,9 @@ def upgrade():
     schema = context.get_context().config.get_main_option('schema')
 
     engine = op.get_bind().engine
-    if op.get_context().dialect.has_table(
-        engine, 'interface', schema=schema
-    ):  # pragma: nocover
+    if type(engine).__name__ != 'MockConnection' and \
+            op.get_context().dialect.has_table(
+                engine, 'interface', schema=schema):  # pragma: nocover
         return
 
     op.drop_table('user_functionality', schema=schema)
