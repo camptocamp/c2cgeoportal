@@ -28,15 +28,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 from unittest import TestCase
+from pyramid.testing import DummyRequest
 from c2cgeoportal import CACHE_PATH
 from c2cgeoportal.lib.cacheversion import CachebusterTween
 
 
 def handler(request):
-    return request
+    return request.response
 
 
-class MyRequest():
+class MyRequest(DummyRequest):
     def __init__(self, path_info):
         self.path_info = path_info
 
@@ -54,5 +55,7 @@ class TestCacheBuster(TestCase):
         CACHE_PATH.append("test")
         ctf = CachebusterTween(handler, None)
         request = MyRequest("/test2/123456/build.css")
-        ctf(request)
+        response = ctf(request)
         self.assertEqual(request.path_info, "/test2/123456/build.css")
+        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*")
+        self.assertEqual(response.headers["Access-Control-Allow-Headers"], "X-Requested-With, Content-Type")
