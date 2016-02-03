@@ -374,7 +374,7 @@ class Checker(object):  # pragma: no cover
         base_path = os.path.dirname(os.path.dirname(
             os.path.abspath(__import__(package).__file__)))
 
-        phantomjs_base_path = "node_modules/phantomjs/bin/phantomjs"
+        phantomjs_base_path = "node_modules/.bin/phantomjs"
         executable_path = os.path.join(base_path, phantomjs_base_path)
 
         checker_config_base_path = "node_modules/ngeo/buildtools/check-example.js"
@@ -384,7 +384,7 @@ class Checker(object):  # pragma: no cover
         url = "http://dev.camptocamp.com/files/ochriste/test_js_error.html"
         url = "https://geomapfish-demo.camptocamp.net/och20/"
 
-        args = [executable_path, checker_config_path, url]
+        args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
         log_message = ""
         # check_output throws a CalledProcessError if return code is > 0

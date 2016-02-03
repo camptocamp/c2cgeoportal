@@ -1034,7 +1034,7 @@ class Entry(object):
         return d
 
     def get_ngeo_index_vars(self, vars={}):
-        set_common_headers(self.request, "ngeo_index", PUBLIC_CACHE)
+        set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
         vars.update({
             "debug": self.debug,

@@ -58,4 +58,10 @@ class CachebusterTween:
             # remove the cache buster
             path.pop(2)
             request.path_info = "/" .join(path)
-        return self.handler(request)
+
+        response = self.handler(request)
+
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+
+        return response
