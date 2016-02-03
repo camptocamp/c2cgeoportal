@@ -19,7 +19,11 @@ app.cfg = %(here)s/.build/config.yaml
 [filter:fanstatic]
 use = egg:fanstatic#fanstatic
 publisher_signature = fanstatic
+% if instanceid == "":
+base_url = /wsgi
+% else:
 base_url = /${instanceid}/wsgi
+% endif
 recompute_hashes = false
 versioning = false
 bottom = true

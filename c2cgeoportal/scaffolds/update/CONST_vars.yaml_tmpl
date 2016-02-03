@@ -12,6 +12,8 @@ vars:
     modwsgi_user: www-data
     # url-path where the instance must respond.
     apache_entry_point: APACHE_ENTRY_POINT
+    # Docker base image name (comes from the makefile).
+    docker_base: DOCKER_BASE
     # database user
     dbuser: www-data
     # database password
@@ -373,6 +375,7 @@ interpreted:
     environment:
     - instanceid
     - apache_entry_point
+    - docker_base
     - development
     node:
         vars:

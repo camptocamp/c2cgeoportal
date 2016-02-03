@@ -154,7 +154,7 @@ def main():
 ${ ',\\n'.join([
     "             '{lang}': '{url}'".format(
         lang=lang,
-        url=request.static_url('demo:static-ngeo/build/{lang}.json'.format(lang=lang))
+        url=request.static_url('{{package}}:static-ngeo/build/{lang}.json'.format(lang=lang))
     )
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}

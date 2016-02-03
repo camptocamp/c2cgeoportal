@@ -11,6 +11,7 @@
 /apache/tinyows.conf
 /apache/application.wsgi
 /deploy/deploy.cfg
+/docker-compose.yml
 /alembic.ini
 /alembic_static.ini
 /development.ini
@@ -27,6 +28,8 @@
 /mapserver/mapserver.map
 /mapserver/tinyows.xml
 /mapserver/replace_db.sh
+/testDB/01-schemas.sql
+/testDB/Dockerfile
 /deploy/hooks/pre-restore-database
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot
