@@ -49,9 +49,9 @@ def upgrade():
     parentschema = context.get_context().config.get_main_option('parentschema')
 
     engine = op.get_bind().engine
-    if op.get_context().dialect.has_table(
-        engine, 'user', schema=staticschema
-    ):  # pragma: nocover
+    if type(engine).__name__ != 'MockConnection' and \
+            op.get_context().dialect.has_table(
+                engine, 'user', schema=staticschema):  # pragma: nocover
         return
 
     op.create_table(
