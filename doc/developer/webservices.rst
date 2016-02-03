@@ -299,6 +299,7 @@ Parameters
 * ``query``: Text to search.
 * ``limit``: The maximum number of results (optional).
 * ``partitionlimit``: The maximum number of results per layer (optional).
+* ``lang``: The used language (optional).
 * ``interface``: The used interface (optional).
 * ``callback``: Name of the callback function (optional).
 
