@@ -48,8 +48,11 @@ class TestCacheBuster(TestCase):
         CACHE_PATH.append("test")
         ctf = CachebusterTween(handler, None)
         request = MyRequest("/test/123456/build.css")
-        ctf(request)
+        response = ctf(request)
         self.assertEqual(request.path_info, "/test/build.css")
+        # test CORS
+        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*")
+        self.assertEqual(response.headers["Access-Control-Allow-Headers"], "X-Requested-With, Content-Type")
 
     def test_noreplace(self):
         CACHE_PATH.append("test")
@@ -57,5 +60,6 @@ class TestCacheBuster(TestCase):
         request = MyRequest("/test2/123456/build.css")
         response = ctf(request)
         self.assertEqual(request.path_info, "/test2/123456/build.css")
-        self.assertEqual(response.headers["Access-Control-Allow-Origin"], "*")
-        self.assertEqual(response.headers["Access-Control-Allow-Headers"], "X-Requested-With, Content-Type")
+        # test no CORS
+        self.assertNotIn("Access-Control-Allow-Origin", response.headers.keys())
+        self.assertNotIn("Access-Control-Allow-Headers", response.headers.keys())
