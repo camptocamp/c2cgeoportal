@@ -102,7 +102,7 @@ class TestRasterViews(TestCase):
         request.params["geom"] = '{"type":"LineString",' \
             '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 3)
+        self.assertEqual(len(result["profile"]), 4)
         self.assertAlmostEqual(result["profile"][0]["y"], 215990)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem2"], 1166)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], 1166)
@@ -118,10 +118,15 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result["profile"][2]["values"]["dem2"], 1181)
         self.assertAlmostEqual(result["profile"][2]["dist"], Decimal("18.4"))
         self.assertAlmostEqual(result["profile"][2]["x"], 547996.5)
+        self.assertAlmostEqual(result["profile"][3]["y"], 216009.5)
+        self.assertAlmostEqual(result["profile"][3]["values"]["dem"], 1164)
+        self.assertAlmostEqual(result["profile"][3]["values"]["dem2"], 1164)
+        self.assertAlmostEqual(result["profile"][3]["dist"], Decimal("27.6"))
+        self.assertAlmostEqual(result["profile"][3]["x"], 547990.0)
 
         request.params["layers"] = "dem"
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 3)
+        self.assertEqual(len(result["profile"]), 4)
         self.assertAlmostEqual(result["profile"][0]["y"], 215990)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], 1166)
         self.assertAlmostEqual(result["profile"][0]["dist"], Decimal("0.0"))
@@ -134,6 +139,10 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result["profile"][2]["values"]["dem"], 1181)
         self.assertAlmostEqual(result["profile"][2]["dist"], Decimal("18.4"))
         self.assertAlmostEqual(result["profile"][2]["x"], 547996.5)
+        self.assertAlmostEqual(result["profile"][3]["y"], 216009.5)
+        self.assertAlmostEqual(result["profile"][3]["values"]["dem"], 1164)
+        self.assertAlmostEqual(result["profile"][3]["dist"], Decimal("27.6"))
+        self.assertAlmostEqual(result["profile"][3]["x"], 547990.0)
 
         # test length = 0
         request.params["geom"] = '{"type":"LineString",' \
@@ -149,19 +158,27 @@ class TestRasterViews(TestCase):
         request.params["geom"] = '{"type":"LineString",' \
             '"coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 3)
+        self.assertEqual(len(result["profile"]), 5)
         self.assertAlmostEqual(result["profile"][0]["y"], 216000)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], 1169)
         self.assertAlmostEqual(result["profile"][0]["dist"], Decimal("0.0"))
         self.assertAlmostEqual(result["profile"][0]["x"], 548000)
-        self.assertAlmostEqual(result["profile"][1]["y"], 216003.66666666666)
-        self.assertAlmostEqual(result["profile"][1]["values"]["dem"], 1155)
-        self.assertAlmostEqual(result["profile"][1]["dist"], Decimal("5.2"))
-        self.assertEqual(result["profile"][1]["x"], 548003.66666666663)
-        self.assertAlmostEqual(result["profile"][2]["y"], 216006.33333333334)
-        self.assertAlmostEqual(result["profile"][2]["values"]["dem"], 1154)
-        self.assertAlmostEqual(result["profile"][2]["dist"], Decimal("9.0"))
-        self.assertAlmostEqual(result["profile"][2]["x"], 548006.33333333337)
+        self.assertAlmostEqual(result["profile"][1]["y"], 216001.0)
+        self.assertAlmostEqual(result["profile"][1]["values"]["dem"], 1162)
+        self.assertAlmostEqual(result["profile"][1]["dist"], Decimal("1.4"))
+        self.assertEqual(result["profile"][1]["x"], 548001.0)
+        self.assertAlmostEqual(result["profile"][2]["y"], 216003.66666666666)
+        self.assertAlmostEqual(result["profile"][2]["values"]["dem"], 1155)
+        self.assertAlmostEqual(result["profile"][2]["dist"], Decimal("5.2"))
+        self.assertAlmostEqual(result["profile"][2]["x"], 548003.6666666666)
+        self.assertAlmostEqual(result["profile"][3]["y"], 216006.33333333334)
+        self.assertAlmostEqual(result["profile"][3]["values"]["dem"], 1154)
+        self.assertAlmostEqual(result["profile"][3]["dist"], Decimal("9"))
+        self.assertAlmostEqual(result["profile"][3]["x"], 548006.3333333334)
+        self.assertAlmostEqual(result["profile"][4]["y"], 216009.0)
+        self.assertAlmostEqual(result["profile"][4]["values"]["dem"], 1159)
+        self.assertAlmostEqual(result["profile"][4]["dist"], Decimal("12.7"))
+        self.assertAlmostEqual(result["profile"][4]["x"], 548009.0)
 
         # test wrong layer name
         request.params["layers"] = "wrong"
@@ -188,11 +205,13 @@ class TestRasterViews(TestCase):
         self.assertEqual(response.body, """distance,dem4,dem2,dem,x,y
 0.0,-9999,1166,1166,548009,215990
 9.2,-9999,1181,1181,548003,215996
-18.4,1181,1181,1181,547996,216003""")
+18.4,1181,1181,1181,547996,216003
+27.6,1164,1164,1164,547990,216009""")
 
         request.params["layers"] = "dem"
         response = profile.csv()
         self.assertEqual(response.body, """distance,dem,x,y
 0.0,1166,548009,215990
 9.2,1181,548003,215996
-18.4,1181,547996,216003""")
+18.4,1181,547996,216003
+27.6,1164,547990,216009""")

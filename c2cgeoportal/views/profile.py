@@ -157,7 +157,7 @@ class Profile(Raster):
                     cur_nb_points = 1
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)
                 dy = (coord[1] - prev_coord[1]) / float(cur_nb_points)
-                for i in range(1, cur_nb_points):
+                for i in range(1, cur_nb_points + 1):
                     result.append([prev_coord[0] + dx * i, prev_coord[1] + dy * i])
             else:
                 result.append([coord[0], coord[1]])
