@@ -298,7 +298,7 @@ steps:
 
    .. prompt:: bash
 
-        make <user>.mk build
+        make -f <user>.mk build
 
 4. Apply the ``c2cgeoportal_update`` scaffold:
 
