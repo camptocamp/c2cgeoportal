@@ -381,8 +381,6 @@ class Checker(object):  # pragma: no cover
         checker_config_path = os.path.join(base_path, checker_config_base_path)
 
         url = self.request.route_url("mobile")
-        url = "http://dev.camptocamp.com/files/ochriste/test_js_error.html"
-        url = "https://geomapfish-demo.camptocamp.net/och20/"
 
         args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 

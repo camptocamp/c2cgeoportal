@@ -73,6 +73,9 @@ endif
 ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
 endif
+ifeq (${DOCKER}, TRUE)
+DEFAULT_BUILD_RULES += testDB
+endif
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 # Requirements
@@ -347,10 +350,11 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks
-ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
+ENVIRONMENT_VARS += INSTANCE_ID=$(INSTANCE_ID) \
 	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
-	DEVELOPMENT=${DEVELOPMENT} \
-	PACKAGE=${PACKAGE}
+	DOCKER_BASE=$(DOCKER_BASE) \
+	DEVELOPMENT=$(DEVELOPMENT) \
+	PACKAGE=$(PACKAGE)
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
@@ -511,15 +515,18 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: lingua-server.cfg $(SERVER_LOCALISATION
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
+I18N_SOURCE_FILES += $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES)
+ifeq ($(DOCKER),FALSE)
+# The theme from the database
+I18N_SOURCE_FILES += development.ini
+endif
+
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		$(SERVER_LOCALISATION_SOURCES_FILES) \
 		$(VENV_BIN)/pot-create lingua-client.cfg \
-		$(APP_HTML_FILES) \
-		$(APP_JS_FILES) \
-		$(APP_DIRECTIVES_PARTIALS_FILES) \
-		development.ini \
+		$(I18N_SOURCE_FILES) \
 		.build/config.yaml
-	$(VENV_BIN)/pot-create --config lingua-client.cfg --output $@ development.ini $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES)
+	$(VENV_BIN)/pot-create --config lingua-client.cfg --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
@@ -977,4 +984,13 @@ push_docker:
 	docker push $(DOCKER_BASE)_print:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)_wsgi:$(DOCKER_TAG)
 	docker push $(DOCKER_BASE)_mapserver:$(DOCKER_TAG)
+
+.PHONY: testDB
+testDB: testDB/02-alembic.sql testDB/03-alembic-static.sql
+
+testDB/02-alembic.sql: $(VENV_BIN)/alembic alembic.ini
+	$(VENV_BIN)/alembic -c alembic.ini upgrade --sql head > $@
+
+testDB/03-alembic-static.sql: $(VENV_BIN)/alembic alembic_static.ini
+	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif

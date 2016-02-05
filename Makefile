@@ -185,10 +185,10 @@ ngeo/contribs/gmf/apps/%/index.html: ngeo
 ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	touch --no-create $@
 
-$(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp
+$(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --html $* $< $@
 
-$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp
+$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --js $* $< $@
 
 ngeo/.tx/config.mako: ngeo
@@ -201,7 +201,7 @@ c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
 ngeo/package.json: ngeo
 	touch --no-create $@
 
-c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requirements.timestamp
+c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --package _ $< $@
 
 # Templates
