@@ -26,41 +26,31 @@ that:
 The tag is by default ``latest``, but you can change it by setting the
 ``DOCKER_TAG`` Makefile variable.
 
+Edit ``vars_<package>.yaml`` and add:
 
-Create a developer composition
-------------------------------
+.. code:: yaml
 
-Create a ``docker-compose.yml.mako`` file like that:
+    dbhost: db
 
-.. code:: docker
+Database container
+------------------
 
-    #A composition file for integration tests and development
-    print:
-      image: camptocamp/<project_name>_print:latest
-      links:
-      - mapserver
-      #ports:
-      #- 8280:8080
+You can add scripts to populate the DB container by adding ``.sql`` or ``.sh``
+files in the ``testDB`` directory. They must start with 2 digits, followed by
+an underscore. Please start at number 10.
 
-    mapserver:
-      image: camptocamp/<project_name>_mapserver:latest
-      extra_hosts:
-      - "db:${dbhost}"
-      #ports:
-      #- 8380:80
+Developer composition
+---------------------
 
-    wsgi:
-      image: camptocamp/<project_name>_wsgi:latest
-      extra_hosts:
-      - "db:${dbhost}"
-      ports:
-      - 8480:80
+A ``docker-compose.yml.mako`` file is created as a starting point.
 
 If you want to host the database on your local machine, you must add a
 ``dbhost`` entry pointing to ``172.17.0.1`` (your host address for Docker
 container) in your ``vars_<package>.yaml`` file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.
 
+If you want to use an external serveur for the database, just put it's address
+in the ``dbhost`` entry.
 
 Run the developer composition
 -----------------------------

@@ -62,37 +62,26 @@ that:</p>
 </ul>
 <p>The tag is by default <code class="docutils literal"><span class="pre">latest</span></code>, but you can change it by setting the
 <code class="docutils literal"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
-</div>
-<div class="section" id="create-a-developer-composition">
-<h2>Create a developer composition<a class="headerlink" href="#create-a-developer-composition" title="Permalink to this headline">¶</a></h2>
-<p>Create a <code class="docutils literal"><span class="pre">docker-compose.yml.mako</span></code> file like that:</p>
-<div class="code docker highlight-python"><div class="highlight"><pre>#A composition file for integration tests and development
-print:
-  image: camptocamp/&lt;project_name&gt;_print:latest
-  links:
-  - mapserver
-  #ports:
-  #- 8280:8080
-
-mapserver:
-  image: camptocamp/&lt;project_name&gt;_mapserver:latest
-  extra_hosts:
-  - &quot;db:${dbhost}&quot;
-  #ports:
-  #- 8380:80
-
-wsgi:
-  image: camptocamp/&lt;project_name&gt;_wsgi:latest
-  extra_hosts:
-  - &quot;db:${dbhost}&quot;
-  ports:
-  - 8480:80
+<p>Edit <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and add:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre>dbhost: db
 </pre></div>
 </div>
+</div>
+<div class="section" id="database-container">
+<h2>Database container<a class="headerlink" href="#database-container" title="Permalink to this headline">¶</a></h2>
+<p>You can add scripts to populate the DB container by adding <code class="docutils literal"><span class="pre">.sql</span></code> or <code class="docutils literal"><span class="pre">.sh</span></code>
+files in the <code class="docutils literal"><span class="pre">testDB</span></code> directory. They must start with 2 digits, followed by
+an underscore. Please start at number 10.</p>
+</div>
+<div class="section" id="developer-composition">
+<h2>Developer composition<a class="headerlink" href="#developer-composition" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal"><span class="pre">docker-compose.yml.mako</span></code> file is created as a starting point.</p>
 <p>If you want to host the database on your local machine, you must add a
 <code class="docutils literal"><span class="pre">dbhost</span></code> entry pointing to <code class="docutils literal"><span class="pre">172.17.0.1</span></code> (your host address for Docker
 container) in your <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.</p>
+<p>If you want to use an external serveur for the database, just put it&#8217;s address
+in the <code class="docutils literal"><span class="pre">dbhost</span></code> entry.</p>
 </div>
 <div class="section" id="run-the-developer-composition">
 <h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this headline">¶</a></h2>
@@ -172,7 +161,8 @@ something like that:</p>
   <ul>
 <li><a class="reference internal" href="#">Use Docker to deploy your application</a><ul>
 <li><a class="reference internal" href="#configure-your-project">Configure your project</a></li>
-<li><a class="reference internal" href="#create-a-developer-composition">Create a developer composition</a></li>
+<li><a class="reference internal" href="#database-container">Database container</a></li>
+<li><a class="reference internal" href="#developer-composition">Developer composition</a></li>
 <li><a class="reference internal" href="#run-the-developer-composition">Run the developer composition</a></li>
 <li><a class="reference internal" href="#run-with-a-local-c2cgeoportal">Run with a local c2cgeoportal</a></li>
 <li><a class="reference internal" href="#make-your-docker-images-configurable-from-the-composition">Make your Docker images configurable from the composition</a><ul>
