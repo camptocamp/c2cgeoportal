@@ -61,7 +61,8 @@ class CachebusterTween:
 
         response = self.handler(request)
 
-        response.headers["Access-Control-Allow-Origin"] = "*"
-        response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+        if path[1] in CACHE_PATH:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
 
         return response
