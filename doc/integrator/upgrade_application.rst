@@ -335,7 +335,7 @@ steps:
 
    .. prompt:: bash
 
-        make <user>.mk
+        make -f <user>.mk build
 
 7. Upgrade the database using the ``alembic`` script:
 
