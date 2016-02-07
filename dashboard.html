@@ -8,108 +8,305 @@
         font-size: 14px;
         margin: 0;
       }
-      #queries, #content {
-        padding: 10px;
+      .top, .bottom {
+        width: 100%;
+        height: 50%;
       }
-      .menu {
+      .backlog, .ready, .ongoing, .closed, .done, .queries, .main {
+        height: 100%;
         float: left;
-        width: 20%;
-        height: 100%;
+        border: 0;
+        overflow: auto;
       }
-      .content {
-        float: right;
-        width: 77%;
-        height: 100%;
+      .backlog, .ready, .ongoing, .closed, .done {
+        width: 22%;
+      }
+      .done {
+        width: 12%;
+      }
+      .queries {
+        width: 20%;
+      }
+      .main {
+        width: 80%;
+      }
+      #backlog, #ready, #ongoing, #closed, #done, #queries, #main {
+        padding: 10px;
         border: none;
+      }
+      #ready, #ongoing, #closed, #done, #main {
         border-left-style: solid;
         border-left-width: 1px;
         border-left-color: black;
       }
+      #backlog, #ready, #ongoing, #closed, #done {
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: black;
+      }
+      #queries, #main {
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-top-color: black;
+      }
+      
       .label {
         font-weight: bold;
+      }
+      .assignee {
+        font-style: italic;
+      }
+      .ngeo {
+        color: #cc2222;
+      }
+      .c2cgeoportal {
+        color: #00aa00;
+      }
+      .closedIssue {
+        opacity: 0.5;
+      }
+      select {
+        width: 150px;
       }
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script>
     
-      var repos = [
-        {'name': 'camptocamp/c2cgeoportal',
-         'milestone': '2.0', 
-         'steps_color': '009800',
-         'tasks_color': '207de5'},
-        {'name': 'camptocamp/ngeo',
-         'milestone': '2.0',
-         'steps_color': '009800',
-         'tasks_color': '207de5'}
-      ];
+      var repos = [{'name': 'camptocamp/ngeo',
+                    'css': 'ngeo'},
+                   {'name': 'camptocamp/c2cgeoportal',
+                    'css': 'c2cgeoportal'}];
+      var milestones = ['2.0', '2.1'];
+      var stepsColor = '009800';
+      var tasksColor = '207de5';
+      var steps = [];    // Initialized in init()
+      var tasks = [];    // Initialized in init()
+      var assignees = [] // Initialized in init()
+      
+      var mainKey = -1;
+      var stepsKey = 0;
+      var milestone = '2.0';
+      var task = 'all';
+      var specs = 'all';
+      var assignee = 'all';
+      
       var queries = [
-        {'title': 'Open', 'query': 'is:open'},
-        {'title': 'Backlog', 'query': 'label:Backlog is:open'},
-        {'title': 'Ready', 'query': 'label:Ready is:open'},
-        {'title': 'Ongoing', 'query': 'label:Ongoing is:open'},
-        {'title': 'Closed', 'query': 'label:Ongoing is:closed'},
-        {'title': 'Done', 'query': 'label:Done is:closed'},
-        {'title': '[Specs] Open', 'query': 'label:Specs is:open'},
-        {'title': '[Specs] Backlog', 'query': 'label:Specs label:Backlog is:open'},
-        {'title': "[Error] Ongoing no assignee", 'query': "label:Ongoing is:open no:assignee"},
-        {'title': "[Error] Done not closed", 'query': "label:Done is:open"}
+        {'title': 'Multi',
+         'queries': [{'label': 'Backlog',
+                      'state': 'open',
+                      'target': 'backlog'},
+                     {'label': 'Ready',
+                      'state': 'open',
+                      'target': 'ready'},
+                     {'label': 'Ongoing',
+                      'state': 'open',
+                      'target': 'ongoing'},
+                     {'label': 'Ongoing',
+                      'state': 'closed',
+                      'target': 'closed'},
+                     {'label': 'Done',
+                      'state':'closed',
+                      'target': 'done'}],
+         'type': 'multi'},
+        {'title': 'Not Done',
+         'query': '-label:"Done"',
+         'type': 'main'},
+        {'title': 'PSC Question',
+         'query': 'label:"PSC Question" is:open',
+         'type': 'main'},
+        {'title': 'PSC Enhancement',
+         'query': 'label:"PSC Enhancement" is:open',
+         'type': 'main'},
+        {'title': "Error - Ongoing no assignee",
+         'query': "label:Ongoing is:open no:assignee", 
+         'type': 'main'},
+        {'title': "Error - Done not closed",
+         'query': "label:Done is:open",
+         'type': 'main'}
       ]
-      function query_link(repo, query) {
-        var q = encodeURIComponent("is:issue repo:" + repo.name
-                                   + " milestone:" + repo.milestone 
-                                   + " " + query.query);
-        var url = "https://api.github.com/search/issues?q=" + q;
-        var github_url = "https://github.com/" + repo.name + "/issues?q=" + q;
-        return "<a href=\"javascript:load('" + url +"', '"
-               + github_url + "');\">" + query.title + "</a>";
-      }
       function set_auth(xhr) {
-        xhr.setRequestHeader('Authorization', 'Basic ' 
-                             + btoa('c2cdashboard:aHbIcJ58'));
-      }
-      function load_queries() {
         
-        $("#queries").html('');
+        var user = 'c2cdashboard:aHbIcJ58';
+        if ($.urlParam('usr') && $.urlParam('pwd')) {
+          user = $.urlParam('usr') + ':' + $.urlParam('pwd');
+        }
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa(user));
+      }
+      function display_queries(qKey) {
+      
+        mainKey = qKey;
+      
+        var milestoneRadios = [];
+        $.each(milestones, function(key, ms) {
+          var input = "<input onClick=\"load_all();\" id=\"form_milestone\" name=\"form_milestone\" type=\"radio\" value=\"" + ms + "\"";
+          if (ms == milestone) {
+            input += " checked";
+          }
+          input += ">" + ms + "</input>";
+          milestoneRadios.push(input);
+        });
+        var taskOptions = [];
+        $.each(tasks, function(key, t) {
+          var option = "<option value=\"" + t + "\"";
+          if (t == task) {
+            option += " selected";
+          }
+          option += ">" + t + "</option>"
+          taskOptions.push(option);
+        });
+        var specsList = [{'id': 'all', 'name': 'All Specs'},
+                         {'id': 'specsNo', 'name': 'No Specs'},
+                         {'id': 'specsYes', 'name': 'Specs'}];
+        var specsOptions = [];
+        $.each(specsList, function(key, sl) {
+          var option = "<option value=\"" + sl.id + "\"";
+          if (sl.id == specs) {
+            option += " selected";
+          }
+          option += ">" + sl.name + "</option>";
+          specsOptions.push(option);
+        });
+        var assigneeOptions = [];
+        $.each(assignees, function(key, a) {
+          var option = "<option value=\"" + a + "\"";
+          if (a == assignee) {
+            option += " selected";
+          }
+          option += ">@" + a + "</option>"
+          assigneeOptions.push(option);
+        });
+        $("#queries").html("<p><form>");
+        $("#queries").append(milestoneRadios.join("") + "<br/>");
+        $("#queries").append("<select id=\"form_task\" onChange=\"load_all();\">"
+                             + "<option value=\"all\">All Tasks</option>"
+                             + taskOptions.join("") + "</select><br />");        
+        $("#queries").append("<select id=\"form_specs\" onChange=\"load_all();\">"
+                             + specsOptions.join("") + "</select><br />");        
+        $("#queries").append("<select id=\"form_assignee\" onChange=\"load_all();\">"
+                             + "<option value=\"all\">All Assignees</option>"
+                             + assigneeOptions.join("") + "</select><br />");        
+        $("#queries").append("</form></p>");
+        
+        $.each(queries, function(key, query) {
+          if (query.type == 'main') {
+            var title = query.title;
+            if (key == qKey) {
+              title += ' >';
+            }
+            $("#queries").append("<dt><a href=\"javascript:load_results("
+                        + key + ", true);\">" + title + "</a></dt>");
+          }
+        });
+        $("#queries").append("</dl>");
+      }
+      function init_assignees(rs) {
+      
+        if (rs.length == 0) {
+          assignees.sort();
 
-        $.each(repos, function(key, repo) {
-          $.ajax({
-            type: "GET",
-            url: "https://api.github.com/repos/" + repo.name + "/labels",
-            dataType: 'json',
-            beforeSend: function(xhr) { set_auth(xhr); }
-          }).done(function(data) {
-              var steps = [];
-              var tasks = [];
-              $.each(data, function(key, label) {
-                if (label.color == repo.steps_color) {
-                  steps.push(label.name);
-                } else if (label.color == repo.tasks_color) {
-                  tasks.push(label.name);
-                }
-              });
-
-              var qs = $.extend(true, [], queries);
-              qs.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
-                       'title': "[Error] No step labels"});
-              qs.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
-                       'title': "[Error] No task labels"});
-              
-              $("#queries").append("<p>" + repo.name + " (" + repo.milestone + ")</p><dl>");
-            
-              var queries_items = [];
-              $.each(qs, function(key, query) {
-                queries_items.push(query_link(repo, query));
-              });
-            
-              $("#queries").append("<dt>" + queries_items.join('</dt><dt>') + "</dt></dl>");
-            }).done();
+          // End init
+          display_queries(-1);          
+          load_all();
+          return;
+        }
+        $.ajax({
+          type: "GET",
+          url: "https://api.github.com/repos/" + repos[0].name + "/assignees",
+          dataType: 'json',
+          beforeSend: function(xhr) { set_auth(xhr); },
+          success: function(data) {
+                        
+            $.each(data, function(key, a) {
+              if (assignees.indexOf(a.login) == -1) {
+                assignees.push(a.login);
+              }
+            });
+            rs.shift();
+            init_assignees(rs);
+          }
         });
       }
-      function load(url, github_url) {
-      
-        $("#content").html("<p>Retrieving data... See query on <a target=\"_blank\" href=\""
-                           + github_url + "\">GitHub</a></p>");
+      function init() {
         
+        // Launched only on first repo. All repos must have same config (labels, colors, milestones)
+        $.ajax({
+          type: "GET",
+          url: "https://api.github.com/repos/" + repos[0].name + "/labels",
+          dataType: 'json',
+          beforeSend: function(xhr) { set_auth(xhr); }
+        }).done(function(data) {
+            $.each(data, function(key, label) {
+              if (label.color == stepsColor) {
+                steps.push(label.name);
+              } else if (label.color == tasksColor) {
+                tasks.push(label.name);
+              }
+            });
+
+            queries.push({'query': "-label:\"" + steps.join("\" -label:\"") + "\"",
+                         'title': "Error - No step labels", 'type': 'main'});
+            queries.push({'query': "-label:\"" + tasks.join("\" -label:\"") + "\"",
+                         'title': "Error - No task labels", 'type': 'main'}); 
+                         
+            init_assignees($.extend(true, [], repos));
+          });
+      }     
+      function update_form_state() {
+        
+        milestone = $("#form_milestone:checked").val(); 
+        task = $("#form_task").val();
+        specs = $("#form_specs").val();
+        assignee = $("#form_assignee").val();
+      }
+      function load_all() {
+      
+        update_form_state();
+        load_results(stepsKey, false);
+        if (mainKey >= 0) {
+          load_results(mainKey, true);
+        }
+      }
+      function load_results(key, showLabels) {
+      
+        load(queries[key], $.extend(true, [], repos), showLabels);
+        
+        if (queries[key].type == 'main') {
+          display_queries(key);
+        }
+      }
+      function load(query, rs, showLabels) {
+      
+        if (rs.length == 0) {
+          return;
+        }
+        var msgTarget = "main";
+        if (query.type == 'multi') {
+          msgTarget = query.queries[0].target;
+        }
+        if (rs.length == repos.length) {
+          $("#" + msgTarget).html("<p>Retrieving data...</p>");       
+        }
+        var q = "is:issue repo:" + rs[0].name;
+        if (query.type == 'main') {
+          q += ' ' + query.query;
+        }
+        if (task != 'all') {
+          q += " label:" + task;
+        }
+        if (specs != 'all') {
+          if (specs == 'specsNo') {
+            q += " -label:Specs";
+          } else {
+            q += " label:Specs";
+          }
+        }
+        if (assignee != 'all') {
+          q += " assignee:" + assignee;
+        }
+        q += " milestone:" + milestone;
+        var url = "https://api.github.com/search/issues?q=" + encodeURIComponent(q);
+
+        var result = "";
         $.ajax({
           type: "GET",
           url: url,
@@ -118,28 +315,88 @@
           success: function(data) {
             var items = [];
             $.each(data.items, function(key, val) {
-              var labels = [];
-              $.each(val.labels, function(key, label) {
-                labels.push("<span class=\"label\" style=\"color: #" + label.color + "\">" + label.name + "</span>")
-              });
-              var assignee = '';
-              if (val.assignee) {
-                assignee = " @" + val.assignee.login;
+              var labelsStr = '';
+              if (showLabels) {
+                var labels = [];
+                $.each(val.labels, function(key, label) {
+                  labels.push("<span class=\"label\" style=\"color: #" + label.color + "\">" + label.name + "</span>")
+                });
+                labelsStr = " [" + labels.join(' ') + "]";
               }
-              items.push("<dt><a target=\"_blank\" href=\"" + val.html_url
+              var assignee = '';
+              if (val.assignee && val.state != 'closed') {
+                assignee = " <span class=\"assignee\">@" + val.assignee.login + "</span>";
+              }
+              var line = "<a class=\"" + rs[0].css + "\" target=\"_blank\" href=\"" + val.html_url
                          + "\">#" + val.number + "</a>: " + val.title 
-                         + " [" + labels.join(' ') + "]" + assignee + "</dt>");
+                         + labelsStr + assignee;
+              if (val.state == 'closed') {
+                line = "<span class=\"closedIssue\">" + line + "</span>";
+              }
+              if (query.type == 'main') {
+                items.push("<dt>" + line + "</dt>");
+              } else if (query.type == 'multi') {
+                $.each(query.queries, function(key, qquery) {
+                  if (!items[qquery.target]) {
+                    items[qquery.target] = [];
+                  }
+                  var found = false;
+                  $.each(val.labels, function(key, label) {
+                    if (label.name == qquery.label) {
+                      found = true;
+                    }
+                  });
+                  if (found && val.state == qquery.state) {
+                    items[qquery.target].push("<dt>" + line + "</dt>")
+                  }
+                });
+              }
             });   
-            $("#content").html("<p>" + data.total_count
-                               + " issue(s) found. See query on <a target=\"_blank\" href=\""
-                               + github_url + "\">GitHub</a></p><dl>" + items.join("") + "</dl>");
+            if (query.type == 'main') {
+              if (rs.length == repos.length) {
+                $("#main").html("");
+              } 
+              $("#" + query.type).append("<dl>" + items.join("") + "</dl>");
+            } else if (query.type == 'multi') {
+              $.each(query.queries, function(key, qquery) {
+                if (rs.length == repos.length) {
+                  $("#" + qquery.target).html("");
+                }                   
+                if (items[qquery.target]) {
+                  $("#" + qquery.target).append("<dl>" + items[qquery.target].join("") + "</dl>");
+                }
+              });
+            }
+            rs.shift();
+            load(query, rs, showLabels);
+          },
+          error: function(data) {
+            $("#" + msgTarget).append("<p>GitHub ERROR: Sorry rate limit exceeded, wait one minute and refresh</p>");
           }
         });
       }
+      $.urlParam = function(name) {
+      
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+          return null;
+        } else {
+         return results[1] || 0;
+        }
+      }
     </script>
   </head>
-  <body onload="load_queries();">
-    <div class="menu"><div id="queries"></div></div>
-    <div class="content"><div id="content"></div></div>
+  <body onload="init();">
+    <div class="top">
+      <div class="backlog"><div id="backlog"></div></div>
+      <div class="ready"><div id="ready"></div></div>
+      <div class="ongoing"><div id="ongoing"></div></div>
+      <div class="closed"><div id="closed"></div></div>
+      <div class="done"><div id="done"></div></div>
+    </div>
+    <div class="bottom">
+      <div class="queries"><div id="queries"></div></div>
+      <div class="main"><div id="main"></div></div>
+    </div>
   </body>
 </html>
