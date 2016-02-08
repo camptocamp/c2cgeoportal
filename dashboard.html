@@ -30,11 +30,26 @@
       .main {
         width: 80%;
       }
-      #backlog, #ready, #ongoing, #closed, #done, #queries, #main {
+      #backlog, #ready, #ongoing, #closed,
+      #done, #queries, #main {
         padding: 10px;
         border: none;
       }
-      #ready, #ongoing, #closed, #done, #main {
+      #backlog, #ready, #ongoing, #closed, #done, #main {
+        padding-top: 0;
+      }
+      #backlog_title, #ready_title, #ongoing_title,
+      #closed_title, #done_title, #main_title {
+        padding: 0;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #aaaaaa;
+      }
+      #ready, #ongoing, #closed, #done, #main,
+      #ready_title, #ongoing_title, #closed_title, #done_title, #main_title {
         border-left-style: solid;
         border-left-width: 1px;
         border-left-color: black;
@@ -44,7 +59,7 @@
         border-bottom-width: 1px;
         border-bottom-color: black;
       }
-      #queries, #main {
+      #queries, #main_title {
         border-top-style: solid;
         border-top-width: 1px;
         border-top-color: black;
@@ -64,6 +79,14 @@
       }
       .closedIssue {
         opacity: 0.5;
+      }
+      dl, p {
+        margin: 0;
+        padding-top: 6px;
+      }
+      form {
+        margin: 0;
+        padding-bottom: 4px;
       }
       select {
         width: 150px;
@@ -92,21 +115,16 @@
       
       var queries = [
         {'title': 'Multi',
-         'queries': [{'label': 'Backlog',
-                      'state': 'open',
-                      'target': 'backlog'},
-                     {'label': 'Ready',
-                      'state': 'open',
-                      'target': 'ready'},
-                     {'label': 'Ongoing',
-                      'state': 'open',
-                      'target': 'ongoing'},
-                     {'label': 'Ongoing',
-                      'state': 'closed',
-                      'target': 'closed'},
-                     {'label': 'Done',
-                      'state':'closed',
-                      'target': 'done'}],
+         'queries': [{'label': 'Backlog', 'state': 'open',
+                      'title': 'Backlog', 'target': 'backlog'},
+                     {'label': 'Ready', 'state': 'open',
+                      'title': 'Ready', 'target': 'ready'},
+                     {'label': 'Ongoing', 'state': 'open',
+                      'title': 'Ongoing', 'target': 'ongoing'},
+                     {'label': 'Ongoing', 'state': 'closed',
+                      'title': 'Closed', 'target': 'closed'},
+                     {'label': 'Done', 'state':'closed',
+                      'title': 'Done', 'target': 'done'}],
          'type': 'multi'},
         {'title': 'Not Done',
          'query': '-label:"Done"',
@@ -175,7 +193,7 @@
           option += ">@" + a + "</option>"
           assigneeOptions.push(option);
         });
-        $("#queries").html("<p><form>");
+        $("#queries").html("<form>");
         $("#queries").append(milestoneRadios.join("") + "<br/>");
         $("#queries").append("<select id=\"form_task\" onChange=\"load_all();\">"
                              + "<option value=\"all\">All Tasks</option>"
@@ -185,13 +203,13 @@
         $("#queries").append("<select id=\"form_assignee\" onChange=\"load_all();\">"
                              + "<option value=\"all\">All Assignees</option>"
                              + assigneeOptions.join("") + "</select><br />");        
-        $("#queries").append("</form></p>");
+        $("#queries").append("</form><dl>");
         
         $.each(queries, function(key, query) {
           if (query.type == 'main') {
             var title = query.title;
             if (key == qKey) {
-              title += ' >';
+              title += ' -->';
             }
             $("#queries").append("<dt><a href=\"javascript:load_results("
                         + key + ", true);\">" + title + "</a></dt>");
@@ -355,15 +373,22 @@
             if (query.type == 'main') {
               if (rs.length == repos.length) {
                 $("#main").html("");
+                query.number = 0;
               } 
-              $("#" + query.type).append("<dl>" + items.join("") + "</dl>");
+              query.number += data.items.length;
+              $("#main_title").html(query.title + " (" + query.number + ")");
+              $("#main").append("<dl>" + items.join("") + "</dl>");
             } else if (query.type == 'multi') {
               $.each(query.queries, function(key, qquery) {
                 if (rs.length == repos.length) {
                   $("#" + qquery.target).html("");
+                  qquery.number = 0;
+                  $("#" + qquery.target + "_title").html(qquery.title + " (0)");
                 }                   
                 if (items[qquery.target]) {
                   $("#" + qquery.target).append("<dl>" + items[qquery.target].join("") + "</dl>");
+                  qquery.number += items[qquery.target].length;
+                  $("#" + qquery.target + "_title").html(qquery.title + " (" + qquery.number + ")");
                 }
               });
             }
@@ -388,15 +413,15 @@
   </head>
   <body onload="init();">
     <div class="top">
-      <div class="backlog"><div id="backlog"></div></div>
-      <div class="ready"><div id="ready"></div></div>
-      <div class="ongoing"><div id="ongoing"></div></div>
-      <div class="closed"><div id="closed"></div></div>
-      <div class="done"><div id="done"></div></div>
+      <div class="backlog"><div id="backlog_title">Backlog</div><div id="backlog"></div></div>
+      <div class="ready"><div id="ready_title">Ready</div><div id="ready"></div></div>
+      <div class="ongoing"><div id="ongoing_title">Ongoing</div><div id="ongoing"></div></div>
+      <div class="closed"><div id="closed_title">Closed</div><div id="closed"></div></div>
+      <div class="done"><div id="done_title">Done</div><div id="done"></div></div>
     </div>
     <div class="bottom">
       <div class="queries"><div id="queries"></div></div>
-      <div class="main"><div id="main"></div></div>
+      <div class="main"><div id="main_title"><-- Select Query</div><div id="main"></div></div>
     </div>
   </body>
 </html>
