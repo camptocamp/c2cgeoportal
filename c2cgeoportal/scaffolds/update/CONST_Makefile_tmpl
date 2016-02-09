@@ -48,7 +48,7 @@ WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 # Make rules
 TEST_PACKAGES ?= TRUE
-DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) build-server apache
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
 ifeq ($(TEST_PACKAGES), TRUE)
 DEFAULT_BUILD_RULES += test-packages
 ifeq ($(DEPLOY), TRUE)
@@ -995,3 +995,8 @@ testDB/02-alembic.sql: $(VENV_BIN)/alembic alembic.ini
 testDB/03-alembic-static.sql: $(VENV_BIN)/alembic alembic_static.ini
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif
+
+.PHONY: $(PACKAGE)/version.py
+$(PACKAGE)/version.py:
+	@echo "# Auto-generated file. Do not Edit!" > $@
+	@.build/venv/bin/gen-version >> $@

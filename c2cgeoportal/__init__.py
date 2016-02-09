@@ -806,6 +806,8 @@ def includeme(config):
 
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
+    config.add_route("version_json", "/version.json", request_method="GET")
+
     # scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
 

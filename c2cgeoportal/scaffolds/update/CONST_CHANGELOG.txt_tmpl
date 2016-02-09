@@ -35,6 +35,7 @@ replace your sencha touch interface by an ngeo interface.
     + /{{package}}/static-ngeo/build/
     + /{{package}}/static-ngeo/fonts/gmf-icons.*
     + /{{package}}/static-ngeo/fonts/fontawesome-webfont.*
+    + /{{package}}/version.py
 
 4. In the `vars_{{package}}.yaml` file:
 

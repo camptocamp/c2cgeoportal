@@ -42,10 +42,10 @@ main:
 docker:
     docker:
         cmd: docker --version | awk '{{print $3}}'
-        version: 1.9.1
+        version: 1.8.2
     docker-compose:
         cmd: docker-compose --version | awk '{{print $3}}'
-        version: 1.5.2
+        version: 1.4.2
 
 deploy:
     deploy: 0.4.8

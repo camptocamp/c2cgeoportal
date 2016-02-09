@@ -31,6 +31,7 @@
 /testDB/01-schemas.sql
 /testDB/Dockerfile
 /deploy/hooks/pre-restore-database
+/{{package}}/version.py
 /{{package}}/locale/*/LC_MESSAGES/*.mo
 /{{package}}/locale/{{package}}-*.pot
 /{{package}}/static-ngeo/build/
