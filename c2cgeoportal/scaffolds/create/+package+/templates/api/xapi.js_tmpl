@@ -155,7 +155,7 @@ document.write('<link rel="stylesheet" type="text/css" href="'
         Ext.BLANK_IMAGE_URL = "${request.static_url('{{package}}:static/lib/cgxp/ext/Ext/resources/images/default/s.gif') | n}";
         OpenLayers.Number.thousandsSeparator = ' ';
         OpenLayers.DOTS_PER_INCH = 96;
-        OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/' | n)}";
+        OpenLayers.ImgPath = "${request.static_url('{{package}}:static/lib/cgxp/core/src/theme/img/ol/') | n}";
         OpenLayers.Lang.setCode("${lang}");
         GeoExt.Lang.set("${lang}");
 
