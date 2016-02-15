@@ -13,7 +13,7 @@ service URL with the following configuration:
 
    loginResetPasswordURL: "${request.route_url('loginresetpassword') | n}",
 
-And to generate the required e-mail, in the ``vars_<package>.yaml`` file, the following configuration:
+And to generate the required e-mail, in the ``vars_<package>.yaml`` file, add the following configuration:
 
 .. code:: yaml
 
@@ -22,11 +22,13 @@ And to generate the required e-mail, in the ``vars_<package>.yaml`` file, the fo
         email_from: info@camptocamp.com
         email_subject: New password generated for GeoMapFish
         email_body: |
-            Hello,
+            Hello {user},
 
-            You ask for an new password,
-            the new generated password is: {password}
+            You have asked for an new password,
+            the newly generated password is: {password}
 
             Sincerely yours
             The GeoMapfish team
         smtp_server: smtp.example.com
+
+Replace the ``smtp.example.com`` value by a working SMTP server name.
