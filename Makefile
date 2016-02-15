@@ -177,11 +177,11 @@ ngeo: NGEO_GIT_ARGS ?= --branch=master
 ngeo:
 	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
 
-.SECONDARY: ngeo/contribs/gmf/apps/%/index.html
+.PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
 ngeo/contribs/gmf/apps/%/index.html: ngeo
 	touch --no-create $@
 
-.SECONDARY: ngeo/contribs/gmf/apps/%/js/controller.js
+.PRECIOUS: ngeo/contribs/gmf/apps/%/js/controller.js
 ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	touch --no-create $@
 
@@ -197,7 +197,7 @@ c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako: ngeo/.tx/config.mako
 	mkdir -p $(dir $@)
 	cp $< $@
 
-.SECONDARY: ngeo/package.json
+.PRECIOUS: ngeo/package.json
 ngeo/package.json: ngeo
 	touch --no-create $@
 
