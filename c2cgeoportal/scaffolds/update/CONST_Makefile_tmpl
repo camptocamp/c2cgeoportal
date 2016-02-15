@@ -116,6 +116,7 @@ TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOM
 endif
 
 # ngeo
+ANGULAR_VERSION = 1.5
 NPM_CMD = node_modules/.bin/npm
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
@@ -423,9 +424,9 @@ clean: template-clean
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
-	rm -f .build/externs/angular-1.4.js \
-		.build/externs/angular-1.4-q_templated.js \
-		.build/externs/angular-1.4-http-promise_templated.js \
+	rm -f .build/externs/angular-$(ANGULAR_VERSION).js \
+		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
+		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
 
@@ -627,9 +628,9 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
 		.build/gmftemplatecache.js \
-		.build/externs/angular-1.4.js \
-		.build/externs/angular-1.4-q_templated.js \
-		.build/externs/angular-1.4-http-promise_templated.js \
+		.build/externs/angular-$(ANGULAR_VERSION).js \
+		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
+		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js \
 		.build/node_modules.timestamp
 	node_modules/.bin/closure-util build $< $@
@@ -645,17 +646,17 @@ node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestam
 		$(addprefix gmf:,$(GMF_DIRECTIVES_PARTIALS_FILES)) \
 		$(addprefix $(PACKAGE):,$(APP_DIRECTIVES_PARTIALS_FILES))" $< > $@
 
-.build/externs/angular-1.4.js:
+.build/externs/angular-$(ANGULAR_VERSION).js:
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION).js
 
-.build/externs/angular-1.4-q_templated.js:
+.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js:
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-q_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-q_templated.js
 
-.build/externs/angular-1.4-http-promise_templated.js:
+.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js:
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-1.4-http-promise_templated.js
+	curl --max-redirs 0 --location --output $@ https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js
 
 .build/externs/jquery-1.9.js:
 	mkdir -p $(dir $@)
