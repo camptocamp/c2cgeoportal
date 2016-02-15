@@ -100,10 +100,10 @@ vars:
         email_from: info@camptocamp.com
         email_subject: New password generated for GeoMapFish
         email_body: |
-            Hello,
+            Hello {user},
 
             You have asked for an new password,
-            the new generated password is: %s
+            the newly generated password is: {password}
 
             Sincerely yours
             The GeoMapfish team
