@@ -45,6 +45,7 @@ from pyramid.httpexceptions import HTTPException
 
 from papyrus.renderers import GeoJSON, XSD
 
+from c2cgeoportal import stats
 from c2cgeoportal.resources import FAModels
 from c2cgeoportal.lib import dbreflection, get_setting, caching, \
     C2CPregenerator, MultiDomainStaticURLInfo
@@ -807,6 +808,8 @@ def includeme(config):
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
     config.add_route("version_json", "/version.json", request_method="GET")
+
+    stats.init(config)
 
     # scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])

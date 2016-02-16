@@ -367,6 +367,9 @@ vars:
       #   the settings at runtime (they are constructed at build time).
       #   The function receives one parameter: the settings object.
 
+    # Statistics are disabled by default
+    stats: {}
+
 interpreted:
     python:
     - authtkt.secret
