@@ -239,7 +239,7 @@ vars:
 
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
-    raster:
+    raster: {}
 
     # Used by enumeration in the query builder
     layers:

@@ -31,6 +31,7 @@
 import httplib2
 import subprocess
 
+import yaml
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
@@ -61,6 +62,23 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
             print(colorize(message_str, RED))
             print("------")
             raise
+
+
+class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
+    "GeoMapfish config extractor (raster layers)"
+
+    extensions = [".yaml"]
+
+    def __call__(self, filename, options):
+        with open(filename) as config_file:
+            config = yaml.load(config_file)
+            return [
+                Message(
+                    None, raster_layer, None, [], u"", u"",
+                    (filename, u"raster/%s" % raster_layer)
+                )
+                for raster_layer in config.get("raster", {}).keys()
+            ]
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
