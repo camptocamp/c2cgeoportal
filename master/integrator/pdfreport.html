@@ -52,7 +52,7 @@ and <a class="reference external" href="http://community.jaspersoft.com/project/
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The service is configured in the main <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file of the project
 as in the following example:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">...</span>
     <span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
         <span class="l l-Scalar l-Scalar-Plain">defaults</span><span class="p p-Indicator">:</span>
@@ -99,7 +99,7 @@ as in the following example:</p>
 <li><code class="docutils literal"><span class="pre">spec_template</span></code>: optional JSON template used to build the <code class="docutils literal"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
 </ul>
 <p>If no <code class="docutils literal"><span class="pre">spec_template</span></code> is provided, the following template is used:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;layout&quot;</span><span class="p">:</span> <span class="s2">&quot;%(layername)s&quot;</span><span class="p">,</span>
     <span class="nt">&quot;outputFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span>
     <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>

@@ -47,7 +47,7 @@ and the corresponding admin interface configuration
 in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
 <p>For example to add some user details, including a link to a
 new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Used to hide the original user in the admin interface</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
@@ -95,7 +95,7 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
 </pre></div>
 </div>
 <p>And in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Add a field set (form) for the title</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Add a field set (form) for the title</span>
 <span class="n">Title</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
 
 <span class="c1"># Add a field set for the user details</span>
@@ -131,11 +131,11 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
 </div>
 <p>We can change the renderer of a field, for example change the
 Role renderer:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">AnOtherRenderer</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">AnOtherRenderer</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And if we need an other resource (javascript or stylesheet):</p>
-<div class="highlight-python"><div class="highlight"><pre>from fa.jquery import fanstatic_resources
+<div class="highlight-python"><div class="highlight"><pre><span></span>from fa.jquery import fanstatic_resources
 from fanstatic import Resource, Group, Library
 from pyramid_formalchemy import events as fa_events
 
@@ -150,7 +150,7 @@ def before_render_role(context, event):
 </pre></div>
 </div>
 <p>And in the <code class="docutils literal"><span class="pre">setup.py</span></code> we need to add in the <code class="docutils literal"><span class="pre">entry_points</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&#39;fanstatic.libraries&#39;: [
+<div class="highlight-python"><div class="highlight"><pre><span></span>&#39;fanstatic.libraries&#39;: [
     &#39;&lt;package&gt;_admin = &lt;package&gt;.forms:fanstatic_lib&#39;,
 ],
 </pre></div>

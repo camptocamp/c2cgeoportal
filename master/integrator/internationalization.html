@@ -51,7 +51,7 @@ are included in two kinds of Javascript files stored in
 <li><p class="first"><code class="docutils literal"><span class="pre">&lt;lang&gt;.js</span></code> is used to translate data-related strings such as layernames or
 attributenames (in interrogation results). It is based upon the OpenLayers
 translation syntax. For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre>OpenLayers.Util.extend(OpenLayers.Lang.&lt;lang&gt;, {
+<div class="highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Util.extend(OpenLayers.Lang.&lt;lang&gt;, {
     &quot;layertree&quot;: &quot;Themes&quot;
 });
 </pre></div>
@@ -61,7 +61,7 @@ translation syntax. For instance:</p>
 or to add translations of project-specific plugins. It is based upon the GeoExt
 translation syntax. Key-value translation pairs are encapsulated by class.
 For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;cgxp.tree.LayerTree.prototype&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="n">moveupText</span><span class="p">:</span> <span class="s2">&quot;Move up&quot;</span>
     <span class="p">}</span>
@@ -90,12 +90,12 @@ separated files because of API constraints. Read more at <a class="reference int
 <h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p class="first">Extract all messages from the project:</p>
-<div class="highlight-python"><div class="highlight"><pre>.build/venv/bin/python setup.py extract_messages
+<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py extract_messages
 </pre></div>
 </div>
 </li>
 <li><p class="first">Initialize a catalog for every supported language, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre>.build/venv/bin/python setup.py init_catalog -l en
+<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py init_catalog -l en
 .build/venv/bin/python setup.py init_catalog -l fr
 .build/venv/bin/python setup.py init_catalog -l de
 </pre></div>
@@ -104,13 +104,13 @@ separated files because of API constraints. Read more at <a class="reference int
 <li><p class="first">Edit the .po files in <code class="docutils literal"><span class="pre">&lt;package&gt;/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;.po</span></code></p>
 </li>
 <li><p class="first">Run make to compile all the .po files to .mo:</p>
-<div class="highlight-python"><div class="highlight"><pre>make -f &lt;user&gt;.mk build
+<div class="highlight-python"><div class="highlight"><pre><span></span>make -f &lt;user&gt;.mk build
 </pre></div>
 </div>
 </li>
 </ol>
 <p>When you add a new message repeat all steps but replace the step 2. by:</p>
-<div class="highlight-python"><div class="highlight"><pre>.build/venv/bin/python setup.py update_catalog
+<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py update_catalog
 </pre></div>
 </div>
 <p><a class="reference external" href="http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization">Source from pylondhq</a></p>

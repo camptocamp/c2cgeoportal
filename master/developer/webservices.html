@@ -67,7 +67,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <div class="section" id="result-in-v2">
 <h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
 <p>Base for all possible results:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     themes: [&lt;themes&gt;],
     group: &lt;group&gt;,
     background_layers: [&lt;layers&gt;],
@@ -76,7 +76,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </pre></div>
 </div>
 <p>Theme:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;name&quot;: &lt;name&gt;,
     &quot;icon&quot;: &lt;icon_url&gt;,
     &quot;functionalities&quot;: {
@@ -90,7 +90,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </pre></div>
 </div>
 <p>Group:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;name&quot;: &lt;name&gt;,
     &quot;mixed&quot;: true/false,
     &quot;metadata&quot;: {
@@ -101,7 +101,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </pre></div>
 </div>
 <p>Layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;name&quot;: &lt;name&gt;,
     &quot;type&quot;: &quot;WMS/WMTS&quot;,
     &quot;metadata&quot;: {
@@ -111,7 +111,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </pre></div>
 </div>
 <p>WMS Layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
 
     &quot;layers&quot;: &lt;wms_layers&gt;,
     &quot;name&quot;: &lt;name in tree&gt;,
@@ -156,7 +156,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </pre></div>
 </div>
 <p>WMTS layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;url&quot;: &lt;wmts_capabilities_url&gt;,
     &quot;layer&quot;: &lt;wmts_layer&gt;,
     &quot;style&quot;: &lt;style&gt;,
@@ -210,7 +210,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="annoymous-json-result">
 <h4>Annoymous JSON result<a class="headerlink" href="#annoymous-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;functionality&quot;: {
         &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
         ...
@@ -221,7 +221,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="connected-json-result">
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;username&quot;: &quot;&lt;username&gt;&quot;,
     &quot;is_password_changed&quot;: &quot;True&quot;/&quot;False&quot;, # If false the user should change his password
     &quot;role_name&quot;: &quot;&lt;role_name&gt;&quot;,
@@ -253,7 +253,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span class="p">{</span>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -276,7 +276,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span class="p">{</span>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -328,7 +328,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id3">
 <h3>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;&lt;layer&gt;&quot;: &lt;value&gt;,
     ...
 }
@@ -370,7 +370,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id7">
 <h4>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;short_url&quot;: &lt;the short URL&gt;
 }
 </pre></div>
@@ -391,7 +391,7 @@ This is used to be able to get the data in the client from a file select by the 
 <div class="section" id="id8">
 <h3>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;filename&quot;: &lt;The base64 encoded file&gt;
     &quot;success&quot;: true
 }
@@ -426,7 +426,7 @@ and the data contains the given &#8216;csv&#8217; data.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../difference</span></code></p>
 <p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
 <p>Data:</p>
-<div class="code json highlight-python"><div class="highlight"><pre>{
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
     &quot;geometries&quot;: [&lt;geomA&gt;, &lt;geomB&gt;]
 }
 </pre></div>

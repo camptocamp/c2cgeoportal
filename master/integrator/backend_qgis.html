@@ -47,17 +47,17 @@
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service
 which will be used to get the namespace required to parse the WFS response,
 and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
 <span class="n">cgxp</span><span class="o">.</span><span class="n">LEGEND_INCLUDE_LAYER_NAME</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Change the DPI value to use the same as in the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
 <span class="o">+</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mf">2.54</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mf">0.00028</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following configuration:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>encodeLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>encodeLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
 encodeExternalLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
 </pre></div>
 </div>
@@ -65,7 +65,7 @@ encodeExternalLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
 <div class="section" id="apache-configuration">
 <h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
-<div class="code highlight-python"><div class="highlight"><pre>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
+<div class="code highlight-python"><div class="highlight"><pre><span></span>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
 + ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
 - SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
@@ -76,7 +76,7 @@ encodeExternalLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
 </pre></div>
 </div>
 </div>
@@ -97,7 +97,7 @@ span.prompt1:before {
 <p>The first solution is to create a tunnel with ssh:</p>
 <pre class="highlight"><span class="prompt1">ssh -L 5432:localhost:54532 &lt;server&gt;</span>
 </pre><p>And use the following connection attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre>Name: &lt;aname&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>Name: &lt;aname&gt;
 Host: localhost
 Port: 5432
 Database: &lt;database&gt;
@@ -112,7 +112,7 @@ Password: www-data
 <p>For that you should ask the sysadmins to be able to access to the
 postgres port on the server from your infra.</p>
 <p>Then use the following connection attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre>Name: &lt;aname&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>Name: &lt;aname&gt;
 Host: &lt;server&gt;
 Port: 5432
 Database: &lt;database&gt;

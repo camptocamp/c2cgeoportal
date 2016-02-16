@@ -65,14 +65,14 @@ proxy:</p>
 received you will set the <cite>HTTPS</cite> environment variable by adding the
 following in the <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
 section, in our example:</p>
-<div class="highlight-python"><div class="highlight"><pre>SetEnvIf    X-Https on HTTPS=1
+<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf    X-Https on HTTPS=1
 </pre></div>
 </div>
 </li>
 </ul>
 <p>In Mako templates, if you need to know what scheme is used, you may test the
 value of <code class="docutils literal"><span class="pre">request.scheme</span></code>. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>var WMTS_OPTIONS = {
+<div class="highlight-python"><div class="highlight"><pre><span></span>var WMTS_OPTIONS = {
 % if request.scheme == &#39;https&#39;:
     url: &#39;https://my.wmts.server/&#39;
 % else:
@@ -102,7 +102,7 @@ resourceproxy service as described below.</p>
 <p>If you want to load non https external resources in your https application, you
 must use the resourceproxy service and add the list of hosts you want to access
 in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>resourceproxy:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>resourceproxy:
     # list of urls from which it is safe to load content
     targets:
       #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s

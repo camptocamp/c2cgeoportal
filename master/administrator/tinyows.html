@@ -52,7 +52,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 there will already be a default Apache configuration file for TinyOWS under the
 location <code class="docutils literal"><span class="pre">apache/tinyows.conf.mako</span></code>. Uncomment the lines in this file to
 enable TinyOWS:</p>
-<div class="highlight-python"><div class="highlight"><pre>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
+<div class="highlight-python"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
 &lt;Location /${instanceid}/tinyows&gt;
   SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
 
@@ -73,7 +73,7 @@ c2cgeoportal.</p>
 <h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
 <code class="docutils literal"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;tinyows
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;tinyows
     online_resource=&quot;http://${host}/${instanceid}/wsgi/tinyows_proxy&quot;
     schema_dir=&quot;/usr/share/tinyows/schema/&quot;
     log=&quot;tinyows.log&quot;
@@ -128,7 +128,7 @@ the validation database-side though!</li>
 same database as for the c2cgeoportal application will be used.</p>
 <p>The layers that should be accessible with TinyOWS have to specified with
 <code class="docutils literal"><span class="pre">layer</span></code> elements:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;layer
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;layer
     retrievable=&quot;1&quot;
     writable=&quot;1&quot;
     ns_prefix=&quot;tows&quot;
@@ -159,7 +159,7 @@ TinyOWS XML configuration. Please refer to the
 for more information.</p>
 </div>
 <p>After the configuration is made, re-build the c2cgeoportal application:</p>
-<div class="highlight-python"><div class="highlight"><pre>make &lt;profile&gt;.mk build
+<div class="highlight-python"><div class="highlight"><pre><span></span>make &lt;profile&gt;.mk build
 </pre></div>
 </div>
 </div>

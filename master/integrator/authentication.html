@@ -68,7 +68,7 @@ should be used instead.</p>
 <p>To use a &#8220;remote user&#8221; authentication policy edit the application&#8217;s
 main <code class="docutils literal"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal"><span class="pre">authentication_policy</span></code> to a
 <code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
-<div class="code python highlight-python"><div class="highlight"><pre>from pyramid.config import Configurator
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
 from pyramid.authentication import RemoteUserAuthenticationPolicy
 from c2cgeoportal import locale_negotiator
 from c2cgeoportal.resources import FAModels, defaultgroupsfinder
@@ -103,11 +103,11 @@ work properly.</p>
 the c2cgeoportal application with the name of the user&#8217;s role. This can be done
 in <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module&#8217;s
 <code class="docutils literal"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
+<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
 </pre></div>
 </div>
 <p>or:</p>
-<div class="highlight-python"><div class="highlight"><pre>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
+<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
 </pre></div>
 </div>
 <p>With this <code class="docutils literal"><span class="pre">mod_setenvif</span></code> extracts the role name from the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header
@@ -117,12 +117,12 @@ documentation for more details.</p>
 an Apache module called NINAP. The above Apache configuration may also contain
 NINAP directives (see nevisProxy documentation). For instance to indicate what
 field in the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header contains the username:</p>
-<div class="highlight-python"><div class="highlight"><pre>NINAP_UserPattern &#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;
+<div class="highlight-python"><div class="highlight"><pre><span></span>NINAP_UserPattern &#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;
 </pre></div>
 </div>
 <p>Eventually the following directives activate the access restriction to the
 application:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;Location /&lt;instance_id&gt;/wsgi&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;Location /&lt;instance_id&gt;/wsgi&gt;
   AuthType sectoken
   Require valid-user
 &lt;/Location&gt;
@@ -138,7 +138,7 @@ Therefore the application should redefine the callback function that adds
 a <code class="docutils literal"><span class="pre">user</span></code> property to the request. This is done by calling the
 <code class="docutils literal"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal"><span class="pre">Configurator</span></code> object.
 You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
     <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -154,7 +154,7 @@ You may for example add to <code class="docutils literal"><span class="pre">__in
 </pre></div>
 </div>
 <p>And then, in the application&#8217;s <code class="docutils literal"><span class="pre">main</span></code> function:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">get_user_from_request</span><span class="p">,</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">get_user_from_request</span><span class="p">,</span>
                             <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="bp">True</span>
                             <span class="p">)</span>
 </pre></div>
@@ -168,7 +168,7 @@ the value of the <code class="docutils literal"><span class="pre">rolename</span
 If for some reason you need to use another name for this role, you may define
 an alias in a project-specific callback and use it instead of the standard
 <code class="docutils literal"><span class="pre">defaultgroupsfinder</span></code> as <code class="docutils literal"><span class="pre">AuthenticationPolicy</span></code> argument in <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
     <span class="n">role</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>
     <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&lt;your_admin_rolename&gt;&#39;</span><span class="p">:</span>
@@ -200,7 +200,7 @@ source, like LDAP, another <em>client validation</em> mechanism should be set up
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> provides a specific <code class="docutils literal"><span class="pre">Configurator</span></code> function for that, namely
 <code class="docutils literal"><span class="pre">set_user_validator</span></code> which allow to register a custom validator.
 Here&#8217;s an example:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="kn">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
@@ -219,7 +219,7 @@ the user information source.</p>
 <p>User validators can obviously be chained. For example, a user validator
 function that queries the <code class="docutils literal"><span class="pre">user</span></code> database table if the user does not exist in
 LDAP would look like this:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="kn">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
@@ -232,7 +232,7 @@ LDAP would look like this:</p>
 <div class="section" id="custom-user-validation-ldap">
 <h3>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h3>
 <p>Full example using pyramid_ldap, see <cite># LDAP</cite> / <cite># END LDAP</cite> blocs.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="c1"># -*- coding: utf-8 -*-</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
 <span class="c1"># LDAP</span>

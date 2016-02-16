@@ -71,7 +71,7 @@ functionality associated with his/her role, will be ignored.</p>
 administration interface (and added to the <code class="docutils literal"><span class="pre">functionality</span></code> table in the
 database).</p>
 <p>For example:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>admin_interface:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>admin_interface:
     available_functionalities:
     - default_basemap
     - print_template
@@ -79,7 +79,7 @@ database).</p>
 </pre></div>
 </div>
 <p>The following syntax is also accepted:</p>
-<div class="code yaml last highlight-python"><div class="highlight"><pre>admin_interface:
+<div class="code yaml last highlight-python"><div class="highlight"><pre><span></span>admin_interface:
     available_functionalities: [default_basemap, print_template, mapserver_substitution]
 </pre></div>
 </div>
@@ -88,7 +88,7 @@ database).</p>
 <dd><p class="first">Functionalities accessible to anonymous users. This is a list of
 key/value pairs, whose values are either arrays or scalars.</p>
 <p>For example:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>functionalities:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>functionalities:
     anonymous:
         print_template:
         - 1 A4 portrait
@@ -107,7 +107,7 @@ key/value pairs, of the same form as for <code class="docutils literal"><span cl
 <dd><p class="first">Functionalities that are made available to Mako templates (e.g.
 <code class="docutils literal"><span class="pre">viewer.js</span></code>) through the <code class="docutils literal"><span class="pre">functionality</span></code> template variable.</p>
 <p>For example with:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>functionalities:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>functionalities:
     available_in_templates:
     - &lt;functionality_name&gt;
 </pre></div>
@@ -136,13 +136,13 @@ anonymous, authenticated or has some specific role.</p>
 <p>First make sure that <code class="docutils literal"><span class="pre">default_basemap</span></code> is made available in the templates
 using the <code class="docutils literal"><span class="pre">functionalities:available_in_templates</span></code> parameter in the
 <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> configuration file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>functionalities:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>functionalities:
     available_in_templates: [default_basemap]
 </pre></div>
 </div>
 <p>Then indicate (still in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>) what default basemap should be used
 for anonymous users:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>functionalities:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>functionalities:
     anonymous:
         # some other configs...
         default_basemap: &lt;some_basemap&gt;
@@ -150,7 +150,7 @@ for anonymous users:</p>
 </div>
 <p>Optionally you may also indicate what basemap to use for authenticated users
 (if omitted, the anonymous <code class="docutils literal"><span class="pre">default_basemap</span></code> value will be used):</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>functionalities:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>functionalities:
     anonymous:
         # ...
     registered:
@@ -162,7 +162,7 @@ users in the administration interface.</p>
 <p>So that the <code class="docutils literal"><span class="pre">default_basemap</span></code> is actually provided to the
 <code class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></code> plugin, use the following configuration in your
 project&#8217;s <code class="docutils literal"><span class="pre">viewer.js</span></code> template:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="p">{</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
     <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
 <span class="p">}</span>
@@ -177,7 +177,7 @@ with specific roles.</p>
 available in the administration interface and to the list of functionalities
 provided to the templates. Set also <code class="docutils literal"><span class="pre">authorized_plugins</span></code> as an empty list for
 anonymous users. In <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>admin_interface:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>admin_interface:
     # ...
     available_functionalities:
         - default_basemap
@@ -197,7 +197,7 @@ functionalities:
 </div>
 <p>Then you may test in your project&#8217;s <code class="docutils literal"><span class="pre">viewer.js</span></code> template if the current user
 has been granted access to some protected plugins:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>app = new gxp.Viewer({
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>app = new gxp.Viewer({
     // ...
     tools: [{
         //...
@@ -219,7 +219,7 @@ has been granted access to some protected plugins:</p>
 <h3>Using Functionalities list to configure the layers in the QueryBuilder<a class="headerlink" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder" title="Permalink to this headline">¶</a></h3>
 <p>Add the new <code class="docutils literal"><span class="pre">querybuilder_layer</span></code> functionality to the list of
 <code class="docutils literal"><span class="pre">available_functionalities</span></code> in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>admin_interface:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>admin_interface:
     available_functionalities:
         ...
         - querybuilder_layer
@@ -227,13 +227,13 @@ has been granted access to some protected plugins:</p>
 </div>
 <p>Make sure that the <code class="docutils literal"><span class="pre">dumps</span></code> function is imported in
 <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> using:</p>
-<div class="code python highlight-python"><div class="highlight"><pre>&lt;%
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>&lt;%
 from json import dumps
 %&gt;
 </pre></div>
 </div>
 <p>And configure your plugin like that:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>{
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>{
     ptype: &quot;cgxp_querier&quot;,
     featureTypes: ${dumps(functionality[&#39;querybuilder_layer&#39;]) | n},
     ...
@@ -248,7 +248,7 @@ from json import dumps
 theme.</p>
 <p>To do so make sure that the <code class="docutils literal"><span class="pre">MapOpacitySlider</span></code> plugin has a reference to the
 layertree plugin. For instance:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="p">{</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
     <span class="n">layerTreeId</span><span class="p">:</span> <span class="s2">&quot;layertree&quot;</span><span class="p">,</span>
     <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>

@@ -173,7 +173,7 @@ using the command:</p>
 </ul>
 </div></blockquote>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>tiles_url:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>tiles_url:
 - http://a.tiles.{host}/
 - http://b.tiles.{host}/
 - http://c.tiles.{host}/
@@ -182,7 +182,7 @@ using the command:</p>
 </div>
 <p>The configuration of the <code class="docutils literal"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
 <p>To get your tiles URL in the <code class="docutils literal"><span class="pre">viewer.js</span></code> do:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>&lt;%
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>&lt;%
 from json import dumps
 %&gt;
 var WMTS_OPTIONS = {
@@ -192,7 +192,7 @@ var WMTS_OPTIONS = {
 </pre></div>
 </div>
 <p>And in the <code class="docutils literal"><span class="pre">mobile/config.js</span></code> do:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>var dummy = &quot;&lt;% from json import dumps %&gt;&quot;;
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>var dummy = &quot;&lt;% from json import dumps %&gt;&quot;;
 jsonFormat = new OpenLayers.Format.JSON();
 try {
     App.tilesURL = jsonFormat.read(&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;);
@@ -217,7 +217,7 @@ var WMTS_OPTIONS = {
 <h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
 <p>If you use an internal service to access to the tiles you can use sub domaine
 to access to them by using that in <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code>:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>url: [
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>url: [
     &#39;${request.route_url(&#39;&lt;view&gt;&#39;, subdomain=&#39;s1&#39;)}&#39;,
     &#39;${request.route_url(&#39;&lt;view&gt;&#39;, subdomain=&#39;s2&#39;)}&#39;,
     &#39;${request.route_url(&#39;&lt;view&gt;&#39;, subdomain=&#39;s3&#39;)}&#39;,
@@ -230,7 +230,7 @@ The sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
 the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre># The URL template used to generate the sub domain URL
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span># The URL template used to generate the sub domain URL
 # %(sub)s will be replaced by the sub domain value.
 subdomain_url_template: http://%(sub)s.{host}
 </pre></div>

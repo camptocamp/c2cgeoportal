@@ -45,14 +45,14 @@
 <div class="section" id="viewer-configuration">
 <h2>Viewer configuration<a class="headerlink" href="#viewer-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, make sure no namespace is added for WFS:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="n">undefined</span><span class="p">;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="n">undefined</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define in the <code class="docutils literal"><span class="pre">vars</span></code> section:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>mapserverproxy:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>mapserverproxy:
     mapserv_url: http://your.geoserver/geoserver/wms
     geoserver: true
 </pre></div>

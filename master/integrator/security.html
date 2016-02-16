@@ -68,7 +68,7 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
 <p>By default, only localhost can access c2c&#8217;s services.
 To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>Add or modify the structure like that:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>headers:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>headers:
     &lt;service_name&gt;:
         access_control_allow_origin: [&quot;&lt;domain1&gt;&quot;, &quot;&lt;domain2&gt;&quot;, ...]
         access_control_max_age: 3600

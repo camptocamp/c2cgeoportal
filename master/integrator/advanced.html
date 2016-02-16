@@ -45,7 +45,7 @@
 <p>We can use the <code class="docutils literal"><span class="pre">functionalities</span></code> or the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> to configure the
 interface. For instance:</p>
 <p>Activate CGXP plugin using an <code class="docutils literal"><span class="pre">authorized_plugins</span></code> functionality:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>% if &#39;my_plugin&#39; in functionality[&#39;authorized_plugins&#39;]:
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>% if &#39;my_plugin&#39; in functionality[&#39;authorized_plugins&#39;]:
 {
     // plugin configuration
 },
@@ -54,18 +54,18 @@ interface. For instance:</p>
 </div>
 <p>Configure the <code class="docutils literal"><span class="pre">querier</span></code> layer using the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>,
 Add in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>viewer:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>viewer:
     feature_types:
     - layer_1
     - layer_2
 </pre></div>
 </div>
 <p>Add in your project Makefile <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>:</p>
-<div class="code makefile highlight-python"><div class="highlight"><pre><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
+<div class="code makefile highlight-python"><div class="highlight"><pre><span></span><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
 </pre></div>
 </div>
 <p>And in <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>&lt;%
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>&lt;%
 from json import dumps
 %&gt;
 % if len(request.registry.settings[&#39;viewer&#39;][&#39;feature_types&#39;]) &gt; 0:

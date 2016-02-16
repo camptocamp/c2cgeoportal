@@ -45,7 +45,7 @@
 <p>If you want to optimize the parallelization of static resource download you
 can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 something like this:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre># The used sub domain for the static resources
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span># The used sub domain for the static resources
 subdommains: [&#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;]
 </pre></div>
 </div>
@@ -53,7 +53,7 @@ subdommains: [&#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;]
 vhost. If the application is served on deferent URL and you want to use
 the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre># The URL template used to generate the sub domain URL
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span># The URL template used to generate the sub domain URL
 # %(sub)s will be replaced by the sub domain value.
 subdomain_url_template: http://%(sub)s.{host}
 </pre></div>

@@ -114,7 +114,7 @@ must be saved in dedicated schemas that won&#8217;t be replaced.</p>
 <p>We should configure the deploy tool to deploy only the
 wanted schema, by setting the following configuration in the
 <code class="docutils literal"><span class="pre">[databases]</span></code> section of the <code class="docutils literal"><span class="pre">deploy/deploy.cfg.mako</span></code> file:</p>
-<div class="highlight-python"><div class="highlight"><pre>names = ${db}.${schema},${db}.&lt;readonly_geodata_schema&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>names = ${db}.${schema},${db}.&lt;readonly_geodata_schema&gt;
 use_schema = true
 </pre></div>
 </div>

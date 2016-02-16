@@ -49,7 +49,7 @@ it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
 <p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>layers:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>layers:
     enum:
         dbsession: &quot;&lt;session name&gt;&quot;
         &quot;&lt;layer_name&gt;&quot;:
@@ -71,7 +71,7 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 <p>If <code class="docutils literal"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
 <p>If <code class="docutils literal"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
 <p>Simple example:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>layers
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>layers
     enum:
         mapserver_layer:
             table: geodata.table
@@ -91,7 +91,7 @@ for layers whose data are hosted in external databases, using the
 <p>Such <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session objects</a>
 must be listed in the <code class="docutils literal"><span class="pre">DBSessions</span></code> dictionary created in c2cgeoportal
 models file. Its default value is:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;dbsession&quot;</span><span class="p">:</span> <span class="n">DBSession</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
@@ -99,7 +99,7 @@ models file. Its default value is:</p>
 <p><code class="docutils literal"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
 <p>You may add your own DB session objects in the application&#8217;s <code class="docutils literal"><span class="pre">models.py</span></code> file.
 For instance:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSessions</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSessions</span>
 <span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
 </pre></div>
 </div>

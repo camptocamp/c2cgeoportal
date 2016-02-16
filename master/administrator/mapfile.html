@@ -74,7 +74,7 @@ need to use a relatively large value for the <code class="docutils literal"><spa
 <ul>
 <li><p class="first">The <code class="docutils literal"><span class="pre">MAP</span></code> and all the <code class="docutils literal"><span class="pre">LAYER``s</span> <span class="pre">should</span> <span class="pre">have</span> <span class="pre">a</span> <span class="pre">``PROJECTION</span></code>. For
 example:</p>
-<div class="highlight-python"><div class="highlight"><pre>PROJECTION
+<div class="highlight-python"><div class="highlight"><pre><span></span>PROJECTION
     &quot;init=epsg:21781&quot;
 END
 </pre></div>
@@ -96,13 +96,13 @@ resolution into account.</p>
 <p>Layers involved in the <code class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></code> and <code class="docutils literal"><span class="pre">query</span> <span class="pre">builder</span></code> features should
 support WFS GetFeature. To support WFS GetFeature a <code class="docutils literal"><span class="pre">LAYER</span></code> should define
 a template:</p>
-<div class="highlight-python"><div class="highlight"><pre>TEMPLATE fooOnlyForWFSGetFeature
+<div class="highlight-python"><div class="highlight"><pre><span></span>TEMPLATE fooOnlyForWFSGetFeature
 </pre></div>
 </div>
 <p>This is a fake template, but this is required.</p>
 <p>The <code class="docutils literal"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal"><span class="pre">METADATA</span></code> section. For
 example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
 <span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
 <span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
 <span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
@@ -144,14 +144,14 @@ values defined in the layer&#8217;s classes (<code class="docutils literal"><spa
 <p>Layers involved in the <code class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></code> feature should support WMS
 GetFeatureInfo.</p>
 <p>To support WMS GetFeatureInfo a <code class="docutils literal"><span class="pre">LAYER</span></code> should define a template:</p>
-<div class="highlight-python"><div class="highlight"><pre>TEMPLATE fooOnlyForWMSGetFeatureInfo
+<div class="highlight-python"><div class="highlight"><pre><span></span>TEMPLATE fooOnlyForWMSGetFeatureInfo
 </pre></div>
 </div>
 <p>As for WFS GetFeature, this is a fake template, but it is required.</p>
 <p>The <code class="docutils literal"><span class="pre">gml_include_items</span></code>, <code class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code> and <code class="docutils literal"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal"><span class="pre">LAYER</span></code>. For
 example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
 <span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
 <span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
 </pre></div>
@@ -195,7 +195,7 @@ may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile the <code class="docutils literal"><span class="pre">DATA</span></code> property of the
 <code class="docutils literal"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>DATA &quot;the_geom FROM
+<div class="highlight-python"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM
       (SELECT
          geo.*
        FROM
@@ -230,7 +230,7 @@ area. Theses features won&#8217;t be displayed as they are not in the area (ie n
 <p>The <code class="docutils literal"><span class="pre">${mapfile_data_subselect}</span></code> variable is defined in the <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>
 configuration file. Its goal is to simplify the writing of the mapfile.
 It is defined as follows:</p>
-<div class="code sql highlight-python"><div class="highlight"><pre>SELECT
+<div class="code sql highlight-python"><div class="highlight"><pre><span></span>SELECT
   ST_Collect(ra.area)
 FROM
   main.restrictionarea AS ra,
@@ -254,7 +254,7 @@ AND
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
 <p>If we don&#8217;t need to restrict on an area we can use the following
 <code class="docutils literal"><span class="pre">DATA</span></code> property of the <code class="docutils literal"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>DATA &quot;the_geom FROM (
+<div class="highlight-python"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
     SELECT
         geo.*
     FROM
@@ -269,7 +269,7 @@ AND
 </div>
 <p>Then you don&#8217;t need to define an area in the admin interface.</p>
 <p>The <code class="docutils literal"><span class="pre">${mapfile_data_noarea_subselect}</span></code> is defined as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>SELECT
+<div class="highlight-python"><div class="highlight"><pre><span></span>SELECT
     rra.role_id
 FROM
     main.restrictionarea AS ra,
@@ -291,12 +291,12 @@ AND
 <h3>Metadata and filename<a class="headerlink" href="#metadata-and-filename" title="Permalink to this headline">¶</a></h3>
 <p>It is required to have the following in the <code class="docutils literal"><span class="pre">VALIDATION</span></code> section of
 the <code class="docutils literal"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>${mapserver_layer_validation}
+<div class="highlight-python"><div class="highlight"><pre><span></span>${mapserver_layer_validation}
 </pre></div>
 </div>
 <p>This variable is defined in the <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code> configuration file
 as follows:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mapserver_layer_validation =
+<div class="code highlight-python"><div class="highlight"><pre><span></span>mapserver_layer_validation =
     &quot;default_role_id&quot; &quot;-1&quot;
     &quot;role_id&quot; &quot;^-?[0-9]*$$&quot;
 </pre></div>
@@ -313,7 +313,7 @@ attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
 <p>To define variables, edit the matching <code class="docutils literal"><span class="pre">MAP</span></code>/<code class="docutils literal"><span class="pre">LAYER</span></code>/<code class="docutils literal"><span class="pre">VALIDATION</span></code>
 section in the MapFile and add:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
 <span class="s2">&quot;s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
 </pre></div>
 </div>
@@ -328,7 +328,7 @@ insert the variable value, but not at the start of a line (to avoid escape issue
 As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal"><span class="pre">DATA</span></code> section. For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre>LAYER
+<div class="highlight-python"><div class="highlight"><pre><span></span>LAYER
     ...
     DATA &quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=21781&quot;
     METADATA
@@ -365,7 +365,7 @@ variable substitution, but they are not avalable for cached query like:
 <p>Mapserver allows different forms of legends.</p>
 <ul>
 <li><p class="first">Legend with legend text (normal configuration, f.e. <code class="docutils literal"><span class="pre">[</span> <span class="pre">o</span> <span class="pre">]</span> <span class="pre">Placemark</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre>CLASS
+<div class="highlight-python"><div class="highlight"><pre><span></span>CLASS
     NAME &quot;Placemark&quot;
     STYLE
         ...
@@ -375,7 +375,7 @@ END
 </div>
 </li>
 <li><p class="first">Legend without legend text (f.e. <code class="docutils literal"><span class="pre">[</span> <span class="pre">o</span> <span class="pre">]</span></code> , often used if there is one single class in the layer ):</p>
-<div class="highlight-python"><div class="highlight"><pre>CLASS
+<div class="highlight-python"><div class="highlight"><pre><span></span>CLASS
     NAME &quot; &quot;
     STYLE
         ...
@@ -386,7 +386,7 @@ END
 <p>You can set the <code class="docutils literal"><span class="pre">legend</span> <span class="pre">rule</span></code> in the admin interface to <code class="docutils literal"><span class="pre">%20</span></code>, if you want to show the legend icon in the layer tree</p>
 </li>
 <li><p class="first">No legend (don&#8217;t set any <code class="docutils literal"><span class="pre">NAME</span></code> in the <code class="docutils literal"><span class="pre">CLASS</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre>CLASS
+<div class="highlight-python"><div class="highlight"><pre><span></span>CLASS
     STYLE
         ...
     END
@@ -406,15 +406,15 @@ because it saves MapServer from computing the extent of all layer features.</p>
 <p>To have good performance you should have tiled files with overview, and probably
 a tileindex, you can doing these steps:</p>
 <p>Convert your rasters in tiled GeoTIFF:</p>
-<div class="code highlight-python"><div class="highlight"><pre>gdal_translate -of GTiff -co &quot;TILED=YES&quot; -co &quot;TFW=YES&quot; &lt;filename_in.tif&gt; &lt;filename_out.tif&gt;
+<div class="code highlight-python"><div class="highlight"><pre><span></span>gdal_translate -of GTiff -co &quot;TILED=YES&quot; -co &quot;TFW=YES&quot; &lt;filename_in.tif&gt; &lt;filename_out.tif&gt;
 </pre></div>
 </div>
 <p>Then build overviews for your rasters</p>
-<div class="code highlight-python"><div class="highlight"><pre>gdaladdo -r average filename.tif 2 4 8 16
+<div class="code highlight-python"><div class="highlight"><pre><span></span>gdaladdo -r average filename.tif 2 4 8 16
 </pre></div>
 </div>
 <p>You can generate a shapefile indexing all your rasters</p>
-<div class="code highlight-python"><div class="highlight"><pre>gdaltindex filename_index.shp raster/*.tif
+<div class="code highlight-python"><div class="highlight"><pre><span></span>gdaltindex filename_index.shp raster/*.tif
 </pre></div>
 </div>
 </div>

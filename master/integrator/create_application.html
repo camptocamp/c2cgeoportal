@@ -64,7 +64,7 @@ created by the c2cgeoportal skeletons (the <code class="docutils literal"><span 
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeletons). Projects following a parent/child
 architecture may use a different structure. Here&#8217;s an example of a structure
 for a project composed of a main application and sub-applications:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;root&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;root&gt;
   +- &lt;main_project&gt;
   +- &lt;first_sub_project&gt;
   +- &lt;second_sub_project&gt;
@@ -207,13 +207,13 @@ get it:</p>
 <span class="prompt1">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
 <span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
 </pre><p>and replace the lines:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
     &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt; --&gt;
 </pre></div>
 </div>
 <p>by those ones:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;property name=&quot;cmd&quot;&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;property name=&quot;cmd&quot;&gt;
     &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt;
 </pre></div>
@@ -256,7 +256,7 @@ the project.</p>
 <li>Configure the instances in <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> as follows:</li>
 </ol>
 <blockquote>
-<div><div class="code yaml highlight-python"><div class="highlight"><pre>vars:
+<div><div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
 
     ...
     instance: INSTANCE
@@ -290,7 +290,7 @@ interpreted:
 <li><p class="first">In <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add a custom CSS and a task to generate the make files:</p>
 </li>
 </ol>
-<div class="code make highlight-python"><div class="highlight"><pre>CSS_BASE_FILES += &lt;package&gt;/static/css/proj-$(INSTANCE).css
+<div class="code make highlight-python"><div class="highlight"><pre><span></span>CSS_BASE_FILES += &lt;package&gt;/static/css/proj-$(INSTANCE).css
 CONFIG_VARS += viewer
 ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 </pre></div>
@@ -307,14 +307,14 @@ ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 <ol class="arabic simple" start="5">
 <li>Define the host templates as follows (<code class="docutils literal"><span class="pre">main.mk</span></code>, <code class="docutils literal"><span class="pre">demo.mk</span></code>, <code class="docutils literal"><span class="pre">prod.mk</span></code>):</li>
 </ol>
-<div class="code highlight-python"><div class="highlight"><pre>INSTANCE_ID = $(INSTANCE)
+<div class="code highlight-python"><div class="highlight"><pre><span></span>INSTANCE_ID = $(INSTANCE)
 include $(INSTANCE).mk
 </pre></div>
 </div>
 <ol class="arabic simple" start="6">
 <li>Create a <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code> file with:</li>
 </ol>
-<div class="code highlight-python"><div class="highlight"><pre>extends: vars_&lt;project&gt;.yaml
+<div class="code highlight-python"><div class="highlight"><pre><span></span>extends: vars_&lt;project&gt;.yaml
 
 vars:
 
@@ -338,7 +338,7 @@ vars:
 <ol class="arabic simple" start="7">
 <li>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></code> file do the following changes:</li>
 </ol>
-<div class="code diff highlight-python"><div class="highlight"><pre>-        &lt;meta name=&quot;keywords&quot; content=&quot;&lt;package&gt;, geoportal&quot;&gt;
+<div class="code diff highlight-python"><div class="highlight"><pre><span></span>-        &lt;meta name=&quot;keywords&quot; content=&quot;&lt;package&gt;, geoportal&quot;&gt;
 -        &lt;meta name=&quot;description&quot; content=&quot;&lt;package&gt; Geoportal Application.&quot;&gt;
 +        &lt;meta name=&quot;keywords&quot; content=&quot;${request.registry.settings[&#39;instance&#39;]}, geoportal&quot;&gt;
 +        &lt;meta name=&quot;description&quot; content=&quot;${request.registry.settings[&#39;viewer&#39;][&#39;page_title&#39;]}.&quot;&gt;
@@ -355,7 +355,7 @@ vars:
 <ol class="arabic simple" start="8">
 <li>Create the instance CSS file <code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-&lt;instance&gt;.css</span></code>:</li>
 </ol>
-<div class="code css highlight-python"><div class="highlight"><pre>#header-in {
+<div class="code css highlight-python"><div class="highlight"><pre><span></span>#header-in {
     background: url(&#39;../images/&lt;instance&gt;_banner_left.png&#39;) top left no-repeat;
     height: &lt;height&gt;px;
 }
@@ -375,7 +375,7 @@ define the <code class="docutils literal"><span class="pre">WMTS_OPTIONS</span><
 </dl>
 </li>
 </ol>
-<div class="code javascript highlight-python"><div class="highlight"><pre>var WMTS_OPTIONS = {
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>var WMTS_OPTIONS = {
    url: &#39;${tiles_url}&#39;,
    ...
 }
@@ -394,13 +394,13 @@ var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
 <ol class="arabic simple" start="10">
 <li>In the <code class="docutils literal"><span class="pre">mapserver/c2cgeoportal.map.mako</span></code> file add the following line:</li>
 </ol>
-<div class="code highlight-python"><div class="highlight"><pre>INCLUDE &quot;${instance}.map&quot;
+<div class="code highlight-python"><div class="highlight"><pre><span></span>INCLUDE &quot;${instance}.map&quot;
 </pre></div>
 </div>
 <ol class="arabic simple" start="11">
 <li>Edit <code class="docutils literal"><span class="pre">deploy/deploy.cfg.mako</span></code> as follows:</li>
 </ol>
-<div class="code diff highlight-python"><div class="highlight"><pre> [DEFAULT]
+<div class="code diff highlight-python"><div class="highlight"><pre><span></span> [DEFAULT]
 -project = &lt;package&gt;
 +project = ${instance}
 
@@ -419,7 +419,7 @@ var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
 <li><p class="first">Update the deploy configuration as follows:</p>
 <pre class="highlight"><span class="prompt1">git mv deploy/hooks/post-restore-code<span class="o">{</span>,.mako<span class="o">}</span></span>
 </pre><p>Then edit it (<cite>deploy/hooks/post-restore-code.mako</cite>):</p>
-<div class="code diff highlight-python"><div class="highlight"><pre>-make -f $TARGET.mk template-clean
+<div class="code diff highlight-python"><div class="highlight"><pre><span></span>-make -f $TARGET.mk template-clean
 -make -f $TARGET.mk template-generate
 +INSTANCE=${instance} make -f $TARGET.mk template-clean
 +INSTANCE=${instance} make -f $TARGET.mk template-generate
@@ -460,7 +460,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>The result is also a file without the .mako.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>${&lt;variablename&gt;}
+<div class="highlight-python"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
 </pre></div>
 </div>
 <p>for example:</p>

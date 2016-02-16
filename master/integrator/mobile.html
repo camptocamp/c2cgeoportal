@@ -80,7 +80,7 @@ the Camptocamp sysadmins).</p>
 and <code class="docutils literal"><span class="pre">sencha-cmd</span></code>. By default the <code class="docutils literal"><span class="pre">sencha-cmd</span></code> command is used, if
 it&#8217;s not the case on your host put the following configuration variables
 in your <cite>&lt;package&gt;.mk</cite> file:</p>
-<div class="code make highlight-python"><div class="highlight"><pre>SENCHA_CMD = &lt;sencha-command&gt;
+<div class="code make highlight-python"><div class="highlight"><pre><span></span>SENCHA_CMD = &lt;sencha-command&gt;
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal"><span class="pre">&lt;sencha-command&gt;</span></code> by <code class="docutils literal"><span class="pre">sencha-sdk</span></code> if you want to build the
@@ -91,7 +91,7 @@ mobile app using a version of GeoMapFish older than 1.4.</p>
 <p>The last step involves adding <em>routes</em> and <em>views</em> specific to the mobile
 application. Edit the project&#8217;s <code class="docutils literal"><span class="pre">__init__.py</span></code> file and add the following
 lines before the <code class="docutils literal"><span class="pre">main</span></code> function&#8217;s return statement:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="c1"># mobile views and routes</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="c1"># mobile views and routes</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/&#39;</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
                 <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
@@ -130,7 +130,7 @@ installed on the build machine. (See above.)</p>
 <p class="first admonition-title">Note</p>
 <p>On Windows you will need to override the values of the <code class="docutils literal"><span class="pre">mobile</span></code> part
 <code class="docutils literal"><span class="pre">SENCHA_CMD</span></code> variables as such:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span class="n">SENCHA_CMD</span> <span class="o">=</span> <span class="n">sencha</span><span class="o">.</span><span class="n">bat</span>
+<div class="code make highlight-python"><div class="highlight"><pre><span></span><span class="n">SENCHA_CMD</span> <span class="o">=</span> <span class="n">sencha</span><span class="o">.</span><span class="n">bat</span>
 </pre></div>
 </div>
 <p class="last">You would add this in <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>, or any make configuration file
@@ -159,12 +159,12 @@ used to retrieve data from raster file (elevation, slope, etc...) and display
 it in the <code class="docutils literal"><span class="pre">Query</span> <span class="pre">view</span></code> above query results.</p>
 <p>If the raster service is already configured on the server, you can activate it
 in the mobile application by adding the following to the config.js file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">raster</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">raster</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>You&#8217;ll also need to add a template string to each translation object. It needs
 to be adapted to the data retrieved from the server:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>OpenLayers.Lang.fr = {
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Lang.fr = {
     [...]
     &#39;rasterTpl&#39;: [
         &#39;&lt;div class=&quot;coordinates&quot;&gt;&#39;,
@@ -197,7 +197,7 @@ file:</p>
 <li><p class="first">Set <code class="docutils literal"><span class="pre">OpenLayers.ImgPath</span></code> to the path where you custom marker is.</p>
 </li>
 <li><p class="first">Define the following new variable:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">crosshair_options</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">crosshair_options</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ImgPath</span><span class="o">+</span><span class="s1">&#39;custom_marker.png&#39;</span><span class="p">,</span>
     <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">]</span>
 <span class="p">};</span>
@@ -220,7 +220,7 @@ applying the <code class="docutils literal"><span class="pre">c2cgeoportal_updat
 <h3>Permalink<a class="headerlink" href="#permalink" title="Permalink to this headline">¶</a></h3>
 <p>If a permalink field is needed, just add the following component in the
 Settings view:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -234,7 +234,7 @@ If the user is authenticated the <code class="docutils literal"><span class="pre
 and a &#8220;log out&#8221; button.</p>
 <p>Here&#8217;s an example of a <code class="docutils literal"><span class="pre">Settings</span></code> view that includes a <code class="docutils literal"><span class="pre">Login</span></code> view
 component:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>Ext.define(&quot;App.view.Settings&quot;, {
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>Ext.define(&quot;App.view.Settings&quot;, {
     extend: &#39;Ext.Container&#39;,
     xtype: &#39;settingsview&#39;,
     requires: [
@@ -277,7 +277,7 @@ be self-explanatory. <code class="docutils literal"><span class="pre">welcomeTex
 button when the user is authenticated, it typically includes the variable
 <code class="docutils literal"><span class="pre">{username}</span></code>, which is changed to the actual username at render time. By
 default, <code class="docutils literal"><span class="pre">config.js</span></code> includes the following english translations:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>OpenLayers.Lang.en = {
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Lang.en = {
     ...
     // login/logout
     &#39;loginButtonText&#39;: &#39;Log in&#39;,
@@ -293,7 +293,7 @@ default, <code class="docutils literal"><span class="pre">config.js</span></code
 <p>For the <code class="docutils literal"><span class="pre">Login</span></code> component to work the <code class="docutils literal"><span class="pre">App.info</span></code> JavaScript variable should
 be set. The setting of this variable should be done anywhere in the
 <code class="docutils literal"><span class="pre">config.js</span></code> file, with this:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>By default <code class="docutils literal"><span class="pre">config.js</span></code> includes it.</p>
@@ -343,7 +343,7 @@ contents so they reference the new mobile directory (<code class="docutils liter
 the new <code class="docutils literal"><span class="pre">jsbuild</span></code> mobile config file (<code class="docutils literal"><span class="pre">jsbuild/mobile2.cfg</span></code>).</p>
 <p>You also need to add <code class="docutils literal"><span class="pre">jsbuild-mobile2</span></code> and <code class="docutils literal"><span class="pre">mobile2</span></code> to the list
 of parts that are run by Buildout by default:</p>
-<div class="highlight-python"><div class="highlight"><pre>[buildout]
+<div class="highlight-python"><div class="highlight"><pre><span></span>[buildout]
 extends = CONST_buildout.cfg
 parts += jsbuild-mobile mobile jsbuild-mobile2 mobile2
 </pre></div>

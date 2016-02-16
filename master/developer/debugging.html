@@ -70,7 +70,7 @@ span.prompt1:before {
 </style><span class="prompt1">shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</span>
 </pre><p>You may also activate Mapserver&#8217;s debug mode and set the log level in your
 mapfile by adding the following configuration:</p>
-<div class="highlight-python"><div class="highlight"><pre>MAP
+<div class="highlight-python"><div class="highlight"><pre><span></span>MAP
     ...
     CONFIG &quot;MS_ERRORFILE&quot; &quot;/tmp/ms_error.txt&quot;
     DEBUG 5
@@ -97,7 +97,7 @@ to test it).</p>
 <div class="section" id="tilecloud-chain">
 <h3>Tilecloud chain<a class="headerlink" href="#tilecloud-chain" title="Permalink to this headline">¶</a></h3>
 <p>Points to check with TileCloud chain:</p>
-<div class="highlight-python"><div class="highlight"><pre>* Disabling metatiles should be avoided.
+<div class="highlight-python"><div class="highlight"><pre><span></span>* Disabling metatiles should be avoided.
 * Make sure that``empty_metatile_detection`` and ``empty_tile_detection`` are configured correctly.
 * Make sure to not generate tiles with a higher resolution than in the raster sources.
 </pre></div>

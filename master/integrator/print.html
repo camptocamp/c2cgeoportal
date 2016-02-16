@@ -72,7 +72,7 @@ span.prompt1:before {
 </pre><p>Then in <code class="docutils literal"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> you should remove the <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">=</span> <span class="pre">2</span></code> (it&#8217;s <code class="docutils literal"><span class="pre">3</span></code> by default).</p>
 <p>In the concerned viewer javascript files, in the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following lines:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre>version: 3,
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>version: 3,
 encodeLayer: {},
 encodeExternalLayer: {},
 additionalAttributes: []
@@ -154,7 +154,7 @@ print output, a templating system is implemented to allow you to use mako
 template so you don&#8217;t have to duplicate a huge quantity of code in your <code class="docutils literal"><span class="pre">print/config.yaml</span></code>.</p>
 <p>In the default template we have two base print template <code class="docutils literal"><span class="pre">A4_portrait.mako</span></code> and
 <code class="docutils literal"><span class="pre">A3_landscape.mako</span></code> where we have some blocks like:</p>
-<div class="code mako highlight-python"><div class="highlight"><pre>&lt;%def name=&quot;title()&quot;&gt;\
+<div class="code mako highlight-python"><div class="highlight"><pre><span></span>&lt;%def name=&quot;title()&quot;&gt;\
 1 A4 portrait\
 &lt;/%def&gt;
 </pre></div>
@@ -185,13 +185,13 @@ removing the <code class="docutils literal"><span class="pre">print</span></code
 </pre></li>
 <li><p class="first">Deactivate the print compilation by adding the following lines
 in the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span class="n">PRINT_VERSION</span> <span class="o">=</span> <span class="n">NONE</span>
+<div class="code make highlight-python"><div class="highlight"><pre><span></span><span class="n">PRINT_VERSION</span> <span class="o">=</span> <span class="n">NONE</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Point to the parent print server by editing the following lines
 in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>vars:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
     ...
     # For print proxy
     # This value means that we use the parent print server
@@ -201,7 +201,7 @@ in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yam
 </li>
 <li><p class="first">If needed set the print templates used by anonymous users by adding the
 following in the application configuration (<code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code>):</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>vars:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
   ...
   functionalities:
       anonymous:

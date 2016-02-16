@@ -74,7 +74,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <li><code class="docutils literal"><span class="pre">checker_wfscapabilities</span></code>: Check the WFS GetCapabilities.</li>
 </ul>
 <p>Configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>checker:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>checker:
     print_template: 1 A4 portrait
     print_center_lon: to be defined
     print_center_lat: to be defined
@@ -88,7 +88,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
 <p>To disable a predefined check do this:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>vars:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
     check_collector:
         disabled:
         - &lt;name&gt;
@@ -98,7 +98,7 @@ update_paths:
 </pre></div>
 </div>
 <p>To add a host:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>vars:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
     check_collector:
         hosts:
         - display: Child
@@ -110,7 +110,7 @@ update_paths:
 </div>
 <p>We can use an argument type of the script to call a specific
 list of checks on all hosts, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre>http://example.com/main/wsgi/check_collector?type=all
+<div class="highlight-python"><div class="highlight"><pre><span></span>http://example.com/main/wsgi/check_collector?type=all
 </pre></div>
 </div>
 </div>

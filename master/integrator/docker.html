@@ -46,7 +46,7 @@
 <h2>Configure your project<a class="headerlink" href="#configure-your-project" title="Permalink to this headline">¶</a></h2>
 <p>Edit the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file and add those lines after the APACHE_VHOST
 line:</p>
-<div class="code make highlight-python"><div class="highlight"><pre>DOCKER = TRUE
+<div class="code make highlight-python"><div class="highlight"><pre><span></span>DOCKER = TRUE
 DOCKER_BASE = camptocamp/&lt;project_name&gt;
 JASPERREPORTS_VERSION = 6.1.1
 </pre></div>
@@ -63,7 +63,7 @@ that:</p>
 <p>The tag is by default <code class="docutils literal"><span class="pre">latest</span></code>, but you can change it by setting the
 <code class="docutils literal"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
 <p>Edit <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and add:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>dbhost: db
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>dbhost: db
 </pre></div>
 </div>
 </div>
@@ -99,17 +99,17 @@ the Docker image creation to use your version of c2cgeoportal.</p>
 <p>First, you need to move/copy you c2cgeoportal clone into you project root
 directory. That is needed to allow Docker to see those files.</p>
 <p>Then, add this line to your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file (before the <code class="docutils literal"><span class="pre">include</span> <span class="pre">...</span></code>):</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_EXCLUDE</span> <span class="o">=</span> <span class="n">c2cgeoportal</span>
+<div class="code make highlight-python"><div class="highlight"><pre><span></span><span class="n">TEMPLATE_EXCLUDE</span> <span class="o">=</span> <span class="n">c2cgeoportal</span>
 </pre></div>
 </div>
 <p>Edit your <code class="docutils literal"><span class="pre">.dockerignore</span></code> file and add those lines at the end:</p>
-<div class="code docker highlight-python"><div class="highlight"><pre>!c2cgeoportal/c2cgeoportal*
+<div class="code docker highlight-python"><div class="highlight"><pre><span></span>!c2cgeoportal/c2cgeoportal*
 !c2cgeoportal/setup.*
 !c2cgeoportal/requirements.txt
 </pre></div>
 </div>
 <p>Finally, edit your <code class="docutils literal"><span class="pre">Dockerfile</span></code> and add those lines just before the step #2:</p>
-<div class="code docker highlight-python"><div class="highlight"><pre>COPY c2cgeoportal /app/c2cgeoportal
+<div class="code docker highlight-python"><div class="highlight"><pre><span></span>COPY c2cgeoportal /app/c2cgeoportal
 RUN pip install -e c2cgeoportal
 </pre></div>
 </div>
@@ -120,12 +120,12 @@ RUN pip install -e c2cgeoportal
 <h3>WSGI<a class="headerlink" href="#wsgi" title="Permalink to this headline">¶</a></h3>
 <p>To make the DB connection used by your WSGI configurable from the
 composition, you can add this in your <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre>hooks:
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>hooks:
   after_setup: {{package}}.after_setup_hook
 </pre></div>
 </div>
 <p>Then, in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file, add this function:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">after_settings_hook</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">after_settings_hook</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
     <span class="n">DB_KEY</span> <span class="o">=</span> <span class="s2">&quot;sqlalchemy.url&quot;</span>
     <span class="n">orig</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="n">DB_KEY</span><span class="p">]</span>
     <span class="n">new</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SQLALCHEMY_URL&quot;</span><span class="p">,</span> <span class="n">orig</span><span class="p">)</span>
@@ -140,7 +140,7 @@ for the wsgi image, you&#8217;ll be able to change the DB connection used.</p>
 <p>The created <code class="docutils literal"><span class="pre">mapserver/Dockerfile</span></code> file installs a hook to make the setup of
 the DB possible. Just set the <code class="docutils literal"><span class="pre">DB_CONNECTION</span></code> environment variable to
 something like that:</p>
-<div class="code docker highlight-python"><div class="highlight"><pre>environment:
+<div class="code docker highlight-python"><div class="highlight"><pre><span></span>environment:
   DB_CONNECTION: user=www-data password=toto dbname=geoacordaDev host=db
 </pre></div>
 </div>
