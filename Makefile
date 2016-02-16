@@ -72,6 +72,7 @@ help:
 .PHONY: build
 build: $(MAKO_FILES:.mako=) \
 	c2c-egg \
+	c2cgeoportal/version.py \
 	$(JSBUILD_ADMIN_OUTPUT_FILES) \
 	$(CSS_ADMIN_OUTPUT) \
 	$(MO_FILES) \
@@ -260,3 +261,14 @@ $(JSBUILD_ADMIN_OUTPUT_FILES): $(JSBUILD_ADMIN_FILES) $(JSBUILD_ADMIN_CONFIG)
 $(CSS_ADMIN_OUTPUT): .build/venv/bin/c2c-cssmin $(CSS_ADMIN_FILES)
 	mkdir -p $(dir $@)
 	.build/venv/bin/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_ADMIN_FILES)
+
+c2cgeoportal/version.py: gen_current_version
+
+.PHONY: gen_current_version
+gen_current_version:
+	@echo "# Copyright (c) 2016, Camptocamp SA" > c2cgeoportal/version.py.new
+	@echo "# All rights reserved." >> c2cgeoportal/version.py.new
+	@echo  >> c2cgeoportal/version.py.new
+	@echo "# Auto-generated file. Do not Edit!" >> c2cgeoportal/version.py.new
+	@.build/venv/bin/python c2cgeoportal/scripts/gen_version.py >> c2cgeoportal/version.py.new
+	@if `diff -q c2cgeoportal/version.py.new c2cgeoportal/version.py > /dev/null 2> /dev/null`; then rm c2cgeoportal/version.py.new; else echo "New version of c2cgeoportal/version.py"; mv c2cgeoportal/version.py.new c2cgeoportal/version.py; fi
