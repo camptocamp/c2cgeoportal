@@ -168,6 +168,11 @@ class FullTextSearchView(object):
                 properties["params"] = o.params
             if o.actions is not None:
                 properties["actions"] = o.actions
+            if o.actions is None and o.layer_name is not None:
+                properties["actions"] = [{
+                    "action": "add_layer",
+                    "data": o.layer_name,
+                }]
 
             if o.the_geom is not None:
                 geom = to_shape(o.the_geom)
