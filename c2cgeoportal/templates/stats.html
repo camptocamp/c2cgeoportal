@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Stats</title>
+    <style>
+        table {
+            border: 2px black solid;
+            border-collapse: collapse;
+        }
+        th {
+            border: 2px black solid;
+            text-align: left;
+            padding: 0px 4px;
+        }
+        td {
+            border: 1px black solid;
+            padding: 0px 4px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timers</h1>
+    <table>
+        <tr><th>What</th><th>NB</th><th>Avg [ms]</th><th>Min [ms]</th><th>Max [ms]</th></tr>
+% for key in sorted(timers.keys()):
+        <tr><td>${key}</td><td>${timers[key]["nb"]}</td><td>${timers[key]["avg_ms"]}</td><td>${timers[key]["min_ms"]}</td><td>${timers[key]["max_ms"]}</td></tr>
+% endfor
+    </table>
+</body>
+</html>

@@ -29,3 +29,4 @@ Content:
    authentication
    extend_data_model
    caching
+   statistics
