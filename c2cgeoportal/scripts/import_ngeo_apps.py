@@ -45,6 +45,22 @@ def _sub(pattern, repl, string, count=0, flags=0):
     return new_string
 
 
+def _subs(subs, string):
+    for pattern, repl in subs:
+        if repl is False:
+            if re.search(pattern, string) is not None:
+                return string
+        else:
+            new_string = re.sub(pattern, repl, string)
+            if new_string != string:
+                return new_string
+    print("Unable to find the patterns:")
+    print("\n".join([p for p, r in subs]))
+    print("in")
+    print(string)
+    exit(1)
+
+
 def _get_ngeo_version():
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
 
@@ -100,6 +116,10 @@ def main():
 #            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
 
         if args.html:
+            data = "<%\n" \
+                "from json import dumps\n" \
+                "%>\n" + \
+                data
             # back for ng-app
             data = _sub(r"ng-{{package}}", r"ng-app", data)
             # back for mobile-web-app-capable
@@ -169,6 +189,16 @@ ${ ',\\n'.join([
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}
            });""",
+                data,
+            )
+            data = _subs(
+                [(
+                    "module.constant\('gmfSearchGroups', \[\]\);",
+                    False
+                ), (
+                    "module.constant\('gmfSearchGroups', \[[^\]]*\]\);",
+                    "module.constant('gmfSearchGroups', ${dumps(fulltextsearch_groups) | n});",
+                )],
                 data,
             )
 
