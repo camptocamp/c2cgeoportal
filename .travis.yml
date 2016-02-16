@@ -76,9 +76,6 @@ script:
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
 - .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
 - travis/status.sh
-# verify c2cgeoportal version
-- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)?$ ]] ; then test `grep "REQUIREMENTS ?= 'c2cgeoportal==" c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl|awk -F '==' '{{print $2}}'` = "${TRAVIS_TAG}'" ; fi
-- if [[ ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)?$ ]] ; then test `python setup.py --version` = ${TRAVIS_TAG} ; fi
 
 after_failure:
 - .build/venv/bin/python setup.py nosetests
@@ -95,6 +92,9 @@ after_success:
 
 before_deploy:
 - .build/venv/bin/pip install wheel
+- sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
+- sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
+- git diff
 
 deploy:
   provider: pypi
@@ -106,7 +106,7 @@ deploy:
   on:
     tags: true
     python: 2.7
-    condition: ${TRAVIS_TAG} =~ ^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)?$
+    condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
 
 after_deploy:
   travis/after_deploy.sh
