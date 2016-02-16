@@ -29,6 +29,7 @@
 
 
 import re
+import subprocess
 from json import loads, dumps
 from argparse import ArgumentParser
 
@@ -42,6 +43,10 @@ def _sub(pattern, repl, string, count=0, flags=0):
         print(string)
         exit(1)
     return new_string
+
+
+def _get_ngeo_version():
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
 
 
 def main():
@@ -76,7 +81,12 @@ def main():
 
             del json_data["scripts"]
 
-            data = dumps(json_data, indent=4)
+            if "ngeo" in json_data["devDependencies"]:
+                # freeze the ngeo version
+                json_data["devDependencies"]["ngeo"] = \
+                    "git://github.com/camptocamp/ngeo#" + _get_ngeo_version()
+
+            data = dumps(json_data, indent=4, sort_keys=True)
             data = _sub(r" +\n", "\n", data)
 
         else:
