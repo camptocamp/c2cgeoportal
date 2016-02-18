@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 import re
 import subprocess
 from json import loads, dumps
@@ -79,7 +80,9 @@ class _RouteDest:
 
 
 def _get_ngeo_version():
-    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
+    return os.environ["TRAVIS_TAG"] \
+        if "TRAVIS_TAG" in os.environ and "dev" in os.environ["TRAVIS_TAG"] \
+        else subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
 
 
 def main():
@@ -104,20 +107,19 @@ def main():
         if args.package:
             json_data = loads(data)
             json_data["name"] = "{{package}}"
-            json_data["description"] = "GeoMapfish project"
+            json_data["description"] = "A GeoMapFish project"
+
+            # freeze the ngeo version
+            json_data["devDependencies"]["ngeo"] = \
+                "git://github.com/camptocamp/ngeo#" + _get_ngeo_version()
+
             del json_data["repository"]
             del json_data["bugs"]
-            json_data["devDependencies"]["ngeo"] = "git://github.com/camptocamp/ngeo#master"
             del json_data["devDependencies"]["angular-jsdoc"]
             del json_data["devDependencies"]["jsdoc"]
             del json_data["devDependencies"]["jsdom"]
 
             del json_data["scripts"]
-
-            if "ngeo" in json_data["devDependencies"]:
-                # freeze the ngeo version
-                json_data["devDependencies"]["ngeo"] = \
-                    "git://github.com/camptocamp/ngeo#" + _get_ngeo_version()
 
             data = dumps(json_data, indent=4, sort_keys=True)
             data = _sub(r" +\n", "\n", data)
