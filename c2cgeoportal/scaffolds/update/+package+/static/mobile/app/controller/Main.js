@@ -314,38 +314,42 @@ Ext.define('App.controller.Main', {
     loadTheme: function(theme) {
         if (!theme) {
             if (App.themes && App.themes.length > 0) {
-                App.theme = theme = App.themes[0].name;
+                theme = App.themes[0].name;
             }
             else if (console) {
                 console.log("No themes are displayed in mobile for the curent role");
             }
         }
+        if (App.map.getLayerIndex(this.getOverlay()) != -1) {
+            App.map.removeLayer(this.getOverlay());
+        }
+        var layers = [];
+        var allLayers = [];
         Ext.each(App.themes, function(t) {
             if (t.name == theme) {
-                if (App.map.getLayerIndex(this.getOverlay()) != -1) {
-                    App.map.removeLayer(this.getOverlay());
-                }
-                var overlay = new OpenLayers.Layer.WMS(
-                    'overlay',
-                    App.wmsUrl,
-                    {
-                        // layers to display at startup
-                        layers: t.layers,
-                        transparent: true
-                    }, {
-                        singleTile: true,
-                        maxExtent: App.map.baseLayer.maxExtent,
-                        // list of available layers
-                        allLayers: t.allLayers
-                    }
-                );
-                App.map.addLayer(overlay);
-                this.setOverlay(overlay);
+                layers = t.layers;
+                allLayers = t.allLayers;
                 App.theme = theme;
-                App.map.events.triggerEvent('themechange');
                 return false;
             }
         }, this);
+        var overlay = new OpenLayers.Layer.WMS(
+            'overlay',
+            App.wmsUrl,
+            {
+                // layers to display at startup
+                layers: layers,
+                transparent: true
+            }, {
+                singleTile: true,
+                maxExtent: App.map.baseLayer.maxExtent,
+                // list of available layers
+                allLayers: allLayers
+            }
+        );
+        App.map.addLayer(overlay);
+        this.setOverlay(overlay);
+        App.map.events.triggerEvent('themechange');
     },
 
     setCenterCrosshair: function(lonlat, zoom) {
