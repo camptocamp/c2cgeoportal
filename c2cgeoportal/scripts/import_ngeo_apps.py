@@ -31,6 +31,7 @@
 import re
 import subprocess
 from json import loads, dumps
+from urlparse import parse_qsl
 from argparse import ArgumentParser
 
 
@@ -59,6 +60,22 @@ def _subs(subs, string):
     print("in")
     print(string)
     exit(1)
+
+
+class _RouteDest:
+
+    def __init__(self, constant, route):
+        self.constant = constant
+        self.route = route
+
+    def __call__(self, matches):
+        query_string = matches.group(1)
+        query = ''
+        if len(query_string) > 0:
+            query = ", _query=%s" % dumps(dict(parse_qsl(query_string)))
+        return r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
+            self.constant, self.route, query
+        )
 
 
 def _get_ngeo_version():
@@ -203,24 +220,18 @@ ${ ',\\n'.join([
             )
 
             # replace routes
-            for constant, url_end, route, query in [
-                ("authenticationBaseUrl", r"", "base", None),
-                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", None),
-                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy", None),
-                ("gmfTreeUrl", r"/themes\?version=2&background=background", "themes", {
-                    "version": 2,
-                    "background": "background"
-                }),
+            for constant, url_end, route in [
+                ("authenticationBaseUrl", r"", "base"),
+                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch"),
+                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy"),
+                ("gmfTreeUrl", r"/themes", "themes"),
             ]:
-                route_args = "" if query is None else ", _query=%s" % dumps(query)
                 data = _sub(
                     r"module.constant\('%s', "
-                    "'https://geomapfish-demo.camptocamp.net/2.0/wsgi%s'\);" % (
+                    "'https://geomapfish-demo.camptocamp.net/2.0/wsgi%s\??([^\']*)'\);" % (
                         constant, url_end
                     ),
-                    r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
-                        constant, route, route_args
-                    ),
+                    _RouteDest(constant, route),
                     data,
                 )
 
