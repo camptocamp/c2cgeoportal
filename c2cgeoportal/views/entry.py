@@ -58,7 +58,7 @@ from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
     Theme, LayerGroup, RestrictionArea, Interface, \
-    Layer, LayerV1, LayerWMS, LayerWMTS
+    Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch
 
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -1036,8 +1036,10 @@ class Entry(object):
     def get_ngeo_index_vars(self, vars={}):
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
+        groups = DBSession.query(FullTextSearch.layer_name).all()
         vars.update({
             "debug": self.debug,
+            "fulltextsearch_groups": groups
         })
         return vars
 

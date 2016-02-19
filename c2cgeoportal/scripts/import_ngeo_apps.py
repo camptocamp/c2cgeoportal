@@ -31,6 +31,7 @@
 import re
 import subprocess
 from json import loads, dumps
+from urlparse import parse_qsl
 from argparse import ArgumentParser
 
 
@@ -43,6 +44,38 @@ def _sub(pattern, repl, string, count=0, flags=0):
         print(string)
         exit(1)
     return new_string
+
+
+def _subs(subs, string):
+    for pattern, repl in subs:
+        if repl is False:
+            if re.search(pattern, string) is not None:
+                return string
+        else:
+            new_string = re.sub(pattern, repl, string)
+            if new_string != string:
+                return new_string
+    print("Unable to find the patterns:")
+    print("\n".join([p for p, r in subs]))
+    print("in")
+    print(string)
+    exit(1)
+
+
+class _RouteDest:
+
+    def __init__(self, constant, route):
+        self.constant = constant
+        self.route = route
+
+    def __call__(self, matches):
+        query_string = matches.group(1)
+        query = ''
+        if len(query_string) > 0:
+            query = ", _query=%s" % dumps(dict(parse_qsl(query_string)))
+        return r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
+            self.constant, self.route, query
+        )
 
 
 def _get_ngeo_version():
@@ -100,6 +133,10 @@ def main():
 #            data = _sub(r"datasetTitle: 'Internal',", r"datasetTitle: '{{project}}',", data)
 
         if args.html:
+            data = "<%\n" \
+                "from json import dumps\n" \
+                "%>\n" + \
+                data
             # back for ng-app
             data = _sub(r"ng-{{package}}", r"ng-app", data)
             # back for mobile-web-app-capable
@@ -171,26 +208,30 @@ ${ ',\\n'.join([
            });""",
                 data,
             )
+            data = _subs(
+                [(
+                    "module.constant\('gmfSearchGroups', \[\]\);",
+                    False
+                ), (
+                    "module.constant\('gmfSearchGroups', \[[^\]]*\]\);",
+                    "module.constant('gmfSearchGroups', ${dumps(fulltextsearch_groups) | n});",
+                )],
+                data,
+            )
 
             # replace routes
-            for constant, url_end, route, query in [
-                ("authenticationBaseUrl", r"", "base", None),
-                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", None),
-                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy", None),
-                ("gmfTreeUrl", r"/themes\?version=2&background=background", "themes", {
-                    "version": 2,
-                    "background": "background"
-                }),
+            for constant, url_end, route in [
+                ("authenticationBaseUrl", r"", "base"),
+                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch"),
+                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy"),
+                ("gmfTreeUrl", r"/themes", "themes"),
             ]:
-                route_args = "" if query is None else ", _query=%s" % dumps(query)
                 data = _sub(
                     r"module.constant\('%s', "
-                    "'https://geomapfish-demo.camptocamp.net/2.0/wsgi%s'\);" % (
+                    "'https://geomapfish-demo.camptocamp.net/2.0/wsgi%s\??([^\']*)'\);" % (
                         constant, url_end
                     ),
-                    r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
-                        constant, route, route_args
-                    ),
+                    _RouteDest(constant, route),
                     data,
                 )
 

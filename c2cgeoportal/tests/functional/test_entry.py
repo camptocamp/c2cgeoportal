@@ -758,11 +758,11 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug",
+            "debug", "fulltextsearch_groups"
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "permalink_themes"
+            "debug", "fulltextsearch_groups", "permalink_themes"
         ]))
 
         result = entry.mobile()
