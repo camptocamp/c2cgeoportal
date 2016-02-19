@@ -510,24 +510,26 @@ compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 # to don't delete them
 .SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
 
-$(PACKAGE)/locale/$(PACKAGE)-server.pot: lingua-server.cfg $(SERVER_LOCALISATION_SOURCES_FILES) $(VENV_BIN)/pot-create
+$(PACKAGE)/locale/$(PACKAGE)-server.pot: \
+		lingua-server.cfg \
+		$(VENV_BIN)/pot-create \
+		$(SERVER_LOCALISATION_SOURCES_FILES)
 	$(VENV_BIN)/pot-create --keyword _ --config $< --output $@ $(SERVER_LOCALISATION_SOURCES_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
-I18N_SOURCE_FILES += $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES)
+I18N_SOURCE_FILES += $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES) .build/config.yaml
 ifeq ($(DOCKER),FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
-		$(SERVER_LOCALISATION_SOURCES_FILES) \
-		$(VENV_BIN)/pot-create lingua-client.cfg \
-		$(I18N_SOURCE_FILES) \
-		.build/config.yaml
-	$(VENV_BIN)/pot-create --config lingua-client.cfg --output $@ $(I18N_SOURCE_FILES)
+		lingua-client.cfg \
+		$(VENV_BIN)/pot-create \
+		$(I18N_SOURCE_FILES)
+	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@

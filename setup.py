@@ -124,6 +124,7 @@ setup(
         ],
         "lingua.extractors": [
             "geomapfish-theme = c2cgeoportal.lib.lingua_extractor:GeoMapfishThemeExtractor",
+            "geomapfish-config = c2cgeoportal.lib.lingua_extractor:GeoMapfishConfigExtractor",
             "geomapfish-angular = c2cgeoportal.lib.lingua_extractor:GeoMapfishAngularExtractor",
         ],
     }
