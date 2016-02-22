@@ -92,7 +92,7 @@ after_success:
 
 before_deploy:
 - .build/venv/bin/pip install wheel
-- sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
+- sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
 - sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
 - git diff
 
