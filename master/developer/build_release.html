@@ -99,14 +99,6 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <span class="prompt1">git reset --hard origin/master</span>
 </pre><p>Get the localisation from Transifex:</p>
 <pre class="highlight"><span class="prompt1">make transifex-get</span>
-</pre><p>Edit the <code class="docutils literal"><span class="pre">doc/integrator/update_application.rst</span></code> file to change the default version.</p>
-<p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
-<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span></code>
-(<code class="docutils literal"><span class="pre">REQUIREMENTS</span> <span class="pre">?=</span> <span class="pre">c2cgeoportal==&lt;release&gt;</span></code>).</p>
-<p>Add and commit the changes:</p>
-<pre class="highlight"><span class="prompt1">git add doc/integrator/update_application.rst <span class="se">\</span>
-    c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Update the default downloaded version.cfg&quot;</span></span>
 </pre><p>For each version we create a new branch (at the latest at the final release):</p>
 <pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;version&gt;</span>
@@ -124,7 +116,7 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <li>Go to URL: <a class="reference external" href="https://www.transifex.com/camptocamp/geomapfish/content/">https://www.transifex.com/camptocamp/geomapfish/content/</a></li>
 <li>Click on &#8220;Add a resource&#8221;</li>
 <li>Select the <code class="docutils literal"><span class="pre">.pot</span></code> file</li>
-<li>The name should be something like &#8220;c2cgeoportal-1_6&#8221; (with the right version)</li>
+<li>The name should be something like &#8220;c2cgeoportal-2_0&#8221; (with the right version)</li>
 <li>Click on &#8220;Create a resource&#8221;</li>
 <li>Run <cite>make transifex-init</cite></li>
 </ul>
@@ -137,40 +129,13 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 <pre class="highlight"><span class="prompt1">git fetch</span>
 <span class="prompt1">git checkout &lt;version&gt;</span>
 <span class="prompt1">git reset --hard origin/&lt;version&gt;</span>
-</pre><p>Update the version of c2cgeoportal to <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> in
-<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span></code>
-(<code class="docutils literal"><span class="pre">REQUIREMENTS</span> <span class="pre">?=</span> <span class="pre">c2cgeoportal==&lt;release&gt;</span></code>).</p>
-<p>Verify that the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> is correct
-(as the <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code>, required when we create a release candidate
-or a development release).</p>
-</div>
-<div class="section" id="release-w-x-y-z">
-<h3>Release w.x.y(.z)<a class="headerlink" href="#release-w-x-y-z" title="Permalink to this headline">¶</a></h3>
-<p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
 </pre><p>Tag the new release:</p>
 <pre class="highlight"><span class="prompt1">git tag &lt;release&gt;</span>
-</pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;release</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
-<p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add setup.py</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Start release &lt;release + 1&gt;&quot;</span></span>
-</pre><p>Push your changes:</p>
-<pre class="highlight"><span class="prompt1">git push origin &lt;version&gt;</span>
-<span class="prompt1">git push origin &lt;release&gt;</span>
-</pre></div>
-<div class="section" id="release-candidate-or-development-w-x-y-rc-dev-z">
-<h3>Release candidate or development w.x.y.(rc|dev)z<a class="headerlink" href="#release-candidate-or-development-w-x-y-rc-dev-z" title="Permalink to this headline">¶</a></h3>
-<p>In this case we don&#8217;t commit the version changes in the branch.</p>
-<p>Commit, tag and push your changes:</p>
-<pre class="highlight"><span class="prompt1">git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl <span class="se">\</span>
-git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
-<span class="prompt1">git tag &lt;release&gt;</span>
 <span class="prompt1">git push origin &lt;release&gt;</span>
 </pre></div>
 <div class="section" id="notes-about-travis">
 <h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
-<p>When you push a tag with the pattern <code class="docutils literal"><span class="pre">^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$</span></code>
+<p>When you push a tag with the pattern <code class="docutils literal"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>
 a new release will automatically be created on Travis CI.</p>
 </div>
 </div>
@@ -238,8 +203,6 @@ and <code class="docutils literal"><span class="pre">geospatial&#64;lists.campto
 <li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
 <li><a class="reference internal" href="#id1">New version</a></li>
 <li><a class="reference internal" href="#id2">New release</a></li>
-<li><a class="reference internal" href="#release-w-x-y-z">Release w.x.y(.z)</a></li>
-<li><a class="reference internal" href="#release-candidate-or-development-w-x-y-rc-dev-z">Release candidate or development w.x.y.(rc|dev)z</a></li>
 <li><a class="reference internal" href="#notes-about-travis">Notes about Travis</a></li>
 </ul>
 </li>
