@@ -27,8 +27,9 @@ For each version we create a new branch (at least at the final release):
 
 .. prompt:: bash
 
+    git fetch
     git checkout master
-    git pull origin master
+    git reset --hard origin/master
     git checkout -b <version>
 
 Go back on master:
@@ -64,8 +65,9 @@ Tag the new CGXP release:
 
 .. prompt:: bash
 
+    git fetch
     git checkout <version>
-    git pull origin <version>
+    git reset --hard origin/<version>
     git tag <release>
     git push origin <release>
 
@@ -79,8 +81,9 @@ Checkout the code:
 
 .. prompt:: bash
 
+    git fetch
     git checkout master
-    git pull origin master
+    git reset --hard origin/master
 
 Get the localisation from Transifex:
 
@@ -149,8 +152,9 @@ Checkout the code:
 
 .. prompt:: bash
 
+    git fetch
     git checkout <version>
-    git pull origin <version>
+    git reset --hard origin/<version>
 
 Update the version of c2cgeoportal to ``<release>`` in
 ``c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl``
