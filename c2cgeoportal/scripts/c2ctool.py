@@ -53,7 +53,7 @@ except ImportError:
         return out
 
 DEFAULT_C2CGEOPORTAL_URL = \
-    "https://pypi.python.org/packages/source/c/c2cgeoportal/" \
+    "https://pypi.python.org/packages/py2.py3/c/c2cgeoportal/" \
     "c2cgeoportal-%(version)s-py2.py3-none-any.whl"
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 
