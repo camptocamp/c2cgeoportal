@@ -27,7 +27,6 @@ VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
-FULL_VERSION = $(shell python setup.py --version)
 TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = .build/venv/bin/tx $(HOME)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME)/.transifexrc))

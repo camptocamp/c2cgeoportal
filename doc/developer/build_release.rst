@@ -89,22 +89,7 @@ Get the localisation from Transifex:
 
 .. prompt:: bash
 
-   make transifex-get
-
-Edit the ``doc/integrator/update_application.rst`` file to change the default version.
-
-Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl``
-(``REQUIREMENTS ?= c2cgeoportal==<release>``).
-
-
-Add and commit the changes:
-
-.. prompt:: bash
-
-    git add doc/integrator/update_application.rst \
-        c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl
-    git commit -m "Update the default downloaded version.cfg"
+    make transifex-get
 
 For each version we create a new branch (at the latest at the final release):
 
@@ -139,7 +124,7 @@ Create a new Transifex resource:
     * Go to URL: https://www.transifex.com/camptocamp/geomapfish/content/
     * Click on "Add a resource"
     * Select the ``.pot`` file
-    * The name should be something like "c2cgeoportal-1_6" (with the right version)
+    * The name should be something like "c2cgeoportal-2_0" (with the right version)
     * Click on "Create a resource"
     * Run `make transifex-init`
 
@@ -156,64 +141,17 @@ Checkout the code:
     git checkout <version>
     git reset --hard origin/<version>
 
-Update the version of c2cgeoportal to ``<release>`` in
-``c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl``
-(``REQUIREMENTS ?= c2cgeoportal==<release>``).
-
-Verify that the version in the ``setup.py`` is correct
-(as the ``<release>``, required when we create a release candidate
-or a development release).
-
-Release w.x.y(.z)
-~~~~~~~~~~~~~~~~~
-
-Commit your changes:
-
-.. prompt:: bash
-
-    git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl
-    git commit -m "Do release <release>"
-
 Tag the new release:
 
 .. prompt:: bash
 
-    git tag <release>
-
-Edit the version in the ``setup.py`` to be ``<release + 1>``.
-
-Commit your changes:
-
-.. prompt:: bash
-
-    git add setup.py
-    git commit -m "Start release <release + 1>"
-
-Push your changes:
-
-.. prompt:: bash
-
-    git push origin <version>
-    git push origin <release>
-
-Release candidate or development w.x.y.(rc|dev)z
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In this case we don't commit the version changes in the branch.
-
-Commit, tag and push your changes:
-
-.. prompt:: bash
-
-    git add setup.py c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl \
-    git commit -m "Do release <release>"
     git tag <release>
     git push origin <release>
 
 Notes about Travis
 ~~~~~~~~~~~~~~~~~~
 
-When you push a tag with the pattern ``^[0-9]+.[0-9]+.[0-9]+(\.dev[0-9]+|\.rc[0-9]+|\.[0-9]+)$``
+When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``
 a new release will automatically be created on Travis CI.
 
 Post release tasks
