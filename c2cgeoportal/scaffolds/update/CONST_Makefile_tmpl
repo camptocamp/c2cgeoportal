@@ -373,6 +373,7 @@ help:
 	@echo  "- serve			Run the development server (Pserve)"
 	@echo  "- clean			Remove generated files"
 	@echo  "- cleanall		Remove all the build artefacts"
+	@echo  "- cleanallcache		Remove all the build artefacts and the extra caches (npm and pip)"
 	@echo
 	@echo "Utility targets:"
 	@echo
@@ -429,6 +430,11 @@ cleanall: clean
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+
+.PHONY: cleanallcache
+cleanallcache: cleanall
+	rm -rf $(HOME)/.npm
+	rm -rf $(HOME)/.cache/pip
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
