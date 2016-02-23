@@ -171,6 +171,7 @@ def main():
     <script src="${{request.static_url('%s/jquery/dist/jquery.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular/angular.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-gettext/dist/angular-gettext.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/angular-animate/angular-animate.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/bootstrap/dist/js/bootstrap.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/proj4/dist/proj4-src.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/d3/d3.min.js' % request.registry.settings['node_modules_path'])}}"></script>
