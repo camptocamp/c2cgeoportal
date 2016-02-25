@@ -31,7 +31,8 @@ from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = """c2cgeoportal is the server part of `GeoMapFish <http://geomapfish.org/>`_,
-the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
+the client part is `CGXP <https://github.com/camptocamp/cgxp/>`_,
+the mobile client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 
 `Documentation <http://docs.camptocamp.net/c2cgeoportal/>`_
 
