@@ -53,10 +53,13 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
     def __call__(self, filename, options):
         message_str = subprocess.check_output(["node", "tools/extract-messages.js", filename])
         try:
-            messages = loads(message_str)
-            return [Message(
-                None, message, None, [], u"", u"", context.split(":")
-            ) for context, message in messages]
+            messages = []
+            for contexts, message in loads(message_str):
+                for context in contexts.split(", "):
+                    messages.append(Message(
+                        None, message, None, [], u"", u"", context.split(":")
+                    ))
+            return messages
         except:
             print(colorize("An error occurred", RED))
             print(colorize(message_str, RED))
