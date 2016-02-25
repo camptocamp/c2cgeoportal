@@ -610,12 +610,20 @@ $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS
 	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
-# to don't delete them
-.SECONDARY: $(NGEO_FONTS)
-$(PACKAGE)/static-ngeo/fonts/gmf%: node_modules/ngeo/contribs/gmf/fonts/gmf%
+.SECONDARY: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
+node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.SECONDARY: $(PACKAGE)/static-ngeo/fonts/gmf-icons.%
+$(PACKAGE)/static-ngeo/fonts/gmf-icons.%: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
 	mkdir -p $(dir $@)
 	cp $< $@
 
+.SECONDARY: /static-ngeo/fonts/fontawesome-webfont.%
+/static-ngeo/fonts/fontawesome-webfont.%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.SECONDARY: $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%
 $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fonts/fontawesome-webfont.%
 	mkdir -p $(dir $@)
 	cp $< $@
