@@ -596,9 +596,14 @@ $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
-$(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po .build/locale/%/LC_MESSAGES/gmf.po .build/node_modules.timestamp
+node_modules/.bin/compile-catalog: .build/node_modules.timestamp
+
+$(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
+		.build/locale/%/LC_MESSAGES/gmf.po \
+		node_modules/.bin/compile-catalog \
+		.build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node tools/compile-catalog .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
+	node node_modules/.bin/compile-catalog .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)
