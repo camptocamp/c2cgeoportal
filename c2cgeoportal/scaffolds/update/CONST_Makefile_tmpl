@@ -532,6 +532,7 @@ endif
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
+		project.yaml \
 		$(VENV_BIN)/pot-create \
 		$(I18N_SOURCE_FILES)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
