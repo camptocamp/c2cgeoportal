@@ -543,14 +543,14 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
-	touch $@
+	touch --no-create $@
 	msgmerge --sort-by-file --backup=none --update $@ $<
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
-	touch $@
+	touch --no-create $@
 	msgmerge --sort-by-file --backup=none --update $@ $<
 
 .PRECIOUS: %.mo
@@ -627,7 +627,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 
 node_modules/ngeo/node_modules: .build/node_modules.timestamp
 	ln -s .. $@
-	touch $@
+	touch --no-create $@
 
 $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
