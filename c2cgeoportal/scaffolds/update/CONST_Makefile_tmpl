@@ -727,6 +727,7 @@ update:
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
 ifeq ($(NGEO), TRUE)
+	rm -f .build/node_modules.timestamp
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 endif
