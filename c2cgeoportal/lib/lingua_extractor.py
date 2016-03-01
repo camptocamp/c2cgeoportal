@@ -53,10 +53,13 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
     def __call__(self, filename, options):
         message_str = subprocess.check_output(["node", "tools/extract-messages.js", filename])
         try:
-            messages = loads(message_str)
-            return [Message(
-                None, message, None, [], u"", u"", context.split(":")
-            ) for context, message in messages]
+            messages = []
+            for contexts, message in loads(message_str):
+                for context in contexts.split(", "):
+                    messages.append(Message(
+                        None, message, None, [], u"", u"", context.split(":")
+                    ))
+            return messages
         except:
             print(colorize("An error occurred", RED))
             print(colorize(message_str, RED))
@@ -92,6 +95,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
         self.capabilities_cache = {}
 
         self.env = bootstrap(filename)
+        with open("project.yaml") as f:
+            self.package = yaml.load(f)
 
         try:
             from c2cgeoportal.models import Theme, LayerGroup, \
@@ -99,8 +104,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
 
             self._import(Theme, messages)
             self._import(LayerGroup, messages)
-            self._import(LayerWMS, messages)
-            self._import(LayerWMTS, messages)
+            self._import(LayerWMS, messages, self._import_layer_wms)
+            self._import(LayerWMTS, messages, self._import_layer_wmts)
         except ProgrammingError as e:
             print(colorize("ERROR: The database is probably not up to date", RED))
             print(colorize(e, RED))
@@ -114,28 +119,24 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
         for item in items:
             messages.append(Message(
                 None, item.name, None, [], u"", u"",
-                (".".join([item.item_type, item.name]), item.id)
+                (item.item_type, item.name)
             ))
 
             if callback is not None:
                 callback(item, messages)
 
-    def _import_layer_internal_wms(self, layer, messages):
-        url = self._get_capabilities(self.env["registry"].settings["mapserverproxy"]["mapserv_url"])
-        for wms_layer in layer.layerplit(","):
+    def _import_layer_wms(self, layer, messages):
+        server = layer.server_ogc
+        url = server.url_wfs or server.url or \
+            self.env["registry"].settings["mapserverproxy"]["mapserv_url"]
+        for wms_layer in layer.layer.split(","):
             self._import_layer_attributes(
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
             )
 
-    def _import_layer_external_wms(self, layer, messages):
-        for wms_layer in layer.layerplit(","):
-            self._import_layer_attributes(
-                layer.url, wms_layer, layer.item_type, layer.name, layer.id, messages
-            )
-
     def _import_layer_wmts(self, layer, messages):
-        layers = [d.value for d in layer.ui_metadatas if d.name == "wms_layer"]
-        url = [d.value for d in layer.ui_metadatas if d.name == "wms_url"]
+        layers = [d.value for d in layer.ui_metadatas if d.name == "wmsLayer"]
+        url = [d.value for d in layer.ui_metadatas if d.name == "wmsUrl"]
         if len(url) == 1 and len(layers) >= 1:
             for wms_layer in layers:
                 self._import_layer_attributes(
@@ -145,7 +146,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
     def _import_layer_attributes(self, url, layer, item_type, name, layer_id, messages):
         for attribute in self._layer_attributes(url, layer):
             messages.append(Message(
-                None, attribute, None, [], "", "", (".".join([item_type, name]), layer_id)
+                None, attribute, None, [], "", "", (".".join([item_type, name]), layer)
             ))
 
     def _layer_attributes(self, url, layer):
@@ -153,16 +154,16 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
             "REQUEST": "DescribeFeatureType",
-            "TYPENAME": layer,
+            "FEATURES": layer,
         })
 
         print("Get DescribeFeatureType for url: %s" % url)
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlsplit(url).hostname != "localhost":  # pragma: no cover
-            h.pop("Host")
+        h = {}
+        if urlsplit(url).hostname == "localhost":  # pragma: no cover
+            h["Host"] = self.package["host"]
         try:
             resp, content = http.request(url, method="GET", headers=h)
         except:  # pragma: no cover
@@ -193,3 +194,4 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
                 "gml:PointPropertyType", "gml:LineStringPropertyType", "gml:PolygonPropertyType"
             ]:
                 attributes.append(element.getAttribute("name"))
+        return attributes

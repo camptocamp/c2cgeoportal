@@ -140,6 +140,7 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular/angular.min.js \
 	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-animate/angular-animate.min.js \
+	node_modules/angular-touch/angular-touch.min.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
 	node_modules/proj4/dist/proj4.js \
 	node_modules/d3/d3.min.js \
@@ -514,9 +515,6 @@ $(VENV_BIN)/pot-create: .build/requirements.timestamp
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
-# to don't delete them
-.SECONDARY: $(SERVER_LOCALISATION_FILES:.mo=.po)
-
 $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 		lingua-server.cfg \
 		$(VENV_BIN)/pot-create \
@@ -534,6 +532,7 @@ endif
 
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
+		project.yaml \
 		$(VENV_BIN)/pot-create \
 		$(I18N_SOURCE_FILES)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
@@ -541,18 +540,21 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
+.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
-	touch $@
+	touch --no-create $@
 	msgmerge --sort-by-file --backup=none --update $@ $<
 
+.PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
-	touch $@
+	touch --no-create $@
 	msgmerge --sort-by-file --backup=none --update $@ $<
 
+.PRECIOUS: %.mo
 %.mo: %.po
 	msgfmt -o $@ $<
 	touch --no-create $@
@@ -574,9 +576,7 @@ $(HOME)/.transifexrc:
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
 
-# to don't delete them
-.SECONDARY: $(addprefix .build/locale/, $(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
-
+.PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
@@ -589,15 +589,13 @@ build-ngeo: $(NGEO_OUTPUT_FILES)
 .PHONY: compile-js-catalog
 compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 
-# to don't delete them
-.SECONDARY: $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-client.po, $(LANGUAGES)))
-
 $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
 node_modules/.bin/compile-catalog: .build/node_modules.timestamp
 
+.PRECIOUS: $(APP_OUTPUT_DIR)/%.json
 $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
 		.build/locale/%/LC_MESSAGES/gmf.po \
 		node_modules/.bin/compile-catalog \
@@ -610,19 +608,27 @@ $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS
 	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
-# to don't delete them
-.SECONDARY: $(NGEO_FONTS)
-$(PACKAGE)/static-ngeo/fonts/gmf%: node_modules/ngeo/contribs/gmf/fonts/gmf%
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
+node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.PRECIOUS: $(PACKAGE)/static-ngeo/fonts/gmf-icons.%
+$(PACKAGE)/static-ngeo/fonts/gmf-icons.%: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
 	mkdir -p $(dir $@)
 	cp $< $@
 
+.PRECIOUS: /static-ngeo/fonts/fontawesome-webfont.%
+/static-ngeo/fonts/fontawesome-webfont.%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.PRECIOUS: $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%
 $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fonts/fontawesome-webfont.%
 	mkdir -p $(dir $@)
 	cp $< $@
 
 node_modules/ngeo/node_modules: .build/node_modules.timestamp
 	ln -s .. $@
-	touch $@
+	touch --no-create $@
 
 $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
@@ -630,6 +636,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
+.PRECIOUS: .build/%.json
 .build/%.json: node_modules/ngeo/buildtools/mako_build.json \
 		$(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
@@ -640,8 +647,9 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var ngeo_folder=node_modules/ngeo/ \
 		--var generate_exports=true $< > $@
 
+.PRECIOUS: .build/%.js
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		.build/gmftemplatecache.js \
+		$(APP_OUTPUT_DIR)/templatecache.js \
 		.build/externs/angular-$(ANGULAR_VERSION).js \
 		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
@@ -651,7 +659,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-.build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
+$(APP_OUTPUT_DIR)/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
 		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
@@ -720,6 +728,7 @@ update:
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
 ifeq ($(NGEO), TRUE)
+	rm -f .build/node_modules.timestamp
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 endif
