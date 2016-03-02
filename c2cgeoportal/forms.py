@@ -255,10 +255,19 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         if item in self.layer_group:
             self.layer_group.remove(item)
 
+        prefixs = {
+            "layerv1": "Layer V1: ",
+            "l_wms": "WMS Layer: ",
+            "l_wmts": "WMTS Layer: ",
+        }
+
         result = "<li>"
         if self.auto_check:
             result += '<input type="checkbox"></input>'
-        result += "<label>%(label)s</label>" % {"label": item.name}
+        result += "<label>%(prefix)s%(label)s</label>" % {
+            "prefix": prefixs.get(item.type, ""),
+            "label": item.name,
+        }
         result += self.render_children(item, depth)
         result += "</li>"
         return result
