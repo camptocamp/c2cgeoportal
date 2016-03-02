@@ -82,7 +82,7 @@ class Shortener(object):
         paths = uri_parts.path.split("/")
         if hostname != self.request.server_name:
             raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
-                hostname, self.request.host
+                hostname, self.request.server_name
             ))
 
         shortened = False
