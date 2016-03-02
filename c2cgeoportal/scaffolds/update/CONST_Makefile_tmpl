@@ -643,7 +643,6 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
-		--var js=$(PACKAGE)/static-ngeo/js/$*.js \
 		--var ngeo_folder=node_modules/ngeo/ \
 		--var generate_exports=true $< > $@
 
