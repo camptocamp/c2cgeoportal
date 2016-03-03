@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Editing &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Print" href="print.html" />
+    <link rel="prev" title="Query builder (Querier)" href="querier.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="editing">
+<span id="integrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
+<p>Any c2cgeoportal application comes with an editing interface, available at
+<code class="docutils literal"><span class="pre">/edit</span></code> (assuming <code class="docutils literal"><span class="pre">/</span></code> is the application&#8217;s root URL).</p>
+<p>The editing interface requires the editing plugin (<code class="docutils literal"><span class="pre">cgxp.plugins.Editing</span></code>),
+which is provided by CGXP as of commit <a class="reference external" href="https://github.com/camptocamp/cgxp/commit/58c931de2f6397ffba223b4305d0b10a18413032">58c931d</a>.
+Make sure your application uses an appropriate version (commit) of CGXP.</p>
+<p>The editing interface is defined in the application&#8217;s <code class="docutils literal"><span class="pre">templates/edit.html</span></code>
+and <code class="docutils literal"><span class="pre">templates/edit.js</span></code> files.  The integrator can edit
+<code class="docutils literal"><span class="pre">templates/edit.html</span></code> and <code class="docutils literal"><span class="pre">templates/edit.js</span></code> to customize the editing
+interface.</p>
+<p>The integrator will probably need to:</p>
+<ul class="simple">
+<li>Add base layers.</li>
+<li>Change the map settings (<code class="docutils literal"><span class="pre">projection</span></code>, <code class="docutils literal"><span class="pre">resolutions</span></code>, etc.).</li>
+</ul>
+<p>Other customizations, like adding tools to the toolbar, can be done. If layer
+sources and tools are added you will certainly need to edit <code class="docutils literal"><span class="pre">jsbuild/app.cfg</span></code>
+and add scripts in the <code class="docutils literal"><span class="pre">[edit.js]</span></code> sections.</p>
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Editing.html">Editing API doc</a> for the list of
+options the plugin can receive.</p>
+<div class="section" id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>At the moment only fields of type <code class="docutils literal"><span class="pre">datetime</span></code> and <code class="docutils literal"><span class="pre">date</span></code> are supported. <code class="docutils literal"><span class="pre">time</span></code> is NOT supported.</p>
+</div>
+<div class="section" id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<p>Checking the validity of a geometry may be enabled using the following
+configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
+    ...
+    layers:
+        geometry_validation: True
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Editing</a><ul>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+<li><a class="reference internal" href="#validation">Validation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="querier.html" title="previous chapter">Query builder (Querier)</a></li>
+      <li>Next: <a href="print.html" title="next chapter">Print</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/editing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/editing.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

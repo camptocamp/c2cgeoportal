@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create a new release &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Python Packaging" href="python_packaging.html" />
+    <link rel="prev" title="Client-side development" href="client_side.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="create-a-new-release">
+<span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vocabulary">
+<h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
+<p>On this page I use the word <code class="docutils literal"><span class="pre">version</span></code> for a major version of MapFish
+Geoportal (1.6), and the word <code class="docutils literal"><span class="pre">release</span></code> for each step in this version
+(1.6.0rc1, 1.6.0, 1.6.1, ...).</p>
+<p><code class="docutils literal"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes CGXP and c2cgeoportal,
+from start of 2014 both projects will synchronize their major versions.</p>
+<p>Then <code class="docutils literal"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.6.0rc1</span></code> for the first release candidate
+of the version <code class="docutils literal"><span class="pre">1.6.0</span></code>, <code class="docutils literal"><span class="pre">1.6.0</span></code> for the final release, <code class="docutils literal"><span class="pre">1.6.1</span></code> for
+the first bug fix release, and <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.6</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code>, ...</p>
+</div>
+<div class="section" id="cgxp">
+<h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-version">
+<h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
+<p>For each version we create a new branch (at least at the final release):</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout master</span>
+<span class="prompt1">git reset --hard origin/master</span>
+<span class="prompt1">git checkout -b &lt;version&gt;</span>
+</pre><p>Go back on master:</p>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
+</pre><p>Add the version in the doc generator by editing the
+<code class="docutils literal"><span class="pre">core/src/doc/update_online.sh</span></code> file and add the new <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code>
+in the <code class="docutils literal"><span class="pre">for</span> <span class="pre">VERSION</span> <span class="pre">in</span></code> loop.</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><span class="prompt1">git add core/src/doc/update_online.sh</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Generate documentation for version &lt;version&gt;&quot;</span></span>
+</pre><p>Push your changes:</p>
+<pre class="highlight"><span class="prompt1">git push origin master</span>
+<span class="prompt1">git push origin &lt;version&gt;</span>
+</pre><p>Then continue by creating the release.</p>
+</div>
+<div class="section" id="new-release">
+<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
+<p>Tag the new CGXP release:</p>
+<pre class="highlight"><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout &lt;version&gt;</span>
+<span class="prompt1">git reset --hard origin/&lt;version&gt;</span>
+<span class="prompt1">git tag &lt;release&gt;</span>
+<span class="prompt1">git push origin &lt;release&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="c2cgeoportal">
+<h2>c2cgeoportal<a class="headerlink" href="#c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>New version<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Checkout the code:</p>
+<pre class="highlight"><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout master</span>
+<span class="prompt1">git reset --hard origin/master</span>
+</pre><p>Get the localisation from Transifex:</p>
+<pre class="highlight"><span class="prompt1">make transifex-get</span>
+</pre><p>For each version we create a new branch (at the latest at the final release):</p>
+<pre class="highlight"><span class="prompt1">git checkout -b &lt;version&gt;</span>
+<span class="prompt1">git push origin &lt;version&gt;</span>
+</pre><p>Go back to the master branch:</p>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
+</pre><p>Edit the version in the <code class="docutils literal"><span class="pre">setup.py</span></code> to be <code class="docutils literal"><span class="pre">&lt;version</span> <span class="pre">+</span> <span class="pre">1&gt;</span></code>.</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><span class="prompt1">git add setup.py</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
+</pre><p>Push your changes:</p>
+<pre class="highlight"><span class="prompt1">git push origin master</span>
+</pre><p>Create a new Transifex resource:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Go to URL: <a class="reference external" href="https://www.transifex.com/camptocamp/geomapfish/content/">https://www.transifex.com/camptocamp/geomapfish/content/</a></li>
+<li>Click on &#8220;Add a resource&#8221;</li>
+<li>Select the <code class="docutils literal"><span class="pre">.pot</span></code> file</li>
+<li>The name should be something like &#8220;c2cgeoportal-2_0&#8221; (with the right version)</li>
+<li>Click on &#8220;Create a resource&#8221;</li>
+<li>Run <cite>make transifex-init</cite></li>
+</ul>
+</div></blockquote>
+<p>Then continue by creating the release.</p>
+</div>
+<div class="section" id="id2">
+<h3>New release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Checkout the code:</p>
+<pre class="highlight"><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout &lt;version&gt;</span>
+<span class="prompt1">git reset --hard origin/&lt;version&gt;</span>
+</pre><p>Tag the new release:</p>
+<pre class="highlight"><span class="prompt1">git tag &lt;release&gt;</span>
+<span class="prompt1">git push origin &lt;release&gt;</span>
+</pre></div>
+<div class="section" id="notes-about-travis">
+<h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
+<p>When you push a tag with the pattern <code class="docutils literal"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>
+a new release will automatically be created on Travis CI.</p>
+</div>
+</div>
+<div class="section" id="post-release-tasks">
+<h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
+<p>When a new release or a new version is done you should do the following tasks:</p>
+<ul>
+<li><p class="first">Merge the release changes (on <code class="docutils literal"><span class="pre">cgxp</span></code> and on <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>)
+to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6</span></code> =&gt; <code class="docutils literal"><span class="pre">2.0</span></code>, <code class="docutils literal"><span class="pre">2.0</span></code> =&gt; <code class="docutils literal"><span class="pre">master</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
+    -c c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
+    heads</span>
+<span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
+    -c c2cgeoportal/tests/functional/alembic_static.ini <span class="se">\</span>
+    heads</span>
+</pre><p>If yes create the merge with:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
+    -c c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
+    merge -m <span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
+    &lt;rev 1&gt; &lt;rev 2&gt;</span>
+</pre><p>Remove the import and replace the core of the method by <code class="docutils literal"><span class="pre">pass</span></code> in the generated file.</p>
+<p class="last">And finally add the new file.</p>
+</div>
+</li>
+<li><p class="first">Upgrade the demo in your home folder with <code class="docutils literal"><span class="pre">c2ctool</span></code>.</p>
+</li>
+<li><p class="first">Update the demo on the main folder with:</p>
+<pre class="highlight"><span class="prompt1">sudo -u sigdev make -f demo.mk update</span>
+<span class="prompt1">sudo -u sigdev make -f demo.mk build</span>
+</pre></li>
+<li><p class="first">Test the demo.</p>
+</li>
+<li><p class="first">Move all the open issues to a new milestone and close the current milestone
+in <cite>cgxp &lt;https://github.com/camptocamp/cgxp/milestones&gt;</cite>
+and in <cite>c2cgeoportal &lt;https://github.com/camptocamp/c2cgeoportal/milestones&gt;</cite>.</p>
+</li>
+<li><p class="first">Send a release email to the <code class="docutils literal"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
+and <code class="docutils literal"><span class="pre">geospatial&#64;lists.camptocamp.com</span></code> mailing lists.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create a new release</a><ul>
+<li><a class="reference internal" href="#vocabulary">Vocabulary</a></li>
+<li><a class="reference internal" href="#cgxp">CGXP</a><ul>
+<li><a class="reference internal" href="#new-version">New version</a></li>
+<li><a class="reference internal" href="#new-release">New release</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
+<li><a class="reference internal" href="#id1">New version</a></li>
+<li><a class="reference internal" href="#id2">New release</a></li>
+<li><a class="reference internal" href="#notes-about-travis">Notes about Travis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#post-release-tasks">Post release tasks</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="client_side.html" title="previous chapter">Client-side development</a></li>
+      <li>Next: <a href="python_packaging.html" title="next chapter">Python Packaging</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/build_release.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/developer/build_release.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

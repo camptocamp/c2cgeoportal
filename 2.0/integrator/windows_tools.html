@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuring Windows tools required to connect to our servers &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Build the project with Make" href="make.html" />
+    <link rel="prev" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuring-windows-tools-required-to-connect-to-our-servers">
+<span id="integrator-preparative-work"></span><h1>Configuring Windows tools required to connect to our servers<a class="headerlink" href="#configuring-windows-tools-required-to-connect-to-our-servers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-ssh-key-with-windows">
+<h2>Creating a SSH Key with Windows<a class="headerlink" href="#creating-a-ssh-key-with-windows" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Download PuTTYgen:<ol class="loweralpha">
+<li>Windows: <a class="reference external" href="http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe">http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe</a></li>
+<li>Other operating systems: <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html</a></li>
+</ol>
+</li>
+<li>Choose key type  &#8220;SSH-2 RSA&#8221;</li>
+<li>Click &#8220;Generate&#8221; and move the mouse over the window until the blue bar shows 100%.</li>
+<li>Enter a password into &#8220;Key passphrase&#8221; and confirm with &#8220;confirm passphrase&#8221;</li>
+<li>Save the private and public part of the key. Send the public part to the system administrators of the server you want to have access.</li>
+</ol>
+</div>
+<div class="section" id="add-your-ssh-public-key-to-github">
+<h2>Add your SSH Public Key to Github<a class="headerlink" href="#add-your-ssh-public-key-to-github" title="Permalink to this headline">¶</a></h2>
+<p>In order to pull and push to Github from your server, you need to add the key to Github: <a class="reference external" href="https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account">https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account</a></p>
+</div>
+<div class="section" id="connecting-to-a-server-from-windows">
+<h2>Connecting to a server from Windows<a class="headerlink" href="#connecting-to-a-server-from-windows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="command-line">
+<h3>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h3>
+<p>Based on the PuTTY software. Useful to launch commands on the server.</p>
+<ol class="arabic simple">
+<li>Download PuTTY: <a class="reference external" href="http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe">http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe</a></li>
+<li>Configurate PuTTY:
+a) In the left-hand column (Category), choose &#8220;Connection&gt;SSH&gt;Auth&#8221;
+b) Fill the &#8220;Private key file for authentication&#8221; field</li>
+<li>Auto-login:
+a) One may save his/her username in &#8220;Connection&gt;Data&#8221; &gt; &#8220;Auto-login username&#8221;</li>
+<li>Connect to the server:
+a) Fill connection info in the Session tab (&#8220;Connection Type&#8221; should be set at &#8220;SSH&#8221;)
+b) Save the configuration
+c) Click on &#8220;Open&#8221; and type your passphrase when prompted</li>
+<li>if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](<a class="reference external" href="http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont</a>)</li>
+</ol>
+</div>
+<div class="section" id="visual-interface">
+<h3>Visual Interface<a class="headerlink" href="#visual-interface" title="Permalink to this headline">¶</a></h3>
+<p>Based on the WinSCP software. Useful to browse the server, download/upload/edit files in a Windows-like interface. WinSCP manual is available online at <a class="reference external" href="http://winscp.net/eng/docs/start">http://winscp.net/eng/docs/start</a></p>
+<ol class="arabic simple">
+<li>Download WinSCP: <a class="reference external" href="http://winscp.net/eng/download.php">http://winscp.net/eng/download.php</a></li>
+<li>Open WinSCP</li>
+<li>Edit your connection info in the &#8220;Session&#8221; tab</li>
+<li>In the &#8220;SSH &gt; Protocol Options&#8221; section, make sure that SSH version is set to &#8220;2&#8221;.</li>
+<li>Click on &#8220;Connect&#8221; and type your passphrase when prompted.</li>
+<li>if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](<a class="reference external" href="http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont</a>)</li>
+</ol>
+</div>
+<div class="section" id="saving-your-passphrase-with-putty-or-winscp">
+<h3>Saving your Passphrase with PuTTY or WinSCP<a class="headerlink" href="#saving-your-passphrase-with-putty-or-winscp" title="Permalink to this headline">¶</a></h3>
+<p>To avoid having to type your passphrase every time you connect to the server using PuTTY or WinSCP, you may use Pageant, an authentication agent program, part of WinSCP (Windows Start Menu &gt; All Programs &gt; WinSCP &gt; Key Tools &gt; Pageant):</p>
+<p>Launch Pageant (appears in the status bar in Windows bottom-right corner)
+Click on &#8220;Add Key&#8221; and choose your private key
+Type your passphrase when prompted.</p>
+</div>
+<div class="section" id="using-putty-to-access-the-server-database">
+<h3>Using PuTTY to Access the Server Database<a class="headerlink" href="#using-putty-to-access-the-server-database" title="Permalink to this headline">¶</a></h3>
+<p>The following page explains how to set up an SSH tunnel using PuTTY: <a class="reference external" href="http://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html">http://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html</a></p>
+<p>We do recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuring Windows tools required to connect to our servers</a><ul>
+<li><a class="reference internal" href="#creating-a-ssh-key-with-windows">Creating a SSH Key with Windows</a></li>
+<li><a class="reference internal" href="#add-your-ssh-public-key-to-github">Add your SSH Public Key to Github</a></li>
+<li><a class="reference internal" href="#connecting-to-a-server-from-windows">Connecting to a server from Windows</a><ul>
+<li><a class="reference internal" href="#command-line">Command Line</a></li>
+<li><a class="reference internal" href="#visual-interface">Visual Interface</a></li>
+<li><a class="reference internal" href="#saving-your-passphrase-with-putty-or-winscp">Saving your Passphrase with PuTTY or WinSCP</a></li>
+<li><a class="reference internal" href="#using-putty-to-access-the-server-database">Using PuTTY to Access the Server Database</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="upgrade_application.html" title="previous chapter">Upgrading a GeoMapFish application</a></li>
+      <li>Next: <a href="make.html" title="next chapter">Build the project with Make</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/windows_tools.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/windows_tools.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

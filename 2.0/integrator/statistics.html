@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Statistics &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Developer Guide" href="../developer/index.html" />
+    <link rel="prev" title="Caching" href="caching.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="statistics">
+<span id="integrator-statistics"></span><h1>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h1>
+<p>It is sometimes important to understand where time is lost. A statistics module can be
+enabled to measure that.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The statistics module can have two different outputs that are both disabled by default.</p>
+<p>The first one is the StatsD one. To enable it you must configure the target address for
+the StatsD daemon. You can either define the following environment variables:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">export</span> <span class="nv">STATSD_ADDRESS</span><span class="o">=</span>statsd:8125</span>
+<span class="prompt1"><span class="nb">export</span> <span class="nv">STATSD_PREFIX</span><span class="o">=</span>my_app.wsgi</span>
+</pre><p>Or add those lines to your <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code>:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
+    ...
+    stats:
+        statsd_address: statsd:8125
+        statsd_prefix: my_app.wsgi
+</pre></div>
+</div>
+<p>The second output is an in memory collector that adds two URLs to the application:</p>
+<ul class="simple">
+<li>/stats.html</li>
+<li>/stats.json</li>
+</ul>
+<p>To enabled it (not recommended for production systems), you can either define the
+following environment variable:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">STATS_VIEW</span><span class="o">=</span>1</span>
+</pre><p>Or add one line to your <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code>:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
+    ...
+    stats:
+        view: true
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-more-statistics">
+<h2>Add more statistics<a class="headerlink" href="#add-more-statistics" title="Permalink to this headline">¶</a></h2>
+<p>By default, timing statistics are added for the routes and the SQL queries. If you want to
+measures special things in you application, just add code like that:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>from c2cgeoportal import stats
+...
+    measure = stats.timer()
+    ... # The code you want to measure
+    measure.stop([&quot;my_feature&quot;, &quot;something&quot;])
+</pre></div>
+</div>
+<p>Or, if you know the key in advance and can use a context, you can write it like that:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>from c2cgeoportal import stats
+...
+    with stats.timer_context([&quot;my_feature&quot;, &quot;something&quot;]):
+        ... # The code you want to measure
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Statistics</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#add-more-statistics">Add more statistics</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="caching.html" title="previous chapter">Caching</a></li>
+      <li>Next: <a href="../developer/index.html" title="next chapter">Developer Guide</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/statistics.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/statistics.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

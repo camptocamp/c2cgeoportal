@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Development procedure &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Documentation infrastructure" href="documentation_infrastructure.html" />
+    <link rel="prev" title="Python Packaging" href="python_packaging.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="development-procedure">
+<span id="developer-development-procedure"></span><h1>Development procedure<a class="headerlink" href="#development-procedure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="process">
+<h2>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h2>
+<p>Any change to c2cgeoportal and CGXP requires a GitHub pull request.</p>
+<p>To give everyone a chance to review changes pull requests should not stay open
+for at least 24 hours.</p>
+<p>Any main developers of c2cgeoportal projects can take responsibility for
+merging commits in the main (<code class="docutils literal"><span class="pre">master</span></code>) branch.</p>
+<p>Pull requests with significant impacts can and should be reviewed by more than
+one person.</p>
+</div>
+<div class="section" id="working-with-git-and-github">
+<h2>Working with Git and GitHub<a class="headerlink" href="#working-with-git-and-github" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-a-topic-branch">
+<h3>Create a topic branch<a class="headerlink" href="#create-a-topic-branch" title="Permalink to this headline">¶</a></h3>
+<p>To create a Git branch from the master branch use:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git checkout -b &lt;branch_name&gt; master</span>
+</pre><p>You can then add commits to your branch, and push commits to a remote branch
+using:</p>
+<pre class="highlight"><span class="prompt1">git push -u origin &lt;branch_name&gt;</span>
+</pre><p>The <code class="docutils literal"><span class="pre">-u</span></code> option adds an upstream (tracking) reference for the branch. This is
+optional, but convenient. Once the branch has an upstream reference you can
+push commits by just using <code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></code>.</p>
+<p>The &#8220;origin&#8221; remote can either represent the main repository (that in the
+&#8220;camptocamp&#8221; organization) or your own fork. Creating branches in the main
+repository can ease collaboration between developers, but isn&#8217;t required.</p>
+</div>
+<div class="section" id="sync-up-a-topic-branch-from-master">
+<h3>Sync up a topic branch from master<a class="headerlink" href="#sync-up-a-topic-branch-from-master" title="Permalink to this headline">¶</a></h3>
+<p>To update a branch from the master you first need to update your
+local master branch:</p>
+<pre class="highlight"><span class="prompt1">git checkout master</span>
+<span class="prompt1">git fetch origin</span>
+<span class="prompt1">git merge origin/master</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You&#8217;ll use &#8220;upstream&#8221; instead of &#8220;origin&#8221; if &#8220;origin&#8221; references
+your own fork.</p>
+</div>
+<p>You can now update your branch from master:</p>
+<pre class="highlight"><span class="prompt1">git checkout &lt;branch_name&gt;</span>
+<span class="prompt1">git rebase master</span>
+<span class="prompt1">git push origin &lt;branch_name&gt;</span>
+</pre></div>
+<div class="section" id="pull-requests">
+<h3>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h3>
+<p>Making a pull request is done via the GitHub web interface. Open your branch in
+the browser (e.g. <a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/tree/make">https://github.com/camptocamp/c2cgeoportal/tree/make</a>) and
+press the <code class="docutils literal"><span class="pre">Pull</span> <span class="pre">Request</span></code> button.</p>
+<p>Once a pull request is merged it is good practise to add a comment in the pull
+request, for others to get notifications.</p>
+</div>
+<div class="section" id="remove-branches">
+<h3>Remove branches<a class="headerlink" href="#remove-branches" title="Permalink to this headline">¶</a></h3>
+<p>Once you&#8217;re done with a topic branch (because its commits are merged
+in the master branch) you can remove it with:</p>
+<pre class="highlight"><span class="prompt1">git branch -D &lt;branch_name&gt;</span>
+</pre><p>To remove a remote branch use:</p>
+<pre class="highlight"><span class="prompt1">git push origin :&lt;branch_name&gt;</span>
+</pre><p>This means push nothing to &#8220;branch_name&#8221; on the origin remote.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Development procedure</a><ul>
+<li><a class="reference internal" href="#process">Process</a></li>
+<li><a class="reference internal" href="#working-with-git-and-github">Working with Git and GitHub</a><ul>
+<li><a class="reference internal" href="#create-a-topic-branch">Create a topic branch</a></li>
+<li><a class="reference internal" href="#sync-up-a-topic-branch-from-master">Sync up a topic branch from master</a></li>
+<li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
+<li><a class="reference internal" href="#remove-branches">Remove branches</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="python_packaging.html" title="previous chapter">Python Packaging</a></li>
+      <li>Next: <a href="documentation_infrastructure.html" title="next chapter">Documentation infrastructure</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/development_procedure.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/developer/development_procedure.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

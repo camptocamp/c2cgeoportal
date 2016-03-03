@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>WMSTime Layer &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Intranet Users Detection" href="intranet.html" />
+    <link rel="prev" title="Reset password" href="reset_password.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wmstime-layer">
+<span id="integrator-wmstime"></span><h1>WMSTime Layer<a class="headerlink" href="#wmstime-layer" title="Permalink to this headline">¶</a></h1>
+<p>c2cgeoportal supports <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">WMS Time layers</a>.</p>
+<p>When the time is enabled for a layer group, a time widget (a slider or datepicker)
+is added to this group in the layer tree which enables changing the layer time.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Most of the configuration is automatically extracted from the mapfile. But there
+is also some configuration to do in the administration interface.</p>
+<div class="section" id="mapfile">
+<h3>Mapfile<a class="headerlink" href="#mapfile" title="Permalink to this headline">¶</a></h3>
+<p>In the mapfile, a WMS Time layer is configured with the help of the layer
+metadata:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">wms_timeextent</span></code></li>
+<li><code class="docutils literal"><span class="pre">wms_timeitem</span></code></li>
+<li><code class="docutils literal"><span class="pre">wms_timedefault</span></code></li>
+</ul>
+<p>c2cgeoportal uses the <code class="docutils literal"><span class="pre">wms_timeextent</span></code> to configure the slider. Two different
+formats are supported to define the time:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">min/max/interval</span></code></li>
+<li><code class="docutils literal"><span class="pre">value1,value2,value3,...</span></code></li>
+</ul>
+<p>The format <code class="docutils literal"><span class="pre">min/max/interval</span></code> allows specifying a time range by giving a start
+date, an end date and an interval between the time stops.</p>
+<p>The format <code class="docutils literal"><span class="pre">value1,value2,value3,...</span></code> allows specifying a time range by
+listing discrete values.</p>
+<p>The dates (<code class="docutils literal"><span class="pre">min</span></code>, <code class="docutils literal"><span class="pre">max</span></code> and <code class="docutils literal"><span class="pre">valueN</span></code>) could be specified using any of the
+following formats:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">YYYY</span></code></li>
+<li><code class="docutils literal"><span class="pre">YYYY-MM</span></code></li>
+<li><code class="docutils literal"><span class="pre">YYYY-MM-DD</span></code></li>
+<li><code class="docutils literal"><span class="pre">YYYY-MM-DDTHH:MM:SSTZ</span></code> (TZ is an optional timezone, i.e. &#8220;Z&#8221; or &#8220;+0100&#8221;)</li>
+</ul>
+<p>The format used for the dates in the mapfile determines both the resolution used
+for the slider and the format of the time parameter used for the GetMap
+requests. For example when a layer has monthly data, the <code class="docutils literal"><span class="pre">YYYY-MM</span></code> should be
+used in the mapfile to make sure that only months and years are displayed in the
+slider tip and passed to the GetMap request.</p>
+<p>The interval (<code class="docutils literal"><span class="pre">interval</span></code>) has to be defined regarding international standard
+ISO 8601 and its duration/time intervals definition (see
+<a class="reference external" href="http://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations / Time intervals</a>).</p>
+<p>Some examples for the interval definition:</p>
+<ul class="simple">
+<li>An interval of one year: <code class="docutils literal"><span class="pre">P1Y</span></code></li>
+<li>An interval of six months: <code class="docutils literal"><span class="pre">P6M</span></code></li>
+</ul>
+<p>For more information please refer to the <a class="reference external" href="http://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
+</div>
+<div class="section" id="admin-interface">
+<h3>Admin interface<a class="headerlink" href="#admin-interface" title="Permalink to this headline">¶</a></h3>
+<p>Most of the configuration is done in the mapfile as described in the above
+section. However the time widget must be configured via the admin interface.
+Two different widget types are available: A time slider and a datepicker
+widget. The preferred widget can be selected in the admin interface (field
+<code class="docutils literal"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
+<p>Besides, the time mode can be changed. The time mode is one of:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">single</span></code></li>
+<li><code class="docutils literal"><span class="pre">range</span></code></li>
+<li><code class="docutils literal"><span class="pre">disabled</span></code></li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">single</span></code> mode displays a widget to select a single time or date. For a
+slider widget, a slider with a single thumb will be displayed. If datepicker is
+selected as widget, a single datepicker will be shown to select a single date.
+The WMS Time layer will display data that is relative to the selected time or date.</p>
+<p>The <code class="docutils literal"><span class="pre">range</span></code> mode displays a widget to select a time range. For a slider widget,
+a slider with two thumbs is shown. For the datepicker widget, two datepicker
+fields are displayed to select the start and end date.
+In mode <code class="docutils literal"><span class="pre">range</span></code> the layer will display data that is relative to the defined range.</p>
+<p>The <code class="docutils literal"><span class="pre">disabled</span></code> mode hides the time widget. No time parameter will be sent
+to the GetMap request in this case.</p>
+</div>
+</div>
+<div class="section" id="merging-configurations">
+<h2>Merging configurations<a class="headerlink" href="#merging-configurations" title="Permalink to this headline">¶</a></h2>
+<p>The previous section describes the time configuration for a single layer.
+However there could be multiple WMS Time layers in a group. In such a case, you
+need to be aware of some limitations that apply to the configuration of the WMS
+Time layers of the same group.</p>
+<p>Some of those limitations apply to the mapfile:</p>
+<ul class="simple">
+<li>The WMS Time layers of a same group must all be configured with either a
+list of discrete values or an interval. It is not possible to mix the two
+different types of definition within the same group,</li>
+<li>If the WMS Time layers of a group use the <code class="docutils literal"><span class="pre">min/max/interval</span></code>, they must
+all use the same interval.</li>
+</ul>
+<p>There is also a limitation that applies to the admin interface: all the WMS Time
+layers of a group should be configured to use the same widget and the same time mode
+(<code class="docutils literal"><span class="pre">single</span></code> or <code class="docutils literal"><span class="pre">range</span></code>) except for layers with time mode <code class="docutils literal"><span class="pre">disabled</span></code> that can be mixed
+within others.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">WMSTime Layer</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#mapfile">Mapfile</a></li>
+<li><a class="reference internal" href="#admin-interface">Admin interface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#merging-configurations">Merging configurations</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="reset_password.html" title="previous chapter">Reset password</a></li>
+      <li>Next: <a href="intranet.html" title="next chapter">Intranet Users Detection</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/wmstime.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/wmstime.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

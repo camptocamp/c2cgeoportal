@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Webservices documentation &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Cache management" href="cache.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="webservices-documentation">
+<span id="developer-webservices"></span><h1>Webservices documentation<a class="headerlink" href="#webservices-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="theme-webservice">
+<h2>Theme webservice<a class="headerlink" href="#theme-webservice" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../themes</span></code></p>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">version</span></code>: <code class="docutils literal"><span class="pre">1</span></code> or <code class="docutils literal"><span class="pre">2</span></code>, API version, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">sets</span></code>: kind of data we want to get, can be <code class="docutils literal"><span class="pre">all</span></code>, <code class="docutils literal"><span class="pre">themes</span></code>, <code class="docutils literal"><span class="pre">group</span></code>
+or <code class="docutils literal"><span class="pre">background_layers</span></code>, default is <code class="docutils literal"><span class="pre">all</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">background</span></code>: parent group of background layers to get.</li>
+<li><code class="docutils literal"><span class="pre">group</span></code>: the group to get.</li>
+<li><code class="docutils literal"><span class="pre">catalog</span></code>: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>, different error reporting for catalog mode, default is <code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">min_levels</span></code>: minimum number of group levels that&#8217;s required, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">role</span></code>: role name, not used by the server but it&#8217;s required for the cache management.</li>
+</ul>
+<p>Requests examples:</p>
+<ul class="simple">
+<li>themes?version=2</li>
+<li>themes?version=2&amp;background=background</li>
+<li>themes?version=2&amp;group=Transport</li>
+</ul>
+</div>
+<div class="section" id="result-in-v2">
+<h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
+<p>Base for all possible results:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    themes: [&lt;themes&gt;],
+    group: &lt;group&gt;,
+    background_layers: [&lt;layers&gt;],
+    errors: [&lt;errors&gt;]
+}
+</pre></div>
+</div>
+<p>Theme:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &lt;name&gt;,
+    &quot;icon&quot;: &lt;icon_url&gt;,
+    &quot;functionalities&quot;: {
+        &lt;name&gt;: &lt;values&gt;
+    },
+    &quot;ui_metadata&quot;: {
+        &lt;name&gt;: &lt;value&gt;
+    },
+    &quot;children&quot;: [&lt;items&gt;]
+}
+</pre></div>
+</div>
+<p>Group:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &lt;name&gt;,
+    &quot;mixed&quot;: true/false,
+    &quot;metadata&quot;: {
+        &lt;name&gt;: &lt;value&gt;
+    },
+    &quot;children&quot;: [&lt;items&gt;]
+}
+</pre></div>
+</div>
+<p>Layer:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &lt;name&gt;,
+    &quot;type&quot;: &quot;WMS/WMTS&quot;,
+    &quot;metadata&quot;: {
+        &lt;name&gt;: &lt;value&gt;
+    }
+}
+</pre></div>
+</div>
+<p>WMS Layer:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+
+    &quot;layers&quot;: &lt;wms_layers&gt;,
+    &quot;name&quot;: &lt;name in tree&gt;,
+    &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
+    &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;,
+    &quot;url&quot;: &lt;wms server url&gt;/null,
+    &quot;url_wfs&quot;: &lt;wfs server url&gt;/null,
+    &quot;wfs_support&quot;: true/false,
+    &quot;isSingleTile&quot;: true/false,
+    &quot;queryable&quot;: 0/1,
+    &quot;id&quot;: ​734,
+    &quot;imageType&quot;: &quot;image/jpeg&quot;,
+    &quot;style&quot;: &lt;style&gt;,
+    &quot;serverType&quot;: &lt;value&gt;,
+    &quot;metadata&quot;: {
+        &quot;identifier_attribute_field&quot;: &quot;display_name&quot;,
+        &quot;disclaimer&quot;: &quot;© les contributeurs d’OpenStreetMap&quot;,
+        &quot;legend&quot;: &quot;true&quot;,
+        &quot;legend_rule&quot;: &quot;Arrêts de bus&quot;,
+        &quot;max_resolution&quot;: &lt;value&gt;,
+        &quot;min_resolution&quot;: &lt;value&gt;
+    },
+    &quot;metadataUrls&quot;: {
+        &quot;url&quot;: &lt;url&gt;,
+        &quot;type&quot;: &quot;TC211/FGDC&quot;,
+        &quot;format&quot;: &quot;text/html&quot;
+    },
+    &quot;time&quot;: {
+        &quot;mode&quot;: &quot;value/range&quot;,
+        &quot;interval&quot;: [year, mounth, day, secound],
+        &quot;resolution&quot;: &quot;year/mounth/day/secound&quot;,
+        &quot;minValue&quot;: &lt;minValue&gt;,
+        &quot;maxValue&quot;: &lt;maxValue&gt;
+    },
+    &quot;childLayers&quot;: [{
+        &quot;name&quot;: &lt;name&gt;,
+        &quot;queryable&quot;: 0/1,
+        &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
+        &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;
+    }]
+}
+</pre></div>
+</div>
+<p>WMTS layer:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;url&quot;: &lt;wmts_capabilities_url&gt;,
+    &quot;layer&quot;: &lt;wmts_layer&gt;,
+    &quot;style&quot;: &lt;style&gt;,
+    &quot;matrix_set&quot;: &lt;matrix_set&gt;,
+    &quot;dimensions&quot;: {
+        &lt;name&gt;: &lt;value&gt;
+    }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="login">
+<h3>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
+<p>Used to login in the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../login</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+<li><code class="docutils literal"><span class="pre">password</span></code></li>
+<li><code class="docutils literal"><span class="pre">came_from</span></code> the URL where we will redirect after a success</li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li>200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.</li>
+<li>302 Found: Success -&gt; redirect on came_from.</li>
+<li>400 Bad request: When something wrong.</li>
+</ul>
+</div>
+<div class="section" id="logout">
+<h3>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h3>
+<p>Used to log out of the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../logout</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">GET</span></code></p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li>200 Success: Success.</li>
+<li>400 Bad request: When something wrong.</li>
+</ul>
+</div>
+<div class="section" id="user-informations">
+<h3>User informations<a class="headerlink" href="#user-informations" title="Permalink to this headline">¶</a></h3>
+<p>Used to get the user informations.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginuser</span></code></p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li>200 Success: Success.</li>
+</ul>
+<div class="section" id="annoymous-json-result">
+<h4>Annoymous JSON result<a class="headerlink" href="#annoymous-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;functionality&quot;: {
+        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
+        ...
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="connected-json-result">
+<span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;username&quot;: &quot;&lt;username&gt;&quot;,
+    &quot;is_password_changed&quot;: &quot;True&quot;/&quot;False&quot;, # If false the user should change his password
+    &quot;role_name&quot;: &quot;&lt;role_name&gt;&quot;,
+    &quot;role_id&quot;: &lt;role_id&gt;
+    &quot;functionality&quot;: {
+        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
+        ...
+    }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="change-password">
+<h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
+<p>Used to change the user password.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginchange</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">oldPassword</span></code></li>
+<li><code class="docutils literal"><span class="pre">newPassword</span></code></li>
+<li><code class="docutils literal"><span class="pre">confirmNewPassword</span></code></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li>200 Success: Success.</li>
+<li>400 Bad request: When something wrong.</li>
+</ul>
+<div class="section" id="json-result">
+<h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="generate-a-new-password">
+<h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginresetpassword</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
+<p>Used when the user lost his password.</p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li>200 Success: Success.</li>
+<li>400 Bad request: When something wrong.</li>
+</ul>
+<div class="section" id="success-json-result">
+<h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="full-text-search">
+<h2>Full-Text Search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../fulltextsearch</span></code></p>
+<div class="section" id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">query</span></code>: Text to search.</li>
+<li><code class="docutils literal"><span class="pre">limit</span></code>: The maximum number of results (optional).</li>
+<li><code class="docutils literal"><span class="pre">partitionlimit</span></code>: The maximum number of results per layer (optional).</li>
+<li><code class="docutils literal"><span class="pre">lang</span></code>: The used language (optional).</li>
+<li><code class="docutils literal"><span class="pre">interface</span></code>: The used interface (optional).</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Name of the callback function (optional).</li>
+</ul>
+</div>
+<div class="section" id="result">
+<h3>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h3>
+<p>A GeoJSON of a feature collection with the properties:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">label</span></code>: Text to display.</li>
+<li><code class="docutils literal"><span class="pre">layer_name</span></code>: Layer to display.</li>
+<li><code class="docutils literal"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span>Params</span></a> to set.</li>
+<li><code class="docutils literal"><span class="pre">actions</span></code>: List of actions.</li>
+</ul>
+<p>The <cite>action</cite> is a dictionary with:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">action</span></code>: the action: (add_theme|add_group|add_layer).</li>
+<li><code class="docutils literal"><span class="pre">data</span></code>: data needed for the action (actually, the item name).</li>
+</ul>
+</div>
+</div>
+<div class="section" id="raster">
+<h2>Raster<a class="headerlink" href="#raster" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../raster</span></code></p>
+<div class="section" id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">lon</span></code>: The longitude.</li>
+<li><code class="docutils literal"><span class="pre">lat</span></code>: The latitude.</li>
+<li><code class="docutils literal"><span class="pre">layers</span></code>: The raster layers we want to query.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;&lt;layer&gt;&quot;: &lt;value&gt;,
+    ...
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="digital-elevation-model">
+<h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../profile.csv</span></code> or <code class="docutils literal"><span class="pre">.../profile.json</span></code></p>
+<p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
+<div class="section" id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</li>
+<li><code class="docutils literal"><span class="pre">layers</span></code>: On witch layers, default to all.</li>
+<li><code class="docutils literal"><span class="pre">nbPoints</span></code>: Maximum number of points.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Result<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>A JSON or a CSV file, with &#8216;dist&#8217;, &#8216;value&#8217;, &#8216;x&#8217;, &#8216;y&#8217;.</p>
+</div>
+</div>
+<div class="section" id="shortener">
+<h2>Shortener<a class="headerlink" href="#shortener" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../short/create</span></code></p>
+<p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
+<div class="section" id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">url</span></code>: URL to shorten.</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: Email address to send a message to.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h4>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;short_url&quot;: &lt;the short URL&gt;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="get">
+<h3>Get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">short/&lt;ref&gt;</span></code></p>
+<p>Result: code: 302, redirect to the original URL.</p>
+</div>
+</div>
+<div class="section" id="echo">
+<h2>Echo<a class="headerlink" href="#echo" title="Permalink to this headline">¶</a></h2>
+<p>This service returns a file containing data submitted in the POST request as the &#8220;file&#8221; field.
+This is used to be able to get the data in the client from a file select by the user.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../echo</span></code></p>
+<div class="section" id="id8">
+<h3>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;filename&quot;: &lt;The base64 encoded file&gt;
+    &quot;success&quot;: true
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="export-csv">
+<h2>Export CSV<a class="headerlink" href="#export-csv" title="Permalink to this headline">¶</a></h2>
+<p>This service returns a file containing data submitted in the POST request as the &#8220;csv&#8221; field.
+This is used to be able to get as a download file csv data build on the client.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../csv</span></code></p>
+<div class="section" id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">csv_extension</span></code>: File extension, defaults to &#8216;csv&#8217;.</li>
+<li><code class="docutils literal"><span class="pre">csv_encoding</span></code>: Character encoding, defaults to &#8216;UTF-8&#8217;,</li>
+<li><code class="docutils literal"><span class="pre">name</span></code>: File name without extension set in the &#8216;Content-Disposition&#8217;, defaults to &#8216;export&#8217;.</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>Result<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>The &#8216;Content-Type&#8217; header is &#8216;text/csv&#8217;,
+and the data contains the given &#8216;csv&#8217; data.</p>
+</div>
+</div>
+<div class="section" id="geometry-processing">
+<h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Permalink to this headline">¶</a></h2>
+<p>This service provides geometry processing (currently only one)</p>
+<div class="section" id="difference">
+<h3>Difference<a class="headerlink" href="#difference" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../difference</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
+<p>Data:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
+    &quot;geometries&quot;: [&lt;geomA&gt;, &lt;geomB&gt;]
+}
+</pre></div>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">&lt;geomA&gt;</span></code> is a GeoJSON geometry to extrude,
+and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></code> is the geometry used to do the extrude.</p>
+<p>Result: the new <code class="docutils literal"><span class="pre">GeoJSON</span></code> geometry.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Webservices documentation</a><ul>
+<li><a class="reference internal" href="#theme-webservice">Theme webservice</a><ul>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#result-in-v2">Result in v2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#login">Login</a></li>
+<li><a class="reference internal" href="#logout">Logout</a></li>
+<li><a class="reference internal" href="#user-informations">User informations</a><ul>
+<li><a class="reference internal" href="#annoymous-json-result">Annoymous JSON result</a></li>
+<li><a class="reference internal" href="#connected-json-result">Connected JSON result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#change-password">Change password</a><ul>
+<li><a class="reference internal" href="#json-result">JSON result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generate-a-new-password">Generate a new password</a><ul>
+<li><a class="reference internal" href="#success-json-result">Success JSON result</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#full-text-search">Full-Text Search</a><ul>
+<li><a class="reference internal" href="#id1">Parameters</a></li>
+<li><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#raster">Raster</a><ul>
+<li><a class="reference internal" href="#id2">Parameters</a></li>
+<li><a class="reference internal" href="#id3">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#digital-elevation-model">Digital Elevation Model</a><ul>
+<li><a class="reference internal" href="#id4">Parameters</a></li>
+<li><a class="reference internal" href="#id5">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shortener">Shortener</a><ul>
+<li><a class="reference internal" href="#create">Create</a><ul>
+<li><a class="reference internal" href="#id6">Parameters</a></li>
+<li><a class="reference internal" href="#id7">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#get">Get</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echo">Echo</a><ul>
+<li><a class="reference internal" href="#id8">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export-csv">Export CSV</a><ul>
+<li><a class="reference internal" href="#id9">Parameters</a></li>
+<li><a class="reference internal" href="#id10">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geometry-processing">Geometry processing</a><ul>
+<li><a class="reference internal" href="#difference">Difference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="debugging.html" title="previous chapter">Debugging</a></li>
+      <li>Next: <a href="cache.html" title="next chapter">Cache management</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/webservices.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/developer/webservices.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

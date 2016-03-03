@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interfaces &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="ngeo" href="ngeo.html" />
+    <link rel="prev" title="Additional features" href="features.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interfaces">
+<span id="integrator-interface"></span><h1>Interfaces<a class="headerlink" href="#interfaces" title="Permalink to this headline">¶</a></h1>
+<p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table listing the
+available interfaces (or pages) of the application.
+The default interfaces are &#8220;main&#8221;, &#8220;mobile&#8221;, &#8220;edit&#8221; and &#8220;routing&#8221;.</p>
+<p>The interfaces are added by the following lines in <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;edit&#39;</span><span class="p">)</span>
+<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;routing&#39;</span><span class="p">)</span>
+<span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;mobile&#39;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The used method has the following API:</p>
+<p><code class="docutils literal"><span class="pre">add_interface(config,</span> <span class="pre">interface_name=None,</span> <span class="pre">interface_type=INTERFACE_TYPE_CGXP,</span> <span class="pre">**kwargs)</span></code>:</p>
+<p><code class="docutils literal"><span class="pre">config</span></code> is the application configuration object.</p>
+<p><code class="docutils literal"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal"><span class="pre">interface</span></code> table,
+also used to create the route path.</p>
+<p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>,
+<code class="docutils literal"><span class="pre">INTERFACE_TYPE_SENCHA_TOUCH</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
+<code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="features.html" title="previous chapter">Additional features</a></li>
+      <li>Next: <a href="ngeo.html" title="next chapter">ngeo</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/interface.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/interface.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Print &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="JavaScript API" href="api.html" />
+    <link rel="prev" title="Editing" href="editing.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="print">
+<span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h1>
+<p>Adding the <em>print</em> feature to a c2cgeoportal project involves adding
+a <code class="docutils literal"><span class="pre">cgxp.plugins.Print</span></code> plugin to the viewer, and configuring the MapFish
+Print.</p>
+<div class="section" id="the-print-plugin">
+<h2>The Print plugin<a class="headerlink" href="#the-print-plugin" title="Permalink to this headline">¶</a></h2>
+<p>The viewer should include a <code class="docutils literal"><span class="pre">Print</span></code> plugin for the <em>print</em> feature to
+be available in the user interface.</p>
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Print.html">Print API doc</a> for the
+list of options the plugin can receive.</p>
+<p><em>The main viewer includes a Print plugin by default.</em></p>
+</div>
+<div class="section" id="using-mapfish-print-v3">
+<h2>Using MapFish Print v3<a class="headerlink" href="#using-mapfish-print-v3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="migration-from-the-v2">
+<h3>Migration from the v2<a class="headerlink" href="#migration-from-the-v2" title="Permalink to this headline">¶</a></h3>
+<p>Start the migration by instantiating the default template:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">cd</span> &lt;project_root&gt;</span>
+<span class="prompt1">cp -r print ~</span>
+<span class="prompt1">git rm -r print</span>
+<span class="prompt1">.build/venv/bin/pcreate --interactive -s c2cgeoportal_create /tmp/&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="nv">srid</span><span class="o">=</span>-1</span>
+<span class="prompt1">.build/venv/bin/pcreate --interactive -s c2cgeoportal_update /tmp/&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
+<span class="prompt1">mv /tmp/&lt;project&gt;/print .</span>
+<span class="prompt1">rm -rf /tmp/&lt;project&gt;</span>
+</pre><p>Then in <code class="docutils literal"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> you should remove the <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">=</span> <span class="pre">2</span></code> (it&#8217;s <code class="docutils literal"><span class="pre">3</span></code> by default).</p>
+<p>In the concerned viewer javascript files, in the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following lines:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>version: 3,
+encodeLayer: {},
+encodeExternalLayer: {},
+additionalAttributes: []
+</pre></div>
+</div>
+</div>
+<div class="section" id="template-configuration">
+<h3>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h3>
+<p>All print-related files are located in the <code class="docutils literal"><span class="pre">print/</span></code> folder, and the files related to the template in the
+<code class="docutils literal"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
+<p>The main configuration file is <code class="docutils literal"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapFish print documntation</a></li>
+<li><a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="mapfish-print-v2-configuration">
+<h2>MapFish Print v2 configuration<a class="headerlink" href="#mapfish-print-v2-configuration" title="Permalink to this headline">¶</a></h2>
+<p>All print-related files are located in the <code class="docutils literal"><span class="pre">print/</span></code> folder.</p>
+<p>The main file (<code class="docutils literal"><span class="pre">print/config.yaml</span></code>) used to define your print template written in YAML format.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/YAML">YAML on Wikipedia</a></li>
+<li><a class="reference external" href="http://www.yaml.org/">The official YAML site</a></li>
+<li><a class="reference external" href="http://mapfish.org/doc/print/configuration.html">Mapfish print configuration documentation</a></li>
+<li><a class="reference external" href="http://yaml-online-parser.appspot.com/">YAML validator</a></li>
+</ul>
+<div class="section" id="spec-attributes">
+<h3>Spec attributes<a class="headerlink" href="#spec-attributes" title="Permalink to this headline">¶</a></h3>
+<p>With CGXP we have the following spec attributes:</p>
+<p>On each page:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">center</span></code> Center (standard).</li>
+<li><code class="docutils literal"><span class="pre">rotation</span></code> Map rotation (standard).</li>
+<li><code class="docutils literal"><span class="pre">scale</span></code> Scale (standard).</li>
+<li><code class="docutils literal"><span class="pre">showMap</span></code> Used to show the map.</li>
+<li><code class="docutils literal"><span class="pre">showMapframe</span></code> Used to show the border on the map page. <a class="footnote-reference" href="#map" id="id1">[1]</a></li>
+<li><code class="docutils literal"><span class="pre">showNorth</span></code> Used to show the arrow on the map page. <a class="footnote-reference" href="#map" id="id2">[1]</a></li>
+<li><code class="docutils literal"><span class="pre">showScale</span></code> Used to show the scale bar on the map page. <a class="footnote-reference" href="#map" id="id3">[1]</a></li>
+<li><code class="docutils literal"><span class="pre">showScaleValue</span></code>  Used to show the scale on the map page. <a class="footnote-reference" href="#map" id="id4">[1]</a></li>
+<li><code class="docutils literal"><span class="pre">showAttr</span></code> Used to show the table on the query result pages. <a class="footnote-reference" href="#query" id="id5">[2]</a></li>
+<li><code class="docutils literal"><span class="pre">showMapQueryResult</span></code> Not used, true for the query result pages. <a class="footnote-reference" href="#query" id="id6">[2]</a></li>
+<li><code class="docutils literal"><span class="pre">col0</span></code> - <code class="docutils literal"><span class="pre">coln</span></code>: Column tiles for the query result pages.</li>
+<li><code class="docutils literal"><span class="pre">table</span></code>: Query result table.</li>
+</ul>
+<table class="docutils footnote" frame="void" id="map" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id4">4</a>)</em> is <code class="docutils literal"><span class="pre">true</span></code> on the map page and <code class="docutils literal"><span class="pre">false</span></code> on query result pages</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="query" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id6">2</a>)</em> is <code class="docutils literal"><span class="pre">true</span></code> on the query result pages and <code class="docutils literal"><span class="pre">false</span></code> on map page</td></tr>
+</tbody>
+</table>
+<p>Global:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dpi</span></code> The DPI (standard).</li>
+<li><code class="docutils literal"><span class="pre">layout</span></code> The used layout (standard).</li>
+<li><code class="docutils literal"><span class="pre">srs</span></code> The EPSG code (standard).</li>
+<li><code class="docutils literal"><span class="pre">unit</span></code> The unit (standard).</li>
+<li><code class="docutils literal"><span class="pre">legend</span></code> The legend (standard).</li>
+<li><code class="docutils literal"><span class="pre">title</span></code> The document title.</li>
+<li><code class="docutils literal"><span class="pre">comment</span></code> The document description.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use Mako templates for generating the print configuration,
+to prevent character &#8216;$&#8217; from being incorrectly interpreted, use
+<code class="docutils literal"><span class="pre">&lt;%text&gt;$&lt;/%text&gt;{attribute}</span></code> in place of <code class="docutils literal"><span class="pre">${attribute}</span></code>.</p>
+</div>
+</div>
+<div class="section" id="mako-templating">
+<h3>Mako templating<a class="headerlink" href="#mako-templating" title="Permalink to this headline">¶</a></h3>
+<p>If you intend to have more than one paper format for your PDF
+print output, a templating system is implemented to allow you to use mako
+template so you don&#8217;t have to duplicate a huge quantity of code in your <code class="docutils literal"><span class="pre">print/config.yaml</span></code>.</p>
+<p>In the default template we have two base print template <code class="docutils literal"><span class="pre">A4_portrait.mako</span></code> and
+<code class="docutils literal"><span class="pre">A3_landscape.mako</span></code> where we have some blocks like:</p>
+<div class="code mako highlight-python"><div class="highlight"><pre><span></span>&lt;%def name=&quot;title()&quot;&gt;\
+1 A4 portrait\
+&lt;/%def&gt;
+</pre></div>
+</div>
+<p>And in <code class="docutils literal"><span class="pre">print/templates/A3_landscape_inherit.mako</span></code> and
+<code class="docutils literal"><span class="pre">print/templates/A4_portrait_inherit.mako</span></code> thoses block will
+be redefined.</p>
+<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the &#8220;header&#8221; part and includes the wanted templates.</p>
+</div>
+<div class="section" id="using-backgroundpdf-parameter">
+<h3>Using backgroundPdf parameter<a class="headerlink" href="#using-backgroundpdf-parameter" title="Permalink to this headline">¶</a></h3>
+<p>In print configuration you can use a PDF as a background image. You should put the
+PDF file in the print directory and use
+<code class="docutils literal"><span class="pre">&lt;%text&gt;$&lt;/%text&gt;{configDir}/template_A4_portrait.pdf</span></code>
+for the valeur of backgroundPdf parameter.</p>
+<p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the &#8220;header&#8221; part and includes the wanted templates.</p>
+</div>
+</div>
+<div class="section" id="using-a-single-print-server-in-a-set-of-sites">
+<h2>Using a single print server in a set of sites<a class="headerlink" href="#using-a-single-print-server-in-a-set-of-sites" title="Permalink to this headline">¶</a></h2>
+<p>For memory issues it is recommended to only use a single print server for a set of sites.</p>
+<p>For that we need to have only one <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> which can easily be
+generated by the templating. Then we should do:</p>
+<ul>
+<li><p class="first">Remove the print from the <code class="docutils literal"><span class="pre">children</span></code> projects by
+removing the <code class="docutils literal"><span class="pre">print</span></code> folder:</p>
+<pre class="highlight"><span class="prompt1">git rm print</span>
+</pre></li>
+<li><p class="first">Deactivate the print compilation by adding the following lines
+in the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file:</p>
+<div class="code make highlight-python"><div class="highlight"><pre><span></span><span class="n">PRINT_VERSION</span> <span class="o">=</span> <span class="n">NONE</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Point to the parent print server by editing the following lines
+in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
+    ...
+    # For print proxy
+    # This value means that we use the parent print server
+    print_url: http://{host}:8080/print-{parent_instanceid}/pdf/
+</pre></div>
+</div>
+</li>
+<li><p class="first">If needed set the print templates used by anonymous users by adding the
+following in the application configuration (<code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code>):</p>
+<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
+  ...
+  functionalities:
+      anonymous:
+          print_template:
+          - 1 A4 child
+          - 2 A3 child
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the user vars of children projects, the <code class="docutils literal"><span class="pre">parent_instanceid</span></code> should be
+defined so that it works in the user dev environment.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This system works for print v2 but must be adapted for
+print v3 (although that&#8217;s the same idea).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Print</a><ul>
+<li><a class="reference internal" href="#the-print-plugin">The Print plugin</a></li>
+<li><a class="reference internal" href="#using-mapfish-print-v3">Using MapFish Print v3</a><ul>
+<li><a class="reference internal" href="#migration-from-the-v2">Migration from the v2</a></li>
+<li><a class="reference internal" href="#template-configuration">Template configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mapfish-print-v2-configuration">MapFish Print v2 configuration</a><ul>
+<li><a class="reference internal" href="#spec-attributes">Spec attributes</a></li>
+<li><a class="reference internal" href="#mako-templating">Mako templating</a></li>
+<li><a class="reference internal" href="#using-backgroundpdf-parameter">Using backgroundPdf parameter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-a-single-print-server-in-a-set-of-sites">Using a single print server in a set of sites</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="editing.html" title="previous chapter">Editing</a></li>
+      <li>Next: <a href="api.html" title="next chapter">JavaScript API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/print.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/integrator/print.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
