@@ -6,6 +6,12 @@ VARS_FILES += vars.yaml
 
 DEVELOPPEMENT ?= FALSE
 
+ifdef TRAVIS_TAG
+VERSION ?= $(TRAVIS_TAG)
+else
+VERSION ?= 2.0
+endif
+
 PIP_CMD ?= .build/venv/bin/pip
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
@@ -173,7 +179,7 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(APPS_HTML_FILES) $(APPS_JS_FILES)
 
-ngeo: NGEO_GIT_ARGS ?= --branch=master
+ngeo: NGEO_GIT_ARGS ?= --branch=$(VERSION)
 ngeo:
 	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
 
