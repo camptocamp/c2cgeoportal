@@ -57,20 +57,21 @@ class PrintProxy(Proxy):  # pragma: no cover
         resp, content = self._proxy(*args, **kwargs)
 
         if self.request.method == "GET":
-            try:
-                capabilities = json.loads(content)
-            except JSONDecodeError as e:
-                # log and raise
-                log.error("Unable to parse capabilities.")
-                log.exception(e)
-                log.error(content)
-                return HTTPBadGateway(content)
+            if resp.status == 200:
+                try:
+                    capabilities = json.loads(content)
+                except JSONDecodeError as e:
+                    # log and raise
+                    log.error("Unable to parse capabilities.")
+                    log.exception(e)
+                    log.error(content)
+                    return HTTPBadGateway(content)
 
-            pretty = self.request.params.get("pretty", "false") == "true"
-            content = json.dumps(
-                filter_(capabilities), separators=None if pretty else (",", ":"),
-                indent=4 if pretty else None
-            )
+                pretty = self.request.params.get("pretty", "false") == "true"
+                content = json.dumps(
+                    filter_(capabilities), separators=None if pretty else (",", ":"),
+                    indent=4 if pretty else None
+                )
         else:
             content = ""
 
