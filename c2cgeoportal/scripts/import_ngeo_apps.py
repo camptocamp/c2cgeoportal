@@ -81,7 +81,8 @@ class _RouteDest:
 
 def _get_ngeo_version():
     return os.environ["TRAVIS_TAG"] \
-        if "TRAVIS_TAG" in os.environ and "dev" not in os.environ["TRAVIS_TAG"] \
+        if len(os.environ.get("TRAVIS_TAG", "")) > 0 and \
+        "dev" not in os.environ["TRAVIS_TAG"] \
         else subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
 
 
