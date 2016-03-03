@@ -27,10 +27,10 @@
     </appender>
 
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>build/logs/logFile.log</file>
+        <file>logs/${instanceid}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>build/logs/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/${instanceid}.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>

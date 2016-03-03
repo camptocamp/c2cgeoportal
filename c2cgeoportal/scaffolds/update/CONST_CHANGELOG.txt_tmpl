@@ -1,6 +1,17 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 1.6.8
+=============
+
+1. In the file `print/WEB-INF/classes/logback.xml.mako` do the following replacement:
+
+    - <file>build/logs/logFile.log</file>
+    + <file>logs/${instanceid}.log</file>
+    - <fileNamePattern>build/logs/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+    + <fileNamePattern>logs/${instanceid}.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+
 Version 1.6.7
 =============
 
