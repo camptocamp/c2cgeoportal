@@ -1,7 +1,7 @@
 throwErrorOnExtraParameters: true
 
 templates:
-    A4 portrait: !template
+    1 A4 portrait: !template
         reportTemplate: A4_Portrait.jrxml
         attributes:
             title: !string
