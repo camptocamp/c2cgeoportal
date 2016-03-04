@@ -6,7 +6,7 @@ Upgrading a GeoMapFish application
 .. warning::
 
     From version 1.6 we use Alembic instead of sqlachemy-migrate for database migration.
-    Than to upgrade to GeoMapFish 1.6, integrators must start from the very last release
+    Then to upgrade to GeoMapFish 1.6, integrators must start from the very last release
     of 1.5 since the upgrades to 1.5 are no longer available with the new tool.
 
 Using the c2ctool command
