@@ -74,7 +74,7 @@ vars:
     checker:
         fulltextsearch: text to search
         print_spec:
-            layout: "A4 portrait"
+            layout: "1 A4 portrait"
             outputFormat: "pdf"
             attributes:
                 title: ""
