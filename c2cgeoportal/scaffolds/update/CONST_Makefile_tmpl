@@ -873,11 +873,13 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 # If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
+	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
 else
 	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+	zip -d $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) print-apps/
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 endif
 
