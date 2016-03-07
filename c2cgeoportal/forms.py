@@ -258,7 +258,9 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result = "<li>"
         if self.auto_check:
             result += '<input type="checkbox"></input>'
-        result += "<label>%(label)s</label>" % {"label": item.name}
+        result += "<label>%(label)s</label>" % {
+            "label": item.name,
+        }
         result += self.render_children(item, depth)
         result += "</li>"
         return result
@@ -288,10 +290,16 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         elif final_item in self.layer:
             self.layer.remove(final_item)
 
+        prefixs = {
+            "layerv1": "Layer V1: ",
+            "l_wms": "WMS Layer: ",
+            "l_wmts": "WMTS Layer: ",
+        }
+
         result = """
         <li>
             <input type="checkbox" id="%(id)s" name="%(name)s" value="%(value)s"%(add)s></input>
-            <label>%(label)s</label>
+            <label>%(type)s%(label)s</label>
             """ % {
             "id": "%s_%i" % (self.name, self.i),
             # adds -second to fields (layer) that appears two time to
@@ -299,7 +307,8 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             "name": self.name + ("-second" if final_item.id in self._rendered_id else ""),
             "value": final_item.id,
             "add": ' checked="checked"' if self.is_checked(item, final_item) else "",
-            "label": final_item.name
+            "type": prefixs.get(final_item.item_type, ""),
+            "label": final_item.name,
         }
         self._rendered_id.append(final_item.id)
         self.i += 1
