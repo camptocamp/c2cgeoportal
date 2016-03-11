@@ -444,7 +444,7 @@ compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
 $(PACKAGE)/locale/$(PACKAGE)-server.pot: $(SERVER_LOCALISATION_SOURCES_FILES) $(VENV_BIN)/pot-create lingua.cfg
 	$(VENV_BIN)/pot-create -c lingua.cfg -o $@ $(SERVER_LOCALISATION_SOURCES_FILES)
-	# removes the allways changed date line
+	# Remove date lines which are always changing
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
