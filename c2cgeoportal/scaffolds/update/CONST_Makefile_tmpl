@@ -928,17 +928,16 @@ $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
-# If Linux else windows
-ifeq ($(VENV_BIN), .build/venv/bin)
-	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
-	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
-	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
-	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
-else
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
 	zip -d $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) print-apps/
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+else
+	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
+	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
+	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
 endif
 
 ifneq ($(TOMCAT_STOP_COMMAND),)
@@ -946,13 +945,12 @@ ifneq ($(TOMCAT_STOP_COMMAND),)
 endif
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
-# If Linux else windows
-ifeq ($(VENV_BIN), .build/venv/bin)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) cp $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
-	rm -f $(PRINT_TMP)/$(PRINT_WAR)
-else
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
 	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
+else
+	$(TOMCAT_OUTPUT_CMD_PREFIX) cp $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	rm -f $(PRINT_TMP)/$(PRINT_WAR)
 endif
 ifneq ($(TOMCAT_START_COMMAND),)
 	$(TOMCAT_START_COMMAND)
