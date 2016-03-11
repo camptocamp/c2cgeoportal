@@ -4,6 +4,8 @@ OPERATING_SYSTEM ?= LINUX
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 VENV_BIN = .build/venv/Scripts
+PYTHON_BIN_POSTFIX = .exe
+NODE_BIN_POSTFIX = .cmd
 FIND ?=$(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
 # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
@@ -16,6 +18,8 @@ CONST_REQUIREMENT ?= CONST_requirements_windows.txt
 PRINT_TMP ?= tmp
 else
 VENV_BIN ?= .build/venv/bin
+PYTHON_BIN_POSTFIX =
+NODE_BIN_POSTFIX =
 FIND ?= find
 HOME_DIR ?= $(HOME)/
 # Use TileCloud chain
@@ -477,7 +481,7 @@ else
 endif
 
 .PHONY: flake8
-flake8: $(VENV_BIN)/flake8
+flake8: $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/flake8 $(PACKAGE)
 
 .PHONY: build-server
@@ -487,7 +491,7 @@ build-server: template-generate compile-py-catalog $(SERVER_LOCALISATION_FILES)
 build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
-lint-ngeo: $(VENV_BIN)/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
+lint-ngeo: $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
 
 .PHONY: serve
 serve: build development.ini
@@ -498,10 +502,10 @@ update-node-modules: $(NPM_CMD)
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 
-$(VENV_BIN)/alembic: .build/dev-requirements.timestamp
+$(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .PHONY: upgrade-db
-upgrade-db: alembic.ini alembic_static.ini $(VENV_BIN)/alembic
+upgrade-db: alembic.ini alembic_static.ini $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/alembic -c alembic.ini upgrade head
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade head
 
@@ -518,7 +522,7 @@ template-clean:
 .PHONY: template-generate
 template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
 
-$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template $(VARS_DEPENDS)
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
 
 %: %.in $(INSTANCE_ID_MARKER)
 ifeq ($(origin VARS_FILE), undefined)
@@ -541,21 +545,21 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
-$(VENV_BIN)/c2c-template: .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
+.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(MAKE_FILES)
 	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
 
 # server localisation
 
-$(VENV_BIN)/pot-create: .build/requirements.timestamp
+$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
 $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 		lingua-server.cfg \
-		$(VENV_BIN)/pot-create \
+		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		$(SERVER_LOCALISATION_SOURCES_FILES)
 	$(VENV_BIN)/pot-create --keyword _ --config $< --output $@ $(SERVER_LOCALISATION_SOURCES_FILES)
 	# removes the always changed date line
@@ -571,7 +575,7 @@ endif
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
 		project.yaml \
-		$(VENV_BIN)/pot-create \
+		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		$(I18N_SOURCE_FILES)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
@@ -599,9 +603,9 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 
 # Get l10n from ngeo
 
-$(VENV_BIN)/tx: .build/dev-requirements.timestamp
+$(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-$(VENV_BIN)/mako-render: .build/dev-requirements.timestamp
+$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 $(TX_RC):
 	echo "[https://www.transifex.com]" > $@
@@ -610,7 +614,7 @@ $(TX_RC):
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
 
-.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render
+.tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "tx_version=$(TX_VERSION)" $< > $@
 
@@ -627,7 +631,7 @@ build-ngeo: $(NGEO_OUTPUT_FILES)
 .PHONY: compile-js-catalog
 compile-js-catalog: $(JSON_CLIENT_LOCALISATION_FILES)
 
-$(VENV_BIN)/db2pot: .build/requirements.timestamp
+$(VENV_BIN)/db2pot$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
@@ -677,13 +681,15 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
 .PRECIOUS: .build/%.json
 .build/%.json: node_modules/ngeo/buildtools/mako_build.json \
-		$(VENV_BIN)/mako-render
+		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
 		--var generate_exports=true $< > $@
+
+node_modules/.bin/closure-util$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
 
 .PRECIOUS: .build/%.js
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
@@ -692,13 +698,16 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js \
-		.build/node_modules.timestamp
+		node_modules/.bin/closure-util$(NODE_BIN_POSTFIX)
 	node_modules/.bin/closure-util build $< $@
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-$(APP_OUTPUT_DIR)/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js $(VENV_BIN)/mako-render \
-		$(APP_DIRECTIVES_PARTIALS_FILES) $(GMF_DIRECTIVES_PARTIALSFILES) $(NGEO_DIRECTIVES_PARTIALS_FILES)
+$(APP_OUTPUT_DIR)/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
+	$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
+	$(APP_DIRECTIVES_PARTIALS_FILES) \
+	$(GMF_DIRECTIVES_PARTIALSFILES) \
+	$(NGEO_DIRECTIVES_PARTIALS_FILES)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
 		--var "app=$(PACKAGE)" \
@@ -742,20 +751,26 @@ ifeq ($(NGEO), TRUE)
 endif
 	touch $@
 
-.build/gjslint.timestamp: .build/node_modules.timestamp $(APP_JS_FILES)
+$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+
+.build/gjslint.timestamp: $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) \
+	.build/node_modules.timestamp \
+	$(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out .build/node_modules.timestamp $?)
+	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp $?)
 	touch $@
 
-.build/jshint.timestamp: .build/node_modules.timestamp $(APP_JS_FILES)
+node_modules/.bin/jshint$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
+
+.build/jshint.timestamp: node_modules/.bin/jshint$(NODE_BIN_POSTFIX) $(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	node_modules/.bin/jshint --verbose $(filter-out .build/node_modules.timestamp $?)
+	node_modules/.bin/jshint --verbose $(filter-out node_modules/.bin/jshint$(NODE_BIN_POSTFIX) $?)
 	touch $@
 
 
 # Git
 
-$(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
+$(VENV_BIN)/jsbuild$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .PHONY: update
 update:
@@ -791,30 +806,31 @@ $(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD:
 
 # CGXP build
 
-$(VENV_BIN)/cssmin: .build/dev-requirements.timestamp
+$(VENV_BIN)/cssmin$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-$(VENV_BIN)/jsbuild: .build/dev-requirements.timestamp
+$(VENV_BIN)/jsbuild$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-$(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG) \
-	$(VENV_BIN)/jsbuild \
+$(JSBUILD_MAIN_OUTPUT_FILES): $(JSBUILD_MAIN_FILES) \
+	$(JSBUILD_MAIN_CONFIG) \
+	$(VENV_BIN)/jsbuild$(PYTHON_BIN_POSTFIX) \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD
 	mkdir -p $(dir $@)
 	$(VENV_BIN)/jsbuild $(JSBUILD_MAIN_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(OUTPUT_DIR)
 
-$(CSS_BASE_OUTPUT): $(VENV_BIN)/cssmin \
+$(CSS_BASE_OUTPUT): $(VENV_BIN)/cssmin$(PYTHON_BIN_POSTFIX) \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_BASE_FILES)
 	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_BASE_FILES)
 
-$(CSS_API_OUTPUT): $(VENV_BIN)/cssmin \
+$(CSS_API_OUTPUT): $(VENV_BIN)/cssmin$(PYTHON_BIN_POSTFIX) \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_API_FILES)
 	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_API_FILES)
 
-$(CSS_XAPI_OUTPUT): $(VENV_BIN)/cssmin \
+$(CSS_XAPI_OUTPUT): $(VENV_BIN)/cssmin$(PYTHON_BIN_POSTFIX) \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/modules/openlayers/HEAD \
 	$(GIT_MODULES_FOLDER)$(PACKAGE)/static/lib/cgxp/HEAD \
 	$(CSS_XAPI_FILES)
@@ -825,7 +841,8 @@ $(CSS_XAPI_OUTPUT): $(VENV_BIN)/cssmin \
 .PHONY: sencha-touch
 sencha-touch: $(PACKAGE)/static/mobile/build/production/App/app.js
 
-$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) $(VENV_BIN)/jsbuild
+$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) \
+	$(VENV_BIN)/jsbuild$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/jsbuild $(JSBUILD_MOBILE_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(JSBUILD_MOBILE_OUTPUT_DIR)
 
 $(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FILES) \
@@ -836,12 +853,13 @@ $(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FI
 
 # Check packages
 
-$(VENV_BIN)/c2c-versions: .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .PHONY: test-packages
 test-packages: .build/test-packages.timestamp
 
-.build/test-packages.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+PYTHON_BIN_POSTFIX =
+.build/test-packages.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml common
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml $(TEST_PACKAGES)
 	touch $@
@@ -849,36 +867,36 @@ test-packages: .build/test-packages.timestamp
 .PHONY: test-packages-deploy
 test-packages-deploy: .build/test-packages-deploy.timestamp
 
-.build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+.build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml deploy
 	touch $@
 
 .PHONY: test-packages-mobile
 test-packages-mobile: .build/test-packages-mobile.timestamp
 
-.build/test-packages-mobile.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+.build/test-packages-mobile.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml mobile
 	touch $@
 
 .PHONY: test-packages-tilecloud-chain
 test-packages-tilecloud-chain: .build/test-packages-tilecloud-chain.timestamp
 
-.build/test-packages-tilecloud-chain.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+.build/test-packages-tilecloud-chain.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml tilecloud-chain
 	touch $@
 
 .PHONY: test-packages-ngeo
 test-packages-ngeo: .build/test-packages-ngeo.timestamp
 
-.build/test-packages-ngeo.timestamp: $(VENV_BIN)/c2c-versions CONST_packages.yaml
+.build/test-packages-ngeo.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml ngeo
 	touch $@
 
 # Check
 
-$(VENV_BIN)/gjslint: .build/dev-requirements.timestamp
+$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
-$(VENV_BIN)/flake8: .build/dev-requirements.timestamp
+$(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 # Venv
 
@@ -956,11 +974,13 @@ print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
 	curl --max-redirs 0 --location --output $@ https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
 	unzip -t -q $@
 
+$(VENV_BIN)/generate_controller$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+
 # Tile cloud chain
-apache/mapcache.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+apache/mapcache.xml: tilegeneration/config.yaml $(VENV_BIN)/generate_controller$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/generate_controller --generate-mapcache-config
 
-apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml .build/dev-requirements.timestamp
+apache/tiles.conf: tilegeneration/config.yaml apache/mapcache.xml $(VENV_BIN)/generate_controller$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/generate_controller --generate-apache-config
 
 # Apache config
@@ -1058,10 +1078,10 @@ push_docker:
 .PHONY: testDB
 testDB: testDB/02-alembic.sql testDB/03-alembic-static.sql
 
-testDB/02-alembic.sql: $(VENV_BIN)/alembic alembic.ini
+testDB/02-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini
 	$(VENV_BIN)/alembic -c alembic.ini upgrade --sql head > $@
 
-testDB/03-alembic-static.sql: $(VENV_BIN)/alembic alembic_static.ini
+testDB/03-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif
 
