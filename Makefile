@@ -45,7 +45,7 @@ L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeo
 LANGUAGES = en $(L10N_LANGUAGES)
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix .build/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
-SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
+SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.py)) \
 	$(shell find c2cgeoportal/lib -name "*.py" -print) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
