@@ -246,23 +246,15 @@ this line under ``MAP`` (use regular slash ``/``) ::
 <project>.mk
 ^^^^^^^^^^^^
 
-The following configuration override must be added to your <project>.mk::
+The following configuration override must be added to your ``<project>.mk``::
 
-    # Solve conflict between Windows own find command and cygwin find.
-    FIND ?= c:/path/to/cygwin/find.exe
-    # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
-    # You can still install it but you must install Shapely manualy inside
-    # TILECLOUD_CHAIN virtualenv
-    TILECLOUD_CHAIN ?= FALSE
-    # On windows, the virtualenv binary folder is Scripts, not bin.
-    VENV_BIN ?= .build/venv/Scripts
-    # On windows, some python packages are installed from already packaged wheels.
-    CONST_REQUIREMENT ?= CONST_requirements_windows.txt
+    # Sets that's we use Windows
+    OPERATING_SYSTEM ?= WINDOWS
+    # Path to cygwin
+    CYGWIN_PATH ?= c:/path/to/cygwin
     APACHE_VHOST ?= your_apache_vhost_folder
     APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
     PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
-    # because Windows doesn't like path with //
-    PRINT_TMP ?= tmp
     TOMCAT_SERVICE_COMMAND ?= path/to/your/Tomcat7/bin/Tomcat7.exe
     APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n <servicename>
     # Where <servicename> is the name of the Apache service, look at your

@@ -1,7 +1,28 @@
-VENV_BIN ?= .build/venv/bin
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
+OPERATING_SYSTEM ?= LINUX
+
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+VENV_BIN = .build/venv/Scripts
+FIND ?=$(CYGWIN_PATH)/bin/find.exe
+HOME_DIR ?= ""
+# TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
+# You can still install it but you must install Shapely manualy inside
+# TILECLOUD_CHAIN virtualenv
+TILECLOUD_CHAIN ?= FALSE
+# Some python packages are installed from already packaged wheels.
+CONST_REQUIREMENT ?= CONST_requirements_windows.txt
+# because Windows doesn't like path with //
+PRINT_TMP ?= tmp
+else
+VENV_BIN ?= .build/venv/bin
 FIND ?= find
+HOME_DIR ?= $(HOME)/
+# Use TileCloud chain
+TILECLOUD_CHAIN ?= TRUE
+CONST_REQUIREMENT ?= CONST_requirements.txt
+PRINT_TMP ?= /tmp
+endif
 
 # Don't minify the js / css, ...
 DEVELOPMENT ?= FALSE
@@ -13,12 +34,11 @@ CGXP ?= TRUE
 MOBILE ?= FALSE
 # Enable ngeo build
 NGEO ?= TRUE
-# Use TileCloud chain
-TILECLOUD_CHAIN ?= TRUE
 # Used print version
 PRINT_VERSION ?= 3
 # Enable Docker target
 DOCKER ?= FALSE
+DOCKER_BASE ?= no
 DOCKER_TAG ?= latest
 # Use deploy
 ifeq ($(DOCKER), FALSE)
@@ -79,7 +99,6 @@ endif
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 # Requirements
-CONST_REQUIREMENT ?= CONST_requirements.txt
 EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt $(CONST_REQUIREMENT)
 REQUIREMENTS ?= c2cgeoportal
 REQUIREMENTS += -r $(CONST_REQUIREMENT)
@@ -108,16 +127,21 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 # transifex
 TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(pkg_resources.get_distribution('c2cgeoportal').version.split('.')[0:2]))")
-TX_DEPENDENCIES = $(VENV_BIN)/tx $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+TX_RC = $(HOME_DIR).transifexrc
+TX_DEPENDENCIES = $(VENV_BIN)/tx $(TX_RC) .tx/config
+ifeq (,$(wildcard $(TX_RC)))
+TOUCHBACK_TXRC =
 else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
 # ngeo
 ANGULAR_VERSION = 1.5
+ifeq ($(OPERATING_SYSTEM), LINUX)
 NPM_CMD = node_modules/.bin/npm
+else
+NPM_CMD = npm
+endif
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 NGEO_INTERFACES ?= mobile
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
@@ -146,6 +170,11 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/d3/d3.min.js \
 	node_modules/typeahead.js/dist/typeahead.bundle.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
+ifeq ($(OPERATING_SYSTEM),WINDOWS)
+COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
+else
+COMPILE_CATALOG = node_modules/.bin/compile-catalog
+endif
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -286,7 +315,6 @@ PRINT_BASE_DIR ?= print
 PRINT_WAR ?= print-$(INSTANCE_ID).war
 PRINT_OUTPUT ?= /srv/tomcat/tomcat1/webapps
 PRINT_OUTPUT_WAR =
-PRINT_TMP ?= /tmp
 JASPERREPORTS_VERSION ?= 6.1.1
 TOMCAT_SERVICE_COMMAND ?= sudo /etc/init.d/tomcat-tomcat1
 ifneq ($(TOMCAT_SERVICE_COMMAND),)
@@ -313,7 +341,7 @@ PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
 PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
 PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
 PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
-PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
+PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && $(FIND) -name '$(INPUT)' -type f))
 PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
 endif
 
@@ -419,8 +447,11 @@ clean: template-clean
 	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
 	rm -rf $(PACKAGE)/static/mobile/build
 	rm -rf $(PACKAGE)/static/mobile/archive
+# We use the print
+ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 
 .PHONY: cleanall
@@ -431,12 +462,19 @@ cleanall: clean
 		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
+ifdef PRINT_BASE_WAR
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+endif
 
 .PHONY: cleanallcache
 cleanallcache: cleanall
-	rm -rf $(HOME)/.npm
-	rm -rf $(HOME)/.cache/pip
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+	rm -rf %AppData%/npm-cache
+	rm -rf %AppData%/../Local/pip/cache
+else
+	rm -rf $(HOME_DIR).npm
+	rm -rf $(HOME_DIR).cache/pip
+endif
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
@@ -565,7 +603,7 @@ $(VENV_BIN)/tx: .build/dev-requirements.timestamp
 
 $(VENV_BIN)/mako-render: .build/dev-requirements.timestamp
 
-$(HOME)/.transifexrc:
+$(TX_RC):
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@
 	echo "username = c2c" >> $@
@@ -593,15 +631,15 @@ $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
-node_modules/.bin/compile-catalog: .build/node_modules.timestamp
+$(COMPILE_CATALOG): .build/node_modules.timestamp
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
 $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
 		.build/locale/%/LC_MESSAGES/gmf.po \
-		node_modules/.bin/compile-catalog \
+		$(COMPILE_CATALOG) \
 		.build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node node_modules/.bin/compile-catalog .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
+	node $(COMPILE_CATALOG) .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)
@@ -627,6 +665,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	cp $< $@
 
 node_modules/ngeo/node_modules: .build/node_modules.timestamp
+	rm -f $@
 	ln -s .. $@
 	touch --no-create $@
 
@@ -643,7 +682,6 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
-		--var js=$(PACKAGE)/static-ngeo/js/$*.js \
 		--var ngeo_folder=node_modules/ngeo/ \
 		--var generate_exports=true $< > $@
 
@@ -693,7 +731,9 @@ else
 endif
 
 $(NPM_CMD):
+ifeq ($(OPERATING_SYSTEM), LINUX)
 	npm install npm
+endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	mkdir -p $(dir $@)
@@ -974,7 +1014,11 @@ $(INSTANCE_ID_MARKER):
 
 # Upgrade
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+UPGRADE_ARGS ?= --windows
+else
 UPGRADE_ARGS ?=
+endif
 
 $(UPGRADE_MAKE_FILE):
 	@echo "The file '$(UPGRADE_MAKE_FILE)' can't be found,"
@@ -985,7 +1029,7 @@ $(UPGRADE_MAKE_FILE):
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install c2cgeoportal==${VERSION}
+	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1
@@ -1024,4 +1068,4 @@ endif
 .PHONY: $(PACKAGE)/version.py
 $(PACKAGE)/version.py:
 	@echo "# Auto-generated file. Do not Edit!" > $@
-	@.build/venv/bin/gen-version >> $@
+	@$(VENV_BIN)/gen-version >> $@
