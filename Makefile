@@ -45,7 +45,7 @@ L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeo
 LANGUAGES = en $(L10N_LANGUAGES)
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix .build/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
-SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
+SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.py)) \
 	$(shell find c2cgeoportal/lib -name "*.py" -print) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
@@ -101,6 +101,7 @@ checks: flake8
 clean:
 	rm -f .build/dev-requirements.timestamp
 	rm -f .build/venv.timestamp
+	rm -f c2cgeoportal/version.py
 	rm -f c2cgeoportal/locale/*.pot
 	rm -f c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
 	rm -rf c2cgeoportal/static/build
