@@ -146,60 +146,7 @@ templates:
                     title: !string {}
                     table: !table {}
 
-        processors: &processors
-        - !reportBuilder # compile all reports in current directory
-            directory: '.'
-        - !configureHttpRequests &configureHttpRequests
-            httpProcessors:
-            - !mapUri
-                matchers:
-                - !dnsMatch
-                    host: ${host}
-                mapping:
-                    (https?)://${host}/(.*): "http://127.0.0.1/$2"
-            - !forwardHeaders
-                matchers:
-                - !localMatch {}
-                headers:
-                - Cookie
-                - Host
-            - !forwardHeaders
-                headers:
-                - Referer
-            - !restrictUris
-                matchers:
-                - !localMatch
-                  pathRegex: "/${instanceid}/wsgi/mapserv_proxy"
-                - !localMatch
-                  pathRegex: "/${instanceid}/tiles/.*"
-                - !localMatch
-                  reject: true
-                - !ipMatch
-                  ip: 10.0.0.0
-                  mask: 255.0.0.0
-                  reject: true
-                - !ipMatch
-                  ip: 172.16.0.0
-                  mask: 255.240.0.0
-                  reject: true
-                - !ipMatch
-                  ip: 192.168.0.0
-                  mask: 255.255.0.0
-                  reject: true
-                - !acceptAll {}
-        - !prepareLegend
-            template: legend.jrxml
-        - !createNorthArrow {}
-        - !createScalebar {}
-        - !createMap {}
-        - !createDataSource
-            processors:
-            - !prepareTable
-                dynamic: true
-                columns:
-                    icon: !urlImage
-                        urlExtractor: (.*)
-                        urlGroup: 1
+        processors: *processors
     4 A3 landscape: !template
         reportTemplate: A3_Landscape.jrxml
         attributes:
@@ -231,58 +178,5 @@ templates:
                     title: !string {}
                     table: !table {}
 
-        processors: &processors
-        - !reportBuilder # compile all reports in current directory
-            directory: '.'
-        - !configureHttpRequests &configureHttpRequests
-            httpProcessors:
-            - !mapUri
-                matchers:
-                - !dnsMatch
-                    host: ${host}
-                mapping:
-                    (https?)://${host}/(.*): "http://127.0.0.1/$2"
-            - !forwardHeaders
-                matchers:
-                - !localMatch {}
-                headers:
-                - Cookie
-                - Host
-            - !forwardHeaders
-                headers:
-                - Referer
-            - !restrictUris
-                matchers:
-                - !localMatch
-                  pathRegex: "/${instanceid}/wsgi/mapserv_proxy"
-                - !localMatch
-                  pathRegex: "/${instanceid}/tiles/.*"
-                - !localMatch
-                  reject: true
-                - !ipMatch
-                  ip: 10.0.0.0
-                  mask: 255.0.0.0
-                  reject: true
-                - !ipMatch
-                  ip: 172.16.0.0
-                  mask: 255.240.0.0
-                  reject: true
-                - !ipMatch
-                  ip: 192.168.0.0
-                  mask: 255.255.0.0
-                  reject: true
-                - !acceptAll {}
-        - !prepareLegend
-            template: legend.jrxml
-        - !createNorthArrow {}
-        - !createScalebar {}
-        - !createMap {}
-        - !createDataSource
-            processors:
-            - !prepareTable
-                dynamic: true
-                columns:
-                    icon: !urlImage
-                        urlExtractor: (.*)
-                        urlGroup: 1
+        processors: *processors
 
