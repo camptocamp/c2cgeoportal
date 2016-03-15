@@ -4,23 +4,23 @@ templates:
     1 A4 portrait: !template
         reportTemplate: A4_Portrait.jrxml
         attributes:
-            title: !string
+            title: !string &title
                 default: ""
-            comments: !string
+            comments: !string &comments
                 default: ""
-            debug: !boolean
+            debug: !boolean &debug
                 default: false
-            legend: !legend {}
-            northArrow: !northArrow
+            legend: !legend &legend {} 
+            northArrow: !northArrow &northArrow
                 size: 40
                 default:
                     graphic: "file:///north.svg"
-            scalebar: !scalebar
+            scalebar: !scalebar &scalebar
                 width: 150
                 height: 20
                 default:
                      fontSize: 8
-            map: !map
+            map: !map &map
                 maxDpi: 254
                 dpiSuggestions: [254]
                 zoomLevels: !zoomLevels
@@ -87,31 +87,18 @@ templates:
                         urlExtractor: (.*)
                         urlGroup: 1
 
-#    A4 landscape: !template
-#        reportTemplate: A4_Landscape.jrxml
-#        attributes: &attributes
-#            title: !string
-#                default: ""
-#            comments: !string
-#                default: ""
-#            debug: !boolean
-#                default: false
-#            legend: !legend {}
-#            northArrow: !northArrow
-#                size: 40
-#                default:
-#                    graphic: "file:///north.svg"
-#            scalebar: !scalebar
-#                width: 150
-#                height: 20
-#                default:
-#                     fontSize: 8
-#            map: !map
-#                maxDpi: 254
-#                dpiSuggestions: [254]
-#                zoomLevels: !zoomLevels
-#                    scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
-#                width: 555
-#                height: 675
-#            datasource: !datasource *datasource
-#        processors: *processors
+    2 A4 landscape: !template
+        reportTemplate: A4_Landscape.jrxml
+        attributes:
+            title: *title
+            comments: *comments
+            debug: *debug
+            legend: *legend
+            northArrow: *northArrow
+            scalebar: *scalebar
+            map: !map
+               <<: *map
+               width: 800
+               height: 441
+            datasource: *datasource
+        processors: *processors
