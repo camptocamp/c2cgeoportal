@@ -140,7 +140,7 @@ templates:
                 zoomLevels: !zoomLevels
                     scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
                 width: 800
-                height: 675
+                height: 1000
             datasource: !datasource &datasource
                 attributes:
                     title: !string {}
@@ -224,8 +224,8 @@ templates:
                 dpiSuggestions: [254]
                 zoomLevels: !zoomLevels
                     scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
-                width: 1150
-                height: 675
+                width: 800
+                height: 450
             datasource: !datasource &datasource
                 attributes:
                     title: !string {}
