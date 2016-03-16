@@ -116,67 +116,33 @@ templates:
 #            datasource: !datasource *datasource
 #        processors: *processors
     3 A portrait: !template
-        reportTemplate: A_Portrait.jrxml
+        reportTemplate: A3_Portrait.jrxml
         attributes:
-            title: !string
-                default: ""
-            comments: !string
-                default: ""
-            debug: !boolean
-                default: false
-            legend: !legend {}
-            northArrow: !northArrow
-                size: 40
-                default:
-                    graphic: "file:///north.svg"
-            scalebar: !scalebar
-                width: 150
-                height: 20
-                default:
-                     fontSize: 8
+            title: *title
+            comments: *comments
+            debug: *debug
+            legend: *legend
+            northArrow: *northArrow
+            scalebar: *scalebar
             map: !map
-                maxDpi: 254
-                dpiSuggestions: [254]
-                zoomLevels: !zoomLevels
-                    scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
+                <<: *map
                 width: 800
                 height: 1000
-            datasource: !datasource &datasource
-                attributes:
-                    title: !string {}
-                    table: !table {}
-
+            datasource: *datasource
         processors: *processors
     4 A3 landscape: !template
         reportTemplate: A3_Landscape.jrxml
         attributes:
-            title: !string
-                default: ""
-            comments: !string
-                default: ""
-            debug: !boolean
-                default: false
-            legend: !legend {}
-            northArrow: !northArrow
-                size: 40
-                default:
-                    graphic: "file:///north.svg"
-            scalebar: !scalebar
-                width: 150
-                height: 20
-                default:
-                     fontSize: 8
+            title: *title
+            comments: *comments
+            debug: *debug
+            legend: *legend
+            northArrow: *northArrow
+            scalebar: *scalebar
             map: !map
-                maxDpi: 254
-                dpiSuggestions: [254]
-                zoomLevels: !zoomLevels
-                    scales: [100, 250, 500, 2500, 5000, 10000, 25000, 50000, 100000, 500000]
+                <<: *map
                 width: 800
                 height: 450
-            datasource: !datasource &datasource
-                attributes:
-                    title: !string {}
-                    table: !table {}
-
+            datasource: *datasource
         processors: *processors
 
