@@ -171,7 +171,7 @@ transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 
 .PHONY: transifex-init
 transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
-	.build/venv/bin/tx push --source
+	.build/venv/bin/tx push --source --force
 	.build/venv/bin/tx push --translations --force --no-interactive
 	$(TOUCHBACK_TXRC)
 
