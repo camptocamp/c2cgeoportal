@@ -29,6 +29,8 @@
 
 
 import re
+import json
+import requests
 from os import path
 from yaml import load
 from six import string_types
@@ -82,49 +84,6 @@ class BaseTemplate(Template):  # pragma: no cover
                 vars["package"] = m.group(1)
                 break
 
-    def out(self, msg):
-        print(msg)
-
-
-class TemplateCreate(BaseTemplate):  # pragma: no cover
-    _template_dir = "create"
-    summary = "Template used to create a c2cgeoportal project"
-
-    def pre(self, command, output_dir, vars):
-        """
-        Overrides the base template, adding the "srid" variable to
-        the variables list.
-        """
-        self._set_srid_in_vars(command, vars)
-        self._set_mobile_title_in_vars(command, vars)
-        return BaseTemplate.pre(self, command, output_dir, vars)
-
-    def post(self, command, output_dir, vars):
-        """
-        Overrides the base template class to print "Welcome to c2cgeoportal!"
-        after a successful scaffolding rendering.
-        """
-
-        self.out("Welcome to c2cgeoportal!")
-        return BaseTemplate.post(self, command, output_dir, vars)
-
-    def _set_mobile_title_in_vars(self, command, vars):
-        """
-        Set the mobile_title into the vars dict.
-        """
-        mobile_title = None
-        for arg in command.args:
-            m = re.match("mobile_application_title=(.+)", arg)
-            if m:
-                mobile_title = m.group(1)
-                break
-
-        if mobile_title is None:
-            prompt = "The mobile application title:"
-            mobile_title = input_(prompt).strip()
-
-        vars["mobile_application_title"] = mobile_title
-
     def _set_srid_in_vars(self, command, vars):
         """
         Set the SRID into the vars dict.
@@ -145,6 +104,98 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
             raise ValueError(
                 "Specified SRID is not an integer")
 
+    def out(self, msg):
+        print(msg)
+
+
+class TemplateCreate(BaseTemplate):  # pragma: no cover
+    _template_dir = "create"
+    summary = "Template used to create a c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars):
+        """
+        Overrides the base template, adding the "srid" variable to
+        the variables list.
+        """
+        self._set_apache_vhost_in_vars(command, vars)
+        self._set_srid_in_vars(command, vars)
+        self._set_extent_in_vars(command, vars)
+        self._set_mobile_title_in_vars(command, vars)
+        return BaseTemplate.pre(self, command, output_dir, vars)
+
+    def post(self, command, output_dir, vars):
+        """
+        Overrides the base template class to print "Welcome to c2cgeoportal!"
+        after a successful scaffolding rendering.
+        """
+
+        self.out("Welcome to c2cgeoportal!")
+        return BaseTemplate.post(self, command, output_dir, vars)
+
+    def _set_apache_vhost_in_vars(self, command, vars):
+        """
+        Set the apache_vhost into vars dict.
+        """
+        apache_vhost = None
+        for arg in command.args:
+            m = re.match("apache_vhost=(.+)", arg)
+            if m:
+                apache_vhost = m.group(1)
+                break
+
+        if apache_vhost is None:
+            prompt = "The Apache vhost name:"
+            apache_vhost = input_(prompt).strip()
+
+        vars["apache_vhost"] = apache_vhost
+
+    def _set_mobile_title_in_vars(self, command, vars):
+        """
+        Set the mobile_title into the vars dict.
+        """
+        mobile_title = None
+        for arg in command.args:
+            m = re.match("mobile_application_title=(.+)", arg)
+            if m:
+                mobile_title = m.group(1)
+                break
+
+        if mobile_title is None:
+            prompt = "The mobile application title:"
+            mobile_title = input_(prompt).strip()
+
+        vars["mobile_application_title"] = mobile_title
+
+    def _set_extent_in_vars(self, command, vars):
+        """
+        Set the Extent into the vars dict.
+        """
+        extent = None
+        for arg in command.args:
+            m = re.match("extent=(\d+, ){3}(\d+ )", arg)
+            if m:
+                extent = m.group(1)
+                break
+        if extent is None:
+            extent = self._epsg2bbox(vars["srid"])
+        if extent is None:
+            prompt = "Extent (minx, miny, maxx, maxy): " \
+                     "in EPSG:"+vars["srid"]+" projection: "
+            extent = input_(prompt).strip().split(",")
+        vars["extent_mapserver"] = " ".join(extent)
+        vars["extent_viewer"] = json.dumps(extent)
+
+    def _epsg2bbox(self, srid):
+        r = requests.get("http://epsg.io/?format=json&q=%i" % (srid))
+        bbox = r.json()["results"][0]["bbox"]
+        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
+                         % (srid, bbox[1], bbox[0]))
+        r1 = r.json()[0]
+        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
+                         % (srid, bbox[3], bbox[2]))
+        r2 = r.json()[0]
+        return [r1["x"], r2["y"], r2["x"], r1["y"]]
+
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
@@ -155,6 +206,8 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         Overrides the base template, adding the "mobile_application_title" variable to
         the variables list.
         """
+
+        self._set_srid_in_vars(command, vars)
 
         # Init defaults
         vars["mobile_application_title"] = "Geoportal Mobile Application"
