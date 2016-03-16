@@ -69,7 +69,7 @@ def main():
 
     table_list = [LayerWMTS, LayerWMS, ServerOGC]
     for table in table_list:
-        print "Emptying table %s." % str(table.__table__)
+        print("Emptying table %s." % str(table.__table__))
         # must be done exactly this way othewise the cascade config in the
         # models are not used
         for t in session.query(table).all():
@@ -78,7 +78,7 @@ def main():
     # list and create all distinct server_ogc
     server_ogc(session)
 
-    print "Converting layerv1."
+    print("Converting layerv1.")
     for layer in session.query(LayerV1).all():
         layer_v1tov2(session, layer)
 
@@ -179,39 +179,45 @@ def layer_v1tov2(session, layer):
     session.add(new_layer)
 
 
-def layer_add_ui_metadata(layer, new_layer, session):
+def new_uimetadata(name, value, item):
     from c2cgeoportal.models import UIMetadata
 
+    uimetadata = UIMetadata(name, value)
+    uimetadata.item = item
+    return uimetadata
+
+
+def layer_add_ui_metadata(layer, new_layer, session):
     if layer.metadata_url is not None:
-        session.add(UIMetadata(u"metadataUrl", layer.metadata_url, new_layer))
+        session.add(new_uimetadata(u"metadataUrl", layer.metadata_url, new_layer))
     if layer.is_checked is True:
-        session.add(UIMetadata(u"isChecked", u"true", new_layer))
+        session.add(new_uimetadata(u"isChecked", u"true", new_layer))
     if layer.icon is not None:
-        session.add(UIMetadata(u"icon", layer.icon, new_layer))
+        session.add(new_uimetadata(u"icon", layer.icon, new_layer))
     if layer.wms_url is not None:
-        session.add(UIMetadata(u"wmsUrl", layer.wms_url, new_layer))
+        session.add(new_uimetadata(u"wmsUrl", layer.wms_url, new_layer))
     if layer.wms_layers is not None:
-        session.add(UIMetadata(u"wmsLayers", layer.wms_layers, new_layer))
+        session.add(new_uimetadata(u"wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
-        session.add(UIMetadata(u"queryLayers", layer.query_layers, new_layer))
+        session.add(new_uimetadata(u"queryLayers", layer.query_layers, new_layer))
     if layer.legend is not None:
-        session.add(UIMetadata(u"legend", layer.legend, new_layer))
+        session.add(new_uimetadata(u"legend", layer.legend, new_layer))
     if layer.legend_image is not None:
-        session.add(UIMetadata(u"legendImage", layer.legend_image, new_layer))
+        session.add(new_uimetadata(u"legendImage", layer.legend_image, new_layer))
     if layer.legend_rule is not None:
-        session.add(UIMetadata(u"legendRule", layer.legend_rule, new_layer))
+        session.add(new_uimetadata(u"legendRule", layer.legend_rule, new_layer))
     if layer.is_legend_expanded is True:
-        session.add(UIMetadata(u"isLegendExpanded", u"true", new_layer))
+        session.add(new_uimetadata(u"isLegendExpanded", u"true", new_layer))
     if layer.min_resolution is not None:
-        session.add(UIMetadata(u"minResolution", layer.min_resolution, new_layer))
+        session.add(new_uimetadata(u"minResolution", layer.min_resolution, new_layer))
     if layer.max_resolution is not None:
-        session.add(UIMetadata(u"maxResolution", layer.max_resolution, new_layer))
+        session.add(new_uimetadata(u"maxResolution", layer.max_resolution, new_layer))
     if layer.disclaimer is not None:
-        session.add(UIMetadata(u"disclaimer", layer.disclaimer, new_layer))
+        session.add(new_uimetadata(u"disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
-        session.add(UIMetadata(
+        session.add(new_uimetadata(
             u"identifier_attribute_field",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(UIMetadata("excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_uimetadata("excludeProperties", layer.exclude_properties, new_layer))
