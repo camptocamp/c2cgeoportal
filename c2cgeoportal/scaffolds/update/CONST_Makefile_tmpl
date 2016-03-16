@@ -160,8 +160,9 @@ endif
 
 ifeq ($(DEVELOPMENT), FALSE)
 	CSSMIN_ARGS += --compress
-	LESS_ARGS += --clean-css
+	LESS_ARGS += --clean-css="--s0"
 endif
+LESS_ARGS += --autoprefix
 DEFAULT_CSS_BASE_FILES += \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/ext-all.css \
 	$(PACKAGE)/static/lib/cgxp/ext/Ext/resources/css/xtheme-gray.css \
@@ -632,7 +633,7 @@ node_modules/ngeo/node_modules: .build/node_modules.timestamp
 
 $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node_modules/.bin/lessc $< $@
+	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 
