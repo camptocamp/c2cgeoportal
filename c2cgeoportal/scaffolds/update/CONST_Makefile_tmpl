@@ -1,7 +1,16 @@
-VENV_BIN ?= .build/venv/bin
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 PACKAGE = {{package}}
+OPERATING_SYSTEM ?= LINUX
+
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+VENV_BIN = .build/venv/Scripts
+FIND ?=$(CYGWIN_PATH)/bin/find.exe
+HOME_DIR ?= ""
+else
+VENV_BIN ?= .build/venv/bin
 FIND ?= find
+HOME_DIR ?= $(HOME)/
+endif
 
 # Don't minify the js / css, ...
 DEVELOPMENT ?= FALSE
@@ -19,6 +28,7 @@ TILECLOUD_CHAIN ?= TRUE
 PRINT_VERSION ?= 3
 # Enable Docker target
 DOCKER ?= FALSE
+DOCKER_BASE ?= "no"
 DOCKER_TAG ?= latest
 # Use deploy
 ifeq ($(DOCKER), FALSE)
@@ -29,6 +39,7 @@ INSTANCE_ID =
 endif
 
 PIP_CMD ?= $(VENV_BIN)/pip
+PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
 PIP_VERSION ?= pip>=6
 SETUPTOOL_VERSION ?= setuptools>=12
 
@@ -107,12 +118,13 @@ GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 # transifex
-NGEO_TX_VERSION = master
-TX_DEPENDENCIES = $(VENV_BIN)/tx $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
+NGEO_TX_VERSION = 2.0
+TX_RC = .transifexrc
+TX_DEPENDENCIES = $(VENV_BIN)/tx $(HOME_DIR)$(TX_RC) .tx/config
+ifeq (,$(wildcard $(TX_RC)))
+TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(TX_RC)
 else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
+TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
 # ngeo
@@ -146,6 +158,11 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/d3/d3.min.js \
 	node_modules/typeahead.js/dist/typeahead.bundle.min.js
 NGEO_PROJECT_LIBS_JS_FILES ?=
+ifeq ($(OPERATING_SYSTEM),WINDOWS)
+COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
+else
+COMPILE_CATALOG = node_modules/.bin/compile-catalog
+endif
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -435,8 +452,13 @@ cleanall: clean
 
 .PHONY: cleanallcache
 cleanallcache: cleanall
-	rm -rf $(HOME)/.npm
-	rm -rf $(HOME)/.cache/pip
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+	rm -rf %AppData%/npm-cache
+	rm -rf %AppData%/../Local/pip/cache
+else
+	rm -rf $(HOME_DIR)/.npm
+	rm -rf $(HOME_DIR)/.cache/pip
+endif
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8
@@ -565,7 +587,7 @@ $(VENV_BIN)/tx: .build/dev-requirements.timestamp
 
 $(VENV_BIN)/mako-render: .build/dev-requirements.timestamp
 
-$(HOME)/.transifexrc:
+$(TX_RC):
 	echo "[https://www.transifex.com]" > $@
 	echo "hostname = https://www.transifex.com" >> $@
 	echo "username = c2c" >> $@
@@ -593,15 +615,15 @@ $(VENV_BIN)/db2pot: .build/requirements.timestamp
 
 $(JSON_CLIENT_LOCALISATION_FILES): .build/node_modules.timestamp
 
-node_modules/.bin/compile-catalog: .build/node_modules.timestamp
+$(COMPILE_CATALOG): .build/node_modules.timestamp
 
 .PRECIOUS: $(APP_OUTPUT_DIR)/%.json
 $(APP_OUTPUT_DIR)/%.json: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po \
 		.build/locale/%/LC_MESSAGES/gmf.po \
-		node_modules/.bin/compile-catalog \
+		$(COMPILE_CATALOG) \
 		.build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node node_modules/.bin/compile-catalog .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
+	node $(COMPILE_CATALOG) .build/locale/$*/LC_MESSAGES/gmf.po $< > $@
 
 $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES)
 	mkdir -p $(dir $@)
@@ -627,6 +649,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	cp $< $@
 
 node_modules/ngeo/node_modules: .build/node_modules.timestamp
+	rm -f $@
 	ln -s .. $@
 	touch --no-create $@
 
@@ -643,7 +666,6 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
-		--var js=$(PACKAGE)/static-ngeo/js/$*.js \
 		--var ngeo_folder=node_modules/ngeo/ \
 		--var generate_exports=true $< > $@
 
@@ -693,12 +715,18 @@ else
 endif
 
 $(NPM_CMD):
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+	npm install
+else
 	npm install npm
+endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	mkdir -p $(dir $@)
 ifeq ($(NGEO), TRUE)
+ifeq ($(OPERATING_SYSTEM), LINUX)
 	$(NPM_CMD) install
+endif
 endif
 	touch $@
 
@@ -843,7 +871,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 # Venv
 
 .build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt
-	$(PIP_CMD) install $(DEV_REQUIREMENTS)
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(DEV_REQUIREMENTS)
 	touch $@
 
 .build/venv.timestamp-noclean:
@@ -853,7 +881,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
-	$(PIP_CMD) install $(REQUIREMENTS)
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS)
 	touch $@
 
 # Print
@@ -873,13 +901,11 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 # If Linux else windows
 ifeq ($(VENV_BIN), .build/venv/bin)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
-	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
 else
 	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
-	zip -d $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) print-apps/
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 endif
 
@@ -974,7 +1000,11 @@ $(INSTANCE_ID_MARKER):
 
 # Upgrade
 UPGRADE_MAKE_FILE ?= $(INSTANCE_ID).mk
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+UPGRADE_ARGS ?= --windows
+else
 UPGRADE_ARGS ?=
+endif
 
 $(UPGRADE_MAKE_FILE):
 	@echo "The file '$(UPGRADE_MAKE_FILE)' can't be found,"
@@ -985,7 +1015,7 @@ $(UPGRADE_MAKE_FILE):
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install c2cgeoportal==${VERSION}
+	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1
@@ -1024,4 +1054,4 @@ endif
 .PHONY: $(PACKAGE)/version.py
 $(PACKAGE)/version.py:
 	@echo "# Auto-generated file. Do not Edit!" > $@
-	@.build/venv/bin/gen-version >> $@
+	@$(VENV_BIN)/gen-version >> $@
