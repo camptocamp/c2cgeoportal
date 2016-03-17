@@ -37,6 +37,8 @@ vars:
             print_template:
             - 1 A4 portrait
             - 2 A4 landscape
+            - 3 A3 portrait
+            - 4 A3 landscape
             default_basemap: map
 
             # The name of the theme to use as the default theme for the

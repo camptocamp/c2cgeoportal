@@ -97,8 +97,39 @@ templates:
             northArrow: *northArrow
             scalebar: *scalebar
             map: !map
+                <<: *map
+                width: 800
+                height: 441
+            datasource: *datasource
+        processors: *processors
+
+    3 A portrait: !template
+        reportTemplate: A3_Portrait.jrxml
+        attributes:
+            title: *title
+            comments: *comments
+            debug: *debug
+            legend: *legend
+            northArrow: *northArrow
+            scalebar: *scalebar
                <<: *map
                width: 800
-               height: 441
+               height: 1000
+            datasource: *datasource
+        processors: *processors
+
+    4 A3 landscape: !template
+        reportTemplate: A3_Landscape.jrxml
+        attributes:
+            title: *title
+            comments: *comments
+            debug: *debug
+            legend: *legend
+            northArrow: *northArrow
+            scalebar: *scalebar
+            map: !map
+                <<: *map
+                width: 800
+                height: 460
             datasource: *datasource
         processors: *processors
