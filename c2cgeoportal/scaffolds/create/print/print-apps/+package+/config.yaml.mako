@@ -10,7 +10,7 @@ templates:
                 default: ""
             debug: !boolean &debug
                 default: false
-            legend: !legend &legend {} 
+            legend: !legend &legend {}
             northArrow: !northArrow &northArrow
                 size: 40
                 default:
