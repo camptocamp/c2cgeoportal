@@ -36,6 +36,7 @@ vars:
         anonymous:
             print_template:
             - 1 A4 portrait
+            - 2 A4 landscape
             - 3 A3 portrait
             - 4 A3 landscape
             default_basemap: map
