@@ -6,13 +6,19 @@ python:
 services:
 - postgresql
 
+env:
+  global:
+    secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
+
 before_install:
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get remove -y --force-yes python-zope.interface
 - sudo apt-get install -y --force-yes aptitude
 - sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
 - sudo apt-get update
-- sudo aptitude install -y apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
+- sudo aptitude install -y apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7
+  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
+  postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
 
 - sudo -u postgres createdb -E UTF8 -T template0 template_postgis
 - psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
@@ -24,6 +30,12 @@ before_install:
 
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
+
+- echo "[https://www.transifex.com]" > ~/.transifexrc
+- echo "hostname = https://www.transifex.com" >> ~/.transifexrc
+- echo "username = stephane.brunner@camptocamp.com" >> ~/.transifexrc
+- echo "password = ${TX_PASS}" >> ~/.transifexrc
+- echo "token =" >> ~/.transifexrc
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
@@ -91,9 +103,11 @@ after_success:
 
 before_deploy:
 - .build/venv/bin/pip install wheel
-- sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
-- sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
-- git diff
+- if [ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ] ; then
+  sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
+  sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
+  git diff;
+  fi
 
 deploy:
 - provider: pypi
