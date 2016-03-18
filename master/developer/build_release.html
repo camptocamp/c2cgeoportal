@@ -111,17 +111,8 @@ in the <code class="docutils literal"><span class="pre">for</span> <span class="
 </pre><p>Push your changes:</p>
 <pre class="highlight"><span class="prompt1">git push origin master</span>
 </pre><p>Create a new Transifex resource:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Go to URL: <a class="reference external" href="https://www.transifex.com/camptocamp/geomapfish/content/">https://www.transifex.com/camptocamp/geomapfish/content/</a></li>
-<li>Click on &#8220;Add a resource&#8221;</li>
-<li>Select the <code class="docutils literal"><span class="pre">.pot</span></code> file</li>
-<li>The name should be something like &#8220;c2cgeoportal-2_0&#8221; (with the right version)</li>
-<li>Click on &#8220;Create a resource&#8221;</li>
-<li>Run <cite>make transifex-init</cite></li>
-</ul>
-</div></blockquote>
-<p>Then continue by creating the release.</p>
+<pre class="highlight"><span class="prompt1">make transifex-init</span>
+</pre><p>Then continue by creating the release.</p>
 </div>
 <div class="section" id="id2">
 <h3>New release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
