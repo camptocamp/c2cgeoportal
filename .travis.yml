@@ -88,7 +88,6 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
-- travis/doc.sh
 
 before_deploy:
 - .build/venv/bin/pip install wheel
@@ -97,7 +96,7 @@ before_deploy:
 - git diff
 
 deploy:
-  provider: pypi
+- provider: pypi
   user: sbrunner
   password:
     secure: dT4Z3Zk2SGq1BPl+mX2iI0ubK7veSPb1b0fGrKHpvC3gBxuGUDMhtHw5dgopdWWeUhZLzLoPpEZPyCHtJhE2vunGwZfmJXkrqp/yC1meszZpDgBkpRWzx62u/f1+FmUdGPukvlqTfzgl/vJwertPRzX9Y4hanoFIDQvIKnp37Ls=
@@ -107,9 +106,25 @@ deploy:
     tags: true
     python: 2.7
     condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
-
-after_deploy:
-  travis/after_deploy.sh
+- provider: script
+  script: travis/doc.sh
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    python: 2.7
+- &transifex
+  provider: script
+  script: make transifex-send
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    branch: master
+    python: 2.7
+- <<: *transifex
+  on:
+    repo: camptocamp/c2cgeoportal
+    branch: 2.0
+    python: 2.7
 
 notifications:
   email:

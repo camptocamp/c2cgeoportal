@@ -107,7 +107,7 @@ GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 # transifex
-NGEO_TX_VERSION = master
+TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(pkg_resources.get_distribution('c2cgeoportal').version.split('.')[0:2]))")
 TX_DEPENDENCIES = $(VENV_BIN)/tx $(HOME)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME)/.transifexrc))
 TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
@@ -574,7 +574,7 @@ $(HOME)/.transifexrc:
 
 .tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "git_branch=$(NGEO_TX_VERSION)" $< > $@
+		--var "tx_version=$(TX_VERSION)" $< > $@
 
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
