@@ -121,12 +121,9 @@ Push your changes:
 
 Create a new Transifex resource:
 
-    * Go to URL: https://www.transifex.com/camptocamp/geomapfish/content/
-    * Click on "Add a resource"
-    * Select the ``.pot`` file
-    * The name should be something like "c2cgeoportal-2_0" (with the right version)
-    * Click on "Create a resource"
-    * Run `make transifex-init`
+.. prompt:: bash
+
+    make transifex-init
 
 Then continue by creating the release.
 

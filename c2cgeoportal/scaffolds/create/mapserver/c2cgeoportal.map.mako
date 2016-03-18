@@ -125,6 +125,8 @@ MAP
         PROJECTION
           "init=epsg:21781"
         END
+        TOLERANCE 10
+        TOLERANCEUNITS pixels
         CLASS
             NAME "countries"
             OUTLINECOLOR 0 0 0

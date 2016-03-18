@@ -6,13 +6,19 @@ python:
 services:
 - postgresql
 
+env:
+  global:
+    secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
+
 before_install:
 - cat /etc/apt/sources.list.d/*
 - sudo apt-get remove -y --force-yes python-zope.interface
 - sudo apt-get install -y --force-yes aptitude
 - sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
 - sudo apt-get update
-- sudo aptitude install -y apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4 postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
+- sudo aptitude install -y apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7
+  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
+  postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
 
 - sudo -u postgres createdb -E UTF8 -T template0 template_postgis
 - psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
@@ -25,7 +31,14 @@ before_install:
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
 
+- echo "[https://www.transifex.com]" > ~/.transifexrc
+- echo "hostname = https://www.transifex.com" >> ~/.transifexrc
+- echo "username = stephane.brunner@camptocamp.com" >> ~/.transifexrc
+- echo "password = ${TX_PASS}" >> ~/.transifexrc
+- echo "token =" >> ~/.transifexrc
+
 install:
+- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - travis/no-make-error.sh . help
 - make -f travis.mk c2c-egg
 - travis/pip.sh install tilecloud_chain
@@ -50,7 +63,6 @@ script:
 - .build/venv/bin/flake8 --version
 - python setup.py --version
 
-- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 - find /tmp/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
 - find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
@@ -88,16 +100,17 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
-- travis/doc.sh
 
 before_deploy:
 - .build/venv/bin/pip install wheel
-- sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
-- sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
-- git diff
+- if [ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ] ; then
+  sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
+  sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
+  git diff;
+  fi
 
 deploy:
-  provider: pypi
+- provider: pypi
   user: sbrunner
   password:
     secure: dT4Z3Zk2SGq1BPl+mX2iI0ubK7veSPb1b0fGrKHpvC3gBxuGUDMhtHw5dgopdWWeUhZLzLoPpEZPyCHtJhE2vunGwZfmJXkrqp/yC1meszZpDgBkpRWzx62u/f1+FmUdGPukvlqTfzgl/vJwertPRzX9Y4hanoFIDQvIKnp37Ls=
@@ -107,9 +120,25 @@ deploy:
     tags: true
     python: 2.7
     condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
-
-after_deploy:
-  travis/after_deploy.sh
+- provider: script
+  script: travis/doc.sh
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    python: 2.7
+- &transifex
+  provider: script
+  script: make transifex-send
+  skip_cleanup: true
+  on:
+    repo: camptocamp/c2cgeoportal
+    branch: master
+    python: 2.7
+- <<: *transifex
+  on:
+    repo: camptocamp/c2cgeoportal
+    branch: 2.0
+    python: 2.7
 
 notifications:
   email:

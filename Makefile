@@ -6,6 +6,12 @@ VARS_FILES += vars.yaml
 
 DEVELOPPEMENT ?= FALSE
 
+ifdef TRAVIS_TAG
+VERSION ?= $(TRAVIS_TAG)
+else
+VERSION ?= 2.0
+endif
+
 PIP_CMD ?= .build/venv/bin/pip
 
 ADMIN_OUTPUT_DIR = c2cgeoportal/static/build/admin/
@@ -39,7 +45,7 @@ L10N_PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeo
 LANGUAGES = en $(L10N_LANGUAGES)
 PO_FILES = $(addprefix c2cgeoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal.po, $(LANGUAGES)))
 MO_FILES = $(addprefix .build/,$(addsuffix .mo.timestamp,$(basename $(PO_FILES))))
-SRC_FILES = $(shell ls -1 c2cgeoportal/*.py) \
+SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.py)) \
 	$(shell find c2cgeoportal/lib -name "*.py" -print) \
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
@@ -95,6 +101,7 @@ checks: flake8
 clean:
 	rm -f .build/dev-requirements.timestamp
 	rm -f .build/venv.timestamp
+	rm -f c2cgeoportal/version.py
 	rm -f c2cgeoportal/locale/*.pot
 	rm -f c2cgeoportal/locale/en/LC_MESSAGES/c2cgeoportal.po
 	rm -rf c2cgeoportal/static/build
@@ -164,7 +171,7 @@ transifex-send: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 
 .PHONY: transifex-init
 transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
-	.build/venv/bin/tx push --source
+	.build/venv/bin/tx push --source --force
 	.build/venv/bin/tx push --translations --force --no-interactive
 	$(TOUCHBACK_TXRC)
 
@@ -173,7 +180,7 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(APPS_HTML_FILES) $(APPS_JS_FILES)
 
-ngeo: NGEO_GIT_ARGS ?= --branch=master
+ngeo: NGEO_GIT_ARGS ?= --branch=$(VERSION)
 ngeo:
 	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
 
