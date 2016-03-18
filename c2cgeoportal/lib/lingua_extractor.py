@@ -42,6 +42,7 @@ from lingua.extractors import Message
 from pyramid.paster import bootstrap
 
 from c2cgeoportal.lib import add_url_params
+from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
 
 
@@ -68,20 +69,40 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
 
 
 class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
-    "GeoMapfish config extractor (raster layers)"
+    "GeoMapfish config extractor (raster layers, and print templates)"
 
     extensions = [".yaml"]
 
     def __call__(self, filename, options):
         with open(filename) as config_file:
             config = yaml.load(config_file)
-            return [
-                Message(
-                    None, raster_layer, None, [], u"", u"",
-                    (filename, u"raster/%s" % raster_layer)
-                )
-                for raster_layer in config.get("raster", {}).keys()
-            ]
+            # for application config (.build/config.yaml)
+            if "raster" in config:
+                return [
+                    Message(
+                        None, raster_layer, None, [], u"", u"",
+                        (filename, u"raster/%s" % raster_layer)
+                    )
+                    for raster_layer in config.get("raster", {}).keys()
+                ]
+            # for the print config
+            elif "templates" in config:
+                result = []
+                for template in config.get("templates").keys():
+                    result.append(Message(
+                        None, template, None, [], u"", u"",
+                        (filename, u"template/%s" % template)
+                    ))
+                    result += [
+                        Message(
+                            None, attribute, None, [], u"", u"",
+                            (filename, u"template/%s/%s" % (template, attribute))
+                        )
+                        for attribute in config.get("templates")[template].attributes.keys()
+                    ]
+                return result
+            else:
+                raise "Not a known config file"
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover

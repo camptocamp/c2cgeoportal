@@ -524,7 +524,11 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
-I18N_SOURCE_FILES += $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES) .build/config.yaml
+I18N_SOURCE_FILES += $(APP_HTML_FILES) \
+	$(APP_JS_FILES) \
+	$(APP_DIRECTIVES_PARTIALS_FILES) \
+	.build/config.yaml \
+	print/print-apps/$(PACKAGE)/config.yaml
 ifeq ($(DOCKER),FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
