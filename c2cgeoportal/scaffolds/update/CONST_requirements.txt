@@ -1,5 +1,5 @@
 -r CONST_versions_requirements.txt
-Pillow==3.0.0
+Pillow==3.1.1
 psycopg2==2.6.1
 Shapely==1.5.13
 pyproj==1.9.5.1
