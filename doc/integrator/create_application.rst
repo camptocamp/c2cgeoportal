@@ -206,7 +206,8 @@ Add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp -b <version>
+    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp
+    git submodule foreach git checkout <version>
     git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
@@ -234,7 +235,8 @@ Add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp -b <version>
+    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp
+    git submodule foreach git checkout <version>
     git submodule foreach git submodule update --init
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
