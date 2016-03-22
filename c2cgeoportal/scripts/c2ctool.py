@@ -238,11 +238,12 @@ class C2cTool:
 
             url = (
                 "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
-                "c2cgeoportal/scaffolds/update/CONST_versions.txt" % self.options.version
+                "c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt" %
+                self.options.version
             )
             headers, _ = http.request(url)
             if headers.status != 200:
-                print("Failed downloading the c2cgeoportal CONST_versions.txt file.")
+                print("Failed downloading the c2cgeoportal CONST_versions_requirements.txt file.")
                 print(url)
                 exit(1)
 

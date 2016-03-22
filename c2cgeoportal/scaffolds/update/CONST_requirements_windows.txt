@@ -1,4 +1,4 @@
--r CONST_versions.txt
+-r CONST_versions_requirements.txt
 wheels/psycopg2-2.6.1-cp27-none-win32.whl
 wheels/Shapely-1.5.13-cp27-none-win32.whl
 wheels/Pillow-3.1.0-cp27-none-win32.whl

@@ -1,6 +1,18 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.1.0
+=============
+
+1. Get the new files for ngeo integration:
+
+    ...
+
+2. Remove the no longer used files:
+
+    git rm CONST_versions.txt
+
+
 Version 2.0.0
 =============
 

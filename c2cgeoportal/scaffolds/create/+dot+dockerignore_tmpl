@@ -6,7 +6,7 @@
 !apache/application.wsgi
 !requirements.txt
 !CONST_requirements.txt
-!CONST_versions.txt
+!CONST_versions_requirements.txt
 !setup.cfg
 !setup.py
 !development.ini
