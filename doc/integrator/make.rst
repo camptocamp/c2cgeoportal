@@ -82,34 +82,24 @@ Custom rules
 ------------
 
 In the ``<package>.mk`` file we can create some other rules.
-Here is a simple example that creates the
-`/var/sig/tiles/1.0.0/WMTSCapabilities.xml` file
-and removes it on the `clean` rule:
+Here is a simple example:
 
 .. code:: makefile
 
-    WMTSCAPABILITIES_FILE ?= /var/sig/tiles/1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
+    MY_FILE ?= <file>
 
-    PRE_RULES = $(WMTSCAPABILITIES_FILE)
+    PRE_RULES = $(MY_FILE)
 
-    $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
-        $(VENV_BIN)/generate_controller --capabilities
+    $(MY_FILE): <source_file>
+        cp <source_file> $(MY_FILE)
+        # Short version:
+        # cp $< $@
 
     clean: project-clean
     .PHONY: project-clean
     project-clean:
-        rm -f $(WMTSCAPABILITIES_FILE)
+        rm -f $(MY_FILE)
 
-``tilegeneration/config.yaml`` and ``.build/dev-requirements.timestamp`` are the files
-that must be built to run the current rule.
-
-``$(VENV_BIN)/generate_controller --capabilities`` is the command that generates the wanted file.
-
-And if you don't want the instance id in the production file you can put in your production mk file:
-
-.. code:: makefile
-
-    WMTSCAPABILITIES_FILE = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
 
 Note
 ----

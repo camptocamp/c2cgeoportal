@@ -241,6 +241,7 @@ vars:
     - http://b.tiles.{host}/{instanceid}/tiles
     - http://c.tiles.{host}/{instanceid}/tiles
     - http://d.tiles.{host}/{instanceid}/tiles
+    wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
@@ -324,6 +325,7 @@ interpreted:
     - instanceid
     - apache_entry_point
     - development
+    - wmtscapabilities_path
     node:
         vars:
         - closure_library_path
