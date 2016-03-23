@@ -37,7 +37,7 @@
                 <textElement textAlignment="Right">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA["Le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy", new Locale("fr")).format(TODAY())]]></textFieldExpression>
+                <textFieldExpression><![CDATA["Le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy", new Locale("fr")).format(new Date())]]></textFieldExpression>
             </textField>
             <line>
                 <reportElement x="0" y="25" width="555" height="1" forecolor="#FA7500"/>

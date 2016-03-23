@@ -36,6 +36,9 @@ vars:
         anonymous:
             print_template:
             - 1 A4 portrait
+            - 2 A4 landscape
+            - 3 A3 portrait
+            - 4 A3 landscape
             default_basemap: map
 
             # The name of the theme to use as the default theme for the
@@ -80,7 +83,7 @@ vars:
     checker:
         fulltextsearch: text to search
         print_spec:
-            layout: "A4 portrait"
+            layout: "1 A4 portrait"
             outputFormat: "pdf"
             attributes:
                 title: ""
@@ -106,10 +109,10 @@ vars:
         email_from: info@camptocamp.com
         email_subject: New password generated for GeoMapFish
         email_body: |
-            Hello,
+            Hello {user},
 
             You have asked for an new password,
-            the new generated password is: {password}
+            the newly generated password is: {password}
 
             Sincerely yours
             The GeoMapfish team

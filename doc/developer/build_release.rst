@@ -195,7 +195,7 @@ When a new release or a new version is done you should do the following tasks:
 
 * Test the demo.
 * Move all the open issues to a new milestone and close the current milestone
-  in `cgxp <https://github.com/camptocamp/cgxp/milestones>`
-  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`.
+  in `cgxp <https://github.com/camptocamp/cgxp/milestones>_`
+  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>_`.
 * Send a release email to the ``geomapfish@googlegroups.com``
   and ``geospatial@lists.camptocamp.com`` mailing lists.
