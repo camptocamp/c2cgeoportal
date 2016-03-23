@@ -669,12 +669,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	mkdir -p $(dir $@)
 	cp $< $@
 
-node_modules/ngeo/node_modules: .build/node_modules.timestamp
-	rm -f $@
-	ln -s .. $@
-	touch --no-create $@
-
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
