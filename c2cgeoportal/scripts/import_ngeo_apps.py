@@ -106,21 +106,34 @@ def main():
         data = src.read()
 
         if args.package:
-            json_data = loads(data)
+            ngeo_json_data = loads(data)
+            json_data = {}
             json_data["name"] = "{{package}}"
+            json_data["version"] = "2.0.0"
             json_data["description"] = "A GeoMapFish project"
 
+            json_data["devDependencies"] = ngeo_json_data["devDependencies"]
             # freeze the ngeo version
             json_data["devDependencies"]["ngeo"] = \
                 "git://github.com/camptocamp/ngeo#" + _get_ngeo_version()
-
-            del json_data["repository"]
-            del json_data["bugs"]
-            del json_data["devDependencies"]["angular-jsdoc"]
-            del json_data["devDependencies"]["jsdoc"]
-            del json_data["devDependencies"]["jsdom"]
-
-            del json_data["scripts"]
+            for package in [
+                "angular-jsdoc",
+                "angular-mocks",
+                "coveralls",
+                "fs-extra",
+                "gaze",
+                "graceful-fs",
+                "jsdoc",
+                "jsdom",
+                "karma",
+                "karma-coverage",
+                "karma-jasmine",
+                "karma-phantomjs-launcher",
+                "nomnom",
+                "temp",
+                "walk",
+            ]:
+                del json_data["devDependencies"][package]
 
             data = dumps(json_data, indent=4, sort_keys=True)
             data = _sub(r" +\n", "\n", data)
