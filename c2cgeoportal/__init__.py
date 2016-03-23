@@ -317,10 +317,10 @@ def _add_static_view(config, name, path):
 def locale_negotiator(request):
     lang = request.params.get("lang")
     if lang is None:
-        # if best_match returns None then Pyramid will use what's defined in
-        # the default_locale_name configuration variable
+        # if best_match returns None then use the default_locale_name configuration variable
         return request.accept_language.best_match(
-            request.registry.settings.get("available_locale_names"))
+            request.registry.settings.get("available_locale_names"),
+            default_match=request.registry.settings.get("default_locale_name"))
     return lang
 
 
