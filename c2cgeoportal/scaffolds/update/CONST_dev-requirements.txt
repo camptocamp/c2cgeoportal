@@ -1,7 +1,7 @@
 flake8
 pep8-naming
-c2c.template>=1.2.dev
-c2c.versions==1.0.0
+c2c.template==1.2.0
+c2c.versions==1.0.1
 htmlmin==0.1.10
 alembic==0.7.7
 https://github.com/transifex/transifex-client/archive/655c5e9f964bdc3e7ba4787d68b048bc670dcbf0.zip#transifex-client
