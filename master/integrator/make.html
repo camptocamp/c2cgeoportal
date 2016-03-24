@@ -110,20 +110,26 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 Here is a simple example that creates the
 <cite>/var/sig/tiles/1.0.0/WMTSCapabilities.xml</cite> file
 and removes it on the <cite>clean</cite> rule:</p>
-<div class="code makefile highlight-python"><div class="highlight"><pre><span></span>PRE_RULES = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+<div class="code makefile highlight-python"><div class="highlight"><pre><span></span>WMTSCAPABILITIES_FILE ?= /var/sig/tiles/1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 
-/var/sig/tiles/1.0.0/WMTSCapabilities.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+PRE_RULES = $(WMTSCAPABILITIES_FILE)
+
+$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
     $(VENV_BIN)/generate_controller --capabilities
 
 clean: project-clean
 .PHONY: project-clean
 project-clean:
-    rm -f /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+    rm -f $(WMTSCAPABILITIES_FILE)
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code> and <code class="docutils literal"><span class="pre">.build/dev-requirements.timestamp</span></code> are the files
 that must be built to run the current rule.</p>
 <p><code class="docutils literal"><span class="pre">$(VENV_BIN)/generate_controller</span> <span class="pre">--capabilities</span></code> is the command that generates the wanted file.</p>
+<p>And if you don&#8217;t want the instance id in the production file you can put in your production mk file:</p>
+<div class="code makefile highlight-python"><div class="highlight"><pre><span></span>WMTSCAPABILITIES_FILE = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+</pre></div>
+</div>
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
