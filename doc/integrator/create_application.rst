@@ -172,7 +172,8 @@ Add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp -b <version>
+    git submodule add git@github.com:camptocamp/cgxp.git <project>/<package>/static/lib/cgxp
+    git submodule foreach git checkout <version>
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
 Branches are available starting at version ``1.3``.
@@ -199,7 +200,8 @@ If you plan to use CGXP, add the CGXP submodule:
 
 .. prompt:: bash
 
-    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp -b <version>
+    git submodule add https://github.com/camptocamp/cgxp.git <package>/static/lib/cgxp
+    git submodule foreach git checkout <version>
 
 ``-b <version>`` forces to use the CGXP branch ``<version>``.
 Branches are available starting at version ``1.3``.

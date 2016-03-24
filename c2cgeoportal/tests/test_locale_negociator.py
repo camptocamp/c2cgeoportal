@@ -54,7 +54,7 @@ class TestLocalNegociator(TestCase):
 
         request.headers["accept-language"] = "en-us,en;q=0.3,fr;q=0.7"
         lang = locale_negotiator(request)
-        self.assertEquals(lang, None)
+        self.assertEquals(lang, "de")
 
     def test_lang_is_available(self):
         from c2cgeoportal import locale_negotiator

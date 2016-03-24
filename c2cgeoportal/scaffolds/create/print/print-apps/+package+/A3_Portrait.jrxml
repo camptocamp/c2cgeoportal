@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
+<!-- 2016-03-15T12:06:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gmf16_A3_portrait" pageWidth="842" pageHeight="1190" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="041e6c80-82d5-4055-a560-dd402f39361f">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="comments" class="java.lang.String"/>
+	<parameter name="debug" class="java.lang.Boolean"/>
+	<parameter name="mapSubReport" class="java.lang.String"/>
+	<parameter name="legend" class="net.sf.jasperreports.engine.data.JRTableModelDataSource"/>
+	<parameter name="legendSubReport" class="java.lang.String"/>
+	<parameter name="numberOfLegendRows" class="java.lang.Integer"/>
+	<parameter name="scalebarSubReport" class="java.lang.String"/>
+	<parameter name="northArrowSubReport" class="java.lang.String"/>
+	<parameter name="jrDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<pageHeader>
+		<band height="28">
+			<staticText>
+				<reportElement x="709" y="0" width="92" height="24" uuid="d350aa9e-8da5-4a43-94a5-ea4a6deaec36">
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[En-tête, sur chaque page]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="180" height="24" uuid="9ea240ba-e965-4d07-bc48-5b2d093382f9"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="185" y="0" width="360" height="23" uuid="7ce8d781-d008-4256-a075-ebd0bebbb83e"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="545" y="0" width="255" height="20" uuid="5b782d9b-59cf-441b-ae26-1693d11a534f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy", new Locale("fr")).format(new Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="25" width="800" height="1" forecolor="#FA7500" uuid="ce77e4cd-7737-4406-bb3e-8186f123125e">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="0" y="27" width="800" height="1" forecolor="#FA7500" uuid="8acdb708-4911-463c-b130-cfc9b7586fef">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="717" splitType="Stretch">
+			<staticText>
+				<reportElement x="706" y="0" width="95" height="20" uuid="23f391a6-adcb-40c0-8370-b5fe12c11232">
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Detail band 1]]></text>
+			</staticText>
+			<subreport>
+				<reportElement mode="Transparent" x="0" y="1" width="800" height="675" uuid="c30e77bd-7173-4e4d-85a3-219f8d59c297">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$P{mapSubReport}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="758" y="630" width="40" height="40" uuid="0fae1157-6844-4e51-9e64-b0cf1fdfcc86"/>
+				<subreportExpression><![CDATA[$P{northArrowSubReport}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="5" y="650" width="150" height="20" uuid="756bf319-bd30-49bd-9e3d-631b5b6f2b6b"/>
+				<subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
+			</subreport>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="680" width="798" height="37" uuid="ea3e251d-bbb2-48ac-b144-4505165208e0"/>
+				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="716" width="100" height="1" uuid="a7951507-1c38-49a8-b66b-47fa957727f5"/>
+			</break>
+		</band>
+		<band height="65">
+			<printWhenExpression><![CDATA[!($P{jrDataSource} instanceof net.sf.jasperreports.engine.JREmptyDataSource)]]></printWhenExpression>
+			<staticText>
+				<reportElement x="704" y="0" width="95" height="20" uuid="74616956-d129-46f0-9fc1-52ee8c578503">
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Detail band 2]]></text>
+			</staticText>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="888" height="42" uuid="1fb53a3e-a3c6-4765-9b64-0e5f306c217f"/>
+				<dataSourceExpression><![CDATA[$P{jrDataSource}]]></dataSourceExpression>
+				<subreportExpression><![CDATA["results.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="82" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{numberOfLegendRows} != 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="0" width="1" height="1" forecolor="#FFFFFF" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3"/>
+			</line>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="703" y="0" width="95" height="20" uuid="094e2564-2140-41ea-8541-b95a3f5a6666">
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Detail band 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="460" height="20" forecolor="#424242" uuid="29fb8881-15f4-4235-8d78-003175bd408f"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LÉGENDE]]></text>
+			</staticText>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="800" height="56" uuid="4c32d050-9b4f-448e-97f0-072a4606c164">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$P{legend}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{legendSubReport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="55">
+			<line>
+				<reportElement x="0" y="0" width="800" height="1" forecolor="#FA7500" uuid="34cbcce8-ca61-41ae-9c1d-cae2e371031d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="705" y="0" width="95" height="20" uuid="61f9a30e-2aaa-4209-91ea-b9d844908ee1">
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Pied de page, sur chaque page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="300" height="14" uuid="323e51d1-9bf3-4a1b-961f-69c339a07d28"/>
+				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="140" height="52" uuid="3ce3b68b-0610-4dbf-bdba-aa788b22a476"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Suisse
+Camptocamp SA, Lausanne
+Tel + 41 21 619 10 10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="192" height="51" uuid="948290c9-c6dc-4442-90d2-5b47c6b2c074"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[France
+Camptocamp France SAS, Chambéry
+Tél : +33 4 79 44 44 94]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="573" y="0" width="159" height="51" uuid="0dc8e697-b57c-4dec-9622-f0e611100b04"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Autriche
+Camptocamp Austria, Vienne
+Tél : +43 1 712 21 94 0]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="738" y="21" width="38" height="30" uuid="e0567a18-8d1d-4e04-9658-0eb2fb648f2f"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="776" y="21" width="22" height="30" uuid="4574386a-cbc9-4529-896b-c402fb4236c1"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

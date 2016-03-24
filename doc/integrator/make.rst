@@ -88,20 +88,28 @@ and removes it on the `clean` rule:
 
 .. code:: makefile
 
-    PRE_RULES = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+    WMTSCAPABILITIES_FILE ?= /var/sig/tiles/1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 
-    /var/sig/tiles/1.0.0/WMTSCapabilities.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
+    PRE_RULES = $(WMTSCAPABILITIES_FILE)
+
+    $(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
         $(VENV_BIN)/generate_controller --capabilities
 
     clean: project-clean
     .PHONY: project-clean
     project-clean:
-        rm -f /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+        rm -f $(WMTSCAPABILITIES_FILE)
 
 ``tilegeneration/config.yaml`` and ``.build/dev-requirements.timestamp`` are the files
 that must be built to run the current rule.
 
 ``$(VENV_BIN)/generate_controller --capabilities`` is the command that generates the wanted file.
+
+And if you don't want the instance id in the production file you can put in your production mk file:
+
+.. code:: makefile
+
+    WMTSCAPABILITIES_FILE = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
 
 Note
 ----

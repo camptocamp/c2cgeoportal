@@ -53,7 +53,7 @@ INSTANCE_ID =
 endif
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_VERSION ?= pip>=6
+PIP_VERSION ?= pip>=7
 SETUPTOOL_VERSION ?= setuptools>=12
 
 GIT_MODULES_FOLDER ?= .git/modules/
@@ -673,12 +673,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	mkdir -p $(dir $@)
 	cp $< $@
 
-node_modules/ngeo/node_modules: .build/node_modules.timestamp
-	rm -f $@
-	ln -s .. $@
-	touch --no-create $@
-
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) node_modules/ngeo/node_modules .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
@@ -969,7 +964,7 @@ print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 
 print/WEB-INF/lib/joda-time-1.6.jar:
 	mkdir -p $(dir $@)
-	curl --max-redirs 0 --location --output $@ http://maven.ibiblio.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
+	curl --max-redirs 0 --location --output $@ http://central.maven.org/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/postgresql-9.3-1102.jdbc41.jar:
