@@ -112,6 +112,7 @@ templates:
             legend: *legend
             northArrow: *northArrow
             scalebar: *scalebar
+            map: !map
                <<: *map
                width: 800
                height: 1000
