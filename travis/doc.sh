@@ -23,7 +23,7 @@ mv doc/_build/html/* ${BRANCH}
 if [ ${DOC} == true ]
 then
     git add --all ${BRANCH}
-    git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}"
+    git commit -m "Update documentation for the revision ${TRAVIS_COMMIT}" | true
     git push origin gh-pages
 else
     git checkout master/searchindex.js
