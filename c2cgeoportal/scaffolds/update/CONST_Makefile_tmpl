@@ -741,7 +741,7 @@ endif
 
 $(NPM_CMD):
 ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm
+	npm install npm || npm install npm || npm install npm
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
