@@ -61,9 +61,9 @@ It also used throw OpenLayers.i18n to display the name on the layers tree.</li>
 throw the <code class="docutils literal"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas through which the user can see the layer.</li>
 <li><code class="docutils literal"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></code>: the related postgres table,
-used by the <a class="reference internal" href="editing.html#administrator-editing"><span>Editing</span></a>.</li>
+used by the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>.</li>
 <li><code class="docutils literal"><span class="pre">Attributes</span> <span class="pre">to</span> <span class="pre">exclude</span></code>: the list of attributes (database columns) that shouldn&#8217;t appear in
-the <a class="reference internal" href="editing.html#administrator-editing"><span>Editing</span></a> so that they cannot be modified by the end user.
+the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a> so that they cannot be modified by the end user.
 For enumerable attributes (foreign key), the column name should end with &#8216;_id&#8217;.</li>
 <li><code class="docutils literal"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
 <li><code class="docutils literal"><span class="pre">UI</span> <span class="pre">Metadata</span></code>: Additional metadata used by the UI.</li>
@@ -208,8 +208,8 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
 </ul>
 </li>
 <li><p class="first"><code class="docutils literal"><span class="pre">config</span></code>: to get the server name from the URL, with the config from the <code class="docutils literal"><span class="pre">vars</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>servers:
-   my_server: http://example.com/test
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">servers</span><span class="p">:</span>
+   <span class="n">my_server</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">test</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">config://my_server/icon.png</span></code> will be transformed into
@@ -270,9 +270,6 @@ the URL <code class="docutils literal"><span class="pre">http://example.com/test
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -283,7 +280,7 @@ the URL <code class="docutils literal"><span class="pre">http://example.com/test
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

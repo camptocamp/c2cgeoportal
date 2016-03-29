@@ -47,25 +47,25 @@
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service
 which will be used to get the namespace required to parse the WFS response,
 and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
 <span class="n">cgxp</span><span class="o">.</span><span class="n">LEGEND_INCLUDE_LAYER_NAME</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Change the DPI value to use the same as in the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
 <span class="o">+</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mf">2.54</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mf">0.00028</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following configuration:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>encodeLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
-encodeExternalLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgis&#39;</span> <span class="p">}</span>
+<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgis&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="apache-configuration">
 <h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
+<div class="code highlight-default"><div class="highlight"><pre><span></span>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
 + ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
 - SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
@@ -76,7 +76,7 @@ encodeExternalLayer: { useNativeAngle: true, serverType: &#39;qgis&#39; }
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
 </pre></div>
 </div>
 </div>
@@ -97,13 +97,13 @@ span.prompt1:before {
 <p>The first solution is to create a tunnel with ssh:</p>
 <pre class="highlight"><span class="prompt1">ssh -L 5432:localhost:54532 &lt;server&gt;</span>
 </pre><p>And use the following connection attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>Name: &lt;aname&gt;
-Host: localhost
-Port: 5432
-Database: &lt;database&gt;
-SSL mode: Disable
-Username: www-data
-Password: www-data
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
+<span class="n">Host</span><span class="p">:</span> <span class="n">localhost</span>
+<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">Disable</span>
+<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
 </pre></div>
 </div>
 </div>
@@ -112,13 +112,13 @@ Password: www-data
 <p>For that you should ask the sysadmins to be able to access to the
 postgres port on the server from your infra.</p>
 <p>Then use the following connection attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>Name: &lt;aname&gt;
-Host: &lt;server&gt;
-Port: 5432
-Database: &lt;database&gt;
-SSL mode: require
-Username: www-data
-Password: www-data
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
+<span class="n">Host</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span><span class="o">&gt;</span>
+<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">require</span>
+<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
 </pre></div>
 </div>
 </div>
@@ -182,9 +182,6 @@ Password: www-data
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -195,7 +192,7 @@ Password: www-data
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

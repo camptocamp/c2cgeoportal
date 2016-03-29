@@ -45,17 +45,17 @@
 <p>If you want to optimize the parallelization of static resource download you
 can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 something like this:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span># The used sub domain for the static resources
-subdommains: [&#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;]
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The used sub domain for the static resources</span>
+<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Those sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
 the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span># The URL template used to generate the sub domain URL
-# %(sub)s will be replaced by the sub domain value.
-subdomain_url_template: http://%(sub)s.{host}
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
+<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
+<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -96,9 +96,6 @@ subdomain_url_template: http://%(sub)s.{host}
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -109,7 +106,7 @@ subdomain_url_template: http://%(sub)s.{host}
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

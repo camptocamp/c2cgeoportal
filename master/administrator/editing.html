@@ -52,7 +52,7 @@ administration interface.</p>
 <p>To be editable a layer should satisfy the following requirements:</p>
 <ol class="arabic">
 <li><p class="first">It should be accessible with WMS, and correctly configured in the
-mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><span>Mapfile configuration</span></a>.</p>
+mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><span class="std std-ref">Mapfile configuration</span></a>.</p>
 </li>
 <li><p class="first">Its data should be in a PostGIS table, which should be in the
 application database. The PostGIS table can be in a separate
@@ -60,11 +60,11 @@ schema though, which is even recommended.</p>
 </li>
 <li><p class="first">The PostGIS table should include a primary key with a sequence
 associated. Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>db=# \d table;
-                     Table &quot;public.table&quot;
-    Column   |      Type   |                              Modifiers
--------------+-------------+----------------------------------------------------------
- id          | integer     | not null default nextval(&#39;public.table_id_seq&#39;::regclass)
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">=</span><span class="c1"># \d table;</span>
+                     <span class="n">Table</span> <span class="s2">&quot;public.table&quot;</span>
+    <span class="n">Column</span>   <span class="o">|</span>      <span class="n">Type</span>   <span class="o">|</span>                              <span class="n">Modifiers</span>
+<span class="o">-------------+-------------+----------------------------------------------------------</span>
+ <span class="nb">id</span>          <span class="o">|</span> <span class="n">integer</span>     <span class="o">|</span> <span class="ow">not</span> <span class="n">null</span> <span class="n">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;public.table_id_seq&#39;</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -218,9 +218,6 @@ layer names, separated by commas.</li>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -231,7 +228,7 @@ layer names, separated by commas.</li>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

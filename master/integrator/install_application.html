@@ -53,7 +53,7 @@ all the commands concerning the database.</p>
 <dt>We use a server manages by Camptocamp, meaning:</dt>
 <dd><ul class="first last simple">
 <li>all dependencies described in the
-<a class="reference internal" href="requirements.html#integrator-requirements"><span>requirements</span></a> are installed,</li>
+<a class="reference internal" href="requirements.html#integrator-requirements"><span class="std std-ref">requirements</span></a> are installed,</li>
 <li>Postgres has a GIS template <code class="docutils literal"><span class="pre">template_postgis</span></code> and a user <code class="docutils literal"><span class="pre">www-data</span></code>,</li>
 <li>Apache uses the user <code class="docutils literal"><span class="pre">www-data</span></code>.</li>
 </ul>
@@ -155,7 +155,7 @@ OpenLayers and GeoExt.</p>
 <p>For example Windows or RedHat.</p>
 <p>Disable the package checking:</p>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">FALSE</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">FALSE</span>
 </pre></div>
 </div>
 </div>
@@ -173,7 +173,7 @@ in all stage of the application setup.</p>
 <div class="section" id="command-interface-and-environment-variable">
 <h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
 <p>Only use Windows default commande interface:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
 </pre></div>
 </div>
 <p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
@@ -213,7 +213,7 @@ packages according to the files you have downloaded.</p>
 &#8220;Note that the <code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> directive and corresponding features are not
 available on Windows or when running Apache 1.3.&#8221;)</p>
 <p>The following lines must be commented/removed:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
+<div class="highlight-default"><div class="highlight"><pre><span></span>WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
 ...
 WSGIProcessGroup c2cgeoportal:${instanceid}
 </pre></div>
@@ -222,7 +222,7 @@ WSGIProcessGroup c2cgeoportal:${instanceid}
 <div class="section" id="apache-mapserver-conf-mako">
 <h4>apache/mapserver.conf.mako<a class="headerlink" href="#apache-mapserver-conf-mako" title="Permalink to this headline">¶</a></h4>
 <p>The path to Mapserver executable must be modified:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
 </pre></div>
 </div>
 </div>
@@ -230,14 +230,14 @@ WSGIProcessGroup c2cgeoportal:${instanceid}
 <h4>mapserver/c2cgeoportal.map.mako<a class="headerlink" href="#mapserver-c2cgeoportal-map-mako" title="Permalink to this headline">¶</a></h4>
 <p>You must specify the path to the mapserver&#8217;s epsg file by uncommenting and adapting
 this line under <code class="docutils literal"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal"><span class="pre">/</span></code>)</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>PROJ_LIB&quot; &quot;C:/PATH/TO/ms4w/proj/nad&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJ_LIB</span><span class="s2">&quot; &quot;</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">ms4w</span><span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">nad</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="project-mk">
 <h4>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h4>
 <p>The following configuration override must be added to your <code class="docutils literal"><span class="pre">&lt;project&gt;.mk</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># Sets that&#39;s we use Windows
+<div class="highlight-default"><div class="highlight"><pre><span></span># Sets that&#39;s we use Windows
 OPERATING_SYSTEM ?= WINDOWS
 # Path to cygwin
 CYGWIN_PATH ?= c:/path/to/cygwin
@@ -261,7 +261,7 @@ on RedHat Enterprise Linux (RHEL) 6.</p>
 <p>First of all, note that, with RHEL, you cannot install the c2cgeoportal
 application in your homedir. If you do so, you will get the following error
 in the Apache logs:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>(13)Permission denied: access to /~elemoine/ denied
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="n">access</span> <span class="n">to</span> <span class="o">/~</span><span class="n">elemoine</span><span class="o">/</span> <span class="n">denied</span>
 </pre></div>
 </div>
 <p class="last">So always install the application in an Apache-accessible directory. On
@@ -276,9 +276,9 @@ login name.</p>
 user, which is the Apache user. In RHEL 6, there&#8217;s no user <code class="docutils literal"><span class="pre">www-data</span></code>, and
 the Apache user is <code class="docutils literal"><span class="pre">apache</span></code>. <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> Should then
 set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> to <code class="docutils literal"><span class="pre">apache</span></code> in the <code class="docutils literal"><span class="pre">vars:</span></code> section:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>vars:
-    ...
-    modwsgi_user: apache
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">modwsgi_user</span><span class="p">:</span> <span class="n">apache</span>
 </pre></div>
 </div>
 </div>
@@ -286,7 +286,7 @@ set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> 
 <div class="section" id="id1">
 <h3>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Configure some <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> RedHat specifics:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span># Service base command for Tomcat on RedHat
+<div class="highlight-default"><div class="highlight"><pre><span></span># Service base command for Tomcat on RedHat
 TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
 # Command prefix to acces to the webapp folder
 TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
@@ -302,7 +302,7 @@ DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages
 <p>On RHEL 6 the <code class="docutils literal"><span class="pre">mapserv</span></code> binary is located in <code class="docutils literal"><span class="pre">/usr/libexec/</span></code>. The
 <code class="docutils literal"><span class="pre">mapserver.conf.mako</span></code> Apache config file assumes that <code class="docutils literal"><span class="pre">mapserv</span></code> is located in
 <code class="docutils literal"><span class="pre">/usr/lib/cgi-bin/</span></code>, and should therefore be changed:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
 </pre></div>
 </div>
 </div>
@@ -425,9 +425,6 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -438,7 +435,7 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

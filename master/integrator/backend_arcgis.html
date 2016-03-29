@@ -46,7 +46,7 @@
 <h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service which will be used
 to get the namespace required to parse the WFS response:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -54,15 +54,15 @@ to get the namespace required to parse the WFS response:</p>
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
-mapserv_wfs_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
+<span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
 <em>WFS GetCapabilities</em>.</p>
 <p>If your project has a parent (in a parent/child architecture),
 in the <code class="docutils literal"><span class="pre">config_child.yaml.mako</span></code> file also define the WFS service separately:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>external_mapserv_wfs_url: http://your.parent.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">external_mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
 </pre></div>
 </div>
 </div>
@@ -133,9 +133,6 @@ queries.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -146,7 +143,7 @@ queries.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

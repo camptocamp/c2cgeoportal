@@ -48,11 +48,11 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
 <div class="section" id="apache-configuration-for-tinyows">
 <h2>Apache configuration for TinyOWS<a class="headerlink" href="#apache-configuration-for-tinyows" title="Permalink to this headline">¶</a></h2>
-<p>When creating a c2cgeoportal project using the <a class="reference internal" href="../integrator/create_application.html#integrator-create-application"><span>Paste skeletons</span></a>
+<p>When creating a c2cgeoportal project using the <a class="reference internal" href="../integrator/create_application.html#integrator-create-application"><span class="std std-ref">Paste skeletons</span></a>
 there will already be a default Apache configuration file for TinyOWS under the
 location <code class="docutils literal"><span class="pre">apache/tinyows.conf.mako</span></code>. Uncomment the lines in this file to
 enable TinyOWS:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
 &lt;Location /${instanceid}/tinyows&gt;
   SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
 
@@ -73,40 +73,40 @@ c2cgeoportal.</p>
 <h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The configuration of TinyOWS is made in a XML file, which is located at
 <code class="docutils literal"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;tinyows
-    online_resource=&quot;http://${host}/${instanceid}/wsgi/tinyows_proxy&quot;
-    schema_dir=&quot;/usr/share/tinyows/schema/&quot;
-    log=&quot;tinyows.log&quot;
-    log_level=&quot;1&quot;
-    check_schema=&quot;0&quot;&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
+    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;http://$</span><span class="si">{host}</span><span class="s2">/$</span><span class="si">{instanceid}</span><span class="s2">/wsgi/tinyows_proxy&quot;</span>
+    <span class="n">schema_dir</span><span class="o">=</span><span class="s2">&quot;/usr/share/tinyows/schema/&quot;</span>
+    <span class="n">log</span><span class="o">=</span><span class="s2">&quot;tinyows.log&quot;</span>
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">check_schema</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;</span>
 
-  &lt;contact
-      name=&quot;GeoMapFish&quot;
-      site=&quot;http://www.geomapfish.org/&quot;
-      email=&quot;geomapfish@googlegroups.com&quot; /&gt;
+  <span class="o">&lt;</span><span class="n">contact</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoMapFish&quot;</span>
+      <span class="n">site</span><span class="o">=</span><span class="s2">&quot;http://www.geomapfish.org/&quot;</span>
+      <span class="n">email</span><span class="o">=</span><span class="s2">&quot;geomapfish@googlegroups.com&quot;</span> <span class="o">/&gt;</span>
 
-  &lt;metadata
-      name=&quot;GeoMapFish TinyOWS Server&quot;
-      title=&quot;GeoMapFish TinyOWS Server&quot; /&gt;
+  <span class="o">&lt;</span><span class="n">metadata</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoMapFish TinyOWS Server&quot;</span>
+      <span class="n">title</span><span class="o">=</span><span class="s2">&quot;GeoMapFish TinyOWS Server&quot;</span> <span class="o">/&gt;</span>
 
-  &lt;pg
-      host=&quot;${dbhost}&quot;
-      user=&quot;${dbuser}&quot;
-      password=&quot;${dbpassword}&quot;
-      port=&quot;${dbport}&quot;
-      dbname=&quot;${db}&quot; /&gt;
+  <span class="o">&lt;</span><span class="n">pg</span>
+      <span class="n">host</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbhost}</span><span class="s2">&quot;</span>
+      <span class="n">user</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbuser}</span><span class="s2">&quot;</span>
+      <span class="n">password</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbpassword}</span><span class="s2">&quot;</span>
+      <span class="n">port</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbport}</span><span class="s2">&quot;</span>
+      <span class="n">dbname</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{db}</span><span class="s2">&quot;</span> <span class="o">/&gt;</span>
 
-  &lt;layer
-      retrievable=&quot;1&quot;
-      writable=&quot;1&quot;
-      ns_prefix=&quot;tows&quot;
-      ns_uri=&quot;http://www.tinyows.org/&quot;
-      name=&quot;point&quot;
-      schema=&quot;edit&quot;
-      table=&quot;point&quot;
-      title=&quot;Points&quot;
-      pkey=&quot;id&quot; /&gt;
-&lt;/tinyows&gt;
+  <span class="o">&lt;</span><span class="n">layer</span>
+      <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+      <span class="n">writable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+      <span class="n">ns_prefix</span><span class="o">=</span><span class="s2">&quot;tows&quot;</span>
+      <span class="n">ns_uri</span><span class="o">=</span><span class="s2">&quot;http://www.tinyows.org/&quot;</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+      <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;edit&quot;</span>
+      <span class="n">table</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+      <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Points&quot;</span>
+      <span class="n">pkey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">tinyows</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>In the root element <code class="docutils literal"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
@@ -128,16 +128,16 @@ the validation database-side though!</li>
 same database as for the c2cgeoportal application will be used.</p>
 <p>The layers that should be accessible with TinyOWS have to specified with
 <code class="docutils literal"><span class="pre">layer</span></code> elements:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;layer
-    retrievable=&quot;1&quot;
-    writable=&quot;1&quot;
-    ns_prefix=&quot;tows&quot;
-    ns_uri=&quot;http://www.tinyows.org/&quot;
-    name=&quot;point&quot;
-    schema=&quot;edit&quot;
-    table=&quot;point&quot;
-    title=&quot;Points&quot;
-    pkey=&quot;id&quot; /&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">layer</span>
+    <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">writable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">ns_prefix</span><span class="o">=</span><span class="s2">&quot;tows&quot;</span>
+    <span class="n">ns_uri</span><span class="o">=</span><span class="s2">&quot;http://www.tinyows.org/&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;edit&quot;</span>
+    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Points&quot;</span>
+    <span class="n">pkey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span> <span class="o">/&gt;</span>
 </pre></div>
 </div>
 <p>In this example a layer named <code class="docutils literal"><span class="pre">point</span></code> is created for table <code class="docutils literal"><span class="pre">point</span></code> in the
@@ -159,7 +159,7 @@ TinyOWS XML configuration. Please refer to the
 for more information.</p>
 </div>
 <p>After the configuration is made, re-build the c2cgeoportal application:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>make &lt;profile&gt;.mk build
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">&lt;</span><span class="n">profile</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">build</span>
 </pre></div>
 </div>
 </div>
@@ -217,9 +217,6 @@ authentication use your c2cgeoportal account details.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -230,7 +227,7 @@ authentication use your c2cgeoportal account details.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

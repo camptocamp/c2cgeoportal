@@ -68,10 +68,10 @@ have the CORS headers (<a class="reference external" href="http://enable-cors.or
 <p>By default, only localhost can access c2c&#8217;s services.
 To permit access to a specific service by an external server, you must set headers CORS (Access-Control-Allow-Origin) in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file.</p>
 <p>Add or modify the structure like that:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>headers:
-    &lt;service_name&gt;:
-        access_control_allow_origin: [&quot;&lt;domain1&gt;&quot;, &quot;&lt;domain2&gt;&quot;, ...]
-        access_control_max_age: 3600
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">headers</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">service_name</span><span class="o">&gt;</span><span class="p">:</span>
+        <span class="n">access_control_allow_origin</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;&lt;domain1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;domain2&gt;&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">access_control_max_age</span><span class="p">:</span> <span class="mi">3600</span>
 </pre></div>
 </div>
 <p>A <code class="docutils literal"><span class="pre">&quot;*&quot;</span></code> can be included in <code class="docutils literal"><span class="pre">access_control_allow_origin</span></code> to allow everybody to
@@ -160,9 +160,6 @@ JS frameworks.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -173,7 +170,7 @@ JS frameworks.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

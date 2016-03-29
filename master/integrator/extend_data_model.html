@@ -47,7 +47,7 @@ and the corresponding admin interface configuration
 in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>.</p>
 <p>For example to add some user details, including a link to a
 new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span class="pre">&lt;package&gt;/models.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
@@ -60,16 +60,16 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
     <span class="p">]</span>
     <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
-            <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;phone&#39;</span><span class="p">))</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;phone&#39;</span><span class="p">))</span>
 
     <span class="c1"># title</span>
-    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">functionalities</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">phone</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                 <span class="n">phone</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">User</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">functionalities</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phone</span> <span class="o">=</span> <span class="n">phone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
@@ -82,8 +82,8 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
     <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
     <span class="p">]</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Name&#39;</span><span class="p">))</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Name&#39;</span><span class="p">))</span>
     <span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Description&#39;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">u&#39;&#39;</span><span class="p">):</span>
@@ -95,7 +95,7 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
 </pre></div>
 </div>
 <p>And in the file <code class="docutils literal"><span class="pre">&lt;package&gt;/forms.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Add a field set (form) for the title</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Add a field set (form) for the title</span>
 <span class="n">Title</span> <span class="o">=</span> <span class="n">FieldSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Title</span><span class="p">)</span>
 
 <span class="c1"># Add a field set for the user details</span>
@@ -131,28 +131,28 @@ new class named &#8220;Title&#8221;, add to <code class="docutils literal"><span
 </div>
 <p>We can change the renderer of a field, for example change the
 Role renderer:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">AnOtherRenderer</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">renderer</span><span class="o">=</span><span class="n">AnOtherRenderer</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And if we need an other resource (javascript or stylesheet):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>from fa.jquery import fanstatic_resources
-from fanstatic import Resource, Group, Library
-from pyramid_formalchemy import events as fa_events
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fa.jquery</span> <span class="k">import</span> <span class="n">fanstatic_resources</span>
+<span class="kn">from</span> <span class="nn">fanstatic</span> <span class="k">import</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Library</span>
+<span class="kn">from</span> <span class="nn">pyramid_formalchemy</span> <span class="k">import</span> <span class="n">events</span> <span class="k">as</span> <span class="n">fa_events</span>
 
-fanstatic_lib = Library(&#39;&lt;package&gt;_admin&#39;, &#39;static&#39;)
-new_js = Resource(fanstatic_lib, &#39;&lt;path_to_javascript.js&gt;&#39;,
-    depends=[fanstatic_resources.&lt;depends_on&gt;])
-new_css = Resource(fanstatic_lib, &#39;&lt;path_to_stylesheet.css&gt;&#39;)
+<span class="n">fanstatic_lib</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_admin&#39;</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">)</span>
+<span class="n">new_js</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">fanstatic_lib</span><span class="p">,</span> <span class="s1">&#39;&lt;path_to_javascript.js&gt;&#39;</span><span class="p">,</span>
+    <span class="n">depends</span><span class="o">=</span><span class="p">[</span><span class="n">fanstatic_resources</span><span class="o">.&lt;</span><span class="n">depends_on</span><span class="o">&gt;</span><span class="p">])</span>
+<span class="n">new_css</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="n">fanstatic_lib</span><span class="p">,</span> <span class="s1">&#39;&lt;path_to_stylesheet.css&gt;&#39;</span><span class="p">)</span>
 
-@fa_events.subscriber([models.Role, fa_events.IBeforeRenderEvent])
-def before_render_role(context, event):
-    Group([new_js, new_css]).need()
+<span class="nd">@fa_events</span><span class="o">.</span><span class="n">subscriber</span><span class="p">([</span><span class="n">models</span><span class="o">.</span><span class="n">Role</span><span class="p">,</span> <span class="n">fa_events</span><span class="o">.</span><span class="n">IBeforeRenderEvent</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">before_render_role</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="n">Group</span><span class="p">([</span><span class="n">new_js</span><span class="p">,</span> <span class="n">new_css</span><span class="p">])</span><span class="o">.</span><span class="n">need</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>And in the <code class="docutils literal"><span class="pre">setup.py</span></code> we need to add in the <code class="docutils literal"><span class="pre">entry_points</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&#39;fanstatic.libraries&#39;: [
-    &#39;&lt;package&gt;_admin = &lt;package&gt;.forms:fanstatic_lib&#39;,
-],
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;fanstatic.libraries&#39;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s1">&#39;&lt;package&gt;_admin = &lt;package&gt;.forms:fanstatic_lib&#39;</span><span class="p">,</span>
+<span class="p">],</span>
 </pre></div>
 </div>
 </div>
@@ -191,9 +191,6 @@ def before_render_role(context, event):
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -204,7 +201,7 @@ def before_render_role(context, event):
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

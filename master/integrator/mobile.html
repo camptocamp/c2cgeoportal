@@ -80,7 +80,7 @@ the Camptocamp sysadmins).</p>
 and <code class="docutils literal"><span class="pre">sencha-cmd</span></code>. By default the <code class="docutils literal"><span class="pre">sencha-cmd</span></code> command is used, if
 it&#8217;s not the case on your host put the following configuration variables
 in your <cite>&lt;package&gt;.mk</cite> file:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span></span>SENCHA_CMD = &lt;sencha-command&gt;
+<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">SENCHA_CMD</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">sencha</span><span class="o">-</span><span class="n">command</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal"><span class="pre">&lt;sencha-command&gt;</span></code> by <code class="docutils literal"><span class="pre">sencha-sdk</span></code> if you want to build the
@@ -91,7 +91,7 @@ mobile app using a version of GeoMapFish older than 1.4.</p>
 <p>The last step involves adding <em>routes</em> and <em>views</em> specific to the mobile
 application. Edit the project&#8217;s <code class="docutils literal"><span class="pre">__init__.py</span></code> file and add the following
 lines before the <code class="docutils literal"><span class="pre">main</span></code> function&#8217;s return statement:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="c1"># mobile views and routes</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="c1"># mobile views and routes</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/&#39;</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
                 <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
@@ -130,7 +130,7 @@ installed on the build machine. (See above.)</p>
 <p class="first admonition-title">Note</p>
 <p>On Windows you will need to override the values of the <code class="docutils literal"><span class="pre">mobile</span></code> part
 <code class="docutils literal"><span class="pre">SENCHA_CMD</span></code> variables as such:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span></span><span class="n">SENCHA_CMD</span> <span class="o">=</span> <span class="n">sencha</span><span class="o">.</span><span class="n">bat</span>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">SENCHA_CMD</span> <span class="o">=</span> <span class="n">sencha</span><span class="o">.</span><span class="n">bat</span>
 </pre></div>
 </div>
 <p class="last">You would add this in <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>, or any make configuration file
@@ -149,7 +149,7 @@ instance.</p>
 <div class="section" id="theme">
 <h3>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h3>
 <p>The list of themes and layers shown in the mobile application is dynamically
-generated. See <a class="reference internal" href="../administrator/index.html#administrator-guide"><span>Administrator Guide</span></a>.</p>
+generated. See <a class="reference internal" href="../administrator/index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>.</p>
 </div>
 </div>
 <div class="section" id="raster-service">
@@ -159,22 +159,22 @@ used to retrieve data from raster file (elevation, slope, etc...) and display
 it in the <code class="docutils literal"><span class="pre">Query</span> <span class="pre">view</span></code> above query results.</p>
 <p>If the raster service is already configured on the server, you can activate it
 in the mobile application by adding the following to the config.js file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">raster</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">raster</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>You&#8217;ll also need to add a template string to each translation object. It needs
 to be adapted to the data retrieved from the server:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Lang.fr = {
-    [...]
-    &#39;rasterTpl&#39;: [
-        &#39;&lt;div class=&quot;coordinates&quot;&gt;&#39;,
-            &#39;&lt;p&gt;X : {x} - Y : {y}&lt;/p&gt;&#39;,
-            &#39;&lt;p&gt;Altitude terrain : {mnt} m&lt;/p&gt;&#39;,
-            &#39;&lt;p&gt;Altitude surface : {mns} m&lt;/p&gt;&#39;,
-        &#39;&lt;/div&gt;&#39;
-    ].join(&#39;&#39;),
-    [...]
-};
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">fr</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="s1">&#39;rasterTpl&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;&lt;div class=&quot;coordinates&quot;&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&lt;p&gt;X : </span><span class="si">{x}</span><span class="s1"> - Y : </span><span class="si">{y}</span><span class="s1">&lt;/p&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&lt;p&gt;Altitude terrain : </span><span class="si">{mnt}</span><span class="s1"> m&lt;/p&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&lt;p&gt;Altitude surface : </span><span class="si">{mns}</span><span class="s1"> m&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;/div&gt;&#39;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 <p>In the example above <code class="docutils literal"><span class="pre">mns</span></code> and <code class="docutils literal"><span class="pre">mnt</span></code> are the keys used in the server
@@ -197,7 +197,7 @@ file:</p>
 <li><p class="first">Set <code class="docutils literal"><span class="pre">OpenLayers.ImgPath</span></code> to the path where you custom marker is.</p>
 </li>
 <li><p class="first">Define the following new variable:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">crosshair_options</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">crosshair_options</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ImgPath</span><span class="o">+</span><span class="s1">&#39;custom_marker.png&#39;</span><span class="p">,</span>
     <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">]</span>
 <span class="p">};</span>
@@ -220,7 +220,7 @@ applying the <code class="docutils literal"><span class="pre">c2cgeoportal_updat
 <h3>Permalink<a class="headerlink" href="#permalink" title="Permalink to this headline">¶</a></h3>
 <p>If a permalink field is needed, just add the following component in the
 Settings view:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -234,40 +234,40 @@ If the user is authenticated the <code class="docutils literal"><span class="pre
 and a &#8220;log out&#8221; button.</p>
 <p>Here&#8217;s an example of a <code class="docutils literal"><span class="pre">Settings</span></code> view that includes a <code class="docutils literal"><span class="pre">Login</span></code> view
 component:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>Ext.define(&quot;App.view.Settings&quot;, {
-    extend: &#39;Ext.Container&#39;,
-    xtype: &#39;settingsview&#39;,
-    requires: [
-        // Do not forget this requirement, or Sencha Touch
-        // will complain that &quot;widget.login&quot; is an
-        // unrecognized alias.
-        &#39;App.view.Login&#39;
-    ],
-    config: {
-        items: [{
-            xtype: &#39;toolbar&#39;,
-            docked: &#39;top&#39;,
-            items: [{
-                xtype: &#39;spacer&#39;
-            }, {
-                xtype: &#39;button&#39;,
-                iconCls: &#39;home&#39;,
-                iconMask: true,
-                action: &#39;home&#39;
-            }]
-        }, {
-            xtype: &#39;container&#39;,
-            cls: &#39;settings&#39;,
-            items: [{
-                xtype: &#39;component&#39;,
-                html: &#39;&lt;p&gt;Some text&lt;/p&gt;&#39;
-            }, {
-                // This is the login view component.
-                xtype: &#39;login&#39;
-            }]
-        }]
-    }
-});
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">Ext</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s2">&quot;App.view.Settings&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">extend</span><span class="p">:</span> <span class="s1">&#39;Ext.Container&#39;</span><span class="p">,</span>
+    <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;settingsview&#39;</span><span class="p">,</span>
+    <span class="n">requires</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">//</span> <span class="n">Do</span> <span class="ow">not</span> <span class="n">forget</span> <span class="n">this</span> <span class="n">requirement</span><span class="p">,</span> <span class="ow">or</span> <span class="n">Sencha</span> <span class="n">Touch</span>
+        <span class="o">//</span> <span class="n">will</span> <span class="n">complain</span> <span class="n">that</span> <span class="s2">&quot;widget.login&quot;</span> <span class="ow">is</span> <span class="n">an</span>
+        <span class="o">//</span> <span class="n">unrecognized</span> <span class="n">alias</span><span class="o">.</span>
+        <span class="s1">&#39;App.view.Login&#39;</span>
+    <span class="p">],</span>
+    <span class="n">config</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">items</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;toolbar&#39;</span><span class="p">,</span>
+            <span class="n">docked</span><span class="p">:</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
+            <span class="n">items</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;spacer&#39;</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;button&#39;</span><span class="p">,</span>
+                <span class="n">iconCls</span><span class="p">:</span> <span class="s1">&#39;home&#39;</span><span class="p">,</span>
+                <span class="n">iconMask</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="n">action</span><span class="p">:</span> <span class="s1">&#39;home&#39;</span>
+            <span class="p">}]</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;container&#39;</span><span class="p">,</span>
+            <span class="n">cls</span><span class="p">:</span> <span class="s1">&#39;settings&#39;</span><span class="p">,</span>
+            <span class="n">items</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;component&#39;</span><span class="p">,</span>
+                <span class="n">html</span><span class="p">:</span> <span class="s1">&#39;&lt;p&gt;Some text&lt;/p&gt;&#39;</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="o">//</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">login</span> <span class="n">view</span> <span class="n">component</span><span class="o">.</span>
+                <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;login&#39;</span>
+            <span class="p">}]</span>
+        <span class="p">}]</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>The i18n keys relative to the login/logout functionality are: <code class="docutils literal"><span class="pre">welcomeText</span></code>,
@@ -277,23 +277,23 @@ be self-explanatory. <code class="docutils literal"><span class="pre">welcomeTex
 button when the user is authenticated, it typically includes the variable
 <code class="docutils literal"><span class="pre">{username}</span></code>, which is changed to the actual username at render time. By
 default, <code class="docutils literal"><span class="pre">config.js</span></code> includes the following english translations:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Lang.en = {
-    ...
-    // login/logout
-    &#39;loginButtonText&#39;: &#39;Log in&#39;,
-    &#39;welcomeText&#39;: &#39;&lt;p&gt;You are {username}.&lt;/p&gt;&#39;,
-    &#39;logoutButtonText&#39;: &#39;Log out&#39;,
-    &#39;loginLabel&#39;: &#39;Login&#39;,
-    &#39;passwordLabel&#39;: &#39;Password&#39;,
-    &#39;loginSubmitButtonText&#39;: &#39;Submit&#39;,
-    &#39;loginCancelButtonText&#39;: &#39;Cancel&#39;
-};
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">en</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">//</span> <span class="n">login</span><span class="o">/</span><span class="n">logout</span>
+    <span class="s1">&#39;loginButtonText&#39;</span><span class="p">:</span> <span class="s1">&#39;Log in&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;welcomeText&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;p&gt;You are </span><span class="si">{username}</span><span class="s1">.&lt;/p&gt;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;logoutButtonText&#39;</span><span class="p">:</span> <span class="s1">&#39;Log out&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;loginLabel&#39;</span><span class="p">:</span> <span class="s1">&#39;Login&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;passwordLabel&#39;</span><span class="p">:</span> <span class="s1">&#39;Password&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;loginSubmitButtonText&#39;</span><span class="p">:</span> <span class="s1">&#39;Submit&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;loginCancelButtonText&#39;</span><span class="p">:</span> <span class="s1">&#39;Cancel&#39;</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 <p>For the <code class="docutils literal"><span class="pre">Login</span></code> component to work the <code class="docutils literal"><span class="pre">App.info</span></code> JavaScript variable should
 be set. The setting of this variable should be done anywhere in the
 <code class="docutils literal"><span class="pre">config.js</span></code> file, with this:</p>
-<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>By default <code class="docutils literal"><span class="pre">config.js</span></code> includes it.</p>
@@ -343,9 +343,9 @@ contents so they reference the new mobile directory (<code class="docutils liter
 the new <code class="docutils literal"><span class="pre">jsbuild</span></code> mobile config file (<code class="docutils literal"><span class="pre">jsbuild/mobile2.cfg</span></code>).</p>
 <p>You also need to add <code class="docutils literal"><span class="pre">jsbuild-mobile2</span></code> and <code class="docutils literal"><span class="pre">mobile2</span></code> to the list
 of parts that are run by Buildout by default:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>[buildout]
-extends = CONST_buildout.cfg
-parts += jsbuild-mobile mobile jsbuild-mobile2 mobile2
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">buildout</span><span class="p">]</span>
+<span class="n">extends</span> <span class="o">=</span> <span class="n">CONST_buildout</span><span class="o">.</span><span class="n">cfg</span>
+<span class="n">parts</span> <span class="o">+=</span> <span class="n">jsbuild</span><span class="o">-</span><span class="n">mobile</span> <span class="n">mobile</span> <span class="n">jsbuild</span><span class="o">-</span><span class="n">mobile2</span> <span class="n">mobile2</span>
 </pre></div>
 </div>
 <p>At this point you should be able to successfully run Buildout again.</p>
@@ -422,9 +422,6 @@ route and view.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -435,7 +432,7 @@ route and view.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
