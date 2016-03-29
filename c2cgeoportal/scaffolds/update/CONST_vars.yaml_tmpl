@@ -85,7 +85,8 @@ vars:
         roots_with_prefix:
         - ["{closure_library_path}/closure/goog", "{closure_library_path}/closure/goog"]
         - ["{package}:static-ngeo/js", "{directory}/{package}/static-ngeo/js"]
-        - ["{node_modules_path}/openlayers", "{node_modules_path}/openlayers"]
+        - ["{node_modules_path}/openlayers/src", "{node_modules_path}/openlayers/src"]
+        - ["{node_modules_path}/openlayers/build", "{node_modules_path}/openlayers/build"]
         - ["{node_modules_path}/ngeo/src", "{node_modules_path}/ngeo/src"]
         - ["{node_modules_path}/ngeo/contribs/gmf/src", "{node_modules_path}/ngeo/contribs/gmf/src"]
 
