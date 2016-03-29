@@ -129,7 +129,7 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
-# transifex
+# i18n
 TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(pkg_resources.get_distribution('c2cgeoportal').version.split('.')[0:2]))")
 TX_RC = $(HOME_DIR).transifexrc
 TX_DEPENDENCIES = $(VENV_BIN)/tx $(TX_RC) .tx/config
@@ -138,6 +138,24 @@ TOUCHBACK_TXRC =
 else
 TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
+
+MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -print)
+MAP_TEMPLATE_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.in" -print)
+MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -print)
+MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -print)
+MAP_FILES +=  $(MAP_TEMPLATE_FILES:.in=) $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
+
+I18N_SOURCE_FILES += $(APP_HTML_FILES) \
+	$(APP_JS_FILES) \
+	$(APP_DIRECTIVES_PARTIALS_FILES) \
+	.build/config.yaml
+ifeq ($(DOCKER),FALSE)
+# The theme from the database
+I18N_SOURCE_FILES += development.ini
+endif
+I18N_DEPENDENTIES += $(I18N_SOURCE_FILES) \
+	$(MAP_FILES) \
+	project.yaml
 
 # ngeo
 ANGULAR_VERSION = 1.5
@@ -567,17 +585,10 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
-I18N_SOURCE_FILES += $(APP_HTML_FILES) $(APP_JS_FILES) $(APP_DIRECTIVES_PARTIALS_FILES) .build/config.yaml
-ifeq ($(DOCKER),FALSE)
-# The theme from the database
-I18N_SOURCE_FILES += development.ini
-endif
-
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
-		project.yaml \
-		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
-		$(I18N_SOURCE_FILES)
+		$(I18N_DEPENDENTIES) \
+		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
