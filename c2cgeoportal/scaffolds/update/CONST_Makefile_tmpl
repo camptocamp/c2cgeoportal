@@ -6,7 +6,7 @@ ifeq ($(OPERATING_SYSTEM), WINDOWS)
 VENV_BIN = .build/venv/Scripts
 PYTHON_BIN_POSTFIX = .exe
 NODE_BIN_POSTFIX = .cmd
-FIND ?=$(CYGWIN_PATH)/bin/find.exe
+FIND ?= $(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
 # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
 # You can still install it but you must install Shapely manualy inside
@@ -997,8 +997,8 @@ wsgi_docker: requirements.txt .whiskey/action_hooks/pre-build
 .PHONY: requirements.txt
 requirements.txt:
 	rm -f $@
-	for line in $(REQUIREMENTS) ; do echo $$line >> $@; done   # one requirement one line
-	sed -e ':a;N;$$!ba;s/-\([re]\)\n/-\1 /g' -i requirements.txt  # put "-r blah" on a single line
+	for line in $(REQUIREMENTS) ; do echo $$line >> $@; done # one requirement one line
+	sed -e ':a;N;$$!ba;s/-\([re]\)\n/-\1 /g' -i requirements.txt # put "-r blah" on a single line
 
 else
 apache: .build/apache.timestamp
