@@ -729,7 +729,7 @@ node_modules/.bin/closure-util$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
 
 .PRECIOUS: .build/%.js
 .build/%.js: .build/%.json $(OL_JS_FILES) $(NGEO_JS_FILES) $(APP_JS_FILES) \
-		$(APP_OUTPUT_DIR)/templatecache.js \
+		$(APP_OUTPUT_DIR)/gmftemplatecache.js \
 		.build/externs/angular-$(ANGULAR_VERSION).js \
 		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
@@ -739,7 +739,7 @@ node_modules/.bin/closure-util$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
 
 node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestamp
 
-$(APP_OUTPUT_DIR)/templatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
+$(APP_OUTPUT_DIR)/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
 	$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
 	$(APP_DIRECTIVES_PARTIALS_FILES) \
 	$(GMF_DIRECTIVES_PARTIALSFILES) \
