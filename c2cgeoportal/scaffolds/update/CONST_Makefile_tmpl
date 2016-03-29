@@ -179,6 +179,13 @@ NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-we
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
+	node_modules/ngeo/node_modules/font-awesome \
+	node_modules/ngeo/node_modules/openlayers \
+	node_modules/ngeo/node_modules/bootstrap \
+	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.woff2 \
+	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.woff \
+	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.ttf \
+	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.eot \
 	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
 	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_LIBS_JS_FILES += \
@@ -662,6 +669,26 @@ $(APP_OUTPUT_DIR)/%.js: .build/%.js .build/node_modules.timestamp $(NGEO_LIBS_JS
 	awk 'FNR==1{print ""}1' $(NGEO_LIBS_JS_FILES) $(NGEO_PROJECT_LIBS_JS_FILES) $< > $@
 	sed -i '/^\/\/# sourceMappingURL=.*\.map$$/d' $@
 
+.PRECIOUS: node_modules/%
+node_modules/%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.PRECIOUS: node_modules/ngeo/node_modules/%
+node_modules/ngeo/node_modules/%: node_modules/%
+	mkdir -p $(dir $@)
+	ln -s ../../../$< $@
+	touch --no-create $@
+
+.PRECIOUS: node_modules/font-awesome/fonts/fontawesome-webfont.%
+node_modules/font-awesome/fonts/fontawesome-webfont.%: .build/node_modules.timestamp
+	touch --no-create $@
+
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.%
+node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.%: node_modules/font-awesome/fonts/fontawesome-webfont.%
+	mkdir -p $(dir $@)
+	cp $< $@
+	touch --no-create $@
+
 .PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
 node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%: .build/node_modules.timestamp
 	touch --no-create $@
@@ -671,8 +698,8 @@ $(PACKAGE)/static-ngeo/fonts/gmf-icons.%: node_modules/ngeo/contribs/gmf/fonts/g
 	mkdir -p $(dir $@)
 	cp $< $@
 
-.PRECIOUS: /static-ngeo/fonts/fontawesome-webfont.%
-/static-ngeo/fonts/fontawesome-webfont.%: .build/node_modules.timestamp
+.PRECIOUS: node_modules/font-awesome/fonts/fontawesome-webfont.%
+node_modules/font-awesome/fonts/fontawesome-webfont.%: .build/node_modules.timestamp
 	touch --no-create $@
 
 .PRECIOUS: $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%
@@ -684,7 +711,9 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
+.PRECIOUS: .build/node_modules.timestamp
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
+	touch --no-create $@
 
 .PRECIOUS: .build/%.json
 .build/%.json: node_modules/ngeo/buildtools/mako_build.json \
