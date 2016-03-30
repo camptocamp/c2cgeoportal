@@ -12,13 +12,10 @@ replace your sencha touch interface by an ngeo interface.
     at that point, the following folder should exist: /tmp/{{project}}/
 
     cp /tmp/{{project}}/.jshintrc .
-    cp /tmp/{{project}}/build.mako.json .
-    cp /tmp/{{project}}/package.json .
-    cp /tmp/{{project}}/templatecache.mako.js .
     cp /tmp/{{project}}/lingua-client.cfg .
     cp /tmp/{{project}}/lingua-server.cfg .
     cp /tmp/{{project}}/apache/wsgi.conf.mako apache/
-    cp /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
+    cp -r /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
     cp /tmp/{{project}}/{{package}}/templates/mobile.html {{package}}/templates/
 
 2. Remove the no longer used files:
