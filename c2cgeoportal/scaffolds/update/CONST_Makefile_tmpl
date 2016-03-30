@@ -809,6 +809,11 @@ upgrade: .build/requirements.timestamp project.yaml
 		c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
+.PHONY: upgrade_v2
+upgrade_v2: .build/requirements.timestamp project.yaml
+	.build/venv/bin/pip install c2cgeoportal==${VERSION}
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
+
 .PHONY: upgrade1
 upgrade1: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
