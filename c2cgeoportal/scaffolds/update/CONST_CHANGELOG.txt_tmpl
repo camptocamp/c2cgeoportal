@@ -69,30 +69,7 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
-   If you don't have a `cache_control` you should also add the following lines:
-
-   +  headers:
-   +      "<service_name>":
-   +          "cache_control_max_age": <max_age>
-
-8. A new checker has been added to test for javascript error. If you have
-   overridded the checker list in your `vars_{{package}}.yaml` file, you must
-   add it.
-
-    # Check collector configuration
-    check_collector:
-        disabled: [checker_printcapabilities, checker_pdf]
-        check_type:
-            all:
-    ...
-   +         - name: checker_js_generic
-   +           display: PhantomJS generic test
-            main:
-    ...
-   +         - name: checker_js_generic
-   +           display: PhantomJS generic test
-
-9. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
+8. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
 
      <input id="password" name="password" type="password" autocomplete="on"/>
     +<input id="oldPassword" name="oldPassword" type="password" />
