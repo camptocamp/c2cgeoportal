@@ -44,7 +44,7 @@ Than just run:
 .. prompt:: bash
 
    export VERSION=<target_version>
-   make -f <makefile> upgrade
+   make -f <makefile> upgrade_v2
 
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
