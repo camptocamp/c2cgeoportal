@@ -33,8 +33,8 @@ Available services:
 * ``checker_edit``: Check the edit page.
 * ``checker_edit_js``: Check the edit.js used by the edit page.
 * ``checker_apiloader``: Check the API loader.
-* ``checker_printcapabilities``: Check the print capabilities.
-* ``checker_pdf``: Check the print (try to print a page).
+* ``checker_print3capabilities``: Check the print capabilities.
+* ``checker_pdf3``: Check the print (try to print a page).
 * ``checker_fts``: Check the FullTextSearch.
 * ``checker_wmscapabilities``: Check the WMS GetCapabilities.
 * ``checker_wfscapabilities``: Check the WFS GetCapabilities.

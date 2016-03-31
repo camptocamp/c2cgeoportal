@@ -585,11 +585,6 @@ def includeme(config):
     config.add_route("checker_xapi", "/checker_xapi", request_method="GET")
     config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
     config.add_route(
-        "checker_printcapabilities", "/checker_printcapabilities",
-        request_method="GET",
-    )
-    config.add_route("checker_pdf", "/checker_pdf", request_method="GET")
-    config.add_route(
         "checker_print3capabilities", "/checker_print3capabilities",
         request_method="GET",
     )
@@ -604,20 +599,6 @@ def includeme(config):
 
     # print proxy routes
     config.add_route("printproxy", "/printproxy", request_method="HEAD")
-    config.add_route(
-        "printproxy_info", "/printproxy/info.json",
-        request_method="GET",
-        pregenerator=C2CPregenerator(role=True),
-    )
-    config.add_route(
-        "printproxy_create", "/printproxy/create.json",
-        request_method="POST",
-    )
-    config.add_route(
-        "printproxy_get", "/printproxy/{file}.printout",
-        request_method="GET",
-    )
-    # V3
     add_cors_route(config, "/printproxy/*all", "print")
     config.add_route(
         "printproxy_capabilities", "/printproxy/capabilities.json",

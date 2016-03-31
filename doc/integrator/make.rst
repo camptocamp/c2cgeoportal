@@ -74,7 +74,7 @@ The following variables may be set in the makefiles:
 * ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``PRE_RULES``: predefine some build rules, default is empty.
-* ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
+* ``PRINT_VERSION``: , The print version we want to use (``3`` or ``NONE``), defaults to ``3``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, defaults to ``TRUE``.
 
 
