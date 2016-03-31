@@ -1,4 +1,5 @@
 vars:
+    main_version: __import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]
     dbuser: www-data
     dbpassword: www-data
     dbhost: localhost
@@ -25,3 +26,5 @@ interpreted:
     - git_branch
     yaml:
     - fqdn # to trim
+    python:
+    - main_version
