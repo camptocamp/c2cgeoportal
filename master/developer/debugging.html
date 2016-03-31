@@ -89,6 +89,11 @@ account:</p>
 <pre class="highlight"><span class="prompt1">sudo /etc/init.d/postgres reload</span>
 </pre><p>Logs are available in the <code class="docutils literal"><span class="pre">/var/log/postgresql/postgresql-9.*-main.log</span></code> file.</p>
 </div>
+<div class="section" id="makefile">
+<h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
+<p>You can run <cite>DEBUG=TRUE make ...</cite> to have some debug message.
+Actually we display the running rule and why she is running (dependence update).</p>
+</div>
 <div class="section" id="performance-or-network-error">
 <h2>Performance or network error<a class="headerlink" href="#performance-or-network-error" title="Permalink to this headline">¶</a></h2>
 <p>For performance and proxy issues make sure that all internal URLs in the config file
@@ -121,6 +126,7 @@ to test it).</p>
 <li><a class="reference internal" href="#general">General</a></li>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 <li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
+<li><a class="reference internal" href="#makefile">Makefile</a></li>
 <li><a class="reference internal" href="#performance-or-network-error">Performance or network error</a><ul>
 <li><a class="reference internal" href="#tilecloud-chain">Tilecloud chain</a></li>
 </ul>
