@@ -31,11 +31,12 @@ before_install:
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
 - sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
 
-- echo "[https://www.transifex.com]" > ~/.transifexrc
-- echo "hostname = https://www.transifex.com" >> ~/.transifexrc
-- echo "username = stephane.brunner@camptocamp.com" >> ~/.transifexrc
-- echo "password = ${TX_PASS}" >> ~/.transifexrc
-- echo "token =" >> ~/.transifexrc
+- |
+  if [ "${TX_PASS}" != "" ] ; then echo "[https://www.transifex.com]
+  hostname = https://www.transifex.com
+  username = stephane.brunner@camptocamp.com
+  password = ${TX_PASS}
+  token =" >> ~/.transifexrc; fi
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
