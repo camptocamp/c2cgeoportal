@@ -71,9 +71,18 @@ replace your sencha touch interface by an ngeo interface.
 
 8. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
 
-     <input id="password" name="password" type="password" autocomplete="on"/>
-    +<input id="oldPassword" name="oldPassword" type="password" />
-     <input id="newPassword" name="newPassword" type="password" />
+      <input id="password" name="password" type="password" autocomplete="on"/>
+    + <input id="oldPassword" name="oldPassword" type="password" />
+      <input id="newPassword" name="newPassword" type="password" />
+
+9. On the `{{package}}/model.py` removes the following lines:
+
+    - LayerInternalWMS.__acl__ = [DENY_ALL]
+    - LayerExternalWMS.__acl__ = [DENY_ALL]
+    - LayerWMTS.__acl__ = [DENY_ALL]
+    - WMTSDimension.__acl__ = [DENY_ALL]
+
+10. Add a Layer group named 'background' with the background layers.
 
 
 Version 1.6.8
