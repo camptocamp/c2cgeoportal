@@ -786,13 +786,13 @@ endif
 
 $(NPM_CMD):
 ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm
+	npm install npm || npm install npm || npm install npm
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	mkdir -p $(dir $@)
 ifeq ($(NGEO), TRUE)
-	$(NPM_CMD) install
+	$(NPM_CMD) install || $(NPM_CMD) install || $(NPM_CMD) install
 endif
 	touch $@
 
