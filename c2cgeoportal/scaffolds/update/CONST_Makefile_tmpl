@@ -494,7 +494,9 @@ cleanall: clean
 		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
 		.build/externs/jquery-1.9.js
 ifdef PRINT_BASE_WAR
+ifeq ($(PRINT_VERSION), 3)
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+endif
 endif
 
 .PHONY: cleanallcache
@@ -966,7 +968,9 @@ else  # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
+ifeq ($(PRINT_VERSION), 3)
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
+endif
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)

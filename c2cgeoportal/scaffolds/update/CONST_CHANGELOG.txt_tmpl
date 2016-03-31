@@ -24,13 +24,10 @@ replace your sencha touch interface by an ngeo interface.
     at that point, the following folder should exist: /tmp/{{project}}/
 
     cp /tmp/{{project}}/.jshintrc .
-    cp /tmp/{{project}}/build.mako.json .
-    cp /tmp/{{project}}/package.json .
-    cp /tmp/{{project}}/templatecache.mako.js .
     cp /tmp/{{project}}/lingua-client.cfg .
     cp /tmp/{{project}}/lingua-server.cfg .
     cp /tmp/{{project}}/apache/wsgi.conf.mako apache/
-    cp /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
+    cp -r /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
     cp /tmp/{{project}}/{{package}}/templates/mobile.html {{package}}/templates/
 
 2. Remove the no longer used files:
@@ -41,13 +38,18 @@ replace your sencha touch interface by an ngeo interface.
 
 3. Add in the `.gitignore` file:
 
+    + /node_modules/
     + /print/print-servlet.war
+    + /.tx/nconfig
     + /.tx/ngeo.gmf-*
-    + /c2cgeoportal/scaffolds/
     + /{{package}}/static-ngeo/build/
     + /{{package}}/static-ngeo/fonts/gmf-icons.*
     + /{{package}}/static-ngeo/fonts/fontawesome-webfont.*
     + /{{package}}/version.py
+    + /mapserver/replace_db.sh
+    + /testDB/01-schemas.sql
+    * /testDB/Dockerfile
+    + /.whiskey/action_hooks/pre-build
 
 4. In the `vars_{{package}}.yaml` file:
 
@@ -84,34 +86,22 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
-   If you don't have a `cache_control` you should also add the following lines:
+8. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
 
-   +  headers:
-   +      "<service_name>":
-   +          "cache_control_max_age": <max_age>
+      <input id="password" name="password" type="password" autocomplete="on"/>
+    + <input id="oldPassword" name="oldPassword" type="password" />
+      <input id="newPassword" name="newPassword" type="password" />
 
-8. A new checker has been added to test for javascript error. If you have
-   overridded the checker list in your `vars_{{package}}.yaml` file, you must
-   add it.
+9. On the `{{package}}/model.py` removes the following lines:
 
-    # Check collector configuration
-    check_collector:
-        disabled: [checker_printcapabilities, checker_pdf]
-        check_type:
-            all:
-    ...
-   +         - name: checker_js_generic
-   +           display: PhantomJS generic test
-            main:
-    ...
-   +         - name: checker_js_generic
-   +           display: PhantomJS generic test
+    - LayerInternalWMS.__acl__ = [DENY_ALL]
+    - LayerExternalWMS.__acl__ = [DENY_ALL]
+    - LayerWMTS.__acl__ = [DENY_ALL]
+    - WMTSDimension.__acl__ = [DENY_ALL]
 
-9. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
+10. Add a Layer group named 'background' with the background layers.
 
-     <input id="password" name="password" type="password" autocomplete="on"/>
-    +<input id="oldPassword" name="oldPassword" type="password" />
-     <input id="newPassword" name="newPassword" type="password" />
+11. It's not allowed anymore to have layers dirrectily in a theme.
 
 
 Version 1.6.8
