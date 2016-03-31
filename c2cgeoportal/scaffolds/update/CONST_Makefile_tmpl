@@ -581,7 +581,9 @@ $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 # server localisation
 
+.PRECIOUS: $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
 $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
+	touch --no-create $@
 
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
