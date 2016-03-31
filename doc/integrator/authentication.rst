@@ -229,7 +229,7 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
     # LDAP
     # get_user_from_request also needed for the same reason
     from c2cgeoportal import locale_negotiator, add_interface, \
-        INTERFACE_TYPE_SENCHA_TOUCH, get_user_from_request
+        INTERFACE_TYPE_NGEO, get_user_from_request
     # END LDAP
     from c2cgeoportal.lib.authentication import create_authentication
     from yourproject.resources import Root
@@ -335,7 +335,7 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
         add_interface(config)
         add_interface(config, "edit")
         add_interface(config, "routing")
-        add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
+        add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
         # LDAP
         # register the customized function

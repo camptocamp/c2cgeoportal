@@ -38,8 +38,6 @@ DEVELOPMENT ?= FALSE
 LANGUAGES ?= en fr de
 # Enable CGXP build
 CGXP ?= TRUE
-# Enable sencha touch build
-MOBILE ?= FALSE
 # Enable ngeo build
 NGEO ?= TRUE
 # Used print version
@@ -65,9 +63,6 @@ GIT_MODULES_FOLDER ?= .git/modules/
 ifeq ($(CGXP), TRUE)
 DEFAULT_WEB_RULE += build-cgxp
 endif
-ifeq ($(MOBILE), TRUE)
-DEFAULT_WEB_RULE += sencha-touch
-endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_WEB_RULE += build-ngeo
 CLIENT_CHECK_RULE ?= lint-ngeo
@@ -84,9 +79,6 @@ DEFAULT_BUILD_RULES += test-packages-deploy
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
-endif
-ifeq ($(MOBILE), TRUE)
-DEFAULT_BUILD_RULES += test-packages-mobile
 endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_BUILD_RULES += test-packages-ngeo
@@ -330,14 +322,6 @@ CSS_XAPI_OUTPUT = $(OUTPUT_DIR)/xapi.css
 VALIDATE_PY_FOLDERS = $(PACKAGE)/*.py $(PACKAGE)/lib $(PACKAGE)/scripts $(PACKAGE)/views
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
 
-# Sencha touch
-SENCHA_CMD ?= sencha-cmd
-
-JSBUILD_MOBILE_CONFIG = jsbuild/mobile.cfg
-JSBUILD_MOBILE_OUTPUT_DIR = $(PACKAGE)/static/mobile/
-JSBUILD_MOBILE_OUTPUT_FILES = $(addprefix $(JSBUILD_MOBILE_OUTPUT_DIR), openlayers-mobile.js)
-MOBILE_APP_JS_FILES = $(PACKAGE)/static/mobile/config.js $(PACKAGE)/static/mobile/app.js $(shell $(FIND) $(PACKAGE)/static/mobile/app -type f -name '*.js' 2> /dev/null)
-
 # Documentation
 SPHINX_FILES = $(shell $(FIND) doc -name "*.rst" -print)
 
@@ -479,9 +463,6 @@ clean: template-clean
 	rm -f apache/mapcache.xml apache/tiles.conf
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
-	rm -f $(JSBUILD_MOBILE_OUTPUT_FILES)
-	rm -rf $(PACKAGE)/static/mobile/build
-	rm -rf $(PACKAGE)/static/mobile/archive
 # We use the print
 ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
@@ -929,23 +910,6 @@ $(CSS_XAPI_OUTPUT): $(VENV_BIN)/cssmin$(PYTHON_BIN_POSTFIX) \
 	$(PRERULE_CMD)
 	$(VENV_BIN)/c2c-cssmin $(CSSMIN_ARGS) $@ $(CSS_XAPI_FILES)
 
-# Sencha touch
-
-.PHONY: sencha-touch
-sencha-touch: $(PACKAGE)/static/mobile/build/production/App/app.js
-
-$(JSBUILD_MOBILE_OUTPUT_FILES): $(JSBUILD_MOBILE_CONFIG) \
-		$(VENV_BIN)/jsbuild$(PYTHON_BIN_POSTFIX)
-	$(PRERULE_CMD)
-	$(VENV_BIN)/jsbuild $(JSBUILD_MOBILE_CONFIG) $(JSBUILD_ARGS) -j $(notdir $@) -o $(JSBUILD_MOBILE_OUTPUT_DIR)
-
-$(PACKAGE)/static/mobile/build/production/App/app.js: $(JSBUILD_MOBILE_OUTPUT_FILES) \
-		$(PACKAGE)/static/mobile/custom.scss $(MOBILE_APP_JS_FILES)
-	$(PRERULE_CMD)
-	rm -rf $(PACKAGE)/static/mobile/build
-	rm -rf $(PACKAGE)/static/mobile/archive
-	cd $(PACKAGE)/static/mobile && $(SENCHA_CMD) app build production
-
 # Check packages
 
 $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
@@ -966,14 +930,6 @@ test-packages-deploy: .build/test-packages-deploy.timestamp
 .build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(PRERULE_CMD)
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml deploy
-	touch $@
-
-.PHONY: test-packages-mobile
-test-packages-mobile: .build/test-packages-mobile.timestamp
-
-.build/test-packages-mobile.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml mobile
 	touch $@
 
 .PHONY: test-packages-tilecloud-chain

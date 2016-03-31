@@ -53,12 +53,6 @@ docker:
 deploy:
     deploy: 0.4.8
 
-mobile:
-    sencha:
-        cmd: sencha help 2> /dev/null | grep 'Sencha Cmd' | head -n 1 | awk '{{print $3}}' | sed 's/^v//'
-        version: 4.0
-    ruby-compass: 0 # just present
-
 tilecloud-chain:
     libapache2-mod-mapcache: 1.0.0
     memcached:
