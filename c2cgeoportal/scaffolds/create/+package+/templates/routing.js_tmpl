@@ -71,19 +71,9 @@ Ext.onReady(function() {
         {
             ptype: 'cgxp_routing',
             routingService: {
-                engine_car: {
+                osrm_demo: {
                     type: 'OSRM',
-                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/car',
-                    dynamic: true
-                },
-                engine_bicycle: {
-                    type: 'OSRM',
-                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/bicycle',
-                    dynamic: true
-                },
-                foot: {
-                    type: 'OSRM',
-                    url: 'http://mfusrgrp-re2013.demo-camptocamp.com/foot',
+                    url: 'https://router.project-osrm.org/',
                     dynamic: true
                 }
             },
