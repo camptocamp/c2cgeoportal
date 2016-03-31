@@ -138,7 +138,8 @@ def set_cors_headers(service_headers_settings, request, service_name,
 
     response.headers.update({
         "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": CORS_METHODS
+        "Access-Control-Allow-Methods": CORS_METHODS,
+        "Vary": "Origin",
     })
 
     if preflight:
