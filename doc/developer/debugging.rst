@@ -63,6 +63,12 @@ account:
 
 Logs are available in the ``/var/log/postgresql/postgresql-9.*-main.log`` file.
 
+Makefile
+--------
+
+You can run `DEBUG=TRUE make ...` to have some debug message.
+Actually we display the running rule and why she is running (dependence update).
+
 Performance or network error
 ----------------------------
 
