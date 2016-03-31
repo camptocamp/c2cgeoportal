@@ -110,10 +110,10 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
 
     # Run on the development.ini file
     extensions = [".ini"]
+    featuretype_cache = {}
 
     def __call__(self, filename, options):
         messages = []
-        self.capabilities_cache = {}
 
         self.env = bootstrap(filename)
         with open("project.yaml") as f:
@@ -175,44 +175,52 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
             "REQUEST": "DescribeFeatureType",
-            "FEATURES": layer,
         })
 
-        print("Get DescribeFeatureType for url: %s" % url)
+        if url not in self.featuretype_cache:
+            print("Get DescribeFeatureType for url: %s" % url)
+            self.featuretype_cache[url] = None
 
-        # forward request to target (without Host Header)
-        http = httplib2.Http()
-        h = {}
-        if urlsplit(url).hostname == "localhost":  # pragma: no cover
-            h["Host"] = self.package["host"]
-        try:
-            resp, content = http.request(url, method="GET", headers=h)
-        except:  # pragma: no cover
-            print("Unable to DescribeFeatureType from url %s" % url)
-            self.capabilities_cache[url] = None
+            # forward request to target (without Host Header)
+            http = httplib2.Http()
+            h = {}
+            if urlsplit(url).hostname == "localhost":  # pragma: no cover
+                h["Host"] = self.package["host"]
+            try:
+                resp, content = http.request(url, method="GET", headers=h)
+            except:  # pragma: no cover
+                print("Unable to DescribeFeatureType from url %s" % url)
+                self.capabilities_cache[url] = None
+                return []
+
+            if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+                print(
+                    "DescribeFeatureType from url %s return the error: %i %s" %
+                    (url, resp.status, resp.reason)
+                )
+                self.capabilities_cache[url] = None
+                return []
+
+            try:
+                describe = parseString(content)
+                self.featuretype_cache[url] = describe
+            except AttributeError:
+                print(
+                    "WARNING! an error occured while trying to "
+                    "read the mapfile and recover the themes."
+                )
+                print("url: %s\nxml:\n%s" % (url, content))
+        else:
+            describe = self.featuretype_cache[url]
+
+        if describe is None:
             return []
-
-        if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            print(
-                "DescribeFeatureType from url %s return the error: %i %s" %
-                (url, resp.status, resp.reason)
-            )
-            self.capabilities_cache[url] = None
-            return []
-
-        try:
-            describe = parseString(content)
-        except AttributeError:
-            print(
-                "WARNING! an error occured while trying to "
-                "read the mapfile and recover the themes."
-            )
-            print("url: %s\nxml:\n%s" % (url, content))
 
         attributes = []
-        for element in describe.getElementsByTagName("element"):
-            if element.getAttribute("type") not in [
-                "gml:PointPropertyType", "gml:LineStringPropertyType", "gml:PolygonPropertyType"
-            ]:
-                attributes.append(element.getAttribute("name"))
+        # Should probably be adapted for other king of servers
+        for type_element in describe.getElementsByTagName("complexType"):
+            if type_element.getAttribute("name") == "%sType" % layer:
+                for element in type_element.getElementsByTagName("element"):
+                    if not element.getAttribute("type").startswith("gml:"):
+                        attributes.append(element.getAttribute("name"))
         return attributes
