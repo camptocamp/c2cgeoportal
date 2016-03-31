@@ -91,6 +91,18 @@ replace your sencha touch interface by an ngeo interface.
 
 11. It's not allowed anymore to have layers dirrectily in a theme.
 
+12. Do the following change in the `{{package}}/templates/index.html` file:
+
+    - % if not no_redirect and mobile_url is not None:
+    + % if "no_redirect" not in request.params:
+      <script>
+          if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+    -         window.location = "${mobile_url}";
+    +         window.location = "${request.route_url('mobile')}";
+          }
+      </script>
+      % endif
+
 
 Version 1.6.8
 =============

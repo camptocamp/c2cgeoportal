@@ -742,7 +742,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
+            set(["lang", "debug", "extra_params"])
         )
         result = entry.get_cgxp_viewer_vars()
         self.assertEquals(set(result.keys()), set([
@@ -819,7 +819,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
+            set(["lang", "debug", "extra_params"])
         )
         self.assertEquals(
             set(result["extra_params"].keys()),
@@ -865,7 +865,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
+            set(["lang", "debug", "extra_params"])
         )
 
     def test_entry_points_wfs(self):
@@ -902,7 +902,7 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "debug", "extra_params", "mobile_url", "no_redirect"
+                "lang", "debug", "extra_params"
             ])
         )
         self.assertEquals(
@@ -940,7 +940,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
+            set(["lang", "debug", "extra_params"])
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -965,7 +965,7 @@ class TestEntryView(TestCase):
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
             set(result.keys()),
-            set(["lang", "debug", "extra_params", "mobile_url", "no_redirect"])
+            set(["lang", "debug", "extra_params"])
         )
         result = entry.get_cgxp_viewer_vars()
 
@@ -981,8 +981,8 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "mobile_url", "permalink_themes",
-                "no_redirect", "debug", "extra_params",
+                "lang", "permalink_themes",
+                "debug", "extra_params",
             ])
         )
         self.assertEquals(
@@ -1000,7 +1000,7 @@ class TestEntryView(TestCase):
         self.assertEquals(
             set(result.keys()),
             set([
-                "lang", "mobile_url", "permalink_themes", "no_redirect", "debug", "extra_params"
+                "lang", "permalink_themes", "debug", "extra_params"
             ])
         )
         self.assertEquals(
