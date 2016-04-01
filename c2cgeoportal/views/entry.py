@@ -1385,6 +1385,7 @@ class Entry(object):
     def _user(self, user=None):
         user = self.request.user if user is None else user
         result = {
+            "success": True,  # for Extjs
             "username": user.username,
             "is_password_changed": user.is_password_changed,
             "role_name": user.role_name,

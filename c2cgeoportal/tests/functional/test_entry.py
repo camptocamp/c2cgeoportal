@@ -198,6 +198,7 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(json.loads(response.body), {
+            "success": True,
             "username": "__test_user1",
             "is_password_changed": False,
             "role_name": "__test_role1",
@@ -259,6 +260,7 @@ class TestEntryView(TestCase):
         response = Entry(request).login()
         self.assertEquals(response.status_int, 200)
         self.assertEquals(json.loads(response.body), {
+            "success": True,
             "username": "__test_user1",
             "is_password_changed": True,
             "role_name": "__test_role1",
