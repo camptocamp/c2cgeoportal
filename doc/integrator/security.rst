@@ -57,8 +57,6 @@ Entry:
 - cgxp_index
 - cgxp_viewer
 - ngeo_index
-- sencha_index
-- sencha_config
 - apijs
 - apihelp
 

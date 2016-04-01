@@ -296,7 +296,7 @@ vars:
 
     # Check collector configuration
     check_collector:
-        disabled: [checker_printcapabilities, checker_pdf]
+        disabled: []
         check_type:
             all:
             - name: checker_main
@@ -315,10 +315,6 @@ vars:
               display: Extended API
             - name: checker_lang_files
               display: Language files
-            - name: checker_printcapabilities
-              display: Print capabilities
-            - name: checker_pdf
-              display: Print PDF
             - name: checker_print3capabilities
               display: Print capabilities
             - name: checker_pdf3

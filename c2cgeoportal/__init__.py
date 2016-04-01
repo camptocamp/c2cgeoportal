@@ -91,7 +91,6 @@ class DecimalJSON:
         return _render
 
 INTERFACE_TYPE_CGXP = "cgxp"
-INTERFACE_TYPE_SENCHA_TOUCH = "senchatouch"
 INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
@@ -116,9 +115,6 @@ def add_interface(
                 routes=("/%s" % interface_name, "/%s.js" % interface_name),
                 renderers=("/%s.html" % interface_name, "/%s.js" % interface_name),
             )
-
-    elif interface_type == INTERFACE_TYPE_SENCHA_TOUCH:
-        add_interface_senchatouch(config, interface_name, **kwargs)
 
     elif interface_type == INTERFACE_TYPE_NGEO:
         if interface_name is None or interface_name == "main":
@@ -184,78 +180,6 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
         renderer=renderers[1]
     )
 
-
-def add_interface_senchatouch(config, interface_name, package=None):  # pragma: nocover
-    # Cannot be at the header to don"t load the model too early
-    from c2cgeoportal.views.entry import Entry
-
-    if package is None:
-        package = config.get_settings()["package"]
-
-    def add_interface(f):
-        def new_f(root, request):
-            request.interface_name = interface_name
-            return f(root, request)
-        return new_f
-
-    interface_name = "mobile" if interface_name is None else interface_name
-    config.add_route("mobile_index_dev", "/mobile_dev/", request_method="GET")
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="mobile",
-        renderer="%(package)s:static/mobile/index.html" % {
-            "package": package
-        },
-        route_name="mobile_index_dev"
-    )
-    config.add_route("mobile_config_dev", "/mobile_dev/config.js", request_method="GET")
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="mobileconfig",
-        renderer="%(package)s:static/mobile/config.js" % {
-            "package": package
-        },
-        route_name="mobile_config_dev"
-    )
-    config.add_static_view(
-        name="%s_dev" % interface_name,
-        path="%(package)s:static/mobile" % {
-            "package": package
-        },
-    )
-
-    config.add_route("mobile_index_prod", "/mobile/", request_method="GET")
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="mobile",
-        renderer="%(package)s:static/mobile/build/production/App/index.html" % {
-            "package": package
-        },
-        route_name="mobile_index_prod"
-    )
-    config.add_route(
-        "mobile_config_prod", "/mobile/config.js",
-        request_method="GET",
-        pregenerator=C2CPregenerator(role=True),
-    )
-    config.add_view(
-        Entry,
-        decorator=add_interface,
-        attr="mobileconfig",
-        renderer="%(package)s:static/mobile/build/production/App/config.js" % {
-            "package": package
-        },
-        route_name="mobile_config_prod"
-    )
-    config.add_static_view(
-        name=interface_name,
-        path="%(package)s:static/mobile/build/production/App" % {
-            "package": package
-        },
-    )
 
 ngeo_static_init = False
 
@@ -661,11 +585,6 @@ def includeme(config):
     config.add_route("checker_xapi", "/checker_xapi", request_method="GET")
     config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
     config.add_route(
-        "checker_printcapabilities", "/checker_printcapabilities",
-        request_method="GET",
-    )
-    config.add_route("checker_pdf", "/checker_pdf", request_method="GET")
-    config.add_route(
         "checker_print3capabilities", "/checker_print3capabilities",
         request_method="GET",
     )
@@ -680,20 +599,6 @@ def includeme(config):
 
     # print proxy routes
     config.add_route("printproxy", "/printproxy", request_method="HEAD")
-    config.add_route(
-        "printproxy_info", "/printproxy/info.json",
-        request_method="GET",
-        pregenerator=C2CPregenerator(role=True),
-    )
-    config.add_route(
-        "printproxy_create", "/printproxy/create.json",
-        request_method="POST",
-    )
-    config.add_route(
-        "printproxy_get", "/printproxy/{file}.printout",
-        request_method="GET",
-    )
-    # V3
     add_cors_route(config, "/printproxy/*all", "print")
     config.add_route(
         "printproxy_capabilities", "/printproxy/capabilities.json",
