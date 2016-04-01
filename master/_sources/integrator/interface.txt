@@ -14,7 +14,7 @@ The interfaces are added by the following lines in ``<package>/__init__.py``:
     add_interface(config)
     add_interface(config, 'edit')
     add_interface(config, 'routing')
-    add_interface(config, 'mobile', INTERFACE_TYPE_SENCHA_TOUCH)
+    add_interface(config, 'mobile', INTERFACE_TYPE_NGEO)
 
 
 The used method has the following API:
@@ -26,6 +26,5 @@ The used method has the following API:
 ``interface_name`` is the name specified in the ``interface`` table,
 also used to create the route path.
 
-``interface_type`` may be either ``INTERFACE_TYPE_CGXP``,
-``INTERFACE_TYPE_SENCHA_TOUCH``, ``INTERFACE_TYPE_NGEO`` or
+``interface_type`` may be either ``INTERFACE_TYPE_CGXP``, ``INTERFACE_TYPE_NGEO`` or
 ``INTERFACE_TYPE_NGEO_CATALOGUE``. Constants available in ``c2cgeoportal``.

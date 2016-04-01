@@ -238,7 +238,7 @@ LDAP would look like this:</p>
 <span class="c1"># LDAP</span>
 <span class="c1"># get_user_from_request also needed for the same reason</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
-    <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">,</span> <span class="n">get_user_from_request</span>
+    <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 <span class="c1"># END LDAP</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
 <span class="kn">from</span> <span class="nn">yourproject.resources</span> <span class="k">import</span> <span class="n">Root</span>
@@ -344,7 +344,7 @@ LDAP would look like this:</p>
     <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;edit&quot;</span><span class="p">)</span>
     <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;routing&quot;</span><span class="p">)</span>
-    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;mobile&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">)</span>
+    <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;mobile&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
 
     <span class="c1"># LDAP</span>
     <span class="c1"># register the customized function</span>

@@ -134,8 +134,7 @@ Cygwin's git for Windows. To do so:
 Print
 ^^^^^^
 
-If using MapFish Print v3 (thus defining ``PRINT_VERSION ?= 3`` in your
-makefile), then you should define the service name of your Tomcat server. In
+You should define the service name of your Tomcat server. In
 your makefile, define the following variables:
 
 .. prompt:: bash
