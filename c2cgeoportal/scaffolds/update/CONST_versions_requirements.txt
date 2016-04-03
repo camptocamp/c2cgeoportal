@@ -7,7 +7,7 @@ dogpile.cache==0.5.7
 dogpile.core==0.4.1
 https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 fanstatic==0.16
-GeoAlchemy2==0.2.6
+GeoAlchemy2==0.3.0
 GeoFormAlchemy2==2.0.dev3
 geojson==1.0.9
 httplib2==0.9.2
