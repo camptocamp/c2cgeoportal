@@ -40,7 +40,10 @@ main:
         version: 0.18
     unzip:
         cmd: unzip -v | head -n1 | awk '{{print $2}}'
-        version: 6
+        version: 6.0
+    zip:
+        cmd: zip -v | head -n2 | tail -n1 | awk '{{print $4}}'
+        version: 3.0
 
 docker:
     docker:
