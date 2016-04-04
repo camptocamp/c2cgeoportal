@@ -89,7 +89,7 @@ replace your sencha touch interface by an ngeo interface.
 
 10. Add a Layer group named 'background' with the background layers.
 
-11. It's not allowed anymore to have layers dirrectily in a theme.
+11. It's not allowed anymore to have layers directly in a theme.
 
 12. Do the following change in the `{{package}}/templates/index.html` file:
 
