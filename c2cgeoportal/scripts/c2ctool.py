@@ -340,6 +340,7 @@ class C2cTool:
         check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
         diff_file.close()
 
+        check_call(["make", "-f", self.options.file, "update-node-modules"])
         check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
 
         print("")
