@@ -53,6 +53,18 @@ def main():
         dest="app_name",
         help="the application name (optional, default is 'app')"
     )
+    parser.add_argument(
+        "--no-layers",
+        dest="layers",
+        action="store_false",
+        help="don't import the layers"
+    )
+    parser.add_argument(
+        "--no-groups",
+        dest="groups",
+        action="store_false",
+        help="don't import the groups"
+    )
     options = parser.parse_args()
 
     app_config = options.app_config
@@ -67,24 +79,26 @@ def main():
 
     session = DBSession()
 
-    table_list = [LayerWMTS, LayerWMS, ServerOGC]
-    for table in table_list:
-        print("Emptying table %s." % str(table.__table__))
-        # must be done exactly this way othewise the cascade config in the
-        # models are not used
-        for t in session.query(table).all():
-            session.delete(t)
+    if options.layers:
+        table_list = [LayerWMTS, LayerWMS, ServerOGC]
+        for table in table_list:
+            print("Emptying table %s." % str(table.__table__))
+            # must be done exactly this way othewise the cascade config in the
+            # models are not used
+            for t in session.query(table).all():
+                session.delete(t)
 
-    # list and create all distinct server_ogc
-    server_ogc(session)
+        # list and create all distinct server_ogc
+        server_ogc(session)
 
-    print("Converting layerv1.")
-    for layer in session.query(LayerV1).all():
-        layer_v1tov2(session, layer)
+        print("Converting layerv1.")
+        for layer in session.query(LayerV1).all():
+            layer_v1tov2(session, layer)
 
-    print("Converting layer group.")
-    for group in session.query(LayerGroup).all():
-        layergroup_v1tov2(session, group)
+    if options.groups:
+        print("Converting layer group.")
+        for group in session.query(LayerGroup).all():
+            layergroup_v1tov2(session, group)
 
     transaction.commit()
 
