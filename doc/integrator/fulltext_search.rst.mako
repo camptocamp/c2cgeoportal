@@ -14,7 +14,7 @@ The viewer should include a ``FullTextSearch`` plugin for the *text search*
 feature to be available in the user interface.
 
 See the `FullTextSearch API doc
-<http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FullTextSearch.html>`_ for the
+<http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FullTextSearch.html>`_ for the
 list of options the plugin can receive.
 
 *The main viewer includes a FullTextSearch plugin by default.*
@@ -149,7 +149,7 @@ For instance to specify a ``floor``:
 
 Query string ``floor=1`` is then automatically appended to all WMS requests.
 
-See `FloorSlider <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FloorSlider.html>`_
+See `FloorSlider <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FloorSlider.html>`_
 for more information.
 
 Actions

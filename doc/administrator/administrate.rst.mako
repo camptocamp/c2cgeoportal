@@ -76,10 +76,10 @@ The layers in the admin interface have the following attributes:
     the given layer, used to zoom to visible scale, with WMS if it's empty
     we get the values from the capabilities.
  *  ``Disclaimer``: optional, copyright of the layer, used by
-    `Disclaimer <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Disclaimer.html>`_.
+    `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
  *  ``Identifier attribute field``: field used to identify a feature from the
     layer, e.g.: 'name', used by
-    `FeaturesWindow <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FeaturesWindow.html>`_.
+    `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
  *  ``Restrictions area``: the areas throw witch the user can see the layer.
 
 On ``internal WMS`` layer we have the following specific attributes:
