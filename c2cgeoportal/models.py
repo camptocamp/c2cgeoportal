@@ -370,6 +370,9 @@ class TreeItem(Base):
 
         return False
 
+    def get_metadatas(self, name):  # pragma: nocover
+        return [metadata for metadata in self.ui_metadatas if metadata.name == name]
+
     def __init__(self, name=u""):
         self.name = name
 

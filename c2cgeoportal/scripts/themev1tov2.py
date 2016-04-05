@@ -63,7 +63,7 @@ def main():
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \
-        ServerOGC, LayerWMS, LayerWMTS, LayerV1
+        ServerOGC, LayerWMS, LayerWMTS, LayerV1, LayerGroup
 
     session = DBSession()
 
@@ -81,6 +81,10 @@ def main():
     print("Converting layerv1.")
     for layer in session.query(LayerV1).all():
         layer_v1tov2(session, layer)
+
+    print("Converting layer group.")
+    for group in session.query(LayerGroup).all():
+        layergroup_v1tov2(session, group)
 
     transaction.commit()
 
@@ -221,3 +225,14 @@ def layer_add_ui_metadata(layer, new_layer, session):
         ))
     if layer.exclude_properties is not None:
         session.add(new_uimetadata("excludeProperties", layer.exclude_properties, new_layer))
+
+
+def layergroup_v1tov2(session, group):
+    is_expended_metadatas = group.get_metadatas("isExpanded")
+    if group.is_expanded is True:
+        if len(is_expended_metadatas) > 0:
+            is_expended_metadatas[0].value = u"true"
+        else:
+            session.add(new_uimetadata(u"isExpanded", u"true", group))
+    elif len(is_expended_metadatas) > 0:
+        session.delete(is_expended_metadatas)
