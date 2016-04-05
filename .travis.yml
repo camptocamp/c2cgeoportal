@@ -71,7 +71,6 @@ script:
 - find /tmp/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
 - find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
 - find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs travis/quote
-- travis/test-new-project.sh wsgi/viewer.js
 - travis/test-new-project.sh wsgi/check_collector
 - travis/test-new-project.sh wsgi/check_collector?type=all
 - travis/status.sh /tmp/testgeomapfish/

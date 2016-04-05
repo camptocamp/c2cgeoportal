@@ -288,7 +288,8 @@ vars:
     # Checker configuration
     checker:
         fulltextsearch: text to search
-        lang_files: [ngeo, cgxp, cgxp-api]
+        lang_files: [ngeo, cgxp-api]
+        ngeo_interfaces: [desktop, mobile]
         themes:
             default:
                 params:
@@ -296,7 +297,7 @@ vars:
 
     # Check collector configuration
     check_collector:
-        disabled: []
+        disabled: [checker_main, checker_viewer]
         check_type:
             all:
             - name: checker_main
@@ -343,6 +344,8 @@ vars:
             default: # for children
             - name: checker_viewer
               display: Viewer script
+            - name: checker_js_generic
+              display: PhantomJS generic test
         hosts:
         - display: {{package}}
           url: http://{host}/{instanceid}/wsgi

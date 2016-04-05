@@ -117,16 +117,7 @@ def add_interface(
             )
 
     elif interface_type == INTERFACE_TYPE_NGEO:
-        if interface_name is None or interface_name == "main":
-            interface_name = "main"
-            add_interface_ngeo(
-                config,
-                interface_name=interface_name,
-                route_name="root",
-                route="/",
-                renderer="/%s.html" % interface_name,
-            )
-        route = "/%s" % interface_name
+        route = "/" if interface_name == "desktop" else "/%s" % interface_name
 
         add_interface_ngeo(
             config,

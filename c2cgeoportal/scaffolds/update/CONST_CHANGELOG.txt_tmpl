@@ -1,23 +1,42 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+This changelog considers that you don't currently use an ngeo interface and you
+replace your sencha touch interface by an ngeo interface.
+
+
 Version 2.1.0
 =============
 
+The changelog consider that we replace add the cgxp interfaces by the ngeo desktop interface,
+but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+
 1. Get the new files for ngeo integration:
 
-    ...
+    cp /tmp/{{project}}/{{package}}/templates/desktop.html {{package}}/templates/
+    cp /tmp/{{project}}/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
+    cp /tmp/{{project}}/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
 
 2. Remove the no longer used files:
 
     git rm CONST_versions.txt
+    git rm {{package}}/templates/index.html
+    git rm {{package}}/templates/viewer.js
+    git rm {{package}}/templates/edit.html
+    git rm {{package}}/templates/edit.js
+    git rm {{package}}/templates/routing.html
+    git rm {{package}}/templates/routing.js
 
+3. In the `{{package}}/__init__.py` do the following replacement:
+
+    - add_interface(config)
+    - add_interface(config, "edit")
+    - add_interface(config, "routing")
+    + add_interface(config, "desktop", INTERFACE_TYPE_NGEO)
+    + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
 Version 2.0.0
 =============
-
-This changelog considers that you don't currently use an ngeo interface and you
-replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:
 

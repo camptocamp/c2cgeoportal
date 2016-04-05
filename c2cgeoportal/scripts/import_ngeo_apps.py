@@ -155,14 +155,15 @@ def main():
                 data
             # back for ng-app
             data = _sub(r"ng-{{package}}", r"ng-app", data)
-            # back for mobile-web-app-capable
-            data = _sub(
-                r"mobile-web-{{package}}-capable",
-                r"mobile-web-app-capable", data
-            )
+            if args.interface == "mobile":
+                # back for mobile-web-app-capable
+                data = _sub(
+                    r"mobile-web-{{package}}-capable",
+                    r"mobile-web-app-capable", data
+                )
             # Styles
             data = _sub(
-                r'    <link rel="stylesheet.*/build/mobile.css">',
+                r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
                 r"""% if debug:
     <link rel="stylesheet/less" href="${{request.static_url('%s/ngeo/contribs/gmf/less/font.less' % request.registry.settings['node_modules_path'])}}" type="text/css">
     <link rel="stylesheet/less" href="${{request.static_url('{{{{package}}}}:static-ngeo/less/{interface}.less')}}" type="text/css">

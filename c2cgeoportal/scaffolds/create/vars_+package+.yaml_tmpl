@@ -100,6 +100,7 @@ vars:
                 legend: {}
 
     check_collector:
+        disabled: []
         hosts: []
         # - display: Child:
         #   url: http://{host}/child/wsgi
@@ -121,5 +122,6 @@ vars:
 update_paths:
 - authtkt
 - checker
+- check_collector.disabled
 - check_collector.hosts
 - admin_interface

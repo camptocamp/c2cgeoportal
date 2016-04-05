@@ -320,17 +320,18 @@ class Checker(object):  # pragma: no cover
         checker_config_base_path = "node_modules/ngeo/buildtools/check-example.js"
         checker_config_path = os.path.join(base_path, checker_config_base_path)
 
-        url = self.request.route_url("mobile")
+        log_message = []
+        for interface in self.settings["ngeo_interfaces"]:
+            url = self.request.route_url(interface)
 
-        args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
+            args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
-        log_message = ""
-        # check_output throws a CalledProcessError if return code is > 0
-        try:
-            check_output(args)
-        except CalledProcessError as e:
-            log_message = e.output
+            # check_output throws a CalledProcessError if return code is > 0
+            try:
+                check_output(args)
+            except CalledProcessError as e:
+                log_message.append(e.output)
 
         return self.make_response(
-            "OK" if len(log_message) == 0 else urllib.unquote(log_message)
+            "OK" if len(log_message) == 0 else urllib.unquote(", ".join(log_message))
         )
