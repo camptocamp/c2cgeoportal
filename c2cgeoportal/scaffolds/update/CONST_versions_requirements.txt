@@ -21,7 +21,7 @@ js.jquery-markitup==1.1.10.post1
 js.jqueryui-selectmenu==0.1
 js.jqueryui-syronex-colorpicker==1.0.0
 js.tinymce==4.2.7
-lingua==4.8.1
+lingua==4.9
 Mako==1.0.4
 Markdown==2.6.6
 MarkupSafe==0.23
