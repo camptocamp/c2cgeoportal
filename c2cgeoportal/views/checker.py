@@ -57,6 +57,12 @@ def build_url(name, url, request, headers=None):
     else:
         url_ = url
 
+    settings = request.registry.settings.get("checker", {})
+    for header in settings.get("forward_headers", []):
+        value = request.headers.get(header)
+        if value is not None:
+            headers[header] = value
+
     log.info("%s, URL: %s => %s" % (name, url, url_))
     return url_, headers
 

@@ -90,3 +90,29 @@ class TestExportCSVView(TestCase):
                 }
             )
         )
+
+    def test_build_url_forward_headers(self):
+        request = DummyRequest()
+        request.environ = {
+            "SERVER_NAME": "example.com"
+        }
+        request.registry.settings = {
+            "checker": {
+                "forward_headers": ["Cookie"]
+            }
+        }
+        request.headers["Cookie"] = "test"
+        self.assertEqual(
+            build_url(
+                "Test",
+                "https://camptocamp.com/toto?titi#tutu",
+                request
+            ),
+            (
+                "https://camptocamp.com/toto?titi#tutu",
+                {
+                    "Cache-Control": "no-cache",
+                    "Cookie": "test",
+                }
+            )
+        )
