@@ -103,7 +103,7 @@ templates:
             datasource: *datasource
         processors: *processors
 
-    3 A portrait: !template
+    3 A3 portrait: !template
         reportTemplate: A3_Portrait.jrxml
         attributes:
             title: *title
