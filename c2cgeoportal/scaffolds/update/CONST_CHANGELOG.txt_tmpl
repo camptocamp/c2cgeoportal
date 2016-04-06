@@ -22,6 +22,7 @@ replace your sencha touch interface by an ngeo interface.
 
     git rm lingua.cfg
     git rm -r {{package}}/static/mobile/
+    git rm jsbuild/mobile.cfg
     git rm print/print-servlet.war
 
 3. Add in the `.gitignore` file:

@@ -70,8 +70,8 @@ The following variables may be set in the makefiles:
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``INSTANCE_ID``: The WSGI instance id (should be unique on a server).
 * ``LANGUAGES``: the list of available languages.
-* ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
 * ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
+* ``NGEO_INTERFACES``: The list of NGEO interfaces, default is ``mobile``.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``PRE_RULES``: predefine some build rules, default is empty.
 * ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
