@@ -28,27 +28,27 @@ Checker
 
 Available services:
 
-* ``checker_main``: Check the main page.
-* ``checker_viewer``: Check the viewer.js used by the main page.
-* ``checker_edit``: Check the edit page.
-* ``checker_edit_js``: Check the edit.js used by the edit page.
-* ``checker_apiloader``: Check the API loader.
-* ``checker_print3capabilities``: Check the print capabilities.
+* ``checker_routes``: Check some routes, configured in ``routes`` aa array of objects
+  with ``name`` and ``params``, ``routes_disable`` can be use to disable only one rule.
 * ``checker_pdf3``: Check the print (try to print a page).
 * ``checker_fts``: Check the FullTextSearch.
-* ``checker_wmscapabilities``: Check the WMS GetCapabilities.
-* ``checker_wfscapabilities``: Check the WFS GetCapabilities.
+* ``checker_theme_errors``: Check the that the theme don't have errors on all the interfaces.
+* ``checker_lang_files``: Check that all the language files are present,
+  use the configuration global ``available_locale_names``, and the checker configuration
+  ``lang_files``, an array of string that must be in ``[cgxp, cgxp-api, ngeo]``.
+* ``checker_phantomjs``: Check with phantomjs that the pages load correctly without errors,
+  use the ``phantomjs_routes`` configuration as an array of route name to check.
 
 Configuration in ``vars_<project>.yaml``:
 
 .. code:: yaml
 
     checker:
-        print_template: 1 A4 portrait
-        print_center_lon: to be defined
-        print_center_lat: to be defined
-        print_scale: 10000
-        fulltextsearch: text to search
+        defaults:
+            <the config>
+        <a type>:
+            <overide the default config for a specific type>
+
 
 Check collector
 ---------------

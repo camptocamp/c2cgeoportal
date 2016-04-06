@@ -568,23 +568,12 @@ def includeme(config):
     # checker routes, Checkers are web services to test and assess that
     # the application is correctly functioning.
     # These web services are used by tools like (nagios).
-    config.add_route("checker_main", "/checker_main", request_method="GET")
-    config.add_route("checker_viewer", "/checker_viewer", request_method="GET")
-    config.add_route("checker_edit", "/checker_edit", request_method="GET")
-    config.add_route("checker_edit_js", "/checker_edit_js", request_method="GET")
-    config.add_route("checker_api", "/checker_api", request_method="GET")
-    config.add_route("checker_xapi", "/checker_xapi", request_method="GET")
+    config.add_route("checker_routes", "/checker_routes", request_method="GET")
     config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
-    config.add_route(
-        "checker_print3capabilities", "/checker_print3capabilities",
-        request_method="GET",
-    )
     config.add_route("checker_pdf3", "/checker_pdf3", request_method="GET")
     config.add_route("checker_fts", "/checker_fts", request_method="GET")
-    config.add_route("checker_wmscapabilities", "/checker_wmscapabilities", request_method="GET")
-    config.add_route("checker_wfscapabilities", "/checker_wfscapabilities", request_method="GET")
     config.add_route("checker_theme_errors", "/checker_theme_errors", request_method="GET")
-    config.add_route("checker_js_generic", "/checker_js_generic", request_method="GET")
+    config.add_route("checker_phantomjs", "/checker_phantomjs", request_method="GET")
     # collector
     config.add_route("check_collector", "/check_collector", request_method="GET")
 

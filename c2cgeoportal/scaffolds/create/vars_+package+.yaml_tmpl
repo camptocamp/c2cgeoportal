@@ -81,23 +81,27 @@ vars:
 
     # Checker configuration
     checker:
-        fulltextsearch: text to search
-        print_spec:
-            layout: "1 A4 portrait"
-            outputFormat: "pdf"
-            attributes:
-                title: ""
-                comments: ""
-                datasource: []
-                map:
-                    projection: "EPSG:21781"
-                    dpi: 254
-                    rotation: 0
-                    center: [600000, 200000]
-                    scale: 100000
-                    longitudeFirst: true
-                    layers: []
-                legend: {}
+        defaults:
+            routes_disable: []
+            fulltextsearch: text to search
+            print_spec:
+                layout: "1 A4 portrait"
+                outputFormat: "pdf"
+                attributes:
+                    title: ""
+                    comments: ""
+                    datasource: []
+                    map:
+                        projection: "EPSG:21781"
+                        dpi: 254
+                        rotation: 0
+                        center: [600000, 200000]
+                        scale: 100000
+                        longitudeFirst: true
+                        layers: []
+                    legend: {}
+        all:
+            routes_disable: []
 
     check_collector:
         disabled: []
@@ -121,7 +125,8 @@ vars:
 
 update_paths:
 - authtkt
-- checker
+- checker.defaults
+- checker.all
 - check_collector.disabled
 - check_collector.hosts
 - admin_interface

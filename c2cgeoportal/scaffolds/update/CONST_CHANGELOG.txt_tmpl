@@ -35,6 +35,59 @@ but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with
     + add_interface(config, "desktop", INTERFACE_TYPE_NGEO)
     + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
+4. The checkers will be refactored, you should do at least the following change:
+      checker
+    -     fulltextsearch: text to search
+    -     print_spec:
+    -         layout: "1 A4 portrait"
+    -         outputFormat: "pdf"
+    -         attributes:
+    -             title: ""
+    -             comments: ""
+    -             datasource: []
+    -             map:
+    -                 projection: "EPSG:21781"
+    -                 dpi: 254
+    -                 rotation: 0
+    -                 center: [600000, 200000]
+    -                 scale: 100000
+    -                 longitudeFirst: true
+    -                 layers: []
+    -             legend: {}
+    +     defaults:
+    +         routes_disable: []
+    +         fulltextsearch: text to search
+    +         print_spec:
+    +             layout: "1 A4 portrait"
+    +             outputFormat: "pdf"
+    +             attributes:
+    +                 title: ""
+    +                 comments: ""
+    +                 datasource: []
+    +                 map:
+    +                     projection: "EPSG:21781"
+    +                     dpi: 254
+    +                     rotation: 0
+    +                     center: [600000, 200000]
+    +                     scale: 100000
+    +                     longitudeFirst: true
+    +                     layers: []
+    +                 legend: {}
+    +     all:
+    +         routes_disable: []
+      check_collector:
+    +     disabled: []
+          hosts: []
+    ...
+      update_paths:
+    ...
+    - - checker
+    + - checker.defaults
+    + - checker.all
+    + - check_collector.disabled
+      - check_collector.hosts
+
+
 Version 2.0.0
 =============
 

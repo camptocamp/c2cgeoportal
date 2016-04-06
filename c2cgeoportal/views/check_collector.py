@@ -69,7 +69,9 @@ class CheckerCollector(object):  # pragma: no cover
                     if check["name"] in disabled:
                         continue
                     start2 = time()
-                    res, err = self._testurl("%s/%s" % (host["url"], check["name"]))
+                    res, err = self._testurl("{}/{}?type={}".format(
+                        host["url"], check["name"], check_type
+                    ))
                     body += "<p>%s: %s (%0.4fs)</p>" % \
                         (check["display"], res, time() - start2)
                     if err:
