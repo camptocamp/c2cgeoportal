@@ -112,7 +112,20 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
     Don't add any '/' after the project name.
 
-You'll be asked to enter the SRID for this project.
+You'll be asked to enter the SRID and the Apache vhost for this project. Note
+that the default extent would be defined directly from the srid. You can change
+it later.
+
+.. note::
+
+    You can define these informations directly in the command line using
+    parameters:
+
+     .. prompt:: bash
+
+         .build/venv/bin/pcreate -s c2cgeoportal_create ../<project>
+         package=<package> srid=21781 extent="420000, 30000, 900000, 350000"
+         apache_vhost=geomapfish
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you're

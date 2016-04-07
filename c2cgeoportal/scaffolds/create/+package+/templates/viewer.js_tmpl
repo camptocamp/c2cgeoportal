@@ -21,9 +21,9 @@ Ext.onReady(function() {
 % if bounds:
     var INITIAL_EXTENT = ${dumps(bounds)};
 % else:
-    var INITIAL_EXTENT = [420000, 30000, 900000, 350000];
+    var INITIAL_EXTENT = {{extent_viewer}};
 % endif
-    var RESTRICTED_EXTENT = [420000, 30000, 900000, 350000];
+    var RESTRICTED_EXTENT = {{extent_viewer}};
 
     // Themes definitions
     var THEMES = {
@@ -174,7 +174,7 @@ Ext.onReady(function() {
             mapserverproxyURL: "${request.route_url('mapserverproxy') | n}",
             maxFeatures: ${wfs_settings.get('maxfeatures', 200)},
             srsName: 'EPSG:{{srid}}',
-            featureTypes: ["query_layer"],
+            featureTypes: ["borders"],
             attributeURLs: ${queryer_attribute_urls | n},
             describeFeatureTypeParams: ${dumps(version_role_params) | n}
         },

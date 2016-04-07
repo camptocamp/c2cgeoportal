@@ -31,7 +31,9 @@
 import re
 import subprocess
 import os
-from yaml import load
+import json
+import requests
+import yaml
 from six import string_types
 
 from pyramid.scaffolds.template import Template
@@ -83,35 +85,6 @@ class BaseTemplate(Template):  # pragma: no cover
                 vars["package"] = m.group(1)
                 break
 
-    def out(self, msg):
-        print(msg)
-
-
-class TemplateCreate(BaseTemplate):  # pragma: no cover
-    _template_dir = "create"
-    summary = "Template used to create a c2cgeoportal project"
-
-    def pre(self, command, output_dir, vars):
-        """
-        Overrides the base template, adding the "srid" variable to
-        the variables list.
-        """
-        self._set_srid_in_vars(command, vars)
-        return BaseTemplate.pre(self, command, output_dir, vars)
-
-    def post(self, command, output_dir, vars):
-        """
-        Overrides the base template class to print "Welcome to c2cgeoportal!"
-        after a successful scaffolding rendering.
-        """
-
-        self.out("Welcome to c2cgeoportal!")
-        if os.name == 'posix':
-            for file in ("post-restore-code", "pre-restore-database.mako"):
-                dest = os.path.join(output_dir, "deploy/hooks", file)
-                subprocess.check_call(["chmod", "+x", dest])
-        return BaseTemplate.post(self, command, output_dir, vars)
-
     def _set_srid_in_vars(self, command, vars):
         """
         Set the SRID into the vars dict.
@@ -132,6 +105,68 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
             raise ValueError(
                 "Specified SRID is not an integer")
 
+    def out(self, msg):
+        print(msg)
+
+
+class TemplateCreate(BaseTemplate):  # pragma: no cover
+    _template_dir = "create"
+    summary = "Template used to create a c2cgeoportal project"
+
+    def pre(self, command, output_dir, vars):
+        """
+        Overrides the base template, adding the "srid" variable to
+        the variables list.
+        """
+        self._set_apache_vhost_in_vars(command, vars)
+        self._set_srid_in_vars(command, vars)
+        self._set_extent_in_vars(command, vars)
+        return BaseTemplate.pre(self, command, output_dir, vars)
+
+    def post(self, command, output_dir, vars):
+        """
+        Overrides the base template class to print "Welcome to c2cgeoportal!"
+        after a successful scaffolding rendering.
+        """
+
+        self.out("Welcome to c2cgeoportal!")
+        if os.name == 'posix':
+            for file in ("post-restore-code", "pre-restore-database.mako"):
+                dest = os.path.join(output_dir, "deploy/hooks", file)
+                subprocess.check_call(["chmod", "+x", dest])
+        return BaseTemplate.post(self, command, output_dir, vars)
+
+    def _set_srid_in_vars(self, command, vars):
+        """
+        Set the Extent into the vars dict.
+        """
+        extent = None
+        for arg in command.args:
+            m = re.match("extent=(\d+, ){3}(\d+ )", arg)
+            if m:
+                extent = m.group(1)
+                break
+        if extent is None:
+            extent = self._epsg2bbox(vars["srid"])
+        if extent is None:
+            prompt = \
+                "Extent (minx, miny, maxx, maxy): " \
+                "in EPSG: {} projection: ".format(vars["srid"])
+            extent = input_(prompt).strip().split(",")
+        vars["extent_mapserver"] = " ".join(extent)
+        vars["extent_viewer"] = json.dumps(extent)
+
+    def _epsg2bbox(self, srid):
+        r = requests.get("http://epsg.io/?format=json&q=%i" % (srid))
+        bbox = r.json()["results"][0]["bbox"]
+        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
+                         % (srid, bbox[1], bbox[0]))
+        r1 = r.json()[0]
+        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
+                         % (srid, bbox[3], bbox[2]))
+        r2 = r.json()[0]
+        return [r1["x"], r2["y"], r2["x"], r1["y"]]
+
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
@@ -143,11 +178,12 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         """
 
         if os.path.exists("project.yaml"):
-            project = load(file("project.yaml", "r"))
-            if "template_vars" in project:
-                for key, value in project["template_vars"].items():
-                    if isinstance(value, string_types):
-                        vars[key] = value.encode("utf-8")
+            with open("project.yaml", "r") as f:
+                project = yaml.load(f)
+                if "template_vars" in project:
+                    for key, value in project["template_vars"].items():
+                        if isinstance(value, string_types):
+                            vars[key] = value.encode("utf-8")
 
         return BaseTemplate.pre(self, command, output_dir, vars)
 

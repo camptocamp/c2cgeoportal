@@ -5,6 +5,8 @@ VARS_FILE = vars_{{package}}.yaml
 VARS_FILES += ${VARS_FILE}
 endif
 
-APACHE_VHOST ?= {{project}}
+APACHE_VHOST ?= {{apache_vhost}}
+INSTANCE_ID ?= {{project}}
+TILECLOUD_CHAIN ?= FALSE
 
 include CONST_Makefile

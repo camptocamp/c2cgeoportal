@@ -42,6 +42,9 @@ CGXP ?= TRUE
 MOBILE ?= FALSE
 # Enable ngeo build
 NGEO ?= TRUE
+# Use TileCloud chain
+TILECLOUD_CHAIN ?= TRUE
+TILECLOUD_CHAIN_LOCAL ?= FALSE
 # Used print version
 PRINT_VERSION ?= 3
 # Enable Docker target
@@ -74,17 +77,30 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
+# TileCloud-chain
+WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
+ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
+ifeq ($(TILECLOUD_CHAIN), TRUE)
+WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
+DEFAULT_BUILD_RULES += apache/tiles.conf tilegeneration/config.yaml
+ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
+DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
+endif
+endif
+
 # Make rules
 TEST_PACKAGES ?= TRUE
 DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
 ifeq ($(TEST_PACKAGES), TRUE)
 DEFAULT_BUILD_RULES += test-packages
-ifeq ($(DEPLOY), TRUE)
-DEFAULT_BUILD_RULES += test-packages-deploy
-endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
+ifeq ($(DEPLOY), TRUE)
+DEFAULT_BUILD_RULES += test-packages-deploy
+endif
+endif
+
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
@@ -488,6 +504,9 @@ ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
+        rm -f $(WMTSCAPABILITIES_FILE)
+endif
 
 .PHONY: cleanall
 cleanall: clean
@@ -1185,6 +1204,7 @@ upgrade3: .build/requirements.timestamp project.yaml
 upgrade4: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
 
+# Docker
 ifeq ($(DOCKER), TRUE)
 .PHONY: push_docker
 push_docker:
@@ -1204,6 +1224,11 @@ testDB/03-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_s
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif
 
+# Tilecloud chain
+$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --capabilities
+
+# Version
 .PHONY: $(PACKAGE)/version.py
 $(PACKAGE)/version.py:
 	@echo "# Auto-generated file. Do not Edit!" > $@

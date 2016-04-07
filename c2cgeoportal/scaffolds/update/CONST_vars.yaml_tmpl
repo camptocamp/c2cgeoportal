@@ -268,6 +268,7 @@ vars:
     - http://b.tiles.{host}/{instanceid}/tiles
     - http://c.tiles.{host}/{instanceid}/tiles
     - http://d.tiles.{host}/{instanceid}/tiles
+    wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
@@ -287,6 +288,7 @@ vars:
 
     # Checker configuration
     checker:
+        forward_headers: []
         fulltextsearch: text to search
         lang_files: [ngeo, cgxp, cgxp-api]
         themes:
@@ -381,6 +383,7 @@ interpreted:
     - apache_entry_point
     - docker_base
     - development
+    - wmtscapabilities_path
     node:
         vars:
         - closure_library_path
