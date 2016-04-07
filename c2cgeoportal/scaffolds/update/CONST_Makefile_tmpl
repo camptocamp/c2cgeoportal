@@ -14,6 +14,7 @@ MOBILE ?= TRUE
 NGEO ?= FALSE
 # Use TileCloud chain
 TILECLOUD_CHAIN ?= TRUE
+TILECLOUD_CHAIN_LOCAL ?= FALSE
 # Used print version
 PRINT_VERSION ?= 3
 
@@ -36,12 +37,19 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
-# Make rules
-
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
+# TileCloud-chain
+WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
+ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/tiles.conf
+WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
+DEFAULT_BUILD_RULES += test-packages-tilecloud-chain apache/tiles.conf tilegeneration/config.yaml
+ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
+DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
+endif
+
+# Make rules
+DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
@@ -364,6 +372,9 @@ clean: template-clean
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
+        rm -f $(WMTSCAPABILITIES_FILE)
+endif
 
 .PHONY: cleanall
 cleanall: clean
@@ -813,3 +824,7 @@ upgrade3: .build/requirements.timestamp project.yaml
 .PHONY: upgrade4
 upgrade4: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
+
+# Tilecloud chain
+$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
+	$(VENV_BIN)/generate_controller --capabilities
