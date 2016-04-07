@@ -215,7 +215,7 @@ c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requir
 
 $(MAKO_FILES:.mako=): .build/venv/bin/c2c-template ${VARS_FILES}
 
-%: %.mako
+%: %.mako .build/requirements.timestamp
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
 c2cgeoportal/locale/c2cgeoportal.pot: lingua.cfg $(SRC_FILES) .build/requirements.timestamp
