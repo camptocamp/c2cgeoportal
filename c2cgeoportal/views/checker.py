@@ -28,12 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
+import urllib
 import httplib
 import logging
 from httplib2 import Http
 from json import dumps, loads
 from time import sleep
 from urlparse import urlsplit, urlunsplit
+from subprocess import check_output, CalledProcessError
 
 from pyramid.view import view_config
 from pyramid.response import Response
@@ -68,7 +71,10 @@ class Checker(object):  # pragma: no cover
 
     def __init__(self, request):
         self.request = request
-        self.settings = self.request.registry.settings["checker"]
+        self.settings = self.request.registry.settings["checker"].get("defaults", {})
+        type_ = request.params.get("type")
+        if type_ is not None:
+            self.settings.update(self.request.registry.settings["checker"].get(type_, {}))
 
     def set_status(self, code, text):
         if int(code) >= self.status_int:
@@ -93,40 +99,29 @@ class Checker(object):  # pragma: no cover
 
         return "OK"
 
-    @view_config(route_name="checker_main")
-    def main(self):
-        url = self.request.route_url("home")
-        return self.make_response(self.testurl(url))
+    def testurls(self, named_urls):
+        results = [
+            "{}: {}".format(name, self.testurl(url))
+            for name, url in named_urls
+        ]
+        return self.make_response(
+            "OK" if len(results) == 0 else "\n\n".join(results)
+        )
 
-    @view_config(route_name="checker_viewer")
-    def viewer(self):
-        url = self.request.route_url("viewer")
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_edit")
-    def edit(self):
-        url = self.request.route_url("edit")
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_edit_js")
-    def edit_js(self):
-        url = self.request.route_url("edit.js")
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_api")
-    def api_js(self):
-        url = self.request.route_url("apijs")
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_xapi")
-    def xapi_js(self):
-        url = self.request.route_url("xapijs")
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_print3capabilities")
-    def print3capabilities(self):
-        url = self.request.route_url("printproxy_capabilities")
-        return self.make_response(self.testurl(url))
+    @view_config(route_name="checker_routes")
+    def routes(self):
+        named_urls = [
+            (
+                route["name"],
+                add_url_params(
+                    self.request.route_url(route["name"]),
+                    route.get("params", {}),
+                ),
+            )
+            for route in self.settings["routes"]
+            if route["name"] not in self.settings["routes_disable"]
+        ]
+        return self.testurls(named_urls)
 
     @view_config(route_name="checker_pdf3")
     def pdf3(self):
@@ -200,24 +195,6 @@ class Checker(object):  # pragma: no cover
 
         return "OK"
 
-    @view_config(route_name="checker_wmscapabilities")
-    def wmscapabilities(self):
-        url = add_url_params(self.request.route_url("mapserverproxy"), {
-            "SERVICE": "WMS",
-            "VERSION": "1.1.1",
-            "REQUEST": "GetCapabilities",
-        })
-        return self.make_response(self.testurl(url))
-
-    @view_config(route_name="checker_wfscapabilities")
-    def wfscapabilities(self):
-        url = add_url_params(self.request.route_url("mapserverproxy"), {
-            "SERVICE": "WFS",
-            "VERSION": "1.1.0",
-            "REQUEST": "GetCapabilities",
-        })
-        return self.make_response(self.testurl(url))
-
     @view_config(route_name="checker_theme_errors")
     def themes_errors(self):
         from c2cgeoportal.models import DBSession, Interface
@@ -227,6 +204,7 @@ class Checker(object):  # pragma: no cover
         url = self.request.route_url("themes")
         h = Http()
         default_params = settings.get("default", {}).get("params", {})
+        results = []
         for interface, in DBSession.query(Interface.name).all():
             params = {}
             params.update(default_params)
@@ -240,19 +218,21 @@ class Checker(object):  # pragma: no cover
 
             if resp.status != httplib.OK:
                 self.set_status(resp.status, resp.reason)
-                return self.make_response(content)
+                results.append("{}: {}".format(interface, content))
 
             result = loads(content)
 
             if len(result["errors"]) != 0:
                 self.set_status(500, "Theme with error")
 
-                return self.make_response("Theme with error for interface '%s'\n%s" % (
+                results.append("{}: Theme with error\n{}".format(
                     Interface.name,
                     "\n".join(result["errors"])
                 ))
 
-        return self.make_response("OK")
+        return self.make_response(
+            "OK" if len(results) == 0 else urllib.unquote("\n\n".join(results))
+        )
 
     @view_config(route_name="checker_lang_files")
     def checker_lang_files(self):
@@ -269,27 +249,36 @@ class Checker(object):  # pragma: no cover
                 )
             ))
 
-        result = []
+        named_urls = []
         for _type in self.settings.get("lang_files", []):
             for lang in available_locale_names:
                 if _type == "cgxp":
-                    url = self.request.static_url(
-                        "{package}:static/build/lang-{lang}.js".format(
-                            package=self.request.registry.settings["package"], lang=lang
+                    named_urls.append((
+                        "%s-%s" % (_type, lang),
+                        self.request.static_url(
+                            "{package}:static/build/lang-{lang}.js".format(
+                                package=self.request.registry.settings["package"], lang=lang
+                            )
                         )
-                    )
+                    ))
                 elif _type == "cgxp-api":
-                    url = self.request.static_url(
-                        "{package}:static/build/api-lang-{lang}.js".format(
-                            package=self.request.registry.settings["package"], lang=lang
+                    named_urls.append((
+                        "%s-%s" % (_type, lang),
+                        self.request.static_url(
+                            "{package}:static/build/api-lang-{lang}.js".format(
+                                package=self.request.registry.settings["package"], lang=lang
+                            )
                         )
-                    )
+                    ))
                 elif _type == "ngeo":
-                    url = self.request.static_url(
-                        "{package}:static-ngeo/build/{lang}.json".format(
-                            package=self.request.registry.settings["package"], lang=lang
+                    named_urls.append((
+                        "%s-%s" % (_type, lang),
+                        self.request.static_url(
+                            "{package}:static-ngeo/build/{lang}.json".format(
+                                package=self.request.registry.settings["package"], lang=lang
+                            )
                         )
-                    )
+                    ))
                 else:
                     self.set_status(500, "Unknown lang_files")
                     return self.make_response((
@@ -298,17 +287,10 @@ class Checker(object):  # pragma: no cover
                             _type
                         )
                     ))
-                result.append(self.testurl(url))
-        return self.make_response(
-            "OK" if len(result) == 0 else "\n\n".join(result)
-        )
+        return self.testurls(named_urls)
 
-    @view_config(route_name="checker_js_generic")
-    def js_generic(self):
-        from subprocess import check_output, CalledProcessError
-        import os
-        import urllib
-
+    @view_config(route_name="checker_phantomjs")
+    def checker_phantomjs(self):
         package = self.request.registry.settings["package"]
 
         base_path = os.path.dirname(os.path.dirname(
@@ -320,17 +302,19 @@ class Checker(object):  # pragma: no cover
         checker_config_base_path = "node_modules/ngeo/buildtools/check-example.js"
         checker_config_path = os.path.join(base_path, checker_config_base_path)
 
-        url = self.request.route_url("mobile")
+        results = []
+        for route in self.settings["phantomjs_routes"]:
+            url = self.request.route_url(route)
 
-        args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
+            args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
-        log_message = ""
-        # check_output throws a CalledProcessError if return code is > 0
-        try:
-            check_output(args)
-        except CalledProcessError as e:
-            log_message = e.output
+            # check_output throws a CalledProcessError if return code is > 0
+            try:
+                check_output(args)
+                "{}: OK".format(route)
+            except CalledProcessError as e:
+                "{}: {}".format(route, results.append(e.output))
 
         return self.make_response(
-            "OK" if len(log_message) == 0 else urllib.unquote(log_message)
+            "OK" if len(results) == 0 else urllib.unquote("\n\n".join(results))
         )

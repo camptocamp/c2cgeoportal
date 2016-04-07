@@ -50,7 +50,7 @@ SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.p
 	$(shell find c2cgeoportal/views -name "*.py" -print) \
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
 
-APPS += mobile
+APPS += desktop mobile
 APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
 APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))

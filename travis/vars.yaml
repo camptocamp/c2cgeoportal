@@ -7,9 +7,16 @@ vars:
     - http://127.0.0.1/{instanceid}
     - https://127.0.0.1/{instanceid}
 
+    checker:
+        defaults:
+            routes_disable: [printproxy_capabilities]
+        all:
+            routes_disable: [printproxy_capabilities]
     check_collector:
-        disabled: [checker_print3capabilities, checker_pdf3, checker_fts]
+        disabled: [checker_pdf3, checker_fts]
 
 update_paths:
-- check_collector.disabled
 - authorized_referers
+- checker.defaults
+- checker.all
+- check_collector.disabled

@@ -63,7 +63,6 @@ The following variables may be set in the makefiles:
 
 * ``APACHE_ENTRY_POINT``: The apache entry point, defaults to ``/$(INSTANCE_ID)/``.
 * ``APACHE_VHOST``: The vhost folder name in ``/var/www/vhost``.
-* ``CGXP``: ``TRUE`` to build the CGXP interface, defaults to ``TRUE``.
 * ``CONFIG_VARS``: The list of parameters read from the project yaml configuration file.
 * ``DEVELOPMENT``: if ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
   ``development.ini`` pyramid config file is used, defaults to ``FALSE``.
@@ -71,7 +70,7 @@ The following variables may be set in the makefiles:
 * ``INSTANCE_ID``: The WSGI instance id (should be unique on a server).
 * ``LANGUAGES``: the list of available languages.
 * ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
-* ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
+* ``CGXP_INTERFACES``: The list of CGXP interfaces, default is empty.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``PRE_RULES``: predefine some build rules, default is empty.
 * ``PRINT_VERSION``: , The print version we want to use (``3`` or ``NONE``), defaults to ``3``.

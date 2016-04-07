@@ -36,10 +36,8 @@ endif
 DEVELOPMENT ?= FALSE
 # Language provided by the application
 LANGUAGES ?= en fr de
-# Enable CGXP build
-CGXP ?= TRUE
-# Enable ngeo build
-NGEO ?= TRUE
+NGEO_INTERFACES ?= desktop mobile
+CGXP_INTERFACES ?=
 # Used print version
 PRINT_VERSION ?= 3
 # Enable Docker target
@@ -60,10 +58,10 @@ SETUPTOOL_VERSION ?= setuptools>=12
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
-ifeq ($(CGXP), TRUE)
+ifneq ($(CGXP_INTERFACE), "")
 DEFAULT_WEB_RULE += build-cgxp
 endif
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 DEFAULT_WEB_RULE += build-ngeo
 CLIENT_CHECK_RULE ?= lint-ngeo
 endif
@@ -80,7 +78,7 @@ endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
 endif
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 DEFAULT_BUILD_RULES += test-packages-ngeo
 endif
 endif
@@ -103,11 +101,11 @@ DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
-ifeq ($(CGXP), TRUE)
+ifneq ($(CGXP_INTERFACE), "")
 REQUIREMENTS += JSTools
 DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
 endif
 ifeq ($(DOCKER), FALSE)
@@ -158,7 +156,6 @@ else
 NPM_CMD = npm
 endif
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
-NGEO_INTERFACES ?= mobile
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js -type f -name '*.js')
@@ -202,8 +199,10 @@ endif
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
 JSBUILD_MAIN_CONFIG = jsbuild/app.cfg
-JSBUILD_MAIN_OUTPUT_FILES ?= app.js edit.js routing.js api.js xapi.js
+JSBUILD_MAIN_OUTPUT_FILES ?= $(addsuffix .js, $(CGXP_INTERFACES)) api.js xapi.js
+ifdef CGXP_INTERFACES
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix lang-, $(addsuffix .js, $(LANGUAGES)))
+endif
 JSBUILD_MAIN_OUTPUT_FILES += $(addprefix api-lang-, $(addsuffix .js, $(LANGUAGES)))
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
 ifeq ($(DEVELOPMENT), TRUE)
@@ -323,8 +322,10 @@ VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)/tests
 SPHINX_FILES = $(shell $(FIND) doc -name "*.rst" -print)
 
 # Server localisation
+ifdef CGXP_INTERFACES
 SERVER_LOCALISATION_SOURCES_FILES += $(PACKAGE)/models.py $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 SERVER_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-server.mo, $(LANGUAGES)))
+endif
 
 # Print
 PRINT_BASE_DIR ?= print
@@ -781,7 +782,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 
 package.json:
 	$(PRERULE_CMD)
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 	@echo Missing $@ required file by ngeo
 	exit 1
 else
@@ -797,7 +798,7 @@ endif
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 	$(NPM_CMD) install || $(NPM_CMD) install || $(NPM_CMD) install
 endif
 	touch $@
@@ -835,7 +836,7 @@ update:
 	git submodule foreach git submodule update --init
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
-ifeq ($(NGEO), TRUE)
+ifneq ($(NGEO_INTERFACE), "")
 	rm -f .build/node_modules.timestamp
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp

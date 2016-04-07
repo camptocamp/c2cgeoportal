@@ -287,62 +287,62 @@ vars:
 
     # Checker configuration
     checker:
-        fulltextsearch: text to search
-        lang_files: [ngeo, cgxp, cgxp-api]
-        themes:
-            default:
-                params:
-                    version: 2
+        defaults:
+            fulltextsearch: text to search
+            lang_files: [ngeo, cgxp-api]
+            phantomjs_routes: [desktop]
+            themes:
+                default:
+                    params:
+                        version: 2
+        all:
+            phantomjs_routes: [desktop, mobile]
+            routes:
+            - name: apijs
+            - name: xapijs
+            - name: printproxy_capabilities
+            - name: mapserverproxy
+              params:
+                SERVICE: WMS
+                VERSION: 1.1.1
+                REQUEST: GetCapabilities
+            - name: mapserverproxy
+              params:
+                SERVICE: WFS
+                VERSION: 1.1.0
+                REQUEST: GetCapabilities
+        main:
+            routes:
+            - name: apijs
+            - name: printproxy_capabilities
 
     # Check collector configuration
     check_collector:
-        disabled: []
+        disabled: [checker_main, checker_viewer]
         check_type:
             all:
-            - name: checker_main
-              display: Main page
-            - name: checker_viewer
-              display: Viewer script
-            - name: checker_edit
-              display: Edit page
-            - name: checker_edit_js
-              display: Edit script
+            - name: checker_routes
+              display: Check pages
             - name: checker_theme_errors
               display: Errors in the themes
-            - name: checker_api
-              display: API
-            - name: checker_xapi
-              display: Extended API
             - name: checker_lang_files
               display: Language files
-            - name: checker_print3capabilities
-              display: Print capabilities
             - name: checker_pdf3
               display: Print PDF
             - name: checker_fts
               display: FullTextSearch
-            - name: checker_wmscapabilities
-              display: WMS capabilities
-            - name: checker_wfscapabilities
-              display: WFS capabilities
-            - name: checker_js_generic
+            - name: checker_phantomjs
               display: PhantomJS generic test
             main:
-            - name: checker_main
-              display: Main page
-            - name: checker_viewer
-              display: Viewer script
-            - name: checker_api
-              display: API
-            - name: checker_print3capabilities
-              display: Print capabilities
+            - name: checker_routes
+              display: Check pages
             - name: checker_fts
               display: FullTextSearch
-            - name: checker_js_generic
+            - name: checker_phantomjs
               display: PhantomJS generic test
             default: # for children
-            - name: checker_viewer
-              display: Viewer script
+            - name: checker_phantomjs
+              display: PhantomJS generic test
         hosts:
         - display: {{package}}
           url: http://{host}/{instanceid}/wsgi
