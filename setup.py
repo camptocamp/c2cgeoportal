@@ -116,6 +116,7 @@ setup(
             "db2pot = c2cgeoportal.scripts.db2pot:main",
             "themev1tov2 = c2cgeoportal.scripts.themev1tov2:main",
             "theme2fts = c2cgeoportal.scripts.theme2fts:main",
+            "l10nv1tov2 = c2cgeoportal.scripts.l10nv1tov2:main",
             "import-ngeo-apps = c2cgeoportal.scripts.import_ngeo_apps:main",
             "gen-version = c2cgeoportal.scripts.gen_version:main",
         ],
