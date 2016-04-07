@@ -115,6 +115,9 @@ class _MemoryBackend(object):
         return {"timers": timers}
 
 
+INVALID_KEY_CHARS = re.compile(r"[:|\.]")
+
+
 class _StatsDBackend(object):  # pragma: nocover
     def __init__(self, address, prefix):
         self._prefix = prefix
@@ -132,7 +135,7 @@ class _StatsDBackend(object):  # pragma: nocover
         self._socket.connect(sa)
 
     def _key(self, key):
-        return self._prefix + ".".join([i.replace(".", r"_") for i in key])
+        return self._prefix + ".".join([INVALID_KEY_CHARS.sub("_", i) for i in key])
 
     def timer(self, key, duration):
         the_key = self._key(key)
@@ -143,12 +146,7 @@ class _StatsDBackend(object):  # pragma: nocover
             pass  # Ignore errors (must survive if stats cannot be sent)
 
 
-def _request_callback(event):  # pragma: nocover
-    """
-    Callback called when a new HTTP request is incoming.
-    """
-    measure = timer()
-
+def _create_finished_cb(kind, measure):  # pragma: nocover
     def finished_cb(request):
         if request.exception is not None:
             if isinstance(request.exception, HTTPException):
@@ -161,10 +159,27 @@ def _request_callback(event):  # pragma: nocover
             name = "_not_found"
         else:
             name = request.matched_route.name
-        key = ["route", request.method, name, str(status)]
+        key = [kind, request.method, name, str(status)]
         measure.stop(key)
+    return finished_cb
 
-    event.request.add_finished_callback(finished_cb)
+
+def _request_callback(event):  # pragma: nocover
+    """
+    Callback called when a new HTTP request is incoming.
+    """
+    measure = timer()
+    event.request.add_finished_callback(_create_finished_cb("route", measure))
+
+
+def _before_rendered_callback(event):  # pragma: nocover
+    """
+    Callback called when the rendering is starting.
+    """
+    request = event.get("request", None)
+    if request:
+        measure = timer()
+        request.add_finished_callback(_create_finished_cb("render", measure))
 
 
 def _simplify_sql(sql):
@@ -215,6 +230,7 @@ def init_pyramid_spy(config):  # pragma: nocover
     :param config: The Pyramid config
     """
     config.add_subscriber(_request_callback, pyramid.events.NewRequest)
+    config.add_subscriber(_before_rendered_callback, pyramid.events.BeforeRender)
 
 
 def _get_env_or_settings(config, what_env, what_vars, default):
