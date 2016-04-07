@@ -62,24 +62,23 @@ monitoring system like Nagios to check that the application is alive.</p>
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>Available services:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">checker_main</span></code>: Check the main page.</li>
-<li><code class="docutils literal"><span class="pre">checker_viewer</span></code>: Check the viewer.js used by the main page.</li>
-<li><code class="docutils literal"><span class="pre">checker_edit</span></code>: Check the edit page.</li>
-<li><code class="docutils literal"><span class="pre">checker_edit_js</span></code>: Check the edit.js used by the edit page.</li>
-<li><code class="docutils literal"><span class="pre">checker_apiloader</span></code>: Check the API loader.</li>
-<li><code class="docutils literal"><span class="pre">checker_print3capabilities</span></code>: Check the print capabilities.</li>
+<li><code class="docutils literal"><span class="pre">checker_routes</span></code>: Check some routes, configured in <code class="docutils literal"><span class="pre">routes</span></code> aa array of objects
+with <code class="docutils literal"><span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">params</span></code>, <code class="docutils literal"><span class="pre">routes_disable</span></code> can be use to disable only one rule.</li>
 <li><code class="docutils literal"><span class="pre">checker_pdf3</span></code>: Check the print (try to print a page).</li>
 <li><code class="docutils literal"><span class="pre">checker_fts</span></code>: Check the FullTextSearch.</li>
-<li><code class="docutils literal"><span class="pre">checker_wmscapabilities</span></code>: Check the WMS GetCapabilities.</li>
-<li><code class="docutils literal"><span class="pre">checker_wfscapabilities</span></code>: Check the WFS GetCapabilities.</li>
+<li><code class="docutils literal"><span class="pre">checker_theme_errors</span></code>: Check the that the theme don&#8217;t have errors on all the interfaces.</li>
+<li><code class="docutils literal"><span class="pre">checker_lang_files</span></code>: Check that all the language files are present,
+use the configuration global <code class="docutils literal"><span class="pre">available_locale_names</span></code>, and the checker configuration
+<code class="docutils literal"><span class="pre">lang_files</span></code>, an array of string that must be in <code class="docutils literal"><span class="pre">[cgxp,</span> <span class="pre">cgxp-api,</span> <span class="pre">ngeo]</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">checker_phantomjs</span></code>: Check with phantomjs that the pages load correctly without errors,
+use the <code class="docutils literal"><span class="pre">phantomjs_routes</span></code> configuration as an array of route name to check.</li>
 </ul>
 <p>Configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
-    <span class="n">print_template</span><span class="p">:</span> <span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>
-    <span class="n">print_center_lon</span><span class="p">:</span> <span class="n">to</span> <span class="n">be</span> <span class="n">defined</span>
-    <span class="n">print_center_lat</span><span class="p">:</span> <span class="n">to</span> <span class="n">be</span> <span class="n">defined</span>
-    <span class="n">print_scale</span><span class="p">:</span> <span class="mi">10000</span>
-    <span class="n">fulltextsearch</span><span class="p">:</span> <span class="n">text</span> <span class="n">to</span> <span class="n">search</span>
+    <span class="n">defaults</span><span class="p">:</span>
+        <span class="o">&lt;</span><span class="n">the</span> <span class="n">config</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="nb">type</span><span class="o">&gt;</span><span class="p">:</span>
+        <span class="o">&lt;</span><span class="n">overide</span> <span class="n">the</span> <span class="n">default</span> <span class="n">config</span> <span class="k">for</span> <span class="n">a</span> <span class="n">specific</span> <span class="nb">type</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div>
