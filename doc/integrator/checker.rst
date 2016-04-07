@@ -50,6 +50,15 @@ Configuration in ``vars_<project>.yaml``:
         print_scale: 10000
         fulltextsearch: text to search
 
+If some of the checked services require an authenticated user, the
+``forward_headers`` permit to forward ``Cookie`` or ``Authorisation`` headers
+in the underlying requests.
+
+.. code:: yaml
+
+    checker:
+        forward_headers: ['Cookie', 'Authorisation']
+
 Check collector
 ---------------
 

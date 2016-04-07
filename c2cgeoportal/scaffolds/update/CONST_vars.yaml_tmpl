@@ -254,6 +254,7 @@ vars:
 
     # Checker configuration
     checker:
+        forward_headers: []
         fulltextsearch: text to search
         lang_files: [cgxp, cgxp-api]
         themes:
