@@ -49,9 +49,7 @@ install_requires = [
     "GeoAlchemy2",
     "SQLAHelper",
     "pyramid_tm",
-    # See: https://github.com/elemoine/papyrus/issues/32
-    "geojson<=1.0.9",
-    "papyrus==2.0.dev3",
+    "papyrus",
     "ipcalc",
     "papyrus_ogcproxy>=0.2.dev1",
     "pyramid_formalchemy>=0.4.3",
