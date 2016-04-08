@@ -51,7 +51,6 @@ install_requires = [
     "papyrus",
     "ipcalc",
     "httplib2",
-    "papyrus_ogcproxy>=0.2.dev1",
     # Needed by the developement.ini
     "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",

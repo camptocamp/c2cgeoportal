@@ -29,7 +29,6 @@ Markdown==2.6.6
 MarkupSafe==0.23
 OWSLib==0.11.0
 papyrus==2.1
-papyrus-ogcproxy==0.2.dev1
 Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2

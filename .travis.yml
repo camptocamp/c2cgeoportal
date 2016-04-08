@@ -89,6 +89,7 @@ script:
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
+- travis/pip.sh install papyrus_ogcproxy
 - .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
 - travis/status.sh
 
