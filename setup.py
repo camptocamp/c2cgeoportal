@@ -43,24 +43,17 @@ the mobile client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 install_requires = [
     "pyramid<=1.6.99,>=1.6b3",
     "pyramid_multiauth",
-    "pyramid_mako",
-    "pyramid_chameleon",
+    "pyramid_mako",  # to render the HTML files
     "psycopg2",
     "GeoAlchemy2",
     "SQLAHelper",
     "pyramid_tm",
     "papyrus",
     "ipcalc",
+    "httplib2",
     "papyrus_ogcproxy>=0.2.dev1",
-    "pyramid_formalchemy>=0.4.3",
-    "fa.jquery>=0.9.5",
-    "js.jquery==1.7.1",
-    # The version 1.10.3 have an issue with the 'jump to' combobox of the
-    # admin interface
-    "js.jqueryui==1.8.24",
-    "FormAlchemy==1.4.3",
-    "WebHelpers==1.3",
-    "GeoFormAlchemy2>=2.0.dev2",
+    # Needed by the developement.ini
+    "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",
     "dogpile.cache",
     "Paste",
@@ -76,6 +69,17 @@ install_requires = [
     # WebError introduce an incompatibility issue with pyramid_debugtoolbar,
     # see: https://github.com/Pylons/weberror/issues/13
     "WebError<=0.10.3",
+
+    # # admin interface # #
+    "pyramid_chameleon",
+    "pyramid_formalchemy>=0.4.3",
+    "fa.jquery>=0.9.5",
+    "js.jquery==1.7.1",
+    # The version 1.10.3 have an issue with the 'jump to' combobox of the
+    # admin interface
+    "js.jqueryui==1.8.24",
+    "FormAlchemy==1.4.3",
+    "GeoFormAlchemy2>=2.0.dev2",
 ]
 
 setup_requires = [
