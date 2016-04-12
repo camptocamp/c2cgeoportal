@@ -20,14 +20,14 @@ All layer type
 ~~~~~~~~~~~~~~
 
 All the layers in the admin interface have the following attributes:
- *  ``Name``: the name of the WMS layer/group, or he WMTS layer.
+ *  ``Name``: the name of the WMS layer/group, or the WMTS layer.
     It also used throw OpenLayers.i18n to display the name on the layers tree.
  *  ``Public``: make the layer public, also it is accessible
     throw the ``Restriction areas``.
  *  ``Restrictions area``: the areas through which the user can see the layer.
  *  ``Related Postgres table``: the related postgres table,
     used by the :ref:`administrator_editing`.
- *  ``Attributes to exclude``: the list of attributes (database columns) that shouldn't appear in
+ *  ``Exclude properties``: the list of attributes (database columns) that shouldn't appear in
     the :ref:`administrator_editing` so that they cannot be modified by the end user.
     For enumerable attributes (foreign key), the column name should end with '_id'.
  *  ``Parents``: the groups and theme in which the layer is.
