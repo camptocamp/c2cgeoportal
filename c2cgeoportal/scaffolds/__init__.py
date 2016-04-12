@@ -38,6 +38,7 @@ from six import string_types
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
+from c2cgeoportal.scripts.c2ctool import _colorize, GREEN
 
 
 class BaseTemplate(Template):  # pragma: no cover
@@ -58,8 +59,6 @@ class BaseTemplate(Template):  # pragma: no cover
 
         ret = Template.pre(self, command, output_dir, vars)
 
-        self._set_package_in_vars(command, vars)
-
         if vars["package"] == "site":
             raise ValueError(
                 "Sorry, you may not name your package 'site'. "
@@ -75,38 +74,14 @@ class BaseTemplate(Template):  # pragma: no cover
 
         return ret
 
-    def _set_package_in_vars(self, command, vars):
-        """
-        Set the package into the vars dict.
-        """
-        for arg in command.args:
-            m = re.match("package=(\w+)", arg)
-            if m:
-                vars["package"] = m.group(1)
-                break
-
-    def _set_srid_in_vars(self, command, vars):
-        """
-        Set the SRID into the vars dict.
-        """
-        srid = None
-        for arg in command.args:
-            m = re.match("srid=(\d+)", arg)
-            if m:
-                srid = m.group(1)
-                break
-        if srid is None:
-            prompt = "Spatial Reference System Identifier " \
-                     "(e.g. 21781): "
-            srid = input_(prompt).strip()
-        try:
-            vars["srid"] = int(srid)
-        except ValueError:
-            raise ValueError(
-                "Specified SRID is not an integer")
-
     def out(self, msg):
         print(msg)
+
+    def _args_to_vars(self, args, vars):
+        for arg in args:
+            m = re.match("(.+)=(.*)", arg)
+            if m:
+                vars[m.group(1)] = m.group(2)
 
 
 class TemplateCreate(BaseTemplate):  # pragma: no cover
@@ -118,54 +93,87 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template, adding the "srid" variable to
         the variables list.
         """
-        self._set_apache_vhost_in_vars(command, vars)
-        self._set_srid_in_vars(command, vars)
-        self._set_extent_in_vars(command, vars)
+
+        self._args_to_vars(command.args, vars)
+
+        self._get_vars(vars, "package", "Get a package name: ")
+        self._get_vars(vars, "apache_vhost", "The Apache vhost name: ")
+        self._get_vars(
+            vars, "srid",
+            "Spatial Reference System Identifier (e.g. 21781): ", int,
+        )
+        srid = vars["srid"]
+        extent = self._epsg2bbox(srid)
+        self._get_vars(
+            vars, "extent",
+            "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
+            "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
+            if extent else
+            "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
+        )
+        match = re.match(r"(\d+)[,; ] *(\d+)[,; ] *(\d+)[,; ] *(\d+)", vars["extent"])
+        if match is not None:
+            extent = [match.group(n + 1) for n in range(4)]
+        vars["extent_mapserver"] = " ".join(extent)
+        vars["extent_viewer"] = json.dumps(extent)
+
         return BaseTemplate.pre(self, command, output_dir, vars)
+
+    def _get_vars(self, vars, name, prompt, type=None):
+        """
+        Set an attribute in the vars dict.
+        """
+
+        value = vars.get(name)
+
+        if value is None:
+            value = input_(prompt).strip()
+
+        if type is not None:
+            try:
+                type(value)
+            except ValueError:
+                exit("The attribute {} is not a {}".format(name, type))
+
+        vars[name] = value
 
     def post(self, command, output_dir, vars):
         """
-        Overrides the base template class to print "Welcome to c2cgeoportal!"
-        after a successful scaffolding rendering.
+        Overrides the base template class to print the next step.
         """
 
-        self.out("Welcome to c2cgeoportal!")
         if os.name == 'posix':
             for file in ("post-restore-code", "pre-restore-database.mako"):
                 dest = os.path.join(output_dir, "deploy/hooks", file)
                 subprocess.check_call(["chmod", "+x", dest])
+
+        self.out("\nContinue with:")
+        self.out(_colorize(
+            ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
+            "package={vars[package]} srid={vars[srid]}".format(vars=vars),
+            GREEN
+        ))
+
         return BaseTemplate.post(self, command, output_dir, vars)
 
-    def _set_srid_in_vars(self, command, vars):
-        """
-        Set the Extent into the vars dict.
-        """
-        extent = None
-        for arg in command.args:
-            m = re.match("extent=(\d+, ){3}(\d+ )", arg)
-            if m:
-                extent = m.group(1)
-                break
-        if extent is None:
-            extent = self._epsg2bbox(vars["srid"])
-        if extent is None:
-            prompt = \
-                "Extent (minx, miny, maxx, maxy): " \
-                "in EPSG: {} projection: ".format(vars["srid"])
-            extent = input_(prompt).strip().split(",")
-        vars["extent_mapserver"] = " ".join(extent)
-        vars["extent_viewer"] = json.dumps(extent)
-
     def _epsg2bbox(self, srid):
-        r = requests.get("http://epsg.io/?format=json&q=%i" % (srid))
-        bbox = r.json()["results"][0]["bbox"]
-        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
-                         % (srid, bbox[1], bbox[0]))
-        r1 = r.json()[0]
-        r = requests.get("http://epsg.io/trans?s_srs=4326&t_srs=%i&data=%i,%i"
-                         % (srid, bbox[3], bbox[2]))
-        r2 = r.json()[0]
-        return [r1["x"], r2["y"], r2["x"], r1["y"]]
+        try:
+            r = requests.get("http://epsg.io/?format=json&q={}".format(srid))
+            bbox = r.json()["results"][0]["bbox"]
+            r = requests.get(
+                "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
+                .format(srid=srid, bbox=bbox)
+            )
+            r1 = r.json()[0]
+            r = requests.get(
+                "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
+                .format(srid=srid, bbox=bbox)
+            )
+            r2 = r.json()[0]
+            return [r1["x"], r2["y"], r2["x"], r1["y"]]
+        except IndexError:
+            print("Unable to get the bbox")
+            return None
 
 
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
@@ -182,8 +190,12 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
                 project = yaml.load(f)
                 if "template_vars" in project:
                     for key, value in project["template_vars"].items():
-                        if isinstance(value, string_types):
-                            vars[key] = value.encode("utf-8")
+                        vars[key] = \
+                            value.encode("utf-8") \
+                            if isinstance(value, string_types) \
+                            else value
+
+        self._args_to_vars(command.args, vars)
 
         return BaseTemplate.pre(self, command, output_dir, vars)
 
@@ -191,4 +203,11 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         if os.name == 'posix':
             dest = os.path.join(output_dir, ".whiskey/action_hooks/pre-build.mako")
             subprocess.check_call(["chmod", "+x", dest])
+        """
+        Overrides the base template class to print "Welcome to c2cgeoportal!"
+        after a successful scaffolding rendering.
+        """
+
+        self.out(_colorize("\nWelcome to c2cgeoportal!", GREEN))
+
         return BaseTemplate.post(self, command, output_dir, vars)

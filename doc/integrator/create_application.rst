@@ -106,7 +106,7 @@ To create the application first apply the ``c2cgeoportal_create`` skeleton:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -s c2cgeoportal_create ../<project> package=<package>
+    .build/venv/bin/pcreate -s c2cgeoportal_create ../<project>
 
 .. note::
 
@@ -123,9 +123,9 @@ it later.
 
      .. prompt:: bash
 
-         .build/venv/bin/pcreate -s c2cgeoportal_create ../<project>
-         package=<package> srid=21781 extent="420000, 30000, 900000, 350000"
-         apache_vhost=geomapfish
+         .build/venv/bin/pcreate -s c2cgeoportal_create ../<project> \
+             package=<package> srid=21781 extent="420000 30000 900000 350000" \
+             apache_vhost=<vhost> mobile_application_title=<title>
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you're
@@ -135,7 +135,8 @@ Now apply the ``c2cgeoportal_update`` skeleton:
 
 .. prompt:: bash
 
-    .build/venv/bin/pcreate -s c2cgeoportal_update ../<project> package=<package>
+    .build/venv/bin/pcreate -s c2cgeoportal_update ../<project> package=<package> \
+             package=<package> srid=<srid> apache_vhost=<vhost> mobile_application_title=<title>
 
 .. note::
 

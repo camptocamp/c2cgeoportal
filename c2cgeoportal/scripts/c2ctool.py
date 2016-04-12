@@ -34,7 +34,7 @@ import sys
 import shutil
 import argparse
 import httplib2
-from yaml import load
+import yaml
 from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
@@ -174,7 +174,8 @@ class C2cTool:
             print("Unable to find the required 'project.yaml' file.")
             exit(1)
 
-        return load(file("project.yaml", "r"))
+        with open("project.yaml", "r") as f:
+            return yaml.load(f)
 
     def test_checkers(self):
         http = httplib2.Http()
@@ -326,14 +327,17 @@ class C2cTool:
 
         check_call([
             "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
-            "../%s" % self.project["project_folder"], "package=%s" % self.project["project_package"]
+            "../%s" % self.project["project_folder"]
         ])
-        check_call([
-            "%s/pcreate" % self.venv_bin, "-s", "c2cgeoportal_create",
+        pcreate_cmd = [
+            "%s/pcreate" % self.venv_bin, "--scaffold=c2cgeoportal_create",
             "/tmp/%s" % self.project["project_folder"],
-            "package=%s" % self.project["project_package"],
-            "srid=%s" % self.project["template_vars"].get("srid", 21781),
-        ])
+        ]
+        pcreate_cmd += [
+            "{}={}".format(name, value)
+            for name, value in self.project["template_vars"].items()
+        ]
+        check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 
         diff_file = open("changelog.diff", "w")
