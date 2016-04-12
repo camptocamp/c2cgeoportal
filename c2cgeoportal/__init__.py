@@ -384,7 +384,7 @@ class OgcproxyRoutePredicate:
                 return False
         return True
 
-    def phash(self):
+    def phash(self):  # pragma: nocover
         return ""
 
 
@@ -509,7 +509,7 @@ def includeme(config):
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
-    if settings.get("ogcproxy_enable", True):
+    if settings.get("ogcproxy_enable", False):  # pragma: nocover
         # add an OGCProxy view
         config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
         config.add_route(
