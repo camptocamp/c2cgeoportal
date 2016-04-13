@@ -37,6 +37,7 @@ Based on the PuTTY software. Useful to launch commands on the server.
 2. Configurate PuTTY:
    a. In the left-hand column (Category), choose "Connection>SSH>Auth"
    b. Fill the "Private key file for authentication" field
+   c. Activate "Allow agent forwarding"
 3. Auto-login:
    a. One may save his/her username in "Connection>Data" > "Auto-login username"
 4. Connect to the server:
