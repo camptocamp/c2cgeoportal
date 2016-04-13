@@ -1,8 +1,8 @@
 --index-url http://pypi.camptocamp.net/pypi
 flake8
 pep8-naming
-c2c.template==1.1.1
-c2c.versions==1.0.0
+c2c.template==1.2.0
+c2c.versions==1.0.1
 https://github.com/Pylons/pyramid/archive/1e02bbfc0df09259bf207112acf019c8dba44a90.zip#egg=pyramid>=1.6.dev
 pyramid_debugtoolbar
 htmlmin==0.1.10
