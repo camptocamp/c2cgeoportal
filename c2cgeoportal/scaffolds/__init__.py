@@ -38,7 +38,7 @@ from six import string_types
 
 from pyramid.scaffolds.template import Template
 from pyramid.compat import input_
-from c2cgeoportal.scripts.c2ctool import _colorize, GREEN
+from c2cgeoportal.lib.bashcolor import colorize, GREEN
 
 
 class BaseTemplate(Template):  # pragma: no cover
@@ -148,7 +148,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
                 subprocess.check_call(["chmod", "+x", dest])
 
         self.out("\nContinue with:")
-        self.out(_colorize(
+        self.out(colorize(
             ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
             "package={vars[package]} srid={vars[srid]}".format(vars=vars),
             GREEN
@@ -208,6 +208,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        self.out(_colorize("\nWelcome to c2cgeoportal!", GREEN))
+        self.out(colorize("\nWelcome to c2cgeoportal!", GREEN))
 
         return BaseTemplate.post(self, command, output_dir, vars)
