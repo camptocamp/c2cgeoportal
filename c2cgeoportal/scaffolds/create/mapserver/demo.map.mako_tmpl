@@ -54,9 +54,9 @@ LAYER
     PROJECTION
       "init=epsg:4326"
     END
-    COMPOSITE
-      OPACITY 50
-    END
+#    COMPOSITE
+#      OPACITY 50
+#    END
     LABELITEM "name"
     CLASS
         NAME "[ 6 - 50 ["
