@@ -221,14 +221,6 @@ class C2cTool:
         if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
             headers, _ = http.request(
-                "https://github.com/camptocamp/CGXP/tree/%s" %
-                self.options.version, "HEAD"
-            )
-            if headers.status != 200:
-                print("This CGXP tag does not exist.")
-                exit(1)
-
-            headers, _ = http.request(
                 DEFAULT_C2CGEOPORTAL_URL % {
                     "version": self.options.version
                 }
@@ -295,23 +287,6 @@ class C2cTool:
             print(colorize("The pull isn't fast forward.", RED))
             print(colorize("Please solve the rebase and run the step again.", YELLOW))
             exit(1)
-
-        check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        if self.options.version == "master":
-            check_call([
-                "git", "submodule", "foreach", "git", "reset", "--hard",
-                "origin/%s" % self.options.version, "--"
-            ])
-        elif re.match(VERSION_RE, self.options.version) is not None:
-            check_call([
-                "git", "submodule", "foreach", "git", "reset", "--hard",
-                self.options.version, "--"
-            ])
-        else:
-            notes.append(
-                "We can't define the cgxp revision, than you should manually do:\n"
-                "git submodule foreach git reset --hard <revision>"
-            )
 
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
@@ -396,8 +371,6 @@ class C2cTool:
         check_call(["git", "reset", "--mixed"])
 
         check_call(["git", "add", "-A"])
-        if path.exists("%s/static/lib/cgxp" % self.project["project_package"]):
-            check_call(["git", "add", "%s/static/lib/cgxp" % self.project["project_package"]])
         check_call(["git", "status"])
 
         print("")
