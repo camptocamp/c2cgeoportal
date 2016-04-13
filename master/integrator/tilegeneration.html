@@ -102,6 +102,23 @@ EC2, SQS, SNS.</p>
 <li><p class="first">Install the base template template:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></li>
+<li><p class="first">In the <code class="docutils literal"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you use local cache activate the capabilities generation with:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
+</pre></div>
+</div>
+<p>and set the <code class="docutils literal"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal"><span class="pre">${wmtscapabilities_path}</span></code> in your
+<code class="docutils literal"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
+</li>
+<li><p class="first">In your <code class="docutils literal"><span class="pre">&lt;prod&gt;.mk</span></code> you can also set the capabilities file name with:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+</li>
 <li><p class="first">Add configuration to Git:</p>
 <pre class="highlight"><span class="prompt1">git add tilegeneration</span>
 </pre></li>

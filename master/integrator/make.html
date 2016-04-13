@@ -95,8 +95,8 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <li><code class="docutils literal"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">INSTANCE_ID</span></code>: The WSGI instance id (should be unique on a server).</li>
 <li><code class="docutils literal"><span class="pre">LANGUAGES</span></code>: the list of available languages.</li>
-<li><code class="docutils literal"><span class="pre">MOBILE</span></code>: <code class="docutils literal"><span class="pre">TRUE</span></code> to build the Sencha Touch interface, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code>: The list of CGXP interfaces, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>: The list of NGEO interfaces, default is <code class="docutils literal"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">POST_RULES</span></code>: postdefine some build rules, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">PRE_RULES</span></code>: predefine some build rules, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">PRINT_VERSION</span></code>: , The print version we want to use (<code class="docutils literal"><span class="pre">3</span></code> or <code class="docutils literal"><span class="pre">NONE</span></code>), defaults to <code class="docutils literal"><span class="pre">3</span></code>.</li>
@@ -106,27 +106,20 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
-Here is a simple example that creates the
-<cite>/var/sig/tiles/1.0.0/WMTSCapabilities.xml</cite> file
-and removes it on the <cite>clean</cite> rule:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span>WMTSCAPABILITIES_FILE ?= /var/sig/tiles/1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
+Here is a simple example:</p>
+<div class="code makefile highlight-default"><div class="highlight"><pre><span></span>MY_FILE ?= &lt;file&gt;
 
-PRE_RULES = $(WMTSCAPABILITIES_FILE)
+PRE_RULES = $(MY_FILE)
 
-$(WMTSCAPABILITIES_FILE): tilegeneration/config.yaml .build/dev-requirements.timestamp
-    $(VENV_BIN)/generate_controller --capabilities
+$(MY_FILE): &lt;source_file&gt;
+    cp &lt;source_file&gt; $(MY_FILE)
+    # Short version:
+    # cp $&lt; $@
 
 clean: project-clean
 .PHONY: project-clean
 project-clean:
-    rm -f $(WMTSCAPABILITIES_FILE)
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code> and <code class="docutils literal"><span class="pre">.build/dev-requirements.timestamp</span></code> are the files
-that must be built to run the current rule.</p>
-<p><code class="docutils literal"><span class="pre">$(VENV_BIN)/generate_controller</span> <span class="pre">--capabilities</span></code> is the command that generates the wanted file.</p>
-<p>And if you don&#8217;t want the instance id in the production file you can put in your production mk file:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_FILE</span> <span class="o">=</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">sig</span><span class="o">/</span><span class="n">tiles</span><span class="o">/</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
+    rm -f $(MY_FILE)
 </pre></div>
 </div>
 </div>

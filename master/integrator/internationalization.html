@@ -42,8 +42,19 @@
             
   <div class="section" id="internationalization">
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="client">
-<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ngeo-and-server">
+<h2>ngeo and server<a class="headerlink" href="#ngeo-and-server" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file define the supported language with (default):</p>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file define the available and default language:</p>
+<p>Build your application</p>
+<p>The file to translate are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
+<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (Should be empty for ngeo interfaces)</li>
+</ul>
+</div>
+<div class="section" id="cgxp">
+<h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
 <p>Translations of the browser interfaces (main viewer, edit interfaces and APIs)
 are included in two kinds of Javascript files stored in
 <code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></code>:</p>
@@ -86,35 +97,6 @@ For example: en, de or fr.</p>
 separated files because of API constraints. Read more at <a class="reference internal" href="api.html#integrator-api-i18n"><span class="std std-ref">Internationalization</span></a>.</p>
 </div>
 </div>
-<div class="section" id="server">
-<h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p class="first">Extract all messages from the project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">extract_messages</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Initialize a catalog for every supported language, for example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">init_catalog</span> <span class="o">-</span><span class="n">l</span> <span class="n">en</span>
-<span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">init_catalog</span> <span class="o">-</span><span class="n">l</span> <span class="n">fr</span>
-<span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">init_catalog</span> <span class="o">-</span><span class="n">l</span> <span class="n">de</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Edit the .po files in <code class="docutils literal"><span class="pre">&lt;package&gt;/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;.po</span></code></p>
-</li>
-<li><p class="first">Run make to compile all the .po files to .mo:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">user</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">build</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<p>When you add a new message repeat all steps but replace the step 2. by:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">update_catalog</span>
-</pre></div>
-</div>
-<p><a class="reference external" href="http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization">Source from pylondhq</a></p>
-</div>
 </div>
 
 
@@ -129,8 +111,8 @@ separated files because of API constraints. Read more at <a class="reference int
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Internationalization</a><ul>
-<li><a class="reference internal" href="#client">Client</a></li>
-<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#ngeo-and-server">ngeo and server</a></li>
+<li><a class="reference internal" href="#cgxp">CGXP</a></li>
 </ul>
 </li>
 </ul>

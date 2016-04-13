@@ -55,14 +55,14 @@ required.</p>
 <dl class="docutils">
 <dt>All the layers in the admin interface have the following attributes:</dt>
 <dd><ul class="first last simple">
-<li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the WMS layer/group, or he WMTS layer.
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the WMS layer/group, or the WMTS layer.
 It also used throw OpenLayers.i18n to display the name on the layers tree.</li>
 <li><code class="docutils literal"><span class="pre">Public</span></code>: make the layer public, also it is accessible
 throw the <code class="docutils literal"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas through which the user can see the layer.</li>
 <li><code class="docutils literal"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></code>: the related postgres table,
 used by the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a>.</li>
-<li><code class="docutils literal"><span class="pre">Attributes</span> <span class="pre">to</span> <span class="pre">exclude</span></code>: the list of attributes (database columns) that shouldn&#8217;t appear in
+<li><code class="docutils literal"><span class="pre">Exclude</span> <span class="pre">properties</span></code>: the list of attributes (database columns) that shouldn&#8217;t appear in
 the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a> so that they cannot be modified by the end user.
 For enumerable attributes (foreign key), the column name should end with &#8216;_id&#8217;.</li>
 <li><code class="docutils literal"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
@@ -130,10 +130,10 @@ in the capabilities it can be empty.</li>
 the given layer, used to zoom to visible scale, with WMS if it&#8217;s empty
 we get the values from the capabilities.</li>
 <li><code class="docutils literal"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
-<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
 <li><code class="docutils literal"><span class="pre">Identifier</span> <span class="pre">attribute</span> <span class="pre">field</span></code>: field used to identify a feature from the
 layer, e.g.: &#8216;name&#8217;, used by
-<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
 <li><code class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></code>: the areas throw witch the user can see the layer.</li>
 </ul>
 </dd>

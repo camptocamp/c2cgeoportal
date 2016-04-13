@@ -49,7 +49,7 @@ Print.</p>
 <h2>The Print plugin<a class="headerlink" href="#the-print-plugin" title="Permalink to this headline">¶</a></h2>
 <p>The viewer should include a <code class="docutils literal"><span class="pre">Print</span></code> plugin for the <em>print</em> feature to
 be available in the user interface.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Print.html">Print API doc</a> for the
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/Print.html">Print API doc</a> for the
 list of options the plugin can receive.</p>
 <p><em>The main viewer includes a Print plugin by default.</em></p>
 </div>
@@ -154,9 +154,7 @@ print output, a templating system is implemented to allow you to use mako
 template so you don&#8217;t have to duplicate a huge quantity of code in your <code class="docutils literal"><span class="pre">print/config.yaml</span></code>.</p>
 <p>In the default template we have two base print template <code class="docutils literal"><span class="pre">A4_portrait.mako</span></code> and
 <code class="docutils literal"><span class="pre">A3_landscape.mako</span></code> where we have some blocks like:</p>
-<div class="code mako highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;%</span><span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="s2">&quot;title()&quot;</span><span class="o">&gt;</span>\
-<span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>\
-<span class="o">&lt;/%</span><span class="n">def</span><span class="o">&gt;</span>
+<div class="code mako highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;%</span><span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="s2">&quot;title()&quot;</span><span class="o">&gt;</span>    <span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>    <span class="o">&lt;/%</span><span class="n">def</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>And in <code class="docutils literal"><span class="pre">print/templates/A3_landscape_inherit.mako</span></code> and
@@ -169,7 +167,7 @@ be redefined.</p>
 <p>In print configuration you can use a PDF as a background image. You should put the
 PDF file in the print directory and use
 <code class="docutils literal"><span class="pre">&lt;%text&gt;$&lt;/%text&gt;{configDir}/template_A4_portrait.pdf</span></code>
-for the valeur of backgroundPdf parameter.</p>
+for the value of backgroundPdf parameter.</p>
 <p>The <code class="docutils literal"><span class="pre">print.yaml.mako</span></code> has the &#8220;header&#8221; part and includes the wanted templates.</p>
 </div>
 </div>

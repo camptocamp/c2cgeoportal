@@ -81,6 +81,13 @@ use the <code class="docutils literal"><span class="pre">phantomjs_routes</span>
         <span class="o">&lt;</span><span class="n">overide</span> <span class="n">the</span> <span class="n">default</span> <span class="n">config</span> <span class="k">for</span> <span class="n">a</span> <span class="n">specific</span> <span class="nb">type</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+<p>If some of the checked services require an authenticated user, the
+<code class="docutils literal"><span class="pre">forward_headers</span></code> permit to forward <code class="docutils literal"><span class="pre">Cookie</span></code> or <code class="docutils literal"><span class="pre">Authorisation</span></code> headers
+in the underlying requests.</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
+    <span class="n">forward_headers</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Cookie&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorisation&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="check-collector">
 <h2>Check collector<a class="headerlink" href="#check-collector" title="Permalink to this headline">¶</a></h2>
