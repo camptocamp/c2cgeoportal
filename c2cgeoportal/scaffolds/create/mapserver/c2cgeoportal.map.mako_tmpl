@@ -35,9 +35,6 @@ MAP
 
     SHAPEPATH '/var/sig/{{package}}'
 
-    TOLERANCE 10
-    TOLERANCEUNITS pixels
-
     IMAGECOLOR 255 255 255
     STATUS ON
 

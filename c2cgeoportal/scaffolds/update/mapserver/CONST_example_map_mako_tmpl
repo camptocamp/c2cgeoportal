@@ -32,6 +32,8 @@ LAYER
         ${mapserver_layer_validation} # For secured layers
     END
     STATUS ON
+    TOLERANCE 10
+    TOLERANCEUNITS pixels
     PROJECTION
       "init=epsg:{{srid}}"
     END

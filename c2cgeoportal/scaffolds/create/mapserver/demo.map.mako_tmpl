@@ -5,6 +5,8 @@ LAYER
     NAME "borders"
     TYPE POLYGON
     STATUS ON
+    TOLERANCE 10
+    TOLERANCEUNITS pixels
     TEMPLATE fooOnlyForWMSGetFeatureInfo # For GetFeatureInfo
     EXTENT -31 27 45 71 # Useful for better performance but not mandatory
     CONNECTIONTYPE postgis
@@ -41,6 +43,8 @@ LAYER
     NAME "density"
     TYPE POLYGON
     STATUS ON
+    TOLERANCE 10
+    TOLERANCEUNITS pixels
     TEMPLATE fooOnlyForWMSGetFeatureInfo # For GetFeatureInfo
     EXTENT  -31 27 45 71
     CONNECTIONTYPE postgis
