@@ -36,7 +36,7 @@ but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with
     + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
 4. The checkers will be refactored, you should do at least the following change:
-      checker
+      checker:
     -     fulltextsearch: text to search
     -     print_spec:
     -         layout: "1 A4 portrait"
