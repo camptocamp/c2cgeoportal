@@ -107,7 +107,6 @@ endif
 ifeq ($(NGEO), TRUE)
 DEFAULT_BUILD_RULES += test-packages-ngeo
 endif
-endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += apache/tiles.conf
 endif
