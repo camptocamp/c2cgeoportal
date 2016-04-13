@@ -29,6 +29,9 @@
 
 
 import re
+import urlparse
+import datetime
+import dateutil
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
 
@@ -57,13 +60,131 @@ def get_url(url, request, default=None, errors=None):
         server = request.registry.settings.get("servers", {}).get(obj.netloc, None)
         if server is None:
             if default is None and errors is not None:
-                errors.append("The server '%s' isn't found in the config" % obj.netloc)
+                errors.add("The server '%s' isn't found in the config" % obj.netloc)
             return default
         else:
             return "%s%s?%s" % (server, obj.path, obj.query)
 
     else:
         return url
+
+
+def get_url2(name, value, request, errors):
+    url = urlparse.urlsplit(value)
+    if url.scheme == "":
+        if url.netloc == "" and url.path not in ("", "/"):
+            # Relative URL like: /dummy/static/url or dummy/static/url
+            return urlparse.urlunsplit(url)
+        errors.add(
+            "The attribute '{}'='{}' isn't an URL."
+            .format(name, value)
+        )
+        return None
+    elif url.scheme in ("http", "https"):
+        if url.netloc == "":
+            errors.add(
+                "The attribute '{}'='{}' isn't a valid URL."
+                .format(name, value)
+            )
+            return None
+        return urlparse.urlunsplit(url)
+    elif url.scheme == "static":
+        if url.path in ("", "/"):
+            errors.add(
+                "The attribute '{}'='{}' can't have an empty path."
+                .format(name, value)
+            )
+            return None
+        proj = url.netloc
+        if proj == "":
+            proj = "project:static"
+        elif ":" not in proj:
+            proj = "project:{}".format(proj)
+        return request.static_url(
+            "{}{}".format(proj, url.path)
+        )
+    elif url.scheme == "config":
+        if url.netloc == "":
+            errors.add(
+                "The attribute '{}'='{}' can't have an empty netloc."
+                .format(name, value)
+            )
+            return None
+        server = request.registry.settings.get("servers", {}).get(url.netloc, None)
+        if server is None:
+            errors.add(
+                "The server '{}' isn't found in the config".format(url.netloc)
+            )
+            return None
+        return u"{}{}?{}".format(server, url.path, url.query)
+
+
+def get_typed(name, value, types, request, errors):
+    try:
+        if name not in types:
+            # ignore
+            return None
+        type_ = types[name]
+        if type_.get("type", "string") == "string":
+            return value
+        elif type_["type"] == "list":
+            return [v.strip() for v in value.split(",")]
+        elif type_["type"] == "boolean":
+            value = value.lower()
+            if value in ["yes", "y", "on", "1"]:
+                return True
+            elif value in ["no", "n", "off", "0"]:
+                return False
+            else:
+                errors.add(
+                    "The boolean attribute '{}'='{}' is not in "
+                    "[yes, y, on, 1, no, n, off, 0].".format(
+                        name, value.lower()
+                    )
+                )
+        elif type_["type"] == "integer":
+            return int(value)
+        elif type_["type"] == "float":
+            return float(value)
+        elif type_["type"] == "date":
+            date = dateutil.parser.parse(
+                value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
+            )
+            if date.time() != datetime.time(0, 0, 0):
+                errors.add("The date attribute '{}'='{}' shouldn't have any time")
+                return None
+            return datetime.date.strftime(
+                date.date(), "%Y-%m-%d"
+            )
+        elif type_["type"] == "time":
+            date = dateutil.parser.parse(
+                value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
+            )
+            if date.date() != datetime.date(1, 1, 1):
+                errors.add("The time attribute '{}'='{}' shouldn't have any date")
+                return None
+            return datetime.time.strftime(
+                date.time(), "%H:%M:%S"
+            )
+        elif type_["type"] == "datetime":
+            date = dateutil.parser.parse(
+                value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
+            )
+            return datetime.datetime.strftime(
+                date, "%Y-%m-%dT%H:%M:%S"
+            )
+        elif type_["type"] == "url":
+            return get_url2(name, value, request, errors)
+        else:
+            errors.add("Unknown type '{}'.".format(type_["type"]))
+    except Exception as e:
+        errors.add(
+            "Unable to parse the attribute '{}'='{}' with the type '{}', error:\n{}"
+            .format(
+                name, value, type_.get("type", "string"), str(e)
+            )
+        )
+    return None
 
 
 def add_url_params(url, params):

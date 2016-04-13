@@ -153,13 +153,13 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
             "registered": {},
             "anonymous": {},
             "available_in_templates": []
+        },
+        "layers": {
+            "geometry_validation": True
         }
     }, *args, **kargs)
     request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
-    request.registry.settings["layers"] = {
-        "geometry_validation": True
-    }
     request.headers["Host"] = host
     request.user = None
     request.interface_name = "main"

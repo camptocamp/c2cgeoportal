@@ -216,7 +216,7 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
 def add_static_view_ngeo(config):  # pragma: nocover
     """ Add the project static view for ngeo """
     package = config.get_settings()["package"]
-    _add_static_view(config, "proj-ngeo", "%s:static-ngeo" % package)
+    _add_static_view(config, "static-ngeo", "%s:static-ngeo" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
         override_with="%s:static-ngeo/" % package
@@ -246,7 +246,7 @@ def add_admin_interface(config):
 def add_static_view(config):
     """ Add the project static view for CGXP """
     package = config.get_settings()["package"]
-    _add_static_view(config, "proj", "%s:static" % package)
+    _add_static_view(config, "static-cgxp", "%s:static" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
         override_with="%s:static/" % package
@@ -690,6 +690,10 @@ def includeme(config):
         settings,
         ("admin_interface", "available_metadata"),
         formalchemy_available_metadata)
+    formalchemy_available_metadata = [
+        e if isinstance(e, basestring) else e.get("name")
+        for e in formalchemy_available_metadata
+    ]
 
     config.add_route("checker_all", "/checker_all", request_method="GET")
 
