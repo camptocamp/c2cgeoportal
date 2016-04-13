@@ -21,7 +21,7 @@
 /print/WEB-INF/classes/logback.xml
 /print/print-apps/{{package}}/config.yaml
 /mapserver/c2cgeoportal.map
-/mapserver/example.map
+/mapserver/demo.map
 /mapserver/tinyows.xml
 /deploy/hooks/pre-restore-database
 /{{package}}/static/build/

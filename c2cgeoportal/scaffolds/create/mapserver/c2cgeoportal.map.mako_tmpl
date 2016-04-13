@@ -88,6 +88,6 @@ MAP
         END
     END
 
-    INCLUDE "example.map"
+    INCLUDE "demo.map"
 
 END
