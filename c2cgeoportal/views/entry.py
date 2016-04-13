@@ -956,21 +956,13 @@ class Entry(object):
         d = {
             "lang": self.lang,
             "debug": self.debug,
-            "no_redirect": self.request.params.get("no_redirect") is not None,
             "extra_params": extra_params,
         }
 
         # general templates_params handling
         d.update(templates_params)
 
-        # check if route to mobile app exists
-        try:
-            d["mobile_url"] = self.request.route_url("mobile_index_prod")
-        except:  # pragma: no cover
-            d["mobile_url"] = None
-
         set_common_headers(self.request, "cgxp_index", NO_CACHE)
-
         return d
 
     def get_cgxp_permalinktheme_vars(self):
@@ -1385,6 +1377,7 @@ class Entry(object):
     def _user(self, user=None):
         user = self.request.user if user is None else user
         result = {
+            "success": True,  # for Extjs
             "username": user.username,
             "is_password_changed": user.is_password_changed,
             "role_name": user.role_name,

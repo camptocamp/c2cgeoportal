@@ -20,14 +20,14 @@ All layer type
 ~~~~~~~~~~~~~~
 
 All the layers in the admin interface have the following attributes:
- *  ``Name``: the name of the WMS layer/group, or he WMTS layer.
+ *  ``Name``: the name of the WMS layer/group, or the WMTS layer.
     It also used throw OpenLayers.i18n to display the name on the layers tree.
  *  ``Public``: make the layer public, also it is accessible
     throw the ``Restriction areas``.
  *  ``Restrictions area``: the areas through which the user can see the layer.
  *  ``Related Postgres table``: the related postgres table,
     used by the :ref:`administrator_editing`.
- *  ``Attributes to exclude``: the list of attributes (database columns) that shouldn't appear in
+ *  ``Exclude properties``: the list of attributes (database columns) that shouldn't appear in
     the :ref:`administrator_editing` so that they cannot be modified by the end user.
     For enumerable attributes (foreign key), the column name should end with '_id'.
  *  ``Parents``: the groups and theme in which the layer is.
@@ -76,10 +76,10 @@ The layers in the admin interface have the following attributes:
     the given layer, used to zoom to visible scale, with WMS if it's empty
     we get the values from the capabilities.
  *  ``Disclaimer``: optional, copyright of the layer, used by
-    `Disclaimer <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Disclaimer.html>`_.
+    `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
  *  ``Identifier attribute field``: field used to identify a feature from the
     layer, e.g.: 'name', used by
-    `FeaturesWindow <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FeaturesWindow.html>`_.
+    `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
  *  ``Restrictions area``: the areas throw witch the user can see the layer.
 
 On ``internal WMS`` layer we have the following specific attributes:

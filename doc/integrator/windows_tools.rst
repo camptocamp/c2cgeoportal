@@ -9,8 +9,8 @@ Creating a SSH Key with Windows
 
 1. Download PuTTYgen:
 
-   a) Windows: http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe
-   b) Other operating systems: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+   a. Windows: http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe
+   b. Other operating systems: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
 
 2. Choose key type  "SSH-2 RSA"
 
@@ -35,14 +35,15 @@ Based on the PuTTY software. Useful to launch commands on the server.
 
 1. Download PuTTY: http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
 2. Configurate PuTTY:
-   a) In the left-hand column (Category), choose "Connection>SSH>Auth"
-   b) Fill the "Private key file for authentication" field
+   a. In the left-hand column (Category), choose "Connection>SSH>Auth"
+   b. Fill the "Private key file for authentication" field
+   c. Activate "Allow agent forwarding"
 3. Auto-login:
-   a) One may save his/her username in "Connection>Data" > "Auto-login username"
+   a. One may save his/her username in "Connection>Data" > "Auto-login username"
 4. Connect to the server:
-   a) Fill connection info in the Session tab ("Connection Type" should be set at "SSH")
-   b) Save the configuration
-   c) Click on "Open" and type your passphrase when prompted
+   a. Fill connection info in the Session tab ("Connection Type" should be set at "SSH")
+   b. Save the configuration
+   c. Click on "Open" and type your passphrase when prompted
 5. if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont)
 
 Visual Interface

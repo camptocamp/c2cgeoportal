@@ -32,8 +32,8 @@ ourselves!*
 
 :ref:`releasenotes`.
 
-`Demo <http://geomapfish-demo.camptocamp.net/1.6>`_,
-`with features grid <http://geomapfish-demo.camptocamp.net/1.6?grid>`_,
+`Demo <http://geomapfish-demo.camptocamp.net/${main_version}>`_,
+`with features grid <http://geomapfish-demo.camptocamp.net/${main_version}?grid>`_,
 to test the editing you can use the username 'demo' with the password 'demo'.
 
 `CGXP (Client) documentation <http://docs.camptocamp.net/cgxp/master/>`_.

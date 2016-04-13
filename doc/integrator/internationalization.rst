@@ -5,9 +5,40 @@
 Internationalization
 ====================
 
-------
-Client
-------
+---------------
+ngeo and server
+---------------
+
+In the ``<package>.mk`` file define the supported language with (default):
+
+.. code: make
+
+   LANGUAGES ?= en fr de
+
+In the ``vars_<package>.yaml`` file define the available and default language:
+
+.. code: yaml
+
+   vars:
+        ...
+        default_locale_name: fr
+        available_locale_names: [en, fr, de]
+
+Build your application
+
+The file to translate are:
+
+* ``demo/locale/<lang>/LC_MESSAGES/demo-client.po`` for ngeo client
+* ``demo/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (Should be empty for ngeo interfaces)
+
+.. note:
+
+   All the ``#, fuzzy`` strings should be verified ans the line should be removed.
+   (if the line isn't removed the localisation will not be used.)
+
+----
+CGXP
+----
 
 Translations of the browser interfaces (main viewer, edit interfaces and APIs)
 are included in two kinds of Javascript files stored in
@@ -46,30 +77,3 @@ are included in two kinds of Javascript files stored in
 
     Translations from both OpenLayers- and GeoExt-based systems are stored in
     separated files because of API constraints. Read more at :ref:`integrator_api_i18n`.
-
-------
-Server
-------
-
-#. Extract all messages from the project::
-
-    .build/venv/bin/python setup.py extract_messages
-
-#. Initialize a catalog for every supported language, for example::
-
-    .build/venv/bin/python setup.py init_catalog -l en
-    .build/venv/bin/python setup.py init_catalog -l fr
-    .build/venv/bin/python setup.py init_catalog -l de
-
-#. Edit the .po files in ``<package>/locale/<lang>/LC_MESSAGES/<package>.po``
-
-#. Run make to compile all the .po files to .mo::
-
-    make -f <user>.mk build
-
-When you add a new message repeat all steps but replace the step 2. by::
-
-    .build/venv/bin/python setup.py update_catalog
-
-
-`Source from pylondhq <http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization>`_
