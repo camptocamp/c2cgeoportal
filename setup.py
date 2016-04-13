@@ -65,9 +65,6 @@ install_requires = [
     "pyramid_closure",
     "lingua",
     "PyYAML",
-    # WebError introduce an incompatibility issue with pyramid_debugtoolbar,
-    # see: https://github.com/Pylons/weberror/issues/13
-    "WebError<=0.10.3",
 
     # # admin interface # #
     "pyramid_chameleon",
