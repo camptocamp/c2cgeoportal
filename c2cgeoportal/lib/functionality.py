@@ -29,50 +29,71 @@
 
 
 import logging
-from c2cgeoportal.lib import get_setting
+from c2cgeoportal.lib import get_setting, get_typed, get_types_map
 
 log = logging.getLogger(__name__)
 
 
-def _get_config_functionality(name, registered, config):
+def _get_config_functionality(name, registered, types, request, errors):
     result = None
 
     if registered:
         result = get_setting(
-            config, ("functionalities", "registered", name))
+            request.registry.settings, ("functionalities", "registered", name))
     if result is None:
         result = get_setting(
-            config, ("functionalities", "anonymous", name))
+            request.registry.settings, ("functionalities", "anonymous", name))
 
     if result is None:
         result = []
     elif not isinstance(result, list):
         result = [result]
 
-    return result
+    result = [get_typed(name, r, types, request, errors) for r in result]
+    return [r for r in result if r is not None]
 
 
-def _get_db_functionality(name, role):
-    return [
-        functionality.value for
-        functionality in role.functionalities
+def _get_db_functionality(name, role, types, request, errors):
+    result = [
+        get_typed(name, functionality.value, types, request, errors)
+        for functionality in role.functionalities
         if functionality.name == name
     ]
+    return [r for r in result if r is not None]
 
 
-def get_functionality(name, config, request):
+FUNCTIONALITIES_TYPES = None
+
+
+def get_functionality(name, request):
     result = []
+    errors = set()
+    global FUNCTIONALITIES_TYPES
+    if FUNCTIONALITIES_TYPES is None:
+        FUNCTIONALITIES_TYPES = get_types_map(
+            request.registry.settings.get("admin_interface", {})
+            .get("available_functionalities", [])
+        )
+
     if request.user is not None and request.user.role is not None:
-        result = _get_db_functionality(name, request.user.role)
+        result = _get_db_functionality(
+            name, request.user.role,
+            FUNCTIONALITIES_TYPES, request, errors
+        )
     if len(result) == 0:
-        result = _get_config_functionality(name, request.user is not None, config)
+        result = _get_config_functionality(
+            name, request.user is not None, FUNCTIONALITIES_TYPES, request, errors
+        )
+
+    if errors != set():  # pragma: no cover
+        log.errors("\n".join(errors))
     return result
 
 
 def get_mapserver_substitution_params(request):
     params = {}
     mss = get_functionality(
-        "mapserver_substitution", request.registry.settings, request
+        "mapserver_substitution", request
     )
     if mss:
         for s in mss:

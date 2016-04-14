@@ -38,6 +38,7 @@ from webob.acceptparse import Accept
 
 import c2cgeoportal
 from c2cgeoportal import tests
+from c2cgeoportal.lib import functionality
 
 
 mapserv_url = None
@@ -60,6 +61,7 @@ c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
 def set_up_common():
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
+    functionality.FUNCTIONALITIES_TYPES = None
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn"t been executed) then db_url is None
@@ -98,6 +100,8 @@ def set_up_common():
 
 
 def tear_down_common():
+
+    c2cgeoportal.lib.functionality.FUNCTIONALITIES_TYPES = None
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None

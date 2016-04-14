@@ -49,7 +49,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
-    get_url, get_typed, add_url_params
+    get_url, get_typed, get_types_map, add_url_params
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -77,15 +77,9 @@ class Entry(object):
         self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.debug = "debug" in request.params
         self.lang = request.locale_name
-        metadatas = self.settings.get("admin_interface", {}).get("available_metadata", [])
-        self.metadata_type = {}
-        for metadata in metadatas:
-            if isinstance(metadata, basestring):
-                self.metadata_type[metadata] = {
-                    "name": metadata,
-                }
-            else:
-                self.metadata_type[metadata["name"]] = metadata
+        self.metadata_type = get_types_map(
+            self.settings.get("admin_interface", {}).get("available_metadata", [])
+        )
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
@@ -935,7 +929,7 @@ class Entry(object):
                 ("functionalities", "available_in_templates"), []
         ):
             functionality[func] = get_functionality(
-                func, self.settings, self.request
+                func, self.request
             )
         return functionality
 

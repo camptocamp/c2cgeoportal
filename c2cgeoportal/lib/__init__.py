@@ -41,6 +41,18 @@ from pyramid.compat import WIN
 from pyramid.config.views import StaticURLInfo
 
 
+def get_types_map(types_array):
+    types_map = {}
+    for type_ in types_array:
+        if isinstance(type_, basestring):
+            types_map[type_] = {
+                "name": type_,
+            }
+        else:
+            types_map[type_["name"]] = type_
+    return types_map
+
+
 def get_url(url, request, default=None, errors=None):
     if url is None:
         return default

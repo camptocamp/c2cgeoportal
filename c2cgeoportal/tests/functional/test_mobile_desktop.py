@@ -34,6 +34,7 @@ from nose.plugins.attrib import attr
 import transaction
 from pyramid import testing
 
+from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
@@ -97,6 +98,8 @@ class TestMobileDesktop(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
+        functionality.FUNCTIONALITIES_TYPES = None
+
         from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup, Interface
 
@@ -112,10 +115,10 @@ class TestMobileDesktop(TestCase):
 
         transaction.commit()
 
-    def _create_entry_obj(self, username=None, params={}):
+    def _create_entry_obj(self, username=None, params={}, **kargs):
         from c2cgeoportal.views.entry import Entry
 
-        request = create_dummy_request()
+        request = create_dummy_request(**kargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: \
             request.registry.settings["mapserverproxy"]["mapserv_url"]
