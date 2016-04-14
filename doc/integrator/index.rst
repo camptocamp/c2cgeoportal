@@ -18,6 +18,7 @@ Content:
    docker
    features
    tilegeneration
+   customise
    functionality
    raster
    internationalization
