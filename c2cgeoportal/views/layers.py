@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from datetime import datetime
+
 from pyramid.httpexceptions import HTTPInternalServerError, \
     HTTPNotFound, HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
@@ -258,6 +260,8 @@ class Layers(object):
         protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
         try:
             features = protocol.create(self.request)
+            for feature in features.features:
+                self._log_last_update(feature)
             return features
         except TopologicalError, e:
             self.request.response.status_int = 400
@@ -308,6 +312,7 @@ class Layers(object):
         protocol = self._get_protocol_for_layer(layer, before_update=check_geometry)
         try:
             feature = protocol.update(self.request, feature_id)
+            self._log_last_update(feature)
             return feature
         except TopologicalError, e:
             self.request.response.status_int = 400
@@ -323,6 +328,15 @@ class Layers(object):
             if not valid:
                 reason = DBSession.query(func.ST_IsValidReason(geom)).scalar()
                 raise TopologicalError(reason)
+
+    def _log_last_update(self, feature):
+        last_update_date = self.settings.get("last_update_date_column", False)
+        if last_update_date:
+            setattr(feature, last_update_date, datetime.now())
+
+        last_update_user = self.settings.get("last_update_user_column", False)
+        if last_update_user:
+            setattr(feature, last_update_user, self.request.user.role.id)
 
     @view_config(route_name="layers_delete")
     def delete(self):
@@ -362,7 +376,19 @@ class Layers(object):
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        return self._metadata(str(layer.geo_table), layer.exclude_properties)
+        # exclude the columns used to record the last features update
+        if layer.exclude_properties is not None:
+            exclude = layer.exclude_properties.split(",")
+        else:
+            exclude = []
+        last_update_date = self.settings.get("last_update_date_column", False)
+        if last_update_date:
+            exclude.append(last_update_date)
+        last_update_user = self.settings.get("last_update_user_column", False)
+        if last_update_user:
+            exclude.append(last_update_user)
+
+        return self._metadata(str(layer.geo_table), ",".join(exclude))
 
     @cache_region.cache_on_arguments()
     def _metadata(self, geo_table, exclude_properties):

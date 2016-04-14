@@ -59,6 +59,8 @@ vars:
 
     layers:
         geometry_validation: True
+        last_update_date_column: False
+        last_update_user_column: False
 
     # For base layers
     tiles_url:
