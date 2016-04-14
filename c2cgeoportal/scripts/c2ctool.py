@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 from os import path, unlink
 import re
 import sys
@@ -296,7 +297,9 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        if self.options.version == "master":
+        if "TRAVIS_FOLDER" in os.environ:
+            pass
+        elif self.options.version == "master":
             check_call([
                 "git", "submodule", "foreach", "git", "reset", "--hard",
                 "origin/%s" % self.options.version, "--"
