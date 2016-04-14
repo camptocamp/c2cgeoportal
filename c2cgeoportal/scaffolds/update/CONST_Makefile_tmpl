@@ -551,6 +551,7 @@ serve: build development.ini
 .PHONY: update-node-modules
 update-node-modules: $(NPM_CMD)
 	$(NPM_CMD) install --force
+	mkdir -p .build
 	touch .build/node_modules.timestamp
 
 $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
@@ -762,7 +763,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
-.PRECIOUS: .build/node_modules.timestamp
+.PRECIOUS: node_modules/ngeo/buildtools/mako_build.json
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
