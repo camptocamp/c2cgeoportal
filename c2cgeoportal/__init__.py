@@ -28,11 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-import yaml
 import sqlalchemy
 import sqlahelper
 import pyramid_tm
 import mimetypes
+import c2c.template
 from urlparse import urlsplit
 import simplejson as json
 from socket import gethostbyname, gaierror
@@ -450,7 +450,7 @@ def includeme(config):
 
     # update the settings object from the YAML application config file
     settings = config.get_settings()
-    settings.update(yaml.load(file(settings.get("app.cfg"))))
+    settings.update(c2c.template.get_config(settings.get("app.cfg")))
 
     call_hook(settings, "after_settings", settings)
 

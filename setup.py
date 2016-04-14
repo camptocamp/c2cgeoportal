@@ -65,6 +65,7 @@ install_requires = [
     "pyramid_closure",
     "lingua",
     "PyYAML",
+    "c2c.template>=1.3.0.dev",
 
     # # admin interface # #
     "pyramid_chameleon",
