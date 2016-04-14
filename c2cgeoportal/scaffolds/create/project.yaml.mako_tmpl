@@ -5,5 +5,6 @@ checker_path: /${instanceid}/wsgi/check_collector?
 template_vars:
     package: {{package}}
     srid: {{srid}}
+    extent: {{extent}}
     mobile_application_title: {{mobile_application_title}}
     apache_vhost: {{apache_vhost}}
