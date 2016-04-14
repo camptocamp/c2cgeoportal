@@ -500,7 +500,7 @@ clean: template-clean
 # We use the print
 ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=) 2> /dev/null || true
 endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
