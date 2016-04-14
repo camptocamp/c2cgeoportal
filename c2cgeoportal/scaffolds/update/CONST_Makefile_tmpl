@@ -1165,7 +1165,7 @@ endif
 INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
 $(INSTANCE_ID_MARKER):
 	$(PRERULE_CMD)
-	rm -f .build/instanceid-*.timestamp | true
+	rm -f .build/instanceid-*.timestamp || true
 	touch $@
 
 # Upgrade
