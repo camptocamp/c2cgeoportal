@@ -6,7 +6,7 @@ common:
         version: 2.7
     python-dev: 2.7
     java:
-        cmd: java -version 2>&1 | grep 'java version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
+        cmd: java -version 2>&1 | grep  -E '(java|openjdk) version' | awk '{{print $3}}' | sed 's/"//g' | sed 's/_/./g'
         version: 1.7.0
 
 main:

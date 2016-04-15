@@ -38,11 +38,8 @@ templates:
         - !configureHttpRequests &configureHttpRequests
             httpProcessors:
             - !mapUri
-                matchers:
-                - !dnsMatch
-                    host: ${host}
                 mapping:
-                    (https?)://${host}/(.*): "http://127.0.0.1/$2"
+                    (https?)://${__import__('re').escape(host)}/(.*): "http://127.0.0.1/$2"
             - !forwardHeaders
                 matchers:
                 - !localMatch {}
