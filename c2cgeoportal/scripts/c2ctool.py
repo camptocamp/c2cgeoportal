@@ -329,12 +329,12 @@ class C2cTool:
             check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
-            "../%s" % self.project["project_folder"]
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name", "--overwrite",
+            "--scaffold=c2cgeoportal_update", "../%s" % self.project["project_folder"]
         ])
         pcreate_cmd = [
-            "%s/pcreate" % self.venv_bin, "--scaffold=c2cgeoportal_create",
-            "/tmp/%s" % self.project["project_folder"],
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name",
+            "--scaffold=c2cgeoportal_create", "/tmp/%s" % self.project["project_folder"],
         ]
         for name, value in self.project["template_vars"].items():
             if isinstance(value, basestring):
