@@ -1,10 +1,11 @@
 .. _integrator_backend_qgis:
 
+=========================================
 Specific configuration for QGIS mapserver
 =========================================
 
 Viewer configuration
---------------------
+====================
 
 In the ``<package>/templates/viewer.js`` file, define the url of the WFS service
 which will be used to get the namespace required to parse the WFS response,
@@ -22,12 +23,12 @@ In the ``cgxp_print`` plugin add the following configuration:
 
 .. code:: javascript
 
-   encodeLayer: { useNativeAngle: true, serverType: 'qgis' }
-   encodeExternalLayer: { useNativeAngle: true, serverType: 'qgis' }
+   encodeLayer: { useNativeAngle: true, serverType: 'qgisserver' }
+   encodeExternalLayer: { useNativeAngle: true, serverType: 'qgisserver' }
 
 
 Apache configuration
---------------------
+====================
 
 In the ``apache/mapserv.conf.mako`` do the following changes:
 
@@ -40,16 +41,23 @@ In the ``apache/mapserv.conf.mako`` do the following changes:
    + SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
 
 Application configuration
--------------------------
+=========================
 
 In the ``vars_<project>.yaml`` file, define:
 
 .. code:: yaml
 
-    mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
+    vars:
+        ...
+            mapserverproxy:
+                mapserv_url: http://your.qgis.server/ows
+                geoserver: false
+    update_paths:
+    ...
+    - mapserverproxy
 
 Cleanup
--------
+=======
 
 Remove the mapserver folder:
 
@@ -57,13 +65,34 @@ Remove the mapserver folder:
 
    git rm mapserver
 
-Connect to Postgres from QGIS desktop
--------------------------------------
+QGIS Desktop configuration
+==========================
 
-This chapter is subject to change when the QGIS plugin is available.
+OWS configuration
+*****************
+
+You should setup your OWS service in the QGIS project properties in the OWS
+tab.
+
+You should take care to **uncheck** the checkbox *User Layer ids as names*. If
+this checkbox is enabled you will have unreliabel layers name.
+
+You should **check** the checkbox *Add geometry to feature response* in order
+to make the WMS GetFeatureInfo working correctly.
+
+In the *WFS capabilities* section, you should check the layers that need to be
+available in the WFS service.
+
+Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to
+change.
+
+Connect to Postgres database
+*****************************
+
+This section is subject to change when the QGIS plugin is available.
 
 Throw a tunnel
-~~~~~~~~~~~~~~
+---------------
 
 The first solution is to create a tunnel with ssh:
 
@@ -82,7 +111,7 @@ And use the following connection attributes::
    Password: www-data
 
 Directly on the server
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 For that you should ask the sysadmins to be able to access to the
 postgres port on the server from your infra.
@@ -98,6 +127,6 @@ Then use the following connection attributes::
    Password: www-data
 
 Deploy notes
-~~~~~~~~~~~~
+************
 
 TODO
