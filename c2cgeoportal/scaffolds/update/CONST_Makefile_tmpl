@@ -844,14 +844,14 @@ endif
 $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm || npm install npm || npm install npm
+	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 ifeq ($(NGEO), TRUE)
-	$(NPM_CMD) install || $(NPM_CMD) install || $(NPM_CMD) install
+	$(NPM_CMD) install || sleep 20 || $(NPM_CMD) install || sleep 90 || $(NPM_CMD) install
 endif
 	touch $@
 
