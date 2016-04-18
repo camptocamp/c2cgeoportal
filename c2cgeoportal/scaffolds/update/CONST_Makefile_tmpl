@@ -90,23 +90,35 @@ DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
 endif
 
-# Make rules
-TEST_PACKAGES ?= TRUE
-ifeq ($(TEST_PACKAGES), TRUE)
-DEFAULT_BUILD_RULES += test-packages
+# Test packages
+ifndef ($(TEST_PACKAGES))
+TEST_PACKAGES = common
+ifeq ($(DOCKER), FALSE)
+TEST_PACKAGES += main
+ifeq ($(MAPSERVER), TRUE)
+TEST_PACKAGES += mapserver
+endif
+ifeq ($(POSTGRES), TRUE)
+TEST_PACKAGES += postgres
+endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
+TEST_PACKAGES += tilecloud-chain
 endif
 ifeq ($(DEPLOY), TRUE)
-DEFAULT_BUILD_RULES += test-packages-deploy
+TEST_PACKAGES += deploy
+endif
+ifeq ($(NGEO), TRUE)
+TEST_PACKAGES += ngeo
+endif
+else
+TEST_PACKAGES += docker
 endif
 endif
 
-ifeq ($(MOBILE), TRUE)
-DEFAULT_BUILD_RULES += test-packages-mobile
-endif
-ifeq ($(NGEO), TRUE)
-DEFAULT_BUILD_RULES += test-packages-ngeo
+# Make rules
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
+ifneq ($(TEST_PACKAGES), FALSE)
+DEFAULT_BUILD_RULES += test-packages
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += apache/tiles.conf
@@ -136,11 +148,6 @@ DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
-endif
-ifeq ($(DOCKER), FALSE)
-TEST_PACKAGES = main
-else
-TEST_PACKAGES = docker
 endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
@@ -974,43 +981,9 @@ $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .PHONY: test-packages
 test-packages: .build/test-packages.timestamp
 
-PYTHON_BIN_POSTFIX =
 .build/test-packages.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml common
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml $(TEST_PACKAGES)
-	touch $@
-
-.PHONY: test-packages-deploy
-test-packages-deploy: .build/test-packages-deploy.timestamp
-
-.build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml deploy
-	touch $@
-
-.PHONY: test-packages-mobile
-test-packages-mobile: .build/test-packages-mobile.timestamp
-
-.build/test-packages-mobile.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml mobile
-	touch $@
-
-.PHONY: test-packages-tilecloud-chain
-test-packages-tilecloud-chain: .build/test-packages-tilecloud-chain.timestamp
-
-.build/test-packages-tilecloud-chain.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml tilecloud-chain
-	touch $@
-
-.PHONY: test-packages-ngeo
-test-packages-ngeo: .build/test-packages-ngeo.timestamp
-
-.build/test-packages-ngeo.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml ngeo
 	touch $@
 
 # Check
