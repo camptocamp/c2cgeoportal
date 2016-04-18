@@ -37,7 +37,7 @@ Create Date: 2014-10-24 11:43:23.886123
 try:
     from hashlib import sha1
     sha1  # suppress pyflakes warning
-except ImportError:  # pragma: nocover
+except ImportError:  # pragma: no cover
     from sha import new as sha1
 
 from alembic import op, context
@@ -64,7 +64,7 @@ def upgrade():
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
             op.get_context().dialect.has_table(
-                engine, 'functionality', schema=schema):  # pragma: nocover
+                engine, 'functionality', schema=schema):  # pragma: no cover
         return
 
     op.create_table(
@@ -221,7 +221,7 @@ def upgrade():
         Column('role_id', Integer, ForeignKey(schema + '.role.id'), nullable=False),
         schema=schema,
     )
-    if parentschema is not None and parentschema is not '':  # pragma: nocover
+    if parentschema is not None and parentschema is not '':  # pragma: no cover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

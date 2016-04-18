@@ -32,7 +32,7 @@ import logging
 try:
     from hashlib import sha1
     sha1  # suppress pyflakes warning
-except ImportError:  # pragma: nocover
+except ImportError:  # pragma: no cover
     from sha import new as sha1
 
 import sqlahelper
@@ -73,7 +73,7 @@ DBSessions = {
 
 try:
     postgis_version = DBSession.execute(func.postgis_version()).scalar()
-except UnboundExecutionError:  # pragma: nocover - needed by non functional tests
+except UnboundExecutionError:  # pragma: no cover - needed by non functional tests
     postgis_version = "2.0"
 management = postgis_version.startswith("1.")
 
@@ -81,7 +81,7 @@ AUTHORIZED_ROLE = "role_admin"
 
 if schema is not None:
     _schema = schema
-else:  # pragma: nocover
+else:  # pragma: no cover
     raise Exception(
         "schema not specified, you need to add it to your config"
     )
@@ -89,7 +89,7 @@ _parentschema = parentschema
 
 if srid is not None:
     _srid = srid
-else:  # pragma: nocover
+else:  # pragma: no cover
     raise Exception(
         "srid not specified, you need to add it to your config"
     )
@@ -101,7 +101,7 @@ def cache_invalidate_cb(*args):
 
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
-    def get_col_spec(self):  # pragma: nocover
+    def get_col_spec(self):  # pragma: no cover
         return "TSVECTOR"
 
 
@@ -149,7 +149,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return "%s - %s" % (self.name or u"", self.value or u"")  # pragma: nocover
+        return "%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
 event.listen(Functionality, "after_delete", cache_invalidate_cb)
@@ -301,7 +301,7 @@ class User(Base):
     password = property(_get_password, _set_password)
 
     def __unicode__(self):
-        return self.username or u""  # pragma: nocover
+        return self.username or u""  # pragma: no cover
 
 
 class Role(Base):
@@ -331,7 +331,7 @@ class Role(Base):
         self.description = description
 
     def __unicode__(self):
-        return self.name or u""  # pragma: nocover
+        return self.name or u""  # pragma: no cover
 
     @property
     def bounds(self):
@@ -357,11 +357,11 @@ class TreeItem(Base):
     description = Column(Unicode, label=_(u"Description"))
 
     @property
-    def parents(self):  # pragma: nocover
+    def parents(self):  # pragma: no cover
         return [c.group for c in self.parents_relation]
 
     def is_in_interface(self, name):
-        if not hasattr(self, "interfaces"):  # pragma: nocover
+        if not hasattr(self, "interfaces"):  # pragma: no cover
             return False
 
         for interface in self.interfaces:
@@ -370,14 +370,14 @@ class TreeItem(Base):
 
         return False
 
-    def get_metadatas(self, name):  # pragma: nocover
+    def get_metadatas(self, name):  # pragma: no cover
         return [metadata for metadata in self.ui_metadatas if metadata.name == name]
 
     def __init__(self, name=u""):
         self.name = name
 
     def __unicode__(self):
-        return self.name or u""  # pragma: nocover
+        return self.name or u""  # pragma: no cover
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
@@ -422,7 +422,7 @@ class LayergroupTreeitem(Base):
     ordering = Column(Integer)
 
     # Used by formalchemy
-    def __unicode__(self):  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
         return self.group.name
 
     def __init__(self, group=None, item=None, ordering=0):
@@ -673,7 +673,7 @@ class ServerOGC(Base):
         self.is_single_tile = is_single_tile
 
     def __unicode__(self):
-        return self.name or u""  # pragma: nocover
+        return self.name or u""  # pragma: no cover
 
 
 class LayerWMS(Layer):
@@ -806,7 +806,7 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __unicode__(self):  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
         return self.name or u""
 
 event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
@@ -870,7 +870,7 @@ class Interface(Base):
         self.name = name
         self.description = description
 
-    def __unicode__(self):  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
         return self.name or u""
 
 
@@ -904,7 +904,7 @@ class UIMetadata(Base):
         self.name = name
         self.value = value
 
-    def __unicode__(self):  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
         return u"%s: %s" % (self.name or u"", self.value or u"")
 
 
@@ -939,7 +939,7 @@ class WMTSDimension(Base):
         self.value = value
         self.layer = layer
 
-    def __unicode__(self):  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
         return self.name or u""
 
 
@@ -960,7 +960,7 @@ if _parentschema is not None and _parentschema != "":  # pragma: no cover
             self.name = name
 
         def __unicode__(self):
-            return self.name or u""  # pragma: nocover
+            return self.name or u""  # pragma: no cover
 
 
 class Shorturl(Base):

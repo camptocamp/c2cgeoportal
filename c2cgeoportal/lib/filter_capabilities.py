@@ -311,10 +311,10 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(self, name, qname, attrs):  # pragma: nocover  # noqa
+    def startElementNS(self, name, qname, attrs):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name, qname):  # pragma: nocover  # noqa
+    def endElementNS(self, name, qname):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name):
@@ -339,10 +339,10 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._accumulator.append(text.encode("utf-8")))
 
-    def ignorableWhitespace(self, ws):  # pragma: nocover  # noqa
+    def ignorableWhitespace(self, ws):  # pragma: no cover  # noqa
         self._do(lambda: self._accumulator.append(ws))
 
-    def processingInstruction(self, target, body):  # pragma: nocover  # noqa
+    def processingInstruction(self, target, body):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.processingInstruction(target, body))
 
     def skippedEntity(self, name):  # pragma: no cover  # noqa

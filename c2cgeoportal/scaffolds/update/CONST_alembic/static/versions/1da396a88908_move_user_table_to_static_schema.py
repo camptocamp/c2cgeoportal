@@ -51,7 +51,7 @@ def upgrade():
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
             op.get_context().dialect.has_table(
-                engine, 'user', schema=staticschema):  # pragma: nocover
+                engine, 'user', schema=staticschema):  # pragma: no cover
         return
 
     op.create_table(
@@ -68,7 +68,7 @@ def upgrade():
     parent_column = ''
     parent_select = ''
     parent_join = ''
-    if parentschema is not None and parentschema is not '':  # pragma: nocover
+    if parentschema is not None and parentschema is not '':  # pragma: no cover
         op.add_column(
             'user',
             Column('parent_role_name', String),
@@ -120,7 +120,7 @@ def downgrade():
     parent_column = ''
     parent_select = ''
     parent_join = ''
-    if parentschema is not None and parentschema is not '':  # pragma: nocover
+    if parentschema is not None and parentschema is not '':  # pragma: no cover
         op.add_column(
             'user',
             Column('parent_role_id', Integer, ForeignKey(parentschema + '.role.id')),

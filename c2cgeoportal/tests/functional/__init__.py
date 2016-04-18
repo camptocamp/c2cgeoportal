@@ -65,7 +65,7 @@ def set_up_common():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn"t been executed) then db_url is None
-    if db_url is None:  # pragma: nocover
+    if db_url is None:  # pragma: no cover
         return
 
     # verify that we have a working database connection before going
@@ -75,7 +75,7 @@ def set_up_common():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:  # pragma: nocover
+    except OperationalError:  # pragma: no cover
         return
 
     import sqlahelper
@@ -105,7 +105,7 @@ def tear_down_common():
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
-    if db_url is None:  # pragma: nocover
+    if db_url is None:  # pragma: no cover
         return
 
     # verify that we have a working database connection before going
@@ -115,7 +115,7 @@ def tear_down_common():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:  # pragma: nocover
+    except OperationalError:  # pragma: no cover
         return
 
     import alembic.config

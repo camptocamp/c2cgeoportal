@@ -81,7 +81,7 @@ class _AssociationProxy(object):
             # and class levels we could return an SQL expression here.
             # The code of hybrid_property in SQLAlchemy illustrates
             # how to do that.
-            raise AttributeError  # pragma: nocover
+            raise AttributeError  # pragma: no cover
         target = getattr(obj, self.target)
         return getattr(target, self.value_attr) if target else None
 
@@ -123,7 +123,7 @@ def _xsd_sequence_callback(tb, cls):
 
 
 def _column_reflect_listener(inspector, table, column_info, engine):
-    if isinstance(column_info["type"], Geometry):  # pragma: nocover
+    if isinstance(column_info["type"], Geometry):  # pragma: no cover
         query = engine.execute(
             sql.text(SQL_GEOMETRY_COLUMNS),
             table_schema=table.schema,

@@ -46,7 +46,7 @@ from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
 
 
-class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
+class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     "GeoMapfish angular extractor"
 
     extensions = [".js", ".html"]
@@ -68,7 +68,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: nocover
             raise
 
 
-class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
+class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
     "GeoMapfish config extractor (raster layers, and print templates)"
 
     extensions = [".yaml"]
@@ -105,7 +105,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
                 raise Exception("Not a known config file")
 
 
-class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
+class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     "GeoMapfish theme extractor"
 
     # Run on the development.ini file

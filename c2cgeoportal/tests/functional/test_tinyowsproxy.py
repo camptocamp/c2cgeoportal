@@ -142,7 +142,7 @@ class TestTinyOWSProxyView(TestCase):
         DBSession.delete(r)
 
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_1").all():
-            DBSession.delete(layer)  # pragma: nocover
+            DBSession.delete(layer)  # pragma: no cover
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_2").all():
             DBSession.delete(layer)
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "layer_3").all():

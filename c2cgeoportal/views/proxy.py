@@ -69,7 +69,7 @@ class Proxy:
                 parsed_url.scheme, parsed_url.hostname,
                 parsed_url.path, query_string
             )
-        else:  # pragma: nocover
+        else:  # pragma: no cover
             url = "%s://%s:%i%s?%s" % (
                 parsed_url.scheme, parsed_url.hostname, parsed_url.port,
                 parsed_url.path, query_string
@@ -83,16 +83,16 @@ class Proxy:
         # forward request to target (without Host Header)
         http = httplib2.Http()
 
-        if headers is None:  # pragma: nocover
+        if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
 
-        if parsed_url.hostname != "localhost":  # pragma: nocover
+        if parsed_url.hostname != "localhost":  # pragma: no cover
             headers.pop("Host")
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
 
-        if method in ("POST", "PUT") and body is None:  # pragma: nocover
+        if method in ("POST", "PUT") and body is None:  # pragma: no cover
             body = StringIO(self.request.body)
 
         try:
@@ -106,7 +106,7 @@ class Proxy:
                 resp, content = http.request(
                     url, method=method, headers=headers
                 )
-        except Exception as e:  # pragma: nocover
+        except Exception as e:  # pragma: no cover
             log.error(
                 "Error '%s' while getting the URL:\n%s\nMethod: %s." %
                 (sys.exc_info()[0], url, method)

@@ -94,7 +94,7 @@ class MapservProxy(Proxy):
             # In some application we want to display the features owned by a user
             # than we need his id.
             if not self.external:
-                params["user_id"] = self.user.id  # pragma: nocover
+                params["user_id"] = self.user.id  # pragma: no cover
 
         # don't allows direct variable substitution
         for k in params.keys():

@@ -468,7 +468,7 @@ LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
 
 
 # LayerWMTS
-class RoListRenderer(FieldRenderer):  # pragma: nocover
+class RoListRenderer(FieldRenderer):  # pragma: no cover
     def render_readonly(self, **kwargs):
         return helpers.content_tag("span", ("," + helpers.tag("br")).join([
             helpers.literal(value) for value in self.raw_value
@@ -491,7 +491,7 @@ class ChildrenAttributeField(AttributeField):
     def __init__(self, *args, **kargs):
         AttributeField.__init__(self, *args, **kargs)
 
-    def sync(self):  # pragma: nocover
+    def sync(self):  # pragma: no cover
         self.model.children = [
             self.parent.session.query(models.TreeItem).get(int(pk))
             for pk in self.renderer.deserialize()

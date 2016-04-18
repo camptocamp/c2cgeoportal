@@ -118,7 +118,7 @@ class _MemoryBackend(object):
 INVALID_KEY_CHARS = re.compile(r"[:|\.]")
 
 
-class _StatsDBackend(object):  # pragma: nocover
+class _StatsDBackend(object):  # pragma: no cover
     def __init__(self, address, prefix):
         self._prefix = prefix
         if self._prefix != "" and not self._prefix.endswith("."):
@@ -146,7 +146,7 @@ class _StatsDBackend(object):  # pragma: nocover
             pass  # Ignore errors (must survive if stats cannot be sent)
 
 
-def _create_finished_cb(kind, measure):  # pragma: nocover
+def _create_finished_cb(kind, measure):  # pragma: no cover
     def finished_cb(request):
         if request.exception is not None:
             if isinstance(request.exception, HTTPException):
@@ -164,7 +164,7 @@ def _create_finished_cb(kind, measure):  # pragma: nocover
     return finished_cb
 
 
-def _request_callback(event):  # pragma: nocover
+def _request_callback(event):  # pragma: no cover
     """
     Callback called when a new HTTP request is incoming.
     """
@@ -172,7 +172,7 @@ def _request_callback(event):  # pragma: nocover
     event.request.add_finished_callback(_create_finished_cb("route", measure))
 
 
-def _before_rendered_callback(event):  # pragma: nocover
+def _before_rendered_callback(event):  # pragma: no cover
     """
     Callback called when the rendering is starting.
     """
@@ -196,7 +196,7 @@ def _simplify_sql(sql):
 
 
 def _before_cursor_execute(conn, cursor, statement,
-                           parameters, context, executemany):  # pragma: nocover
+                           parameters, context, executemany):  # pragma: no cover
     measure = timer(["sql", _simplify_sql(statement)])
 
     def after(*args, **kwargs):
@@ -205,7 +205,7 @@ def _before_cursor_execute(conn, cursor, statement,
     sqlalchemy.event.listen(conn, "after_cursor_execute", after, once=True)
 
 
-def _before_commit(session):  # pragma: nocover
+def _before_commit(session):  # pragma: no cover
     measure = timer(["sql", "commit"])
 
     def after(*args, **kwargs):
@@ -214,7 +214,7 @@ def _before_commit(session):  # pragma: nocover
     sqlalchemy.event.listen(session, "after_commit", after, once=True)
 
 
-def init_db_spy():  # pragma: nocover
+def init_db_spy():  # pragma: no cover
     """
     Subscribe to SQLAlchemy events in order to get some stats on DB interactions.
     """
@@ -224,7 +224,7 @@ def init_db_spy():  # pragma: nocover
     sqlalchemy.event.listen(Session, "before_commit", _before_commit)
 
 
-def init_pyramid_spy(config):  # pragma: nocover
+def init_pyramid_spy(config):  # pragma: no cover
     """
     Subscribe to Pyramid events in order to get some stats on route time execution.
     :param config: The Pyramid config
@@ -235,7 +235,7 @@ def init_pyramid_spy(config):  # pragma: nocover
 
 def _get_env_or_settings(config, what_env, what_vars, default):
     from_env = os.environ.get(what_env, None)
-    if from_env is not None:  # pragma: nocover
+    if from_env is not None:  # pragma: no cover
         return from_env
     stats = config.get_settings().get("stats", {})
     return stats.get(what_vars, default)
@@ -246,7 +246,7 @@ def init_backends(config):
     Initialize the backends according to the configuration.
     :param config: The Pyramid config
     """
-    if _get_env_or_settings(config, "STATS_VIEW", "view", False):  # pragma: nocover
+    if _get_env_or_settings(config, "STATS_VIEW", "view", False):  # pragma: no cover
         memory_backend = _MemoryBackend()
         BACKENDS.append(memory_backend)
 
@@ -258,7 +258,7 @@ def init_backends(config):
                         renderer="c2cgeoportal:templates/stats.html")
 
     statsd_address = _get_env_or_settings(config, "STATSD_ADDRESS", "statsd_address", None)
-    if statsd_address is not None:  # pragma: nocover
+    if statsd_address is not None:  # pragma: no cover
         statsd_prefix = _get_env_or_settings(config, "STATSD_PREFIX", "statsd_prefix", "")
         BACKENDS.append(_StatsDBackend(statsd_address, statsd_prefix))
 
@@ -269,6 +269,6 @@ def init(config):
     :param config: The Pyramid config
     """
     init_backends(config)
-    if BACKENDS:  # pragma: nocover
+    if BACKENDS:  # pragma: no cover
         init_pyramid_spy(config)
         init_db_spy()
