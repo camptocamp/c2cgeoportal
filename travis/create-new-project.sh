@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-.build/venv/bin/pcreate -s c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test extent= > /dev/null
-.build/venv/bin/pcreate -s c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test > /dev/null # on create
+.build/venv/bin/pcreate -s c2cgeoportal_create /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test extent= > /dev/null
+.build/venv/bin/pcreate -s c2cgeoportal_update /tmp/travis/testgeomapfish package=testgeomapfish srid=21781 apache_vhost=test > /dev/null # on create
 
 cp travis/build.mk /tmp/travis/testgeomapfish/travis.mk
 cp travis/vars.yaml /tmp/travis/testgeomapfish/vars_travis.yaml
