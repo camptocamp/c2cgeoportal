@@ -31,28 +31,10 @@ For each version we create a new branch (at least at the final release):
     git pull origin master
     git checkout -b <version>
 
-Go back on master:
-
-.. prompt:: bash
-
-    git checkout master
-
-Add the version in the doc generator by editing the
-``core/src/doc/update_online.sh`` file and add the new ``<version>``
-in the ``for VERSION in`` loop.
-
-Commit your changes:
-
-.. prompt:: bash
-
-    git add core/src/doc/update_online.sh
-    git commit -m "Generate documentation for version <version>"
-
 Push your changes:
 
 .. prompt:: bash
 
-    git push origin master
     git push origin <version>
 
 Then continue by creating the release.
