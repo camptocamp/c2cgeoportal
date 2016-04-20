@@ -1193,7 +1193,7 @@ upgrade1: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml
+upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
