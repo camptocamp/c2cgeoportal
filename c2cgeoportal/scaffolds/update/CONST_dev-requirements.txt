@@ -1,6 +1,5 @@
 flake8==2.5.4
 pep8-naming== 0.3.3
-c2c.template==1.2.0
 c2c.versions==1.0.1
 htmlmin==0.1.10
 alembic==0.8.5

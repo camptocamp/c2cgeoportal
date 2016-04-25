@@ -77,13 +77,13 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
         with open(filename) as config_file:
             config = yaml.load(config_file)
             # for application config (.build/config.yaml)
-            if "raster" in config:
+            if "vars" in config:
                 return [
                     Message(
                         None, raster_layer, None, [], u"", u"",
                         (filename, u"raster/%s" % raster_layer)
                     )
-                    for raster_layer in config.get("raster", {}).keys()
+                    for raster_layer in config["vars"].get("raster", {}).keys()
                 ]
             # for the print config
             elif "templates" in config:
@@ -102,7 +102,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: nocover
                     ]
                 return result
             else:
-                raise "Not a known config file"
+                raise Exception("Not a known config file")
 
 
 class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover

@@ -1,6 +1,7 @@
 Babel==2.3.3
 boto==2.39.0
 bottle==0.12.9
+c2c.template==1.3.0.dev1
 Chameleon==2.24
 dogpile.cache==0.5.7
 dogpile.core==0.4.1
