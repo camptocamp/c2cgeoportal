@@ -367,10 +367,10 @@ class C2cTool:
             "%s/pcreate" % self.venv_bin, "--scaffold=c2cgeoportal_create",
             "/tmp/%s" % self.project["project_folder"],
         ]
-        pcreate_cmd += [
-            "{}={}".format(name, value)
-            for name, value in self.project["template_vars"].items()
-        ]
+        for name, value in self.project["template_vars"].items():
+            if isinstance(value, basestring):
+                value = value.encode('utf-8')
+            pcreate_cmd.append("{}={}".format(name, value))
         check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 

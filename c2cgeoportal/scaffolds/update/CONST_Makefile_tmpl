@@ -799,7 +799,7 @@ UPGRADE_ARGS ?=
 # instance id marker
 INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
 $(INSTANCE_ID_MARKER):
-	rm -f .build/instanceid-*.timestamp | true
+	rm -f .build/instanceid-*.timestamp || true
 	touch $@
 
 .PHONY: upgrade
