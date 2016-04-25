@@ -77,6 +77,8 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
+
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
@@ -90,7 +92,6 @@ endif
 
 # Make rules
 TEST_PACKAGES ?= TRUE
-DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
 ifeq ($(TEST_PACKAGES), TRUE)
 DEFAULT_BUILD_RULES += test-packages
 ifeq ($(TILECLOUD_CHAIN), TRUE)
@@ -214,6 +215,7 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-animate/angular-animate.min.js \
 	node_modules/angular-touch/angular-touch.min.js \
+	node_modules/angular-sanitize/angular-sanitize.min.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
 	node_modules/proj4/dist/proj4.js \
 	node_modules/d3/d3.min.js \
@@ -1193,7 +1195,7 @@ upgrade1: .build/requirements.timestamp project.yaml
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml
+upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
