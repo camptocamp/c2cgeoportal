@@ -34,7 +34,6 @@ from nose.plugins.attrib import attr
 import transaction
 import os
 import json
-import urllib
 from geoalchemy2 import WKTElement
 from pyramid import testing
 from owslib.wms import WebMapService
@@ -368,102 +367,6 @@ class TestEntryView(TestCase):
             if layer["name"] == "__test_public_layer"
         ], [False])
 
-    def test_mobileconfig_no_auth_no_theme(self):
-        entry = self._create_entry_obj()
-        response = entry.mobileconfig()
-
-        self.assertEqual(response["themes"], [])
-
-    def test_mobileconfig_no_auth_theme(self):
-        entry = self._create_entry_obj(params={"theme": u"__test_theme"})
-        entry.request.interface_name = "mobile"
-        response = entry.mobileconfig()
-
-        self.assertEqual(
-            [t["name"] for t in response["themes"]],
-            ["__test_theme"]
-        )
-        theme = response["themes"][0]
-        self.assertEqual(
-            set([l["name"] for l in theme["allLayers"]]),
-            set([u"__test_layer_in_group", u"__test_public_layer", u"test_wmsfeaturesgroup"])
-        )
-
-        self.assertEqual(theme["layers"], ["__test_layer_in_group"])
-
-        info = response["info"]
-        self.assertEqual(
-            info,
-            {"username": ""}
-        )
-
-    def test_mobileconfig_no_auth_default_theme(self):
-        entry = self._create_entry_obj()
-        entry.request.interface_name = "mobile"
-        entry.request.registry.settings["functionalities"] = {
-            "anonymous": {
-                "mobile_default_theme": u"__test_theme"
-            }
-        }
-        response = entry.mobileconfig()
-
-        theme = response["themes"][0]
-        layers = theme["allLayers"]
-        self.assertEqual(len(layers), 3)
-
-    def test_mobileconfig_wmsgroup(self):
-        entry = self._create_entry_obj(params={"theme": u"__test_theme"})
-        entry.request.interface_name = "mobile"
-        response = entry.mobileconfig()
-
-        theme = response["themes"][0]
-        layers = theme["allLayers"]
-        self.assertEqual(
-            layers,
-            [{
-                "name": u"test_wmsfeaturesgroup",
-                "minResolutionHint": 1.76,
-                "maxResolutionHint": 8.82,
-                "childLayers": [{
-                    "name": "test_wmsfeatures",
-                    "minResolutionHint": 1.76,
-                    "maxResolutionHint": 8.82,
-                }]
-            }, {
-                "name": u"__test_layer_in_group"
-            }, {
-                "name": u"__test_public_layer"
-            }]
-        )
-
-    def test_mobileconfig_auth_theme(self):
-        entry = self._create_entry_obj(
-            params={"theme": u"__test_theme"}, username=u"__test_user1"
-        )
-        entry.request.interface_name = "mobile"
-        response = entry.mobileconfig()
-
-        theme = response["themes"][0]
-        layers = theme["allLayers"]
-
-        self.assertEqual(set([
-            layer["name"] for layer in layers
-        ]), set([
-            u"__test_layer_in_group", u"__test_public_layer",
-            u"__test_private_layer", u"test_wmsfeaturesgroup"
-        ]))
-
-        self.assertEqual(
-            set(theme["layers"]),
-            set([u"__test_layer_in_group", u"__test_private_layer"])
-
-        )
-        info = response["info"]
-        self.assertEqual(
-            info,
-            {"username": "__test_user1"}
-        )
-
     def test_theme(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
@@ -668,51 +571,6 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response["permalink_themes"], '["my_themes"]')
 
-    def test_mobile_cache_version(self):
-        from c2cgeoportal.views.entry import Entry
-
-        request = self._create_request_obj()
-        request.user = None
-        entry = Entry(request)
-        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
-        result = entry.mobile()
-        self.assertRegexpMatches(result["url_params"], "cache_version=[0-9a-f]*")
-        self.assertRegexpMatches(result["extra_params"], "cache_version=[0-9a-f]*")
-        self.assertEquals(result["url_params"], result["extra_params"])
-
-        result2 = entry.mobile()
-        self.assertEquals(result2["url_params"], result["url_params"])
-        self.assertEquals(result2["extra_params"], result["extra_params"])
-
-    def test_auth_mobile_cache_version(self):
-        from c2cgeoportal.views.entry import Entry
-
-        request = self._create_request_obj(username=u"__test_user1")
-        entry = Entry(request)
-        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
-        result = entry.mobile()
-        self.assertRegexpMatches(result["url_params"], "cache_version=[0-9a-f]*")
-        self.assertRegexpMatches(result["extra_params"], "role=__test_role1&cache_version=[0-9a-f]*")
-
-        result2 = entry.mobile()
-        self.assertEquals(result2["url_params"], result["url_params"])
-        self.assertEquals(result2["extra_params"], result["extra_params"])
-
-    def test_auth_mobile(self):
-        from c2cgeoportal.views.entry import Entry
-
-        request = self._create_request_obj(username=u"__test_user1")
-        request.params = {
-            u"test": u"éàè"
-        }
-        entry = Entry(request)
-        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
-        result = entry.mobile()
-        self.assertRegexpMatches(
-            result["extra_params"],
-            "test=" + urllib.quote("éàè") + "&role=__test_role1&cache_version=[0-9a-f]*"
-        )
-
     def test_entry_points(self):
         from c2cgeoportal.views.entry import Entry
 
@@ -766,12 +624,6 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set([
             "debug", "fulltextsearch_groups", "permalink_themes"
         ]))
-
-        result = entry.mobile()
-        self.assertEquals(
-            set(result.keys()),
-            set(["lang", "came_from", "url_params", "extra_params"])
-        )
 
         result = entry.apijs()
         self.assertEquals(
