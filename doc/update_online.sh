@@ -25,48 +25,35 @@ BUILDBASEDIR=/var/www/vhosts/docs.camptocamp.net/htdocs/c2cgeoportal
 
 git fetch
 
-for VERSION in master 1.4 1.5
-do
+VERSION = 1.6
 
-    # BUILDDIR is where the HTML files are generated
-    BUILDDIR=${BUILDBASEDIR}/${VERSION}
+# BUILDDIR is where the HTML files are generated
+BUILDDIR=${BUILDBASEDIR}/${VERSION}
 
-    # create the build dir if it doesn't exist
-    if [[ ! -d ${BUILDDIR} ]]; then
-        mkdir -p ${BUILDDIR}
-    fi
+# create the build dir if it doesn't exist
+if [[ ! -d ${BUILDDIR} ]]; then
+    mkdir -p ${BUILDDIR}
+fi
 
-    # reset local changes and get the latest files
-    git reset --hard
-    git clean -f -d
-    git checkout --force ${VERSION}
-    git fetch
-    git reset --hard origin/${VERSION}
+# reset local changes and get the latest files
+git clean -f -d
+git reset --hard origin/${VERSION}
 
-    # create a virtual env if none exists already
-    if [[ ! -d env ]]; then
-        virtualenv env
-    fi
+# create a virtual env if none exists already
+if [[ ! -d env ]]; then
+    virtualenv env
+fi
 
-    # install or update Sphinx
-    if [ -e requirements.txt ]
-    then
-        ./env/bin/pip install -r requirements.txt
-    else
-        ./env/bin/pip install Sphinx==1.1.3 sphinx-prompt==0.2.2
-    fi
+# install or update Sphinx
+if [ -e requirements.txt ]
+then
+    ./env/bin/pip install -r requirements.txt
+else
+    ./env/bin/pip install Sphinx==1.1.3 sphinx-prompt==0.2.2
+fi
 
-    make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
+make SPHINXBUILD=./env/bin/sphinx-build BUILDDIR=${BUILDDIR} clean html
 
-    if [ ! -e ${BUILDBASEDIR}/html/${VERSION} ]; then
-        ln -s ${BUILDBASEDIR}/${VERSION}/html ${BUILDBASEDIR}/html/${VERSION}
-    fi
-
-done
-
-# have the right script to run it on the next time
-git checkout --force master
-git pull origin master
-git reset --hard
-
-exit 0
+if [ ! -e ${BUILDBASEDIR}/html/${VERSION} ]; then
+    ln -s ${BUILDBASEDIR}/${VERSION}/html ${BUILDBASEDIR}/html/${VERSION}
+fi
