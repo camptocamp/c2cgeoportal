@@ -405,7 +405,10 @@ class C2cTool:
         command.upgrade(Config("alembic_static.ini"), "head")
 
         if not self.options.windows:
-            check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
+            check_call(self.project.get("cmds", {}).get(
+                "apache_graceful",
+                ["sudo", "/usr/sbin/apache2ctl", "graceful"]
+            ))
 
         print()
         print(self.color_bar)
