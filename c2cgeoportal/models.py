@@ -438,18 +438,26 @@ class TreeGroup(TreeItem):
     def _get_children(self):
         return [c.item for c in self.children_relation]
 
-    def _set_children(self, children):
+    def _set_children(self, children, order=False):
         for child in self.children_relation:
             if child.item not in children:
                 child.item = None
                 child.group = None
-        for index, child in enumerate(children):
-            current = [c for c in self.children_relation if c.item == child]
-            if len(current) == 1:
-                current[0].ordering = index * 10
-            else:
-                LayergroupTreeitem(self, child, index * 10)
-        self.children_relation.sort(key=lambda child: child.ordering)
+        if order is True:  # pragma: nocover
+            for index, child in enumerate(children):
+                current = [c for c in self.children_relation if c.item == child]
+                if len(current) == 1:
+                    current[0].ordering = index * 10
+                else:
+                    LayergroupTreeitem(self, child, index * 10)
+            self.children_relation.sort(key=lambda child: child.ordering)
+        else:
+            current_item = [child.item for child in self.children_relation]
+            for index, item in enumerate(children):
+                if item not in current_item:
+                    LayergroupTreeitem(self, item, 1000000 + index)
+            for index, child in enumerate(self.children_relation):
+                child.ordering = index * 10
 
     children = property(_get_children, _set_children)
 
