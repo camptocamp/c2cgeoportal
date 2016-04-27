@@ -2,6 +2,6 @@ flake8==2.5.4
 pep8-naming== 0.3.3
 c2c.versions==1.0.1
 htmlmin==0.1.10
-alembic==0.8.5
+alembic==0.8.6
 https://github.com/transifex/transifex-client/archive/655c5e9f964bdc3e7ba4787d68b048bc670dcbf0.zip#transifex-client
 Mako==1.0.4
