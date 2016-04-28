@@ -509,7 +509,7 @@ clean: template-clean
 # We use the print
 ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=) 2> /dev/null || true
 endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
@@ -853,14 +853,14 @@ endif
 $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm || npm install npm || npm install npm
+	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 ifeq ($(NGEO), TRUE)
-	$(NPM_CMD) install || $(NPM_CMD) install || $(NPM_CMD) install
+	$(NPM_CMD) install || sleep 20 || $(NPM_CMD) install || sleep 90 || $(NPM_CMD) install
 endif
 	touch $@
 
@@ -1140,7 +1140,7 @@ endif
 INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
 $(INSTANCE_ID_MARKER):
 	$(PRERULE_CMD)
-	rm -f .build/instanceid-*.timestamp | true
+	rm -f .build/instanceid-*.timestamp || true
 	touch $@
 
 # Upgrade

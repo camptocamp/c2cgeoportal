@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 from os import path, unlink
 import re
 import sys
@@ -296,7 +297,9 @@ class C2cTool:
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "fetch", "origin"])
-        if self.options.version == "master":
+        if "TRAVIS_FOLDER" in os.environ:
+            pass
+        elif self.options.version == "master":
             check_call([
                 "git", "submodule", "foreach", "git", "reset", "--hard",
                 "origin/%s" % self.options.version, "--"
@@ -326,17 +329,17 @@ class C2cTool:
             check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
-            "../%s" % self.project["project_folder"]
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name", "--overwrite",
+            "--scaffold=c2cgeoportal_update", "../%s" % self.project["project_folder"]
         ])
         pcreate_cmd = [
-            "%s/pcreate" % self.venv_bin, "--scaffold=c2cgeoportal_create",
-            "/tmp/%s" % self.project["project_folder"],
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name",
+            "--scaffold=c2cgeoportal_create", "/tmp/%s" % self.project["project_folder"],
         ]
-        pcreate_cmd += [
-            "{}={}".format(name, value)
-            for name, value in self.project["template_vars"].items()
-        ]
+        for name, value in self.project["template_vars"].items():
+            if isinstance(value, basestring):
+                value = value.encode('utf-8')
+            pcreate_cmd.append("{}={}".format(name, value))
         check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 
