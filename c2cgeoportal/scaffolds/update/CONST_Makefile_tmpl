@@ -37,6 +37,8 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
+DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
+
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
@@ -49,7 +51,6 @@ endif
 endif
 
 # Make rules
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
