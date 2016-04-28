@@ -37,6 +37,8 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
+DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
+
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
@@ -49,7 +51,6 @@ endif
 endif
 
 # Make rules
-DEFAULT_BUILD_RULES ?= test-packages .build/requirements.timestamp $(WEB_RULE) build-server apache
 ifeq ($(MOBILE), TRUE)
 DEFAULT_BUILD_RULES += test-packages-mobile
 endif
@@ -804,8 +805,10 @@ $(INSTANCE_ID_MARKER):
 
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install --index-url http://pypi.camptocamp.net/pypi \
-		--find-links https://camptocamp.github.io/c2cgeoportal/index/c2cgeoportal \
+	.build/venv/bin/pip install \
+		--trusted-host pypi.camptocamp.net \
+		--index-url http://pypi.camptocamp.net/pypi \
+		--find-links http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal \
 		c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
