@@ -53,9 +53,6 @@ except ImportError:
         out, err = p.communicate()
         return out
 
-DEFAULT_C2CGEOPORTAL_URL = \
-    "https://pypi.python.org/packages/py2.py3/c/c2cgeoportal/" \
-    "c2cgeoportal-%(version)s-py2.py3-none-any.whl"
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 
 
@@ -227,15 +224,6 @@ class C2cTool:
             )
             if headers.status != 200:
                 print("This CGXP tag does not exist.")
-                exit(1)
-
-            headers, _ = http.request(
-                DEFAULT_C2CGEOPORTAL_URL % {
-                    "version": self.options.version
-                }
-            )
-            if headers.status != 200:
-                print("The c2cgeoportal wheel does not exist.")
                 exit(1)
 
             url = (
