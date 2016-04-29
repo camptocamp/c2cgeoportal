@@ -117,6 +117,11 @@ Version 1.6.8
     - <fileNamePattern>build/logs/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
     + <fileNamePattern>logs/${instanceid}.%d{yyyy-MM-dd}.log</fileNamePattern>
 
+2. In the `deploy/hooks/pre-restore-database.mako` file add:
+   cd "${directory}"
+   before
+   .build/venv/bin/alembic -c alembic_static.ini upgrade head
+
 
 Version 1.6.7
 =============
