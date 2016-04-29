@@ -73,3 +73,23 @@ In the controler you have some lines like:
    goog.require('gmf.authenticationDirective');
 
 This is needed to include the javascript of the used directives.
+
+The map configuration will be here:
+
+.. code:: javascript
+
+   goog.base(
+         this, {
+           srid: 21781,
+           mapViewConfig: {
+             center: [632464, 185457],
+             zoom: 3,
+             resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+           }
+         },
+         $scope, $injector);
+
+.. note::
+
+   The resolutions should be the same as in the previus CGXP application to have
+   backward compatible permalinks.

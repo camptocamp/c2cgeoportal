@@ -40,6 +40,7 @@ before_install:
   echo "password = ${TX_PASS}" >> ~/.transifexrc
   echo "token =" >> ~/.transifexrc
   fi
+- export TRAVIS_FOLDER=`pwd`
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
@@ -49,14 +50,10 @@ install:
 - .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
 - diff -u c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
 - make -f travis.mk build
-- .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test extent= > /dev/null
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish package=testgeomapfish srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test > /dev/null # on create
-- cp /tmp/testgeomapfish/project.yaml.mako project.yaml
-- .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
-- rm project.yaml
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
 - .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
-- travis/no-make-error.sh /tmp/testgeomapfish -f travis.mk help
+- travis/create-new-project.sh
+- travis/test-upgrade.sh
 - travis/build-new-project.sh
 
 script:
@@ -67,29 +64,37 @@ script:
 - .build/venv/bin/flake8 --version
 - python setup.py --version
 
-- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
-- find /tmp/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
-- find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
-- find /tmp/testgeomapfish/setup.py /tmp/testgeomapfish/test/*.py /tmp/testgeomapfish/test/views -name \*.py | xargs travis/quote
+# test new project
+- |-
+  cd /tmp/travis/testgeomapfish
+  .build/venv/bin/pcreate -s c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
+  cd -
+- travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
+- find /tmp/travis/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
+- find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
+- find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
+- travis/test-new-project.sh wsgi/viewer.js
 - travis/test-new-project.sh wsgi/check_collector
 - travis/test-new-project.sh wsgi/check_collector?type=all
-- travis/status.sh /tmp/testgeomapfish/
+- travis/status.sh /tmp/travis/testgeomapfish/
 - travis/empty-make-new-project.sh
+- travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build
+- cp travis/empty-vars.mk /tmp/travis/testgeomapfish/
+- travis/run-on.sh /tmp/travis/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
+- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
+
+# test c2cgeoportal
+- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 - travis/empty-make.sh -f travis.mk build
 - travis/no-make-error.sh . build
-- travis/no-make-error.sh /tmp/testgeomapfish -f travis.mk build
-- cp travis/empty-vars.mk /tmp/testgeomapfish/
-- travis/run-on.sh /tmp/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
 - make -f travis.mk doc
 - make -f travis.mk checks
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 - travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
-- travis/pip.sh install papyrus_ogcproxy
 - .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
 - travis/status.sh
 

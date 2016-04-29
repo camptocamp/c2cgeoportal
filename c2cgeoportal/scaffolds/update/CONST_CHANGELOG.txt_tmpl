@@ -113,7 +113,7 @@ Version 2.0.0
 
     + /node_modules/
     + /print/print-servlet.war
-    + /.tx/nconfig
+    + /.tx/config
     + /.tx/ngeo.gmf-*
     + /{{package}}/static-ngeo/build/
     + /{{package}}/static-ngeo/fonts/gmf-icons.*
@@ -200,6 +200,11 @@ Version 1.6.8
     + <file>logs/${instanceid}.log</file>
     - <fileNamePattern>build/logs/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
     + <fileNamePattern>logs/${instanceid}.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+2. In the `deploy/hooks/pre-restore-database.mako` file add:
+   cd "${directory}"
+   before
+   .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 
 Version 1.6.7

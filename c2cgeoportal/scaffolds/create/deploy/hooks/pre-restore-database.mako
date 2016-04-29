@@ -29,4 +29,5 @@ psql -c 'CREATE TABLE IF NOT EXISTS ${schema}_static.shorturl (
 psql -c 'GRANT USAGE ON SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 psql -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 
+cd "${directory}"
 .build/venv/bin/alembic -c alembic_static.ini upgrade head

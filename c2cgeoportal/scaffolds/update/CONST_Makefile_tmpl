@@ -68,6 +68,8 @@ CLIENT_CHECK_RULE ?= lint-ngeo
 endif
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
+
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
 ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
@@ -79,21 +81,35 @@ DEFAULT_BUILD_RULES += $(WMTSCAPABILITIES_FILE)
 endif
 endif
 
-# Make rules
-TEST_PACKAGES ?= TRUE
-DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
-ifeq ($(TEST_PACKAGES), TRUE)
-DEFAULT_BUILD_RULES += test-packages
+# Test packages
+ifndef ($(TEST_PACKAGES))
+TEST_PACKAGES = common
+ifeq ($(DOCKER), FALSE)
+TEST_PACKAGES += main
+ifeq ($(MAPSERVER), TRUE)
+TEST_PACKAGES += mapserver
+endif
+ifeq ($(POSTGRES), TRUE)
+TEST_PACKAGES += postgres
+endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += test-packages-tilecloud-chain
+TEST_PACKAGES += tilecloud-chain
 endif
 ifeq ($(DEPLOY), TRUE)
-DEFAULT_BUILD_RULES += test-packages-deploy
+TEST_PACKAGES += deploy
+endif
+ifneq ($(NGEO_INTERFACE), "")
+TEST_PACKAGES += ngeo
+endif
+else
+TEST_PACKAGES += docker
 endif
 endif
 
-ifneq ($(NGEO_INTERFACE), "")
-DEFAULT_BUILD_RULES += test-packages-ngeo
+# Make rules
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
+ifneq ($(TEST_PACKAGES), FALSE)
+DEFAULT_BUILD_RULES += test-packages
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += apache/tiles.conf
@@ -120,11 +136,6 @@ DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
 ifneq ($(NGEO_INTERFACE), "")
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
-endif
-ifeq ($(DOCKER), FALSE)
-TEST_PACKAGES = main
-else
-TEST_PACKAGES = docker
 endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
@@ -198,6 +209,7 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-gettext/dist/angular-gettext.min.js \
 	node_modules/angular-animate/angular-animate.min.js \
 	node_modules/angular-touch/angular-touch.min.js \
+	node_modules/angular-sanitize/angular-sanitize.min.js \
 	node_modules/bootstrap/dist/js/bootstrap.min.js \
 	node_modules/proj4/dist/proj4.js \
 	node_modules/d3/d3.min.js \
@@ -467,7 +479,7 @@ clean: template-clean
 # We use the print
 ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=) 2> /dev/null || true
 endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
@@ -516,6 +528,7 @@ serve: build development.ini
 .PHONY: update-node-modules
 update-node-modules: $(NPM_CMD)
 	$(NPM_CMD) install --force
+	mkdir -p .build
 	touch .build/node_modules.timestamp
 
 $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
@@ -727,7 +740,7 @@ $(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) 
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@
 
-.PRECIOUS: .build/node_modules.timestamp
+.PRECIOUS: node_modules/ngeo/buildtools/mako_build.json
 node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
@@ -808,14 +821,14 @@ endif
 $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
-	npm install npm || npm install npm || npm install npm
+	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 ifneq ($(NGEO_INTERFACE), "")
-	$(NPM_CMD) install || $(NPM_CMD) install || $(NPM_CMD) install
+	$(NPM_CMD) install || sleep 20 || $(NPM_CMD) install || sleep 90 || $(NPM_CMD) install
 endif
 	touch $@
 
@@ -919,35 +932,9 @@ $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .PHONY: test-packages
 test-packages: .build/test-packages.timestamp
 
-PYTHON_BIN_POSTFIX =
 .build/test-packages.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
 	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml common
 	$(VENV_BIN)/c2c-versions CONST_packages.yaml $(TEST_PACKAGES)
-	touch $@
-
-.PHONY: test-packages-deploy
-test-packages-deploy: .build/test-packages-deploy.timestamp
-
-.build/test-packages-deploy.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml deploy
-	touch $@
-
-.PHONY: test-packages-tilecloud-chain
-test-packages-tilecloud-chain: .build/test-packages-tilecloud-chain.timestamp
-
-.build/test-packages-tilecloud-chain.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml tilecloud-chain
-	touch $@
-
-.PHONY: test-packages-ngeo
-test-packages-ngeo: .build/test-packages-ngeo.timestamp
-
-.build/test-packages-ngeo.timestamp: $(VENV_BIN)/c2c-versions$(PYTHON_BIN_POSTFIX) CONST_packages.yaml
-	$(PRERULE_CMD)
-	$(VENV_BIN)/c2c-versions CONST_packages.yaml ngeo
 	touch $@
 
 # Check
@@ -1102,7 +1089,7 @@ endif
 INSTANCE_ID_MARKER ?= .build/instanceid-$(INSTANCE_ID).timestamp
 $(INSTANCE_ID_MARKER):
 	$(PRERULE_CMD)
-	rm -f .build/instanceid-*.timestamp | true
+	rm -f .build/instanceid-*.timestamp || true
 	touch $@
 
 # Upgrade
@@ -1121,29 +1108,24 @@ $(UPGRADE_MAKE_FILE):
 	exit 1
 
 .PHONY: upgrade
-upgrade: .build/requirements.timestamp project.yaml
+upgrade: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
-.PHONY: upgrade_v2
-upgrade_v2: .build/requirements.timestamp project.yaml
-	.build/venv/bin/pip install c2cgeoportal==${VERSION}
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
-
 .PHONY: upgrade1
-upgrade1: .build/requirements.timestamp project.yaml
+upgrade1: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml
+upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
-upgrade3: .build/requirements.timestamp project.yaml
+upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 3
 
 .PHONY: upgrade4
-upgrade4: .build/requirements.timestamp project.yaml
+upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
 
 # Docker

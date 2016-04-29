@@ -310,8 +310,9 @@ def _create_get_user_from_request(settings):
                 request.path_info_peek() == "admin" and request.referer is None or
                 _is_valid_referer(request.referer, settings)
         ):
-            log.warning("Invalid referer for %s: %s", request.path_qs,
-                        repr(request.referer))
+            if request.referer is not None:
+                log.warning("Invalid referer for %s: %s", request.path_qs,
+                            repr(request.referer))
             return None
 
         if not hasattr(request, "_user"):

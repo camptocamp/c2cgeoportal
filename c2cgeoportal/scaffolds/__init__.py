@@ -114,6 +114,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         match = re.match(r"(\d+)[,; ] *(\d+)[,; ] *(\d+)[,; ] *(\d+)", vars["extent"])
         if match is not None:
             extent = [match.group(n + 1) for n in range(4)]
+        vars["extent"] = ", ".join(extent)
         vars["extent_mapserver"] = " ".join(extent)
         vars["extent_viewer"] = json.dumps(extent)
 

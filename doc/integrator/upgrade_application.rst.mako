@@ -12,6 +12,19 @@ The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 Easy updating an application code
 ---------------------------------
 
+Verify that you have in your `package.yaml.mako` file the following `template_vars`: `package`, `srid`, `extent`, `apacha_vhost`, for example:
+
+.. code:: yaml
+
+   ...
+   template_vars:
+       package: ${'$'}{package}
+       srid: ${'$'}{srid}
+       extent: 489246, 78873, 837119, 296543
+       apache_vhost: <apache_vhost>
+
+Then run:
+
 .. prompt:: bash
 
    make -f <makefile> update

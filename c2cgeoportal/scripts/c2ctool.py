@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from os import path, unlink
+import os
 import re
 import sys
 import shutil
@@ -52,9 +52,6 @@ except ImportError:
         out, err = p.communicate()
         return out
 
-DEFAULT_C2CGEOPORTAL_URL = \
-    "https://pypi.python.org/packages/py2.py3/c/c2cgeoportal/" \
-    "c2cgeoportal-%(version)s-py2.py3-none-any.whl"
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
 
 
@@ -170,7 +167,7 @@ class C2cTool:
         ))
 
     def get_project(self):
-        if not path.isfile("project.yaml"):
+        if not os.path.isfile("project.yaml"):
             print("Unable to find the required 'project.yaml' file.")
             exit(1)
 
@@ -220,15 +217,6 @@ class C2cTool:
     def step0(self):
         if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
-            headers, _ = http.request(
-                DEFAULT_C2CGEOPORTAL_URL % {
-                    "version": self.options.version
-                }
-            )
-            if headers.status != 200:
-                print("The c2cgeoportal wheel does not exist.")
-                exit(1)
-
             url = (
                 "http://raw.github.com/camptocamp/c2cgeoportal/%s/"
                 "c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt" %
@@ -240,10 +228,10 @@ class C2cTool:
                 print(url)
                 exit(1)
 
-        if path.split(path.realpath("."))[1] != self.project["project_folder"]:
+        if os.path.split(os.path.realpath("."))[1] != self.project["project_folder"]:
             print("Your project isn't in the right folder!")
             print("It should be in folder '%s' instead of folder '%s'." % (
-                self.project["project_folder"], path.split(path.realpath("."))[1]
+                self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
             ))
             exit(1)
 
@@ -302,17 +290,17 @@ class C2cTool:
             check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % self.venv_bin, "--overwrite", "--scaffold=c2cgeoportal_update",
-            "../%s" % self.project["project_folder"]
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name", "--overwrite",
+            "--scaffold=c2cgeoportal_update", "../%s" % self.project["project_folder"]
         ])
         pcreate_cmd = [
-            "%s/pcreate" % self.venv_bin, "--scaffold=c2cgeoportal_create",
-            "/tmp/%s" % self.project["project_folder"],
+            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name",
+            "--scaffold=c2cgeoportal_create", "/tmp/%s" % self.project["project_folder"],
         ]
-        pcreate_cmd += [
-            "{}={}".format(name, value)
-            for name, value in self.project["template_vars"].items()
-        ]
+        for name, value in self.project["template_vars"].items():
+            if isinstance(value, basestring):
+                value = value.encode('utf-8')
+            pcreate_cmd.append("{}={}".format(name, value))
         check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 
@@ -337,8 +325,8 @@ class C2cTool:
             print("The makefile is missing")
             exit(1)
 
-        if path.isfile("changelog.diff"):
-            unlink("changelog.diff")
+        if os.path.isfile("changelog.diff"):
+            os.unlink("changelog.diff")
 
         check_call(["make", "-f", self.options.file, "build"])
 
@@ -346,7 +334,10 @@ class C2cTool:
         command.upgrade(Config("alembic_static.ini"), "head")
 
         if not self.options.windows:
-            check_call(["sudo", "/usr/sbin/apache2ctl", "graceful"])
+            check_call(self.project.get("cmds", {}).get(
+                "apache_graceful",
+                ["sudo", "/usr/sbin/apache2ctl", "graceful"]
+            ))
 
         print("")
         print(self.color_bar)
@@ -364,7 +355,7 @@ class C2cTool:
             self.print_step(3, intro="Correct them, then type:")
             exit(1)
 
-        if path.exists("/tmp/%s" % self.project["project_folder"]):
+        if os.path.exists("/tmp/%s" % self.project["project_folder"]):
             shutil.rmtree("/tmp/%s" % self.project["project_folder"])
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
