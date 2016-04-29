@@ -18,10 +18,10 @@ Verify that you have in your `package.yaml.mako` file the following `template_va
 
    ...
    template_vars:
-       package: ${package}
-       srid: ${srid}
+       package: ${'$'}{package}
+       srid: ${'$'}{srid}
        extent: 489246, 78873, 837119, 296543
-       apache_vhost: demo_geomapfish
+       apache_vhost: <apache_vhost>
 
 Then run:
 
