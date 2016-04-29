@@ -1159,29 +1159,29 @@ $(UPGRADE_MAKE_FILE):
 	exit 1
 
 .PHONY: upgrade
-upgrade: .build/requirements.timestamp project.yaml
+upgrade: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade_v2
-upgrade_v2: .build/requirements.timestamp project.yaml
+upgrade_v2: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	.build/venv/bin/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
 
 .PHONY: upgrade1
-upgrade1: .build/requirements.timestamp project.yaml
+upgrade1: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini
+upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 2
 
 .PHONY: upgrade3
-upgrade3: .build/requirements.timestamp project.yaml
+upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 3
 
 .PHONY: upgrade4
-upgrade4: .build/requirements.timestamp project.yaml
+upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
 
 # Docker
