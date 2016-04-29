@@ -18,6 +18,17 @@ The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 Easy updating an application code
 ---------------------------------
 
+.. prompt:: bash
+
+   make -f <makefile> update
+   make -f <makefile> build
+
+Where ``<makefile>`` is your user make file (``<user>.mk``).
+
+
+Easy upgrading an application
+-----------------------------
+
 Verify that you have in your `package.yaml.mako` file the following `template_vars`: `package`, `srid`, `extent`, `mobile_application_title`, `apacha_vhost`, for example:
 
 .. code:: yaml
@@ -30,18 +41,22 @@ Verify that you have in your `package.yaml.mako` file the following `template_va
        mobile_application_title: Mobile application
        apache_vhost: demo_geomapfish
 
-Then run:
+In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
+because it will prevent the installation of the new ``c2cgeoportal`` egg.
+
+Then run (for Linux):
 
 .. prompt:: bash
 
-   make -f <makefile> update
-   make -f <makefile> build
+   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
 
-Where ``<makefile>`` is your user make file (``<user>.mk``).
+Where ``<makefile>`` is your user make file (``<user>.mk``),
+``<target_version>`` is the version that you wish to upgrade to
+(for the development version it should be 'master').
+
+And follow the instructions.
 
 
-Easy upgrading an application
------------------------------
 .. note:: For Windows:
 
     If you are using Windows, you will have to execute some steps prior
@@ -75,28 +90,12 @@ Easy upgrading an application
       ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
       commands
 
-If you are using Linux, in the ``setup.py`` be sure not to specify a
-``c2cgeoportal`` version, because it will prevent the installation of the new
-``c2cgeoportal`` egg.
+    And, run:
 
-On Linux, run:
+    .. prompt:: bash
 
-.. prompt:: bash
-
-   .build/venv/bin/c2ctool upgrade <makefile> <target_version>
-
-On Windows, run:
-
-.. prompt:: bash
-
-   .build/venv/Scripts/c2ctool upgrade --windows <makefile> \
-        <target_version>
-
-Where ``<makefile>`` is your user make file (``<user>.mk``),
-``<target_version>`` is the version that you wish to upgrade to
-(for the development version it should be 'master').
-
-And follow the instructions.
+       .build/venv/Scripts/c2ctool upgrade --windows <makefile> \
+            <target_version>
 
 
 Easy upgrading an application from 1.5 to 1.6
