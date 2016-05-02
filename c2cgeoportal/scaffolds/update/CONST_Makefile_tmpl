@@ -374,7 +374,7 @@ clean: template-clean
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
-        rm -f $(WMTSCAPABILITIES_FILE)
+	rm -f $(WMTSCAPABILITIES_FILE)
 endif
 
 .PHONY: cleanall
