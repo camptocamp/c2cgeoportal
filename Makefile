@@ -180,9 +180,9 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(APPS_HTML_FILES) $(APPS_JS_FILES)
 
-ngeo: NGEO_GIT_ARGS ?= --branch=$(VERSION)
-ngeo:
-	git clone --depth 1 $(NGEO_GIT_ARGS) https://github.com/camptocamp/ngeo.git
+ngeo: .build/requirements.timestamp
+	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell .build/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
+	touch --no-create $@
 
 .PRECIOUS: ngeo/contribs/gmf/apps/%/index.html
 ngeo/contribs/gmf/apps/%/index.html: ngeo

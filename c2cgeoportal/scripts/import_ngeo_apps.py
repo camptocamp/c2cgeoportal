@@ -78,12 +78,47 @@ class _RouteDest:
             self.constant, self.route, query
         )
 
+RE_NPM_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)$")
+RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
+
+
+def _ngeo_version():
+    if os.environ["TRAVIS_TAG"]:
+        match = RE_NPM_VERSION.match(os.environ["TRAVIS_TAG"])
+        prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["TRAVIS_TAG"])
+        if match is not None:
+            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
+        if prerelease_match is not None:
+            return "{}.{}.{}-{}.{}".format(
+                prerelease_match.group(1),
+                prerelease_match.group(2),
+                prerelease_match.group(3),
+                prerelease_match.group(4),
+                prerelease_match.group(5)
+            )
+    return None
+
+
+def _ngeo_git_version():
+    version = _ngeo_version()
+    if version is not None:
+        return version
+    if os.environ["TRAVIS_TAG"]:
+        return os.environ["TRAVIS_TAG"]
+    return "master"
+
+
+def ngeo_git_version():
+    print(_ngeo_git_version())
+
 
 def _get_ngeo_version():
-    return os.environ["TRAVIS_TAG"] \
-        if len(os.environ.get("TRAVIS_TAG", "")) > 0 \
-        else "git://github.com/camptocamp/ngeo#{}".format(
-            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip())
+    version = _ngeo_version()
+    if version is not None:
+        return version
+    return "git://github.com/camptocamp/ngeo#{}".format(
+        subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
+    )
 
 
 def main():
