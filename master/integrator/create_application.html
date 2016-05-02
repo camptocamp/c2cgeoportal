@@ -133,9 +133,8 @@ it later.</p>
 <p>You can define these informations directly in the command line using
 parameters:</p>
 <blockquote class="last">
-<div><pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_create ../&lt;project&gt; <span class="se">\</span>
-    <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="nv">srid</span><span class="o">=</span><span class="m">21781</span> <span class="nv">extent</span><span class="o">=</span><span class="s2">&quot;420000 30000 900000 350000&quot;</span> <span class="se">\</span>
-    <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt; <span class="nv">mobile_application_title</span><span class="o">=</span>&lt;title&gt;</span>
+<div><pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_create ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="se">\</span>
+    <span class="nv">srid</span><span class="o">=</span><span class="m">21781</span> <span class="nv">extent</span><span class="o">=</span><span class="s2">&quot;420000 30000 900000 350000&quot;</span> <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt;</span>
 </pre></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal"><span class="pre">&lt;project&gt;</span></code> that will be next to the
@@ -143,7 +142,7 @@ parameters:</p>
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeleton:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_update ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="se">\</span>
-         <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="nv">srid</span><span class="o">=</span>&lt;srid&gt; <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt; <span class="nv">mobile_application_title</span><span class="o">=</span>&lt;title&gt;</span>
+         <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="nv">srid</span><span class="o">=</span>&lt;srid&gt; <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>

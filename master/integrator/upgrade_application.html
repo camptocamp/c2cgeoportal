@@ -48,6 +48,16 @@
 </div>
 <div class="section" id="easy-updating-an-application-code">
 <h2>Easy updating an application code<a class="headerlink" href="#easy-updating-an-application-code" title="Permalink to this headline">¶</a></h2>
+<p>Verify that you have in your <cite>package.yaml.mako</cite> file the following <cite>template_vars</cite>: <cite>package</cite>, <cite>srid</cite>, <cite>extent</cite>, <cite>apacha_vhost</cite>, for example:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
+template_vars:
+    package: ${package}
+    srid: ${srid}
+    extent: 489246, 78873, 837119, 296543
+    apache_vhost: &lt;apache_vhost&gt;
+</pre></div>
+</div>
+<p>Then run:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";

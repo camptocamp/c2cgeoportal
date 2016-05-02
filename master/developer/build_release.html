@@ -66,17 +66,8 @@ span.prompt1:before {
 <span class="prompt1">git checkout master</span>
 <span class="prompt1">git reset --hard origin/master</span>
 <span class="prompt1">git checkout -b &lt;version&gt;</span>
-</pre><p>Go back on master:</p>
-<pre class="highlight"><span class="prompt1">git checkout master</span>
-</pre><p>Add the version in the doc generator by editing the
-<code class="docutils literal"><span class="pre">core/src/doc/update_online.sh</span></code> file and add the new <code class="docutils literal"><span class="pre">&lt;version&gt;</span></code>
-in the <code class="docutils literal"><span class="pre">for</span> <span class="pre">VERSION</span> <span class="pre">in</span></code> loop.</p>
-<p>Commit your changes:</p>
-<pre class="highlight"><span class="prompt1">git add core/src/doc/update_online.sh</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Generate documentation for version &lt;version&gt;&quot;</span></span>
 </pre><p>Push your changes:</p>
-<pre class="highlight"><span class="prompt1">git push origin master</span>
-<span class="prompt1">git push origin &lt;version&gt;</span>
+<pre class="highlight"><span class="prompt1">git push origin &lt;version&gt;</span>
 </pre><p>Then continue by creating the release.</p>
 </div>
 <div class="section" id="new-release">
