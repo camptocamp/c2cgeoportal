@@ -38,6 +38,7 @@ from geoalchemy2 import WKTElement
 from pyramid import testing
 from owslib.wms import WebMapService
 
+from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
@@ -54,6 +55,8 @@ class TestEntryView(TestCase):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
+
+        functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
@@ -139,6 +142,8 @@ class TestEntryView(TestCase):
 
     def tearDown(self):  # noqa
         testing.tearDown()
+
+        functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
             RestrictionArea, Theme, LayerGroup, Interface

@@ -33,9 +33,19 @@ from unittest import TestCase
 
 class TestFunctionalities(TestCase):
     def test_get_config_functionality(self):
-        from c2cgeoportal.lib.functionality import _get_config_functionality
+        from c2cgeoportal.lib import get_types_map
+        from c2cgeoportal.lib import functionality
 
-        f = _get_config_functionality("func", True, {
+        types = get_types_map(["func"])
+
+        class Registry(object):
+            settings = {}
+
+        class Request(object):
+            registry = Registry()
+
+        request = Request()
+        request.registry.settings = {
             "functionalities": {
                 "registered": {
                     "func": 10
@@ -44,22 +54,19 @@ class TestFunctionalities(TestCase):
                     "func": 20
                 }
             }
-        })
+        }
+        functionality.FUNCTIONALITIES_TYPES = None
+        errors = set()
+
+        f = functionality._get_config_functionality("func", True, types, request, errors)
+        self.assertEquals(errors, set())
         self.assertEquals(f, [10])
 
-        f = _get_config_functionality("func", False, {
-            "functionalities": {
-                "registered": {
-                    "func": 10
-                },
-                "anonymous": {
-                    "func": 20
-                }
-            }
-        })
+        f = functionality._get_config_functionality("func", False, types, request, errors)
+        self.assertEquals(errors, set())
         self.assertEquals(f, [20])
 
-        f = _get_config_functionality("func", True, {
+        request.registry.settings = {
             "functionalities": {
                 "registered": {
                     "not_func": 10
@@ -68,10 +75,13 @@ class TestFunctionalities(TestCase):
                     "func": 20
                 }
             }
-        })
+        }
+        functionality.FUNCTIONALITIES_TYPES = None
+        f = functionality._get_config_functionality("func", True, types, request, errors)
+        self.assertEquals(errors, set())
         self.assertEquals(f, [20])
 
-        f = _get_config_functionality("func", False, {
+        request.registry.settings = {
             "functionalities": {
                 "registered": {
                     "func": 10
@@ -80,5 +90,8 @@ class TestFunctionalities(TestCase):
                     "not_func": 20
                 }
             }
-        })
+        }
+        functionality.FUNCTIONALITIES_TYPES = None
+        f = functionality._get_config_functionality("func", False, types, request, errors)
+        self.assertEquals(errors, set())
         self.assertEquals(f, [])

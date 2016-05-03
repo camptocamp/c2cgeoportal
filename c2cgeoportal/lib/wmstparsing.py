@@ -248,7 +248,7 @@ def _parse_default_values(default_values):
     slash separated String.
     return None on the seconde value if it doesn't exist.
     """
-    if default_values is None:  # pragma: nocover
+    if default_values is None:  # pragma: no cover
         return None, None
 
     def_value = str(default_values).split("/")

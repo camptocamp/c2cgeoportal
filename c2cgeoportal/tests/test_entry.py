@@ -166,6 +166,9 @@ class TestEntryView(TestCase):
                     "func": ["reg"]
                 },
                 "available_in_templates": ["func"]
+            },
+            "admin_interface": {
+                "available_functionalities": ["func"]
             }
         }
         entry = Entry(request)

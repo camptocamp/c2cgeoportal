@@ -34,7 +34,7 @@ from pyramid_formalchemy.resources import Models
 
 class Root(object):
     def __init__(self, request):
-        self.request = request  # pragma: nocover
+        self.request = request  # pragma: no cover
 
 
 class FAModels(Models):
@@ -48,6 +48,6 @@ def defaultgroupsfinder(username, request):
     the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
     policy. """
     if not hasattr(request, "user") or request.user is None:
-        return []  # pragma: nocover
+        return []  # pragma: no cover
     role = request.user.role
     return [role.name] if role else []

@@ -33,11 +33,11 @@ import urllib
 import logging
 import json
 import sys
+import urlparse
 
 from random import Random
 from math import sqrt
 from xml.dom.minidom import parseString
-from urlparse import urlsplit
 from socket import gaierror
 
 from pyramid.view import view_config
@@ -48,7 +48,8 @@ from pyramid.response import Response
 from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
-from c2cgeoportal.lib import get_setting, get_protected_layers_query, get_url, add_url_params
+from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
+    get_url, get_typed, get_types_map, add_url_params
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -76,11 +77,26 @@ class Entry(object):
         self.mapserver_settings = self.settings.get("mapserverproxy", {})
         self.debug = "debug" in request.params
         self.lang = request.locale_name
+        self.metadata_type = get_types_map(
+            self.settings.get("admin_interface", {}).get("available_metadata", [])
+        )
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
         return {"title": _("title i18n")}
+
+    def _get_metadatas(self, item, errors):
+        metadatas = {}
+        for metadata in item.ui_metadatas:
+            value = get_typed(
+                metadata.name, metadata.value,
+                self.metadata_type, self.request, errors
+            )
+            if value is not None:
+                metadatas[metadata.name] = value
+
+        return metadatas
 
     def _wms_getcap(self, url):
         if url.find("?") < 0:
@@ -121,7 +137,7 @@ class Entry(object):
             headers["sec-username"] = self.request.user.username
             headers["sec-roles"] = role.name
 
-        if urlsplit(url).hostname != "localhost":  # pragma: no cover
+        if urlparse.urlsplit(url).hostname != "localhost":  # pragma: no cover
             headers.pop("Host")
         try:
             resp, content = http.request(url, method="GET", headers=headers)
@@ -224,10 +240,8 @@ class Entry(object):
         l = {
             "id": layer.id,
             "name": layer.name,
-            "metadata": {}
+            "metadata": self._get_metadatas(layer, errors),
         }
-        for metadata in layer.ui_metadatas:
-            l["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
         if layer.geo_table:
             self._fill_editable(l, layer)
 
@@ -600,7 +614,7 @@ class Entry(object):
                 "id": group.id,
                 "name": group.name,
                 "children": children,
-                "metadata": {},
+                "metadata": self._get_metadatas(group, errors),
                 "mixed": False,
             }
             if version == 1:
@@ -616,8 +630,6 @@ class Entry(object):
                 if len(set(identifier)) > 1:
                     g["mixed"] = True
 
-            for metadata in group.ui_metadatas:
-                g["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
 
@@ -701,16 +713,12 @@ class Entry(object):
                     "icon": icon,
                     "children": children,
                     "functionalities": self._get_functionalities(theme),
-                    "metadata": {},
+                    "metadata": self._get_metadatas(theme, errors),
                 }
                 if version == 1:
                     t.update({
                         "in_mobile_viewer": theme.is_in_interface("mobile"),
                     })
-                for metadata in theme.ui_metadatas:
-                    t["metadata"][metadata.name] = get_url(
-                        metadata.value, self.request, errors=errors
-                    )
                 export_themes.append(t)
 
         return export_themes, errors
@@ -821,7 +829,7 @@ class Entry(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        if urlsplit(wfsgc_url).hostname != "localhost":  # pragma: no cover
+        if urlparse.urlsplit(wfsgc_url).hostname != "localhost":  # pragma: no cover
             h.pop("Host")
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=h)
@@ -889,7 +897,7 @@ class Entry(object):
         # forward request to target (without Host Header)
         http = httplib2.Http()
         h = dict(self.request.headers)
-        if urlsplit(ext_url).hostname != "localhost":
+        if urlparse.urlsplit(ext_url).hostname != "localhost":
             h.pop("Host")
         try:
             resp, content = http.request(ext_url, method="GET", headers=h)
@@ -921,7 +929,7 @@ class Entry(object):
                 ("functionalities", "available_in_templates"), []
         ):
             functionality[func] = get_functionality(
-                func, self.settings, self.request
+                func, self.request
             )
         return functionality
 

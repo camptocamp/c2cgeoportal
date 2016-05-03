@@ -38,6 +38,7 @@ from webob.acceptparse import Accept
 
 import c2cgeoportal
 from c2cgeoportal import tests
+from c2cgeoportal.lib import functionality
 
 
 mapserv_url = None
@@ -60,10 +61,11 @@ c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
 def set_up_common():
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
+    functionality.FUNCTIONALITIES_TYPES = None
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn"t been executed) then db_url is None
-    if db_url is None:  # pragma: nocover
+    if db_url is None:  # pragma: no cover
         return
 
     # verify that we have a working database connection before going
@@ -73,7 +75,7 @@ def set_up_common():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:  # pragma: nocover
+    except OperationalError:  # pragma: no cover
         return
 
     import sqlahelper
@@ -99,9 +101,11 @@ def set_up_common():
 
 def tear_down_common():
 
+    c2cgeoportal.lib.functionality.FUNCTIONALITIES_TYPES = None
+
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
-    if db_url is None:  # pragma: nocover
+    if db_url is None:  # pragma: no cover
         return
 
     # verify that we have a working database connection before going
@@ -111,7 +115,7 @@ def tear_down_common():
     engine = create_engine(db_url)
     try:
         engine.connect()
-    except OperationalError:  # pragma: nocover
+    except OperationalError:  # pragma: no cover
         return
 
     import alembic.config
@@ -153,13 +157,13 @@ def create_dummy_request(additional_settings={}, *args, **kargs):
             "registered": {},
             "anonymous": {},
             "available_in_templates": []
+        },
+        "layers": {
+            "geometry_validation": True
         }
     }, *args, **kargs)
     request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
-    request.registry.settings["layers"] = {
-        "geometry_validation": True
-    }
     request.headers["Host"] = host
     request.user = None
     request.interface_name = "main"

@@ -49,14 +49,14 @@ def keygen_function(namespace, fn):
 
     if namespace is None:
         namespace = "%s:%s" % (fn.__module__, fn.__name__)
-    else:  # pragma: nocover
+    else:  # pragma: no cover
         namespace = "%s:%s|%s" % (fn.__module__, fn.__name__, namespace)
 
     args = inspect.getargspec(fn)
     has_self = args[0] and args[0][0] in ("self", "cls")
 
     def generate_key(*args, **kw):
-        if kw:  # pragma: nocover
+        if kw:  # pragma: no cover
             raise ValueError(
                 "key creation function does not accept keyword arguments.")
         parts = [namespace]
@@ -89,7 +89,7 @@ def get_region(region=None):
     """
     try:
         return _regions[region]
-    except KeyError:  # pragma: nocover
+    except KeyError:  # pragma: no cover
         raise Exception(
             "No such caching region. A region must be"
             "initialized before it can be used")
@@ -174,7 +174,7 @@ def set_common_headers(
             response.cache_control.private = True
         else:
             response.cache_control.public = True
-    else:  # pragma: nocover
+    else:  # pragma: no cover
         raise "Invalid cache type"
 
     if hasattr(request, "registry"):

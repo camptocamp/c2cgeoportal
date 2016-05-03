@@ -47,7 +47,7 @@ def upgrade():
     engine = op.get_bind().engine
     if type(engine).__name__ != 'MockConnection' and \
             op.get_context().dialect.has_table(
-                engine, 'restricted_role_theme', schema=schema):  # pragma: nocover
+                engine, 'restricted_role_theme', schema=schema):  # pragma: no cover
         return
 
     op.add_column('theme', Column(

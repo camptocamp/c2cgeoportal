@@ -67,7 +67,7 @@ class TestIncludeme(TestCase):
         self.config.include(c2cgeoportal.includeme)
 
         def custom_validator(username, password):
-            return False  # pragma: nocover
+            return False  # pragma: no cover
         self.config.set_user_validator(custom_validator)
         self.assertEqual(self.config.registry.validate_user,
                          custom_validator)

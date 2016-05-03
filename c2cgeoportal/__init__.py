@@ -97,7 +97,7 @@ INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
 def add_interface(
     config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs
-):  # pragma: nocover
+):  # pragma: no cover
     if interface_type == INTERFACE_TYPE_CGXP:
         if interface_name is None:
             add_interface_cgxp(
@@ -128,7 +128,7 @@ def add_interface(
         )
 
 
-def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: nocover
+def add_interface_cgxp(config, interface_name, route_names, routes, renderers):  # pragma: no cover
     # Cannot be at the header to don"t load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -175,7 +175,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
 ngeo_static_init = False
 
 
-def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: nocover
+def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: no cover
     # Cannot be at the header to don't load the model too early
     from c2cgeoportal.views.entry import Entry
 
@@ -213,10 +213,10 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
         ngeo_static_init = True
 
 
-def add_static_view_ngeo(config):  # pragma: nocover
+def add_static_view_ngeo(config):  # pragma: no cover
     """ Add the project static view for ngeo """
     package = config.get_settings()["package"]
-    _add_static_view(config, "proj-ngeo", "%s:static-ngeo" % package)
+    _add_static_view(config, "static-ngeo", "%s:static-ngeo" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
         override_with="%s:static-ngeo/" % package
@@ -246,7 +246,7 @@ def add_admin_interface(config):
 def add_static_view(config):
     """ Add the project static view for CGXP """
     package = config.get_settings()["package"]
-    _add_static_view(config, "proj", "%s:static" % package)
+    _add_static_view(config, "static-cgxp", "%s:static" % package)
     config.override_asset(
         to_override="c2cgeoportal:project/",
         override_with="%s:static/" % package
@@ -385,7 +385,7 @@ class OgcproxyRoutePredicate:
                 return False
         return True
 
-    def phash(self):  # pragma: nocover
+    def phash(self):  # pragma: no cover
         return ""
 
 
@@ -414,7 +414,7 @@ def add_cors_route(config, pattern, service):
     """
     Add the OPTIONS route and view need for services supporting CORS.
     """
-    def view(request):  # pragma: nocover
+    def view(request):  # pragma: no cover
         from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
         return set_common_headers(request, service, NO_CACHE)
 
@@ -423,7 +423,7 @@ def add_cors_route(config, pattern, service):
     config.add_view(view, route_name=name)
 
 
-def error_handler(http_exception, request):  # pragma: nocover
+def error_handler(http_exception, request):  # pragma: no cover
     """
     View callable for handling all the exceptions that are not already handled.
     """
@@ -510,7 +510,7 @@ def includeme(config):
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
-    if settings.get("ogcproxy_enable", False):  # pragma: nocover
+    if settings.get("ogcproxy_enable", False):  # pragma: no cover
         # add an OGCProxy view
         config.add_route_predicate("ogc_server", OgcproxyRoutePredicate)
         config.add_route(
@@ -690,6 +690,10 @@ def includeme(config):
         settings,
         ("admin_interface", "available_metadata"),
         formalchemy_available_metadata)
+    formalchemy_available_metadata = [
+        e if isinstance(e, basestring) else e.get("name")
+        for e in formalchemy_available_metadata
+    ]
 
     config.add_route("checker_all", "/checker_all", request_method="GET")
 

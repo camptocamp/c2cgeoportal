@@ -67,6 +67,7 @@ from geoalchemy2 import Geometry, WKTElement
 import transaction
 import sqlahelper
 
+from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
@@ -192,6 +193,8 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Functionality, Interface, DBSession
 
+        functionality.FUNCTIONALITIES_TYPES = None
+
         DBSession.query(User).filter(User.username == "__test_user1").delete()
         DBSession.query(User).filter(User.username == "__test_user2").delete()
         DBSession.query(User).filter(User.username == "__test_user3").delete()
@@ -230,7 +233,7 @@ class TestMapserverproxyView(TestCase):
         for f in DBSession.query(Functionality).filter(Functionality.value == u"2 Wohlen A3 landscape").all():
             DBSession.delete(f)
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_unprotected").all():
-            DBSession.delete(layer)  # pragma: nocover
+            DBSession.delete(layer)  # pragma: no cover
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_protected").all():
             DBSession.delete(layer)
         for layer in DBSession.query(LayerV1).filter(LayerV1.name == "testpoint_protected_query_with_collect").all():
@@ -250,6 +253,12 @@ class TestMapserverproxyView(TestCase):
                 "mapserv_url": mapserv_url,
                 "geoserver": False,
             },
+            "admin_interface": {
+                "available_functionalities": [
+                    "mapserver_substitution",
+                    "print_template",
+                ]
+            }
         })
         request.params = {"map": os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -926,6 +935,9 @@ class TestMapserverproxyView(TestCase):
         self.assertTrue(unicode(response.body.decode("utf-8")).find(u"Swiss") < 0)
 
         request = self._create_dummy_request()
+        request.registry.settings["admin_interface"] = {"available_functionalities": [
+            "mapserver_substitution"
+        ]}
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
         request.registry.settings["functionalities"]["anonymous"] = {

@@ -52,7 +52,7 @@ def create_authentication(settings):
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(username, password, request):  # pragma: nocover
+def c2cgeoportal_check(username, password, request):  # pragma: no cover
     if request.registry.validate_user(request, username, password):
         return []
     return None

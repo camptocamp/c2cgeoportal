@@ -138,23 +138,36 @@ vars:
 
     # The list of available variable names for the `UI metadatas` form.
         available_metadata:
-        - copyTo
+        - name: copyTo
+          type: list
         - legendRule
-        - isLegendExpanded
-        - metadataUrl
+        - name: isLegendExpanded
+          type: boolean
+        - name: metadataUrl
+          type: url
         - disclaimer
-        - isChecked
+        - name: isChecked
+          type: boolean
         - identifierAttributeField
-        - maxResolution
-        - legend
-        - minResolution
-        - thumbnail
-        - wmsUrl
-        - wfsUrl
-        - queryLayers
+        - name: legend
+          type: url
+        - name: maxResolution
+          type: float
+        - name: minResolution
+          type: float
+        - name: thumbnail
+          type: url
+        - name: wmsUrl
+          type: url
+        - name: wfsUrl
+          type: url
+        - name: queryLayers
+          type: list
         - wmsLayers
-        - minResolutionHint
-        - maxResolutionHint
+        - name: minResolutionHint
+          type: float
+        - name: maxResolutionHint
+          type: float
 
     # The list of functionalities that can be configured
     # through the admin interface.

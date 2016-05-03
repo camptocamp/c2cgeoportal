@@ -48,7 +48,7 @@ class GeometryProcessing(object):
         body = loads(self.request.body)
         if "geometries" not in body or \
                 type(body["geometries"]) != list or \
-                len(body["geometries"]) != 2:  # pragma: nocover
+                len(body["geometries"]) != 2:  # pragma: no cover
             raise HTTPBadRequest("""Wrong body, it should be like that:
             {
                 "geometries": [geomA, geomB]

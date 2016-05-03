@@ -127,24 +127,3 @@ LayerGroup
  *  ``Internal WMS``: if true it can include only ``Internal WMS`` layers,
     if false it can include only ``external WMS`` or ``WMTS`` layers.
  *  ``Group of base layers``: if not ``Internal WMS`` replace radio button by check box (deprecated in v2).
-
-URL
----
-
-In the admin interface we can use in all the URL the following special schema:
-
-* ``static``: to use a static route,
-
-  * ``static:///icon.png`` will get the URL of the ``static`` static route of the project.
-  * ``static://c2cgeoportal/icon.png`` will get the URL of the ``static`` static route of ``c2cgeoportal``.
-  * ``static://prj:img/icon.png`` will get the URL of the ``img`` static route of ``prj``.
-
-* ``config``: to get the server name from the URL, with the config from the ``vars`` file:
-
-  .. code:: yaml
-
-     servers:
-        my_server: http://example.com/test
-
-  ``config://my_server/icon.png`` will be transformed into
-  the URL ``http://example.com/test/icon.png``.

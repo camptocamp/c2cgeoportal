@@ -43,7 +43,7 @@ def get_cache_version():
     return uuid.uuid4().hex
 
 
-def version_cache_buster(request, subpath, kw):  # pragma: nocover
+def version_cache_buster(request, subpath, kw):  # pragma: no cover
     return urljoin(get_cache_version() + "/", subpath), kw
 
 
