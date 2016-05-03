@@ -12,7 +12,7 @@ The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 Easy updating an application code
 ---------------------------------
 
-Verify that you have in your `package.yaml.mako` file the following `template_vars`: `package`, `srid`, `extent`, `apacha_vhost`, for example:
+Verify that you have in your ``package.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
 
 .. code:: yaml
 
