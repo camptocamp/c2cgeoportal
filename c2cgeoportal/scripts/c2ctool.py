@@ -54,6 +54,13 @@ except ImportError:
         return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
+REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
+TEMPLATE_EXAMPLE = {
+    "package": "${package}",
+    "srid": "${srid}",
+    "extent": "489246, 78873, 837119, 296543",
+    "apache_vhost": "<apache_vhost>",
+}
 
 
 def main():
@@ -216,6 +223,24 @@ class C2cTool:
             self.step4()
 
     def step0(self):
+        project_template_keys = self.project.get("template_vars").keys()
+        messages = []
+        for required in REQUIRED_TEMPLATE_KEYS:
+            if required not in project_template_keys:
+                messages.append(
+                    "The element '{}' is missing in the 'template_vars' of "
+                    "the file 'project.yaml.mako', you should for example: {}: {}.".format(
+                        required, required, TEMPLATE_EXAMPLE.get('required', '')
+                    )
+                )
+        if len(messages) > 0:
+            print("")
+            print(self.color_bar)
+            print(colorize("\n".join(messages), RED))
+            print("")
+            self.print_step(0, intro="Fix it and run again the upgrade:")
+            exit(1)
+
         if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
             headers, _ = http.request(
