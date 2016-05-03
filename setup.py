@@ -118,6 +118,7 @@ setup(
             "l10nv1tov2 = c2cgeoportal.scripts.l10nv1tov2:main",
             "import-ngeo-apps = c2cgeoportal.scripts.import_ngeo_apps:main",
             "gen-version = c2cgeoportal.scripts.gen_version:main",
+            "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",

@@ -713,10 +713,22 @@ node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.%: node_modules/font-aw
 	cp $< $@
 	touch --no-create $@
 
-.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg
 node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%: .build/node_modules.timestamp
 	$(PRERULE_CMD)
 	touch --no-create $@
+
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf
+node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.svg
+	node_modules/.bin/svg2ttf $< $@
+
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.eot
+node_modules/ngeo/contribs/gmf/fonts/gmf-icons.eot: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf
+	node_modules/.bin/ttf2eot $< $@
+
+.PRECIOUS: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff
+node_modules/ngeo/contribs/gmf/fonts/gmf-icons.woff: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.ttf
+	node_modules/.bin/ttf2woff $< $@
 
 .PRECIOUS: $(PACKAGE)/static-ngeo/fonts/gmf-icons.%
 $(PACKAGE)/static-ngeo/fonts/gmf-icons.%: node_modules/ngeo/contribs/gmf/fonts/gmf-icons.%
