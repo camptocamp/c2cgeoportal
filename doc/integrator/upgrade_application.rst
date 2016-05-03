@@ -29,7 +29,7 @@ Where ``<makefile>`` is your user make file (``<user>.mk``).
 Easy upgrading an application
 -----------------------------
 
-Verify that you have in your `package.yaml.mako` file the following `template_vars`: `package`, `srid`, `extent`, `mobile_application_title`, `apacha_vhost`, for example:
+Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``mobile_application_title``, ``apache_vhost``, for example:
 
 .. code:: yaml
 
