@@ -483,7 +483,7 @@ ifdef PRINT_BASE_WAR
 endif
 	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 ifeq ($(TILECLOUD_CHAIN_LOCAL), TRUE)
-        rm -f $(WMTSCAPABILITIES_FILE)
+	rm -f $(WMTSCAPABILITIES_FILE)
 endif
 
 .PHONY: cleanall

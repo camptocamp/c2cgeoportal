@@ -53,6 +53,13 @@ except ImportError:
         return out
 
 VERSION_RE = "^[0-9]+\.[0-9]+\..+$"
+REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent", "apache_vhost"]
+TEMPLATE_EXAMPLE = {
+    "package": "${package}",
+    "srid": "${srid}",
+    "extent": "489246, 78873, 837119, 296543",
+    "apache_vhost": "<apache_vhost>",
+}
 
 
 def main():
@@ -160,10 +167,10 @@ class C2cTool:
     color_bar = colorize("================================================================", GREEN)
 
     def print_step(self, step, intro="To continue type:"):
-        print(intro)
-        print(colorize("make -f %s upgrade%i", YELLOW) % (
+        print(colorize(intro, YELLOW))
+        print(colorize("make -f {} upgrade{}", GREEN).format(
             self.options.file if self.options.file is not None else "<user.mk>",
-            step
+            step if step != 0 else "",
         ))
 
     def get_project(self):
@@ -215,6 +222,24 @@ class C2cTool:
             self.step4()
 
     def step0(self):
+        project_template_keys = self.project.get("template_vars").keys()
+        messages = []
+        for required in REQUIRED_TEMPLATE_KEYS:
+            if required not in project_template_keys:
+                messages.append(
+                    "The element '{}' is missing in the 'template_vars' of "
+                    "the file 'project.yaml.mako', you should for example: {}: {}.".format(
+                        required, required, TEMPLATE_EXAMPLE.get('required', '')
+                    )
+                )
+        if len(messages) > 0:
+            print("")
+            print(self.color_bar)
+            print(colorize("\n".join(messages), RED))
+            print("")
+            self.print_step(0, intro="Fix it and run again the upgrade:")
+            exit(1)
+
         if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
             url = (
@@ -224,15 +249,22 @@ class C2cTool:
             )
             headers, _ = http.request(url)
             if headers.status != 200:
-                print("Failed downloading the c2cgeoportal CONST_versions_requirements.txt file.")
+                print("")
+                print(self.color_bar)
+                print("Failed downloading the c2cgeoportal CONST_versions_requirements.txt file from URL:")
                 print(url)
+                print("The upgrade is impossible")
                 exit(1)
 
         if os.path.split(os.path.realpath("."))[1] != self.project["project_folder"]:
+            print("")
+            print(self.color_bar)
             print("Your project isn't in the right folder!")
             print("It should be in folder '%s' instead of folder '%s'." % (
                 self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
             ))
+            print("")
+            self.print_step(0, intro="Fix it and lunch again the upgrade:")
             exit(1)
 
         check_call(["git", "status"])
@@ -261,8 +293,10 @@ class C2cTool:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
             except CalledProcessError:
                 print(self.color_bar)
+                print("")
                 print(colorize("The pull (rebase) failed.", RED))
-                print(colorize("Please solve the rebase and run the step again.", YELLOW))
+                print("")
+                self.print_step(1, intro="Please solve the rebase and run the step 1 again:")
                 exit(1)
 
         check_call(["git", "submodule", "sync"])
@@ -272,8 +306,10 @@ class C2cTool:
 
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
             print(self.color_bar)
+            print("")
             print(colorize("The pull isn't fast forward.", RED))
-            print(colorize("Please solve the rebase and run the step again.", YELLOW))
+            print("")
+            self.print_step(1, intro="Please solve the rebase and run the step 1 again:")
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
@@ -322,7 +358,11 @@ class C2cTool:
 
     def step2(self):
         if self.options.file is None:
+            print("")
+            print(self.color_bar)
             print("The makefile is missing")
+            print("")
+            self.print_step(2, intro="Fix it and run again the step 2:")
             exit(1)
 
         if os.path.isfile("changelog.diff"):
@@ -352,7 +392,9 @@ class C2cTool:
 
     def step3(self):
         if not self.test_checkers():
-            self.print_step(3, intro="Correct them, then type:")
+            print("")
+            print(self.color_bar)
+            self.print_step(3, intro="Correct the checker, the step 3 again:")
             exit(1)
 
         if os.path.exists("/tmp/%s" % self.project["project_folder"]):
