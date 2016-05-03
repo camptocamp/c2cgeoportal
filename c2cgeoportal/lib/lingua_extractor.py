@@ -190,7 +190,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
                 resp, content = http.request(url, method="GET", headers=h)
             except:  # pragma: no cover
                 print("Unable to DescribeFeatureType from url %s" % url)
-                self.capabilities_cache[url] = None
+                self.featuretype_cache[url] = None
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
@@ -198,7 +198,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
                     "DescribeFeatureType from url %s return the error: %i %s" %
                     (url, resp.status, resp.reason)
                 )
-                self.capabilities_cache[url] = None
+                self.featuretype_cache[url] = None
                 return []
 
             try:
