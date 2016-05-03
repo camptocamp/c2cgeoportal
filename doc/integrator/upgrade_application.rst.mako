@@ -53,6 +53,11 @@ Than just run:
    export VERSION=<target_version>
    make -f <makefile> upgrade_v2
 
+.. note:: For Windows:
+
+   You should add replace ``export VERSION=<target_version>`` with
+   ``SET VERSION=<target_version>``.
+
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
 (for the development version it should be 'master').
