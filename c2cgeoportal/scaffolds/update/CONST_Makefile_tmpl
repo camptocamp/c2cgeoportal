@@ -91,7 +91,7 @@ endif
 endif
 
 # Test packages
-ifndef ($(TEST_PACKAGES))
+ifndef TEST_PACKAGES
 TEST_PACKAGES = common
 ifeq ($(DOCKER), FALSE)
 TEST_PACKAGES += main
