@@ -1032,11 +1032,15 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+ifeq ($(PRINT_VERSION), 3)
 	zip -d $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) print-apps/
+endif
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 else
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
+ifeq ($(PRINT_VERSION), 3)
 	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
+endif
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
 endif
