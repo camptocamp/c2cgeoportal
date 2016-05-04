@@ -9,12 +9,12 @@ Organisation
 The main page where we can redefine the header
 is in the file: ``<package>/templates/<interface>.html``.
 
-Where `<interface>` is the interface name or "index" for the default interface.
+Where ``<interface>`` is the interface name or "index" for the default interface.
 
 The viewer (map and all related tools)
 is define in the file: ``<package>/static-ngeo/js/<interface>.js``.
 
-Where `<interface>` is the interface name or "main" for the default interface.
+Where ``<interface>`` is the interface name or "main" for the default interface.
 
 And finally the image should be placed in the folder is ``<package>/static-ngeo/images/``.
 
@@ -42,7 +42,7 @@ All the directives should provide an example.
 
 At the end of the file you find something like:
 
-.. code:: javascript
+.. code:: html
 
     <script>
       (function() {
