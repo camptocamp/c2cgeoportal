@@ -196,27 +196,6 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="url">
-<h2>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
-<p>In the admin interface we can use in all the URL the following special schema:</p>
-<ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">static</span></code>: to use a static route,</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">static:///icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">static</span></code> static route of the project.</li>
-<li><code class="docutils literal"><span class="pre">static://c2cgeoportal/icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">static</span></code> static route of <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">static://prj:img/icon.png</span></code> will get the URL of the <code class="docutils literal"><span class="pre">img</span></code> static route of <code class="docutils literal"><span class="pre">prj</span></code>.</li>
-</ul>
-</li>
-<li><p class="first"><code class="docutils literal"><span class="pre">config</span></code>: to get the server name from the URL, with the config from the <code class="docutils literal"><span class="pre">vars</span></code> file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">servers</span><span class="p">:</span>
-   <span class="n">my_server</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">test</span>
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">config://my_server/icon.png</span></code> will be transformed into
-the URL <code class="docutils literal"><span class="pre">http://example.com/test/icon.png</span></code>.</p>
-</li>
-</ul>
-</div>
 </div>
 
 
@@ -240,7 +219,6 @@ the URL <code class="docutils literal"><span class="pre">http://example.com/test
 </ul>
 </li>
 <li><a class="reference internal" href="#layergroup">LayerGroup</a></li>
-<li><a class="reference internal" href="#url">URL</a></li>
 </ul>
 </li>
 </ul>

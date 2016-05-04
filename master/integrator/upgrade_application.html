@@ -48,7 +48,7 @@
 </div>
 <div class="section" id="easy-updating-an-application-code">
 <h2>Easy updating an application code<a class="headerlink" href="#easy-updating-an-application-code" title="Permalink to this headline">¶</a></h2>
-<p>Verify that you have in your <cite>package.yaml.mako</cite> file the following <cite>template_vars</cite>: <cite>package</cite>, <cite>srid</cite>, <cite>extent</cite>, <cite>apacha_vhost</cite>, for example:</p>
+<p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
 template_vars:
     package: ${package}
@@ -80,7 +80,13 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 <p>Than just run:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade_v2</span>
-</pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p class="last">You should add replace <code class="docutils literal"><span class="pre">export</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code> with
+<code class="docutils literal"><span class="pre">SET</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code>.</p>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
 <code class="docutils literal"><span class="pre">&lt;target_version&gt;</span></code> is the version that you wish to upgrade to
 (for the development version it should be &#8216;master&#8217;).</p>
 <p>And follow the instructions.</p>
