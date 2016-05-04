@@ -46,10 +46,10 @@
 <h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
 <p>The main page where we can redefine the header
 is in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.html</span></code>.</p>
-<p>Where <cite>&lt;interface&gt;</cite> is the interface name or &#8220;index&#8221; for the default interface.</p>
+<p>Where <code class="docutils literal"><span class="pre">&lt;interface&gt;</span></code> is the interface name or &#8220;index&#8221; for the default interface.</p>
 <p>The viewer (map and all related tools)
 is define in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/js/&lt;interface&gt;.js</span></code>.</p>
-<p>Where <cite>&lt;interface&gt;</cite> is the interface name or &#8220;main&#8221; for the default interface.</p>
+<p>Where <code class="docutils literal"><span class="pre">&lt;interface&gt;</span></code> is the interface name or &#8220;main&#8221; for the default interface.</p>
 <p>And finally the image should be placed in the folder is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/images/</span></code>.</p>
 <p>The style sheet file for all the project is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;package&gt;.less</span></code>.</p>
 <p>The style sheet file for one interface is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span></code>.</p>
@@ -68,7 +68,7 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.</p>
 <p>All the directives should provide an example.</p>
 <p>At the end of the file you find something like:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
   <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
      <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
      <span class="n">var</span> <span class="n">serverVars</span> <span class="o">=</span> <span class="p">{</span>
@@ -114,6 +114,11 @@ in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.<
 backward compatible permalinks.</p>
 </div>
 </div>
+<div class="section" id="background-layers">
+<h1>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h1>
+<p>The background layers are configured in the database, with the layer group named
+<strong>background</strong> (by default).</p>
+</div>
 
 
           </div>
@@ -132,6 +137,7 @@ backward compatible permalinks.</p>
 </li>
 <li><a class="reference internal" href="#html-file">HTML file</a></li>
 <li><a class="reference internal" href="#controller-js-file">Controller (js file)</a></li>
+<li><a class="reference internal" href="#background-layers">Background layers</a></li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
