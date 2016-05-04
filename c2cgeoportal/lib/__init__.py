@@ -143,14 +143,14 @@ def get_typed(name, value, types, request, errors):
             return [v.strip() for v in value.split(",")]
         elif type_["type"] == "boolean":
             value = value.lower()
-            if value in ["yes", "y", "on", "1"]:
+            if value in ["yes", "y", "on", "1", "true"]:
                 return True
-            elif value in ["no", "n", "off", "0"]:
+            elif value in ["no", "n", "off", "0", "false"]:
                 return False
             else:
                 errors.add(
                     "The boolean attribute '{}'='{}' is not in "
-                    "[yes, y, on, 1, no, n, off, 0].".format(
+                    "[yes, y, on, 1, true, no, n, off, 0, false].".format(
                         name, value.lower()
                     )
                 )
