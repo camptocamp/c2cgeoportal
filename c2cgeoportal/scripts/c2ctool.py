@@ -422,7 +422,6 @@ class C2cTool:
     def step3(self):
         if not self.test_checkers():
             print("")
-            print(self.color_bar)
             self.print_step(3, intro="Correct the checker, the step 3 again:")
             exit(1)
 
