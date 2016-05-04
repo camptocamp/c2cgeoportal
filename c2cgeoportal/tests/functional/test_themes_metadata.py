@@ -166,6 +166,7 @@ class TestThemesViewMetadata(TestCase):
         types += [{"name": "url{}".format(n), "type": "url"} for n in range(1, 21)]
 
         request = create_dummy_request(additional_settings={
+            "package": "tests",
             "servers": {
                 "server": "http://example.com/test"
             },
@@ -214,9 +215,9 @@ class TestThemesViewMetadata(TestCase):
                             u"time": "10:36:28",
                             u"datetime": "2003-09-25T10:36:28",
                             u"url1": u"http://example.com/hi?a=b#c",
-                            u"url2": "http://dummy.org/project:static/path/icon.png",
-                            u"url3": "http://dummy.org/project:static/path/icon.png",
-                            u"url4": "http://dummy.org/project:cgxp/path/icon.png",
+                            u"url2": "http://dummy.org/tests:static/path/icon.png",
+                            u"url3": "http://dummy.org/tests:static/path/icon.png",
+                            u"url4": "http://dummy.org/tests:cgxp/path/icon.png",
                             u"url5": "http://dummy.org/project:static/path/icon.png",
                             u"url6": "http://dummy.org/project:cgxp/path/icon.png",
                             u"url7": u"http://example.com/test?",
