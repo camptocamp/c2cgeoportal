@@ -96,3 +96,28 @@ And follow the instructions.
     * Follow the Windows instructions hereunder, note that you will have to use
       ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
       commands
+
+Upgrade the database
+--------------------
+
+The database will be automatically upgraded during the upgrade process.
+
+To upgrade only the database you can use alembic directly.
+
+The help:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --help
+
+Upgrade the main schema:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --config alembic.ini upgrade head
+
+Upgrade the static schema:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --config alembic_static.ini upgrade head
