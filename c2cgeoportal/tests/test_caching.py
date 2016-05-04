@@ -82,7 +82,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
@@ -90,7 +90,7 @@ class TestSetCorsHeaders(TestCase):
         self._assert_headers(self._do("POST", {"Origin": self. ORIGIN2}), {
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
         # 4. If the list of exposed headers is not empty add one or more
@@ -128,7 +128,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
         # 5. If method is not a case-sensitive match for any of the values in
@@ -153,7 +153,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
         # 8. Optionally add a single Access-Control-Max-Age header with as value
@@ -176,7 +176,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
             "Access-Control-Allow-Headers": "X-Foo, X-Bar",
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
     def test_not_configured(self):
@@ -198,7 +198,7 @@ class TestSetCorsHeaders(TestCase):
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })
 
         # An origin not included in the access_control_allow_origin is allowed,
@@ -208,5 +208,5 @@ class TestSetCorsHeaders(TestCase):
         }, credentials=True, settings=settings), {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,
-            "Vary": "Origin",
+            "Vary": set(["Origin"]),
         })

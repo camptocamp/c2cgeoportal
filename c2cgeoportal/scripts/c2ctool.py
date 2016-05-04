@@ -251,7 +251,10 @@ class C2cTool:
             if headers.status != 200:
                 print("")
                 print(self.color_bar)
-                print("Failed downloading the c2cgeoportal CONST_versions_requirements.txt file from URL:")
+                print(
+                    "Failed downloading the c2cgeoportal "
+                    "CONST_versions_requirements.txt file from URL:"
+                )
                 print(url)
                 print("The upgrade is impossible")
                 exit(1)

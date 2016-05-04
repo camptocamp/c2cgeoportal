@@ -139,8 +139,10 @@ def set_cors_headers(service_headers_settings, request, service_name,
     response.headers.update({
         "Access-Control-Allow-Origin": origin,
         "Access-Control-Allow-Methods": CORS_METHODS,
-        "Vary": "Origin",
     })
+    if "Vary" not in response.headers:
+        response.headers["Vary"] = set([])
+    response.headers["Vary"].add("Origin")
 
     if preflight:
         max_age = service_headers_settings.get("access_control_max_age", 3600)
@@ -162,6 +164,10 @@ def set_cors_headers(service_headers_settings, request, service_name,
 def set_common_headers(
         request, service_name, cache,
         response=None, credentials=True, vary=False, content_type=None):
+    """
+    Set the common headers
+    vary: Vary on Accept-Language
+    """
     if response is None:
         response = request.response
 
@@ -177,6 +183,7 @@ def set_common_headers(
     else:  # pragma: no cover
         raise "Invalid cache type"
 
+    response.headers["Vary"] = set(["Accept-Encoding"])
     if hasattr(request, "registry"):
         headers_settings = request.registry.settings.get("headers", {})
         service_headers_settings = headers_settings.get(service_name)
@@ -199,7 +206,9 @@ def set_common_headers(
         )
 
     if vary:
-        response.headers["Vary"] = "Accept-Language"
+        response.headers["Vary"].add("Accept-Language")
+
+    response.headers["Vary"] = ", ".join(response.headers["Vary"])
 
     if content_type is not None:
         response.content_type = content_type
