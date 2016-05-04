@@ -12,6 +12,7 @@ PYTHON_BIN_POSTFIX = .exe
 NODE_BIN_POSTFIX = .cmd
 FIND ?= $(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
+TX_HOST ?= http://www.transifex.com
 # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
 # You can still install it but you must install Shapely manualy inside
 # TILECLOUD_CHAIN virtualenv
@@ -82,7 +83,7 @@ endif
 endif
 
 # Test packages
-ifndef ($(TEST_PACKAGES))
+ifndef TEST_PACKAGES
 TEST_PACKAGES = common
 ifeq ($(DOCKER), FALSE)
 TEST_PACKAGES += main
@@ -148,6 +149,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
 TX_RC = $(HOME_DIR).transifexrc
 TX_DEPENDENCIES = $(VENV_BIN)/tx $(TX_RC) .tx/config
+TX_HOST ?= https://www.transifex.com
 ifeq (,$(wildcard $(TX_RC)))
 TOUCHBACK_TXRC =
 else
@@ -643,8 +645,8 @@ $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 $(TX_RC):
 	$(PRERULE_CMD)
-	echo "[https://www.transifex.com]" > $@
-	echo "hostname = https://www.transifex.com" >> $@
+	echo "[$(TX_HOST)]" > $@
+	echo "hostname = $(TX_HOST)" >> $@
 	echo "username = c2c" >> $@
 	echo "password = c2cc2c" >> $@
 	echo "token =" >> $@
@@ -652,7 +654,7 @@ $(TX_RC):
 .tx/config: .tx/CONST_config_mako $(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "tx_version=$(TX_VERSION)" $< > $@
+		--var "tx_version=$(TX_VERSION)" --var "tx_host=$(TX_HOST)" $< > $@
 
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
@@ -993,11 +995,15 @@ $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
 	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+ifeq ($(PRINT_VERSION), 3)
 	zip -d $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) print-apps/
+endif
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 else
 	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
+ifeq ($(PRINT_VERSION), 3)
 	zip -d $(PRINT_TMP)/$(PRINT_WAR) print-apps/
+endif
 	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
 	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
 endif
