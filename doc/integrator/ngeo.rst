@@ -93,3 +93,9 @@ The map configuration will be here:
 
    The resolutions should be the same as in the previus CGXP application to have
    backward compatible permalinks.
+
+Background layers
+=================
+
+The background layers are configured in the database, with the layer group named
+**background** (by default).
