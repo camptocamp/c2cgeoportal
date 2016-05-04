@@ -108,10 +108,11 @@ def get_url2(name, value, request, errors):
             )
             return None
         proj = url.netloc
+        package = request.registry.settings["package"]
         if proj == "":
-            proj = "project:static"
+            proj = "{}:static".format(package)
         elif ":" not in proj:
-            proj = "project:{}".format(proj)
+            proj = "{}:{}".format(package, proj)
         return request.static_url(
             "{}{}".format(proj, url.path)
         )
