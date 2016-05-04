@@ -180,7 +180,7 @@ class TestThemesViewMetadata(TestCase):
 
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set([
-            "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, no, n, off, 0].",
+            "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
             "The date attribute '{}'='{}' shouldn't have any time",
             "The time attribute '{}'='{}' shouldn't have any date",
             "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format",
