@@ -170,8 +170,7 @@ ifeq ($(DOCKER),FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
-I18N_DEPENDENTIES += $(I18N_SOURCE_FILES) \
-	$(MAP_FILES) \
+I18N_DEPENDENTIES += $(MAP_FILES) \
 	project.yaml
 
 # ngeo
@@ -377,6 +376,7 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/logback.xml \
 	$(PRINT_BASE_DIR)/WEB-INF/classes/mapfish-spring-application-context-override.xml \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
+I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 endif
 
 ifeq ($(DOCKER), FALSE)
@@ -595,6 +595,7 @@ $(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 .PHONY: compile-py-catalog
 compile-py-catalog: $(SERVER_LOCALISATION_FILES)
 
+.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-server.pot
 $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 		lingua-server.cfg \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
@@ -605,9 +606,11 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
 
+.PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
 		$(I18N_DEPENDENTIES) \
+		$(I18N_SOURCE_FILES) \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
