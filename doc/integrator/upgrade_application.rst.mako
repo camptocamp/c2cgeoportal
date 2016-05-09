@@ -55,7 +55,7 @@ Than just run:
 
 .. note:: For Windows:
 
-   You should add replace ``export VERSION=<target_version>`` with
+   You should replace ``export VERSION=<target_version>`` with
    ``SET VERSION=<target_version>``.
 
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
