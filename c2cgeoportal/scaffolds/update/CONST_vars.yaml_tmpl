@@ -138,6 +138,10 @@ vars:
 
     # The list of available variable names for the `UI metadatas` form.
         available_metadata:
+        # Layers group
+        - name: isExpanded
+          type: boolean
+        # Layer
         - name: copyTo
           type: list
         - legendRule
