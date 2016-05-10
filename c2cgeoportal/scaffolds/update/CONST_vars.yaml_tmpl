@@ -161,8 +161,7 @@ vars:
           type: url
         - name: wfsUrl
           type: url
-        - name: queryLayers
-          type: list
+        - queryLayers
         - wmsLayers
         - name: minResolutionHint
           type: float
