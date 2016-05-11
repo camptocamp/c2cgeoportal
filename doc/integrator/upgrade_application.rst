@@ -29,17 +29,30 @@ Where ``<makefile>`` is your user make file (``<user>.mk``).
 Easy upgrading an application
 -----------------------------
 
-Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``mobile_application_title``, ``apache_vhost``, for example:
+Verify that your ``project.yaml.mako`` file is like the following:
 
 .. code:: yaml
 
-   ...
-   template_vars:
-       package: ${package}
-       srid: ${srid}
-       extent: 489246, 78873, 837119, 296543
-       mobile_application_title: Mobile application
-       apache_vhost: demo_geomapfish
+    project_folder: <project_folder>
+    project_package: ${package}
+    host: <host>
+    checker_path: /${instanceid}/wsgi/check_collector?
+    template_vars:
+        package: ${package}
+        srid: ${srid}
+        extent: <application_extent>
+        mobile_application_title: <mobile_application_title>
+        apache_vhost: <apache_vhost>
+
+Where ``<project_folder>`` is the last element of the folder e.g. for
+``/home/user/my_geomapfish`` it will be ``my_geomapfish``,
+
+the ``<host>`` is the host to use for the Apache VirtualHost,
+
+the ``<application_extent>`` is the application extent (e.g. 489246, 78873, 837119, 296543),
+
+and the ``<apache_vhost>`` is the vhost folder name e.g. if your application is in
+``/var/www/vhosts/geomapfish-demo/private/my_geomapfish`` if will be ``geomapfish-demo``.
 
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
@@ -119,22 +132,26 @@ Create a ``project.yaml.mako`` file that contains:
 
 .. code::
 
-   project_folder: <folder>
-   project_package: <package>
-   host: <host>
-   checker_path: /${instanceid}/wsgi/check_collector?
-   template_vars:
-        srid: <srid>
-        mobile_application_title: 'Geoportal Mobile Application'
+    project_folder: <project_folder>
+    project_package: ${package}
+    host: <host>
+    checker_path: /${instanceid}/wsgi/check_collector?
+    template_vars:
+        package: ${package}
+        srid: ${srid}
+        extent: <application_extent>
+        mobile_application_title: <mobile_application_title>
+        apache_vhost: <apache_vhost>
 
-Where ``<folder>`` is the last element of the folder e.g. for
-``/home/user/c2cgeoportal`` it will be ``c2cgeoportal``,
-
-the ``<package>`` is the package name,
+Where ``<project_folder>`` is the last element of the folder e.g. for
+``/home/user/my_geomapfish`` it will be ``my_geomapfish``,
 
 the ``<host>`` is the host to use for the Apache VirtualHost,
 
-and the ``<srid>`` is the SRID of the project (e.g. 21781).
+the ``<application_extent>`` is the application extent (e.g. 489246, 78873, 837119, 296543),
+
+and the ``<apache_vhost>`` is the vhost folder name e.g. if your application is in
+``/var/www/vhosts/geomapfish-demo/private/my_geomapfish`` if will be ``geomapfish-demo``.
 
 
 Add ``/project.yaml`` and ``/.build`` to the ``.gitignore`` file.
