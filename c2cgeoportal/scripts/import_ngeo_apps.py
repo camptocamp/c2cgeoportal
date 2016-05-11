@@ -195,6 +195,12 @@ def main():
                     r"mobile-web-{{package}}-capable",
                     r"mobile-web-app-capable", data
                 )
+            else:
+                data = _sub(
+                    r'<img src="image/logo.png" />',
+                    r'<img src="${request.static_url(\'demo:static-ngeo/image/logo.png\')}" />',
+                    data,
+                )
             # Styles
             data = _sub(
                 r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
