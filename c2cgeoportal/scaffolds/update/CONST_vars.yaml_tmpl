@@ -373,6 +373,15 @@ vars:
     # Statistics are disabled by default
     stats: {}
 
+    db_chooser:
+      # List of {method path} regexes to force the usage of the master, even for GET and OPTIONS
+      # This supersedes the replica list.
+      master:
+      - GET /short/.*   # The shortener updates the last_hit column on GET
+      # List of {method path} regexes to force the usage of the replica
+      replica:
+      - \w+ /printproxy/.*  # The print proxy is never writing to the DB
+
 interpreted:
     python:
     - authtkt.secret
