@@ -261,7 +261,7 @@ class Layers(object):
         try:
             features = protocol.create(self.request)
             for feature in features.features:
-                self._log_last_update(feature)
+                self._log_last_update(layer, feature)
             return features
         except TopologicalError, e:
             self.request.response.status_int = 400
@@ -312,7 +312,7 @@ class Layers(object):
         protocol = self._get_protocol_for_layer(layer, before_update=check_geometry)
         try:
             feature = protocol.update(self.request, feature_id)
-            self._log_last_update(feature)
+            self._log_last_update(layer, feature)
             return feature
         except TopologicalError, e:
             self.request.response.status_int = 400
@@ -329,14 +329,21 @@ class Layers(object):
                 reason = DBSession.query(func.ST_IsValidReason(geom)).scalar()
                 raise TopologicalError(reason)
 
-    def _log_last_update(self, feature):
-        last_update_date = self.settings.get("last_update_date_column", False)
-        if last_update_date:
+    def _log_last_update(self, layer, feature):
+        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
 
-        last_update_user = self.settings.get("last_update_user_column", False)
-        if last_update_user:
+        last_update_user = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.role.id)
+
+    def _get_ui_metadata(self, layer, key):
+        metadatas = layer.get_metadatas(key)
+        if len(metadatas) == 1:
+            metadata = metadatas[0]
+            return metadata.value
+        return None
 
     @view_config(route_name="layers_delete")
     def delete(self):
@@ -381,10 +388,10 @@ class Layers(object):
             exclude = layer.exclude_properties.split(",")
         else:
             exclude = []
-        last_update_date = self.settings.get("last_update_date_column", False)
+        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
         if last_update_date:
             exclude.append(last_update_date)
-        last_update_user = self.settings.get("last_update_user_column", False)
+        last_update_user = self._get_ui_metadata(layer, "lastUpdateDateColumn")
         if last_update_user:
             exclude.append(last_update_user)
 

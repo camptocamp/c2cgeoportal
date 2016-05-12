@@ -47,26 +47,3 @@ configuration in ``vars_<project>.yaml``:
        ...
        layers:
            geometry_validation: True
-
-Last updates logging
---------------------
-
-To log who and when a feature has been created or updated, add the following
-configuration in ``vars_<project>.yaml``:
-
-.. code:: yaml
-
-   vars:
-       ...
-       layers:
-           last_update_date_column: last_update_timestamp
-           last_update_user_column: last_update_role_id
-
-
-The values are the column name in the editable layers; they can be created with:
-
-
-.. code:: sql
-
-   ALTER TABLE edit.foo ADD last_modified_timestamp timestamp;
-   ALTER TABLE edit.foo ADD last_modified_role_id text;
