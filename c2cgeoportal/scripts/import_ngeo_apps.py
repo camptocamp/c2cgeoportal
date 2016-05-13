@@ -36,9 +36,9 @@ from urlparse import parse_qsl
 from argparse import ArgumentParser
 
 
-def _sub(pattern, repl, string, count=0, flags=0):
+def _sub(pattern, repl, string, count=0, flags=0, required=True):
     new_string = re.sub(pattern, repl, string, count=count, flags=flags)
-    if new_string == string:
+    if required and new_string == string:
         print("Unable to find the pattern:")
         print(pattern)
         print("in")
@@ -280,11 +280,12 @@ ${ ',\\n'.join([
             )
 
             # replace routes
-            for constant, url_end, route in [
-                ("authenticationBaseUrl", r"", "base"),
-                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch"),
-                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy"),
-                ("gmfTreeUrl", r"/themes", "themes"),
+            for constant, url_end, route, required in [
+                ("authenticationBaseUrl", r"", "base", True),
+                ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", True),
+                ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
+                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy", True),
+                ("gmfTreeUrl", r"/themes", "themes", True),
             ]:
                 data = _sub(
                     r"module.constant\('%s', "
@@ -293,6 +294,7 @@ ${ ',\\n'.join([
                     ),
                     _RouteDest(constant, route),
                     data,
+                    required=required,
                 )
 
         with open(args.dst, "wt") as dst:
