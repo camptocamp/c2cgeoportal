@@ -83,7 +83,7 @@ RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)
 
 
 def _ngeo_version():
-    if os.environ["TRAVIS_TAG"]:
+    if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
         match = RE_NPM_VERSION.match(os.environ["TRAVIS_TAG"])
         prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["TRAVIS_TAG"])
         if match is not None:
@@ -103,7 +103,7 @@ def _ngeo_git_version():
     version = _ngeo_version()
     if version is not None:
         return version
-    if os.environ["TRAVIS_TAG"]:
+    if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
         return os.environ["TRAVIS_TAG"]
     return "master"
 
