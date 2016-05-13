@@ -60,7 +60,8 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
-            LayerWMS, ServerOGC
+            LayerWMS, ServerOGC, FullTextSearch
+        from sqlalchemy import func
 
         role1 = Role(name=u"__test_role1")
         role1.id = 999
@@ -134,8 +135,31 @@ class TestEntryView(TestCase):
             roles=[role2], area=area, readwrite=True
         )
 
+        entry1 = FullTextSearch()
+        entry1.label = "label1"
+        entry1.layer_name = "layer1"
+        entry1.ts = func.to_tsvector("french", "soleil travail")
+        entry1.the_geom = WKTElement("POINT(-90 -45)", 21781)
+        entry1.public = True
+
+        entry2 = FullTextSearch()
+        entry2.label = "label1"
+        entry2.layer_name = "layer1"
+        entry2.ts = func.to_tsvector("french", "soleil travail")
+        entry2.the_geom = WKTElement("POINT(-90 -45)", 21781)
+        entry2.public = True
+
+        entry3 = FullTextSearch()
+        entry3.label = "label1"
+        entry3.layer_name = None
+        entry3.ts = func.to_tsvector("french", "soleil travail")
+        entry3.the_geom = WKTElement("POINT(-90 -45)", 21781)
+        entry3.public = True
+
         DBSession.add_all([
-            user1, user2, public_layer, private_layer, public_layer2, private_layer2
+            user1, user2,
+            public_layer, private_layer, public_layer2, private_layer2,
+            entry1, entry2, entry3,
         ])
 
         transaction.commit()
@@ -576,7 +600,7 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(response["permalink_themes"], '["my_themes"]')
 
-    def test_entry_points(self):
+    def _create_entry(self):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
@@ -603,6 +627,10 @@ class TestEntryView(TestCase):
         }
         entry = Entry(request)
         request.user = None
+        return entry, request
+
+    def test_entry_points(self):
+        entry, request = self._create_entry()
 
         result = entry.get_cgxp_index_vars()
         self.assertEquals(
@@ -618,7 +646,8 @@ class TestEntryView(TestCase):
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],
-            '{"layer_test": {"label": "%s"}}' % mapserv
+            '{"layer_test": {"label": "%s"}}' %
+            request.registry.settings["mapserverproxy"]["mapserv_url"]
         )
 
         result = entry.get_ngeo_index_vars()
@@ -644,6 +673,14 @@ class TestEntryView(TestCase):
         self.assertEquals(set(result.keys()), set(["lang", "debug"]))
         result = entry.xapihelp()
         self.assertEquals(set(result.keys()), set(["lang", "debug"]))
+
+    def test_ngeo_vars(self):
+        entry, _ = self._create_entry()
+        result = entry.get_ngeo_index_vars()
+        self.assertEquals(
+            result["fulltextsearch_groups"],
+            ["layer1"],
+        )
 
     def test_auth_home(self):
         from c2cgeoportal.views.entry import Entry
