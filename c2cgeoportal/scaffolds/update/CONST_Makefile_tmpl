@@ -164,7 +164,7 @@ GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 # i18n
 TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
 TX_RC = $(HOME_DIR).transifexrc
-TX_DEPENDENCIES = $(VENV_BIN)/tx $(TX_RC) .tx/config
+TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
 TX_HOST ?= https://www.transifex.com
 ifeq (,$(wildcard $(TX_RC)))
 TOUCHBACK_TXRC =
