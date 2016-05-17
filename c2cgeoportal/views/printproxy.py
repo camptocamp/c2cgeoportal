@@ -51,32 +51,6 @@ class PrintProxy(Proxy):  # pragma: no cover
         Proxy.__init__(self, request)
         self.config = self.request.registry.settings
 
-    def _get_capabilities_proxy(self, filter_, *args, **kwargs):
-        resp, content = self._proxy(*args, **kwargs)
-
-        if self.request.method == "GET":
-            if resp.status == 200:
-                try:
-                    capabilities = json.loads(content)
-                except JSONDecodeError as e:
-                    # log and raise
-                    log.error("Unable to parse capabilities.")
-                    log.exception(e)
-                    log.error(content)
-                    return HTTPBadGateway(content)
-
-                pretty = self.request.params.get("pretty", "false") == "true"
-                content = json.dumps(
-                    filter_(capabilities), separators=None if pretty else (",", ":"),
-                    indent=4 if pretty else None
-                )
-        else:
-            content = ""
-
-        return self._build_response(
-            resp, content, PRIVATE_CACHE, "print",
-        )
-
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self):
         """ Get print capabilities. """
@@ -89,10 +63,14 @@ class PrintProxy(Proxy):  # pragma: no cover
         params = dict(self.request.params)
         query_string = urllib.urlencode(params)
 
-        return self._capabilities(
+        resp, content = self._capabilities(
             templates,
             query_string,
             self.request.method,
+        )
+
+        return self._build_response(
+            resp, content, PRIVATE_CACHE, "print",
         )
 
     @cache_region.cache_on_arguments()
@@ -100,13 +78,32 @@ class PrintProxy(Proxy):  # pragma: no cover
         # get URL
         _url = self.config["print_url"] + "/capabilities.json"
 
-        def _filter(capabilities):
-            capabilities["layouts"] = list(
-                layout for layout in capabilities["layouts"] if
-                layout["name"] in templates)
-            return capabilities
+        resp, content = self._proxy(_url)
 
-        return self._get_capabilities_proxy(_filter, _url)
+        if self.request.method == "GET":
+            if resp.status == 200:
+                try:
+                    capabilities = json.loads(content)
+                except JSONDecodeError as e:
+                    # log and raise
+                    log.error("Unable to parse capabilities.")
+                    log.exception(e)
+                    log.error(content)
+                    return HTTPBadGateway(content)
+
+                capabilities["layouts"] = list(
+                    layout for layout in capabilities["layouts"] if
+                    layout["name"] in templates)
+
+                pretty = self.request.params.get("pretty", "false") == "true"
+                content = json.dumps(
+                    capabilities, separators=None if pretty else (",", ":"),
+                    indent=4 if pretty else None
+                )
+        else:
+            content = ""
+
+        return resp, content
 
     @view_config(route_name="printproxy_report_create")
     def report_create(self):
