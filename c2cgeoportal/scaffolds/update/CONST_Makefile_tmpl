@@ -857,6 +857,8 @@ $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
 	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
+else
+	touch $@
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
