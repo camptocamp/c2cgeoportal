@@ -45,6 +45,7 @@ from pyramid.i18n import TranslationStringFactory
 from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPForbidden, HTTPBadGateway
 from pyramid.security import remember, forget
 from pyramid.response import Response
+from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
@@ -924,12 +925,12 @@ class Entry(object):
     @cache_region.cache_on_arguments()
     def _functionality_cached(self, role):
         functionality = {}
-        for func in get_setting(
+        for func_ in get_setting(
                 self.settings,
                 ("functionalities", "available_in_templates"), []
         ):
-            functionality[func] = get_functionality(
-                func, self.request
+            functionality[func_] = get_functionality(
+                func_, self.request
             )
         return functionality
 
@@ -1035,7 +1036,12 @@ class Entry(object):
     def get_ngeo_index_vars(self, vars={}):
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
-        groups = DBSession.query(FullTextSearch.layer_name).all()
+        groups = [
+            group[0] for group in DBSession.query(
+                func.distinct(FullTextSearch.layer_name)
+            ).filter(FullTextSearch.layer_name.isnot(None)).all()
+        ]
+
         vars.update({
             "debug": self.debug,
             "fulltextsearch_groups": groups
