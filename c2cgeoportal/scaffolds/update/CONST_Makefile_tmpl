@@ -3,7 +3,11 @@ PACKAGE = {{package}}
 OPERATING_SYSTEM ?= LINUX
 
 ifeq ($(DEBUG), TRUE)
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -lt --reverse $? $@ || true
+else
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -lt --reverse $? $@ || true
+endif
 endif
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
