@@ -807,6 +807,7 @@ node_modules/ngeo/buildtools/templatecache.mako.js: .build/node_modules.timestam
 
 $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
 	cp $< $@
 
 .PRECIOUS: .build/gmftemplatecache.js
