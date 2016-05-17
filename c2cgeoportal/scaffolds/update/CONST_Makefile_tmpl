@@ -695,6 +695,7 @@ $(TX_RC):
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 
