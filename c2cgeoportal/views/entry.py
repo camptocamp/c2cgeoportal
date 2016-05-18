@@ -272,7 +272,7 @@ class Entry(object):
 
             if layer.layer_type == "internal WMS":
                 if not self._fill_internal_wms(l, layer, wms, wms_layers, errors):
-                    return None, set()
+                    return None, errors
                 errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
