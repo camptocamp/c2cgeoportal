@@ -383,11 +383,15 @@ class Entry(object):
             if len(max_resolutions_hint) > 0:
                 l["maxResolutionHint"] = max(max_resolutions_hint)
 
-        l["url"] = get_url(layer.server_ogc.url, self.request, errors=errors)
+        l["url"] = get_url(
+            layer.server_ogc.url, self.request,
+            default=self.request.route_url("mapserverproxy"), errors=errors)
         l["isSingleTile"] = layer.server_ogc.is_single_tile
 
         l["wfsSupport"] = layer.server_ogc.wfs_support
-        l["urlWfs"] = layer.server_ogc.url_wfs
+        l["urlWfs"] = get_url(
+            layer.server_ogc.url_wfs, self.request,
+            default=l["url"], errors=errors)
         l["serverType"] = layer.server_ogc.type
 
         return True
