@@ -3,7 +3,11 @@ PACKAGE = {{package}}
 OPERATING_SYSTEM ?= LINUX
 
 ifeq ($(DEBUG), TRUE)
+ifeq ($(OPERATING_SYSTEM), WINDOWS)
+PRERULE_CMD ?= @echo "Build $@ due mofification on $?"; ls -lt --reverse $? $@ || true
+else
 PRERULE_CMD ?= @echo "Build \033[1;34m$@\033[0m due mofification on \033[1;34m$?\033[0m"; ls -lt --reverse $? $@ || true
+endif
 endif
 
 ifeq ($(OPERATING_SYSTEM), WINDOWS)
@@ -158,9 +162,9 @@ GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
 # i18n
-TX_VERSION = $(shell .build/venv/bin/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
+TX_VERSION = $(shell $(VENV_BIN)/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
 TX_RC = $(HOME_DIR).transifexrc
-TX_DEPENDENCIES = $(VENV_BIN)/tx $(TX_RC) .tx/config
+TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
 TX_HOST ?= https://www.transifex.com
 ifeq (,$(wildcard $(TX_RC)))
 TOUCHBACK_TXRC =
@@ -691,6 +695,7 @@ $(TX_RC):
 .PRECIOUS: .build/locale/%/LC_MESSAGES/gmf.po
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
+	mkdir -p $(dir $@)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 
@@ -857,6 +862,8 @@ $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
 	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
+else
+	touch $@
 endif
 
 .build/node_modules.timestamp: package.json $(NPM_CMD)
