@@ -36,7 +36,7 @@ Witch is used to include a directive.
 
 You can find the available directive in the
 `ngeo documentation <http://camptocamp.github.io/ngeo/master/apidoc/>`_
-in the sections 'gmf/Directives' and 'ngeo/Directives'.
+in the sections ``gmf/Directives`` and ``ngeo/Directives``.
 
 All the directives should provide an example.
 
