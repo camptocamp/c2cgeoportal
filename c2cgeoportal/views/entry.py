@@ -198,7 +198,7 @@ class Entry(object):
 
         return (resolution_hint_min, resolution_hint_max)
 
-    def _get_child_layers_info(self, layer):
+    def _get_child_layers_info_1(self, layer):
         """ Return information about sub layers of a layer.
 
             Arguments:
@@ -218,6 +218,24 @@ class Entry(object):
                 child_layer_info["queryable"] = child_layer.queryable
             child_layers_info.append(child_layer_info)
         return child_layers_info
+
+    def _get_child_layers_info(self, layer):
+        """ Return information about sub layers of a layer.
+
+            Arguments:
+
+            * ``layer`` The layer object in the WMS capabilities.
+        """
+        layer_info = dict(name=layer.name)
+        resolution = self._get_layer_resolution_hint(layer)
+        if resolution[0] <= resolution[1]:
+            layer_info.update({
+                "minResolutionHint": resolution[0],
+                "maxResolutionHint": resolution[1]
+            })
+        if hasattr(layer, "queryable"):
+            layer_info["queryable"] = layer.queryable == 1
+        return layer_info
 
     def _layer(self, layer, wms, wms_layers, time, role_id):
         errors = set()
@@ -264,7 +282,7 @@ class Entry(object):
             l["type"] = "WMS"
             l["layers"] = layer.layer
             if not self._fill_wms(l, layer, errors, role_id):
-                return None, set()
+                return None, errors
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
         elif isinstance(layer, LayerWMTS):
@@ -323,28 +341,44 @@ class Entry(object):
             l["style"] = layer.style
 
         # now look at what's in the WMS capabilities doc
-        if layer.layer in wms_layers:
-            wms_layer_obj = wms[layer.layer]
-            metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
-            if len(metadata_urls) > 0:  # pragma: no cover
-                l["metadataUrls"] = metadata_urls
-            resolutions = self._get_layer_resolution_hint(wms_layer_obj)
-            if resolutions[0] <= resolutions[1]:
-                if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("%0.2f" % resolutions[0])
-                if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
-            l["childLayers"] = self._get_child_layers_info(wms_layer_obj)
-            if hasattr(wms_layer_obj, "queryable"):
-                l["queryable"] = wms_layer_obj.queryable
-        else:
-            if self.mapserver_settings["geoserver"]:
-                return False
+        l["childLayers"] = []
+        for layer_name in layer.layer.split(","):
+            if layer_name in wms_layers:
+                wms_layer_obj = wms[layer_name]
+                metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
+                if len(metadata_urls) > 0:  # pragma: no cover
+                    if "metadataUrls" not in l:
+                        l["metadataUrls"] = metadata_urls
+                    else:
+                        l["metadataUrls"].extend(metadata_urls)
+                if len(wms_layer_obj.layers) == 0:
+                    l["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
+                else:
+                    for child_layer in wms_layer_obj.layers:
+                        l["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
                     "The layer '%s' (%s) is not defined in WMS capabilities" %
-                    (layer.layer, layer.name)
+                    (layer_name, layer.name)
                 )
+                return False
+
+        if "minResolutionHint" not in l:
+            min_resolutions_hint = [
+                l_["minResolutionHint"]
+                for l_ in l["childLayers"]
+                if "minResolutionHint" in l_
+            ]
+            if len(min_resolutions_hint) > 0:
+                l["minResolutionHint"] = min(min_resolutions_hint)
+        if "maxResolutionHint" not in l:
+            max_resolutions_hint = [
+                l_["maxResolutionHint"]
+                for l_ in l["childLayers"]
+                if "maxResolutionHint" in l_
+            ]
+            if len(max_resolutions_hint) > 0:
+                l["maxResolutionHint"] = max(max_resolutions_hint)
 
         l["url"] = get_url(layer.server_ogc.url, self.request, errors=errors)
         l["isSingleTile"] = layer.server_ogc.is_single_tile
@@ -410,7 +444,7 @@ class Entry(object):
                     l["minResolutionHint"] = float("%0.2f" % resolutions[0])
                 if "maxResolutionHint" not in l:
                     l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
-            l["childLayers"] = self._get_child_layers_info(wms_layer_obj)
+            l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:

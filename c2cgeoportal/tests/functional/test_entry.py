@@ -536,7 +536,6 @@ class TestEntryView(TestCase):
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
-            u"__test_public_layer_not_mapfile",
             u"__test_public_layer2",
         ]))
 
@@ -553,7 +552,6 @@ class TestEntryView(TestCase):
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
-            u"__test_public_layer_not_mapfile",
             u"__test_public_layer2",
             u"__test_private_layer2",
         ]))
@@ -602,7 +600,9 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"__test_public_layer2",
         ]))
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(themes["errors"], [
+            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+        ])
 
         # autenticated v2
         request.params = {
@@ -616,7 +616,9 @@ class TestEntryView(TestCase):
             u"__test_public_layer2",
             u"__test_private_layer2",
         ]))
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(themes["errors"], [
+            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+        ])
 
     def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
