@@ -396,9 +396,9 @@ class Entry(object):
 
         return True
 
-    def _fill_wms_v1(self, l, layer, version=1):
+    def _fill_wms_v1(self, l, layer):
         l["imageType"] = layer.image_type
-        if version == 1 and layer.legend_rule:
+        if layer.legend_rule:
             l["icon"] = add_url_params(self.request.route_url("mapserverproxy"), {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
@@ -423,22 +423,21 @@ class Entry(object):
                 "RULE": layer.legend_rule,
             })
 
-    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors, version=1):
-        self._fill_wms_v1(l, layer, version=version)
+    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors):
+        self._fill_wms_v1(l, layer)
 
-        if version == 1:
-            self._fill_legend_rule_query_string(
-                l, layer,
-                self.request.route_url("mapserverproxy")
-            )
+        self._fill_legend_rule_query_string(
+            l, layer,
+            self.request.route_url("mapserverproxy")
+        )
 
-            # this is a leaf, ie. a Mapserver layer
-            if layer.min_resolution is not None:
-                l["minResolutionHint"] = layer.min_resolution
-            if layer.max_resolution is not None:
-                l["maxResolutionHint"] = layer.max_resolution
+        # this is a leaf, ie. a Mapserver layer
+        if layer.min_resolution is not None:
+            l["minResolutionHint"] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l["maxResolutionHint"] = layer.max_resolution
 
-        wmslayer = layer.name if version == 1 else layer.layer
+        wmslayer = layer.name
         # now look at what's in the WMS capabilities doc
         if wmslayer in wms_layers:
             wms_layer_obj = wms[wmslayer]
@@ -463,15 +462,14 @@ class Entry(object):
                 )
         return True
 
-    def _fill_external_wms(self, l, layer, errors, version=1):
-        self._fill_wms_v1(l, layer, version=version)
-        if version == 1:
-            self._fill_legend_rule_query_string(l, layer, layer.url)
+    def _fill_external_wms(self, l, layer, errors):
+        self._fill_wms_v1(l, layer)
+        self._fill_legend_rule_query_string(l, layer, layer.url)
 
-            if layer.min_resolution is not None:
-                l["minResolutionHint"] = layer.min_resolution
-            if layer.max_resolution is not None:
-                l["maxResolutionHint"] = layer.max_resolution
+        if layer.min_resolution is not None:
+            l["minResolutionHint"] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l["maxResolutionHint"] = layer.max_resolution
 
         l["url"] = get_url(layer.url, self.request, errors=errors)
         l["isSingleTile"] = layer.is_single_tile
