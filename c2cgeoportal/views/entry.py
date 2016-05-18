@@ -233,8 +233,8 @@ class Entry(object):
                 "minResolutionHint": resolution[0],
                 "maxResolutionHint": resolution[1]
             })
-        if hasattr(layer, "queryable"):
-            layer_info["queryable"] = layer.queryable == 1
+        layer_info["queryable"] = layer.queryable == 1 \
+            if hasattr(layer, "queryable") else True
         return layer_info
 
     def _layer(self, layer, wms, wms_layers, time, role_id):
