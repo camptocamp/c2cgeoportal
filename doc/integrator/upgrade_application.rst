@@ -180,7 +180,7 @@ Get the new required files from the c2cgeoportal templates:
 .. prompt:: bash
 
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_create \
-        /tmp/<project> package=<package> srid=-1
+        /tmp/<project> package=<package> srid=21781
    .build/venv/bin/pcreate --interactive -s c2cgeoportal_update \
         /tmp/<project> package=<package>
    cp /tmp/<project>/CONST_Makefile \
