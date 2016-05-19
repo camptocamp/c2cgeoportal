@@ -7,7 +7,7 @@ unittest2
 flake8
 pep8-naming
 flake8-copyright
-c2c.template>=1.0.1dev4
+c2c.template==1.1.2
 JSTools
 c2c.cssmin
 transifex-client
