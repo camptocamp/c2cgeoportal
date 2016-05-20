@@ -84,24 +84,24 @@ class PdfReport(Proxy):  # pragma: no cover
         return config
 
     def _build_map(self, mapserv_url, vector_request_url, srs, map_config):
-        backgroundlayers = self._get_map_config("backgroundlayers", [])
-        imageformat = self._get_map_config("imageformat", "image/png")
+        backgroundlayers = self._get_map_config("backgroundlayers", map_config, [])
+        imageformat = self._get_map_config("imageformat", map_config, "image/png")
         return {
             "projection": srs,
             "dpi": 254,
             "rotation": 0,
             "bbox": [0, 0, 1000000, 1000000],
             "zoomToFeatures": {
-                "zoomType": self._get_map_config("zoomType", "extent"),
+                "zoomType": self._get_map_config("zoomType", map_config, "extent"),
                 "layer": "vector",
-                "minScale": self._get_map_config("minScale", 1000),
+                "minScale": self._get_map_config("minScale", map_config, 1000),
             },
             "layers": [{
                 "type": "gml",
                 "name": "vector",
                 "style": {
                     "version": "2",
-                    "[1 > 0]": self._get_map_config("style", {
+                    "[1 > 0]": self._get_map_config("style", map_config, {
                         "fillColor": "red",
                         "fillOpacity": 0.2,
                         "symbolizers": [{

@@ -252,7 +252,7 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES) .build/dev
 .build/venv.timestamp:
 	mkdir -p $(dir $@)
 	virtualenv --no-site-packages .build/venv
-	$(PIP_CMD) install 'pip>=7' 'setuptools>=12'
+	$(PIP_CMD) install 'pip==8.1.2' 'setuptools==21.1.0'
 	touch $@
 
 .build/requirements.timestamp: .build/venv.timestamp setup.py \

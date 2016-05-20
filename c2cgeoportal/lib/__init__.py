@@ -299,11 +299,13 @@ class C2CPregenerator:  # pragma: no cover
 @implementer(IStaticURLInfo)
 class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
     def generate(self, path, request, **kw):
+        if WIN:
+            path = path.replace("\\", "/")
         for (url, spec, route_name) in self.registrations:
+            if WIN:
+                spec = spec.replace("\\", "/")
             if path.startswith(spec):
                 subpath = path[len(spec):]
-                if WIN:
-                    subpath = subpath.replace("\\", "/")  # windows
                 if self.cache_busters:
                     subpath, kw = self._bust_asset_path(
                         request, spec, subpath, kw)

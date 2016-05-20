@@ -31,6 +31,7 @@
 import sys
 import json
 import argparse
+import subprocess
 
 
 def main():
@@ -69,10 +70,13 @@ and build your application to merge the old localisation with the new one.
         lines = src.readlines()
         while lines[-1].strip() == "":
             lines = lines[0:-1]
-        jsonlines = ["{"]
+
+        jsonlines = ["console.log(JSON.stringify({"]
         jsonlines += lines[1:-1]
-        jsonlines.append("}")
-        source = json.loads("\n".join(jsonlines))
+        jsonlines.append("}))")
+
+        json_ = subprocess.check_output(["node", "-e", " ".join(jsonlines)])
+        source = json.loads(json_)
 
     with open(options.po_v2, "w+") as destionation:
         destionation.write("""msgid ""
