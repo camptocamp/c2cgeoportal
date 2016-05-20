@@ -63,7 +63,7 @@ Layers involved in the ``box query`` and ``query builder`` features should
 support WFS GetFeature. To support WFS GetFeature a ``LAYER`` should define
 a template::
 
-    TEMPLATE fooOnlyForWFSGetFeature
+    TEMPLATE "fooOnlyForWFSGetFeature"
 
 This is a fake template, but this is required.
 

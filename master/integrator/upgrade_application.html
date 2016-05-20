@@ -85,7 +85,7 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>For Windows:</p>
-<p class="last">You should add replace <code class="docutils literal"><span class="pre">export</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code> with
+<p class="last">You should replace <code class="docutils literal"><span class="pre">export</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code> with
 <code class="docutils literal"><span class="pre">SET</span> <span class="pre">VERSION=&lt;target_version&gt;</span></code>.</p>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user Makefile (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>),
@@ -131,6 +131,23 @@ commands</p>
 </ul>
 </div>
 </div>
+<div class="section" id="upgrade-the-database">
+<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The database will be automatically upgraded during the upgrade process.</p>
+<p>To upgrade only the database you can use alembic directly.</p>
+<p>The help:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>Upgrade the main schema:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+</pre></div>
+</div>
+<p>Upgrade the static schema:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -148,6 +165,7 @@ commands</p>
 <li><a class="reference internal" href="#using-the-c2ctool-command">Using the c2ctool command</a></li>
 <li><a class="reference internal" href="#easy-updating-an-application-code">Easy updating an application code</a></li>
 <li><a class="reference internal" href="#easy-upgrading-an-application">Easy upgrading an application</a></li>
+<li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
 </ul>
 </li>
 </ul>

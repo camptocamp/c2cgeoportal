@@ -59,8 +59,8 @@ and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following configuration:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgis&#39;</span> <span class="p">}</span>
-<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgis&#39;</span> <span class="p">}</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
+<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -78,7 +78,14 @@ and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+        <span class="n">mapserverproxy</span><span class="p">:</span>
+            <span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">qgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">ows</span>
+            <span class="n">geoserver</span><span class="p">:</span> <span class="n">false</span>
+<span class="n">update_paths</span><span class="p">:</span>
+<span class="o">...</span>
+<span class="o">-</span> <span class="n">mapserverproxy</span>
 </pre></div>
 </div>
 </div>
@@ -91,11 +98,26 @@ span.prompt1:before {
 }
 </style><span class="prompt1">git rm mapserver</span>
 </pre></div>
-<div class="section" id="connect-to-postgres-from-qgis-desktop">
-<h2>Connect to Postgres from QGIS desktop<a class="headerlink" href="#connect-to-postgres-from-qgis-desktop" title="Permalink to this headline">¶</a></h2>
-<p>This chapter is subject to change when the QGIS plugin is available.</p>
+<div class="section" id="qgis-desktop-configuration">
+<h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ows-configuration">
+<h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this headline">¶</a></h3>
+<p>You should setup your OWS service in the QGIS project properties in the OWS
+tab.</p>
+<p>You should take care to <strong>uncheck</strong> the checkbox <em>User Layer ids as names</em>. If
+this checkbox is enabled you will have unreliabel layers name.</p>
+<p>You should <strong>check</strong> the checkbox <em>Add geometry to feature response</em> in order
+to make the WMS GetFeatureInfo working correctly.</p>
+<p>In the <em>WFS capabilities</em> section, you should check the layers that need to be
+available in the WFS service.</p>
+<p>Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to
+change.</p>
+</div>
+<div class="section" id="connect-to-postgres-database">
+<h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
+<p>This section is subject to change when the QGIS plugin is available.</p>
 <div class="section" id="throw-a-tunnel">
-<h3>Throw a tunnel<a class="headerlink" href="#throw-a-tunnel" title="Permalink to this headline">¶</a></h3>
+<h4>Throw a tunnel<a class="headerlink" href="#throw-a-tunnel" title="Permalink to this headline">¶</a></h4>
 <p>The first solution is to create a tunnel with ssh:</p>
 <pre class="highlight"><span class="prompt1">ssh -L 5432:localhost:54532 &lt;server&gt;</span>
 </pre><p>And use the following connection attributes:</p>
@@ -110,7 +132,7 @@ span.prompt1:before {
 </div>
 </div>
 <div class="section" id="directly-on-the-server">
-<h3>Directly on the server<a class="headerlink" href="#directly-on-the-server" title="Permalink to this headline">¶</a></h3>
+<h4>Directly on the server<a class="headerlink" href="#directly-on-the-server" title="Permalink to this headline">¶</a></h4>
 <p>For that you should ask the sysadmins to be able to access to the
 postgres port on the server from your infra.</p>
 <p>Then use the following connection attributes:</p>
@@ -122,6 +144,7 @@ postgres port on the server from your infra.</p>
 <span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
 <span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="deploy-notes">
@@ -147,9 +170,13 @@ postgres port on the server from your infra.</p>
 <li><a class="reference internal" href="#apache-configuration">Apache configuration</a></li>
 <li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
 <li><a class="reference internal" href="#cleanup">Cleanup</a></li>
-<li><a class="reference internal" href="#connect-to-postgres-from-qgis-desktop">Connect to Postgres from QGIS desktop</a><ul>
+<li><a class="reference internal" href="#qgis-desktop-configuration">QGIS Desktop configuration</a><ul>
+<li><a class="reference internal" href="#ows-configuration">OWS configuration</a></li>
+<li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a><ul>
 <li><a class="reference internal" href="#throw-a-tunnel">Throw a tunnel</a></li>
 <li><a class="reference internal" href="#directly-on-the-server">Directly on the server</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#deploy-notes">Deploy notes</a></li>
 </ul>
 </li>
