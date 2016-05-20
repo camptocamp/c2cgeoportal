@@ -11,10 +11,10 @@ required.
 Layers
 ------
 
-In the version 2 we split the layer table in 3 tables: 'layer_internal_wms',
-'layer_external_wms', 'layer_wmts', and we copy the previous layer table in 'layerv1'.
+In the version 2 we split the layer table in 3 tables: ``layer_internal_wms``,
+``layer_external_wms``, ``layer_wmts``, and we copy the previous layer table in ``layerv1``.
 
-And the 'order' will be moved in the relation of the tree.
+And the ``order`` will be moved in the relation of the tree.
 
 All layer type
 ~~~~~~~~~~~~~~
@@ -113,7 +113,7 @@ On ``WMTS`` layer we have the following specific attributes:
 
 .. note::
     You can use both ``WMS layers`` and ``Query layers`` if you want that
-    different sets of WMS layers are used for printing and querying.
+    different sets of ``WMS layers`` are used for printing and querying.
     If you want to define ``WMS layers`` but no ``Query layers``,
     set it to ``[]``.
 
