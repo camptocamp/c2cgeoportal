@@ -65,8 +65,8 @@ INSTANCE_ID =
 endif
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_VERSION ?= pip>=7
-SETUPTOOL_VERSION ?= setuptools>=12
+PIP_VERSION ?= pip==8.1.2
+SETUPTOOLS_VERSION ?= setuptools==21.1.0
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -1013,7 +1013,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	virtualenv --no-site-packages .build/venv
-	$(PIP_CMD) install '$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
+	$(PIP_CMD) install '$(PIP_VERSION)' '$(SETUPTOOLS_VERSION)'
 	touch $@
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
