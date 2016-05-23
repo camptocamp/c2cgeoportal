@@ -36,10 +36,28 @@ Base for all possible results:
 .. code:: json
 
     {
+        "serversOGC": {
+            "<name>": <server OGC>
+            ...
+        }
         "themes": [<themes>],
         "group": <group>,
         "background_layers": [<layers>],
         "errors": [<errors>]
+    }
+
+Server OGC:
+
+.. code:: json
+
+   {
+        "url": "<wms server url>",
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
+        "imageType": "image/(jpeg|png)",
+        "isSingleTile": (true|false),
+        "serverType": "(mapserver|geoserver|qgisserver)",
+        "auth": ""
     }
 
 
@@ -67,6 +85,16 @@ Group:
     {
         "name": "<name>",
         "mixed": (true|false),
+        # if not mixed
+        "serverOGC": {
+            "url": "<wms server url>",
+            "wfsUrl": "<wfs server url>",
+            "wfsSupport": (true|false),
+            "imageType": "image/(jpeg|png)",
+            "isSingleTile": (true|false),
+            "serverType": "(mapserver|geoserver|qgisserver)",
+            "auth": ""
+        }
         "metadata": {
             "<name>": "<value>"
         },
@@ -92,19 +120,22 @@ WMS Layer:
 .. code:: json
 
     {
-
-        "layers": "<wms_layers>",
+        "id": <id>,
         "name": "<name in tree>",
+        "layers": "<wms_layers>",
+        "style": "<style>",
+        # if not mixed
+        "serverOGC": "<server name>",
+        # derecated
         "url": "<wms server url>",
         "url_wfs": "<wfs server url>",
         "wfs_support": (true|false),
         "isSingleTile": (true|false),
-        "id": <id>,
         "imageType": "image/(jpeg|png)",
-        "style": "<style>",
         "serverType": "(mapserver|geoserver|qgisserver)",
         "minResolutionHint": <minResolutionHint>,
         "maxResolutionHint": <maxResolutionHint>,
+        # end derecated
         "metadata": {
             "identifier_attribute_field": "<display_name>",
             "disclaimer": "<disclamer>",

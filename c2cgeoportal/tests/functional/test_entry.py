@@ -1450,14 +1450,16 @@ class TestEntryView(TestCase):
         group1.children = [group2]
         group2.children = [layer]
 
-        self.assertEqual(entry._group("", group1, [layer.name], wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._group(
+            "", group1, [layer.name],
+            wms=None, wms_layers=[], time=TimeInformation()
+        ), ({
             "id": 11,
             "isExpanded": False,
             "isInternalWMS": True,
             "name": "block",
             "isBaseLayer": False,
             "metadata": {},
-            "mixed": False,
             "children": [{
                 "id": 12,
                 "isExpanded": False,
@@ -1466,7 +1468,6 @@ class TestEntryView(TestCase):
                 "isBaseLayer": False,
                 "metadataURL": "http://example.com/group.metadata",
                 "metadata": {},
-                "mixed": False,
                 "children": [{
                     "name": "test layer in group",
                     "id": 20,

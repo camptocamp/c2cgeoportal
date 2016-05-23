@@ -57,7 +57,7 @@ from c2cgeoportal.lib.functionality import get_functionality, \
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
-    Theme, LayerGroup, RestrictionArea, Interface, \
+    Theme, LayerGroup, RestrictionArea, Interface, ServerOGC, \
     Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch
 
 
@@ -237,7 +237,7 @@ class Entry(object):
             if hasattr(layer, "queryable") else True
         return layer_info
 
-    def _layer(self, layer, wms, wms_layers, time, role_id):
+    def _layer(self, layer, wms, wms_layers, time, role_id, mixed=True):
         errors = set()
         l = {
             "id": layer.id,
@@ -284,7 +284,7 @@ class Entry(object):
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
-            if not self._fill_wms(l, layer, errors, role_id):
+            if not self._fill_wms(l, layer, errors, role_id, mixed=mixed):
                 return None, errors
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
@@ -336,7 +336,7 @@ class Entry(object):
             if c > 0:
                 l["editable"] = True
 
-    def _fill_wms(self, l, layer, errors, role_id):
+    def _fill_wms(self, l, layer, errors, role_id, mixed):
         wms, wms_layers = self._wms_layers(role_id, layer.server_ogc)
 
         l["imageType"] = layer.server_ogc.image_type
@@ -383,6 +383,9 @@ class Entry(object):
             if len(max_resolutions_hint) > 0:
                 l["maxResolutionHint"] = max(max_resolutions_hint)
 
+        if mixed:
+            l["serverOGC"] = layer.server_ogc.name
+        # deprecated
         l["url"] = get_url(
             layer.server_ogc.url, self.request,
             default=self.request.route_url("mapserverproxy"), errors=errors)
@@ -393,6 +396,7 @@ class Entry(object):
             layer.server_ogc.url_wfs, self.request,
             default=l["url"], errors=errors)
         l["serverType"] = layer.server_ogc.type
+        # end deprecated
 
         return True
 
@@ -562,28 +566,31 @@ class Entry(object):
         return \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
 
-    def _get_layer_identifiers(self, group):
-        """Recurse on all children to get unique identifier for each child."""
-        identifier = []
+    def _get_ogc_servers(self, group, depth=1):
+        """ Recurse on all children to get unique identifier for each child. """
+        ogc_servers = set()
+
+        # escape loop
+        if depth > 30:
+            log.error("Error: too many recursions with group '%s'" % group.name)
+            return ogc_servers
 
         # recurse on children
         if isinstance(group, LayerGroup) and group.children > 0:
             for tree_item in group.children:
-                child_identifier = self._get_layer_identifiers(tree_item)
-                identifier = identifier + child_identifier
+                ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
 
         if isinstance(group, LayerWMS):
-            identifier.append(group.server_ogc_id)
+            ogc_servers.add(group.server_ogc)
 
         if isinstance(group, LayerWMTS):
-            # add 2 different values to force the mixed state
-            identifier = identifier + ["wmts1", "wmts2"]
+            ogc_servers.add(False)
 
-        return identifier
+        return ogc_servers
 
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, role_id=None, version=1, **kwargs
+        catalogue=True, role_id=None, version=1, mixed=True, **kwargs
     ):
         children = []
         errors = set()
@@ -595,6 +602,13 @@ class Entry(object):
             )
             return None, errors
 
+        ogc_servers = None
+        org_depth = depth
+        if depth == 1:
+            ogc_servers = list(self._get_ogc_servers(group))
+            # check if mixed content
+            mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
+
         for tree_item in group.children:
             if type(tree_item) == LayerGroup:
                 depth += 1
@@ -603,7 +617,7 @@ class Entry(object):
                     gp, gp_errors = self._group(
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
-                        catalogue=catalogue, role_id=role_id, version=version, **kwargs
+                        catalogue=catalogue, role_id=role_id, version=version, mixed=mixed, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -619,7 +633,7 @@ class Entry(object):
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
 
-                        l, l_errors = self._layer(tree_item, role_id=role_id, **kwargs)
+                        l, l_errors = self._layer(tree_item, role_id=role_id, mixed=mixed, **kwargs)
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
@@ -640,7 +654,6 @@ class Entry(object):
                 "name": group.name,
                 "children": children,
                 "metadata": {},
-                "mixed": False,
             }
             if version == 1:
                 g.update({
@@ -649,11 +662,10 @@ class Entry(object):
                     "isBaseLayer": group.is_base_layer,
                 })
             else:
-                # check if mixed content
-                identifier = self._get_layer_identifiers(group)
-                # Use set() to remove duplicates
-                if len(set(identifier)) > 1:
-                    g["mixed"] = True
+                if org_depth == 1:
+                    g["mixed"] = mixed
+                    if not mixed:
+                        g["serverOGC"] = ogc_servers[0].name
 
             for metadata in group.ui_metadatas:
                 g["metadata"][metadata.name] = get_url(metadata.value, self.request, errors=errors)
@@ -1305,6 +1317,27 @@ class Entry(object):
 
         result = {}
         all_errors = set()
+        if version == 2:
+
+            result["serversOGC"] = {}
+            for server_ogc in DBSession.query(ServerOGC).all():
+                url = get_url(
+                    server_ogc.url, self.request,
+                    default=self.request.route_url("mapserverproxy"), errors=all_errors
+                )
+                url_wfs = get_url(
+                    server_ogc.url_wfs, self.request,
+                    default=url, errors=all_errors
+                )
+                result["serversOGC"][server_ogc.name] = {
+                    "url": url,
+                    "urlWfs": url_wfs,
+                    "type": server_ogc.type,
+                    "imageType": server_ogc.image_type,
+                    "auth": server_ogc.auth,
+                    "wtsSupport": server_ogc.wfs_support,
+                    "isSingleTile": server_ogc.is_single_tile,
+                }
         if export_themes:
             themes, errors = self._themes(
                 role_id, interface, True, version, catalogue, min_levels
