@@ -67,7 +67,7 @@ class TestThemesView(TestCase):
         layer_v1.ui_metadatas = [UIMetadata("test", "v1")]
 
         server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/jpeg")
-        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="internal_url", image_type="image/jpeg")
+        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -75,7 +75,7 @@ class TestThemesView(TestCase):
         layer_internal_wms.ui_metadatas = [UIMetadata("test", "internal_wms")]
         layer_internal_wms.server_ogc = server_ogc_internal
 
-        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", public=True)
+        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.ui_metadatas = [UIMetadata("test", "external_wms")]
         layer_external_wms.server_ogc = server_ogc_external

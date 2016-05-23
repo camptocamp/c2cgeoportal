@@ -110,7 +110,7 @@ class TestEntryView(TestCase):
         layer = Layer()
         layer.layers = [child_layer_1, child_layer_2]
 
-        child_layers_info = entry._get_child_layers_info(layer)
+        child_layers_info = entry._get_child_layers_info_1(layer)
 
         expected = [{
             "name": "layer_1",
@@ -247,7 +247,7 @@ class TestEntryView(TestCase):
         layer = Layer()
         layer.layers = [child_layer_1, child_layer_2]
 
-        child_layers_info = entry._get_child_layers_info(layer)
+        child_layers_info = entry._get_child_layers_info_1(layer)
 
         expected = [{
             "name": "layer_1"
