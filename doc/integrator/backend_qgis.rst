@@ -51,7 +51,6 @@ In the ``vars_<project>.yaml`` file, define:
         ...
             mapserverproxy:
                 mapserv_url: http://your.qgis.server/ows
-                geoserver: false
     update_paths:
     ...
     - mapserverproxy
@@ -91,40 +90,42 @@ Connect to Postgres database
 
 This section is subject to change when the QGIS plugin is available.
 
-Throw a tunnel
----------------
+The way you should connect QGIS to the database is based on an external file 
+called. pg_service.conf located in the home directory. The content of this file 
+is as follow::
 
-The first solution is to create a tunnel with ssh:
+    [geomapfish]
+    host=localhost
+    dbname=geomapfish
+    user=www-data
+    password=www-data
+    port=5433
+
+You probably need to create a tunnel with ssh:
 
 .. prompt:: bash
 
    ssh -L 5432:localhost:54532 <server>
 
-And use the following connection attributes::
+Note that if you can connect directly to the database, you don't need this tunnel.
+Ask to your database administrator the correct parameters. You probably just need 
+to change the host parameter.
 
-   Name: <aname>
-   Host: localhost
-   Port: 5432
-   Database: <database>
-   SSL mode: Disable
-   Username: www-data
-   Password: www-data
+You can have several sections. A section start with a name with [] and
+finish with a blanck line. This file should be a unix file.
 
-Directly on the server
-----------------------
+On QGIS deskop, when creating a new PostGIS connection, give it a name and use
+the service name (`geomapfish` in our example) in the connection parameters
+form.
 
-For that you should ask the sysadmins to be able to access to the
-postgres port on the server from your infra.
+Copy past this file in the server, change the parameters to fit with the server
+settings and add the variable environment setting in the Apache config::
 
-Then use the following connection attributes::
+    [..]
+    SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
+    + SetEnv PGSERVICEFILE path/to/pg_service.conf
 
-   Name: <aname>
-   Host: <server>
-   Port: 5432
-   Database: <database>
-   SSL mode: require
-   Username: www-data
-   Password: www-data
+Don't forget to restart Apache.
 
 Deploy notes
 ************
