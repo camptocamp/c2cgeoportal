@@ -155,6 +155,12 @@ vars:
         - wmsLayers
         - minResolutionHint
         - maxResolutionHint
+        # WMTS layers
+        - ogcServer
+        - layers
+        - queryLayers
+        - printLayers
+
 
     # The list of functionalities that can be configured
     # through the admin interface.
