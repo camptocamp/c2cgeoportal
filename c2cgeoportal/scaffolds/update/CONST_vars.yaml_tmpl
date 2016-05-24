@@ -252,7 +252,7 @@ vars:
             en: english
             de: german
 
-    servers:
+    servers: {}
 
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
