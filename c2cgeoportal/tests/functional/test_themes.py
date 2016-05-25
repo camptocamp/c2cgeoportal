@@ -484,7 +484,7 @@ class TestThemesView(TestCase):
         self.assertEquals(
             themes["serversOGC"], {
                 "__test_server_ogc_internal": {
-                    "wtsSupport": False,
+                    "wfsSupport": False,
                     "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
                     "isSingleTile": False,
                     "auth": None,
@@ -493,7 +493,7 @@ class TestThemesView(TestCase):
                     "imageType": "image/jpeg",
                 },
                 "source for image/jpeg": {
-                    "wtsSupport": True,
+                    "wfsSupport": True,
                     "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
                     "isSingleTile": False,
                     "auth": "main",
@@ -502,7 +502,7 @@ class TestThemesView(TestCase):
                     "imageType": "image/jpeg",
                 },
                 "__test_server_ogc_external": {
-                    "wtsSupport": False,
+                    "wfsSupport": False,
                     "url": "http://wms.geo.admin.ch/",
                     "isSingleTile": False,
                     "auth": None,
@@ -511,7 +511,7 @@ class TestThemesView(TestCase):
                     "imageType": "image/jpeg",
                 },
                 "source for image/png": {
-                    "wtsSupport": True,
+                    "wfsSupport": True,
                     "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
                     "isSingleTile": False,
                     "auth": "main",
