@@ -480,7 +480,6 @@ class TestThemesView(TestCase):
         })
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
-        print(themes)
         self.assertEquals(
             themes["serversOGC"], {
                 "__test_server_ogc_internal": {
