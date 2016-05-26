@@ -171,6 +171,8 @@ vars:
           type: float
         - name: maxResolutionHint
           type: float
+        - lastUpdateDateColumn
+        - lastUpdateUserColumn
 
     # The list of functionalities that can be configured
     # through the admin interface.
