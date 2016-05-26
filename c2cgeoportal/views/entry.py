@@ -1335,7 +1335,7 @@ class Entry(object):
                     "type": server_ogc.type,
                     "imageType": server_ogc.image_type,
                     "auth": server_ogc.auth,
-                    "wtsSupport": server_ogc.wfs_support,
+                    "wfsSupport": server_ogc.wfs_support,
                     "isSingleTile": server_ogc.is_single_tile,
                 }
         if export_themes:
