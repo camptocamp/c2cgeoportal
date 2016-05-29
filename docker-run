@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+DOCKER_ARG=
+if [[ $1 =~ ^- ]]
+then
+    DOCKER_ARG=$1
+    shift
+fi
+
+DOCKER_ADRS=`ifconfig docker0 | head -n 2 | tail -n 1 | awk -F : '{print $2}' | awk '{print $1}'`
+
+docker run \
+    $DOCKER_ARG \
+    --volume=build:/build \
+    --volume=`pwd`:/src \
+    --volume=${HOME}:${HOME} \
+    --volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish \
+    --add-host=db:${DOCKER_ADRS} \
+    --add-host=mapserver:${DOCKER_ADRS} \
+    --env=HOME=${HOME} \
+    --env=USER_NAME=`whoami` \
+    --env=USER_ID=`id -u` \
+    --env=GROUP_ID=`id -g` \
+    sbrunner/c2cgeoportal:latest \
+    run "$@"

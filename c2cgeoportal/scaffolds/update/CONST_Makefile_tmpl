@@ -1047,6 +1047,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
 	$(PRERULE_CMD)
 	$(PIP_CMD) install $(REQUIREMENTS)
+	$(PIP_CMD) install -e .
 	touch $@
 
 # Print

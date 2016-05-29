@@ -1,4 +1,5 @@
 extends: vars.yaml
 
 vars:
-    mapserv_url: http://localhost/cgi-bin/mapserv
+    dbhost: db
+    mapserv_url: http://localhost/mapserver

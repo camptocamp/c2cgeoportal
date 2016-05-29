@@ -3,33 +3,43 @@ language: python
 python:
 - 2.7
 
+sudo: required
+
 services:
 - postgresql
+- docker
+
+addons:
+  postgresql: "9.3"
 
 env:
   global:
-    secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
+    - secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
 
 before_install:
 - cat /etc/apt/sources.list.d/*
 - rm -rf /home/travis/.nvm
+- sudo rm --recursive --force /var/lib/apt/lists/*
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-9.1-postgis-2.2-scripts
 - sudo apt-get install --assume-yes --force-yes aptitude
 - sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
-- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs
-  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
-  postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs deploy cgi-mapserver
+- sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
+- sudo pip install coveralls pyignore
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template0 template_postgis
-- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
-- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql > /dev/null
+- psql --dbname=template_postgis --username=postgres --command="CREATE EXTENSION postgis;"
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template_postgis c2cgeoportal_test
 - sudo -u postgres createdb --encoding=UTF8 --template=template_postgis geomapfish
 
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
-- sudo -u postgres psql --quiet --dbname=c2cgeoportal_test --file=travis/db.sql
+- sudo sh -c 'echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/9.3/main/pg_hba.conf'
+- sudo sh -c 'echo "listen_addresses = '"'*'"'" >> /etc/postgresql/9.3/main/postgresql.conf'
+- sudo service postgresql restart
+- cp travis/db.sql /tmp
+- sudo --user=postgres psql --quiet --dbname=c2cgeoportal_test --file=/tmp/db.sql
 
 - |
   if [ "${TX_PASS}" != "" ]
@@ -41,11 +51,19 @@ before_install:
   echo "token =" >> ~/.transifexrc
   fi
 - export TRAVIS_FOLDER=`pwd`
+- mkdir --parents /tmp/travis/testgeomapfish
+- |
+    if travis/docker-modif "${TRAVIS_COMMIT_RANGE}" .dockerignore
+    then
+        docker build --tag=sbrunner/c2cgeoportal .
+    else
+        docker pull sbrunner/c2cgeoportal
+    fi
 
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
-- travis/no-make-error.sh . help
-- make -f travis.mk build
+- ./docker-run travis/no-make-error.sh . help
+- ./docker-run make -f travis.mk build
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/build-new-project.sh
@@ -55,8 +73,8 @@ script:
 - sudo -u postgres psql --version
 - node --version
 - npm --version
-- .build/venv/bin/flake8 --version
 - python setup.py --version
+- docker version
 
 # test new project
 - cd /tmp/travis/testgeomapfish
@@ -72,28 +90,25 @@ script:
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build
 - cp travis/empty-vars.mk /tmp/travis/testgeomapfish/
 - travis/run-on.sh /tmp/travis/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
+- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
+- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
 
 # test c2cgeoportal
-- travis/empty-make.sh -f travis.mk build
-- travis/no-make-error.sh . build
-- make -f travis.mk doc
-- make -f travis.mk checks
-- make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
-- travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
-- travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
-- .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
+- ./docker-run travis/empty-make.sh -f travis.mk build
+- ./docker-run travis/no-make-error.sh . -f travis.mk build
+- ./docker-run make -f travis.mk doc
+- ./docker-run make -f travis.mk checks
+- ./docker-run make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
+- ./docker-run python setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
 - travis/status.sh
 
 after_failure:
-- .build/venv/bin/python setup.py nosetests
+- ./docker-run python setup.py nosetests
 
 after_success:
-- travis/pip.sh install coveralls
-- .build/venv/bin/coveralls
+- coveralls
 - openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d | true
 - chmod 600 ~/.ssh/id_rsa
 - git config --global user.email travis@camptocamp.com
@@ -106,7 +121,6 @@ after_success:
   fi
 
 before_deploy:
-- .build/venv/bin/pip install wheel
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ]] ; then
   sed --expression 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' --in-place c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
   sed --expression 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' --in-place setup.py;
@@ -124,7 +138,7 @@ deploy:
     tags: true
     condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
 - provider: script
-  script: make transifex-send
+  script: docker-run make transifex-send
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal

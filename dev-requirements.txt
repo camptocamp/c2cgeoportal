@@ -1,3 +1,5 @@
+pip==8.1.2
+virtualenv==15.0.2
 setuptools>=8.0
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
 nose
@@ -12,3 +14,4 @@ c2c.cssmin
 transifex-client
 alembic
 -r doc/requirements.txt
+-r requirements.txt

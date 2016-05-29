@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+apache2 -DFOREGROUND &
+
+export PATH=${PATH}:/src/.build/venv/bin
+
+chmod 777 /build
+
+groupadd -g ${GROUP_ID} geomapfish
+useradd --shell /bin/bash --uid ${USER_ID} --gid ${GROUP_ID} ${USER_NAME}
+
+su $USER_NAME -c "$*"
