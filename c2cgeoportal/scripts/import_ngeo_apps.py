@@ -256,7 +256,30 @@ def main():
                 data,
             )
             data = _sub(
-                "module.constant\('langUrls', {[^}]*}\);",
+                re.escape(r"""
+        var angularLocaleScriptUrlElements = urlElements.slice(0, urlElements.length - 3);
+        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js');"""),
+                "",
+                data,
+            )
+            data = _sub(
+                re.escape(
+                    "gmfModule.constant('angularLocaleScript', "
+                    "angularLocaleScriptUrlElements.join('/'));"
+                ),
+                "gmfModule.constant('angularLocaleScript', "
+                "'${ request.static_url('{{package}}:static-ngeo/build/"
+                "angular-locale_\{\{locale\}\}.js' }'",
+                data,
+            )
+            data = _sub(
+                re.escape("""
+        var langUrls = {};
+        ['en', 'fr', 'de'].forEach(function(lang) {
+            var langUrlElements = urlElements.slice(0, urlElements.length - 3);
+            langUrlElements.push('build', 'gmf-' + lang + '.json')
+            langUrls[lang] = langUrlElements.join('/')
+        });"""),
                 r"""module.constant('langUrls', {
 ${ ',\\n'.join([
     "             '{lang}': '{url}'".format(
