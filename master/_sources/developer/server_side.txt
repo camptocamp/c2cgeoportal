@@ -10,8 +10,8 @@ c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here's how:
 
 * Change current directory to your sources root directory and clone
-    ``c2cgeoportal`` there, in the following line the sources directory is the
-    user home directory. Than checkout the submodules, build c2cgeoportal,
+    ``c2cgeoportal`` there (in the following line the sources directory is the
+    user home directory). Then checkout the submodules, build c2cgeoportal,
     and go back to your project directory:
 
   .. prompt:: bash
