@@ -101,7 +101,7 @@ vars:
     - fr
     - de
 
-    # All the application interfaces (except Sencha touch), used to create the apache rewrite rules
+    # All the application interfaces used to create the apache rewrite rules
     interfaces:
     - main
     - mobile
