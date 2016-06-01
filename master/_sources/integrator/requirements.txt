@@ -22,12 +22,6 @@ components installed on your system:
 * **libproj** >= 4.7
 * **gettext** >= 0.18
 
-For mobile
-~~~~~~~~~~
-
-* **Sencha** Command
-* **Compass**
-
 For ngeo
 ~~~~~~~~
 
