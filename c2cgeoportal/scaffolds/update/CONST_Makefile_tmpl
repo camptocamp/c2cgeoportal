@@ -997,7 +997,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .PHONY: print
 ifeq ($(DOCKER), TRUE)
-print: $(MAKO_FILES) print/Dockerfile $(PRINT_REQUIREMENT)
+print: $(MAKO_FILES:.mako=) print/Dockerfile $(PRINT_REQUIREMENT)
 	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
 
 else  # !DOCKER
@@ -1077,7 +1077,7 @@ ifeq ($(DOCKER), TRUE)
 apache: mapserver_docker wsgi_docker
 
 .PHONY: mapserver_docker
-mapserver_docker: mapserver/Dockerfile $(MAKO_FILES) mapserver/mapserver.map
+mapserver_docker: mapserver/Dockerfile $(MAKO_FILES:.mako=) mapserver/mapserver.map
 	$(PRERULE_CMD)
 	docker build -t $(DOCKER_BASE)_mapserver:$(DOCKER_TAG) mapserver
 
