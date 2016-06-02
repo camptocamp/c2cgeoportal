@@ -37,7 +37,7 @@ Database container
 
 You can add scripts to populate the DB container by adding ``.sql`` or ``.sh``
 files in the ``testDB`` directory. They must start with 2 digits, followed by
-an underscore. Please start at number 10.
+an underscore. Please start at number 20.
 
 Developer composition
 ---------------------

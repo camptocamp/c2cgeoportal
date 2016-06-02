@@ -1207,13 +1207,13 @@ push_docker:
 	docker push $(DOCKER_BASE)_mapserver:$(DOCKER_TAG)
 
 .PHONY: testDB
-testDB: testDB/02-alembic.sql testDB/03-alembic-static.sql
+testDB: testDB/12-alembic.sql testDB/13-alembic-static.sql
 
-testDB/02-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini
+testDB/12-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic.ini upgrade --sql head > $@
 
-testDB/03-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini
+testDB/13-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif
