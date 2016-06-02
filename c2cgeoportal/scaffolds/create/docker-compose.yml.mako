@@ -3,6 +3,8 @@
 db:
   build: testDB
   environment:
+    POSTGRES_USER: ${dbuser}
+    POSTGRES_DB: ${db}
     POSTGRES_PASSWORD: ${dbpassword}
   #ports:
   #  - 15432:5432
