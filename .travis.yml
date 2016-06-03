@@ -128,14 +128,9 @@ deploy:
   on:
     tags: true
     condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
-- &transifex
-  provider: script
+- provider: script
   script: make transifex-send
   skip_cleanup: true
-  on:
-    repo: camptocamp/c2cgeoportal
-    branch: master
-- <<: *transifex
   on:
     repo: camptocamp/c2cgeoportal
     branch: 2.0
