@@ -109,6 +109,7 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
+- travis/doc.sh
 
 before_deploy:
 - .build/venv/bin/pip install wheel
