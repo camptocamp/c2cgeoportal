@@ -127,7 +127,6 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: 2.7
     condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$
 - &transifex
   provider: script
@@ -136,18 +135,15 @@ deploy:
   on:
     repo: camptocamp/c2cgeoportal
     branch: master
-    python: 2.7
 - <<: *transifex
   on:
     repo: camptocamp/c2cgeoportal
     branch: 2.0
-    python: 2.7
 - provider: script
   script: travis/doc.sh
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    python: 2.7
 
 notifications:
   email:
