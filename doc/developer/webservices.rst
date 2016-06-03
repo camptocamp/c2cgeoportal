@@ -128,8 +128,8 @@ WMS Layer:
         "serverOGC": "<server name>",
         # derecated
         "url": "<wms server url>",
-        "url_wfs": "<wfs server url>",
-        "wfs_support": (true|false),
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
         "isSingleTile": (true|false),
         "imageType": "image/(jpeg|png)",
         "serverType": "(mapserver|geoserver|qgisserver)",
