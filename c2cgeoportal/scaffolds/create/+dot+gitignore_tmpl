@@ -28,7 +28,9 @@
 /mapserver/demo.map
 /mapserver/tinyows.xml
 /mapserver/replace_db.sh
-/testDB/01-schemas.sql
+/testDB/11-schemas.sql
+/testDB/12-alembic.sql
+/testDB/13-alembic-static.sql
 /testDB/Dockerfile
 /deploy/hooks/pre-restore-database
 /{{package}}/version.py

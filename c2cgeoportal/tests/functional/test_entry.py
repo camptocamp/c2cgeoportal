@@ -99,6 +99,11 @@ class TestEntryView(TestCase):
         public_layer_not_mapfile.interfaces = [main, mobile]
         public_layer_not_mapfile.server_ogc = ServerOGC(name="__test_server_ogc", url="internal_url", image_type="image/jpeg")
 
+        public_layer_no_layers = LayerWMS(
+            name=u"__test_public_layer_no_layers", public=True)
+        public_layer_no_layers.interfaces = [main, mobile]
+        public_layer_no_layers.server_ogc = ServerOGC(name="__test_server_ogc", url="internal_url", image_type="image/jpeg")
+
         layer_in_group = LayerV1(name=u"__test_layer_in_group")
         layer_in_group.interfaces = [main, mobile]
         layer_group = LayerGroup(name=u"__test_layer_group")
@@ -111,7 +116,8 @@ class TestEntryView(TestCase):
         group = LayerGroup(name=u"__test_layer_group")
         group.children = [
             public_layer, private_layer, layer_group, layer_wmsgroup,
-            public_layer2, public_layer_not_mapfile, private_layer2
+            public_layer2, public_layer_not_mapfile, public_layer_no_layers,
+            private_layer2
         ]
         theme = Theme(name=u"__test_theme")
         theme.children = [group]
@@ -468,12 +474,12 @@ class TestEntryView(TestCase):
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
-            u"__test_public_layer_not_mapfile",
             u"__test_public_layer2",
         ]))
 
         self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities"
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
 
         # autenticated
@@ -485,12 +491,12 @@ class TestEntryView(TestCase):
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
-            u"__test_public_layer_not_mapfile",
             u"__test_public_layer2",
             u"__test_private_layer2",
         ]))
         self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities"
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
 
     def test_theme_geoserver(self):
@@ -534,7 +540,10 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"__test_public_layer2",
         ]))
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
 
         # autenticated v2
         request.params = {
@@ -548,7 +557,10 @@ class TestEntryView(TestCase):
             u"__test_public_layer2",
             u"__test_private_layer2",
         ]))
-        self.assertEquals(themes["errors"], [])
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
 
     def test_wfs_types(self):
         from c2cgeoportal.views.entry import Entry
@@ -1332,14 +1344,16 @@ class TestEntryView(TestCase):
         group1.children = [group2]
         group2.children = [layer]
 
-        self.assertEqual(entry._group("", group1, [layer.name], wms=None, wms_layers=[], time=TimeInformation()), ({
+        self.assertEqual(entry._group(
+            "", group1, [layer.name],
+            wms=None, wms_layers=[], time=TimeInformation()
+        ), ({
             "id": 11,
             "isExpanded": False,
             "isInternalWMS": True,
             "name": "block",
             "isBaseLayer": False,
             "metadata": {},
-            "mixed": False,
             "children": [{
                 "id": 12,
                 "isExpanded": False,
@@ -1348,7 +1362,6 @@ class TestEntryView(TestCase):
                 "isBaseLayer": False,
                 "metadataURL": "http://example.com/group.metadata",
                 "metadata": {},
-                "mixed": False,
                 "children": [{
                     "name": "test layer in group",
                     "id": 20,

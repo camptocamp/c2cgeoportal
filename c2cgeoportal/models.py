@@ -37,6 +37,7 @@ except ImportError:  # pragma: no cover
 
 import sqlahelper
 from papyrus.geo_interface import GeoInterface
+import re
 from sqlalchemy import ForeignKey, Table, event
 from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, DateTime, UserDefinedType
@@ -974,3 +975,33 @@ class Shorturl(Base):
     creation = Column(DateTime)
     last_hit = Column(DateTime)
     nb_hits = Column(Integer)
+
+
+def db_chooser_tween_factory(handler, registry):  # pragma: nocover
+    """
+    Tween factory to route to a replica DB for read-only queries.
+    Must be put over the pyramid_tm tween and sqlahelper must have a "replica" engine
+    configured.
+    """
+    settings = registry.settings.get("db_chooser", {})
+    master_paths = [re.compile(i.replace("//", "/")) for i in settings.get("master", [])]
+    replica_paths = [re.compile(i.replace("//", "/")) for i in settings.get("replica", [])]
+
+    def db_chooser_tween(request):
+        session = DBSession()
+        old = session.bind
+        method_path = "%s %s" % (request.method, request.path)
+        force_master = any(r.match(method_path) for r in master_paths)
+        if not force_master and (request.method in ("GET", "OPTIONS") or
+                                 any(r.match(method_path) for r in replica_paths)):
+            log.debug("Using replica database for: " + method_path)
+            session.bind = sqlahelper.get_engine("replica")
+        else:
+            log.debug("Using master database for: " + method_path)
+
+        try:
+            return handler(request)
+        finally:
+            session.bind = old
+
+    return db_chooser_tween

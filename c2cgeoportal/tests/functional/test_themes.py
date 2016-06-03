@@ -67,7 +67,7 @@ class TestThemesView(TestCase):
         layer_v1.ui_metadatas = [UIMetadata("test", "v1")]
 
         server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/jpeg")
-        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="internal_url", image_type="image/jpeg")
+        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -75,7 +75,7 @@ class TestThemesView(TestCase):
         layer_internal_wms.ui_metadatas = [UIMetadata("test", "internal_wms")]
         layer_internal_wms.server_ogc = server_ogc_internal
 
-        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", public=True)
+        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.ui_metadatas = [UIMetadata("test", "external_wms")]
         layer_external_wms.server_ogc = server_ogc_external
@@ -470,6 +470,76 @@ class TestThemesView(TestCase):
                         "metadata": {
                             u"test": u"external_wms",
                         }
+                    }]
+                }]
+            }]
+        )
+
+    def test_server_ogc(self):
+        entry = self._create_entry_obj(params={
+            "version": "2",
+            "catalogue": "true",
+        })
+        themes = entry.themes()
+        self.assertEquals(self._get_filtered_errors(themes), set())
+        self.assertEquals(
+            themes["serversOGC"], {
+                "__test_server_ogc_internal": {
+                    "wfsSupport": False,
+                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "isSingleTile": False,
+                    "auth": None,
+                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "type": "mapserver",
+                    "imageType": "image/jpeg",
+                },
+                "source for image/jpeg": {
+                    "wfsSupport": True,
+                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "isSingleTile": False,
+                    "auth": "main",
+                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "type": "mapserver",
+                    "imageType": "image/jpeg",
+                },
+                "__test_server_ogc_external": {
+                    "wfsSupport": False,
+                    "url": "http://wms.geo.admin.ch/",
+                    "isSingleTile": False,
+                    "auth": None,
+                    "urlWfs": "http://wms.geo.admin.ch/",
+                    "type": "mapserver",
+                    "imageType": "image/jpeg",
+                },
+                "source for image/png": {
+                    "wfsSupport": True,
+                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "isSingleTile": False,
+                    "auth": "main",
+                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "type": "mapserver",
+                    "imageType": "image/png",
+                }
+            },
+        )
+        self.assertEquals(
+            [self._only_name(t, "serverOGC") for t in themes["themes"]],
+            [{
+                "children": [{
+                    # order is important
+                    "children": [{
+                        "serverOGC": "__test_server_ogc_internal",
+                    }, {
+                        "serverOGC": "__test_server_ogc_external",
+                    }, {
+                    }]
+                }, {
+                    # order is important
+                    "children": [{
+                    }, {
+                        "serverOGC": "__test_server_ogc_internal",
+                    }, {
+                        "serverOGC": "__test_server_ogc_external",
                     }]
                 }]
             }]

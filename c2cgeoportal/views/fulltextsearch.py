@@ -28,14 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
-
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 
 from geojson import Feature, FeatureCollection
 from sqlalchemy import func, desc, or_, and_
-from sqlalchemy.sql import expression
 from geoalchemy2.shape import to_shape
 
 from c2cgeoportal import locale_negotiator
@@ -89,12 +86,8 @@ class FullTextSearchView(object):
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms = "&".join(re.sub("'", "''", w) + ":*" for w in query.split(" ") if w != "")
-        _filter = expression.text(
-            "%(tsvector)s @@ to_tsquery('%(lang)s', '%(terms)s')" % {
-                "tsvector": "ts", "lang": language, "terms": terms
-            }
-        )
+        terms = "&".join(w + ":*" for w in query.split(" ") if w != "")
+        _filter = FullTextSearch.ts.match(terms, postgresql_regconfig=language)
 
         if self.request.user is None or self.request.user.role is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
@@ -132,13 +125,7 @@ class FullTextSearchView(object):
         # and on some assumptions about how it might be calculated
         # (the normalization is applied two times with the combination of 2 and 8,
         # so the effect on at least the one-word-results is therefore stronger).
-        rank = expression.text(
-            "ts_rank_cd(%(tsvector)s, to_tsquery('%(lang)s', '%(terms)s'), 2|8)" % {
-                "tsvector": "ts",
-                "lang": language,
-                "terms": terms
-            }
-        )
+        rank = func.ts_rank_cd(FullTextSearch.ts, func.to_tsquery(language, terms), 2 | 8)
 
         if partitionlimit:
             # Here we want to partition the search results based on

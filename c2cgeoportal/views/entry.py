@@ -59,7 +59,7 @@ from c2cgeoportal.lib.functionality import get_functionality, \
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
-    Theme, LayerGroup, RestrictionArea, Interface, \
+    Theme, LayerGroup, RestrictionArea, Interface, ServerOGC, \
     Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch
 
 
@@ -215,7 +215,7 @@ class Entry(object):
 
         return (resolution_hint_min, resolution_hint_max)
 
-    def _get_child_layers_info(self, layer):
+    def _get_child_layers_info_1(self, layer):
         """ Return information about sub layers of a layer.
 
             Arguments:
@@ -236,7 +236,25 @@ class Entry(object):
             child_layers_info.append(child_layer_info)
         return child_layers_info
 
-    def _layer(self, layer, wms, wms_layers, time, role_id):
+    def _get_child_layers_info(self, layer):
+        """ Return information about sub layers of a layer.
+
+            Arguments:
+
+            * ``layer`` The layer object in the WMS capabilities.
+        """
+        layer_info = dict(name=layer.name)
+        resolution = self._get_layer_resolution_hint(layer)
+        if resolution[0] <= resolution[1]:
+            layer_info.update({
+                "minResolutionHint": resolution[0],
+                "maxResolutionHint": resolution[1]
+            })
+        layer_info["queryable"] = layer.queryable == 1 \
+            if hasattr(layer, "queryable") else True
+        return layer_info
+
+    def _layer(self, layer, wms, wms_layers, time, role_id, mixed=True):
         errors = set()
         l = {
             "id": layer.id,
@@ -269,17 +287,20 @@ class Entry(object):
 
             if layer.layer_type == "internal WMS":
                 if not self._fill_internal_wms(l, layer, wms, wms_layers, errors):
-                    return None, set()
+                    return None, errors
                 errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
                 self._fill_wmts(l, layer, wms, wms_layers, errors)
         elif isinstance(layer, LayerWMS):
+            if layer.layer is None or layer.layer == "":
+                errors.add("The layer '{}' don't have any layers".format(layer.name))
+                return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
-            if not self._fill_wms(l, layer, errors, role_id):
-                return None, set()
+            if not self._fill_wms(l, layer, errors, role_id, mixed=mixed):
+                return None, errors
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
         elif isinstance(layer, LayerWMTS):
@@ -330,7 +351,7 @@ class Entry(object):
             if c > 0:
                 l["editable"] = True
 
-    def _fill_wms(self, l, layer, errors, role_id):
+    def _fill_wms(self, l, layer, errors, role_id, mixed):
         wms, wms_layers = self._wms_layers(role_id, layer.server_ogc)
 
         l["imageType"] = layer.server_ogc.image_type
@@ -338,41 +359,65 @@ class Entry(object):
             l["style"] = layer.style
 
         # now look at what's in the WMS capabilities doc
-        if layer.layer in wms_layers:
-            wms_layer_obj = wms[layer.layer]
-            metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
-            if len(metadata_urls) > 0:  # pragma: no cover
-                l["metadataUrls"] = metadata_urls
-            resolutions = self._get_layer_resolution_hint(wms_layer_obj)
-            if resolutions[0] <= resolutions[1]:
-                if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("%0.2f" % resolutions[0])
-                if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
-            l["childLayers"] = self._get_child_layers_info(wms_layer_obj)
-            if hasattr(wms_layer_obj, "queryable"):
-                l["queryable"] = wms_layer_obj.queryable
-        else:
-            if self.mapserver_settings["geoserver"]:
-                return False
+        l["childLayers"] = []
+        for layer_name in layer.layer.split(","):
+            if layer_name in wms_layers:
+                wms_layer_obj = wms[layer_name]
+                metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
+                if len(metadata_urls) > 0:  # pragma: no cover
+                    if "metadataUrls" not in l:
+                        l["metadataUrls"] = metadata_urls
+                    else:
+                        l["metadataUrls"].extend(metadata_urls)
+                if len(wms_layer_obj.layers) == 0:
+                    l["childLayers"].append(self._get_child_layers_info(wms_layer_obj))
+                else:
+                    for child_layer in wms_layer_obj.layers:
+                        l["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
                     "The layer '%s' (%s) is not defined in WMS capabilities" %
-                    (layer.layer, layer.name)
+                    (layer_name, layer.name)
                 )
+                return False
 
-        l["url"] = get_url(layer.server_ogc.url, self.request, errors=errors)
+        if "minResolutionHint" not in l:
+            min_resolutions_hint = [
+                l_["minResolutionHint"]
+                for l_ in l["childLayers"]
+                if "minResolutionHint" in l_
+            ]
+            if len(min_resolutions_hint) > 0:
+                l["minResolutionHint"] = min(min_resolutions_hint)
+        if "maxResolutionHint" not in l:
+            max_resolutions_hint = [
+                l_["maxResolutionHint"]
+                for l_ in l["childLayers"]
+                if "maxResolutionHint" in l_
+            ]
+            if len(max_resolutions_hint) > 0:
+                l["maxResolutionHint"] = max(max_resolutions_hint)
+
+        if mixed:
+            l["serverOGC"] = layer.server_ogc.name
+        # deprecated
+        l["url"] = get_url(
+            layer.server_ogc.url, self.request,
+            default=self.request.route_url("mapserverproxy"), errors=errors)
         l["isSingleTile"] = layer.server_ogc.is_single_tile
 
         l["wfsSupport"] = layer.server_ogc.wfs_support
-        l["urlWfs"] = layer.server_ogc.url_wfs
+        l["urlWfs"] = get_url(
+            layer.server_ogc.url_wfs, self.request,
+            default=l["url"], errors=errors)
         l["serverType"] = layer.server_ogc.type
+        # end deprecated
 
         return True
 
-    def _fill_wms_v1(self, l, layer, version=1):
+    def _fill_wms_v1(self, l, layer):
         l["imageType"] = layer.image_type
-        if version == 1 and layer.legend_rule:
+        if layer.legend_rule:
             l["icon"] = add_url_params(self.request.route_url("mapserverproxy"), {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
@@ -397,22 +442,21 @@ class Entry(object):
                 "RULE": layer.legend_rule,
             })
 
-    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors, version=1):
-        self._fill_wms_v1(l, layer, version=version)
+    def _fill_internal_wms(self, l, layer, wms, wms_layers, errors):
+        self._fill_wms_v1(l, layer)
 
-        if version == 1:
-            self._fill_legend_rule_query_string(
-                l, layer,
-                self.request.route_url("mapserverproxy")
-            )
+        self._fill_legend_rule_query_string(
+            l, layer,
+            self.request.route_url("mapserverproxy")
+        )
 
-            # this is a leaf, ie. a Mapserver layer
-            if layer.min_resolution is not None:
-                l["minResolutionHint"] = layer.min_resolution
-            if layer.max_resolution is not None:
-                l["maxResolutionHint"] = layer.max_resolution
+        # this is a leaf, ie. a Mapserver layer
+        if layer.min_resolution is not None:
+            l["minResolutionHint"] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l["maxResolutionHint"] = layer.max_resolution
 
-        wmslayer = layer.name if version == 1 else layer.layer
+        wmslayer = layer.name
         # now look at what's in the WMS capabilities doc
         if wmslayer in wms_layers:
             wms_layer_obj = wms[wmslayer]
@@ -425,7 +469,7 @@ class Entry(object):
                     l["minResolutionHint"] = float("%0.2f" % resolutions[0])
                 if "maxResolutionHint" not in l:
                     l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
-            l["childLayers"] = self._get_child_layers_info(wms_layer_obj)
+            l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
@@ -437,15 +481,14 @@ class Entry(object):
                 )
         return True
 
-    def _fill_external_wms(self, l, layer, errors, version=1):
-        self._fill_wms_v1(l, layer, version=version)
-        if version == 1:
-            self._fill_legend_rule_query_string(l, layer, layer.url)
+    def _fill_external_wms(self, l, layer, errors):
+        self._fill_wms_v1(l, layer)
+        self._fill_legend_rule_query_string(l, layer, layer.url)
 
-            if layer.min_resolution is not None:
-                l["minResolutionHint"] = layer.min_resolution
-            if layer.max_resolution is not None:
-                l["maxResolutionHint"] = layer.max_resolution
+        if layer.min_resolution is not None:
+            l["minResolutionHint"] = layer.min_resolution
+        if layer.max_resolution is not None:
+            l["maxResolutionHint"] = layer.max_resolution
 
         l["url"] = get_url(layer.url, self.request, errors=errors)
         l["isSingleTile"] = layer.is_single_tile
@@ -538,28 +581,31 @@ class Entry(object):
         return \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
 
-    def _get_layer_identifiers(self, group):
-        """Recurse on all children to get unique identifier for each child."""
-        identifier = []
+    def _get_ogc_servers(self, group, depth=1):
+        """ Recurse on all children to get unique identifier for each child. """
+        ogc_servers = set()
+
+        # escape loop
+        if depth > 30:
+            log.error("Error: too many recursions with group '%s'" % group.name)
+            return ogc_servers
 
         # recurse on children
         if isinstance(group, LayerGroup) and group.children > 0:
             for tree_item in group.children:
-                child_identifier = self._get_layer_identifiers(tree_item)
-                identifier = identifier + child_identifier
+                ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
 
         if isinstance(group, LayerWMS):
-            identifier.append(group.server_ogc_id)
+            ogc_servers.add(group.server_ogc)
 
         if isinstance(group, LayerWMTS):
-            # add 2 different values to force the mixed state
-            identifier = identifier + ["wmts1", "wmts2"]
+            ogc_servers.add(False)
 
-        return identifier
+        return ogc_servers
 
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, role_id=None, version=1, **kwargs
+        catalogue=True, role_id=None, version=1, mixed=True, **kwargs
     ):
         children = []
         errors = set()
@@ -571,6 +617,13 @@ class Entry(object):
             )
             return None, errors
 
+        ogc_servers = None
+        org_depth = depth
+        if depth == 1:
+            ogc_servers = list(self._get_ogc_servers(group))
+            # check if mixed content
+            mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
+
         for tree_item in group.children:
             if type(tree_item) == LayerGroup:
                 depth += 1
@@ -579,7 +632,7 @@ class Entry(object):
                     gp, gp_errors = self._group(
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
-                        catalogue=catalogue, role_id=role_id, version=version, **kwargs
+                        catalogue=catalogue, role_id=role_id, version=version, mixed=mixed, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -595,7 +648,7 @@ class Entry(object):
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
 
-                        l, l_errors = self._layer(tree_item, role_id=role_id, **kwargs)
+                        l, l_errors = self._layer(tree_item, role_id=role_id, mixed=mixed, **kwargs)
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
@@ -625,11 +678,10 @@ class Entry(object):
                     "isBaseLayer": group.is_base_layer,
                 })
             else:
-                # check if mixed content
-                identifier = self._get_layer_identifiers(group)
-                # Use set() to remove duplicates
-                if len(set(identifier)) > 1:
-                    g["mixed"] = True
+                if org_depth == 1:
+                    g["mixed"] = mixed
+                    if not mixed:
+                        g["serverOGC"] = ogc_servers[0].name
 
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
@@ -1144,6 +1196,27 @@ class Entry(object):
 
         result = {}
         all_errors = set()
+        if version == 2:
+
+            result["serversOGC"] = {}
+            for server_ogc in DBSession.query(ServerOGC).all():
+                url = get_url(
+                    server_ogc.url, self.request,
+                    default=self.request.route_url("mapserverproxy"), errors=all_errors
+                )
+                url_wfs = get_url(
+                    server_ogc.url_wfs, self.request,
+                    default=url, errors=all_errors
+                )
+                result["serversOGC"][server_ogc.name] = {
+                    "url": url,
+                    "urlWfs": url_wfs,
+                    "type": server_ogc.type,
+                    "imageType": server_ogc.image_type,
+                    "auth": server_ogc.auth,
+                    "wfsSupport": server_ogc.wfs_support,
+                    "isSingleTile": server_ogc.is_single_tile,
+                }
         if export_themes:
             themes, errors = self._themes(
                 role_id, interface, True, version, catalogue, min_levels
