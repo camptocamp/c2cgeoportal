@@ -71,7 +71,7 @@ class TimeInformation(object):
 
     def merge_mode(self, mode):
         if mode != "disabled":
-            if self.mode:
+            if self.mode is not None:
                 if self.mode != mode:
                     raise ValueError(
                         "Could not mix time mode '%s' and '%s'"
@@ -83,7 +83,7 @@ class TimeInformation(object):
     def merge_widget(self, widget):
         widget = "slider" if not widget else widget
 
-        if self.widget:
+        if self.widget is not None:
             if self.widget != widget:
                 raise ValueError(
                     "Could not mix time widget '%s' and '%s'"
@@ -188,9 +188,9 @@ class TimeExtentInterval(object):
 
     def to_dict(self):
         min_def_value = _format_date(self.min_def_value) \
-            if self.min_def_value else None
+            if self.min_def_value is not None else None
         max_def_value = _format_date(self.max_def_value) \
-            if self.max_def_value else None
+            if self.max_def_value is not None else None
 
         return {
             "minValue": _format_date(self.start),
@@ -286,7 +286,7 @@ def _parse_date(date):
 
     try:
         dt = isodate.parse_datetime(date)
-        if not dt.tzinfo:
+        if dt.tzinfo is None:
             dt = dt.replace(tzinfo=isodate.UTC)
         return "second", dt
     except:
@@ -296,7 +296,7 @@ def _parse_date(date):
 def _format_date(date):
     assert isinstance(date, datetime.datetime)
     str = isodate.datetime_isoformat(date)
-    if not date.tzinfo:
+    if date.tzinfo is None:
         str += "Z"
     return str
 
