@@ -101,7 +101,7 @@ replace your sencha touch interface by an ngeo interface.
       <script>
           if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
     -         window.location = "${mobile_url}";
-    +         window.location = "${request.route_url('mobile')}";
+    +         window.location = "${request.route_url('mobile', _query=dict(request.GET))}";
           }
       </script>
       % endif
