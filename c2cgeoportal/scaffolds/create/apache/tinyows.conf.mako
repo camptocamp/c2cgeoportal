@@ -9,4 +9,5 @@
 #   Order deny,allow
 #   Deny from all
 #   Allow from 127.0.0.1 ::1
+#   Require ip 127.0.0.1 ::1
 # </Location>
