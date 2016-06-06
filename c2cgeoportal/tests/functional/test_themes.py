@@ -124,14 +124,11 @@ class TestThemesView(TestCase):
         from c2cgeoportal.models import DBSession, Layer, \
             Theme, LayerGroup, Interface, UIMetadata, WMTSDimension
 
-        for t in DBSession.query(UIMetadata).all():
-            DBSession.delete(t)
-        for t in DBSession.query(WMTSDimension).all():
-            DBSession.delete(t)
+        DBSession.query(UIMetadata).delete()
+        DBSession.query(WMTSDimension).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        for layergroup in DBSession.query(LayerGroup).all():
-            DBSession.delete(layergroup)
+        DBSession.query(LayerGroup).delete()
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(Interface).filter(
