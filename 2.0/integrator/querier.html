@@ -29,11 +29,13 @@
     <link rel="next" title="Editing" href="editing.html" />
     <link rel="prev" title="Full-text search" href="fulltext_search.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -49,17 +51,17 @@ it is possible to display combos providing the available values of
 the attributes. The values are automatically retrieved using a
 web service that does a <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
 <p>The web service configuration is done in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>layers:
-    enum:
-        dbsession: &quot;&lt;session name&gt;&quot;
-        &quot;&lt;layer_name&gt;&quot;:
-            dbsession: &quot;&lt;session name&gt;&quot;
-            table: &quot;&lt;[schema.]table name&gt;&quot;
-            attributes:
-                &quot;&lt;attribute name&gt;&quot;:
-                    table: &quot;&lt;[schema.]table name&gt;&quot;
-                    column_name: &quot;&lt;column name&gt;&quot;
-                    separator: &quot;,&quot;
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span><span class="p">:</span>
+    <span class="n">enum</span><span class="p">:</span>
+        <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
+        <span class="s2">&quot;&lt;layer_name&gt;&quot;</span><span class="p">:</span>
+            <span class="n">dbsession</span><span class="p">:</span> <span class="s2">&quot;&lt;session name&gt;&quot;</span>
+            <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
+            <span class="n">attributes</span><span class="p">:</span>
+                <span class="s2">&quot;&lt;attribute name&gt;&quot;</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;&lt;[schema.]table name&gt;&quot;</span>
+                    <span class="n">column_name</span><span class="p">:</span> <span class="s2">&quot;&lt;column name&gt;&quot;</span>
+                    <span class="n">separator</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal"><span class="pre">enum</span></code> level is a shortcut that
@@ -71,13 +73,13 @@ attribute level. <code class="docutils literal"><span class="pre">table</span></
 <p>If <code class="docutils literal"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
 <p>If <code class="docutils literal"><span class="pre">separator</span></code> is defined, the column is considered as a list of values.</p>
 <p>Simple example:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>layers
-    enum:
-        mapserver_layer:
-            table: geodata.table
-            attributes:
-                type:
-                country:
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">layers</span>
+    <span class="n">enum</span><span class="p">:</span>
+        <span class="n">mapserver_layer</span><span class="p">:</span>
+            <span class="n">table</span><span class="p">:</span> <span class="n">geodata</span><span class="o">.</span><span class="n">table</span>
+            <span class="n">attributes</span><span class="p">:</span>
+                <span class="nb">type</span><span class="p">:</span>
+                <span class="n">country</span><span class="p">:</span>
 </pre></div>
 </div>
 <p>Make sure that the <code class="docutils literal"><span class="pre">cgxp_querier</span></code> plugin has the attribute <code class="docutils literal"><span class="pre">attributeURLs</span></code>
@@ -91,7 +93,7 @@ for layers whose data are hosted in external databases, using the
 <p>Such <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_1_0/orm/session_basics.html#getting-a-session">DB session objects</a>
 must be listed in the <code class="docutils literal"><span class="pre">DBSessions</span></code> dictionary created in c2cgeoportal
 models file. Its default value is:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">DBSessions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;dbsession&quot;</span><span class="p">:</span> <span class="n">DBSession</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
@@ -99,7 +101,7 @@ models file. Its default value is:</p>
 <p><code class="docutils literal"><span class="pre">DBSession</span></code> being the session object linked to the default database.</p>
 <p>You may add your own DB session objects in the application&#8217;s <code class="docutils literal"><span class="pre">models.py</span></code> file.
 For instance:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSessions</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSessions</span>
 <span class="n">DBSessions</span><span class="p">[</span><span class="s1">&#39;some_db_session_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SomeDbSessionObject</span>
 </pre></div>
 </div>
@@ -146,14 +148,11 @@ For instance:</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -164,8 +163,8 @@ For instance:</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/querier.txt"

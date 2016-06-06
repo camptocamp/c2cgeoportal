@@ -70,8 +70,8 @@ The following variables may be set in the makefiles:
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``INSTANCE_ID``: The WSGI instance id (should be unique on a server).
 * ``LANGUAGES``: the list of available languages.
-* ``MOBILE``: ``TRUE`` to build the Sencha Touch interface, defaults to ``TRUE``.
 * ``NGEO``: ``TRUE`` to build the ngeo interface, defaults to ``FALSE``.
+* ``NGEO_INTERFACES``: The list of NGEO interfaces, default is ``mobile``.
 * ``POST_RULES``: postdefine some build rules, default is empty.
 * ``PRE_RULES``: predefine some build rules, default is empty.
 * ``PRINT_VERSION``: , The print version we want to use (``2``, ``3`` or ``NONE``), defaults to ``3``.
@@ -82,26 +82,24 @@ Custom rules
 ------------
 
 In the ``<package>.mk`` file we can create some other rules.
-Here is a simple example that creates the
-`/var/sig/tiles/1.0.0/WMTSCapabilities.xml` file
-and removes it on the `clean` rule:
+Here is a simple example:
 
 .. code:: makefile
 
-    PRE_RULES = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+    MY_FILE ?= <file>
 
-    /var/sig/tiles/1.0.0/WMTSCapabilities.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
-        $(VENV_BIN)/generate_controller --capabilities
+    PRE_RULES = $(MY_FILE)
+
+    $(MY_FILE): <source_file>
+        cp <source_file> $(MY_FILE)
+        # Short version:
+        # cp $< $@
 
     clean: project-clean
     .PHONY: project-clean
     project-clean:
-        rm -f /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+        rm -f $(MY_FILE)
 
-``tilegeneration/config.yaml`` and ``.build/dev-requirements.timestamp`` are the files
-that must be built to run the current rule.
-
-``$(VENV_BIN)/generate_controller --capabilities`` is the command that generates the wanted file.
 
 Note
 ----

@@ -29,11 +29,13 @@
     <link rel="next" title="Client-side development" href="client_side.html" />
     <link rel="prev" title="Principles" href="principles.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -80,7 +82,7 @@ span.prompt1:before {
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pip uninstall c2cgeoportal</span>
 </pre></li>
 <li><p class="first">Remove/comment the following line in the CONST_requirements.txt file:</p>
-<div class="code make highlight-python"><div class="highlight"><pre><span></span>c2cgeoportal==1.6.0
+<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
 </pre></div>
 </div>
 </li>
@@ -94,7 +96,7 @@ span.prompt1:before {
 <p>When restarting the print server frequently, performance issues may randomly be observed.
 This is done in random number generation.</p>
 <p>To improve the performances you should add in the <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/bin/setenv-local.sh</span></code> file:</p>
-<div class="code bash last highlight-python"><div class="highlight"><pre><span></span>export ADD_JAVA_OPTS=&quot;-Djava.security.egd=file:/dev/./urandom&quot;
+<div class="code bash last highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">ADD_JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -166,10 +168,10 @@ machine it may be <code class="docutils literal"><span class="pre">http://locaho
 <code class="docutils literal"><span class="pre">localhost</span></code> virtual host. One option involves creating a specific script
 alias for <code class="docutils literal"><span class="pre">mapserv</span></code>, for example by adding something like the following
 to your <code class="docutils literal"><span class="pre">/var/www/&lt;virtual_host_name&gt;/conf/mapserv.conf</span></code> file:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
-&lt;Location /mapserv&gt;
-    SetHandler fcgid-script
-&lt;/Location&gt;
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">mapserv</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="nb">bin</span><span class="o">/</span><span class="n">mapserv</span>
+<span class="o">&lt;</span><span class="n">Location</span> <span class="o">/</span><span class="n">mapserv</span><span class="o">&gt;</span>
+    <span class="n">SetHandler</span> <span class="n">fcgid</span><span class="o">-</span><span class="n">script</span>
+<span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>To know what domain name to use look at the <code class="docutils literal"><span class="pre">ServerAlias</span></code>&#8216;es
@@ -288,14 +290,14 @@ this directory.</p>
 <p>All the static resources used sub domains by using the configurations variables:
 <code class="docutils literal"><span class="pre">subdomain_url_template</span></code> and <code class="docutils literal"><span class="pre">subdomains</span></code>.</p>
 <p>To be able to use sub domain in a view we should configure the route as this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.lib</span> <span class="kn">import</span> <span class="n">MultiDomainPregenerator</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.lib</span> <span class="k">import</span> <span class="n">MultiDomainPregenerator</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
     <span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
     <span class="n">pregenerator</span><span class="o">=</span><span class="n">MultiDomainPregenerator</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>And use the <code class="docutils literal"><span class="pre">route_url</span></code> with an additional argument <code class="docutils literal"><span class="pre">subdomain</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>request.route_url(&#39;&lt;name&gt;&#39;, subdomain=&#39;&lt;subdomain&gt;&#39;)}&quot;,
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="n">subdomain</span><span class="o">=</span><span class="s1">&#39;&lt;subdomain&gt;&#39;</span><span class="p">)}</span><span class="s2">&quot;,</span>
 </pre></div>
 </div>
 </div>
@@ -393,14 +395,11 @@ this directory.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -411,8 +410,8 @@ this directory.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/developer/server_side.txt"

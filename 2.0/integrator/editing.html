@@ -29,11 +29,13 @@
     <link rel="next" title="Print" href="print.html" />
     <link rel="prev" title="Query builder (Querier)" href="querier.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -59,7 +61,7 @@ interface.</p>
 <p>Other customizations, like adding tools to the toolbar, can be done. If layer
 sources and tools are added you will certainly need to edit <code class="docutils literal"><span class="pre">jsbuild/app.cfg</span></code>
 and add scripts in the <code class="docutils literal"><span class="pre">[edit.js]</span></code> sections.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/Editing.html">Editing API doc</a> for the list of
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/Editing.html">Editing API doc</a> for the list of
 options the plugin can receive.</p>
 <div class="section" id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
@@ -69,10 +71,10 @@ options the plugin can receive.</p>
 <h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
 <p>Checking the validity of a geometry may be enabled using the following
 configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>vars:
-    ...
-    layers:
-        geometry_validation: True
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">layers</span><span class="p">:</span>
+        <span class="n">geometry_validation</span><span class="p">:</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
@@ -118,14 +120,11 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -136,8 +135,8 @@ configuration in <code class="docutils literal"><span class="pre">vars_&lt;proje
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/editing.txt"

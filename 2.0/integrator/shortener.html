@@ -29,11 +29,13 @@
     <link rel="next" title="Reset password" href="reset_password.html" />
     <link rel="prev" title="HTTPS" href="https.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -43,25 +45,25 @@
   <div class="section" id="configure-short-url">
 <span id="integrator-shortener"></span><h1>Configure short URL<a class="headerlink" href="#configure-short-url" title="Permalink to this headline">¶</a></h1>
 <p>The configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> looks like this:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>shortener:
-     # The base of created URL
-     base_url:  http://{host}/{apache_entry_point}s/
-     # Used to send a confirmation email
-     email_from: info@camptocamp.com
-     email_subject: You have created the following short URL
-     email_body: |
-         Hello,
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">shortener</span><span class="p">:</span>
+     <span class="c1"># The base of created URL</span>
+     <span class="n">base_url</span><span class="p">:</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">apache_entry_point</span><span class="p">}</span><span class="n">s</span><span class="o">/</span>
+     <span class="c1"># Used to send a confirmation email</span>
+     <span class="n">email_from</span><span class="p">:</span> <span class="n">info</span><span class="nd">@camptocamp</span><span class="o">.</span><span class="n">com</span>
+     <span class="n">email_subject</span><span class="p">:</span> <span class="n">You</span> <span class="n">have</span> <span class="n">created</span> <span class="n">the</span> <span class="n">following</span> <span class="n">short</span> <span class="n">URL</span>
+     <span class="n">email_body</span><span class="p">:</span> <span class="o">|</span>
+         <span class="n">Hello</span><span class="p">,</span>
 
-         You have created the following short URL:
-         short URL: %(short_url)s
-         full URL: %(full_url)s
+         <span class="n">You</span> <span class="n">have</span> <span class="n">created</span> <span class="n">the</span> <span class="n">following</span> <span class="n">short</span> <span class="n">URL</span><span class="p">:</span>
+         <span class="n">short</span> <span class="n">URL</span><span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">short_url</span><span class="p">)</span><span class="n">s</span>
+         <span class="n">full</span> <span class="n">URL</span><span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">full_url</span><span class="p">)</span><span class="n">s</span>
 
-         The Mapfish team
-     smtp_server: smtp.example.com
-     # length (default) of ref of new short url
-     # Can be change when you want
-     # max 20 (size of the column)
-     length: 4
+         <span class="n">The</span> <span class="n">Mapfish</span> <span class="n">team</span>
+     <span class="n">smtp_server</span><span class="p">:</span> <span class="n">smtp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+     <span class="c1"># length (default) of ref of new short url</span>
+     <span class="c1"># Can be change when you want</span>
+     <span class="c1"># max 20 (size of the column)</span>
+     <span class="n">length</span><span class="p">:</span> <span class="mi">4</span>
 </pre></div>
 </div>
 <p>The shortened URL is sent by email to the current registered user email address
@@ -100,14 +102,11 @@ viewer interface.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -118,8 +117,8 @@ viewer interface.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/shortener.txt"

@@ -29,11 +29,13 @@
     <link rel="next" title="Query builder (Querier)" href="querier.html" />
     <link rel="prev" title="Advanced configuration examples" href="advanced.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -49,7 +51,7 @@ database.</p>
 <h2>The FullTextSearch plugin<a class="headerlink" href="#the-fulltextsearch-plugin" title="Permalink to this headline">¶</a></h2>
 <p>The viewer should include a <code class="docutils literal"><span class="pre">FullTextSearch</span></code> plugin for the <em>text search</em>
 feature to be available in the user interface.</p>
-<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FullTextSearch.html">FullTextSearch API doc</a> for the
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/FullTextSearch.html">FullTextSearch API doc</a> for the
 list of options the plugin can receive.</p>
 <p><em>The main viewer includes a FullTextSearch plugin by default.</em></p>
 </div>
@@ -60,20 +62,13 @@ search table should be named <code class="docutils literal"><span class="pre">ts
 the application-specific schema.</p>
 <p>You don&#8217;t need to create the table yourself, as it is created by the
 <code class="docutils literal"><span class="pre">create_db</span></code> command line (see the section
-<a class="reference internal" href="install_application.html#integrator-install-application"><span>Install an existing application</span></a>).</p>
+<a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
 <p>If you did want to create the table manually you&#8217;d use the following commands:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch ( \</span>
-<span class="s2">    id SERIAL PRIMARY KEY, \</span>
-<span class="s2">    layer_name TEXT, \</span>
-<span class="s2">    label TEXT, \</span>
-<span class="s2">    public BOOLEAN DEFAULT &#39;t&#39;, \</span>
-<span class="s2">    params TEXT, \</span>
-<span class="s2">    role_id INTEGER REFERENCES &lt;schema_name&gt;.role, \</span>
-<span class="s2">    ts TSVECTOR);&quot;</span> &lt;db_name&gt;</span>
+</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch (         id SERIAL PRIMARY KEY,         layer_name TEXT,         label TEXT,         public BOOLEAN DEFAULT &#39;t&#39;,         params TEXT,         role_id INTEGER REFERENCES &lt;schema_name&gt;.role,         ts TSVECTOR);&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;SELECT AddGeometryColumn(&#39;&lt;schema_name&gt;&#39;, &#39;tsearch&#39;, &#39;the_geom&#39;, &lt;srid&gt;, &#39;GEOMETRY&#39;, 2);&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE INDEX tsearch_ts_idx ON &lt;schema_name&gt;.tsearch USING gin(ts);&quot;</span> &lt;db_name&gt;</span>
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;srid&gt;</span></code>, and <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code>  substituted as appropriate.</p>
@@ -84,11 +79,11 @@ span.prompt1:before {
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>Here&#8217;s an example of an insertion in the <code class="docutils literal"><span class="pre">tsearch</span></code> table:</p>
-<div class="code sql highlight-python"><div class="highlight"><pre><span></span>INSERT INTO app_schema.tsearch
-  (the_geom, layer_name, label, public, role_id, ts)
-VALUES
-  (ST_GeomFromText(&#39;POINT(2660000 1140000)&#39;, 21781), &#39;Layer group&#39;,
-   &#39;text to display&#39;, &#39;t&#39;, NULL, to_tsvector(&#39;french&#39;, &#39;text to search&#39;));
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+<span class="n">VALUES</span>
+  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;text to display&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span> <span class="s1">&#39;text to search&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">Layer</span> <span class="pre">group</span></code> is the name of the layer group that should be activated,
@@ -96,11 +91,11 @@ VALUES
 <code class="docutils literal"><span class="pre">test</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
 <code class="docutils literal"><span class="pre">french</span></code> is the used language.</p>
 <p>Here&#8217;s another example where rows from a <code class="docutils literal"><span class="pre">SELECT</span></code> are inserted:</p>
-<div class="code sql highlight-python"><div class="highlight"><pre><span></span>INSERT INTO app_schema.tsearch
-  (the_geom, layer_name, label, public, role_id, ts)
-SELECT
-  geom, &#39;layer group name&#39;, text, &#39;t&#39;, NULL, to_tsvector(&#39;german&#39;, text)
-FROM table;
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+<span class="n">SELECT</span>
+  <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -133,17 +128,17 @@ available to users of the corresponding role.</p>
 insert that data multiple times. For example, if you want to make the data
 of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
 are <code class="docutils literal"><span class="pre">1</span></code> and <code class="docutils literal"><span class="pre">2</span></code> you will use two SQL <code class="docutils literal"><span class="pre">INSERT</span></code> statements:</p>
-<div class="code sql last highlight-python"><div class="highlight"><pre><span></span>INSERT INTO app_schema.tsearch
-   (the_geom, layer_name, label, public, role_id, ts)
-SELECT
-   geom, &#39;layer group name&#39;, text, &#39;f&#39;, 1, to_tsvector(&#39;german&#39;, text)
-FROM table;
+<div class="code sql last highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+<span class="n">SELECT</span>
+   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 
-INSERT INTO app_schema.tsearch
-   (the_geom, layer_name, label, public, role_id, ts)
-SELECT
-   geom, &#39;layer group name&#39;, text, &#39;f&#39;, 2, to_tsvector(&#39;german&#39;, text)
-FROM table;
+<span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+<span class="n">SELECT</span>
+   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -152,31 +147,31 @@ FROM table;
 <span id="integrator-fulltext-search-params"></span><h2>Params<a class="headerlink" href="#params" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">params</span></code> column can contain a JSON with a dictionary of parameters.
 For instance to specify a <code class="docutils literal"><span class="pre">floor</span></code>:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Query string <code class="docutils literal"><span class="pre">floor=1</span></code> is then automatically appended to all WMS requests.</p>
-<p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FloorSlider.html">FloorSlider</a>
+<p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/FloorSlider.html">FloorSlider</a>
 for more information.</p>
 </div>
 <div class="section" id="actions">
 <h2>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">actions</span></code> column contains a JSON with an array of actions like:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_layer&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_layer_name&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_group&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_group_name&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_theme&quot;</span><span class="p">,</span>
     <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_theme_name&gt;&quot;</span>
 <span class="p">}</span>
@@ -210,30 +205,30 @@ can be used.</p>
 <p>First connect to the database:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -d &lt;database&gt;</span>
 </pre><p>For that we need the Postgres unaccent extension and dictionary:</p>
-<div class="code sql highlight-python"><div class="highlight"><pre><span></span>CREATE EXTENSION unaccent;
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">EXTENSION</span> <span class="n">unaccent</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Insert the unaccent dictionary into a text search configuration
 (<a class="reference external" href="http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html">Documentation</a>):</p>
-<div class="code sql highlight-python"><div class="highlight"><pre><span></span>CREATE TEXT SEARCH CONFIGURATION fr (COPY = french);
-ALTER TEXT SEARCH CONFIGURATION fr
-    ALTER MAPPING FOR hword, hword_part, word
-    WITH unaccent, french_stem;
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">fr</span> <span class="p">(</span><span class="n">COPY</span> <span class="o">=</span> <span class="n">french</span><span class="p">);</span>
+<span class="n">ALTER</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">fr</span>
+    <span class="n">ALTER</span> <span class="n">MAPPING</span> <span class="n">FOR</span> <span class="n">hword</span><span class="p">,</span> <span class="n">hword_part</span><span class="p">,</span> <span class="n">word</span>
+    <span class="n">WITH</span> <span class="n">unaccent</span><span class="p">,</span> <span class="n">french_stem</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>When populating the <code class="docutils literal"><span class="pre">tsearch</span></code> table use the text configuration &#8216;fr&#8217;
 instead of &#8216;french&#8217;. For example:</p>
-<div class="code sql highlight-python"><div class="highlight"><pre><span></span>INSERT INTO &lt;schema&gt;.tsearch
-  (the_geom, layer_name, label, public, role_id, ts)
-VALUES
-  (ST_GeomFromText(&#39;POINT(2660000 1140000)&#39;, 21781), &#39;Layer group&#39;,
-   &#39;Accent text to display (éàè)&#39;, &#39;t&#39;, NULL, to_tsvector(&#39;fr&#39;, &#39;Accent text to search (éàè)&#39;));
+<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="o">&lt;</span><span class="n">schema</span><span class="o">&gt;.</span><span class="n">tsearch</span>
+  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+<span class="n">VALUES</span>
+  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>And define the configuration in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>fulltextsearch:
-    languages:
-        fr: fr
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">fulltextsearch</span><span class="p">:</span>
+    <span class="n">languages</span><span class="p">:</span>
+        <span class="n">fr</span><span class="p">:</span> <span class="n">fr</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and
@@ -292,14 +287,11 @@ configuration is named &#8216;french&#8217;.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -310,8 +302,8 @@ configuration is named &#8216;french&#8217;.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/fulltext_search.txt"

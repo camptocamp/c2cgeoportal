@@ -29,11 +29,13 @@
     <link rel="next" title="Extend the data model" href="extend_data_model.html" />
     <link rel="prev" title="Infrastructure and Deployment" href="deploy.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -68,7 +70,7 @@ should be used instead.</p>
 <p>To use a &#8220;remote user&#8221; authentication policy edit the application&#8217;s
 main <code class="docutils literal"><span class="pre">__init__.py</span></code> file, and set <code class="docutils literal"><span class="pre">authentication_policy</span></code> to a
 <code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
+<div class="code python highlight-default"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
 from pyramid.authentication import RemoteUserAuthenticationPolicy
 from c2cgeoportal import locale_negotiator
 from c2cgeoportal.resources import FAModels, defaultgroupsfinder
@@ -103,11 +105,11 @@ work properly.</p>
 the c2cgeoportal application with the name of the user&#8217;s role. This can be done
 in <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> by relying on the <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_setenvif.html">mod_setenvif</a> Apache module&#8217;s
 <code class="docutils literal"><span class="pre">SetEnvIf</span></code> directive. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
+<div class="highlight-default"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &lt;role&gt;(.*)&lt;/role&gt; rolename=$1
 </pre></div>
 </div>
 <p>or:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
+<div class="highlight-default"><div class="highlight"><pre><span></span>SetEnvIf isiwebsectoken &#39;&lt;field name=&quot;roles&quot;&gt;([a-zA-Z0-9,\.]*)&lt;/field&gt;&#39; rolename=$1
 </pre></div>
 </div>
 <p>With this <code class="docutils literal"><span class="pre">mod_setenvif</span></code> extracts the role name from the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header
@@ -117,15 +119,15 @@ documentation for more details.</p>
 an Apache module called NINAP. The above Apache configuration may also contain
 NINAP directives (see nevisProxy documentation). For instance to indicate what
 field in the <code class="docutils literal"><span class="pre">isiwebsectoken</span></code> header contains the username:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>NINAP_UserPattern &#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">NINAP_UserPattern</span> <span class="s1">&#39;&lt;field name=&quot;loginId&quot;&gt;([a-zA-Z0-9\._-]*)&lt;/field&gt;&#39;</span>
 </pre></div>
 </div>
 <p>Eventually the following directives activate the access restriction to the
 application:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;Location /&lt;instance_id&gt;/wsgi&gt;
-  AuthType sectoken
-  Require valid-user
-&lt;/Location&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Location</span> <span class="o">/&lt;</span><span class="n">instance_id</span><span class="o">&gt;/</span><span class="n">wsgi</span><span class="o">&gt;</span>
+  <span class="n">AuthType</span> <span class="n">sectoken</span>
+  <span class="n">Require</span> <span class="n">valid</span><span class="o">-</span><span class="n">user</span>
+<span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> code expects that the user data (user name, role name and
@@ -138,12 +140,12 @@ Therefore the application should redefine the callback function that adds
 a <code class="docutils literal"><span class="pre">user</span></code> property to the request. This is done by calling the
 <code class="docutils literal"><span class="pre">set_request_property</span></code> function on the <code class="docutils literal"><span class="pre">Configurator</span></code> object.
 You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
     <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
-    <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
         <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rolename&#39;</span><span class="p">)</span>
@@ -154,8 +156,8 @@ You may for example add to <code class="docutils literal"><span class="pre">__in
 </pre></div>
 </div>
 <p>And then, in the application&#8217;s <code class="docutils literal"><span class="pre">main</span></code> function:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">get_user_from_request</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="bp">True</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">get_user_from_request</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="kc">True</span>
                             <span class="p">)</span>
 </pre></div>
 </div>
@@ -168,7 +170,7 @@ the value of the <code class="docutils literal"><span class="pre">rolename</span
 If for some reason you need to use another name for this role, you may define
 an alias in a project-specific callback and use it instead of the standard
 <code class="docutils literal"><span class="pre">defaultgroupsfinder</span></code> as <code class="docutils literal"><span class="pre">AuthenticationPolicy</span></code> argument in <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mygroupsfinder</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
     <span class="n">role</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>
     <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&lt;your_admin_rolename&gt;&#39;</span><span class="p">:</span>
@@ -200,13 +202,13 @@ source, like LDAP, another <em>client validation</em> mechanism should be set up
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> provides a specific <code class="docutils literal"><span class="pre">Configurator</span></code> function for that, namely
 <code class="docutils literal"><span class="pre">set_user_validator</span></code> which allow to register a custom validator.
 Here&#8217;s an example:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="kn">import</span> <span class="n">get_ldap_connector</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="kc">None</span>
 <span class="o">...</span>
 <span class="n">config</span><span class="o">.</span><span class="n">set_user_validator</span><span class="p">(</span><span class="n">custom_user_validator</span><span class="p">)</span>
 </pre></div>
@@ -219,12 +221,12 @@ the user information source.</p>
 <p>User validators can obviously be chained. For example, a user validator
 function that queries the <code class="docutils literal"><span class="pre">user</span></code> database table if the user does not exist in
 LDAP would look like this:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">default_user_validator</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="kn">import</span> <span class="n">get_ldap_connector</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">default_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 </pre></div>
@@ -232,23 +234,23 @@ LDAP would look like this:</p>
 <div class="section" id="custom-user-validation-ldap">
 <h3>Custom user validation - LDAP<a class="headerlink" href="#custom-user-validation-ldap" title="Permalink to this headline">¶</a></h3>
 <p>Full example using pyramid_ldap, see <cite># LDAP</cite> / <cite># END LDAP</cite> blocs.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
+<span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="k">import</span> <span class="n">Configurator</span>
 <span class="c1"># LDAP</span>
 <span class="c1"># get_user_from_request also needed for the same reason</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
     <span class="n">INTERFACE_TYPE_SENCHA_TOUCH</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 <span class="c1"># END LDAP</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal.lib.authentication</span> <span class="kn">import</span> <span class="n">create_authentication</span>
-<span class="kn">from</span> <span class="nn">yourproject.resources</span> <span class="kn">import</span> <span class="n">Root</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
+<span class="kn">from</span> <span class="nn">yourproject.resources</span> <span class="k">import</span> <span class="n">Root</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="c1"># LDAP</span>
 <span class="c1"># dependencies</span>
 <span class="kn">import</span> <span class="nn">ldap</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
 <span class="c1"># END LDAP</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
@@ -256,12 +258,12 @@ LDAP would look like this:</p>
 <span class="c1"># LDAP</span>
 <span class="c1"># authenticate on LDAP and return cleaned user data</span>
 <span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">default_user_validator</span>
-    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="kn">import</span> <span class="n">get_ldap_connector</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;user </span><span class="si">%s</span><span class="s1"> found in ldap&#39;</span> <span class="o">%</span> <span class="n">username</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="n">user</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;uid&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;roles&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]}</span>
@@ -277,7 +279,7 @@ LDAP would look like this:</p>
     <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="k">pass</span>
 
-    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_user&#39;</span><span class="p">):</span>
         <span class="c1"># avoid recursive calls from</span>
@@ -285,15 +287,15 @@ LDAP would look like this:</p>
         <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">_user</span>
 
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;user is not authenticated or is a ldap user&quot;</span><span class="p">)</span>
         <span class="n">identity</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
-        <span class="k">if</span> <span class="n">identity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">identity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">identity</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
             <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">identity</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
             <span class="n">user</span><span class="o">.</span><span class="n">functionalities</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">identity</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
             <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
             <span class="n">request</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">user</span>
@@ -349,7 +351,7 @@ LDAP would look like this:</p>
     <span class="c1"># LDAP</span>
     <span class="c1"># register the customized function</span>
     <span class="n">config</span><span class="o">.</span><span class="n">set_user_validator</span><span class="p">(</span><span class="n">custom_user_validator</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># END LDAP</span>
 
     <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
@@ -404,14 +406,11 @@ LDAP would look like this:</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -422,8 +421,8 @@ LDAP would look like this:</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/authentication.txt"

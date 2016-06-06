@@ -29,11 +29,13 @@
     <link rel="next" title="Configure short URL" href="shortener.html" />
     <link rel="prev" title="JavaScript API" href="api.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -65,21 +67,21 @@ proxy:</p>
 received you will set the <cite>HTTPS</cite> environment variable by adding the
 following in the <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> file in the <code class="docutils literal"><span class="pre">&lt;location</span> <span class="pre">...&gt;</span></code>
 section, in our example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>SetEnvIf    X-Https on HTTPS=1
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SetEnvIf</span>    <span class="n">X</span><span class="o">-</span><span class="n">Https</span> <span class="n">on</span> <span class="n">HTTPS</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
 </li>
 </ul>
 <p>In Mako templates, if you need to know what scheme is used, you may test the
 value of <code class="docutils literal"><span class="pre">request.scheme</span></code>. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>var WMTS_OPTIONS = {
-% if request.scheme == &#39;https&#39;:
-    url: &#39;https://my.wmts.server/&#39;
-% else:
-    url: &#39;http://my.wmts.server/&#39;
-% endif
-/* ... */
-};
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;https&#39;</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://my.wmts.server/&#39;</span>
+<span class="o">%</span> <span class="k">else</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;http://my.wmts.server/&#39;</span>
+<span class="o">%</span> <span class="n">endif</span>
+<span class="o">/*</span> <span class="o">...</span> <span class="o">*/</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 </div>
@@ -102,7 +104,7 @@ resourceproxy service as described below.</p>
 <p>If you want to load non https external resources in your https application, you
 must use the resourceproxy service and add the list of hosts you want to access
 in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
-<div class="code yaml highlight-python"><div class="highlight"><pre><span></span>resourceproxy:
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>resourceproxy:
     # list of urls from which it is safe to load content
     targets:
       #exempletargetname: http://www.camptocamp.com/?param1=%s&amp;param2=%s
@@ -157,14 +159,11 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -175,8 +174,8 @@ in your project <cite>vars_&lt;project&gt;.yaml</cite> configuration file:</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/https.txt"

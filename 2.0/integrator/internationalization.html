@@ -29,11 +29,13 @@
     <link rel="next" title="Create a cluster" href="cluster.html" />
     <link rel="prev" title="Mobile Applications" href="mobile.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -42,8 +44,19 @@
             
   <div class="section" id="internationalization">
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="client">
-<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ngeo-and-server">
+<h2>ngeo and server<a class="headerlink" href="#ngeo-and-server" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file define the supported language with (default):</p>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file define the available and default language:</p>
+<p>Build your application</p>
+<p>The file to translate are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for ngeo client</li>
+<li><code class="docutils literal"><span class="pre">demo/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (Should be empty for ngeo interfaces)</li>
+</ul>
+</div>
+<div class="section" id="cgxp">
+<h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
 <p>Translations of the browser interfaces (main viewer, edit interfaces and APIs)
 are included in two kinds of Javascript files stored in
 <code class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></code>:</p>
@@ -51,9 +64,9 @@ are included in two kinds of Javascript files stored in
 <li><p class="first"><code class="docutils literal"><span class="pre">&lt;lang&gt;.js</span></code> is used to translate data-related strings such as layernames or
 attributenames (in interrogation results). It is based upon the OpenLayers
 translation syntax. For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>OpenLayers.Util.extend(OpenLayers.Lang.&lt;lang&gt;, {
-    &quot;layertree&quot;: &quot;Themes&quot;
-});
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">OpenLayers</span><span class="o">.</span><span class="n">Lang</span><span class="o">.&lt;</span><span class="n">lang</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s2">&quot;layertree&quot;</span><span class="p">:</span> <span class="s2">&quot;Themes&quot;</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 </li>
@@ -61,7 +74,7 @@ translation syntax. For instance:</p>
 or to add translations of project-specific plugins. It is based upon the GeoExt
 translation syntax. Key-value translation pairs are encapsulated by class.
 For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;cgxp.tree.LayerTree.prototype&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="n">moveupText</span><span class="p">:</span> <span class="s2">&quot;Move up&quot;</span>
     <span class="p">}</span>
@@ -83,37 +96,8 @@ For example: en, de or fr.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Translations from both OpenLayers- and GeoExt-based systems are stored in
-separated files because of API constraints. Read more at <a class="reference internal" href="api.html#integrator-api-i18n"><span>Internationalization</span></a>.</p>
+separated files because of API constraints. Read more at <a class="reference internal" href="api.html#integrator-api-i18n"><span class="std std-ref">Internationalization</span></a>.</p>
 </div>
-</div>
-<div class="section" id="server">
-<h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p class="first">Extract all messages from the project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py extract_messages
-</pre></div>
-</div>
-</li>
-<li><p class="first">Initialize a catalog for every supported language, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py init_catalog -l en
-.build/venv/bin/python setup.py init_catalog -l fr
-.build/venv/bin/python setup.py init_catalog -l de
-</pre></div>
-</div>
-</li>
-<li><p class="first">Edit the .po files in <code class="docutils literal"><span class="pre">&lt;package&gt;/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;.po</span></code></p>
-</li>
-<li><p class="first">Run make to compile all the .po files to .mo:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>make -f &lt;user&gt;.mk build
-</pre></div>
-</div>
-</li>
-</ol>
-<p>When you add a new message repeat all steps but replace the step 2. by:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>.build/venv/bin/python setup.py update_catalog
-</pre></div>
-</div>
-<p><a class="reference external" href="http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization">Source from pylondhq</a></p>
 </div>
 </div>
 
@@ -129,8 +113,8 @@ separated files because of API constraints. Read more at <a class="reference int
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Internationalization</a><ul>
-<li><a class="reference internal" href="#client">Client</a></li>
-<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#ngeo-and-server">ngeo and server</a></li>
+<li><a class="reference internal" href="#cgxp">CGXP</a></li>
 </ul>
 </li>
 </ul>
@@ -155,14 +139,11 @@ separated files because of API constraints. Read more at <a class="reference int
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -173,8 +154,8 @@ separated files because of API constraints. Read more at <a class="reference int
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/internationalization.txt"

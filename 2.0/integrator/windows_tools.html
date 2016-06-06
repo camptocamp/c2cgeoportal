@@ -29,11 +29,13 @@
     <link rel="next" title="Build the project with Make" href="make.html" />
     <link rel="prev" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -68,14 +70,15 @@
 <ol class="arabic simple">
 <li>Download PuTTY: <a class="reference external" href="http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe">http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe</a></li>
 <li>Configurate PuTTY:
-a) In the left-hand column (Category), choose &#8220;Connection&gt;SSH&gt;Auth&#8221;
-b) Fill the &#8220;Private key file for authentication&#8221; field</li>
+a. In the left-hand column (Category), choose &#8220;Connection&gt;SSH&gt;Auth&#8221;
+b. Fill the &#8220;Private key file for authentication&#8221; field
+c. Activate &#8220;Allow agent forwarding&#8221;</li>
 <li>Auto-login:
-a) One may save his/her username in &#8220;Connection&gt;Data&#8221; &gt; &#8220;Auto-login username&#8221;</li>
+a. One may save his/her username in &#8220;Connection&gt;Data&#8221; &gt; &#8220;Auto-login username&#8221;</li>
 <li>Connect to the server:
-a) Fill connection info in the Session tab (&#8220;Connection Type&#8221; should be set at &#8220;SSH&#8221;)
-b) Save the configuration
-c) Click on &#8220;Open&#8221; and type your passphrase when prompted</li>
+a. Fill connection info in the Session tab (&#8220;Connection Type&#8221; should be set at &#8220;SSH&#8221;)
+b. Save the configuration
+c. Click on &#8220;Open&#8221; and type your passphrase when prompted</li>
 <li>if you get disconnected because of your network configuration (proxies etc.) you should follow [this explanation](<a class="reference external" href="http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">http://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont</a>)</li>
 </ol>
 </div>
@@ -151,14 +154,11 @@ Type your passphrase when prompted.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -169,8 +169,8 @@ Type your passphrase when prompted.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/windows_tools.txt"

@@ -29,11 +29,13 @@
     <link rel="next" title="Cache management" href="cache.html" />
     <link rel="prev" title="Debugging" href="debugging.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -67,104 +69,132 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <div class="section" id="result-in-v2">
 <h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
 <p>Base for all possible results:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    themes: [&lt;themes&gt;],
-    group: &lt;group&gt;,
-    background_layers: [&lt;layers&gt;],
-    errors: [&lt;errors&gt;]
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;serversOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span> <span class="n">OGC</span><span class="o">&gt;</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;background_layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Server OGC:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
 <p>Theme:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;name&quot;: &lt;name&gt;,
-    &quot;icon&quot;: &lt;icon_url&gt;,
-    &quot;functionalities&quot;: {
-        &lt;name&gt;: &lt;values&gt;
-    },
-    &quot;ui_metadata&quot;: {
-        &lt;name&gt;: &lt;value&gt;
-    },
-    &quot;children&quot;: [&lt;items&gt;]
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;values&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Group:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;name&quot;: &lt;name&gt;,
-    &quot;mixed&quot;: true/false,
-    &quot;metadata&quot;: {
-        &lt;name&gt;: &lt;value&gt;
-    },
-    &quot;children&quot;: [&lt;items&gt;]
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="c1"># if not mixed</span>
+    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;name&quot;: &lt;name&gt;,
-    &quot;type&quot;: &quot;WMS/WMTS&quot;,
-    &quot;metadata&quot;: {
-        &lt;name&gt;: &lt;value&gt;
-    }
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>WMS Layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-
-    &quot;layers&quot;: &lt;wms_layers&gt;,
-    &quot;name&quot;: &lt;name in tree&gt;,
-    &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
-    &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;,
-    &quot;url&quot;: &lt;wms server url&gt;/null,
-    &quot;url_wfs&quot;: &lt;wfs server url&gt;/null,
-    &quot;wfs_support&quot;: true/false,
-    &quot;isSingleTile&quot;: true/false,
-    &quot;queryable&quot;: 0/1,
-    &quot;id&quot;: ​734,
-    &quot;imageType&quot;: &quot;image/jpeg&quot;,
-    &quot;style&quot;: &lt;style&gt;,
-    &quot;serverType&quot;: &lt;value&gt;,
-    &quot;metadata&quot;: {
-        &quot;identifier_attribute_field&quot;: &quot;display_name&quot;,
-        &quot;disclaimer&quot;: &quot;© les contributeurs d’OpenStreetMap&quot;,
-        &quot;legend&quot;: &quot;true&quot;,
-        &quot;legend_rule&quot;: &quot;Arrêts de bus&quot;,
-        &quot;max_resolution&quot;: &lt;value&gt;,
-        &quot;min_resolution&quot;: &lt;value&gt;
-    },
-    &quot;metadataUrls&quot;: {
-        &quot;url&quot;: &lt;url&gt;,
-        &quot;type&quot;: &quot;TC211/FGDC&quot;,
-        &quot;format&quot;: &quot;text/html&quot;
-    },
-    &quot;time&quot;: {
-        &quot;mode&quot;: &quot;value/range&quot;,
-        &quot;interval&quot;: [year, mounth, day, secound],
-        &quot;resolution&quot;: &quot;year/mounth/day/secound&quot;,
-        &quot;minValue&quot;: &lt;minValue&gt;,
-        &quot;maxValue&quot;: &lt;maxValue&gt;
-    },
-    &quot;childLayers&quot;: [{
-        &quot;name&quot;: &lt;name&gt;,
-        &quot;queryable&quot;: 0/1,
-        &quot;minResolutionHint&quot;: &lt;minResolutionHint&gt;,
-        &quot;maxResolutionHint&quot;: &lt;maxResolutionHint&gt;
-    }]
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="c1"># if not mixed</span>
+    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
+    <span class="c1"># derecated</span>
+    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c1"># end derecated</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;identifier_attribute_field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;display_name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;disclaimer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;disclamer&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;legend_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;legend_rule&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;min_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;(value|range)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>WMTS layer:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;url&quot;: &lt;wmts_capabilities_url&gt;,
-    &quot;layer&quot;: &lt;wmts_layer&gt;,
-    &quot;style&quot;: &lt;style&gt;,
-    &quot;matrix_set&quot;: &lt;matrix_set&gt;,
-    &quot;dimensions&quot;: {
-        &lt;name&gt;: &lt;value&gt;
-    }
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;matrix_set&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;matrix_set&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -210,27 +240,27 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="annoymous-json-result">
 <h4>Annoymous JSON result<a class="headerlink" href="#annoymous-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;functionality&quot;: {
-        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
-        ...
-    }
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="connected-json-result">
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;username&quot;: &quot;&lt;username&gt;&quot;,
-    &quot;is_password_changed&quot;: &quot;True&quot;/&quot;False&quot;, # If false the user should change his password
-    &quot;role_name&quot;: &quot;&lt;role_name&gt;&quot;,
-    &quot;role_id&quot;: &lt;role_id&gt;
-    &quot;functionality&quot;: {
-        &quot;&lt;functionnality_name&gt;&quot;: [&quot;functionnality_value&quot;],
-        ...
-    }
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="o">/</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
+    <span class="s2">&quot;role_name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;role_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -253,7 +283,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -276,7 +306,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -304,7 +334,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">label</span></code>: Text to display.</li>
 <li><code class="docutils literal"><span class="pre">layer_name</span></code>: Layer to display.</li>
-<li><code class="docutils literal"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span>Params</span></a> to set.</li>
+<li><code class="docutils literal"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span class="std std-ref">Params</span></a> to set.</li>
 <li><code class="docutils literal"><span class="pre">actions</span></code>: List of actions.</li>
 </ul>
 <p>The <cite>action</cite> is a dictionary with:</p>
@@ -328,10 +358,10 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id3">
 <h3>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;&lt;layer&gt;&quot;: &lt;value&gt;,
-    ...
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -370,9 +400,9 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id7">
 <h4>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;short_url&quot;: &lt;the short URL&gt;
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -391,10 +421,10 @@ This is used to be able to get the data in the client from a file select by the 
 <div class="section" id="id8">
 <h3>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;filename&quot;: &lt;The base64 encoded file&gt;
-    &quot;success&quot;: true
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -426,9 +456,9 @@ and the data contains the given &#8216;csv&#8217; data.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../difference</span></code></p>
 <p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
 <p>Data:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span>{
-    &quot;geometries&quot;: [&lt;geomA&gt;, &lt;geomB&gt;]
-}
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">&lt;geomA&gt;</span></code> is a GeoJSON geometry to extrude,
@@ -534,14 +564,11 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -552,8 +579,8 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/developer/webservices.txt"

@@ -29,11 +29,13 @@
     <link rel="next" title="Use Docker to deploy your application" href="docker.html" />
     <link rel="prev" title="Configuring Windows tools required to connect to our servers" href="windows_tools.html" />
    
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -76,7 +78,7 @@ Default is:</p>
 <p>The project variables are set in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
 which extends the default <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>they must be listed in the makefile as well using <code class="docutils literal"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
@@ -96,8 +98,8 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <li><code class="docutils literal"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">INSTANCE_ID</span></code>: The WSGI instance id (should be unique on a server).</li>
 <li><code class="docutils literal"><span class="pre">LANGUAGES</span></code>: the list of available languages.</li>
-<li><code class="docutils literal"><span class="pre">MOBILE</span></code>: <code class="docutils literal"><span class="pre">TRUE</span></code> to build the Sencha Touch interface, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">NGEO</span></code>: <code class="docutils literal"><span class="pre">TRUE</span></code> to build the ngeo interface, defaults to <code class="docutils literal"><span class="pre">FALSE</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>: The list of NGEO interfaces, default is <code class="docutils literal"><span class="pre">mobile</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">POST_RULES</span></code>: postdefine some build rules, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">PRE_RULES</span></code>: predefine some build rules, default is empty.</li>
 <li><code class="docutils literal"><span class="pre">PRINT_VERSION</span></code>: , The print version we want to use (<code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code> or <code class="docutils literal"><span class="pre">NONE</span></code>), defaults to <code class="docutils literal"><span class="pre">3</span></code>.</li>
@@ -107,23 +109,22 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
-Here is a simple example that creates the
-<cite>/var/sig/tiles/1.0.0/WMTSCapabilities.xml</cite> file
-and removes it on the <cite>clean</cite> rule:</p>
-<div class="code makefile highlight-python"><div class="highlight"><pre><span></span>PRE_RULES = /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+Here is a simple example:</p>
+<div class="code makefile highlight-default"><div class="highlight"><pre><span></span>MY_FILE ?= &lt;file&gt;
 
-/var/sig/tiles/1.0.0/WMTSCapabilities.xml: tilegeneration/config.yaml .build/dev-requirements.timestamp
-    $(VENV_BIN)/generate_controller --capabilities
+PRE_RULES = $(MY_FILE)
+
+$(MY_FILE): &lt;source_file&gt;
+    cp &lt;source_file&gt; $(MY_FILE)
+    # Short version:
+    # cp $&lt; $@
 
 clean: project-clean
 .PHONY: project-clean
 project-clean:
-    rm -f /var/sig/tiles/1.0.0/WMTSCapabilities.xml
+    rm -f $(MY_FILE)
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></code> and <code class="docutils literal"><span class="pre">.build/dev-requirements.timestamp</span></code> are the files
-that must be built to run the current rule.</p>
-<p><code class="docutils literal"><span class="pre">$(VENV_BIN)/generate_controller</span> <span class="pre">--capabilities</span></code> is the command that generates the wanted file.</p>
 </div>
 <div class="section" id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
@@ -174,14 +175,11 @@ indicating that an other rule is correctly done.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -192,8 +190,8 @@ indicating that an other rule is correctly done.</p>
       &copy;2011-2014, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/integrator/make.txt"

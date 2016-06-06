@@ -3,12 +3,6 @@
 Upgrading a GeoMapFish application
 ==================================
 
-.. warning::
-
-    From version 1.6 we use Alembic instead of sqlachemy-migrate for database migration.
-    Than to upgrade to GeoMapFish 1.6, integrators must start from the very last release
-    of 1.5 since the upgrades to 1.5 are no longer available with the new tool.
-
 Using the c2ctool command
 -------------------------
 
@@ -17,6 +11,19 @@ The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 
 Easy updating an application code
 ---------------------------------
+
+Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
+
+.. code:: yaml
+
+   ...
+   template_vars:
+       package: ${package}
+       srid: ${srid}
+       extent: 489246, 78873, 837119, 296543
+       apache_vhost: <apache_vhost>
+
+Then run:
 
 .. prompt:: bash
 
@@ -44,7 +51,12 @@ Than just run:
 .. prompt:: bash
 
    export VERSION=<target_version>
-   make -f <makefile> upgrade
+   make -f <makefile> upgrade_v2
+
+.. note:: For Windows:
+
+   You should replace ``export VERSION=<target_version>`` with
+   ``SET VERSION=<target_version>``.
 
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
 ``<target_version>`` is the version that you wish to upgrade to
@@ -84,3 +96,28 @@ And follow the instructions.
     * Follow the Windows instructions hereunder, note that you will have to use
       ``.build\venv\Scripts\...`` instead of ``.build\venv\bin\...`` in all given
       commands
+
+Upgrade the database
+--------------------
+
+The database will be automatically upgraded during the upgrade process.
+
+To upgrade only the database you can use alembic directly.
+
+The help:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --help
+
+Upgrade the main schema:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --config alembic.ini upgrade head
+
+Upgrade the static schema:
+
+.. code:: bash
+
+   .build/venv/bin/alembic --config alembic_static.ini upgrade head

@@ -14,7 +14,7 @@ The viewer should include a ``FullTextSearch`` plugin for the *text search*
 feature to be available in the user interface.
 
 See the `FullTextSearch API doc
-<http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FullTextSearch.html>`_ for the
+<http://docs.camptocamp.net/cgxp/['2', '0']/lib/plugins/FullTextSearch.html>`_ for the
 list of options the plugin can receive.
 
 *The main viewer includes a FullTextSearch plugin by default.*
@@ -34,14 +34,7 @@ If you did want to create the table manually you'd use the following commands:
 
 .. prompt:: bash
 
-    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch ( \
-        id SERIAL PRIMARY KEY, \
-        layer_name TEXT, \
-        label TEXT, \
-        public BOOLEAN DEFAULT 't', \
-        params TEXT, \
-        role_id INTEGER REFERENCES <schema_name>.role, \
-        ts TSVECTOR);" <db_name>
+    sudo -u postgres psql -c "CREATE TABLE <schema_name>.tsearch (         id SERIAL PRIMARY KEY,         layer_name TEXT,         label TEXT,         public BOOLEAN DEFAULT 't',         params TEXT,         role_id INTEGER REFERENCES <schema_name>.role,         ts TSVECTOR);" <db_name>
     sudo -u postgres psql -c "SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);" <db_name>
     sudo -u postgres psql -c "CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);" <db_name>
 
@@ -149,7 +142,7 @@ For instance to specify a ``floor``:
 
 Query string ``floor=1`` is then automatically appended to all WMS requests.
 
-See `FloorSlider <http://docs.camptocamp.net/cgxp/1.6/lib/plugins/FloorSlider.html>`_
+See `FloorSlider <http://docs.camptocamp.net/cgxp/['2', '0']/lib/plugins/FloorSlider.html>`_
 for more information.
 
 Actions
