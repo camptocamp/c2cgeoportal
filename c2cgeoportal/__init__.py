@@ -837,3 +837,19 @@ def includeme(config):
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.
     config.add_view(error_handler, context=HTTPException)
+
+    _log_versions(settings)
+
+
+def _log_versions(settings):
+    package = settings.get("package", None)
+    if package is not None:
+        try:
+            import c2cgeoportal.version
+            project_info = importlib.import_module(package + ".version").INFO
+            c2c_info = c2cgeoportal.version.INFO
+            log.warning("Starting WSGI for %s version %s (%s) with c2cgeoportal version %s (%s)",
+                        package, project_info["git_tag"], project_info["git_hash"][0:8],
+                        c2c_info["git_tag"], c2c_info["git_hash"][0:8])
+        except:  # pragma: nocover
+            pass  # In some cases, we don't have the version.py file
