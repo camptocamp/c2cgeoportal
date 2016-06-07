@@ -57,7 +57,9 @@ class TestThemesViewMetadata(TestCase):
 
         desktop = Interface(name=u"desktop")
 
-        server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/png")
+        server_ogc_internal = ServerOGC(
+            name="__test_server_ogc_internal", type="mapserver", image_type="image/png"
+        )
 
         layer_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_wms.layer = "__test_layer_internal_wms"
@@ -172,6 +174,7 @@ class TestThemesViewMetadata(TestCase):
             },
             "admin_interface": {"available_metadata": types}
         })
+        request.route_url = lambda url: "http://mapserver.org/"
         request.static_url = lambda url: "http://dummy.org/{}".format(url)
         request.params = {
             "version": "2",

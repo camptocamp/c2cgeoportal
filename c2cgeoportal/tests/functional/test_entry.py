@@ -1354,6 +1354,7 @@ class TestEntryView(TestCase):
             "name": "block",
             "isBaseLayer": False,
             "metadata": {},
+            "mixed": False,
             "children": [{
                 "id": 12,
                 "isExpanded": False,
@@ -1362,6 +1363,7 @@ class TestEntryView(TestCase):
                 "isBaseLayer": False,
                 "metadataURL": "http://example.com/group.metadata",
                 "metadata": {},
+                "mixed": False,
                 "children": [{
                     "name": "test layer in group",
                     "id": 20,
