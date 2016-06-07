@@ -589,7 +589,7 @@ serve: build development.ini
 
 .PHONY: update-node-modules
 update-node-modules: $(NPM_CMD)
-	$(NPM_CMD) install --force
+	$(NPM_CMD) install --force || sleep 20 || $(NPM_CMD) install --force || sleep 90 || $(NPM_CMD) install --force
 	mkdir -p .build
 	touch .build/node_modules.timestamp
 
