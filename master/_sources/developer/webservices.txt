@@ -36,10 +36,28 @@ Base for all possible results:
 .. code:: json
 
     {
-        themes: [<themes>],
-        group: <group>,
-        background_layers: [<layers>],
-        errors: [<errors>]
+        "serversOGC": {
+            "<name>": <server OGC>
+            ...
+        }
+        "themes": [<themes>],
+        "group": <group>,
+        "background_layers": [<layers>],
+        "errors": [<errors>]
+    }
+
+Server OGC:
+
+.. code:: json
+
+   {
+        "url": "<wms server url>",
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
+        "imageType": "image/(jpeg|png)",
+        "isSingleTile": (true|false),
+        "serverType": "(mapserver|geoserver|qgisserver)",
+        "auth": ""
     }
 
 
@@ -48,13 +66,13 @@ Theme:
 .. code:: json
 
     {
-        "name": <name>,
-        "icon": <icon_url>,
+        "name": "<name>",
+        "icon": "<icon_url>",
         "functionalities": {
-            <name>: <values>
+            "<name>": "<values>"
         },
         "ui_metadata": {
-            <name>: <value>
+            "<name>": "<value>"
         },
         "children": [<items>]
     }
@@ -65,10 +83,20 @@ Group:
 .. code:: json
 
     {
-        "name": <name>,
-        "mixed": true/false,
+        "name": "<name>",
+        "mixed": (true|false),
+        # if not mixed
+        "serverOGC": {
+            "url": "<wms server url>",
+            "wfsUrl": "<wfs server url>",
+            "wfsSupport": (true|false),
+            "imageType": "image/(jpeg|png)",
+            "isSingleTile": (true|false),
+            "serverType": "(mapserver|geoserver|qgisserver)",
+            "auth": ""
+        }
         "metadata": {
-            <name>: <value>
+            "<name>": "<value>"
         },
         "children": [<items>]
     }
@@ -79,10 +107,10 @@ Layer:
 .. code:: json
 
     {
-        "name": <name>,
-        "type": "WMS/WMTS",
+        "name": "<name>",
+        "type": "(WMS|WMTS)",
         "metadata": {
-            <name>: <value>
+            "<name>": "<value>"
         }
     }
 
@@ -92,27 +120,29 @@ WMS Layer:
 .. code:: json
 
     {
-
-        "layers": <wms_layers>,
-        "name": <name in tree>,
+        "id": <id>,
+        "name": "<name in tree>",
+        "layers": "<wms_layers>",
+        "style": "<style>",
+        # if not mixed
+        "serverOGC": "<server name>",
+        # derecated
+        "url": "<wms server url>",
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
+        "isSingleTile": (true|false),
+        "imageType": "image/(jpeg|png)",
+        "serverType": "(mapserver|geoserver|qgisserver)",
         "minResolutionHint": <minResolutionHint>,
         "maxResolutionHint": <maxResolutionHint>,
-        "url": <wms server url>/null,
-        "url_wfs": <wfs server url>/null,
-        "wfs_support": true/false,
-        "isSingleTile": true/false,
-        "queryable": 0/1,
-        "id": ​734,
-        "imageType": "image/jpeg",
-        "style": <style>,
-        "serverType": <value>,
+        # end derecated
         "metadata": {
-            "identifier_attribute_field": "display_name",
-            "disclaimer": "© les contributeurs d’OpenStreetMap",
-            "legend": "true",
-            "legend_rule": "Arrêts de bus",
-            "max_resolution": <value>,
-            "min_resolution": <value>
+            "identifier_attribute_field": "<display_name>",
+            "disclaimer": "<disclamer>",
+            "legend": (true|false),
+            "legend_rule": "<legend_rule>",
+            "max_resolution": <max_resolution>,
+            "min_resolution": <min_resolution>
         },
         "metadataUrls": {
             "url": <url>,
@@ -120,15 +150,15 @@ WMS Layer:
             "format": "text/html"
         },
         "time": {
-            "mode": "value/range",
-            "interval": [year, mounth, day, secound],
-            "resolution": "year/mounth/day/secound",
+            "mode": "(value|range)",
+            "interval": "(year|mounth|day|secound)",
+            "resolution": "(year|mounth|day|secound)",
             "minValue": <minValue>,
             "maxValue": <maxValue>
         },
         "childLayers": [{
-            "name": <name>,
-            "queryable": 0/1,
+            "name": "<name>",
+            "queryable": (true|false),
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
         }]
@@ -140,12 +170,12 @@ WMTS layer:
 .. code:: json
 
     {
-        "url": <wmts_capabilities_url>,
-        "layer": <wmts_layer>,
-        "style": <style>,
-        "matrix_set": <matrix_set>,
+        "url": "<wmts_capabilities_url>",
+        "layer": "<wmts_layer>",
+        "style": "<style>",
+        "matrix_set": "<matrix_set>",
         "dimensions": {
-            <name>: <value>
+            "<name>": "<value>"
         }
     }
 
