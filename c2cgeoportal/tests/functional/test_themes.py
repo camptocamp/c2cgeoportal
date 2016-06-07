@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import re
 import transaction
 
 from unittest2 import TestCase
@@ -169,8 +168,10 @@ class TestThemesView(TestCase):
         return result
 
     def _get_filtered_errors(self, themes):
-        prog = re.compile("^The layer '' \(__test_layer_external_wms\) is not defined in WMS capabilities$")
-        return set([e for e in themes["errors"] if prog.match(e) is None])
+        return set([
+            e for e in themes["errors"]
+            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
+        ])
 
     def test_version(self):
         entry = self._create_entry_obj()
