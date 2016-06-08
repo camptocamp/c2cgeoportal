@@ -29,7 +29,7 @@ Markdown==2.6.5
 MarkupSafe==0.23
 OWSLib==0.10.3
 papyrus==2.0.dev3
-papyrus-ogcproxy==0.2.dev1
+https://github.com/elemoine/papyrus_ogcproxy/archive/f223ae4e12acd76455f1ffeab56ed1db67fa1392.zip#egg=papyrus-ogcproxy
 Paste==2.0.2
 PasteDeploy==1.5.2
 PasteScript==2.0.2
