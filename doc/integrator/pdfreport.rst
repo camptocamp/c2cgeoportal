@@ -19,7 +19,7 @@ Configuration
 The service is configured in the main ``vars_<package>.yaml`` file of the project
 as in the following example:
 
-.. code-block:: yaml
+.. code:: yaml
 
     vars:
         ...
@@ -58,7 +58,7 @@ as in the following example:
                         layout: some_template_name
                         outputFormat: pdf
                         attributes:
-                            datasourceID: %(ids)s
+                            ids: %(ids)s
                 some_template_with_multi_map:
                     <<: *pdfreport-layer-default
                     maps:
@@ -82,71 +82,40 @@ with the following parameters:
 
 * ``check_credentials``: boolean, wether layer credentials are checked before generating the report. Defaults to ``True``.
 * ``srs``: projection code (required when showing the map).
+* ``spec``: optional template used to build the ``spec`` argument sent to the MapFish Print webapp.
+* ``map``: optional the map configuration.
+* ``maps``: optional a list of maps configuration.
+
+The map configuration can contains the following:
+
 * ``backgroundlayers``: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes ("). Defaults to ``""``.
 * ``imageformat``: format of the generated map. Defaults to ``image/png``.
-* ``spec_template``: optional JSON template used to build the ``spec`` argument sent to the MapFish Print webapp.
+* ``zoomType``: The type of zoom, default is ``extent``.
+* ``minScale``: The minimum zoom scale, default is ``1000``.
+* ``style``: The used style, default is:
 
-If no ``spec_template`` is provided, the following template is used:
+  .. code:: yaml
 
-.. code-block:: json
+     fillColor: red
+     fillOpacity: 0.2
+     symbolizers:
+     - strokeColor: red
+       strokeWidth: 1
+       type: point
+       pointRadius: 10
 
-    {
-        "layout": "%(layername)s",
-        "outputFormat": "pdf",
-        "attributes": {
-            "paramID": "%(id)s",
-            "map": {
-                "projection": "%(srs)s",
-                "dpi": 254,
-                "rotation": 0,
-                "bbox": [0, 0, 1000000, 1000000],
-                "zoomToFeatures": {
-                    "zoomType": "center",
-                    "layer": "vector",
-                    "minScale": 25000
-                },
-                "layers": [{
-                    "type": "gml",
-                    "name": "vector",
-                    "style": {
-                        "version": "2",
-                        "[1 > 0]": {
-                            "fillColor": "red",
-                            "fillOpacity": 0.2,
-                            "symbolizers": [{
-                                "strokeColor": "red",
-                                "strokeWidth": 1,
-                                "type": "point",
-                                "pointRadius": 10
-                            }]
-                        }
-                    },
-                    "opacity": 1,
-                    "url": "%(vector_request_url)s"
-                }, {
-                    "baseURL": "%(mapserv_url)s",
-                    "opacity": 1,
-                    "type": "WMS",
-                    "serverType": "mapserver",
-                    "layers": ["%(backgroundlayers)s"],
-                    "imageFormat": "%(imageformat)s"
-                }]
-            }
-        }
-    }
+The variables pass to the ``spec`` template using the ``%(<variable name>)s`` syntax:
 
-Variables may be inserted using the ``%(<variable name>)s`` syntax. The following
-variables values are passed to the template:
-
-* ``layername``: name of the layer
-* ``id``: feature id
-* ``srs``: projection code
-* ``mapserv_url``: URL of the MapServer proxy
-* ``vector_request_url``: URL of the WFS GetFeature request retrieving the feature geometry in GML
-* ``imageformat``: format of the WMS layer
-* ``backgroundlayers``: WMS layers to display on the map (including the current layer)
+* ``layername``: name of the layer.
+* ``ids``: JSON representation of the features id.
+* ``srs``: projection code.
+* ``mapserv_url``: URL of the MapServer proxy.
+* ``vector_request_url``: URL of the WFS GetFeature request retrieving the feature geometry in GML.
 
 Configuration of the reports
 ----------------------------
+
+If you use the ``ids`` in an SQL query you should use ``$X{IN, <column_name>, $P{ids}}``
+to avoid SQL injection, `see also <http://jasperreports.sourceforge.net/sample.reference/query/>`_.
 
 See the `Mapfish Print documentation <http://mapfish.github.io/mapfish-print-doc/>`_.
