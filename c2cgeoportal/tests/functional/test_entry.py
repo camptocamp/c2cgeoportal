@@ -197,8 +197,7 @@ class TestEntryView(TestCase):
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
-        for layergroup in DBSession.query(LayerGroup).all():
-            DBSession.delete(layergroup)
+        DBSession.query(LayerGroup).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(

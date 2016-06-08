@@ -678,10 +678,9 @@ class Entry(object):
                     "isBaseLayer": group.is_base_layer,
                 })
             else:
-                if org_depth == 1:
-                    g["mixed"] = mixed
-                    if not mixed:
-                        g["serverOGC"] = ogc_servers[0].name
+                g["mixed"] = mixed
+                if org_depth == 1 and not mixed:
+                    g["serverOGC"] = ogc_servers[0].name
 
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
