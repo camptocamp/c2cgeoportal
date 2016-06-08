@@ -58,7 +58,7 @@ as in the following example:
                         layout: some_template_name
                         outputFormat: pdf
                         attributes:
-                            paramID: "%(id)s"
+                            datasourceID: %(ids)s
                 some_template_with_multi_map:
                     <<: *pdfreport-layer-default
                     maps:

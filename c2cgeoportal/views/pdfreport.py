@@ -104,12 +104,14 @@ class PdfReport(OGCProxy):  # pragma: no cover
 
     @view_config(route_name="pdfreport", renderer="json")
     def get_report(self):
-        id_ = self.request.matchdict["id"]
+        ids = self.request.matchdict["ids"].split(",")
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
 
         if layer_config is None:
             raise HTTPBadRequest("Layer not found")
+
+        features_ids = [self.layername + "." + id_ for id_ in ids]
 
         if layer_config["check_credentials"]:
             # check user credentials
@@ -142,7 +144,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "outputformat": "gml3",
                 "request": "GetFeature",
                 "typeName": self.layername,
-                "featureid": self.layername + "." + id_,
+                "featureid": ",".join(features_ids),
                 "srsName": "epsg:" + str(srs)
             }.items()])
         )
@@ -153,7 +155,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "layout": self.layername,
                 "outputFormat": "pdf",
                 "attributes": {
-                    "paramID": id_
+                    "ids": ids
                 }
             }
             map_config = layer_config.get("map")
@@ -172,7 +174,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         else:
             spec = loads(dumps(spec) % {
                 "layername": self.layername,
-                "id": id_,
+                "ids": dumps(ids),
                 "srs": srs,
                 "mapserv_url": mapserv_url,
                 "vector_request_url": vector_request_url,
