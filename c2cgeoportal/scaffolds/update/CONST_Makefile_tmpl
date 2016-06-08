@@ -97,6 +97,9 @@ ifndef TEST_PACKAGES
 TEST_PACKAGES = common
 ifeq ($(DOCKER), FALSE)
 TEST_PACKAGES += main
+ifneq (, $(filter $(PRINT_VERSION), 2 3))
+TEST_PACKAGES += print
+endif
 ifeq ($(MAPSERVER), TRUE)
 TEST_PACKAGES += mapserver
 endif
@@ -114,8 +117,8 @@ TEST_PACKAGES += ngeo
 endif
 else
 TEST_PACKAGES += docker
-endif
-endif
+endif # DOCKER
+endif # TEST_PACKAGES
 
 # Make rules
 DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
