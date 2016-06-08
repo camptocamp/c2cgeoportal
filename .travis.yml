@@ -133,12 +133,13 @@ deploy:
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
-    branch: 2.0
+    branch: master
 - provider: script
   script: travis/doc.sh
   skip_cleanup: true
   on:
     repo: camptocamp/c2cgeoportal
+    branch: master
 
 notifications:
   email:
