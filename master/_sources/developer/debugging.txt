@@ -25,7 +25,7 @@ If the ``pyramid_debugtoolbar`` is enabled the error is directly returned
 in the query that fails.
 
 For print-related issues have a look at the logs in the
-``/srv/tomcat/tomcat1/logs/mapfish-print.log`` file.
+``/srv/tomcat/tomcat1/logs/<instanceid>.log`` file.
 
 Mapserver
 ---------
