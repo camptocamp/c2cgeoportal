@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -ex
+
+make -f travis.mk doc
 
 DOC=false
 BRANCH=master
