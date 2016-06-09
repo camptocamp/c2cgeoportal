@@ -870,7 +870,7 @@ $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 	.build/node_modules.timestamp \
 	$(APP_JS_FILES)
 	mkdir -p $(dir $@)
-	$(VENV_BIN)/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp $?)
+	$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp, $?)
 	touch $@
 
 node_modules/.bin/jshint$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
@@ -878,7 +878,7 @@ node_modules/.bin/jshint$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
 .build/jshint.timestamp: node_modules/.bin/jshint$(NODE_BIN_POSTFIX) $(APP_JS_FILES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	node_modules/.bin/jshint --verbose $(filter-out node_modules/.bin/jshint$(NODE_BIN_POSTFIX) $?)
+	node_modules/.bin/jshint$(NODE_BIN_POSTFIX) --verbose $(filter-out node_modules/.bin/jshint$(NODE_BIN_POSTFIX), $?)
 	touch $@
 
 
