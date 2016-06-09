@@ -34,12 +34,15 @@ from pyramid.view import view_config
 from geojson import Feature, FeatureCollection
 from sqlalchemy import func, desc, or_, and_
 from geoalchemy2.shape import to_shape
+import re
 
 from c2cgeoportal import locale_negotiator
 from c2cgeoportal.models import DBSession, FullTextSearch, Interface
 from c2cgeoportal.lib.caching import get_region, set_common_headers, NO_CACHE
 
 cache_region = get_region()
+
+IGNORED_CHARS_RE = re.compile(r"[()'&|!:*-]")
 
 
 class FullTextSearchView(object):
@@ -66,7 +69,7 @@ class FullTextSearchView(object):
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")
-        query = self.request.params.get("query")
+        terms = self.request.params.get("query")
 
         maxlimit = self.settings.get("maxlimit", 200)
 
@@ -86,8 +89,9 @@ class FullTextSearchView(object):
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms = "&".join(w + ":*" for w in query.split(" ") if w != "")
-        _filter = FullTextSearch.ts.match(terms, postgresql_regconfig=language)
+        terms_ts = "&".join(w + ":*"
+                            for w in IGNORED_CHARS_RE.sub(" ", terms).split(" ") if w != "")
+        _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
         if self.request.user is None or self.request.user.role is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
@@ -125,7 +129,7 @@ class FullTextSearchView(object):
         # and on some assumptions about how it might be calculated
         # (the normalization is applied two times with the combination of 2 and 8,
         # so the effect on at least the one-word-results is therefore stronger).
-        rank = func.ts_rank_cd(FullTextSearch.ts, func.to_tsquery(language, terms), 2 | 8)
+        rank = func.ts_rank_cd(FullTextSearch.ts, func.to_tsquery(language, terms_ts), 2 | 8)
 
         if partitionlimit:
             # Here we want to partition the search results based on
