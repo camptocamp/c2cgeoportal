@@ -18,6 +18,7 @@
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/desktop.js_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/desktop.html_tmpl
+/c2cgeoportal/scaffolds/create/+package+/static-ngeo/image/
 /c2cgeoportal/scaffolds/update/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info

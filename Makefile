@@ -54,6 +54,8 @@ APPS += desktop mobile
 APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
 APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
+APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
+	$(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png)
 
 ENVIRONMENT_VARS += TX_VERSION=$(TX_VERSION)
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
@@ -81,7 +83,7 @@ build: $(MAKO_FILES:.mako=) \
 	$(JSBUILD_ADMIN_OUTPUT_FILES) \
 	$(CSS_ADMIN_OUTPUT) \
 	$(MO_FILES) \
-	$(APPS_HTML_FILES) $(APPS_JS_FILES) \
+	$(APPS_FILES) \
 	c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako \
 	c2cgeoportal/scaffolds/update/package.json_tmpl \
 	c2cgeoportal/scaffolds/update/CONST_create_template/
@@ -108,7 +110,7 @@ clean:
 	rm -rf c2cgeoportal/static/build
 	rm -f $(MAKO_FILES:.mako=)
 	rm -rf ngeo
-	rm -f $(APPS_HTML_FILES) $(APPS_JS_FILES)
+	rm -f $(APPS_FILES)
 
 .PHONY: cleanall
 cleanall: clean
@@ -179,7 +181,7 @@ transifex-init: $(TX_DEPENDENCIES) c2cgeoportal/locale/c2cgeoportal.pot
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
-import-ngeo-apps: $(APPS_HTML_FILES) $(APPS_JS_FILES)
+import-ngeo-apps: $(APPS_FILES)
 
 ngeo: .build/requirements.timestamp
 	if [ ! -e "ngeo" ] ; then git clone --depth 1 --branch=$(shell .build/venv/bin/ngeo-version) https://github.com/camptocamp/ngeo.git ; fi
@@ -216,6 +218,15 @@ c2cgeoportal/scaffolds/update/package.json_tmpl: ngeo/package.json .build/requir
 c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/create/
 	rm -rf $@ || true
 	cp -r $< $@
+
+.PRECIOUS: ngeo/contribs/gmf/apps/desktop/image/%
+ngeo/contribs/gmf/apps/desktop/image/%: ngeo
+	touch --no-create $@
+
+.PRECIOUS: $(APPS_PACAKGE_PATH)/static-ngeo/image/%
+$(APPS_PACAKGE_PATH)/static-ngeo/image/%: ngeo/contribs/gmf/apps/desktop/image/%
+	mkdir -p $(dir $@)
+	cp $< $@
 
 # Templates
 
