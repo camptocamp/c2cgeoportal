@@ -57,6 +57,30 @@ class BaseTemplate(Template):  # pragma: no cover
         package logger "root").
         """
 
+        self._args_to_vars(command.args, vars)
+
+        self._get_vars(vars, "package", "Get a package name: ")
+        self._get_vars(vars, "apache_vhost", "The Apache vhost name: ")
+        self._get_vars(
+            vars, "srid",
+            "Spatial Reference System Identifier (e.g. 21781): ", int,
+        )
+        srid = vars["srid"]
+        extent = self._epsg2bbox(srid)
+        self._get_vars(
+            vars, "extent",
+            "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
+            "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
+            if extent else
+            "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
+        )
+        match = re.match(r"(\d+)[,; ] *(\d+)[,; ] *(\d+)[,; ] *(\d+)", vars["extent"])
+        if match is not None:
+            extent = [match.group(n + 1) for n in range(4)]
+        vars["extent"] = ",".join(extent)
+        vars["extent_mapserver"] = " ".join(extent)
+        vars["extent_viewer"] = json.dumps(extent)
+
         ret = Template.pre(self, command, output_dir, vars)
 
         if vars["package"] == "site":
@@ -83,43 +107,6 @@ class BaseTemplate(Template):  # pragma: no cover
             if m:
                 vars[m.group(1)] = m.group(2)
 
-
-class TemplateCreate(BaseTemplate):  # pragma: no cover
-    _template_dir = "create"
-    summary = "Template used to create a c2cgeoportal project"
-
-    def pre(self, command, output_dir, vars):
-        """
-        Overrides the base template, adding the "srid" variable to
-        the variables list.
-        """
-
-        self._args_to_vars(command.args, vars)
-
-        self._get_vars(vars, "package", "Get a package name: ")
-        self._get_vars(vars, "apache_vhost", "The Apache vhost name: ")
-        self._get_vars(
-            vars, "srid",
-            "Spatial Reference System Identifier (e.g. 21781): ", int,
-        )
-        srid = vars["srid"]
-        extent = self._epsg2bbox(srid)
-        self._get_vars(
-            vars, "extent",
-            "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
-            "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
-            if extent else
-            "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
-        )
-        match = re.match(r"(\d+)[,; ] *(\d+)[,; ] *(\d+)[,; ] *(\d+)", vars["extent"])
-        if match is not None:
-            extent = [match.group(n + 1) for n in range(4)]
-        vars["extent"] = ", ".join(extent)
-        vars["extent_mapserver"] = " ".join(extent)
-        vars["extent_viewer"] = json.dumps(extent)
-
-        return BaseTemplate.pre(self, command, output_dir, vars)
-
     def _get_vars(self, vars, name, prompt, type=None):
         """
         Set an attribute in the vars dict.
@@ -137,25 +124,6 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
                 exit("The attribute {} is not a {}".format(name, type))
 
         vars[name] = value
-
-    def post(self, command, output_dir, vars):
-        """
-        Overrides the base template class to print the next step.
-        """
-
-        if os.name == 'posix':
-            for file in ("post-restore-code", "pre-restore-database.mako"):
-                dest = os.path.join(output_dir, "deploy/hooks", file)
-                subprocess.check_call(["chmod", "+x", dest])
-
-        self.out("\nContinue with:")
-        self.out(colorize(
-            ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
-            "package={vars[package]} srid={vars[srid]}".format(vars=vars),
-            GREEN
-        ))
-
-        return BaseTemplate.post(self, command, output_dir, vars)
 
     def _epsg2bbox(self, srid):
         try:
@@ -177,6 +145,30 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
             return None
 
 
+class TemplateCreate(BaseTemplate):  # pragma: no cover
+    _template_dir = "create"
+    summary = "Template used to create a c2cgeoportal project"
+
+    def post(self, command, output_dir, vars):
+        """
+        Overrides the base template class to print the next step.
+        """
+
+        if os.name == 'posix':
+            for file in ("post-restore-code", "pre-restore-database.mako"):
+                dest = os.path.join(output_dir, "deploy/hooks", file)
+                subprocess.check_call(["chmod", "+x", dest])
+
+        self.out("\nContinue with:")
+        self.out(colorize(
+            ".build/venv/bin/pcreate -s c2cgeoportal_update ../{vars[project]} "
+            "package={vars[package]} srid={vars[srid]} extent={vars[extent]}".format(vars=vars),
+            GREEN
+        ))
+
+        return BaseTemplate.post(self, command, output_dir, vars)
+
+
 class TemplateUpdate(BaseTemplate):  # pragma: no cover
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
@@ -195,8 +187,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
                             value.encode("utf-8") \
                             if isinstance(value, string_types) \
                             else value
-
-        self._args_to_vars(command.args, vars)
 
         return BaseTemplate.pre(self, command, output_dir, vars)
 
