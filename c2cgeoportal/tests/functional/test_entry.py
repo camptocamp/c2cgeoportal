@@ -931,7 +931,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         self.assertEqual(entry._group(
-            "", LayerGroup(), layers=[], wms=None, wms_layers=[], time=TimeInformation()), (None, set())
+            "", LayerGroup(), layers=[]), (None, set())
         )
 
         layer = LayerV1()
@@ -954,7 +954,7 @@ class TestEntryView(TestCase):
         layer.geo_table = "tiwms"
         layer.public = True
 
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer, role_id=None), ({
             "id": 20,
             "name": "test internal WMS",
             "metadataURL": "http://example.com/tiwms",
@@ -991,7 +991,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation, role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test external WMS",
             "icon": "/dummy/static/c2cgeoportal:project/tewms.png",
@@ -1024,7 +1024,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1055,7 +1055,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1083,7 +1083,7 @@ class TestEntryView(TestCase):
         layer.min_resolution = 10
         layer.max_resolution = 1000
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1109,7 +1109,7 @@ class TestEntryView(TestCase):
         layer.is_legend_expanded = False
         layer.metadata_url = "http://example.com/wmsfeatures.metadata"
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=None, wms_layers=[], time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": u"test no 2D",
             "isChecked": False,
@@ -1152,7 +1152,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
             "id": 20,
             "name": u"test_wmsfeaturesgroup",
             "type": "internal WMS",
@@ -1189,7 +1189,7 @@ class TestEntryView(TestCase):
         layer_t1.public = True
         layer_t1.time_mode = "single"
         time = TimeInformation()
-        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
+        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1213,7 +1213,7 @@ class TestEntryView(TestCase):
         layer_t2.time_mode = "single"
         layer_t2.time_widget = "slider"
         time = TimeInformation()
-        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
+        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1229,7 +1229,10 @@ class TestEntryView(TestCase):
         group.name = "time"
         group.children = [layer_t1, layer_t2]
         time = TimeInformation()
-        entry._group("", group, [layer_t1.name, layer_t2.name], wms=wms, wms_layers=wms_layers, time=time)
+        entry._group(
+            "", group, [layer_t1.name, layer_t2.name],
+            wms=wms, wms_layers=wms_layers, time=time, mixed=False, depth=2
+        )
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1253,7 +1256,7 @@ class TestEntryView(TestCase):
         layer.time_mode = "single"
         layer.time_widget = "datepicker"
         time = TimeInformation()
-        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time, role_id=None)
+        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1275,7 +1278,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1305,7 +1308,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers, time=TimeInformation(), role_id=None), ({
+        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1345,7 +1348,6 @@ class TestEntryView(TestCase):
 
         self.assertEqual(entry._group(
             "", group1, [layer.name],
-            wms=None, wms_layers=[], time=TimeInformation()
         ), ({
             "id": 11,
             "isExpanded": False,
@@ -1387,7 +1389,6 @@ class TestEntryView(TestCase):
     def test_internalwms(self):
         from c2cgeoportal.views.entry import Entry
         from c2cgeoportal.models import LayerV1, LayerGroup
-        from c2cgeoportal.lib.wmstparsing import TimeInformation
 
         request = self._create_request_obj()
         request.static_url = lambda name: "/dummy/static/" + name
@@ -1400,7 +1401,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = False
         group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group1, [], catalogue=False)
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group1 = LayerGroup()
@@ -1408,7 +1409,7 @@ class TestEntryView(TestCase):
         group2 = LayerGroup()
         group2.is_internal_wms = True
         group1.children = [group2]
-        _, errors = entry._group("", group1, [], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group1, [], catalogue=False)
         self._assert_has_error(errors, "Group '' cannot be in group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1416,7 +1417,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "internal WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group, [layer.name], catalogue=False)
         self.assertEqual(errors, set([
             u"The layer '' is not defined in WMS capabilities",
         ]))
@@ -1426,7 +1427,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "external WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1434,7 +1435,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "WMTS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1442,7 +1443,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "no 2D"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1450,7 +1451,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "internal WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation())
+        _, errors = entry._group("", group, [layer.name], catalogue=False)
         self._assert_has_error(errors, "Layer '' cannot be in the group '' (internal/external mix).")
 
         group = LayerGroup()
@@ -1458,7 +1459,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "external WMS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
         group = LayerGroup()
@@ -1466,7 +1467,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "WMTS"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
         group = LayerGroup()
@@ -1474,7 +1475,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.layer_type = "no 2D"
         group.children = [layer]
-        _, errors = entry._group("", group, [layer.name], catalogue=False, wms=None, wms_layers=[], time=TimeInformation(), min_levels=0)
+        _, errors = entry._group("", group, [layer.name], catalogue=False, min_levels=0)
         self.assertEqual(errors, set())
 
     def test_loginchange_no_params(self):

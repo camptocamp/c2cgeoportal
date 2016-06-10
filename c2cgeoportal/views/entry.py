@@ -254,7 +254,7 @@ class Entry(object):
             if hasattr(layer, "queryable") else True
         return layer_info
 
-    def _layer(self, layer, wms, wms_layers, time, role_id, mixed=True):
+    def _layer(self, layer, wms=None, wms_layers=[], time=None, role_id=None, mixed=True):
         errors = set()
         l = {
             "id": layer.id,
@@ -263,6 +263,10 @@ class Entry(object):
         }
         if layer.geo_table:
             self._fill_editable(l, layer)
+        if mixed:
+            assert(time is None)
+            time = TimeInformation()
+        assert(time is not None)
 
         if isinstance(layer, LayerV1):
             l.update({
@@ -605,7 +609,8 @@ class Entry(object):
 
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, role_id=None, version=1, mixed=True, **kwargs
+        catalogue=True, role_id=None, version=1, mixed=True, time=None,
+        **kwargs
     ):
         children = []
         errors = set()
@@ -623,6 +628,8 @@ class Entry(object):
             ogc_servers = list(self._get_ogc_servers(group))
             # check if mixed content
             mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
+            if not mixed:
+                time = TimeInformation()
 
         for tree_item in group.children:
             if type(tree_item) == LayerGroup:
@@ -632,7 +639,8 @@ class Entry(object):
                     gp, gp_errors = self._group(
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
-                        catalogue=catalogue, role_id=role_id, version=version, mixed=mixed, **kwargs
+                        catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
+                        time=time, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -648,7 +656,9 @@ class Entry(object):
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
 
-                        l, l_errors = self._layer(tree_item, role_id=role_id, mixed=mixed, **kwargs)
+                        l, l_errors = self._layer(
+                            tree_item, role_id=role_id, mixed=mixed, time=time, **kwargs
+                        )
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
@@ -677,10 +687,15 @@ class Entry(object):
                     "isInternalWMS": group.is_internal_wms,
                     "isBaseLayer": group.is_base_layer,
                 })
+                if time is not None and time.has_time() and time.layer is None:
+                    g["time"] = time.to_dict()
             else:
                 g["mixed"] = mixed
-                if org_depth == 1 and not mixed:
-                    g["serverOGC"] = ogc_servers[0].name
+                if org_depth == 1:
+                    if not mixed:
+                        g["serverOGC"] = ogc_servers[0].name
+                        if time.has_time() and time.layer is None:
+                            g["time"] = time.to_dict()
 
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
@@ -798,18 +813,14 @@ class Entry(object):
         errors = set()
         for item in theme.children:
             if type(item) == LayerGroup:
-                time = TimeInformation()
                 gp, gp_errors = self._group(
                     "%s/%s" % (theme.name, item.name),
-                    item, layers, time=time, wms=wms, wms_layers=wms_layers,
+                    item, layers, wms=wms, wms_layers=wms_layers,
                     role_id=role_id, version=version, catalogue=catalogue,
                     min_levels=min_levels
                 )
                 errors |= gp_errors
-
                 if gp is not None:
-                    if time.has_time() and time.layer is None:
-                        gp["time"] = time.to_dict()
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
@@ -817,9 +828,8 @@ class Entry(object):
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
-                    time = TimeInformation()
                     l, l_errors = self._layer(
-                        item, time=time, wms=wms, wms_layers=wms_layers, role_id=role_id
+                        item, wms=wms, wms_layers=wms_layers, role_id=role_id
                     )
                     errors |= l_errors
                     if l is not None:
@@ -1241,14 +1251,13 @@ class Entry(object):
         return result
 
     def _get_group(self, group, role_id, interface, version):
-        time = TimeInformation()
         layers = self._layers(role_id, version, interface)
         wms, wms_layers = self._wms_layers(
             role_id if self.mapserver_settings["geoserver"] else None, None
         )
         lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
         return self._group(
-            lg.name, lg, layers, time=time, wms=wms, wms_layers=wms_layers,
+            lg.name, lg, layers, wms=wms, wms_layers=wms_layers,
             role_id=role_id, version=version
         )
 
