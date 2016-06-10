@@ -36,7 +36,9 @@ replace your sencha touch interface by an ngeo interface.
     + /{{package}}/static-ngeo/fonts/fontawesome-webfont.*
     + /{{package}}/version.py
     + /mapserver/replace_db.sh
-    + /testDB/01-schemas.sql
+    + /testDB/11-schemas.sql
+    + /testDB/12-alembic.sql
+    + /testDB/13-alembic-static.sql
     * /testDB/Dockerfile
     + /.whiskey/action_hooks/pre-build
 
