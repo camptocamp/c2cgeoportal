@@ -2,7 +2,7 @@
 *.pyc
 *.pyo
 *.class
-/c2cgeoportal/static/build
+/c2cgeoportal/static/build/
 /c2cgeoportal/tests/functional/c2cgeoportal_test.map
 /c2cgeoportal/tests/functional/test.ini
 /c2cgeoportal/tests/functional/alembic.ini
@@ -18,6 +18,7 @@
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/static-ngeo/js/desktop.js_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/desktop.html_tmpl
+/c2cgeoportal/scaffolds/update/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info
 /doc/administrator/administrate.rst
@@ -29,8 +30,8 @@
 /doc/integrator/fulltext_search.rst
 /doc/integrator/print.rst
 /doc/integrator/upgrade_application.rst
-/ngeo
-/.build
+/ngeo/
+/.build/
 /.eggs
 /.coverage
 /coverage.xml
