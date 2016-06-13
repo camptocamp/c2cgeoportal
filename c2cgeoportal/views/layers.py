@@ -334,7 +334,7 @@ class Layers(object):
         if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
 
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.role.id)
 
@@ -391,7 +391,7 @@ class Layers(object):
         last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
         if last_update_date:
             exclude.append(last_update_date)
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
         if last_update_user:
             exclude.append(last_update_user)
 
