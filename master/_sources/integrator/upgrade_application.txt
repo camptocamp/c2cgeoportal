@@ -9,8 +9,8 @@ Using the c2ctool command
 The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
 
 
-Easy updating an application code
----------------------------------
+Updating an application code
+----------------------------
 
 Verify that you have in your ``project.yaml.mako`` file the following ``template_vars``: ``package``, ``srid``, ``extent``, ``apache_vhost``, for example:
 
@@ -33,8 +33,8 @@ Then run:
 Where ``<makefile>`` is your user make file (``<user>.mk``).
 
 
-Easy upgrading an application
------------------------------
+Upgrading an application
+------------------------
 
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.

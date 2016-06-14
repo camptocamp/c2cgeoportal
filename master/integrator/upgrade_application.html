@@ -48,8 +48,8 @@
 <h2>Using the c2ctool command<a class="headerlink" href="#using-the-c2ctool-command" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">c2ctool</span></code> is a tool to facilitate the common operations around GeoMapFish.</p>
 </div>
-<div class="section" id="easy-updating-an-application-code">
-<h2>Easy updating an application code<a class="headerlink" href="#easy-updating-an-application-code" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="updating-an-application-code">
+<h2>Updating an application code<a class="headerlink" href="#updating-an-application-code" title="Permalink to this headline">¶</a></h2>
 <p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
 template_vars:
@@ -68,8 +68,8 @@ span.prompt1:before {
 <span class="prompt1">make -f &lt;makefile&gt; build</span>
 </pre><p>Where <code class="docutils literal"><span class="pre">&lt;makefile&gt;</span></code> is your user make file (<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code>).</p>
 </div>
-<div class="section" id="easy-upgrading-an-application">
-<h2>Easy upgrading an application<a class="headerlink" href="#easy-upgrading-an-application" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upgrading-an-application">
+<h2>Upgrading an application<a class="headerlink" href="#upgrading-an-application" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">setup.py</span></code> be sure not to specify a <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> version,
 because it will prevent the installation of the new <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> egg.</p>
 <p>We considers that your makefile is named <code class="docutils literal"><span class="pre">&lt;instanceid&gt;.mk</span></code>, if it&#8217;s not the case
@@ -163,8 +163,8 @@ commands</p>
   <ul>
 <li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
 <li><a class="reference internal" href="#using-the-c2ctool-command">Using the c2ctool command</a></li>
-<li><a class="reference internal" href="#easy-updating-an-application-code">Easy updating an application code</a></li>
-<li><a class="reference internal" href="#easy-upgrading-an-application">Easy upgrading an application</a></li>
+<li><a class="reference internal" href="#updating-an-application-code">Updating an application code</a></li>
+<li><a class="reference internal" href="#upgrading-an-application">Upgrading an application</a></li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
 </ul>
 </li>
