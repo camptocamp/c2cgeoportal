@@ -151,7 +151,7 @@ WMS Layer:
         },
         "time": {
             "mode": "(value|range)",
-            "interval": "(year|mounth|day|secound)",
+            "interval": [<year>, <mounth>, <day>, <secound>],
             "resolution": "(year|mounth|day|secound)",
             "minValue": <minValue>,
             "maxValue": <maxValue>
