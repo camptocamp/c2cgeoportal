@@ -2,7 +2,7 @@ INSTANCE_ID = travis
 
 TILECLOUD_CHAIN = FALSE
 
-REQUIREMENTS += -e ${TRAVIS_FOLDER}
+REQUIREMENTS += --editable ${TRAVIS_FOLDER}
 
 PRINT_OUTPUT = /var/lib/tomcat7/webapps
 

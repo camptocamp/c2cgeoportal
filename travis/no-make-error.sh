@@ -7,7 +7,7 @@ make $* > /dev/null 2> make-err
 
 RESULT=$(cat make-err)
 
-rm make-err -f
+rm make-err --force
 
 if [ "${RESULT}" != "" ]
 then
