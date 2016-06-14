@@ -350,14 +350,17 @@ class C2cTool:
         check_call(["make", "-f", self.options.file, "update-node-modules"])
         check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
 
-        print("")
-        print(self.color_bar)
-        print("\n".join(notes))
-        print(
-            "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
-            " (listed in the `changelog.diff` file)."
-        )
-        self.print_step(2)
+        if os.path.getsize("changelog.diff") == 0:
+            self.step2()
+        else:
+            print("")
+            print(self.color_bar)
+            print("\n".join(notes))
+            print(
+                "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
+                " (listed in the `changelog.diff` file)."
+            )
+            self.print_step(2)
 
     def step2(self):
         if self.options.file is None:
