@@ -220,6 +220,10 @@ class C2cTool:
             self.step3()
         elif self.options.step == 4:
             self.step4()
+        elif self.options.step == 5:
+            self.step5()
+        elif self.options.step == 6:
+            self.step6()
 
     def step0(self):
         project_template_keys = self.project.get("template_vars").keys()
@@ -280,8 +284,6 @@ class C2cTool:
         self.print_step(1)
 
     def step1(self):
-        notes = []
-
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
@@ -343,9 +345,8 @@ class C2cTool:
         check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 
-        diff_file = open("changelog.diff", "w")
-        check_call(["git", "diff", "CONST_CHANGELOG.txt"], stdout=diff_file)
-        diff_file.close()
+        with open("changelog.diff", "w") as diff_file:
+            check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
         check_call(["make", "-f", self.options.file, "update-node-modules"])
         check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
@@ -355,7 +356,6 @@ class C2cTool:
         else:
             print("")
             print(self.color_bar)
-            print("\n".join(notes))
             print(
                 "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
                 " (listed in the `changelog.diff` file)."
@@ -363,16 +363,66 @@ class C2cTool:
             self.print_step(2)
 
     def step2(self):
+        if os.path.isfile("changelog.diff"):
+            os.unlink("changelog.diff")
+
+        with open("ngeo.diff", "w") as diff_file:
+            check_call([
+                "git", "diff", "--",
+                "CONST_create_template/{}/template".format(self.project["project_package"]),
+                "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+            ], stdout=diff_file)
+
+        if os.path.getsize("ngeo.diff") == 0:
+            self.step3()
+        else:
+            print("")
+            print(self.color_bar)
+            print(
+                "Apply the ngeo application diff available in the `ngeo.diff` file."
+            )
+            self.print_step(3)
+
+    def step3(self):
+        if os.path.isfile("ngeo.diff"):
+            os.unlink("ngeo.diff")
+
+        status = check_output(["git", "status", "--short", "CONST_create_template"])
+        status = [s for s in status.split("\n") if len(s) > 3]
+        status = [s[3:] for s in status if not s.startswith("?? ")]
+        status = [s for s in status if not s.startswith(
+            "CONST_create_template/{}/template".format(self.project["project_package"]),
+        )]
+        status = [s for s in status if not s.startswith(
+            "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+        )]
+
+        with open("create.diff", "w") as diff_file:
+            check_call(["git", "diff", "--"] + status, stdout=diff_file)
+
+        if os.path.getsize("create.diff") == 0:
+            self.step4()
+        else:
+            print("")
+            print(self.color_bar)
+            print(
+                "Optional step, have a look in the `create.diff` file, "
+                "if there is a change in the create template that should "
+                "be reported in your project."
+            )
+            self.print_step(4)
+
+    def step4(self):
         if self.options.file is None:
             print("")
             print(self.color_bar)
             print("The makefile is missing")
             print("")
-            self.print_step(2, intro="Fix it and run again the step 2:")
+            self.print_step(4, intro="Fix it and run again the step 4:")
             exit(1)
 
-        if os.path.isfile("changelog.diff"):
-            os.unlink("changelog.diff")
+        if os.path.isfile("create.diff"):
+            os.unlink("create.diff")
 
         check_call(["make", "-f", self.options.file, "build"])
 
@@ -394,12 +444,12 @@ class C2cTool:
             print("You are running on Windows, please restart your Apache server,")
             print("because we can not do that automatically.")
 
-        self.print_step(3)
+        self.print_step(5)
 
-    def step3(self):
+    def step5(self):
         if not self.test_checkers():
             print("")
-            self.print_step(3, intro="Correct the checker, the step 3 again:")
+            self.print_step(5, intro="Correct the checker, the step 5 again:")
             exit(1)
 
         if os.path.exists("/tmp/%s" % self.project["project_folder"]):
@@ -419,9 +469,9 @@ class C2cTool:
             "add them into the `.gitignore` file and launch step 3 again."
         )
 
-        self.print_step(4, intro="Then to commit your changes type:")
+        self.print_step(6, intro="Then to commit your changes type:")
 
-    def step4(self):
+    def step6(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % self.options.version])
 
         print("")
