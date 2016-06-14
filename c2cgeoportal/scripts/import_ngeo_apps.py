@@ -198,9 +198,14 @@ def main():
             else:
                 data = _sub(
                     r'<img src="image/logo.png" />',
-                    r'<img src="${request.static_url(\'demo:static-ngeo/image/logo.png\')}" />',
+                    '<img src="${request.static_url(\'demo:static-ngeo/image/logo.png\')}" />',
                     data,
                 )
+            data = _sub(
+                r'<link rel="shortcut icon" href="image/favicon.ico"/>',
+                '<link rel="shortcut icon" href="${request.static_url(\'demo:static-ngeo/image/favicon.png\')}"/>',  # noqa
+                data,
+            )
             # Styles
             data = _sub(
                 r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
@@ -224,15 +229,19 @@ def main():
         window.CLOSURE_NO_DEPS = true;
     </script>
     <script src="${{request.static_url('%s/jquery/dist/jquery.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/ngeo/contrib/gmf/third-party/jquery-ui/jquery-ui.min.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular/angular.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/angular-gettext/dist/angular-gettext.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-animate/angular-animate.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-sanitize/angular-sanitize.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-touch/angular-touch.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/bootstrap/dist/js/bootstrap.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/proj4/dist/proj4-src.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/d3/d3.min.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/angular-ui-date/dist/date.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/angular-ui-slider/src/slider.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/typeahead.js/dist/typeahead.bundle.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/proj4/dist/proj4-src.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/angular-gettext/dist/angular-gettext.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/angular-dynamic-locale/dist/tmhDynamicLocale.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/bootstrap/dist/js/bootstrap.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/d3/d3.min.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/closure/goog/base.js' % request.registry.settings['closure_library_path'])}}"></script>
     <script src="${{request.route_url('deps.js')}}"></script>
     <script>
@@ -269,7 +278,7 @@ def main():
                 ),
                 "gmfModule.constant('angularLocaleScript', "
                 "'${ request.static_url('{{package}}:static-ngeo/build/"
-                "angular-locale_\{\{locale\}\}.js' }'",
+                "angular-locale_\{\{locale\}\}.js') }');",
                 data,
             )
             data = _sub(
@@ -280,7 +289,7 @@ def main():
             langUrlElements.push('build', 'gmf-' + lang + '.json')
             langUrls[lang] = langUrlElements.join('/')
         });"""),
-                r"""module.constant('langUrls', {
+                r"""var langUrls = {
 ${ ',\\n'.join([
     "             '{lang}': '{url}'".format(
         lang=lang,
