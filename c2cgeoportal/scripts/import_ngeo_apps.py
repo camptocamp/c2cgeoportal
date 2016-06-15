@@ -156,7 +156,6 @@ def main():
                 "coveralls",
                 "fs-extra",
                 "gaze",
-                "graceful-fs",
                 "jsdoc",
                 "jsdom",
                 "karma",
