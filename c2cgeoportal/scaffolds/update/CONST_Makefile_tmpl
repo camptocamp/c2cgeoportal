@@ -38,6 +38,12 @@ CONST_REQUIREMENT ?= CONST_requirements.txt
 PRINT_TMP ?= /tmp
 endif
 
+TEMPLATE_EXCLUDE += .build node_modules \
+	print/templates CONST_alembic \
+	$(PACKAGE)/static/lib
+FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
+
+
 # Don't minify the js / css, ...
 DEVELOPMENT ?= FALSE
 # Language provided by the application
@@ -117,10 +123,13 @@ ifneq ($(TEST_PACKAGES), FALSE)
 DEFAULT_BUILD_RULES += test-packages
 endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEFAULT_BUILD_RULES += apache/tiles.conf
+DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 endif
 ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
+endif
+ifeq (${DEPOY}, TRUE)
+DEFAULT_BUILD_RULES += deploy/deploy.cfg
 endif
 ifeq (${DOCKER}, TRUE)
 DEFAULT_BUILD_RULES += testDB
@@ -388,6 +397,12 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 endif
 
+PRINT_FILES += $(shell $(FIND) print $(FIND_OPTS) -not -name ".mako" -not -name ".jinja" -print)
+PRINT_MAKO_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.mako" -print)
+PRINT_JINJA_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.jinja" -print)
+PRINT_FILES +=  $(PRINT_MAKO_FILES:.mako=) $(PRINT_JINJA_FILES:.jinja=)
+PRINT_REQUIREMENT += $(PRINT_FILES)
+
 ifeq ($(DOCKER), FALSE)
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 endif
@@ -408,13 +423,11 @@ PY_FILES = $(shell $(FIND) $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -print)
 
 # Templates
-TEMPLATE_EXCLUDE += .build node_modules print/templates \
-	CONST_alembic/main/script.py.mako \
-	CONST_alembic/static/script.py.mako \
-	$(PACKAGE)/static/lib
-FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
-MAKO_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.mako" -print)
-JINJA_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.jinja" -print)
+ALL_MAKO_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.mako" -print)
+ALL_JINJA_FILES = $(shell $(FIND) $(FIND_OPTS) -name "*.jinja" -print)
+EXTRA_EXCLUDE = $(foreach ELEM, print apache mapfile deploy jsbuild tilegeneration,-path ./$(ELEM) -prune -o)
+MAKO_FILES = $(shell $(FIND) $(EXTRA_EXCLUDE) $(FIND_OPTS) -name "*.mako" -print)
+JINJA_FILES = $(shell $(FIND) $(EXTRA_EXCLUDE) $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
 CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
@@ -554,12 +567,12 @@ upgrade-db: alembic.ini alembic_static.ini $(VENV_BIN)/alembic$(PYTHON_BIN_POSTF
 
 .PHONY: template-clean
 template-clean:
-	rm -f $(MAKO_FILES:.mako=)
-	rm -f $(JINJA_FILES:.jinja=)
+	rm -f $(ALL_MAKO_FILES:.mako=)
+	rm -f $(ALL_JINJA_FILES:.jinja=)
 	rm -f .build/config.yaml
 
 .PHONY: template-generate
-template-generate: $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
+template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/config.yaml
 
 $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
 
@@ -991,7 +1004,7 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 .PHONY: print
 ifeq ($(DOCKER), TRUE)
-print: $(MAKO_FILES:.mako=) print/Dockerfile $(PRINT_REQUIREMENT)
+print: print/Dockerfile $(PRINT_REQUIREMENT)
 	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
 
 else  # !DOCKER
