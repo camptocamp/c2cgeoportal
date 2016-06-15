@@ -19,7 +19,7 @@ git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
 mkdir --parent ${BRANCH}
-rm --resursive --force ${BRANCH}/*
+rm --recursive --force ${BRANCH}/*
 mv doc/_build/html/* ${BRANCH}
 
 if [ ${DOC} == true ]
