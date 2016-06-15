@@ -8,8 +8,30 @@ replace your sencha touch interface by an ngeo interface.
 Version 2.1.0
 =============
 
-The changelog consider that we replace add the cgxp interfaces by the ngeo desktop interface,
+We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
 but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+
+If you want to keep your CGXP interface you should:
+
+* In your `{{package}}.mk` file add:
+  + CGXP_INTERFACE = main edit routing
+  + NGEO_INTERFACES = mobile
+* Add in your vars file:
+    vars:
+      ...
+      checker:
+        ...
+  +     lang_files: [cgxp]
+      check_collector:
+        ...
+  +     disabled: []
+    update_paths:
+    ...
+  - - check_collector.disabled # don't readd it on step 5.!
+  + - checker.lang_files
+* Continue on the step 4., (you should do the step 1.-3. when you want
+  to use the ngeo interface)
+
 
 1. Get the new files for ngeo integration:
 
@@ -17,9 +39,8 @@ but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with
     cp /tmp/{{project}}/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
     cp /tmp/{{project}}/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
 
-2. Remove the no longer used files:
+2. Remove the cgxp interfaces:
 
-    git rm CONST_versions.txt
     git rm {{package}}/templates/index.html
     git rm {{package}}/templates/viewer.js
     git rm {{package}}/templates/edit.html
@@ -33,9 +54,12 @@ but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with
     - add_interface(config, "edit")
     - add_interface(config, "routing")
     + add_interface(config, "desktop", INTERFACE_TYPE_NGEO)
-    + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
-4. The checkers will be refactored, you should do at least the following change:
+4. Remove the no longer used files:
+
+    git rm CONST_versions.txt
+
+5. The checkers will be refactored, you should do at least the following change:
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
