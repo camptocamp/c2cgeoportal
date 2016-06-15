@@ -151,9 +151,6 @@ ifneq ($(CGXP_INTERFACE), "")
 REQUIREMENTS += JSTools
 DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
-ifneq ($(NGEO_INTERFACE), "")
-DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
-endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
 
@@ -546,7 +543,7 @@ build-server: template-generate compile-py-catalog $(SERVER_LOCALISATION_FILES)
 build-cgxp: $(JSBUILD_MAIN_OUTPUT_FILES) $(CSS_BASE_OUTPUT) $(CSS_API_OUTPUT) $(CSS_XAPI_OUTPUT)
 
 .PHONY: lint-ngeo
-lint-ngeo: $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
+lint-ngeo: .build/eslint.timestamp
 
 .PHONY: serve
 serve: build development.ini
@@ -873,22 +870,12 @@ ifneq ($(NGEO_INTERFACE), "")
 endif
 	touch $@
 
-$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+node_modules/.bin/eslint$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
 
-.build/gjslint.timestamp: $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) \
-	$(PRERULE_CMD)
-	.build/node_modules.timestamp \
-	$(APP_JS_FILES)
-	mkdir -p $(dir $@)
-	$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $(filter-out $(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX) .build/node_modules.timestamp, $?)
-	touch $@
-
-node_modules/.bin/jshint$(NODE_BIN_POSTFIX): .build/node_modules.timestamp
-
-.build/jshint.timestamp: node_modules/.bin/jshint$(NODE_BIN_POSTFIX) $(APP_JS_FILES)
+.build/eslint.timestamp: node_modules/.bin/eslint$(NODE_BIN_POSTFIX) $(APP_JS_FILES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	node_modules/.bin/jshint$(NODE_BIN_POSTFIX) --verbose $(filter-out node_modules/.bin/jshint$(NODE_BIN_POSTFIX), $?)
+	node_modules/.bin/eslint$(NODE_BIN_POSTFIX) $(filter-out node_modules/.bin/eslint$(NODE_BIN_POSTFIX), $?)
 	touch $@
 
 
@@ -979,8 +966,6 @@ test-packages: .build/test-packages.timestamp
 	touch $@
 
 # Check
-
-$(VENV_BIN)/gjslint$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
