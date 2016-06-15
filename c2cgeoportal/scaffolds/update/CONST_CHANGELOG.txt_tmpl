@@ -58,6 +58,7 @@ If you want to keep your CGXP interface you should:
 4. Remove the no longer used files:
 
     git rm CONST_versions.txt
+    git rm .jshintrc
 
 5. The checkers will be refactored, you should do at least the following change:
       checker:
