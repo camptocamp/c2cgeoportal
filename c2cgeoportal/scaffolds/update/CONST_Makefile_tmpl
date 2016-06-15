@@ -1168,6 +1168,14 @@ upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 4
 
+.PHONY: upgrade5
+upgrade5: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 5
+
+.PHONY: upgrade6
+upgrade6: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 6
+
 # Docker
 ifeq ($(DOCKER), TRUE)
 .PHONY: push_docker
