@@ -169,7 +169,7 @@ def main():
             ]:
                 del json_data["devDependencies"][package]
 
-            data = dumps(json_data, indent=4, sort_keys=True)
+            data = dumps(json_data, indent=2, sort_keys=True)
             data = _sub(r" +\n", "\n", data)
 
         else:
