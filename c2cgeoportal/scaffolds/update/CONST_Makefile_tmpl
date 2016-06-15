@@ -397,11 +397,12 @@ APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
+CONF_FILES += apache/application.wsgi
 CONF_FILES_MAKO = $(shell ls -1 apache/*.conf.mako 2> /dev/null)
 CONF_FILES_JINJA = $(shell ls -1 apache/*.conf.jinja 2> /dev/null)
-CONF_FILES = $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
+CONF_FILES += $(shell ls -1 apache/*.conf 2> /dev/null) $(CONF_FILES_MAKO:.mako=) $(CONF_FILES_JINJA:.jinja=)
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-CONF_FILES += apache/tiles.conf
+CONF_FILES += apache/tiles.conf apache/mapcache.xml
 endif
 PY_FILES = $(shell $(FIND) $(PACKAGE) -type f -name '*.py' -print)
 TEMPLATES_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -print)
