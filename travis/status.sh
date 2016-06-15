@@ -8,7 +8,7 @@ then
     cd $1
 fi
 
-status=`git status -s`
+status=`git status --short`
 
 if [ "$status" != "" ]
 then

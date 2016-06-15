@@ -2,7 +2,7 @@
 
 cd /tmp/travis/testgeomapfish/
 
-RESULT=$(make $* 2>&1 | tail -n +4)
+RESULT=$(make $* 2>&1 | tail --lines=+4)
 
 echo ${RESULT}
 

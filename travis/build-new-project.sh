@@ -6,4 +6,4 @@ make -f travis.mk build
 echo "Build complete"
 
 git add testgeomapfish/locale/*/LC_MESSAGES/testgeomapfish-*.po
-git commit -m "Add location"
+git commit --message="Add location"

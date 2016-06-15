@@ -12,24 +12,23 @@ env:
 
 before_install:
 - cat /etc/apt/sources.list.d/*
-- sudo apt-get remove -y --force-yes python-zope.interface
-- sudo apt-get install -y --force-yes aptitude
-- sudo add-apt-repository -y ppa:stephane-brunner/precise-gis
+- sudo apt-get remove --assume-yes --force-yes python-zope.interface
+- sudo apt-get install --assume-yes --force-yes aptitude
+- sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
 - sudo apt-get update
-- sudo aptitude install -y apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7
   deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
   postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
 
-- sudo -u postgres createdb -E UTF8 -T template0 template_postgis
-- psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
-- psql -d template_postgis -U postgres -f /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql > /dev/null
-#- psql -d template_postgis -U postgres -c "CREATE EXTENSION postgis;"
+- sudo -u postgres createdb --encoding=UTF8 --template=template0 template_postgis
+- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
+- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql > /dev/null
 
-- sudo -u postgres createdb -E UTF8 -T template_postgis c2cgeoportal_test
-- sudo -u postgres createdb -E UTF8 -T template_postgis geomapfish
+- sudo -u postgres createdb --encoding=UTF8 --template=template_postgis c2cgeoportal_test
+- sudo -u postgres createdb --encoding=UTF8 --template=template_postgis geomapfish
 
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
-- sudo -u postgres psql -q -d c2cgeoportal_test -f travis/db.sql
+- sudo -u postgres psql --quiet --dbname=c2cgeoportal_test --file=travis/db.sql
 
 - |
   if [ "${TX_PASS}" != "" ]
@@ -47,27 +46,27 @@ install:
 - travis/no-make-error.sh . help
 - make -f travis.mk c2c-egg
 - travis/pip.sh install tilecloud_chain
-- .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
-- diff -u c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
+- .build/venv/bin/pip freeze | grep --invert-match '^-e' | grep --invert-match '^#'
+- diff --unified c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt <(.build/venv/bin/pip freeze | grep --invert-match '^-e' | grep --invert-match '^#') | grep '^[+-]'
 - make -f travis.mk build
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini heads
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini heads
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini heads
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini heads
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/build-new-project.sh
 
 script:
-- uname -a
+- uname --all
 - sudo -u postgres psql --version
-- node -v
-- npm -v
+- node --version
+- npm --version
 - .build/venv/bin/flake8 --version
 - python setup.py --version
 
 # test new project
 - |-
   cd /tmp/travis/testgeomapfish
-  .build/venv/bin/pcreate -s c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
+  .build/venv/bin/pcreate --scaffold=c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
   cd -
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
 - find /tmp/travis/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
@@ -80,10 +79,10 @@ script:
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build
 - cp travis/empty-vars.mk /tmp/travis/testgeomapfish/
 - travis/run-on.sh /tmp/travis/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- .build/venv/bin/alembic -c c2cgeoportal/tests/functional/alembic.ini downgrade base
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
+- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
 
 # test c2cgeoportal
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
@@ -116,8 +115,8 @@ after_success:
 before_deploy:
 - .build/venv/bin/pip install wheel
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ]] ; then
-  sed -e 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' -i c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
-  sed -e 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' -i setup.py;
+  sed --expression 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' --in-place c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
+  sed --expression 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' --in-place setup.py;
   git diff;
   fi
 
