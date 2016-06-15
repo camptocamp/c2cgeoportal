@@ -171,6 +171,7 @@ def main():
 
             data = dumps(json_data, indent=2, sort_keys=True)
             data = _sub(r" +\n", "\n", data)
+            data = data + "\n"
 
         else:
             data = re.sub(r"{{", r"\\{\\{", data)
