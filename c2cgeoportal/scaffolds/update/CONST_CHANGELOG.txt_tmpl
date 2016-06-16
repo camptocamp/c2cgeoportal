@@ -14,7 +14,7 @@ but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with
 If you want to keep your CGXP interface you should:
 
 * In your `{{package}}.mk` file add:
-  + CGXP_INTERFACE = main edit routing
+  + CGXP_INTERFACES = main edit routing
   + NGEO_INTERFACES = mobile
 * Add in your vars file:
     vars:
