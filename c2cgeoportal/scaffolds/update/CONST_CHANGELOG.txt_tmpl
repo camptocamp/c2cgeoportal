@@ -21,14 +21,15 @@ If you want to keep your CGXP interface you should:
       ...
       checker:
         ...
-  +     lang_files: [cgxp]
+        defaults:
+  +       lang_files: [cgxp]
       check_collector:
         ...
   +     disabled: []
     update_paths:
     ...
   - - check_collector.disabled # don't readd it on step 5.!
-  + - checker.lang_files
+  + - checker.defaults.lang_files
 * Continue on the step 4., (you should do the step 1.-3. when you want
   to use the ngeo interface)
 
