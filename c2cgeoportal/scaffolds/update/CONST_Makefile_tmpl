@@ -644,7 +644,8 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
 		$(I18N_DEPENDENTIES) \
-		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX)
+		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
+		.build/mapserver.timestamp
 	$(PRERULE_CMD)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line
@@ -1136,15 +1137,24 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	echo "Include $(shell pwd)/apache/*.conf" > $@
 
 .build/apache.timestamp: \
+		.build/mapserver.timestamp \
 		.build/config.yaml \
 		$(CONF_FILES) \
 		apache/application.wsgi \
 		$(PY_FILES) \
 		$(TEMPLATES_FILES) \
-		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf \
 		.build/requirements.timestamp \
 		$(PRINT_OUTPUT_WAR) \
-		development.ini production.ini
+		development.ini production.ini \
+		$(JSON_CLIENT_LOCALISATION_FILES)
+	$(PRERULE_CMD)
+	$(APACHE_GRACEFUL)
+	touch $@
+
+.build/mapserver.timestamp: \
+		$(TEMPLATES_FILES) \
+		apache/mapserver.conf \
+		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(PRERULE_CMD)
 	$(APACHE_GRACEFUL)
 	touch $@
