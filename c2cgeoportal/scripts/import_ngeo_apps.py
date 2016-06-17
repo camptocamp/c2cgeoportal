@@ -229,7 +229,7 @@ def main():
         window.CLOSURE_NO_DEPS = true;
     </script>
     <script src="${{request.static_url('%s/jquery/dist/jquery.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/ngeo/contrib/gmf/third-party/jquery-ui/jquery-ui.min.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script src="${{request.static_url('%s/ngeo/contribs/gmf/third-party/jquery-ui/jquery-ui.min.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular/angular.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-animate/angular-animate.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/angular-sanitize/angular-sanitize.js' % request.registry.settings['node_modules_path'])}}"></script>
