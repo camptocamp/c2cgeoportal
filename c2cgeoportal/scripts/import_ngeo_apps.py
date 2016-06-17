@@ -203,7 +203,7 @@ def main():
                 )
             data = _sub(
                 r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="${request.static_url(\'demo:static-ngeo/image/favicon.png\')}"/>',  # noqa
+                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/image/favicon.ico\')}"/>',  # noqa
                 data,
             )
             # Styles
@@ -289,15 +289,15 @@ def main():
             langUrlElements.push('build', 'gmf-' + lang + '.json')
             langUrls[lang] = langUrlElements.join('/')
         });"""),
-                r"""var langUrls = {
+                r"""        var langUrls = {
 ${ ',\\n'.join([
-    "             '{lang}': '{url}'".format(
+    "          '{lang}': '{url}'".format(
         lang=lang,
         url=request.static_url('{{package}}:static-ngeo/build/{lang}.json'.format(lang=lang))
     )
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}
-           });""",
+        };""",
                 data,
             )
             data = _subs(

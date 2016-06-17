@@ -70,10 +70,10 @@ SETUPTOOLS_VERSION ?= setuptools==21.1.0
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
-ifneq ($(CGXP_INTERFACE), "")
+ifneq ($(CGXP_INTERFACES), "")
 DEFAULT_WEB_RULE += build-cgxp
 endif
-ifneq ($(NGEO_INTERFACE), "")
+ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += build-ngeo
 CLIENT_CHECK_RULE ?= lint-ngeo
 endif
@@ -112,7 +112,7 @@ endif
 ifeq ($(DEPLOY), TRUE)
 TEST_PACKAGES += deploy
 endif
-ifneq ($(NGEO_INTERFACE), "")
+ifneq ($(NGEO_INTERFACES), "")
 TEST_PACKAGES += ngeo
 endif
 else
@@ -147,7 +147,7 @@ DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
 endif
-ifneq ($(CGXP_INTERFACE), "")
+ifneq ($(CGXP_INTERFACES), "")
 REQUIREMENTS += JSTools
 DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
@@ -847,7 +847,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 
 package.json:
 	$(PRERULE_CMD)
-ifneq ($(NGEO_INTERFACE), "")
+ifneq ($(NGEO_INTERFACES), "")
 	@echo Missing $@ required file by ngeo
 	exit 1
 else
@@ -865,7 +865,7 @@ endif
 .build/node_modules.timestamp: package.json $(NPM_CMD)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-ifneq ($(NGEO_INTERFACE), "")
+ifneq ($(NGEO_INTERFACES), "")
 	$(NPM_CMD) install || sleep 20 || $(NPM_CMD) install || sleep 90 || $(NPM_CMD) install
 endif
 	touch $@
@@ -893,7 +893,7 @@ update:
 	git submodule foreach git submodule update --init
 	git submodule foreach git clean -fd
 	git submodule foreach git submodule foreach git clean -fd
-ifneq ($(NGEO_INTERFACE), "")
+ifneq ($(NGEO_INTERFACES), "")
 	rm -f .build/node_modules.timestamp
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
