@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'c2cgeoportal'
-copyright = u'2011-2014, Camptocamp'
+copyright = u'2011-2016, Camptocamp'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

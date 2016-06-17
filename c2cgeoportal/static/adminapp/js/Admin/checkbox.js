@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 by Camptocamp SA
+Copyright (c) 2011-2016 by Camptocamp SA
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
