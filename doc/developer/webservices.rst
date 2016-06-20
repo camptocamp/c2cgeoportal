@@ -206,7 +206,7 @@ Parameters (post form):
 
 Result HTTP code:
 
-* 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
+* 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
 * 302 Found: Success -> redirect on came_from.
 * 400 Bad request: When something wrong.
 
