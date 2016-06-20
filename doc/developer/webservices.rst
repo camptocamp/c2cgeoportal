@@ -171,7 +171,7 @@ WMTS layer:
 
     {
         "url": "<wmts_capabilities_url>",
-        "layer": "<wmts_layer>",
+        "name": "<wmts_layer>",
         "style": "<style>",
         "matrix_set": "<matrix_set>",
         "dimensions": {
