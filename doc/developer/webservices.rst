@@ -46,7 +46,8 @@ Base for all possible results:
         "errors": [<errors>]
     }
 
-Server OGC:
+Server OGC
+~~~~~~~~~~
 
 .. code:: json
 
@@ -61,7 +62,8 @@ Server OGC:
     }
 
 
-Theme:
+Theme
+~~~~~
 
 .. code:: json
 
@@ -78,7 +80,8 @@ Theme:
     }
 
 
-Group:
+Group
+~~~~~
 
 .. code:: json
 
@@ -102,7 +105,8 @@ Group:
     }
 
 
-Layer:
+Layer
+~~~~~
 
 .. code:: json
 
@@ -115,7 +119,8 @@ Layer:
     }
 
 
-WMS Layer:
+WMS Layer
+~~~~~~~~~
 
 .. code:: json
 
@@ -165,7 +170,8 @@ WMS Layer:
     }
 
 
-WMTS layer:
+WMTS layer
+~~~~~~~~~~
 
 .. code:: json
 
