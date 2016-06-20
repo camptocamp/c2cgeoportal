@@ -85,7 +85,7 @@ replace your sencha touch interface by an ngeo interface.
     + <input id="oldPassword" name="oldPassword" type="password" />
       <input id="newPassword" name="newPassword" type="password" />
 
-9. On the `{{package}}/model.py` removes the following lines:
+9. On the `{{package}}/models.py` removes the following lines:
 
     - LayerInternalWMS.__acl__ = [DENY_ALL]
     - LayerExternalWMS.__acl__ = [DENY_ALL]

@@ -119,7 +119,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: nocover
         for item in items:
             messages.append(Message(
                 None, item.name, None, [], u"", u"",
-                (item.item_type, item.name)
+                (item.item_type, item.name.encode("ascii", errors="replace"))
             ))
 
             if callback is not None:
