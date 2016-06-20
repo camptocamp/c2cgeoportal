@@ -146,7 +146,9 @@ Version 2.0.0
     + /{{package}}/static-ngeo/fonts/fontawesome-webfont.*
     + /{{package}}/version.py
     + /mapserver/replace_db.sh
-    + /testDB/01-schemas.sql
+    + /testDB/11-schemas.sql
+    + /testDB/12-alembic.sql
+    + /testDB/13-alembic-static.sql
     * /testDB/Dockerfile
     + /.whiskey/action_hooks/pre-build
 
@@ -193,7 +195,7 @@ Version 2.0.0
     + <input id="oldPassword" name="oldPassword" type="password" />
       <input id="newPassword" name="newPassword" type="password" />
 
-9. On the `{{package}}/model.py` removes the following lines:
+9. On the `{{package}}/models.py` removes the following lines:
 
     - LayerInternalWMS.__acl__ = [DENY_ALL]
     - LayerExternalWMS.__acl__ = [DENY_ALL]
