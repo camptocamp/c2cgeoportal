@@ -511,6 +511,7 @@ class Entry(object):
             self._fill_wmts_v2(l, layer)
 
     def _fill_wmts_v2(self, l, layer):
+        l["layer"] = layer.layer
         l["imageType"] = layer.image_type
         l["dimensions"] = {}
         for dimension in layer.dimensions:
