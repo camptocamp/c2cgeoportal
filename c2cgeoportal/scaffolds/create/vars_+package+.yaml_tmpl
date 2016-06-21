@@ -80,14 +80,35 @@ vars:
     #    http: http://someproxy
 
     shortener:
+        # Used to send a confirmation email
         email_from: info@example.com
         email_subject: "Geoportal URL"
         email_body: |
+            Hello,
+
             Somebody sent you the following link:
             %(short_url)s
 
             With the message:
             %(message)
+
+            Sincerely yours
+            The GeoMapfish team
+        smtp_server: smtp.example.com
+
+    reset_password:
+        # Used to send a confirmation email
+        email_from: info@camptocamp.com
+        email_subject: New password generated for GeoMapFish
+        email_body: |
+            Hello {user},
+
+            You have asked for an new password,
+            the newly generated password is: {password}
+
+            Sincerely yours
+            The GeoMapfish team
+        smtp_server: smtp.example.com
 
     # Checker configuration
     checker:
@@ -119,20 +140,6 @@ vars:
         # - display: Child:
         #   url: {web_protocol}://{host}/child/wsgi
 
-    reset_password:
-        # Used to send a confirmation email
-        email_from: info@camptocamp.com
-        email_subject: New password generated for GeoMapFish
-        email_body: |
-            Hello {user},
-
-            You have asked for an new password,
-            the newly generated password is: {password}
-
-            Sincerely yours
-            The GeoMapfish team
-        smtp_server: smtp.example.com
-
 update_paths:
 - shortener
 - authtkt
@@ -141,3 +148,4 @@ update_paths:
 - check_collector.disabled
 - check_collector.hosts
 - admin_interface
+- shortener

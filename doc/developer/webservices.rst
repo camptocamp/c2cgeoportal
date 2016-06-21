@@ -413,8 +413,8 @@ Parameters
 ~~~~~~~~~~
 
 * ``url``: URL to shorten.
-* ``email``: Email address to send a message to.
-* ``message``: A user message.
+* ``email``: Email address to send a message to (optional).
+* ``message``: The user message to add in the email (optional).
 * ``callback``: Function name to do the callback (optional, deprecated in v2).
 
 Result
