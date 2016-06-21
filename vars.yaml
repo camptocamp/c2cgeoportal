@@ -1,5 +1,5 @@
 vars:
-    main_version: __import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]
+    main_version: "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2])"
     dbuser: www-data
     dbpassword: www-data
     dbhost: localhost
