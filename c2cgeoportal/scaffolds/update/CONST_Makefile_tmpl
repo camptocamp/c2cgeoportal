@@ -514,10 +514,7 @@ cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
 	rm -f $(ANGULAR_LOCALES_FILES)
-	rm -f .build/externs/angular-$(ANGULAR_VERSION).js \
-		.build/externs/angular-$(ANGULAR_VERSION)-q_templated.js \
-		.build/externs/angular-$(ANGULAR_VERSION)-http-promise_templated.js \
-		.build/externs/jquery-1.9.js
+
 ifdef PRINT_BASE_WAR
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
 endif
