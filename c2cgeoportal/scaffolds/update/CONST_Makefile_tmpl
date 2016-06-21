@@ -738,7 +738,7 @@ node_modules/%: .build/node_modules.timestamp
 node_modules/ngeo/node_modules/%: node_modules/%
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	ln -s ../../../$< $@
+	[ -e $@ ] || ln -s ../../../$< $@
 	touch --no-create $@
 
 .PRECIOUS: node_modules/font-awesome/fonts/fontawesome-webfont.%
