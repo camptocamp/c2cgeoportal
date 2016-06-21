@@ -225,10 +225,10 @@ print v3 (although that&#8217;s the same idea).</p>
 </div>
 <div class="section" id="having-a-dedicated-print-instance">
 <h2>Having a dedicated print instance<a class="headerlink" href="#having-a-dedicated-print-instance" title="Permalink to this headline">¶</a></h2>
-<p>The goal is to be able to crate a custom makefile with witch one we make:</p>
+<p>The goal is to be able to create a custom makefile with which one we make:</p>
 <pre class="highlight"><span class="prompt1">make -f &lt;file&gt;.mk</span>
 </pre><p>To have only the print.</p>
-<p>For this create a makefile with:</p>
+<p>For this, create a makefile with:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">BUILD_RULES</span> <span class="o">=</span> <span class="n">test</span><span class="o">-</span><span class="n">packages</span> <span class="nb">print</span>
 <span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">main</span> <span class="nb">print</span>
 </pre></div>
