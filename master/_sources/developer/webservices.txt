@@ -46,7 +46,8 @@ Base for all possible results:
         "errors": [<errors>]
     }
 
-Server OGC:
+Server OGC
+~~~~~~~~~~
 
 .. code:: json
 
@@ -61,7 +62,8 @@ Server OGC:
     }
 
 
-Theme:
+Theme
+~~~~~
 
 .. code:: json
 
@@ -78,7 +80,8 @@ Theme:
     }
 
 
-Group:
+Group
+~~~~~
 
 .. code:: json
 
@@ -102,7 +105,8 @@ Group:
     }
 
 
-Layer:
+Layer
+~~~~~
 
 .. code:: json
 
@@ -115,7 +119,8 @@ Layer:
     }
 
 
-WMS Layer:
+WMS Layer
+~~~~~~~~~
 
 .. code:: json
 
@@ -165,7 +170,8 @@ WMS Layer:
     }
 
 
-WMTS layer:
+WMTS layer
+~~~~~~~~~~
 
 .. code:: json
 
@@ -200,7 +206,7 @@ Parameters (post form):
 
 Result HTTP code:
 
-* 200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.
+* 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
 * 302 Found: Success -> redirect on came_from.
 * 400 Bad request: When something wrong.
 
@@ -230,7 +236,7 @@ Result HTTP code:
 * 200 Success: Success.
 
 Annoymous JSON result
-`````````````````````
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -244,7 +250,7 @@ Annoymous JSON result
 .. _developer_webservices_auth_connected:
 
 Connected JSON result
-`````````````````````
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -281,7 +287,7 @@ Result HTTP code:
 * 400 Bad request: When something wrong.
 
 JSON result
-```````````
+~~~~~~~~~~~
 
 .. code:: json
 
@@ -309,7 +315,7 @@ Result HTTP code:
 * 400 Bad request: When something wrong.
 
 Success JSON result
-```````````````````
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -404,14 +410,14 @@ URL: ``.../short/create``
 Method ``POST``
 
 Parameters
-``````````
+~~~~~~~~~~
 
 * ``url``: URL to shorten.
 * ``email``: Email address to send a message to.
 * ``callback``: Function name to do the callback.
 
 Result
-``````
+~~~~~~
 
 .. code:: json
 
