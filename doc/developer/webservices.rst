@@ -236,7 +236,7 @@ Result HTTP code:
 * 200 Success: Success.
 
 Annoymous JSON result
-`````````````````````
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -250,7 +250,7 @@ Annoymous JSON result
 .. _developer_webservices_auth_connected:
 
 Connected JSON result
-`````````````````````
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -287,7 +287,7 @@ Result HTTP code:
 * 400 Bad request: When something wrong.
 
 JSON result
-```````````
+~~~~~~~~~~~
 
 .. code:: json
 
@@ -315,7 +315,7 @@ Result HTTP code:
 * 400 Bad request: When something wrong.
 
 Success JSON result
-```````````````````
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: json
 
@@ -410,14 +410,14 @@ URL: ``.../short/create``
 Method ``POST``
 
 Parameters
-``````````
+~~~~~~~~~~
 
 * ``url``: URL to shorten.
 * ``email``: Email address to send a message to.
 * ``callback``: Function name to do the callback.
 
 Result
-``````
+~~~~~~
 
 .. code:: json
 
