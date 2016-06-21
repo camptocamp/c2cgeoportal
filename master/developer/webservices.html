@@ -81,8 +81,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="server-ogc">
-<h4>Server OGC<a class="headerlink" href="#server-ogc" title="Permalink to this headline">¶</a></h4>
+<p>Server OGC:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
      <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
      <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
@@ -94,9 +93,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
  <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="theme">
-<h4>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h4>
+<p>Theme:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
@@ -110,9 +107,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="group">
-<h4>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h4>
+<p>Group:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
@@ -133,9 +128,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="layer">
-<h4>Layer<a class="headerlink" href="#layer" title="Permalink to this headline">¶</a></h4>
+<p>Layer:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
@@ -145,9 +138,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="wms-layer">
-<h4>WMS Layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h4>
+<p>WMS Layer:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
@@ -194,9 +185,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="wmts-layer">
-<h4>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h4>
+<p>WMTS layer:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
@@ -207,7 +196,6 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -226,7 +214,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <p>Result HTTP code:</p>
 <ul class="simple">
-<li>200 Success: Success with the JSON result as <a class="reference internal" href="#developer-webservices-auth-connected"><span class="std std-ref">Connected JSON result</span></a>.</li>
+<li>200 Success: Success with the JSON result as :ref:_developer_webservices_auth_connected.</li>
 <li>302 Found: Success -&gt; redirect on came_from.</li>
 <li>400 Bad request: When something wrong.</li>
 </ul>
@@ -494,15 +482,7 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 <li><a class="reference internal" href="#">Webservices documentation</a><ul>
 <li><a class="reference internal" href="#theme-webservice">Theme webservice</a><ul>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
-<li><a class="reference internal" href="#result-in-v2">Result in v2</a><ul>
-<li><a class="reference internal" href="#server-ogc">Server OGC</a></li>
-<li><a class="reference internal" href="#theme">Theme</a></li>
-<li><a class="reference internal" href="#group">Group</a></li>
-<li><a class="reference internal" href="#layer">Layer</a></li>
-<li><a class="reference internal" href="#wms-layer">WMS Layer</a></li>
-<li><a class="reference internal" href="#wmts-layer">WMTS layer</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#result-in-v2">Result in v2</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#authentication">Authentication</a><ul>
