@@ -617,7 +617,7 @@ class LayerV1(Layer):  # Deprecated in v2
     identifier_attribute_field = Column(Unicode, label=_(u"Identifier attribute field"))
     time_mode = Column(Enum(
         "disabled",
-        "single",
+        "value",
         "range",
         native_enum=False), default="disabled", nullable=False,
         label=_(u"Time mode"))
@@ -697,7 +697,7 @@ class LayerWMS(Layer):
     style = Column(Unicode, label=_(u"Style"))
     time_mode = Column(Enum(
         "disabled",
-        "single",
+        "value",
         "range",
         native_enum=False), default="disabled", nullable=False,
         label=_(u"Time mode")

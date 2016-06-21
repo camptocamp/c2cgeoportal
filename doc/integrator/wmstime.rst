@@ -73,11 +73,11 @@ widget. The preferred widget can be selected in the admin interface (field
 
 Besides, the time mode can be changed. The time mode is one of:
 
-* ``single``
+* ``value``
 * ``range``
 * ``disabled``
 
-The ``single`` mode displays a widget to select a single time or date. For a
+The ``value`` mode displays a widget to select a single time or date. For a
 slider widget, a slider with a single thumb will be displayed. If datepicker is
 selected as widget, a single datepicker will be shown to select a single date.
 The WMS Time layer will display data that is relative to the selected time or date.
