@@ -51,6 +51,11 @@ class Shortener(object):
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get("shortener", {})
+        self.short_bases = [
+            self.request.route_url("shortener_get", ref="")
+        ]
+        if "base_url" in self.settings:
+            self.short_bases.append(self.settings["base_url"])
 
     @view_config(route_name="shortener_get")
     def get(self):
@@ -79,7 +84,6 @@ class Shortener(object):
         # Check that it is an internal URL...
         uri_parts = urlparse(url)
         hostname = uri_parts.hostname
-        paths = uri_parts.path.split("/")
         if "allowed_hosts" in self.settings:
             if hostname not in self.settings["allowed_hosts"]:  # pragma: no cover
                 raise HTTPBadRequest("The requested host is not allowed.")
@@ -90,9 +94,12 @@ class Shortener(object):
                 ))
 
         shortened = False
-        if (len(paths) > 1 and paths[-2] == "short"):
-            ref = paths[-1]
-            shortened = True
+
+        for base in self.short_bases:
+            base_parts = urlparse(base)
+            if uri_parts.path.startswith(base_parts.path):
+                shortened = True
+                ref = uri_parts.path.split("/")[-1]
 
         tries = 0
         while not shortened:
