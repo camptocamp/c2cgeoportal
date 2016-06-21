@@ -134,8 +134,6 @@ class Shortener(object):
         else:
             s_url = self.request.route_url("shortener_get", ref=ref)
 
-        email = email or user_email
-
         if \
                 email is not None and \
                 "email_from" in self.settings and \
