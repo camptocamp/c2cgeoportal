@@ -58,7 +58,7 @@ And for a minor upgrade run:
 .. prompt:: bash
 
    export VERSION=<target_version>
-   make -f <makefile> upgrade_v2
+   make -f <makefile> upgrade
 
 
 .. note:: For Windows:
