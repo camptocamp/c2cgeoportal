@@ -1,5 +1,5 @@
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
-PACKAGE = {{package}}
+export PACKAGE = {{package}}
 OPERATING_SYSTEM ?= LINUX
 
 ifeq ($(DEBUG), TRUE)
@@ -46,6 +46,7 @@ FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type
 
 # Don't minify the js / css, ...
 DEVELOPMENT ?= FALSE
+export DEVELOPMENT
 # Language provided by the application
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
@@ -55,6 +56,7 @@ PRINT_VERSION ?= 3
 # Enable Docker target
 DOCKER ?= FALSE
 DOCKER_BASE ?= no
+export DOCKER_BASE
 DOCKER_TAG ?= latest
 # Use deploy
 ifeq ($(DOCKER), FALSE)
@@ -63,6 +65,7 @@ else
 DEPLOY ?= FALSE
 INSTANCE_ID =
 endif
+export INSTANCE_ID
 
 PIP_CMD ?= $(VENV_BIN)/pip
 PIP_VERSION ?= pip==8.1.2
@@ -83,7 +86,7 @@ DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/vers
 
 # TileCloud-chain
 WMTSCAPABILITIES_PATH ?= 1.0.0/WMTSCapabilities-$(INSTANCE_ID).xml
-ENVIRONMENT_VARS += WMTSCAPABILITIES_PATH=${WMTSCAPABILITIES_PATH}
+export WMTSCAPABILITIES_PATH
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 WMTSCAPABILITIES_FILE ?= /var/sig/tiles/$(WMTSCAPABILITIES_PATH)
 DEFAULT_BUILD_RULES += apache/tiles.conf tilegeneration/config.yaml
@@ -409,6 +412,7 @@ endif
 
 # Apache
 APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
+export APACHE_ENTRY_POINT
 APACHE_VHOST ?= $(PACKAGE)
 APACHE_CONF_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/conf
 APACHE_GRACEFUL ?= sudo /usr/sbin/apache2ctl graceful
@@ -436,11 +440,6 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
 	tiles_url checker check_collector default_max_age jsbuild package srid \
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser
-ENVIRONMENT_VARS += INSTANCE_ID=$(INSTANCE_ID) \
-	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
-	DOCKER_BASE=$(DOCKER_BASE) \
-	DEVELOPMENT=$(DEVELOPMENT) \
-	PACKAGE=$(PACKAGE)
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 
