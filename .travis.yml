@@ -109,7 +109,8 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
-- if [ $TRAVIS_REPO_SLUG == camptocamp/c2cgeoportal ]
+- |
+  if [ $TRAVIS_REPO_SLUG == camptocamp/c2cgeoportal ]
   then
     travis/doc.sh
   fi
