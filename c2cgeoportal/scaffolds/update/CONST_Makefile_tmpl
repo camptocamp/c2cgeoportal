@@ -811,7 +811,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 .build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
 		$(APP_DIRECTIVES_PARTIALS_FILES) \
-		$(GMF_DIRECTIVES_PARTIALSFILES) \
+		$(GMF_DIRECTIVES_PARTIALS_FILES) \
 		$(NGEO_DIRECTIVES_PARTIALS_FILES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
