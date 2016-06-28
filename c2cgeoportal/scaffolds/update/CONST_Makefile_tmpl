@@ -1214,11 +1214,11 @@ push_docker:
 .PHONY: testDB
 testDB: testDB/12-alembic.sql testDB/13-alembic-static.sql
 
-testDB/12-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini
+testDB/12-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini CONST_alembic/main/versions/*.py
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic.ini upgrade --sql head > $@
 
-testDB/13-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini
+testDB/13-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini CONST_alembic/static/versions/*.py
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif

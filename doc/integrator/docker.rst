@@ -131,3 +131,25 @@ something like that:
 
     environment:
       DB_CONNECTION: user=www-data password=toto dbname=geoacordaDev host=db
+
+
+Keep your DB schema up to date
+------------------------------
+
+The WSGI image contains Alembic. You can use it as a start once container and
+add something like that in your composition:
+
+.. code:: yaml
+
+    alembic:
+      labels:
+        io.rancher.container.start_once: 'true'
+      image: company/prefix_wsgi:tag
+      environment:
+        SQLALCHEMY_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/${DB_NAME}
+      links:
+        - db
+      command: ./run_alembic.sh
+
+When you do an upgrade, backup your DB and upgrade this container first. It will update your
+DB schema, if needed.

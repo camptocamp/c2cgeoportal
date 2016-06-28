@@ -3,10 +3,14 @@
 !.whiskey
 !{{package}}
 !{{package}}.egg-info
+!alembic.ini
+!alembic_static.ini
 !apache/application.wsgi
 !requirements.txt
+!CONST_alembic
 !CONST_requirements.txt
 !CONST_versions.txt
+!run_alembic.sh
 !setup.cfg
 !setup.py
 !development.ini

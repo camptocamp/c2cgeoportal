@@ -20,6 +20,7 @@ script_location = CONST_alembic/main
 # versions/ directory
 # sourceless = false
 
+# overriden from the SQLALCHEMY_URL environment variable
 sqlalchemy.url = ${sqlalchemy["url"]}
 version_table = c2cgeoportal_version
 version_table_schema = ${schema}
