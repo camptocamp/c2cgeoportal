@@ -149,7 +149,7 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "%stheme" % route_names[0],
-        "%s%stheme/*themes" % (routes[0], "" if routes[0][-1] == "/" else "/"),
+        "%s%stheme/{themes}" % (routes[0], "" if routes[0][-1] == "/" else "/"),
     )
     config.add_view(
         Entry,
@@ -196,7 +196,7 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         "%stheme" % route_name,
-        "%s%stheme/*themes" % (route, "" if route[-1] == "/" else "/"),
+        "%s%stheme/{themes}" % (route, "" if route[-1] == "/" else "/"),
         request_method="GET",
     )
     config.add_view(
