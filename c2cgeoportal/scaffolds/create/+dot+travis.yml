@@ -3,12 +3,13 @@ language: python
 python:
 - 2.7
 
+services:
+- postgresql
+
 install:
-- sudo apt-get install postgis
-- sudo -u postgres createdb -E UTF8 -T template0 template_postgis
-- sudo -u postgres psql -d template_postgis -c "CREATE EXTENSION postgis;"
-- sudo -u postgres createdb -E UTF8 -T template_postgis geomapfish
 - sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
+- sudo -u postgres createdb -E UTF8 geomapfish
+- sudo -u postgres psql -d geomapfish -c "CREATE EXTENSION postgis;"
 - sudo -u postgres psql -d geomapfish -c 'CREATE SCHEMA main;'
 - sudo -u postgres psql -d geomapfish -c 'CREATE SCHEMA main_static;'
 - sudo -u postgres psql -d geomapfish -c "ALTER USER \"www-data\" PASSWORD 'www-data';"
