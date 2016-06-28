@@ -60,7 +60,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
-            LayerWMS, ServerOGC, FullTextSearch
+            LayerWMS, OGCServer, FullTextSearch
         from sqlalchemy import func
 
         role1 = Role(name=u"__test_role1")
@@ -87,22 +87,22 @@ class TestEntryView(TestCase):
         public_layer2 = LayerWMS(
             name=u"__test_public_layer2", layer=u"__test_public_layer_bis", public=True)
         public_layer2.interfaces = [main, mobile]
-        public_layer2.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
+        public_layer2.ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
 
         private_layer2 = LayerWMS(
             name=u"__test_private_layer2", layer=u"__test_private_layer_bis", public=False)
         private_layer2.interfaces = [main, mobile]
-        private_layer2.server_ogc = ServerOGC(name="__test_server_ogc", type="mapserver", image_type="image/jpeg")
+        private_layer2.ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
 
         public_layer_not_mapfile = LayerWMS(
             name=u"__test_public_layer_not_mapfile", layer=u"__test_public_layer_not_in_mapfile", public=True)
         public_layer_not_mapfile.interfaces = [main, mobile]
-        public_layer_not_mapfile.server_ogc = ServerOGC(name="__test_server_ogc", url="internal_url", image_type="image/jpeg")
+        public_layer_not_mapfile.ogc_server = OGCServer(name="__test_ogc_server", url="internal_url", image_type="image/jpeg")
 
         public_layer_no_layers = LayerWMS(
             name=u"__test_public_layer_no_layers", public=True)
         public_layer_no_layers.interfaces = [main, mobile]
-        public_layer_no_layers.server_ogc = ServerOGC(name="__test_server_ogc", url="internal_url", image_type="image/jpeg")
+        public_layer_no_layers.ogc_server = OGCServer(name="__test_ogc_server", url="internal_url", image_type="image/jpeg")
 
         layer_in_group = LayerV1(name=u"__test_layer_in_group")
         layer_in_group.interfaces = [main, mobile]

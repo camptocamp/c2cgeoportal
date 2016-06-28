@@ -59,7 +59,7 @@ from c2cgeoportal import (
 
 __all__ = [
     "Functionality", "User", "Role", "LayerGroup", "Theme",
-    "LayerV1", "ServerOGC", "LayerWMS",
+    "LayerV1", "OGCServer", "LayerWMS",
     "LayerWMTS", "RestrictionArea", "Interface", "UIMetadata",
     "WMTSDimension", "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
     "LayerWMTSGrid", "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid",
@@ -443,9 +443,9 @@ LayerV1.interfaces.set(renderer=CheckBoxSet)
 LayerV1.ui_metadatas.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
-# ServerOGC
-ServerOGC = FieldSet(models.ServerOGC)
-ServerOGC.image_type.set(
+# OGC server
+OGCServer = FieldSet(models.OGCServer)
+OGCServer.image_type.set(
     renderer=SelectFieldRenderer,
     options=image_type_options,
 )
@@ -464,7 +464,7 @@ LayerWMS.time_widget.set(
 LayerWMS.interfaces.set(renderer=CheckBoxSet)
 LayerWMS.ui_metadatas.set(readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
-LayerWMS.server_ogc.set(renderer=SelectFieldRenderer)
+LayerWMS.ogc_server.set(renderer=SelectFieldRenderer)
 
 
 # LayerWMTS

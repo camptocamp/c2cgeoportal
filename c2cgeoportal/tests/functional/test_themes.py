@@ -54,7 +54,7 @@ class TestThemesView(TestCase):
 
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Functionality, Interface, \
-            LayerV1, ServerOGC, LayerWMS, LayerWMTS, \
+            LayerV1, OGCServer, LayerWMS, LayerWMTS, \
             UIMetadata, WMTSDimension
 
         main = Interface(name=u"main")
@@ -65,19 +65,19 @@ class TestThemesView(TestCase):
         layer_v1.interfaces = [main]
         layer_v1.ui_metadatas = [UIMetadata("test", "v1")]
 
-        server_ogc_internal = ServerOGC(name="__test_server_ogc_internal", type="mapserver", image_type="image/jpeg")
-        server_ogc_external = ServerOGC(name="__test_server_ogc_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
+        ogc_server_internal = OGCServer(name="__test_ogc_server_internal", type="mapserver", image_type="image/jpeg")
+        ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
         layer_internal_wms.ui_metadatas = [UIMetadata("test", "internal_wms")]
-        layer_internal_wms.server_ogc = server_ogc_internal
+        layer_internal_wms.ogc_server = ogc_server_internal
 
         layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
         layer_external_wms.ui_metadatas = [UIMetadata("test", "external_wms")]
-        layer_external_wms.server_ogc = server_ogc_external
+        layer_external_wms.ogc_server = ogc_server_external
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
@@ -473,7 +473,7 @@ class TestThemesView(TestCase):
             }]
         )
 
-    def test_server_ogc(self):
+    def test_ogc_server(self):
         entry = self._create_entry_obj(params={
             "version": "2",
             "catalogue": "true",
@@ -481,8 +481,8 @@ class TestThemesView(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
-            themes["serversOGC"], {
-                "__test_server_ogc_internal": {
+            themes["ogcServers"], {
+                "__test_ogc_server_internal": {
                     "wfsSupport": False,
                     "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
                     "isSingleTile": False,
@@ -500,7 +500,7 @@ class TestThemesView(TestCase):
                     "type": "mapserver",
                     "imageType": "image/jpeg",
                 },
-                "__test_server_ogc_external": {
+                "__test_ogc_server_external": {
                     "wfsSupport": False,
                     "url": "http://wms.geo.admin.ch/",
                     "isSingleTile": False,
@@ -521,23 +521,23 @@ class TestThemesView(TestCase):
             },
         )
         self.assertEquals(
-            [self._only_name(t, "serverOGC") for t in themes["themes"]],
+            [self._only_name(t, "ogcServer") for t in themes["themes"]],
             [{
                 "children": [{
                     # order is important
                     "children": [{
-                        "serverOGC": "__test_server_ogc_internal",
+                        "ogcServer": "__test_ogc_server_internal",
                     }, {
-                        "serverOGC": "__test_server_ogc_external",
+                        "ogcServer": "__test_ogc_server_external",
                     }, {
                     }]
                 }, {
                     # order is important
                     "children": [{
                     }, {
-                        "serverOGC": "__test_server_ogc_internal",
+                        "ogcServer": "__test_ogc_server_internal",
                     }, {
-                        "serverOGC": "__test_server_ogc_external",
+                        "ogcServer": "__test_ogc_server_external",
                     }]
                 }]
             }]
