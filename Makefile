@@ -33,7 +33,7 @@ VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 
-TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
+export TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = .build/venv/bin/tx $(HOME)/.transifexrc .tx/config
 ifeq (,$(wildcard $(HOME)/.transifexrc))
 TOUCHBACK_TXRC = touch --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
@@ -57,8 +57,7 @@ APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .j
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png)
 
-ENVIRONMENT_VARS += TX_VERSION=$(TX_VERSION)
-C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) .build/venv/bin/c2c-template --vars $(VARS_FILE)
+C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
 
 .PHONY: help

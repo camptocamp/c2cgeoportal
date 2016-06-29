@@ -346,7 +346,7 @@ Create the project
 
     CSS_BASE_FILES += <package>/static/css/proj-$(INSTANCE).css
     CONFIG_VARS += viewer
-    ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
+    export INSTANCE
 
 4. Define the developer templates as follows (``<user>.mk``):
 

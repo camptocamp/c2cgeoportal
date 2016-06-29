@@ -52,6 +52,25 @@ To make such variables available to the python code, for instance using
 
 they must be listed in the makefile as well using ``CONFIG_VARS`` (see below).
 
+To get a variable from the makefile to the vars, you should make your variable as export:
+
+.. code:: make
+
+   export MY_VAR ?= my_value
+
+And in your yaml vars file add:
+
+.. code:: yaml
+
+   vars:
+      ...
+      my_var: MY_VAR
+   interpreted:
+      ...
+      environment:
+      - ...
+      - my_var
+
 For more information see the
 `c2c.template <https://github.com/sbrunner/c2c.template>`_ documentation.
 
