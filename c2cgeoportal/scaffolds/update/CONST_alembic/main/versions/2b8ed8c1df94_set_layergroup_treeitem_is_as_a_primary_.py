@@ -39,7 +39,7 @@ from alembic import op, context
 # revision identifiers, used by Alembic.
 revision = '2b8ed8c1df94'
 down_revision = '32527659d57b'
-branch_labels = ('1.6',)
+branch_labels = None
 depends_on = None
 
 
