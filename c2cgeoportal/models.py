@@ -57,7 +57,7 @@ from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
     "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
-    "LayerV1", "ServerOGC",
+    "LayerV1", "OGCServer",
     "LayerWMS", "LayerWMTS", "Interface", "UIMetadata", "WMTSDimension",
     "LayergroupTreeitem"
 ]
@@ -636,10 +636,10 @@ class LayerV1(Layer):  # Deprecated in v2
         self.layer_type = layer_type
 
 
-class ServerOGC(Base):
-    __label__ = _(u"Server OGC")
-    __plural__ = _(u"Servers OGC")
-    __tablename__ = "server_ogc"
+class OGCServer(Base):
+    __label__ = _(u"OGC server")
+    __plural__ = _(u"OGC servers")
+    __tablename__ = "ogc_server"
     __table_args__ = {"schema": _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
@@ -690,8 +690,8 @@ class LayerWMS(Layer):
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    server_ogc_id = Column(
-        Integer, ForeignKey(_schema + ".server_ogc.id"), nullable=False
+    ogc_server_id = Column(
+        Integer, ForeignKey(_schema + ".ogc_server.id"), nullable=False
     )
     layer = Column(Unicode, label=_(u"WMS layer name"))
     style = Column(Unicode, label=_(u"Style"))
@@ -708,9 +708,9 @@ class LayerWMS(Layer):
         native_enum=False), default="slider", nullable=True,
         label=_(u"Time widget"))
 
-    # relationship with ServerOGC
-    server_ogc = relationship(
-        "ServerOGC"
+    # relationship with OGCServer
+    ogc_server = relationship(
+        "OGCServer"
     )
 
     def __init__(self, name=u"", layer=u"", public=True, icon=u""):

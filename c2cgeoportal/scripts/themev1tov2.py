@@ -75,12 +75,12 @@ def main():
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \
-        ServerOGC, LayerWMS, LayerWMTS, LayerV1, LayerGroup
+        OGCServer, LayerWMS, LayerWMTS, LayerV1, LayerGroup
 
     session = DBSession()
 
     if options.layers:
-        table_list = [LayerWMTS, LayerWMS, ServerOGC]
+        table_list = [LayerWMTS, LayerWMS, OGCServer]
         for table in table_list:
             print("Emptying table %s." % str(table.__table__))
             # must be done exactly this way othewise the cascade config in the
@@ -88,8 +88,8 @@ def main():
             for t in session.query(table).all():
                 session.delete(t)
 
-        # list and create all distinct server_ogc
-        server_ogc(session)
+        # list and create all distinct ogc_server
+        ogc_server(session)
 
         print("Converting layerv1.")
         for layer in session.query(LayerV1).all():
@@ -103,23 +103,23 @@ def main():
     transaction.commit()
 
 
-def server_ogc(session):
-    from c2cgeoportal.models import LayerV1, ServerOGC
+def ogc_server(session):
+    from c2cgeoportal.models import LayerV1, OGCServer
 
     servers_v1 = session.query(
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile).group_by(
             LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile).all()
     unique_servers = []
 
-    # get existing list of server_ogc
-    servers_ogc = session.query(ServerOGC).all()
+    # get existing list of ogc_server
+    servers_ogc = session.query(OGCServer).all()
     for server in servers_ogc:
         identifier = str(server.url) + ' ' + str(server.image_type) + ' ' + \
             str(server.is_single_tile)
         if identifier not in unique_servers:
             unique_servers.append(identifier)
 
-    # add new server_ogc
+    # add new ogc_server
     for server in servers_v1:
         # default image_type
         image_type = server[1]
@@ -128,24 +128,24 @@ def server_ogc(session):
         identifier = str(server[0]) + ' ' + image_type + ' ' + str(server[2])
         if identifier not in unique_servers:
             unique_servers.append(identifier)
-            new_server_ogc = ServerOGC()
-            new_server_ogc.url = server[0]
-            new_server_ogc.image_type = image_type
-            new_server_ogc.is_single_tile = server[2]
+            new_ogc_server = OGCServer()
+            new_ogc_server.url = server[0]
+            new_ogc_server.image_type = image_type
+            new_ogc_server.is_single_tile = server[2]
             name = server[0]
             if name is None:
                 name = str(server[1])
             if server[2]:
                 name += ' with single_tile'
-            new_server_ogc.name = u'source for %s' % name
+            new_ogc_server.name = u'source for %s' % name
 
-            session.add(new_server_ogc)
+            session.add(new_ogc_server)
 
     transaction.commit()
 
 
 def layer_v1tov2(session, layer):
-    from c2cgeoportal.models import ServerOGC, LayerWMS, LayerWMTS, \
+    from c2cgeoportal.models import OGCServer, LayerWMS, LayerWMTS, \
         LayergroupTreeitem, WMTSDimension
 
     if layer.layer_type == "internal WMS" or layer.layer_type == "external WMS":
@@ -154,11 +154,11 @@ def layer_v1tov2(session, layer):
         image_type = layer.image_type
         if layer.image_type is None:
             image_type = 'image/png'
-        server_ogc = session.query(ServerOGC).filter(
-            ServerOGC.url == layer.url,
-            ServerOGC.image_type == image_type, ServerOGC.is_single_tile ==
+        ogc_server = session.query(OGCServer).filter(
+            OGCServer.url == layer.url,
+            OGCServer.image_type == image_type, OGCServer.is_single_tile ==
             layer.is_single_tile).one()
-        new_layer.server_ogc = server_ogc
+        new_layer.ogc_server = ogc_server
     elif layer.layer_type == "WMTS":
         new_layer = LayerWMTS()
 

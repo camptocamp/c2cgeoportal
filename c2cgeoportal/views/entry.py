@@ -59,7 +59,7 @@ from c2cgeoportal.lib.functionality import get_functionality, \
 from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
-    Theme, LayerGroup, RestrictionArea, Interface, ServerOGC, \
+    Theme, LayerGroup, RestrictionArea, Interface, OGCServer, \
     Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch
 
 
@@ -356,9 +356,9 @@ class Entry(object):
                 l["editable"] = True
 
     def _fill_wms(self, l, layer, errors, role_id, mixed):
-        wms, wms_layers = self._wms_layers(role_id, layer.server_ogc)
+        wms, wms_layers = self._wms_layers(role_id, layer.ogc_server)
 
-        l["imageType"] = layer.server_ogc.image_type
+        l["imageType"] = layer.ogc_server.image_type
         if layer.style:  # pragma: no cover
             l["style"] = layer.style
 
@@ -403,18 +403,18 @@ class Entry(object):
                 l["maxResolutionHint"] = max(max_resolutions_hint)
 
         if mixed:
-            l["serverOGC"] = layer.server_ogc.name
+            l["ogcServer"] = layer.ogc_server.name
         # deprecated
         l["url"] = get_url(
-            layer.server_ogc.url, self.request,
+            layer.ogc_server.url, self.request,
             default=self.request.route_url("mapserverproxy"), errors=errors)
-        l["isSingleTile"] = layer.server_ogc.is_single_tile
+        l["isSingleTile"] = layer.ogc_server.is_single_tile
 
-        l["wfsSupport"] = layer.server_ogc.wfs_support
+        l["wfsSupport"] = layer.ogc_server.wfs_support
         l["urlWfs"] = get_url(
-            layer.server_ogc.url_wfs, self.request,
+            layer.ogc_server.url_wfs, self.request,
             default=l["url"], errors=errors)
-        l["serverType"] = layer.server_ogc.type
+        l["serverType"] = layer.ogc_server.type
         # end deprecated
 
         return True
@@ -601,7 +601,7 @@ class Entry(object):
                 ogc_servers.update(self._get_ogc_servers(tree_item, depth=depth + 1))
 
         if isinstance(group, LayerWMS):
-            ogc_servers.add(group.server_ogc)
+            ogc_servers.add(group.ogc_server)
 
         if isinstance(group, LayerWMTS):
             ogc_servers.add(False)
@@ -694,7 +694,7 @@ class Entry(object):
                 g["mixed"] = mixed
                 if org_depth == 1:
                     if not mixed:
-                        g["serverOGC"] = ogc_servers[0].name
+                        g["ogcServer"] = ogc_servers[0].name
                         if time.has_time() and time.layer is None:
                             g["time"] = time.to_dict()
 
@@ -714,12 +714,12 @@ class Entry(object):
         return [l.name for l in query.all()]
 
     @cache_region.cache_on_arguments()
-    def _wms_layers(self, role_id, server_ogc=None):
+    def _wms_layers(self, role_id, ogc_server=None):
         """ role_id is just for cache """
 
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = self._wms_getcap(
-            server_ogc.url if server_ogc and server_ogc.url else
+            ogc_server.url if ogc_server and ogc_server.url else
             self.mapserver_settings["mapserv_url"]
         )
         if len(wms_errors) > 0:
@@ -1208,24 +1208,24 @@ class Entry(object):
         all_errors = set()
         if version == 2:
 
-            result["serversOGC"] = {}
-            for server_ogc in DBSession.query(ServerOGC).all():
+            result["ogcServers"] = {}
+            for ogc_server in DBSession.query(OGCServer).all():
                 url = get_url(
-                    server_ogc.url, self.request,
+                    ogc_server.url, self.request,
                     default=self.request.route_url("mapserverproxy"), errors=all_errors
                 )
                 url_wfs = get_url(
-                    server_ogc.url_wfs, self.request,
+                    ogc_server.url_wfs, self.request,
                     default=url, errors=all_errors
                 )
-                result["serversOGC"][server_ogc.name] = {
+                result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
-                    "type": server_ogc.type,
-                    "imageType": server_ogc.image_type,
-                    "auth": server_ogc.auth,
-                    "wfsSupport": server_ogc.wfs_support,
-                    "isSingleTile": server_ogc.is_single_tile,
+                    "type": ogc_server.type,
+                    "imageType": ogc_server.image_type,
+                    "auth": ogc_server.auth,
+                    "wfsSupport": ogc_server.wfs_support,
+                    "isSingleTile": ogc_server.is_single_tile,
                 }
         if export_themes:
             themes, errors = self._themes(

@@ -53,17 +53,17 @@ class TestThemesViewMetadata(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, ServerOGC, LayerWMS, UIMetadata
+            Theme, LayerGroup, Interface, OGCServer, LayerWMS, UIMetadata
 
         desktop = Interface(name=u"desktop")
 
-        server_ogc_internal = ServerOGC(
-            name="__test_server_ogc_internal", type="mapserver", image_type="image/png"
+        ogc_server_internal = OGCServer(
+            name="__test_ogc_server_internal", type="mapserver", image_type="image/png"
         )
 
         layer_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_wms.layer = "__test_layer_internal_wms"
-        layer_wms.server_ogc = server_ogc_internal
+        layer_wms.ogc_server = ogc_server_internal
         layer_wms.interfaces = [desktop]
         layer_wms.ui_metadatas = [
             UIMetadata("string", "string"),
