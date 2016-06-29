@@ -8,7 +8,7 @@ The administration interface is located at ``http://<server>/<project>/admin``.
 Authentication for the administration interface is done through the main application interface. Role ``role_admin`` is
 required.
 
-Server OGC
+OGC Server
 ----------
 
 This is the description of an OGC server (WMS/WFS).
@@ -57,7 +57,7 @@ WMS layer
 ~~~~~~~~~
 On internal WMS layers we have the following specific attributes:
 
-* ``Server OGC``: the used server.
+* ``OGC Server``: the used server.
 * ``Layers``: the WMS layers. Can be one layer, one group, a coma separated list of layers.
   In the case of a coma separated list of layers, we will get the legend rule for the
   layer icon on the first layer, and the legend will not be supported we should define a legend metadata.

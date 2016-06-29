@@ -47,8 +47,8 @@
 <p>The administration interface is located at <code class="docutils literal"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
 <p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal"><span class="pre">role_admin</span></code> is
 required.</p>
-<div class="section" id="server-ogc">
-<h2>Server OGC<a class="headerlink" href="#server-ogc" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ogc-server">
+<h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
 <p>This is the description of an OGC server (WMS/WFS).
 For one server we try to create only one request when it&#8217;s possible.</p>
 <p>If you want to query the same server to get PNG and JPEG images,
@@ -92,7 +92,7 @@ For enumerable attributes (foreign key), the column name should end with &#8216;
 <h3>WMS layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h3>
 <p>On internal WMS layers we have the following specific attributes:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">Server</span> <span class="pre">OGC</span></code>: the used server.</li>
+<li><code class="docutils literal"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</li>
 <li><code class="docutils literal"><span class="pre">Layers</span></code>: the WMS layers. Can be one layer, one group, a coma separated list of layers.
 In the case of a coma separated list of layers, we will get the legend rule for the
 layer icon on the first layer, and the legend will not be supported we should define a legend metadata.</li>
@@ -210,7 +210,7 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Administrate a c2cgeoportal application</a><ul>
-<li><a class="reference internal" href="#server-ogc">Server OGC</a></li>
+<li><a class="reference internal" href="#ogc-server">OGC Server</a></li>
 <li><a class="reference internal" href="#layers">Layers</a><ul>
 <li><a class="reference internal" href="#all-layer-type">All layer type</a></li>
 <li><a class="reference internal" href="#wms-layer">WMS layer</a></li>

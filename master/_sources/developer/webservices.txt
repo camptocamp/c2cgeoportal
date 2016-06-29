@@ -36,8 +36,8 @@ Base for all possible results:
 .. code:: json
 
     {
-        "serversOGC": {
-            "<name>": <server OGC>
+        "ogcServers": {
+            "<name>": <OGC Server name>
             ...
         }
         "themes": [<themes>],
@@ -46,7 +46,7 @@ Base for all possible results:
         "errors": [<errors>]
     }
 
-Server OGC
+OGC Server
 ~~~~~~~~~~
 
 .. code:: json
@@ -89,7 +89,7 @@ Group
         "name": "<name>",
         "mixed": (true|false),
         # if not mixed
-        "serverOGC": {
+        "ogcServer": {
             "url": "<wms server url>",
             "wfsUrl": "<wfs server url>",
             "wfsSupport": (true|false),
@@ -130,7 +130,7 @@ WMS Layer
         "layers": "<wms_layers>",
         "style": "<style>",
         # if not mixed
-        "serverOGC": "<server name>",
+        "ogcServer": "<server name>",
         # derecated
         "url": "<wms server url>",
         "urlWfs": "<wfs server url>",

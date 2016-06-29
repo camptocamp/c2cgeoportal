@@ -70,8 +70,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
 <p>Base for all possible results:</p>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;serversOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span> <span class="n">OGC</span><span class="o">&gt;</span>
+    <span class="s2">&quot;ogcServers&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">OGC</span> <span class="n">Server</span> <span class="n">name</span><span class="o">&gt;</span>
         <span class="o">...</span>
     <span class="p">}</span>
     <span class="s2">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
@@ -81,8 +81,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="server-ogc">
-<h4>Server OGC<a class="headerlink" href="#server-ogc" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="ogc-server">
+<h4>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h4>
 <div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
      <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
      <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
@@ -117,7 +117,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
     <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
         <span class="s2">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
         <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
@@ -154,7 +154,7 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
     <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
     <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
     <span class="c1"># derecated</span>
     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
@@ -495,7 +495,7 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
 <li><a class="reference internal" href="#theme-webservice">Theme webservice</a><ul>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
 <li><a class="reference internal" href="#result-in-v2">Result in v2</a><ul>
-<li><a class="reference internal" href="#server-ogc">Server OGC</a></li>
+<li><a class="reference internal" href="#ogc-server">OGC Server</a></li>
 <li><a class="reference internal" href="#theme">Theme</a></li>
 <li><a class="reference internal" href="#group">Group</a></li>
 <li><a class="reference internal" href="#layer">Layer</a></li>

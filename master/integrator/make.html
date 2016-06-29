@@ -82,6 +82,21 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 </pre></div>
 </div>
 <p>they must be listed in the makefile as well using <code class="docutils literal"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
+<p>To get a variable from the makefile to the vars, you should make your variable as export:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span>export MY_VAR ?= my_value
+</pre></div>
+</div>
+<p>And in your yaml vars file add:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="n">my_var</span><span class="p">:</span> <span class="n">MY_VAR</span>
+<span class="n">interpreted</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="n">environment</span><span class="p">:</span>
+   <span class="o">-</span> <span class="o">...</span>
+   <span class="o">-</span> <span class="n">my_var</span>
+</pre></div>
+</div>
 <p>For more information see the
 <a class="reference external" href="https://github.com/sbrunner/c2c.template">c2c.template</a> documentation.</p>
 </div>
