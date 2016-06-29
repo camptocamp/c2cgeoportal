@@ -148,10 +148,10 @@ When a new release or a new version is done you should do the following tasks:
      .. prompt:: bash
 
         .build/venv/bin/alembic \
-            -c c2cgeoportal/tests/functional/alembic.ini \
+            --config c2cgeoportal/tests/functional/alembic.ini \
             heads
         .build/venv/bin/alembic \
-            -c c2cgeoportal/tests/functional/alembic_static.ini \
+            --config c2cgeoportal/tests/functional/alembic_static.ini \
             heads
 
      If yes create the merge with:
@@ -159,8 +159,8 @@ When a new release or a new version is done you should do the following tasks:
      .. prompt:: bash
 
         .build/venv/bin/alembic \
-            -c c2cgeoportal/tests/functional/alembic[_static].ini \
-            merge -m "Merge <src> and <dst> branches" \
+            --config c2cgeoportal/tests/functional/alembic[_static].ini \
+            merge --message "Merge <src> and <dst> branches" \
             <rev 1> <rev 2>
 
      Remove the import and replace the core of the method by ``pass`` in the generated file.
