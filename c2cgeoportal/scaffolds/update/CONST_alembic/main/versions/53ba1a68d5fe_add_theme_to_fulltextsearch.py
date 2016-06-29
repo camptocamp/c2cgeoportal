@@ -36,7 +36,6 @@ Create Date: 2015-08-05 14:43:30.889188
 
 from alembic import op, context
 from sqlalchemy import Column, Integer, ForeignKey, Boolean, String
-from c2cgeoportal.lib.sqlalchemy_ import JSONEncodedDict
 
 # revision identifiers, used by Alembic.
 revision = '53ba1a68d5fe'
@@ -52,7 +51,7 @@ def upgrade():
         nullable=True
     ), schema=schema)
     op.add_column('tsearch', Column('lang', String(2), nullable=True), schema=schema)
-    op.add_column('tsearch', Column('actions', JSONEncodedDict, nullable=True), schema=schema)
+    op.add_column('tsearch', Column('actions', String, nullable=True), schema=schema)
     op.add_column('tsearch', Column('from_theme', Boolean, server_default='false'), schema=schema)
 
     op.create_index(
