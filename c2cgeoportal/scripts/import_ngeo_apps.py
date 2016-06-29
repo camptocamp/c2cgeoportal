@@ -185,6 +185,7 @@ def main():
         if args.html:
             data = "<%\n" \
                 "from json import dumps\n" \
+                "from c2cgeoportal.lib-cacheversion import get_cache_version\n" \
                 "%>\n" + \
                 data
             # back for ng-app
@@ -264,10 +265,13 @@ def main():
                 "'${request.registry.settings[\"default_locale_name\"]}');",
                 data,
             )
+            data = _sub(re.escape(r"""
+        var cacheVersion = '0';
+"""), "", data)
             data = _sub(
                 re.escape(r"""
         var angularLocaleScriptUrlElements = urlElements.slice(0, urlElements.length - 3);
-        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js');"""),
+        angularLocaleScriptUrlElements.push('build', 'angular-locale_\{\{locale\}\}.js?cache_version=' + cacheVersion);"""),  # noqa
                 "",
                 data,
             )
@@ -286,7 +290,7 @@ def main():
         var langUrls = {};
         ['en', 'fr', 'de'].forEach(function(lang) {
             var langUrlElements = urlElements.slice(0, urlElements.length - 3);
-            langUrlElements.push('build', 'gmf-' + lang + '.json')
+            langUrlElements.push('build', 'gmf-' + lang + '.json?cache_version=' + cacheVersion)
             langUrls[lang] = langUrlElements.join('/')
         });"""),
                 r"""        var langUrls = {
@@ -298,6 +302,11 @@ ${ ',\\n'.join([
     for lang in request.registry.settings["available_locale_names"]
 ]) | n}
         };""",
+                data,
+            )
+            data = _sub(
+                re.escape("module.constant('cacheVersion', cacheVersion);"),
+                "module.constant('cacheVersion', get_cache_version());",
                 data,
             )
             data = _subs(
