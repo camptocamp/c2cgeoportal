@@ -161,33 +161,6 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
-# i18n
-TX_VERSION = $(shell $(VENV_BIN)/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
-TX_RC = $(HOME_DIR).transifexrc
-TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
-TX_HOST ?= https://www.transifex.com
-ifeq (,$(wildcard $(TX_RC)))
-TOUCHBACK_TXRC =
-else
-TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
-endif
-
-MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -print)
-MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -print)
-MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -print)
-MAP_FILES +=  $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
-
-I18N_SOURCE_FILES += $(APP_HTML_FILES) \
-	$(APP_JS_FILES) \
-	$(APP_DIRECTIVES_PARTIALS_FILES) \
-	.build/config.yaml
-ifeq ($(DOCKER),FALSE)
-# The theme from the database
-I18N_SOURCE_FILES += development.ini
-endif
-I18N_DEPENDENTIES += $(MAP_FILES) \
-	project.yaml
-
 # ngeo
 ANGULAR_VERSION = 1.5
 ifeq ($(OPERATING_SYSTEM), LINUX)
@@ -202,7 +175,7 @@ APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js -type f -name '*.js')
 APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
-APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/directives/partials/*.html 2> /dev/null)
+APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/js/components/*/*.html 2> /dev/null)
 LESS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/less -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
@@ -242,6 +215,33 @@ COMPILE_CATALOG = node_modules/ngeo/buildtools/compile-catalog.js
 else
 COMPILE_CATALOG = node_modules/.bin/compile-catalog
 endif
+
+# i18n
+TX_VERSION = $(shell $(VENV_BIN)/python -c "print('_'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2]))")
+TX_RC = $(HOME_DIR).transifexrc
+TX_DEPENDENCIES = $(VENV_BIN)/tx$(PYTHON_BIN_POSTFIX) $(TX_RC) .tx/config
+TX_HOST ?= https://www.transifex.com
+ifeq (,$(wildcard $(TX_RC)))
+TOUCHBACK_TXRC =
+else
+TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
+endif
+
+MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -print)
+MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -print)
+MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -print)
+MAP_FILES +=  $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
+
+I18N_SOURCE_FILES += $(APP_HTML_FILES) \
+	$(APP_JS_FILES) \
+	$(APP_DIRECTIVES_PARTIALS_FILES) \
+	.build/config.yaml
+ifeq ($(DOCKER),FALSE)
+# The theme from the database
+I18N_SOURCE_FILES += development.ini
+endif
+I18N_DEPENDENTIES += $(MAP_FILES) \
+	project.yaml
 
 # CGXP
 JSBUILD_MAIN_FILES = $(shell $(FIND) $(PACKAGE)/static/lib/cgxp $(PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
@@ -810,7 +810,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 .build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
 		$(APP_DIRECTIVES_PARTIALS_FILES) \
-		$(GMF_DIRECTIVES_PARTIALSFILES) \
+		$(GMF_DIRECTIVES_PARTIALS_FILES) \
 		$(NGEO_DIRECTIVES_PARTIALS_FILES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)

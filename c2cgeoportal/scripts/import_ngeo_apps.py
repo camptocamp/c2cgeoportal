@@ -251,6 +251,9 @@ def main():
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/templatecache.js')}}"></script>
     <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/less/dist/less.min.js' % request.registry.settings['node_modules_path'])}}"></script>
+    <script>
+        {{{{package}}}}.templateBaseUrl = '${{request.static_url("{{{{package}}}}:static-ngeo")}}';
+    </script>
 % else:
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
 % endif""".format(interface=args.interface),  # noqa
