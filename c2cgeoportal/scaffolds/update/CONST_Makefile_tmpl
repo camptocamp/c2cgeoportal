@@ -124,7 +124,6 @@ endif # DOCKER
 endif # TEST_PACKAGES
 
 # Make rules
-DEFAULT_BUILD_RULES ?= .build/requirements.timestamp $(WEB_RULE) $(PACKAGE)/version.py build-server apache
 ifneq ($(TEST_PACKAGES), FALSE)
 DEFAULT_BUILD_RULES += test-packages
 endif
