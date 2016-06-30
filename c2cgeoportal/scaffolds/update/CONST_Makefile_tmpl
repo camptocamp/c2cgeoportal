@@ -1111,7 +1111,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 	touch $@
 
 .build/mapserver.timestamp: \
-		$(TEMPLATES_FILES) \
+		$(MAP_FILES) \
 		apache/mapserver.conf \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(PRERULE_CMD)
