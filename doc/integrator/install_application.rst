@@ -280,17 +280,6 @@ on RedHat Enterprise Linux (RHEL) 6.
     is the name of the Apache virtual host, and ``<username>`` is your Unix
     login name.
 
-vars_<project>.yaml
-^^^^^^^^^^^^^^^^^^^
-
-By default, ``mod_wsgi`` processes are executed under the ``www-data`` Unix
-user, which is the Apache user. In RHEL 6, there's no user ``www-data``, and
-the Apache user is ``apache``. ``vars_<project>.yaml`` Should then
-set ``modwsgi_user`` to ``apache`` in the ``vars:`` section::
-
-    vars:
-        ...
-        modwsgi_user: apache
 
 <project>.mk
 ~~~~~~~~~~~~
@@ -301,6 +290,9 @@ Configure some ``<package>.mk`` RedHat specifics::
     TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
     # Command prefix to acces to the webapp folder
     TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
+    # Unix user who execute the 'mod_wsgi' processes.
+    # apache on RedHat, www-data elsewhere
+    MODWSGI_USER ?= apache
     # Graceful command for RedHat
     APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
     # Test packages are designed for Debian. They must be disabled by adding the following

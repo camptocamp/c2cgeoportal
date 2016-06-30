@@ -9,7 +9,7 @@ vars:
     srid: -1
 
     # the Unix user under which the modwsgi daemon processes are executed.
-    modwsgi_user: www-data
+    modwsgi_user: MODWSGI_USER
     # url-path where the instance must respond.
     apache_entry_point: APACHE_ENTRY_POINT
     # Docker base image name (comes from the makefile).
@@ -407,6 +407,7 @@ interpreted:
     - python_path
     - directory
     environment:
+    - modwsgi_user
     - instanceid
     - apache_entry_point
     - docker_base
