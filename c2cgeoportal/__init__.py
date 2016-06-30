@@ -624,6 +624,7 @@ def includeme(config):
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
     # shortener
+    add_cors_route(config, "/short/create", "shortner")
     config.add_route("shortener_create", "/short/create", request_method="POST")
     config.add_route("shortener_get", "/short/{ref}", request_method="GET")
 
