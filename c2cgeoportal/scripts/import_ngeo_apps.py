@@ -185,7 +185,7 @@ def main():
         if args.html:
             data = "<%\n" \
                 "from json import dumps\n" \
-                "from c2cgeoportal.lib-cacheversion import get_cache_version\n" \
+                "from c2cgeoportal.lib.cacheversion import get_cache_version\n" \
                 "%>\n" + \
                 data
             # back for ng-app
@@ -309,7 +309,7 @@ ${ ',\\n'.join([
             )
             data = _sub(
                 re.escape("module.constant('cacheVersion', cacheVersion);"),
-                "module.constant('cacheVersion', get_cache_version());",
+                "module.constant('cacheVersion', '${get_cache_version()}');",
                 data,
             )
             data = _subs(
