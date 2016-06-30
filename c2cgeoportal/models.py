@@ -908,6 +908,10 @@ class UIMetadata(Base):
     def __unicode__(self):  # pragma: no cover
         return u"%s: %s" % (self.name or u"", self.value or u"")
 
+event.listen(UIMetadata, "after_insert", cache_invalidate_cb, propagate=True)
+event.listen(UIMetadata, "after_update", cache_invalidate_cb, propagate=True)
+event.listen(UIMetadata, "after_delete", cache_invalidate_cb, propagate=True)
+
 
 class WMTSDimension(Base):
     __label__ = _(u"WMTS dimension")
