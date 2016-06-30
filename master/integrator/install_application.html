@@ -272,18 +272,6 @@ in <code class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost&gt
 is the name of the Apache virtual host, and <code class="docutils literal"><span class="pre">&lt;username&gt;</span></code> is your Unix
 login name.</p>
 </div>
-<div class="section" id="vars-project-yaml">
-<h4>vars_&lt;project&gt;.yaml<a class="headerlink" href="#vars-project-yaml" title="Permalink to this headline">¶</a></h4>
-<p>By default, <code class="docutils literal"><span class="pre">mod_wsgi</span></code> processes are executed under the <code class="docutils literal"><span class="pre">www-data</span></code> Unix
-user, which is the Apache user. In RHEL 6, there&#8217;s no user <code class="docutils literal"><span class="pre">www-data</span></code>, and
-the Apache user is <code class="docutils literal"><span class="pre">apache</span></code>. <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> Should then
-set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> to <code class="docutils literal"><span class="pre">apache</span></code> in the <code class="docutils literal"><span class="pre">vars:</span></code> section:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
-    <span class="o">...</span>
-    <span class="n">modwsgi_user</span><span class="p">:</span> <span class="n">apache</span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="id1">
 <h3>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -292,6 +280,9 @@ set <code class="docutils literal"><span class="pre">modwsgi_user</span></code> 
 TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
 # Command prefix to acces to the webapp folder
 TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
+# Unix user who execute the &#39;mod_wsgi&#39; processes.
+# apache on RedHat, www-data elsewhere
+MODWSGI_USER ?= apache
 # Graceful command for RedHat
 APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
 # Test packages are designed for Debian. They must be disabled by adding the following
@@ -387,10 +378,7 @@ and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</spa
 <li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a><ul>
-<li><a class="reference internal" href="#vars-project-yaml">vars_&lt;project&gt;.yaml</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a></li>
 <li><a class="reference internal" href="#id1">&lt;project&gt;.mk</a><ul>
 <li><a class="reference internal" href="#id2">apache/mapserver.conf.mako</a></li>
 </ul>
