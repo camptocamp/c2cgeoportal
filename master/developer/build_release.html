@@ -133,15 +133,15 @@ to the upper branches i.e.: <code class="docutils literal"><span class="pre">1.6
 <p class="first admonition-title">Note</p>
 <p>On <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    -c c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
+    --config c2cgeoportal/tests/functional/alembic.ini <span class="se">\</span>
     heads</span>
 <span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    -c c2cgeoportal/tests/functional/alembic_static.ini <span class="se">\</span>
+    --config c2cgeoportal/tests/functional/alembic_static.ini <span class="se">\</span>
     heads</span>
 </pre><p>If yes create the merge with:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
-    -c c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
-    merge -m <span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
+    --config c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
+    merge --message <span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
     &lt;rev 1&gt; &lt;rev 2&gt;</span>
 </pre><p>Remove the import and replace the core of the method by <code class="docutils literal"><span class="pre">pass</span></code> in the generated file.</p>
 <p class="last">And finally add the new file.</p>

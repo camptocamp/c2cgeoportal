@@ -308,7 +308,15 @@ Add a new script call from the application's root directory:
 
 .. prompt:: bash
 
-    .build/venv/bin/alembic revision --branch-label <branch> -m "<Explicit name>"
+    .build/venv/bin/alembic --config alembic[_static].ini revision --message "<Explicit name>"
+
+Or in c2cgeoportal root directory:
+
+.. prompt:: bash
+
+    .build/venv/bin/alembic \
+        --config c2cgeoportal/tests/functional/alembic[_static].ini \
+        revision --message "<Explicit name>"
 
 Where ``<branch>`` is the branch on witch we will merge, usually ``master`` but
 it can also be something like ``2.0``.
