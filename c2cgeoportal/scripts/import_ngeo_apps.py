@@ -252,7 +252,7 @@ def main():
     <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script src="${{request.static_url('%s/less/dist/less.min.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script>
-        {{{{package}}}}.templateBaseUrl = '${{request.static_url("{{{{package}}}}:static-ngeo")}}';
+        {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/js/components")}}';
     </script>
 % else:
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.js')}}"></script>
