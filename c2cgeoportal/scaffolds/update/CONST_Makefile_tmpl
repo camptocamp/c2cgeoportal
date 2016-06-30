@@ -614,6 +614,7 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
+	chmod go+r $@
 
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
@@ -627,6 +628,7 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 	# removes the always changed date line
 	sed -i '/^"POT-Creation-Date: /d' $@
 	sed -i '/^"PO-Revision-Date: /d' $@
+	chmod go+r $@
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAGE)-server.pot

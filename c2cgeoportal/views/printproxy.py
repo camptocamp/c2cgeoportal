@@ -89,7 +89,7 @@ class PrintProxy(Proxy):  # pragma: no cover
                     log.error("Unable to parse capabilities.")
                     log.exception(e)
                     log.error(content)
-                    return HTTPBadGateway(content)
+                    raise HTTPBadGateway(content)
 
                 capabilities["layouts"] = list(
                     layout for layout in capabilities["layouts"] if
