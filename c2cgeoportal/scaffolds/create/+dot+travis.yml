@@ -3,26 +3,7 @@ language: python
 python:
 - 2.7
 
-services:
-- postgresql
-
-install:
-- sudo -u postgres createuser www-data --no-superuser --no-createdb --no-createrole
-- sudo -u postgres createdb -E UTF8 geomapfish
-- sudo -u postgres psql -d geomapfish -c "CREATE EXTENSION postgis;"
-- sudo -u postgres psql -d geomapfish -c 'CREATE SCHEMA main;'
-- sudo -u postgres psql -d geomapfish -c 'CREATE SCHEMA main_static;'
-- sudo -u postgres psql -d geomapfish -c "ALTER USER \"www-data\" PASSWORD 'www-data';"
-- sudo -u postgres psql -d geomapfish -c 'GRANT SELECT ON spatial_ref_sys TO "www-data";'
-- sudo -u postgres psql -d geomapfish -c 'GRANT ALL ON SCHEMA main TO "www-data";'
-- sudo -u postgres psql -d geomapfish -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
-- sudo -u postgres psql -d geomapfish -c 'GRANT ALL ON geometry_columns TO "www-data";'
-- sudo mkdir -p /srv/tomcat/tomcat1/webapps
-- sudo chmod g+w,o+w /srv/tomcat/tomcat1/webapps
-- make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini
-- .build/venv/bin/alembic upgrade head
-- .build/venv/bin/alembic -c alembic_static.ini upgrade head
-- make -f travis.mk build
+sudo: false
 
 script:
 - make -f travis.mk checks

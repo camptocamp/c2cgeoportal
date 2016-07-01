@@ -4,3 +4,8 @@ nocapture = 1
 cover-package = {{package}}
 with-coverage = 1
 cover-erase = 1
+
+[flake8]
+exclude = {{package}}/static/lib/cgxp
+ignore = E121,E123,E126,E226,E24,E704
+max-line-length = 110

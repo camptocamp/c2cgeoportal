@@ -181,6 +181,8 @@ NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-we
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
+NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
+NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	node_modules/ngeo/node_modules/font-awesome \
 	node_modules/ngeo/node_modules/openlayers \
@@ -190,8 +192,8 @@ NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
 	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.ttf \
 	node_modules/ngeo/contribs/gmf/fonts/fontawesome-webfont.eot \
 	$(APP_OUTPUT_DIR)/templatecache.js \
-	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES))) \
-	$(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES))) \
+	$(NGEO_OUTPUT_JS_INTERFACES_FILES) \
+	$(NGEO_OUTPUT_CSS_INTERFACES_FILES) \
 	$(ANGULAR_LOCALES_FILES)
 NGEO_LIBS_JS_FILES += \
 	node_modules/jquery/dist/jquery.min.js \
@@ -491,7 +493,11 @@ endif
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
+checks: flake8 $(CLIENT_CHECK_RULE) $(NGEO_OUTPUT_JS_INTERFACES_FILES) $(NGEO_OUTPUT_CSS_INTERFACES_FILES) git-attributes
+
+.PHONY: git-attributes
+git-attributes:
+	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
 .PHONY: clean
 clean: template-clean
