@@ -97,7 +97,7 @@ doc: .build/sphinx.timestamp
 tests: nose
 
 .PHONY: checks
-checks: flake8
+checks: flake8 git-attributes
 
 .PHONY: clean
 clean:
@@ -133,15 +133,11 @@ flake8: .build/venv/bin/flake8
 	# E712 is not compatible with SQLAlchemy
 	find $(VALIDATE_PY_FOLDERS) -name \*.py | xargs .build/venv/bin/flake8 \
 		--ignore=E712 \
-		--max-complexity=20 \
-		--max-line-length=100 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
 	.build/venv/bin/flake8 \
 		--ignore=E712 \
-		--max-complexity=20 \
-		--max-line-length=100 \
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA" \
@@ -152,6 +148,10 @@ flake8: .build/venv/bin/flake8
 		--copyright-check \
 		--copyright-min-file-size=1 \
 		--copyright-regexp="Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?$(shell date +%Y), Camptocamp SA"
+
+.PHONY: git-attributes
+git-attributes:
+	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
 # i18n
 $(HOME)/.transifexrc:
