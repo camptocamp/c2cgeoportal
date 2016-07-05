@@ -44,10 +44,6 @@ before_install:
 install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - travis/no-make-error.sh . help
-- make -f travis.mk c2c-egg
-- travis/pip.sh install tilecloud_chain
-- .build/venv/bin/pip freeze | grep --invert-match '^-e' | grep --invert-match '^#'
-- diff --unified c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt <(.build/venv/bin/pip freeze | grep --invert-match '^-e' | grep --invert-match '^#') | grep '^[+-]'
 - make -f travis.mk build
 - .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini heads
 - .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini heads
@@ -69,8 +65,6 @@ script:
 - make -f travis.mk checks
 - cd $TRAVIS_FOLDER
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help
-- find /tmp/travis/testgeomapfish/CONST_alembic -name \*.py | xargs .build/venv/bin/flake8 --copyright-check --copyright-min-file-size=1 --copyright-regexp="Copyright \(c\) [0-9\-]*$(shell date +%Y), Camptocamp SA" --max-line-length=100
-- find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs .build/venv/bin/flake8 --max-line-length=100
 - find /tmp/travis/testgeomapfish/setup.py /tmp/travis/testgeomapfish/testgeomapfish/*.py /tmp/travis/testgeomapfish/testgeomapfish/views -name \*.py | xargs travis/quote
 - travis/test-new-project.sh wsgi/check_collector
 - travis/test-new-project.sh wsgi/check_collector?type=all
@@ -85,7 +79,6 @@ script:
 - .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
 
 # test c2cgeoportal
-- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 - travis/empty-make.sh -f travis.mk build
 - travis/no-make-error.sh . build
 - make -f travis.mk doc

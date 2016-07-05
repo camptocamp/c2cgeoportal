@@ -4,7 +4,8 @@ Makefile text whitespace=indent-with-non-tab,tabwidth=2
 CONST_Makefile_tmpl text whitespace=indent-with-non-tab,tabwidth=2
 *.mk text whitespace=indent-with-non-tab,tabwidth=2
 doc/Makefile -whitespace
-*.rst tex conflict-marker-size=100
+*.rst text conflict-marker-size=100
+*.rst.mako text conflict-marker-size=100
 *.jrxml text whitespace=indent-with-non-tab
 *.ttf binary
 *.png binary
