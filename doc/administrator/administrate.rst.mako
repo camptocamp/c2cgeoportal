@@ -11,10 +11,10 @@ required.
 Layers
 ------
 
-In the version 2 we split the layer table in 3 tables: 'layer_internal_wms',
-'layer_external_wms', 'layer_wmts', and we copy the previous layer table in 'layerv1'.
+In the version 2 we split the layer table in 3 tables: ``layer_internal_wms``,
+``layer_external_wms``, ``layer_wmts``, and we copy the previous layer table in ``layerv1``.
 
-And the 'order' will be moved in the relation of the tree.
+And the ``order`` will be moved in the relation of the tree.
 
 All layer type
 ~~~~~~~~~~~~~~
