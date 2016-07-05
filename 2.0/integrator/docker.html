@@ -148,6 +148,24 @@ something like that:</p>
 </div>
 </div>
 </div>
+<div class="section" id="keep-your-db-schema-up-to-date">
+<h2>Keep your DB schema up to date<a class="headerlink" href="#keep-your-db-schema-up-to-date" title="Permalink to this headline">¶</a></h2>
+<p>The WSGI image contains Alembic. You can use it as a start once container and
+add something like that in your composition:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>alembic:
+  labels:
+    io.rancher.container.start_once: &#39;true&#39;
+  image: company/prefix_wsgi:tag
+  environment:
+    SQLALCHEMY_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/${DB_NAME}
+  links:
+    - db
+  command: ./run_alembic.sh
+</pre></div>
+</div>
+<p>When you do an upgrade, backup your DB and upgrade this container first. It will update your
+DB schema, if needed.</p>
+</div>
 </div>
 
 
@@ -172,6 +190,7 @@ something like that:</p>
 <li><a class="reference internal" href="#mapserver">Mapserver</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#keep-your-db-schema-up-to-date">Keep your DB schema up to date</a></li>
 </ul>
 </li>
 </ul>
