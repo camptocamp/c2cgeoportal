@@ -448,6 +448,7 @@ CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid
 	reset_password fulltextsearch headers authorized_referers hooks stats db_chooser
 ENVIRONMENT_VARS += INSTANCE_ID=$(INSTANCE_ID) \
 	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
+	DOCKER=$(DOCKER) \
 	DOCKER_BASE=$(DOCKER_BASE) \
 	DEVELOPMENT=$(DEVELOPMENT) \
 	PACKAGE=$(PACKAGE)

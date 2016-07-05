@@ -120,6 +120,66 @@ Then, in your ``<package>/__init__.py`` file, add this function:
 By setting the ``SQLALCHEMY_URL`` environment variable in your composition
 for the wsgi image, you'll be able to change the DB connection used.
 
+You can change your ``production.ini`` and ``development.ini`` files to use
+environment variables for configuring the loggers. Here is an example for
+the part about the logging:
+
+.. code::
+
+    [loggers]
+    keys = root, sqlalchemy, c2cgeoportal
+
+    [handlers]
+    keys = console, logstash
+
+    [formatters]
+    keys = generic
+
+    [logger_root]
+    level = %(OTHER_LOG_LEVEL)s
+    handlers = %(LOG_TYPE)s
+
+    [logger_c2cgeoportal]
+    level = %(C2C_LOG_LEVEL)s
+    handlers =
+    qualname = c2cgeoportal
+
+    [logger_sqlalchemy]
+    level = %(SQL_LOG_LEVEL)s
+    handlers =
+    qualname = sqlalchemy.engine
+
+    [handler_console]
+    class = StreamHandler
+    args = (sys.stdout,)
+    level = NOTSET
+    formatter = generic
+
+    [formatter_generic]
+    format = %(levelname)-5.5s %(message)s
+
+    [handler_logstash]
+    class = cee_syslog_handler.CeeSysLogHandler
+    args = [("%(LOG_HOST)s", %(LOG_PORT)s)]
+    level = NOTSET
+
+Please note that to use
+``CeeSysLogHandler`` you need to add ``cee_syslog_handler>=0.3.3`` to your
+dependencies.
+
+Define default values for all those environment variables in your
+``Dockerfile`` and then you can change them in your composition. For example
+add the following at the end of your ``Dockerfile``:
+
+ .. code::
+
+    ENV LOG_TYPE console
+    ENV LOG_HOST localhost
+    ENV LOG_PORT 514
+    ENV C2C_LOG_LEVEL WARN
+    ENV SQL_LOG_LEVEL WARN
+    ENV OTHER_LOG_LEVEL WARN
+
 Mapserver
 .........
 
