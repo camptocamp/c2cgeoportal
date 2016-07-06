@@ -136,6 +136,63 @@ composition, you can add this in your <code class="docutils literal"><span class
 </div>
 <p>By setting the <code class="docutils literal"><span class="pre">SQLALCHEMY_URL</span></code> environment variable in your composition
 for the wsgi image, you&#8217;ll be able to change the DB connection used.</p>
+<p>You can change your <code class="docutils literal"><span class="pre">production.ini</span></code> and <code class="docutils literal"><span class="pre">development.ini</span></code> files to use
+environment variables for configuring the loggers. Here is an example for
+the part about the logging:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>[loggers]
+keys = root, sqlalchemy, c2cgeoportal
+
+[handlers]
+keys = console, logstash
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = %(OTHER_LOG_LEVEL)s
+handlers = %(LOG_TYPE)s
+
+[logger_c2cgeoportal]
+level = %(C2C_LOG_LEVEL)s
+handlers =
+qualname = c2cgeoportal
+
+[logger_sqlalchemy]
+level = %(SQL_LOG_LEVEL)s
+handlers =
+qualname = sqlalchemy.engine
+
+[handler_console]
+class = StreamHandler
+args = (sys.stdout,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(levelname)-5.5s %(message)s
+
+[handler_logstash]
+class = cee_syslog_handler.CeeSysLogHandler
+args = [(&quot;%(LOG_HOST)s&quot;, %(LOG_PORT)s)]
+level = NOTSET
+</pre></div>
+</div>
+<p>Please note that to use
+<code class="docutils literal"><span class="pre">CeeSysLogHandler</span></code> you need to add <code class="docutils literal"><span class="pre">cee_syslog_handler&gt;=0.3.3</span></code> to your
+dependencies.</p>
+<p>Define default values for all those environment variables in your
+<code class="docutils literal"><span class="pre">Dockerfile</span></code> and then you can change them in your composition. For example
+add the following at the end of your <code class="docutils literal"><span class="pre">Dockerfile</span></code>:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">ENV</span> <span class="n">LOG_TYPE</span> <span class="n">console</span>
+<span class="n">ENV</span> <span class="n">LOG_HOST</span> <span class="n">localhost</span>
+<span class="n">ENV</span> <span class="n">LOG_PORT</span> <span class="mi">514</span>
+<span class="n">ENV</span> <span class="n">C2C_LOG_LEVEL</span> <span class="n">WARN</span>
+<span class="n">ENV</span> <span class="n">SQL_LOG_LEVEL</span> <span class="n">WARN</span>
+<span class="n">ENV</span> <span class="n">OTHER_LOG_LEVEL</span> <span class="n">WARN</span>
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 <div class="section" id="mapserver">
 <h3>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h3>
