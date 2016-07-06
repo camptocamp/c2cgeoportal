@@ -263,6 +263,10 @@ class Entry(object):
             "name": layer.name,
             "metadata": self._get_metadatas(layer, errors),
         }
+        if re.search("[/?#]", layer.name):  # pragma: no cover
+            errors.add("The layer has an unsupported name '{}'.".format(layer.name))
+        if isinstance(layer, LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
+            errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
             self._fill_editable(l, layer)
         if mixed:
@@ -622,6 +626,9 @@ class Entry(object):
         children = []
         errors = set()
 
+        if re.search("[/?#]", group.name):  # pragma: no cover
+            errors.add("The group has an unsupported name '{}'.".format(group.name))
+
         # escape loop
         if depth > 30:
             errors.add(
@@ -704,10 +711,16 @@ class Entry(object):
                 if not mixed:
                     for name, nb in Counter(layers_name).items():
                         if nb > 1:
-                            errors.add("The GeoMapFish layer name '{}', can't be two times in the same block (first level group).".format(name))
+                            errors.add(
+                                "The GeoMapFish layer name '{}', can't be two times "
+                                "in the same block (first level group).".format(name)
+                            )
                     for name, nb in Counter(wms_layers).items():
                         if nb > 1:
-                            errors.add("The WMS layer name '{}', can't be two times in the same block (first level group).".format(name))
+                            errors.add(
+                                "The WMS layer name '{}', can't be two times "
+                                "in the same block (first level group).".format(name)
+                            )
 
                 g["mixed"] = mixed
                 if org_depth == 1:
