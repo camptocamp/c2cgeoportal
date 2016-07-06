@@ -34,6 +34,7 @@ import logging
 import json
 import sys
 import urlparse
+import re
 
 from random import Random
 from math import sqrt
@@ -760,6 +761,10 @@ class Entry(object):
 
         export_themes = []
         for theme in themes.all():
+            if re.search("[/?#]", theme.name):
+                errors.add("The theme has an unsupported name '{}'.".format(theme.name))
+                continue
+
             children, children_errors = self._get_children(
                 theme, layers, wms, wms_layers, version, catalogue, min_levels, role_id
             )
