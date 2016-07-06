@@ -40,6 +40,7 @@ from random import Random
 from math import sqrt
 from xml.dom.minidom import parseString
 from socket import gaierror
+from collections import Counter
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
@@ -612,8 +613,12 @@ class Entry(object):
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
         catalogue=True, role_id=None, version=1, mixed=True, time=None,
-        **kwargs
+        wms_layers=None, layers_name=None, **kwargs
     ):
+        if wms_layers is None:
+            wms_layers = []
+        if layers_name is None:
+            layers_name = []
         children = []
         errors = set()
 
@@ -642,7 +647,7 @@ class Entry(object):
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
-                        time=time, **kwargs
+                        time=time, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -657,6 +662,10 @@ class Entry(object):
                     if (catalogue or not isinstance(tree_item, LayerV1) or
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
+
+                        layers_name.append(tree_item.name)
+                        if isinstance(tree_item, LayerWMS):
+                            wms_layers.extend(tree_item.layer.split(","))
 
                         l, l_errors = self._layer(
                             tree_item, role_id=role_id, mixed=mixed, time=time, **kwargs
@@ -692,6 +701,14 @@ class Entry(object):
                 if time is not None and time.has_time() and time.layer is None:
                     g["time"] = time.to_dict()
             else:
+                if not mixed:
+                    for name, nb in Counter(layers_name).items():
+                        if nb > 1:
+                            errors.add("The GeoMapFish layer name '{}', can't be two times in the same block (first level group).".format(name))
+                    for name, nb in Counter(wms_layers).items():
+                        if nb > 1:
+                            errors.add("The WMS layer name '{}', can't be two times in the same block (first level group).".format(name))
+
                 g["mixed"] = mixed
                 if org_depth == 1:
                     if not mixed:
