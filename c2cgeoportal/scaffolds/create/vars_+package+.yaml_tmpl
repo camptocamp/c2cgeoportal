@@ -82,6 +82,16 @@ vars:
     #proxies:
     #    http: http://someproxy
 
+    shortener:
+        email_from: info@example.com
+        email_subject: "Geoportal URL"
+        email_body: |
+            Somebody sent you the following link:
+            %(short_url)s
+
+            With the message:
+            %(message)
+
     # Checker configuration
     checker:
         defaults:
@@ -127,6 +137,7 @@ vars:
         smtp_server: smtp.example.com
 
 update_paths:
+- shortener
 - authtkt
 - checker.defaults
 - checker.all
