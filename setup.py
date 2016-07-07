@@ -54,7 +54,7 @@ install_requires = [
     # Needed by the developement.ini
     "pyramid_debugtoolbar",
     "OWSLib>=0.6.0",
-    "dogpile.cache<0.6",
+    "dogpile.cache>=0.6",
     "Paste",
     "PasteDeploy",
     "PasteScript",
