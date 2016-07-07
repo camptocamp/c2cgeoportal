@@ -296,8 +296,7 @@ class Entry(object):
                 l["legendImage"] = get_url(layer.legend_image, self.request, errors=errors)
 
             if layer.layer_type == "internal WMS":
-                if not self._fill_internal_wms(l, layer, wms, wms_layers, errors):
-                    return None, errors
+                self._fill_internal_wms(l, layer, wms, wms_layers, errors)
                 errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
@@ -309,8 +308,7 @@ class Entry(object):
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
-            if not self._fill_wms(l, layer, errors, role_id, mixed=mixed):
-                return None, errors
+            self._fill_wms(l, layer, errors, role_id, mixed=mixed)
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
         elif isinstance(layer, LayerWMTS):
@@ -389,7 +387,6 @@ class Entry(object):
                     "The layer '%s' (%s) is not defined in WMS capabilities" %
                     (layer_name, layer.name)
                 )
-                return False
 
         if "minResolutionHint" not in l:
             min_resolutions_hint = [
@@ -422,8 +419,6 @@ class Entry(object):
             default=l["url"], errors=errors)
         l["serverType"] = layer.ogc_server.type
         # end deprecated
-
-        return True
 
     def _fill_wms_v1(self, l, layer):
         l["imageType"] = layer.image_type
@@ -483,13 +478,10 @@ class Entry(object):
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
-            if self.mapserver_settings["geoserver"]:
-                return False
-            else:
+            if not self.mapserver_settings["geoserver"]:
                 errors.add(
                     "The layer '%s' is not defined in WMS capabilities" % wmslayer
                 )
-        return True
 
     def _fill_external_wms(self, l, layer, errors):
         self._fill_wms_v1(l, layer)

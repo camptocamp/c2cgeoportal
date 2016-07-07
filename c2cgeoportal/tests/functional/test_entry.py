@@ -478,6 +478,7 @@ class TestEntryView(TestCase):
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
 
         self.assertEquals(set(themes["errors"]), set([
@@ -496,6 +497,7 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
@@ -517,6 +519,7 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
+            u"__test_layer_group",
         ]))
 
         # autenticated v1
@@ -530,6 +533,7 @@ class TestEntryView(TestCase):
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
             u"__test_private_layer",
+            u"__test_layer_group",
         ]))
 
         # unautenticated v2
@@ -546,6 +550,7 @@ class TestEntryView(TestCase):
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
 
         # autenticated v2
@@ -563,6 +568,7 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
 
     def test_wfs_types(self):
