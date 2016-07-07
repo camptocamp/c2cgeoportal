@@ -413,15 +413,15 @@ class TestEntryView(TestCase):
 
         # unautenticated
         themes, errors = entry._themes(None, "main")
+        self.assertEquals(errors, set([
+            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+        ]))
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_layer_group",
             u"__test_public_layer",
-        ]))
-        self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
 
         # autenticated on parent
@@ -439,6 +439,9 @@ class TestEntryView(TestCase):
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
+        self.assertEquals(errors, set([
+            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+        ]))
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
@@ -446,9 +449,6 @@ class TestEntryView(TestCase):
             u"__test_layer_group",
             u"__test_public_layer",
             u"__test_private_layer",
-        ]))
-        self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
 
         # mapfile error
@@ -511,18 +511,19 @@ class TestEntryView(TestCase):
 
         # unautenticated v1
         themes, errors = entry._themes(None, "main")
+        self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
         ]))
-        self.assertEquals(errors, set([]))
 
         # autenticated v1
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
+        self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
@@ -530,7 +531,6 @@ class TestEntryView(TestCase):
             u"__test_public_layer",
             u"__test_private_layer",
         ]))
-        self.assertEquals(errors, set([]))
 
         # unautenticated v2
         request.params = {
@@ -538,14 +538,14 @@ class TestEntryView(TestCase):
         }
         request.user = None
         themes = entry.themes()
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
-        ]))
-        self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
 
         # autenticated v2
@@ -554,15 +554,15 @@ class TestEntryView(TestCase):
         }
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
-        ]))
-        self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
 
     def test_wfs_types(self):
