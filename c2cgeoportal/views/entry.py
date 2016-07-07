@@ -360,7 +360,8 @@ class Entry(object):
                 l["editable"] = True
 
     def _fill_wms(self, l, layer, errors, role_id, mixed):
-        wms, wms_layers = self._wms_layers(role_id, layer.ogc_server)
+        wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)
+        errors |= wms_errors
 
         l["imageType"] = layer.ogc_server.image_type
         if layer.style:  # pragma: no cover
@@ -746,9 +747,9 @@ class Entry(object):
             self.mapserver_settings["mapserv_url"]
         )
         if len(wms_errors) > 0:
-            return [], wms_errors
+            return None, [], wms_errors
 
-        return wms, list(wms.contents)
+        return wms, list(wms.contents), wms_errors
 
     @cache_region.cache_on_arguments()
     def _themes(
@@ -761,9 +762,10 @@ class Entry(object):
         """
         errors = set()
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers(
+        wms, wms_layers, wms_errors = self._wms_layers(
             role_id if self.mapserver_settings["geoserver"] else None, None
         )
+        errors |= wms_errors
 
         themes = DBSession.query(Theme)
         themes = themes.filter(Theme.public.is_(True))
@@ -1280,7 +1282,7 @@ class Entry(object):
 
     def _get_group(self, group, role_id, interface, version):
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers(
+        wms, wms_layers, _ = self._wms_layers(
             role_id if self.mapserver_settings["geoserver"] else None, None
         )
         lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
