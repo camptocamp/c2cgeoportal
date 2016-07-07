@@ -80,10 +80,14 @@ class Shortener(object):
         uri_parts = urlparse(url)
         hostname = uri_parts.hostname
         paths = uri_parts.path.split("/")
-        if hostname != self.request.server_name:
-            raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
-                hostname, self.request.server_name
-            ))
+        if "allowed_hosts" in self.settings:
+            if hostname not in self.settings["allowed_hosts"]:  # pragma: no cover
+                raise HTTPBadRequest("The requested host is not allowed.")
+        else:
+            if hostname != self.request.server_name:
+                raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
+                    hostname, self.request.server_name
+                ))
 
         shortened = False
         if (len(paths) > 1 and paths[-2] == "short"):
