@@ -37,7 +37,6 @@ import os
 import json
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
@@ -1149,9 +1148,6 @@ class TestEntryView(TestCase):
         h = {"Host": host}
         resp, xml = http.request(url, method="GET", headers=h)
 
-        wms = WebMapService(None, xml=xml)
-        wms_layers = list(wms.contents)
-
         layer = LayerV1()
         layer.id = 20
         layer.name = "test_wmsfeaturesgroup"
@@ -1161,7 +1157,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": u"test_wmsfeaturesgroup",
             "type": "internal WMS",
@@ -1198,7 +1194,7 @@ class TestEntryView(TestCase):
         layer_t1.public = True
         layer_t1.time_mode = "single"
         time = TimeInformation()
-        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer_t1, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1222,7 +1218,7 @@ class TestEntryView(TestCase):
         layer_t2.time_mode = "single"
         layer_t2.time_widget = "slider"
         time = TimeInformation()
-        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer_t2, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1240,7 +1236,7 @@ class TestEntryView(TestCase):
         time = TimeInformation()
         entry._group(
             "", group, [layer_t1.name, layer_t2.name],
-            wms=wms, wms_layers=wms_layers, time=time, mixed=False, depth=2
+            time=time, mixed=False, depth=2
         )
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
@@ -1265,7 +1261,7 @@ class TestEntryView(TestCase):
         layer.time_mode = "single"
         layer.time_widget = "datepicker"
         time = TimeInformation()
-        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1287,7 +1283,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1317,7 +1313,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
