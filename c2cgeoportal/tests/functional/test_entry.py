@@ -31,6 +31,7 @@
 from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
+import re
 import transaction
 import os
 import json
@@ -326,6 +327,11 @@ class TestEntryView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
+    def _get_filtered_errors(self, errors):
+        regex = re.compile("The layer \\'[a-z0-9_]*\\' is not defined in WMS capabilities")
+        errors = [e for e in errors if not regex.match(e)]
+        return set(errors)
+
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
         response = entry.get_cgxp_viewer_vars()
@@ -371,10 +377,8 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
 
         self.assertEqual(
-            set(json.loads(response["serverError"])),
-            set([
-                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            ])
+            self._get_filtered_errors(json.loads(response["serverError"])),
+            set()
         )
 
         themes = json.loads(response["themes"])
@@ -572,10 +576,8 @@ class TestEntryView(TestCase):
 
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(
-            set(json.loads(response["serverError"])),
-            set([
-                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            ])
+            self._get_filtered_errors(json.loads(response["serverError"])),
+            set()
         )
 
         result = set([
