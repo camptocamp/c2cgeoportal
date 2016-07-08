@@ -68,16 +68,19 @@ vars:
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
-    subdomain_url_template: http://%(sub)s.{host}
-
+    #subdomain_url_template: http://%(sub)s.{host}
     # The used sub domain for the static resources
-    subdomains: [s1, s2, s3]
+    # Don't works with pyramid debug toolbar
+    #subdomains: [s1, s2, s3]
 
     fulltextsearch:
         languages:
             fr: french
             en: english
             de: german
+
+    #proxies:
+    #    http: http://someproxy
 
     # Checker configuration
     checker:
