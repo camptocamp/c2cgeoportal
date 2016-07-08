@@ -63,7 +63,7 @@ install_requires = [
     "FormAlchemy",
     "GeoFormAlchemy2>=2.0.dev2",
     "OWSLib>=0.6.0",
-    "dogpile.cache",
+    "dogpile.cache<0.6",
     "Paste",
     "PasteDeploy",
     "PasteScript",
