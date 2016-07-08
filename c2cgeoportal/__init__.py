@@ -714,8 +714,9 @@ def includeme(config):
     # scan view decorator for adding routes
     config.scan(ignore=["c2cgeoportal.tests", "c2cgeoportal.scripts"])
 
-    config.registry.registerUtility(
-        MultiDomainStaticURLInfo(), IStaticURLInfo)
+    if "subdomains" in settings:  # pragma: no cover
+        config.registry.registerUtility(
+            MultiDomainStaticURLInfo(), IStaticURLInfo)
 
     # add the static view (for static resources)
     _add_static_view(config, "static", "c2cgeoportal:static")

@@ -293,15 +293,6 @@ vars:
     - http://d.tiles.{host}/{instanceid}/tiles
     wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
-    # The URL template used to generate the sub domain URL
-    # %(sub)s will be replaced by the sub domain value.
-    #subdomain_url_template: http://%(sub)s.{host}
-    # The used sub domain for the static resources
-    #subdomains: [s1, s2, s3, s4]
-
-    #proxies:
-    #    http: http://someproxy
-
     # Control the HTTP headers
     headers:
         ngeo_index:

@@ -311,15 +311,12 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                         request, spec, subpath, kw)
                 if url is None:
                     kw["subpath"] = subpath
-                    if "subdomains" in request.registry.settings:
-                        subdomains = request.registry.settings["subdomains"]
-                        return request.route_url(
-                            route_name,
-                            subdomain=subdomains[hash(subpath) % len(subdomains)],
-                            **kw
-                        )
-                    else:
-                        return request.route_url(route_name, **kw)
+                    subdomains = request.registry.settings["subdomains"]
+                    return request.route_url(
+                        route_name,
+                        subdomain=subdomains[hash(subpath) % len(subdomains)],
+                        **kw
+                    )
                 else:
                     subpath = quote(subpath)
                     return urljoin(url, subpath)
