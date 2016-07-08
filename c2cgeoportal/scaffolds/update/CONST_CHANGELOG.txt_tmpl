@@ -1,10 +1,6 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
-This changelog considers that you don't currently use an ngeo interface and you
-replace your sencha touch interface by an ngeo interface.
-
-
 Version 2.1.0
 =============
 
@@ -36,9 +32,9 @@ If you want to keep your CGXP interface you should:
 
 1. Get the new files for ngeo integration:
 
-    cp /tmp/{{project}}/{{package}}/templates/desktop.html {{package}}/templates/
-    cp /tmp/{{project}}/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
-    cp /tmp/{{project}}/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
+    cp CONST_create_template/{{project}}/{{package}}/templates/desktop.html {{package}}/templates/
+    cp CONST_create_template/{{project}}/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
+    cp CONST_create_template/{{project}}/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
 
 2. Remove the cgxp interfaces:
 
@@ -116,6 +112,9 @@ If you want to keep your CGXP interface you should:
 
 Version 2.0.0
 =============
+
+This changelog considers that you don't currently use an ngeo interface and you
+replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:
 
