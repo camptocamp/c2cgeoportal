@@ -312,15 +312,16 @@ class Checker(object):  # pragma: no cover
         for route in self.settings["phantomjs_routes"]:
             url = self.request.route_url(route)
 
-            args = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
+            cmd = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 
             # check_output throws a CalledProcessError if return code is > 0
             try:
-                check_output(args)
-                "{}: OK".format(route)
+                check_output(cmd)
+                results.append("{}: OK".format(route))
             except CalledProcessError as e:
-                "{}: {}".format(route, results.append(e.output))
+                results.append("{}: {}".format(route, e.output.replace("\n", "<br/>")))
+                self.set_status(500, "{}: JS error".format(route))
 
         return self.make_response(
-            "OK" if len(results) == 0 else urllib.unquote("\n\n".join(results))
+            "-" if len(results) == 0 else "<br/><br/>".join(results)
         )
