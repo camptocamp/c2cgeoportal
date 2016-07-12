@@ -54,8 +54,9 @@ class PdfReport(Proxy):  # pragma: no cover
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         resp, content = self._proxy(
-            "%s/buildreport.pdf" % (
+            "%s/buildreport.%s" % (
                 self.config["print_url"],
+                spec["outputFormat"],
             ),
             method="POST",
             body=dumps(spec),
