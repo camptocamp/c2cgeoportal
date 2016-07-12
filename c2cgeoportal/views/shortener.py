@@ -138,6 +138,7 @@ class Shortener(object):
             text = self.settings["email_body"] % {
                 "full_url": url,
                 "short_url": s_url,
+                "message": self.request.params.get("message", ""),
             }
             send_email(
                 self.settings["email_from"],
