@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Server-side development &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Client-side development" href="client_side.html" />
+    <link rel="prev" title="Principles" href="principles.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="server-side-development">
+<span id="developer-server-side"></span><h1>Server-side development<a class="headerlink" href="#server-side-development" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-development-environment-in-a-project">
+<h2>Create development environment in a project<a class="headerlink" href="#create-development-environment-in-a-project" title="Permalink to this headline">¶</a></h2>
+<p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
+of an existing c2cgeoportal application. Here&#8217;s how:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Change current directory to your sources root directory and clone</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">c2cgeoportal</span></code> there, in the following line the sources directory is the
+user home directory. Than checkout the submodules, build c2cgeoportal,
+and go back to your project directory:</p>
+</dd>
+</dl>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">cd</span> ~</span>
+<span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
+<span class="prompt1">git submodule update --init</span>
+<span class="prompt1">make build</span>
+<span class="prompt1"><span class="nb">cd</span>  ~/&lt;project&gt;</span>
+</pre><p>You can now check out your development branch if necessary.</p>
+</li>
+<li><p class="first">Edit your <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> to have something like this:</p>
+<pre class="code make literal-block">
+<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;user&gt;
+<span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
+<span class="name variable">REQUIREMENTS</span> <span class="operator">=</span> -e ../c2cgeoportal
+
+<span class="comment preproc">include &lt;package&gt;.mk
+</span>
+</pre>
+</li>
+<li><p class="first">Uninstall the regular c2cgeoportal egg from the virtual environment:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/pip uninstall c2cgeoportal</span>
+</pre></li>
+<li><p class="first">Remove/comment the following line in the CONST_requirements.txt file:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">c2cgeoportal</span><span class="o">==</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build your application application:</p>
+<pre class="highlight"><span class="prompt1">rm .build/requirements.timestamp <span class="o">&amp;&amp;</span> make -f &lt;user&gt;.mk build</span>
+</pre></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Print performance issue</p>
+<p>When restarting the print server frequently, performance issues may randomly be observed.
+This is done in random number generation.</p>
+<p>To improve the performances you should add in the <code class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/bin/setenv-local.sh</span></code> file:</p>
+<div class="code bash last highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">ADD_JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="running-tests">
+<h3>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
+<p>To be able to run c2cgeoportal tests you need to have the c2cgeoportal source
+code, and a make environment for it. So do that first, as described below.</p>
+<div class="section" id="install-c2cgeportal-from-source">
+<h4>Install c2cgeportal from source<a class="headerlink" href="#install-c2cgeportal-from-source" title="Permalink to this headline">¶</a></h4>
+<p>Check out c2cgeoportal from GitHub:</p>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
+</pre><p>Change into the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory and initialize the submodules:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
+<span class="prompt1">git submodule update --init</span>
+</pre><p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
+tests are self-contained, and do not require any specific setup. The functional
+tests require a PostGIS database and a MapServer installation that can access
+the test mapfile <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>.</p>
+</div>
+<div class="section" id="unit-tests">
+<h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
+<p>To run the unit tests do this:</p>
+<pre class="highlight"><span class="prompt1">make build</span>
+<span class="prompt1">.build/venv/bin/python setup.py nosetests -a <span class="s1">&#39;!functional&#39;</span></span>
+</pre></div>
+<div class="section" id="functional-tests">
+<h4>Functional tests<a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h4>
+<p>For the functional tests you need to have MapServer and PostgreSQL/PostGIS
+installed. Make sure this is the case before proceeding.</p>
+<p>You now need to create PostGIS database (named <code class="docutils literal"><span class="pre">c2cgeoportal_test</span></code> for example)
+and a schema named <code class="docutils literal"><span class="pre">main</span></code> into it.</p>
+<p>To create the database use the following command if you have a PostGIS database
+template at your disposal:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis c2cgeoportal_test</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you don&#8217;t have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
+<span class="prompt1">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+       -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+       -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql</span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+       -c <span class="s1">&#39;GRANT ALL ON geometry_columns TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
+       -c <span class="s1">&#39;GRANT SELECT ON spatial_ref_sys TO &quot;www-data&quot;;&#39;</span></span>
+</pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
+database.</p>
+</div>
+<p>If you don&#8217;t have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
+</pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code> and <code class="docutils literal"><span class="pre">main_static</span></code> schema:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
+<span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
+</pre><p>If you don&#8217;t use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
+<code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
+<p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
+i.e. on the machine you run the tests on. For example, if you use your desktop
+machine it may be <code class="docutils literal"><span class="pre">http://locahost/cgi-bin/mapserv</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On Camptocamp servers <code class="docutils literal"><span class="pre">mapserv</span></code> is usually not available on the
+<code class="docutils literal"><span class="pre">localhost</span></code> virtual host. One option involves creating a specific script
+alias for <code class="docutils literal"><span class="pre">mapserv</span></code>, for example by adding something like the following
+to your <code class="docutils literal"><span class="pre">/var/www/&lt;virtual_host_name&gt;/conf/mapserv.conf</span></code> file:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">mapserv</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="nb">bin</span><span class="o">/</span><span class="n">mapserv</span>
+<span class="o">&lt;</span><span class="n">Location</span> <span class="o">/</span><span class="n">mapserv</span><span class="o">&gt;</span>
+    <span class="n">SetHandler</span> <span class="n">fcgid</span><span class="o">-</span><span class="n">script</span>
+<span class="o">&lt;/</span><span class="n">Location</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>To know what domain name to use look at the <code class="docutils literal"><span class="pre">ServerAlias</span></code>&#8216;es
+configured for the virtual host in
+<code class="docutils literal"><span class="pre">/etc/apache2/sites-enabled/&lt;virtual_host_name&gt;</span></code>.</p>
+<p class="last">Here&#8217;s an example of a possible <code class="docutils literal"><span class="pre">mapserv_url</span></code>:
+<code class="docutils literal"><span class="pre">http://mapfish-geoportal-demo/mapserv</span></code>.</p>
+</div>
+<p>Once done with the editing of <code class="docutils literal"><span class="pre">vars.yaml</span></code>, run <code class="docutils literal"><span class="pre">make</span></code>
+to generate <code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/test.ini</span></code> and
+<code class="docutils literal"><span class="pre">c2cgeoportal/tests/functional/c2cgeoportal_test.map</span></code>:</p>
+<pre class="highlight"><span class="prompt1">make build</span>
+</pre><p>You can now run the functional tests with this:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests -a functional</span>
+</pre></div>
+<div class="section" id="all-tests">
+<h4>All tests<a class="headerlink" href="#all-tests" title="Permalink to this headline">¶</a></h4>
+<p>To run all the tests do this:</p>
+<pre class="highlight"><span class="prompt1">make tests</span>
+</pre><p>To run a specific test use the <code class="docutils literal"><span class="pre">--where</span></code> switch. For example:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py nosetests --where <span class="se">\</span>
+    c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue</span>
+</pre></div>
+</div>
+<div class="section" id="adding-tests">
+<h3>Adding tests<a class="headerlink" href="#adding-tests" title="Permalink to this headline">¶</a></h3>
+<p><strong>To Be Done</strong></p>
+</div>
+</div>
+<div class="section" id="upgrade-dependencies">
+<h2>Upgrade dependencies<a class="headerlink" href="#upgrade-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>When we start a new version of c2cgeoportal or just before a new development
+phase it&#8217;s a good idea to update the dependencies.</p>
+<div class="section" id="eggs">
+<h3>Eggs<a class="headerlink" href="#eggs" title="Permalink to this headline">¶</a></h3>
+<p>All the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> (and <code class="docutils literal"><span class="pre">tilecloud-chain</span></code>) dependencies are present in
+the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_versions.mako</span></code> file.</p>
+<p>To update them you can simply get them from a travis build in the
+<code class="docutils literal"><span class="pre">.build/venv/bin/pip</span> <span class="pre">freeze</span></code> task.</p>
+</div>
+<div class="section" id="submodules">
+<h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
+<p>Go to the OpenLayers folder:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> c2cgeoportal/static/lib/openlayers/</span>
+</pre><p>Get the new revision of OpenLayers:</p>
+<pre class="highlight"><span class="prompt1">git fetch</span>
+<span class="prompt1">git checkout release-&lt;version&gt;</span>
+</pre><p>Then you can commit it:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> -</span>
+<span class="prompt1">git add c2cgeoportal/static/lib/openlayers/</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;update OpenLayers to &lt;version&gt;&quot;</span></span>
+</pre></div>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="object-model">
+<h3>Object model<a class="headerlink" href="#object-model" title="Permalink to this headline">¶</a></h3>
+<img alt="../_images/database.png" src="../_images/database.png" />
+<p><code class="docutils literal"><span class="pre">TreeItem</span></code> and <code class="docutils literal"><span class="pre">TreeGroup</span></code> are abstract (can&#8217;t be create) class used to create the tree.</p>
+<p><code class="docutils literal"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal"><span class="pre">LayerGroup</span></code> but without any constrains.</p>
+<p>It&#8217;s not visible on this schema, but the <code class="docutils literal"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal"><span class="pre">parent_role</span></code>)
+to the <code class="docutils literal"><span class="pre">Role</span></code> of the parent schema.</p>
+<div class="section" id="ui-metadata-vs-functionality">
+<h4><code class="docutils literal"><span class="pre">ui_metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code><a class="headerlink" href="#ui-metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
+<p>Technically the same <code class="docutils literal"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
+<p><code class="docutils literal"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of
+the application. For instance to change the default basemap when a new theme
+is loaded.</p>
+<p>To do that in the CGXP application we trigger an event when we load a theme the
+new <code class="docutils literal"><span class="pre">functionnalities</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">ui_metadata</span></code> contains attributes that are directly related to the element.
+For example the layer disclaimer, ...</p>
+</div>
+</div>
+<div class="section" id="migration">
+<h3>Migration<a class="headerlink" href="#migration" title="Permalink to this headline">¶</a></h3>
+<p>We use the <code class="docutils literal"><span class="pre">alembic</span></code> module for database migration. <code class="docutils literal"><span class="pre">alembic</span></code> works with a
+so-called <em>migration repository</em>, which is a simple directory in the
+application source tree:<code class="docutils literal"><span class="pre">CONST_alembic</span></code>. As the <code class="docutils literal"><span class="pre">CONST_</span></code> prefix suggests
+this repository is part of the <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, it is created
+or updated when this scaffold is applied. So developers who modify the
+<code class="docutils literal"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts to the
+<code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold, as opposed to the application.</p>
+<p>Add a new script call from the application&#8217;s root directory:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic revision -m <span class="s2">&quot;&lt;Explicite name&gt;&quot;</span></span>
+</pre><p>This will generate the migration script in
+<code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
+You should <em>NOT</em> commit the script in this directory because this migration
+script should be shared with all c2cgeoportal projects.
+It is the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template which is responsible for updating
+this directory.</p>
+<p>The script should not get any part of the <code class="docutils literal"><span class="pre">c2cgeoportal.model</span></code> module!</p>
+<p>To get the project schema use:
+<code class="docutils literal"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">context.get_context().config.get_main_option('schema')</span></code></p>
+<p>The scripts should not fail if it is run again. See:
+<a class="reference external" href="http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">http://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
+<p>Then customize the migration to suit your needs, test it:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/alembic upgrade head</span>
+</pre><p>Once you have tested it, move it to the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template, in
+<code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/update/CONST_mlembic/versions/</span></code>.</p>
+<dl class="docutils">
+<dt>More information at:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://alembic.readthedocs.org/en/latest/index.html">http://alembic.readthedocs.org/en/latest/index.html</a></li>
+<li><a class="reference external" href="http://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script">http://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script</a></li>
+<li><a class="reference external" href="http://alembic.readthedocs.org/en/latest/ops.html">http://alembic.readthedocs.org/en/latest/ops.html</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="sub-domain">
+<h2>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h2>
+<p>All the static resources used sub domains by using the configurations variables:
+<code class="docutils literal"><span class="pre">subdomain_url_template</span></code> and <code class="docutils literal"><span class="pre">subdomains</span></code>.</p>
+<p>To be able to use sub domain in a view we should configure the route as this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.lib</span> <span class="k">import</span> <span class="n">MultiDomainPregenerator</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span>
+    <span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;path&gt;&#39;</span><span class="p">,</span>
+    <span class="n">pregenerator</span><span class="o">=</span><span class="n">MultiDomainPregenerator</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>And use the <code class="docutils literal"><span class="pre">route_url</span></code> with an additional argument <code class="docutils literal"><span class="pre">subdomain</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s1">&#39;&lt;name&gt;&#39;</span><span class="p">,</span> <span class="n">subdomain</span><span class="o">=</span><span class="s1">&#39;&lt;subdomain&gt;&#39;</span><span class="p">)}</span><span class="s2">&quot;,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coding-style">
+<h3>Coding style<a class="headerlink" href="#coding-style" title="Permalink to this headline">¶</a></h3>
+<p>Please read <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">http://www.python.org/dev/peps/pep-0008/</a>.</p>
+<p>And run validation:</p>
+<pre class="highlight"><span class="prompt1">make checks</span>
+</pre></div>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Major dependencies docs:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.sqlalchemy.org/">SQLAlchemy</a></li>
+<li><a class="reference external" href="http://geoalchemy-2.readthedocs.org/">GeoAlchemy2</a></li>
+<li><a class="reference external" href="http://docs.formalchemy.org/">Formalchemy</a></li>
+<li><a class="reference external" href="https://github.com/camptocamp/GeoFormAlchemy/blob/master/GeoFormAlchemy/README.rst">GeoFormAlchemy</a></li>
+<li><a class="reference external" href="http://alembic.readthedocs.org/">alembic</a></li>
+<li><a class="reference external" href="http://docs.pylonsproject.org/en/latest/docs/pyramid.html">Pyramid</a></li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/papyrus">Papyrus</a></li>
+<li><a class="reference external" href="http://www.mapfish.org/doc/print/index.html">MapFish Print</a></li>
+<li><a class="reference external" href="http://docutils.sourceforge.net/docs/ref/rst/introduction.html">reStructuredText</a></li>
+<li><a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Server-side development</a><ul>
+<li><a class="reference internal" href="#create-development-environment-in-a-project">Create development environment in a project</a></li>
+<li><a class="reference internal" href="#tests">Tests</a><ul>
+<li><a class="reference internal" href="#running-tests">Running tests</a><ul>
+<li><a class="reference internal" href="#install-c2cgeportal-from-source">Install c2cgeportal from source</a></li>
+<li><a class="reference internal" href="#unit-tests">Unit tests</a></li>
+<li><a class="reference internal" href="#functional-tests">Functional tests</a></li>
+<li><a class="reference internal" href="#all-tests">All tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-tests">Adding tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#upgrade-dependencies">Upgrade dependencies</a><ul>
+<li><a class="reference internal" href="#eggs">Eggs</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database">Database</a><ul>
+<li><a class="reference internal" href="#object-model">Object model</a><ul>
+<li><a class="reference internal" href="#ui-metadata-vs-functionality"><code class="docutils literal"><span class="pre">ui_metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#migration">Migration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sub-domain">Sub domain</a></li>
+<li><a class="reference internal" href="#code">Code</a><ul>
+<li><a class="reference internal" href="#coding-style">Coding style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="principles.html" title="previous chapter">Principles</a></li>
+      <li>Next: <a href="client_side.html" title="next chapter">Client-side development</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/server_side.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/developer/server_side.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Specific configuration for QGIS mapserver &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Specific Backend Documentation" href="backend.html" />
+    <link rel="next" title="Specific configuration for Arcgis" href="backend_arcgis.html" />
+    <link rel="prev" title="Specific Backend Documentation" href="backend.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="backend_arcgis.html" title="Specific configuration for Arcgis"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="backend.html" title="Specific Backend Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="backend.html" accesskey="U">Specific Backend Documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="specific-configuration-for-qgis-mapserver">
+<span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS mapserver<a class="headerlink" href="#specific-configuration-for-qgis-mapserver" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wfs-namespace">
+<h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
+<p>In the <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></tt> file, define the url of the WFS service
+which will be used to get the namespace required to parse the WFS response,
+and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
+<span class="n">cgxp</span><span class="o">.</span><span class="n">LEGEND_INCLUDE_LAYER_NAME</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Change the DPI value to use the same as in the server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+<span class="o">+</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mf">2.54</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mf">0.00028</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="apache-configuration">
+<h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <tt class="docutils literal"><span class="pre">apache/mapserv.conf.in</span></tt> do the following changes:</p>
+<div class="code highlight-python"><pre>- ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/mapserv
++ ScriptAlias /${vars:instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
+
+- SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
++ SetEnv QGIS_PROJECT_FILE ${buildout:directory}/qgisserver.qgs</pre>
+</div>
+</div>
+<div class="section" id="application-configuration">
+<h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file, define:</p>
+<div class="code yaml highlight-python"><pre>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer</pre>
+</div>
+</div>
+<div class="section" id="cleanup">
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
+<p>Remove the mapserver folder:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git rm mapserver</span>
+</pre></div>
+<div class="section" id="connect-to-postgres-from-qgis-desktop">
+<h2>Connect to Postgres from QGIS desktop<a class="headerlink" href="#connect-to-postgres-from-qgis-desktop" title="Permalink to this headline">¶</a></h2>
+<p>This chapter is subject to change when the QGIS plugin is available.</p>
+<div class="section" id="throw-a-tunnel">
+<h3>Throw a tunnel<a class="headerlink" href="#throw-a-tunnel" title="Permalink to this headline">¶</a></h3>
+<p>The first solution is to create a tunnel with ssh:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">ssh -L 5432:localhost:54532 &lt;server&gt;</span>
+</pre><p>And use the following connection attributes:</p>
+<div class="highlight-python"><pre>Name: &lt;aname&gt;
+Host: localhost
+Port: 5432
+Database: &lt;database&gt;
+SSL mode: Disable
+Username: www-data
+Password: www-data</pre>
+</div>
+</div>
+<div class="section" id="directly-on-the-server">
+<h3>Directly on the server<a class="headerlink" href="#directly-on-the-server" title="Permalink to this headline">¶</a></h3>
+<p>For that you should ask the sysadmins to be able to access to the
+postgres port on the server from your infra.</p>
+<p>Then use the following connection attributes:</p>
+<div class="highlight-python"><pre>Name: &lt;aname&gt;
+Host: &lt;server&gt;
+Port: 5432
+Database: &lt;database&gt;
+SSL mode: require
+Username: www-data
+Password: www-data</pre>
+</div>
+</div>
+<div class="section" id="deploy-notes">
+<h3>Deploy notes<a class="headerlink" href="#deploy-notes" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Specific configuration for QGIS mapserver</a><ul>
+<li><a class="reference internal" href="#wfs-namespace">WFS namespace</a></li>
+<li><a class="reference internal" href="#apache-configuration">Apache configuration</a></li>
+<li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
+<li><a class="reference internal" href="#cleanup">Cleanup</a></li>
+<li><a class="reference internal" href="#connect-to-postgres-from-qgis-desktop">Connect to Postgres from QGIS desktop</a><ul>
+<li><a class="reference internal" href="#throw-a-tunnel">Throw a tunnel</a></li>
+<li><a class="reference internal" href="#directly-on-the-server">Directly on the server</a></li>
+<li><a class="reference internal" href="#deploy-notes">Deploy notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="backend.html"
+                        title="previous chapter">Specific Backend Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="backend_arcgis.html"
+                        title="next chapter">Specific configuration for Arcgis</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/backend_qgis.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="backend_arcgis.html" title="Specific configuration for Arcgis"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="backend.html" title="Specific Backend Documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="backend.html" >Specific Backend Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

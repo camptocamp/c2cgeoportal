@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mobile Applications &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Digital Elevation Tools" href="raster.html" />
+    <link rel="prev" title="Authentication" href="authentication.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="raster.html" title="Digital Elevation Tools"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="authentication.html" title="Authentication"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mobile-applications">
+<span id="integrator-mobile"></span><h1>Mobile Applications<a class="headerlink" href="#mobile-applications" title="Permalink to this headline">¶</a></h1>
+<p>Any c2cgeoportal projet created with the <tt class="docutils literal"><span class="pre">c2cgeoportal_create</span></tt> and
+<tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffolds comes with a <a class="reference external" href="http://www.sencha.com/products/touch/">Sencha Touch</a> based mobile application.</p>
+<p>The mobile application is available at the URLs <tt class="docutils literal"><span class="pre">/mobile_dev/</span></tt> and
+<tt class="docutils literal"><span class="pre">/mobile/</span></tt>. Do not forget the trailing slash! The first URL should be used
+during development, as non-minified resources are used. The second URL is for
+production.</p>
+<p>This application includes the following features:</p>
+<ul class="simple">
+<li>Map with zoom buttons.</li>
+<li>Geolocation.</li>
+<li>Base layer selector.</li>
+<li>Overlay selector.</li>
+<li>Text search.</li>
+<li>Map queries (long-press on the map).</li>
+</ul>
+<p>Current limitations:</p>
+<ul class="simple">
+<li>The overlays only are queryable.</li>
+<li>Non-WMS overlays are not supported.</li>
+<li>For map queries it is assumed that there a 1:1 relationship between WMS
+layers and WFS feature types, which is not the case if a WMS layer is
+actually a group in the mapfile.</li>
+</ul>
+<p>For map queries (long-press) to work a <a class="reference external" href="https://github.com/openlayers/openlayers/commit/f5aae88a3141dc94863791e500253b8a89ccd7ce">specific OpenLayers commit</a>
+is required. Commit <a class="reference external" href="https://github.com/camptocamp/cgxp/commit/444ba161fa67cdb503479da12dda71a82a70f310">444ba16</a>
+of CGXP includes this OpenLayers commit. So make sure your c2cgeoportal
+application uses this commit (or better) of CGXP.</p>
+<div class="section" id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
+<p>Creating and building a mobile application requires the <a class="reference external" href="http://www.sencha.com/products/sencha-cmd/download/">Sencha Cmd</a> tools and <a class="reference external" href="http://compass-style.org/">Compass</a> to be installed on the target machine.</p>
+<p>On Camptocamp server we just need the Debian packages <tt class="docutils literal"><span class="pre">sencha-cmd</span></tt>
+and <tt class="docutils literal"><span class="pre">ruby-compass</span></tt> (The <tt class="docutils literal"><span class="pre">sencha-cmd</span></tt> package was created by
+the Camptocamp sysadmins).</p>
+<p>On Camptocamp servers, in case you have both <tt class="docutils literal"><span class="pre">sencha-sdk-tools</span></tt> and
+<tt class="docutils literal"><span class="pre">sencha-cmd</span></tt> installed, commands are named respectively <tt class="docutils literal"><span class="pre">sencha-sdk</span></tt>
+and <tt class="docutils literal"><span class="pre">sencha-cmd</span></tt>. By default the <tt class="docutils literal"><span class="pre">sencha-cmd</span></tt> command is used, if
+it&#8217;s not the case on your host put the following configuration variables
+in your <cite>buildout.cfg</cite> file:</p>
+<div class="highlight-python"><pre>[mobile]
+sencha_cmd = &lt;sencha-command&gt;</pre>
+</div>
+<p>Replace <tt class="docutils literal"><span class="pre">&lt;sencha-command&gt;</span></tt> by <tt class="docutils literal"><span class="pre">sencha-sdk</span></tt> if you want to build the
+mobile app using a version of GeoMapFish older than 1.4.</p>
+</div>
+<div class="section" id="adding-mobile-routes-and-views">
+<h2>Adding mobile routes and views<a class="headerlink" href="#adding-mobile-routes-and-views" title="Permalink to this headline">¶</a></h2>
+<p>The last step involves adding <em>routes</em> and <em>views</em> specific to the mobile
+application. Edit the project&#8217;s <tt class="docutils literal"><span class="pre">__init__.py</span></tt> file and add the following
+lines before the <tt class="docutils literal"><span class="pre">main</span></tt> function&#8217;s return statement:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="c1"># mobile views and routes</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package_name&gt;:static/mobile/index.html&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_index_dev&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_config_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile_dev/config.js&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobileconfig&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package_name&gt;:static/mobile/config.js&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_config_dev&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s1">&#39;mobile_dev&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;package_name&gt;:static/mobile&#39;</span><span class="p">)</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_index_prod&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile/&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package_name&gt;:static/mobile/build/production/App/index.html&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_index_prod&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;mobile_config_prod&#39;</span><span class="p">,</span> <span class="s1">&#39;/mobile/config.js&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;c2cgeoportal.views.entry.Entry&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;mobileconfig&#39;</span><span class="p">,</span>
+                <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;&lt;package_name&gt;:static/mobile/build/production/App/config.js&#39;</span><span class="p">,</span>
+                <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;mobile_config_prod&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s1">&#39;mobile&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;package_name&gt;:static/mobile/build/production/App&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Replace <tt class="docutils literal"><span class="pre">&lt;package_name&gt;</span></tt> with the project&#8217;s actual package name.</p>
+<p>Now switch to the next section.</p>
+</div>
+<div class="section" id="building-the-mobile-application">
+<h2>Building the mobile application<a class="headerlink" href="#building-the-mobile-application" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">CONST_buildout.cfg</span></tt> file includes the parts <tt class="docutils literal"><span class="pre">jsbuild-mobile</span></tt> and
+<tt class="docutils literal"><span class="pre">mobile</span></tt> that are dedicated to building the mobile application.</p>
+<p>For the <tt class="docutils literal"><span class="pre">mobile</span></tt> part to work Sencha SDK Tools and Compass should be
+installed on the build machine. (See above.)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On Windows you will need to override the values of the <cite>mobile</cite> part&#8217;s
+<cite>sencha_cmd</cite> variables as such:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mobile</span><span class="p">]</span>
+<span class="n">sencha_cmd</span> <span class="o">=</span> <span class="n">sencha</span><span class="o">.</span><span class="n">bat</span>
+</pre></div>
+</div>
+<p class="last">You would add this in <cite>buildout.cfg</cite>, or any Buildout configuration file
+that extends <cite>buildout.cfg</cite>.</p>
+</div>
+<p>Once built the mobile application should be available on <tt class="docutils literal"><span class="pre">/mobile_dev/</span></tt> and
+<tt class="docutils literal"><span class="pre">/mobile/</span></tt> in the browser, where <tt class="docutils literal"><span class="pre">/</span></tt> is the root of the WSGI application.</p>
+</div>
+<div class="section" id="configuring-the-map-and-the-layers">
+<h2>Configuring the map and the layers<a class="headerlink" href="#configuring-the-map-and-the-layers" title="Permalink to this headline">¶</a></h2>
+<p>To change the map configuration and the layers for the mobile application edit
+the project&#8217;s <tt class="docutils literal"><span class="pre">static/mobile/config.js</span></tt> and modify the config object passed
+to the <tt class="docutils literal"><span class="pre">OpenLayers.Map</span></tt> constructor. The execution of the <tt class="docutils literal"><span class="pre">config.js</span></tt>
+script should result in <tt class="docutils literal"><span class="pre">App.map</span></tt> being set to an <tt class="docutils literal"><span class="pre">OpenLayers.Map</span></tt>
+instance.</p>
+<div class="section" id="theme">
+<h3>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h3>
+<p>The list of themes and layers shown in the mobile application is dynamically
+generated. See <a class="reference internal" href="../administrator/index.html#administrator-guide"><em>Administrator Guide</em></a>.</p>
+</div>
+</div>
+<div class="section" id="ui-strings-translations">
+<h2>UI strings translations<a class="headerlink" href="#ui-strings-translations" title="Permalink to this headline">¶</a></h2>
+<p>The overlay selector uses the layer names (as defined in the <tt class="docutils literal"><span class="pre">allLayers</span></tt>
+array of overlays) as translation keys. To add your translations edit
+<tt class="docutils literal"><span class="pre">static/mobile/config.js</span></tt> and populate the <tt class="docutils literal"><span class="pre">OpenLayers.Lang.&lt;code&gt;</span></tt> objects
+as necessary.</p>
+</div>
+<div class="section" id="raster-service">
+<h2>Raster service<a class="headerlink" href="#raster-service" title="Permalink to this headline">¶</a></h2>
+<p>When querying the map (longpress), the c2cgeoportal <tt class="docutils literal"><span class="pre">raster</span></tt> service can be
+used to retrieve data from raster file (elevation, slope, etc...) and display
+it in the <tt class="docutils literal"><span class="pre">Query</span> <span class="pre">view</span></tt> above query results.</p>
+<p>If the raster service is already configured on the server, you can activate it
+in the mobile application by adding the following to the config.js file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">raster</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>You&#8217;ll also need to add a template string to each translation object. It needs
+to be adapted to the data retrieved from the server:</p>
+<div class="code javascript highlight-python"><pre>OpenLayers.Lang.fr = {
+    [...]
+    'rasterTpl': [
+        '&lt;div class="coordinates"&gt;',
+            '&lt;p&gt;X : {x} - Y : {y}&lt;/p&gt;',
+            '&lt;p&gt;Altitude terrain : {mnt} m&lt;/p&gt;',
+            '&lt;p&gt;Altitude surface : {mns} m&lt;/p&gt;',
+        '&lt;/div&gt;'
+    ].join(''),
+    [...]
+};</pre>
+</div>
+<p>In the example above <tt class="docutils literal"><span class="pre">mns</span></tt> and <tt class="docutils literal"><span class="pre">mnt</span></tt> are the keys used in the server
+config for the <tt class="docutils literal"><span class="pre">raster</span> <span class="pre">web</span> <span class="pre">services</span></tt>.</p>
+</div>
+<div class="section" id="settings-view">
+<h2>Settings view<a class="headerlink" href="#settings-view" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">Settings</span></tt> view, located in <tt class="docutils literal"><span class="pre">app/view/Settings.js</span></tt>, can be customized
+to suit the project needs. The <tt class="docutils literal"><span class="pre">Settings.js</span></tt> file is part of c2cgeoportal&#8217;s
+<tt class="docutils literal"><span class="pre">c2cgeoportal_create</span></tt> scaffold, it will therefore not be overwritten when
+applying the <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffold during an update of c2cgeoportal.</p>
+<p>If style customization is also required for components in this view, use the
+<tt class="docutils literal"><span class="pre">custom.scss</span></tt> file.</p>
+<div class="section" id="permalink">
+<h3>Permalink<a class="headerlink" href="#permalink" title="Permalink to this headline">¶</a></h3>
+<p>If a permalink field is needed, just add the following component in the
+Settings view:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="n">xtype</span><span class="p">:</span> <span class="s1">&#39;map_permalink&#39;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="login-logout">
+<h3>Login/logout<a class="headerlink" href="#login-logout" title="Permalink to this headline">¶</a></h3>
+<p>The mobile application includes a <tt class="docutils literal"><span class="pre">Login</span></tt> view component that the
+<tt class="docutils literal"><span class="pre">Settings</span></tt> view can include as one of its items. This component enables login
+and logout. If the user is not authenticated the <tt class="docutils literal"><span class="pre">Login</span></tt> component adds
+a &#8220;log in&#8221; button, that, when clicked, redirects the user to a login form view.
+If the user is authenticated the <tt class="docutils literal"><span class="pre">Login</span></tt> component adds a welcome message,
+and a &#8220;log out&#8221; button.</p>
+<p>Here&#8217;s an example of a <tt class="docutils literal"><span class="pre">Settings</span></tt> view that includes a <tt class="docutils literal"><span class="pre">Login</span></tt> view
+component:</p>
+<div class="code javascript highlight-python"><pre>Ext.define("App.view.Settings", {
+    extend: 'Ext.Container',
+    xtype: 'settingsview',
+    requires: [
+        // Do not forget this requirement, or Sencha Touch
+        // will complain that "widget.login" is an
+        // unrecognized alias.
+        'App.view.Login'
+    ],
+    config: {
+        items: [{
+            xtype: 'toolbar',
+            docked: 'top',
+            items: [{
+                xtype: 'spacer'
+            }, {
+                xtype: 'button',
+                iconCls: 'home',
+                iconMask: true,
+                action: 'home'
+            }]
+        }, {
+            xtype: 'container',
+            cls: 'settings',
+            items: [{
+                xtype: 'component',
+                html: '&lt;p&gt;Some text&lt;/p&gt;'
+            }, {
+                // This is the login view component.
+                xtype: 'login'
+            }]
+        }]
+    }
+});</pre>
+</div>
+<p>The i18n keys relative to the login/logout functionality are: <tt class="docutils literal"><span class="pre">welcomeText</span></tt>,
+<tt class="docutils literal"><span class="pre">loginLabel</span></tt>, <tt class="docutils literal"><span class="pre">passwordLabel</span></tt>, <tt class="docutils literal"><span class="pre">loginSubmitButtonText</span></tt>, and
+<tt class="docutils literal"><span class="pre">loginCancelButtonText</span></tt>. The last four pertain to the login form, they should
+be self-explanatory. <tt class="docutils literal"><span class="pre">welcomeText</span></tt> is the text displayed above the &#8220;log out&#8221;
+button when the user is authenticated, it typically includes the variable
+<tt class="docutils literal"><span class="pre">{username}</span></tt>, which is changed to the actual username at render time. By
+default, <tt class="docutils literal"><span class="pre">config.js</span></tt> includes the following english translations:</p>
+<div class="code javascript highlight-python"><pre>OpenLayers.Lang.en = {
+    ...
+    // login/logout
+    'loginButtonText': 'Log in',
+    'welcomeText': '&lt;p&gt;You are {username}.&lt;/p&gt;',
+    'logoutButtonText': 'Log out',
+    'loginLabel': 'Login',
+    'passwordLabel': 'Password',
+    'loginSubmitButtonText': 'Submit',
+    'loginCancelButtonText': 'Cancel'
+};</pre>
+</div>
+<p>For the <tt class="docutils literal"><span class="pre">Login</span></tt> component to work the <tt class="docutils literal"><span class="pre">App.info</span></tt> JavaScript variable should
+be set. The setting of this variable should be done anywhere in the
+<tt class="docutils literal"><span class="pre">config.js</span></tt> file, with this:</p>
+<div class="code javascript highlight-python"><div class="highlight"><pre><span></span><span class="n">App</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s1">&#39;${info | n}&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>By default <tt class="docutils literal"><span class="pre">config.js</span></tt> includes it.</p>
+</div>
+</div>
+<div class="section" id="multiple-mobile-applications">
+<h2>Multiple mobile applications<a class="headerlink" href="#multiple-mobile-applications" title="Permalink to this headline">¶</a></h2>
+<p>This section discusses the possibility of having multiple mobile applications
+within a c2cgeoportal application.</p>
+<p>As you will find out by reading the rest of this section creating multiple
+mobile applications is a clear violation of the &#8220;don&#8217;t repeat yourself&#8221;
+principle. It is therefore discouraged; creating multiple <em>profiles</em> of the
+mobile application should be done through multiple themes. However you may need
+multiple mobile applications if you want, for example, different base layers,
+and/or a high degree of customization, for each application.</p>
+<p>Any c2cgeoportal application includes a mobile application in the
+<tt class="docutils literal"><span class="pre">&lt;package_name&gt;/static/mobile/</span></tt> directory.  The mobile application is created
+by the <tt class="docutils literal"><span class="pre">c2cgeoportal_create</span></tt> and <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffolds. To create
+another mobile application, the easiest is to copy the existing <tt class="docutils literal"><span class="pre">mobile</span></tt>
+directory into a new directory. For example:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> &lt;package_name&gt;/static</span>
+<span class="prompt">cp -r mobile mobile2</span>
+</pre><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is important to note that the <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffold, which is
+used when updating a c2cgeoportal application to a new c2cgeoportal
+version, will update the <tt class="docutils literal"><span class="pre">mobile</span></tt> directory only. This further means that
+any other mobile application will need to be manually updated (by copying
+files).</p>
+</div>
+<p>Other things need to be duplicated:</p>
+<ul>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">jsbuild</span></tt> mobile config file should be duplicated.</p>
+<p>For this copy
+<tt class="docutils literal"><span class="pre">jsbuild/mobile.cfg</span></tt> into <tt class="docutils literal"><span class="pre">jsbuild/mobile2.cfg</span></tt>, for example. You may
+want to adapt the new config file, based on your needs.</p>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">jsbuild-mobile</span></tt> and <tt class="docutils literal"><span class="pre">mobile</span></tt> Buildout parts should be duplicated.</p>
+<p>For this copy the <tt class="docutils literal"><span class="pre">[jsbuild-mobile]</span></tt> and <tt class="docutils literal"><span class="pre">[mobile]</span></tt> sections of
+<tt class="docutils literal"><span class="pre">CONST_buildout.cfg</span></tt>, them into the application&#8217;s <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> file,
+rename them (to <tt class="docutils literal"><span class="pre">[jsbuild-mobile2]</span></tt> and <tt class="docutils literal"><span class="pre">[mobile2]</span></tt>), and adapt their
+contents so they reference the new mobile directory (<tt class="docutils literal"><span class="pre">static/mobile2</span></tt>), and
+the new <tt class="docutils literal"><span class="pre">jsbuild</span></tt> mobile config file (<tt class="docutils literal"><span class="pre">jsbuild/mobile2.cfg</span></tt>).</p>
+<p>You also need to add <tt class="docutils literal"><span class="pre">jsbuild-mobile2</span></tt> and <tt class="docutils literal"><span class="pre">mobile2</span></tt> to the list
+of parts that are run by Buildout by default:</p>
+<div class="highlight-python"><pre>[buildout]
+extends = CONST_buildout.cfg
+parts += jsbuild-mobile mobile jsbuild-mobile2 mobile2</pre>
+</div>
+<p>At this point you should be able to successfully run Buildout again.</p>
+</li>
+<li><p class="first">The mobile routes and views should be duplicated.</p>
+<p>For that edit the application&#8217;s main <tt class="docutils literal"><span class="pre">__init__.py</span></tt> file and copy the entire
+<tt class="docutils literal"><span class="pre">#</span> <span class="pre">mobile</span> <span class="pre">views</span> <span class="pre">and</span> <span class="pre">routes</span></tt> block, and paste it right below the original.
+Now change the route names, for example from <tt class="docutils literal"><span class="pre">mobile_index_dev</span></tt> to
+<tt class="docutils literal"><span class="pre">mobile_index_dev2</span></tt>. Change the route URLs, for example from
+<tt class="docutils literal"><span class="pre">/mobile_dev/</span></tt> to <tt class="docutils literal"><span class="pre">/mobile_dev2/</span></tt>. Change the paths to the templates
+files, for example from
+<tt class="docutils literal"><span class="pre">renderer='&lt;package_name&gt;:static/mobile/index.html'</span></tt> to
+<tt class="docutils literal"><span class="pre">renderer='&lt;package_name&gt;:static/mobile2/index.html'</span></tt>.  Do this for every
+route and view.</p>
+<p>You should be done.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Mobile Applications</a><ul>
+<li><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
+<li><a class="reference internal" href="#adding-mobile-routes-and-views">Adding mobile routes and views</a></li>
+<li><a class="reference internal" href="#building-the-mobile-application">Building the mobile application</a></li>
+<li><a class="reference internal" href="#configuring-the-map-and-the-layers">Configuring the map and the layers</a><ul>
+<li><a class="reference internal" href="#theme">Theme</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ui-strings-translations">UI strings translations</a></li>
+<li><a class="reference internal" href="#raster-service">Raster service</a></li>
+<li><a class="reference internal" href="#settings-view">Settings view</a><ul>
+<li><a class="reference internal" href="#permalink">Permalink</a></li>
+<li><a class="reference internal" href="#login-logout">Login/logout</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multiple-mobile-applications">Multiple mobile applications</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="authentication.html"
+                        title="previous chapter">Authentication</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="raster.html"
+                        title="next chapter">Digital Elevation Tools</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/mobile.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="raster.html" title="Digital Elevation Tools"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="authentication.html" title="Authentication"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

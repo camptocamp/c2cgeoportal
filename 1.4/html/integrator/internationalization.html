@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internationalization &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Update a c2cgeoportal application" href="update_application.html" />
+    <link rel="prev" title="Extend the data model" href="extend_data_model.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="update_application.html" title="Update a c2cgeoportal application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extend_data_model.html" title="Extend the data model"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="internationalization">
+<span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<p>Translations of the browser interfaces (main viewer, edit interfaces and APIs)
+are included in two kinds of Javascript files stored in
+<tt class="docutils literal"><span class="pre">&lt;package&gt;/static/js/Proj/Lang/</span></tt>:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;lang&gt;.js</span></tt> is used to translate data-related strings such as layernames or
+attributenames (in interrogation results). It is based upon the OpenLayers
+translation syntax. For instance:</p>
+<div class="highlight-python"><pre>OpenLayers.Util.extend(OpenLayers.Lang.&lt;lang&gt;, {
+    "layertree": "Themes"
+});</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">GeoExt-&lt;lang&gt;.js</span></tt> is used to adapt the translations of existing plugins/widgets
+or to add translations of project-specific plugins. It is based upon the GeoExt
+translation syntax. Key-value translation pairs are encapsulated by class.
+For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">GeoExt</span><span class="o">.</span><span class="n">Lang</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;&lt;lang&gt;&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s2">&quot;cgxp.tree.LayerTree.prototype&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">moveupText</span><span class="p">:</span> <span class="s2">&quot;Move up&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">&lt;lang&gt; is the <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO 639-1 code</a>.
+For example: en, de or fr.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Standard translations for CGXP plugins/widgets strings are available on
+<a class="reference external" href="https://github.com/camptocamp/cgxp/tree/master/core/src/script/CGXP/locale">Github</a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Translations from both OpenLayers- and GeoExt-based systems are stored in
+separated files because of API constraints. Read more at <a class="reference internal" href="api.html#integrator-api-i18n"><em>Internationalization</em></a>.</p>
+</div>
+</div>
+<div class="section" id="server">
+<h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Extract all messages from the project:</p>
+<div class="highlight-python"><pre>./buildout/bin/python setup.py extract_messages</pre>
+</div>
+</li>
+<li><p class="first">Initialize a catalog for every supported language, for example:</p>
+<div class="highlight-python"><pre>./buildout/bin/python setup.py init_catalog -l en
+./buildout/bin/python setup.py init_catalog -l fr
+./buildout/bin/python setup.py init_catalog -l de</pre>
+</div>
+</li>
+<li><p class="first">Edit the .po files in <tt class="docutils literal"><span class="pre">&lt;package&gt;/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;.po</span></tt></p>
+</li>
+<li><p class="first">Run buildout to compile all the .po files to .mo:</p>
+<div class="highlight-python"><pre>./buildout/bin/buildout -c buildout_$USER.cfg install po2mo</pre>
+</div>
+</li>
+<li><p class="first">Finally don&#8217;t forget to restart apache:</p>
+<div class="highlight-python"><pre>sudo /usr/sbin/apache2ctl graceful</pre>
+</div>
+</li>
+</ol>
+<p>When you add a new message repeat all steps but replace the step 2. by:</p>
+<div class="highlight-python"><pre>./buildout/bin/python setup.py update_catalog</pre>
+</div>
+<p><a class="reference external" href="http://wiki.pylonshq.com/display/pylonsdocs/Internationalization+and+Localization">Source from pylondhq</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Internationalization</a><ul>
+<li><a class="reference internal" href="#client">Client</a></li>
+<li><a class="reference internal" href="#server">Server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="extend_data_model.html"
+                        title="previous chapter">Extend the data model</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="update_application.html"
+                        title="next chapter">Update a c2cgeoportal application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/internationalization.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="update_application.html" title="Update a c2cgeoportal application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="extend_data_model.html" title="Extend the data model"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

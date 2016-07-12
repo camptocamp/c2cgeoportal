@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Intranet Users Detection &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Security" href="security.html" />
+    <link rel="prev" title="Configure short URL" href="shortener.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="security.html" title="Security"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="shortener.html" title="Configure short URL"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="intranet-users-detection">
+<span id="integrator-intranet"></span><h1>Intranet Users Detection<a class="headerlink" href="#intranet-users-detection" title="Permalink to this headline">¶</a></h1>
+<p>It may be interesting to assign a default role to anonymous users connecting
+from a given IP or set of IP addresses (eg. intranet users).</p>
+<p>The default username and role for anonymous intranet users as well as the
+matching IP regexp are configured in <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> (see step #4 below).
+The assigned role must obviously have been defined in the administration interface.</p>
+<p>Example of accepted IP setting:</p>
+<div class="code yaml highlight-python"><pre>intranet_ip = 12.34.56.78
+intranet_ip = ^12.34.(.*)</pre>
+</div>
+<p>This page lists the changes that must be applied to add such a functionality.</p>
+<ol class="arabic">
+<li><p class="first">Upgrade the CGXP submodule to the last version of branch 1.4.</p>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></tt>. Replace</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">locale_negotiator</span>
+</pre></div>
+</div>
+<p>by</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="kn">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
+</pre></div>
+</div>
+<p>Add the following function:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
+        <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_user&#39;</span><span class="p">,</span> <span class="s1">&#39;Intranet&#39;</span><span class="p">)</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">functionalities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_role&#39;</span><span class="p">,</span> <span class="s1">&#39;intranet&#39;</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;authFailed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="n">user</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">main()</span></tt> function before</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>add</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">In <tt class="docutils literal"><span class="pre">apache/wsgi.conf.in</span></tt> add to <tt class="docutils literal"><span class="pre">&lt;Location</span> <span class="pre">/${vars:instanceid}/wsgi&gt;</span></tt>:</p>
+<div class="code apache highlight-python"><pre>SetEnvIf REMOTE_ADDR ${vars:intranet_ip} intranet=1</pre>
+</div>
+<p>or, depending on the proxies setup:</p>
+<div class="code apache highlight-python"><pre>SetEnvIf x-forwarded-for ${vars:intranet_ip} intranet=1</pre>
+</div>
+</li>
+<li><p class="first">In the <tt class="docutils literal"><span class="pre">[vars]</span></tt> section of <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> add</p>
+<div class="code yaml highlight-python"><pre># intranet detection
+intranet_ip = &lt;IP address or regexp&gt;
+intranet_default_user = 'Intranet'
+intranet_default_role = 'role_intranet'</pre>
+</div>
+</li>
+<li><p class="first">At the end of <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> add</p>
+<div class="code yaml highlight-python"><pre># Default role/username from within the intranet
+intranet_default_user: ${vars:intranet_default_user}
+intranet_default_role: ${vars:intranet_default_role}</pre>
+</div>
+</li>
+<li><p class="first">In <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></tt> replace</p>
+<div class="code python highlight-python"><pre>&lt;script type="text/javascript" src="${request.route_url('viewer')}${extra_params}</pre>
+</div>
+<p>by</p>
+<div class="code python highlight-python"><pre>&lt;%
+anonymous_param = '&amp;anonymous' if 'anonymous' in request.params else ''
+%&gt;
+&lt;script type="text/javascript" src="${request.route_url('viewer')}${extra_params}${anonymous_param}"&gt;&lt;/script&gt;</pre>
+</div>
+</li>
+<li><p class="first">In <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></tt> and <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/edit.js</span></tt> add at the beginning:</p>
+<div class="code python highlight-python"><pre>&lt;%
+mapserverProxyUrl = request.route_url('mapserverproxy', path='')
+if 'anonymous' in request.params:
+    mapserverProxyUrl += '?anonymous'
+%&gt;</pre>
+</div>
+<p>and replace all occurences of</p>
+<div class="code python highlight-python"><pre>${request.route_url('mapserverproxy', path='')}</pre>
+</div>
+<p>or</p>
+<div class="code python highlight-python"><pre>${request.route_url('mapserverproxy')}</pre>
+</div>
+<p>by</p>
+<div class="code python highlight-python"><pre>${mapserverProxyUrl}</pre>
+</div>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="shortener.html"
+                        title="previous chapter">Configure short URL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="security.html"
+                        title="next chapter">Security</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/intranet.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="security.html" title="Security"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="shortener.html" title="Configure short URL"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" >Additional features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

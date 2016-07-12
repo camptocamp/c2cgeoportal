@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TileGeneration &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Customize the UI" href="customize_ui.html" />
+    <link rel="prev" title="Specific configuration for Arcgis" href="backend_arcgis.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="customize_ui.html" title="Customize the UI"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="backend_arcgis.html" title="Specific configuration for Arcgis"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tilegeneration">
+<span id="administrator-tilegeneration"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>With this solution we solve the following issue:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Managing millions of files on the file system is difficult.</li>
+<li>We should be able to update all the generated tiles.</li>
+<li>We shouldn&#8217;t have thousands of expired files.</li>
+</ul>
+</div></blockquote>
+<p>To do so we need need a tool that can generate the tiles,
+update some of them contained in given geometries and delete empty tiles.</p>
+<p>On-the-fly tiles generation introduces some issues such as having a growing
+number of tiles that may become unmanageable. For example when updating the
+data, it is not possible to figure out what tiles should be updated.</p>
+<p>For the high usage website we want to put the tiles on S3
+with the same tool.</p>
+<p>One issue we have if we want to generate all the tiles, the generation
+time can grow to more than one month, especially if we have
+a high resolution (low if in m/px) on the last zoom level.
+Than for the last zoom level we should generate the tiles on the fly
+with a low expiry (4 hours for example).
+We should use metatiles to don&#8217;t have too may request to postgres.
+And the tiles should be delete after the expiry time.</p>
+<p>The chosen solution is a combination of two tools:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://mapserver.org/trunk/mapcache/">MapCache</a> for the last zoom level.</li>
+<li><a class="reference external" href="https://github.com/sbrunner/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id1">
+<h2>MapCache<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>MapCache is a tool of the MapServer Suite.</p>
+<p>It is recommended to use <a class="reference external" href="http://memcached.org/">Memcached</a> as cache,
+since it is the only system that offers automatic deletion of the expired tiles.</p>
+<p>To use it you should have MapCache and Memcached installed on your computer.
+And Memcached should listen on port 11211.</p>
+<p>To clear/flush Memcached cache, use the following command:</p>
+<blockquote>
+<div><div class="code bash highlight-python"><pre>echo "flush_all" | /bin/netcat -q 2 127.0.0.1 11211</pre>
+</div>
+</div></blockquote>
+<p>See the <a class="reference external" href="https://github.com/sbrunner/tilecloud-chain#configure-mapcache">TileCloud-chain documentation for more details</a></p>
+</div>
+<div class="section" id="id2">
+<h2>TileCloud-chain<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
+generating tiles from WMS of Mapnik on a local storage or S3 using a
+WMTS layout.</p>
+<p>It supports the following AWS services for generating tiles:
+EC2, SQS, SNS.</p>
+<p><a class="reference external" href="http://pypi.python.org/pypi/tilecloud-chain">See readme</a>.</p>
+<div class="section" id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul>
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">tilecloud-chain</span></tt> to the dependencies in the <tt class="docutils literal"><span class="pre">setup.py</span></tt>.</p>
+</li>
+<li><p class="first">Build the project:</p>
+<div class="highlight-python"><pre>./buildout/bin/buildout -c buildout_&lt;user&gt;.cfg</pre>
+</div>
+</li>
+<li><p class="first">Install the base template template:</p>
+<div class="highlight-python"><pre>./buildout/bin/pcreate --interactive -s tilecloud_chain ../&lt;project_name&gt; package=&lt;package_name&gt;</pre>
+</div>
+</li>
+<li><p class="first">Add configuration to Git:</p>
+<div class="code bash highlight-python"><pre>git add tilegeneration buildout_tilegeneration.cfg</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The configuration is done in the self-documented file
+<tt class="docutils literal"><span class="pre">tilegeneration/config.yaml</span></tt>. The original file is available at:
+<a class="reference external" href="https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl">https://github.com/sbrunner/tilecloud-chain/blob/master/tilecloud_chain/scaffolds/create/tilegeneration/config.yaml.in_tmpl</a></p>
+<p>The main thing to do is to:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Set the resolutions we want to generate in the <tt class="docutils literal"><span class="pre">grids</span></tt>.
+If we want to generate different resolution per layers we should create
+deferent grid.
+Sub-level of <tt class="docutils literal"><span class="pre">grids</span></tt> is the grid name.</p>
+</li>
+<li><p class="first">Configure the <tt class="docutils literal"><span class="pre">caches</span></tt> and set the <tt class="docutils literal"><span class="pre">generation</span></tt>/<tt class="docutils literal"><span class="pre">default_cache</span></tt>.
+Sub-level of <tt class="docutils literal"><span class="pre">caches</span></tt> is the cache name.</p>
+</li>
+<li><p class="first">Configure the <tt class="docutils literal"><span class="pre">layer_default</span></tt>, the <tt class="docutils literal"><span class="pre">layers</span></tt>, and the
+<tt class="docutils literal"><span class="pre">generation</span></tt>/<tt class="docutils literal"><span class="pre">default_layers</span></tt>.
+Sub-level of <tt class="docutils literal"><span class="pre">layers</span></tt> is the layer name.</p>
+</li>
+<li><p class="first">We can drop the empty tiles with an hash comparison,
+tilecloud-chain has a tool to help us:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</pre>
+</div>
+<p>We consider that the first tile of the max zoom is empty.
+Than copy past the result in the layer config.</p>
+</li>
+<li><p class="first">If you need it you can generate the WMTS capabilities file:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_controller --generate_wmts_capabilities</pre>
+</div>
+</li>
+<li><p class="first">And an OpenLayers test page:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_controller --openlayers-test</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>If you generate the tiles locally you don&#8217;t need all the configuration
+variables, because many of them in the <tt class="docutils literal"><span class="pre">generation</span></tt> part are for
+AWS generation.</p>
+</div>
+<div class="section" id="tile-generation-and-management">
+<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
+<p>This package offers two commands lines, one to generate the tiles locally,
+see help:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_tiles --help</pre>
+</div>
+<p>one to generate the tiles using AWS, see help:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_controller --help</pre>
+</div>
+<p>Before start a tile generation on S3 measure the cost:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_controller --cost</pre>
+</div>
+<p>If you setup all the default options you can generate the tiles by
+using the command:</p>
+<div class="highlight-python"><pre>./buildout/bin/generate_tiles</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="docutils">
+<dt>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY::</dt>
+<dd>export AWS_ACCESS_KEY_ID=XXXXX
+export AWS_SECRET_ACCESS_KEY=YYYY</dd>
+</dl>
+<p class="last">If you forget it you will get an explicit message.</p>
+</div>
+</div>
+<div class="section" id="integration-in-c2cgeoportal">
+<h3>Integration in c2cgeoportal<a class="headerlink" href="#integration-in-c2cgeoportal" title="Permalink to this headline">¶</a></h3>
+<p>In the <tt class="docutils literal"><span class="pre">viewer.js</span></tt>, <tt class="docutils literal"><span class="pre">api/viewer.js</span></tt> and <tt class="docutils literal"><span class="pre">edit.js</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Be sure that <tt class="docutils literal"><span class="pre">OpenLayers.IMAGE_RELOAD_ATTEMPTS</span></tt> is not defined.</li>
+<li>In <tt class="docutils literal"><span class="pre">WMTS_OPTION</span></tt> url should be ${tiles_url}.</li>
+</ul>
+</div></blockquote>
+<p>In the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> define <tt class="docutils literal"><span class="pre">tiles_url</span></tt> to something like, for S3 usage:</p>
+<div class="highlight-python"><pre>tiles_url:
+- http://a.tiles.${vars:host}/
+- http://b.tiles.${vars:host}/
+- http://c.tiles.${vars:host}/
+- http://d.tiles.${vars:host}/</pre>
+</div>
+<p>The configuration of the <tt class="docutils literal"><span class="pre">tiles</span></tt> vhost will be done by the sysadmins.</p>
+<p>To get your tiles URL in the <tt class="docutils literal"><span class="pre">viewer.js</span></tt> do:</p>
+<div class="code javascript highlight-python"><pre>&lt;%
+from json import dumps
+%&gt;
+var WMTS_OPTIONS = {
+    url: ${dumps(request.registry.settings['tiles_url']) | n},
+    ...
+}</pre>
+</div>
+<p>And in the <tt class="docutils literal"><span class="pre">mobile/config.js</span></tt> do:</p>
+<div class="code javascript highlight-python"><pre>var dummy = "&lt;% from json import dumps %&gt;";
+jsonFormat = new OpenLayers.Format.JSON();
+try {
+    App.tilesURL = jsonFormat.read('${dumps(request.registry.settings["tiles_url"]) | n}');
+}
+catch (e) {
+    App.tilesURL = "";
+}
+var WMTS_OPTIONS = {
+    url: App.tilesURL,
+    ...
+}</pre>
+</div>
+</div>
+</div>
+<div class="section" id="switchablewmts">
+<h2>SwitchableWMTS<a class="headerlink" href="#switchablewmts" title="Permalink to this headline">¶</a></h2>
+<p>Useful tool to switch from TileCloud to MapCache.</p>
+<p>See: <a class="reference external" href="https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js">https://github.com/camptocamp/cgxp/blob/master/openlayers.addins/SwitchableWMTS/lib/OpenLayers/Layer/SwitchableWMTS.js</a></p>
+</div>
+<div class="section" id="internal-service">
+<h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
+<p>If you use an internal service to access to the tiles you can use sub domaine
+to access to them by using that in <tt class="docutils literal"><span class="pre">WMTS_OPTION</span></tt>:</p>
+<div class="highlight-python"><pre>url: [
+    '${request.route_url('&lt;view&gt;', path='', subdomain='s1')}',
+    '${request.route_url('&lt;view&gt;', path='', subdomain='s2')}',
+    '${request.route_url('&lt;view&gt;', path='', subdomain='s3')}',
+    '${request.route_url('&lt;view&gt;', path='', subdomain='s4')}'
+]</pre>
+</div>
+<p>With <tt class="docutils literal"><span class="pre">&lt;view&gt;</span></tt> the name of the view that serve the tiles.
+The sub domain should obviously be define in the DNS and in the Apache
+vhost. If the application is served on deferent URL and you want to use
+the sub domain on only one of them you can define in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>
+the following:</p>
+<div class="highlight-python"><pre># The URL template used to generate the sub domain URL
+# %(sub)s will be replaced by the sub domain value.
+subdomain_url_template: http://%(sub)s.${vars:host}</pre>
+</div>
+</div>
+<div class="section" id="tileforge">
+<h2>Tileforge<a class="headerlink" href="#tileforge" title="Permalink to this headline">¶</a></h2>
+<p>If you still want to use Tileforge, follow the instructions below.</p>
+<div class="section" id="id3">
+<h3>Integration in c2cgeoportal<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>In the <tt class="docutils literal"><span class="pre">production.ini.in</span></tt> and <tt class="docutils literal"><span class="pre">development.ini.in</span></tt>,
+in section <tt class="docutils literal"><span class="pre">[app:app]</span></tt> add:</p>
+<div class="highlight-python"><pre># For tilecache controller
+tilecache.cfg = ${buildout:directory}/tilecache/tilecache.cfg</pre>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> section <tt class="docutils literal"><span class="pre">[buildout]</span></tt> add:</p>
+<div class="highlight-python"><pre>find-links += http://pypi.camptocamp.net/internal-pypi/index/tileforge</pre>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></tt> function <tt class="docutils literal"><span class="pre">main</span></tt> add:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.views.tilecache</span> <span class="kn">import</span> <span class="n">load_tilecache_config</span>
+
+<span class="c1"># add a TileCache view</span>
+<span class="n">load_tilecache_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">())</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;tilecache&#39;</span><span class="p">,</span> <span class="s1">&#39;/tilecache{path:.*?}&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span>
+    <span class="n">view</span><span class="o">=</span><span class="s1">&#39;c2cgeoportal.views.tilecache:tilecache&#39;</span><span class="p">,</span>
+    <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;tilecache&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">setup.py</span></tt> attribute <tt class="docutils literal"><span class="pre">install_requires</span></tt> add <tt class="docutils literal"><span class="pre">'tileforge',</span></tt>.</p>
+</div>
+<div class="section" id="id4">
+<h3>Configuration<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The configuration file is <tt class="docutils literal"><span class="pre">tilecache/tilecache.cfg.in</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">[cache]</span></tt> section describes how the tiles are saved.</p>
+<p>The <tt class="docutils literal"><span class="pre">[DEFAULTS]</span></tt> section applies default values to all layers.</p>
+<p>The important attributes are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">layers</span></tt> the WMS layers or groups.</li>
+<li><tt class="docutils literal"><span class="pre">metadata_connection</span></tt> connection to the database.</li>
+<li><tt class="docutils literal"><span class="pre">metadata_data</span></tt> the SQL request to get the geometries that should be generated.</li>
+<li><tt class="docutils literal"><span class="pre">metadata_image_postproc</span></tt> a post process apply on the generated tiles.</li>
+</ul>
+</div></blockquote>
+<p>The destination folder needs to be created with the good rights,
+(www-data should be able to write on it):</p>
+<div class="highlight-python"><pre>mkdir /var/sig/tilecache
+chmod o+w /var/sig/tilecache</pre>
+</div>
+</div>
+<div class="section" id="commands">
+<h3>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h3>
+<p>Usage:</p>
+<div class="highlight-python"><pre>./buildout/bin/tilemanager [OPTIONS] LAYERNAME [ZOOM_START ZOOM_STOP]
+
+Options:
+  --version             show program version number and exit
+  -h, --help            show this help message and exit
+  -c CONFIG, --config=CONFIG
+                        path to configuration file
+  -b BBOX, --bbox=BBOX  restrict to specified bounding box
+  -t THREADS, --threads=THREADS
+                        number of concurrent threads to run (defaults is 8)
+  -r RETRY, --retry=RETRY
+                        retry to generated tiles from RETRY file
+  -v, --verbose         make lots of noise</pre>
+</div>
+<p>Run on a BBOX:</p>
+<div class="highlight-python"><pre>sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg --bbox=&lt;left&gt;,&lt;bottom&gt;,&lt;right&gt;,&lt;top&gt; &lt;tileforge_layer&gt;</pre>
+</div>
+<p>Run on configured diff table:</p>
+<div class="highlight-python"><pre>sudo -u www-data ./buildout/bin/tilemanager -c tilecache/tilecache.cfg &lt;tileforge_layer&gt;</pre>
+</div>
+</div>
+<div class="section" id="tiles">
+<h3>Tiles<a class="headerlink" href="#tiles" title="Permalink to this headline">¶</a></h3>
+<p>The tiles will be stored in the folder
+<tt class="docutils literal"><span class="pre">/var/sig/tilecache/c2cgeoportal-&gt;instanceid&gt;_tilecache</span></tt>,
+in the WMTS format.</p>
+<p>To regenerate only the tiles that have changed, you can
+specify in the layer the attribute <tt class="docutils literal"><span class="pre">metadata_data</span></tt> how to get the
+geometries where there are some modifications. For example:
+<tt class="docutils literal"><span class="pre">metadata_data</span> <span class="pre">=</span> <span class="pre">&quot;&lt;geometry_column&gt;</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;&quot;</span></tt>.
+We also need the database connection than we need:
+<tt class="docutils literal"><span class="pre">metadata_connection</span> <span class="pre">=</span> <span class="pre">${mapserver_connection}</span></tt>.</p>
+<p>A post-processing command can be set by using the attribute:
+<tt class="docutils literal"><span class="pre">metadata_image_postproc</span></tt>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TileGeneration</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#id1">MapCache</a></li>
+<li><a class="reference internal" href="#id2">TileCloud-chain</a><ul>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#tile-generation-and-management">Tile Generation and management</a></li>
+<li><a class="reference internal" href="#integration-in-c2cgeoportal">Integration in c2cgeoportal</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#switchablewmts">SwitchableWMTS</a></li>
+<li><a class="reference internal" href="#internal-service">Internal service</a></li>
+<li><a class="reference internal" href="#tileforge">Tileforge</a><ul>
+<li><a class="reference internal" href="#id3">Integration in c2cgeoportal</a></li>
+<li><a class="reference internal" href="#id4">Configuration</a></li>
+<li><a class="reference internal" href="#commands">Commands</a></li>
+<li><a class="reference internal" href="#tiles">Tiles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="backend_arcgis.html"
+                        title="previous chapter">Specific configuration for Arcgis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="customize_ui.html"
+                        title="next chapter">Customize the UI</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/tilegeneration.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="customize_ui.html" title="Customize the UI"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="backend_arcgis.html" title="Specific configuration for Arcgis"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

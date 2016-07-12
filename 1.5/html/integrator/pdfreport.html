@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PDF Reporting &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="WMSTime Layer" href="wmstime.html" />
+    <link rel="prev" title="Security" href="security.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="wmstime.html" title="WMSTime Layer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="Security"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pdf-reporting">
+<span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Permalink to this headline">¶</a></h1>
+<p>c2cgeoportal offers a <em>pdfreport</em> webservice that can be used to generate
+advanced PDF reports about a given feature.</p>
+<p>It is based upon <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapfishPrint version 3</a>
+and <a class="reference external" href="http://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
+<p>The webservice is called using the following URL schema:
+<tt class="docutils literal"><span class="pre">http://&lt;host&gt;/&lt;instanceid&gt;/wsgi/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></tt>.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>To make queries to the database directly from the Jasper Reports, additional <tt class="docutils literal"><span class="pre">.jar</span></tt> files
+must be added to the MapFish Print directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> print
+mkdir WEB-INF/lib
+<span class="nb">cd</span> WEB-INF/lib
+wget http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/jasperreports-functions-5.5.0.jar/download -O jasperreports-functions-5.5.0.jar
+wget http://mirrors.ibiblio.org/pub/mirrors/maven2/joda-time/joda-time/1.6/joda-time-1.6.jar
+wget http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
+</pre></div>
+</div>
+<p>Edit the <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> file and add <tt class="docutils literal"><span class="pre">WEB-INF/lib/*.jar</span></tt> to the <tt class="docutils literal"><span class="pre">input</span></tt> list
+of the <tt class="docutils literal"><span class="pre">`[pdf-report]</span></tt> part:</p>
+<div class="code highlight-python"><pre>  input = ${print-war:basewar}
+      config.yaml
+      WEB-INF/mapfish-print-printer-factory.xml
+      WEB-INF/classes/logback.xml
++     WEB-INF/lib/*.jar
+      *.jrxml
+      *.tif
+      *.bmp
+      *.jpg
+      *.jpeg
+      *.gif
+      *.png</pre>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The service is configured in the main <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file of the project
+as in the following example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">print_url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8080/print-c2cgeoportal-${vars:instanceid}</span>
+    <span class="l l-Scalar l-Scalar-Plain">defaults</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">show_map</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+        <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+        <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="s">&quot;grp_ly_tilegenerierung_landeskarte&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="s">&quot;image/png&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">srs</span><span class="p p-Indicator">:</span> <span class="s">&quot;EPSG:21781&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">layers</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="s">&quot;grp_ly_tilegenerierung_landeskarte,ly_a020_belastete_standorte_point&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="s">&quot;image/jpeg&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">some_template_with_no_map</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">show_map</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+            <span class="l l-Scalar l-Scalar-Plain">spec_template</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span>
+                <span class="s">&quot;layout&quot;</span><span class="p p-Indicator">:</span> <span class="s">&quot;some_template_name&quot;</span><span class="p p-Indicator">,</span>
+                <span class="s">&quot;outputFormat&quot;</span><span class="p p-Indicator">:</span> <span class="s">&quot;pdf&quot;</span><span class="p p-Indicator">,</span>
+                <span class="s">&quot;attributes&quot;</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span>
+                    <span class="s">&quot;paramID&quot;</span><span class="p p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
+                <span class="p p-Indicator">}</span>
+            <span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>with the following parameters:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">print_url</span></tt> is the local URL of the MapFish Print version 3 instance.</li>
+<li><tt class="docutils literal"><span class="pre">defaults</span></tt> contains the default values of parameters not provided explicitely for a given layer.</li>
+<li><tt class="docutils literal"><span class="pre">layers</span></tt> is an optional per-layer list of settings specific to the listed layers. The entries of the list are the layernames provided as argument of the webservice. If a layer is not listed, the default parameters above are used.</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">defaults</span></tt> and <tt class="docutils literal"><span class="pre">layers</span></tt>-specific parameters are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">show_map</span></tt>: boolean, wether a map is embedded in the report. Defaults to <tt class="docutils literal"><span class="pre">True</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">check_credentials</span></tt>: boolean, wether layer credentials are checked before generating the report. Defaults to <tt class="docutils literal"><span class="pre">True</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">srs</span></tt>: projection code (required when showing the map).</li>
+<li><tt class="docutils literal"><span class="pre">backgroundlayers</span></tt>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (&#8221;). Defaults to <tt class="docutils literal"><span class="pre">&quot;&quot;</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">imageformat</span></tt>: format of the generated map. Defaults to <tt class="docutils literal"><span class="pre">image/png</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">spec_template</span></tt>: optional JSON template used to build the <tt class="docutils literal"><span class="pre">spec</span></tt> argument sent to the MapFish Print webapp.</li>
+</ul>
+<p>If no <tt class="docutils literal"><span class="pre">spec_template</span></tt> is provided, the following template is used:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;layout&quot;</span><span class="p">:</span> <span class="s2">&quot;%(layername)s&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;outputFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;paramID&quot;</span><span class="p">:</span> <span class="s2">&quot;%(id)s&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;map&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;projection&quot;</span><span class="p">:</span> <span class="s2">&quot;%(srs)s&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;dpi&quot;</span><span class="p">:</span> <span class="mi">254</span><span class="p">,</span>
+            <span class="nt">&quot;rotation&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;bbox&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">],</span>
+            <span class="nt">&quot;zoomToFeatures&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;zoomType&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;minScale&quot;</span><span class="p">:</span> <span class="mi">25000</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gml&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;style&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;[1 &gt; 0]&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="nt">&quot;fillColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                        <span class="nt">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                        <span class="nt">&quot;symbolizers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                            <span class="nt">&quot;strokeColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;strokeWidth&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;point&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;pointRadius&quot;</span><span class="p">:</span> <span class="mi">10</span>
+                        <span class="p">}]</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;%(vector_request_url)s&quot;</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="nt">&quot;baseURL&quot;</span><span class="p">:</span> <span class="s2">&quot;%(mapserv_url)s&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;WMS&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;mapserver&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%(backgroundlayers)s&quot;</span><span class="p">],</span>
+                <span class="nt">&quot;imageFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;%(imageformat)s&quot;</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Variables may be inserted using the <tt class="docutils literal"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></tt> syntax. The following
+variables values are passed to the template:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">layername</span></tt>: name of the layer</li>
+<li><tt class="docutils literal"><span class="pre">id</span></tt>: feature id</li>
+<li><tt class="docutils literal"><span class="pre">srs</span></tt>: projection code</li>
+<li><tt class="docutils literal"><span class="pre">mapserv_url</span></tt>: URL of the MapServer proxy</li>
+<li><tt class="docutils literal"><span class="pre">vector_request_url</span></tt>: URL of the WFS GetFeature request retrieving the feature geometry in GML</li>
+<li><tt class="docutils literal"><span class="pre">imageformat</span></tt>: format of the WMS layer</li>
+<li><tt class="docutils literal"><span class="pre">backgroundlayers</span></tt>: WMS layers to display on the map (including the current layer)</li>
+</ul>
+</div>
+<div class="section" id="configuration-of-the-reports">
+<h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">Mapfish Print documentation</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PDF Reporting</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#configuration-of-the-reports">Configuration of the reports</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="security.html"
+                        title="previous chapter">Security</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wmstime.html"
+                        title="next chapter">WMSTime Layer</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/pdfreport.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="wmstime.html" title="WMSTime Layer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="Security"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" >Additional features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

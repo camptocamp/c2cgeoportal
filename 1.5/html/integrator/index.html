@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Integrator Guide &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="next" title="Requirements" href="requirements.html" />
+    <link rel="prev" title="Editing" href="../administrator/editing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../administrator/editing.html" title="Editing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="integrator-guide">
+<span id="id1"></span><h1>Integrator Guide<a class="headerlink" href="#integrator-guide" title="Permalink to this headline">¶</a></h1>
+<p>Content:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#required-apache-modules">Required apache modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html#additional-notes-for-windows-users">Additional notes for Windows users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_application.html">Create a new application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#project-structure">Project structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#install-c2cgeoportal">Install c2cgeoportal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#list-existing-skeletons">List existing skeletons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#create-the-new-application">Create the new application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#put-the-application-under-revision-control">Put the application under revision control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#configure-the-application">Configure the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_application.html#create-a-multi-instance-project">Create a multi instance project</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install_application.html">Install an existing application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install_application.html#set-up-the-database">Set up the database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_application.html#install-the-application">Install the application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Additional features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fulltext_search.html">Full-text search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querier.html">Query builder (Querier)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html">Editing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="print.html">Print</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https.html">HTTPS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">JavaScript API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_replication.html">Password Replication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortener.html">Configure short URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet.html">Intranet Users Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdfreport.html">PDF Reporting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wmstime.html">WMSTime Layer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wmstime.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wmstime.html#merging-configurations">Merging configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wmstime.html#default-values">Default values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.html">Specific Backend Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backend_qgis.html">Specific configuration for QGIS mapserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend_arcgis.html">Specific configuration for Arcgis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tilegeneration.html">TileGeneration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tilegeneration.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilegeneration.html#id1">MapCache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilegeneration.html#id2">TileCloud-chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilegeneration.html#switchablewmts">SwitchableWMTS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilegeneration.html#internal-service">Internal service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customize_ui.html">Customize the UI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customize_ui.html#organisation">Organisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customize_ui.html#viewer-js">Viewer.js</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customize_ui.html#sub-domain">Sub domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customize_ui.html#advanced-configuration-examples">Advanced configuration examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extend_data_model.html">Extend the data model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internationalization.html#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internationalization.html#server">Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="update_application.html">Updating a GeoMapFish application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#user-the-easy-c2c-tool-experimantal">User the easy c2c tool (experimantal)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#easy-updating-an-application-code-experimental">Easy updating an application code (experimental)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#easy-upgrading-an-application-experimental">Easy upgrading an application (experimental)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#updating-an-application-code">Updating an application code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#updating-cgxp">Updating CGXP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#updating-c2cgeoportal">Updating c2cgeoportal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update_application.html#test-and-commit">Test and commit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deploy the application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#important-notes">Important notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#deploy-configuration">Deploy configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#buildout-configuration">Buildout configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#prepare-destination-host">Prepare destination host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#easy-deploy-experimental">Easy deploy (experimental)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#to-deploy-from-dev-to-demo">To deploy from dev to demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#to-deploy-from-demo-to-prod">To deploy from demo to prod</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#the-default-policy">The default policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#using-another-policy">Using another policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#custom-user-validation">Custom user validation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mobile.html">Mobile Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#adding-mobile-routes-and-views">Adding mobile routes and views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#building-the-mobile-application">Building the mobile application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#configuring-the-map-and-the-layers">Configuring the map and the layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#ui-strings-translations">UI strings translations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#raster-service">Raster service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#settings-view">Settings view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mobile.html#multiple-mobile-applications">Multiple mobile applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="raster.html">Digital Elevation Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functionality.html">Customizing the Application using Functionalities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functionality.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functionality.html#using-functionalities-in-templates">Using Functionalities in Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="checker.html">Automated check</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="checker.html#checker">Checker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checker.html#check-collector">Check collector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#headers">Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#internal">Internal</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../administrator/editing.html"
+                        title="previous chapter">Editing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="next chapter">Requirements</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../administrator/editing.html" title="Editing"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

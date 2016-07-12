@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Full-text search &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Query builder (Querier)" href="querier.html" />
+    <link rel="prev" title="Additional features" href="features.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="querier.html" title="Query builder (Querier)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="Additional features"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="full-text-search">
+<span id="integrator-fulltext-search"></span><h1>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h1>
+<p>Enabling the <em>full-text search</em> feature involves adding a <tt class="docutils literal"><span class="pre">FullTextSearch</span></tt>
+plugin to the viewer, and creating and populating a dedicated table in the
+database.</p>
+<div class="section" id="the-fulltextsearch-plugin">
+<h2>The FullTextSearch plugin<a class="headerlink" href="#the-fulltextsearch-plugin" title="Permalink to this headline">¶</a></h2>
+<p>The viewer should include a <tt class="docutils literal"><span class="pre">FullTextSearch</span></tt> plugin for the <em>text search</em>
+feature to be available in the user interface.</p>
+<p>See the <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FullTextSearch.html">FullTextSearch API doc</a> for the
+list of options the plugin can receive.</p>
+<p><em>The main viewer includes a FullTextSearch plugin by default.</em></p>
+</div>
+<div class="section" id="the-full-text-search-table">
+<h2>The full-text search table<a class="headerlink" href="#the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
+<p>The <em>text search</em> feature requires a dedicated PostgreSQL table. The full-text
+search table should be named <tt class="docutils literal"><span class="pre">tsearch</span></tt> (for <em>text search</em>) and should be in
+the application-specific schema.</p>
+<p>You don&#8217;t need to create the table yourself, as it is created by the
+<tt class="docutils literal"><span class="pre">create_db</span></tt> command line (see the section
+<a class="reference internal" href="install_application.html#integrator-install-application"><em>Install an existing application</em></a>).</p>
+<p>If you did want to create the table manually you&#8217;d use the following commands:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE TABLE &lt;schema_name&gt;.tsearch ( \</span>
+<span class="s2">    id SERIAL PRIMARY KEY, \</span>
+<span class="s2">    layer_name TEXT, \</span>
+<span class="s2">    label TEXT, \</span>
+<span class="s2">    public BOOLEAN DEFAULT &#39;t&#39;, \</span>
+<span class="s2">    params TEXT, \</span>
+<span class="s2">    role_id INTEGER REFERENCES &lt;schema_name&gt;.role, \</span>
+<span class="s2">    ts TSVECTOR);&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;SELECT AddGeometryColumn(&#39;&lt;schema_name&gt;&#39;, &#39;tsearch&#39;, &#39;the_geom&#39;, &lt;srid&gt;, &#39;GEOMETRY&#39;, 2);&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt">sudo -u postgres psql -c <span class="s2">&quot;CREATE INDEX tsearch_ts_idx ON &lt;schema_name&gt;.tsearch USING gin(ts);&quot;</span> &lt;db_name&gt;</span>
+</pre><p>with <tt class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;srid&gt;</span></tt>, and <tt class="docutils literal"><span class="pre">&lt;db_name&gt;</span></tt>  substituted as appropriate.</p>
+<p>Also make sure that the db user can <tt class="docutils literal"><span class="pre">SELECT</span></tt> in the <tt class="docutils literal"><span class="pre">tsearch</span></tt> table:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE &lt;schema_name&gt;.tsearch TO &quot;&lt;db_user&gt;&quot;;&#39;</span> &lt;db_name&gt;</span>
+</pre><p>with <tt class="docutils literal"><span class="pre">&lt;db_user&gt;</span></tt>, and <tt class="docutils literal"><span class="pre">&lt;db_name&gt;</span></tt> substituded as appropriately.</p>
+</div>
+<div class="section" id="populate-the-full-text-search-table">
+<h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an example of an insertion in the <tt class="docutils literal"><span class="pre">tsearch</span></tt> table:</p>
+<div class="code sql highlight-python"><pre>INSERT INTO app_schema.tsearch
+  (the_geom, layer_name, label, public, role_id, ts)
+VALUES
+  (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
+   'text to display', 't', NULL, to_tsvector('french', 'text to search'));</pre>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">Layer</span> <span class="pre">group</span></tt> is the name of the layer group that should be activated,
+<tt class="docutils literal"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></tt> is the text that is displayed in the results,
+<tt class="docutils literal"><span class="pre">test</span> <span class="pre">to</span> <span class="pre">search</span></tt> is the text that we search for,
+<tt class="docutils literal"><span class="pre">french</span></tt> is the used language.</p>
+<p>Here&#8217;s another example where rows from a <tt class="docutils literal"><span class="pre">SELECT</span></tt> are inserted:</p>
+<div class="code sql highlight-python"><pre>INSERT INTO app_schema.tsearch
+  (the_geom, layer_name, label, public, role_id, ts)
+SELECT
+  geom, 'layer group name', text, 't', NULL, to_tsvector('german', text)
+FROM table;</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The language string used as the first argument to the <tt class="docutils literal"><span class="pre">to_tsvector</span></tt>
+function should match that defined in the <tt class="docutils literal"><span class="pre">default_locale_name</span></tt> variable of
+the application configuration (<tt class="docutils literal"><span class="pre">config.yaml</span></tt>). For example if you have
+&#8220;french&#8221; text in the database the application&#8217;s <tt class="docutils literal"><span class="pre">default_locale_name</span></tt> should
+be <tt class="docutils literal"><span class="pre">fr</span></tt>. In other words c2cgeoportal assumes that the database language
+and the application&#8217;s default language match.</p>
+</div>
+</div>
+<div class="section" id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">tsearch</span></tt> table includes two security-related columns, namely <tt class="docutils literal"><span class="pre">public</span></tt>
+and <tt class="docutils literal"><span class="pre">role_id</span></tt>. If <tt class="docutils literal"><span class="pre">public</span></tt> is <tt class="docutils literal"><span class="pre">true</span></tt> then the row is available to any
+user, including anonymous users. And in that case, the <tt class="docutils literal"><span class="pre">role_id</span></tt> column is
+ignored by <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt>. If <tt class="docutils literal"><span class="pre">public</span></tt> is <tt class="docutils literal"><span class="pre">false</span></tt> then the row isn&#8217;t
+available to anonymous users. If <tt class="docutils literal"><span class="pre">role_id</span></tt> is <tt class="docutils literal"><span class="pre">NULL</span></tt>, the row is available
+to any authenticated user. If <tt class="docutils literal"><span class="pre">role_id</span></tt> is not <tt class="docutils literal"><span class="pre">NULL</span></tt>, the row is only
+available to users of the corresponding role.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you want to restrict some data to specific roles, then you will need to
+insert that data multiple times. For example, if you want to make the data
+of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
+are <tt class="docutils literal"><span class="pre">1</span></tt> and <tt class="docutils literal"><span class="pre">2</span></tt> you will use two SQL <tt class="docutils literal"><span class="pre">INSERT</span></tt> statements:</p>
+<div class="code sql last highlight-python"><pre>INSERT INTO app_schema.tsearch
+   (the_geom, layer_name, label, public, role_id, ts)
+SELECT
+   geom, 'layer group name', text, 'f', 1, to_tsvector('german', text)
+FROM table;
+
+INSERT INTO app_schema.tsearch
+   (the_geom, layer_name, label, public, role_id, ts)
+SELECT
+   geom, 'layer group name', text, 'f', 2, to_tsvector('german', text)
+FROM table;</pre>
+</div>
+</div>
+</div>
+<div class="section" id="params">
+<h2>Params<a class="headerlink" href="#params" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">params</span></tt> column can contain a JSON with a dictionary of parameters.
+For instance to specify a <tt class="docutils literal"><span class="pre">floor</span></tt>:</p>
+<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Query string <tt class="docutils literal"><span class="pre">floor=1</span></tt> is then automatically appended to all WMS requests.</p>
+<p>See <a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FloorSlider.html">FloorSlider</a>
+for more information.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the configuration file <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> you can add the
+following variables:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">fulltextsearch_defaultlimit</span></tt> the default limit on the results,
+default is 30.</li>
+<li><tt class="docutils literal"><span class="pre">fulltextsearch_maxlimit</span></tt> the max possible limit, default is 200.</li>
+</ul>
+</div>
+<div class="section" id="using-the-unaccent-extension">
+<h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this headline">¶</a></h2>
+<p>By the default the full text search is accent-sensitive.
+To make it accent-insensitive Postgres&#8217;s
+<a class="reference external" href="http://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
+can be used.</p>
+<p>First connect to the database:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">sudo -u postgres psql -d &lt;database&gt;</span>
+</pre><p>For that we need the Postgres unaccent extension and dictionary:</p>
+<div class="code sql highlight-python"><pre>CREATE EXTENSION unaccent;</pre>
+</div>
+<p>Insert the unaccent dictionary into a text search configuration
+(<a class="reference external" href="http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html">Documentation</a>):</p>
+<div class="code sql highlight-python"><pre>CREATE TEXT SEARCH CONFIGURATION fr (COPY = french);
+ALTER TEXT SEARCH CONFIGURATION fr
+    ALTER MAPPING FOR hword, hword_part, word
+    WITH unaccent, french_stem;</pre>
+</div>
+<p>When populating the <tt class="docutils literal"><span class="pre">tsearch</span></tt> table use the text configuration &#8216;fr&#8217;
+instead of &#8216;french&#8217;. For example:</p>
+<div class="code sql highlight-python"><pre>INSERT INTO &lt;schema&gt;.tsearch
+  (the_geom, layer_name, label, public, role_id, ts)
+VALUES
+  (ST_GeomFromText('POINT(2660000 1140000)', 21781), 'Layer group',
+   'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));</pre>
+</div>
+<p>And define the configuration in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file:</p>
+<div class="code yaml highlight-python"><pre>fulltextsearch:
+    languages:
+        fr: fr</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">fr:</span> <span class="pre">fr</span></tt> is a link between the pyramid language and
+the text search configuration, by default the it&#8217;s
+<tt class="docutils literal"><span class="pre">fr:</span> <span class="pre">french</span></tt> because the default french text search
+configuration is named &#8216;french&#8217;.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Full-text search</a><ul>
+<li><a class="reference internal" href="#the-fulltextsearch-plugin">The FullTextSearch plugin</a></li>
+<li><a class="reference internal" href="#the-full-text-search-table">The full-text search table</a></li>
+<li><a class="reference internal" href="#populate-the-full-text-search-table">Populate the full-text search table</a></li>
+<li><a class="reference internal" href="#security">Security</a></li>
+<li><a class="reference internal" href="#params">Params</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#using-the-unaccent-extension">Using the unaccent extension</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="features.html"
+                        title="previous chapter">Additional features</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="querier.html"
+                        title="next chapter">Query builder (Querier)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/fulltext_search.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="querier.html" title="Query builder (Querier)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="Additional features"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" >Additional features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

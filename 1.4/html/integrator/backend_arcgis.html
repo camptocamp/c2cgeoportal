@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Specific configuration for Arcgis &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Specific Backend Documentation" href="backend.html" />
+    <link rel="next" title="TileGeneration" href="tilegeneration.html" />
+    <link rel="prev" title="Specific Backend Documentation" href="backend.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tilegeneration.html" title="TileGeneration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="backend.html" title="Specific Backend Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="backend.html" accesskey="U">Specific Backend Documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="specific-configuration-for-arcgis">
+<span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wfs-namespace">
+<h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
+<p>in the <tt class="docutils literal"><span class="pre">viewer.js</span></tt> file, define the url of the WFS service which will be used
+to get the namespace required to parse the WFS response:</p>
+<p>cgxp.WFS_FEATURE_NS = &#8220;<a class="reference external" href="http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer">http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer</a>&#8221;;</p>
+</div>
+<div class="section" id="differentiating-wms-and-wfs-services">
+<h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
+<p>It may be necessary to differentiate the WMS and WFS services url.</p>
+<p>in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file, define:</p>
+<div class="code yaml highlight-python"><pre>mapserv_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer
+mapserv_wfs_url: http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer</pre>
+</div>
+<p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
+<em>WFS GetCapabilities</em>.</p>
+<p>If your project has a parent (in a parent/child architecture),
+in the <tt class="docutils literal"><span class="pre">config_child.yaml.in</span></tt> file also define the WFS service separately:</p>
+<div class="code yaml highlight-python"><pre>external_mapserv_wfs_url: http://your.parent.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer</pre>
+</div>
+</div>
+<div class="section" id="wfs-geometryname">
+<h2>WFS geometryName<a class="headerlink" href="#wfs-geometryname" title="Permalink to this headline">¶</a></h2>
+<p>Also, the name of the geometry parameter in the WFS response is different in ArcGis.</p>
+<p>in the <tt class="docutils literal"><span class="pre">viewer.js</span></tt> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
+following parameter in the plugin configuration:</p>
+<blockquote>
+<div>geometryName: &#8216;SHAPE&#8217;</div></blockquote>
+</div>
+<div class="section" id="note">
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<p>ArcGis (even 10.2) doesn&#8217;t understand &#8220;application/vnd.ogc.gml&#8221; for <em>INFO_FORMAT</em> in
+a <em>GetFeatureInfo</em> request and return only a simple XML formated response
+instead of GML.</p>
+<p>This kind of result can not be parsed correctly by the <em>cgxp.plugins.GetFeature</em> plugin,
+meaning a WMS GetFeatureInfo result will not display correctly.</p>
+<p>It is recommended to use the <em>cgxp.plugins.WFSGetFeature</em> plugin that does <em>only</em> WFS
+queries.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Specific configuration for Arcgis</a><ul>
+<li><a class="reference internal" href="#wfs-namespace">WFS namespace</a></li>
+<li><a class="reference internal" href="#differentiating-wms-and-wfs-services">Differentiating WMS and WFS services</a></li>
+<li><a class="reference internal" href="#wfs-geometryname">WFS geometryName</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="backend.html"
+                        title="previous chapter">Specific Backend Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tilegeneration.html"
+                        title="next chapter">TileGeneration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/backend_arcgis.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tilegeneration.html" title="TileGeneration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="backend.html" title="Specific Backend Documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="backend.html" >Specific Backend Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

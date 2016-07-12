@@ -1,0 +1,753 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create a new application &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Install an existing application" href="install_application.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="install_application.html" title="Install an existing application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="create-a-new-application">
+<span id="integrator-create-application"></span><h1>Create a new application<a class="headerlink" href="#create-a-new-application" title="Permalink to this headline">¶</a></h1>
+<p>Creating a new c2cgeoportal application is done by applying two Paste skeletons
+(a.k.a. templates and scaffolds). These skeletons are provided by the
+<tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> package. So to be able to create a c2cgeoportal application
+the <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> package must be installed.</p>
+<p>If you already have a c2cgeoportal application installed, and if that
+application uses a version of c2cgeoportal that fits you, then you don&#8217;t need
+to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
+that is already alongside the existing c2cgeoportal application (in the
+<tt class="docutils literal"><span class="pre">buildout/eggs</span></tt> directory).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some c2cgeoportal applications provide their own skeletons. For example
+a <em>parent</em> application may provide a skeleton for creating <em>child</em>
+applications. In that case, the c2cgeoportal skeletons, as well as the
+application skeletons, should be applied.</p>
+</div>
+<div class="section" id="project-structure">
+<h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
+<p>In the simple case the root directory of the application is the directory
+created by the c2cgeoportal skeletons (the <tt class="docutils literal"><span class="pre">c2cgeoportal_create</span></tt> and
+<tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> skeletons). Projects following a parent/child
+architecture may use a different structure. Here&#8217;s an example of a structure
+for a project composed of a main application and sub-applications:</p>
+<div class="highlight-python"><pre>&lt;root&gt;
+  +- &lt;main_project&gt;
+  +- &lt;first_sub_project&gt;
+  +- &lt;second_sub_project&gt;
+  +- ...</pre>
+</div>
+<p>Here <tt class="docutils literal"><span class="pre">&lt;root&gt;</span></tt> is the root of the Git tree.</p>
+</div>
+<div class="section" id="install-c2cgeoportal">
+<h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<p>This step is required if you cannot, or do not want, to create the c2cgeoportal
+application from an existing one. For example, if you are creating a child
+application from an existing parent application, it means you already have
+<tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> installed, so you can just skip this section, and directly go
+to the next.</p>
+<p>Also, installing <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt>, as described in this section, requires
+access to the c2cgeoportal GitHub repository. If you can&#8217;t view the
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal">https://github.com/camptocamp/c2cgeoportal</a> page in your browser that means you
+do not have the required permissions. Please contact Camptocamp in that case.</p>
+<p>To install <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> you first need to clone the c2cgeoportal repository
+from GitHub:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git clone https://github.com/camptocamp/c2cgeoportal.git</span>
+<span class="prompt"><span class="nb">cd</span> c2cgeoportal</span>
+</pre><p>Then you should checkout the branch or tag of the version you want to install:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout &lt;branch<span class="p">|</span>tag&gt;</span>
+<span class="prompt">git submodule update --init</span>
+</pre><p><tt class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></tt> can be <tt class="docutils literal"><span class="pre">1.4</span></tt> for the latest version of the 1.4 branch,
+<tt class="docutils literal"><span class="pre">1.4.0</span></tt> for the first stable 1.4 version.</p>
+<p>Now run the <tt class="docutils literal"><span class="pre">bootstrap.py</span></tt> script to boostrap the Buildout environment:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">python bootstrap.py --version 1.5.2 --distribute --download-base <span class="se">\</span>
+    http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source <span class="se">\</span>
+    http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py</span>
+</pre><p>Build c2cgeoportal:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout</span>
+</pre></div>
+<div class="section" id="list-existing-skeletons">
+<h2>List existing skeletons<a class="headerlink" href="#list-existing-skeletons" title="Permalink to this headline">¶</a></h2>
+<p>To list the available skeletons/templates use the following command, either
+from the root directory of c2cgeoportal (if you&#8217;ve followed the instructions
+from the previous section), or from the root directory of the existing
+c2cgeoportal application you want to create the new application from:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/pcreate -l</span>
+</pre><p>You should at least see the c2cgeoportal skeletons:</p>
+<ul class="simple">
+<li>c2cgeoportal_create</li>
+<li>c2cgeoportal_update</li>
+</ul>
+</div>
+<div class="section" id="create-the-new-application">
+<h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
+<p>The first step in the project creation is to chose a project name
+<tt class="docutils literal"><span class="pre">&lt;project_name&gt;</span></tt>, and a package name <tt class="docutils literal"><span class="pre">&lt;package_name&gt;</span></tt>.</p>
+<p>Normally the project name should be the same name as the Git repository name.</p>
+<p>The package name should not contain an underscore (<tt class="docutils literal"><span class="pre">_</span></tt>) because of an
+issue with Pip.</p>
+<p>To create the application first apply the <tt class="docutils literal"><span class="pre">c2cgeoportal_create</span></tt> skeleton:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/pcreate -s c2cgeoportal_create ../&lt;project_name&gt; <span class="nv">package</span><span class="o">=</span>&lt;package_name&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>
+</div>
+<p>You&#8217;ll be asked to enter the SRID for this project.</p>
+<p>This will create a directory named <tt class="docutils literal"><span class="pre">&lt;project_name&gt;</span></tt> that will be next to the
+<tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> directory, or to the directory of the application you&#8217;re
+creating this application from.</p>
+<p>Now apply the <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> skeleton:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/pcreate -s c2cgeoportal_update ../&lt;project_name&gt; <span class="nv">package</span><span class="o">=</span>&lt;package_name&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffold is also used to update the
+application. The files generated by this skeleton are prefixed with
+<tt class="docutils literal"><span class="pre">CONST_</span></tt>, which means they are <em>constant</em> files that should not be changed.
+Following this rule is important for easier updates.</p>
+<p>Go to your new project:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> ../&lt;project_name&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p class="last">A special egg is available for Windows. It may be used by replacing
+<tt class="docutils literal"><span class="pre">'c2cgeoportal'</span></tt> by <tt class="docutils literal"><span class="pre">'c2cgeoportal-win'</span></tt> in  the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file.</p>
+</div>
+<p><tt class="docutils literal"><span class="pre">pcreate</span></tt> doesn&#8217;t conserve file permission, so restore it manually:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">chmod +x deploy/hooks/post-restore-database.in</span>
+</pre><p>In the <tt class="docutils literal"><span class="pre">versions.cfg</span></tt> file make sure that c2cgeoportal version is set:</p>
+<div class="code highlight-python"><pre>c2cgeoportal = &lt;version&gt;</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<div class="code last highlight-python"><pre>c2cgeoportal-win = &lt;version&gt;</pre>
+</div>
+</div>
+<p>With <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> the egg version you want to use, normally it should be the same
+number as the <tt class="docutils literal"><span class="pre">tag</span></tt> you use to checkout <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt>.</p>
+<p>If this application is not part of a parent/child architecture, or is
+a <tt class="docutils literal"><span class="pre">parent</span></tt> application, you can just remove the
+<tt class="docutils literal"><span class="pre">buildout_child.cfg</span></tt> and <tt class="docutils literal"><span class="pre">config_child.yaml.in</span></tt> files:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">rm buildout_child.cfg config_child.yaml.in</span>
+</pre><p>If this application is a <tt class="docutils literal"><span class="pre">child</span></tt> application make <tt class="docutils literal"><span class="pre">buildout_child.cfg</span></tt> the
+main Buildout configuration file, and <tt class="docutils literal"><span class="pre">config_child.yaml.in</span></tt> the config file:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">rm buildout.cfg config.yaml.in</span>
+<span class="prompt">mv buildout_child.cfg buildout.cfg</span>
+<span class="prompt">mv config_child.yaml.in config.yaml.in</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In a parent/child architecture one instance of the application is the
+parent, the others are children. Child instances display layers
+served by the parent instance. Parent and child instances share
+the same database, but use dedicated schemas within that database.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">&lt;project_name&gt;/static/mobile/touch.tar.gz</span></tt> archive must be uncompressed
+and then removed.</p>
+</div>
+</div>
+<div class="section" id="put-the-application-under-revision-control">
+<h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
+<p>Remove the <tt class="docutils literal"><span class="pre">egg-info</span></tt> directory, as it shouldn&#8217;t be added to the
+application&#8217;s source repository:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">rm -rf *.egg-info</span>
+</pre><p>Now is a good time to put the application source code under revision
+control (Git preferably).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We use the http URL to allow everybody to clone.</p>
+</div>
+<div class="section" id="to-add-a-new-child-in-an-existing-repository">
+<h3>To add a new child in an existing repository<a class="headerlink" href="#to-add-a-new-child-in-an-existing-repository" title="Permalink to this headline">¶</a></h3>
+<p>Add the project:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> ..</span>
+<span class="prompt">git add &lt;package_name&gt;/</span>
+</pre><p>Add the CGXP submodule:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git submodule add https://github.com/camptocamp/cgxp.git &lt;project_name&gt;/&lt;package_name&gt;/static/lib/cgxp -b &lt;version&gt;</span>
+<span class="prompt">git submodule foreach git submodule update --init</span>
+</pre><p><tt class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;version&gt;</span></tt> forces to use the CGXP branch <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>.
+Branches are available starting at version <tt class="docutils literal"><span class="pre">1.3</span></tt>.</p>
+<p>Commit and push on the main repository:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git commit -m <span class="s2">&quot;initial commit of &lt;project_name&gt;&quot;</span></span>
+<span class="prompt">git push origin master</span>
+</pre></div>
+<div class="section" id="to-add-a-project-in-a-new-repository">
+<h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
+<p>Add the project:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git init</span>
+<span class="prompt">git add &lt;package_name&gt;/ .gitignore config.yaml.in <span class="se">\</span>
+        versions.cfg README.rst CONST_CHANGELOG.txt <span class="se">\</span>
+        CONST_buildout.cfg buildout.cfg buildout/ <span class="se">\</span>
+        bootstrap.py setup.cfg setup.py <span class="se">\</span>
+        development.ini.in production.ini.in <span class="se">\</span>
+        jsbuild/ print/ apache/ <span class="se">\</span>
+        mapserver/ deploy/</span>
+<span class="prompt">git remote add origin git@github.com:camptocamp/&lt;project_name&gt;.git</span>
+</pre><p>Add the CGXP submodule:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git submodule add https://github.com/camptocamp/cgxp.git &lt;pacakge_name&gt;/static/lib/cgxp -b &lt;version&gt;</span>
+<span class="prompt">git submodule foreach git submodule update --init</span>
+</pre><p><tt class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;version&gt;</span></tt> forces to use the CGXP branch <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>.
+Branches are available starting at version <tt class="docutils literal"><span class="pre">1.3</span></tt>.</p>
+<p>Commit and push on the main repository:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git commit -m <span class="s2">&quot;initial commit&quot;</span></span>
+<span class="prompt">git push origin master</span>
+</pre></div>
+</div>
+<div class="section" id="configure-the-application">
+<h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
+<p>As the integrator you need to edit two files to configure the application:
+<tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> and <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> includes the <em>static configuration</em> of the application.  This
+configuration is to be opposed to the <em>dynamic configuration</em>, which is in the
+database, and managed by the <em>administrator</em>. The static configuration
+includes for example the application&#8217;s default language (specified with
+<tt class="docutils literal"><span class="pre">default_locale_name</span></tt>).  It also includes the
+configuration for specific parts of the application, like
+<a class="reference internal" href="raster.html#integrator-raster"><em>Digital Elevation Tools</em></a> web services.</p>
+<p><tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> includes the execution environment configuration. In this
+files are set <em>environment variables</em> such as the application instance id
+(<tt class="docutils literal"><span class="pre">instance_id</span></tt>), the database name (<tt class="docutils literal"><span class="pre">db</span></tt>), and host names. Pay particular
+attention to the <tt class="docutils literal"><span class="pre">to_be_defined</span></tt> values. <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> actually defines
+the <em>default</em> environment configuration. The configuration for specific
+installations (specific servers for example) can be written in specific files,
+that extend <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt>.  The <a class="reference internal" href="install_application.html#integrator-install-application"><em>Install an existing application</em></a>
+section provides more information.</p>
+<p>Don&#8217;t miss to add your changes to git:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add buildout.cfg</span>
+<span class="prompt">git commit -m <span class="s2">&quot;initialise buildout.cfg&quot;</span></span>
+<span class="prompt">git push origin master</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use the check collector don&#8217;t miss to add the new child to
+the parent site check_collector configuration.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Additional notes for Windows users:</p>
+<p>To have a working PNG print you should get and edit the file
+<tt class="docutils literal"><span class="pre">print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span></tt>,
+get it:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
+<span class="prompt">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
+<span class="prompt">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
+</pre><p>and replace the lines:</p>
+<div class="highlight-python"><pre>&lt;!-- &lt;property name="cmd"&gt;
+        &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
+&lt;/property&gt; --&gt;</pre>
+</div>
+<p>by those ones:</p>
+<div class="highlight-python"><pre>&lt;property name="cmd"&gt;
+        &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
+&lt;/property&gt;</pre>
+</div>
+<p>with the right path to <tt class="docutils literal"><span class="pre">convert</span></tt>.</p>
+<p>Some parts will not work or will not do anything on Windows, than add in
+your <cite>buildout.cfg</cite> file in the <cite>[buildout]</cite> section:</p>
+<div class="last highlight-python"><pre>    parts -= fix-perm
+
+and in the `[template]` section::
+
+    extends -= facts</pre>
+</div>
+</div>
+<p>After creation and minimal setup the application is ready to be installed.
+Then follow the sections in the install application guide:</p>
+<ul class="simple">
+<li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><em>Create the schema</em></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-create-user"><em>Create a database user</em></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-bootstrap-buildout"><em>CONST_buildout.cfg</em></a>.</li>
+<li><a class="reference internal" href="install_application.html#integrator-install-application-install-application"><em>Install the application</em></a>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you create the main instance you should do the whole
+database creation as described in <a class="reference internal" href="install_application.html#integrator-install-application"><em>Install an existing application</em></a>,
+except the &#8216;Get the application source tree&#8217; chapter.</p>
+</div>
+</div>
+<div class="section" id="create-a-multi-instance-project">
+<h2>Create a multi instance project<a class="headerlink" href="#create-a-multi-instance-project" title="Permalink to this headline">¶</a></h2>
+<p>In some cases we want to create applications based on very similar code and settings.</p>
+<p>To be consistent with c2cgeoportal terminology we will use the words <cite>project</cite>
+to refer to the whole project and <cite>instance</cite> for a dedicated configuration of
+the project.</p>
+<p>This procedure will deal with:</p>
+<ul class="simple">
+<li>One folder per instance <tt class="docutils literal"><span class="pre">mapfile/&lt;instance&gt;</span></tt>.</li>
+<li>One configuration file for all the project <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>.</li>
+<li>One configuration file for each instance <tt class="docutils literal"><span class="pre">config_&lt;instance&gt;.yaml.in</span></tt>.</li>
+<li>One buildout file for all the project <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt>.</li>
+<li>One buildout file for each instance <tt class="docutils literal"><span class="pre">buildout_&lt;instane&gt;.cfg</span></tt>.</li>
+<li>One buildout generator for each developer and server <tt class="docutils literal"><span class="pre">buildout_&lt;user&gt;.cfg.jinja</span></tt>.</li>
+<li>One additional CSS file for each instance <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/static/css/proj_&lt;instance&gt;.css</span></tt>.</li>
+</ul>
+<div class="section" id="create-the-project">
+<h3>Create the project<a class="headerlink" href="#create-the-project" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>In <tt class="docutils literal"><span class="pre">setup.py</span></tt> add the following dependencies:</li>
+</ol>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="s1">&#39;bottle&#39;</span><span class="p">,</span>
+<span class="s1">&#39;jinja2&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>In <tt class="docutils literal"><span class="pre">setup.py</span></tt> add the following <tt class="docutils literal"><span class="pre">console_scripts</span></tt>:</li>
+</ol>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="s1">&#39;gen_project_files = &lt;package_name&gt;.scripts.gen_project_files:main&#39;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Create the generated project files from templates
+<tt class="docutils literal"><span class="pre">&lt;package_name&gt;/scripts/gen_project_files.py</span></tt> script:</li>
+</ol>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">bottle</span> <span class="kn">import</span> <span class="n">jinja2_template</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;config.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jinja&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;instances&#39;</span><span class="p">]:</span>
+            <span class="n">file_parts</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">instance</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">jinja2_template</span><span class="p">(</span>
+                <span class="n">template</span><span class="p">,</span>
+                <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+                <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">file_open</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">file_open</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">file_open</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>In <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> add a task to generate the buildout files:</li>
+</ol>
+<div class="code highlight-python"><pre>[jinja-template]
+recipe = collective.recipe.cmd:py
+on_install = true
+on_update = true
+cmds =
+    &gt;&gt;&gt; from subprocess import call
+    &gt;&gt;&gt; from os.path import join
+    &gt;&gt;&gt; cmd = join('buildout', 'bin', 'gen_project_files')
+    &gt;&gt;&gt; call([cmd])</pre>
+</div>
+<ol class="arabic simple" start="5">
+<li>Define the developer templates as follows (<tt class="docutils literal"><span class="pre">buildout_&lt;user&gt;.cfg.jinja</span></tt>):</li>
+</ol>
+<div class="code highlight-python"><pre>[buildout]
+extends = buildout_{{instance}}.cfg
+parts -= fix-perm
+
+[vars]
+instanceid = &lt;user&gt;-{{instance}}
+host = &lt;host&gt;
+
+[jsbuild]
+compress = False
+
+[jsbuild-mobile]
+compress = False
+
+[cssbuild]
+compress = false</pre>
+</div>
+<ol class="arabic simple" start="6">
+<li>Define the host templates as follows (<tt class="docutils literal"><span class="pre">buildout_main.cfg.jinja</span></tt>,
+<tt class="docutils literal"><span class="pre">buildout_demo.cfg.jinja</span></tt>, <tt class="docutils literal"><span class="pre">buildout_prod.cfg.jinja</span></tt>):</li>
+</ol>
+<div class="code highlight-python"><pre>[buildout]
+extends = buildout_{{instance}}.cfg
+
+[vars]
+instanceid = ${vars:instance}
+apache-entry-point = /${vars:instanceid}/
+host = &lt;host&gt;</pre>
+</div>
+<ol class="arabic simple" start="7">
+<li>Create a <tt class="docutils literal"><span class="pre">config_&lt;instance&gt;.yaml.in</span></tt> file with:</li>
+</ol>
+<div class="code highlight-python"><pre>page_title: &lt;title&gt;
+
+viewer:
+     initial_extent: [&lt;min_x&gt;, &lt;min_y&gt;, &lt;max_x&gt;, &lt;max_y&gt;]
+     restricted_extent: [&lt;min_x&gt;, &lt;min_y&gt;, &lt;max_x&gt;, &lt;max_y&gt;]
+     default_themes:
+     - &lt;theme&gt;
+     feature_types:
+     - &lt;feature&gt;
+
+functionalities:
+     anonymous:
+         print_template:
+         - &lt;template&gt;</pre>
+</div>
+<ol class="arabic simple" start="8">
+<li>In <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/__init__.py</span></tt> use the previous YAML file:</li>
+</ol>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span> <span class="c1"># already defined</span>
+    <span class="o">...</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span> <span class="c1"># already defined</span>
+    <span class="n">project_settings</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">file</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;app2.cfg&#39;</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">project_settings</span><span class="p">:</span>
+        <span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">project_settings</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li>Define the instance buildout file <tt class="docutils literal"><span class="pre">buildout_&lt;instance&gt;.cfg</span></tt> as follows:</li>
+</ol>
+<div class="code highlight-python"><pre>[buildout]
+extends = buildout.cfg
+
+[vars]
+instance = &lt;instance&gt;</pre>
+</div>
+<ol class="arabic simple" start="10">
+<li>In <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> define the vars as follows:</li>
+</ol>
+<div class="code highlight-python"><pre>[vars]
+instance = to_be_overridden
+schema = ${vars:instance}
+instanceid = to_be_overridden
+parent_instanceid = to_be_defined
+host = to_be_overridden</pre>
+</div>
+<p>These are placeholder variables which must be defined</p>
+<ol class="arabic simple" start="11">
+<li>In the <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> add the additional CSS:</li>
+</ol>
+<div class="code highlight-python"><pre>[cssbuild]
+input +=
+    &lt;package_name&gt;/static/css/proj_${vars:instance}.css</pre>
+</div>
+<ol class="arabic simple" start="12">
+<li>In the <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/templates/index.html</span></tt> file do the following changes:</li>
+</ol>
+<div class="code diff highlight-python"><pre>-        &lt;meta name="keywords" content="&lt;package_name&gt;, geoportal"&gt;
+-        &lt;meta name="description" content="&lt;package_name&gt; Geoportal Application."&gt;
++        &lt;meta name="keywords" content="${request.registry.settings['instance']}, geoportal"&gt;
++        &lt;meta name="description" content="${request.registry.settings['page_title']}."&gt;
+
+-        &lt;title&gt;&lt;project_name&gt; Geoportal Application&lt;/title&gt;
++        &lt;title&gt;${request.registry.settings['page_title']}&lt;/title&gt;
+
+         &lt;link rel="stylesheet" type="text/css" href="${request.static_url('&lt;package_name&gt;:static/css/proj-widgets.css')}" /&gt;
++        &lt;link rel="stylesheet" type="text/css" href="${request.static_url('&lt;package_name&gt;:static/css/proj_%s.css' % request.registry.settings['instance'])}" /&gt;</pre>
+</div>
+<ol class="arabic simple" start="13">
+<li>Create the instance CSS file <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/static/css/proj_&lt;instance&gt;.css</span></tt>:</li>
+</ol>
+<div class="code css highlight-python"><pre>#header-in {
+    background: url('../images/&lt;instance&gt;_banner_left.png') top left no-repeat;
+    height: &lt;height&gt;px;
+}
+header-out {
+    background: url('../images/&lt;instance&gt;_banner_right.png') top right no-repeat;
+    background-color: #&lt;color&gt;;
+    height: &lt;height&gt;px;
+}</pre>
+</div>
+<ol class="arabic simple" start="14">
+<li>In <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> define the following attributes:</li>
+</ol>
+<div class="code yaml highlight-python"><pre># list of instance(s) for the project
+instances:
+    - &lt;instance&gt;
+    - &lt;another_instance&gt;
+    - &lt;as_many_instance_as_wanted&gt;
+
+instance: ${vars:instance}
+
+external_themes_url: http://${vars:host}/${vars:parent_instanceid}/wsgi/themes
+external_mapserv_url: http://${vars:host}/${vars:parent_instanceid}/mapserv
+
+tiles_url: http://${vars:host}/${vars:parent_instanceid}/tiles</pre>
+</div>
+<ol class="arabic simple" start="15">
+<li>In the files <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/templates/api/mapconfig.js</span></tt>,
+<tt class="docutils literal"><span class="pre">&lt;package_name&gt;/templates/viewer.js</span></tt> and <tt class="docutils literal"><span class="pre">&lt;package_name&gt;/templates/edit.js</span></tt>
+define the <tt class="docutils literal"><span class="pre">WMTS_OPTIONS</span></tt> url as follows:</li>
+</ol>
+<div class="code javascript highlight-python"><pre>var WMTS_OPTIONS = {
+    url: '${tiles_url}',
+    ...
+ }</pre>
+</div>
+<ol class="arabic simple" start="16">
+<li>In <tt class="docutils literal"><span class="pre">apache/mapserver.conf.in</span></tt> file do the following change:</li>
+</ol>
+<div class="code diff highlight-python"><pre>-   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/c2cgeoportal.map
++   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/${vars:instance}/c2cgeoportal.map</pre>
+</div>
+<ol class="arabic simple" start="17">
+<li>Edit <tt class="docutils literal"><span class="pre">deploy/deploy.cfg.in</span></tt> as follows:</li>
+</ol>
+<div class="code diff highlight-python"><pre> [DEFAULT]
+-project = ${vars:project}
++project = ${vars:instance}
+
+ [code]
+-dir = /var/www/vhosts/&lt;project_name&gt;/private/&lt;project_name&gt;
++dir = /var/www/vhosts/&lt;project_name&gt;/private/${vars:instance}
+
+ [apache]
+-dest = /var/www/vhosts/&lt;project_name&gt;/conf/&lt;project_name&gt;.conf
+-content = Include /var/www/vhosts/&lt;project_name&gt;/private/&lt;project_name&gt;/apache/*.conf
++dest = /var/www/vhosts/&lt;project_name&gt;/conf/${vars:instance}.conf
++content = Include /var/www/vhosts/&lt;project_name&gt;/private/${vars:instance}/apache/*.conf</pre>
+</div>
+<ol class="arabic simple" start="18">
+<li>In <tt class="docutils literal"><span class="pre">production.ini.in</span></tt> and <tt class="docutils literal"><span class="pre">developement.ini.in</span></tt>
+add the following value:</li>
+</ol>
+<div class="code highlight-python"><pre>[app:app]
+app2.cfg = %(here)s/config_${vars:instance}.yaml</pre>
+</div>
+<ol class="arabic simple" start="19">
+<li>In the <tt class="docutils literal"><span class="pre">&lt;package&gt;/CONST_migration/migrate.cfg.in</span></tt>, replace</li>
+</ol>
+<div class="code highlight-python"><pre>version_table=version_&lt;package&gt;</pre>
+</div>
+<p>by:</p>
+<div class="code highlight-python"><pre>version_table=version_${vars:instance}</pre>
+</div>
+<ol class="arabic simple" start="20">
+<li>In <tt class="docutils literal"><span class="pre">.gitignore</span></tt> add the following lines:</li>
+</ol>
+<div class="code highlight-python"><pre>config_*.yaml
+buildout_*_*.cfg
+mapserver/*/*.map
+mapserver/*/*/*.map</pre>
+</div>
+</div>
+<div class="section" id="result">
+<h3>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h3>
+<p>Now you can configure the application at instance level in the following places:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">mapserver/&lt;instance&gt;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">buildout_&lt;instance&gt;.cfg</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">mandant/static/images/&lt;instance&gt;_banner_right.png</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">mandant/static/images/&lt;instance&gt;_banner_left.png</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">mandant/static/css/proj_&lt;instance&gt;.css</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">config_&lt;instance&gt;.yaml.in</span></tt></li>
+</ul>
+<p>To generate the configuration files, run the following command:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout install eggs template jinja-template</span>
+</pre><p>then run the buildout command with the .cfg file for the instance you want to setup:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout -c buildout_&lt;user&gt;_&lt;instance&gt;.cfg</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create a new application</a><ul>
+<li><a class="reference internal" href="#project-structure">Project structure</a></li>
+<li><a class="reference internal" href="#install-c2cgeoportal">Install c2cgeoportal</a></li>
+<li><a class="reference internal" href="#list-existing-skeletons">List existing skeletons</a></li>
+<li><a class="reference internal" href="#create-the-new-application">Create the new application</a></li>
+<li><a class="reference internal" href="#put-the-application-under-revision-control">Put the application under revision control</a><ul>
+<li><a class="reference internal" href="#to-add-a-new-child-in-an-existing-repository">To add a new child in an existing repository</a></li>
+<li><a class="reference internal" href="#to-add-a-project-in-a-new-repository">To add a project in a new repository</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configure-the-application">Configure the application</a></li>
+<li><a class="reference internal" href="#create-a-multi-instance-project">Create a multi instance project</a><ul>
+<li><a class="reference internal" href="#create-the-project">Create the project</a></li>
+<li><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="previous chapter">Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="install_application.html"
+                        title="next chapter">Install an existing application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/create_application.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="install_application.html" title="Install an existing application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

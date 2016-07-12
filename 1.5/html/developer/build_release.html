@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Build a new release &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Principles" href="principles.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="principles.html" title="Principles"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="debugging.html" title="Debugging"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="build-a-new-release">
+<span id="developer-build-release"></span><h1>Build a new release<a class="headerlink" href="#build-a-new-release" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vocabulary">
+<h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
+<p>On this page I use the word <tt class="docutils literal"><span class="pre">version</span></tt> for a major version of MapFish
+Geoportal (1.3), and the word <tt class="docutils literal"><span class="pre">release</span></tt> for each step in this version
+(1.3rc1, 1.3.0, 1.3.1, ...).</p>
+<p><tt class="docutils literal"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></tt> is the pack that includes CGXP and c2cgeoportal,
+from start of 2014 both projects will synchronize their major versions.</p>
+<p>Then <tt class="docutils literal"><span class="pre">&lt;release&gt;</span></tt> can be <tt class="docutils literal"><span class="pre">1.3rc1</span></tt> for the first release candidate
+of the version <tt class="docutils literal"><span class="pre">1.3</span></tt>, <tt class="docutils literal"><span class="pre">1.3.0</span></tt> for the final release, <tt class="docutils literal"><span class="pre">1.3.1</span></tt> for
+the first bug fix release, and <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> can be <tt class="docutils literal"><span class="pre">1.3</span></tt>, <tt class="docutils literal"><span class="pre">1.4</span></tt>, ...</p>
+</div>
+<div class="section" id="cgxp">
+<h2>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-version">
+<h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
+<p>For each version we create a new branch (at least at the final release):</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout master</span>
+<span class="prompt">git pull origin master</span>
+<span class="prompt">git checkout -b &lt;version&gt;</span>
+</pre><p>Go back on master:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout master</span>
+</pre><p>Add the version in the doc generator by editing the
+<tt class="docutils literal"><span class="pre">core/src/doc/update_online.sh</span></tt> file and add the new <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>
+in the <tt class="docutils literal"><span class="pre">for</span> <span class="pre">VERSION</span> <span class="pre">in</span></tt> loop.</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add core/src/doc/update_online.sh</span>
+<span class="prompt">git commit -m <span class="s2">&quot;Generate documentation for version &lt;version&gt;&quot;</span></span>
+</pre><p>Push your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git push origin master</span>
+<span class="prompt">git push origin &lt;version&gt;</span>
+</pre><p>Then continue by creating the release.</p>
+</div>
+<div class="section" id="new-release">
+<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this headline">¶</a></h3>
+<p>Tag the new CGXP release:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout &lt;version&gt;</span>
+<span class="prompt">git pull origin &lt;version&gt;</span>
+<span class="prompt">git tag &lt;release&gt;</span>
+<span class="prompt">git push origin &lt;release&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="c2cgeoportal">
+<h2>c2cgeoportal<a class="headerlink" href="#c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>New version<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Checkout the code:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout master</span>
+<span class="prompt">git pull origin master</span>
+</pre><p>Edit the <tt class="docutils literal"><span class="pre">doc/integrator/update_application.rst</span></tt> file to change the default version
+for the <tt class="docutils literal"><span class="pre">version.cfg</span></tt>.</p>
+<p>Add and commit the changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add doc/integrator/update_application.rst</span>
+<span class="prompt">git commit -m <span class="s2">&quot;Update the default downloaded version.cfg&quot;</span></span>
+</pre><p>For each version we create a new branch (at the latest at the final release):</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout -b &lt;version&gt;</span>
+<span class="prompt">git push origin &lt;version&gt;</span>
+</pre><p>Go back to the master branch:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout master</span>
+</pre><p>Edit the version in the <tt class="docutils literal"><span class="pre">setup.py</span></tt> to be <tt class="docutils literal"><span class="pre">&lt;version</span> <span class="pre">+</span> <span class="pre">1&gt;</span></tt>.</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add setup.py</span>
+<span class="prompt">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
+</pre><p>Push your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git push origin master</span>
+</pre><p>Then continue by creating the release.</p>
+</div>
+<div class="section" id="id2">
+<h3>New release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Checkout the code:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git checkout &lt;version&gt;</span>
+<span class="prompt">git pull origin &lt;version&gt;</span>
+</pre><p>Update the version of c2cgeoportal in the
+<tt class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/create/versions.cfg</span></tt> file to the <tt class="docutils literal"><span class="pre">&lt;release&gt;</span></tt>.</p>
+<p>Verify that the version in the <tt class="docutils literal"><span class="pre">setup.py</span></tt> is correct
+(as the <tt class="docutils literal"><span class="pre">&lt;release&gt;</span></tt>).</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add setup.py c2cgeoportal/scaffolds/create/versions.cfg</span>
+<span class="prompt">git commit -m <span class="s2">&quot;Do release &lt;release&gt;&quot;</span></span>
+</pre><p>Tag the new release:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git tag &lt;release&gt;</span>
+</pre><p>Edit the version in the <tt class="docutils literal"><span class="pre">setup.py</span></tt> to be <tt class="docutils literal"><span class="pre">&lt;release</span> <span class="pre">+</span> <span class="pre">1&gt;</span></tt>.</p>
+<p>Commit your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add setup.py</span>
+<span class="prompt">git commit -m <span class="s2">&quot;Start release &lt;release + 1&gt;&quot;</span></span>
+</pre><p>Push your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git push origin &lt;version&gt;</span>
+<span class="prompt">git push origin &lt;release&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When you push a tag with the pattern <cite>^[0-9].[0-9]+.[0-9]$</cite> a new release
+will automatically be created on Travis CI.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Build a new release</a><ul>
+<li><a class="reference internal" href="#vocabulary">Vocabulary</a></li>
+<li><a class="reference internal" href="#cgxp">CGXP</a><ul>
+<li><a class="reference internal" href="#new-version">New version</a></li>
+<li><a class="reference internal" href="#new-release">New release</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c2cgeoportal">c2cgeoportal</a><ul>
+<li><a class="reference internal" href="#id1">New version</a></li>
+<li><a class="reference internal" href="#id2">New release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="debugging.html"
+                        title="previous chapter">Debugging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="principles.html"
+                        title="next chapter">Principles</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/developer/build_release.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="principles.html" title="Principles"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="debugging.html" title="Debugging"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

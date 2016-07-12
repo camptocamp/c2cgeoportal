@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Customize the UI &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Extend the data model" href="extend_data_model.html" />
+    <link rel="prev" title="TileGeneration" href="tilegeneration.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="extend_data_model.html" title="Extend the data model"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tilegeneration.html" title="TileGeneration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="customize-the-ui">
+<span id="integrator-customize-ui"></span><h1>Customize the UI<a class="headerlink" href="#customize-the-ui" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="organisation">
+<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header
+is in the file: <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></tt>.</p>
+<p>The viewer (map and all related tools)
+is define in the file: <tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></tt>.</p>
+<p>The sample for the API is in the file:
+<tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/apiviewer.js</span></tt>.</p>
+<p>The style sheet file is: <tt class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj.css</span></tt></p>
+<p>And finally the image should be placed in the folder:
+<tt class="docutils literal"><span class="pre">&lt;package&gt;/static/images/</span></tt></p>
+</div>
+<div class="section" id="viewer-js">
+<h2>Viewer.js<a class="headerlink" href="#viewer-js" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">viewer.js</span></tt> template is used to configure the client application.
+It creates a
+<a class="reference external" href="http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html">gxp.Viewer</a>
+object (<tt class="docutils literal"><span class="pre">app</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">gxp.Viewer({</span> <span class="pre">...</span> <span class="pre">});</span></tt>) defining the application&#8217;s UI.
+The Viewer config includes three important sections:</p>
+<div class="section" id="portalconfig">
+<h3><tt class="docutils literal"><span class="pre">portalConfig</span></tt><a class="headerlink" href="#portalconfig" title="Permalink to this headline">¶</a></h3>
+<p>The portal configuration assembles Ext components (containers really),
+to describe the application layout.</p>
+</div>
+<div class="section" id="tools">
+<h3><tt class="docutils literal"><span class="pre">tools</span></tt><a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h3>
+<p>Most of the tools used in the application are
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins.html">cgxp.plugins</a>.</p>
+<p>In most cases code examples to add to the <tt class="docutils literal"><span class="pre">viewer.js</span></tt> file are available.
+Don&#8217;t forget to add the plugin files in your <tt class="docutils literal"><span class="pre">jsbuild/app.cfg</span></tt> file.
+For example, to use the Legend panel, add:</p>
+<div class="highlight-python"><pre>[app.js]
+...
+include =
+    ...
+    CGXP/plugins/Legend.js</pre>
+</div>
+</div>
+<div class="section" id="map">
+<h3><tt class="docutils literal"><span class="pre">map</span></tt><a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<p>See <tt class="docutils literal"><span class="pre">map</span></tt> section from
+<a class="reference external" href="http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html">gxp.Viewer documentation</a></p>
+</div>
+<div class="section" id="layers">
+<h3><tt class="docutils literal"><span class="pre">layers</span></tt><a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h3>
+<p>In the <tt class="docutils literal"><span class="pre">layers</span></tt> section we configure the background layers like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;plan&#39;</span><span class="p">),</span>
+        <span class="nx">mapserverLayers</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">queryLayers</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;query_plan&#39;</span><span class="p">,</span>
+            <span class="nx">identifierAttribute</span><span class="o">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+            <span class="nx">minScaleDenominator</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="nx">maxScaleDenominator</span><span class="o">:</span> <span class="mi">1000</span>
+        <span class="p">}],</span>
+        <span class="nx">mapserverParams</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;EXTERNAL&#39;</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+        <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>with <tt class="docutils literal"><span class="pre">WMTS_OPTIONS</span></tt> defined like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;${tile_url}&#39;</span><span class="p">,</span>
+    <span class="nx">displayInLayerSwitcher</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">transitionEffect</span><span class="o">:</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span>
+    <span class="nx">visibility</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">requestEncoding</span><span class="o">:</span> <span class="s1">&#39;REST&#39;</span><span class="p">,</span>
+    <span class="nx">buffer</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+    <span class="nx">dimensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">],</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;time&#39;</span><span class="o">:</span> <span class="s1">&#39;2011&#39;</span>
+    <span class="p">},</span>
+    <span class="nx">matrixSet</span><span class="o">:</span> <span class="s1">&#39;swissgrid&#39;</span><span class="p">,</span>
+    <span class="nx">maxExtent</span><span class="o">:</span> <span class="k">new</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">Bounds</span><span class="p">(</span><span class="mi">420000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">900000</span><span class="p">,</span> <span class="mi">350000</span><span class="p">),</span>
+    <span class="nx">projection</span><span class="o">:</span> <span class="k">new</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">Projection</span><span class="p">(</span><span class="s2">&quot;EPSG:21781&quot;</span><span class="p">),</span>
+    <span class="nx">units</span><span class="o">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span>
+    <span class="nx">formatSuffix</span><span class="o">:</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span>
+    <span class="nx">serverResolutions</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The important points are:</p>
+<ul class="simple">
+<li>Booth <tt class="docutils literal"><span class="pre">group:</span> <span class="pre">'background'</span></tt> are requires by
+<a class="reference external" href="http://gxp.opengeo.org">GXP</a> (first), and by the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>
+(in <tt class="docutils literal"><span class="pre">args</span></tt>).</li>
+<li><tt class="docutils literal"><span class="pre">mapserverLayers</span></tt> is used to know the layers to
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Print.html">print</a>.
+if it&#8217;s not present the tiles are used.</li>
+<li><tt class="docutils literal"><span class="pre">queryLayers</span></tt> provide information to the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/GetFeature.html">GetFeature</a>
+plugin on the background layers. It can also be a coma separated string.
+If it&#8217;s not present the <tt class="docutils literal"><span class="pre">mapserverLayers</span></tt> is used.</li>
+<li><tt class="docutils literal"><span class="pre">ref</span></tt> is used by the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>.</li>
+<li><tt class="docutils literal"><span class="pre">visibility</span></tt> should be set to <tt class="docutils literal"><span class="pre">false</span></tt> to don&#8217;t download unneeded tiles, the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>
+will manage it.</li>
+<li><tt class="docutils literal"><span class="pre">transitionEffect</span></tt>, <tt class="docutils literal"><span class="pre">buffer</span></tt> provides good value for performance
+and user experience.</li>
+</ul>
+<div class="section" id="linked-base-layers">
+<h4><tt class="docutils literal"><span class="pre">linked</span> <span class="pre">base</span> <span class="pre">layers</span></tt><a class="headerlink" href="#linked-base-layers" title="Permalink to this headline">¶</a></h4>
+<p>It is possible to link a base layer with one or more <em>detached</em> base layers.</p>
+<p>A <em>detached</em> base layer is a base layer that is not listed in the <tt class="docutils literal"><span class="pre">MapOpacitySlider</span></tt>
+dropdown list. But this layer can be linked with a normal base layer and will be
+displayed or hidden at the same time.</p>
+<p>To do so:</p>
+<ul class="simple">
+<li>in the normal base layer, add the parameter <tt class="docutils literal"><span class="pre">linkedLayers</span></tt> with the list of
+<em>detached</em> base layers <tt class="docutils literal"><span class="pre">ref</span></tt> names.</li>
+<li>add the <em>detached</em> base layer like any other normal base layer, but with
+<tt class="docutils literal"><span class="pre">visibility:</span> <span class="pre">false</span></tt> and no <tt class="docutils literal"><span class="pre">group</span></tt> in <tt class="docutils literal"><span class="pre">args</span></tt></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer_nice_name&#39;</span><span class="p">,</span>
+      <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer&#39;</span><span class="p">,</span>
+      <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer_source_name&#39;</span><span class="p">,</span>
+      <span class="nx">transitionEffect</span><span class="o">:</span> <span class="s2">&quot;resize&quot;</span><span class="p">,</span>
+      <span class="nx">visibility</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+<span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;normal_base_layer&#39;</span><span class="p">),</span>
+        <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;normal_base_layer&#39;</span><span class="p">,</span>
+        <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;normal_base_layer_source_name&#39;</span><span class="p">,</span>
+        <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+        <span class="nx">linkedLayers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;detached_base_layer&#39;</span><span class="p">]</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sub-domain">
+<h2>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h2>
+<p>If you want to optimize the parallelization of static resource download you
+can use sub domain to do that you should define in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>
+something like this:</p>
+<div class="highlight-python"><pre># The used sub domain for the static resources
+subdommains: ['s1', 's2', 's3', 's4']</pre>
+</div>
+<p>Those sub domain should obviously be define in the DNS and in the Apache
+vhost. If the application is served on deferent URL and you want to use
+the sub domain on only one of them you can define in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>
+the following:</p>
+<div class="highlight-python"><pre># The URL template used to generate the sub domain URL
+# %(sub)s will be replaced by the sub domain value.
+subdomain_url_template: http://%(sub)s.${vars:host}</pre>
+</div>
+</div>
+<div class="section" id="advanced-configuration-examples">
+<h2>Advanced configuration examples<a class="headerlink" href="#advanced-configuration-examples" title="Permalink to this headline">¶</a></h2>
+<p>We can use the <tt class="docutils literal"><span class="pre">functionalities</span></tt> or the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> to configure the
+interface. For instance:</p>
+<p>Activate CGXP plugin using an <tt class="docutils literal"><span class="pre">authorized_plugins</span></tt> functionality:</p>
+<div class="highlight-python"><pre>% if 'my_plugin' in functionality['authorized_plugins']:
+{
+    // plugin configuration
+},
+% endif</pre>
+</div>
+<p>Configure the <tt class="docutils literal"><span class="pre">querier</span></tt> layer using the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>,
+Add in <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>:</p>
+<div class="highlight-python"><pre>viewer:
+    feature_types:
+    - layer_1
+    - layer_2</pre>
+</div>
+<p>And in <tt class="docutils literal"><span class="pre">viewer.js</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;%
+from json import dumps
+%&gt;
+% if len(request.registry.settings['viewer']['feature_types']) &gt; 0:
+{
+    ptype: "cgxp_querier",
+    // plugin configuration
+    featureTypes: ${dumps(request.registry.settings['viewer']['feature_types']) | n}
+},
+% endif</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Customize the UI</a><ul>
+<li><a class="reference internal" href="#organisation">Organisation</a></li>
+<li><a class="reference internal" href="#viewer-js">Viewer.js</a><ul>
+<li><a class="reference internal" href="#portalconfig"><tt class="docutils literal"><span class="pre">portalConfig</span></tt></a></li>
+<li><a class="reference internal" href="#tools"><tt class="docutils literal"><span class="pre">tools</span></tt></a></li>
+<li><a class="reference internal" href="#map"><tt class="docutils literal"><span class="pre">map</span></tt></a></li>
+<li><a class="reference internal" href="#layers"><tt class="docutils literal"><span class="pre">layers</span></tt></a><ul>
+<li><a class="reference internal" href="#linked-base-layers"><tt class="docutils literal"><span class="pre">linked</span> <span class="pre">base</span> <span class="pre">layers</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sub-domain">Sub domain</a></li>
+<li><a class="reference internal" href="#advanced-configuration-examples">Advanced configuration examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tilegeneration.html"
+                        title="previous chapter">TileGeneration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extend_data_model.html"
+                        title="next chapter">Extend the data model</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/customize_ui.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="extend_data_model.html" title="Extend the data model"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tilegeneration.html" title="TileGeneration"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

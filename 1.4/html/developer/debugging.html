@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Debugging &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Build a new release" href="build_release.html" />
+    <link rel="prev" title="Client-side development" href="client_side.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="build_release.html" title="Build a new release"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="client_side.html" title="Client-side development"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="debugging">
+<span id="developer-debugging"></span><h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this document is to give some troubleshooting tips.</p>
+<div class="section" id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<p>First you should add <tt class="docutils literal"><span class="pre">?debug</span></tt> in the application URL to have all the
+JavaScript and stylesheets in separated non-minified files.</p>
+<p>Using a browser-integrated debugging tool such as
+<a class="reference external" href="https://addons.mozilla.org/fr/firefox/addon/firebug/">Firebug</a> (for Firefox)
+or Chrome development tool is very useful.</p>
+<p>In case of 500 errors have a look at the apache logs, located at
+<tt class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/logs/error.log</span></tt>. If we call a service behind
+a proxy, the log entry actually references the final URL. Therefore you may
+call the latter URL directly on the server by typing <tt class="docutils literal"><span class="pre">curl</span> <span class="pre">&quot;&lt;url&gt;&quot;</span></tt>.</p>
+<p>For print-related issues have a look at the logs in the
+<tt class="docutils literal"><span class="pre">/srv/tomcat/tomcat1/logs/mapfish-print.log</span></tt> file.</p>
+</div>
+<div class="section" id="mapserver">
+<h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
+<p>Sometime more information are available by using this command:</p>
+<div class="highlight-python"><pre>shp2img -m &lt;mapfile&gt; -o test.png -e &lt;minx&gt; &lt;miny&gt; &lt;maxx&gt; &lt;maxy&gt; -s &lt;sizex&gt; &lt;sizey&gt; -l &lt;layers&gt;</pre>
+</div>
+<p>You may also activate Mapserver&#8217;s debug mode and set the log level in your
+mapfile by adding the following configuration:</p>
+<div class="highlight-python"><pre>MAP
+    ...
+    CONFIG "MS_ERRORFILE" "/tmp/ms_error.txt"
+    DEBUG 5
+    ...</pre>
+</div>
+<p><a class="reference external" href="http://mapserver.org/optimization/debugging.html?highlight=debug#step-2-set-the-debug-level">More informations</a></p>
+</div>
+<div class="section" id="postgresql">
+<h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
+<p>In the <tt class="docutils literal"><span class="pre">/etc/postgresql/9.0/main/postgresql.conf</span></tt> configuration file
+you can set <tt class="docutils literal"><span class="pre">log_statement</span></tt> to <tt class="docutils literal"><span class="pre">all</span></tt> to see all the called statements.
+This file must be edited using the <tt class="docutils literal"><span class="pre">postgres</span></tt> user.</p>
+<p>Reloading PostgreSQL is required so that the new configuration is taken into
+account:</p>
+<div class="highlight-python"><pre>sudo /etc/init.d/postgres reload</pre>
+</div>
+<p>Logs are available in the <tt class="docutils literal"><span class="pre">/var/log/postgresql/postgresql-9.0-main.log</span></tt> file.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Debugging</a><ul>
+<li><a class="reference internal" href="#general">General</a></li>
+<li><a class="reference internal" href="#mapserver">Mapserver</a></li>
+<li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="client_side.html"
+                        title="previous chapter">Client-side development</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="build_release.html"
+                        title="next chapter">Build a new release</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/developer/debugging.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="build_release.html" title="Build a new release"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="client_side.html" title="Client-side development"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

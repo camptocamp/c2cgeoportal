@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Updating a GeoMapFish application &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Deploy the application" href="deploy.html" />
+    <link rel="prev" title="Internationalization" href="internationalization.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="deploy.html" title="Deploy the application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="internationalization.html" title="Internationalization"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="updating-a-geomapfish-application">
+<span id="integrator-update-application"></span><h1>Updating a GeoMapFish application<a class="headerlink" href="#updating-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="user-the-easy-c2c-tool-experimantal">
+<h2>User the easy c2c tool (experimantal)<a class="headerlink" href="#user-the-easy-c2c-tool-experimantal" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">c2ctool</span></tt> is a tool to facilitate the common operations around GeoMapFish,
+to use it from a c2cgeoportal 1.4 you should at first get the c2cgeoportal 1.5:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">wget https://raw.github.com/camptocamp/c2cgeoportal/&lt;version&gt;/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg</span>
+<span class="prompt"> ./buildout/bin/buildout install eggs</span>
+</pre><p>Replace <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> by a version number (branch) or release number (tag).
+To get the last dev version, replace <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> by <tt class="docutils literal"><span class="pre">master</span></tt>.</p>
+</div>
+<div class="section" id="easy-updating-an-application-code-experimental">
+<h2>Easy updating an application code (experimental)<a class="headerlink" href="#easy-updating-an-application-code-experimental" title="Permalink to this headline">¶</a></h2>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/c2ctool update &lt;buildout_file&gt;</span>
+</pre><p>Where <tt class="docutils literal"><span class="pre">&lt;buildout_file&gt;</span></tt> is your user buildout file.</p>
+</div>
+<div class="section" id="easy-upgrading-an-application-experimental">
+<h2>Easy upgrading an application (experimental)<a class="headerlink" href="#easy-upgrading-an-application-experimental" title="Permalink to this headline">¶</a></h2>
+<p>Create a <tt class="docutils literal"><span class="pre">project.yaml.in</span></tt> file that contains:</p>
+<div class="code highlight-python"><pre>project_folder: &lt;folder&gt;
+project_package: &lt;package&gt;
+host: &lt;host&gt;
+checker_path: /${instanceid}/wsgi/check_collector?
+template_vars:
+     mobile_application_title: 'Geoportal Mobile Application'</pre>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">&lt;folder&gt;</span></tt> is the last element of the folder e.g. for
+<tt class="docutils literal"><span class="pre">/home/user/c2cgeoportal</span></tt> it will be <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt>,</p>
+<p>the <tt class="docutils literal"><span class="pre">&lt;package&gt;</span></tt> is the package name,</p>
+<p>and the <tt class="docutils literal"><span class="pre">&lt;host&gt;</span></tt> is the host to use for the Apache VirtualHost.</p>
+<p>Add <tt class="docutils literal"><span class="pre">project.yaml</span></tt> in the <tt class="docutils literal"><span class="pre">.gitignore</span></tt> file.</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/c2ctool upgrade &lt;buildout_file&gt; &lt;target_version&gt;</span>
+</pre><p>Where <tt class="docutils literal"><span class="pre">&lt;buildout_file&gt;</span></tt> is your user buildout file,
+<tt class="docutils literal"><span class="pre">&lt;target_version&gt;</span></tt> is the version that you wish to update to.</p>
+<p>And follow the instructions.</p>
+</div>
+<div class="section" id="updating-an-application-code">
+<h2>Updating an application code<a class="headerlink" href="#updating-an-application-code" title="Permalink to this headline">¶</a></h2>
+<p>To get the changes done by other people, we need to <tt class="docutils literal"><span class="pre">pull</span></tt> the new code:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git pull</span>
+<span class="prompt">git submodule sync</span>
+<span class="prompt">git submodule update --init</span>
+<span class="prompt">git submodule foreach git submodule sync</span>
+<span class="prompt">git submodule foreach git submodule update --init</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The submodule command is used to have the right version of CGXP.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<blockquote>
+<div>If you update the code after an upgrade of the application it is
+recommended to clean your old eggs (this will also build your application):</div></blockquote>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout -c CONST_buildout_cleaner.cfg</span>
+<span class="prompt">rm -rf old</span>
+</pre></div>
+</div>
+<div class="section" id="updating-cgxp">
+<h2>Updating CGXP<a class="headerlink" href="#updating-cgxp" title="Permalink to this headline">¶</a></h2>
+<p>To update CGXP to a release tag (like 1.3.0) use the following:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> &lt;package&gt;/static/lib/cgxp</span>
+<span class="prompt">git fetch</span>
+<span class="prompt">git checkout &lt;tag&gt;</span>
+<span class="prompt">git submodule sync</span>
+<span class="prompt">git submodule update --init</span>
+</pre><p>To update CGXP to a version branch (like 1.3) use the following:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> &lt;package&gt;/static/lib/cgxp</span>
+<span class="prompt">git fetch</span>
+<span class="prompt">git checkout &lt;branch&gt;</span>
+<span class="prompt">git pull origin &lt;branch&gt;</span>
+<span class="prompt">git submodule sync</span>
+<span class="prompt">git submodule update --init</span>
+</pre><p><tt class="docutils literal"><span class="pre">&lt;package&gt;</span></tt> is to be replaced by the name of your application package name,
+<tt class="docutils literal"><span class="pre">&lt;tag&gt;</span></tt> is the name of the release (in Git we use a tag),
+<tt class="docutils literal"><span class="pre">&lt;branch&gt;</span></tt> is the name of the version (in Git we use a branch).</p>
+<p>If the application code is under Git you also need to update the application
+to reference the new commit for the cgxp submodule:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt"><span class="nb">cd</span> -</span>
+<span class="prompt">git add &lt;package&gt;/static/lib/cgxp</span>
+</pre><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">We have a major issue here for applications under SVN. When SVN, as
+opposed to Git, is used for the application the version of CGXP is
+not fixed in the application. This means that each installation of
+an application may work with a different version of CGXP.</p>
+</div>
+<p>Do manual migration steps based on what&#8217;s in the
+<a class="reference external" href="https://github.com/camptocamp/cgxp/blob/master/CHANGELOG.rst">CHANGELOG</a>.</p>
+</div>
+<div class="section" id="updating-c2cgeoportal">
+<h2>Updating c2cgeoportal<a class="headerlink" href="#updating-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
+<p>Upgrading an application to a new release of c2cgeoportal requires several
+steps:</p>
+<ol class="arabic">
+<li><p class="first">It&#8217;s good to start an update in a clean repository, then:</p>
+<ul>
+<li><p class="first">See what&#8217;s not commited:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git status</span>
+</pre></li>
+<li><p class="first">Reset non commited changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git reset --hard</span>
+</pre></li>
+<li><p class="first">Remove all untracked files and directories:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git clean -f -d</span>
+</pre></li>
+</ul>
+</li>
+<li><p class="first">Now, to update the application&#8217;s other dependencies,
+get the <tt class="docutils literal"><span class="pre">version.cfg</span></tt> file:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">wget https://raw.github.com/camptocamp/c2cgeoportal/&lt;version&gt;/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg</span>
+</pre><p>Replace <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> by a version number (branch) or release number (tag).
+To get the last dev version, replace <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> by <tt class="docutils literal"><span class="pre">master</span></tt>.</p>
+<p>For example to get the <tt class="docutils literal"><span class="pre">versions.cfg</span></tt> file of version 1.5, type:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">wget https://raw.github.com/camptocamp/c2cgeoportal/1.5/c2cgeoportal/scaffolds/create/versions.cfg -O versions.cfg</span>
+</pre></li>
+<li><p class="first">Execute <tt class="docutils literal"><span class="pre">buildout</span></tt> (<tt class="docutils literal"><span class="pre">eggs</span></tt> part) to get the new <tt class="docutils literal"><span class="pre">c2cgeoportal</span></tt> version:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout install eggs</span>
+</pre></li>
+<li><p class="first">Apply the <tt class="docutils literal"><span class="pre">c2cgeoportal_update</span></tt> scaffold:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/pcreate --interactive -s c2cgeoportal_update ../&lt;project_name&gt; <span class="nv">package</span><span class="o">=</span>&lt;package_name&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">&lt;package_name&gt;</span></tt> is to be replaced by the name of the application module.
+See above for more information.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For Windows:</p>
+<p>The <tt class="docutils literal"><span class="pre">$PROJECT/static/mobile/touch.tar.gz</span></tt> archive must be uncompressed and then removed.</p>
+<p>If it&#8217;s not present, proceed as follows:</p>
+<ul class="last simple">
+<li>Get Sencha Touch at <a class="reference external" href="http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip">http://cdn.sencha.io/touch/sencha-touch-2.3.1-gpl.zip</a>.</li>
+<li>Unzip it.</li>
+<li>Open a terminal and go to the folder where you have unzipped Sencha Touch.</li>
+<li>Run <tt class="docutils literal"><span class="pre">sencha</span> <span class="pre">generate</span> <span class="pre">app</span> <span class="pre">TempApp</span> <span class="pre">C:/tmp/TempApp</span></tt>.</li>
+<li>Copy the <tt class="docutils literal"><span class="pre">C:/tmp/TempApp/touch</span></tt> to your project in the folder <tt class="docutils literal"><span class="pre">&lt;package&gt;/static/mobile/touch</span></tt>.</li>
+<li>Remove the generated app (<tt class="docutils literal"><span class="pre">C:/tmp/TempApp</span></tt>).</li>
+</ul>
+</div>
+</li>
+<li><p class="first">Do manual migration steps based on what&#8217;s in the <tt class="docutils literal"><span class="pre">CONST_CHANGELOG.txt</span></tt>
+file.</p>
+</li>
+<li><p class="first">Clean your old eggs:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout -c CONST_buildout_cleaner.cfg</span>
+<span class="prompt">rm -rf old</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The first line will build the application and move the old eggs in a folder named <tt class="docutils literal"><span class="pre">old/</span></tt>.</p>
+</div>
+</li>
+<li><p class="first">Execute <tt class="docutils literal"><span class="pre">buildout</span></tt> to rebuild and install the application:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout -c &lt;buildout_config_file&gt;</span>
+</pre></li>
+<li><p class="first">Update the database using the <tt class="docutils literal"><span class="pre">manage_db</span></tt> script:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/manage_db upgrade</span>
+</pre></li>
+<li><p class="first">Add the new files in the repository:</p>
+<blockquote>
+<div><p>Get informations on the status of the repository:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git status</span>
+</pre><p>Add the new files:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git add &lt;file1&gt; &lt;file2&gt; ...</span>
+</pre></div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="test-and-commit">
+<h2>Test and commit<a class="headerlink" href="#test-and-commit" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">After the update process is done, do a final build of the application:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">./buildout/bin/buildout -c &lt;buildout_config_file&gt;</span>
+</pre></li>
+<li><p class="first">Reload Apache configuration:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">sudo /usr/sbin/apache2ctl graceful</span>
+</pre></li>
+<li><p class="first">Test your application.</p>
+</li>
+<li><p class="first">Test the checker at <cite>http://&lt;application base&gt;/wsgi/check_collector?type=all</cite>.</p>
+</li>
+<li><p class="first">Commit your changes:</p>
+<pre class="highlight"><style type="text/css" scoped>span.prompt:before {
+  content: "$ ";
+}
+</style><span class="prompt">git commit -am <span class="s2">&quot;Update to GeoMapFish &lt;release&gt;&quot;</span></span>
+</pre></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Updating a GeoMapFish application</a><ul>
+<li><a class="reference internal" href="#user-the-easy-c2c-tool-experimantal">User the easy c2c tool (experimantal)</a></li>
+<li><a class="reference internal" href="#easy-updating-an-application-code-experimental">Easy updating an application code (experimental)</a></li>
+<li><a class="reference internal" href="#easy-upgrading-an-application-experimental">Easy upgrading an application (experimental)</a></li>
+<li><a class="reference internal" href="#updating-an-application-code">Updating an application code</a></li>
+<li><a class="reference internal" href="#updating-cgxp">Updating CGXP</a></li>
+<li><a class="reference internal" href="#updating-c2cgeoportal">Updating c2cgeoportal</a></li>
+<li><a class="reference internal" href="#test-and-commit">Test and commit</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="internationalization.html"
+                        title="previous chapter">Internationalization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="deploy.html"
+                        title="next chapter">Deploy the application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/update_application.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="deploy.html" title="Deploy the application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="internationalization.html" title="Internationalization"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

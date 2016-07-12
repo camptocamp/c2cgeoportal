@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Editing &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Administrator Guide" href="index.html" />
+    <link rel="next" title="Integrator Guide" href="../integrator/index.html" />
+    <link rel="prev" title="Administrate a c2cgeoportal application" href="administrate.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../integrator/index.html" title="Integrator Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="administrate.html" title="Administrate a c2cgeoportal application"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="editing">
+<span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
+<p>This section describes how to set up feature editing in c2cgeoportal
+applications.</p>
+<p>Just like most administrative tasks setting up editing in a c2cgeoportal
+application involves intervening in the database, through the c2cgeoportal
+administration interface.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>To be editable a layer should satisfy the following requirements:</p>
+<ol class="arabic">
+<li><p class="first">It should be accessible with WMS, and correctly configured in the
+mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><em>Mapfile configuration</em></a>.</p>
+</li>
+<li><p class="first">Its data should be in a PostGIS table, which should be in the
+application database. The PostGIS table can be in a separate
+schema though, which is even recommended.</p>
+</li>
+<li><p class="first">The PostGIS table should include a primary key with a sequence
+associated. Example:</p>
+<div class="highlight-python"><pre>db=# \d table;
+                     Table "public.table"
+    Column   |      Type   |                              Modifiers
+-------------+-------------+----------------------------------------------------------
+ id          | integer     | not null default nextval('public.table_id_seq'::regclass)</pre>
+</div>
+</li>
+<li><p class="first">The PostGIS table should include one geometry column only. You
+will get errors if the table has multiple geometry columns, even
+if one of them only is declared in PostGIS&#8217; <tt class="docutils literal"><span class="pre">geometry_columns</span></tt>
+table.</p>
+</li>
+<li><p class="first">The PostGIS table&#8217;s geometry column should be declared in PostGIS&#8217;
+<tt class="docutils literal"><span class="pre">geometry_columns</span></tt> table. c2cgeoportal indeed queries the
+<tt class="docutils literal"><span class="pre">geometry_columns</span></tt> table to get the information it needs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Creating a geometry column and populating <tt class="docutils literal"><span class="pre">geometry_columns</span></tt> is
+typically done using the <a class="reference external" href="http://postgis.net/docs/AddGeometryColumn.html">AddGeometryColumn function</a>.  The
+<a class="reference external" href="http://postgis.net/docs/Populate_Geometry_Columns.html">Populate_Geometry_Columns function</a> can also be
+useful for registering already created geometry columns in
+<tt class="docutils literal"><span class="pre">geometry_columns</span></tt>.</p>
+</div>
+</li>
+<li><p class="first">If the PostGIS table has a many-to-one relationship to another table
+(typically a dictionary table) there are additional requirements:</p>
+<ul class="simple">
+<li>The name of the foreign key column should end with <tt class="docutils literal"><span class="pre">_id</span></tt> (e.g.
+<tt class="docutils literal"><span class="pre">type_id</span></tt>). This is not strictly required, but recommended.</li>
+<li>The relationship&#8217;s target table should have two columns, a
+primary key column and a text column. The text column must
+be named <tt class="docutils literal"><span class="pre">name</span></tt>.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-or-making-layers-editable">
+<h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this headline">¶</a></h2>
+<p>The application&#8217;s layers are defined in the <tt class="docutils literal"><span class="pre">layer</span></tt> table, which is managed
+by selecting the <em>Layers</em> item in the admin interface&#8217;s menu.</p>
+<p>For a <em>layer</em> to be editable its <tt class="docutils literal"><span class="pre">geoTable</span></tt> field should be set. This field
+is the name of the PostGIS table containing the layer&#8217;s geographic data.  It is
+string of the form <tt class="docutils literal"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></tt>.  If <tt class="docutils literal"><span class="pre">schemaname</span></tt> is
+omitted the table is assumed to be in the <tt class="docutils literal"><span class="pre">public</span></tt> schema.  The label
+corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only layers embedded in a layergroup are detected as editable.</p>
+</div>
+</div>
+<div class="section" id="configuring-security">
+<h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this headline">¶</a></h2>
+<p>Editing the features of a layer implies to write changes in the database. To make
+sure that only authorized users may edit a feature, editable layers (including
+public layers) must be linked to a restriction area, used itself to specify the
+roles of authorized users.</p>
+<p>The restriction area should have its <tt class="docutils literal"><span class="pre">readwrite</span></tt> field set to <tt class="docutils literal"><span class="pre">true</span></tt> in the
+administration interface.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>By default a restriction areas has its <tt class="docutils literal"><span class="pre">readwrite</span></tt> field set to <tt class="docutils literal"><span class="pre">false</span></tt>.</li>
+<li>A restriction area whose <tt class="docutils literal"><span class="pre">readwrite</span></tt> field is <tt class="docutils literal"><span class="pre">true</span></tt> applies to both
+<tt class="docutils literal"><span class="pre">read</span></tt> and <tt class="docutils literal"><span class="pre">write</span></tt> operations.</li>
+</ul>
+</div>
+<p>Binding restriction areas and layers together can be done from either the
+<tt class="docutils literal"><span class="pre">Restriction</span> <span class="pre">Area</span></tt> objects or the <tt class="docutils literal"><span class="pre">Layer</span></tt> objects in the admin interface.
+Likewise for binding roles and restriction areas.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Editing</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#adding-or-making-layers-editable">Adding or making layers editable</a></li>
+<li><a class="reference internal" href="#configuring-security">Configuring security</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="administrate.html"
+                        title="previous chapter">Administrate a c2cgeoportal application</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../integrator/index.html"
+                        title="next chapter">Integrator Guide</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/administrator/editing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../integrator/index.html" title="Integrator Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="administrate.html" title="Administrate a c2cgeoportal application"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Administrate a c2cgeoportal application &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Administrator Guide" href="index.html" />
+    <link rel="next" title="Editing" href="editing.html" />
+    <link rel="prev" title="Mapfile configuration" href="mapfile.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="editing.html" title="Editing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mapfile.html" title="Mapfile configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="administrate-a-c2cgeoportal-application">
+<span id="administrator-administrate"></span><h1>Administrate a c2cgeoportal application<a class="headerlink" href="#administrate-a-c2cgeoportal-application" title="Permalink to this headline">¶</a></h1>
+<p>The administration interface is located at <tt class="docutils literal"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></tt>.</p>
+<p>Authentication for the administration interface is done through the main application interface. Role <tt class="docutils literal"><span class="pre">role_admin</span></tt> is
+required.</p>
+<p><em>To Be Done</em></p>
+<div class="section" id="layer">
+<h2>Layer<a class="headerlink" href="#layer" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>The layers in the admin interface has the following attributes:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">Name</span></tt>: the name of the WMS layer/group, or he WMTS layer.
+It also used throw OpenLayers.i18n to display the name on the layers tree.</li>
+<li><tt class="docutils literal"><span class="pre">Order</span></tt>: used to order the layers and group on the layer tree.</li>
+<li><tt class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></tt>: optional, with WMTS if it&#8217;s empty it will
+be get throw the capabilities.</li>
+<li><tt class="docutils literal"><span class="pre">Public</span></tt>: make the layer public, also it is accessible
+throw the <tt class="docutils literal"><span class="pre">Restriction</span> <span class="pre">areas</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">Visible</span></tt>: if it&#8217;s false the layer is just ignored.</li>
+<li><tt class="docutils literal"><span class="pre">Checked</span></tt>: the layer is checked by default.</li>
+<li><tt class="docutils literal"><span class="pre">Icon</span></tt>: icon on the layer tree.</li>
+<li><tt class="docutils literal"><span class="pre">KML</span> <span class="pre">3D</span></tt>: optional, URL to a KML to display it on the Google earth view.</li>
+<li><tt class="docutils literal"><span class="pre">Display</span> <span class="pre">legend</span></tt>: it checked the legend is display on the layer tree.</li>
+<li><tt class="docutils literal"><span class="pre">Legend</span> <span class="pre">image</span></tt>: URL to overwrite the default legend image.</li>
+<li><tt class="docutils literal"><span class="pre">Min/Max</span> <span class="pre">resolution</span></tt>: resolutions between which data are displayed by
+the given layer, used to zoom to visible scale, with WMS if it&#8217;s empty
+we get the values from the capabilities.</li>
+<li><tt class="docutils literal"><span class="pre">Disclaimer</span></tt>: optional, copyright of the layer, used by
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
+<li><tt class="docutils literal"><span class="pre">Identifier</span> <span class="pre">attribute</span> <span class="pre">field</span></tt>: field used to identify a feature from the
+layer, e.g.: &#8216;name&#8217;, used by
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/1.5/lib/plugins/FeaturesWindow.html">FeaturesWindow</a>.</li>
+<li><tt class="docutils literal"><span class="pre">Related</span> <span class="pre">Postgres</span> <span class="pre">table</span></tt>: the related postgres table,
+used by the <a class="reference internal" href="editing.html#administrator-editing"><em>Editing</em></a>.</li>
+<li><tt class="docutils literal"><span class="pre">Attributes</span> <span class="pre">to</span> <span class="pre">exclude</span></tt>: the list of attributes that shouldn&#8217;t appear in
+the <a class="reference internal" href="editing.html#administrator-editing"><em>Editing</em></a> so that they cannot be modified by end
+user.</li>
+<li><tt class="docutils literal"><span class="pre">Restrictions</span> <span class="pre">area</span></tt>: the areas throw witch the user can see the layer.</li>
+<li><tt class="docutils literal"><span class="pre">Parents</span></tt>: the groups and theme in witch the layer is.</li>
+</ul>
+</dd>
+<dt>On <tt class="docutils literal"><span class="pre">internal</span> <span class="pre">WMS</span></tt> layer we have the following specific attributes:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></tt>: the type of the images.</li>
+<li><tt class="docutils literal"><span class="pre">Style</span></tt>: the used style, can be empty.</li>
+<li><tt class="docutils literal"><span class="pre">Legend</span> <span class="pre">rule</span></tt>: the legend rule used to get the layer icon,
+if empty we use the <tt class="docutils literal"><span class="pre">Icon</span></tt>.</li>
+</ul>
+</dd>
+<dt>On <tt class="docutils literal"><span class="pre">external</span> <span class="pre">WMS</span></tt> layer we have the following specific attributes:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">Base</span> <span class="pre">URL</span></tt>: the base URL of the WMS server.</li>
+<li><tt class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></tt>: the type of the images.</li>
+<li><tt class="docutils literal"><span class="pre">Style</span></tt>: the used style, can be empty.</li>
+<li><tt class="docutils literal"><span class="pre">Legend</span> <span class="pre">rule</span></tt>: the legend rule used to get the layer icon,
+if empty we use the <tt class="docutils literal"><span class="pre">Icon</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></tt>: use the single tile mode.</li>
+</ul>
+</dd>
+<dt>On <tt class="docutils literal"><span class="pre">WMTS</span></tt> layer we have the following specific attributes:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">Base</span> <span class="pre">URL</span></tt>: the URL to the WMTS capabilities.</li>
+<li><tt class="docutils literal"><span class="pre">Style</span></tt>: the used style, if not present we use the default style.</li>
+<li><tt class="docutils literal"><span class="pre">Dimensions</span></tt>: a JSON string that gives the dimensions,
+e.g.: <tt class="docutils literal"><span class="pre">{</span> <span class="pre">&quot;YEAR&quot;:</span> <span class="pre">&quot;2012&quot;</span> <span class="pre">}</span></tt>, if not provided default values are used.</li>
+<li><tt class="docutils literal"><span class="pre">Matrix</span> <span class="pre">set</span></tt>: the used matrix set, if there only one matrix set
+in the capabilities it can be empty.</li>
+<li><tt class="docutils literal"><span class="pre">WMS</span> <span class="pre">server</span> <span class="pre">URL</span></tt>: optional, URL to a WMS server to use for printing
+and querying. The URL to the internal WMS is used if this field is not
+specified.</li>
+<li><tt class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></tt>: optional, a comma-separated list of WMS layers
+used for querying.</li>
+<li><tt class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></tt>: optional, a comma-separated list of layers used for
+printing, and for querying if <tt class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></tt> is not set.</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can use both <tt class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></tt> and <tt class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></tt> if you want that
+different sets of WMS layers are used for printing and querying.
+If you want to define <tt class="docutils literal"><span class="pre">WMS</span> <span class="pre">layers</span></tt> but no <tt class="docutils literal"><span class="pre">Query</span> <span class="pre">layers</span></tt>,
+set it to <tt class="docutils literal"><span class="pre">[]</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="layergroup">
+<h2>LayerGroup<a class="headerlink" href="#layergroup" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Name</span></tt>: used throw OpenLayers.i18n to display the name on the layers tree.</li>
+<li><tt class="docutils literal"><span class="pre">Order</span></tt>: used to order the layers and group on the layer tree.</li>
+<li><tt class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></tt>: optional.</li>
+<li><tt class="docutils literal"><span class="pre">Expanded</span></tt>: is expanded on the layer tree by default.</li>
+<li><tt class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></tt>: if true it can include only <tt class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></tt> layers,
+if false it can include only <tt class="docutils literal"><span class="pre">external</span> <span class="pre">WMS</span></tt> or <tt class="docutils literal"><span class="pre">WMTS</span></tt> layers.</li>
+<li><tt class="docutils literal"><span class="pre">Group</span> <span class="pre">of</span> <span class="pre">base</span> <span class="pre">layers</span></tt>: if not <tt class="docutils literal"><span class="pre">Internal</span> <span class="pre">WMS</span></tt> replace radio button by check box.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="add-users">
+<h2>Add users<a class="headerlink" href="#add-users" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Administrate a c2cgeoportal application</a><ul>
+<li><a class="reference internal" href="#layer">Layer</a></li>
+<li><a class="reference internal" href="#layergroup">LayerGroup</a></li>
+<li><a class="reference internal" href="#add-users">Add users</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mapfile.html"
+                        title="previous chapter">Mapfile configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="editing.html"
+                        title="next chapter">Editing</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/administrator/administrate.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="editing.html" title="Editing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mapfile.html" title="Mapfile configuration"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

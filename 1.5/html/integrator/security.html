@@ -1,0 +1,155 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Security &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="PDF Reporting" href="pdfreport.html" />
+    <link rel="prev" title="Intranet Users Detection" href="intranet.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pdfreport.html" title="PDF Reporting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intranet.html" title="Intranet Users Detection"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="security">
+<span id="integrator-security"></span><h1>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="enable-disable-wms-getcapability">
+<h2>Enable / Disable WMS GetCapability<a class="headerlink" href="#enable-disable-wms-getcapability" title="Permalink to this headline">¶</a></h2>
+<p>Set <tt class="docutils literal"><span class="pre">hide_capabilities</span></tt> to <tt class="docutils literal"><span class="pre">true</span></tt> in your <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> to disable
+the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).</p>
+<p>Default: <tt class="docutils literal"><span class="pre">false</span></tt></p>
+</div>
+<div class="section" id="enable-disable-layer-s-in-the-wms-getcapability">
+<h2>Enable / Disable layer(s) in the WMS GetCapability<a class="headerlink" href="#enable-disable-layer-s-in-the-wms-getcapability" title="Permalink to this headline">¶</a></h2>
+<p>To hide protected layers from the WMS GetCapabilities, set <tt class="docutils literal"><span class="pre">use_security_metadata</span></tt> to <tt class="docutils literal"><span class="pre">true</span></tt> in your <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>.</p>
+<p>Be careful that too many protected layers will cause an error because Apache has a
+8190 characters hard limit for GET query length.</p>
+<p>Default: <tt class="docutils literal"><span class="pre">false</span></tt></p>
+</div>
+<div class="section" id="enable-disable-the-admin-interface">
+<h2>Enable / Disable the admin interface<a class="headerlink" href="#enable-disable-the-admin-interface" title="Permalink to this headline">¶</a></h2>
+<p>To disable the admin interface, set <tt class="docutils literal"><span class="pre">enable_admin_interface</span></tt> to <tt class="docutils literal"><span class="pre">false</span></tt>
+in the <tt class="docutils literal"><span class="pre">[vars]</span></tt> section of your <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> file.</p>
+<p>Default: <tt class="docutils literal"><span class="pre">true</span></tt></p>
+</div>
+<div class="section" id="enable-disable-the-ogc-proxy">
+<h2>Enable / Disable the OGC proxy<a class="headerlink" href="#enable-disable-the-ogc-proxy" title="Permalink to this headline">¶</a></h2>
+<p>To disable the OGC proxy, set <tt class="docutils literal"><span class="pre">ogcproxy_enable</span></tt> to <tt class="docutils literal"><span class="pre">false</span></tt> in your <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>.</p>
+<p>Default: <tt class="docutils literal"><span class="pre">true</span></tt></p>
+<p>In the <tt class="docutils literal"><span class="pre">viewer.js</span></tt> files you should also remove the <tt class="docutils literal"><span class="pre">OpenLayers.ProxyHost</span></tt> configuration.</p>
+<p>This implies that all external WMS services (from the database and from the WMS browser) should
+have the CORS headers (<a class="reference external" href="http://enable-cors.org/server.html">enable-cors.org</a>).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Security</a><ul>
+<li><a class="reference internal" href="#enable-disable-wms-getcapability">Enable / Disable WMS GetCapability</a></li>
+<li><a class="reference internal" href="#enable-disable-layer-s-in-the-wms-getcapability">Enable / Disable layer(s) in the WMS GetCapability</a></li>
+<li><a class="reference internal" href="#enable-disable-the-admin-interface">Enable / Disable the admin interface</a></li>
+<li><a class="reference internal" href="#enable-disable-the-ogc-proxy">Enable / Disable the OGC proxy</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intranet.html"
+                        title="previous chapter">Intranet Users Detection</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pdfreport.html"
+                        title="next chapter">PDF Reporting</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/security.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pdfreport.html" title="PDF Reporting"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intranet.html" title="Intranet Users Detection"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" >Additional features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

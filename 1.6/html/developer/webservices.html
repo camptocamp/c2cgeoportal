@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Webservices documentation &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Cache management" href="cache.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="webservices-documentation">
+<span id="developer-webservices"></span><h1>Webservices documentation<a class="headerlink" href="#webservices-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="theme-webservice">
+<h2>Theme webservice<a class="headerlink" href="#theme-webservice" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../themes</span></code></p>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">version</span></code>: <code class="docutils literal"><span class="pre">1</span></code> or <code class="docutils literal"><span class="pre">2</span></code>, API version, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">sets</span></code>: kind of data we want to get, can be <code class="docutils literal"><span class="pre">all</span></code>, <code class="docutils literal"><span class="pre">themes</span></code>, <code class="docutils literal"><span class="pre">group</span></code>
+or <code class="docutils literal"><span class="pre">background_layers</span></code>, default is <code class="docutils literal"><span class="pre">all</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">background</span></code>: parent group of background layers to get.</li>
+<li><code class="docutils literal"><span class="pre">group</span></code>: the group to get.</li>
+<li><code class="docutils literal"><span class="pre">catalog</span></code>: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>, different error reporting for catalog mode, default is <code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">min_levels</span></code>: minimum number of group levels that&#8217;s required, default is <code class="docutils literal"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">role</span></code>: role name, not used by the server but it&#8217;s required for the cache management.</li>
+</ul>
+</div>
+<div class="section" id="result-in-v2">
+<h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
+<p>Base for all possible results:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">themes</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="n">group</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">background_layers</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Theme:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">icon_url</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">values</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Group:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Layer:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;internal WMS/external WMS/WMTS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Internal WMS Layer:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">wms_layers</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;image_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;value/range&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">year</span><span class="p">,</span> <span class="n">mounth</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">secound</span><span class="p">],</span>
+        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;year/mounth/day/secound&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>External WMS Layer:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">wms_server_url</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">wms_layers</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;image_type&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;is_single_tile&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;value/range&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">year</span><span class="p">,</span> <span class="n">mounth</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">secound</span><span class="p">],</span>
+        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;year/mounth/day/secound&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>WMTS layer:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">wmts_capabilities_url</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">wmts_layer</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;matrix_set&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">matrix_set</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="login">
+<h3>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
+<p>Used to login in the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../login</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+<li><code class="docutils literal"><span class="pre">password</span></code></li>
+<li><code class="docutils literal"><span class="pre">came_from</span></code> the URL where we will redirect after a success</li>
+</ul>
+</div>
+<div class="section" id="logout">
+<h3>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h3>
+<p>Used to log out of the application.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../logout</span></code></p>
+</div>
+<div class="section" id="change-password">
+<h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
+<p>Used to change the user password.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../loginchange</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">newPassword</span></code></li>
+<li><code class="docutils literal"><span class="pre">confirmNewPassword</span></code></li>
+</ul>
+</div>
+<div class="section" id="generate-a-new-password">
+<h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
+<p>Used when the user lost his password.</p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">login</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="full-text-search">
+<h2>Full Text Search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../fulltextsearch</span></code></p>
+<div class="section" id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">query</span></code>: Text to search.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Name of the callback function.</li>
+</ul>
+</div>
+<div class="section" id="result">
+<h3>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h3>
+<p>A GeoJSON of a feature collection with the properties:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">label</span></code>: Text to display.</li>
+<li><code class="docutils literal"><span class="pre">layer_name</span></code>: Layer to display.</li>
+<li><code class="docutils literal"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span class="std std-ref">Params</span></a> to set.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="raster">
+<h2>Raster<a class="headerlink" href="#raster" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../raster</span></code></p>
+<div class="section" id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">lon</span></code>: The longitude.</li>
+<li><code class="docutils literal"><span class="pre">lat</span></code>: The latitude.</li>
+<li><code class="docutils literal"><span class="pre">layers</span></code>: The raster layers we want to query.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="digital-elevation-model">
+<h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Permalink to this headline">¶</a></h2>
+<p>URL: <code class="docutils literal"><span class="pre">.../profile.csv</span></code> or <code class="docutils literal"><span class="pre">.../profile.json</span></code></p>
+<p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
+<div class="section" id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</li>
+<li><code class="docutils literal"><span class="pre">layers</span></code>: On witch layers, default to all.</li>
+<li><code class="docutils literal"><span class="pre">nbPoints</span></code>: Maximum number of points.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Result<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>A JSON or a CSV file, with &#8216;dist&#8217;, &#8216;value&#8217;, &#8216;x&#8217;, &#8216;y&#8217;.</p>
+</div>
+</div>
+<div class="section" id="shortener">
+<h2>Shortener<a class="headerlink" href="#shortener" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../short/create</span></code></p>
+<p>Method <code class="docutils literal"><span class="pre">POST</span></code></p>
+<div class="section" id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">url</span></code>: URL to shorten.</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: Email address to send a message to.</li>
+<li><code class="docutils literal"><span class="pre">callback</span></code>: Function name to do the callback.</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h4>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="get">
+<h3>Get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">short/&lt;ref&gt;</span></code></p>
+<p>Result: code: 302, redirect to the original URL.</p>
+</div>
+</div>
+<div class="section" id="echo">
+<h2>Echo<a class="headerlink" href="#echo" title="Permalink to this headline">¶</a></h2>
+<p>This service returns a file containing data submitted in the POST request as the &#8220;file&#8221; field.
+This is used to be able to get the data in the client from a file select by the user.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../echo</span></code></p>
+<div class="section" id="id8">
+<h3>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="export-csv">
+<h2>Export CSV<a class="headerlink" href="#export-csv" title="Permalink to this headline">¶</a></h2>
+<p>This service returns a file containing data submitted in the POST request as the &#8220;csv&#8221; field.
+This is used to be able to get as a download file csv data build on the client.</p>
+<p>URL: <code class="docutils literal"><span class="pre">.../csv</span></code></p>
+<div class="section" id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">csv_extension</span></code>: File extension, defaults to &#8216;csv&#8217;.</li>
+<li><code class="docutils literal"><span class="pre">csv_encoding</span></code>: Character encoding, defaults to &#8216;UTF-8&#8217;,</li>
+<li><code class="docutils literal"><span class="pre">name</span></code>: File name without extension set in the &#8216;Content-Disposition&#8217;, defaults to &#8216;export&#8217;.</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>Result<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>The &#8216;Content-Type&#8217; header is &#8216;text/csv&#8217;,
+and the data contains the given &#8216;csv&#8217; data.</p>
+</div>
+</div>
+<div class="section" id="geometry-processing">
+<h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Permalink to this headline">¶</a></h2>
+<p>This service provides geometry processing (currently only one)</p>
+<div class="section" id="difference">
+<h3>Difference<a class="headerlink" href="#difference" title="Permalink to this headline">¶</a></h3>
+<p>URL: <code class="docutils literal"><span class="pre">.../difference</span></code></p>
+<p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
+<p>Data:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">&lt;geomA&gt;</span></code> is a GeoJSON geometry to extrude,
+and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></code> is the geometry used to do the extrude.</p>
+<p>Result: the new <code class="docutils literal"><span class="pre">GeoJSON</span></code> geometry.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Webservices documentation</a><ul>
+<li><a class="reference internal" href="#theme-webservice">Theme webservice</a><ul>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#result-in-v2">Result in v2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#login">Login</a></li>
+<li><a class="reference internal" href="#logout">Logout</a></li>
+<li><a class="reference internal" href="#change-password">Change password</a></li>
+<li><a class="reference internal" href="#generate-a-new-password">Generate a new password</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#full-text-search">Full Text Search</a><ul>
+<li><a class="reference internal" href="#id1">Parameters</a></li>
+<li><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#raster">Raster</a><ul>
+<li><a class="reference internal" href="#id2">Parameters</a></li>
+<li><a class="reference internal" href="#id3">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#digital-elevation-model">Digital Elevation Model</a><ul>
+<li><a class="reference internal" href="#id4">Parameters</a></li>
+<li><a class="reference internal" href="#id5">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shortener">Shortener</a><ul>
+<li><a class="reference internal" href="#create">Create</a><ul>
+<li><a class="reference internal" href="#id6">Parameters</a></li>
+<li><a class="reference internal" href="#id7">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#get">Get</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#echo">Echo</a><ul>
+<li><a class="reference internal" href="#id8">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export-csv">Export CSV</a><ul>
+<li><a class="reference internal" href="#id9">Parameters</a></li>
+<li><a class="reference internal" href="#id10">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geometry-processing">Geometry processing</a><ul>
+<li><a class="reference internal" href="#difference">Difference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="debugging.html" title="previous chapter">Debugging</a></li>
+      <li>Next: <a href="cache.html" title="next chapter">Cache management</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/webservices.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/developer/webservices.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

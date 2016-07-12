@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Client-side development &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Debugging" href="debugging.html" />
+    <link rel="prev" title="Server-side development" href="server_side.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="debugging.html" title="Debugging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="server_side.html" title="Server-side development"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="client-side-development">
+<span id="developer-client-side"></span><h1>Client-side development<a class="headerlink" href="#client-side-development" title="Permalink to this headline">¶</a></h1>
+<p>The UI of c2cgeoportal applications is built from components of the CGXP
+JavaScript library. This library is on GitHub:
+<a class="reference external" href="https://github.com/camptocamp/cgxp">https://github.com/camptocamp/cgxp</a>.</p>
+<div class="section" id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>To run the CGXP tests start by cloning the repository, and updating its
+submodules (for GXP, OpenLayers, etc.):</p>
+<div class="highlight-python"><pre>git clone https://github.com/camptocamp/cgxp
+cd cgxp
+git submodule update --init</pre>
+</div>
+<p>Now open the Jasmine Spec Runner file (<tt class="docutils literal"><span class="pre">core/tests/SpecRunner.html</span></tt>) in your
+browser. The tests should automatically run (and pass!).</p>
+</div>
+<div class="section" id="adding-tests">
+<h2>Adding tests<a class="headerlink" href="#adding-tests" title="Permalink to this headline">¶</a></h2>
+<p>The test suite is located in the <tt class="docutils literal"><span class="pre">core/tests</span></tt> directory.</p>
+<p>Test files (known as spec files in the Jasmine jargon) are located in the
+<tt class="docutils literal"><span class="pre">spec</span></tt> subdirectory. For example, to add tests for a new plugin whose js file
+is <tt class="docutils literal"><span class="pre">core/src/script/CGXP/plugins/Foo.js</span></tt>, a spec file named <tt class="docutils literal"><span class="pre">Foo.js</span></tt> is to
+be added in <tt class="docutils literal"><span class="pre">core/tests/spec/script/CGXP/plugins/</span></tt>.</p>
+<p>Spec files are referenced using <tt class="docutils literal"><span class="pre">&lt;script&gt;</span></tt> tags <tt class="docutils literal"><span class="pre">SpecRunner.html</span></tt>.</p>
+<div class="section" id="coding-style">
+<h3>Coding style<a class="headerlink" href="#coding-style" title="Permalink to this headline">¶</a></h3>
+<p>Lines should not exceed 80 characters.</p>
+</div>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Major dependencies docs:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.camptocamp.net/cgxp/">CGXP</a></li>
+<li><a class="reference external" href="http://gxp.opengeo.org/master/doc/">GXP</a></li>
+<li><a class="reference external" href="http://dev.geoext.org/geoext/docs/lib/">GeoExt</a></li>
+<li><a class="reference external" href="http://dev.openlayers.org/apidocs/files/OpenLayers-js.html">OpenLayers</a></li>
+<li><a class="reference external" href="http://docs.sencha.com/ext-js/3-4/">Ext JS</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Client-side development</a><ul>
+<li><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li><a class="reference internal" href="#adding-tests">Adding tests</a><ul>
+<li><a class="reference internal" href="#coding-style">Coding style</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="server_side.html"
+                        title="previous chapter">Server-side development</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="debugging.html"
+                        title="next chapter">Debugging</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/developer/client_side.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="debugging.html" title="Debugging"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="server_side.html" title="Server-side development"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Developer Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

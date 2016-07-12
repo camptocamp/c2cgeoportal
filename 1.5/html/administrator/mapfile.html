@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mapfile configuration &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Administrator Guide" href="index.html" />
+    <link rel="next" title="Administrate a c2cgeoportal application" href="administrate.html" />
+    <link rel="prev" title="Administrator Guide" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="administrate.html" title="Administrate a c2cgeoportal application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Administrator Guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mapfile-configuration">
+<span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this headline">¶</a></h1>
+<p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><em>Administrator Guide</em></a>) the application
+administrator manages the application through the database, and the
+application&#8217;s MapServer mapfile.</p>
+<p>The application&#8217;s mapfile is where WMS and WFS layers are defined.  WMS is used
+for the map (<tt class="docutils literal"><span class="pre">WMS</span> <span class="pre">GetMap</span></tt>), and for the <tt class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></tt> feature (<tt class="docutils literal"><span class="pre">WMS</span>
+<span class="pre">GetFeatureInfo</span></tt>). WFS is used for the <tt class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></tt> and <tt class="docutils literal"><span class="pre">query</span> <span class="pre">builder</span></tt>
+features (<tt class="docutils literal"><span class="pre">WFS</span> <span class="pre">GetFeature</span></tt>).</p>
+<p>The application&#8217;s mapfile is located in the <tt class="docutils literal"><span class="pre">mapserver</span></tt> directory, it is
+commonly named <tt class="docutils literal"><span class="pre">c2cgeoportal.map.in</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The application&#8217;s mapfile is a <tt class="docutils literal"><span class="pre">.in</span></tt> file because it contains variables.
+These variables are substituted when the <tt class="docutils literal"><span class="pre">buildout</span></tt> install command is
+executed.</p>
+</div>
+<p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
+and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Please note that, because of c2cgeoportal&#8217;s caching system, each time you
+update the mapfile configuration, you have to reload apache.</p>
+<p class="last">(on debian system, you can do: <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">/usr/sbin/apache2ctl</span> <span class="pre">graceful</span></tt>).</p>
+</div>
+<div class="section" id="print">
+<h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
+<p>MapFish Print does single tile requests to the WMS server. For that reason we
+need to use a relatively large value for the <tt class="docutils literal"><span class="pre">MAXSIZE</span></tt> parameter (of the
+<tt class="docutils literal"><span class="pre">MAP</span></tt> section); 5000 for example.</p>
+<p>MapFish Print also supports map rotations. This implies specific requirements:</p>
+<ul>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">MAP</span></tt> and all the <tt class="docutils literal"><span class="pre">LAYERS</span></tt> should have a <tt class="docutils literal"><span class="pre">PROJECTION</span></tt>. For
+example:</p>
+<div class="highlight-python"><pre>PROJECTION
+    "init=epsg:21781"
+END</pre>
+</div>
+</li>
+<li><p class="first">When rotating the map (with a non-zero value for <tt class="docutils literal"><span class="pre">ANGLE</span></tt>) there are
+important things to be aware of. Make sure to read the notes for the
+<tt class="docutils literal"><span class="pre">ANGLE</span></tt> parameter on <a class="reference external" href="http://mapserver.org/mapfile/map.html">http://mapserver.org/mapfile/map.html</a>.</p>
+</li>
+</ul>
+<p>MapFish Print uses a resolution of 254 dpi (instead of 72 dpi as used for the
+web application on the screen). Using <tt class="docutils literal"><span class="pre">LAYER</span></tt>/<tt class="docutils literal"><span class="pre">SYMBOLSCALEDENOM</span></tt> is
+therefore not recommended. <tt class="docutils literal"><span class="pre">LABEL</span></tt>/<tt class="docutils literal"><span class="pre">MINSIZE</span></tt> and <tt class="docutils literal"><span class="pre">LABEL</span></tt>/<tt class="docutils literal"><span class="pre">MAXSIZE</span></tt>
+should be used when necessary only, as these parameters do not take the <tt class="docutils literal"><span class="pre">MAP</span></tt>
+resolution into account.</p>
+</div>
+<div class="section" id="wfs-getfeature">
+<h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this headline">¶</a></h2>
+<p>Layers involved in the <tt class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></tt> and <tt class="docutils literal"><span class="pre">query</span> <span class="pre">builder</span></tt> features should
+support WFS GetFeature. To support WFS GetFeature a <tt class="docutils literal"><span class="pre">LAYER</span></tt> should define
+a template:</p>
+<div class="highlight-python"><pre>TEMPLATE fooOnlyForWFSGetFeature</pre>
+</div>
+<p>This is a fake template, but this is required.</p>
+<p>The <tt class="docutils literal"><span class="pre">LAYER</span></tt> should also define metadata, with a <tt class="docutils literal"><span class="pre">METADATA</span></tt> section. For
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
+<span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
+<span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">gml_include_items</span></tt></p>
+<blockquote>
+<div>This is a comma-delimited list of attribute names, it specifies the list of
+attributes that should be returned in GML responses. <tt class="docutils literal"><span class="pre">all</span></tt> means that all
+the attributes of the layer should be returned.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">gml_types</span></tt></p>
+<blockquote>
+<div>Always set this to <tt class="docutils literal"><span class="pre">auto</span></tt>. This means that the layer&#8217;s field type
+information is obtained from the input feature driver (OGC).</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">gml_featureid</span></tt></p>
+<blockquote>
+<div>References the name of layer&#8217;s primary key column. Setting this is mandatory
+for <tt class="docutils literal"><span class="pre">GetFeature</span></tt> request including <tt class="docutils literal"><span class="pre">ogc:FeatureId</span></tt> filters. Always set
+it. (This is required for the <a class="reference internal" href="../integrator/api.html#integrator-api"><em>JavaScript API</em></a>.)</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">wfs_enable_request</span></tt></p>
+<blockquote>
+<div>Space separated list of requests to enable. Use <tt class="docutils literal"><span class="pre">*</span></tt>.</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The geometry columns of layers involved in <tt class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></tt> should have the
+same name. By default the WFS GetFeatue CGXP plugin
+(<tt class="docutils literal"><span class="pre">cgxp_wfsgetfeature</span></tt>) assumes the name is <tt class="docutils literal"><span class="pre">geom</span></tt>, but the plugin
+can be configured to use a different name.</p>
+</div>
+<p>In contrast to WMS GetFeatureInfo, WFS GetFeature supports <tt class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></tt> as
+well as <tt class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></tt> (i.e. drawing a box and getting information about the
+features with that box). However, it is to be noted that WFS GetFeature may
+return features that are not visible at the current resolution of the map.
+This is because a limitation in MapServer, where <tt class="docutils literal"><span class="pre">MINSCALE</span></tt>/<tt class="docutils literal"><span class="pre">MAXSCALE</span></tt>
+values defined in the layer&#8217;s classes (<tt class="docutils literal"><span class="pre">CLASS</span></tt>) have no effect.</p>
+</div>
+<div class="section" id="wms-getfeatureinfo">
+<h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this headline">¶</a></h2>
+<p>Layers involved in the <tt class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></tt> feature should support WMS
+GetFeatureInfo.</p>
+<p>To support WMS GetFeatureInfo a <tt class="docutils literal"><span class="pre">LAYER</span></tt> should define a template:</p>
+<div class="highlight-python"><pre>TEMPLATE fooOnlyForWMSGetFeatureInfo</pre>
+</div>
+<p>As for WFS GetFeature, this is a fake template, but it is required.</p>
+<p>The <tt class="docutils literal"><span class="pre">gml_include_items</span></tt>, <tt class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></tt> and <tt class="docutils literal"><span class="pre">gml_geometries</span></tt>
+<em>METADATA</em> variables should also be defined in the <tt class="docutils literal"><span class="pre">LAYER</span></tt>. For
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
+<span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">gml_include_items</span></tt></p>
+<blockquote>
+<div>See above.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">gml_geometries</span></tt></p>
+<blockquote>
+<div>This is a string specifying the name used for geometry elements in
+GetFeatureInfo (GML) responses. This property, and <tt class="docutils literal"><span class="pre">gml_[name]_type</span></tt>,
+should be set for the GetFeatureInfo responses to include the features&#8217;
+geometries instead of bboxes.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></tt></p>
+<blockquote>
+<div>This specifies the type of a geometry column. Specifying this property is
+necessary if geometries, instead of bboxes should be returned in
+GetFeatureInfo (GML) responses. <tt class="docutils literal"><span class="pre">[geometry</span> <span class="pre">name]</span></tt> should be replaced the string set
+with the <tt class="docutils literal"><span class="pre">gml_geometries</span></tt>. For example, if <tt class="docutils literal"><span class="pre">geom_geometries</span></tt> is set to
+<tt class="docutils literal"><span class="pre">the_geom</span></tt> then <tt class="docutils literal"><span class="pre">gml_the_geom_type</span></tt> should be used.
+The possible values are <tt class="docutils literal"><span class="pre">point</span></tt>, <tt class="docutils literal"><span class="pre">multipoint</span></tt>, <tt class="docutils literal"><span class="pre">line</span></tt>, <tt class="docutils literal"><span class="pre">multiline</span></tt>,
+<tt class="docutils literal"><span class="pre">polygon</span></tt>, <tt class="docutils literal"><span class="pre">multipolygon</span></tt>, if you don&#8217;t set the right type
+for multi geometries only the first will be visible on the map.
+See also <a class="reference external" href="http://mapserver.org/ogc/wms_server.html#index-71">gml_[geometry name]_type</a>.</div></blockquote>
+<p>See the <a class="reference external" href="http://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
+</div>
+<div class="section" id="restricted-layer">
+<h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this headline">¶</a></h2>
+<p>The restricted layers work only with postgres data.  All layer defined as
+restricted in the mapfile should be defined as well in the admin interface
+and vice versa.</p>
+<div class="section" id="with-a-restrictionarea-area">
+<h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
+<p>A RestrictionArea is used to restricted the layer displaying to a given area.
+This area is specified in the administration interface while defining the
+<tt class="docutils literal"><span class="pre">RestrictionArea</span></tt> element.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Using an restriction area on a big layer or defining a too complex area
+may slow down the application.</p>
+</div>
+<p>To define a restricted layer in the mapfile the <tt class="docutils literal"><span class="pre">DATA</span></tt> property of the
+<tt class="docutils literal"><span class="pre">LAYER</span></tt> should look like this:</p>
+<div class="highlight-python"><pre>DATA "the_geom FROM
+      (SELECT
+         geo.*
+       FROM
+         &lt;schema&gt;.&lt;table&gt; AS geo
+       WHERE
+         ST_Contains(
+           (${vars:mapfile_data_subselect} '&lt;layername&gt;'),
+           ST_SetSRID(geo.&lt;the_geom&gt;, 21781)
+         )
+      ) as foo using unique id using srid=21781"</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">&lt;schema&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;table&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;layername&gt;</span></tt> and <tt class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></tt> need to be
+replaced as appropriate. <tt class="docutils literal"><span class="pre">&lt;table&gt;</span></tt> is the name of the PostGIS table including
+the geographic data for this layer. <tt class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></tt> is the name of the table&#8217;s
+geometry column. <tt class="docutils literal"><span class="pre">&lt;schema&gt;</span></tt> is the name of the schema including the table.
+<tt class="docutils literal"><span class="pre">&lt;layer_name&gt;</span></tt> can be either the layer NAME or the layer GROUP, depending on
+what&#8217;s configured in the admin interface for the layer.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The DATA example above is developed on several lines to make it
+easily readable in this documentation. However please note that Mapserver
+requires that this directive is contained on a single line.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In some cases you can have geometries that overlap the restriction
+area. Theses features won&#8217;t be displayed as they are not in the area (ie not
+<em>contained</em>). <em>st_intersects</em> or other operator could be used instead of the
+<em>st_contains</em> operator.</p>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">${vars:mapfile_data_subselect}</span></tt> variable is defined in the Buildout
+configuration file (<tt class="docutils literal"><span class="pre">CONST_buildout.cfg</span></tt>). Its goal is to simplify the
+writing of the mapfile. It is defined as follows:</p>
+<div class="highlight-python"><pre>SELECT
+  ST_Collect(ra.area)
+FROM
+  main.restrictionarea AS ra,
+  main.role_restrictionarea AS rra,
+  main.layer_restrictionarea AS lra,
+  main.treeitem AS la
+WHERE
+  rra.role_id = %role_id%
+AND
+  rra.restrictionarea_id = ra.id
+AND
+  lra.restrictionarea_id = ra.id
+AND
+  lra.layer_id = la.id
+AND
+  la.name =</pre>
+</div>
+</div>
+<div class="section" id="without-restriction-on-the-restrictionarea-area">
+<h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
+<p>If we don&#8217;t need to restrict on an area we can use the following
+<tt class="docutils literal"><span class="pre">DATA</span></tt> property of the <tt class="docutils literal"><span class="pre">LAYER</span></tt>:</p>
+<div class="highlight-python"><pre>DATA "the_geom FROM (
+    SELECT
+        geo.*
+    FROM
+        &lt;schema&gt;.&lt;table&gt; AS geo
+    WHERE (
+        %role_id% IN (
+            ${mapfile_data_noarea_subselect} '&lt;layername&gt;'
+        )
+    )
+) AS foo USING UNIQUE id USING srid=21781"</pre>
+</div>
+<p>Then you don&#8217;t need to define an area in the admin interface.</p>
+<p>The <tt class="docutils literal"><span class="pre">${vars:mapfile_data_noarea_subselect}</span></tt> is defined as follows:</p>
+<div class="highlight-python"><pre>SELECT
+    rra.role_id
+FROM
+    main.restrictionarea AS ra,
+    main.role_restrictionarea AS rra,
+    main.layer_restrictionarea AS lra,
+    main.treeitem AS la
+WHERE
+    rra.restrictionarea_id = ra.id
+AND
+    lra.restrictionarea_id = ra.id
+AND
+    lra.layer_id = la.id
+AND
+    la.name =</pre>
+</div>
+</div>
+<div class="section" id="metadata-and-filename">
+<h3>Metadata and filename<a class="headerlink" href="#metadata-and-filename" title="Permalink to this headline">¶</a></h3>
+<p>It is required to have the following in the <tt class="docutils literal"><span class="pre">METADATA</span></tt> section of
+the <tt class="docutils literal"><span class="pre">LAYER</span></tt>:</p>
+<div class="highlight-python"><pre>${mapserver_layer_metadata}</pre>
+</div>
+<p>This variable is defined in the Buildout configuration file as follows:</p>
+<div class="highlight-python"><pre>mapserver_layer_metadata =
+    "default_role_id" "-1"
+    "role_id_validation_pattern" "^-?[0-9]*$$"</pre>
+</div>
+<p>The mapfile should be a <tt class="docutils literal"><span class="pre">.map.in</span></tt> file, for the Buildout variable to be
+substituted at Buildout execution time.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Using Mapserver 6.4 and above we need to add a <tt class="docutils literal"><span class="pre">mapserver_layer_validation</span></tt> placed in
+the <tt class="docutils literal"><span class="pre">VALIDATION</span></tt> section.</p>
+</div>
+</div>
+</div>
+<div class="section" id="variable-substitution">
+<h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to adapt some values in the mapfile according to the user&#8217;s role
+by using variable substitution. For instance to hide some layer objects
+attributes. The list of parameters that support variable substitution is
+available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
+<p>To define variables, edit the matching <tt class="docutils literal"><span class="pre">MAP</span></tt>/<tt class="docutils literal"><span class="pre">LAYER</span></tt>/<tt class="docutils literal"><span class="pre">METADATA</span></tt>
+section in the mapfile and add:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
+<span class="s2">&quot;s_&lt;variable&gt;_validation_pattern&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">validation_pattern</span></tt> is a regular expression used to validate the
+argument. For example if you only want lowercase characters and commas,
+use <tt class="docutils literal"><span class="pre">^[a-z,]*$$</span></tt> (the double &#8216;$&#8217; is needed since we are
+in a <tt class="docutils literal"><span class="pre">.in</span></tt> file).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For MapServer 6.4.0 and above, the default value and the pattern definition
+are placed in the VALIDATION block instead of the METADATA one.
+The validation pattern uses a slightly different metadata name:</p>
+<div class="last highlight-python"><pre>METADATA
+    "default_s_&lt;variable&gt;" "&lt;default_value&gt;"
+    "s_&lt;variable&gt;" "&lt;validation_pattern&gt;"
+END</pre>
+</div>
+</div>
+<p>Now in <tt class="docutils literal"><span class="pre">LAYER</span></tt> place <tt class="docutils literal"><span class="pre">%s_&lt;variable&gt;%</span></tt> where you want to
+insert the variable value.</p>
+<p>Then in the administration interface, create a <tt class="docutils literal"><span class="pre">functionality</span></tt> named
+<tt class="docutils literal"><span class="pre">mapserver_substitution</span></tt> with the value: <tt class="docutils literal"><span class="pre">&lt;variable&gt;=&lt;value&gt;</span></tt>.</p>
+<p>Please note that we cannot use substitution in the <tt class="docutils literal"><span class="pre">MATADATA</span></tt> values.
+As a result, if you would like to adapt the list of attributes returned in a
+WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
+listed in the <tt class="docutils literal"><span class="pre">DATA</span></tt> section. For instance:</p>
+<div class="highlight-python"><pre>LAYER
+    ...
+    DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=21781"
+    METADATA
+        ...
+        "gml_exclude_items" "type,gid"
+        "gml_include_items" "all"
+
+        "default_s_columns" "t.name"
+        "s_columns_validation_pattern" "^[a-z,._]*$$"
+    END
+    CLASS
+        EXPRESSION ([type]=1)
+        ...
+    END
+    ...
+END</pre>
+</div>
+<p>Then add a <tt class="docutils literal"><span class="pre">mapserver_substitution</span></tt> functionality in the administration
+interface with for instance the following value for the given role:
+<tt class="docutils literal"><span class="pre">columns=t.private</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We also be able to use the <tt class="docutils literal"><span class="pre">role_id</span></tt> and <tt class="docutils literal"><span class="pre">user_id</span></tt> as
+variable substitution, but they are not avalable for cached query like:
+<tt class="docutils literal"><span class="pre">GetCapabilities</span></tt>, <tt class="docutils literal"><span class="pre">GetLegendGraphic</span></tt>, <tt class="docutils literal"><span class="pre">DescribeFeatureType</span></tt>.</p>
+</div>
+<p><a class="reference external" href="http://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>
+</div>
+<div class="section" id="note-about-ecw">
+<h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Permalink to this headline">¶</a></h2>
+<p>In general using ECW is not recommended, as MapServer often generates broken
+images and has memory leaks with ECW. See this
+<a class="reference external" href="http://trac.osgeo.org/mapserver/ticket/3245">MapServer ticket</a>
+for example.</p>
+<p>If you still want to use it then replace <tt class="docutils literal"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></tt>
+by <tt class="docutils literal"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></tt> in the <tt class="docutils literal"><span class="pre">apache/mapserver.conf.in</span></tt>
+file. But note that this affects performance.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Mapfile configuration</a><ul>
+<li><a class="reference internal" href="#print">Print</a></li>
+<li><a class="reference internal" href="#wfs-getfeature">WFS GetFeature</a></li>
+<li><a class="reference internal" href="#wms-getfeatureinfo">WMS GetFeatureInfo</a></li>
+<li><a class="reference internal" href="#restricted-layer">Restricted layer</a><ul>
+<li><a class="reference internal" href="#with-a-restrictionarea-area">With a RestrictionArea area</a></li>
+<li><a class="reference internal" href="#without-restriction-on-the-restrictionarea-area">Without restriction on the RestrictionArea area</a></li>
+<li><a class="reference internal" href="#metadata-and-filename">Metadata and filename</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variable-substitution">Variable Substitution</a></li>
+<li><a class="reference internal" href="#note-about-ecw">Note about ECW</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Administrator Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="administrate.html"
+                        title="next chapter">Administrate a c2cgeoportal application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/administrator/mapfile.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="administrate.html" title="Administrate a c2cgeoportal application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Administrator Guide"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Administrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2014, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

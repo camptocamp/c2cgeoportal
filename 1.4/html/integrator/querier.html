@@ -1,0 +1,151 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Query builder (Querier) &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Editing" href="editing.html" />
+    <link rel="prev" title="Full-text search" href="fulltext_search.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="editing.html" title="Editing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fulltext_search.html" title="Full-text search"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" accesskey="U">Additional features</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="query-builder-querier">
+<span id="integrator-querier"></span><h1>Query builder (Querier)<a class="headerlink" href="#query-builder-querier" title="Permalink to this headline">¶</a></h1>
+<p>In the Query builder interface, instead of the standard text field,
+it is possible to display combos providing the available values of
+the attributes. The values are automatically retrieved using a
+web service that does a <tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">dinstinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></tt>.</p>
+<p>The web service configuration is done in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file:</p>
+<div class="code yaml highlight-python"><pre>layers_enum:
+    dbsession: "&lt;session name&gt;"
+    "&lt;layer_name&gt;":
+        dbsession: "&lt;session name&gt;"
+        table: "&lt;[schema.]table name&gt;"
+        attributes:
+            "&lt;attribute name&gt;":
+                table: "&lt;[schema.]table name&gt;"
+                column_name: "&lt;column name&gt;"
+                separator: ","</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></tt> in the <tt class="docutils literal"><span class="pre">layers_enum</span></tt> is just a shortcut
+if almost of the session are similar in the layers. If the dbsession isn&#8217;t
+defined we use the main DB session.</p>
+<p>The <tt class="docutils literal"><span class="pre">table:</span> <span class="pre">&quot;&lt;[schema.]table</span> <span class="pre">name&gt;&quot;</span></tt> in the layer is just a shortcut
+if almost of the attribute of the layer are in the same table.
+Each attributes requires a table.</p>
+<p>If the <tt class="docutils literal"><span class="pre">column_name</span></tt> isn&#8217;t defined we use the attribute name.</p>
+<p>If the <tt class="docutils literal"><span class="pre">separator</span></tt> is defined we consider the column as a list of values.</p>
+<p>Simple example:</p>
+<div class="code yaml highlight-python"><pre>layers_enum:
+    mapserver_layer:
+        table: geodata.table
+        attributes:
+            type:
+            country:</pre>
+</div>
+<p>Make sure that the <tt class="docutils literal"><span class="pre">cgxp_querier</span></tt> plugin has the attribute <tt class="docutils literal"><span class="pre">attributeURLs</span></tt>
+the <tt class="docutils literal"><span class="pre">viewer.js</span></tt>:</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fulltext_search.html"
+                        title="previous chapter">Full-text search</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="editing.html"
+                        title="next chapter">Editing</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/querier.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="editing.html" title="Editing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fulltext_search.html" title="Full-text search"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li>
+          <li><a href="features.html" >Additional features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

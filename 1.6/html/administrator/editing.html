@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Editing &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Administrator Guide" href="index.html" />
+    <link rel="next" title="WFS-T with TinyOWS" href="tinyows.html" />
+    <link rel="prev" title="Administrate a c2cgeoportal application" href="administrate.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="editing">
+<span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
+<p>This section describes how to set up feature editing in c2cgeoportal
+applications.</p>
+<p>Just like most administrative tasks setting up editing in a c2cgeoportal
+application involves intervening in the database, through the c2cgeoportal
+administration interface.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>To be editable a layer should satisfy the following requirements:</p>
+<ol class="arabic">
+<li><p class="first">It should be accessible with WMS, and correctly configured in the
+mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><span class="std std-ref">Mapfile configuration</span></a>.</p>
+</li>
+<li><p class="first">Its data should be in a PostGIS table, which should be in the
+application database. The PostGIS table can be in a separate
+schema though, which is even recommended.</p>
+</li>
+<li><p class="first">The PostGIS table should include a primary key with a sequence
+associated. Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">=</span><span class="c1"># \d table;</span>
+                     <span class="n">Table</span> <span class="s2">&quot;public.table&quot;</span>
+    <span class="n">Column</span>   <span class="o">|</span>      <span class="n">Type</span>   <span class="o">|</span>                              <span class="n">Modifiers</span>
+<span class="o">-------------+-------------+----------------------------------------------------------</span>
+ <span class="nb">id</span>          <span class="o">|</span> <span class="n">integer</span>     <span class="o">|</span> <span class="ow">not</span> <span class="n">null</span> <span class="n">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;public.table_id_seq&#39;</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The PostGIS table should include one geometry column only. You
+will get errors if the table has multiple geometry columns, even
+if one of them only is declared in PostGIS&#8217; <code class="docutils literal"><span class="pre">geometry_columns</span></code>
+table.</p>
+</li>
+<li><p class="first">The PostGIS table&#8217;s geometry column should be declared in PostGIS&#8217;
+<code class="docutils literal"><span class="pre">geometry_columns</span></code> table. c2cgeoportal indeed queries the
+<code class="docutils literal"><span class="pre">geometry_columns</span></code> table to get the information it needs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Creating a geometry column and populating <code class="docutils literal"><span class="pre">geometry_columns</span></code> is
+typically done using the <a class="reference external" href="http://postgis.net/docs/AddGeometryColumn.html">AddGeometryColumn function</a>.  The
+<a class="reference external" href="http://postgis.net/docs/Populate_Geometry_Columns.html">Populate_Geometry_Columns function</a> can also be
+useful for registering already created geometry columns in
+<code class="docutils literal"><span class="pre">geometry_columns</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following geometry types are supported:
+POINT, LINESTRING, POLYGON
+The following geometry types are partially supported:
+MULTIPOINT, MULTILINESTRING, MULTIPOLYGON</p>
+</div>
+</li>
+<li><p class="first">If the PostGIS table has a many-to-one relationship to another table
+(typically a dictionary table) there are additional requirements:</p>
+<ul class="simple">
+<li>The name of the foreign key column should end with <code class="docutils literal"><span class="pre">_id</span></code> (e.g.
+<code class="docutils literal"><span class="pre">type_id</span></code>). This is not strictly required, but recommended.</li>
+<li>The relationship&#8217;s target table should have two columns, a
+primary key column and a text column. The text column must
+be named <code class="docutils literal"><span class="pre">name</span></code>.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-or-making-layers-editable">
+<h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this headline">¶</a></h2>
+<p>The application&#8217;s layers are defined in the <code class="docutils literal"><span class="pre">layer</span></code> table, which is managed
+by selecting the <em>Layers</em> item in the admin interface&#8217;s menu.</p>
+<p>For a <em>layer</em> to be editable its <code class="docutils literal"><span class="pre">geoTable</span></code> field should be set. This field
+is the name of the PostGIS table containing the layer&#8217;s geographic data.  It is
+string of the form <code class="docutils literal"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal"><span class="pre">schemaname</span></code> is
+omitted the table is assumed to be in the <code class="docutils literal"><span class="pre">public</span></code> schema.  The label
+corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only layers embedded in a layergroup are detected as editable.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is recommended to limit the editing to 30 editable layers per user.</p>
+</div>
+</div>
+<div class="section" id="configuring-security">
+<h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this headline">¶</a></h2>
+<p>Editing the features of a layer implies to write changes in the database. To make
+sure that only authorized users may edit a feature, editable layers (including
+public layers) must be linked to a restriction area, used itself to specify the
+roles of authorized users.</p>
+<p>The restriction area should have its <code class="docutils literal"><span class="pre">readwrite</span></code> field set to <code class="docutils literal"><span class="pre">true</span></code> in the
+administration interface.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>By default a restriction areas has its <code class="docutils literal"><span class="pre">readwrite</span></code> field set to <code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li>A restriction area whose <code class="docutils literal"><span class="pre">readwrite</span></code> field is <code class="docutils literal"><span class="pre">true</span></code> applies to both
+<code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code> operations.</li>
+</ul>
+</div>
+<p>Binding restriction areas and layers together can be done from either the
+<code class="docutils literal"><span class="pre">Restriction</span> <span class="pre">Area</span></code> objects or the <code class="docutils literal"><span class="pre">Layer</span></code> objects in the admin interface.
+Likewise for binding roles and restriction areas.</p>
+</div>
+<div class="section" id="enabling-copy-to-functionality">
+<h2>Enabling <cite>Copy to</cite> functionality<a class="headerlink" href="#enabling-copy-to-functionality" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">edit</span></code> interface, you can give the user the possibility to copy
+features from one layer (source layer) to another layer (destination layer).</p>
+<p>In the <code class="docutils literal"><span class="pre">admin</span></code> interface, open the <code class="docutils literal"><span class="pre">UI</span> <span class="pre">metadatas</span></code> list and add a new record:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name: Select <code class="docutils literal"><span class="pre">copy_to</span></code>.</li>
+<li>Value: Enter the list of choices for destination layer, as mapserver
+layer names, separated by commas.</li>
+<li>Item: Select the source layer.</li>
+</ul>
+</div></blockquote>
+<p>Exemple:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name: <code class="docutils literal"><span class="pre">copy_to</span></code></li>
+<li>Value: <code class="docutils literal"><span class="pre">polygon2,polygon3,polygon4</span></code></li>
+<li>Item: <code class="docutils literal"><span class="pre">polygon</span></code></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Source and destination layers must have the same geometry type.</li>
+<li>Only the geometry will be copied, the attributes will not be.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Editing</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#adding-or-making-layers-editable">Adding or making layers editable</a></li>
+<li><a class="reference internal" href="#configuring-security">Configuring security</a></li>
+<li><a class="reference internal" href="#enabling-copy-to-functionality">Enabling <cite>Copy to</cite> functionality</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="administrate.html" title="previous chapter">Administrate a c2cgeoportal application</a></li>
+      <li>Next: <a href="tinyows.html" title="next chapter">WFS-T with TinyOWS</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/administrator/editing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/administrator/editing.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

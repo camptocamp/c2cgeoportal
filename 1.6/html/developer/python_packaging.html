@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Packaging &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Development procedure" href="development_procedure.html" />
+    <link rel="prev" title="Create a new release" href="build_release.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-packaging">
+<span id="developer-python-packaging"></span><h1>Python Packaging<a class="headerlink" href="#python-packaging" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
+<p>We rely on two <em>Python Package Index</em> (PyPI): <a class="reference external" href="http://pypi.camptocamp.net/pypi">http://pypi.camptocamp.net/pypi</a>
+and <a class="reference external" href="http://pypi.camptocamp.net/internal-pypi/index">http://pypi.camptocamp.net/internal-pypi/index</a>.</p>
+<p><a class="reference external" href="http://pypi.camptocamp.net/pypi">http://pypi.camptocamp.net/pypi</a> is a mirror of the official PyPI,
+<a class="reference external" href="http://pypi.python.org">http://pypi.python.org</a>. It is based on <a class="reference external" href="http://pypi.python.org/pypi/collective.eggproxy">collective.eggproxy</a>. We use this mirror as
+a proxy cache for our external dependencies.</p>
+<p><a class="reference external" href="http://pypi.camptocamp.net/internal-pypi/index">http://pypi.camptocamp.net/internal-pypi/index</a> includes <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> and
+<code class="docutils literal"><span class="pre">tileforge</span></code> eggs (and possibly other private eggs in the future). It is based
+on <a class="reference external" href="https://github.com/SurveyMonkey/CheesePrism">CheesePrism</a>. To access this
+PyPI a login/password is required.</p>
+<p>The requirement of c2cgeoportal applications use <code class="docutils literal"><span class="pre">index</span></code>
+and <code class="docutils literal"><span class="pre">find-links</span></code> to reference these Package Index:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">index</span><span class="o">-</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">pypi</span>
+<span class="o">--</span><span class="n">find</span><span class="o">-</span><span class="n">links</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">internal</span><span class="o">-</span><span class="n">pypi</span><span class="o">/</span><span class="n">index</span><span class="o">/</span><span class="n">c2cgeoportal</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="c2cgeoportal-releases">
+<h2>c2cgeoportal releases<a class="headerlink" href="#c2cgeoportal-releases" title="Permalink to this headline">¶</a></h2>
+<p>Releasing c2cgeoportal means creating a source distribution of c2cgeoportal and
+uploading it to <a class="reference external" href="http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal">http://pypi.camptocamp.net/internal-pypi/index/c2cgeoportal</a>.</p>
+<div class="section" id="pypirc-configuration">
+<h3><code class="docutils literal"><span class="pre">pypirc</span></code> configuration<a class="headerlink" href="#pypirc-configuration" title="Permalink to this headline">¶</a></h3>
+<p>To be able to upload distributions to the Camptocamp internal PyPI it is
+required to have an appropriate (e.g. <code class="docutils literal"><span class="pre">[c2c-internal]</span></code>) section in
+<code class="docutils literal"><span class="pre">~/.pypirc</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">distutils</span><span class="p">]</span>
+<span class="n">index</span><span class="o">-</span><span class="n">servers</span> <span class="o">=</span>
+    <span class="n">c2c</span><span class="o">-</span><span class="n">internal</span>
+
+<span class="p">[</span><span class="n">c2c</span><span class="o">-</span><span class="n">internal</span><span class="p">]</span>
+<span class="n">username</span><span class="p">:</span><span class="o">&lt;</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">internal</span><span class="o">-</span><span class="n">pypi_username</span><span class="o">&gt;</span>
+<span class="n">password</span><span class="p">:</span><span class="o">&lt;</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">internal</span><span class="o">-</span><span class="n">pypi_password</span><span class="o">&gt;</span>
+<span class="n">repository</span><span class="p">:</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">camptocamp</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">internal</span><span class="o">-</span><span class="n">pypi</span><span class="o">/</span><span class="n">simple</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-your-repository">
+<h3>Prepare your repository<a class="headerlink" href="#prepare-your-repository" title="Permalink to this headline">¶</a></h3>
+<p>Before creating a version or a release you should have a clean repository,
+then reset non commited changes and remove all untracked files and directories:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git reset --hard</span>
+<span class="prompt1">git clean -f -d</span>
+</pre></div>
+<div class="section" id="build-c2cgeoportal">
+<h3>Build c2cgeoportal<a class="headerlink" href="#build-c2cgeoportal" title="Permalink to this headline">¶</a></h3>
+<p>Creating c2cgeoportal distributions requires building c2cgeoportal. This
+is done using make:</p>
+<pre class="highlight"><span class="prompt1">make build</span>
+</pre></div>
+<div class="section" id="create-and-upload-development-distributions">
+<h3>Create and upload development distributions<a class="headerlink" href="#create-and-upload-development-distributions" title="Permalink to this headline">¶</a></h3>
+<p>We want to be able to create and upload <em>development distributions</em>.</p>
+<p>To create and upload a development distribution just run the following
+command:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py sdist upload -r c2c-internal</span>
+</pre><p>As you can see the name of a development distribution includes a <code class="docutils literal"><span class="pre">dev</span></code>
+<em>pre-release</em> tag and a date <em>post-release</em> tag. This is by convention.</p>
+<p><code class="docutils literal"><span class="pre">c2c-internal</span></code> in the name of the section you added in <code class="docutils literal"><span class="pre">~/.pypirc</span></code> for the
+Camptocamp internal index.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Never upload distributions including code that is not in the master branch
+of the GitHub repository. So push before distributing!</p>
+</div>
+</div>
+<div class="section" id="create-and-upload-release-distributions">
+<h3>Create and upload release distributions<a class="headerlink" href="#create-and-upload-release-distributions" title="Permalink to this headline">¶</a></h3>
+<p>By default <code class="docutils literal"><span class="pre">setup.py</span> <span class="pre">sdist</span></code> produces development distributions (see
+the <code class="docutils literal"><span class="pre">[egg_info]</span></code> options in <code class="docutils literal"><span class="pre">setup.cfg</span></code>). To create <em>release
+distributions</em> specific options are required on the command line:</p>
+<pre class="highlight"><span class="prompt1">.build/venv/bin/python setup.py egg_info --no-date --tag-build <span class="s2">&quot;&quot;</span> sdist upload -r c2c-internal</span>
+</pre><p>The important note of the previous section applies here too, obviously.</p>
+<p>Then tag the code that&#8217;s released:</p>
+<pre class="highlight"><span class="prompt1">git tag &lt;c2cgeoportal_version&gt;</span>
+<span class="prompt1">git push origin &lt;c2cgeoportal_version&gt;</span>
+</pre><p><code class="docutils literal"><span class="pre">origin</span></code> or whatever name you have for the github.com/camptocamp/c2cgeoportal remote.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Once a release distribution has been uploaded, you should bump the
+current version of c2cgeoportal in <code class="docutils literal"><span class="pre">setup.py</span></code>.
+Actually, next development version should have a higher version
+than the current stable one.</p>
+</div>
+</div>
+<div class="section" id="release-checklist">
+<h3>Release checklist<a class="headerlink" href="#release-checklist" title="Permalink to this headline">¶</a></h3>
+<p>Before releasing:</p>
+<blockquote>
+<div><ul class="simple">
+<li>make sure all the tests pass</li>
+<li>make sure the version number is correct in <code class="docutils literal"><span class="pre">setup.py</span></code></li>
+<li>make sure you don&#8217;t have uncommitted/unpushed changes</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Packaging</a><ul>
+<li><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
+<li><a class="reference internal" href="#c2cgeoportal-releases">c2cgeoportal releases</a><ul>
+<li><a class="reference internal" href="#pypirc-configuration"><code class="docutils literal"><span class="pre">pypirc</span></code> configuration</a></li>
+<li><a class="reference internal" href="#prepare-your-repository">Prepare your repository</a></li>
+<li><a class="reference internal" href="#build-c2cgeoportal">Build c2cgeoportal</a></li>
+<li><a class="reference internal" href="#create-and-upload-development-distributions">Create and upload development distributions</a></li>
+<li><a class="reference internal" href="#create-and-upload-release-distributions">Create and upload release distributions</a></li>
+<li><a class="reference internal" href="#release-checklist">Release checklist</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="build_release.html" title="previous chapter">Create a new release</a></li>
+      <li>Next: <a href="development_procedure.html" title="next chapter">Development procedure</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/python_packaging.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2014, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/developer/python_packaging.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

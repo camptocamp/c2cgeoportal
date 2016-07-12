@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Customizing the Application using Functionalities &mdash; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Automated check" href="checker.html" />
+    <link rel="prev" title="Digital Elevation Tools" href="raster.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="checker.html" title="Automated check"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="raster.html" title="Digital Elevation Tools"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="customizing-the-application-using-functionalities">
+<span id="integrator-functionality"></span><h1>Customizing the Application using Functionalities<a class="headerlink" href="#customizing-the-application-using-functionalities" title="Permalink to this headline">¶</a></h1>
+<p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
+the application according to the user&#8217;s permissions.</p>
+<p>A functionality may be associated to users through different ways:</p>
+<ol class="arabic simple">
+<li>Functionalities for anonymous users are defined through the
+<tt class="docutils literal"><span class="pre">functionalities:anonymous</span></tt> variable in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>
+configuration file.</li>
+<li>Functionalities for authenticated users are defined through the
+<tt class="docutils literal"><span class="pre">functionalities:registered</span></tt> variable in the <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>
+configuration file.</li>
+<li>Functionalities for specific roles are defined in the database through the
+administration interface.</li>
+<li>Functionalities for specific users are defined in the database through the
+administration interface.</li>
+</ol>
+<p>Each level overrides the previous ones in the same order as indicated above.
+For example, if the user is authenticated and has associated functionalities in
+the <tt class="docutils literal"><span class="pre">user</span></tt> database table, then the <tt class="docutils literal"><span class="pre">functionalities:anonymous</span></tt> and
+<tt class="docutils literal"><span class="pre">functionalities:registered</span></tt> configuration variables, as well as any
+functionality associated with his/her role, will be ignored.</p>
+<div class="section" id="configuration">
+<span id="integrator-functionality-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file includes variables for managing <em>functionalities</em>.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">admin_interface</span></tt>/<tt class="docutils literal"><span class="pre">available_functionalities</span></tt></dt>
+<dd><p class="first">List of functionality types that should be available in the
+administration interface (and added to the <tt class="docutils literal"><span class="pre">functionality</span></tt> table in the
+database).</p>
+<p>For example:</p>
+<div class="highlight-python"><pre>admin_interface:
+    available_functionalities:
+    - default_basemap
+    - print_template
+    - mapserver_substitution</pre>
+</div>
+<p>The following syntax is also accepted:</p>
+<div class="last highlight-python"><pre>admin_interface:
+    available_functionalities: [default_basemap, print_template, mapserver_substitution]</pre>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">functionalities:anonymous</span></tt></dt>
+<dd><p class="first">Functionalities accessible to anonymous users. This is a list of
+key/value pairs, whose values are either arrays or scalars.</p>
+<p>For example:</p>
+<div class="highlight-python"><pre>functionalities:
+    anonymous:
+        print_template:
+        - 1 A4 portrait
+        - 2 A3 landscape
+        default_basemap: plan</pre>
+</div>
+<p class="last">In this example anonymous users can print maps using the <tt class="docutils literal"><span class="pre">1</span> <span class="pre">A4</span> <span class="pre">portrait</span></tt>
+and <tt class="docutils literal"><span class="pre">2</span> <span class="pre">A3</span> <span class="pre">landscape</span></tt> layouts only. And their default base layer is the
+<tt class="docutils literal"><span class="pre">plan</span></tt> layer.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">functionalities:registered</span></tt></dt>
+<dd>Functionalities accessible to any authenticated user. This is a list of
+key/value pairs, of the same form as for <tt class="docutils literal"><span class="pre">functionalities:anonymous</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">functionalities:available_in_templates</span></tt></dt>
+<dd><p class="first">Functionalities that are made available to Mako templates (e.g.
+<tt class="docutils literal"><span class="pre">viewer.js</span></tt>) through the <tt class="docutils literal"><span class="pre">functionality</span></tt> template variable.</p>
+<p>For example with:</p>
+<div class="highlight-python"><pre>functionalities:
+    available_in_templates:
+    - &lt;functionality_name&gt;</pre>
+</div>
+<p class="last">if a user is associated to, say,
+<tt class="docutils literal"><span class="pre">&lt;functionality_name&gt;</span></tt>/<tt class="docutils literal"><span class="pre">value1</span></tt> and <tt class="docutils literal"><span class="pre">&lt;functionality_name&gt;</span></tt>/<tt class="docutils literal"><span class="pre">value2</span></tt>,
+then the <tt class="docutils literal"><span class="pre">functionality</span></tt> template variable will be set to a dict with one
+key/value pair: <tt class="docutils literal"><span class="pre">&quot;&lt;functionality_name&gt;&quot;:</span> <span class="pre">[&quot;value1&quot;,&quot;value2&quot;]</span></tt>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="using-functionalities-in-templates">
+<h2>Using Functionalities in Templates<a class="headerlink" href="#using-functionalities-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the <a class="reference internal" href="#integrator-functionality-configuration"><em>Configuration</em></a> section above,
+a functionality can be used in the Mako templates as long as it has been
+enabled using the <tt class="docutils literal"><span class="pre">functionalities:available_in_templates</span></tt> parameter in the
+<tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> configuration file.</p>
+<p>Functionalities may be used in templates for various purposes. The examples
+below explain how to set the default basemap and how to limit access to some
+plugins according to the user&#8217;s permissions.</p>
+<div class="section" id="example-of-the-default-basemap-functionality">
+<h3>Example of the default_basemap Functionality<a class="headerlink" href="#example-of-the-default-basemap-functionality" title="Permalink to this headline">¶</a></h3>
+<p>Using functionalities, it is easy to set the default basemap that will be
+displayed when a user loads the application depending on whether he/she is
+anonymous, authenticated or has some specific role.</p>
+<p>First make sure that <tt class="docutils literal"><span class="pre">default_basemap</span></tt> is made available in the templates
+using the <tt class="docutils literal"><span class="pre">functionalities:available_in_templates</span></tt> parameter in the
+<tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> configuration file:</p>
+<div class="highlight-python"><pre>functionalities:
+    available_in_templates: [default_basemap]</pre>
+</div>
+<p>Then indicate (still in <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>) what default basemap should be used
+for anonymous users:</p>
+<div class="highlight-python"><pre>functionalities:
+    anonymous:
+        # some other configs...
+        default_basemap: &lt;some_basemap&gt;</pre>
+</div>
+<p>Optionally you may also indicate what basemap to use for authenticated users
+(if omitted, the anonymous <tt class="docutils literal"><span class="pre">default_basemap</span></tt> value will be used):</p>
+<div class="highlight-python"><pre>functionalities:
+    anonymous:
+        # ...
+    registered:
+        default_basemap: &lt;some_other_basemap&gt;</pre>
+</div>
+<p>Finally you may link <tt class="docutils literal"><span class="pre">default_basemap</span></tt> functionalities to some roles or
+users in the administration interface.</p>
+<p>So that the <tt class="docutils literal"><span class="pre">default_basemap</span></tt> is actually provided to the
+<tt class="docutils literal"><span class="pre">cgxp_mapopacityslider</span></tt> plugin, use the following configuration in your
+project&#8217;s <tt class="docutils literal"><span class="pre">viewer.js</span></tt> template:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">ptype</span><span class="p">:</span> <span class="s2">&quot;cgxp_mapopacityslider&quot;</span><span class="p">,</span>
+    <span class="n">defaultBaseLayerRef</span><span class="p">:</span> <span class="s2">&quot;${functionality[&#39;default_basemap&#39;][0] | n}&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limiting-access-to-some-cgxp-plugins-using-functionalities">
+<h3>Limiting Access to some CGXP Plugins using Functionalities<a class="headerlink" href="#limiting-access-to-some-cgxp-plugins-using-functionalities" title="Permalink to this headline">¶</a></h3>
+<p>Functionalities may also be used to enable some CGXP plugins only for users
+with specific roles.</p>
+<p>To do so, add <tt class="docutils literal"><span class="pre">authorized_plugins</span></tt> to the list of functionalities that must be
+available in the administration interface and to the list of functionalities
+provided to the templates. Set also <tt class="docutils literal"><span class="pre">authorized_plugins</span></tt> as an empty list for
+anonymous users. In <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt>:</p>
+<div class="highlight-python"><pre>admin_interface:
+    # ...
+    available_functionalities:
+        - default_basemap
+        - print_template
+        - mapserver_substitution
+        - authorized_plugins
+
+functionalities:
+    # ...
+    anonymous:
+        # ...
+        default_basemap: &lt;some_basemap&gt;
+        authorized_plugins: []
+
+    available_in_templates: [default_basemap, authorized_plugins]</pre>
+</div>
+<p>Then you may test in your project&#8217;s <tt class="docutils literal"><span class="pre">viewer.js</span></tt> template if the current user
+has been granted access to some protected plugins:</p>
+<div class="highlight-python"><pre>app = new gxp.Viewer({
+    // ...
+    tools: [{
+        //...
+    },
+    % if '&lt;some_protected_plugin&gt;' in functionality['authorized_plugins']:
+    {
+        ptype: ...
+        //...
+    },
+    % endif
+    {
+        //...
+    }]
+});</pre>
+</div>
+</div>
+<div class="section" id="using-functionalities-list-to-configure-the-layers-in-the-querybuilder">
+<h3>Using Functionalities list to configure the layers in the QueryBuilder<a class="headerlink" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder" title="Permalink to this headline">¶</a></h3>
+<p>Add the new <tt class="docutils literal"><span class="pre">querybuilder_layer</span></tt> functionality to the list of
+<tt class="docutils literal"><span class="pre">available_functionalities</span></tt> in your <tt class="docutils literal"><span class="pre">config.yaml.in</span></tt> file:</p>
+<p>Make sure that the <tt class="docutils literal"><span class="pre">dumps</span></tt> function is imported in
+<tt class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></tt> using:</p>
+<p>And configure your plugin like that:</p>
+<p>This way you may assign more than one layer per role using functionalities.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Customizing the Application using Functionalities</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#using-functionalities-in-templates">Using Functionalities in Templates</a><ul>
+<li><a class="reference internal" href="#example-of-the-default-basemap-functionality">Example of the default_basemap Functionality</a></li>
+<li><a class="reference internal" href="#limiting-access-to-some-cgxp-plugins-using-functionalities">Limiting Access to some CGXP Plugins using Functionalities</a></li>
+<li><a class="reference internal" href="#using-functionalities-list-to-configure-the-layers-in-the-querybuilder">Using Functionalities list to configure the layers in the QueryBuilder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="raster.html"
+                        title="previous chapter">Digital Elevation Tools</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="checker.html"
+                        title="next chapter">Automated check</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/integrator/functionality.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="checker.html" title="Automated check"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="raster.html" title="Digital Elevation Tools"
+             >previous</a> |</li>
+        <li><a href="../index.html">c2cgeoportal  documentation</a> &raquo;</li>
+          <li><a href="index.html" >Integrator Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Camptocamp.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
