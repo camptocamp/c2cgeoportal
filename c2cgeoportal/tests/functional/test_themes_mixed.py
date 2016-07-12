@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 import transaction
 
 from unittest2 import TestCase
@@ -160,10 +161,14 @@ class TestThemesView(TestCase):
         return result
 
     def _get_filtered_errors(self, themes):
-        return set([
-            e for e in themes["errors"]
+        errors = themes["errors"]
+        errors = [
+            e for e in errors
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
-        ])
+        ]
+        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', can't be two times in the same block (first level group).")
+        errors = [e for e in errors if regex.match(e)]
+        return set(errors)
 
     def test_theme_mixed(self):
         entry = self._create_entry_obj(params={

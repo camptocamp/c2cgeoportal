@@ -34,11 +34,13 @@ import logging
 import json
 import sys
 import urlparse
+import re
 
 from random import Random
 from math import sqrt
 from xml.dom.minidom import parseString
 from socket import gaierror
+from collections import Counter
 
 from pyramid.view import view_config
 from pyramid.i18n import TranslationStringFactory
@@ -254,13 +256,17 @@ class Entry(object):
             if hasattr(layer, "queryable") else True
         return layer_info
 
-    def _layer(self, layer, wms=None, wms_layers=[], time=None, role_id=None, mixed=True):
+    def _layer(self, layer, time=None, role_id=None, mixed=True):
         errors = set()
         l = {
             "id": layer.id,
             "name": layer.name,
             "metadata": self._get_metadatas(layer, errors),
         }
+        if re.search("[/?#]", layer.name):  # pragma: no cover
+            errors.add("The layer has an unsupported name '{}'.".format(layer.name))
+        if isinstance(layer, LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
+            errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
             self._fill_editable(l, layer)
         if mixed:
@@ -269,6 +275,11 @@ class Entry(object):
         assert(time is not None)
 
         if isinstance(layer, LayerV1):
+            wms, wms_layers, wms_errors = self._wms_layers(
+                role_id if self.mapserver_settings["geoserver"] else None,
+                None,
+            )
+            errors |= wms_errors
             l.update({
                 "type": layer.layer_type,
                 "public": layer.public,
@@ -290,26 +301,29 @@ class Entry(object):
                 l["legendImage"] = get_url(layer.legend_image, self.request, errors=errors)
 
             if layer.layer_type == "internal WMS":
-                if not self._fill_internal_wms(l, layer, wms, wms_layers, errors):
-                    return None, errors
+                self._fill_internal_wms(l, layer, wms, wms_layers, errors)
                 errors |= self._merge_time(time, l, layer, wms, wms_layers)
             elif layer.layer_type == "external WMS":
                 self._fill_external_wms(l, layer, errors)
             elif layer.layer_type == "WMTS":
-                self._fill_wmts(l, layer, wms, wms_layers, errors)
+                self._fill_wmts(l, layer, errors, role_id=role_id)
         elif isinstance(layer, LayerWMS):
+            wms, wms_layers, wms_errors = self._wms_layers(
+                role_id if self.mapserver_settings["geoserver"] else None,
+                layer.ogc_server,
+            )
+            errors |= wms_errors
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' don't have any layers".format(layer.name))
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
-            if not self._fill_wms(l, layer, errors, role_id, mixed=mixed):
-                return None, errors
+            self._fill_wms(l, layer, errors, role_id, mixed=mixed)
             errors |= self._merge_time(time, l, layer, wms, wms_layers)
 
         elif isinstance(layer, LayerWMTS):
             l["type"] = "WMTS"
-            self._fill_wmts(l, layer, wms, wms_layers, errors, version=2)
+            self._fill_wmts(l, layer, errors, version=2)
 
         return l, errors
 
@@ -356,7 +370,8 @@ class Entry(object):
                 l["editable"] = True
 
     def _fill_wms(self, l, layer, errors, role_id, mixed):
-        wms, wms_layers = self._wms_layers(role_id, layer.ogc_server)
+        wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)
+        errors |= wms_errors
 
         l["imageType"] = layer.ogc_server.image_type
         if layer.style:  # pragma: no cover
@@ -383,7 +398,6 @@ class Entry(object):
                     "The layer '%s' (%s) is not defined in WMS capabilities" %
                     (layer_name, layer.name)
                 )
-                return False
 
         if "minResolutionHint" not in l:
             min_resolutions_hint = [
@@ -416,8 +430,6 @@ class Entry(object):
             default=l["url"], errors=errors)
         l["serverType"] = layer.ogc_server.type
         # end deprecated
-
-        return True
 
     def _fill_wms_v1(self, l, layer):
         l["imageType"] = layer.image_type
@@ -477,13 +489,10 @@ class Entry(object):
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
-            if self.mapserver_settings["geoserver"]:
-                return False
-            else:
+            if not self.mapserver_settings["geoserver"]:
                 errors.add(
                     "The layer '%s' is not defined in WMS capabilities" % wmslayer
                 )
-        return True
 
     def _fill_external_wms(self, l, layer, errors):
         self._fill_wms_v1(l, layer)
@@ -497,7 +506,7 @@ class Entry(object):
         l["url"] = get_url(layer.url, self.request, errors=errors)
         l["isSingleTile"] = layer.is_single_tile
 
-    def _fill_wmts(self, l, layer, wms, wms_layers, errors, version=1):
+    def _fill_wmts(self, l, layer, errors, version=1, role_id=None):
         l["url"] = get_url(layer.url, self.request, errors=errors)
 
         if layer.style:
@@ -506,7 +515,7 @@ class Entry(object):
             l["matrixSet"] = layer.matrix_set
 
         if version == 1:
-            self._fill_wmts_v1(l, layer, wms, wms_layers, errors)
+            self._fill_wmts_v1(l, layer, errors, role_id)
         else:
             self._fill_wmts_v2(l, layer)
 
@@ -517,7 +526,7 @@ class Entry(object):
         for dimension in layer.dimensions:
             l["dimensions"][dimension.name] = dimension.value
 
-    def _fill_wmts_v1(self, l, layer, wms, wms_layers, errors):
+    def _fill_wmts_v1(self, l, layer, errors, role_id):
         if layer.dimensions:
             try:
                 l["dimensions"] = json.loads(layer.dimensions)
@@ -527,6 +536,10 @@ class Entry(object):
                     (sys.exc_info()[0], layer.dimensions, layer.name))
 
         mapserverproxy_url = self.request.route_url("mapserverproxy")
+        wms, wms_layers, wms_errors = self._wms_layers(
+            role_id if self.mapserver_settings["geoserver"] else None, None
+        )
+        errors |= wms_errors
 
         if layer.wms_url:
             l["wmsUrl"] = layer.wms_url
@@ -611,10 +624,17 @@ class Entry(object):
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
         catalogue=True, role_id=None, version=1, mixed=True, time=None,
-        **kwargs
+        wms_layers=None, layers_name=None, **kwargs
     ):
+        if wms_layers is None:
+            wms_layers = []
+        if layers_name is None:
+            layers_name = []
         children = []
         errors = set()
+
+        if re.search("[/?#]", group.name):  # pragma: no cover
+            errors.add("The group has an unsupported name '{}'.".format(group.name))
 
         # escape loop
         if depth > 30:
@@ -641,7 +661,7 @@ class Entry(object):
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
-                        time=time, **kwargs
+                        time=time, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -656,6 +676,10 @@ class Entry(object):
                     if (catalogue or not isinstance(tree_item, LayerV1) or
                         (isinstance(tree_item, LayerV1) and group.is_internal_wms ==
                             self._is_internal_wms(tree_item))):
+
+                        layers_name.append(tree_item.name)
+                        if isinstance(tree_item, LayerWMS):
+                            wms_layers.extend(tree_item.layer.split(","))
 
                         l, l_errors = self._layer(
                             tree_item, role_id=role_id, mixed=mixed, time=time, **kwargs
@@ -691,6 +715,20 @@ class Entry(object):
                 if time is not None and time.has_time() and time.layer is None:
                     g["time"] = time.to_dict()
             else:
+                if not mixed:
+                    for name, nb in Counter(layers_name).items():
+                        if nb > 1:
+                            errors.add(
+                                "The GeoMapFish layer name '{}', can't be two times "
+                                "in the same block (first level group).".format(name)
+                            )
+                    for name, nb in Counter(wms_layers).items():
+                        if nb > 1:
+                            errors.add(
+                                "The WMS layer name '{}', can't be two times "
+                                "in the same block (first level group).".format(name)
+                            )
+
                 g["mixed"] = mixed
                 if org_depth == 1:
                     if not mixed:
@@ -723,9 +761,9 @@ class Entry(object):
             self.mapserver_settings["mapserv_url"]
         )
         if len(wms_errors) > 0:
-            return [], wms_errors
+            return None, [], wms_errors
 
-        return wms, list(wms.contents)
+        return wms, list(wms.contents), wms_errors
 
     @cache_region.cache_on_arguments()
     def _themes(
@@ -738,9 +776,6 @@ class Entry(object):
         """
         errors = set()
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers(
-            role_id if self.mapserver_settings["geoserver"] else None, None
-        )
 
         themes = DBSession.query(Theme)
         themes = themes.filter(Theme.public.is_(True))
@@ -760,8 +795,12 @@ class Entry(object):
 
         export_themes = []
         for theme in themes.all():
+            if re.search("[/?#]", theme.name):
+                errors.add("The theme has an unsupported name '{}'.".format(theme.name))
+                continue
+
             children, children_errors = self._get_children(
-                theme, layers, wms, wms_layers, version, catalogue, min_levels, role_id
+                theme, layers, version, catalogue, min_levels, role_id
             )
             errors |= children_errors
 
@@ -808,7 +847,7 @@ class Entry(object):
         }
 
     @cache_region.cache_on_arguments()
-    def _get_children(self, theme, layers, wms, wms_layers, version, catalogue,
+    def _get_children(self, theme, layers, version, catalogue,
                       min_levels, role_id):
         children = []
         errors = set()
@@ -816,7 +855,7 @@ class Entry(object):
             if type(item) == LayerGroup:
                 gp, gp_errors = self._group(
                     "%s/%s" % (theme.name, item.name),
-                    item, layers, wms=wms, wms_layers=wms_layers,
+                    item, layers,
                     role_id=role_id, version=version, catalogue=catalogue,
                     min_levels=min_levels
                 )
@@ -830,7 +869,7 @@ class Entry(object):
                     ))
                 elif item.name in layers:
                     l, l_errors = self._layer(
-                        item, wms=wms, wms_layers=wms_layers, role_id=role_id
+                        item, role_id=role_id
                     )
                     errors |= l_errors
                     if l is not None:
@@ -1253,12 +1292,9 @@ class Entry(object):
 
     def _get_group(self, group, role_id, interface, version):
         layers = self._layers(role_id, version, interface)
-        wms, wms_layers = self._wms_layers(
-            role_id if self.mapserver_settings["geoserver"] else None, None
-        )
         lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
         return self._group(
-            lg.name, lg, layers, wms=wms, wms_layers=wms_layers,
+            lg.name, lg, layers,
             role_id=role_id, version=version
         )
 

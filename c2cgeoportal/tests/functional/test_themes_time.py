@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import re
 import transaction
 
 from unittest2 import TestCase
@@ -171,12 +172,18 @@ class TestThemesTimeView(TestCase):
 
         return result
 
+    def _get_filtered_errors(self, themes):
+        errors = themes["errors"]
+        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', can't be two times in the same block \(first level group\).")
+        errors = [e for e in errors if not regex.match(e)]
+        return set(errors)
+
     def test_time(self):
         entry = self._create_entry_obj(params={
             "version": "2",
         })
         themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set([
+        self.assertEquals(self._get_filtered_errors(themes), set([
             u"Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'single'"
         ]))
         self.assertEquals(

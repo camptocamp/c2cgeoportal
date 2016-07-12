@@ -31,12 +31,12 @@
 from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
+import re
 import transaction
 import os
 import json
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
@@ -326,6 +326,11 @@ class TestEntryView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
+    def _get_filtered_errors(self, errors):
+        regex = re.compile("The layer \\'[a-z0-9_]*\\' is not defined in WMS capabilities")
+        errors = [e for e in errors if not regex.match(e)]
+        return set(errors)
+
     def test_index_no_auth(self):
         entry = self._create_entry_obj()
         response = entry.get_cgxp_viewer_vars()
@@ -371,10 +376,8 @@ class TestEntryView(TestCase):
         response = entry.get_cgxp_viewer_vars()
 
         self.assertEqual(
-            set(json.loads(response["serverError"])),
-            set([
-                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            ])
+            self._get_filtered_errors(json.loads(response["serverError"])),
+            set()
         )
 
         themes = json.loads(response["themes"])
@@ -409,15 +412,15 @@ class TestEntryView(TestCase):
 
         # unautenticated
         themes, errors = entry._themes(None, "main")
+        self.assertEquals(errors, set([
+            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+        ]))
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_layer_group",
             u"__test_public_layer",
-        ]))
-        self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
 
         # autenticated on parent
@@ -435,6 +438,9 @@ class TestEntryView(TestCase):
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
+        self.assertEquals(errors, set([
+            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+        ]))
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
@@ -442,9 +448,6 @@ class TestEntryView(TestCase):
             u"__test_layer_group",
             u"__test_public_layer",
             u"__test_private_layer",
-        ]))
-        self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
 
         # mapfile error
@@ -457,6 +460,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
+            u'GetCapabilities from URL http://localhost/cgi-bin/mapserv?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 7.0.0 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\n</BODY></HTML>',
         ]))
 
     def test_themev2(self):
@@ -474,6 +478,7 @@ class TestEntryView(TestCase):
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
 
         self.assertEquals(set(themes["errors"]), set([
@@ -492,6 +497,7 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
+            u"__test_public_layer_not_mapfile",
         ]))
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
@@ -507,26 +513,28 @@ class TestEntryView(TestCase):
 
         # unautenticated v1
         themes, errors = entry._themes(None, "main")
+        self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
+            u"__test_layer_group",
         ]))
-        self.assertEquals(errors, set([]))
 
         # autenticated v1
         request.params = {}
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
+        self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
             u"__test_private_layer",
+            u"__test_layer_group",
         ]))
-        self.assertEquals(errors, set([]))
 
         # unautenticated v2
         request.params = {
@@ -534,14 +542,15 @@ class TestEntryView(TestCase):
         }
         request.user = None
         themes = entry.themes()
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
-        ]))
-        self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"__test_public_layer_not_mapfile",
         ]))
 
         # autenticated v2
@@ -550,15 +559,16 @@ class TestEntryView(TestCase):
         }
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
+        self.assertEquals(set(themes["errors"]), set([
+            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
+            u"The layer '__test_public_layer_no_layers' don't have any layers",
+        ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
-        ]))
-        self.assertEquals(set(themes["errors"]), set([
-            u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"__test_public_layer_not_mapfile",
         ]))
 
     def test_wfs_types(self):
@@ -572,10 +582,8 @@ class TestEntryView(TestCase):
 
         response = entry.get_cgxp_viewer_vars()
         self.assertEquals(
-            set(json.loads(response["serverError"])),
-            set([
-                u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            ])
+            self._get_filtered_errors(json.loads(response["serverError"])),
+            set()
         )
 
         result = set([
@@ -1140,9 +1148,6 @@ class TestEntryView(TestCase):
         h = {"Host": host}
         resp, xml = http.request(url, method="GET", headers=h)
 
-        wms = WebMapService(None, xml=xml)
-        wms_layers = list(wms.contents)
-
         layer = LayerV1()
         layer.id = 20
         layer.name = "test_wmsfeaturesgroup"
@@ -1152,7 +1157,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": u"test_wmsfeaturesgroup",
             "type": "internal WMS",
@@ -1189,7 +1194,7 @@ class TestEntryView(TestCase):
         layer_t1.public = True
         layer_t1.time_mode = "single"
         time = TimeInformation()
-        entry._layer(layer_t1, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer_t1, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1213,7 +1218,7 @@ class TestEntryView(TestCase):
         layer_t2.time_mode = "single"
         layer_t2.time_widget = "slider"
         time = TimeInformation()
-        entry._layer(layer_t2, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer_t2, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1231,7 +1236,7 @@ class TestEntryView(TestCase):
         time = TimeInformation()
         entry._group(
             "", group, [layer_t1.name, layer_t2.name],
-            wms=wms, wms_layers=wms_layers, time=time, mixed=False, depth=2
+            time=time, mixed=False, depth=2
         )
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
@@ -1256,7 +1261,7 @@ class TestEntryView(TestCase):
         layer.time_mode = "single"
         layer.time_widget = "datepicker"
         time = TimeInformation()
-        entry._layer(layer, wms=wms, wms_layers=wms_layers, time=time, mixed=False)
+        entry._layer(layer, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
             "resolution": "year",
             "interval": (1, 0, 0, 0),
@@ -1278,7 +1283,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
@@ -1308,7 +1313,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        self.assertEqual(entry._layer(layer, wms=wms, wms_layers=wms_layers), ({
+        self.assertEqual(entry._layer(layer), ({
             "id": 20,
             "name": "test WMTS",
             "isChecked": False,
