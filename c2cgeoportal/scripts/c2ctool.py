@@ -31,7 +31,6 @@
 import os
 import re
 import sys
-import shutil
 import argparse
 import httplib2
 import yaml
@@ -334,15 +333,6 @@ class C2cTool:
             "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name", "--overwrite",
             "--scaffold=c2cgeoportal_update", "../%s" % self.project["project_folder"]
         ])
-        pcreate_cmd = [
-            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name",
-            "--scaffold=c2cgeoportal_create", "/tmp/%s" % self.project["project_folder"],
-        ]
-        for name, value in self.project["template_vars"].items():
-            if isinstance(value, basestring):
-                value = value.encode('utf-8')
-            pcreate_cmd.append("{}={}".format(name, value))
-        check_call(pcreate_cmd)
         check_call(["make", "-f", self.options.file, self.options.clean])
 
         with open("changelog.diff", "w") as diff_file:
@@ -451,9 +441,6 @@ class C2cTool:
             print("")
             self.print_step(5, intro="Correct the checker, the step 5 again:")
             exit(1)
-
-        if os.path.exists("/tmp/%s" % self.project["project_folder"]):
-            shutil.rmtree("/tmp/%s" % self.project["project_folder"])
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
