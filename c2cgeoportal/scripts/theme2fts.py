@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 import sys
 import yaml
 import transaction
@@ -117,6 +118,7 @@ class Import:
         settings = {}
         with open(".build/config.yaml") as f:
             settings = yaml.load(f)
+        package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
         self.languages = settings["available_locale_names"]
@@ -129,7 +131,8 @@ class Import:
 
         self._ = {}
         for lang in self.languages:
-            self._[lang] = translation("demo-server", "demo/locale/", [lang])
+            self._[lang] = translation(
+                "{}-client".format(package), os.path.join(package, "locale/"), [lang])
 
         self.interfaces = self.session.query(Interface).filter(
             Interface.name.in_(options.interfaces)
