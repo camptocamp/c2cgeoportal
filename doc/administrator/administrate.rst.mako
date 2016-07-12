@@ -11,8 +11,12 @@ required.
 Layers
 ------
 
-In the version 2 we split the layer table in 3 tables: ``layer_internal_wms``,
-``layer_external_wms``, ``layer_wmts``, and we copy the previous layer table in ``layerv1``.
+In the version 2 we split the layer table in 2 tables: ``layer_wms``,
+``layer_wmts``, and we copy the previous layer table in ``layerv1``.
+There is a tool for migrate the layer from the v1 structure to v2,
+see ``.build/venv/bin/themev1tov2``.
+The ``layerv1`` steal be used in the cgxp application then you should
+maintain the booth version of the layers.
 
 And the ``order`` will be moved in the relation of the tree.
 
