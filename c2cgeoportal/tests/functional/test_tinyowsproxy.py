@@ -258,8 +258,8 @@ class TestTinyOWSProxyView(TestCase):
     def test_proxy_describe_feature_type_get(self):
         request = _create_dummy_request(username=u"__test_user1")
         request.registry.settings["tinyowsproxy"] = {
-            "tinyows_url": "test",
-            "tinyows_host": "demo.gmf.org"
+            "tinyows_host": "demo.gmf.org",
+            "tinyows_url": "http://example.com",
         }
         request.params.update(dict(
             service="wfs", version="1.1.0", request="DescribeFeatureType",

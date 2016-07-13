@@ -49,7 +49,8 @@ class TinyOWSProxy(Proxy):
         Proxy.__init__(self, request)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
-        assert "tinyows_url" in self.settings, \
+        assert \
+            "tinyows_url" in self.settings, \
             "tinyowsproxy.tinyows_url must be set"
 
     def _get_wfs_url(self):

@@ -180,10 +180,12 @@ NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf 
 NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
 NGEO_FONTS = $(NGEO_GMF_FONTS) $(NGEO_FONTAWESOME_FONTS)
 JSON_CLIENT_LOCALISATION_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .json, $(LANGUAGES)))
+MO_CLIENT_LOCALISATION_FILES = $(addprefix $(PACKAGE)/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)-client.po, $(LANGUAGES)))
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
 NGEO_OUTPUT_JS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .js, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_CSS_INTERFACES_FILES = $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .css, $(NGEO_INTERFACES)))
 NGEO_OUTPUT_FILES = $(JSON_CLIENT_LOCALISATION_FILES) \
+	$(MO_CLIENT_LOCALISATION_FILES) \
 	node_modules/ngeo/node_modules/font-awesome \
 	node_modules/ngeo/node_modules/openlayers \
 	node_modules/ngeo/node_modules/bootstrap \
@@ -643,7 +645,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAG
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --sort-by-file --backup=none --update $@ $<
+	msgmerge --backup=none --update $@ $<
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
@@ -651,7 +653,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --sort-by-file --backup=none --update $@ $<
+	msgmerge --backup=none --update $@ $<
 
 .PRECIOUS: %.mo
 %.mo: %.po
@@ -1044,7 +1046,7 @@ endif # !DOCKER
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar/download
+	curl --location --output $@ http://sourceforge.mirrorservice.org/j/ja/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:
@@ -1190,11 +1192,11 @@ push_docker:
 .PHONY: testDB
 testDB: testDB/12-alembic.sql testDB/13-alembic-static.sql
 
-testDB/12-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini
+testDB/12-alembic.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic.ini CONST_alembic/main/versions/*.py
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic.ini upgrade --sql head > $@
 
-testDB/13-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini
+testDB/13-alembic-static.sql: $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX) alembic_static.ini CONST_alembic/static/versions/*.py
 	$(PRERULE_CMD)
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade --sql head > $@
 endif

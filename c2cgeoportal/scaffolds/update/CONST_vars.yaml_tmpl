@@ -14,6 +14,7 @@ vars:
     apache_entry_point: APACHE_ENTRY_POINT
     # Docker base image name (comes from the makefile).
     docker_base: DOCKER_BASE
+    docker: DOCKER
     # database user
     dbuser: www-data
     # database password
@@ -401,6 +402,7 @@ interpreted:
     - modwsgi_user
     - instanceid
     - apache_entry_point
+    - docker
     - docker_base
     - development
     - wmtscapabilities_path
