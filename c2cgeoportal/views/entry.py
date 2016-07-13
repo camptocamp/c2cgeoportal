@@ -395,8 +395,9 @@ class Entry(object):
                         l["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
-                    "The layer '%s' (%s) is not defined in WMS capabilities" %
-                    (layer_name, layer.name)
+                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                        layer_name, layer.name, layer.ogc_server.name
+                    )
                 )
 
         if "minResolutionHint" not in l:
