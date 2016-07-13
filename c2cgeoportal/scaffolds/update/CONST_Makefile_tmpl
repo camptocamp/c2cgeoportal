@@ -56,6 +56,7 @@ PRINT_VERSION ?= 3
 # Enable Docker target
 DOCKER ?= FALSE
 DOCKER_BASE ?= no
+export DOCKER
 export DOCKER_BASE
 DOCKER_TAG ?= latest
 # Use deploy
