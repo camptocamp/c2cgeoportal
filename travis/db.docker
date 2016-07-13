@@ -1,0 +1,7 @@
+FROM camptocamp/postgis
+MAINTAINER Camptocamp "info@camptocamp.com"
+
+ENV POSTGRES_USER www-data
+ENV POSTGRES_DB geomapfish
+
+ADD 2_init.sql /docker-entrypoint-initdb.d
