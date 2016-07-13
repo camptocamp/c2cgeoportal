@@ -3,7 +3,7 @@ boto==2.40.0
 bottle==0.12.9
 c2c.template==1.3.0.dev1
 Chameleon==2.24
-dogpile.cache==0.5.7
+dogpile.cache==0.6.1
 dogpile.core==0.4.1
 https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
 fanstatic==0.16
