@@ -93,5 +93,5 @@ msgstr ""
                 destionation.write(("""
 msgid "%s"
 msgstr "%s"
-""" % (key, value)).encode("utf-8"),
+""" % (key, value.replace('"', '\\"'))).encode("utf-8"),
                 )

@@ -34,6 +34,7 @@ import sys
 import argparse
 import httplib2
 import yaml
+import pkg_resources
 from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from alembic.config import Config
@@ -143,7 +144,7 @@ def _fill_arguments(command):
             "--step", type=int, help=argparse.SUPPRESS, default=0
         )
         parser.add_argument(
-            "version", metavar="VERSION", help="Upgrade to version"
+            "version", metavar="VERSION", nargs='?', help="Upgrade to version"
         )
     elif command == "deploy":
         parser.add_argument(
@@ -243,6 +244,12 @@ class C2cTool:
             self.print_step(0, intro="Fix it and run again the upgrade:")
             exit(1)
 
+        if self.options.version is None:
+            print("")
+            print(self.color_bar)
+            print("The VERSION environment variable is required for this upgrade step")
+            exit(1)
+
         if re.match(VERSION_RE, self.options.version) is not None:
             http = httplib2.Http()
             url = (
@@ -283,6 +290,12 @@ class C2cTool:
         self.print_step(1)
 
     def step1(self):
+        if self.options.version is None:
+            print("")
+            print(self.color_bar)
+            print("The VERSION environment variable is required for this upgrade step")
+            exit(1)
+
         check_call(["git", "reset", "--hard"])
         check_call(["git", "clean", "--force", "-d"])
         check_call(["git", "submodule", "foreach", "--recursive", "git", "reset", "--hard"])
@@ -459,7 +472,9 @@ class C2cTool:
         self.print_step(6, intro="Then to commit your changes type:")
 
     def step6(self):
-        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish %s" % self.options.version])
+        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
+            pkg_resources.get_distribution("c2cgeoportal").version
+        )])
 
         print("")
         print(self.color_bar)
