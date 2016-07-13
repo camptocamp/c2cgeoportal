@@ -31,7 +31,7 @@ The file to translate are:
 * ``demo/locale/<lang>/LC_MESSAGES/demo-client.po`` for ngeo client
 * ``demo/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (Should be empty for ngeo interfaces)
 
-.. note:
+.. note::
 
    All the ``#, fuzzy`` strings should be verified ans the line should be removed.
    (if the line isn't removed the localisation will not be used.)
