@@ -55,6 +55,10 @@ install:
 - travis/test-upgrade.sh
 - travis/build-new-project.sh
 
+- docker build --file travis/mapserver.docker --tag=camptocamp/c2cgeoportal-test-mapserver .
+- "DOCKER_ADRS=`ifconfig docker0 | head -n 2 | tail -n 1 | awk -F : '{print $2}' | awk '{print $1}'`"
+- docker run --publish=81:80 --add-host=db:${DOCKER_ADRS} --detach camptocamp/c2cgeoportal-test-mapserver
+
 script:
 - uname --all
 - node --version

@@ -1,0 +1,4 @@
+FROM camptocamp/mapserver
+MAINTAINER Camptocamp "info@camptocamp.com"
+
+COPY c2cgeoportal/tests/functional/c2cgeoportal_test.map /etc/mapserver/

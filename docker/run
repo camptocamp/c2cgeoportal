@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-apache2 -DFOREGROUND &
-
 export PATH=${PATH}:/src/.build/venv/bin
 
 chmod 777 /build
