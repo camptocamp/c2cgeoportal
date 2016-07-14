@@ -284,8 +284,8 @@ def main():
                     "angularLocaleScriptUrlElements.join('/'));"
                 ),
                 "gmfModule.constant('angularLocaleScript', "
-                "'${ request.static_url('{{package}}:static-ngeo/build/"
-                "angular-locale_\{\{locale\}\}.js') }');",
+                "'${request.static_url('{{package}}:static-ngeo/build/')}"
+                "angular-locale_\{\{locale\}\}.js');",
                 data,
             )
             data = _sub(
