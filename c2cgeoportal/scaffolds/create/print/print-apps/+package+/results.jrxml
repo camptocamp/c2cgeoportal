@@ -5,13 +5,13 @@
 	<field name="tableSubReport" class="java.lang.String"/>
 	<detail>
 		<band height="65">
-			<staticText>
+			<textField>
 				<reportElement x="0" y="0" width="460" height="20" forecolor="#424242"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[RÉSULTATS]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["RÉSULTATS - " + $F{title}]]></textFieldExpression>
+			</textField>
 			<subreport>
 				<reportElement x="0" y="23" width="255" height="42"/>
 				<dataSourceExpression><![CDATA[$F{table}]]></dataSourceExpression>
