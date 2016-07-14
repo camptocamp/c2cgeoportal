@@ -280,14 +280,17 @@ class C2cTool:
             self.print_step(0, intro="Fix it and lunch again the upgrade:")
             exit(1)
 
-        check_call(["git", "status"])
-        print("")
-        print(self.color_bar)
-        print(
-            "Here is the output of 'git status'. Please make sure to commit all your changes "
-            "before going further. All uncommited changes will be lost."
-        )
-        self.print_step(1)
+        if check_output(["git", "status", "--short"]) == "":
+            self.step1()
+        else:
+            check_call(["git", "status"])
+            print("")
+            print(self.color_bar)
+            print(
+                "Here is the output of 'git status'. Please make sure to commit all your changes "
+                "before going further. All uncommited changes will be lost."
+            )
+            self.print_step(1)
 
     def step1(self):
         if self.options.version is None:
