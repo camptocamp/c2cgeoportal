@@ -1,8 +1,25 @@
-#!/bin/bash -e
+#!/usr/bin/python
 
-USER_NAME=`whoami`
-USER_ID=`id -u`
-GROUP_ID=`id -g`
-RUN="$@"
+import os
+import sys
+import json
+import subprocess
+import urllib
 
-docker-compose up --abort-on-container-exit
+os.environ["USER_NAME"] = subprocess.check_output(["whoami"]).strip()
+os.environ["USER_ID"] = subprocess.check_output(["id", "-u"]).strip()
+os.environ["GROUP_ID"] = subprocess.check_output(["id", "-g"]).strip()
+os.environ["RUN"] = urllib.quote(json.dumps(sys.argv[1:]))
+
+if os.path.exists("SUCCESS"):
+    os.remove("SUCCESS")
+
+if os.path.exists("SUCCESS"):
+    os.remove("SUCCESS")
+
+subprocess.check_call(["docker-compose", "up", "--abort-on-container-exit"])
+
+if os.path.exists("SUCCESS"):
+    os.remove("SUCCESS")
+else:
+    exit(2)
