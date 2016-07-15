@@ -1,6 +1,0 @@
-extends: vars.yaml
-
-vars:
-    db: geomapfish
-    dbhost: db
-    mapserv_url: http://localhost:81/mapserver

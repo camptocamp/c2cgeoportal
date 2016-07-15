@@ -57,7 +57,6 @@
 #
 #
 
-import os
 import hashlib
 from unittest2 import TestCase
 from nose.plugins.attrib import attr
@@ -71,7 +70,7 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url, mapserv, create_default_ogcserver,
+    create_dummy_request, mapserv_url, create_default_ogcserver,
 )
 
 Base = sqlahelper.get_base()
@@ -135,7 +134,7 @@ class TestMapserverproxyView(TestCase):
 
         create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
-        ogcserver_geoserver.url = mapserv
+        ogcserver_geoserver.url = mapserv_url
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
@@ -263,10 +262,6 @@ class TestMapserverproxyView(TestCase):
                 ]
             }
         })
-        request.params = {"map": os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "c2cgeoportal_test.map"
-        )}
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request

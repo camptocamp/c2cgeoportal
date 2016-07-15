@@ -56,7 +56,7 @@ class Proxy:
         params = dict(self.request.params) if params is None else params
         parsed_url = urlparse(url)
         all_params = parse_qs(parsed_url.query)
-        for p in all_params:
+        for p in all_params:  # pragma: no cover
             all_params[p] = ",".join(all_params[p])
         all_params.update(params)
         params_encoded = {}
@@ -86,7 +86,7 @@ class Proxy:
         if headers is None:  # pragma: no cover
             headers = dict(self.request.headers)
 
-        if parsed_url.hostname != "localhost":  # pragma: no cover
+        if parsed_url.hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
         if not cache:

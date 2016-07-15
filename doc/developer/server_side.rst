@@ -92,8 +92,7 @@ Change into the ``c2cgeoportal`` directory and initialize the submodules:
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require a PostGIS database and a MapServer installation that can access
-the test mapfile ``c2cgeoportal/tests/functional/c2cgeoportal_test.map``.
+tests require to run with `docker-compose-run`.
 
 Unit tests
 ..........
@@ -103,7 +102,7 @@ To run the unit tests do this:
 .. prompt:: bash
 
     make build
-    .build/venv/bin/python setup.py nosetests -a '!functional'
+    ./docker-run ./setup.py nosetests -a '!functional'
 
 Functional tests
 ................
@@ -197,7 +196,7 @@ You can now run the functional tests with this:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py nosetests -a functional
+    ./docker-compose-run ./setup.py nosetests -a functional
 
 All tests
 .........
@@ -206,13 +205,13 @@ To run all the tests do this:
 
 .. prompt:: bash
 
-    make tests
+    ./docker-compose-run make tests
 
 To run a specific test use the ``--where`` switch. For example:
 
 .. prompt:: bash
 
-    .build/venv/bin/python setup.py nosetests --where \
+    ./docker-compose-run ./setup.py nosetests --where \
         c2cgeoportal/tests/functional/test_themes.py:TestThemesView.test_catalogue
 
 Adding tests

@@ -1,0 +1,23 @@
+db:
+    build: docker/test-db
+
+mapserver:
+    build: docker/test-mapserver
+    links:
+    - db
+
+c2cgeoportal:
+    image: sbrunner/c2cgeoportal
+    links:
+    - db
+    - mapserver
+    volumes:
+    - build:/build
+    - .:/src
+    environment:
+        USER_NAME: ${USER_NAME}
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    stdin_open: true
+    tty: true
+    entrypoint: run ${RUN}

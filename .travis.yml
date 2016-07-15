@@ -14,7 +14,8 @@ env:
 
 before_install:
 - cat /etc/apt/sources.list.d/*
-- rm -rf /home/travis/.nvm
+- rm --recursive --force /home/travis/.nvm
+- sudo rm --force /usr/local/bin/docker-compose
 - sudo rm --recursive --force /var/lib/apt/lists/*
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-9.1-postgis-2.2-scripts
 - sudo apt-get install --assume-yes --force-yes aptitude
@@ -22,11 +23,13 @@ before_install:
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs deploy cgi-mapserver
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
-- sudo pip install coveralls pyignore
+- sudo pip install coveralls pyignore docker-compose
 
 - sudo service postgresql stop
-- docker build --file travis/db.docker --tag=camptocamp/c2cgeoportal-test-db travis
-- docker run --publish=5432:5432 --detach camptocamp/c2cgeoportal-test-db
+
+# database for the GeoMapFish application
+- docker build --tag=geomapfish-db docker/test-db
+- docker run --publish=5432:5432 --detach geomapfish-db
 
 - |
   if [ "${TX_PASS}" != "" ]
@@ -55,10 +58,6 @@ install:
 - travis/test-upgrade.sh
 - travis/build-new-project.sh
 
-- docker build --file travis/mapserver.docker --tag=camptocamp/c2cgeoportal-test-mapserver .
-- "DOCKER_ADRS=`ifconfig docker0 | head -n 2 | tail -n 1 | awk -F : '{print $2}' | awk '{print $1}'`"
-- docker run --publish=81:80 --add-host=db:${DOCKER_ADRS} --detach camptocamp/c2cgeoportal-test-mapserver
-
 script:
 - uname --all
 - node --version
@@ -66,6 +65,13 @@ script:
 - python setup.py --version
 - docker version
 
+# test return code
+- ./docker-compose-run true
+- |
+    if ./docker-compose-run false
+    then
+        false
+    fi
 # test new project
 - cd /tmp/travis/testgeomapfish
 - .build/venv/bin/pcreate --scaffold=c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
@@ -80,10 +86,10 @@ script:
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk build
 - cp travis/empty-vars.mk /tmp/travis/testgeomapfish/
 - travis/run-on.sh /tmp/travis/testgeomapfish/ 'make -f empty-vars.mk .build/config.yaml'
-- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
-- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
-- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
-- ./docker-run alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini downgrade base
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini downgrade base
 
 # test c2cgeoportal
 - ./docker-run travis/empty-make.sh -f travis.mk build
@@ -91,11 +97,11 @@ script:
 - ./docker-run make -f travis.mk doc
 - ./docker-run make -f travis.mk checks
 - ./docker-run make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
-- ./docker-run python setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
+- ./docker-compose-run ./setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
 - travis/status.sh
 
 after_failure:
-- ./docker-run python setup.py nosetests
+- ./docker-compose-run make tests
 
 after_success:
 - coveralls

@@ -15,11 +15,9 @@ docker run \
     --volume=`pwd`:/src \
     --volume=${HOME}:${HOME} \
     --volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish \
-    --add-host=db:${DOCKER_ADRS} \
-    --add-host=mapserver:${DOCKER_ADRS} \
     --env=HOME=${HOME} \
     --env=USER_NAME=`whoami` \
     --env=USER_ID=`id -u` \
     --env=GROUP_ID=`id -g` \
-    sbrunner/c2cgeoportal:latest \
+    sbrunner/c2cgeoportal \
     run "$@"

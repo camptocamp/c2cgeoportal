@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+USER_NAME=`whoami`
+USER_ID=`id -u`
+GROUP_ID=`id -g`
+RUN="$@"
+
+docker-compose up --abort-on-container-exit

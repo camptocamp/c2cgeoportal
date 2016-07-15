@@ -33,7 +33,6 @@ from nose.plugins.attrib import attr
 
 import re
 import transaction
-import os
 import json
 from geoalchemy2 import WKTElement
 from pyramid import testing
@@ -42,7 +41,7 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, mapserv, host, create_dummy_request,
+    mapserv_url, create_dummy_request,
     create_default_ogcserver,
 )
 
@@ -90,7 +89,7 @@ class TestEntryView(TestCase):
         ogcserver_normapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_normapfile.url = mapserv_url + "?map=not_a_mapfile"
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
-        ogcserver_geoserver.url = mapserv
+        ogcserver_geoserver.url = mapserv_url
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
@@ -479,8 +478,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
-            # 'GetCapabilities from URL http://localhost/mapserver?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 7.0.0 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\n</BODY></HTML>',
-            'GetCapabilities from URL http://localhost/mapserver?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 6.4.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=GD SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\nmsEvalRegex(): Regular expression error. String failed expression test.\n</BODY></HTML>',
+            'GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 7.0.1 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\n</BODY></HTML>',
         ]))
 
     def test_themev2(self):
@@ -757,10 +755,9 @@ class TestEntryView(TestCase):
 
         request = testing.DummyRequest()
         request.user = None
-        request.headers["Host"] = host
 
         request.static_url = lambda url: "http://example.com/dummy/static/url"
-        request.route_url = lambda url, **kwargs: mapserv
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.registry.settings = {
             "default_max_age": 76,
             "layers": {
@@ -1114,24 +1111,14 @@ class TestEntryView(TestCase):
             "metadata": {},
         }, set()))
 
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        mapfile = os.path.join(curdir, "c2cgeoportal_test.map")
-
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "c2cgeoportal_test.map"
-        )
         params = (
-            ("map", mapfile),
             ("SERVICE", "WMS"),
             ("VERSION", "1.1.1"),
             ("REQUEST", "GetCapabilities"),
         )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-        url = mapserv + "&".join(["=".join(p) for p in params])
+        url = mapserv_url + "?" + "&".join(["=".join(p) for p in params])
         http = httplib2.Http()
-        h = {"Host": host}
-        resp, xml = http.request(url, method="GET", headers=h)
+        resp, xml = http.request(url, method="GET")
 
         layer = LayerV1()
         layer.id = 20

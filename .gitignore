@@ -2,7 +2,6 @@
 *.pyc
 *.pyo
 /c2cgeoportal/static/build/
-/c2cgeoportal/tests/functional/c2cgeoportal_test.map
 /c2cgeoportal/tests/functional/test.ini
 /c2cgeoportal/tests/functional/alembic.ini
 /c2cgeoportal/tests/functional/alembic_static.ini
@@ -22,6 +21,7 @@
 /c2cgeoportal/scaffolds/update/CONST_create_template/
 /c2cgeoportal/version.py
 /c2cgeoportal.egg-info
+/docker/test-mapserver/mapserver.map
 /doc/administrator/administrate.rst
 /doc/developer/client_side.rst
 /doc/index.rst

@@ -224,8 +224,9 @@ class Entry:
             headers["sec-username"] = self.request.user.username
             headers["sec-roles"] = role.name
 
-        if urlparse.urlsplit(url).hostname != "localhost":  # pragma: no cover
+        if urlparse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
+
         try:
             resp, content = http.request(url, method="GET", headers=headers)
         except:  # pragma: no cover
@@ -1019,11 +1020,12 @@ class Entry:
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlparse.urlsplit(wfsgc_url).hostname != "localhost":  # pragma: no cover
-            h.pop("Host")
+        headers = dict(self.request.headers)
+        if urlparse.urlsplit(wfsgc_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
+            headers.pop("Host")
+
         try:
-            resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=h)
+            resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
         except:  # pragma: no cover
             errors.add("Unable to GetCapabilities from url %s" % wfsgc_url)
             return None, errors
@@ -1087,11 +1089,12 @@ class Entry:
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
-        h = dict(self.request.headers)
-        if urlparse.urlsplit(ext_url).hostname != "localhost":
-            h.pop("Host")
+        headers = dict(self.request.headers)
+        if urlparse.urlsplit(ext_url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
+            headers.pop("Host")
+
         try:
-            resp, content = http.request(ext_url, method="GET", headers=h)
+            resp, content = http.request(ext_url, method="GET", headers=headers)
         except:
             errors.add(
                 "Unable to get external themes from url %s" % ext_url
