@@ -112,3 +112,7 @@ To print the layers in the high quality you you should add those UI Metadata:
 
 * ``ogcServer`` with the name of the used OGC server,
 * ``layers`` or ``printLayers`` with the layers to print.
+
+.. note::
+
+   See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.

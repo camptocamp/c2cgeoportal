@@ -8,6 +8,51 @@ The administration interface is located at ``http://<server>/<project>/admin``.
 Authentication for the administration interface is done through the main application interface. Role ``role_admin`` is
 required.
 
+.. _administrator_administrate_ogc_server:
+
+OGC Server
+----------
+
+This is the description of an OGC server (WMS/WFS).
+For one server we try to create only one request when it is possible.
+
+If you want to query the same server to get PNG and JPEG images,
+you should define two OGC servers. Attributes:
+
+* ``Name``: the name of the OGC Server.
+* ``Description``: a description.
+* ``URL``: the server URL, empty to use the internal mapserver.
+* ``WFS support``: whether WFS is supported by the server.
+* ``WFS URL``: the WFS server URL, empty to use the same as the ``URL``.
+* ``Type``: the server type used to know which custom attribute will be used.
+* ``Image type``: the MIME type of the images (e.g.: ``image/png``).
+* ``Single tile``: whether to use the single tile mode (For future use).
+* ``Auth``: the kind of authentication to use (For future use).
+
+.. _administrator_administrate_metadata:
+
+UI Metadata
+-----------
+
+All the Theme elements can have some Metadata to trigger some features,
+mainly UI features. Attributes:
+
+* ``Item``: the concerned tree item.
+* ``Name``: the type of Metadata we want to set (configured in the ``vars``
+  files in ``admin_interface/available_metadata``).
+* ``Value``: the value of the metadata.
+* ``Descritpion``: a description.
+
+Functionalities
+---------------
+
+Roles and Themes can have some functionalities. Attributes:
+
+* ``Name``: the type of Metadata we want to set (configured in the ``vars``
+  files in ``admin_interface/available_functionalities``).
+* ``Value``: the value of the metadata.
+* ``Descritpion``: a description.
+
 Layers
 ------
 
