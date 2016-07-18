@@ -23,7 +23,7 @@ before_install:
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs deploy cgi-mapserver
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
-- sudo pip install coveralls pyignore docker-compose
+- sudo pip install pyignore docker-compose
 
 - sudo service postgresql stop
 
@@ -104,7 +104,7 @@ after_failure:
 - ./docker-compose-run make tests
 
 after_success:
-- coveralls
+- ./docker-run coveralls
 - openssl aes-256-cbc -K $encrypted_ae821512cabf_key -iv $encrypted_ae821512cabf_iv -in deploy_key.enc -out ~/.ssh/id_rsa -d | true
 - chmod 600 ~/.ssh/id_rsa
 - git config --global user.email travis@camptocamp.com

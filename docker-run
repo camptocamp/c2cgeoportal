@@ -19,5 +19,8 @@ docker run \
     --env=USER_NAME=`whoami` \
     --env=USER_ID=`id -u` \
     --env=GROUP_ID=`id -g` \
+    --env=TRAVIS=${TRAVIS} \
+    --env=TRAVIS_BRANCH=${TRAVIS_BRANCH} \
+    --env=TRAVIS_JOB_ID=${TRAVIS_JOB_ID} \
     sbrunner/c2cgeoportal \
     run "$@"
