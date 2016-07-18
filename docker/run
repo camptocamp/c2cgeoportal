@@ -31,11 +31,19 @@ os.chmod("/build", stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | s
 run_file_name = "/tmp/run"
 with open(run_file_name, 'w') as run_file:
     run_file.write("""#!/usr/bin/python
+
 import subprocess, os
+
 {umask}
+
 # Adds the c2cgeoportal binaries
 os.environ["PATH"] += ":/src/.build/venv/bin"
-subprocess.check_call({args})
+
+try:
+    subprocess.check_call({args})
+except subprocess.CalledProcessError:
+    exit(2)
+
 with open("/src/SUCCESS", "w"):
     pass
 """.format(
@@ -44,4 +52,7 @@ with open("/src/SUCCESS", "w"):
     ))
 
 os.chmod(run_file_name, stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
-subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
+try:
+    subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
+except subprocess.CalledProcessError:
+    exit(2)
