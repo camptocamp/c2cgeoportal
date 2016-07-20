@@ -377,8 +377,9 @@ class TreeItem(Base):
     def __init__(self, name=u""):
         self.name = name
 
-    def __unicode__(self):
-        return self.name or u""  # pragma: nocover
+    def __unicode__(self):  # pragma: no cover
+        type_ = self.__label__ if hasattr(self, "__label__") else self.item_type
+        return u"{}: {}".format(type_, self.name or u"")
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
