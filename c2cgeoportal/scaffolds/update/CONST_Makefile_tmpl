@@ -161,6 +161,12 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
+# Visible web URL
+# The protocol part
+VISIBLE_WEB_PROTOCOL ?= https
+export VISIBLE_WEB_HOST
+export VISIBLE_WEB_PROTOCOL
+
 # ngeo
 ANGULAR_VERSION = 1.5
 ifeq ($(OPERATING_SYSTEM), LINUX)
