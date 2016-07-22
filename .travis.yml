@@ -12,10 +12,11 @@ env:
 
 before_install:
 - cat /etc/apt/sources.list.d/*
+- rm -rf /home/travis/.nvm
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface
 - sudo apt-get install --assume-yes --force-yes aptitude
 - sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
-- sudo apt-get update
+- curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs
   deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
   postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
