@@ -8,6 +8,9 @@ vars:
 
     srid: -1
 
+    host: VISIBLE_WEB_HOST
+    web_protocol: VISIBLE_WEB_PROTOCOL
+
     # the Unix user under which the modwsgi daemon processes are executed.
     modwsgi_user: MODWSGI_USER
     # url-path where the instance must respond.
@@ -275,7 +278,7 @@ vars:
     # The shortner base configuration
     shortener:
         # The base of created URL
-        base_url:  http://{host}{apache_entry_point}s/
+        base_url:  '{web_protocol}://{host}{apache_entry_point}s/'
 
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
@@ -288,10 +291,10 @@ vars:
 
     # For base layers
     tiles_url:
-    - http://a.tiles.{host}/{instanceid}/tiles
-    - http://b.tiles.{host}/{instanceid}/tiles
-    - http://c.tiles.{host}/{instanceid}/tiles
-    - http://d.tiles.{host}/{instanceid}/tiles
+    - '{web_protocol}:://a.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}:://b.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}:://c.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}:://d.tiles.{host}/{instanceid}/tiles'
     wmtscapabilities_path: WMTSCAPABILITIES_PATH
 
     # Control the HTTP headers
@@ -362,15 +365,12 @@ vars:
               display: PhantomJS generic test
         hosts:
         - display: {{package}}
-          url: http://{host}/{instanceid}/wsgi
+          url: '{web_protocol}://{host}/{instanceid}/wsgi'
           type: main
 
     # What web page is authorized to use the API
     authorized_referers:
-    - "http://{host}/{instanceid}"
-    - "https://{host}/{instanceid}"
-    - "http://{host}:8480/{instanceid}"
-    - "https://{host}:8480/{instanceid}"
+    - '{web_protocol}://{host}/{instanceid}'
 
     # Hooks that can be called at different moments in the life of the
     # application. The value is the full python name
@@ -406,6 +406,8 @@ interpreted:
     - docker_base
     - development
     - wmtscapabilities_path
+    - host
+    - web_protocol
     node:
         vars:
         - closure_library_path

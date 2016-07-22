@@ -4,9 +4,6 @@ vars:
     # Database name
     db: geomapfish
 
-    # The visible host name
-    host: localhost
-
     srid: {{srid}}
 
     # The application's default language. This is the language used by
@@ -62,9 +59,9 @@ vars:
 
     # For base layers
     tiles_url:
-    - http://a.tiles.{host}/{instanceid}/tiles
-    - http://b.tiles.{host}/{instanceid}/tiles
-    - http://c.tiles.{host}/{instanceid}/tiles
+    - '{web_protocol}://a.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}://b.tiles.{host}/{instanceid}/tiles'
+    - '{web_protocol}://c.tiles.{host}/{instanceid}/tiles'
 
     # The URL template used to generate the sub domain URL
     # %(sub)s will be replaced by the sub domain value.
@@ -120,7 +117,7 @@ vars:
         disabled: []
         hosts: []
         # - display: Child:
-        #   url: http://{host}/child/wsgi
+        #   url: {web_protocol}://{host}/child/wsgi
 
     reset_password:
         # Used to send a confirmation email

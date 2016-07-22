@@ -6,7 +6,14 @@ VARS_FILES += ${VARS_FILE}
 endif
 
 APACHE_VHOST ?= {{apache_vhost}}
-INSTANCE_ID ?= {{project}}
+INSTANCE_ID ?= {{package}}
 TILECLOUD_CHAIN ?= FALSE
+VISIBLE_WEB_HOST ?= example.com
+
+# Deploy branch
+DEPLOY_BRANCH_DIR ?= /var/www/vhosts/$(APACHE_VHOST)/private/deploybranch
+GIT_REMOTE_URL ?= git@github.com:camptocamp/{{package}}.git
+DEPLOY_BRANCH_BASE_URL ?= $(VISIBLE_PROTOCOL)://$(VISIBLE_HOST)
+DEPLOY_BRANCH_MAKEFILE ?= {{package}}.mk
 
 include CONST_Makefile

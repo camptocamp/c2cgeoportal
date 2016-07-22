@@ -161,6 +161,12 @@ OUTPUT_DIR = $(PACKAGE)/static/build
 GIT_REMOTE ?= origin
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
+# Visible web URL
+# The protocol part
+VISIBLE_WEB_PROTOCOL ?= https
+export VISIBLE_WEB_HOST
+export VISIBLE_WEB_PROTOCOL
+
 # ngeo
 ANGULAR_VERSION = 1.5
 ifeq ($(OPERATING_SYSTEM), LINUX)
@@ -465,13 +471,19 @@ help:
 	@echo  "- cleanall		Remove all the build artefacts"
 	@echo  "- cleanallcache		Remove all the build artefacts and the extra caches (npm and pip)"
 	@echo
-	@echo "Utility targets:"
+	@echo  "Utility targets:"
 	@echo
 	@echo  "- update		Update and clean the project (Git, Node, Pip)"
 	@echo  "- update-git-submodules	Update and clean the Git submodules"
 	@echo  "- update-node-modules	Update node modules (using --force)"
 	@echo  "- upgrade-db		Upgrade the database to the latest version"
 	@echo  "- upgrade		Launch the upgrade process"
+	@echo
+	@echo  "Deploy branch target:"
+	@echo
+	@echo  "- deploy-branch		Deploy the curent branch to demos"
+	@echo  "- remove-branch		Remove the curent branch from demos"
+
 ifdef UTILITY_HELP
 	@echo $(UTILITY_HELP)
 endif
@@ -568,6 +580,23 @@ upgrade-db: alembic.ini alembic_static.ini $(VENV_BIN)/alembic$(PYTHON_BIN_POSTF
 	$(VENV_BIN)/alembic -c alembic.ini upgrade head
 	$(VENV_BIN)/alembic -c alembic_static.ini upgrade head
 
+# Deploy branch
+
+.PHONY: deploy-branch
+deploy-branch:
+	@read -p "Are you sure to deploy the branch in $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH) (Y/n)?" RESP; RESP=`echo $$RESP | tr '[:upper:]' '[:lower:]'`; /usr/bin/test "$$RESP" == "y" -o "$$RESP" == "yes" -o "$$RESP" == ""
+	rm -f $(APACHE_CONF_DIR)/$(GIT_BRANCH).conf
+	rm -rf $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH)
+	mkdir --parents $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH)
+	git clone $(GIT_REMOTE_URL) -b $(GIT_BRANCH) $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH)
+	cd $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH); INSTANCE_ID=$(GIT_BRANCH) APACHE_ENTRY_POINT=/$(GIT_BRANCH)/ $(MAKE) -f $(DEPLOY_BRANCH_MAKEFILE) build
+	@echo Now open $(DEPLOY_BRANCH_BASE_URL)/$(GIT_BRANCH)
+
+.PHONY: remove-branch
+remove-branch:
+	rm -f $(APACHE_CONF_DIR)/$(GIT_BRANCH).conf
+	rm -fr $(DEPLOY_BRANCH_DIR)/$(GIT_BRANCH)
+	$(APACHE_GRACEFUL)
 
 # Templates
 
