@@ -347,12 +347,8 @@ class Layers(object):
 
     @view_config(route_name="layers_delete")
     def delete(self):
-        set_common_headers(self.request, "layers", NO_CACHE)
-
         if self.request.user is None:
             raise HTTPForbidden()
-
-        self.request.response.cache_control.no_cache = True
 
         feature_id = self.request.matchdict.get("feature_id", None)
         layer = self._get_layer_for_request()
@@ -373,7 +369,12 @@ class Layers(object):
                 raise HTTPForbidden()
 
         protocol = self._get_protocol_for_layer(layer, before_delete=security_cb)
-        return protocol.delete(self.request, feature_id)
+        response = protocol.delete(self.request, feature_id)
+        set_common_headers(
+            self.request, "layers", NO_CACHE,
+            response=response,
+        )
+        return response
 
     @view_config(route_name="layers_metadata", renderer="xsd")
     def metadata(self):
