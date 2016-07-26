@@ -50,7 +50,7 @@ the Camptocamp sysadmins).
 On Camptocamp servers, in case you have both ``sencha-sdk-tools`` and
 ``sencha-cmd`` installed, commands are named respectively ``sencha-sdk``
 and ``sencha-cmd``. By default the ``sencha-cmd`` command is used, if
-it's not the case on your host put the following configuration variables
+it is not the case on your host put the following configuration variables
 in your `<package>.mk` file:
 
 .. code:: make

@@ -48,6 +48,46 @@
 <p>The administration interface is located at <code class="docutils literal"><span class="pre">http://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
 <p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal"><span class="pre">role_admin</span></code> is
 required.</p>
+<div class="section" id="ogc-server">
+<span id="administrator-administrate-ogc-server"></span><h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
+<p>This is the description of an OGC server (WMS/WFS).
+For one server we try to create only one request when it is possible.</p>
+<p>If you want to query the same server to get PNG and JPEG images,
+you should define two OGC servers. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the OGC Server.</li>
+<li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
+<li><code class="docutils literal"><span class="pre">URL</span></code>: the server URL, empty to use the internal mapserver.</li>
+<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</li>
+<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">URL</span></code>: the WFS server URL, empty to use the same as the <code class="docutils literal"><span class="pre">URL</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">Type</span></code>: the server type used to know which custom attribute will be used.</li>
+<li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal"><span class="pre">image/png</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</li>
+<li><code class="docutils literal"><span class="pre">Auth</span></code>: the kind of authentication to use (For future use).</li>
+</ul>
+</div>
+<div class="section" id="ui-metadata">
+<span id="administrator-administrate-metadata"></span><h2>UI Metadata<a class="headerlink" href="#ui-metadata" title="Permalink to this headline">¶</a></h2>
+<p>All the Theme elements can have some Metadata to trigger some features,
+mainly UI features. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Item</span></code>: the concerned tree item.</li>
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
+files in <code class="docutils literal"><span class="pre">admin_interface/available_metadata</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
+<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
+</ul>
+</div>
+<div class="section" id="functionalities">
+<h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
+<p>Roles and Themes can have some functionalities. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
+files in <code class="docutils literal"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
+<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
+</ul>
+</div>
 <div class="section" id="layers">
 <h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
 <p>In the version 2 we split the layer table in 2 tables: <code class="docutils literal"><span class="pre">layer_wms</span></code>,
@@ -127,14 +167,14 @@ in the capabilities it can be empty.</li>
 <dt>The layers in the admin interface have the following attributes:</dt>
 <dd><ul class="first last simple">
 <li><code class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional, for WMS, leave it empty to get it from the capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Visible</span></code>: if it&#8217;s false the layer is just ignored.</li>
+<li><code class="docutils literal"><span class="pre">Visible</span></code>: if it is false the layer is just ignored.</li>
 <li><code class="docutils literal"><span class="pre">Checked</span></code>: the layer is checked by default.</li>
 <li><code class="docutils literal"><span class="pre">Icon</span></code>: icon on the layer tree.</li>
 <li><code class="docutils literal"><span class="pre">KML</span> <span class="pre">3D</span></code>: optional, URL to a KML to display it on the Google earth view.</li>
 <li><code class="docutils literal"><span class="pre">Display</span> <span class="pre">legend</span></code>: it checked the legend is display on the layer tree.</li>
 <li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">image</span></code>: URL to overwrite the default legend image.</li>
 <li><code class="docutils literal"><span class="pre">Min/Max</span> <span class="pre">resolution</span></code>: resolutions between which data are displayed by
-the given layer, used to zoom to visible scale, with WMS if it&#8217;s empty
+the given layer, used to zoom to visible scale, with WMS if it is empty
 we get the values from the capabilities.</li>
 <li><code class="docutils literal"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
 <a class="reference external" href="http://docs.camptocamp.net/cgxp/['2','0']/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
@@ -238,6 +278,9 @@ the URL <code class="docutils literal"><span class="pre">http://example.com/test
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Administrate a c2cgeoportal application</a><ul>
+<li><a class="reference internal" href="#ogc-server">OGC Server</a></li>
+<li><a class="reference internal" href="#ui-metadata">UI Metadata</a></li>
+<li><a class="reference internal" href="#functionalities">Functionalities</a></li>
 <li><a class="reference internal" href="#layers">Layers</a><ul>
 <li><a class="reference internal" href="#all-layer-type">All layer type</a></li>
 <li><a class="reference internal" href="#internal-wms-layer">Internal WMS layer</a></li>

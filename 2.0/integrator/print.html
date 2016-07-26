@@ -73,7 +73,7 @@ span.prompt1:before {
 <span class="prompt1">mv /tmp/&lt;project&gt;/print .</span>
 <span class="prompt1">rm -rf /tmp/&lt;project&gt;</span>
 </pre><p>Then in <code class="docutils literal"><span class="pre">~/print</span></code> you will have a backup of the old template, and in the <code class="docutils literal"><span class="pre">print</span></code> folder you will have the new print configuration.</p>
-<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> you should remove the <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">=</span> <span class="pre">2</span></code> (it&#8217;s <code class="docutils literal"><span class="pre">3</span></code> by default).</p>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> you should remove the <code class="docutils literal"><span class="pre">PRINT_VERSION</span> <span class="pre">=</span> <span class="pre">2</span></code> (it is <code class="docutils literal"><span class="pre">3</span></code> by default).</p>
 <p>In the concerned viewer javascript files, in the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following lines:</p>
 <div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
 <span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{},</span>

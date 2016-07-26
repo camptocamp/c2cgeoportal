@@ -241,6 +241,6 @@ And define the configuration in the ``vars_<project>.yaml`` file:
             fr: fr
 
 ``fr: fr`` is a link between the pyramid language and
-the text search configuration, by default the it's
+the text search configuration, by default the it is
 ``fr: french`` because the default french text search
 configuration is named 'french'.
