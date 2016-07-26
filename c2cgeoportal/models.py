@@ -150,7 +150,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return "%s - %s" % (self.name or u"", self.value or u"")  # pragma: nocover
+        return u"%s - %s" % (self.name or u"", self.value or u"")  # pragma: nocover
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
 event.listen(Functionality, "after_delete", cache_invalidate_cb)
