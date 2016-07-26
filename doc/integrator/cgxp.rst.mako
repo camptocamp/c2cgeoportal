@@ -117,11 +117,11 @@ The important points are:
   (in ``args``).
 * ``mapserverLayers`` is used to know the layers to
   `print <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Print.html>`_.
-  if it's not present the tiles are used.
+  if it is not present the tiles are used.
 * ``queryLayers`` provide information to the
   `GetFeature <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/GetFeature.html>`_
   plugin on the background layers. It can also be a coma separated string.
-  If it's not present the ``mapserverLayers`` is used.
+  If it is not present the ``mapserverLayers`` is used.
 * ``ref`` is used by the
   `MapOpacitySlider <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/MapOpacitySlider.html>`_.
 * ``visibility`` should be set to ``false`` to don't download unneeded tiles, the

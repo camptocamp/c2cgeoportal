@@ -115,14 +115,14 @@ layerv1
 
 The layers in the admin interface have the following attributes:
  *  ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
- *  ``Visible``: if it's false the layer is just ignored.
+ *  ``Visible``: if it is false the layer is just ignored.
  *  ``Checked``: the layer is checked by default.
  *  ``Icon``: icon on the layer tree.
  *  ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
  *  ``Display legend``: it checked the legend is display on the layer tree.
  *  ``Legend image``: URL to overwrite the default legend image.
  *  ``Min/Max resolution``: resolutions between which data are displayed by
-    the given layer, used to zoom to visible scale, with WMS if it's empty
+    the given layer, used to zoom to visible scale, with WMS if it is empty
     we get the values from the capabilities.
  *  ``Disclaimer``: optional, copyright of the layer, used by
     `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.

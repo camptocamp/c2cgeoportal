@@ -16,7 +16,7 @@ be used for each server.
 Deploying data from integration to production may be done by
 `cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_.
 
-For the next steps it's important to figure out if the main goal is the scalability
+For the next steps it is important to figure out if the main goal is the scalability
 or the robustness of the application.
 
 In general the scalability is more important because the main cause of
@@ -49,7 +49,7 @@ Add in your project Makefile ``<package>.mk``:
 Then, all the GET and OPTIONS requests will use one of the replica Postgres instances and the
 rest will use the master instance.
 It is assumed, here, that the views handling the GET and OPTIONS queries don't cause write
-operations to the database (not supported by replica instances). If it's not the case in your
+operations to the database (not supported by replica instances). If it is not the case in your
 application (bad practice), add entries to ``db_chooser/master`` in your ``vars_<project>.yaml``.
 For forcing the use of a replica for a POST/PUT/DELETE, add entries to the ``db_chooser/replica``
 configuration.

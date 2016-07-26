@@ -224,7 +224,7 @@ Upgrade dependencies
 --------------------
 
 When we start a new version of c2cgeoportal or just before a new development
-phase it's a good idea to update the dependencies.
+phase it is a good idea to update the dependencies.
 
 Eggs
 ~~~~
@@ -274,7 +274,7 @@ Object model
 
 ``FullTextSearch`` references a first level ``LayerGroup`` but without any constrains.
 
-It's not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
+it is not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
 to the ``Role`` of the parent schema.
 
 ``ui_metadata`` vs ``functionality``
