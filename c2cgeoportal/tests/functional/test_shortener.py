@@ -54,18 +54,53 @@ class TestshortenerView(TestCase):
 
     def test_shortener(self):
         from pyramid.testing import DummyRequest
-        from pyramid.httpexceptions import HTTPFound, HTTPNotFound, \
-            HTTPBadRequest
+        from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
         from c2cgeoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
-            return "https://example.com/s/" + kw["ref"]
+            return "https://example.com/short/" + kw["ref"]
 
         request = DummyRequest()
         request.user = None
         request.host = "example.com:443"
         request.server_name = "example.com"
         request.route_url = route_url
+        request.registry.settings["shortener"] = {
+            "base_url": "https://example.com/s/"
+        }
+        shortener = Shortener(request)
+
+        request.params = {}
+        request.matchdict = {
+            "ref": "AAAAAA"
+        }
+        self.assertRaises(HTTPNotFound, shortener.get)
+
+        request.params = {}
+        request.matchdict = {}
+        self.assertRaises(HTTPBadRequest, shortener.create)
+
+        request.params = {
+            "url": "https://other-site.com/hi"
+        }
+        self.assertRaises(HTTPBadRequest, shortener.create)
+
+    def test_shortener_create_1(self):
+        from pyramid.testing import DummyRequest
+        from pyramid.httpexceptions import HTTPFound
+        from c2cgeoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://example.com/short/" + kw["ref"]
+
+        request = DummyRequest()
+        request.user = None
+        request.host = "example.com:443"
+        request.server_name = "example.com"
+        request.route_url = route_url
+        request.registry.settings["shortener"] = {
+            "base_url": "https://example.com/s/"
+        }
         shortener = Shortener(request)
 
         request.params = {
@@ -86,11 +121,56 @@ class TestshortenerView(TestCase):
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")
 
+    def test_shortener_create_2(self):
+        from pyramid.testing import DummyRequest
+        from pyramid.httpexceptions import HTTPFound
+        from c2cgeoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://example.com/short/" + kw["ref"]
+
+        request = DummyRequest()
+        request.user = None
+        request.host = "example.com:443"
+        request.server_name = "example.com"
+        request.route_url = route_url
+        request.registry.settings["shortener"] = {}
+        shortener = Shortener(request)
+
+        request.params = {
+            "url": "https://example.com/hi"
+        }
+        result = shortener.create()
+        index = result["short_url"].rfind("/")
+        self.assertEqual(
+            result["short_url"][:index],
+            "https://example.com/short"
+        )
+
         request.params = {}
         request.matchdict = {
-            "ref": "AAAAAA"
+            "ref": result["short_url"][index + 1:]
         }
-        self.assertRaises(HTTPNotFound, shortener.get)
+        result = shortener.get()
+        self.assertEqual(type(result), HTTPFound)
+        self.assertEqual(result.location, "https://example.com/hi")
+
+    def test_shortener_noreplace_1(self):
+        from pyramid.testing import DummyRequest
+        from c2cgeoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://example.com/short/" + kw["ref"]
+
+        request = DummyRequest()
+        request.user = None
+        request.host = "example.com:443"
+        request.server_name = "example.com"
+        request.route_url = route_url
+        request.registry.settings["shortener"] = {
+            "base_url": "https://example.com/s/"
+        }
+        shortener = Shortener(request)
 
         request.params = {
             "url": "https://example.com/short/truite"
@@ -98,23 +178,41 @@ class TestshortenerView(TestCase):
         result = shortener.create()
         self.assertEqual(result["short_url"], "https://example.com/s/truite")
 
-        request.params = {}
-        request.matchdict = {}
-        self.assertRaises(HTTPBadRequest, shortener.create)
-
-        request.params = {
-            "url": "https://other-site.com/hi"
-        }
-        self.assertRaises(HTTPBadRequest, shortener.create)
-
-    def test_shortener_baseurl(self):
+    def test_shortener_noreplace_2(self):
         from pyramid.testing import DummyRequest
         from c2cgeoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://example.com/short/" + kw["ref"]
 
         request = DummyRequest()
         request.user = None
         request.host = "example.com:443"
         request.server_name = "example.com"
+        request.route_url = route_url
+        request.registry.settings["shortener"] = {
+            "base_url": "https://example.com/s/"
+        }
+        shortener = Shortener(request)
+
+        request.params = {
+            "url": "https://example.com/s/truite"
+        }
+        result = shortener.create()
+        self.assertEqual(result["short_url"], "https://example.com/s/truite")
+
+    def test_shortener_baseurl(self):
+        from pyramid.testing import DummyRequest
+        from c2cgeoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://example.com/short/" + kw["ref"]
+
+        request = DummyRequest()
+        request.user = None
+        request.host = "example.com:443"
+        request.server_name = "example.com"
+        request.route_url = route_url
         request.registry.settings["shortener"] = {
             "base_url": "http://my_host/my_short/"
         }

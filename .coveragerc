@@ -1,6 +1,7 @@
 [run]
 source = c2cgeoportal
 omit =
-    */tests/*
+    c2cgeoportal/tests/*
     c2cgeoportal/lib/raster/*
     c2cgeoportal/scripts/*
+    c2cgeoportal/version.py
