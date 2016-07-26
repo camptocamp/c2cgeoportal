@@ -153,7 +153,7 @@ class C2CPregenerator:  # pragma: no cover
             query["cache_version"] = get_cache_version()
 
         if self.role and request.user:
-            # The templates change if the user is logged in or not. Usually it's
+            # The templates change if the user is logged in or not. Usually it is
             # the role that is making a difference, but the username is put in
             # some JS files. So we add the username to hit different cache entries.
             query["username"] = request.user.username

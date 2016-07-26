@@ -122,7 +122,7 @@ In the ``admin`` interface, open the ``UI metadatas`` list and add a new record:
       layer names, separated by commas.
     * Item: Select the source layer.
 
-Exemple:
+Example:
 
     * Name: ``copy_to``
     * Value: ``polygon2,polygon3,polygon4``
