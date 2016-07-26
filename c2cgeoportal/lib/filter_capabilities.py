@@ -337,7 +337,7 @@ class _CapabilitiesFilter(XMLFilterBase):
                 if len(self.layers_path) > 1:
                     self.layers_path[-2].children_nb -= 1
 
-        self._do(lambda: self._accumulator.append(text.encode("utf-8")))
+        self._do(lambda: self._accumulator.append(text))
 
     def ignorableWhitespace(self, ws):  # pragma: no cover  # noqa
         self._do(lambda: self._accumulator.append(ws))
