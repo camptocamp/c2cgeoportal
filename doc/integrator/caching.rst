@@ -9,17 +9,18 @@ Headers
 By default most of the elements will be cached for 10 days by the browser.
 
 To change this value for all the application change in the
-``production.ini.in`` file the ``default_max_age`` value. ``0`` will mean ``no-cache``.
+``vars_<package>.yaml`` file the ``vars/default_max_age`` value. ``0`` will mean ``no-cache``.
 The specified value is in seconds.
 
-To change this value for a specific service add the following structure in the
-``config.yaml.in``:
+To change this value for a specific service add the following stricture in the
+``vars_<package>.yaml``:
 
 .. code:: yaml
 
-    headers:
-        <service_name>:
-            cache_control_max_age: <max_age>
+    vars:
+        headers:
+            <service_name>:
+                cache_control_max_age: <max_age>
 
 Where ``<service_name>`` can be: ``entry``, ``fulltextsearch``, ``mapserver``,
 ``print`` or ``layers`` (editing).
