@@ -151,6 +151,8 @@ vars:
         - legendRule
         - name: isLegendExpanded
           type: boolean
+        - name: iconUrl
+          type: url
         - name: metadataUrl
           type: url
         - disclaimer
