@@ -16,7 +16,7 @@ Thy should be configured in the vars file, in the ``admin_interface`` /
 
 It's a list of object who have a ``name`` and a ``type``.
 
-The type can be::
+The type can be:
 
 * ``string``
 * ``list`` a list fo string
