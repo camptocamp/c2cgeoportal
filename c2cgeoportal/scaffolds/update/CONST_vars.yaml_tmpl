@@ -107,10 +107,12 @@ vars:
 
     # All the application interfaces used to create the apache rewrite rules
     interfaces:
-    - main
+    - desktop
     - mobile
     - edit
     - routing
+
+    default_interface: desktop
 
     # The dogpile.cache configuration.
     #
