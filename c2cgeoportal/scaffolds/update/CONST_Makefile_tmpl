@@ -446,7 +446,7 @@ MAKO_FILES = $(shell $(FIND) $(EXTRA_EXCLUDE) $(FIND_OPTS) -name "*.mako" -print
 JINJA_FILES = $(shell $(FIND) $(EXTRA_EXCLUDE) $(FIND_OPTS) -name "*.jinja" -print)
 VARS_FILES += CONST_vars.yaml $(VARS_FILE)
 VARS_DEPENDS += $(VARS_FILES) .build/node_modules.timestamp
-CONFIG_VARS += sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
+CONFIG_VARS += instanceid sqlalchemy.url schema parentschema enable_admin_interface pyramid_closure \
 	node_modules_path closure_library_path default_locale_name servers layers \
 	available_locale_names cache admin_interface functionalities external_themes_url \
 	raster shortener hide_capabilities mapserverproxy tinyowsproxy resourceproxy print_url \
@@ -661,7 +661,8 @@ $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		$(I18N_DEPENDENTIES) \
 		$(I18N_SOURCE_FILES) \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
-		.build/mapserver.timestamp
+		.build/mapserver.timestamp \
+		.build/config.yaml
 	$(PRERULE_CMD)
 	$(VENV_BIN)/pot-create --config $< --output $@ $(I18N_SOURCE_FILES)
 	# removes the always changed date line

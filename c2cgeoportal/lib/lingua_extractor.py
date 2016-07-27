@@ -118,6 +118,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         self.env = bootstrap(filename)
         with open("project.yaml") as f:
             self.package = yaml.load(f)
+        with open(".build/config.yaml") as f:
+            self.config = yaml.load(f)
 
         try:
             from c2cgeoportal.models import Theme, LayerGroup, \
@@ -154,6 +156,36 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self._import_layer_attributes(
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
             )
+        if layer.geo_table is not None:
+            url = "http://localhost/{}/wsgi/layers/{}/md.xsd".format(
+                self.config["vars"]["instanceid"], layer.id,
+            )
+            http = httplib2.Http()
+            h = {
+                "Host": self.package["host"]
+            }
+            try:
+                resp, content = http.request(url, method="GET", headers=h)
+            except:  # pragma: no cover
+                print("Unable to get the layer metadata XSD from URL %s" % url)
+                return
+
+            if resp.status < 200 or resp.status >= 300:  # pragma: no cover
+                print(
+                    "Layer matadata XSD from URL %s return the error: %i %s" %
+                    (url, resp.status, resp.reason)
+                )
+                return
+
+            metadata = parseString(content)
+            for element in metadata.getElementsByTagNameNS(
+                "http://www.w3.org/2001/XMLSchema", "element"
+            ):
+                if not element.getAttribute("type").startswith("gml:"):
+                    messages.append(Message(
+                        None, element.getAttribute("name"), None, [], "", "",
+                        (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
+                    ))
 
     def _import_layer_wmts(self, layer, messages):
         layers = [d.value for d in layer.ui_metadatas if d.name == "wmsLayer"]
@@ -189,13 +221,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(url, method="GET", headers=h)
             except:  # pragma: no cover
-                print("Unable to DescribeFeatureType from url %s" % url)
+                print("Unable to DescribeFeatureType from URL %s" % url)
                 self.featuretype_cache[url] = None
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
                 print(
-                    "DescribeFeatureType from url %s return the error: %i %s" %
+                    "DescribeFeatureType from URL %s return the error: %i %s" %
                     (url, resp.status, resp.reason)
                 )
                 self.featuretype_cache[url] = None
@@ -207,9 +239,9 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             except AttributeError:
                 print(
                     "WARNING! an error occured while trying to "
-                    "read the mapfile and recover the themes."
+                    "read the Mapfile and recover the themes."
                 )
-                print("url: %s\nxml:\n%s" % (url, content))
+                print("URL: %s\nxml:\n%s" % (url, content))
         else:
             describe = self.featuretype_cache[url]
 
@@ -218,9 +250,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         attributes = []
         # Should probably be adapted for other king of servers
-        for type_element in describe.getElementsByTagName("complexType"):
+        for type_element in describe.getElementsByTagNameNS(
+            "http://www.w3.org/2001/XMLSchema", "complexType"
+        ):
             if type_element.getAttribute("name") == "%sType" % layer:
-                for element in type_element.getElementsByTagName("element"):
+                for element in type_element.getElementsByTagNameNS(
+                    "http://www.w3.org/2001/XMLSchema", "element"
+                ):
                     if not element.getAttribute("type").startswith("gml:"):
                         attributes.append(element.getAttribute("name"))
         return attributes
