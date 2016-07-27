@@ -121,6 +121,29 @@ If you want to keep your CGXP interface you should:
    + DEPLOY_BRANCH_BASE_URL ?= $(VISIBLE_PROTOCOL)://$(VISIBLE_HOST)
    + DEPLOY_BRANCH_MAKEFILE ?= {{package}}.mk
 
+8. in the apache/wsgi.conf.mako file do the following changes:
+
+    -% for interface in interfaces:
+    -<%
+    -path = apache_entry_point \
+    -    if interface == "main" \
+    -    else "%s%s/" % (apache_entry_point, interface)
+    -interface = "" if interface == "main" else interface
+    -%>
+    -RewriteRule ^${path}?$ /${instanceid}/wsgi/${interface} [PT]
+    -RewriteRule ^${path}theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
+    -% endfor
+    -
+    -RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/ [PT]
+    +RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/${default_interface} [PT]
+    +RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/${default_interface}/theme/$1 [PT]
+    +
+    +% for interface in interfaces:
+    +RewriteRule ^${apache_entry_point}${interface}/?$ /${instanceid}/wsgi/${interface} [PT]
+    +RewriteRule ^${apache_entry_point}${interface}/theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
+    +% endfor
+    +
+
 
 Version 2.0.0
 =============
