@@ -210,13 +210,7 @@ def main():
             # Styles
             data = _sub(
                 r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
-                r"""% if debug:
-    <link rel="stylesheet/less" href="${{request.static_url('%s/ngeo/contribs/gmf/less/font.less' % request.registry.settings['node_modules_path'])}}" type="text/css">
-    <link rel="stylesheet/less" href="${{request.static_url('{{{{package}}}}:static-ngeo/less/{interface}.less')}}" type="text/css">
-    <link rel="stylesheet/less" href="${{request.static_url('%s/ngeo/contribs/gmf/less/{interface}.less' % request.registry.settings['node_modules_path'])}}" type="text/css">
-% else:
-    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">
-% endif""".format(interface=args.interface),  # noqa
+                r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa
                 data,
                 count=1,
                 flags=re.DOTALL
@@ -250,7 +244,6 @@ def main():
     </script>
     <script src="${{request.static_url('{{{{package}}}}:static-ngeo/build/templatecache.js')}}"></script>
     <script src="${{request.static_url('%s/ngeo/utils/watchwatchers.js' % request.registry.settings['node_modules_path'])}}"></script>
-    <script src="${{request.static_url('%s/less/dist/less.min.js' % request.registry.settings['node_modules_path'])}}"></script>
     <script>
         {{{{package}}}}.baseTemplateUrl = '${{request.static_url("{{{{package}}}}:static-ngeo/js/components")}}';
     </script>
