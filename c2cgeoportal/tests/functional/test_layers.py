@@ -836,9 +836,9 @@ class TestLayers(TestCase):
             "layers": {
                 "enum": {
                     "layer_test": {
-                        "table": tablename,
                         "attributes": {
                             "label": {
+                                "table": tablename,
                                 "column_name": "name"
                             }
                         }
@@ -872,9 +872,9 @@ class TestLayers(TestCase):
             "layers": {
                 "enum": {
                     "layer_test": {
-                        "table": tablename,
                         "attributes": {
                             "label": {
+                                "table": tablename,
                                 "column_name": "name",
                                 "separator": ","
                             }

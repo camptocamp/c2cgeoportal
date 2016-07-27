@@ -186,14 +186,10 @@ def set_common_headers(
     response.headers["Vary"] = set(["Accept-Encoding"])
     if hasattr(request, "registry"):
         headers_settings = request.registry.settings.get("headers", {})
-        service_headers_settings = headers_settings.get(service_name)
+        service_headers_settings = headers_settings.get(service_name, {})
 
         if cache != NO_CACHE:
-            max_age = request.registry.settings["default_max_age"]
-
-            if service_headers_settings and \
-                    "cache_control_max_age" in service_headers_settings:
-                max_age = service_headers_settings["cache_control_max_age"]
+            max_age = service_headers_settings.get("cache_control_max_age", 3600)
 
             if max_age != 0:
                 response.cache_control.max_age = max_age

@@ -24,31 +24,50 @@ as in the following example:
     vars:
         ...
         pdfreport:
-            defaults:
-                check_credentials: False
+            layer-defaults: &pdfreport-layer-default
+                check_credentials: True
                 srs: EPSG:21781
                 map:
                     backgroundlayers: [grp_ly_tilegenerierung_landeskarte]
                     imageformat: image/png
+            map-defaults: &pdfreport-map-default
+                backgroundlayers: []
+                imageformat: image/png
+                zoomType: extent
+                minScale: 1000
+                style:
+                    fillColor: red
+                    fillOpacity: 0.2
+                    symbolizers:
+                    -   strokeColor: red
+                        strokeWidth: 1
+                        type: point
+                        pointRadius: 10
             layers:
                 ly_a020_belastete_standorte_point:
+                    <<: *pdfreport-layer-default
                     map:
+                        <<: *pdfreport-map-default
                         backgroundlayers:
                             - grp_ly_tilegenerierung_landeskarte
                             - ly_a020_belastete_standorte_point
                         imageformat: image/jpeg
                 some_template_with_no_map:
+                    <<: *pdfreport-layer-default
                     spec:
                         layout: some_template_name
                         outputFormat: pdf
                         attributes:
                             paramID: "%(id)s"
                 some_template_with_multi_map:
+                    <<: *pdfreport-layer-default
                     maps:
-                        - backgroundlayers:
-                            - grp_ly_tilegenerierung_landeskarte
-                        - backgroundlayers:
-                            - ly_a020_belastete_standorte_point
+                        -   <<: *pdfreport-map-default
+                            backgroundlayers:
+                                - grp_ly_tilegenerierung_landeskarte
+                        -   <<: *pdfreport-map-default
+                            backgroundlayers:
+                                - ly_a020_belastete_standorte_point
     update_paths:
         - pdfreport
 

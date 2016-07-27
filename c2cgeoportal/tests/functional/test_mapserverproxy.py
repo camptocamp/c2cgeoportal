@@ -290,7 +290,7 @@ class TestMapserverproxyView(TestCase):
         ))
         response = MapservProxy(request).proxy()
         self.assertTrue(response.cache_control.public)
-        self.assertEqual(response.cache_control.max_age, 1000)
+        self.assertEqual(response.cache_control.max_age, 3600)
 
     def test_getlegendgraphic_custom_nocache(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
