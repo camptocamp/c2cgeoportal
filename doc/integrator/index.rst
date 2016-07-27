@@ -20,7 +20,6 @@ Content:
    tilegeneration
    functionality
    raster
-   mobile
    internationalization
    cluster
    backend
