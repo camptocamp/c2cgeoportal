@@ -32,6 +32,7 @@ VALIDATE_TEMPLATE_PY_FOLDERS = c2cgeoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = c2cgeoportal/tests
 
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
+SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
 export TX_VERSION = $(shell python setup.py --version | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = .build/venv/bin/tx $(HOME)/.transifexrc .tx/config
@@ -119,7 +120,7 @@ cleanall: clean
 .PHONY: c2c-egg
 c2c-egg: .build/requirements.timestamp
 
-.build/sphinx.timestamp: .build/dev-requirements.timestamp $(SPHINX_FILES)
+.build/sphinx.timestamp: .build/dev-requirements.timestamp $(SPHINX_FILES) $(SPHINX_MAKO_FILES:.mako=)
 	mkdir -p doc/_build/html
 	doc/build.sh
 	touch $@
