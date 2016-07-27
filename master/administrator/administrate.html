@@ -49,21 +49,43 @@
 <p>Authentication for the administration interface is done through the main application interface. Role <code class="docutils literal"><span class="pre">role_admin</span></code> is
 required.</p>
 <div class="section" id="ogc-server">
-<h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
+<span id="administrator-administrate-ogc-server"></span><h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
 <p>This is the description of an OGC server (WMS/WFS).
-For one server we try to create only one request when it&#8217;s possible.</p>
+For one server we try to create only one request when it is possible.</p>
 <p>If you want to query the same server to get PNG and JPEG images,
-you should defined two OGC server. Attributes:</p>
+you should define two <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">servers</span></code>. Attributes:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">Name</span></code>: the name of the OGC Server.</li>
 <li><code class="docutils literal"><span class="pre">Description</span></code>: a description.</li>
 <li><code class="docutils literal"><span class="pre">URL</span></code>: the server URL, empty to use the internal mapserver.</li>
-<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">support</span></code>: Is the WFs supported by the server.</li>
+<li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</li>
 <li><code class="docutils literal"><span class="pre">WFS</span> <span class="pre">URL</span></code>: the WFS server URL, empty to use the same as the <code class="docutils literal"><span class="pre">URL</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">Type</span></code>: the server type used to know witch custom attribute we will used.</li>
+<li><code class="docutils literal"><span class="pre">Type</span></code>: the server type used to know which custom attribute will be used.</li>
 <li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal"><span class="pre">image/png</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></code>: use the single tile mode.</li>
-<li><code class="docutils literal"><span class="pre">Auth</span></code>: the kind of autentication we should used (not used).</li>
+<li><code class="docutils literal"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</li>
+<li><code class="docutils literal"><span class="pre">Auth</span></code>: the kind of authentication to use (For future use).</li>
+</ul>
+</div>
+<div class="section" id="metadata">
+<span id="administrator-administrate-metadata"></span><h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
+<p>All the Theme elements can have some Metadata to trigger some features,
+mainly UI features. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Item</span></code>: the concerned tree item.</li>
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of <code class="docutils literal"><span class="pre">Metadata</span></code> we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
+files in <code class="docutils literal"><span class="pre">admin_interface/available_metadata</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
+<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
+</ul>
+</div>
+<div class="section" id="functionalities">
+<h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Roles</span></code> and <code class="docutils literal"><span class="pre">Themes</span></code> can have some functionalities. Attributes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Name</span></code>: the type of Metadata we want to set (configured in the <code class="docutils literal"><span class="pre">vars</span></code>
+files in <code class="docutils literal"><span class="pre">admin_interface/available_functionalities</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">Value</span></code>: the value of the metadata.</li>
+<li><code class="docutils literal"><span class="pre">Descritpion</span></code>: a description.</li>
 </ul>
 </div>
 <div class="section" id="layers">
@@ -109,21 +131,13 @@ layer icon on the first layer, and the legend will not be supported we should de
 <div class="section" id="wmts-layer">
 <h3>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h3>
 <p>On WMTS layers we have the following specific attributes:</p>
-<ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</p>
-</li>
-<li><p class="first"><code class="docutils literal"><span class="pre">Layer</span></code>: the WMTS layer.</p>
-</li>
-<li><p class="first"><code class="docutils literal"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</p>
-</li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there&#8217;s only one matrix set</dt>
-<dd><p class="first last">in the capabilities it can be empty.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><code class="docutils literal"><span class="pre">WMTS</span> <span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used.</p>
-</li>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</li>
+<li><code class="docutils literal"><span class="pre">Layer</span></code>: the WMTS layer.</li>
+<li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</li>
+<li><code class="docutils literal"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there&#8217;s only one matrix set
+in the capabilities it can be empty.</li>
+<li><code class="docutils literal"><span class="pre">WMTS</span> <span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used.</li>
 </ul>
 </div>
 <div class="section" id="layerv1-deprecated-in-v2">
@@ -131,14 +145,14 @@ layer icon on the first layer, and the legend will not be supported we should de
 <p>The layers in the admin interface have the following attributes:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: optional, for WMS, leave it empty to get it from the capabilities.</li>
-<li><code class="docutils literal"><span class="pre">Visible</span></code>: if it&#8217;s false the layer is just ignored.</li>
+<li><code class="docutils literal"><span class="pre">Visible</span></code>: if it is false the layer is just ignored.</li>
 <li><code class="docutils literal"><span class="pre">Checked</span></code>: the layer is checked by default.</li>
 <li><code class="docutils literal"><span class="pre">Icon</span></code>: icon on the layer tree.</li>
 <li><code class="docutils literal"><span class="pre">KML</span> <span class="pre">3D</span></code>: optional, URL to a KML to display it on the Google earth view.</li>
 <li><code class="docutils literal"><span class="pre">Display</span> <span class="pre">legend</span></code>: it checked the legend is display on the layer tree.</li>
 <li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">image</span></code>: URL to overwrite the default legend image.</li>
 <li><code class="docutils literal"><span class="pre">Min/Max</span> <span class="pre">resolution</span></code>: resolutions between which data are displayed by
-the given layer, used to zoom to visible scale, with WMS if it&#8217;s empty
+the given layer, used to zoom to visible scale, with WMS if it is empty
 we get the values from the capabilities.</li>
 <li><code class="docutils literal"><span class="pre">Disclaimer</span></code>: optional, copyright of the layer, used by
 <a class="reference external" href="http://docs.camptocamp.net/cgxp/2.0/lib/plugins/Disclaimer.html">Disclaimer</a>.</li>
@@ -216,6 +230,8 @@ if false it can include only <code class="docutils literal"><span class="pre">ex
   <ul>
 <li><a class="reference internal" href="#">Administrate a c2cgeoportal application</a><ul>
 <li><a class="reference internal" href="#ogc-server">OGC Server</a></li>
+<li><a class="reference internal" href="#metadata">Metadata</a></li>
+<li><a class="reference internal" href="#functionalities">Functionalities</a></li>
 <li><a class="reference internal" href="#layers">Layers</a><ul>
 <li><a class="reference internal" href="#all-layer-type">All layer type</a></li>
 <li><a class="reference internal" href="#wms-layer">WMS layer</a></li>

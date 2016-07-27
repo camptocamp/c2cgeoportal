@@ -54,7 +54,7 @@ A single schema for static data is shared, whereas a dedicated main schema will
 be used for each server.</p>
 <p>Deploying data from integration to production may be done by
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Clone_schema">cloning the main integration schema</a>.</p>
-<p>For the next steps it&#8217;s important to figure out if the main goal is the scalability
+<p>For the next steps it is important to figure out if the main goal is the scalability
 or the robustness of the application.</p>
 <p>In general the scalability is more important because the main cause of
 down time is due of too much traffic.</p>
@@ -83,7 +83,7 @@ configuration. To enable this feature on GeoMapFish, you must add this to your
 <p>Then, all the GET and OPTIONS requests will use one of the replica Postgres instances and the
 rest will use the master instance.
 It is assumed, here, that the views handling the GET and OPTIONS queries don&#8217;t cause write
-operations to the database (not supported by replica instances). If it&#8217;s not the case in your
+operations to the database (not supported by replica instances). If it is not the case in your
 application (bad practice), add entries to <code class="docutils literal"><span class="pre">db_chooser/master</span></code> in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>.
 For forcing the use of a replica for a POST/PUT/DELETE, add entries to the <code class="docutils literal"><span class="pre">db_chooser/replica</span></code>
 configuration.</p>

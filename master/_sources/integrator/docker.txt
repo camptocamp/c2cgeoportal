@@ -49,7 +49,7 @@ If you want to host the database on your local machine, you must add a
 container) in your ``vars_<package>.yaml`` file. Then you need to make sure
 Postgres is configured to listen on that interface and accepts authentication.
 
-If you want to use an external serveur for the database, just put it's address
+If you want to use an external serveur for the database, just put it is address
 in the ``dbhost`` entry.
 
 Run the developer composition

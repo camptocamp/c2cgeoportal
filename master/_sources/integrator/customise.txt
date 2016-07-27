@@ -16,7 +16,7 @@ Thy should be configured in the vars file, in the ``admin_interface`` /
 
 It's a list of object who have a ``name`` and a ``type``.
 
-The type can be::
+The type can be:
 
 * ``string``
 * ``list`` a list fo string
@@ -25,7 +25,7 @@ The type can be::
 * ``float``
 * ``date``
 * ``time``
-* ``datetime`` `see the python-dateutil documentation <http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`
+* ``datetime`` `see the python-dateutil documentation <http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`_
 * ``url`` see bellow
 
 URL

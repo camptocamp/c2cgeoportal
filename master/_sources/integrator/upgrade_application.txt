@@ -39,7 +39,7 @@ Upgrading an application
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
 
-We considers that your makefile is named ``<instanceid>.mk``, if it's not the case
+We considers that your makefile is named ``<instanceid>.mk``, if it is not the case
 add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
 .. note:: For Windows:

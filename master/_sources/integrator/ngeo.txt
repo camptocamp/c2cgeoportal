@@ -104,9 +104,15 @@ WMTS Layers
 ===========
 
 To make the WMTS queryable you should add those ``Metadata``:
-``ogcServer`` with the name of the used ``OGC server``,
-``layers`` or ``queryLayers`` with the layers to query (groups not supported).
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``layers`` or ``queryLayers`` with the layers to query (groups not supported).
 
 To print the layers in the high quality you you should add those ``Metadata``:
-``ogcServer`` with the name of the used ``OGC server``,
-``layers`` or ``printLayers`` with the layers to print.
+
+* ``ogcServer`` with the name of the used ``OGC server``,
+* ``layers`` or ``printLayers`` with the layers to print.
+
+.. note::
+
+   See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.
