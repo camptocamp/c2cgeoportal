@@ -8,24 +8,50 @@ The administration interface is located at ``http://<server>/<project>/admin``.
 Authentication for the administration interface is done through the main application interface. Role ``role_admin`` is
 required.
 
+.. _administrator_administrate_ogc_server:
+
 OGC Server
 ----------
 
 This is the description of an OGC server (WMS/WFS).
-For one server we try to create only one request when it's possible.
+For one server we try to create only one request when it is possible.
 
 If you want to query the same server to get PNG and JPEG images,
-you should defined two OGC server. Attributes:
+you should define two ``OGC servers``. Attributes:
 
 * ``Name``: the name of the OGC Server.
 * ``Description``: a description.
 * ``URL``: the server URL, empty to use the internal mapserver.
-* ``WFS support``: Is the WFs supported by the server.
+* ``WFS support``: whether WFS is supported by the server.
 * ``WFS URL``: the WFS server URL, empty to use the same as the ``URL``.
-* ``Type``: the server type used to know witch custom attribute we will used.
+* ``Type``: the server type used to know which custom attribute will be used.
 * ``Image type``: the MIME type of the images (e.g.: ``image/png``).
-* ``Single tile``: use the single tile mode.
-* ``Auth``: the kind of autentication we should used (not used).
+* ``Single tile``: whether to use the single tile mode (For future use).
+* ``Auth``: the kind of authentication to use (For future use).
+
+.. _administrator_administrate_metadata:
+
+Metadata
+--------
+
+All the Theme elements can have some Metadata to trigger some features,
+mainly UI features. Attributes:
+
+* ``Item``: the concerned tree item.
+* ``Name``: the type of ``Metadata`` we want to set (configured in the ``vars``
+  files in ``admin_interface/available_metadata``).
+* ``Value``: the value of the metadata.
+* ``Descritpion``: a description.
+
+Functionalities
+---------------
+
+``Roles`` and ``Themes`` can have some functionalities. Attributes:
+
+* ``Name``: the type of Metadata we want to set (configured in the ``vars``
+  files in ``admin_interface/available_functionalities``).
+* ``Value``: the value of the metadata.
+* ``Descritpion``: a description.
 
 Layers
 ------
@@ -85,23 +111,22 @@ layerv1 (deprecated in v2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The layers in the admin interface have the following attributes:
-
-* ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
-* ``Visible``: if it's false the layer is just ignored.
-* ``Checked``: the layer is checked by default.
-* ``Icon``: icon on the layer tree.
-* ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
-* ``Display legend``: it checked the legend is display on the layer tree.
-* ``Legend image``: URL to overwrite the default legend image.
-* ``Min/Max resolution``: resolutions between which data are displayed by
-  the given layer, used to zoom to visible scale, with WMS if it's empty
-  we get the values from the capabilities.
-* ``Disclaimer``: optional, copyright of the layer, used by
-  `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
-* ``Identifier attribute field``: field used to identify a feature from the
-  layer, e.g.: 'name', used by
-  `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
-* ``Restrictions area``: the areas throw witch the user can see the layer.
+*  ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
+*  ``Visible``: if it is false the layer is just ignored.
+*  ``Checked``: the layer is checked by default.
+*  ``Icon``: icon on the layer tree.
+*  ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
+*  ``Display legend``: it checked the legend is display on the layer tree.
+*  ``Legend image``: URL to overwrite the default legend image.
+*  ``Min/Max resolution``: resolutions between which data are displayed by
+   the given layer, used to zoom to visible scale, with WMS if it is empty
+   we get the values from the capabilities.
+*  ``Disclaimer``: optional, copyright of the layer, used by
+   `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
+*  ``Identifier attribute field``: field used to identify a feature from the
+   layer, e.g.: 'name', used by
+   `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
+*  ``Restrictions area``: the areas throw witch the user can see the layer.
 
 On ``internal WMS`` layer we have the following specific attributes:
 

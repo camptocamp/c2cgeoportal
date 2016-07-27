@@ -39,7 +39,7 @@ Start the migration by instantiating the default template:
 
 Then in ``~/print`` you will have a backup of the old template, and in the ``print`` folder you will have the new print configuration.
 
-In the ``<package>.mk`` you should remove the ``PRINT_VERSION = 2`` (it's ``3`` by default).
+In the ``<package>.mk`` you should remove the ``PRINT_VERSION = 2`` (it is ``3`` by default).
 
 In the concerned viewer javascript files, in the ``cgxp_print`` plugin add the following lines:
 

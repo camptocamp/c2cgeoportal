@@ -675,7 +675,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-server.po: $(PACKAGE)/locale/$(PACKAG
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --backup=none --update $@ $<
+	msgmerge --backup=none --update --sort-output --no-location $@ $<
 
 .PRECIOUS: $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po
 $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAGE)-client.pot
@@ -683,7 +683,7 @@ $(PACKAGE)/locale/%/LC_MESSAGES/$(PACKAGE)-client.po: $(PACKAGE)/locale/$(PACKAG
 	mkdir -p $(dir $@)
 	[ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
 	touch --no-create $@
-	msgmerge --backup=none --update $@ $<
+	msgmerge --backup=none --update --sort-output --no-location $@ $<
 
 .PRECIOUS: %.mo
 %.mo: %.po

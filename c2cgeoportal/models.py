@@ -150,7 +150,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return "%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
+        return u"%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
 event.listen(Functionality, "after_delete", cache_invalidate_cb)
@@ -377,8 +377,9 @@ class TreeItem(Base):
     def __init__(self, name=u""):
         self.name = name
 
-    def __unicode__(self):
-        return self.name or u""  # pragma: no cover
+    def __unicode__(self):  # pragma: no cover
+        type_ = self.__label__ if hasattr(self, "__label__") else self.item_type
+        return u"{}: {}".format(type_, self.name or u"")
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
