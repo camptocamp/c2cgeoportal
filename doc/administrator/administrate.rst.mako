@@ -104,29 +104,30 @@ On WMTS layers we have the following specific attributes:
 * ``Layer``: the WMTS layer.
 * ``Style``: the used style, if not present we use the default style.
 * ``Matrix set``: the used matrix set, if there's only one matrix set
-    in the capabilities it can be empty.
+  in the capabilities it can be empty.
 * ``WMTS Dimensions``: the dimensions, if not provided default values are used.
 
 layerv1 (deprecated in v2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The layers in the admin interface have the following attributes:
-*  ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
-*  ``Visible``: if it is false the layer is just ignored.
-*  ``Checked``: the layer is checked by default.
-*  ``Icon``: icon on the layer tree.
-*  ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
-*  ``Display legend``: it checked the legend is display on the layer tree.
-*  ``Legend image``: URL to overwrite the default legend image.
-*  ``Min/Max resolution``: resolutions between which data are displayed by
-   the given layer, used to zoom to visible scale, with WMS if it is empty
-   we get the values from the capabilities.
-*  ``Disclaimer``: optional, copyright of the layer, used by
-   `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
-*  ``Identifier attribute field``: field used to identify a feature from the
-   layer, e.g.: 'name', used by
-   `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
-*  ``Restrictions area``: the areas throw witch the user can see the layer.
+
+* ``Metadata URL``: optional, for WMS, leave it empty to get it from the capabilities.
+* ``Visible``: if it is false the layer is just ignored.
+* ``Checked``: the layer is checked by default.
+* ``Icon``: icon on the layer tree.
+* ``KML 3D``: optional, URL to a KML to display it on the Google earth view.
+* ``Display legend``: it checked the legend is display on the layer tree.
+* ``Legend image``: URL to overwrite the default legend image.
+* ``Min/Max resolution``: resolutions between which data are displayed by
+  the given layer, used to zoom to visible scale, with WMS if it is empty
+  we get the values from the capabilities.
+* ``Disclaimer``: optional, copyright of the layer, used by
+  `Disclaimer <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/Disclaimer.html>`_.
+* ``Identifier attribute field``: field used to identify a feature from the
+  layer, e.g.: 'name', used by
+  `FeaturesWindow <http://docs.camptocamp.net/cgxp/${main_version}/lib/plugins/FeaturesWindow.html>`_.
+* ``Restrictions area``: the areas throw witch the user can see the layer.
 
 On ``internal WMS`` layer we have the following specific attributes:
 
