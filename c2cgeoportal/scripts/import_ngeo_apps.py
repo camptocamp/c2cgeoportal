@@ -154,7 +154,6 @@ def main():
                 "angular-jsdoc",
                 "angular-mocks",
                 "coveralls",
-                "fs-extra",
                 "gaze",
                 "jsdoc",
                 "jsdom",
@@ -162,9 +161,6 @@ def main():
                 "karma-coverage",
                 "karma-jasmine",
                 "karma-phantomjs-launcher",
-                "nomnom",
-                "temp",
-                "walk",
             ]:
                 del json_data["devDependencies"][package]
 
