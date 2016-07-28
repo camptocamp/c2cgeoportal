@@ -22,5 +22,5 @@ docker run \
     --env=TRAVIS=${TRAVIS} \
     --env=TRAVIS_BRANCH=${TRAVIS_BRANCH} \
     --env=TRAVIS_JOB_ID=${TRAVIS_JOB_ID} \
-    sbrunner/c2cgeoportal \
+    camptocamp/geomapfish_build_dev \
     run "$@"

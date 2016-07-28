@@ -28,6 +28,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import os
 import argparse
 import subprocess
 import pyignore
@@ -36,15 +37,21 @@ import pyignore
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('commit_range')
-    parser.add_argument('ignore_file')
+    parser.add_argument('base_dir')
+    parser.add_argument('ignore_file', nargs='?')
     args = parser.parse_args()
 
     diff = subprocess.check_output(["git", "diff", "--summary", args.commit_range, "--"]).strip()
     files = [] if diff == "" else [
-        l.strip().split(" ")[3] for l in diff.split('\n')
+        l.strip().split(" ")[3]
+        for l in diff.split('\n')
+        if l.startswith(args.base_dir)
     ]
-    ignore = pyignore.Ignore(args.ignore_file)
-    if len(ignore.filter(files)) == 0:
+    if args.ignore_file is not None:
+        ignore = pyignore.Ignore(os.path.join(args.base_dir, args.ignore_file))
+        if len(ignore.filter(files)) == 0:
+            exit(1)
+    elif len(files) == 0:
         exit(1)
 
 if __name__ == "__main__":

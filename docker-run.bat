@@ -18,5 +18,5 @@ docker run ^
     --env=USER_NAME=%USERNAME% ^
     --env=USER_ID=%USER_ID% ^
     --env=GROUP_ID=%GROUP_ID% ^
-    sbrunner/c2cgeoportal:latest ^
+    camptocamp/geomapfish_build_dev ^
     run "%*"
