@@ -1,9 +1,15 @@
-language: python
-
-python:
-- 2.7
-
 sudo: false
+
+language: node_js
+
+node_js:
+- '4'
+- '6'
+
+addons:
+  apt:
+    packages:
+    - python-virtualenv
 
 script:
 - make -f travis.mk checks
