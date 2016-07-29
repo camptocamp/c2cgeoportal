@@ -35,7 +35,10 @@ import yaml
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
+
+from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.exc import ProgrammingError
+from geoalchemy2 import Geometry
 
 from lingua.extractors import Extractor
 from lingua.extractors import Message
@@ -44,6 +47,7 @@ from pyramid.paster import bootstrap
 from c2cgeoportal.lib import add_url_params
 from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
+from c2cgeoportal.view.layers import get_class_for_layer
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
@@ -157,35 +161,18 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
             )
         if layer.geo_table is not None:
-            url = "http://localhost/{}/wsgi/layers/{}/md.xsd".format(
-                self.config["vars"]["instanceid"], layer.id,
-            )
-            http = httplib2.Http()
-            h = {
-                "Host": self.package["host"]
-            }
-            try:
-                resp, content = http.request(url, method="GET", headers=h)
-            except:  # pragma: no cover
-                print("Unable to get the layer metadata XSD from URL %s" % url)
-                return
-
-            if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(
-                    "Layer matadata XSD from URL %s return the error: %i %s" %
-                    (url, resp.status, resp.reason)
-                )
-                return
-
-            metadata = parseString(content)
-            for element in metadata.getElementsByTagNameNS(
-                "http://www.w3.org/2001/XMLSchema", "element"
-            ):
-                if not element.getAttribute("type").startswith("gml:"):
-                    messages.append(Message(
-                        None, element.getAttribute("name"), None, [], "", "",
-                        (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
-                    ))
+            cls = get_class_for_layer(layer)
+            for column_property in class_mapper(cls).iterate_properties:
+                if isinstance(column_property, ColumnProperty):
+                    for column in column_property:
+                        if column.primary_key or column.foreign_keys:
+                            continue
+                        if isinstance(column.type, Geometry):
+                            continue
+                        messages.append(Message(
+                            None, column.key, None, [], "", "",
+                            (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
+                        ))
 
     def _import_layer_wmts(self, layer, messages):
         layers = [d.value for d in layer.ui_metadatas if d.name == "wmsLayer"]
