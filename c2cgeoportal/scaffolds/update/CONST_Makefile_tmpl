@@ -181,7 +181,7 @@ APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/
 APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
-APP_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 $(PACKAGE)/static-ngeo/components/*/*.html 2> /dev/null)
+APP_DIRECTIVES_PARTIALS_FILES = $(shell find -name $(PACKAGE)/static-ngeo/components $(PACKAGE)/static-ngeo/partials $(PACKAGE)/static-ngeo/js *.html 2> /dev/null)
 LESS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/less $(PACKAGE)/static-ngeo/components -type f -name '*.less' 2> /dev/null)
 NGEO_GMF_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/gmf-icons, .woff .ttf .eot)
 NGEO_FONTAWESOME_FONTS = $(addprefix $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont, .woff .woff2 .ttf .eot)
@@ -858,10 +858,12 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var "app=$(PACKAGE)" \
-		--var "partials=$(addprefix ngeo:,$(NGEO_DIRECTIVES_PARTIALS_FILES)) \
-		$(addprefix gmf:,$(GMF_DIRECTIVES_PARTIALS_FILES)) \
-		$(addprefix $(PACKAGE):,$(APP_DIRECTIVES_PARTIALS_FILES))" $< > $@
+		--var "partials=ngeo:node_modules/ngeo/src/directives/partials \
+		gmf:node_modules/ngeo/contribs/gmf/src/directives/partials \
+		$(PACKAGE)_components:$(PACKAGE)/static-ngeo/components \
+		$(PACKAGE)_partials:$(PACKAGE)/static-ngeo/partials \
+		$(PACKAGE)_js:$(PACKAGE)/static-ngeo/js"\
+		--var "app=$(PACKAGE)" $< > $@
 
 .build/externs/angular-$(ANGULAR_VERSION).js:
 	$(PRERULE_CMD)
