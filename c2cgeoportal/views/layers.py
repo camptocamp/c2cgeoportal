@@ -59,6 +59,38 @@ from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, R
 cache_region = get_region()
 
 
+def _get_ui_metadata(layer, key):
+    metadatas = layer.get_metadatas(key)
+    if len(metadatas) == 1:
+        metadata = metadatas[0]
+        return metadata.value
+    return None
+
+
+def get_class_for_layer(layer):
+    # exclude the columns used to record the last features update
+    if layer.exclude_properties is not None:
+        exclude = layer.exclude_properties.split(",")
+    else:
+        exclude = []
+    last_update_date = _get_ui_metadata(layer, "lastUpdateDateColumn")
+    if last_update_date:
+        exclude.append(last_update_date)
+    last_update_user = _get_ui_metadata(layer, "lastUpdateUserColumn")
+    if last_update_user:
+        exclude.append(last_update_user)
+
+    return _metadata(str(layer.geo_table), ",".join(exclude))
+
+
+@cache_region.cache_on_arguments()
+def _metadata(geo_table, exclude_properties):
+    return get_class(
+        geo_table,
+        exclude_properties=exclude_properties
+    )
+
+
 class Layers(object):
 
     def __init__(self, request):
@@ -330,20 +362,13 @@ class Layers(object):
                 raise TopologicalError(reason)
 
     def _log_last_update(self, layer, feature):
-        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        last_update_date = _get_ui_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
 
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
+        last_update_user = _get_ui_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.role.id)
-
-    def _get_ui_metadata(self, layer, key):
-        metadatas = layer.get_metadatas(key)
-        if len(metadatas) == 1:
-            metadata = metadatas[0]
-            return metadata.value
-        return None
 
     @view_config(route_name="layers_delete")
     def delete(self):
@@ -384,26 +409,7 @@ class Layers(object):
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        # exclude the columns used to record the last features update
-        if layer.exclude_properties is not None:
-            exclude = layer.exclude_properties.split(",")
-        else:
-            exclude = []
-        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
-        if last_update_date:
-            exclude.append(last_update_date)
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
-        if last_update_user:
-            exclude.append(last_update_user)
-
-        return self._metadata(str(layer.geo_table), ",".join(exclude))
-
-    @cache_region.cache_on_arguments()
-    def _metadata(self, geo_table, exclude_properties):
-        return get_class(
-            geo_table,
-            exclude_properties=exclude_properties
-        )
+        return get_class_for_layer(layer)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
     def enumerate_attribute_values(self):
