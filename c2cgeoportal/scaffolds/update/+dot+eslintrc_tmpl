@@ -1,11 +1,10 @@
-{
-  "extends": "openlayers",
-  "globals": {
-    "{{package}}": false,
-    "angular": false,
-    "goog": false,
-    "ol": false,
-    "ngeo": false,
-    "gmf": false
-  }
-}
+extends: openlayers
+globals:
+  '{{package}}': false
+  angular: false
+  goog: false
+  ol: false
+  ngeo: false
+  gmf: false
+rules:
+  valid-jsdoc: off
