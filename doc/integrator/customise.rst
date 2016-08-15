@@ -30,6 +30,9 @@ The type can be:
 
 Check ``CONST_vars.yaml`` for examples of usage.
 
+In order to inherit the default values from ``CONST_vars.yaml`` make sure the ``update_paths`` section contains
+the item ``admin_interface.available_functionnalities`` or respectively ``admin_interface.available_metadata``.
+
 URL
 ---
 
