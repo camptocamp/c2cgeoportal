@@ -375,7 +375,7 @@ class C2cTool:
         with open("ngeo.diff", "w") as diff_file:
             check_call([
                 "git", "diff", "--",
-                "CONST_create_template/{}/template".format(self.project["project_package"]),
+                "CONST_create_template/{}/templates".format(self.project["project_package"]),
                 "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
             ], stdout=diff_file)
 
@@ -397,10 +397,10 @@ class C2cTool:
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if not s.startswith("?? ")]
         status = [s for s in status if not s.startswith(
-            "CONST_create_template/{}/template".format(self.project["project_package"]),
+            "CONST_create_template/{}/templates/".format(self.project["project_package"]),
         )]
         status = [s for s in status if not s.startswith(
-            "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+            "CONST_create_template/{}/static-ngeo/".format(self.project["project_package"]),
         )]
 
         with open("create.diff", "w") as diff_file:
