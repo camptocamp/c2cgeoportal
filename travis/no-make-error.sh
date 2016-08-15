@@ -9,7 +9,7 @@ RESULT=$(cat make-err)
 
 rm make-err --force
 
-if [ "${RESULT}" != "" ]
+if [ "${RESULT}" != "" ] && [ "${RESULT}" != "apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1 for ServerName" ]
 then
     echo There is some error output in the make
     make $* > /dev/null
