@@ -13,7 +13,7 @@ env:
 before_install:
 - cat /etc/apt/sources.list.d/*
 - rm -rf /home/travis/.nvm
-- sudo apt-get remove --assume-yes --force-yes python-zope.interface
+- sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-9.1-postgis-2.2-scripts
 - sudo apt-get install --assume-yes --force-yes aptitude
 - sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
 - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
