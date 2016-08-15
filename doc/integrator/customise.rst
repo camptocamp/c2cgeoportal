@@ -4,34 +4,34 @@
 Customise the application
 =========================
 
-There is to generic way to customise the application.
+There is two generic ways to customise the application.
 
 The ``functionnalities`` and the ``UI metadata``.
 
 The functionalities will be attached to the ``role`` and the ``theme``,
 and the UI metadata will be attached to all the elements of the theme.
 
-Thy should be configured in the vars file, in the ``admin_interface`` /
-``available_functionnalities`` or respectively ``available_matadata``.
+They should be configured in the vars file, in the ``admin_interface`` /
+``available_functionnalities`` or respectively ``available_metadata``.
 
-It's a list of object who have a ``name`` and a ``type``.
+It is a list of object who have a ``name`` and a ``type``.
 
 The type can be:
 
 * ``string``
-* ``list`` a list fo string
+* ``list`` a list of strings
 * ``boolean``
 * ``integer``
 * ``float``
 * ``date``
 * ``time``
 * ``datetime`` `see the python-dateutil documentation <http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`_
-* ``url`` see bellow
+* ``url`` see below
 
 URL
 ---
 
-In the admin interface we can use in all the URL the following special schema:
+In the admin interface we can use in all the URLs the following special schema:
 
 * ``static``: to use a static route,
 

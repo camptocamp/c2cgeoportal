@@ -172,7 +172,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
                 print(
-                    "Layer matadata XSD from URL %s return the error: %i %s" %
+                    "Layer metadata XSD from URL %s return the error: %i %s" %
                     (url, resp.status, resp.reason)
                 )
                 return
