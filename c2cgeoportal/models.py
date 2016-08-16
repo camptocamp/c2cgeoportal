@@ -815,6 +815,9 @@ event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
 event.listen(RestrictionArea, "after_update", cache_invalidate_cb)
 event.listen(RestrictionArea, "after_delete", cache_invalidate_cb)
 
+event.listen(RestrictionArea.roles, "set", cache_invalidate_cb)
+event.listen(RestrictionArea.roles, "append", cache_invalidate_cb)
+event.listen(RestrictionArea.roles, "remove", cache_invalidate_cb)
 
 # association table interface <> layer
 interface_layer = Table(
