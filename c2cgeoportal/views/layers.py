@@ -74,7 +74,7 @@ class Layers(object):
         This function assumes that the names of geometry attributes
         in the mapped class are the same as those of geometry columns.
         """
-        mapped_class = get_class(str(layer.geo_table))
+        mapped_class = get_class(layer.geo_table)
         for p in class_mapper(mapped_class).iterate_properties:
             if not isinstance(p, ColumnProperty):
                 continue  # pragma: no cover
@@ -83,7 +83,7 @@ class Layers(object):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
             'Failed getting geometry column info for table "%s".' %
-            str(layer.geo_table)
+            layer.geo_table
         )  # pragma: no cover
 
     def _get_layer(self, layer_id):
@@ -125,7 +125,7 @@ class Layers(object):
 
     def _get_protocol_for_layer(self, layer, **kwargs):
         """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
-        cls = get_class(str(layer.geo_table))
+        cls = get_class(layer.geo_table)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(DBSession, cls, geom_attr, **kwargs)
 
@@ -385,18 +385,15 @@ class Layers(object):
             raise HTTPForbidden()
 
         # exclude the columns used to record the last features update
-        if layer.exclude_properties is not None:
-            exclude = layer.exclude_properties.split(",")
-        else:
-            exclude = []
+        exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
         last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
-        if last_update_date:
+        if last_update_date is not None:
             exclude.append(last_update_date)
         last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
-        if last_update_user:
+        if last_update_user is not None:
             exclude.append(last_update_user)
 
-        return self._metadata(str(layer.geo_table), ",".join(exclude))
+        return self._metadata(layer.geo_table, exclude)
 
     @cache_region.cache_on_arguments()
     def _metadata(self, geo_table, exclude_properties):

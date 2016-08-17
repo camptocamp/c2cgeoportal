@@ -179,7 +179,7 @@ class TestReflection(TestCase):
 
         # the class should now be in the cache
         self.assertTrue(
-            ("public", "table_a", None) in
+            ("public", "table_a", "") in
             c2cgeoportal.lib.dbreflection._class_cache
         )
         _modelclass = get_class("table_a")
@@ -220,7 +220,7 @@ class TestReflection(TestCase):
         from c2cgeoportal.lib.dbreflection import get_class
 
         self._create_table("table_d")
-        get_class("table_d", exclude_properties="foo,bar")
+        get_class("table_d", exclude_properties=["foo", "bar"])
 
         # the class should now be in the cache
         self.assertTrue(

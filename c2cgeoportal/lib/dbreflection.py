@@ -180,7 +180,7 @@ def get_table(tablename, schema=None, session=None):
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=None):
+def get_class(tablename, session=None, exclude_properties=[]):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -189,7 +189,7 @@ def get_class(tablename, session=None, exclude_properties=None):
     is raised.
     """
     tablename, schema = _get_schema(tablename)
-    cache_key = (schema, tablename, exclude_properties)
+    cache_key = (schema, tablename, ",".join(exclude_properties))
 
     if cache_key in _class_cache:
         return _class_cache[cache_key]
@@ -205,12 +205,7 @@ def get_class(tablename, session=None, exclude_properties=None):
     return cls
 
 
-def _create_class(table, exclude_properties=None):
-
-    if isinstance(exclude_properties, basestring):
-        exclude_properties = [p.strip() for p in exclude_properties.split(",")]
-    elif exclude_properties is None:
-        exclude_properties = []
+def _create_class(table, exclude_properties=[]):
 
     cls = type(
         str(table.name.capitalize()),

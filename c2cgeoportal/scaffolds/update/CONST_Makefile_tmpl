@@ -523,6 +523,7 @@ clean: template-clean
 	rm -f apache/mapcache.xml apache/tiles.conf
 	rm -rf $(OUTPUT_DIR)/
 	rm -rf $(APP_OUTPUT_DIR)/
+	rm -f $(PACKAGE)/locale/$(PACKAGE)-*.pot
 # We use the print
 ifdef PRINT_BASE_WAR
 	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
