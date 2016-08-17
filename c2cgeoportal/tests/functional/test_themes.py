@@ -55,7 +55,7 @@ class TestThemesView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Functionality, Interface, \
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
-            Metadata, WMTSDimension
+            Metadata, Dimension
 
         main = Interface(name=u"main")
         mobile = Interface(name=u"mobile")
@@ -82,7 +82,7 @@ class TestThemesView(TestCase):
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
         layer_wmts.metadatas = [Metadata("test", "wmts")]
-        layer_wmts.dimensions = [WMTSDimension("year", "2015")]
+        layer_wmts.dimensions = [Dimension("year", "2015")]
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
         layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
@@ -121,10 +121,10 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, Metadata, WMTSDimension
+            Theme, LayerGroup, Interface, Metadata, Dimension
 
         DBSession.query(Metadata).delete()
-        DBSession.query(WMTSDimension).delete()
+        DBSession.query(Dimension).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
         DBSession.query(LayerGroup).delete()
@@ -558,7 +558,9 @@ class TestThemesView(TestCase):
                 "children": [{
                     "dimensions": {u"year": u"2015"}
                 }, {
+                    "dimensions": {}
                 }, {
+                    "dimensions": {}
                 }]
             }
         )

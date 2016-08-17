@@ -61,9 +61,9 @@ __all__ = [
     "Functionality", "User", "Role", "LayerGroup", "Theme",
     "LayerV1", "OGCServer", "LayerWMS",
     "LayerWMTS", "RestrictionArea", "Interface", "Metadata",
-    "WMTSDimension", "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
+    "Dimension", "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
     "LayerWMTSGrid", "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid",
-    "UserGrid", "InterfaceGrid", "MetadataGrid", "WMTSDimensionGrid"
+    "UserGrid", "InterfaceGrid", "MetadataGrid", "DimensionGrid"
 ]
 
 
@@ -548,9 +548,9 @@ Metadata.name.set(
     options=[(m, m) for m in formalchemy_available_metadata])
 Metadata.value.set(metadata=dict(mandatory="")).required()
 
-# WMTSDimension
-WMTSDimension = FieldSet(models.WMTSDimension)
-WMTSDimension.value.set(metadata=dict(mandatory="")).required()
+# Dimension
+Dimension = FieldSet(models.Dimension)
+Dimension.value.set(metadata=dict(mandatory="")).required()
 
 # RestrictionArea
 RestrictionArea = FieldSet(models.RestrictionArea)
@@ -671,8 +671,8 @@ InterfaceGrid = Grid(models.Interface)
 # MetadataGrid
 MetadataGrid = Grid(models.Metadata)
 
-# WMTSDimensionGrid
-WMTSDimensionGrid = Grid(models.WMTSDimension)
+# DimensionGrid
+DimensionGrid = Grid(models.Dimension)
 
 # RestrictionAreaGrid
 RestrictionAreaGrid = Grid(models.RestrictionArea)

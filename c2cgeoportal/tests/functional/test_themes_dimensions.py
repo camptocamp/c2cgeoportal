@@ -54,55 +54,68 @@ class TestThemesView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, OGCServer, LayerWMS, LayerWMTS
+            Theme, LayerGroup, Interface, OGCServer, LayerWMS, LayerWMTS, Dimension
 
         main = Interface(name=u"main")
+        ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
 
-        ogc_server_internal = OGCServer(name="__test_ogc_server_internal", type="mapserver", image_type="image/jpeg")
-        ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
+        layer_wms_1 = LayerWMS(name=u"__test_layer_wms_1", public=True)
+        layer_wms_1.layer = "__test_layer_wms_1"
+        layer_wms_1.interfaces = [main]
+        layer_wms_1.ogc_server = ogc_server
+        Dimension("A", "a", layer_wms_1)
 
-        layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
-        layer_internal_wms.layer = "__test_layer_internal_wms"
-        layer_internal_wms.interfaces = [main]
-        layer_internal_wms.ogc_server = ogc_server_internal
+        layer_wms_2 = LayerWMS(name=u"__test_layer_wms_2", public=True)
+        layer_wms_2.layer = "__test_layer_wms_2"
+        layer_wms_2.interfaces = [main]
+        layer_wms_2.ogc_server = ogc_server
+        Dimension("A", "b", layer_wms_2)
 
-        layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
-        layer_external_wms.interfaces = [main]
-        layer_external_wms.ogc_server = ogc_server_external
+        layer_wms_3 = LayerWMS(name=u"__test_layer_wms_3", public=True)
+        layer_wms_3.layer = "__test_layer_wms_3"
+        layer_wms_3.interfaces = [main]
+        layer_wms_3.ogc_server = ogc_server
+        Dimension("A", None, layer_wms_3)
+
+        layer_wms_4 = LayerWMS(name=u"__test_layer_wms_4", public=True)
+        layer_wms_4.layer = "__test_layer_wms_4"
+        layer_wms_4.interfaces = [main]
+        layer_wms_4.ogc_server = ogc_server
+        Dimension("A", "a", layer_wms_4)
+
+        layer_wms_5 = LayerWMS(name=u"__test_layer_wms_5", public=True)
+        layer_wms_5.layer = "__test_layer_wms_5"
+        layer_wms_5.interfaces = [main]
+        layer_wms_5.ogc_server = ogc_server
+        Dimension("B", "b", layer_wms_5)
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main]
+        Dimension("B", "b", layer_wmts)
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
-        layer_group_1.children = [layer_internal_wms]
+        layer_group_1.children = [layer_wms_1, layer_wmts]
 
         layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
-        layer_group_2.children = [layer_external_wms]
+        layer_group_2.children = [layer_wms_1, layer_wms_2]
 
         layer_group_3 = LayerGroup(name=u"__test_layer_group_3")
-        layer_group_3.children = [layer_wmts]
+        layer_group_3.children = [layer_wms_1, layer_wms_3]
 
         layer_group_4 = LayerGroup(name=u"__test_layer_group_4")
-        layer_group_4.children = [layer_group_1, layer_group_2]
+        layer_group_4.children = [layer_wms_1, layer_wms_4]
 
         layer_group_5 = LayerGroup(name=u"__test_layer_group_5")
-        layer_group_5.children = [layer_group_1, layer_group_3]
+        layer_group_5.children = [layer_wms_1, layer_wms_5]
 
         layer_group_6 = LayerGroup(name=u"__test_layer_group_6")
-        layer_group_6.children = [layer_internal_wms]
-
-        layer_group_7 = LayerGroup(name=u"__test_layer_group_7")
-        layer_group_7.children = [layer_group_1, layer_group_6]
-
-        layer_group_8 = LayerGroup(name=u"__test_layer_group_8")
-        layer_group_8.children = [layer_group_2, layer_group_6]
+        layer_group_6.children = [layer_wms_3]
 
         theme = Theme(name=u"__test_theme")
         theme.interfaces = [main]
         theme.children = [
             layer_group_1, layer_group_2, layer_group_3,
-            layer_group_4, layer_group_5,
-            layer_group_7, layer_group_8,
+            layer_group_4, layer_group_5, layer_group_6,
         ]
 
         DBSession.add(theme)
@@ -113,9 +126,9 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, Metadata, Dimension
+            Theme, LayerGroup, Interface, UIMetadata, Dimension
 
-        DBSession.query(Metadata).delete()
+        DBSession.query(UIMetadata).delete()
         DBSession.query(Dimension).delete()
         for l in DBSession.query(Layer).all():
             DBSession.delete(l)
@@ -161,108 +174,69 @@ class TestThemesView(TestCase):
         return result
 
     def _get_filtered_errors(self, themes):
-        errors = themes["errors"]
-        errors = [
-            e for e in errors
-            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
-        ]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', can't be two times in the same block (first level group).")
-        errors = [e for e in errors if regex.match(e)]
-        return set(errors)
+        regex = re.compile(r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$")
+        return set([e for e in themes["errors"] if regex.search(e) is None])
 
-    def test_theme_mixed(self):
+    def test_theme_dimensions(self):
         entry = self._create_entry_obj(params={
             "version": "2",
             "interface": "main",
         })
         themes = entry.themes()
-        self.assertEquals(self._get_filtered_errors(themes), set())
+        self.assertEquals(self._get_filtered_errors(themes), set([
+            "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty."
+        ]))
         self.assertEquals(
-            [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
+            [self._only_name(t, ["name", "dimensions"]) for t in themes["themes"]],
             [{
                 "children": [{
+                    "name": u"__test_layer_group_1",
                     "children": [{
-                        "name": "__test_layer_internal_wms"
-                    }],
-                    "mixed": False,
-                    "name": "__test_layer_group_1"
-                }, {
-                    "children": [{
-                        "name": "__test_layer_external_wms"
-                    }],
-                    "mixed": False,
-                    "name": "__test_layer_group_2"
-                }, {
-                    "children": [{
-                        "name": "__test_layer_wmts"
-                    }],
-                    "mixed": True,
-                    "name": "__test_layer_group_3"
-                }, {
-                    "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_1"
+                        "dimensions": {u"A": u"a"},
+                        "name": u"__test_layer_wms_1"
                     }, {
-                        "children": [{
-                            "name": "__test_layer_external_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_2"
+                        "dimensions": {u"B": u"b"},
+                        "name": u"__test_layer_wmts"
                     }],
-                    "mixed": True,
-                    "name": "__test_layer_group_4"
                 }, {
+                    "name": u"__test_layer_group_2",
                     "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_1"
+                        "name": u"__test_layer_wms_1",
                     }, {
-                        "children": [{
-                            "name": "__test_layer_wmts"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_3"
+                        "name": u"__test_layer_wms_2",
                     }],
-                    "mixed": True,
-                    "name": "__test_layer_group_5"
+                    "dimensions": {u"A": u"a"},
                 }, {
+                    "name": u"__test_layer_group_3",
                     "children": [{
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": False,
-                        "name": "__test_layer_group_1"
+                        "name": u"__test_layer_wms_1",
                     }, {
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": False,
-                        "name": "__test_layer_group_6"
+                        "name": u"__test_layer_wms_3",
                     }],
-                    "mixed": False,
-                    "name": "__test_layer_group_7"
+                    "dimensions": {u"A": u"a"},
                 }, {
+                    "name": u"__test_layer_group_4",
                     "children": [{
-                        "children": [{
-                            "name": "__test_layer_external_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_2"
+                        "name": u"__test_layer_wms_1",
                     }, {
-                        "children": [{
-                            "name": "__test_layer_internal_wms"
-                        }],
-                        "mixed": True,
-                        "name": "__test_layer_group_6"
+                        "name": u"__test_layer_wms_4",
                     }],
-                    "mixed": True,
-                    "name": "__test_layer_group_8"
+                    "dimensions": {u"A": u"a"},
+                }, {
+                    "name": u"__test_layer_group_5",
+                    "children": [{
+                        "name": u"__test_layer_wms_1",
+                    }, {
+                        "name": u"__test_layer_wms_5",
+                    }],
+                    "dimensions": {u"A": u"a", u"B": u"b"},
+                }, {
+                    "name": u"__test_layer_group_6",
+                    "children": [{
+                        "name": u"__test_layer_wms_3",
+                    }],
+                    "dimensions": {u"A": None},
                 }],
-                "name": "__test_theme"
+                "name": u"__test_theme",
             }]
         )
