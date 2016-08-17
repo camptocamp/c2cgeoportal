@@ -70,7 +70,7 @@ log = logging.getLogger(__name__)
 cache_region = get_region()
 
 
-class Entry(object):
+class Entry:
 
     WFS_NS = "http://www.opengis.net/wfs"
 

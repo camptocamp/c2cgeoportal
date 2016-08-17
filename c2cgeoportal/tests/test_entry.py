@@ -88,7 +88,7 @@ class TestEntryView(TestCase):
         request.user = None
         entry = Entry(request)
 
-        class Layer(object):
+        class Layer:
             pass
 
         child_layer_1 = Layer()
@@ -234,7 +234,7 @@ class TestEntryView(TestCase):
         request.user = None
         entry = Entry(request)
 
-        class Layer(object):
+        class Layer:
             pass
 
         child_layer_1 = Layer()

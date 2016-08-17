@@ -65,7 +65,7 @@ def timer(key=None):
     return _Timer(key)
 
 
-class _Timer(object):
+class _Timer:
     """
     Allow to measure the duration of some activity
     """
@@ -80,7 +80,7 @@ class _Timer(object):
             backend.timer(self._key, time.time() - self._start)
 
 
-class _MemoryBackend(object):
+class _MemoryBackend:
     def __init__(self):
         self._timers = {}  # key => (nb, sum, min, max)
         self._stats_lock = threading.Lock()
@@ -118,7 +118,7 @@ class _MemoryBackend(object):
 INVALID_KEY_CHARS = re.compile(r"[:|\.]")
 
 
-class _StatsDBackend(object):  # pragma: no cover
+class _StatsDBackend:  # pragma: no cover
     def __init__(self, address, prefix):
         self._prefix = prefix
         if self._prefix != "" and not self._prefix.endswith("."):

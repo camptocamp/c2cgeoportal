@@ -32,7 +32,7 @@ import isodate
 import datetime
 
 
-class TimeInformation(object):
+class TimeInformation:
     """
     Arguments:
 
@@ -105,7 +105,7 @@ class TimeInformation(object):
             return None
 
 
-class TimeExtentValue(object):
+class TimeExtentValue:
     """
     Represents time as a list of values.
     """
@@ -149,7 +149,7 @@ class TimeExtentValue(object):
         }
 
 
-class TimeExtentInterval(object):
+class TimeExtentInterval:
     """
     Represents time with the help of a start, an end and an interval.
     """

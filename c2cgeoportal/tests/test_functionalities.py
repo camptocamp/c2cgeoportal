@@ -38,10 +38,10 @@ class TestFunctionalities(TestCase):
 
         types = get_types_map(["func"])
 
-        class Registry(object):
+        class Registry:
             settings = {}
 
-        class Request(object):
+        class Request:
             registry = Registry()
 
         request = Request()

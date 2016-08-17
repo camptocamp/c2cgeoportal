@@ -32,7 +32,7 @@ from unittest import TestCase
 from c2cgeoportal import stats
 
 
-class FakeRequest(object):
+class FakeRequest:
     def __init__(self, reset):
         self.params = {"reset": reset}
 

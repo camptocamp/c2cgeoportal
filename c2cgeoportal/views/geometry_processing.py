@@ -37,7 +37,7 @@ from pyramid.httpexceptions import HTTPBadRequest
 from c2cgeoportal.models import DBSession
 
 
-class GeometryProcessing(object):
+class GeometryProcessing:
 
     def __init__(self, request):
         self.request = request

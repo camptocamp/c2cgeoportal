@@ -117,10 +117,10 @@ class TestRequestProperty(TestCase):
 
     def test_request_auth_overwritten_property(self):
         def setter(request):
-            class User(object):
+            class User:
                 pass
 
-            class Role(object):
+            class Role:
                 pass
 
             u = User()

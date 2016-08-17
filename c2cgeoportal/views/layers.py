@@ -59,7 +59,7 @@ from c2cgeoportal.models import DBSessions, DBSession, Layer, RestrictionArea, R
 cache_region = get_region()
 
 
-class Layers(object):
+class Layers:
 
     def __init__(self, request):
         self.request = request

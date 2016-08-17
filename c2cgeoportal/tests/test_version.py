@@ -35,7 +35,7 @@ from c2cgeoportal.views import version
 class TestVersionView(TestCase):
 
     def test_get_version(self):
-        class Dummy(object):
+        class Dummy:
             pass
         request = Dummy()
         request.registry = Dummy()
