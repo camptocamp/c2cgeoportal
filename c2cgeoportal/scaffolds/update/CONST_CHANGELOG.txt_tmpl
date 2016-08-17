@@ -144,6 +144,8 @@ If you want to keep your CGXP interface you should:
     +% endfor
     +
 
+9. In your vars_{{package}}.yaml file rename `mobile_default_theme` to `default_theme`.
+
 
 Version 2.0.0
 =============
