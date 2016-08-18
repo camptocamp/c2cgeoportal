@@ -481,6 +481,7 @@ help:
 	@echo
 	@echo  "Deploy branch target:"
 	@echo
+	@echo  "- theme2fts		Inport the theme in the full-text search"
 	@echo  "- deploy-branch		Deploy the curent branch to demos"
 	@echo  "- remove-branch		Remove the curent branch from demos"
 
@@ -549,6 +550,11 @@ else
 	rm -rf $(HOME_DIR).npm
 	rm -rf $(HOME_DIR).cache/pip
 endif
+
+.PHONY: theme2fts
+theme2fts: $(VENV_BIN)/theme2fts$(PYTHON_BIN_POSTFIX) \
+		$(MO_CLIENT_LOCALISATION_FILES)
+	$(VENV_BIN)/theme2fts
 
 .PHONY: flake8
 flake8: $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX)
@@ -1007,6 +1013,7 @@ test-packages: .build/test-packages.timestamp
 
 # Check
 
+$(VENV_BIN)/theme2fts$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 # Venv

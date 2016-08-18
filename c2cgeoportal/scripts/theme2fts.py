@@ -30,12 +30,12 @@
 
 import os
 import sys
-import yaml
 import transaction
 from argparse import ArgumentParser
 from gettext import translation
 from pyramid.paster import get_app
 from sqlalchemy import func
+from c2c.template import get_config
 
 
 def main():
@@ -48,7 +48,6 @@ def main():
     parser.add_argument(
         "--interfaces",
         nargs='+',
-        required=True,
         help="the interfaces to export",
     )
     parser.add_argument(
@@ -115,9 +114,7 @@ class Import:
         self.options = options
         self.imported = set()
 
-        settings = {}
-        with open(".build/config.yaml") as f:
-            settings = yaml.load(f)
+        settings = get_config(".build/config.yaml")
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -134,9 +131,12 @@ class Import:
             self._[lang] = translation(
                 "{}-client".format(package), os.path.join(package, "locale/"), [lang])
 
-        self.interfaces = self.session.query(Interface).filter(
-            Interface.name.in_(options.interfaces)
-        ).all()
+        query = self.session.query(Interface)
+        if options.interfaces is not None:
+            query = query.filter(
+                Interface.name.in_(options.interfaces)
+            )
+        self.interfaces = query.all()
 
         self.public_theme = {}
         self.public_group = {}
