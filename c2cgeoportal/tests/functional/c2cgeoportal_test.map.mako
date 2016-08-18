@@ -515,4 +515,49 @@ MAP
             END
         END
     END
+
+% for name, hasMin, hasMax in [("noscale", False, False), ("minscale", True, False), ("maxscale", False, True), ("boothscale", True, True)]:
+    LAYER
+        NAME "test_${name}"
+        EXTENT -180 -90 180 90
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE postgis
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        DATA "the_geom from main.testpoint using unique id using srid=21781"
+        METADATA
+            "wms_title" "countries"
+            "wms_srs" "epsg:21781"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "the_geom"
+            "gml_the_geom_type" "point"
+            "gml_types" "auto"
+            "wms_metadataurl_href" "http://example.com/wmsfeatures.metadata"
+            "wms_metadataurl_format" "text/plain"
+            "wms_metadataurl_type" "TC211"
+        END
+        DUMP TRUE # for GetFeatureInfo
+        TEMPLATE "template"
+% if hasMin:
+        MINSCALEDENOM 5000
+% endif
+% if hasMax:
+        MAXSCALEDENOM 25000
+% endif
+        PROJECTION
+           "init=epsg:21781"
+        END
+        CLASS
+            NAME "test_wmsfeatures"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+% endfor
 END

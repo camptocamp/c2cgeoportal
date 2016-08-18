@@ -253,8 +253,12 @@ class TestEntryView(TestCase):
         child_layers_info = entry._get_child_layers_info_1(layer)
 
         expected = [{
-            "name": "layer_1"
+            "name": "layer_1",
+            "minResolutionHint": 0.0,
+            "maxResolutionHint": float("inf"),
         }, {
             "name": "layer_2",
+            "minResolutionHint": 0.0,
+            "maxResolutionHint": float("inf"),
         }]
         self.assertEqual(child_layers_info, expected)
