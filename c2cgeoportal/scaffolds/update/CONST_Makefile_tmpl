@@ -213,6 +213,8 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-touch/angular-touch.min.js \
 	node_modules/typeahead.js/dist/typeahead.bundle.min.js \
 	node_modules/angular-ui-date/dist/date.js \
+	node_modules/angular-float-thead/angular-floatThead.js \
+	node_modules/floatthead/dist/jquery.floatThead.min.js \
 	node_modules/angular-ui-slider/src/slider.js \
 	node_modules/proj4/dist/proj4.js \
 	node_modules/angular-gettext/dist/angular-gettext.min.js \
