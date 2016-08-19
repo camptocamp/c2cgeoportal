@@ -35,15 +35,20 @@ import yaml
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
-from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.exc import ProgrammingError, NoSuchTableError
+from sqlalchemy.orm.util import class_mapper
+from sqlalchemy.orm.properties import ColumnProperty
+from geoalchemy2.types import Geometry
 
 from lingua.extractors import Extractor
 from lingua.extractors import Message
 from pyramid.paster import bootstrap
+from c2c.template import get_config
 
 from c2cgeoportal.lib import add_url_params
 from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
+from c2cgeoportal.lib.dbreflection import get_class
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
@@ -118,8 +123,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         self.env = bootstrap(filename)
         with open("project.yaml") as f:
             self.package = yaml.load(f)
-        with open(".build/config.yaml") as f:
-            self.config = yaml.load(f)
+        self.config = get_config(".build/config.yaml")
 
         try:
             from c2cgeoportal.models import Theme, LayerGroup, \
@@ -157,35 +161,27 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
             )
         if layer.geo_table is not None:
-            url = "http://localhost/{}/wsgi/layers/{}/md.xsd".format(
-                self.config["vars"]["instanceid"], layer.id,
-            )
-            http = httplib2.Http()
-            h = {
-                "Host": self.package["host"]
-            }
+            exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
+            last_update_date = layer.get_metadatas("lastUpdateDateColumn")
+            if len(last_update_date) == 1:
+                exclude.append(last_update_date[0].value)
+            last_update_user = layer.get_metadatas("lastUpdateUserColumn")
+            if len(last_update_user) == 1:
+                exclude.append(last_update_user[0].value)
             try:
-                resp, content = http.request(url, method="GET", headers=h)
-            except:  # pragma: no cover
-                print("Unable to get the layer metadata XSD from URL %s" % url)
-                return
-
-            if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(
-                    "Layer metadata XSD from URL %s return the error: %i %s" %
-                    (url, resp.status, resp.reason)
-                )
-                return
-
-            metadata = parseString(content)
-            for element in metadata.getElementsByTagNameNS(
-                "http://www.w3.org/2001/XMLSchema", "element"
-            ):
-                if not element.getAttribute("type").startswith("gml:"):
-                    messages.append(Message(
-                        None, element.getAttribute("name"), None, [], "", "",
-                        (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
-                    ))
+                cls = get_class(layer.geo_table, exclude_properties=exclude)
+                for column_property in class_mapper(cls).iterate_properties:
+                    if isinstance(column_property, ColumnProperty) and \
+                            len(column_property.columns) == 1 and \
+                            not column_property.columns[0].primary_key and \
+                            not column_property.columns[0].foreign_keys and \
+                            not isinstance(column_property.columns[0].type, Geometry):
+                        messages.append(Message(
+                            None, column_property.key, None, [], "", "",
+                            (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
+                        ))
+            except NoSuchTableError:
+                exit(colorize("No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED))
 
     def _import_layer_wmts(self, layer, messages):
         layers = [d.value for d in layer.ui_metadatas if d.name == "wmsLayer"]

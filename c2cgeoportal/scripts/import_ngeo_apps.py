@@ -195,7 +195,7 @@ def main():
             else:
                 data = _sub(
                     r'<img src="image/([^"]+)"( alt="")? ?/>',
-                    '<img src="${request.static_url(\'demo:static-ngeo/image/\\1\')}" />',
+                    '<img src="${request.static_url(\'{{package}}:static-ngeo/image/\\1\')}" />',
                     data,
                 )
             data = _sub(
