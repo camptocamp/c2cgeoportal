@@ -201,21 +201,35 @@ class Entry(object):
             metadata_urls.extend(self._get_layer_metadata_urls(childLayer))
         return metadata_urls
 
-    def _get_layer_resolution_hint(self, layer):
-        resolution_hint_min = float("inf")
-        resolution_hint_max = 0
+    def _get_layer_resolution_hint_raw(self, layer):
+        resolution_hint_min = None
+        resolution_hint_max = None
         if layer.scaleHint:
             # scaleHint is based upon a pixel diagonal length whereas we use
             # resolutions based upon a pixel edge length. There is a sqrt(2)
             # ratio between edge and diagonal of a square.
             resolution_hint_min = float(layer.scaleHint["min"]) / sqrt(2)
-            resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2)
+            resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2) \
+                if layer.scaleHint["max"] != "0" else float("inf")
         for childLayer in layer.layers:
-            resolution = self._get_layer_resolution_hint(childLayer)
-            resolution_hint_min = min(resolution_hint_min, resolution[0])
-            resolution_hint_max = max(resolution_hint_max, resolution[1])
+            resolution = self._get_layer_resolution_hint_raw(childLayer)
+            resolution_hint_min = resolution[0] if resolution_hint_min is None else (
+                resolution_hint_min if resolution[0] is None else
+                min(resolution_hint_min, resolution[0])
+            )
+            resolution_hint_max = resolution[1] if resolution_hint_max is None else (
+                resolution_hint_max if resolution[1] is None else
+                max(resolution_hint_max, resolution[1])
+            )
 
         return (resolution_hint_min, resolution_hint_max)
+
+    def _get_layer_resolution_hint(self, layer):
+        resolution_hint_min, resolution_hint_max = self._get_layer_resolution_hint_raw(layer)
+        return (
+            0.0 if resolution_hint_min is None else resolution_hint_min,
+            float("inf") if resolution_hint_max is None else resolution_hint_max,
+        )
 
     def _get_child_layers_info_1(self, layer):
         """ Return information about sub layers of a layer.
@@ -226,13 +240,12 @@ class Entry(object):
         """
         child_layers_info = []
         for child_layer in layer.layers:
-            child_layer_info = dict(name=child_layer.name)
             resolution = self._get_layer_resolution_hint(child_layer)
-            if resolution[0] <= resolution[1]:
-                child_layer_info.update({
-                    "minResolutionHint": float("%0.2f" % resolution[0]),
-                    "maxResolutionHint": float("%0.2f" % resolution[1])
-                })
+            child_layer_info = {
+                "name": child_layer.name,
+                "minResolutionHint": float("%0.2f" % resolution[0]),
+                "maxResolutionHint": float("%0.2f" % resolution[1]),
+            }
             if hasattr(child_layer, "queryable"):
                 child_layer_info["queryable"] = child_layer.queryable
             child_layers_info.append(child_layer_info)
@@ -245,13 +258,12 @@ class Entry(object):
 
             * ``layer`` The layer object in the WMS capabilities.
         """
-        layer_info = dict(name=layer.name)
         resolution = self._get_layer_resolution_hint(layer)
-        if resolution[0] <= resolution[1]:
-            layer_info.update({
-                "minResolutionHint": resolution[0],
-                "maxResolutionHint": resolution[1]
-            })
+        layer_info = {
+            "name": layer.name,
+            "minResolutionHint": float("%0.2f" % resolution[0]),
+            "maxResolutionHint": float("%0.2f" % resolution[1]),
+        }
         layer_info["queryable"] = layer.queryable == 1 \
             if hasattr(layer, "queryable") else True
         return layer_info
