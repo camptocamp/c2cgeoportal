@@ -29,7 +29,7 @@
 
 from unittest import TestCase
 from pyramid.testing import DummyRequest
-from c2cgeoportal import CACHE_PATH
+from c2cgeoportal.pyramid_ import CACHE_PATH
 from c2cgeoportal.lib.cacheversion import CachebusterTween
 
 

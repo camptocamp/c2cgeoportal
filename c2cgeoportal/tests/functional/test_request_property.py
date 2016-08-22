@@ -81,7 +81,7 @@ class TestRequestProperty(TestCase):
 
     def test_request_right_auth(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal import default_user_validator
+        from c2cgeoportal.pyramid_ import default_user_validator
         from c2cgeoportal.lib.authentication import create_authentication
 
         request = DummyRequest(headers={
@@ -99,7 +99,7 @@ class TestRequestProperty(TestCase):
 
     def test_request_wrong_auth(self):
         from pyramid.testing import DummyRequest
-        from c2cgeoportal import default_user_validator
+        from c2cgeoportal.pyramid_ import default_user_validator
         from c2cgeoportal.lib.authentication import create_authentication
 
         request = DummyRequest(headers={

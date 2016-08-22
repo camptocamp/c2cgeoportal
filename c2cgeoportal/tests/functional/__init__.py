@@ -38,7 +38,7 @@ from webob.acceptparse import Accept
 
 import c2cgeoportal
 from c2cgeoportal import tests
-from c2cgeoportal.lib import functionality
+from c2cgeoportal.lib import functionality, caching
 
 
 mapserv_url = None
@@ -55,7 +55,7 @@ if os.path.exists(configfile):
     host = mapserv_url.hostname
     mapserv_url = urljoin("http://localhost/", mapserv_url.path)
 
-c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
+caching.init_region({"backend": "dogpile.cache.memory"})
 
 
 def set_up_common():
@@ -101,7 +101,7 @@ def set_up_common():
 
 def tear_down_common():
 
-    c2cgeoportal.lib.functionality.FUNCTIONALITIES_TYPES = None
+    functionality.FUNCTIONALITIES_TYPES = None
 
     # if test.in does not exist (because the z3c.recipe.filetemplate
     # part hasn't been executed) then db_url is None
@@ -138,11 +138,11 @@ def tear_down_common():
     import sqlahelper
     sqlahelper.reset()
 
-    c2cgeoportal.caching.invalidate_region()
+    caching.invalidate_region()
 
 
 def create_dummy_request(additional_settings={}, *args, **kargs):
-    from c2cgeoportal import default_user_validator
+    from c2cgeoportal.pyramid_ import default_user_validator
     mapfile = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "c2cgeoportal_test.map"
@@ -177,7 +177,7 @@ def add_user_property(request):
     Add the "user" property to the given request.
     Disable referer checking.
     """
-    from c2cgeoportal import _create_get_user_from_request
+    from c2cgeoportal.pyramid_ import _create_get_user_from_request
     request.referer = "http://example.com/app"
     request.path_info_peek = lambda: "main"
     request.set_property(

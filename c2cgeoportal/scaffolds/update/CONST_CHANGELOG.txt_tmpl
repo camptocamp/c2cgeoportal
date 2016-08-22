@@ -146,6 +146,11 @@ If you want to keep your CGXP interface you should:
 
 9. In your vars_{{package}}.yaml file rename `mobile_default_theme` to `default_theme`.
 
+10. In your {{package}}/__init__.py do the following change:
+
+    -from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
+    +from c2cgeoportal.pyramid_ import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
+
 
 Version 2.0.0
 =============

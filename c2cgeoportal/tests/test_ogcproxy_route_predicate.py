@@ -31,7 +31,7 @@ from unittest import TestCase
 
 from pyramid.request import Request
 
-from c2cgeoportal import OgcproxyRoutePredicate
+from c2cgeoportal.pyramid_ import OgcproxyRoutePredicate
 
 
 class TestMapserverproxyRoutePredicate(TestCase):

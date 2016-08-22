@@ -453,7 +453,7 @@ class TestEntryView(TestCase):
         # mapfile error
         request.params = {}
         request.registry.settings["mapserverproxy"]["mapserv_url"] = mapserv_url + "?map=not_a_mapfile"
-        from c2cgeoportal import caching
+        from c2cgeoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "main")
         self.assertEquals(errors, set([

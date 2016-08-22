@@ -32,6 +32,8 @@ from unittest import TestCase
 from pyramid import testing
 
 import c2cgeoportal
+from c2cgeoportal.pyramid_ import call_hook, set_user_validator, \
+    default_user_validator, _create_get_user_from_request, _match_url_start
 
 
 class TestIncludeme(TestCase):
@@ -55,13 +57,15 @@ class TestIncludeme(TestCase):
         self.config.include(c2cgeoportal.includeme)
         self.failUnless(
             self.config.set_user_validator.im_func.__docobj__ is
-            c2cgeoportal.set_user_validator
+            set_user_validator
         )
 
     def test_default_user_validator(self):
         self.config.include(c2cgeoportal.includeme)
-        self.assertEqual(self.config.registry.validate_user,
-                         c2cgeoportal.default_user_validator)
+        self.assertEqual(
+            self.config.registry.validate_user,
+            default_user_validator
+        )
 
     def test_user_validator_overwrite(self):
         self.config.include(c2cgeoportal.includeme)
@@ -96,12 +100,12 @@ class TestReferer(TestCase):
             def path_info_peek(self):
                 return "main"
 
-        get_user = c2cgeoportal._create_get_user_from_request(self.SETTINGS)
+        get_user = _create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref))
 
     def test_match_url(self):
         def match(ref, val, expected):
-            self.assertEqual(c2cgeoportal._match_url_start(ref, val), expected)
+            self.assertEqual(_match_url_start(ref, val), expected)
 
         match("http://example.com/app/", "http://example.com/app", True)
         match("http://example.com/app", "http://example.com/app/", True)
@@ -145,14 +149,14 @@ class TestHooks(TestCase):
 
     def test_existing(self):
         tracer = {"called": False}
-        c2cgeoportal.call_hook(self.settings, "test", tracer)
+        call_hook(self.settings, "test", tracer)
         self.assertTrue(tracer["called"])
 
     def test_no_hook(self):
-        c2cgeoportal.call_hook(self.settings, "test2")
+        call_hook(self.settings, "test2")
 
     def test_no_hooks(self):
-        c2cgeoportal.call_hook({}, "test")
+        call_hook({}, "test")
 
     def test_bad_hook(self):
-        self.assertRaises(AttributeError, c2cgeoportal.call_hook, self.settings, "bad")
+        self.assertRaises(AttributeError, call_hook, self.settings, "bad")

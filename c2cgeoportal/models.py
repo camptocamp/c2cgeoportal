@@ -46,9 +46,30 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.exc import UnboundExecutionError
 from geoalchemy2 import Geometry, func
 from geoalchemy2.shape import to_shape
-from formalchemy import Column
-from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
-from pyramid.i18n import TranslationStringFactory
+try:
+    from formalchemy import Column
+# Fallback if formalchemy don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    from sqlalchemy import Column as Col
+
+    class Column(Col):
+        def __init__(self, label=None, *args, **kwargs):
+            super(Column, self).__init__(*args, **kwargs)
+
+try:
+    from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
+# Fallback if pyramid don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    Allow = ALL_PERMISSIONS = DENY_ALL = None
+
+
+try:
+    from pyramid.i18n import TranslationStringFactory
+    _ = TranslationStringFactory("c2cgeoportal")
+# Fallback if pyramid don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    def _(s):
+        return s
 
 from c2cgeoportal import schema, parentschema, srid
 from c2cgeoportal.lib import caching
@@ -62,7 +83,6 @@ __all__ = [
     "LayergroupTreeitem"
 ]
 
-_ = TranslationStringFactory("c2cgeoportal")
 log = logging.getLogger(__name__)
 
 Base = sqlahelper.get_base()

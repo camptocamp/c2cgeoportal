@@ -488,8 +488,8 @@ class TestThemesView(TestCase):
                     "isSingleTile": False,
                     "auth": None,
                     "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
+                    "type": u"mapserver",
+                    "imageType": u"image/jpeg",
                 },
                 "source for image/jpeg": {
                     "wfsSupport": True,
@@ -497,8 +497,8 @@ class TestThemesView(TestCase):
                     "isSingleTile": False,
                     "auth": "main",
                     "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
+                    "type": u"mapserver",
+                    "imageType": u"image/jpeg",
                 },
                 "__test_ogc_server_external": {
                     "wfsSupport": False,
@@ -506,8 +506,8 @@ class TestThemesView(TestCase):
                     "isSingleTile": False,
                     "auth": None,
                     "urlWfs": "http://wms.geo.admin.ch/",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
+                    "type": u"mapserver",
+                    "imageType": u"image/jpeg",
                 },
                 "source for image/png": {
                     "wfsSupport": True,
@@ -515,8 +515,8 @@ class TestThemesView(TestCase):
                     "isSingleTile": False,
                     "auth": "main",
                     "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/png",
+                    "type": u"mapserver",
+                    "imageType": u"image/png",
                 }
             },
         )
