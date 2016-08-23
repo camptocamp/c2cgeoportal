@@ -128,7 +128,7 @@ class Proxy:
                 else:
                     log.error(body)
 
-            raise HTTPBadGateway("Error on backend<hr>%s<hr>See logs for detail" % content)
+            raise HTTPBadGateway("Error on backend<hr>See logs for detail")
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
             log.error(

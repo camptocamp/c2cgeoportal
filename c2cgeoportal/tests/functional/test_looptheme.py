@@ -32,13 +32,13 @@ from unittest import TestCase
 from nose.plugins.attrib import attr
 
 import transaction
-import os
 from pyramid import testing
 
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host)
+    mapserv_url, host, create_default_ogcserver,
+)
 
 
 @attr(functional=True)
@@ -52,6 +52,7 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal.models import DBSession, LayerV1, \
             Theme, LayerGroup, Interface
 
+        create_default_ogcserver()
         main = Interface(name=u"main")
 
         layer = LayerV1(name=u"__test_layer", public=True)
@@ -71,13 +72,14 @@ class TestLoopTheme(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, LayerV1, \
-            Theme, LayerGroup
+            Theme, LayerGroup, OGCServer
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
         DBSession.query(LayerGroup).delete()
         for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: no cover
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -89,10 +91,6 @@ class TestLoopTheme(TestCase):
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url: mapserv_url
         request.client_addr = None
-        curdir = os.path.dirname(os.path.abspath(__file__))
-        mapfile = os.path.join(curdir, "c2cgeoportal_test.map")
-        ms_url = "%s?map=%s&" % (mapserv_url, mapfile)
-        request.registry.settings["mapserverproxy"]["mapserv_url"] = ms_url
         request.user = None
         entry = Entry(request)
 

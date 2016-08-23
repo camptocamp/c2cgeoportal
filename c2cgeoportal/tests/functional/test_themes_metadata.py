@@ -39,7 +39,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -54,13 +55,11 @@ class TestThemesViewMetadata(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, OGCServer, LayerWMS, Metadata
+            Theme, LayerGroup, Interface, LayerWMS, Metadata
 
         desktop = Interface(name=u"desktop")
 
-        ogc_server_internal = OGCServer(
-            name="__test_ogc_server_internal", type="mapserver", image_type="image/png"
-        )
+        ogc_server_internal, _ = create_default_ogcserver()
 
         layer_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_wms.layer = "__test_layer_internal_wms"
@@ -181,8 +180,14 @@ class TestThemesViewMetadata(TestCase):
             },
             "admin_interface": {"available_metadata": types}
         })
-        request.route_url = lambda url: "http://mapserver.org/"
-        request.static_url = lambda url: "http://dummy.org/{}".format(url)
+
+        def route_url(url, **kargs):
+            return "http://mapserver.org/"
+        request.route_url = route_url
+
+        def static_url(url, **kargs):
+            return "http://dummy.org/{}".format(url)
+        request.static_url = static_url
         request.params = {
             "version": "2",
             "interface": "desktop",

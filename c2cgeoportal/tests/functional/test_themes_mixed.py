@@ -39,7 +39,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ class TestThemesView(TestCase):
 
         main = Interface(name=u"main")
 
-        ogc_server_internal = OGCServer(name="__test_ogc_server_internal", type="mapserver", image_type="image/jpeg")
+        ogc_server_internal, _ = create_default_ogcserver()
         ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
 
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
@@ -113,7 +114,7 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, Metadata, Dimension
+            Theme, LayerGroup, Interface, Metadata, Dimension, OGCServer
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()
@@ -125,6 +126,7 @@ class TestThemesView(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -135,8 +137,7 @@ class TestThemesView(TestCase):
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
         return request

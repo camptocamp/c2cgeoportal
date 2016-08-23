@@ -34,7 +34,9 @@ from unittest import TestCase
 from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
-    set_up_common as setUpModule)
+    set_up_common as setUpModule,
+    create_default_ogcserver,
+)
 
 
 @attr(functional=True)
@@ -46,6 +48,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal.models import DBSession, Role, User, Functionality
         from c2cgeoportal.lib.dbreflection import init
 
+        create_default_ogcserver()
         role1 = Role(name=u"__test_role1")
         user1 = User(
             username=u"__test_user1",
@@ -72,7 +75,7 @@ class TestFunctionalities(TestCase):
 
     def tearDown(self):  # noqa
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, Functionality
+        from c2cgeoportal.models import DBSession, Role, User, Functionality, OGCServer
 
         functionality.FUNCTIONALITIES_TYPES = None
 
@@ -102,6 +105,7 @@ class TestFunctionalities(TestCase):
             Functionality.name == "__test_s").delete()
         DBSession.query(Functionality).filter(
             Functionality.name == "__test_a").delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -211,7 +215,7 @@ class TestFunctionalities(TestCase):
 
     def test_web_client_functionalities(self):
         from c2cgeoportal.models import DBSession, User
-        from c2cgeoportal.tests.functional import mapserv_url, create_dummy_request
+        from c2cgeoportal.tests.functional import create_dummy_request
         from c2cgeoportal.views.entry import Entry
 
         request = create_dummy_request()
@@ -237,10 +241,6 @@ class TestFunctionalities(TestCase):
             },
             "admin_interface": {
                 "available_functionalities": ["__test_a", "__test_s"]
-            },
-            "mapserverproxy": {
-                "mapserv_url": mapserv_url,
-                "geoserver": False,
             },
         }
         functionality.FUNCTIONALITIES_TYPES = None

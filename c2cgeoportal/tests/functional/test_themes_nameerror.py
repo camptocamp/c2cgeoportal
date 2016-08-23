@@ -38,7 +38,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -53,11 +54,11 @@ class TestThemesNameErrorView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, OGCServer, LayerWMS
+            Theme, LayerGroup, Interface, LayerWMS
 
         main = Interface(name=u"main")
 
-        ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        ogc_server, _ = create_default_ogcserver()
 
         layer_wms = LayerWMS(name=u"__test_layer_wms", public=True)
         layer_wms.layer = "testpoint_unprotected"
@@ -87,9 +88,7 @@ class TestThemesNameErrorView(TestCase):
         DBSession.query(LayerGroup).delete()
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
-        DBSession.query(OGCServer).filter(
-            OGCServer.name == "__test_ogc_server"
-        ).delete()
+        DBSession.query(OGCServer).delete()
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
@@ -99,8 +98,7 @@ class TestThemesNameErrorView(TestCase):
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
         return request

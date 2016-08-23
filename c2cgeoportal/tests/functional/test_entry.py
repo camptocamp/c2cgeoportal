@@ -42,7 +42,9 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, mapserv, host, create_dummy_request,
+    create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -60,7 +62,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
             RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
-            LayerWMS, OGCServer, FullTextSearch
+            LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
         from sqlalchemy import func
 
         role1 = Role(name=u"__test_role1")
@@ -84,36 +86,44 @@ class TestEntryView(TestCase):
         private_layer.geo_table = "a_schema.a_geo_table"
         private_layer.interfaces = [main, mobile]
 
+        ogcserver, ogcserver_external = create_default_ogcserver()
+        ogcserver_normapfile = OGCServer(name="__test_ogc_server_notmapfile")
+        ogcserver_normapfile.url = mapserv_url + "?map=not_a_mapfile"
+        ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
+        ogcserver_geoserver.url = mapserv
+        ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
+        ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
+
         public_layer2 = LayerWMS(
             name=u"__test_public_layer2", layer=u"__test_public_layer_bis", public=True)
         public_layer2.interfaces = [main, mobile]
-        public_layer2.ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        public_layer2.ogc_server = ogcserver
 
         private_layer2 = LayerWMS(
             name=u"__test_private_layer2", layer=u"__test_private_layer_bis", public=False)
         private_layer2.interfaces = [main, mobile]
-        private_layer2.ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        private_layer2.ogc_server = ogcserver
 
         public_layer_not_mapfile = LayerWMS(
             name=u"__test_public_layer_not_mapfile", layer=u"__test_public_layer_not_in_mapfile", public=True)
         public_layer_not_mapfile.interfaces = [main, mobile]
-        public_layer_not_mapfile.ogc_server = OGCServer(name="__test_ogc_server", url="internal_url", image_type="image/jpeg")
+        public_layer_not_mapfile.ogc_server = ogcserver
 
         public_layer_no_layers = LayerWMS(
             name=u"__test_public_layer_no_layers", public=True)
         public_layer_no_layers.interfaces = [main, mobile]
-        public_layer_no_layers.ogc_server = OGCServer(name="__test_ogc_server", url="internal_url", image_type="image/jpeg")
+        public_layer_no_layers.ogc_server = ogcserver
 
         layer_in_group = LayerV1(name=u"__test_layer_in_group")
         layer_in_group.interfaces = [main, mobile]
-        layer_group = LayerGroup(name=u"__test_layer_group")
+        layer_group = LayerGroup(name=u"__test_layer_group_1")
         layer_group.children = [layer_in_group]
 
         layer_wmsgroup = LayerV1(name=u"test_wmsfeaturesgroup")
         layer_wmsgroup.is_checked = False
         layer_wmsgroup.interfaces = [main, mobile]
 
-        group = LayerGroup(name=u"__test_layer_group")
+        group = LayerGroup(name=u"__test_layer_group_2")
         group.children = [
             public_layer, private_layer, layer_group, layer_wmsgroup,
             public_layer2, public_layer_not_mapfile, public_layer_no_layers,
@@ -163,7 +173,7 @@ class TestEntryView(TestCase):
         entry3.public = True
 
         DBSession.add_all([
-            user1, user2,
+            user1, user2, ogcserver_normapfile, ogcserver_geoserver,
             public_layer, private_layer, public_layer2, private_layer2,
             entry1, entry2, entry3,
         ])
@@ -176,7 +186,7 @@ class TestEntryView(TestCase):
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-            RestrictionArea, Theme, LayerGroup, Interface
+            RestrictionArea, Theme, LayerGroup, Interface, OGCServer
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
         DBSession.query(User).filter(User.username == "__test_user2").delete()
@@ -203,6 +213,7 @@ class TestEntryView(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -310,8 +321,7 @@ class TestEntryView(TestCase):
 
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "main"
         request.params = params
 
@@ -419,7 +429,7 @@ class TestEntryView(TestCase):
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
-            u"__test_layer_group",
+            u"__test_layer_group_1",
             u"__test_public_layer",
         ]))
 
@@ -445,14 +455,22 @@ class TestEntryView(TestCase):
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
-            u"__test_layer_group",
+            u"__test_layer_group_1",
             u"__test_public_layer",
             u"__test_private_layer",
         ]))
 
+    def test_notmapfile(self):
         # mapfile error
+        from c2cgeoportal.views.entry import Entry
+        request = self._create_request_obj(additional_settings={
+            "mapserverproxy": {
+                "default_ogc_server": "__test_ogc_server_notmapfile",
+            }
+        })
+        entry = Entry(request)
         request.params = {}
-        request.registry.settings["mapserverproxy"]["mapserv_url"] = mapserv_url + "?map=not_a_mapfile"
+
         from c2cgeoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "main")
@@ -507,8 +525,11 @@ class TestEntryView(TestCase):
     def test_theme_geoserver(self):
         from c2cgeoportal.models import DBSession, User
         from c2cgeoportal.views.entry import Entry
-        request = self._create_request_obj()
-        request.registry.settings["mapserverproxy"]["geoserver"] = True
+        request = self._create_request_obj(additional_settings={
+            "mapserverproxy": {
+                "default_ogc_server": "__test_ogc_server_geoserver",
+            }
+        })
         entry = Entry(request)
 
         # unautenticated v1
@@ -519,7 +540,7 @@ class TestEntryView(TestCase):
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
-            u"__test_layer_group",
+            u"__test_layer_group_1",
         ]))
 
         # autenticated v1
@@ -533,9 +554,10 @@ class TestEntryView(TestCase):
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
             u"__test_private_layer",
-            u"__test_layer_group",
+            u"__test_layer_group_1",
         ]))
 
+        # don't test anything related to geoserver ...
         # unautenticated v2
         request.params = {
             "version": "2"
@@ -575,9 +597,6 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        request.registry.settings["mapserverproxy"].update({
-            "external_mapserv_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
-        })
         entry = Entry(request)
 
         response = entry.get_cgxp_viewer_vars()
@@ -613,8 +632,6 @@ class TestEntryView(TestCase):
     def test_permalink_themes(self):
         from c2cgeoportal.views.entry import Entry
         request = self._create_request_obj()
-        request.registry.settings["mapserverproxy"]["external_mapserv_url"] = \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.params = {
             "permalink_themes": "my_themes",
         }
@@ -628,13 +645,7 @@ class TestEntryView(TestCase):
 
         request = self._create_request_obj()
         request.current_route_url = lambda **kwargs: "http://example.com/current/view"
-        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            "mapserverproxy": {
-                "mapserv_url": mapserv,
-                "external_mapserv_url": mapserv,
-                "geoserver": False,
-            },
             "layers": {
                 "enum": {
                     "layer_test": {
@@ -669,8 +680,7 @@ class TestEntryView(TestCase):
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],
-            '{"layer_test": {"label": "%s"}}' %
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+            '{"layer_test": {"label": "%s"}}' % mapserv_url
         )
 
         result = entry.get_ngeo_index_vars()
@@ -710,13 +720,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import User, Role
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            "mapserverproxy": {
-                "mapserv_url": mapserv,
-                "external_mapserv_url": mapserv,
-                "geoserver": False,
-            },
             "layers": {
                 "enum": {
                     "layer_test": {
@@ -749,12 +753,6 @@ class TestEntryView(TestCase):
     def test_entry_points_version(self):
         from c2cgeoportal.views.entry import Entry
 
-        mapfile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "c2cgeoportal_test.map"
-        )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
-
         request = testing.DummyRequest()
         request.user = None
         request.headers["Host"] = host
@@ -762,11 +760,6 @@ class TestEntryView(TestCase):
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv
         request.registry.settings = {
-            "mapserverproxy": {
-                "mapserv_url": mapserv,
-                "external_mapserv_url": mapserv,
-                "geoserver": False,
-            },
             "default_max_age": 76,
             "layers": {
                 "enum": {
@@ -792,13 +785,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.models import User, Role
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            "mapserverproxy": {
-                "mapserv_url": mapserv,
-                "external_mapserv_url": mapserv,
-                "geoserver": False,
-            },
             "layers": {
                 "enum": {
                     "layer_test": {
@@ -834,15 +821,7 @@ class TestEntryView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        mapserv = request.registry.settings["mapserverproxy"]["mapserv_url"]
         request.registry.settings.update({
-            "mapserverproxy": {
-                "mapserv_url": mapserv,
-                "external_mapserv_url": mapserv,
-                "mapserv_wfs_url": mapserv,
-                "external_mapserv_wfs_url": mapserv,
-                "geoserver": False,
-            },
             "layers": {
                 "enum": {
                     "layer_test": {

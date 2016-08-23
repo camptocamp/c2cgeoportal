@@ -38,7 +38,8 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 
 @attr(functional=True)
@@ -51,6 +52,7 @@ class TestMobileDesktop(TestCase):
 
         from c2cgeoportal.models import DBSession, LayerV1, Theme, Interface, LayerGroup
 
+        create_default_ogcserver()
         main = Interface(name=u"main")
         mobile = Interface(name=u"mobile")
 
@@ -101,7 +103,7 @@ class TestMobileDesktop(TestCase):
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, LayerV1, \
-            Theme, LayerGroup, Interface
+            Theme, LayerGroup, Interface, OGCServer
 
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
@@ -111,6 +113,7 @@ class TestMobileDesktop(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -119,8 +122,7 @@ class TestMobileDesktop(TestCase):
 
         request = create_dummy_request(**kargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
         return Entry(request)

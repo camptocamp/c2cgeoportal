@@ -71,7 +71,8 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url)
+    create_dummy_request, mapserv_url, mapserv, create_default_ogcserver,
+)
 
 Base = sqlahelper.get_base()
 
@@ -126,10 +127,17 @@ class TestMapserverproxyView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
-            Functionality, Interface, DBSession, management
+            Functionality, Interface, DBSession, management, OGCServer, \
+            OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
 
         if management:
             TestPoint.__table__.c.the_geom.type.management = True
+
+        create_default_ogcserver()
+        ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
+        ogcserver_geoserver.url = mapserv
+        ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
+        ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
@@ -180,7 +188,7 @@ class TestMapserverproxyView(TestCase):
 
         DBSession.add_all([
             p1, p2, p3, p4, user1, user2, user3, role1, role2, role3,
-            restricted_area1, restricted_area2, restricted_area3
+            restricted_area1, restricted_area2, restricted_area3, ogcserver_geoserver
         ])
         DBSession.flush()
 
@@ -191,7 +199,7 @@ class TestMapserverproxyView(TestCase):
 
     def tearDown(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
-            Functionality, Interface, DBSession
+            Functionality, Interface, DBSession, OGCServer
 
         functionality.FUNCTIONALITIES_TYPES = None
 
@@ -239,6 +247,7 @@ class TestMapserverproxyView(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
@@ -247,10 +256,6 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
-            "mapserverproxy": {
-                "mapserv_url": mapserv_url,
-                "geoserver": False,
-            },
             "admin_interface": {
                 "available_functionalities": [
                     "mapserver_substitution",
@@ -572,18 +577,10 @@ class TestMapserverproxyView(TestCase):
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
 
-    def _create_getcap_request(self, username=None):
+    def _create_getcap_request(self, username=None, additional_settings={}):
         from c2cgeoportal.models import DBSession, User
 
-        request = create_dummy_request({
-            "mapserverproxy": {
-                "mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "c2cgeoportal_test.map"
-                )),
-                "geoserver": False,
-            }
-        })
+        request = create_dummy_request(additional_settings)
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request
@@ -784,9 +781,6 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
-        request.registry.settings["mapserverproxy"].update({
-            "mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
-        })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
             "typename": "testpoint_unprotected",
@@ -807,9 +801,6 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
-        request.registry.settings["mapserverproxy"].update({
-            "external_mapserv_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
-        })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
             "typename": "testpoint_unprotected",
@@ -830,12 +821,6 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
-        request.registry.settings.update({
-            "mapserverproxy": {
-                "external_mapserv_wfs_url": request.registry.settings["mapserverproxy"]["mapserv_url"],
-                "geoserver": False,
-            },
-        })
 
         featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
             "typename": "testpoint_unprotected",
@@ -950,8 +935,11 @@ class TestMapserverproxyView(TestCase):
     def test_geoserver(self):
         from c2cgeoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_getcap_request(username=u"__test_user1")
-        request.registry.settings["mapserverproxy"]["geoserver"] = True
+        request = self._create_getcap_request(username=u"__test_user1", additional_settings={
+            "mapserverproxy": {
+                "default_ogc_server": "__test_ogc_server_geoserver",
+            }
+        })
         request.params.update(dict(
             service="wms", version="1.1.1", request="getcapabilities",
         ))

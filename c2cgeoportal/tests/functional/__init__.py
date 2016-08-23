@@ -54,6 +54,11 @@ if os.path.exists(configfile):
     mapserv_url = urlparse(cfg.get("test", "mapserv.url"))
     host = mapserv_url.hostname
     mapserv_url = urljoin("http://localhost/", mapserv_url.path)
+    mapfile = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "c2cgeoportal_test.map"
+    )
+    mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
 
 caching.init_region({"backend": "dogpile.cache.memory"})
 
@@ -108,6 +113,9 @@ def tear_down_common():
     if db_url is None:  # pragma: no cover
         return
 
+    import sqlahelper
+    sqlahelper.reset()
+
     # verify that we have a working database connection before going
     # forward
     from sqlalchemy import create_engine
@@ -135,23 +143,26 @@ def tear_down_common():
     except SystemExit:  # alembic call the exit method!
         pass
 
-    import sqlahelper
-    sqlahelper.reset()
-
     caching.invalidate_region()
+
+
+def create_default_ogcserver():
+    from c2cgeoportal.models import DBSession, OGCServer
+    DBSession.query(OGCServer).delete()
+    ogcserver = OGCServer(name="__test_ogc_server")
+    ogcserver.url = mapserv
+    ogcserver_external = OGCServer(name="__test_external_ogc_server")
+    ogcserver_external.url = mapserv + "external=true&"
+    DBSession.add_all([ogcserver, ogcserver_external])
+    return ogcserver, ogcserver_external
 
 
 def create_dummy_request(additional_settings={}, *args, **kargs):
     from c2cgeoportal.pyramid_ import default_user_validator
-    mapfile = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "c2cgeoportal_test.map"
-    )
-    mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
     request = tests.create_dummy_request({
         "mapserverproxy": {
-            "mapserv_url": mapserv,
-            "geoserver": False,
+            "default_ogc_server": "__test_ogc_server",
+            "external_ogc_server": "__test_external_ogc_server",
         },
         "functionalities": {
             "registered": {},
