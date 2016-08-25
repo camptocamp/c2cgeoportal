@@ -255,10 +255,10 @@ class TestEntryView(TestCase):
         expected = [{
             "name": "layer_1",
             "minResolutionHint": 0.0,
-            "maxResolutionHint": float("inf"),
+            "maxResolutionHint": 999999999.0,
         }, {
             "name": "layer_2",
             "minResolutionHint": 0.0,
-            "maxResolutionHint": float("inf"),
+            "maxResolutionHint": 999999999.0,
         }]
         self.assertEqual(child_layers_info, expected)

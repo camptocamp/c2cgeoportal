@@ -155,7 +155,7 @@ class TestThemesScale(TestCase):
                         "childLayers": [{
                             "minResolutionHint": 0.0,
                             "name": "test_noscale",
-                            "maxResolutionHint": float("inf"),
+                            "maxResolutionHint": 999999999.0,
                             "queryable": True,
                         }],
                         "name": u"__test_layer_noscale",
@@ -163,7 +163,7 @@ class TestThemesScale(TestCase):
                         "childLayers": [{
                             "minResolutionHint": 1.76,
                             "name": "test_minscale",
-                            "maxResolutionHint": float("inf"),
+                            "maxResolutionHint": 999999999.0,
                             "queryable": True,
                         }],
                         "name": u"__test_layer_minscale",
