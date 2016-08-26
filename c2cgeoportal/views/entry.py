@@ -211,7 +211,7 @@ class Entry(object):
             # ratio between edge and diagonal of a square.
             resolution_hint_min = float(layer.scaleHint["min"]) / sqrt(2)
             resolution_hint_max = float(layer.scaleHint["max"]) / sqrt(2) \
-                if layer.scaleHint["max"] != "0" else float("inf")
+                if layer.scaleHint["max"] != "0" else 999999999
         for childLayer in layer.layers:
             resolution = self._get_layer_resolution_hint_raw(childLayer)
             resolution_hint_min = resolution[0] if resolution_hint_min is None else (
@@ -229,7 +229,7 @@ class Entry(object):
         resolution_hint_min, resolution_hint_max = self._get_layer_resolution_hint_raw(layer)
         return (
             0.0 if resolution_hint_min is None else resolution_hint_min,
-            float("inf") if resolution_hint_max is None else resolution_hint_max,
+            999999999 if resolution_hint_max is None else resolution_hint_max,
         )
 
     def _get_child_layers_info_1(self, layer):
