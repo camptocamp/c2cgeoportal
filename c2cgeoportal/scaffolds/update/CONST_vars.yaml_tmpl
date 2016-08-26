@@ -391,11 +391,11 @@ vars:
 
     db_chooser:
       # List of {method path} regexes to force the usage of the master, even for GET and OPTIONS
-      # This supersedes the replica list.
+      # This supersedes the slave list.
       master:
       - GET /short/.*   # The shortener updates the last_hit column on GET
-      # List of {method path} regexes to force the usage of the replica
-      replica:
+      # List of {method path} regexes to force the usage of the slave
+      slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
 
 interpreted:

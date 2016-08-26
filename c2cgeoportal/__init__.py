@@ -479,12 +479,12 @@ def includeme(config):
     config.include(pyramid_tm.includeme)
     config.include("pyramid_closure")
 
-    if "sqlalchemy_replica.url" in settings and \
-            settings["sqlalchemy.url"] != settings["sqlalchemy_replica.url"]:  # pragma: nocover
-        # Setup a replica DB connection and add a tween to switch between it and the default one.
-        log.info("Using a replica DB for reading")
-        engine_replica = sqlalchemy.engine_from_config(config.get_settings(), "sqlalchemy_replica.")
-        sqlahelper.add_engine(engine_replica, name="replica")
+    if "sqlalchemy_slave.url" in settings and \
+            settings["sqlalchemy.url"] != settings["sqlalchemy_slave.url"]:  # pragma: nocover
+        # Setup a slave DB connection and add a tween to switch between it and the default one.
+        log.info("Using a slave DB for reading")
+        engine_slave = sqlalchemy.engine_from_config(config.get_settings(), "sqlalchemy_slave.")
+        sqlahelper.add_engine(engine_slave, name="slave")
         config.add_tween("c2cgeoportal.models.db_chooser_tween_factory",
                          over="pyramid_tm.tm_tween_factory")
 
