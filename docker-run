@@ -1,26 +1,39 @@
-#!/bin/bash -e
+#!/usr/bin/python
 
-DOCKER_ARG=
-if [[ $1 =~ ^- ]]
-then
-    DOCKER_ARG=$1
-    shift
-fi
+import sys
+import os
+import subprocess
+import getpass
 
-DOCKER_ADRS=`ifconfig docker0 | head -n 2 | tail -n 1 | awk -F : '{print $2}' | awk '{print $1}'`
 
-docker run \
-    $DOCKER_ARG \
-    --volume=build:/build \
-    --volume=`pwd`:/src \
-    --volume=${HOME}:${HOME} \
-    --volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish \
-    --env=HOME=${HOME} \
-    --env=USER_NAME=`whoami` \
-    --env=USER_ID=`id -u` \
-    --env=GROUP_ID=`id -g` \
-    --env=TRAVIS=${TRAVIS} \
-    --env=TRAVIS_BRANCH=${TRAVIS_BRANCH} \
-    --env=TRAVIS_JOB_ID=${TRAVIS_JOB_ID} \
-    camptocamp/geomapfish_build_dev \
-    run "$@"
+def main():
+
+    args = sys.argv[1:]
+    docker_cmd = ['docker', 'run']
+    if args[0][0] == '-':
+        docker_cmd.append(sys.argv[0])
+        args = args[1:]
+
+    # docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
+
+    docker_cmd.extend([
+        "--volume=build:/build",
+        "--volume={pwd}:/src".format(pwd=os.getcwd()),
+        "--volume={home}:{home}".format(home=os.environ["HOME"]),
+        "--volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish",
+        "--env=HOME={home}".format(home=os.environ["HOME"]),
+        "--env=USER_NAME={}".format(getpass.getuser()),
+        "--env=USER_ID={}".format(os.getuid()),
+        "--env=GROUP_ID={}".format(os.getgid()),
+        "--env=TRAVIS={}".format(os.environ.get("TRAVIS", "")),
+        "--env=TRAVIS_BRANCH={}".format(os.environ.get("TRAVIS_BRANCH", "")),
+        "--env=TRAVIS_JOB_ID={}".format(os.environ.get("TRAVIS_JOB_ID", "")),
+        "camptocamp/geomapfish_build_dev",
+        "run"
+    ])
+    docker_cmd.extend(args)
+    subprocess.check_call(docker_cmd)
+
+
+if __name__ == "__main__":
+    main()
