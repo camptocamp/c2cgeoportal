@@ -330,15 +330,15 @@ class Layers(object):
                 raise TopologicalError(reason)
 
     def _log_last_update(self, layer, feature):
-        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        last_update_date = self._get_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
 
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
+        last_update_user = self._get_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.role.id)
 
-    def _get_ui_metadata(self, layer, key):
+    def _get_metadata(self, layer, key):
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]
@@ -386,10 +386,10 @@ class Layers(object):
 
         # exclude the columns used to record the last features update
         exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
-        last_update_date = self._get_ui_metadata(layer, "lastUpdateDateColumn")
+        last_update_date = self._get_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             exclude.append(last_update_date)
-        last_update_user = self._get_ui_metadata(layer, "lastUpdateUserColumn")
+        last_update_user = self._get_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             exclude.append(last_update_user)
 

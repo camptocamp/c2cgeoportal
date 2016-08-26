@@ -73,7 +73,7 @@ Theme
         "functionalities": {
             "<name>": "<values>"
         },
-        "ui_metadata": {
+        "metadata": {
             "<name>": "<value>"
         },
         "children": [<items>]

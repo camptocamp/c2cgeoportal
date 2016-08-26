@@ -104,7 +104,7 @@ class TestLayers(TestCase):
 
     def _create_layer(
             self, public=False, none_area=False, attr_list=False,
-            exclude_properties=False, ui_metadatas=None):
+            exclude_properties=False, metadatas=None):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -183,8 +183,8 @@ class TestLayers(TestCase):
         if exclude_properties:
             layer.exclude_properties = "name"
 
-        if ui_metadatas:
-            layer.ui_metadatas = ui_metadatas
+        if metadatas:
+            layer.metadatas = metadatas
 
         DBSession.add(layer)
 
@@ -392,13 +392,13 @@ class TestLayers(TestCase):
         from datetime import datetime
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
-        ui_metadatas = [
-            UIMetadata("lastUpdateDateColumn", "last_update_date"),
-            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        metadatas = [
+            Metadata("lastUpdateDateColumn", "last_update_date"),
+            Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
-        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        layer_id = self._create_layer(metadatas=metadatas)
         request = self._get_request(layer_id, username=u"__test_user")
         request.method = "POST"
         request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
@@ -477,13 +477,13 @@ class TestLayers(TestCase):
     def test_update_log(self):
         from datetime import datetime
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
-        ui_metadatas = [
-            UIMetadata("lastUpdateDateColumn", "last_update_date"),
-            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        metadatas = [
+            Metadata("lastUpdateDateColumn", "last_update_date"),
+            Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
-        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        layer_id = self._create_layer(metadatas=metadatas)
         request = self._get_request(layer_id, username=u"__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
@@ -579,13 +579,13 @@ class TestLayers(TestCase):
 
     def test_metadata_log(self):
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
-        ui_metadatas = [
-            UIMetadata("lastUpdateDateColumn", "last_update_date"),
-            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        metadatas = [
+            Metadata("lastUpdateDateColumn", "last_update_date"),
+            Metadata("lastUpdateUserColumn", "last_update_user"),
         ]
-        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        layer_id = self._create_layer(metadatas=metadatas)
         request = self._get_request(layer_id, username=u"__test_user")
 
         layers = Layers(request)

@@ -54,7 +54,7 @@ class TestThemesViewMetadata(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, OGCServer, LayerWMS, UIMetadata
+            Theme, LayerGroup, Interface, OGCServer, LayerWMS, Metadata
 
         desktop = Interface(name=u"desktop")
 
@@ -66,41 +66,41 @@ class TestThemesViewMetadata(TestCase):
         layer_wms.layer = "__test_layer_internal_wms"
         layer_wms.ogc_server = ogc_server_internal
         layer_wms.interfaces = [desktop]
-        layer_wms.ui_metadatas = [
-            UIMetadata("string", "string"),
-            UIMetadata("list", "1, 2, a"),
-            UIMetadata("boolean", "y"),
-            UIMetadata("boolean2", "no"),
-            UIMetadata("boolean3", "Hello"),
-            UIMetadata("integer", "1"),
-            UIMetadata("float", "5.5"),
-            UIMetadata("date", "Sep 25 2003"),
-            UIMetadata("time", "10:36:28"),
-            UIMetadata("datetime", "Sep 25 10:36:28 BRST 2003"),
-            UIMetadata("date2", "Sep 25 10:36:28 BRST 2003"),
-            UIMetadata("time2", "Sep 25 10:36:28 BRST 2003"),
-            UIMetadata("datetime2", "Hello"),
-            UIMetadata("url1", "http://example.com/hi?a=b#c"),
-            UIMetadata("url2", "static:///path/icon.png"),
-            UIMetadata("url3", "static://static/path/icon.png"),
-            UIMetadata("url4", "static://cgxp/path/icon.png"),
-            UIMetadata("url5", "static://project:static/path/icon.png"),
-            UIMetadata("url6", "static://project:cgxp/path/icon.png"),
-            UIMetadata("url7", "config://server"),
-            UIMetadata("url8", "config://server/index.html"),
-            UIMetadata("url9", "/dummy/static/icon.png"),
-            UIMetadata("url10", "dummy/static/icon.png"),
-            UIMetadata("url11", "https:///static/icon.png"),
-            UIMetadata("url12", "static://test"),
-            UIMetadata("url13", "static://test/"),
-            UIMetadata("url14", "config:///static/icon.png"),
-            UIMetadata("url15", "config://unknown_server"),
-            UIMetadata("url16", "https://"),
-            UIMetadata("url17", "https:///"),
-            UIMetadata("url18", "https:///static"),
-            UIMetadata("url19", ""),
-            UIMetadata("url20", "/"),
-            UIMetadata("unknown", "Hello"),
+        layer_wms.metadatas = [
+            Metadata("string", "string"),
+            Metadata("list", "1, 2, a"),
+            Metadata("boolean", "y"),
+            Metadata("boolean2", "no"),
+            Metadata("boolean3", "Hello"),
+            Metadata("integer", "1"),
+            Metadata("float", "5.5"),
+            Metadata("date", "Sep 25 2003"),
+            Metadata("time", "10:36:28"),
+            Metadata("datetime", "Sep 25 10:36:28 BRST 2003"),
+            Metadata("date2", "Sep 25 10:36:28 BRST 2003"),
+            Metadata("time2", "Sep 25 10:36:28 BRST 2003"),
+            Metadata("datetime2", "Hello"),
+            Metadata("url1", "http://example.com/hi?a=b#c"),
+            Metadata("url2", "static:///path/icon.png"),
+            Metadata("url3", "static://static/path/icon.png"),
+            Metadata("url4", "static://cgxp/path/icon.png"),
+            Metadata("url5", "static://project:static/path/icon.png"),
+            Metadata("url6", "static://project:cgxp/path/icon.png"),
+            Metadata("url7", "config://server"),
+            Metadata("url8", "config://server/index.html"),
+            Metadata("url9", "/dummy/static/icon.png"),
+            Metadata("url10", "dummy/static/icon.png"),
+            Metadata("url11", "https:///static/icon.png"),
+            Metadata("url12", "static://test"),
+            Metadata("url13", "static://test/"),
+            Metadata("url14", "config:///static/icon.png"),
+            Metadata("url15", "config://unknown_server"),
+            Metadata("url16", "https://"),
+            Metadata("url17", "https:///"),
+            Metadata("url18", "https:///static"),
+            Metadata("url19", ""),
+            Metadata("url20", "/"),
+            Metadata("unknown", "Hello"),
         ]
 
         layer_group = LayerGroup(name=u"__test_layer_group")
@@ -118,9 +118,9 @@ class TestThemesViewMetadata(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, UIMetadata
+            Theme, LayerGroup, Interface, Metadata
 
-        for t in DBSession.query(UIMetadata).all():
+        for t in DBSession.query(Metadata).all():
             DBSession.delete(t)
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)

@@ -91,7 +91,7 @@ class Entry(object):
 
     def _get_metadatas(self, item, errors):
         metadatas = {}
-        for metadata in item.ui_metadatas:
+        for metadata in item.metadatas:
             value = get_typed(
                 metadata.name, metadata.value,
                 self.metadata_type, self.request, errors

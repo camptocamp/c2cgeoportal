@@ -184,8 +184,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 exit(colorize("No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED))
 
     def _import_layer_wmts(self, layer, messages):
-        layers = [d.value for d in layer.ui_metadatas if d.name == "wmsLayer"]
-        url = [d.value for d in layer.ui_metadatas if d.name == "wmsUrl"]
+        layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
+        url = [d.value for d in layer.metadatas if d.name == "wmsUrl"]
         if len(url) == 1 and len(layers) >= 1:
             for wms_layer in layers:
                 self._import_layer_attributes(

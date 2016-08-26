@@ -55,7 +55,7 @@ class TestThemesView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Functionality, Interface, \
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
-            UIMetadata, WMTSDimension
+            Metadata, WMTSDimension
 
         main = Interface(name=u"main")
         mobile = Interface(name=u"mobile")
@@ -63,7 +63,7 @@ class TestThemesView(TestCase):
 
         layer_v1 = LayerV1(name=u"__test_layer_v1", public=True)
         layer_v1.interfaces = [main]
-        layer_v1.ui_metadatas = [UIMetadata("test", "v1")]
+        layer_v1.metadatas = [Metadata("test", "v1")]
 
         ogc_server_internal = OGCServer(name="__test_ogc_server_internal", type="mapserver", image_type="image/jpeg")
         ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
@@ -71,22 +71,22 @@ class TestThemesView(TestCase):
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
         layer_internal_wms.interfaces = [main, min_levels]
-        layer_internal_wms.ui_metadatas = [UIMetadata("test", "internal_wms")]
+        layer_internal_wms.metadatas = [Metadata("test", "internal_wms")]
         layer_internal_wms.ogc_server = ogc_server_internal
 
         layer_external_wms = LayerWMS(name=u"__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True)
         layer_external_wms.interfaces = [main]
-        layer_external_wms.ui_metadatas = [UIMetadata("test", "external_wms")]
+        layer_external_wms.metadatas = [Metadata("test", "external_wms")]
         layer_external_wms.ogc_server = ogc_server_external
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
         layer_wmts.interfaces = [main, mobile]
-        layer_wmts.ui_metadatas = [UIMetadata("test", "wmts")]
+        layer_wmts.metadatas = [Metadata("test", "wmts")]
         layer_wmts.dimensions = [WMTSDimension("year", "2015")]
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
         layer_group_1.children = [layer_v1, layer_internal_wms, layer_external_wms, layer_wmts]
-        layer_group_1.ui_metadatas = [UIMetadata("test", "group_1")]
+        layer_group_1.metadatas = [Metadata("test", "group_1")]
 
         layer_group_2 = LayerGroup(name=u"__test_layer_group_2")
         layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
@@ -99,7 +99,7 @@ class TestThemesView(TestCase):
 
         theme = Theme(name=u"__test_theme")
         theme.interfaces = [main, mobile]
-        theme.ui_metadatas = [UIMetadata("test", "theme")]
+        theme.metadatas = [Metadata("test", "theme")]
         theme.children = [
             layer_group_1, layer_group_2
         ]
@@ -121,9 +121,9 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, UIMetadata, WMTSDimension
+            Theme, LayerGroup, Interface, Metadata, WMTSDimension
 
-        DBSession.query(UIMetadata).delete()
+        DBSession.query(Metadata).delete()
         DBSession.query(WMTSDimension).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)

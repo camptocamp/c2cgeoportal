@@ -277,7 +277,7 @@ Object model
 it is not visible on this schema, but the ``User`` of a child schema has a link (``parent_role``)
 to the ``Role`` of the parent schema.
 
-``ui_metadata`` vs ``functionality``
+``metadata`` vs ``functionality``
 ....................................
 
 Technically the same ``functionality`` can be reused by more than one element.
@@ -289,7 +289,7 @@ is loaded.
 To do that in the CGXP application we trigger an event when we load a theme the
 new ``functionnalities``.
 
-The ``ui_metadata`` contains attributes that are directly related to the element.
+The ``metadata`` contains attributes that are directly related to the element.
 For example the layer disclaimer, ...
 
 

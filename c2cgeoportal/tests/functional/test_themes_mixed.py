@@ -113,9 +113,9 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, UIMetadata, WMTSDimension
+            Theme, LayerGroup, Interface, Metadata, WMTSDimension
 
-        DBSession.query(UIMetadata).delete()
+        DBSession.query(Metadata).delete()
         DBSession.query(WMTSDimension).delete()
         for l in DBSession.query(Layer).all():
             DBSession.delete(l)

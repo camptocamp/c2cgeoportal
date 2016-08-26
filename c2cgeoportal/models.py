@@ -58,7 +58,7 @@ __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
     "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
     "LayerV1", "OGCServer",
-    "LayerWMS", "LayerWMTS", "Interface", "UIMetadata", "WMTSDimension",
+    "LayerWMS", "LayerWMTS", "Interface", "Metadata", "WMTSDimension",
     "LayergroupTreeitem"
 ]
 
@@ -372,7 +372,7 @@ class TreeItem(Base):
         return False
 
     def get_metadatas(self, name):  # pragma: no cover
-        return [metadata for metadata in self.ui_metadatas if metadata.name == name]
+        return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name=u""):
         self.name = name
@@ -876,10 +876,10 @@ class Interface(Base):
         return self.name or u""
 
 
-class UIMetadata(Base):
-    __label__ = _(u"UI metadata")
-    __plural__ = _(u"UI metadatas")
-    __tablename__ = "ui_metadata"
+class Metadata(Base):
+    __label__ = _(u"metadata")
+    __plural__ = _(u"metadatas")
+    __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
@@ -897,7 +897,7 @@ class UIMetadata(Base):
     item = relationship(
         "TreeItem",
         backref=backref(
-            "ui_metadatas",
+            "metadatas",
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )
@@ -909,9 +909,9 @@ class UIMetadata(Base):
     def __unicode__(self):  # pragma: no cover
         return u"%s: %s" % (self.name or u"", self.value or u"")
 
-event.listen(UIMetadata, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(UIMetadata, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(UIMetadata, "after_delete", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class WMTSDimension(Base):
