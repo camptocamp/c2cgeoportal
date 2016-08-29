@@ -469,7 +469,7 @@ class C2cTool:
         print("We will commit all the above files!")
         print(
             "If there are some files which should not be commited, then you should "
-            "add them into the `.gitignore` file and launch step 3 again."
+            "add them into the `.gitignore` file and launch step 5 again."
         )
 
         self.print_step(6, intro="Then to commit your changes type:")
