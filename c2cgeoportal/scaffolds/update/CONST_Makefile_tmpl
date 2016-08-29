@@ -152,7 +152,7 @@ REQUIREMENTS += JSTools
 DEV_REQUIREMENTS += 'c2c.cssmin>=0.7dev6'
 endif
 ifeq ($(NGEO), TRUE)
-DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
+DEV_REQUIREMENTS += https://github.com/google/closure-linter/archive/v2.3.19.tar.gz
 endif
 
 OUTPUT_DIR = $(PACKAGE)/static/build
