@@ -126,9 +126,8 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
-            Theme, LayerGroup, Interface, UIMetadata, Dimension
+            Theme, LayerGroup, Interface, Dimension, OGCServer
 
-        DBSession.query(UIMetadata).delete()
         DBSession.query(Dimension).delete()
         for l in DBSession.query(Layer).all():
             DBSession.delete(l)
@@ -138,6 +137,7 @@ class TestThemesView(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
