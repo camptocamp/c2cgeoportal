@@ -58,7 +58,7 @@ __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
     "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
     "LayerV1", "OGCServer",
-    "LayerWMS", "LayerWMTS", "Interface", "UIMetadata", "WMTSDimension",
+    "LayerWMS", "LayerWMTS", "Interface", "Metadata", "WMTSDimension",
     "LayergroupTreeitem"
 ]
 
@@ -372,7 +372,7 @@ class TreeItem(Base):
         return False
 
     def get_metadatas(self, name):  # pragma: no cover
-        return [metadata for metadata in self.ui_metadatas if metadata.name == name]
+        return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name=u""):
         self.name = name
@@ -876,10 +876,10 @@ class Interface(Base):
         return self.name or u""
 
 
-class UIMetadata(Base):
-    __label__ = _(u"UI metadata")
-    __plural__ = _(u"UI metadatas")
-    __tablename__ = "ui_metadata"
+class Metadata(Base):
+    __label__ = _(u"metadata")
+    __plural__ = _(u"metadatas")
+    __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
@@ -897,7 +897,7 @@ class UIMetadata(Base):
     item = relationship(
         "TreeItem",
         backref=backref(
-            "ui_metadatas",
+            "metadatas",
             cascade="save-update,merge,delete,delete-orphan",
         ),
     )
@@ -909,9 +909,9 @@ class UIMetadata(Base):
     def __unicode__(self):  # pragma: no cover
         return u"%s: %s" % (self.name or u"", self.value or u"")
 
-event.listen(UIMetadata, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(UIMetadata, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(UIMetadata, "after_delete", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
+event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class WMTSDimension(Base):
@@ -984,13 +984,13 @@ class Shorturl(Base):
 
 def db_chooser_tween_factory(handler, registry):  # pragma: nocover
     """
-    Tween factory to route to a replica DB for read-only queries.
-    Must be put over the pyramid_tm tween and sqlahelper must have a "replica" engine
+    Tween factory to route to a slave DB for read-only queries.
+    Must be put over the pyramid_tm tween and sqlahelper must have a "slave" engine
     configured.
     """
     settings = registry.settings.get("db_chooser", {})
     master_paths = [re.compile(i.replace("//", "/")) for i in settings.get("master", [])]
-    replica_paths = [re.compile(i.replace("//", "/")) for i in settings.get("replica", [])]
+    slave_paths = [re.compile(i.replace("//", "/")) for i in settings.get("slave", [])]
 
     def db_chooser_tween(request):
         session = DBSession()
@@ -998,9 +998,9 @@ def db_chooser_tween_factory(handler, registry):  # pragma: nocover
         method_path = "%s %s" % (request.method, request.path)
         force_master = any(r.match(method_path) for r in master_paths)
         if not force_master and (request.method in ("GET", "OPTIONS") or
-                                 any(r.match(method_path) for r in replica_paths)):
-            log.debug("Using replica database for: " + method_path)
-            session.bind = sqlahelper.get_engine("replica")
+                                 any(r.match(method_path) for r in slave_paths)):
+            log.debug("Using slave database for: " + method_path)
+            session.bind = sqlahelper.get_engine("slave")
         else:
             log.debug("Using master database for: " + method_path)
 

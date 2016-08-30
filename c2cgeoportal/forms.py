@@ -60,10 +60,10 @@ from c2cgeoportal import (
 __all__ = [
     "Functionality", "User", "Role", "LayerGroup", "Theme",
     "LayerV1", "OGCServer", "LayerWMS",
-    "LayerWMTS", "RestrictionArea", "Interface", "UIMetadata",
+    "LayerWMTS", "RestrictionArea", "Interface", "Metadata",
     "WMTSDimension", "LayerV1Grid", "LayerGroupGrid", "ThemeGrid",
     "LayerWMTSGrid", "FunctionalityGrid", "RestrictionAreaGrid", "RoleGrid",
-    "UserGrid", "InterfaceGrid", "UIMetadataGrid", "WMTSDimensionGrid"
+    "UserGrid", "InterfaceGrid", "MetadataGrid", "WMTSDimensionGrid"
 ]
 
 
@@ -440,7 +440,7 @@ LayerV1.time_widget.set(
     options=time_widget_options,
 )
 LayerV1.interfaces.set(renderer=CheckBoxSet)
-LayerV1.ui_metadatas.set(readonly=True)
+LayerV1.metadatas.set(readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
 # OGC server
@@ -462,7 +462,7 @@ LayerWMS.time_widget.set(
     options=time_widget_options,
 )
 LayerWMS.interfaces.set(renderer=CheckBoxSet)
-LayerWMS.ui_metadatas.set(readonly=True)
+LayerWMS.metadatas.set(readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMS.ogc_server.set(renderer=SelectFieldRenderer)
 
@@ -481,7 +481,7 @@ LayerWMTS.image_type.set(
     options=image_type_options
 )
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
-LayerWMTS.ui_metadatas.set(renderer=RoListRenderer, readonly=True)
+LayerWMTS.metadatas.set(renderer=RoListRenderer, readonly=True)
 LayerWMTS.dimensions.set(readonly=True)
 LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 
@@ -505,7 +505,7 @@ LayerGroup.append(ChildrenAttributeField(
     manager_of_class(models.LayerGroup)["children_relation"], LayerGroup,
 ))
 LayerGroup.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
-LayerGroup.ui_metadatas.set(readonly=True)
+LayerGroup.metadatas.set(readonly=True)
 
 # LayergroupTreeitem
 LayergroupTreeitem = FieldSet(models.LayergroupTreeitem)
@@ -521,7 +521,7 @@ Theme.append(ChildrenAttributeField(
 Theme.children_relation.set(renderer=TreeItemCheckBoxTreeSet)
 Theme.functionalities.set(renderer=FunctionalityCheckBoxTreeSet)
 Theme.interfaces.set(renderer=CheckBoxSet)
-Theme.ui_metadatas.set(readonly=True)
+Theme.metadatas.set(readonly=True)
 Theme.restricted_roles.set(renderer=CheckBoxSet)
 
 # Functionality
@@ -535,18 +535,18 @@ Functionality.value.set(metadata=dict(mandatory="")).required()
 Interface = FieldSet(models.Interface)
 Interface.configure(include=[Interface.name, Interface.description])
 
-# UIMetadata
-UIMetadata = FieldSet(models.UIMetadata)
-UIMetadata.configure(include=[
-    UIMetadata.item,
-    UIMetadata.name,
-    UIMetadata.value,
-    UIMetadata.description
+# Metadata
+Metadata = FieldSet(models.Metadata)
+Metadata.configure(include=[
+    Metadata.item,
+    Metadata.name,
+    Metadata.value,
+    Metadata.description
 ])
-UIMetadata.name.set(
+Metadata.name.set(
     renderer=SelectFieldRenderer,
     options=[(m, m) for m in formalchemy_available_metadata])
-UIMetadata.value.set(metadata=dict(mandatory="")).required()
+Metadata.value.set(metadata=dict(mandatory="")).required()
 
 # WMTSDimension
 WMTSDimension = FieldSet(models.WMTSDimension)
@@ -668,8 +668,8 @@ FunctionalityGrid = Grid(models.Functionality)
 # InterfaceGrid
 InterfaceGrid = Grid(models.Interface)
 
-# UIMetadataGrid
-UIMetadataGrid = Grid(models.UIMetadata)
+# MetadataGrid
+MetadataGrid = Grid(models.Metadata)
 
 # WMTSDimensionGrid
 WMTSDimensionGrid = Grid(models.WMTSDimension)

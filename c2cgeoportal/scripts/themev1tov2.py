@@ -192,53 +192,53 @@ def layer_v1tov2(session, layer):
             for name, value in dimensions.items():
                 session.add(WMTSDimension(name, value, new_layer))
 
-    layer_add_ui_metadata(layer, new_layer, session)
+    layer_add_metadata(layer, new_layer, session)
 
     session.add(new_layer)
 
 
-def new_uimetadata(name, value, item):
-    from c2cgeoportal.models import UIMetadata
+def new_metadata(name, value, item):
+    from c2cgeoportal.models import Metadata
 
-    uimetadata = UIMetadata(name, value)
-    uimetadata.item = item
-    return uimetadata
+    metadata = Metadata(name, value)
+    metadata.item = item
+    return metadata
 
 
-def layer_add_ui_metadata(layer, new_layer, session):
+def layer_add_metadata(layer, new_layer, session):
     if layer.metadata_url is not None:
-        session.add(new_uimetadata(u"metadataUrl", layer.metadata_url, new_layer))
+        session.add(new_metadata(u"metadataUrl", layer.metadata_url, new_layer))
     if layer.is_checked is True:
-        session.add(new_uimetadata(u"isChecked", u"true", new_layer))
+        session.add(new_metadata(u"isChecked", u"true", new_layer))
     if layer.icon is not None:
-        session.add(new_uimetadata(u"icon", layer.icon, new_layer))
+        session.add(new_metadata(u"icon", layer.icon, new_layer))
     if layer.wms_url is not None:
-        session.add(new_uimetadata(u"wmsUrl", layer.wms_url, new_layer))
+        session.add(new_metadata(u"wmsUrl", layer.wms_url, new_layer))
     if layer.wms_layers is not None:
-        session.add(new_uimetadata(u"wmsLayers", layer.wms_layers, new_layer))
+        session.add(new_metadata(u"wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
-        session.add(new_uimetadata(u"queryLayers", layer.query_layers, new_layer))
+        session.add(new_metadata(u"queryLayers", layer.query_layers, new_layer))
     if layer.legend is not None:
-        session.add(new_uimetadata(u"legend", layer.legend, new_layer))
+        session.add(new_metadata(u"legend", layer.legend, new_layer))
     if layer.legend_image is not None:
-        session.add(new_uimetadata(u"legendImage", layer.legend_image, new_layer))
+        session.add(new_metadata(u"legendImage", layer.legend_image, new_layer))
     if layer.legend_rule is not None:
-        session.add(new_uimetadata(u"legendRule", layer.legend_rule, new_layer))
+        session.add(new_metadata(u"legendRule", layer.legend_rule, new_layer))
     if layer.is_legend_expanded is True:
-        session.add(new_uimetadata(u"isLegendExpanded", u"true", new_layer))
+        session.add(new_metadata(u"isLegendExpanded", u"true", new_layer))
     if layer.min_resolution is not None:
-        session.add(new_uimetadata(u"minResolution", layer.min_resolution, new_layer))
+        session.add(new_metadata(u"minResolution", layer.min_resolution, new_layer))
     if layer.max_resolution is not None:
-        session.add(new_uimetadata(u"maxResolution", layer.max_resolution, new_layer))
+        session.add(new_metadata(u"maxResolution", layer.max_resolution, new_layer))
     if layer.disclaimer is not None:
-        session.add(new_uimetadata(u"disclaimer", layer.disclaimer, new_layer))
+        session.add(new_metadata(u"disclaimer", layer.disclaimer, new_layer))
     if layer.identifier_attribute_field is not None:
-        session.add(new_uimetadata(
+        session.add(new_metadata(
             u"identifier_attribute_field",
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(new_uimetadata("excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_metadata("excludeProperties", layer.exclude_properties, new_layer))
 
 
 def layergroup_v1tov2(session, group):
@@ -247,6 +247,6 @@ def layergroup_v1tov2(session, group):
         if len(is_expended_metadatas) > 0:
             is_expended_metadatas[0].value = u"true"
         else:
-            session.add(new_uimetadata(u"isExpanded", u"true", group))
+            session.add(new_metadata(u"isExpanded", u"true", group))
     elif len(is_expended_metadatas) > 0:
         session.delete(is_expended_metadatas)
