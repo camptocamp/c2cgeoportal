@@ -68,29 +68,29 @@ down time is due of too much traffic.</p>
 </ul>
 </div></blockquote>
 <p>To have better DB performances, one can setup multiple Postgres servers in a
-<a class="reference external" href="https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial">master/replica</a>
+<a class="reference external" href="https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial">master/slave</a>
 configuration. To enable this feature on GeoMapFish, you must add this to your
 <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">dbhost_replica</span><span class="p">:</span> <span class="n">my_db_replica_hostname</span>
-<span class="n">sqlalchemy_replica</span><span class="p">:</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">postgresql</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">dbuser</span><span class="p">}:{</span><span class="n">dbpassword</span><span class="p">}</span><span class="o">@</span><span class="p">{</span><span class="n">dbhost_replica</span><span class="p">}:{</span><span class="n">dbport</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">db</span><span class="p">}</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">dbhost_slave</span><span class="p">:</span> <span class="n">my_db_slave_hostname</span>
+<span class="n">sqlalchemy_slave</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">postgresql</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">dbuser</span><span class="p">}:{</span><span class="n">dbpassword</span><span class="p">}</span><span class="o">@</span><span class="p">{</span><span class="n">dbhost_slave</span><span class="p">}:{</span><span class="n">dbport</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">db</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Add in your project Makefile <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">sqlalchemy_replica</span><span class="o">.</span><span class="n">url</span>
+<div class="code makefile highlight-default"><div class="highlight"><pre><span></span><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">sqlalchemy_slave</span><span class="o">.</span><span class="n">url</span>
 </pre></div>
 </div>
-<p>Then, all the GET and OPTIONS requests will use one of the replica Postgres instances and the
+<p>Then, all the GET and OPTIONS requests will use one of the slave Postgres instances and the
 rest will use the master instance.
 It is assumed, here, that the views handling the GET and OPTIONS queries don&#8217;t cause write
-operations to the database (not supported by replica instances). If it is not the case in your
+operations to the database (not supported by slave instances). If it is not the case in your
 application (bad practice), add entries to <code class="docutils literal"><span class="pre">db_chooser/master</span></code> in your <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>.
-For forcing the use of a replica for a POST/PUT/DELETE, add entries to the <code class="docutils literal"><span class="pre">db_chooser/replica</span></code>
+For forcing the use of a slave for a POST/PUT/DELETE, add entries to the <code class="docutils literal"><span class="pre">db_chooser/slave</span></code>
 configuration.</p>
-<p>For having more than one instance of replica and having an automatic election of a new
+<p>For having more than one instance of slave and having an automatic election of a new
 master in case of failure, you must setup an high availability proxy (HAProxy, for example).
 This is out of the scope of this document. If you don&#8217;t care about failover, you can use one
-DNS entry with multiple IP entries for the replicas.</p>
+DNS entry with multiple IP entries for the slaves.</p>
 </div>
 
 

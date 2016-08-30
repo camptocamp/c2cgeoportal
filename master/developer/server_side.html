@@ -235,15 +235,15 @@ the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/upda
 <p><code class="docutils literal"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal"><span class="pre">LayerGroup</span></code> but without any constrains.</p>
 <p>it is not visible on this schema, but the <code class="docutils literal"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal"><span class="pre">parent_role</span></code>)
 to the <code class="docutils literal"><span class="pre">Role</span></code> of the parent schema.</p>
-<div class="section" id="ui-metadata-vs-functionality">
-<h4><code class="docutils literal"><span class="pre">ui_metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code><a class="headerlink" href="#ui-metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="metadata-vs-functionality">
+<h4><code class="docutils literal"><span class="pre">metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code><a class="headerlink" href="#metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
 <p>Technically the same <code class="docutils literal"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
 <p><code class="docutils literal"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of
 the application. For instance to change the default basemap when a new theme
 is loaded.</p>
 <p>To do that in the CGXP application we trigger an event when we load a theme the
 new <code class="docutils literal"><span class="pre">functionnalities</span></code>.</p>
-<p>The <code class="docutils literal"><span class="pre">ui_metadata</span></code> contains attributes that are directly related to the element.
+<p>The <code class="docutils literal"><span class="pre">metadata</span></code> contains attributes that are directly related to the element.
 For example the layer disclaimer, ...</p>
 </div>
 </div>
@@ -364,7 +364,7 @@ this directory.</p>
 </li>
 <li><a class="reference internal" href="#database">Database</a><ul>
 <li><a class="reference internal" href="#object-model">Object model</a><ul>
-<li><a class="reference internal" href="#ui-metadata-vs-functionality"><code class="docutils literal"><span class="pre">ui_metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code></a></li>
+<li><a class="reference internal" href="#metadata-vs-functionality"><code class="docutils literal"><span class="pre">metadata</span></code> vs <code class="docutils literal"><span class="pre">functionality</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#migration">Migration</a></li>
