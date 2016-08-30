@@ -76,7 +76,8 @@ class TestLoopTheme(TestCase):
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for layer in DBSession.query(LayerV1).all():
             DBSession.delete(layer)  # pragma: no cover
         DBSession.query(OGCServer).delete()

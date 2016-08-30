@@ -205,11 +205,12 @@ class TestEntryView(TestCase):
         DBSession.query(Role).filter(Role.name == "__test_role1").delete()
         DBSession.query(Role).filter(Role.name == "__test_role2").delete()
 
-        for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
-            DBSession.delete(t)
-        DBSession.query(LayerGroup).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
+        for t in DBSession.query(Theme).all():
+            DBSession.delete(t)
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()

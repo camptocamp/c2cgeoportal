@@ -120,7 +120,8 @@ class TestThemesView(TestCase):
         DBSession.query(Dimension).delete()
         for l in DBSession.query(Layer).all():
             DBSession.delete(l)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(Interface).filter(

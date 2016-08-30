@@ -98,7 +98,8 @@ class TestLayerMultiNameErrorView(TestCase):
 
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(OGCServer).delete()
