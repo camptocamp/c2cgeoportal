@@ -87,7 +87,7 @@ script:
 - make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
 - travis/quote `find c2cgeoportal/lib c2cgeoportal/scaffolds/create c2cgeoportal/templates c2cgeoportal/tests c2cgeoportal/views -name '*.py'` c2cgeoportal/*.py setup.py
 - travis/squote `find c2cgeoportal/scaffolds/update/CONST_alembic -name '*.py'`
-- .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture
+- .build/venv/bin/python setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
 - travis/status.sh
 
 after_failure:

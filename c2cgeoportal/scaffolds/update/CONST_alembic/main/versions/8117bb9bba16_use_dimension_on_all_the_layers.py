@@ -27,20 +27,41 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from unittest import TestCase
+"""Use dimension on all the layers
 
-from c2cgeoportal.views import version
+Revision ID: 8117bb9bba16
+Revises: daf738d5bae4
+Create Date: 2016-08-16 16:53:07.012668
+"""
+
+from alembic import op, context
+
+# revision identifiers, used by Alembic.
+revision = '8117bb9bba16'
+down_revision = 'b60f2a505f42'
+branch_labels = None
+depends_on = None
 
 
-class TestVersionView(TestCase):
+def upgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-    def test_get_version(self):
-        class Dummy:
-            pass
-        request = Dummy()
-        request.registry = Dummy()
-        request.registry.settings = {
-            "package": "my_app"
-        }
-        result = version.version_json(request)
-        self.assertIn("c2cgeoportal", result)
+    op.rename_table('wmts_dimension', 'dimension', schema=schema)
+    with op.batch_alter_table('dimension', schema=schema) as table_op:
+        table_op.drop_constraint('wmts_dimension_layer_id_fkey', type_='foreignkey')
+        table_op.create_foreign_key(
+            'dimension_layer_id_fkey', local_cols=['layer_id'],
+            referent_schema=schema, referent_table='layer', remote_cols=['id'],
+        )
+
+
+def downgrade():
+    schema = context.get_context().config.get_main_option('schema')
+
+    with op.batch_alter_table('dimension', schema=schema) as table_op:
+        table_op.drop_constraint('dimension_layer_id_fkey', type_='foreignkey')
+        table_op.create_foreign_key(
+            'wmts_dimension_layer_id_fkey', local_cols=['layer_id'],
+            referent_schema=schema, referent_table='layer_wmts', remote_cols=['id'],
+        )
+    op.rename_table('dimension', 'wmts_dimension', schema=schema)

@@ -58,7 +58,7 @@ __all__ = [
     "Base", "DBSession", "Functionality", "User", "Role", "TreeItem",
     "TreeGroup", "LayerGroup", "Theme", "Layer", "RestrictionArea",
     "LayerV1", "OGCServer",
-    "LayerWMS", "LayerWMTS", "Interface", "Metadata", "WMTSDimension",
+    "LayerWMS", "LayerWMTS", "Interface", "Metadata", "Dimension",
     "LayergroupTreeitem"
 ]
 
@@ -573,6 +573,10 @@ class Layer(TreeItem):
         self.public = public
 
 
+class DimensionLayer(Layer):
+    __acl__ = [DENY_ALL]
+
+
 class LayerV1(Layer):  # Deprecated in v2
     __label__ = _(u"Layer")
     __plural__ = _(u"Layers")
@@ -678,7 +682,7 @@ class OGCServer(Base):
         return self.name or u""  # pragma: no cover
 
 
-class LayerWMS(Layer):
+class LayerWMS(DimensionLayer):
     __label__ = _(u"WMS layer")
     __plural__ = _(u"WMS layers")
     __tablename__ = "layer_wms"
@@ -715,11 +719,11 @@ class LayerWMS(Layer):
     )
 
     def __init__(self, name=u"", layer=u"", public=True, icon=u""):
-        Layer.__init__(self, name=name, public=public)
+        DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
 
 
-class LayerWMTS(Layer):
+class LayerWMTS(DimensionLayer):
     __label__ = _(u"WMTS layer")
     __plural__ = _(u"WMTS layers")
     __tablename__ = "layer_wmts"
@@ -743,7 +747,7 @@ class LayerWMTS(Layer):
     )
 
     def __init__(self, name=u"", public=True):
-        Layer.__init__(self, name=name, public=public)
+        DimensionLayer.__init__(self, name=name, public=public)
 
 
 # association table role <> restriciton area
@@ -914,10 +918,10 @@ event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
 event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
-class WMTSDimension(Base):
-    __label__ = _(u"WMTS dimension")
-    __plural__ = _(u"WMTS dimensions")
-    __tablename__ = "wmts_dimension"
+class Dimension(Base):
+    __label__ = _(u"Dimension")
+    __plural__ = _(u"Dimensions")
+    __tablename__ = "dimension"
     __table_args__ = {"schema": _schema}
     __acl__ = [
         (Allow, AUTHORIZED_ROLE, ALL_PERMISSIONS),
@@ -930,10 +934,10 @@ class WMTSDimension(Base):
 
     layer_id = Column(
         "layer_id", Integer,
-        ForeignKey(_schema + ".layer_wmts.id"), nullable=False
+        ForeignKey(_schema + ".layer.id"), nullable=False
     )
     layer = relationship(
-        "LayerWMTS",
+        "DimensionLayer",
         backref=backref(
             "dimensions",
             cascade="save-update,merge,delete,delete-orphan",

@@ -87,7 +87,7 @@ class TestReferer(TestCase):
     USER = "toto"
 
     def _get_user(self, to, ref):
-        class MockRequest(object):
+        class MockRequest:
             def __init__(self, to, ref):
                 self.path_qs = to
                 self.referer = ref

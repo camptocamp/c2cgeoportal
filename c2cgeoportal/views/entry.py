@@ -70,7 +70,49 @@ log = logging.getLogger(__name__)
 cache_region = get_region()
 
 
-class Entry(object):
+class DimensionInformation:
+
+    URL_PART_RE = re.compile("[a-zA-Z0-9_\-~\.]+$")
+
+    def __init__(self):
+        self._dimensions = {}
+
+    def merge(self, layer, layer_node, mixed):
+        errors = set()
+
+        dimensions = {}
+        for dimension in layer.dimensions:
+            if dimension.value is not None and not self.URL_PART_RE.match(dimension.value):  # pragma: nocover
+                errors.add("The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
+                    layer.name, dimension.value, dimension.name
+                ))
+            elif dimension.name in dimensions:  # pragma: nocover
+                errors.add("The layer '{}' has a duplicated dimension name '{}'.".format(
+                    layer.name, dimension.name
+                ))
+            else:
+                dimensions[dimension.name] = dimension.value
+
+        if mixed:
+            layer_node["dimensions"] = dimensions
+        else:
+            for name, value in dimensions.items():
+                if name not in self._dimensions or self._dimensions[name] is None:
+                    self._dimensions[name] = value
+                elif self._dimensions[name] != value and value is not None:
+                    errors.add(
+                        "The layer '{}' has a wrong dimension value '{}' for '{}', "
+                        "expected '{}' or empty.".format(
+                            layer.name, value, name, self._dimensions[name]
+                        )
+                    )
+        return errors
+
+    def get_dimensions(self):
+        return self._dimensions
+
+
+class Entry:
 
     WFS_NS = "http://www.opengis.net/wfs"
 
@@ -269,7 +311,7 @@ class Entry(object):
             if hasattr(layer, "queryable") else True
         return layer_info
 
-    def _layer(self, layer, time=None, role_id=None, mixed=True):
+    def _layer(self, layer, time=None, dim=None, role_id=None, mixed=True):
         errors = set()
         l = {
             "id": layer.id,
@@ -286,6 +328,9 @@ class Entry(object):
             assert(time is None)
             time = TimeInformation()
         assert(time is not None)
+
+        if not isinstance(layer, LayerV1):
+            errors |= dim.merge(layer, l, mixed)
 
         if isinstance(layer, LayerV1):
             wms, wms_layers, wms_errors = self._wms_layers(
@@ -536,9 +581,6 @@ class Entry(object):
     def _fill_wmts_v2(self, l, layer):
         l["layer"] = layer.layer
         l["imageType"] = layer.image_type
-        l["dimensions"] = {}
-        for dimension in layer.dimensions:
-            l["dimensions"][dimension.name] = dimension.value
 
     def _fill_wmts_v1(self, l, layer, errors, role_id):
         if layer.dimensions:
@@ -637,7 +679,7 @@ class Entry(object):
 
     def _group(
         self, path, group, layers, depth=1, min_levels=1,
-        catalogue=True, role_id=None, version=1, mixed=True, time=None,
+        catalogue=True, role_id=None, version=1, mixed=True, time=None, dim=None,
         wms_layers=None, layers_name=None, **kwargs
     ):
         if wms_layers is None:
@@ -665,6 +707,7 @@ class Entry(object):
             mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
             if not mixed:
                 time = TimeInformation()
+            dim = DimensionInformation()
 
         for tree_item in group.children:
             if type(tree_item) == LayerGroup:
@@ -675,7 +718,7 @@ class Entry(object):
                         "%s/%s" % (path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
-                        time=time, wms_layers=wms_layers, layers_name=layers_name, **kwargs
+                        time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
                     )
                     errors |= gp_errors
                     if gp is not None:
@@ -696,7 +739,7 @@ class Entry(object):
                             wms_layers.extend(tree_item.layer.split(","))
 
                         l, l_errors = self._layer(
-                            tree_item, role_id=role_id, mixed=mixed, time=time, **kwargs
+                            tree_item, role_id=role_id, mixed=mixed, time=time, dim=dim, **kwargs
                         )
                         errors |= l_errors
                         if l is not None:
@@ -749,6 +792,8 @@ class Entry(object):
                         g["ogcServer"] = ogc_servers[0].name
                         if time.has_time() and time.layer is None:
                             g["time"] = time.to_dict()
+
+                        g["dimensions"] = dim.get_dimensions()
 
             if version == 1 and group.metadata_url:
                 g["metadataURL"] = group.metadata_url
@@ -883,7 +928,7 @@ class Entry(object):
                     ))
                 elif item.name in layers:
                     l, l_errors = self._layer(
-                        item, role_id=role_id
+                        item, role_id=role_id, dim=DimensionInformation()
                     )
                     errors |= l_errors
                     if l is not None:

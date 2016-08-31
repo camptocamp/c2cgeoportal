@@ -41,7 +41,7 @@ from c2cgeoportal.views.checker import build_url
 log = logging.getLogger(__name__)
 
 
-class CheckerCollector(object):  # pragma: no cover
+class CheckerCollector:  # pragma: no cover
 
     def __init__(self, request):
         self.status_int = httplib.OK

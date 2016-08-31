@@ -70,7 +70,7 @@ def build_url(name, url, request, headers=None):
     return url_, headers
 
 
-class Checker(object):  # pragma: no cover
+class Checker:  # pragma: no cover
 
     status_int = httplib.OK
     status = httplib.responses[httplib.OK]

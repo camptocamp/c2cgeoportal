@@ -45,7 +45,7 @@ cache_region = get_region()
 IGNORED_CHARS_RE = re.compile(r"[()'&|!:*-]")
 
 
-class FullTextSearchView(object):
+class FullTextSearchView:
 
     def __init__(self, request):
         self.request = request

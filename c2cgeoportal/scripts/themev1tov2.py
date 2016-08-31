@@ -146,7 +146,7 @@ def ogc_server(session):
 
 def layer_v1tov2(session, layer):
     from c2cgeoportal.models import OGCServer, LayerWMS, LayerWMTS, \
-        LayergroupTreeitem, WMTSDimension
+        LayergroupTreeitem, Dimension
 
     if layer.layer_type == "internal WMS" or layer.layer_type == "external WMS":
         # use the first one
@@ -190,7 +190,7 @@ def layer_v1tov2(session, layer):
         if layer.dimensions is not None:
             dimensions = loads(layer.dimensions)
             for name, value in dimensions.items():
-                session.add(WMTSDimension(name, value, new_layer))
+                session.add(Dimension(name, value, new_layer))
 
     layer_add_metadata(layer, new_layer, session)
 

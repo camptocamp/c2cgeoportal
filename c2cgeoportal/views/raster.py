@@ -40,7 +40,7 @@ from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 log = logging.getLogger(__name__)
 
 
-class Raster(object):
+class Raster:
 
     # cache of GeoRaster instances in function of the layer name
     _rasters = {}

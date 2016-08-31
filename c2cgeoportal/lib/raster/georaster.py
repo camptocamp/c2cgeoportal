@@ -33,7 +33,7 @@ from os.path import dirname
 from struct import unpack
 
 
-class Tile(object):
+class Tile:
     def __init__(self, min_x, min_y, max_x, max_y, filename):
         self.min_x = min_x
         self.min_y = min_y

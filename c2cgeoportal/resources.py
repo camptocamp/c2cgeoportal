@@ -32,7 +32,7 @@ from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS
 from pyramid_formalchemy.resources import Models
 
 
-class Root(object):
+class Root:
     def __init__(self, request):
         self.request = request  # pragma: no cover
 

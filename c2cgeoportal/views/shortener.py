@@ -46,7 +46,7 @@ from c2cgeoportal.lib.caching import set_common_headers, NO_CACHE
 logger = logging.getLogger(__name__)
 
 
-class Shortener(object):
+class Shortener:
 
     def __init__(self, request):
         self.request = request
