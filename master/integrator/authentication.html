@@ -143,7 +143,7 @@ a <code class="docutils literal"><span class="pre">user</span></code> property t
 You may for example add to <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
-    <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">unauthenticated_userid</span>
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -277,7 +277,7 @@ LDAP would look like this:</p>
 <span class="c1"># role in your project</span>
 <span class="k">def</span> <span class="nf">custom_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 
-    <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">O</span><span class="p">:</span>
         <span class="k">pass</span>
 
     <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>

@@ -118,7 +118,7 @@ You may for example add to ``__init__.py``:
 
     def get_user_from_request(request):
         from c2cgeoportal.models import DBSession, Role
-        class O(object):
+        class O:
             pass
         username = request.unauthenticated_userid
         if username is not None:
@@ -265,7 +265,7 @@ Full example using pyramid_ldap, see `# LDAP` / `# END LDAP` blocs.
     # role in your project
     def custom_get_user_from_request(request):
 
-        class O(object):
+        class O:
             pass
 
         from c2cgeoportal.models import DBSession, Role
