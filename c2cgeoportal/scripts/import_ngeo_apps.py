@@ -337,6 +337,11 @@ ${ ',\\n'.join([
                     data,
                     required=required,
                 )
+            data = _sub(
+                re.escape("module.constant('gmfContextualdatacontentTemplateUrl', window.location.pathname + 'contextualdata.html');"),  # noqa
+                "module.constant('gmfContextualdatacontentTemplateUrl', {{package}}.componentsBaseTemplateUrl + '/contextualdata/contextualdata.html');",  # noqa
+                data, required=False
+            )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)

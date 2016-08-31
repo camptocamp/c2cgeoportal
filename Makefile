@@ -56,7 +56,8 @@ APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
 APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
-	$(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png)
+	$(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png) \
+	$(APPS_PACAKGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
 
 C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
@@ -200,6 +201,10 @@ $(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html 
 
 $(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --js $* $< $@
+
+$(APPS_PACAKGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
+	mkdir -p $(dir $@)
+	cp $< $@
 
 ngeo/.tx/config.mako: ngeo
 
