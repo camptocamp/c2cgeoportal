@@ -704,7 +704,6 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
-		--index-url http://pypi.camptocamp.net/pypi \
 		'$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
 	touch $@
 
