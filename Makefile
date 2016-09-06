@@ -52,12 +52,12 @@ SRC_FILES = $(filter-out c2cgeoportal/version.py, $(shell ls -1 c2cgeoportal/*.p
 	$(filter-out c2cgeoportal/scripts/theme2fts.py, $(shell find c2cgeoportal/scripts -name "*.py" -print))
 
 APPS += desktop mobile
-APPS_PACAKGE_PATH = c2cgeoportal/scaffolds/create/+package+
-APPS_HTML_FILES = $(addprefix $(APPS_PACAKGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
-APPS_JS_FILES = $(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
+APPS_PACKAGE_PATH = c2cgeoportal/scaffolds/create/+package+
+APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
+APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
-	$(addprefix $(APPS_PACAKGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png) \
-	$(APPS_PACAKGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
+	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png) \
+	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
 
 C2C_TEMPLATE_CMD = .build/venv/bin/c2c-template --vars $(VARS_FILE)
 
@@ -196,13 +196,13 @@ ngeo/contribs/gmf/apps/%/index.html: ngeo
 ngeo/contribs/gmf/apps/%/js/controller.js: ngeo
 	touch --no-create $@
 
-$(APPS_PACAKGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/templates/%.html_tmpl: ngeo/contribs/gmf/apps/%/index.html .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --html $* $< $@
 
-$(APPS_PACAKGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
+$(APPS_PACKAGE_PATH)/static-ngeo/js/%.js_tmpl: ngeo/contribs/gmf/apps/%/js/controller.js .build/requirements.timestamp c2cgeoportal/scripts/import_ngeo_apps.py
 	.build/venv/bin/import-ngeo-apps --js $* $< $@
 
-$(APPS_PACAKGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
+$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html: ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	mkdir -p $(dir $@)
 	cp $< $@
 
@@ -228,8 +228,8 @@ c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/cre
 ngeo/contribs/gmf/apps/desktop/image/%: ngeo
 	touch --no-create $@
 
-.PRECIOUS: $(APPS_PACAKGE_PATH)/static-ngeo/image/%
-$(APPS_PACAKGE_PATH)/static-ngeo/image/%: ngeo/contribs/gmf/apps/desktop/image/%
+.PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/image/%: ngeo/contribs/gmf/apps/desktop/image/%
 	mkdir -p $(dir $@)
 	cp $< $@
 
