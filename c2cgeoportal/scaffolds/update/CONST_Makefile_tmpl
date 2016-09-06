@@ -22,6 +22,10 @@ PIP_CMD ?= $(VENV_BIN)/pip
 PIP_INSTALL_ARGS += install --trusted-host pypi.camptocamp.net
 PIP_VERSION ?= pip==7.1.2
 SETUPTOOL_VERSION ?= setuptools==21.0.0
+TILECLOUD_VERSION ?= tilecloud==0.2.dev20150115
+TILECLOUDCHAIN_VERSION ?= tilecloud-chain==1.0.0
+JSTOOLS_VERSION ?= JSTools==0.6
+C2CCSSMIN_VERSION ?= c2c.cssmin==0.7dev6
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -71,10 +75,11 @@ EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions.txt $
 REQUIREMENTS += -r $(CONST_REQUIREMENT)
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
 ifeq ($(TILECLOUD_CHAIN), TRUE)
-DEV_REQUIREMENTS += 'tilecloud-chain>=1.0.0dev'
+DEV_REQUIREMENTS += $(TILECLOUD_VERSION) $(TILECLOUDCHAIN_VERSION)
 endif
 ifeq ($(CGXP), TRUE)
-DEV_REQUIREMENTS += JSTools 'c2c.cssmin>=0.7dev6'
+DEV_REQUIREMENTS += $(JSTOOLS_VERSION) $(C2CCSSMIN_VERSION)
+JSTools==0.6 c2c.cssmin==0.7dev6
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
@@ -704,7 +709,6 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	mkdir -p $(dir $@)
 	virtualenv --setuptools --no-site-packages .build/venv
 	$(PIP_CMD) install \
-		--index-url http://pypi.camptocamp.net/pypi \
 		'$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
 	touch $@
 
