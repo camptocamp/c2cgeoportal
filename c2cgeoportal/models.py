@@ -41,6 +41,7 @@ import re
 from sqlalchemy import ForeignKey, Table, event
 from sqlalchemy.types import Integer, Boolean, Unicode, Float, String, \
     Enum, DateTime, UserDefinedType
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.schema import Index
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.exc import UnboundExecutionError
@@ -368,14 +369,15 @@ event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 class TreeItem(Base):
     __tablename__ = "treeitem"
     __table_args__ = (
-        {"schema": _schema}
+        UniqueConstraint("type", "name"),
+        {"schema": _schema},
     )
     __acl__ = [DENY_ALL]
     item_type = Column("type", String(10), nullable=False)
     __mapper_args__ = {"polymorphic_on": item_type}
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, label=_(u"Name"))
+    name = Column(Unicode, label=_(u"Name"), nullable=False)
     metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # shouldn't be used in V2
     description = Column(Unicode, label=_(u"Description"))
 

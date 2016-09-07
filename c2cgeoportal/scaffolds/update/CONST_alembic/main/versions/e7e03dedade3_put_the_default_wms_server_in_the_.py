@@ -52,17 +52,21 @@ def upgrade():
         WHERE url IS NULL
     """.format(schema=schema))
 
-    op.create_unique_constraint('name_unique_ogc_server', 'ogc_server', ['name'], schema=schema)
     op.alter_column('ogc_server', 'url', nullable=False, schema=schema)
-    op.create_unique_constraint('name_unique_treeitem', 'treeitem', ['name'], schema=schema)
+    op.create_unique_constraint('name_unique_ogc_server', 'ogc_server', ['name'], schema=schema)
+    op.alter_column('treeitem', 'name', nullable=False, schema=schema)
+    op.create_unique_constraint(
+        'type_name_unique_treeitem', 'treeitem', ['type', 'name'], schema=schema
+    )
 
 
 def downgrade():
     schema = context.get_context().config.get_main_option('schema')
 
-    op.drop_constraint('name_unique_ogc_server', 'ogc_server', schema=schema)
     op.alter_column('ogc_server', 'url', nullable=True, schema=schema)
-    op.drop_constraint('name_unique_treeitem', 'treeitem', schema=schema)
+    op.drop_constraint('name_unique_ogc_server', 'ogc_server', schema=schema)
+    op.alter_column('treeitem', 'name', nullable=True, schema=schema)
+    op.drop_constraint('type_name_unique_treeitem', 'treeitem', schema=schema)
 
     op.execute("""
         UPDATE "{schema}".ogc_server
