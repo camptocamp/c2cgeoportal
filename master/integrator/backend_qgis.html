@@ -78,12 +78,12 @@ and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
 </div>
 <div class="section" id="application-configuration">
 <h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Add an OGC server in the admin interface for QGIS server (type: qgisserver, auth: Standard auth).</p>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
 <div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
-        <span class="n">mapserverproxy</span><span class="p">:</span>
-            <span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">qgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">ows</span>
-            <span class="n">geoserver</span><span class="p">:</span> <span class="n">false</span>
+    <span class="n">mapserverproxy</span><span class="p">:</span>
+        <span class="n">default_ogc_server</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ogc</span> <span class="n">server</span> <span class="n">name</span><span class="o">&gt;</span>
 <span class="n">update_paths</span><span class="p">:</span>
 <span class="o">...</span>
 <span class="o">-</span> <span class="n">mapserverproxy</span>

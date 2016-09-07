@@ -13,10 +13,11 @@ In the ``<package>/templates/viewer.js`` file, make sure no namespace is added f
 Application configuration
 -------------------------
 
+Add an OGC server in the admin interface for Geoserver (type: geoserver, auth: Geoserver auth).
+
 In the ``vars_<project>.yaml`` file, define in the ``vars`` section:
 
 .. code:: yaml
 
     mapserverproxy:
-        mapserv_url: http://your.geoserver/geoserver/wms
-        geoserver: true
+        default_ogc_server: <ogc server name>

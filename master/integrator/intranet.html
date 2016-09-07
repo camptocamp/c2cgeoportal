@@ -60,11 +60,11 @@ The assigned role must obviously have been defined in the administration interfa
 <li><p class="first">Upgrade the CGXP submodule to the last version of branch 1.4.</p>
 </li>
 <li><p class="first">Edit <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>. Replace</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span>
 </pre></div>
 </div>
 <p>by</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 </pre></div>
 </div>
 <p>Add the following function:</p>

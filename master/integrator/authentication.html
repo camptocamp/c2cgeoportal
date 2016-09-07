@@ -73,7 +73,7 @@ main <code class="docutils literal"><span class="pre">__init__.py</span></code> 
 <code class="docutils literal"><span class="pre">RemoteUserAuthenticationPolicy</span></code> instance:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
 from pyramid.authentication import RemoteUserAuthenticationPolicy
-from c2cgeoportal import locale_negotiator
+from c2cgeoportal.pyramid_ import locale_negotiator
 from c2cgeoportal.resources import FAModels, defaultgroupsfinder
 from ${package}.resources import Root
 
@@ -223,7 +223,7 @@ the user information source.</p>
 function that queries the <code class="docutils literal"><span class="pre">user</span></code> database table if the user does not exist in
 LDAP would look like this:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
@@ -240,7 +240,7 @@ LDAP would look like this:</p>
 <span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="k">import</span> <span class="n">Configurator</span>
 <span class="c1"># LDAP</span>
 <span class="c1"># get_user_from_request also needed for the same reason</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">add_interface</span><span class="p">,</span> \
     <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 <span class="c1"># END LDAP</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal.lib.authentication</span> <span class="k">import</span> <span class="n">create_authentication</span>
@@ -259,7 +259,7 @@ LDAP would look like this:</p>
 <span class="c1"># LDAP</span>
 <span class="c1"># authenticate on LDAP and return cleaned user data</span>
 <span class="k">def</span> <span class="nf">custom_user_validator</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">default_user_validator</span>
+    <span class="kn">from</span> <span class="nn">c2cgeoportal.pyramid_</span> <span class="k">import</span> <span class="n">default_user_validator</span>
     <span class="kn">from</span> <span class="nn">pyramid_ldap</span> <span class="k">import</span> <span class="n">get_ldap_connector</span>
     <span class="n">connector</span> <span class="o">=</span> <span class="n">get_ldap_connector</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
