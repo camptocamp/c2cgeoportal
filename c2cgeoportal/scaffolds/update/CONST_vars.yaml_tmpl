@@ -184,7 +184,6 @@ vars:
         # WMTS layers
         - ogcServer
         - layers
-        - queryLayers
         - printLayers
 
     # The list of functionalities that can be configured
