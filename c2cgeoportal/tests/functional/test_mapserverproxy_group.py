@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
 from unittest import TestCase
 from nose.plugins.attrib import attr
 
@@ -39,7 +38,8 @@ import sqlahelper
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    create_dummy_request, mapserv_url)
+    create_dummy_request, mapserv_url, create_default_ogcserver,
+)
 
 Base = sqlahelper.get_base()
 
@@ -50,6 +50,8 @@ class TestMapserverproxyViewGroup(TestCase):
     def setUp(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
+
+        create_default_ogcserver()
 
         user1 = User(username=u"__test_user1", password=u"__test_user1")
         role1 = Role(name=u"__test_role1", description=u"__test_role1")
@@ -75,7 +77,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
     def tearDown(self):  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
-            Interface, DBSession
+            Interface, DBSession, OGCServer
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
 
@@ -96,21 +98,14 @@ class TestMapserverproxyViewGroup(TestCase):
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
     def _create_getcap_request(self, username=None):
         from c2cgeoportal.models import DBSession, User
 
-        request = create_dummy_request({
-            "mapserverproxy": {
-                "mapserv_url": "%s?map=%s" % (mapserv_url, os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "c2cgeoportal_test.map"
-                )),
-                "geoserver": False,
-            }
-        })
+        request = create_dummy_request()
         request.user = None if username is None else \
             DBSession.query(User).filter_by(username=username).one()
         return request

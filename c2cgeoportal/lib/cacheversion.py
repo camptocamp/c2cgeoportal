@@ -31,7 +31,7 @@
 import uuid
 from urlparse import urljoin
 
-from c2cgeoportal import CACHE_PATH
+from c2cgeoportal.pyramid_ import CACHE_PATH
 from c2cgeoportal.lib.caching import get_region
 
 cache_region = get_region()

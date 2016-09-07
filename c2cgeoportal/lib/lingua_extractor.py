@@ -154,8 +154,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def _import_layer_wms(self, layer, messages):
         server = layer.ogc_server
-        url = server.url_wfs or server.url or \
-            self.env["registry"].settings["mapserverproxy"]["mapserv_url"]
+        url = server.url_wfs or server.url
         for wms_layer in layer.layer.split(","):
             self._import_layer_attributes(
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages

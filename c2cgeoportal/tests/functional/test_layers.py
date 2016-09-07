@@ -47,8 +47,11 @@ class TestLayers(TestCase):
     def setUp(self):  # noqa
         import sqlahelper
         import transaction
-        from c2cgeoportal.models import DBSession, Role, User, Interface
+        from c2cgeoportal.models import DBSession, Role, User, Interface, TreeItem
         from c2cgeoportal.lib.dbreflection import init
+
+        for treeitem in DBSession.query(TreeItem).all():
+            DBSession.delete(treeitem)
 
         self.metadata = None
         self.layer_ids = []
@@ -76,8 +79,7 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-        for i in self.layer_ids:
-            treeitem = DBSession.query(TreeItem).get(i)
+        for treeitem in DBSession.query(TreeItem).all():
             DBSession.delete(treeitem)
 
         DBSession.query(User).filter(
@@ -122,27 +124,21 @@ class TestLayers(TestCase):
         id = self.__class__._table_index
 
         engine = sqlahelper.get_engine()
+        connection = engine.connect()
 
         if not self.metadata:
             self.metadata = declarative_base(bind=engine).metadata
 
         tablename = "table_%d" % id
 
-        table = Table(
+        table1 = Table(
             "%s_child" % tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
             schema="public"
         )
-        table.create()
-        self._tables.append(table)
-
-        ins = table.insert().values(name=u"c1é")
-        c1_id = engine.connect().execute(ins).inserted_primary_key[0]
-        ins = table.insert().values(name=u"c2é")
-        c2_id = engine.connect().execute(ins).inserted_primary_key[0]
-
-        table = Table(
+        self._tables.append(table1)
+        table2 = Table(
             tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("child_id", types.Integer,
@@ -151,31 +147,41 @@ class TestLayers(TestCase):
             Column("geom", Geometry("POINT", srid=21781, management=management)),
             schema="public"
         )
-        table.create()
-        self._tables.append(table)
+        self._tables.append(table2)
 
-        ins = table.insert().values(
+        table2.drop(checkfirst=True)
+        table1.drop(checkfirst=True)
+        table1.create()
+        table2.create()
+
+        ins = table1.insert().values(name=u"c1é")
+        c1_id = connection.execute(ins).inserted_primary_key[0]
+        ins = table1.insert().values(name=u"c2é")
+        c2_id = connection.execute(ins).inserted_primary_key[0]
+
+        ins = table2.insert().values(
             child_id=c1_id,
             name="foo",
             geom=WKTElement("POINT(5 45)", 21781)
         )
-        engine.connect().execute(ins).inserted_primary_key[0]
-        ins = table.insert().values(
+        connection.execute(ins)
+        ins = table2.insert().values(
             child_id=c2_id,
             name="bar",
             geom=WKTElement("POINT(6 46)", 21781)
         )
-        engine.connect().execute(ins).inserted_primary_key[0]
+        connection.execute(ins)
         if attr_list:
-            ins = table.insert().values(
+            ins = table2.insert().values(
                 child_id=c2_id,
                 name="aaa,bbb,foo",
                 geom=WKTElement("POINT(6 46)", 21781)
             )
-            engine.connect().execute(ins).inserted_primary_key[0]
+            connection.execute(ins)
 
         layer = LayerV1()
         layer.id = id
+        layer.name = str(id)
         layer.geo_table = tablename
         layer.public = public
         layer.interface = [self.main]

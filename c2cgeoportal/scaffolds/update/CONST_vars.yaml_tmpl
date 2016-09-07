@@ -226,19 +226,7 @@ vars:
     external_themes_url:
 
     mapserverproxy:
-        # URL to internal MapServer instance
-        mapserv_url: http://localhost/{instanceid}/mapserv
-        # If the WFS service is different from the WMS service, uncomment and set the
-        # mapserv_wfs_url parameter
-        #mapserv_wfs_url:
-
-        external_mapserv_url:
-        # If the WFS service is different from the WMS service, uncomment and set the
-        # external_mapserv_wfs_url parameter
-        #external_mapserv_wfs_url:
-
-        # Using Geoserver as backend?
-        geoserver: false
+        default_ogc_server: source for image/png
 
     tinyowsproxy:
         # URL to internal TinyOWS instance
@@ -268,7 +256,8 @@ vars:
             en: english
             de: german
 
-    servers: {}
+    servers:
+        local: http://localhost/{instanceid}/
 
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.

@@ -320,7 +320,6 @@ Create the project
         instance: INSTANCE
 
         external_themes_url: http://{host}/{parent_instanceid}/wsgi/themes
-        external_mapserv_url: http://{host}/{parent_instanceid}/mapserv
 
         tiles_url: http://{host}/{parent_instanceid}/tiles
 

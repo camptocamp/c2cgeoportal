@@ -39,7 +39,8 @@ from c2cgeoportal.lib import functionality
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -56,8 +57,9 @@ class TestThemeEditing(TestCase):
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, \
-            RestrictionArea, Theme, LayerGroup, Interface, \
-            LayerWMS, OGCServer
+            RestrictionArea, Theme, LayerGroup, Interface, LayerWMS
+
+        ogcserver, ogcserver_external = create_default_ogcserver()
 
         role1 = Role(name=u"__test_role1")
         role1.id = 999
@@ -75,7 +77,7 @@ class TestThemeEditing(TestCase):
         private_layer.layer = "__test_private_layer"
         private_layer.geo_table = "a_schema.a_geo_table"
         private_layer.interfaces = [main]
-        private_layer.ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        private_layer.ogc_server = ogcserver
 
         group = LayerGroup(name=u"__test_layer_group")
         group.children = [private_layer]
@@ -105,7 +107,7 @@ class TestThemeEditing(TestCase):
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, Layer, \
-            RestrictionArea, Theme, LayerGroup, Interface
+            RestrictionArea, Theme, LayerGroup, Interface, OGCServer
 
         DBSession.query(User).filter(User.username == "__test_user1").delete()
         DBSession.query(User).filter(User.username == "__test_user2").delete()
@@ -126,12 +128,14 @@ class TestThemeEditing(TestCase):
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -140,8 +144,7 @@ class TestThemeEditing(TestCase):
 
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "main"
         request.params = params
 

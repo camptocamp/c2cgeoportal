@@ -62,7 +62,9 @@ from c2cgeoportal.lib.wmstparsing import parse_extent, TimeInformation
 from c2cgeoportal.lib.email_ import send_email
 from c2cgeoportal.models import DBSession, User, Role, \
     Theme, LayerGroup, RestrictionArea, Interface, OGCServer, \
-    Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch
+    Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch, \
+    OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_MAPSERVER, \
+    OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
 
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -125,11 +127,47 @@ class Entry:
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
+        if "default_ogc_server" in self.mapserver_settings:
+            try:
+                self.default_ogc_server = DBSession.query(OGCServer).filter(
+                    OGCServer.name == self.mapserver_settings["default_ogc_server"]
+                ).one()
+            except NoResultFound:  # pragma: no cover
+                log.error("Unable to find the OGC server named: {}.".format(
+                    self.mapserver_settings["default_ogc_server"])
+                )
+                log.error("Available OGC servers: {}".format(
+                    ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
+                )
+
+        if "external_ogc_server" in self.mapserver_settings:
+            try:
+                self.external_ogc_server = DBSession.query(OGCServer).filter(
+                    OGCServer.name == self.mapserver_settings["external_ogc_server"]
+                ).one()
+            except NoResultFound:  # pragma: no cover
+                log.error("Unable to find the OGC server named: {}.".format(
+                    self.mapserver_settings["external_ogc_server"])
+                )
+                log.error("Available OGC servers: {}".format(
+                    ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
+                )
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
     def testi18n(self):  # pragma: no cover
         _ = self.request.translate
         return {"title": _("title i18n")}
+
+    def _get_cache_role_key(self, ogc_server):
+        return self._get_role_id() if (
+            ogc_server.auth != OGCSERVER_AUTH_NOAUTH
+        ) else None
+
+    def _get_capabilities_cache_role_key(self, ogc_server):
+        return self._get_role_id() if (
+            ogc_server.auth != OGCSERVER_AUTH_NOAUTH and
+            ogc_server.type != OGCSERVER_TYPE_MAPSERVER
+        ) else None
 
     def _get_metadatas(self, item, errors):
         metadatas = {}
@@ -143,7 +181,10 @@ class Entry:
 
         return metadatas
 
-    def _wms_getcap(self, url):
+    def _wms_getcap(self, ogc_server=None):
+        ogc_server = (ogc_server or self.default_ogc_server)
+        url = get_url(ogc_server.url, self.request)
+
         if url.find("?") < 0:
             url += "?"
 
@@ -153,11 +194,11 @@ class Entry:
             url += urllib.urlencode(sparams) + "&"
 
         return self._wms_getcap_cached(
-            url, self._get_role_id() if self.mapserver_settings["geoserver"] else None
+            url, ogc_server.auth, self._get_capabilities_cache_role_key(ogc_server)
         )
 
     @cache_region.cache_on_arguments()
-    def _wms_getcap_cached(self, url, role_id):
+    def _wms_getcap_cached(self, url, auth, role_id):
         """ role_id is just for cache """
 
         errors = set()
@@ -178,7 +219,7 @@ class Entry:
         role = None if self.request.user is None else self.request.user.role
 
         # Add headers for Geoserver
-        if self.mapserver_settings["geoserver"] and self.request.user is not None:
+        if auth == OGCSERVER_AUTH_GEOSERVER and self.request.user is not None:
             headers["sec-username"] = self.request.user.username
             headers["sec-roles"] = role.name
 
@@ -334,8 +375,8 @@ class Entry:
 
         if isinstance(layer, LayerV1):
             wms, wms_layers, wms_errors = self._wms_layers(
-                role_id if self.mapserver_settings["geoserver"] else None,
-                None,
+                self._get_cache_role_key(self.default_ogc_server),
+                self.default_ogc_server,
             )
             errors |= wms_errors
             l.update({
@@ -367,7 +408,7 @@ class Entry:
                 self._fill_wmts(l, layer, errors, role_id=role_id)
         elif isinstance(layer, LayerWMS):
             wms, wms_layers, wms_errors = self._wms_layers(
-                role_id if self.mapserver_settings["geoserver"] else None,
+                self._get_cache_role_key(layer.ogc_server),
                 layer.ogc_server,
             )
             errors |= wms_errors
@@ -477,18 +518,6 @@ class Entry:
 
         if mixed:
             l["ogcServer"] = layer.ogc_server.name
-        # deprecated
-        l["url"] = get_url(
-            layer.ogc_server.url, self.request,
-            default=self.request.route_url("mapserverproxy"), errors=errors)
-        l["isSingleTile"] = layer.ogc_server.is_single_tile
-
-        l["wfsSupport"] = layer.ogc_server.wfs_support
-        l["urlWfs"] = get_url(
-            layer.ogc_server.url_wfs, self.request,
-            default=l["url"], errors=errors)
-        l["serverType"] = layer.ogc_server.type
-        # end deprecated
 
     def _fill_wms_v1(self, l, layer):
         l["imageType"] = layer.image_type
@@ -548,7 +577,7 @@ class Entry:
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
-            if not self.mapserver_settings["geoserver"]:
+            if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
                     "The layer '%s' is not defined in WMS capabilities" % wmslayer
                 )
@@ -593,7 +622,7 @@ class Entry:
 
         mapserverproxy_url = self.request.route_url("mapserverproxy")
         wms, wms_layers, wms_errors = self._wms_layers(
-            role_id if self.mapserver_settings["geoserver"] else None, None
+            self._get_cache_role_key(self.default_ogc_server), None,
         )
         errors |= wms_errors
 
@@ -811,14 +840,11 @@ class Entry:
         return [l.name for l in query.all()]
 
     @cache_region.cache_on_arguments()
-    def _wms_layers(self, role_id, ogc_server=None):
+    def _wms_layers(self, role_id, ogc_server):
         """ role_id is just for cache """
 
         # retrieve layers metadata via GetCapabilities
-        wms, wms_errors = self._wms_getcap(
-            ogc_server.url if ogc_server and ogc_server.url else
-            self.mapserver_settings["mapserv_url"]
-        )
+        wms, wms_errors = self._wms_getcap(ogc_server)
         if len(wms_errors) > 0:
             return None, [], wms_errors
 
@@ -936,31 +962,23 @@ class Entry:
         return children, errors
 
     def _get_wfs_url(self):
-        if "mapserv_wfs_url" in self.mapserver_settings and \
-                self.mapserver_settings["mapserv_wfs_url"]:
-            return self.mapserver_settings["mapserv_wfs_url"]
-        return self.mapserver_settings["mapserv_url"]
+        return self.default_ogc_server.url_wfs \
+            if self.default_ogc_server.url_wfs is not None \
+            else self.default_ogc_server.url
 
     def _internal_wfs_types(self, role_id):
         return self._wfs_types(self._get_wfs_url(), role_id)
 
     def _get_external_wfs_url(self):
-        if "external_mapserv_wfs_url" in self.mapserver_settings and \
-                self.mapserver_settings["external_mapserv_wfs_url"]:
-            return self.mapserver_settings["external_mapserv_wfs_url"]
-        if "external_mapserv_url" in self.mapserver_settings and \
-                self.mapserver_settings["external_mapserv_url"]:
-            return self.mapserver_settings["external_mapserv_url"]
-        return None
+        return self.external_ogc_server.url_wfs \
+            if self.external_ogc_server.url_wfs is not None \
+            else self.external_ogc_server.url
 
     def _external_wfs_types(self, role_id):
-        url = self._get_external_wfs_url()
-        if not url:
-            return [], set()
-        return self._wfs_types(url, role_id)
+        return self._wfs_types(self._get_external_wfs_url(), role_id)
 
     def _wfs_types(self, wfs_url, role_id):
-        if wfs_url.find("?") < 0:
+        if wfs_url.find("?") < 0:  # pragma: no cover
             wfs_url += "?"
 
         # add functionalities query_string
@@ -1016,7 +1034,7 @@ class Entry:
                     name_value = name.childNodes[0].data
                     # ignore namespace when not using geoserver
                     if name_value.find(":") >= 0 and \
-                            not self.mapserver_settings["geoserver"]:  # pragma nocover
+                            not self.default_ogc_server.type == OGCSERVER_TYPE_GEOSERVER:  # pragma nocover
                         name_value = name_value.split(":")[1]
                     featuretypes.append(name_value)
                 else:  # pragma nocover
@@ -1218,8 +1236,7 @@ class Entry:
 
     @view_config(route_name="apijs", renderer="api/api.js")
     def apijs(self):
-        wms, wms_errors = self._wms_getcap(
-            self.mapserver_settings["mapserv_url"])
+        wms, wms_errors = self._wms_getcap()
         if len(wms_errors) > 0:  # pragma: no cover
             raise HTTPBadGateway("\n".join(wms_errors))
         queryable_layers = [
@@ -1242,11 +1259,13 @@ class Entry:
 
     @view_config(route_name="xapijs", renderer="api/xapi.js")
     def xapijs(self):
-        wms, wms_errors = self._wms_getcap(
-            self.mapserver_settings["mapserv_url"])
+        wms, wms_errors = self._wms_getcap()
+        if len(wms_errors) > 0:  # pragma: no cover
+            raise HTTPBadGateway("\n".join(wms_errors))
         queryable_layers = [
             name for name in list(wms.contents)
-            if wms[name].queryable == 1]
+            if wms[name].queryable == 1
+        ]
         cache_version = self.settings.get("cache_version", None)
 
         set_common_headers(
@@ -1308,20 +1327,23 @@ class Entry:
 
             result["ogcServers"] = {}
             for ogc_server in DBSession.query(OGCServer).all():
-                url = get_url(
-                    ogc_server.url, self.request,
-                    default=self.request.route_url("mapserverproxy"), errors=all_errors
-                )
-                url_wfs = get_url(
-                    ogc_server.url_wfs, self.request,
-                    default=url, errors=all_errors
-                )
+                # required to do everytime to validate the url.
+                if ogc_server.auth != OGCSERVER_AUTH_NOAUTH:
+                    url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
+                    url_wfs = url
+                else:
+                    url = get_url(
+                        ogc_server.url, self.request, errors=all_errors
+                    )
+                    url_wfs = get_url(
+                        ogc_server.url_wfs, self.request,
+                        default=url, errors=all_errors
+                    )
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,
                     "type": ogc_server.type,
                     "imageType": ogc_server.image_type,
-                    "auth": ogc_server.auth,
                     "wfsSupport": ogc_server.wfs_support,
                     "isSingleTile": ogc_server.is_single_tile,
                 }
@@ -1338,24 +1360,32 @@ class Entry:
 
         if export_group:
             group, errors = self._get_group(group, role_id, interface, version)
-            result["group"] = group
+            if group is not None:
+                result["group"] = group
             all_errors |= errors
 
         if export_background:
             group, errors = self._get_group(background_layers_group, role_id, interface, version)
-            result["background_layers"] = group["children"]
+            result["background_layers"] = group["children"] if group is not None else []
             all_errors |= errors
 
         result["errors"] = list(all_errors)
+        if len(all_errors) > 0:
+            log.info("Theme errors:\n{}".format("\n".join(all_errors)))
         return result
 
     def _get_group(self, group, role_id, interface, version):
         layers = self._layers(role_id, version, interface)
-        lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
-        return self._group(
-            lg.name, lg, layers,
-            role_id=role_id, version=version
-        )
+        try:
+            lg = DBSession.query(LayerGroup).filter(LayerGroup.name == group).one()
+            return self._group(
+                lg.name, lg, layers,
+                role_id=role_id, version=version
+            )
+        except NoResultFound:  # pragma: no cover
+            return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
+                group, ", ".join([i[0] for i in DBSession.query(LayerGroup.name).all()])
+            )])
 
     @view_config(context=HTTPForbidden, renderer="login.html")
     def loginform403(self):

@@ -35,7 +35,7 @@ from pyramid import testing
 
 class TestDecimalJSON(TestCase):
     def _call_fut(self, **kwargs):
-        from c2cgeoportal import DecimalJSON
+        from c2cgeoportal.pyramid_ import DecimalJSON
         fake_info = {}
         return DecimalJSON(**kwargs)(fake_info)
 

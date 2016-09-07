@@ -58,7 +58,6 @@ OGC Server
         "imageType": "image/(jpeg|png)",
         "isSingleTile": (true|false),
         "serverType": "(mapserver|geoserver|qgisserver)",
-        "auth": ""
     }
 
 
@@ -96,7 +95,6 @@ Group
             "imageType": "image/(jpeg|png)",
             "isSingleTile": (true|false),
             "serverType": "(mapserver|geoserver|qgisserver)",
-            "auth": ""
         }
         "metadata": {
             "<name>": "<value>"

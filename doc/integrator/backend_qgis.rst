@@ -43,15 +43,16 @@ In the ``apache/mapserv.conf.mako`` do the following changes:
 Application configuration
 =========================
 
+Add an OGC server in the admin interface for QGIS server (type: qgisserver, auth: Standard auth).
+
 In the ``vars_<project>.yaml`` file, define:
 
 .. code:: yaml
 
     vars:
         ...
-            mapserverproxy:
-                mapserv_url: http://your.qgis.server/ows
-                geoserver: false
+        mapserverproxy:
+            default_ogc_server: <ogc server name>
     update_paths:
     ...
     - mapserverproxy

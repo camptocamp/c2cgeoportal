@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from pyramid.config import Configurator
-from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
+from c2cgeoportal.pyramid_ import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
 from c2cgeoportal.lib.authentication import create_authentication
 from {{package}}.resources import Root
 

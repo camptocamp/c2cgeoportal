@@ -321,6 +321,19 @@ def upgrade():
         schema=schema,
     )
 
+    op.execute(
+        "INSERT INTO {schema}.treeitem (type, name, \"order\") "
+        "VALUES ('group', 'background', 0)".format(schema=schema)
+    )
+    op.execute(
+        'INSERT INTO {schema}.treegroup (id) SELECT id '
+        'FROM {schema}.treeitem'.format(schema=schema)
+    )
+    op.execute(
+        'INSERT INTO {schema}.layergroup (id) SELECT id '
+        'FROM {schema}.treeitem'.format(schema=schema)
+    )
+
 
 def downgrade():
     schema = context.get_context().config.get_main_option('schema')

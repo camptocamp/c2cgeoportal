@@ -25,13 +25,13 @@ This page lists the changes that must be applied to add such a functionality.
 
    .. code:: python
 
-       from c2cgeoportal import locale_negotiator
+       from c2cgeoportal.pyramid_ import locale_negotiator
 
    by
 
    .. code:: python
 
-       from c2cgeoportal import locale_negotiator, get_user_from_request
+       from c2cgeoportal.pyramid_ import locale_negotiator, get_user_from_request
 
    Add the following function:
 

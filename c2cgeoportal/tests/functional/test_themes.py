@@ -38,7 +38,9 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
+
 
 import logging
 log = logging.getLogger(__name__)
@@ -55,7 +57,7 @@ class TestThemesView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Functionality, Interface, \
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
-            Metadata, Dimension
+            Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
 
         main = Interface(name=u"main")
         mobile = Interface(name=u"mobile")
@@ -65,8 +67,12 @@ class TestThemesView(TestCase):
         layer_v1.interfaces = [main]
         layer_v1.metadatas = [Metadata("test", "v1")]
 
-        ogc_server_internal = OGCServer(name="__test_ogc_server_internal", type="mapserver", image_type="image/jpeg")
-        ogc_server_external = OGCServer(name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg")
+        ogc_server_internal, _ = create_default_ogcserver()
+        ogc_server_external = OGCServer(
+            name="__test_ogc_server_chtopo", url="http://wms.geo.admin.ch/",
+            image_type="image/jpeg", auth=OGCSERVER_AUTH_NOAUTH
+        )
+        ogc_server_external.wfs_support = False
 
         layer_internal_wms = LayerWMS(name=u"__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -120,19 +126,21 @@ class TestThemesView(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, Layer, \
+        from c2cgeoportal.models import DBSession, OGCServer, Layer, \
             Theme, LayerGroup, Interface, Metadata, Dimension
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
 
@@ -143,8 +151,14 @@ class TestThemesView(TestCase):
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+
+        def route_url(name, _query=None, **kwargs):
+            if _query is None:
+                return "http://localhost/travis/mapserv"
+            else:
+                return "http://localhost/travis/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
+
+        request.route_url = route_url
         request.params = params
 
         return request
@@ -478,45 +492,34 @@ class TestThemesView(TestCase):
             "version": "2",
             "catalogue": "true",
         })
+
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set())
         self.assertEquals(
             themes["ogcServers"], {
-                "__test_ogc_server_internal": {
-                    "wfsSupport": False,
-                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "isSingleTile": False,
-                    "auth": None,
-                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
-                },
-                "source for image/jpeg": {
+                u"__test_external_ogc_server": {
                     "wfsSupport": True,
-                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "url": u"http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
                     "isSingleTile": False,
-                    "auth": "main",
-                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
+                    "urlWfs": u"http://localhost/travis/mapserv?ogcserver=__test_external_ogc_server",
+                    "type": u"mapserver",
+                    "imageType": u"image/png",
                 },
-                "__test_ogc_server_external": {
-                    "wfsSupport": False,
-                    "url": "http://wms.geo.admin.ch/",
-                    "isSingleTile": False,
-                    "auth": None,
-                    "urlWfs": "http://wms.geo.admin.ch/",
-                    "type": "mapserver",
-                    "imageType": "image/jpeg",
-                },
-                "source for image/png": {
+                u"__test_ogc_server": {
                     "wfsSupport": True,
-                    "url": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
+                    "url": u"http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
                     "isSingleTile": False,
-                    "auth": "main",
-                    "urlWfs": "http://localhost/cgi-bin/mapserv?map=/home/travis/build/camptocamp/c2cgeoportal/c2cgeoportal/tests/functional/c2cgeoportal_test.map&",
-                    "type": "mapserver",
-                    "imageType": "image/png",
+                    "urlWfs": u"http://localhost/travis/mapserv?ogcserver=__test_ogc_server",
+                    "type": u"mapserver",
+                    "imageType": u"image/png",
+                },
+                u"__test_ogc_server_chtopo": {
+                    "wfsSupport": False,
+                    "url": u"http://wms.geo.admin.ch/",
+                    "isSingleTile": False,
+                    "urlWfs": u"http://wms.geo.admin.ch/",
+                    "type": u"mapserver",
+                    "imageType": u"image/jpeg",
                 }
             },
         )
@@ -526,18 +529,18 @@ class TestThemesView(TestCase):
                 "children": [{
                     # order is important
                     "children": [{
-                        "ogcServer": "__test_ogc_server_internal",
+                        "ogcServer": u"__test_ogc_server",
                     }, {
-                        "ogcServer": "__test_ogc_server_external",
+                        "ogcServer": u"__test_ogc_server_chtopo",
                     }, {
                     }]
                 }, {
                     # order is important
                     "children": [{
                     }, {
-                        "ogcServer": "__test_ogc_server_internal",
+                        "ogcServer": u"__test_ogc_server",
                     }, {
-                        "ogcServer": "__test_ogc_server_external",
+                        "ogcServer": u"__test_ogc_server_chtopo",
                     }]
                 }]
             }]

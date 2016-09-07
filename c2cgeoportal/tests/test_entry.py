@@ -33,9 +33,10 @@ from unittest import TestCase
 
 def setUpModule():  # noqa
     import c2cgeoportal
+    from c2cgeoportal.pyramid_ import caching
     c2cgeoportal.schema = "main"
     c2cgeoportal.srid = 21781
-    c2cgeoportal.caching.init_region({"backend": "dogpile.cache.memory"})
+    caching.init_region({"backend": "dogpile.cache.memory"})
 
 
 class TestEntryView(TestCase):
@@ -52,7 +53,7 @@ class TestEntryView(TestCase):
     def test_decimal_json(self):
         from decimal import Decimal
         from pyramid.testing import DummyRequest
-        from c2cgeoportal import DecimalJSON
+        from c2cgeoportal.pyramid_ import DecimalJSON
         renderer = DecimalJSON()(None)
         request = DummyRequest()
         request.user = None

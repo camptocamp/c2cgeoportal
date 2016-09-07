@@ -38,7 +38,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request)
+    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -53,18 +54,18 @@ class TestLayerMultiNameErrorView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, OGCServer, LayerWMS
+            Theme, LayerGroup, Interface, LayerWMS
 
         main = Interface(name=u"main")
 
-        ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        ogc_server, _ = create_default_ogcserver()
 
-        layer_wms_1 = LayerWMS(name=u"__test_layer_wms", public=True)
+        layer_wms_1 = LayerWMS(name=u"__test_layer_wms_1", public=True)
         layer_wms_1.layer = "testpoint_unprotected"
         layer_wms_1.interfaces = [main]
         layer_wms_1.ogc_server = ogc_server
 
-        layer_wms_2 = LayerWMS(name=u"__test_layer_wms", public=True)
+        layer_wms_2 = LayerWMS(name=u"__test_layer_wms_2", public=True)
         layer_wms_2.layer = "testpoint_substitution"
         layer_wms_2.interfaces = [main]
         layer_wms_2.ogc_server = ogc_server
@@ -97,12 +98,11 @@ class TestLayerMultiNameErrorView(TestCase):
 
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        DBSession.query(LayerGroup).delete()
+        for g in DBSession.query(LayerGroup).all():
+            DBSession.delete(g)
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
-        DBSession.query(OGCServer).filter(
-            OGCServer.name == "__test_ogc_server"
-        ).delete()
+        DBSession.query(OGCServer).delete()
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
@@ -112,8 +112,7 @@ class TestLayerMultiNameErrorView(TestCase):
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
         return request
@@ -131,6 +130,5 @@ class TestLayerMultiNameErrorView(TestCase):
         }))
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set([
-            "The GeoMapFish layer name '__test_layer_wms', can't be two times in the same block (first level group).",
             "The WMS layer name 'testpoint_unprotected', can't be two times in the same block (first level group).",
         ]))

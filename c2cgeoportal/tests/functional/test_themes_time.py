@@ -43,7 +43,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, create_dummy_request)
+    mapserv_url, create_dummy_request, create_default_ogcserver,
+)
 
 import logging
 log = logging.getLogger(__name__)
@@ -69,12 +70,12 @@ class TestThemesTimeView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS, LayerWMTS, OGCServer
+            Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
         main = Interface(name=u"main")
-        ogc_server = OGCServer(name="__test_ogc_server", type="mapserver", image_type="image/jpeg")
+        ogc_server, _ = create_default_ogcserver()
 
         layer_wms_1 = LayerWMS(name=u"__test_layer_time_1", public=True)
         layer_wms_1.layer = "test_wmstime"
@@ -133,13 +134,14 @@ class TestThemesTimeView(TestCase):
     def tearDown(self):  # noqa
         testing.tearDown()
 
-        from c2cgeoportal.models import DBSession, TreeItem, Interface
+        from c2cgeoportal.models import DBSession, TreeItem, Interface, OGCServer
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)
         DBSession.query(Interface).filter(
             Interface.name == "main"
         ).delete()
+        DBSession.query(OGCServer).delete()
 
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
@@ -147,8 +149,7 @@ class TestThemesTimeView(TestCase):
     def _create_request_obj(self, params={}, **kwargs):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
-        request.route_url = lambda url, **kwargs: \
-            request.registry.settings["mapserverproxy"]["mapserv_url"]
+        request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
         return request

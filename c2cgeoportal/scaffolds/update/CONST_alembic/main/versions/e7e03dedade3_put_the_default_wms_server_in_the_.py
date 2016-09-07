@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2016, Camptocamp SA
+# Copyright (c) 2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,45 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Put the default WMS server in the servers part, add some constrains
 
-from unittest import TestCase
-from pyramid import testing
+Revision ID: e7e03dedade3
+Revises: daf738d5bae4
+Create Date: 2016-08-26 14:39:21.984921
+"""
+
+from alembic import op, context
+
+# revision identifiers, used by Alembic.
+revision = 'e7e03dedade3'
+down_revision = '8117bb9bba16'
+branch_labels = None
+depends_on = None
 
 
-class TestLocalNegociator(TestCase):
-    def test_lang_param(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
+def upgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-        request = testing.DummyRequest(params=dict(lang="fr"))
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "fr")
+    op.execute("""
+        UPDATE "{schema}".ogc_server
+        SET url = 'config://local/mapserv'
+        WHERE url IS NULL
+    """.format(schema=schema))
 
-    def test_lang_is_not_available(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
-        from pyramid.threadlocal import get_current_registry
-        from pyramid.request import Request
+    op.create_unique_constraint('name_unique_ogc_server', 'ogc_server', ['name'], schema=schema)
+    op.alter_column('ogc_server', 'url', nullable=False, schema=schema)
+    op.create_unique_constraint('name_unique_treeitem', 'treeitem', ['name'], schema=schema)
 
-        request = Request.blank("/")
-        request.registry = get_current_registry()
-        request.registry.settings = {
-            "default_locale_name": "de",
-            "available_locale_names": ["de", "es"]
-        }
 
-        request.headers["accept-language"] = "en-us,en;q=0.3,fr;q=0.7"
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "de")
+def downgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-    def test_lang_is_available(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
-        from pyramid.threadlocal import get_current_registry
-        from pyramid.request import Request
+    op.drop_constraint('name_unique_ogc_server', 'ogc_server', schema=schema)
+    op.alter_column('ogc_server', 'url', nullable=True, schema=schema)
+    op.drop_constraint('name_unique_treeitem', 'treeitem', schema=schema)
 
-        request = Request.blank("/")
-        request.registry = get_current_registry()
-        request.registry.settings = {
-            "default_locale_name": "de",
-            "available_locale_names": ["de", "es"]
-        }
-        request.accept_language = "en-us,en;q=0.3,es;q=0.7"
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "es")
+    op.execute("""
+        UPDATE "{schema}".ogc_server
+        SET url = NULL
+        WHERE url = 'config://local/mapserv'
+    """.format(schema=schema))

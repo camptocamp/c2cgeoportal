@@ -46,9 +46,30 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.exc import UnboundExecutionError
 from geoalchemy2 import Geometry, func
 from geoalchemy2.shape import to_shape
-from formalchemy import Column
-from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
-from pyramid.i18n import TranslationStringFactory
+try:
+    from formalchemy import Column
+# Fallback if formalchemy don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    from sqlalchemy import Column as Col
+
+    class Column(Col):
+        def __init__(self, label=None, *args, **kwargs):
+            super(Column, self).__init__(*args, **kwargs)
+
+try:
+    from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
+# Fallback if pyramid don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    Allow = ALL_PERMISSIONS = DENY_ALL = None
+
+
+try:
+    from pyramid.i18n import TranslationStringFactory
+    _ = TranslationStringFactory("c2cgeoportal")
+# Fallback if pyramid don't exists, used by QGIS server plugin
+except:  # pragma: no cover
+    def _(s):
+        return s
 
 from c2cgeoportal import schema, parentschema, srid
 from c2cgeoportal.lib import caching
@@ -62,7 +83,6 @@ __all__ = [
     "LayergroupTreeitem"
 ]
 
-_ = TranslationStringFactory("c2cgeoportal")
 log = logging.getLogger(__name__)
 
 Base = sqlahelper.get_base()
@@ -347,7 +367,9 @@ event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 class TreeItem(Base):
     __tablename__ = "treeitem"
-    __table_args__ = {"schema": _schema}
+    __table_args__ = (
+        {"schema": _schema}
+    )
     __acl__ = [DENY_ALL]
     item_type = Column("type", String(10), nullable=False)
     __mapper_args__ = {"polymorphic_on": item_type}
@@ -641,6 +663,16 @@ class LayerV1(Layer):  # Deprecated in v2
         self.layer_type = layer_type
 
 
+OGCSERVER_TYPE_MAPSERVER = "mapserver"
+OGCSERVER_TYPE_QGISSERVER = "qgisserver"
+OGCSERVER_TYPE_GEOSERVER = "geoserver"
+OGCSERVER_TYPE_OTHER = "other"
+
+OGCSERVER_AUTH_NOAUTH = "No auth"
+OGCSERVER_AUTH_STANDARD = "Standard auth"
+OGCSERVER_AUTH_GEOSERVER = "Geoserver auth"
+
+
 class OGCServer(Base):
     __label__ = _(u"OGC server")
     __plural__ = _(u"OGC servers")
@@ -653,21 +685,33 @@ class OGCServer(Base):
     id = Column(
         Integer, primary_key=True
     )
-    name = Column(Unicode, label=_(u"Name"))
+    name = Column(Unicode, label=_(u"Name"), nullable=False, unique=True)
     description = Column(Unicode, label=_(u"Description"))
-    url = Column(Unicode, label=_(u"Base URL"))
+    url = Column(Unicode, label=_(u"Base URL"), nullable=False)
     url_wfs = Column(Unicode, label=_(u"WFS URL"))
-    type = Column(Unicode, label=_(u"Server type"))
+    type = Column(Enum(
+        OGCSERVER_TYPE_MAPSERVER,
+        OGCSERVER_TYPE_QGISSERVER,
+        OGCSERVER_TYPE_GEOSERVER,
+        OGCSERVER_TYPE_OTHER,
+        native_enum=False), label=_(u"Server type"))
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
         native_enum=False), label=_(u"Image type"))
-    auth = Column(Unicode, label=_(u"Authentication type"))
+    auth = Column(Enum(
+        OGCSERVER_AUTH_NOAUTH,
+        OGCSERVER_AUTH_STANDARD,
+        OGCSERVER_AUTH_GEOSERVER,
+        native_enum=False), label=_(u"Authentication type"))
     wfs_support = Column(Boolean, label=_(u"WFS support"))
     is_single_tile = Column(Boolean, label=_(u"Single tile"))
 
-    def __init__(self, name="", description=None, url=None, url_wfs=None, type=u"mapserver",
-                 image_type="image/png", auth=None, wfs_support=False, is_single_tile=False):
+    def __init__(
+        self, name="", description=None, url="https://wms.example.com", url_wfs=None,
+        type=u"mapserver", image_type="image/png", auth="Standard auth", wfs_support=True,
+        is_single_tile=False
+    ):
         self.name = name
         self.description = description
         self.url = url

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2016, Camptocamp SA
+# Copyright (c) 2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,46 +27,56 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Add missing on delete cascade on layer tree
 
-from unittest import TestCase
-from pyramid import testing
+Revision ID: ec82a8906649
+Revises: e7e03dedade3
+Create Date: 2016-08-30 13:43:30.969505
+"""
+
+from alembic import op, context
+
+# revision identifiers, used by Alembic.
+revision = 'ec82a8906649'
+down_revision = 'e7e03dedade3'
+branch_labels = None
+depends_on = None
 
 
-class TestLocalNegociator(TestCase):
-    def test_lang_param(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
+def upgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-        request = testing.DummyRequest(params=dict(lang="fr"))
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "fr")
+    for source, dest in [
+        ('layer_wmts', 'layer'),
+        ('layerv1', 'layer'),
+        ('theme', 'treegroup'),
+    ]:
+        op.drop_constraint(
+            '{}_id_fkey'.format(source),
+            source, schema=schema,
+        )
+        op.create_foreign_key(
+            '{}_id_fkey'.format(source),
+            source, source_schema=schema, local_cols=['id'],
+            referent_table=dest, referent_schema=schema, remote_cols=['id'],
+            ondelete='cascade',
+        )
 
-    def test_lang_is_not_available(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
-        from pyramid.threadlocal import get_current_registry
-        from pyramid.request import Request
 
-        request = Request.blank("/")
-        request.registry = get_current_registry()
-        request.registry.settings = {
-            "default_locale_name": "de",
-            "available_locale_names": ["de", "es"]
-        }
+def downgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-        request.headers["accept-language"] = "en-us,en;q=0.3,fr;q=0.7"
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "de")
-
-    def test_lang_is_available(self):
-        from c2cgeoportal.pyramid_ import locale_negotiator
-        from pyramid.threadlocal import get_current_registry
-        from pyramid.request import Request
-
-        request = Request.blank("/")
-        request.registry = get_current_registry()
-        request.registry.settings = {
-            "default_locale_name": "de",
-            "available_locale_names": ["de", "es"]
-        }
-        request.accept_language = "en-us,en;q=0.3,es;q=0.7"
-        lang = locale_negotiator(request)
-        self.assertEquals(lang, "es")
+    for source, dest in [
+        ('layer_wmts', 'layer'),
+        ('layerv1', 'layer'),
+        ('theme', 'treegroup'),
+    ]:
+        op.drop_constraint(
+            '{}_id_fkey'.format(source),
+            source, schema=schema,
+        )
+        op.create_foreign_key(
+            '{}_id_fkey'.format(source),
+            source, source_schema=schema, local_cols=['id'],
+            referent_table=dest, referent_schema=schema, remote_cols=['id'],
+        )

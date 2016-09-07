@@ -36,7 +36,7 @@ from sqlalchemy import func, desc, or_, and_
 from geoalchemy2.shape import to_shape
 import re
 
-from c2cgeoportal import locale_negotiator
+from c2cgeoportal.pyramid_ import locale_negotiator
 from c2cgeoportal.models import DBSession, FullTextSearch, Interface
 from c2cgeoportal.lib.caching import get_region, set_common_headers, NO_CACHE
 
