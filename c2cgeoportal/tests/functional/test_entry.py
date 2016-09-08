@@ -686,11 +686,11 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "fulltextsearch_groups"
+            "debug", "fulltextsearch_groups", "wfs_types"
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "fulltextsearch_groups", "permalink_themes"
+            "debug", "fulltextsearch_groups", "permalink_themes", "wfs_types"
         ]))
 
         result = entry.apijs()

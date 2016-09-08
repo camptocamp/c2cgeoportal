@@ -342,6 +342,16 @@ ${ ',\\n'.join([
                 "module.constant('gmfContextualdatacontentTemplateUrl', {{package}}.componentsBaseTemplateUrl + '/contextualdata/contextualdata.html');",  # noqa
                 data, required=False
             )
+            data = _sub(
+                re.escape("module.value('ngeoWfsPermalinkOptions',") + ".*defaultFeatureNS",
+                """module.value('ngeoWfsPermalinkOptions', /** @type {ngeox.WfsPermalinkOptions} */ ({
+            url: '${request.route_url('mapserv_proxy') | n}',
+            wfsTypes: ${json.dumps(wfs_types),
+            defaultFeatureNS""",
+                data,
+                count=1,
+                flags=re.DOTALL,
+            )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)

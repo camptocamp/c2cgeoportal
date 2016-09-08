@@ -1222,10 +1222,17 @@ class Entry:
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
         ]
+        wfs_types, add_errors = self._wfs_types_cached(self._get_wfs_url())
+        if len(add_errors) != 0:  # pragma: no cover
+            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
 
         vars.update({
             "debug": self.debug,
-            "fulltextsearch_groups": groups
+            "fulltextsearch_groups": groups,
+            "wfs_types": [{
+                "featureType": t,
+                "label": t,
+            } for t in wfs_types],
         })
         return vars
 
