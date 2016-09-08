@@ -47,7 +47,6 @@ from pyramid.paster import bootstrap
 from c2c.template import get_config
 
 from c2cgeoportal.lib import add_url_params, get_url2
-from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal.lib.dbreflection import get_class
 
@@ -81,6 +80,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options):
         with open(filename) as config_file:
+            from c2cgeoportal.lib.print_ import *  # noqa
             config = yaml.load(config_file)
             # for application config (.build/config.yaml)
             if "vars" in config:
