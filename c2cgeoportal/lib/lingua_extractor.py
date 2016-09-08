@@ -45,7 +45,7 @@ from lingua.extractors import Message
 from pyramid.paster import bootstrap
 from c2c.template import get_config
 
-from c2cgeoportal.lib import add_url_params
+from c2cgeoportal.lib import add_url_params, get_url2
 from c2cgeoportal.lib.print_ import *  # noqa
 from c2cgeoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal.lib.dbreflection import get_class
@@ -200,6 +200,22 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             ))
 
     def _layer_attributes(self, url, layer):
+        errors = set()
+
+        class Registry:
+            setting = None
+
+        class Request:
+            registry = Registry()
+
+        request = Request()
+        request.registry.settings = self.config
+        # static schema will not be supported
+        url = get_url2("Layer", url, request, errors)
+        if len(errors) > 0:
+            print("\n".join(errors))
+            return []
+
         url = add_url_params(url, {
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
