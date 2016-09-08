@@ -51,7 +51,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
-    get_url, get_typed, get_types_map, add_url_params
+    get_url2, get_url, get_typed, get_types_map, add_url_params
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -182,7 +182,13 @@ class Entry:
 
     def _wms_getcap(self, ogc_server=None):
         ogc_server = (ogc_server or self.default_ogc_server)
-        url = get_url(ogc_server.url, self.request)
+        errors = set()
+        url = get_url2(
+            "The OGC server '{}'".format(ogc_server.name),
+            ogc_server.url, self.request, errors
+        )
+        if len(errors):  # pragma: no cover
+            return None, errors
 
         # add functionalities params
         sparams = get_mapserver_substitution_params(self.request)
@@ -886,12 +892,11 @@ class Entry:
 
             # test if the theme is visible for the current user
             if len(children) > 0:
-                icon = get_url(
-                    theme.icon, self.request,
-                    self.request.static_url(
-                        "c2cgeoportal:static/images/blank.gif"
-                    ),
-                    errors=errors
+                icon = get_url2(
+                    "The Theme '{}'".format(theme.name),
+                    theme.icon, self.request, errors,
+                ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
+                    "c2cgeoportal:static/images/blank.gif"
                 )
 
                 t = {
@@ -1333,13 +1338,14 @@ class Entry:
                     url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
                     url_wfs = url
                 else:
-                    url = get_url(
+                    url = get_url2(
+                        "The OGC server '{}'".format(ogc_server.name),
                         ogc_server.url, self.request, errors=all_errors
                     )
-                    url_wfs = get_url(
-                        ogc_server.url_wfs, self.request,
-                        default=url, errors=all_errors
-                    )
+                    url_wfs = get_url2(
+                        "The OGC server (WFS) '{}'".format(ogc_server.name),
+                        ogc_server.url_wfs, self.request, errors=all_errors
+                    ) if ogc_server.url_wfs is not None else url
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,

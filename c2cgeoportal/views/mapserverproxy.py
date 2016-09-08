@@ -32,7 +32,7 @@ import logging
 
 from pyramid.view import view_config
 
-from c2cgeoportal.lib import get_url
+from c2cgeoportal.lib import get_url2
 from c2cgeoportal.lib.caching import get_region, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal.lib.filter_capabilities import filter_capabilities
@@ -64,11 +64,26 @@ class MapservProxy(Proxy):
         )
 
     def _get_wms_url(self):
-        return get_url(self._get_ogc_server().url, self.request)
+        errors = set()
+        url = get_url2(
+            "The OGC server '{}'".format(self._get_ogc_server().name),
+            self._get_ogc_server().url, self.request, errors
+        )
+        if len(errors) > 0:  # pragma: no cover
+            log.error("\n".join(errors))
+        return url
 
     def _get_wfs_url(self):
         ogc_server = self._get_ogc_server()
-        return get_url(ogc_server.url_wfs or ogc_server.url, self.request)
+        errors = set()
+        url = get_url2(
+            "The OGC server (WFS) '{}'".format(self._get_ogc_server().name),
+            ogc_server.url_wfs or ogc_server.url,
+            self.request, errors
+        )
+        if len(errors) > 0:  # pragma: no cover
+            log.error("\n".join(errors))
+        return url
 
     @cache_region.cache_on_arguments()
     def _get_ogcserver_byname(self, name):
