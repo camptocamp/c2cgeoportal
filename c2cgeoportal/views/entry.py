@@ -29,7 +29,6 @@
 
 
 import httplib2
-import urllib
 import logging
 import json
 import sys
@@ -185,13 +184,9 @@ class Entry:
         ogc_server = (ogc_server or self.default_ogc_server)
         url = get_url(ogc_server.url, self.request)
 
-        if url.find("?") < 0:
-            url += "?"
-
         # add functionalities params
         sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            url += urllib.urlencode(sparams) + "&"
+        url = add_url_params(url, sparams)
 
         return self._wms_getcap_cached(
             url, ogc_server.auth, self._get_capabilities_cache_role_key(ogc_server)
@@ -978,16 +973,12 @@ class Entry:
         return self._wfs_types(self._get_external_wfs_url(), role_id)
 
     def _wfs_types(self, wfs_url, role_id):
-        if wfs_url.find("?") < 0:  # pragma: no cover
-            wfs_url += "?"
-
         # add functionalities query_string
         sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            wfs_url += urllib.urlencode(sparams) + "&"
+        wfs_url = add_url_params(wfs_url, sparams)
 
         if role_id is not None:
-            wfs_url += "role_id=%s&" % role_id
+            wfs_url = add_url_params(wfs_url, {"role_id": str(role_id)})
 
         return self._wfs_types_cached(wfs_url)
 
@@ -996,12 +987,12 @@ class Entry:
         errors = set()
 
         # retrieve layers metadata via GetCapabilities
-        params = (
-            ("SERVICE", "WFS"),
-            ("VERSION", "1.0.0"),
-            ("REQUEST", "GetCapabilities"),
-        )
-        wfsgc_url = wfs_url + "&".join(["=".join(p) for p in params])
+        params = {
+            "SERVICE": "WFS",
+            "VERSION": "1.0.0",
+            "REQUEST": "GetCapabilities",
+        }
+        wfsgc_url = add_url_params(wfs_url, params)
 
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 

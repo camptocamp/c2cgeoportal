@@ -952,7 +952,7 @@ class TestEntryView(TestCase):
             "metadataURL": "http://example.com/tiwms",
             "isChecked": True,
             "icon": "/dummy/route/mapserverproxy?"
-            "LAYER=test internal WMS&SERVICE=WMS&FORMAT=image/png&"
+            "LAYER=test+internal+WMS&SERVICE=WMS&FORMAT=image%2Fpng&"
             "REQUEST=GetLegendGraphic&RULE=rule&VERSION=1.1.1&TRANSPARENT=TRUE",
             "type": "internal WMS",
             "imageType": "image/png",

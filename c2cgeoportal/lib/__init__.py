@@ -32,6 +32,7 @@ import re
 import urlparse
 import datetime
 import dateutil
+import urllib
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
 
@@ -201,6 +202,8 @@ def get_typed(name, value, types, request, errors):
 
 
 def add_url_params(url, params):
+    if len(params.items()) == 0:
+        return url
     return add_spliturl_params(urlsplit(url), params)
 
 
@@ -208,7 +211,7 @@ def add_spliturl_params(spliturl, params):
     query = []
     if spliturl.query != "":
         query.append(spliturl.query)
-    query.extend(["%s=%s" % param for param in params.items()])
+    query.extend([urllib.urlencode(dict([param])) for param in params.items()])
 
     return urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,
