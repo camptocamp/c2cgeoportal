@@ -155,6 +155,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     def _import_layer_wms(self, layer, messages):
         server = layer.ogc_server
         url = server.url_wfs or server.url
+        if url is None:
+            return
         for wms_layer in layer.layer.split(","):
             self._import_layer_attributes(
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
