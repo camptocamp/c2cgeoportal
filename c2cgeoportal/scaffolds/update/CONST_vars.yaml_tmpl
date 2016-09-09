@@ -257,7 +257,8 @@ vars:
             de: german
 
     servers:
-        local: http://localhost/{instanceid}/
+        internal: http://localhost/{instanceid}/
+        local: '{web_protocol}://{host}/{instanceid}/'
 
     # The "raster web services" configuration. See the "raster"
     # chapter in the integrator documentation.
