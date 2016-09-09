@@ -1169,10 +1169,6 @@ class Entry:
         themes, errors = self._themes(role_id, interface)
         wfs_types, add_errors = self._internal_wfs_types(role_id)
         errors |= add_errors
-        external_wfs_types, add_errors = self._external_wfs_types(role_id)
-        errors |= add_errors
-        external_themes, add_errors = self._external_themes(interface)
-        errors |= add_errors
 
         version_params = {
             "cache_version": get_cache_version()
@@ -1189,8 +1185,6 @@ class Entry:
             "themes": json.dumps(themes),
             "user": self.request.user,
             "WFSTypes": json.dumps(wfs_types),
-            "externalWFSTypes": json.dumps(external_wfs_types),
-            "external_themes": external_themes,
             "tiles_url": json.dumps(self.settings.get("tiles_url")),
             "functionality": self._functionality(),
             "queryer_attribute_urls": json.dumps(self._get_layers_enum()),
@@ -1198,6 +1192,15 @@ class Entry:
             "version_params": version_params,
             "version_role_params": version_role_params,
         }
+
+        if hasattr(self, "external_ogc_server"):
+            external_wfs_types, add_errors = self._external_wfs_types(role_id)
+            errors |= add_errors
+            d["externalWFSTypes"] = json.dumps(external_wfs_types)
+
+            external_themes, add_errors = self._external_themes(interface)
+            errors |= add_errors
+            d["external_themes"] = external_themes
 
         # handle permalink_themes
         permalink_themes = self.request.params.get("permalink_themes")
