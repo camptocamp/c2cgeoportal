@@ -1,13 +1,12 @@
 -r CONST_versions_requirements.txt
 -r CONST_fixversions.txt
-Pillow==3.2.0
-psycopg2==2.6.1
-Shapely==1.5.16
-pyproj==1.9.5.1
 # missing dependency of formalchemy
 couchdbkit==0.6.5
 http-parser==0.8.3
+Pillow==3.3.1
+psycopg2==2.6.2
+pyproj==1.9.5.1
 restkit==4.2.2
-
+Shapely==1.5.17
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 -e .
