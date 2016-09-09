@@ -36,6 +36,7 @@ from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
 from sqlalchemy.exc import ProgrammingError, NoSuchTableError
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
 from geoalchemy2.types import Geometry
@@ -45,8 +46,7 @@ from lingua.extractors import Message
 from pyramid.paster import bootstrap
 from c2c.template import get_config
 
-from c2cgeoportal.lib import add_url_params
-from c2cgeoportal.lib.print_ import *  # noqa
+from c2cgeoportal.lib import add_url_params, get_url2
 from c2cgeoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal.lib.dbreflection import get_class
 
@@ -80,6 +80,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options):
         with open(filename) as config_file:
+            from c2cgeoportal.lib.print_ import *  # noqa
             config = yaml.load(config_file)
             # for application config (.build/config.yaml)
             if "vars" in config:
@@ -185,13 +186,22 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 exit(colorize("No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED))
 
     def _import_layer_wmts(self, layer, messages):
+        from c2cgeoportal.models import DBSession, OGCServer
+
         layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
-        url = [d.value for d in layer.metadatas if d.name == "wmsUrl"]
-        if len(url) == 1 and len(layers) >= 1:
+        server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
+        if len(server) == 1 and len(layers) >= 1:
             for wms_layer in layers:
-                self._import_layer_attributes(
-                    url[0], wms_layer, layer.item_type, layer.name, layer.id, messages
-                )
+                try:
+                    DBSession.query(OGCServer).filter(name=server[0]).one()
+                    self._import_layer_attributes(
+                        server[0].url_wfs or server[0].url, wms_layer,
+                        layer.item_type, layer.name, layer.id, messages
+                    )
+                except NoResultFound:
+                    print("Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                        server[0], layer.name
+                    ))
 
     def _import_layer_attributes(self, url, layer, item_type, name, layer_id, messages):
         for attribute in self._layer_attributes(url, layer):
@@ -200,6 +210,22 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             ))
 
     def _layer_attributes(self, url, layer):
+        errors = set()
+
+        class Registry:
+            setting = None
+
+        class Request:
+            registry = Registry()
+
+        request = Request()
+        request.registry.settings = self.config
+        # static schema will not be supported
+        url = get_url2("Layer", url, request, errors)
+        if len(errors) > 0:
+            print("\n".join(errors))
+            return []
+
         url = add_url_params(url, {
             "SERVICE": "WFS",
             "VERSION": "1.1.0",
