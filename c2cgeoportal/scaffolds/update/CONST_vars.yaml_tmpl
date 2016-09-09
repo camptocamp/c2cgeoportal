@@ -306,6 +306,7 @@ vars:
             lang_files: [ngeo, cgxp-api]
             phantomjs_routes: [desktop]
             forward_headers: []
+            routes_disable: []
             themes:
                 default:
                     params:
