@@ -29,7 +29,6 @@
 
 
 import httplib2
-import urllib
 import logging
 import json
 import sys
@@ -52,7 +51,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from owslib.wms import WebMapService
 
 from c2cgeoportal.lib import get_setting, get_protected_layers_query, \
-    get_url, get_typed, get_types_map, add_url_params
+    get_url2, get_url, get_typed, get_types_map, add_url_params
 from c2cgeoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal.lib.caching import get_region, invalidate_region,  \
     set_common_headers, NO_CACHE, PUBLIC_CACHE, PRIVATE_CACHE
@@ -183,15 +182,17 @@ class Entry:
 
     def _wms_getcap(self, ogc_server=None):
         ogc_server = (ogc_server or self.default_ogc_server)
-        url = get_url(ogc_server.url, self.request)
-
-        if url.find("?") < 0:
-            url += "?"
+        errors = set()
+        url = get_url2(
+            "The OGC server '{}'".format(ogc_server.name),
+            ogc_server.url, self.request, errors
+        )
+        if len(errors):  # pragma: no cover
+            return None, errors
 
         # add functionalities params
         sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            url += urllib.urlencode(sparams) + "&"
+        url = add_url_params(url, sparams)
 
         return self._wms_getcap_cached(
             url, ogc_server.auth, self._get_capabilities_cache_role_key(ogc_server)
@@ -891,12 +892,11 @@ class Entry:
 
             # test if the theme is visible for the current user
             if len(children) > 0:
-                icon = get_url(
-                    theme.icon, self.request,
-                    self.request.static_url(
-                        "c2cgeoportal:static/images/blank.gif"
-                    ),
-                    errors=errors
+                icon = get_url2(
+                    "The Theme '{}'".format(theme.name),
+                    theme.icon, self.request, errors,
+                ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
+                    "c2cgeoportal:static/images/blank.gif"
                 )
 
                 t = {
@@ -978,16 +978,12 @@ class Entry:
         return self._wfs_types(self._get_external_wfs_url(), role_id)
 
     def _wfs_types(self, wfs_url, role_id):
-        if wfs_url.find("?") < 0:  # pragma: no cover
-            wfs_url += "?"
-
         # add functionalities query_string
         sparams = get_mapserver_substitution_params(self.request)
-        if sparams:  # pragma: no cover
-            wfs_url += urllib.urlencode(sparams) + "&"
+        wfs_url = add_url_params(wfs_url, sparams)
 
         if role_id is not None:
-            wfs_url += "role_id=%s&" % role_id
+            wfs_url = add_url_params(wfs_url, {"role_id": str(role_id)})
 
         return self._wfs_types_cached(wfs_url)
 
@@ -996,12 +992,12 @@ class Entry:
         errors = set()
 
         # retrieve layers metadata via GetCapabilities
-        params = (
-            ("SERVICE", "WFS"),
-            ("VERSION", "1.0.0"),
-            ("REQUEST", "GetCapabilities"),
-        )
-        wfsgc_url = wfs_url + "&".join(["=".join(p) for p in params])
+        params = {
+            "SERVICE": "WFS",
+            "VERSION": "1.0.0",
+            "REQUEST": "GetCapabilities",
+        }
+        wfsgc_url = add_url_params(wfs_url, params)
 
         log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
 
@@ -1222,10 +1218,17 @@ class Entry:
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
         ]
+        wfs_types, add_errors = self._wfs_types_cached(self._get_wfs_url())
+        if len(add_errors) != 0:  # pragma: no cover
+            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
 
         vars.update({
             "debug": self.debug,
-            "fulltextsearch_groups": groups
+            "fulltextsearch_groups": groups,
+            "wfs_types": [{
+                "featureType": t,
+                "label": t,
+            } for t in wfs_types],
         })
         return vars
 
@@ -1335,13 +1338,14 @@ class Entry:
                     url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
                     url_wfs = url
                 else:
-                    url = get_url(
+                    url = get_url2(
+                        "The OGC server '{}'".format(ogc_server.name),
                         ogc_server.url, self.request, errors=all_errors
                     )
-                    url_wfs = get_url(
-                        ogc_server.url_wfs, self.request,
-                        default=url, errors=all_errors
-                    )
+                    url_wfs = get_url2(
+                        "The OGC server (WFS) '{}'".format(ogc_server.name),
+                        ogc_server.url_wfs, self.request, errors=all_errors
+                    ) if ogc_server.url_wfs is not None else url
                 result["ogcServers"][ogc_server.name] = {
                     "url": url,
                     "urlWfs": url_wfs,

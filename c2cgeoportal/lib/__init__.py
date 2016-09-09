@@ -32,6 +32,7 @@ import re
 import urlparse
 import datetime
 import dateutil
+import urllib
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
 
@@ -57,7 +58,7 @@ def get_url(url, request, default=None, errors=None):
     if url is None:
         return default
 
-    if re.match("^[a-z]*://", url) is None:
+    if re.match("^[a-z]*://", url) is None:  # pragma: no cover
         return url
 
     obj = urlsplit(url)
@@ -81,55 +82,55 @@ def get_url(url, request, default=None, errors=None):
         return url
 
 
-def get_url2(name, value, request, errors):
-    url = urlparse.urlsplit(value)
-    if url.scheme == "":
-        if url.netloc == "" and url.path not in ("", "/"):
+def get_url2(name, url, request, errors):
+    url_split = urlparse.urlsplit(url)
+    if url_split.scheme == "":
+        if url_split.netloc == "" and url_split.path not in ("", "/"):
             # Relative URL like: /dummy/static/url or dummy/static/url
-            return urlparse.urlunsplit(url)
+            return urlparse.urlunsplit(url_split)
         errors.add(
-            "The attribute '{}'='{}' isn't an URL."
-            .format(name, value)
+            "{}='{}' isn't an URL."
+            .format(name, url)
         )
         return None
-    elif url.scheme in ("http", "https"):
-        if url.netloc == "":
+    elif url_split.scheme in ("http", "https"):
+        if url_split.netloc == "":
             errors.add(
-                "The attribute '{}'='{}' isn't a valid URL."
-                .format(name, value)
+                "{}='{}' isn't a valid URL."
+                .format(name, url)
             )
             return None
-        return urlparse.urlunsplit(url)
-    elif url.scheme == "static":
-        if url.path in ("", "/"):
+        return urlparse.urlunsplit(url_split)
+    elif url_split.scheme == "static":
+        if url_split.path in ("", "/"):
             errors.add(
-                "The attribute '{}'='{}' can't have an empty path."
-                .format(name, value)
+                "{}='{}' can't have an empty path."
+                .format(name, url)
             )
             return None
-        proj = url.netloc
+        proj = url_split.netloc
         package = request.registry.settings["package"]
         if proj == "":
             proj = "{}:static".format(package)
         elif ":" not in proj:
             proj = "{}:{}".format(package, proj)
         return request.static_url(
-            "{}{}".format(proj, url.path)
+            "{}{}".format(proj, url_split.path)
         )
-    elif url.scheme == "config":
-        if url.netloc == "":
+    elif url_split.scheme == "config":
+        if url_split.netloc == "":
             errors.add(
-                "The attribute '{}'='{}' can't have an empty netloc."
-                .format(name, value)
+                "{}='{}' can't have an empty netloc."
+                .format(name, url)
             )
             return None
-        server = request.registry.settings.get("servers", {}).get(url.netloc, None)
+        server = request.registry.settings.get("servers", {}).get(url_split.netloc, None)
         if server is None:
             errors.add(
-                "The server '{}' isn't found in the config".format(url.netloc)
+                "The server '{}' isn't found in the config".format(url_split.netloc)
             )
             return None
-        return u"{}{}?{}".format(server, url.path, url.query)
+        return u"{}{}?{}".format(server, url_split.path, url_split.query)
 
 
 def get_typed(name, value, types, request, errors):
@@ -187,7 +188,7 @@ def get_typed(name, value, types, request, errors):
                 date, "%Y-%m-%dT%H:%M:%S"
             )
         elif type_["type"] == "url":
-            return get_url2(name, value, request, errors)
+            return get_url2("The attribute '{}'".format(name), value, request, errors)
         else:
             errors.add("Unknown type '{}'.".format(type_["type"]))
     except Exception as e:
@@ -201,6 +202,8 @@ def get_typed(name, value, types, request, errors):
 
 
 def add_url_params(url, params):
+    if len(params.items()) == 0:
+        return url
     return add_spliturl_params(urlsplit(url), params)
 
 
@@ -208,7 +211,7 @@ def add_spliturl_params(spliturl, params):
     query = []
     if spliturl.query != "":
         query.append(spliturl.query)
-    query.extend(["%s=%s" % param for param in params.items()])
+    query.extend([urllib.urlencode(dict([param])) for param in params.items()])
 
     return urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,

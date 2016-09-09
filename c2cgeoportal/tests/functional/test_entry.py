@@ -686,11 +686,11 @@ class TestEntryView(TestCase):
 
         result = entry.get_ngeo_index_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "fulltextsearch_groups"
+            "debug", "fulltextsearch_groups", "wfs_types"
         ]))
         result = entry.get_ngeo_permalinktheme_vars()
         self.assertEquals(set(result.keys()), set([
-            "debug", "fulltextsearch_groups", "permalink_themes"
+            "debug", "fulltextsearch_groups", "permalink_themes", "wfs_types"
         ]))
 
         result = entry.apijs()
@@ -952,7 +952,7 @@ class TestEntryView(TestCase):
             "metadataURL": "http://example.com/tiwms",
             "isChecked": True,
             "icon": "/dummy/route/mapserverproxy?"
-            "LAYER=test internal WMS&SERVICE=WMS&FORMAT=image/png&"
+            "LAYER=test+internal+WMS&SERVICE=WMS&FORMAT=image%2Fpng&"
             "REQUEST=GetLegendGraphic&RULE=rule&VERSION=1.1.1&TRANSPARENT=TRUE",
             "type": "internal WMS",
             "imageType": "image/png",
