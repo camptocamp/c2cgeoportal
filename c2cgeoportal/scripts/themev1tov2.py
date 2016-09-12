@@ -129,7 +129,10 @@ def ogc_server(session):
         if identifier not in unique_servers:
             unique_servers.append(identifier)
             new_ogc_server = OGCServer()
-            new_ogc_server.url = server[0]
+            url = server[0]
+            if url is None:
+                url = 'config://internal/mapserv'
+            new_ogc_server.url = url
             new_ogc_server.image_type = image_type
             new_ogc_server.is_single_tile = server[2]
             name = server[0]
@@ -154,8 +157,11 @@ def layer_v1tov2(session, layer):
         image_type = layer.image_type
         if layer.image_type is None:
             image_type = 'image/png'
+        url = layer.url
+        if layer.url is None:
+            url = 'config://internal/mapserv'
         ogc_server = session.query(OGCServer).filter(
-            OGCServer.url == layer.url,
+            OGCServer.url == url,
             OGCServer.image_type == image_type, OGCServer.is_single_tile ==
             layer.is_single_tile).one()
         new_layer.ogc_server = ogc_server
