@@ -962,20 +962,36 @@ class Entry:
         return children, errors
 
     def _get_wfs_url(self):
-        return self.default_ogc_server.url_wfs \
-            if self.default_ogc_server.url_wfs is not None \
-            else self.default_ogc_server.url
+        errors = set()
+        ogc_server = self.default_ogc_server
+        url = get_url2(
+            "The OGC server '{}'".format(ogc_server.name),
+            ogc_server.url_wfs or ogc_server.url,
+            self.request, errors=errors,
+        )
+        return url, errors
 
     def _internal_wfs_types(self, role_id):
-        return self._wfs_types(self._get_wfs_url(), role_id)
+        url, errors = self._get_wfs_url()
+        if len(errors) > 0:
+            return None, errors
+        return self._wfs_types(url, role_id)
 
     def _get_external_wfs_url(self):
-        return self.external_ogc_server.url_wfs \
-            if self.external_ogc_server.url_wfs is not None \
-            else self.external_ogc_server.url
+        errors = set()
+        ogc_server = self.external_ogc_server
+        url = get_url2(
+            "The OGC server '{}'".format(ogc_server.name),
+            ogc_server.url_wfs or ogc_server.url,
+            self.request, errors=errors,
+        )
+        return url, errors
 
     def _external_wfs_types(self, role_id):
-        return self._wfs_types(self._get_external_wfs_url(), role_id)
+        url, errors = self._get_external_wfs_url()
+        if len(errors) > 0:
+            return None, errors
+        return self._wfs_types(url, role_id)
 
     def _wfs_types(self, wfs_url, role_id):
         # add functionalities query_string
@@ -1218,7 +1234,11 @@ class Entry:
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
         ]
-        wfs_types, add_errors = self._wfs_types_cached(self._get_wfs_url())
+        url, add_errors = self._get_wfs_url()
+        if len(add_errors) > 0:
+            wfs_types = None
+        else:
+            wfs_types, add_errors = self._wfs_types_cached(url)
         if len(add_errors) != 0:  # pragma: no cover
             log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
 
