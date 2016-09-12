@@ -107,40 +107,38 @@ def ogc_server(session):
     from c2cgeoportal.models import LayerV1, OGCServer
 
     servers_v1 = session.query(
-        LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile).group_by(
-            LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile).all()
-    unique_servers = []
+        LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
+    ).group_by(
+        LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
+    ).all()
 
     # get existing list of ogc_server
     servers_ogc = session.query(OGCServer).all()
-    for server in servers_ogc:
-        identifier = str(server.url) + ' ' + str(server.image_type) + ' ' + \
-            str(server.is_single_tile)
-        if identifier not in unique_servers:
-            unique_servers.append(identifier)
+    unique_servers = set([
+        (server.url, server.image_type, server.is_single_tile)
+        for server in servers_ogc
+    ])
 
     # add new ogc_server
-    for server in servers_v1:
+    for url, image_type, is_single_tile in servers_v1:
         # default image_type
-        image_type = server[1]
-        if server[1] is None:
-            image_type = 'image/png'
-        identifier = str(server[0]) + ' ' + image_type + ' ' + str(server[2])
+        if image_type is None:
+            image_type = "image/png"
+        if url is None:
+            url = "config://internal/mapserv"
+        identifier = (url, image_type, is_single_tile)
         if identifier not in unique_servers:
-            unique_servers.append(identifier)
+            unique_servers.add(identifier)
             new_ogc_server = OGCServer()
-            url = server[0]
-            if url is None:
-                url = 'config://internal/mapserv'
             new_ogc_server.url = url
             new_ogc_server.image_type = image_type
-            new_ogc_server.is_single_tile = server[2]
-            name = server[0]
+            new_ogc_server.is_single_tile = is_single_tile
+            name = url
             if name is None:
-                name = str(server[1])
-            if server[2]:
-                name += ' with single_tile'
-            new_ogc_server.name = u'source for %s' % name
+                name = image_type
+            if is_single_tile:
+                name += " with single_tile"
+            new_ogc_server.name = u"source for %s" % name
 
             session.add(new_ogc_server)
 
@@ -156,14 +154,15 @@ def layer_v1tov2(session, layer):
         new_layer = LayerWMS()
         image_type = layer.image_type
         if layer.image_type is None:
-            image_type = 'image/png'
+            image_type = "image/png"
         url = layer.url
         if layer.url is None:
-            url = 'config://internal/mapserv'
+            url = "config://internal/mapserv"
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
-            OGCServer.image_type == image_type, OGCServer.is_single_tile ==
-            layer.is_single_tile).one()
+            OGCServer.image_type == image_type,
+            OGCServer.is_single_tile == is_single_tile
+        ).one()
         new_layer.ogc_server = ogc_server
     elif layer.layer_type == "WMTS":
         new_layer = LayerWMTS()
