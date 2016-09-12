@@ -41,7 +41,7 @@ the mobile client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
 
 install_requires = [
-    "pyramid<=1.6.99,>=1.6b3",
+    "pyramid>=1.7,<1.8",
     "pyramid_multiauth",
     "pyramid_mako",  # to render the HTML files
     "psycopg2",
@@ -71,11 +71,11 @@ install_requires = [
     "pyramid_chameleon",
     "pyramid_formalchemy>=0.4.3",
     "fa.jquery>=0.9.5",
-    "js.jquery==1.7.1",
+    "js.jquery==1.9.1",
     # The version 1.10.3 have an issue with the 'jump to' combobox of the
     # admin interface
-    "js.jqueryui==1.8.24",
-    "FormAlchemy==1.4.3",
+    "js.jqueryui==1.10.3",
+    "FormAlchemy==1.5.5",
     "GeoFormAlchemy2>=2.0.dev2",
 ]
 
