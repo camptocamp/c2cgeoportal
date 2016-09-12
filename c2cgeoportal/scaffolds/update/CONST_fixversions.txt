@@ -1,0 +1,14 @@
+# List of versions that shouldn't be changed by requires.io
+pyramid==1.6.1
+https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d7b93547e.zip#egg=fa.jquery
+FormAlchemy==1.4.3
+js.jqgrid==4.4.4
+js.jquery==1.7.1
+js.jquery-form==3.9
+js.jquery-jgrowl==1.4.2
+js.jquery-markitup==1.1.10.post1
+js.jqueryui==1.8.24
+js.jqueryui-selectmenu==0.1
+js.jqueryui-syronex-colorpicker==1.0.0
+js.tinymce==4.2.7
+pyramid-formalchemy==0.4.4
