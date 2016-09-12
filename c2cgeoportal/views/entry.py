@@ -973,7 +973,7 @@ class Entry:
 
     def _internal_wfs_types(self, role_id):
         url, errors = self._get_wfs_url()
-        if len(errors) > 0:
+        if len(errors) > 0:  # pragma: no cover
             return None, errors
         return self._wfs_types(url, role_id)
 
@@ -989,7 +989,7 @@ class Entry:
 
     def _external_wfs_types(self, role_id):
         url, errors = self._get_external_wfs_url()
-        if len(errors) > 0:
+        if len(errors) > 0:  # pragma: no cover
             return None, errors
         return self._wfs_types(url, role_id)
 
@@ -1235,7 +1235,7 @@ class Entry:
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
         ]
         url, add_errors = self._get_wfs_url()
-        if len(add_errors) > 0:
+        if len(add_errors) > 0:  # pragma: no cover
             wfs_types = None
         else:
             wfs_types, add_errors = self._wfs_types_cached(url)
