@@ -107,8 +107,8 @@ class MapservProxy(Proxy):
             del params["user_id"]
 
         self.lower_params = self._get_lower_params(params)
-        self.ogc_server = self._get_ogcserver_byname(self.lower_params["ogcserver"]) \
-            if "ogcserver" in self.lower_params else None
+        self.ogc_server = self._get_ogcserver_byname(params["ogcserver"]) \
+            if "ogcserver" in params else None
 
         if self.user is not None:
             # We have a user logged in. We need to set group_id and
