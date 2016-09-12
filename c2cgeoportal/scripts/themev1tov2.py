@@ -126,6 +126,11 @@ def ogc_server(session):
             image_type = "image/png"
         if url is None:
             url = "config://internal/mapserv"
+            name = u"source for {}".format(image_type)
+        else:
+            name = u"source for {} {}".format(url, image_type)
+        if is_single_tile:
+            name += u" with single_tile"
         identifier = (url, image_type, is_single_tile)
         if identifier not in unique_servers:
             unique_servers.add(identifier)
@@ -133,12 +138,7 @@ def ogc_server(session):
             new_ogc_server.url = url
             new_ogc_server.image_type = image_type
             new_ogc_server.is_single_tile = is_single_tile
-            name = url
-            if name is None:
-                name = image_type
-            if is_single_tile:
-                name += " with single_tile"
-            new_ogc_server.name = u"source for %s" % name
+            new_ogc_server.name = name
 
             session.add(new_ogc_server)
 
