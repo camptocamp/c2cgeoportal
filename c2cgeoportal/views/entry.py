@@ -893,7 +893,7 @@ class Entry:
             # test if the theme is visible for the current user
             if len(children) > 0:
                 icon = get_url2(
-                    "The Theme '{}'".format(theme.name),
+                    u"The Theme '{}'".format(theme.name),
                     theme.icon, self.request, errors,
                 ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
                     "c2cgeoportal:static/images/blank.gif"
