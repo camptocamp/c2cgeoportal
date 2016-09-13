@@ -79,7 +79,6 @@ DEV_REQUIREMENTS += $(TILECLOUD_VERSION) $(TILECLOUDCHAIN_VERSION)
 endif
 ifeq ($(CGXP), TRUE)
 DEV_REQUIREMENTS += $(JSTOOLS_VERSION) $(C2CCSSMIN_VERSION)
-JSTools==0.6 c2c.cssmin==0.7dev6
 endif
 ifeq ($(NGEO), TRUE)
 DEV_REQUIREMENTS += http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz
