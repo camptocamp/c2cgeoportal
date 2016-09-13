@@ -737,6 +737,11 @@ $(TX_RC):
 	mkdir -p $(dir $@)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
+	test -s $@
+
+.build/locale/en/LC_MESSAGES/gmf.po:
+	$(PRERULE_CMD)
+	@echo "The en language is the source language, so the file must stay empty"
 
 # ngeo
 
