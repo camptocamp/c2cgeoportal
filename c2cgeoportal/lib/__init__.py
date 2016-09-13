@@ -211,7 +211,14 @@ def add_spliturl_params(spliturl, params):
     query = []
     if spliturl.query != "":
         query.append(spliturl.query)
-    query.extend([urllib.urlencode(dict([param])) for param in params.items()])
+    prepared_params = []
+    for param in params.items():
+        if isinstance(param[1], unicode):
+            prepared_params.append({param[0], param[1].encode("utf-8")})
+        else:
+            prepared_params.append(param)
+
+    query.extend([urllib.urlencode(dict([param])) for param in prepared_params])
 
     return urlunsplit((
         spliturl.scheme, spliturl.netloc, spliturl.path,
