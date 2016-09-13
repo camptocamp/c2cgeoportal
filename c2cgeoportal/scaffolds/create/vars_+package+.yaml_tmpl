@@ -113,7 +113,6 @@ vars:
     # Checker configuration
     checker:
         defaults:
-            routes_disable: []
             fulltextsearch: text to search
             print_spec:
                 layout: "1 A4 portrait"
@@ -131,8 +130,6 @@ vars:
                         longitudeFirst: true
                         layers: []
                     legend: {}
-        all:
-            routes_disable: []
 
     check_collector:
         disabled: []
@@ -144,7 +141,6 @@ update_paths:
 - shortener
 - authtkt
 - checker.defaults
-- checker.all
 - check_collector.disabled
 - check_collector.hosts
 - admin_interface
