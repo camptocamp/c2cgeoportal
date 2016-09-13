@@ -245,13 +245,21 @@ def main():
                 flags=re.DOTALL
             )
             data = _sub(
-                re.escape('<script src="../../../../node_modules/') + "(.*)" + re.escape('"></script>'),
-                r"""<script src="${request.static_url('%s/\1' % request.registry.settings['node_modules_path'])}"></script>""",  # noqa
+                '{}([^"]+){}(.*){}'.format(
+                    re.escape('<script src="../../../../node_modules/'),
+                    re.escape('"'),
+                    re.escape("></script>"),
+                ),
+                r"""<script src="${request.static_url('%s/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa
                 data,
             )
             data = _sub(
-                re.escape('<script src="../../../../') + "(.*)" + re.escape('"></script>'),
-                r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"></script>""",  # noqa
+                '{}([^"]+){}(.*){}'.format(
+                    re.escape('<script src="../../../../'),
+                    re.escape('"'),
+                    re.escape("></script>"),
+                ),
+                r"""<script src="${request.static_url('%s/ngeo/\1' % request.registry.settings['node_modules_path'])}"\2></script>""",  # noqa
                 data,
             )
             # i18n
