@@ -1229,27 +1229,28 @@ class Entry:
     def get_ngeo_index_vars(self, vars={}):
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
-        groups = [
+        vars["debug"] = self.debug
+
+        vars["fulltextsearch_groups"] = [
             group[0] for group in DBSession.query(
                 func.distinct(FullTextSearch.layer_name)
             ).filter(FullTextSearch.layer_name.isnot(None)).all()
         ]
+
         url, add_errors = self._get_wfs_url()
         if len(add_errors) > 0:  # pragma: no cover
             wfs_types = None
         else:
             wfs_types, add_errors = self._wfs_types_cached(url)
-        if len(add_errors) != 0:  # pragma: no cover
-            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
-
-        vars.update({
-            "debug": self.debug,
-            "fulltextsearch_groups": groups,
-            "wfs_types": [{
+        if len(add_errors) == 0:
+            vars["wfs_types"] = [{
                 "featureType": t,
                 "label": t,
-            } for t in wfs_types],
-        })
+            } for t in wfs_types]
+        else:  # pragma: no cover
+            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
+            vars["wfs_types"] = []
+
         return vars
 
     def get_ngeo_permalinktheme_vars(self):
