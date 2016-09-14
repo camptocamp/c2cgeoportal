@@ -1,6 +1,6 @@
 alembic==0.8.7
 c2c.versions==1.0.1
-flake8==3.0.4
+flake8==2.6.2
 htmlmin==0.1.10
 Mako==1.0.4
 pep8-naming== 0.4.1
