@@ -927,8 +927,8 @@ class Interface(Base):
 
 
 class Metadata(Base):
-    __label__ = _(u"metadata")
-    __plural__ = _(u"metadatas")
+    __label__ = _(u"Metadata")
+    __plural__ = _(u"Metadatas")
     __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
     __acl__ = [
