@@ -197,8 +197,8 @@ class TestThemesViewMetadata(TestCase):
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set([
             "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
-            "The date attribute '{}'='{}' shouldn't have any time",
-            "The time attribute '{}'='{}' shouldn't have any date",
+            "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' shouldn't have any time",
+            "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' shouldn't have any date",
             "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format",
             "The attribute 'url11'='https:///static/icon.png' isn't a valid URL.",
             "The attribute 'url12'='static://test' can't have an empty path.",

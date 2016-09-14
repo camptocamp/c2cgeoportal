@@ -165,7 +165,9 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.time() != datetime.time(0, 0, 0):
-                errors.add("The date attribute '{}'='{}' shouldn't have any time")
+                errors.add("The date attribute '{}'='{}' shouldn't have any time".format(
+                    name, value,
+                ))
                 return None
             return datetime.date.strftime(
                 date.date(), "%Y-%m-%d"
@@ -175,7 +177,9 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.date() != datetime.date(1, 1, 1):
-                errors.add("The time attribute '{}'='{}' shouldn't have any date")
+                errors.add("The time attribute '{}'='{}' shouldn't have any date".format(
+                    name, value,
+                ))
                 return None
             return datetime.time.strftime(
                 date.time(), "%H:%M:%S"
