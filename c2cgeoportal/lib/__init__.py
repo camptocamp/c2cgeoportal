@@ -32,6 +32,7 @@ import re
 import urlparse
 import datetime
 import dateutil
+import json
 import urllib
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
@@ -193,6 +194,14 @@ def get_typed(name, value, types, request, errors):
             )
         elif type_["type"] == "url":
             return get_url2("The attribute '{}'".format(name), value, request, errors)
+        elif type_["type"] == "json":
+            try:
+                return json.loads(value)
+            except Exception as e:
+                errors.append("The attribute '{}'='{}' has an error: {}".format(
+                    name, value, str(e),
+                ))
+                return {}
         else:
             errors.add("Unknown type '{}'.".format(type_["type"]))
     except Exception as e:
