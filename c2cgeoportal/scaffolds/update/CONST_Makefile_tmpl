@@ -69,12 +69,12 @@ endif
 export INSTANCE_ID
 
 PIP_CMD ?= $(VENV_BIN)/pip
-PIP_VERSION ?= pip==8.1.2
-SETUPTOOLS_VERSION ?= setuptools==21.1.0
-TILECLOUD_VERSION ?= tilecloud==0.2.dev20150115
-TILECLOUDCHAIN_VERSION ?= tilecloud-chain==1.0.0
-JSTOOLS_VERSION ?= JSTools==0.6
-C2CCSSMIN_VERSION ?= c2c.cssmin==0.7dev6
+PIP_VERSION ?= $(shell grep ^pip== CONST_optional-requirements.txt --colour=never)
+SETUPTOOLS_VERSION ?= $(shell grep ^setuptools== CONST_optional-requirements.txt --colour=never)
+TILECLOUD_VERSION ?= $(shell grep ^tilecloud== CONST_optional-requirements.txt --colour=never)
+TILECLOUDCHAIN_VERSION ?= $(shell grep ^tilecloud-chain== CONST_optional-requirements.txt --colour=never)
+JSTOOLS_VERSION ?= $(shell grep ^JSTools== CONST_optional-requirements.txt --colour=never)
+C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt --colour=never)
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
@@ -147,7 +147,11 @@ endif
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 # Requirements
-EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py CONST_versions_requirements.txt CONST_fixversions.txt $(CONST_REQUIREMENT)
+EGGS_DEPENDENCIES += .build/venv.timestamp-noclean setup.py \
+	CONST_versions_requirements.txt \
+	CONST_fixversions.txt \
+	CONST_optional-requirements.txt \
+	$(CONST_REQUIREMENT)
 REQUIREMENTS ?= c2cgeoportal
 REQUIREMENTS += -r $(CONST_REQUIREMENT)
 DEV_REQUIREMENTS += -r CONST_dev-requirements.txt
@@ -1025,12 +1029,12 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 # Venv
 
-.build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt
+.build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt CONST_optional-requirements.txt
 	$(PRERULE_CMD)
 	$(PIP_CMD) install $(DEV_REQUIREMENTS)
 	touch $@
 
-.build/venv.timestamp-noclean:
+.build/venv.timestamp-noclean: CONST_optional-requirements.txt
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	virtualenv --no-site-packages .build/venv

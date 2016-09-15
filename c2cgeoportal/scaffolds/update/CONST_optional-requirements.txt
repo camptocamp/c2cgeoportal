@@ -1,0 +1,6 @@
+pip==8.1.2
+setuptools==21.1.0
+tilecloud==0.2.dev20150115
+tilecloud-chain==1.0.0
+JSTools==0.6
+c2c.cssmin==0.7dev6
