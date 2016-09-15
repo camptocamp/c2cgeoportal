@@ -169,10 +169,10 @@ def get_typed(name, value, types, request, errors):
                 errors.add("The date attribute '{}'='{}' shouldn't have any time".format(
                     name, value,
                 ))
-                return None
-            return datetime.date.strftime(
-                date.date(), "%Y-%m-%d"
-            )
+            else:
+                return datetime.date.strftime(
+                    date.date(), "%Y-%m-%d"
+                )
         elif type_["type"] == "time":
             date = dateutil.parser.parse(
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
@@ -181,10 +181,10 @@ def get_typed(name, value, types, request, errors):
                 errors.add("The time attribute '{}'='{}' shouldn't have any date".format(
                     name, value,
                 ))
-                return None
-            return datetime.time.strftime(
-                date.time(), "%H:%M:%S"
-            )
+            else:
+                return datetime.time.strftime(
+                    date.time(), "%H:%M:%S"
+                )
         elif type_["type"] == "datetime":
             date = dateutil.parser.parse(
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
@@ -201,7 +201,6 @@ def get_typed(name, value, types, request, errors):
                 errors.append("The attribute '{}'='{}' has an error: {}".format(
                     name, value, str(e),
                 ))
-                return {}
         else:
             errors.add("Unknown type '{}'.".format(type_["type"]))
     except Exception as e:
