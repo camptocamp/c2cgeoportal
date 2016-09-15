@@ -75,7 +75,7 @@ class TestEntryView(TestCase):
         ))
         user2 = User(username=u"__test_user2", password=u"__test_user2", role=role2)
 
-        main = Interface(name=u"main")
+        main = Interface(name=u"desktop")
         mobile = Interface(name=u"mobile")
 
         public_layer = LayerV1(name=u"__test_public_layer", public=True)
@@ -212,7 +212,7 @@ class TestEntryView(TestCase):
         for t in DBSession.query(Theme).all():
             DBSession.delete(t)
         DBSession.query(Interface).filter(
-            Interface.name == "main"
+            Interface.name == "desktop"
         ).delete()
         DBSession.query(OGCServer).delete()
 
@@ -323,7 +323,7 @@ class TestEntryView(TestCase):
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
-        request.interface_name = "main"
+        request.interface_name = "desktop"
         request.params = params
 
         if username is not None:
@@ -422,7 +422,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated
-        themes, errors = entry._themes(None, "main")
+        themes, errors = entry._themes(None, "desktop")
         self.assertEquals(errors, set([
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
@@ -474,7 +474,7 @@ class TestEntryView(TestCase):
 
         from c2cgeoportal.lib import caching
         caching.invalidate_region()
-        themes, errors = entry._themes(None, "main")
+        themes, errors = entry._themes(None, "desktop")
         self.assertEquals(errors, set([
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
@@ -534,7 +534,7 @@ class TestEntryView(TestCase):
         entry = Entry(request)
 
         # unautenticated v1
-        themes, errors = entry._themes(None, "main")
+        themes, errors = entry._themes(None, "desktop")
         self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
         layers = set([l["name"] for l in themes[0]["children"][0]["children"]])

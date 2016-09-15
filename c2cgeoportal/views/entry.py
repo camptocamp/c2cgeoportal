@@ -853,7 +853,7 @@ class Entry:
 
     @cache_region.cache_on_arguments()
     def _themes(
-        self, role_id, interface="main", filter_themes=True, version=1,
+        self, role_id, interface="desktop", filter_themes=True, version=1,
         catalogue=False, min_levels=1
     ):
         """
@@ -1334,7 +1334,7 @@ class Entry:
         elif self.request.client_addr != "127.0.0.1":
             role_id = None
 
-        interface = self.request.params.get("interface", "main")
+        interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
         version = int(self.request.params.get("version", 1))
         catalogue = self.request.params.get("catalogue", "false") == "true"

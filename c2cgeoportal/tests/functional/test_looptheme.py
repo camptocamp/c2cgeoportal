@@ -53,7 +53,7 @@ class TestLoopTheme(TestCase):
             Theme, LayerGroup, Interface
 
         create_default_ogcserver()
-        main = Interface(name=u"main")
+        main = Interface(name=u"desktop")
 
         layer = LayerV1(name=u"__test_layer", public=True)
         layer.interfaces = [main]
@@ -100,5 +100,5 @@ class TestLoopTheme(TestCase):
         self.assertEquals([t["name"] for t in themes], [u"__test_theme"])
 
         cache_region.invalidate()
-        themes, errors = entry._themes(None, u"main")
+        themes, errors = entry._themes(None, u"desktop")
         self.assertEquals(len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1)

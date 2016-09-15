@@ -59,7 +59,7 @@ class TestThemesView(TestCase):
             LayerV1, OGCServer, LayerWMS, LayerWMTS, \
             Metadata, Dimension, OGCSERVER_AUTH_NOAUTH
 
-        main = Interface(name=u"main")
+        main = Interface(name=u"desktop")
         mobile = Interface(name=u"mobile")
         min_levels = Interface(name=u"min_levels")
 

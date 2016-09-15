@@ -86,25 +86,16 @@ INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
 
 
 def add_interface(
-    config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs
+    config, interface_name="desktop", interface_type=INTERFACE_TYPE_CGXP, **kwargs
 ):  # pragma: no cover
     if interface_type == INTERFACE_TYPE_CGXP:
-        if interface_name is None:
-            add_interface_cgxp(
-                config,
-                interface_name="main",
-                route_names=("home", "viewer"),
-                routes=("/", "/viewer.js"),
-                renderers=("index.html", "viewer.js"),
-            )
-        else:
-            add_interface_cgxp(
-                config,
-                interface_name=interface_name,
-                route_names=(interface_name, interface_name + ".js"),
-                routes=("/%s" % interface_name, "/%s.js" % interface_name),
-                renderers=("/%s.html" % interface_name, "/%s.js" % interface_name),
-            )
+        add_interface_cgxp(
+            config,
+            interface_name=interface_name,
+            route_names=(interface_name, interface_name + ".js"),
+            routes=("/%s" % interface_name, "/%s.js" % interface_name),
+            renderers=("/%s.html" % interface_name, "/%s.js" % interface_name),
+        )
 
     elif interface_type == INTERFACE_TYPE_NGEO:
         route = "/%s" % interface_name
