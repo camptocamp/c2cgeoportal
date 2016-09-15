@@ -23,6 +23,7 @@ The type can be:
 * ``boolean``
 * ``integer``
 * ``float``
+* ``json``
 * ``date``
 * ``time``
 * ``datetime`` `see the python-dateutil documentation <http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47>`_
