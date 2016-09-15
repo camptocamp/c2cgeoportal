@@ -32,6 +32,7 @@ import re
 import urlparse
 import datetime
 import dateutil
+import json
 import urllib
 from urlparse import urlsplit, urlunsplit, urljoin
 from urllib import quote
@@ -165,21 +166,25 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.time() != datetime.time(0, 0, 0):
-                errors.add("The date attribute '{}'='{}' shouldn't have any time")
-                return None
-            return datetime.date.strftime(
-                date.date(), "%Y-%m-%d"
-            )
+                errors.add("The date attribute '{}'='{}' shouldn't have any time".format(
+                    name, value,
+                ))
+            else:
+                return datetime.date.strftime(
+                    date.date(), "%Y-%m-%d"
+                )
         elif type_["type"] == "time":
             date = dateutil.parser.parse(
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.date() != datetime.date(1, 1, 1):
-                errors.add("The time attribute '{}'='{}' shouldn't have any date")
-                return None
-            return datetime.time.strftime(
-                date.time(), "%H:%M:%S"
-            )
+                errors.add("The time attribute '{}'='{}' shouldn't have any date".format(
+                    name, value,
+                ))
+            else:
+                return datetime.time.strftime(
+                    date.time(), "%H:%M:%S"
+                )
         elif type_["type"] == "datetime":
             date = dateutil.parser.parse(
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
@@ -189,6 +194,13 @@ def get_typed(name, value, types, request, errors):
             )
         elif type_["type"] == "url":
             return get_url2("The attribute '{}'".format(name), value, request, errors)
+        elif type_["type"] == "json":
+            try:
+                return json.loads(value)
+            except Exception as e:
+                errors.append("The attribute '{}'='{}' has an error: {}".format(
+                    name, value, str(e),
+                ))
         else:
             errors.add("Unknown type '{}'.".format(type_["type"]))
     except Exception as e:
