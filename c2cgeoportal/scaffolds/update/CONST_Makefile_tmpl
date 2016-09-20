@@ -1032,7 +1032,10 @@ $(VENV_BIN)/flake8$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
 
 # Venv
 
-.build/dev-requirements.timestamp: .build/venv.timestamp-noclean CONST_dev-requirements.txt CONST_optional-requirements.txt
+.build/dev-requirements.timestamp: .build/venv.timestamp-noclean \
+		CONST_dev-requirements.txt \
+		CONST_dev-fixversions.txt \
+		CONST_optional-requirements.txt
 	$(PRERULE_CMD)
 	$(PIP_CMD) install $(DEV_REQUIREMENTS)
 	touch $@
