@@ -137,6 +137,7 @@ deploy:
   on:
     repo: camptocamp/c2cgeoportal
     branch: master
+    condition: $TRAVIS_PULL_REQUEST = false
 
 notifications:
   email:
