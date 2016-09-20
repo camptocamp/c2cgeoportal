@@ -14,6 +14,7 @@ Parameters
 ----------
 
 * ``version``: ``1`` or ``2``, API version, default is ``1``.
+* ``interface``: used interface (optional).
 * ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
   or ``background_layers``, default is ``all``.
 * ``background``: parent group of background layers to get.
