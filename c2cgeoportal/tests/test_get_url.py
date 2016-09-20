@@ -57,3 +57,31 @@ class TestGetURL(TestCase):
         errors = set()
         self.assertEquals(get_url("config://srv2/icon.png", request, errors=errors), None)
         self.assertEquals(errors, set(["The server 'srv2' isn't found in the config"]))
+
+    def test_get_url2(self):
+        from c2cgeoportal.lib import get_url2
+
+        request = create_dummy_request({
+            "package": "my_project",
+            "servers": {
+                "srv": "https://example.com/test",
+                "srv_alt": "https://example.com/test/",
+            },
+        })
+
+        def static_url(path, **kwargs):
+            return "http://server.org/" + path
+        request.static_url = static_url
+
+        self.assertEquals(get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png")
+        self.assertEquals(get_url2("test", "static:///icon.png", request, set()), "http://server.org/my_project:static/icon.png")
+        self.assertEquals(get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png")
+        self.assertEquals(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
+        self.assertEquals(get_url2("test", "config://srv", request, set()), "https://example.com/test/")
+        self.assertEquals(get_url2("test", "config://srv/icon.png?test=aaa", request, set()), "https://example.com/test/icon.png?test=aaa")
+        self.assertEquals(get_url2("test", "config://srv_alt/icon.png", request, set()), "https://example.com/test/icon.png")
+        self.assertEquals(get_url2("test", "http://example.com/icon.png", request, set()), "http://example.com/icon.png")
+        self.assertEquals(get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png")
+        errors = set()
+        self.assertEquals(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
+        self.assertEquals(errors, set(["The server 'srv2' isn't found in the config"]))
