@@ -195,12 +195,12 @@ def main():
             else:
                 data = _sub(
                     r'<img src="image/([^"]+)"( alt="")? ?/>',
-                    '<img src="${request.static_url(\'{{package}}:static-ngeo/image/\\1\')}" />',
+                    '<img src="${request.static_url(\'{{package}}:static-ngeo/images/\\1\')}" />',
                     data,
                 )
             data = _sub(
                 r'<link rel="shortcut icon" href="image/favicon.ico"/>',
-                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/image/favicon.ico\')}"/>',  # noqa
+                '<link rel="shortcut icon" href="${request.static_url(\'{{package}}:static-ngeo/images/favicon.ico\')}"/>',  # noqa
                 data,
             )
             # Styles
