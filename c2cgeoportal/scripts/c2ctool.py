@@ -412,9 +412,12 @@ class C2cTool:
             print("")
             print(self.color_bar)
             print(
-                "Optional step, have a look in the `create.diff` file, "
-                "if there is a change in the create template that should "
-                "be reported in your project."
+                "This is an optional step but it helps to have a standard project.\n"
+                "In the `create.diff` file, there are all the changes made in the create template "
+                "that are recommended to be reported in your project.\n"
+                "An advise to be more effective: In most of the casees it concerned a file that "
+                "you never customise, or a file that you customised in depth, then respectively "
+                "copy the new file from CONST_create_template, respectively ignore the changes."
             )
             self.print_step(4)
 
