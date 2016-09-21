@@ -34,6 +34,7 @@ sudo -u postgres psql --command="CREATE SCHEMA main_static;" geomapfish
 sudo -u postgres psql --command='GRANT ALL ON SCHEMA main TO "www-data"' geomapfish
 sudo -u postgres psql --command='GRANT ALL ON SCHEMA main_static TO "www-data"' geomapfish
 
-make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini
+make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini production.ini .build/config.yaml
 .build/venv/bin/alembic --config alembic.ini upgrade head
 .build/venv/bin/alembic --config alembic_static.ini upgrade head
+.build/venv/bin/create-demo-theme

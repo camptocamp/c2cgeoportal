@@ -283,6 +283,14 @@ Then follow the sections in the install application guide:
 
 .. note::
 
+   After that if you want a default theme you can run:
+
+   .. prompt:: bash
+
+      .build/venv/bin/create-demo-theme
+
+.. note::
+
     If you create the main instance you should do the whole
     database creation as described in :ref:`integrator_install_application`,
     except the 'Get the application source tree' chapter.
