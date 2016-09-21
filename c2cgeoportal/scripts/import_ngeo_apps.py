@@ -186,6 +186,8 @@ def main():
                 data
             # back for ng-app
             data = _sub(r"ng-{{package}}", r"ng-app", data)
+            # back for gmf-app- css prefix
+            data = _sub(r"gmf-{{package}}-", r"gmf-app-", data, required=False)
             if args.interface == "mobile":
                 # back for mobile-web-app-capable
                 data = _sub(
@@ -353,9 +355,9 @@ ${ ',\\n'.join([
             data = _sub(
                 re.escape("module.value('ngeoWfsPermalinkOptions',") + ".*defaultFeatureNS",
                 """module.value('ngeoWfsPermalinkOptions', /** @type {ngeox.WfsPermalinkOptions} */ ({
-            url: '${request.route_url('mapserv_proxy') | n}',
-            wfsTypes: ${json.dumps(wfs_types),
-            defaultFeatureNS""",
+              url: '${request.route_url('mapserverproxy') | n}',
+              wfsTypes: ${dumps(wfs_types) | n},
+              defaultFeatureNS""",
                 data,
                 count=1,
                 flags=re.DOTALL,
