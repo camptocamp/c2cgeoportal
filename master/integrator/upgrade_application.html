@@ -45,10 +45,6 @@
             
   <div class="section" id="upgrading-a-geomapfish-application">
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="using-the-c2ctool-command">
-<h2>Using the c2ctool command<a class="headerlink" href="#using-the-c2ctool-command" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">c2ctool</span></code> is a tool to facilitate the common operations around GeoMapFish.</p>
-</div>
 <div class="section" id="updating-the-application-code">
 <h2>Updating the application code<a class="headerlink" href="#updating-the-application-code" title="Permalink to this headline">¶</a></h2>
 <p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
@@ -80,10 +76,8 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 <p>For Windows:</p>
 <p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
 </div>
-<p>Then to upgrade from 1.6 just run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
-<span class="prompt1">make -f &lt;makefile&gt; upgrade_v2</span>
-</pre><p>And for a minor upgrade run:</p>
+<p>Then to upgrade from 1.6 it is recommended to first upgrade to version 2.0.</p>
+<p>To upgrade run:</p>
 <pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
 </pre><div class="admonition note">
@@ -166,7 +160,6 @@ commands</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Upgrading a GeoMapFish application</a><ul>
-<li><a class="reference internal" href="#using-the-c2ctool-command">Using the c2ctool command</a></li>
 <li><a class="reference internal" href="#updating-the-application-code">Updating the application code</a></li>
 <li><a class="reference internal" href="#upgrading-an-application">Upgrading an application</a></li>
 <li><a class="reference internal" href="#upgrade-the-database">Upgrade the database</a></li>
