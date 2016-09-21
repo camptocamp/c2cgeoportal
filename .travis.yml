@@ -46,8 +46,6 @@ install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - travis/no-make-error.sh . help
 - make -f travis.mk build
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic.ini heads
-- .build/venv/bin/alembic --config c2cgeoportal/tests/functional/alembic_static.ini heads
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/build-new-project.sh

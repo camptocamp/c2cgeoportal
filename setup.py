@@ -112,6 +112,7 @@ setup(
             "import-ngeo-apps = c2cgeoportal.scripts.import_ngeo_apps:main",
             "gen-version = c2cgeoportal.scripts.gen_version:main",
             "ngeo-version = c2cgeoportal.scripts.import_ngeo_apps:ngeo_git_version",
+            "create-demo-theme = c2cgeoportal.scripts.create_demo_theme:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal.scaffolds:TemplateCreate",

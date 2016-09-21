@@ -74,7 +74,7 @@ class TestThemesTimeView(TestCase):
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        main = Interface(name=u"main")
+        main = Interface(name=u"desktop")
         ogc_server, _ = create_default_ogcserver()
 
         layer_wms_1 = LayerWMS(name=u"__test_layer_time_1", public=True)

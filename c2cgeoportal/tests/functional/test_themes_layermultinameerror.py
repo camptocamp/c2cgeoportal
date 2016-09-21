@@ -56,7 +56,7 @@ class TestLayerMultiNameErrorView(TestCase):
         from c2cgeoportal.models import DBSession, \
             Theme, LayerGroup, Interface, LayerWMS
 
-        main = Interface(name=u"main")
+        main = Interface(name=u"desktop")
 
         ogc_server, _ = create_default_ogcserver()
 

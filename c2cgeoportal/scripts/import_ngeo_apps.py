@@ -362,6 +362,11 @@ ${ ',\\n'.join([
                 count=1,
                 flags=re.DOTALL,
             )
+            data = _sub(
+                re.escape("module.constant('defaultTheme', 'OSM');"),
+                "module.constant('defaultTheme', 'Demo');",
+                data,
+            )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)
