@@ -45,9 +45,30 @@
             
   <div class="section" id="interfaces">
 <span id="integrator-interface"></span><h1>Interfaces<a class="headerlink" href="#interfaces" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="files">
+<h2>Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h2>
+<p>A CGXP interface requires those files:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* ``&lt;package&gt;/template/&lt;interface name&gt;.html``
+* ``&lt;package&gt;/template/&lt;interface name&gt;.js``
+</pre></div>
+</div>
+<p>And an ngeo interface requires those files:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* ``&lt;package&gt;/``
+* ``&lt;package&gt;/template/&lt;interface name&gt;.html``
+* ``&lt;package&gt;/static-ngeo/js/&lt;interface name&gt;.js``
+* ``&lt;package&gt;/static-ngeo/less/&lt;interface name&gt;.less``
+* ``&lt;package&gt;/static-ngeo/less/&lt;interface name&gt;-build.less``
+</pre></div>
+</div>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
 <p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table listing the
 available interfaces (or pages) of the application.
 The default interfaces are &#8220;main&#8221;, &#8220;mobile&#8221;, &#8220;edit&#8221; and &#8220;routing&#8221;.</p>
+</div>
+<div class="section" id="application-init">
+<h2>Application init<a class="headerlink" href="#application-init" title="Permalink to this headline">¶</a></h2>
 <p>The interfaces are added by the following lines in <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;edit&#39;</span><span class="p">)</span>
@@ -63,6 +84,25 @@ also used to create the route path.</p>
 <p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
 <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
 </div>
+<div class="section" id="makefile">
+<h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
+<p>In the makefile (<code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>) you can define the variable <code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code> and
+<code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code> that should contain the interfaces lists.</p>
+</div>
+<div class="section" id="vars">
+<h2>Vars<a class="headerlink" href="#vars" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">default_interface</span></code> used to define the default interface.</li>
+<li><code class="docutils literal"><span class="pre">interfaces</span></code> used to provide the list of interfaces.</li>
+</ul>
+</div>
+<div class="section" id="jsbuild">
+<h2>JSBuild<a class="headerlink" href="#jsbuild" title="Permalink to this headline">¶</a></h2>
+<p>For the CGXP interfaces you should have a section in the <code class="docutils literal"><span class="pre">jsbuild/app.cfg.mako</span></code> file
+with all the required (plugin) files.</p>
+</div>
+</div>
 
 
           </div>
@@ -72,7 +112,20 @@ also used to create the route path.</p>
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
-            </a></p><div class="relations">
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interfaces</a><ul>
+<li><a class="reference internal" href="#files">Files</a></li>
+<li><a class="reference internal" href="#database">Database</a></li>
+<li><a class="reference internal" href="#application-init">Application init</a></li>
+<li><a class="reference internal" href="#makefile">Makefile</a></li>
+<li><a class="reference internal" href="#vars">Vars</a></li>
+<li><a class="reference internal" href="#jsbuild">JSBuild</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
