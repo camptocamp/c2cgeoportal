@@ -131,7 +131,12 @@ def get_url2(name, url, request, errors):
                 "The server '{}' isn't found in the config".format(url_split.netloc)
             )
             return None
-        return u"{}{}?{}".format(server, url_split.path, url_split.query)
+        if server[-1] != "/":
+            server += "/"
+        url = urlparse.urljoin(server, url_split.path[1:])
+        return url if len(url_split.query) == 0 else u"{}?{}".format(
+            url, url_split.query,
+        )
 
 
 def get_typed(name, value, types, request, errors):
@@ -341,7 +346,7 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                     )
                 else:
                     subpath = quote(subpath)
-                    return urljoin(url, subpath)
+                    return urljoin(url, subpath[1:])
         raise ValueError("No static URL definition matching %s" % path)
 
     def add(self, config, name, spec, **extra):
