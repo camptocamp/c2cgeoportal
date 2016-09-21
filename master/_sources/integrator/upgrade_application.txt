@@ -3,11 +3,6 @@
 Upgrading a GeoMapFish application
 ==================================
 
-Using the c2ctool command
--------------------------
-
-The ``c2ctool`` is a tool to facilitate the common operations around GeoMapFish.
-
 
 Updating the application code
 -----------------------------
@@ -46,20 +41,14 @@ add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
    You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
 
-Then to upgrade from 1.6 just run:
+Then to upgrade from 1.6 it is recommended to first upgrade to version 2.0.
 
-.. prompt:: bash
-
-   export VERSION=<target_version>
-   make -f <makefile> upgrade_v2
-
-And for a minor upgrade run:
+To upgrade run:
 
 .. prompt:: bash
 
    export VERSION=<target_version>
    make -f <makefile> upgrade
-
 
 .. note:: For Windows:
 
