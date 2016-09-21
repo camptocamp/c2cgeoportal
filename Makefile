@@ -271,10 +271,10 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES) .build/dev
 	$(PIP_CMD) install -r dev-requirements.txt
 	touch $@
 
-.build/venv.timestamp:
+.build/venv.timestamp: c2cgeoportal/scaffolds/update/CONST_optional-requirements.txt
 	mkdir -p $(dir $@)
 	virtualenv --no-site-packages .build/venv
-	$(PIP_CMD) install 'pip==8.1.2' 'setuptools==21.1.0'
+	$(PIP_CMD) install $(shell grep ^pip== $< --colour=never) $(shell grep ^setuptools== $< --colour=never)
 	touch $@
 
 .build/requirements.timestamp: .build/venv.timestamp setup.py \
