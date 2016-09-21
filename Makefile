@@ -253,6 +253,7 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES) .build/dev
 	mkdir -p $(dir $@)
 	.build/venv/bin/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
+	test -s $@
 
 .build/%.mo.timestamp: %.po
 	mkdir -p $(dir $@)
