@@ -1,0 +1,2 @@
+# List of versions that shouldn't be changed by requires.io
+flake8==2.6.2

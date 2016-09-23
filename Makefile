@@ -254,6 +254,7 @@ c2cgeoportal/locale/%/LC_MESSAGES/c2cgeoportal.po: $(TX_DEPENDENCIES)
 	mkdir -p $(dir $@)
 	tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
+	test -s $@
 
 $(BUILD_DIR)/%.mo.timestamp: %.po
 	mkdir -p $(dir $@)
