@@ -184,6 +184,8 @@ vars:
           type: float
         - lastUpdateDateColumn
         - lastUpdateUserColumn
+        - name: snappingConfig
+          type: json
         # WMTS layers
         - ogcServer
         - layers
