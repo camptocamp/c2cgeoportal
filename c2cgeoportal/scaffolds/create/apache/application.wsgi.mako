@@ -16,6 +16,10 @@ root = "${directory}"
 regex = re.compile("^/usr/lib/python.\../dist-packages$")
 sys.path = [p for p in sys.path if regex.match(p) is None]
 
+## Set correct default encoding (utf8) in the application environment
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 from pyramid.paster import get_app
 
 configfile = os.path.join(root, "${'development' if development == 'TRUE' else 'production'}.ini")
