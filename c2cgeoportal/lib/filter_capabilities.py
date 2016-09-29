@@ -38,6 +38,7 @@ from xml import sax
 from xml.sax import saxutils
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 from xml.sax.xmlreader import InputSource
+from xml.etree.ElementTree import ParseError
 
 from pyramid.httpexceptions import HTTPBadGateway
 
@@ -114,8 +115,14 @@ def _wms_structure(wms_url, host):
             _fill(layer.name, layer.parent)
         return result
 
+    except ParseError as e:
+        error = u"An error occured while parsing the map server result (%s):\n%s" % (
+            str(e), content
+        )
+        log.exception(error)
+        raise HTTPBadGateway(error)
     except AttributeError:  # pragma: no cover
-        error = "WARNING! an error occured while trying to " \
+        error = u"WARNING! an error occured while trying to " \
             "read the mapfile and recover the themes."
         error = "%s\nurl: %s\nxml:\n%s" % (error, wms_url, content)
         log.exception(error)
