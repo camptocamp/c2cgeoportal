@@ -24,6 +24,7 @@ before_install:
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs
   deploy cgi-mapserver postgresql-9.3-postgis-2.1
+- sudo a2enmod fcgid
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template0 template_postgis
 - sudo -u postgres psql -c "CREATE EXTENSION postgis" -d template_postgis
