@@ -55,7 +55,7 @@ APPS_PACKAGE_PATH = c2cgeoportal/scaffolds/create/+package+
 APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/templates/, $(addsuffix .html_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/, $(addsuffix .js_tmpl, $(APPS)))
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
-	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/image/,favicon.ico logo.png background-layer-button.png) \
+	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/images/,favicon.ico logo.png background-layer-button.png) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
 
 C2C_TEMPLATE_CMD = c2c-template --vars $(VARS_FILE)
@@ -229,8 +229,8 @@ c2cgeoportal/scaffolds/update/CONST_create_template/: c2cgeoportal/scaffolds/cre
 ngeo/contribs/gmf/apps/desktop/image/%: ngeo
 	touch --no-create $@
 
-.PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/image/%
-$(APPS_PACKAGE_PATH)/static-ngeo/image/%: ngeo/contribs/gmf/apps/desktop/image/%
+.PRECIOUS: $(APPS_PACKAGE_PATH)/static-ngeo/images/%
+$(APPS_PACKAGE_PATH)/static-ngeo/images/%: ngeo/contribs/gmf/apps/desktop/image/%
 	mkdir -p $(dir $@)
 	cp $< $@
 
