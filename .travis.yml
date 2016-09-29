@@ -1,3 +1,7 @@
+sudo: required
+
+dist: trusty
+
 language: python
 
 python:
@@ -11,19 +15,19 @@ env:
     secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
 
 before_install:
+- chmod o+rx /home/travis
 - cat /etc/apt/sources.list.d/*
 - rm -rf /home/travis/.nvm
-- sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-9.1-postgis-2.2-scripts
+- sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-*
 - sudo apt-get install --assume-yes --force-yes aptitude
-- sudo add-apt-repository --yes ppa:stephane-brunner/precise-gis
+- sudo add-apt-repository --yes ppa:stephane-brunner/trusty-gis
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs
-  deploy cgi-mapserver postgis=2.0.3-2~precise4 postgresql-9.1-postgis-2.0=2.0.3-2~precise4
-  postgresql-9.1-postgis-2.0-scripts=2.0.3-2~precise4
+  deploy cgi-mapserver postgresql-9.3-postgis-2.1
+- sudo a2enmod fcgid
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template0 template_postgis
-- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql > /dev/null
-- psql --dbname=template_postgis --user=postgres --file=/usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql > /dev/null
+- sudo -u postgres psql -c "CREATE EXTENSION postgis" -d template_postgis
 
 - sudo -u postgres createdb --encoding=UTF8 --template=template_postgis c2cgeoportal_test
 - sudo -u postgres createdb --encoding=UTF8 --template=template_postgis geomapfish

@@ -21,6 +21,11 @@ git remote add origin . # add a fake remote
 
 sudo chmod g+w,o+w /etc/apache2/sites-enabled/
 sudo chmod 777 /var/lib/tomcat7/webapps
+echo "ScriptAlias /mapserv /usr/lib/cgi-bin/mapserv
+<Location /mapserv>
+    Require all granted
+</Location>
+" > /etc/apache2/sites-enabled/mapserver.conf
 
 sudo a2enmod headers
 sudo a2enmod rewrite

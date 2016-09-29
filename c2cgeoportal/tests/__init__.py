@@ -31,7 +31,12 @@
 """Pyramid application test package
 """
 
+import sys
 from pyramid.testing import DummyRequest
+
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 
 def create_dummy_request(additional_settings={}, *args, **kargs):

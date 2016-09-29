@@ -240,10 +240,12 @@ class Entry:
             return None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
-        if resp.get("content-type").split(";")[0].strip() not in \
+        if resp.get("content-type", "").split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
-            error = "GetCapabilities from URL %s returns a wrong Content-Type: %s\n%s" % \
-                (url, resp.get("content-type"), content.encode("utf-8"))
+            log.exception(type(content))
+            log.exception(content)
+            error = u"GetCapabilities from URL %s returns a wrong Content-Type: %s\n%s" % \
+                (url, resp.get("content-type", ""), content)
             errors.add(error)
             log.exception(error)
             return None, errors
