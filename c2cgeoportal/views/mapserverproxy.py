@@ -226,7 +226,7 @@ class MapservProxy(Proxy):
             content = content.replace(u"'", u"\\'")
             content = u"%s('%s');" % (callback, u" ".join(content.splitlines()))
         else:
-            content_type = resp["content-type"] if "content-type" in resp else None
+            content_type = resp.get("content-type")
 
         return self._build_response(
             resp, content, cache_control, "mapserver",
