@@ -1189,6 +1189,7 @@ $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf:
 		apache/mapserver.conf \
 		$(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
 	$(PRERULE_CMD)
+	cat apache/mapserver.conf
 	$(APACHE_GRACEFUL)
 	touch $@
 endif
