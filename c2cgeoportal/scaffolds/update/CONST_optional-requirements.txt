@@ -1,6 +1,6 @@
 pip==8.1.2
-setuptools==27.3.0
+setuptools==28.2.0
 tilecloud==0.3.0
-tilecloud-chain==1.2.0
+tilecloud-chain==1.2.1
 JSTools==0.6
 c2c.cssmin==0.7dev6
