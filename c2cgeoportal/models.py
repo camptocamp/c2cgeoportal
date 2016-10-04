@@ -786,7 +786,7 @@ class LayerWMTS(DimensionLayer):
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    url = Column(Unicode, label=_(u"GetCapabilities URL", nullable=False))
+    url = Column(Unicode, label=_(u"GetCapabilities URL"), nullable=False)
     layer = Column(Unicode, label=_(u"Layer"), nullable=False)
     style = Column(Unicode, label=_(u"Style"))
     matrix_set = Column(Unicode, label=_(u"Matrix set"))
