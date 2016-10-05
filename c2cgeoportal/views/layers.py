@@ -362,13 +362,9 @@ class Layers(object):
         if not layer.public and self.request.user is None:
             raise HTTPForbidden()
 
-        return self._metadata(str(layer.geo_table), layer.exclude_properties)
-
-    @cache_region.cache_on_arguments()
-    def _metadata(self, geo_table, exclude_properties):
         return get_class(
-            geo_table,
-            exclude_properties=exclude_properties
+            str(layer.geo_table),
+            exclude_properties=layer.exclude_properties
         )
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
