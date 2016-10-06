@@ -415,6 +415,17 @@ time_widget_options = [
     ("slider", _("slider")),
     ("datepicker", _("datepicker")),
 ]
+ogcserver_type_options = [
+    (models.OGCSERVER_TYPE_MAPSERVER, _("MapServer")),
+    (models.OGCSERVER_TYPE_QGISSERVER, _("QGISserver")),
+    (models.OGCSERVER_TYPE_GEOSERVER, _("GeoServer")),
+    (models.OGCSERVER_TYPE_OTHER, _("Other")),
+]
+ogcserver_auth_options = [
+    (models.OGCSERVER_AUTH_NOAUTH, _("No auth")),
+    (models.OGCSERVER_AUTH_STANDARD, _("Standard auth")),
+    (models.OGCSERVER_AUTH_GEOSERVER, _("GeoServer auth")),
+]
 
 # Layer V1
 LayerV1 = FieldSet(models.LayerV1)
@@ -448,6 +459,14 @@ OGCServer = FieldSet(models.OGCServer)
 OGCServer.image_type.set(
     renderer=SelectFieldRenderer,
     options=image_type_options,
+)
+OGCServer.type.set(
+    renderer=SelectFieldRenderer,
+    options=ogcserver_type_options,
+)
+OGCServer.auth.set(
+    renderer=SelectFieldRenderer,
+    options=ogcserver_auth_options,
 )
 
 # LayerWMS
