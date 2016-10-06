@@ -696,16 +696,16 @@ class OGCServer(Base):
         OGCSERVER_TYPE_QGISSERVER,
         OGCSERVER_TYPE_GEOSERVER,
         OGCSERVER_TYPE_OTHER,
-        native_enum=False), label=_(u"Server type"))
+        native_enum=False), nullable=False, label=_(u"Server type"))
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), label=_(u"Image type"))
+        native_enum=False), nullable=False, label=_(u"Image type"))
     auth = Column(Enum(
         OGCSERVER_AUTH_NOAUTH,
         OGCSERVER_AUTH_STANDARD,
         OGCSERVER_AUTH_GEOSERVER,
-        native_enum=False), label=_(u"Authentication type"))
+        native_enum=False), nullable=False, label=_(u"Authentication type"))
     wfs_support = Column(Boolean, label=_(u"WFS support"))
     is_single_tile = Column(Boolean, label=_(u"Single tile"))
 
@@ -756,7 +756,7 @@ class LayerWMS(DimensionLayer):
     time_widget = Column(Enum(
         "slider",
         "datepicker",
-        native_enum=False), default="slider", nullable=True,
+        native_enum=False), default="slider", nullable=False,
         label=_(u"Time widget"))
 
     # relationship with OGCServer
@@ -764,9 +764,13 @@ class LayerWMS(DimensionLayer):
         "OGCServer"
     )
 
-    def __init__(self, name=u"", layer=u"", public=True, icon=u""):
+    def __init__(
+        self, name=u"", layer=u"", public=True, icon=u"", time_mode="disabled", time_widget="slider"
+    ):
         DimensionLayer.__init__(self, name=name, public=public)
         self.layer = layer
+        self.time_mode = time_mode
+        self.time_widget = time_widget
 
 
 class LayerWMTS(DimensionLayer):
@@ -782,18 +786,19 @@ class LayerWMTS(DimensionLayer):
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
-    url = Column(Unicode, label=_(u"GetCapabilities URL"))
-    layer = Column(Unicode, label=_(u"Layer"))
+    url = Column(Unicode, label=_(u"GetCapabilities URL", nullable=False))
+    layer = Column(Unicode, label=_(u"Layer"), nullable=False)
     style = Column(Unicode, label=_(u"Style"))
     matrix_set = Column(Unicode, label=_(u"Matrix set"))
     image_type = Column(Enum(
         "image/jpeg",
         "image/png",
-        native_enum=False), label=_(u"Image type")
+        native_enum=False), nullable=False, label=_(u"Image type")
     )
 
-    def __init__(self, name=u"", public=True):
+    def __init__(self, name=u"", public=True, image_type="image/png"):
         DimensionLayer.__init__(self, name=name, public=public)
+        self.image_type = image_type
 
 
 # association table role <> restriciton area

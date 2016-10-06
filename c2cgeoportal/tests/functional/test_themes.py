@@ -86,6 +86,8 @@ class TestThemesView(TestCase):
         layer_external_wms.ogc_server = ogc_server_external
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts.layer = "map"
         layer_wmts.interfaces = [main, mobile]
         layer_wmts.metadatas = [Metadata("test", "wmts")]
         layer_wmts.dimensions = [Dimension("year", "2015")]
