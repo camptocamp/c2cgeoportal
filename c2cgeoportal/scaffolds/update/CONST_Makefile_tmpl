@@ -185,9 +185,9 @@ endif
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
-APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js')
-APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print)
-APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print)
+APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js' 2> /dev/null)
+APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
+APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
 APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
