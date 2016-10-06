@@ -79,13 +79,13 @@ class TestThemesTimeView(TestCase):
 
         layer_wms_1 = LayerWMS(name=u"__test_layer_time_1", public=True)
         layer_wms_1.layer = "test_wmstime"
-        layer_wms_1.time_mode = "single"
+        layer_wms_1.time_mode = "value"
         layer_wms_1.interfaces = [main]
         layer_wms_1.ogc_server = ogc_server
 
         layer_wms_2 = LayerWMS(name=u"__test_layer_time_2", public=True)
         layer_wms_2.layer = "test_wmstime2"
-        layer_wms_2.time_mode = "single"
+        layer_wms_2.time_mode = "value"
         layer_wms_2.interfaces = [main]
         layer_wms_2.ogc_server = ogc_server
 
@@ -185,7 +185,7 @@ class TestThemesTimeView(TestCase):
         })
         themes = entry.themes()
         self.assertEquals(self._get_filtered_errors(themes), set([
-            u"Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'single'"
+            u"Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'"
         ]))
         self.assertEquals(
             [self._only(t) for t in themes["themes"]],
@@ -199,7 +199,7 @@ class TestThemesTimeView(TestCase):
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"single",
+                        "mode": u"value",
                         "resolution": "year",
                         "widget": u"slider"
                     },
@@ -218,7 +218,7 @@ class TestThemesTimeView(TestCase):
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"single",
+                            "mode": u"value",
                             "resolution": "year",
                             "widget": u"slider"
                         },
@@ -231,7 +231,7 @@ class TestThemesTimeView(TestCase):
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"single",
+                        "mode": u"value",
                         "resolution": "year",
                         "widget": u"slider"
                     },
@@ -270,7 +270,7 @@ class TestThemesTimeView(TestCase):
                         "maxValue": "2020-01-01T00:00:00Z",
                         "minDefValue": "2000-01-01T00:00:00Z",
                         "minValue": "2000-01-01T00:00:00Z",
-                        "mode": u"single",
+                        "mode": u"value",
                         "resolution": "year",
                         "widget": u"slider"
                     },
@@ -284,7 +284,7 @@ class TestThemesTimeView(TestCase):
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"single",
+                            "mode": u"value",
                             "resolution": "year",
                             "widget": u"slider"
                         },
@@ -296,7 +296,7 @@ class TestThemesTimeView(TestCase):
                             "maxValue": "2020-01-01T00:00:00Z",
                             "minDefValue": "2015-01-01T00:00:00Z",
                             "minValue": "2015-01-01T00:00:00Z",
-                            "mode": u"single",
+                            "mode": u"value",
                             "resolution": "year",
                             "widget": u"slider"
                         },
@@ -313,7 +313,7 @@ class TestThemesTimeView(TestCase):
                             "maxValue": "2010-01-01T00:00:00Z",
                             "minDefValue": "2000-01-01T00:00:00Z",
                             "minValue": "2000-01-01T00:00:00Z",
-                            "mode": u"single",
+                            "mode": u"value",
                             "resolution": "year",
                             "widget": u"slider"
                         },
