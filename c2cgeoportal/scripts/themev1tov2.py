@@ -65,6 +65,12 @@ def main():
         action="store_false",
         help="don't import the groups"
     )
+    parser.add_argument(
+        "--no-themes",
+        dest="themes",
+        action="store_false",
+        help="don't import the themes"
+    )
     options = parser.parse_args()
 
     app_config = options.app_config
@@ -75,7 +81,7 @@ def main():
 
     # must be done only once we have loaded the project config
     from c2cgeoportal.models import DBSession, \
-        OGCServer, LayerWMS, LayerWMTS, LayerV1, LayerGroup
+        OGCServer, Theme, LayerWMS, LayerWMTS, LayerV1, LayerGroup
 
     session = DBSession()
 
@@ -96,9 +102,14 @@ def main():
             layer_v1tov2(session, layer)
 
     if options.groups:
-        print("Converting layer group.")
+        print("Converting layer groups.")
         for group in session.query(LayerGroup).all():
             layergroup_v1tov2(session, group)
+
+    if options.themes:
+        print("Converting themes.")
+        for theme in session.query(Theme).all():
+            theme_v1tov2(session, theme)
 
     transaction.commit()
 
@@ -226,8 +237,6 @@ def layer_add_metadata(layer, new_layer, session):
         session.add(new_metadata(u"isChecked", u"true", new_layer))
     if layer.icon is not None:
         session.add(new_metadata(u"icon", layer.icon, new_layer))
-    if layer.wms_url is not None:
-        session.add(new_metadata(u"wmsUrl", layer.wms_url, new_layer))
     if layer.wms_layers is not None:
         session.add(new_metadata(u"wmsLayers", layer.wms_layers, new_layer))
     if layer.query_layers is not None:
@@ -264,3 +273,9 @@ def layergroup_v1tov2(session, group):
             session.add(new_metadata(u"isExpanded", u"true", group))
     elif len(is_expended_metadatas) > 0:
         session.delete(is_expended_metadatas)
+
+
+def theme_v1tov2(session, theme):
+    thumbnail = theme.get_metadatas("thumbnail")
+    if thumbnail is None and theme.icon is not None:
+        session.add(new_metadata(u"thumbnail", theme.icon, theme))

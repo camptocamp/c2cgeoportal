@@ -151,9 +151,13 @@ vars:
         # Layer
         - name: copyTo
           type: list
-        - legendRule
+        - name: legend
+          type: boolean
         - name: isLegendExpanded
           type: boolean
+        - legendRule
+        - name: legendImage
+          type: url
         - name: iconUrl
           type: url
         - name: metadataUrl
@@ -162,24 +166,14 @@ vars:
         - name: isChecked
           type: boolean
         - identifierAttributeField
-        - name: legend
-          type: url
         - name: maxResolution
           type: float
         - name: minResolution
           type: float
         - name: thumbnail
           type: url
-        - name: wmsUrl
-          type: url
-        - name: wfsUrl
-          type: url
         - queryLayers
         - wmsLayers
-        - name: minResolutionHint
-          type: float
-        - name: maxResolutionHint
-          type: float
         - lastUpdateDateColumn
         - lastUpdateUserColumn
         - name: snappingConfig
