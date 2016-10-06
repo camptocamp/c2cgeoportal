@@ -82,6 +82,8 @@ All the layers in the admin interface have the following attributes:
   For enumerable attributes (foreign key), the column name should end with '_id'.
 * ``Parents``: the groups and theme in which the layer is.
 * ``Metadata``: Additional metadata.
+* ``Dimensions``: a JSON string that gives the dimensions,
+  e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
 
 WMS layer
 ~~~~~~~~~
@@ -105,7 +107,6 @@ On WMTS layers we have the following specific attributes:
 * ``Style``: the used style, if not present we use the default style.
 * ``Matrix set``: the used matrix set, if there's only one matrix set
   in the capabilities it can be empty.
-* ``WMTS Dimensions``: the dimensions, if not provided default values are used.
 
 layerv1 (deprecated in v2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,8 +150,6 @@ On ``WMTS`` layer we have the following specific attributes:
 
 * ``Base URL``: the URL to the WMTS capabilities.
 * ``Style``: the used style, if not present we use the default style.
-* ``Dimensions``: a JSON string that gives the dimensions,
-  e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
 * ``Matrix set``: the used matrix set, if there's only one matrix set
   in the capabilities it can be empty.
 * ``WMS server URL``: optional, URL to a WMS server to use for printing
