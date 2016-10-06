@@ -402,6 +402,9 @@ class C2cTool:
         status = [s for s in status if not s.startswith(
             "CONST_create_template/{}/static-ngeo/".format(self.project["project_package"]),
         )]
+        matcher = re.compile(r"CONST_create_tremplate.*/CONST_.+")
+        status = [s for s in status if not matcher.match(s)]
+        status = [s for s in status if s != "CONST_create_template/package.json"]
 
         with open("create.diff", "w") as diff_file:
             check_call(["git", "diff", "--"] + status, stdout=diff_file)
