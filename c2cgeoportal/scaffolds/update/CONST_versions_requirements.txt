@@ -22,12 +22,9 @@ papyrus==2.2
 Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
-Pillow==3.4.1
 polib==1.0.7
 postmarkup==1.2.2
 psycopg2==2.6.2
-Pygments==2.1.3
-pyproj==1.9.5.1
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.4
 pyramid-mako==1.0.2
@@ -38,7 +35,6 @@ pytz==2016.7
 PyYAML==3.12
 repoze.lru==0.6
 requests==2.11.1
-Shapely==1.5.17
 simplejson==3.8.2
 six==1.10.0
 SQLAHelper==1.0
