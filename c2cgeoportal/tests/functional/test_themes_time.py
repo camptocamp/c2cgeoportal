@@ -90,6 +90,8 @@ class TestThemesTimeView(TestCase):
         layer_wms_2.ogc_server = ogc_server
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
 
         layer_wms_group = LayerWMS(name=u"__test_layer_time_group", public=True)

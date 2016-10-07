@@ -72,6 +72,8 @@ class TestThemesView(TestCase):
         layer_external_wms.ogc_server = ogc_server_external
 
         layer_wmts = LayerWMTS(name=u"__test_layer_wmts", public=True)
+        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
 
         layer_group_1 = LayerGroup(name=u"__test_layer_group_1")
