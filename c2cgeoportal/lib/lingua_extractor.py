@@ -135,7 +135,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self._import(LayerWMS, messages, self._import_layer_wms)
             self._import(LayerWMTS, messages, self._import_layer_wmts)
         except ProgrammingError as e:
-            print(colorize("ERROR: The database is probably not up to date", RED))
+            print(colorize(
+                "ERROR: The database is probably not up to date "
+                "(should be ignored when happen during the upgrade)",
+                RED
+            ))
             print(colorize(e, RED))
 
         return messages
