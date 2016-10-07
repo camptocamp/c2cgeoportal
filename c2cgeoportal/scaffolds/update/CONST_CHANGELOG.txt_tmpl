@@ -38,9 +38,9 @@ If you want to keep your CGXP interface you should:
 
 1. Get the new files for ngeo integration:
 
-    cp CONST_create_template/{{project}}/{{package}}/templates/desktop.html {{package}}/templates/
-    cp CONST_create_template/{{project}}/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
-    cp CONST_create_template/{{project}}/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
+    cp CONST_create_template/{{package}}/templates/desktop.html {{package}}/templates/
+    cp CONST_create_template/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
+    cp CONST_create_template/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
 
 2. Remove the cgxp interfaces:
 
@@ -156,6 +156,28 @@ If you want to keep your CGXP interface you should:
 
     -from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
     +from c2cgeoportal.pyramid_ import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
+
+11. The TileCloud chain config file format change a little bit, the main change to do is:
+
+    -layer_default:
+    -    ...
+    +defaults:
+    +    layer: &layer
+    +        ...
+
+    and for all `layers:`
+
+     layers:
+         name:
+    +       <<: *layer
+            ...
+
+    And if the dimensions are a number like 2016 they should be quoted => '2016'.
+
+    example: https://github.com/camptocamp/demo_geomapfish/commit/158c53b5f16c230744f0b101bb3b42a88a0bf969
+
+12. In the database we have added some restrictions, have a look here for more informations:
+    https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 
 Version 2.0.0

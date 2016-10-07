@@ -100,6 +100,9 @@ Group
         "metadata": {
             "<name>": "<value>"
         },
+        "dimensions": {
+            "<name>": "<value>"
+        },
         "children": [<items>]
     }
 
@@ -113,6 +116,9 @@ Layer
         "name": "<name>",
         "type": "(WMS|WMTS)",
         "metadata": {
+            "<name>": "<value>"
+        },
+        "dimensions": {
             "<name>": "<value>"
         }
     }
@@ -178,10 +184,7 @@ WMTS layer
         "url": "<wmts_capabilities_url>",
         "layer": "<wmts_layer>",
         "style": "<style>",
-        "matrix_set": "<matrix_set>",
-        "dimensions": {
-            "<name>": "<value>"
-        }
+        "matrix_set": "<matrix_set>"
     }
 
 

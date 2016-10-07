@@ -334,7 +334,6 @@ ${ ',\\n'.join([
                 ("gmfProfileCsvUrl", r"/profile.csv", "profile.csv", args.interface != "mobile"),
                 ("gmfProfileJsonUrl", r"/profile.json", "profile.json", args.interface != "mobile"),
                 ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
-                ("gmfWmsUrl", r"/mapserv_proxy", "mapserverproxy", True),
                 ("gmfTreeUrl", r"/themes", "themes", True),
                 ("gmfShortenerCreateUrl", r"/short/create", "shortener_create", args.interface != "mobile"),
             ]:

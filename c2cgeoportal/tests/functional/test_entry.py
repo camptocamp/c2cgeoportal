@@ -1164,7 +1164,7 @@ class TestEntryView(TestCase):
         layer_t1.legend = False
         layer_t1.is_legend_expanded = False
         layer_t1.public = True
-        layer_t1.time_mode = "single"
+        layer_t1.time_mode = "value"
         time = TimeInformation()
         entry._layer(layer_t1, time=time, mixed=False)
         self.assertEqual(time.to_dict(), {
@@ -1172,7 +1172,7 @@ class TestEntryView(TestCase):
             "interval": (1, 0, 0, 0),
             "maxValue": "2010-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
-            "mode": "single",
+            "mode": "value",
             "widget": "slider",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,
@@ -1187,7 +1187,7 @@ class TestEntryView(TestCase):
         layer_t2.legend = False
         layer_t2.is_legend_expanded = False
         layer_t2.public = True
-        layer_t2.time_mode = "single"
+        layer_t2.time_mode = "value"
         layer_t2.time_widget = "slider"
         time = TimeInformation()
         entry._layer(layer_t2, time=time, mixed=False)
@@ -1196,7 +1196,7 @@ class TestEntryView(TestCase):
             "interval": (1, 0, 0, 0),
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2015-01-01T00:00:00Z",
-            "mode": "single",
+            "mode": "value",
             "widget": "slider",
             "minDefValue": "2015-01-01T00:00:00Z",
             "maxDefValue": None,
@@ -1215,7 +1215,7 @@ class TestEntryView(TestCase):
             "interval": (1, 0, 0, 0),
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
-            "mode": "single",
+            "mode": "value",
             "widget": "slider",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,
@@ -1230,7 +1230,7 @@ class TestEntryView(TestCase):
         layer.legend = False
         layer.is_legend_expanded = False
         layer.public = True
-        layer.time_mode = "single"
+        layer.time_mode = "value"
         layer.time_widget = "datepicker"
         time = TimeInformation()
         entry._layer(layer, time=time, mixed=False)
@@ -1239,7 +1239,7 @@ class TestEntryView(TestCase):
             "interval": (1, 0, 0, 0),
             "maxValue": "2020-01-01T00:00:00Z",
             "minValue": "2000-01-01T00:00:00Z",
-            "mode": "single",
+            "mode": "value",
             "widget": "datepicker",
             "minDefValue": "2000-01-01T00:00:00Z",
             "maxDefValue": None,

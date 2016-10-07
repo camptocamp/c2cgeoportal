@@ -16,7 +16,6 @@ PYTHON_BIN_POSTFIX = .exe
 NODE_BIN_POSTFIX = .cmd
 FIND ?= $(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
-TX_HOST ?= http://www.transifex.com
 # TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
 # You can still install it but you must install Shapely manualy inside
 # TILECLOUD_CHAIN virtualenv
@@ -185,9 +184,9 @@ endif
 APP_OUTPUT_DIR = $(PACKAGE)/static-ngeo/build
 OL_JS_FILES = $(shell $(FIND) node_modules/openlayers/src/ol -type f -name '*.js' 2> /dev/null)
 NGEO_JS_FILES = $(shell $(FIND) node_modules/ngeo/src -type f -name '*.js' 2> /dev/null)
-APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js')
-APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print)
-APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print)
+APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components -type f -name '*.js' 2> /dev/null)
+APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
+APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
 APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
@@ -1219,31 +1218,31 @@ $(UPGRADE_MAKE_FILE):
 .PHONY: upgrade
 upgrade: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION}
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION}
 
 .PHONY: upgrade1
 upgrade1: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 1
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
 
 .PHONY: upgrade2
 upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} --step 2
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 2
 
 .PHONY: upgrade3
 upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} --step 3
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 3
 
 .PHONY: upgrade4
 upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} --step 4
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 4
 
 .PHONY: upgrade5
 upgrade5: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 5
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 5
 
 .PHONY: upgrade6
 upgrade6: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
-	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_MAKE_FILE) ${UPGRADE_ARGS} ${VERSION} --step 6
+	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 6
 
 # Docker
 ifeq ($(DOCKER), TRUE)
