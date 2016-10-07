@@ -162,7 +162,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             self._import_layer_attributes(
                 url, wms_layer, layer.item_type, layer.name, layer.id, messages
             )
-        if layer.geo_table is not None:
+        if layer.geo_table is not None and layer.geo_table != "":
             exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
             last_update_date = layer.get_metadatas("lastUpdateDateColumn")
             if len(last_update_date) == 1:
