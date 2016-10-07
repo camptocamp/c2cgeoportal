@@ -596,7 +596,13 @@ class Entry:
         l["isSingleTile"] = layer.is_single_tile
 
     def _fill_wmts(self, l, layer, errors, version=1, role_id=None):
-        l["url"] = get_url(layer.url, self.request, errors=errors)
+        if version == 1:
+            l["url"] = get_url(layer.url, self.request, errors=errors)
+        else:
+            l["url"] = get_url2(
+                "The WMTS layer '{}'".format(layer.name),
+                layer.url, self.request, errors=errors
+            )
 
         if layer.style:
             l["style"] = layer.style
