@@ -121,7 +121,7 @@ def ogc_server(session):
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
     ).group_by(
         LayerV1.url, LayerV1.image_type, LayerV1.is_single_tile
-    ).all()
+    ).filter(LayerV1.layer_type != "WMTS").all()
 
     # get existing list of ogc_server
     servers_ogc = session.query(OGCServer).all()
