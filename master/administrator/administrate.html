@@ -115,8 +115,7 @@ the <a class="reference internal" href="editing.html#administrator-editing"><spa
 For enumerable attributes (foreign key), the column name should end with &#8216;_id&#8217;.</li>
 <li><code class="docutils literal"><span class="pre">Parents</span></code>: the groups and theme in which the layer is.</li>
 <li><code class="docutils literal"><span class="pre">Metadata</span></code>: Additional metadata.</li>
-<li><code class="docutils literal"><span class="pre">Dimensions</span></code>: a JSON string that gives the dimensions,
-e.g.: <code class="docutils literal"><span class="pre">{</span> <span class="pre">&quot;YEAR&quot;:</span> <span class="pre">&quot;2012&quot;</span> <span class="pre">}</span></code>, if not provided default values are used.</li>
+<li><code class="docutils literal"><span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used (v2 only).</li>
 </ul>
 </div>
 <div class="section" id="wms-layer">
@@ -168,6 +167,8 @@ layer, e.g.: &#8216;name&#8217;, used by
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">Image</span> <span class="pre">type</span></code>: the type of the images.</li>
 <li><code class="docutils literal"><span class="pre">Style</span></code>: the used style, can be empty.</li>
+<li><code class="docutils literal"><span class="pre">Dimensions</span></code>: a JSON string that gives the dimensions,
+e.g.: <code class="docutils literal"><span class="pre">{</span> <span class="pre">&quot;YEAR&quot;:</span> <span class="pre">&quot;2012&quot;</span> <span class="pre">}</span></code>, if not provided default values are used.</li>
 <li><code class="docutils literal"><span class="pre">Legend</span> <span class="pre">rule</span></code>: the legend rule used to get the layer icon,
 if empty we use the <code class="docutils literal"><span class="pre">Icon</span></code>.</li>
 </ul>

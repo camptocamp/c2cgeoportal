@@ -82,8 +82,7 @@ All the layers in the admin interface have the following attributes:
   For enumerable attributes (foreign key), the column name should end with '_id'.
 * ``Parents``: the groups and theme in which the layer is.
 * ``Metadata``: Additional metadata.
-* ``Dimensions``: a JSON string that gives the dimensions,
-  e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
+* ``Dimensions``: the dimensions, if not provided default values are used (v2 only).
 
 WMS layer
 ~~~~~~~~~
@@ -134,6 +133,8 @@ On ``internal WMS`` layer we have the following specific attributes:
 
 * ``Image type``: the type of the images.
 * ``Style``: the used style, can be empty.
+* ``Dimensions``: a JSON string that gives the dimensions,
+  e.g.: ``{ "YEAR": "2012" }``, if not provided default values are used.
 * ``Legend rule``: the legend rule used to get the layer icon,
   if empty we use the ``Icon``.
 
