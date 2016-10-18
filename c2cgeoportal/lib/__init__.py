@@ -231,7 +231,7 @@ def add_spliturl_params(spliturl, params):
     prepared_params = []
     for param in params.items():
         if isinstance(param[1], unicode):
-            prepared_params.append({param[0], param[1].encode("utf-8")})
+            prepared_params.append([param[0], param[1].encode("utf-8")])
         else:
             prepared_params.append(param)
 
