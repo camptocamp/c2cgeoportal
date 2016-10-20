@@ -28,23 +28,27 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import argparse
 import transaction
-from optparse import OptionParser
 from pyramid.paster import get_app
 
 
 def main():
-    parser = OptionParser("Create and populate the database tables.")
-    parser.add_option(
-        '-i', '--iniconfig', default='production.ini',
+    parser = argparse.ArgumentParser(
+        description="Create and populate the database tables."
+    )
+    parser.add_argument(
+        '-i', '--iniconfig',
+        default='production.ini',
         help='project .ini config file'
     )
-    parser.add_option(
-        '-n', '--app-name', default="app",
+    parser.add_argument(
+        '-n', '--app-name',
+        default="app",
         help='The application name (optional, default is "app")'
     )
 
-    options, args = parser.parse_args()
+    options = parser.parse_args()
 
     # read the configuration
     get_app(options.iniconfig, options.app_name)
