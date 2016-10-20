@@ -614,6 +614,7 @@ class LayerV1(Layer):  # Deprecated in v2
     id = Column(
         Integer, ForeignKey(_schema + ".layer.id"), primary_key=True
     )
+    layer = Column(Unicode, label=_(u"Layer"))
     is_checked = Column(Boolean, default=True, label=_(u"Checked"))  # by default
     icon = Column(Unicode, label=_(u"Icon"))  # on the tree
     layer_type = Column(Enum(
@@ -661,6 +662,7 @@ class LayerV1(Layer):  # Deprecated in v2
         layer_type=u"internal WMS"
     ):
         Layer.__init__(self, name=name, public=public)
+        self.layer = name
         self.icon = icon
         self.layer_type = layer_type
 

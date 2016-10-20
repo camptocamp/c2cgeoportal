@@ -929,6 +929,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test internal WMS"
+        layer.layer = "test internal WMS"
         layer.metadata_url = "http://example.com/tiwms"
         layer.is_checked = True
         layer.layer_type = "internal WMS"
@@ -972,6 +973,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test external WMS"
+        layer.layer = "test external WMS"
         layer.is_checked = False
         layer.icon = "static:///tewms.png"
         layer.layer_type = "external WMS"
@@ -1003,6 +1005,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test WMTS"
+        layer.layer = "test WMTS"
         layer.is_checked = False
         layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
@@ -1038,6 +1041,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test WMTS"
+        layer.layer = "test WMTS"
         layer.is_checked = False
         layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
@@ -1066,6 +1070,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test WMTS"
+        layer.layer = "test WMTS"
         layer.is_checked = False
         layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
@@ -1095,6 +1100,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test no 2D"
+        layer.layer = "test no 2D"
         layer.is_checked = False
         layer.layer_type = "no 2D"
         layer.legend = False
@@ -1135,6 +1141,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test_wmsfeaturesgroup"
+        layer.layer = "test_wmsfeaturesgroup"
         layer.layer_type = "internal WMS"
         layer.image_type = "image/png"
         layer.is_checked = False
@@ -1170,6 +1177,7 @@ class TestEntryView(TestCase):
         layer_t1 = LayerV1()
         layer_t1.id = 20
         layer_t1.name = "test_wmstime"
+        layer_t1.layer = "test_wmstime"
         layer_t1.layer_type = "internal WMS"
         layer_t1.image_type = "image/png"
         layer_t1.is_checked = False
@@ -1193,6 +1201,7 @@ class TestEntryView(TestCase):
         layer_t2 = LayerV1()
         layer_t2.id = 30
         layer_t2.name = "test_wmstime2"
+        layer_t2.layer = "test_wmstime2"
         layer_t2.layer_type = "internal WMS"
         layer_t2.image_type = "image/png"
         layer_t2.is_checked = False
@@ -1236,6 +1245,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test_wmstimegroup"
+        layer.layer = "test_wmstimegroup"
         layer.layer_type = "internal WMS"
         layer.image_type = "image/png"
         layer.is_checked = False
@@ -1260,6 +1270,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test WMTS"
+        layer.layer = "test WMTS"
         layer.is_checked = False
         layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
@@ -1289,6 +1300,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test WMTS"
+        layer.layer = "test WMTS"
         layer.is_checked = False
         layer.layer_type = "WMTS"
         layer.url = "http://example.com/WMTS-Capabilities.xml"
@@ -1326,6 +1338,7 @@ class TestEntryView(TestCase):
         layer = LayerV1()
         layer.id = 20
         layer.name = "test layer in group"
+        layer.layer = "test layer in group"
         layer.is_checked = False
         layer.layer_type = "internal WMS"
         layer.image_type = "image/png"
