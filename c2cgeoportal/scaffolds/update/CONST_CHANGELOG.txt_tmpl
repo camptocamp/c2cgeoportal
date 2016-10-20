@@ -127,6 +127,8 @@ If you want to keep your CGXP interface you should:
    + DEPLOY_BRANCH_BASE_URL ?= $(VISIBLE_PROTOCOL)://$(VISIBLE_HOST)
    + DEPLOY_BRANCH_MAKEFILE ?= {{package}}.mk
 
+   Where 'example.com' is the hostname use in the browser to open the application
+
 8. in the apache/wsgi.conf.mako file do the following changes:
 
     -% for interface in interfaces:
