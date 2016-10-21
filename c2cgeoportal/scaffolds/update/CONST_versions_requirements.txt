@@ -25,6 +25,7 @@ PasteScript==2.0.2
 polib==1.0.7
 postmarkup==1.2.2
 psycopg2==2.6.2
+pykwalify==1.5.1
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.4
 pyramid-mako==1.0.2
@@ -32,7 +33,6 @@ pyramid-multiauth==0.8.0
 pyramid-tm==1.0
 python-dateutil==2.5.3
 pytz==2016.7
-PyYAML==3.12
 repoze.lru==0.6
 requests==2.11.1
 simplejson==3.8.2
