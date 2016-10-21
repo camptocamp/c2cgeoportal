@@ -5,6 +5,7 @@ VARS_FILE = vars_{{package}}.yaml
 VARS_FILES += ${VARS_FILE}
 endif
 
+# The hostname use in the browser to open the application
 APACHE_VHOST ?= {{apache_vhost}}
 INSTANCE_ID ?= {{package}}
 TILECLOUD_CHAIN ?= FALSE
