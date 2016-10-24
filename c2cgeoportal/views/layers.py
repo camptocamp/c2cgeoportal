@@ -395,7 +395,7 @@ class Layers:
 
         return get_class(
             str(layer.geo_table),
-            exclude_properties=layer.exclude_properties
+            exclude_properties=exclude
         )
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
