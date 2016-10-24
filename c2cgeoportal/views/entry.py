@@ -454,15 +454,14 @@ class Entry(object):
                 ql = {"name": query_layer}
                 resolutions = self._get_layer_resolution_hint(query_layer_obj)
 
-                if resolutions[0] <= resolutions[1]:
+                if resolutions[0] != float("Inf"):
                     ql["minResolutionHint"] = float(
                         "%0.2f" % resolutions[0])
+                if resolutions[1] != 0:
                     ql["maxResolutionHint"] = float(
                         "%0.2f" % resolutions[1])
 
-                if "minResolutionHint" in ql or \
-                   "maxResolutionHint" in ql:
-                    l["queryLayers"].append(ql)
+                l["queryLayers"].append(ql)
 
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.

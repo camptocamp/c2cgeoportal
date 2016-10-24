@@ -76,6 +76,8 @@ install_requires = [
     "pyramid_closure",
     "lingua",
     "PyYAML",
+    # Issue on branch 1.6 with version 2.3.x
+    "textile<2.3",
 ]
 
 setup_requires = [
