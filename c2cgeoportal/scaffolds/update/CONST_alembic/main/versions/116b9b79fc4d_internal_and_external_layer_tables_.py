@@ -92,7 +92,7 @@ def upgrade():
         'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
         "auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, 'default source for internal ' || image_type "
-        "AS description, 'mapserver' AS type, image_type, 'main' AS auth, 'true' AS wfs_support "
+        "AS description, 'mapserver' AS type, image_type, 'Standard auth' AS auth, 'true' AS wfs_support "
         "FROM (SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type) AS foo" % {
             'schema': schema,
         }
@@ -102,7 +102,7 @@ def upgrade():
         'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
         "auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, 'default source for internal ' || image_type "
-        "AS description, 'mapserver' AS type, image_type, 'main' AS auth, 'true' "
+        "AS description, 'mapserver' AS type, image_type, 'Standard auth' AS auth, 'true' "
         "AS wfs_support from ("
         "SELECT DISTINCT(image_type) FROM %(schema)s.layer_internal_wms "
         "WHERE image_type NOT IN ('image/jpeg', 'image/png')"
