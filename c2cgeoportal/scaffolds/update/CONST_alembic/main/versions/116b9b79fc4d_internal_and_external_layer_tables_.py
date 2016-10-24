@@ -90,22 +90,32 @@ def upgrade():
     # default 'image/jpeg', 'image/png'
     op.execute(
         'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
-        "auth, wfs_support) "
-        "SELECT 'source for ' || image_type AS name, 'default source for internal ' || image_type "
-        "AS description, 'mapserver' AS type, image_type, 'Standard auth' AS auth, 'true' AS wfs_support "
-        "FROM (SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type) AS foo" % {
+        "  auth, wfs_support) "
+        "SELECT 'source for ' || image_type AS name, "
+        "  'default source for internal ' || image_type AS description, "
+        "  'mapserver' AS type, "
+        "  image_type, "
+        "  'Standard auth' AS auth, "
+        "  'true' AS wfs_support "
+        "FROM ("
+        "  SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type"
+        ") AS foo" % {
             'schema': schema,
         }
     )
     # other custom image types
     op.execute(
         'INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, '
-        "auth, wfs_support) "
-        "SELECT 'source for ' || image_type AS name, 'default source for internal ' || image_type "
-        "AS description, 'mapserver' AS type, image_type, 'Standard auth' AS auth, 'true' "
-        "AS wfs_support from ("
-        "SELECT DISTINCT(image_type) FROM %(schema)s.layer_internal_wms "
-        "WHERE image_type NOT IN ('image/jpeg', 'image/png')"
+        "  auth, wfs_support) "
+        "SELECT 'source for ' || image_type AS name, "
+        "  'default source for internal ' || image_type AS description, "
+        "  'mapserver' AS type, "
+        "  image_type, "
+        "  'Standard auth' AS auth, "
+        "  'true' AS wfs_support "
+        "FROM ("
+        "  SELECT DISTINCT(image_type) FROM %(schema)s.layer_internal_wms "
+        "  WHERE image_type NOT IN ('image/jpeg', 'image/png')"
         ") as foo" % {
             'schema': schema,
         }
@@ -116,7 +126,7 @@ def upgrade():
     # internal with not null image_type
     op.execute(
         'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        'time_mode, time_widget) '
+        '  time_mode, time_widget) '
         'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
         'FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so '
         'WHERE lew.image_type=so.image_type AND so.type IS NOT NULL' % {
@@ -126,7 +136,7 @@ def upgrade():
     # internal with null image_type
     op.execute(
         'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        'time_mode, time_widget) '
+        '  time_mode, time_widget) '
         'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
         'FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so '
         "WHERE lew.image_type IS NULL AND so.image_type='image/png'" % {
@@ -147,7 +157,7 @@ def upgrade():
     # layers for external
     op.execute(
         'INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, '
-        'time_mode, time_widget) '
+        '  time_mode, time_widget) '
         'SELECT lew.id, so.id, layer, style, time_mode, time_widget '
         'FROM %(schema)s.layer_external_wms as lew, %(schema)s.server_ogc as so '
         'WHERE lew.url=so.url AND lew.is_single_tile=so.is_single_tile '
@@ -207,7 +217,7 @@ def downgrade():
     # internal (type is not null)
     op.execute(
         'INSERT INTO %(schema)s.layer_internal_wms (id, layer, image_type, style, '
-        'time_mode, time_widget) '
+        '  time_mode, time_widget) '
         'SELECT w.id, layer, image_type, style, time_mode, time_widget '
         'FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o '
         'WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL' % {
@@ -218,7 +228,7 @@ def downgrade():
     # external (type is null)
     op.execute(
         'INSERT INTO %(schema)s.layer_external_wms (id, url, layer, image_type, style, '
-        'is_single_tile, time_mode, time_widget) '
+        '  is_single_tile, time_mode, time_widget) '
         'SELECT w.id, url, layer, image_type, style, is_single_tile, time_mode, time_widget '
         'FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o '
         'WHERE w.server_ogc_id=o.id AND o.type IS NULL' % {
