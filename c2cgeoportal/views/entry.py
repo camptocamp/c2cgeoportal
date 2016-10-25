@@ -814,12 +814,6 @@ class Entry:
                                 "The GeoMapFish layer name '{}', can't be two times "
                                 "in the same block (first level group).".format(name)
                             )
-                    for name, nb in Counter(wms_layers).items():
-                        if nb > 1:
-                            errors.add(
-                                "The WMS layer name '{}', can't be two times "
-                                "in the same block (first level group).".format(name)
-                            )
 
                 g["mixed"] = mixed
                 if org_depth == 1:

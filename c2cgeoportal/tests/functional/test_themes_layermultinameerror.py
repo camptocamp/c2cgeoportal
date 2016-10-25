@@ -121,14 +121,3 @@ class TestLayerMultiNameErrorView(TestCase):
         from c2cgeoportal.views.entry import Entry
 
         return Entry(self._create_request_obj(**kwargs))
-
-    def test_error(self):
-        from c2cgeoportal.views.entry import Entry
-
-        entry = Entry(self._create_request_obj(params={
-            "version": "2",
-        }))
-        themes = entry.themes()
-        self.assertEquals(set(themes["errors"]), set([
-            "The WMS layer name 'testpoint_unprotected', can't be two times in the same block (first level group).",
-        ]))
