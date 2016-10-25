@@ -6,7 +6,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="title" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
-	<parameter name="debug" class="java.lang.Integer"/>
+	<parameter name="debug" class="java.lang.Boolean"/>
 	<parameter name="mapSubReport" class="java.lang.String"/>
 	<parameter name="legend" class="net.sf.jasperreports.engine.data.JRTableModelDataSource"/>
 	<parameter name="legendSubReport" class="java.lang.String"/>
@@ -22,7 +22,7 @@
 				<reportElement x="707" y="3" width="92" height="20" uuid="a3415515-0882-489b-960d-1e65f08f42eb">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<printWhenExpression><![CDATA[$P{debug} == 1]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
@@ -65,7 +65,7 @@
 			</subreport>
 			<staticText>
 				<reportElement x="710" y="7" width="95" height="20" uuid="0600fc24-db21-4948-8939-7de7e1559581">
-					<printWhenExpression><![CDATA[$P{debug} == 1]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
@@ -109,7 +109,7 @@
 			</subreport>
 			<staticText>
 				<reportElement x="710" y="0" width="95" height="20" uuid="88631b30-d237-4e29-b531-20483a50d1f1">
-					<printWhenExpression><![CDATA[$P{debug} == 1]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
@@ -127,7 +127,7 @@
 			</line>
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="718" y="0" width="95" height="20" uuid="12ee394e-d031-4f14-8314-8de274d9a042">
-					<printWhenExpression><![CDATA[$P{debug} == 1]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
@@ -162,7 +162,7 @@
 			</line>
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="707" y="0" width="95" height="20" uuid="2b382754-1c0b-419e-9199-ac53110d197d">
-					<printWhenExpression><![CDATA[$P{debug} == 1]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
