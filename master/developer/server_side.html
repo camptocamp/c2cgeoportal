@@ -264,10 +264,7 @@ or updated when this scaffold is applied. So developers who modify the
 <pre class="highlight"><span class="prompt1">.build/venv/bin/alembic <span class="se">\</span>
     --config c2cgeoportal/tests/functional/alembic<span class="o">[</span>_static<span class="o">]</span>.ini <span class="se">\</span>
     revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
-</pre><p>Where <code class="docutils literal"><span class="pre">&lt;branch&gt;</span></code> is the branch on witch we will merge, usually <code class="docutils literal"><span class="pre">master</span></code> but
-it can also be something like <code class="docutils literal"><span class="pre">2.0</span></code>.</p>
-<p>This will generate the migration script in
-<code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
+</pre><p>This will generate the migration script in <code class="docutils literal"><span class="pre">CONST_alembic/versions/xxx_&lt;Explicite_name&gt;.py</span></code>
 You should <em>NOT</em> commit the script in this directory because this migration
 script should be shared with all c2cgeoportal projects.
 It is the c2cgeoportal <code class="docutils literal"><span class="pre">update</span></code> template which is responsible for updating
