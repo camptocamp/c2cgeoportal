@@ -318,11 +318,7 @@ Or in c2cgeoportal root directory:
         --config c2cgeoportal/tests/functional/alembic[_static].ini \
         revision --message "<Explicit name>"
 
-Where ``<branch>`` is the branch on witch we will merge, usually ``master`` but
-it can also be something like ``2.0``.
-
-This will generate the migration script in
-``CONST_alembic/versions/xxx_<Explicite_name>.py``
+This will generate the migration script in ``CONST_alembic/versions/xxx_<Explicite_name>.py``
 You should *NOT* commit the script in this directory because this migration
 script should be shared with all c2cgeoportal projects.
 It is the c2cgeoportal ``update`` template which is responsible for updating

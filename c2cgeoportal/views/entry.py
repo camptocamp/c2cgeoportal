@@ -357,7 +357,7 @@ class Entry:
         errors = set()
         l = {
             "id": layer.id,
-            "name": layer.name,
+            "name": layer.name if not isinstance(layer, LayerV1) else layer.layer,
             "metadata": self._get_metadatas(layer, errors),
         }
         if re.search("[/?#]", layer.name):  # pragma: no cover

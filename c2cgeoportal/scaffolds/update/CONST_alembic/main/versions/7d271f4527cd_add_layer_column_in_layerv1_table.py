@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2016, Camptocamp SA
+# Copyright (c) 2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,54 +27,37 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+"""Add layer column in layerv1 table
 
-import argparse
-import transaction
-from pyramid.paster import get_app
+Revision ID: 7d271f4527cd
+Revises: 8117bb9bba16
+Create Date: 2016-10-20 15:00:13.619090
+"""
+
+from alembic import op, context
+from sqlalchemy import Column
+from sqlalchemy.types import Unicode
+
+# revision identifiers, used by Alembic.
+revision = '7d271f4527cd'
+down_revision = '8117bb9bba16'
+branch_labels = None
+depends_on = None
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Create and populate the database tables."
+def upgrade():
+    schema = context.get_context().config.get_main_option('schema')
+
+    op.add_column('layerv1', Column('layer', Unicode), schema=schema)
+    op.execute(
+        'UPDATE {schema}.layerv1 AS l1 '
+        'SET layer = name '
+        'FROM {schema}.treeitem AS ti '
+        'WHERE l1.id = ti.id'.format(schema=schema)
     )
-    parser.add_argument(
-        '-i', '--iniconfig',
-        default='production.ini',
-        help='project .ini config file'
-    )
-    parser.add_argument(
-        '-n', '--app-name',
-        default="app",
-        help='The application name (optional, default is "app")'
-    )
 
-    options = parser.parse_args()
 
-    # read the configuration
-    get_app(options.iniconfig, options.app_name)
+def downgrade():
+    schema = context.get_context().config.get_main_option('schema')
 
-    from c2cgeoportal.models import DBSession, Interface, OGCServer, Theme, LayerGroup, LayerWMS
-
-    session = DBSession()
-
-    interfaces = session.query(Interface).all()
-    ogc_server = session.query(OGCServer).filter(OGCServer.name == u"source for image/png").one()
-
-    layer_borders = LayerWMS(u"Borders", u"borders")
-    layer_borders.interfaces = interfaces
-    layer_borders.ogc_server = ogc_server
-    layer_density = LayerWMS(u"Density", u"density")
-    layer_density.interfaces = interfaces
-    layer_density.ogc_server = ogc_server
-
-    group = LayerGroup(u"Demo")
-    group.children = [layer_borders, layer_density]
-
-    theme = Theme(u"Demo")
-    theme.children = [group]
-    theme.interfaces = interfaces
-
-    transaction.commit()
-
-if __name__ == "__main__":
-    main()
+    op.drop_column('layerv1', 'layer', schema=schema)
