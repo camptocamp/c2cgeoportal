@@ -44,7 +44,7 @@ If you want to keep your CGXP interface you should:
 * In the `jsbuild/app.cfg.mako` file do the following replacement:
 
     - [app.js]
-    - [desktop.js]
+    + [desktop.js]
 
 * Continue on the step 4., (you should do the step 1.-3. when you want
   to use the ngeo interface)
