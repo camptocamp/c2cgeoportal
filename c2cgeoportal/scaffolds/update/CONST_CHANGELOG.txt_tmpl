@@ -44,7 +44,7 @@ If you want to keep your CGXP interface you should:
 * In the `jsbuild/app.cfg.mako` file do the following replacement:
 
     - [app.js]
-    - [desktop.js]
+    + [desktop.js]
 
 * Continue on the step 4., (you should do the step 1.-3. when you want
   to use the ngeo interface)
@@ -192,7 +192,12 @@ If you want to keep your CGXP interface you should:
 
     example: https://github.com/camptocamp/demo_geomapfish/commit/158c53b5f16c230744f0b101bb3b42a88a0bf969
 
-12. In the database we have added some restrictions, have a look here for more informations:
+12. To pre upgrade the database, run:
+
+    .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
+    .build/venv/bin/treeitem_uniquename
+
+13. In the database we have added some restrictions, have a look here for more informations:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 

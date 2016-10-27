@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2016, Camptocamp SA
+# Copyright (c) 2014-2016, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,17 +35,17 @@ from pyramid.paster import get_app
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Create and populate the database tables."
+        description="This script will rename all the theme elements to removes duplicated elements."
     )
     parser.add_argument(
         '-i', '--iniconfig',
         default='production.ini',
-        help='project .ini config file'
+        help='project .ini config file',
     )
     parser.add_argument(
         '-n', '--app-name',
         default="app",
-        help='The application name (optional, default is "app")'
+        help='The application name (optional, default is "app")',
     )
 
     options = parser.parse_args()
@@ -53,28 +53,16 @@ def main():
     # read the configuration
     get_app(options.iniconfig, options.app_name)
 
-    from c2cgeoportal.models import DBSession, Interface, OGCServer, Theme, LayerGroup, LayerWMS
+    from c2cgeoportal.models import DBSession, LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme
 
-    session = DBSession()
+    for class_ in [LayerV1, LayerWMS, LayerWMTS, LayerGroup, Theme]:
+        names = []
+        for item in DBSession.query(class_).all():
+            if item.name in names:
+                i = 2
+                while "{}-{}".format(item.name, i) in names:
+                    i += 1
 
-    interfaces = session.query(Interface).all()
-    ogc_server = session.query(OGCServer).filter(OGCServer.name == u"source for image/png").one()
-
-    layer_borders = LayerWMS(u"Borders", u"borders")
-    layer_borders.interfaces = interfaces
-    layer_borders.ogc_server = ogc_server
-    layer_density = LayerWMS(u"Density", u"density")
-    layer_density.interfaces = interfaces
-    layer_density.ogc_server = ogc_server
-
-    group = LayerGroup(u"Demo")
-    group.children = [layer_borders, layer_density]
-
-    theme = Theme(u"Demo")
-    theme.children = [group]
-    theme.interfaces = interfaces
+                item.name = "{}-{}".format(item.name, i)
 
     transaction.commit()
-
-if __name__ == "__main__":
-    main()

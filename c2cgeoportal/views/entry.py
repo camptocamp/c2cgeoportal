@@ -358,7 +358,7 @@ class Entry:
         errors = set()
         l = {
             "id": layer.id,
-            "name": layer.name,
+            "name": layer.name if not isinstance(layer, LayerV1) else layer.layer,
             "metadata": self._get_metadatas(layer, errors),
         }
         if re.search("[/?#]", layer.name):  # pragma: no cover
@@ -668,15 +668,14 @@ class Entry:
                 ql = {"name": query_layer}
                 resolutions = self._get_layer_resolution_hint(query_layer_obj)
 
-                if resolutions[0] <= resolutions[1]:
+                if resolutions[0] != float("Inf"):
                     ql["minResolutionHint"] = float(
                         "%0.2f" % resolutions[0])
+                if resolutions[1] != 0:
                     ql["maxResolutionHint"] = float(
                         "%0.2f" % resolutions[1])
 
-                if "minResolutionHint" in ql or \
-                   "maxResolutionHint" in ql:
-                    l["queryLayers"].append(ql)
+                l["queryLayers"].append(ql)
 
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
@@ -814,12 +813,6 @@ class Entry:
                         if nb > 1:
                             errors.add(
                                 "The GeoMapFish layer name '{}', can't be two times "
-                                "in the same block (first level group).".format(name)
-                            )
-                    for name, nb in Counter(wms_layers).items():
-                        if nb > 1:
-                            errors.add(
-                                "The WMS layer name '{}', can't be two times "
                                 "in the same block (first level group).".format(name)
                             )
 

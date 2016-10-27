@@ -30,7 +30,7 @@
 
 import httplib2
 import subprocess
-
+import os
 import yaml
 from json import loads
 from urlparse import urlsplit
@@ -45,10 +45,12 @@ from lingua.extractors import Extractor
 from lingua.extractors import Message
 from pyramid.paster import bootstrap
 from c2c.template import get_config
+from bottle import mako_template
 
 from c2cgeoportal.lib import add_url_params, get_url2
 from c2cgeoportal.lib.bashcolor import colorize, RED
 from c2cgeoportal.lib.dbreflection import get_class
+from c2cgeoportal.lib.caching import init_region
 
 
 class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
@@ -57,7 +59,37 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     extensions = [".js", ".html"]
 
     def __call__(self, filename, options):
-        message_str = subprocess.check_output(["node", "tools/extract-messages.js", filename])
+
+        class Registry:
+            settings = get_config(".build/config.yaml")
+
+        class Request:
+            registry = Registry()
+
+            def static_url(*args, **kwargs):
+                return ""
+
+            def static_path(*args, **kwargs):
+                return ""
+
+            def route_url(*args, **kwargs):
+                return ""
+
+        init_region({"backend": "dogpile.cache.memory"})
+        processed = mako_template(filename, {
+            "request": Request(),
+            "lang": "fr",
+            "debug": False,
+            "extra_params": {},
+            "permalink_themes": "",
+            "fulltextsearch_groups": [],
+            "wfs_types": [],
+        })
+        int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
+        with open(int_filename, "wb") as file_open:
+            file_open.write(processed.encode("utf-8"))
+        message_str = subprocess.check_output(["node", "tools/extract-messages.js", int_filename])
+        os.unlink(int_filename)
         try:
             messages = []
             for contexts, message in loads(message_str):

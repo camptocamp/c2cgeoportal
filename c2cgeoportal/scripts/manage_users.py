@@ -29,8 +29,8 @@
 
 
 import os.path
+import argparse
 import warnings
-from optparse import OptionParser
 
 from pyramid.paster import get_app
 import transaction
@@ -54,39 +54,45 @@ Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
 User can be created if it doesn't exist yet."""
 
-    parser = OptionParser(usage)
-    parser.add_option(
-        "-i", "--app-config", default="production.ini",
-        dest="app_config",
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument(
+        "-i", "--app-config",
+        default="production.ini", dest="app_config",
         help="The application .ini config file (optional, default is "
         "'production.ini')"
     )
-    parser.add_option(
-        "-n", "--app-name", default="app", dest="app_name",
+    parser.add_argument(
+        "-n", "--app-name",
+        default="app", dest="app_name",
         help="The application name (optional, default is 'app')"
     )
-    parser.add_option(
+    parser.add_argument(
         "-p", "--password",
         help="Set password (if not set, username is used as password"
     )
-    parser.add_option(
-        "-c", "--create", action="store_true", default=False,
+    parser.add_argument(
+        "-c", "--create",
+        action="store_true", default=False,
         help="Create user if it doesn't already exist"
     )
-    parser.add_option(
-        "-r", "--rolename", default="role_admin",
+    parser.add_argument(
+        "-r", "--rolename",
+        default="role_admin",
         help="The role name which must exist in the database"
     )
-    parser.add_option(
-        "-e", "--email", default=None,
+    parser.add_argument(
+        "-e", "--email",
+        default=None,
         help="The user email"
     )
+    parser.add_argument(
+        'user',
+        nargs='1',
+        help="The user"
+    )
 
-    (options, args) = parser.parse_args()
-    if len(args) != 1:
-        parser.error("You must specify a username")
-
-    username = args[0]
+    options = parser.parse_args()
+    username = options.user
 
     app_config = options.app_config
     app_name = options.app_name
