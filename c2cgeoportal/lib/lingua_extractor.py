@@ -65,6 +65,8 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
 
         class Request:
             registry = Registry()
+            params = {}
+            GET = {}
 
             def static_url(*args, **kwargs):
                 return ""
