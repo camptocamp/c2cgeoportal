@@ -314,6 +314,8 @@ vars:
             - name: apijs
             - name: xapijs
             - name: printproxy_capabilities
+            # print V2
+            #- name: printproxy_info
             - name: mapserverproxy
               params:
                 SERVICE: WMS
@@ -331,7 +333,7 @@ vars:
 
     # Check collector configuration
     check_collector:
-        disabled: [checker_main, checker_viewer]
+        disabled: [checker_main, checker_viewer, checker_pdf]
         check_type:
             all:
             - name: checker_routes
@@ -340,6 +342,8 @@ vars:
               display: Errors in the themes
             - name: checker_lang_files
               display: Language files
+            - name: checker_pdf
+              display: Print PDF
             - name: checker_pdf3
               display: Print PDF
             - name: checker_fts

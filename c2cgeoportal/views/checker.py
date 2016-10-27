@@ -129,6 +129,61 @@ class Checker:  # pragma: no cover
         ]
         return self.testurls(named_urls)
 
+    @view_config(route_name="checker_pdf")
+    def pdf(self):
+        return self.make_response(self._pdf())
+
+    def _pdf(self):
+        body = {
+            "comment": "Foobar",
+            "title": "Bouchon",
+            "units": "m",
+            "srs": "EPSG:%i" % self.request.registry.settings["srid"],
+            "dpi": 254,
+            "layers": [],
+            "layout": self.settings["print_template"],
+            "pages": [{
+                "center": [self.settings["print_center_lon"], self.settings["print_center_lat"]],
+                "col0": "",
+                "rotation": 0,
+                "scale": self.settings["print_scale"],
+                "table": {
+                    "columns": ["col0"],
+                    "data": [{
+                        "col0": ""
+                    }]
+                }
+            }]
+        }
+        body = dumps(body)
+
+        url = add_url_params(self.request.route_url("printproxy_create"), {
+            "url": self.request.route_url("printproxy"),
+        })
+        url, headers = build_url("Check the printproxy request (create)", url, self.request, {
+            "Content-Type": "application/json;charset=utf-8",
+        })
+
+        h = Http()
+        resp, content = h.request(url, "POST", headers=headers, body=body)
+
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
+            return "Failed creating PDF: " + content
+
+        json = loads(content)
+        url, headers = build_url(
+            "Check the printproxy pdf (retrieve)", json["getURL"], self.request
+        )
+
+        resp, content = h.request(url, headers=headers)
+
+        if resp.status != httplib.OK:
+            self.set_status(resp.status, resp.reason)
+            return "Failed retrieving PDF: " + content
+
+        return "OK"
+
     @view_config(route_name="checker_pdf3")
     def pdf3(self):
         return self.make_response(self._pdf3())
