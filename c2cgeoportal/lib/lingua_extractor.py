@@ -159,8 +159,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         self.config = get_config(".build/config.yaml")
 
         try:
-            from c2cgeoportal.models import Theme, LayerGroup, \
-                LayerWMS, LayerWMTS
+            from c2cgeoportal.models import DBSession, Theme, LayerGroup, \
+                LayerWMS, LayerWMTS, FullTextSearch
 
             self._import(Theme, messages)
             self._import(LayerGroup, messages)
@@ -173,6 +173,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 RED
             ))
             print(colorize(e, RED))
+
+        for ln in DBSession.query(FullTextSearch.layer_name).distinct().all():
+            messages.append(Message(
+                None, ln, None, [], u"", u"",
+                ("fts", ln.encode("ascii", errors="replace"))
+            ))
 
         return messages
 
