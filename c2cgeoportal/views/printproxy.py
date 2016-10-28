@@ -35,9 +35,11 @@ import simplejson as json
 from simplejson.decoder import JSONDecodeError
 
 from pyramid.view import view_config
+from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal.lib.caching import get_region, PRIVATE_CACHE
+from c2cgeoportal.lib.caching import get_region, \
+    set_common_headers, NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal.lib.functionality import get_functionality
 from c2cgeoportal.views.proxy import Proxy
 
@@ -50,6 +52,103 @@ class PrintProxy(Proxy):  # pragma: no cover
     def __init__(self, request):
         Proxy.__init__(self, request)
         self.config = self.request.registry.settings
+
+    def _get_capabilities_proxy(self, filter_, *args, **kwargs):
+        resp, content = self._proxy(*args, **kwargs)
+
+        if self.request.method == "GET":
+            if resp.status == 200:
+                try:
+                    capabilities = json.loads(content)
+                except JSONDecodeError as e:
+                    # log and raise
+                    log.error("Unable to parse capabilities.")
+                    log.exception(e)
+                    log.error(content)
+                    return HTTPBadGateway(content)
+
+                pretty = self.request.params.get("pretty", "false") == "true"
+                content = json.dumps(
+                    filter_(capabilities), separators=None if pretty else (",", ":"),
+                    indent=4 if pretty else None
+                )
+        else:
+            content = ""
+
+        return self._build_response(
+            resp, content, PRIVATE_CACHE, "print",
+        )
+
+    ##########
+    # # V2 # #
+    ##########
+
+    @view_config(route_name="printproxy_info")
+    def info(self):
+        """ Get print capabilities. """
+
+        templates = get_functionality(
+            "print_template", self.config, self.request
+        )
+
+        # get query string
+        params = dict(self.request.params)
+        query_string = urllib.urlencode(params)
+
+        return self._info(
+            templates,
+            query_string,
+            self.request.method,
+        )
+
+    @cache_region.cache_on_arguments()
+    def _info(self, templates, query_string, method):
+        # get URL
+        _url = self.config["print_url"] + "info.json"
+
+        def _filter(capabilities):
+            capabilities["layouts"] = list(
+                layout for layout in capabilities["layouts"] if
+                layout["name"] in templates)
+            return capabilities
+
+        return self._get_capabilities_proxy(_filter, _url)
+
+    @view_config(route_name="printproxy_create")
+    def create(self):
+        """ Create PDF. """
+        return self._proxy_response(
+            "print",
+            "%screate.json" % (
+                self.config["print_url"]
+            )
+        )
+
+    @view_config(route_name="printproxy_get")
+    def get(self):
+        """ Get created PDF. """
+
+        resp, content = self._proxy("%s%s.printout" % (
+            self.config["print_url"],
+            self.request.matchdict.get("file")
+        ))
+
+        headers = {}
+        if "content-type" in resp:
+            headers["content-type"] = resp["content-type"]
+        if "content-disposition" in resp:
+            headers["content-disposition"] = resp["content-disposition"]
+
+        return set_common_headers(
+            self.request, "print", NO_CACHE,
+            response=Response(
+                content, status=resp.status, headers=headers
+            ),
+        )
+
+    ##########
+    # # V3 # #
+    ##########
 
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self):

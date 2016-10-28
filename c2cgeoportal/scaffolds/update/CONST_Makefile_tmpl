@@ -134,6 +134,9 @@ endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 endif
+ifeq ($(PRINT_VERSION), 2)
+DEFAULT_BUILD_RULES += print
+endif
 ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
 endif
@@ -421,12 +424,23 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
 I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 endif
+ifeq ($(PRINT_VERSION), 2)
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
+PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
+PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
+PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
+PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
+PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && $(FIND) -name '$(INPUT)' -type f))
+PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
+endif
 
+ifneq (, $(filter $(PRINT_VERSION), 2 3))
 PRINT_FILES += $(shell $(FIND) print $(FIND_OPTS) -not -name ".mako" -not -name ".jinja" -print)
 PRINT_MAKO_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.mako" -print)
 PRINT_JINJA_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.jinja" -print)
 PRINT_FILES +=  $(PRINT_MAKO_FILES:.mako=) $(PRINT_JINJA_FILES:.jinja=)
 PRINT_REQUIREMENT += $(PRINT_FILES)
+endif
 
 ifeq ($(DOCKER), FALSE)
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
@@ -551,7 +565,9 @@ cleanall: clean
 	rm -f $(ANGULAR_LOCALES_FILES)
 
 ifdef PRINT_BASE_WAR
+ifeq ($(PRINT_VERSION), 3)
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+endif
 endif
 
 .PHONY: cleanallcache
@@ -1067,8 +1083,10 @@ else  # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
+ifeq ($(PRINT_VERSION), 3)
 	$(PRERULE_CMD)
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
+endif
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 	$(PRERULE_CMD)
