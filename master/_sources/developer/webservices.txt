@@ -356,6 +356,28 @@ The `action` is a dictionary with:
 * ``action``: the action: (add_theme|add_group|add_layer).
 * ``data``: data needed for the action (actually, the item name).
 
+
+Layers
+======
+
+Layer description
+-----------------
+
+URL: ``.../layers/<layer_id>/md.xsd``
+
+Result
+~~~~~~
+
+A standard xsd document that describe the layer.
+
+MapFish protocol
+----------------
+
+URL: ``.../layers/<layer_id>/....``
+
+`Parameters and results, see the MapFish protocol <https://github.com/elemoine/papyrus/wiki/Protocol>`_.
+
+
 Raster
 ======
 
