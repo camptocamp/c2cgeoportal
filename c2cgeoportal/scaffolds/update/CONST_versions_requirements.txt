@@ -14,7 +14,7 @@ ipcalc==1.99.0
 isodate==0.5.4
 Jinja2==2.8
 lingua==4.11
-Mako==1.0.4
+Mako==1.0.5
 Markdown==2.6.7
 MarkupSafe==0.23
 OWSLib==0.13.0
@@ -27,7 +27,7 @@ postmarkup==1.2.2
 psycopg2==2.6.2
 pykwalify==1.5.1
 pyramid-chameleon==0.3
-pyramid-debugtoolbar==3.0.4
+pyramid-debugtoolbar==3.0.5
 pyramid-mako==1.0.2
 pyramid-multiauth==0.8.0
 pyramid-tm==1.0.1
