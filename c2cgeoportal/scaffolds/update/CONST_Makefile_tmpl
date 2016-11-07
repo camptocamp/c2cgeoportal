@@ -252,9 +252,9 @@ else
 TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
-MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -o -name "*.sym" -o -name "*.conf" -print)
-MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -o -name "*.sym.mako" -o -name "*.conf.mako" -print)
-MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -o -name "*.sym.jinja" -o -name "*.conf.jinja" -print)
+MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map" -o -name "*.sym" -o -name "*.conf" \) -print)
+MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map.mako" -o -name "*.sym.mako" -o -name "*.conf.mako" \) -print)
+MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map.jinja" -o -name "*.sym.jinja" -o -name "*.conf.jinja" \) -print)
 MAP_FILES += $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
 
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
@@ -646,7 +646,7 @@ template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/co
 
 $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
 
-%: %.mako $(INSTANCE_ID_MARKER)
+%: %.mako $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
@@ -654,7 +654,7 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
-%: %.jinja $(INSTANCE_ID_MARKER)
+%: %.jinja $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
@@ -662,7 +662,7 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
-$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
 .build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(MAKE_FILES)
 	$(PRERULE_CMD)
