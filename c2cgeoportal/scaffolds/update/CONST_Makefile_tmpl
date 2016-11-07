@@ -938,6 +938,10 @@ $(NPM_CMD):
 	$(PRERULE_CMD)
 ifeq ($(OPERATING_SYSTEM), LINUX)
 	npm install npm || sleep 20 || npm install npm || sleep 90 || npm install npm
+	# see also:
+	# https://github.com/npm/npm/issues/6761
+	# https://github.com/npm/npm/issues/6855
+	rm -rf /tmp/npm-* || true
 else
 	touch $@
 endif
