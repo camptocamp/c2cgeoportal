@@ -301,7 +301,10 @@ vars:
         defaults:
             fulltextsearch: text to search
             lang_files: [ngeo, cgxp-api]
-            phantomjs_routes: [desktop]
+            phantomjs_routes:
+            - name: desktop
+              query:
+                no_redirect: true
             forward_headers: []
             routes_disable: []
             themes:
@@ -309,7 +312,21 @@ vars:
                     params:
                         version: 2
         all:
-            phantomjs_routes: [desktop, mobile]
+            phantomjs_routes:
+            - name: desktop
+              query:
+                no_redirect: true
+            - name: mobile
+              query:
+                no_redirect: true
+            - name: desktop
+              query:
+                no_redirect: true
+                debug: true
+            - name: mobile
+              query:
+                no_redirect: true
+                debug: true
             routes:
             - name: apijs
             - name: xapijs
