@@ -1232,33 +1232,35 @@ $(UPGRADE_MAKE_FILE):
 	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
 	exit 1
 
+$(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX)
+
 .PHONY: upgrade
-upgrade: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION}
 
 .PHONY: upgrade1
-upgrade1: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade1: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
+upgrade2: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 2
 
 .PHONY: upgrade3
-upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade3: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 3
 
 .PHONY: upgrade4
-upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade4: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 4
 
 .PHONY: upgrade5
-upgrade5: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade5: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 5
 
 .PHONY: upgrade6
-upgrade6: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade6: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 6
 
 # Docker
