@@ -86,6 +86,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             "permalink_themes": "",
             "fulltextsearch_groups": [],
             "wfs_types": [],
+            "_": lambda x: x,
         })
         int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
         with open(int_filename, "wb") as file_open:
@@ -176,11 +177,12 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             ))
             print(colorize(e, RED))
 
-        for ln in DBSession.query(FullTextSearch.layer_name).distinct().all():
-            messages.append(Message(
-                None, ln, None, [], u"", u"",
-                ("fts", ln.encode("ascii", errors="replace"))
-            ))
+        for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
+            if ln is not None:
+                messages.append(Message(
+                    None, ln, None, [], u"", u"",
+                    ("fts", ln.encode("ascii", errors="replace"))
+                ))
 
         return messages
 

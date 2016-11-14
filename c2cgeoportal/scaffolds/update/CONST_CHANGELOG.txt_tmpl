@@ -194,6 +194,7 @@ If you want to keep your CGXP interface you should:
 
 12. To pre upgrade the database, run:
 
+    make -f <user>.mk .build/venv/bin/alembic alembic.ini production.ini .build/config.yaml
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
