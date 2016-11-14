@@ -77,6 +77,9 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             def route_url(*args, **kwargs):
                 return ""
 
+            def current_route_url(*args, **kwargs):
+                return ""
+
         init_region({"backend": "dogpile.cache.memory"})
         processed = mako_template(filename, {
             "request": Request(),
