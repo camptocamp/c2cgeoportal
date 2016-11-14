@@ -394,6 +394,13 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result += "</ul></li>"
         return result
 
+
+class RoListRenderer(FieldRenderer):  # pragma: no cover
+    def render_readonly(self, **kwargs):
+        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
+            helpers.literal(value) for value in self.raw_value
+        ]), style="white-space: nowrap;")
+
 ##############################################################################
 # FIELDS defs
 #
@@ -451,7 +458,7 @@ LayerV1.time_widget.set(
     options=time_widget_options,
 )
 LayerV1.interfaces.set(renderer=CheckBoxSet)
-LayerV1.metadatas.set(readonly=True)
+LayerV1.metadatas.set(renderer=RoListRenderer, readonly=True)
 LayerV1.restrictionareas.set(renderer=CheckBoxSet)
 
 # OGC server
@@ -481,18 +488,13 @@ LayerWMS.time_widget.set(
     options=time_widget_options,
 )
 LayerWMS.interfaces.set(renderer=CheckBoxSet)
-LayerWMS.metadatas.set(readonly=True)
+LayerWMS.metadatas.set(renderer=RoListRenderer, readonly=True)
+LayerWMS.dimensions.set(renderer=RoListRenderer, readonly=True)
 LayerWMS.restrictionareas.set(renderer=CheckBoxSet)
 LayerWMS.ogc_server.set(renderer=SelectFieldRenderer)
 
 
 # LayerWMTS
-class RoListRenderer(FieldRenderer):  # pragma: no cover
-    def render_readonly(self, **kwargs):
-        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
-            helpers.literal(value) for value in self.raw_value
-        ]), style="white-space: nowrap;")
-
 LayerWMTS = FieldSet(models.LayerWMTS)
 LayerWMTS.configure(exclude=[LayerWMTS.parents_relation])
 LayerWMTS.image_type.set(
@@ -501,7 +503,7 @@ LayerWMTS.image_type.set(
 )
 LayerWMTS.interfaces.set(renderer=CheckBoxSet)
 LayerWMTS.metadatas.set(renderer=RoListRenderer, readonly=True)
-LayerWMTS.dimensions.set(readonly=True)
+LayerWMTS.dimensions.set(renderer=RoListRenderer, readonly=True)
 LayerWMTS.restrictionareas.set(renderer=CheckBoxSet)
 
 
