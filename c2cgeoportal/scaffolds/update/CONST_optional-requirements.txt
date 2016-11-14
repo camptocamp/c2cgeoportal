@@ -1,4 +1,4 @@
-pip==9.0.0
+pip==9.0.1
 setuptools==28.8.0
 tilecloud==0.3.0
 tilecloud-chain==1.2.1
