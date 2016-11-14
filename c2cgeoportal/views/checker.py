@@ -286,8 +286,8 @@ class Checker:  # pragma: no cover
             if len(result["errors"]) != 0:
                 self.set_status(500, "Theme with error")
 
-                results.append("{}: Theme with error\n{}".format(
-                    Interface.name,
+                results.append("Interface '{}': Theme with error\n{}".format(
+                    interface,
                     "\n".join(result["errors"])
                 ))
 
