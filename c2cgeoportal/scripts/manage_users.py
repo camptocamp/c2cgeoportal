@@ -181,5 +181,6 @@ User can be created if it doesn't exist yet."""
 
         print("Password resetted for user %s" % username)
 
+
 if __name__ == "__main__":
     main()

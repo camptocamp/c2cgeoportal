@@ -91,6 +91,7 @@ class TestPoint(Base):
     city = Column(types.Unicode)
     country = Column(types.Unicode)
 
+
 GETFEATURE_REQUEST = u"""<?xml version='1.0' encoding="UTF-8" ?>
 <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <wfs:Query typeName="feature:%(feature)s" srsName="EPSG:21781" xmlns:feature="http://mapserver.gis.umn.edu/mapserver">

@@ -401,6 +401,7 @@ class RoListRenderer(FieldRenderer):  # pragma: no cover
             helpers.literal(value) for value in self.raw_value
         ]), style="white-space: nowrap;")
 
+
 ##############################################################################
 # FIELDS defs
 #
@@ -625,6 +626,8 @@ def _get_roles(parent):  # pragma: no cover
         (role.name, role.name)
         for role in parent.session.query(models.Role).all()
     ]
+
+
 User.role_name.set(
     renderer=SelectFieldRenderer,
     options=_get_roles,
