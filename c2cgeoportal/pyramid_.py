@@ -80,6 +80,7 @@ class DecimalJSON:
             return ret
         return _render
 
+
 INTERFACE_TYPE_CGXP = "cgxp"
 INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"

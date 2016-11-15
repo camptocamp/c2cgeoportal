@@ -78,6 +78,7 @@ class _RouteDest:
             self.constant, self.route, query
         )
 
+
 RE_NPM_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)$")
 RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
 

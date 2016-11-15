@@ -32,6 +32,8 @@ import httplib2
 import subprocess
 import os
 import yaml
+import re
+import traceback
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
@@ -45,7 +47,9 @@ from lingua.extractors import Extractor
 from lingua.extractors import Message
 from pyramid.paster import bootstrap
 from c2c.template import get_config
-from bottle import mako_template
+from bottle import template, MakoTemplate
+from mako.template import Template
+from mako.lookup import TemplateLookup
 
 from c2cgeoportal.lib import add_url_params, get_url2
 from c2cgeoportal.lib.bashcolor import colorize, RED
@@ -59,14 +63,16 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
     extensions = [".js", ".html"]
 
     def __call__(self, filename, options):
+        config = get_config(".build/config.yaml")
 
         class Registry:
-            settings = get_config(".build/config.yaml")
+            settings = config
 
         class Request:
             registry = Registry()
             params = {}
             GET = {}
+            user_agent = ""
 
             def static_url(*args, **kwargs):
                 return ""
@@ -77,22 +83,56 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
             def route_url(*args, **kwargs):
                 return ""
 
+            def current_route_url(*args, **kwargs):
+                return ""
+
         init_region({"backend": "dogpile.cache.memory"})
-        processed = mako_template(filename, {
-            "request": Request(),
-            "lang": "fr",
-            "debug": False,
-            "extra_params": {},
-            "permalink_themes": "",
-            "fulltextsearch_groups": [],
-            "wfs_types": [],
-            "_": lambda x: x,
-        })
-        int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
-        with open(int_filename, "wb") as file_open:
-            file_open.write(processed.encode("utf-8"))
+
+        int_filename = filename
+        if re.match("^" + re.escape("./{}/templates".format(config["package"])), filename):
+            try:
+                empty_template = Template("")
+
+                class Lookup(TemplateLookup):
+                    def get_template(self, uri):
+                        return empty_template
+
+                class MyTemplate(MakoTemplate):
+                    def prepare(self, **options):
+                        options.update({"input_encoding": self.encoding})
+                        lookup = Lookup(**options)
+                        if self.source:
+                            self.tpl = Template(self.source, lookup=lookup, **options)
+                        else:
+                            self.tpl = Template(
+                                uri=self.name,
+                                filename=self.filename,
+                                lookup=lookup, **options)
+
+                processed = template(
+                    filename,
+                    {
+                        "request": Request(),
+                        "lang": "fr",
+                        "debug": False,
+                        "extra_params": {},
+                        "permalink_themes": "",
+                        "fulltextsearch_groups": [],
+                        "wfs_types": [],
+                        "_": lambda x: x,
+                    },
+                    template_adapter=MyTemplate
+                )
+                exit()
+                int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
+                with open(int_filename, "wb") as file_open:
+                    file_open.write(processed.encode("utf-8"))
+            except:
+                print(traceback.format_exc())
+
         message_str = subprocess.check_output(["node", "tools/extract-messages.js", int_filename])
-        os.unlink(int_filename)
+        if int_filename != filename:
+            os.unlink(int_filename)
         try:
             messages = []
             for contexts, message in loads(message_str):
@@ -129,17 +169,17 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
             # for the print config
             elif "templates" in config:
                 result = []
-                for template in config.get("templates").keys():
+                for template_ in config.get("templates").keys():
                     result.append(Message(
-                        None, template, None, [], u"", u"",
-                        (filename, u"template/%s" % template)
+                        None, template_, None, [], u"", u"",
+                        (filename, u"template/%s" % template_)
                     ))
                     result += [
                         Message(
                             None, attribute, None, [], u"", u"",
-                            (filename, u"template/%s/%s" % (template, attribute))
+                            (filename, u"template/%s/%s" % (template_, attribute))
                         )
-                        for attribute in config.get("templates")[template].attributes.keys()
+                        for attribute in config.get("templates")[template_].attributes.keys()
                     ]
                 return result
             else:
@@ -178,7 +218,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             print(colorize(e, RED))
 
         for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
-            if ln is not None:
+            if ln is not None and ln != "":
                 messages.append(Message(
                     None, ln, None, [], u"", u"",
                     ("fts", ln.encode("ascii", errors="replace"))
