@@ -35,9 +35,6 @@ before_install:
 
 install:
 - make -f travis.mk c2c-egg
-- travis/pip.sh install tilecloud_chain
-- .build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#'
-- diff -u c2cgeoportal/scaffolds/update/CONST_versions.txt <(.build/venv/bin/pip freeze | grep -v '^-e' | grep -v '^#') | grep '^[+-]'
 - .build/venv/bin/pcreate -s c2cgeoportal_create /tmp/test package=test srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test extent= > /dev/null
 - .build/venv/bin/pcreate -s c2cgeoportal_update /tmp/test package=test srid=21781 mobile_application_title="Mobile App éàè" apache_vhost=test > /dev/null # on create
 - cp /tmp/test/project.yaml.mako project.yaml

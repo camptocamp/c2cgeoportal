@@ -1,14 +1,17 @@
 --index-url http://pypi.camptocamp.net/pypi
-setuptools>=8.0
+c2c.cssmin
+c2c.template==1.1.2
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
+flake8==3.0.4
+flake8-copyright==0.2.0
+JSTools
+mccabe==0.5.2
 nose
 nosexcover
-unittest2
-flake8
-pep8-naming
-flake8-copyright
-c2c.template==1.1.2
-JSTools
-c2c.cssmin
+pep8-naming==0.4.1
+pycodestyle==2.0.0
+pyflakes==1.2.3
+setuptools>=8.0
 transifex-client
+unittest2
 -r doc/requirements.txt
