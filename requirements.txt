@@ -1,4 +1,5 @@
 --index-url http://pypi.camptocamp.net/pypi
 -e git+https://github.com/camptocamp/pyramid_closure#egg=pyramid_closure
 -e git+https://github.com/Pylons/pyramid@1e02bbfc0df09259bf207112acf019c8dba44a90#egg=pyramid
+-r c2cgeoportal/scaffolds/update/CONST_versions.txt
 -e .
