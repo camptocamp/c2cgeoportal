@@ -255,7 +255,8 @@ class Layers(object):
                     raise HTTPForbidden()
 
                 # check if geometry is valid
-                self._validate_geometry(spatial_elt)
+                if self._get_validation_setting(layer):
+                    self._validate_geometry(spatial_elt)
 
         protocol = self._get_protocol_for_layer(layer, before_create=check_geometry)
         try:
@@ -307,7 +308,8 @@ class Layers(object):
                 raise HTTPForbidden()
 
             # check is geometry is valid
-            self._validate_geometry(spatial_elt)
+            if self._get_validation_setting(layer):
+                self._validate_geometry(spatial_elt)
 
         protocol = self._get_protocol_for_layer(layer, before_update=check_geometry)
         try:
@@ -319,8 +321,7 @@ class Layers(object):
             return {"validation_error": str(e)}
 
     def _validate_geometry(self, geom):
-        validate = self.settings.get("geometry_validation", False)
-        if validate and geom is not None:
+        if geom is not None:
             simple = DBSession.query(func.ST_IsSimple(geom)).scalar()
             if not simple:
                 raise TopologicalError("Not simple")
@@ -338,7 +339,7 @@ class Layers(object):
         if last_update_user is not None:
             setattr(feature, last_update_user, self.request.user.role.id)
 
-    def _get_ui_metadata(self, layer, key):
+    def _get_ui_metadata(self, layer, key, default=None):
         query = DBSession.query(UIMetadata).filter(
             UIMetadata.item_id == layer.id,
             UIMetadata.name == key
@@ -347,7 +348,14 @@ class Layers(object):
         if len(metadatas) == 1:
             metadata = metadatas[0]
             return metadata.value
-        return None
+        return default
+
+    def _get_validation_setting(self, layer):
+        # The validation UIMetadata is stored as a string, not a boolean
+        should_validate = self._get_ui_metadata(layer, "geometry_validation", None)
+        if should_validate:
+            return should_validate.lower() != "false"
+        return self.settings.get("geometry_validation", False)
 
     @view_config(route_name="layers_delete")
     def delete(self):

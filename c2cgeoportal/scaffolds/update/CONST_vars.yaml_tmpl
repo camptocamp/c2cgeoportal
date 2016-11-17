@@ -130,6 +130,7 @@ vars:
         - copy_to
         - lastUpdateDateColumn
         - lastUpdateUserColumn
+        - geometry_validation
 
     # The list of functionalities that can be configured
     # through the admin interface.
