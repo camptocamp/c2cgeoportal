@@ -417,10 +417,10 @@ class C2cTool:
                 print(self.color_bar)
                 print(
                     "This is an optional step but it helps to have a standard project.\n"
-                    "In the `create.diff` file, there are all the changes made in the create template "
-                    "that are recommended to be reported in your project.\n"
-                    "An advise to be more effective: In most of the casees it concerned a file that "
-                    "you never customise, or a file that you customised in depth, then respectively "
+                    "The `create.diff` file is a recommendation of the changes that you should apply "
+                    "to your project.\n"
+                    "An advise to be more effective: in most cases it concerns a file that "
+                    "you never customize, or a file that you have heavily customized, then respectively "
                     "copy the new file from CONST_create_template, respectively ignore the changes."
                 )
                 self.print_step(4)
