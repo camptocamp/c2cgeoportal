@@ -123,7 +123,6 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                     },
                     template_adapter=MyTemplate
                 )
-                exit()
                 int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
                 with open(int_filename, "wb") as file_open:
                     file_open.write(processed.encode("utf-8"))
