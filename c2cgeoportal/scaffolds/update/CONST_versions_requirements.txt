@@ -24,7 +24,6 @@ PasteDeploy==1.5.2
 PasteScript==2.0.2
 polib==1.0.7
 postmarkup==1.2.2
-psycopg2==2.6.2
 pykwalify==1.5.2
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==3.0.5
