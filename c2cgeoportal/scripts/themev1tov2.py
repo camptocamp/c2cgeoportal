@@ -192,13 +192,6 @@ def layer_v1tov2(session, layer):
     new_layer.geo_table = layer.geo_table
     new_layer.interfaces = layer.interfaces
 
-    for link in layer.parents_relation:
-        new_link = LayergroupTreeitem()
-        new_link.ordering = link.ordering
-        new_link.treegroup_id = link.treegroup_id
-        new_link.group = link.group
-        new_link.item = new_layer
-
     if layer.layer_type[-4:] == " WMS":
         new_layer.layer = layer.name
         new_layer.style = layer.style
@@ -216,6 +209,13 @@ def layer_v1tov2(session, layer):
             dimensions = loads(layer.dimensions)
             for name, value in dimensions.items():
                 session.add(Dimension(name, value, new_layer))
+
+    for link in layer.parents_relation:
+        new_link = LayergroupTreeitem()
+        new_link.ordering = link.ordering
+        new_link.treegroup_id = link.treegroup_id
+        new_link.group = link.group
+        new_link.item = new_layer
 
     layer_add_metadata(layer, new_layer, session)
 
