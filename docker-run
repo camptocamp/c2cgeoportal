@@ -11,12 +11,13 @@ def main():
     args = sys.argv[1:]
     docker_cmd = ['docker', 'run']
     if args[0][0] == '-':
-        docker_cmd.append(sys.argv[0])
+        docker_cmd.append(args[0])
         args = args[1:]
 
     # docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
 
     docker_cmd.extend([
+        "--rm",
         "--volume=build:/build",
         "--volume={pwd}:/src".format(pwd=os.getcwd()),
         "--volume={home}:{home}".format(home=os.environ["HOME"]),

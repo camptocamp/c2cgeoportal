@@ -55,6 +55,10 @@ install:
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git fetch origin ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}; fi
 - ./docker-run travis/no-make-error.sh . help
 - ./docker-run make -f travis.mk build
+
+- pip install sqlalchemy psycopg2
+- python travis/waitdb postgres://www-data:www-data@localhost/geomapfish
+
 - travis/create-new-project.sh
 - travis/test-upgrade.sh
 - travis/build-new-project.sh
