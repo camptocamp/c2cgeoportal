@@ -376,4 +376,4 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(set([feature.properties["label"] for feature in response.features]), set(["label5", "label6"]))
+        self.assertEqual({feature.properties["label"] for feature in response.features}, set(["label5", "label6"]))

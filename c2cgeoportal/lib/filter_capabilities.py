@@ -68,7 +68,7 @@ def get_private_layers():
 @cache_region.cache_on_arguments()
 def get_writable_layers(role_id):
     q = get_writable_layers_query(role_id, distinct(Layer.name))
-    return set([r for r, in q.all()])
+    return {r for r, in q.all()}
 
 
 @cache_region.cache_on_arguments()
