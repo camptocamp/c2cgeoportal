@@ -375,8 +375,8 @@ class C2cTool:
         with open("ngeo.diff", "w") as diff_file:
             check_call([
                 "git", "diff", "--",
-                "CONST_create_template/{}/templates".format(self.project["project_package"]),
-                "CONST_create_template/{}/static-ngeo".format(self.project["project_package"]),
+                "CONST_create_template/{0}/templates".format(self.project["project_package"]),
+                "CONST_create_template/{0}/static-ngeo".format(self.project["project_package"]),
             ], stdout=diff_file)
 
         if os.path.getsize("ngeo.diff") == 0:
@@ -397,10 +397,10 @@ class C2cTool:
         status = [s for s in status.split("\n") if len(s) > 3]
         status = [s[3:] for s in status if not s.startswith("?? ")]
         status = [s for s in status if not s.startswith(
-            "CONST_create_template/{}/templates/".format(self.project["project_package"]),
+            "CONST_create_template/{0}/templates/".format(self.project["project_package"]),
         )]
         status = [s for s in status if not s.startswith(
-            "CONST_create_template/{}/static-ngeo/".format(self.project["project_package"]),
+            "CONST_create_template/{0}/static-ngeo/".format(self.project["project_package"]),
         )]
         matcher = re.compile(r"CONST_create_tremplate.*/CONST_.+")
         status = [s for s in status if not matcher.match(s)]
@@ -484,7 +484,7 @@ class C2cTool:
         self.print_step(6, intro="Then to commit your changes type:")
 
     def step6(self):
-        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
+        check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {0}".format(
             pkg_resources.get_distribution("c2cgeoportal").version
         )])
 

@@ -52,11 +52,11 @@ def upgrade():
         ('theme', 'treegroup'),
     ]:
         op.drop_constraint(
-            '{}_id_fkey'.format(source),
+            '{0}_id_fkey'.format(source),
             source, schema=schema,
         )
         op.create_foreign_key(
-            '{}_id_fkey'.format(source),
+            '{0}_id_fkey'.format(source),
             source, source_schema=schema, local_cols=['id'],
             referent_table=dest, referent_schema=schema, remote_cols=['id'],
             ondelete='cascade',
@@ -72,11 +72,11 @@ def downgrade():
         ('theme', 'treegroup'),
     ]:
         op.drop_constraint(
-            '{}_id_fkey'.format(source),
+            '{0}_id_fkey'.format(source),
             source, schema=schema,
         )
         op.create_foreign_key(
-            '{}_id_fkey'.format(source),
+            '{0}_id_fkey'.format(source),
             source, source_schema=schema, local_cols=['id'],
             referent_table=dest, referent_schema=schema, remote_cols=['id'],
         )

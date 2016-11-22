@@ -121,13 +121,13 @@ class BaseTemplate(Template):  # pragma: no cover
             try:
                 type(value)
             except ValueError:
-                exit("The attribute {} is not a {}".format(name, type))
+                exit("The attribute {0} is not a {1}".format(name, type))
 
         vars[name] = value
 
     def _epsg2bbox(self, srid):
         try:
-            r = requests.get("http://epsg.io/?format=json&q={}".format(srid))
+            r = requests.get("http://epsg.io/?format=json&q={0}".format(srid))
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
                 "http://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"

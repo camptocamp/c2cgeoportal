@@ -88,9 +88,9 @@ def _ngeo_version():
         match = RE_NPM_VERSION.match(os.environ["TRAVIS_TAG"])
         prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["TRAVIS_TAG"])
         if match is not None:
-            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
+            return "{0}.{1}.{2}".format(match.group(1), match.group(2), match.group(3))
         if prerelease_match is not None:
-            return "{}.{}.{}-{}.{}".format(
+            return "{0}.{1}.{2}-{3}.{4}".format(
                 prerelease_match.group(1),
                 prerelease_match.group(2),
                 prerelease_match.group(3),
@@ -117,7 +117,7 @@ def _get_ngeo_version():
     version = _ngeo_version()
     if version is not None:
         return version
-    return "git://github.com/camptocamp/ngeo#{}".format(
+    return "git://github.com/camptocamp/ngeo#{0}".format(
         subprocess.check_output(["git", "rev-parse", "HEAD"], cwd="ngeo").strip()
     )
 
@@ -208,7 +208,7 @@ def main():
             )
             # Styles
             data = _sub(
-                r'    <link rel="stylesheet.*/build/{}.css">'.format(args.interface),
+                r'    <link rel="stylesheet.*/build/{0}.css">'.format(args.interface),
                 r"""    <link rel="stylesheet" href="${{request.static_url('{{{{package}}}}:static-ngeo/build/{interface}.css')}}" type="text/css">""".format(interface=args.interface),  # noqa
                 data,
                 count=1,
@@ -248,7 +248,7 @@ def main():
                 flags=re.DOTALL
             )
             data = _sub(
-                '{}([^"]+){}(.*){}'.format(
+                '{0}([^"]+){1}(.*){2}'.format(
                     re.escape('<script src="../../../../node_modules/'),
                     re.escape('"'),
                     re.escape("></script>"),
@@ -257,7 +257,7 @@ def main():
                 data,
             )
             data = _sub(
-                '{}([^"]+){}(.*){}'.format(
+                '{0}([^"]+){1}(.*){2}'.format(
                     re.escape('<script src="../../../../'),
                     re.escape('"'),
                     re.escape("></script>"),

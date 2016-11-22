@@ -406,7 +406,7 @@ class TreeItem(Base):
 
     def __unicode__(self):  # pragma: no cover
         type_ = self.__label__ if hasattr(self, "__label__") else self.item_type
-        return u"{}: {}".format(type_, self.name or u"")
+        return u"{0}: {1}".format(type_, self.name or u"")
 
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
