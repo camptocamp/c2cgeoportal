@@ -60,9 +60,9 @@ def main():
         for item in DBSession.query(class_).all():
             if item.name in names:
                 i = 2
-                while "{}-{}".format(item.name, i) in names:
+                while "{0}-{1}".format(item.name, i) in names:
                     i += 1
 
-                item.name = "{}-{}".format(item.name, i)
+                item.name = "{0}-{1}".format(item.name, i)
 
     transaction.commit()

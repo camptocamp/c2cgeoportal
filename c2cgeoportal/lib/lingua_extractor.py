@@ -89,7 +89,7 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
         init_region({"backend": "dogpile.cache.memory"})
 
         int_filename = filename
-        if re.match("^" + re.escape("./{}/templates".format(config["package"])), filename):
+        if re.match("^" + re.escape("./{0}/templates".format(config["package"])), filename):
             try:
                 empty_template = Template("")
 
@@ -268,7 +268,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                             (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
                         ))
             except NoSuchTableError:
-                exit(colorize("No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED))
+                exit(colorize("No such table '{0}' for layer '{1}'.".format(layer.geo_table, layer.name), RED))
 
     def _import_layer_wmts(self, layer, messages):
         from c2cgeoportal.models import DBSession, OGCServer
@@ -284,7 +284,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         layer.item_type, layer.name, layer.id, messages
                     )
                 except NoResultFound:
-                    print("Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                    print("Error: the OGC server '{0}' from the WMTS layer '{1}' does not exist.".format(
                         server[0], layer.name
                     ))
 

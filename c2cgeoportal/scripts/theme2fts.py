@@ -129,7 +129,7 @@ class Import:
         self._ = {}
         for lang in self.languages:
             self._[lang] = translation(
-                "{}-client".format(package), os.path.join(package, "locale/"), [lang])
+                "{0}-client".format(package), os.path.join(package, "locale/"), [lang])
 
         query = self.session.query(Interface)
         if options.interfaces is not None:
