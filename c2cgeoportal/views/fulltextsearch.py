@@ -65,7 +65,7 @@ class FullTextSearchView:
             language = self.languages[lang]
         except KeyError:
             return HTTPInternalServerError(
-                detail="%s not defined in languages" % lang)
+                detail="{0!s} not defined in languages".format(lang))
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")

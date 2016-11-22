@@ -65,17 +65,17 @@ class Proxy:
         query_string = urllib.urlencode(params_encoded)
 
         if parsed_url.port is None:
-            url = "%s://%s%s?%s" % (
+            url = "{0!s}://{1!s}{2!s}?{3!s}".format(
                 parsed_url.scheme, parsed_url.hostname,
                 parsed_url.path, query_string
             )
         else:  # pragma: no cover
-            url = "%s://%s:%i%s?%s" % (
+            url = "{0!s}://{1!s}:{2:d}{3!s}?{4!s}".format(
                 parsed_url.scheme, parsed_url.hostname, parsed_url.port,
                 parsed_url.path, query_string
             )
 
-        log.info("Send query to URL:\n%s." % url)
+        log.info("Send query to URL:\n{0!s}.".format(url))
 
         if method is None:
             method = self.request.method
@@ -107,14 +107,14 @@ class Proxy:
                     url, method=method, headers=headers
                 )
         except Exception as e:  # pragma: no cover
-            log.error(
-                "Error '%s' while getting the URL:\n%s\nMethod: %s." %
-                (sys.exc_info()[0], url, method)
-            )
+            log.error("Error '{0!s}' while getting the URL:\n{1!s}\nMethod: {2!s}.".format(
+                sys.exc_info()[0], url, method
+            ))
 
             log.error(
-                "--- With headers ---\n%s" %
-                "\n".join(["%s: %s" % h for h in headers.items()])
+                "--- With headers ---\n{0!s}".format("\n".join(
+                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                ))
             )
 
             log.error("--- Exception ---")
@@ -132,16 +132,16 @@ class Proxy:
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
             log.error(
-                "Error '%s' in response of URL:\n%s." %
-                (resp.reason, url)
+                "Error '{0!s}' in response of URL:\n{1!s}.".format(resp.reason, url)
             )
 
-            log.error("Status: %i" % resp.status)
-            log.error("Method: %s" % method)
+            log.error("Status: {0:d}".format(resp.status))
+            log.error("Method: {0!s}".format(method))
 
             log.error(
-                "--- With headers ---\n%s" %
-                "\n".join(["%s: %s" % h for h in headers.items()])
+                "--- With headers ---\n{0!s}".format("\n".join(
+                    ["{0!s}: {1!s}".format(*h) for h in headers.items()]
+                ))
             )
 
             if method == "POST":

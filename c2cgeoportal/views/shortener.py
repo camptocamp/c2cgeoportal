@@ -63,7 +63,7 @@ class Shortener:
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
 
         if len(short_urls) != 1:
-            raise HTTPNotFound("Ref '%s' not found" % ref)
+            raise HTTPNotFound("Ref '{0!s}' not found".format(ref))
 
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
@@ -93,7 +93,7 @@ class Shortener:
                 raise HTTPBadRequest("The requested host is not allowed.")
         else:
             if hostname != self.request.server_name:
-                raise HTTPBadRequest("The requested host '%s' should be '%s'" % (
+                raise HTTPBadRequest("The requested host '{0!s}' should be '{1!s}'".format(
                     hostname, self.request.server_name
                 ))
 

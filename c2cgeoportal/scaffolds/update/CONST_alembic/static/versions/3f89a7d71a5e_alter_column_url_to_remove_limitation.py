@@ -44,7 +44,7 @@ down_revision = None
 
 
 def upgrade():
-    schema = '%s_static' % context.get_context().config.get_main_option('schema')
+    schema = '{0!s}_static'.format(context.get_context().config.get_main_option('schema'))
     op.alter_column('shorturl', 'url', type_=types.Unicode, schema=schema)
 
 

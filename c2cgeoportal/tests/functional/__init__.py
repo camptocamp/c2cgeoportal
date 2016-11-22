@@ -58,7 +58,7 @@ if os.path.exists(configfile):
         os.path.dirname(os.path.abspath(__file__)),
         "c2cgeoportal_test.map"
     )
-    mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+    mapserv = "{0!s}?map={1!s}&".format(mapserv_url, mapfile)
 
 caching.init_region({"backend": "dogpile.cache.memory"})
 

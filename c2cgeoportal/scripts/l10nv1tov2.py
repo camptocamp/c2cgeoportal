@@ -81,17 +81,17 @@ and build your application to merge the old localisation with the new one.
     with open(options.po_v2, "w+") as destionation:
         destionation.write("""msgid ""
 msgstr ""
-"Last-Translator: Imported from %s\\n"
-"Language: %s\\n"
+"Last-Translator: Imported from {0!s}\\n"
+"Language: {1!s}\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8bit\\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
-""" % (options.json_v1, options.lang))
+""".format(options.json_v1, options.lang))
         for key, value in source.items():
             if isinstance(value, basestring):
                 destionation.write(("""
-msgid "%s"
-msgstr "%s"
-""" % (key, value.replace('"', '\\"'))).encode("utf-8"),
+msgid "{0!s}"
+msgstr "{1!s}"
+""".format(key, value.replace('"', '\\"'))).encode("utf-8"),
                 )

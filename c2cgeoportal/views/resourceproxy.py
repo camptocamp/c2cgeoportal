@@ -66,5 +66,5 @@ class ResourceProxy(Proxy):
                 content_type=content_type
             )
         else:  # pragma: no cover
-            log.warning("target url not found: %s" % target)
+            log.warning("target url not found: {0!s}".format(target))
             return HTTPBadRequest("url not allowed")

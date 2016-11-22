@@ -74,8 +74,7 @@ class TimeInformation:
             if self.mode is not None:
                 if self.mode != mode:
                     raise ValueError(
-                        "Could not mix time mode '%s' and '%s'"
-                        % (mode, self.mode)
+                        "Could not mix time mode '{0!s}' and '{1!s}'".format(mode, self.mode)
                     )
             else:
                 self.mode = mode
@@ -86,8 +85,7 @@ class TimeInformation:
         if self.widget is not None:
             if self.widget != widget:
                 raise ValueError(
-                    "Could not mix time widget '%s' and '%s'"
-                    % (widget, self.widget)
+                    "Could not mix time widget '{0!s}' and '{1!s}'".format(widget, self.widget)
                 )
         else:
             self.widget = widget
@@ -220,8 +218,7 @@ def parse_extent(extent, default_values):
             # case "start/end/interval"
             if len(extent) > 1 or extent[0].count("/") != 2:
                 raise ValueError(
-                    "Unsupported time definition '%s'"
-                    % extent)
+                    "Unsupported time definition '{0!s}'".format(extent))
             s, e, i = extent[0].split("/")
             start = _parse_date(s)
             end = _parse_date(e)
@@ -290,7 +287,7 @@ def _parse_date(date):
             dt = dt.replace(tzinfo=isodate.UTC)
         return "second", dt
     except:
-        raise ValueError("Invalid date format '%s'" % date)
+        raise ValueError("Invalid date format '{0!s}'".format(date))
 
 
 def _format_date(date):

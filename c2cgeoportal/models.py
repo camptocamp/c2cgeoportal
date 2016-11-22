@@ -171,7 +171,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return u"%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
+        return u"{0!s} - {1!s}".format(self.name or u"", self.value or u"")  # pragma: no cover
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -979,7 +979,7 @@ class Metadata(Base):
         self.value = value
 
     def __unicode__(self):  # pragma: no cover
-        return u"%s: %s" % (self.name or u"", self.value or u"")
+        return u"{0!s}: {1!s}".format(self.name or u"", self.value or u"")
 
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
@@ -1068,7 +1068,7 @@ def db_chooser_tween_factory(handler, registry):  # pragma: nocover
     def db_chooser_tween(request):
         session = DBSession()
         old = session.bind
-        method_path = "%s %s" % (request.method, request.path)
+        method_path = "{0!s} {1!s}".format(request.method, request.path)
         force_master = any(r.match(method_path) for r in master_paths)
         if not force_master and (request.method in ("GET", "OPTIONS") or
                                  any(r.match(method_path) for r in slave_paths)):

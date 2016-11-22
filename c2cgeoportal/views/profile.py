@@ -74,7 +74,7 @@ class Profile(Raster):
                     point["values"][l] = -9999
 
             r = template % tuple((str(point["values"][l]) for l in layers))
-            result += "\n%s,%s,%d,%d" % (str(point["dist"]), r, point["x"], point["y"])
+            result += "\n{},{},{:.1f},{:.1f}".format(str(point["dist"]), r, point["x"], point["y"])
 
         return set_common_headers(
             self.request, "profile", NO_CACHE,
@@ -94,7 +94,7 @@ class Profile(Raster):
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer %s not found" % layer)
+                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
         else:
             rasters = self.rasters
 

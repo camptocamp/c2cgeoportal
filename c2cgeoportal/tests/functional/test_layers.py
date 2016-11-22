@@ -129,10 +129,10 @@ class TestLayers(TestCase):
         if not self.metadata:
             self.metadata = declarative_base(bind=engine).metadata
 
-        tablename = "table_%d" % id
+        tablename = "table_{0:d}".format(id)
 
         table1 = Table(
-            "%s_child" % tablename, self.metadata,
+            "{0!s}_child".format(tablename), self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
             schema="public"
@@ -142,7 +142,7 @@ class TestLayers(TestCase):
             tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("child_id", types.Integer,
-                   ForeignKey("public.%s_child.id" % tablename)),
+                   ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column("name", types.Unicode),
             Column("geom", Geometry("POINT", srid=21781, management=management)),
             schema="public"
@@ -274,7 +274,7 @@ class TestLayers(TestCase):
         layer_id2 = self._create_layer()
         layer_id3 = self._create_layer()
 
-        layer_ids = "%d,%d,%d" % (layer_id1, layer_id2, layer_id3)
+        layer_ids = "{0:d},{1:d},{2:d}".format(layer_id1, layer_id2, layer_id3)
         request = self._get_request(layer_ids, username=u"__test_user")
 
         layers = Layers(request)
@@ -579,7 +579,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertEquals(cls.__table__.name, "table_%d" % layer_id)
+        self.assertEquals(cls.__table__.name, "table_{0:d}".format(layer_id))
         self.assertTrue(hasattr(cls, "name"))
         self.assertTrue("child" in cls.__dict__)
 
@@ -776,7 +776,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True)
-        tablename = "table_%d" % layer_id
+        tablename = "table_{0:d}".format(layer_id)
         settings = {
             "layers": {
                 "enum": {
@@ -812,7 +812,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True, attr_list=True)
-        tablename = "table_%d" % layer_id
+        tablename = "table_{0:d}".format(layer_id)
         settings = {
             "layers": {
                 "enum": {

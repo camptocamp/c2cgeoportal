@@ -139,7 +139,7 @@ class _StatsDBackend:  # pragma: no cover
 
     def timer(self, key, duration):
         the_key = self._key(key)
-        message = "%s:%s|ms" % (the_key, int(round(duration * 1000.0)))
+        message = "{0!s}:{1!s}|ms".format(the_key, int(round(duration * 1000.0)))
         try:
             self._socket.send(message)
         except:
