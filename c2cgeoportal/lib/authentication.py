@@ -36,9 +36,9 @@ from c2cgeoportal.resources import defaultgroupsfinder
 
 
 def create_authentication(settings):
-    timeout = settings.get("authtkt_timeout", None)
+    timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None else int(timeout)
-    reissue_time = settings.get("reissue_time", None)
+    reissue_time = settings.get("reissue_time")
     reissue_time = None if reissue_time is None else int(reissue_time)
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         settings["authtkt_secret"],

@@ -64,7 +64,7 @@ class Layers:
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings.get("layers", {})
-        self.layers_enum_config = self.settings.get("enum", None)
+        self.layers_enum_config = self.settings.get("enum")
 
     def _get_geom_col_info(self, layer):
         """ Return information about the layer's geometry column, namely
@@ -189,7 +189,7 @@ class Layers:
 
         layer = self._get_layer_for_request()
         protocol = self._get_protocol_for_layer(layer)
-        feature_id = self.request.matchdict.get("feature_id", None)
+        feature_id = self.request.matchdict.get("feature_id")
         feature = protocol.read(self.request, id=feature_id)
         if not isinstance(feature, Feature):
             return feature
@@ -276,7 +276,7 @@ class Layers:
 
         self.request.response.cache_control.no_cache = True
 
-        feature_id = self.request.matchdict.get("feature_id", None)
+        feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
         def check_geometry(r, feature, o):
@@ -350,7 +350,7 @@ class Layers:
         if self.request.user is None:
             raise HTTPForbidden()
 
-        feature_id = self.request.matchdict.get("feature_id", None)
+        feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
         def security_cb(r, o):
@@ -422,14 +422,14 @@ class Layers:
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
             raise HTTPBadRequest("Unknown attribute: %s" % fieldname)
         dbsession = DBSessions.get(
-            layerinfos.get("dbsession", general_dbsession_name), None
+            layerinfos.get("dbsession", general_dbsession_name),
         )
         if dbsession is None:  # pragma: no cover
             raise HTTPInternalServerError(
                 "No dbsession found for layer '%s'" % layername
             )
 
-        layer_table = layerinfos.get("table", None)
+        layer_table = layerinfos.get("table")
         attrinfos = layerinfos["attributes"][fieldname]
         attrinfos = {} if attrinfos is None else attrinfos
 
