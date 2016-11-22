@@ -864,8 +864,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
-		--var 'src_components=$(PACKAGE)/static-ngeo/components/**/*.js' \
+		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js,$(PACKAGE)/static-ngeo/components/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
