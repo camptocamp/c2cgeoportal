@@ -180,7 +180,7 @@ def get_table(tablename, schema=None, session=None):
     return table
 
 
-def get_class(tablename, session=None, exclude_properties=[]):
+def get_class(tablename, session=None, exclude_properties=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -188,6 +188,8 @@ def get_class(tablename, session=None, exclude_properties=[]):
     tablename in the database a NoSuchTableError SQLAlchemy exception
     is raised.
     """
+    if exclude_properties is None:
+        exclude_properties = []
     tablename, schema = _get_schema(tablename)
     cache_key = (schema, tablename, ",".join(exclude_properties))
 
@@ -205,8 +207,10 @@ def get_class(tablename, session=None, exclude_properties=[]):
     return cls
 
 
-def _create_class(table, exclude_properties=[]):
+def _create_class(table, exclude_properties=None):
 
+    if exclude_properties is None:  # pragma: nocover
+        exclude_properties = []
     cls = type(
         str(table.name.capitalize()),
         (GeoInterface, Base),

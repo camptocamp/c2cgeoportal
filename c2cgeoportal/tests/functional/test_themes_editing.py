@@ -139,7 +139,9 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    def _create_request_obj(self, username=None, params={}, **kwargs):
+    def _create_request_obj(self, username=None, params=None, **kwargs):
+        if params is None:
+            params = {}
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request(**kwargs)

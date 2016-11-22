@@ -275,8 +275,10 @@ class User(Base):
 
     def __init__(
         self, username=u"", password=u"", email=u"", is_password_changed=False,
-        functionalities=[], role=None
+        functionalities=None, role=None
     ):
+        if functionalities is None:
+            functionalities = []
         self.username = username
         self.password = password
         self.email = email
@@ -348,7 +350,9 @@ class Role(Base):
         cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name=u"", description=u"", functionalities=[], extent=None):
+    def __init__(self, name=u"", description=u"", functionalities=None, extent=None):
+        if functionalities is None:
+            functionalities = []
         self.name = name
         self.functionalities = functionalities
         self.extent = extent
@@ -862,8 +866,12 @@ class RestrictionArea(Base):
         backref="restrictionareas", cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name="", description="", layers=[], roles=[],
+    def __init__(self, name="", description="", layers=None, roles=None,
                  area=None, readwrite=False):
+        if layers is None:
+            layers = []
+        if roles is None:
+            roles = []
         self.name = name
         self.description = description
         self.layers = layers

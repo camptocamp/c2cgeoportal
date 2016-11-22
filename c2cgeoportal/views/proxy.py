@@ -165,8 +165,10 @@ class Proxy:
 
     def _proxy_response(
         self, service_name, url,
-        headers=None, headers_update={}, public=False, **kwargs
+        headers=None, headers_update=None, public=False, **kwargs
     ):  # pragma: no cover
+        if headers_update is None:
+            headers_update = {}
         cache = kwargs.get("cache", False)
         if cache is True:
             resp, content = self._proxy_cache(
@@ -185,8 +187,10 @@ class Proxy:
 
     def _build_response(
         self, resp, content, cache_control, service_name,
-        headers=None, headers_update={}, content_type=None
+        headers=None, headers_update=None, content_type=None
     ):
+        if headers_update is None:
+            headers_update = {}
         headers = dict(resp) if headers is None else headers
 
         # Hop-by-hop Headers are not supported by WSGI

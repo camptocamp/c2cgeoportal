@@ -114,7 +114,9 @@ class TestThemesScale(TestCase):
     # viewer view tests
     #
 
-    def _create_request_obj(self, params={}, **kwargs):
+    def _create_request_obj(self, params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
@@ -127,7 +129,9 @@ class TestThemesScale(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _only_name(self, item, attributes=["name"]):
+    def _only_name(self, item, attributes=None):
+        if attributes is None:
+            attributes = ["name"]
         result = {}
 
         for attribute in attributes:

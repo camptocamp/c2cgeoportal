@@ -118,7 +118,9 @@ class TestMobileDesktop(TestCase):
 
         transaction.commit()
 
-    def _create_entry_obj(self, username=None, params={}, **kargs):
+    def _create_entry_obj(self, username=None, params=None, **kargs):
+        if params is None:
+            params = {}
         from c2cgeoportal.views.entry import Entry
 
         request = create_dummy_request(**kargs)
