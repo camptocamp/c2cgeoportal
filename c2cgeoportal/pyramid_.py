@@ -418,7 +418,7 @@ def error_handler(http_exception, request):  # pragma: no cover
 
 def call_hook(settings, name, *args, **kwargs):
     hooks = settings.get("hooks", {})
-    hook = hooks.get(name, None)
+    hook = hooks.get(name)
     if hook is None:
         return
     parts = hook.split(".")

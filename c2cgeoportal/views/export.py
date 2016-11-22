@@ -41,7 +41,7 @@ DEFAULT_CSV_ENCODING = "UTF-8"
 
 @view_config(route_name="csvecho")
 def exportcsv(request):
-    csv = request.params.get("csv", None)
+    csv = request.params.get("csv")
     if csv is None:
         return HTTPBadRequest("csv parameter is required")
 

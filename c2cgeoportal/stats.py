@@ -92,7 +92,7 @@ class _MemoryBackend:
         """
         the_key = "/".join(key)
         with self._stats_lock:
-            cur = self._timers.get(the_key, None)
+            cur = self._timers.get(the_key)
             if cur is None:
                 self._timers[the_key] = (1, duration, duration, duration)
             else:
@@ -176,7 +176,7 @@ def _before_rendered_callback(event):  # pragma: no cover
     """
     Callback called when the rendering is starting.
     """
-    request = event.get("request", None)
+    request = event.get("request")
     if request:
         measure = timer()
         request.add_finished_callback(_create_finished_cb("render", measure))
@@ -234,7 +234,7 @@ def init_pyramid_spy(config):  # pragma: no cover
 
 
 def _get_env_or_settings(config, what_env, what_vars, default):
-    from_env = os.environ.get(what_env, None)
+    from_env = os.environ.get(what_env)
     if from_env is not None:  # pragma: no cover
         return from_env
     stats = config.get_settings().get("stats", {})

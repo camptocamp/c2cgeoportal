@@ -125,14 +125,14 @@ def ogc_server(session):
 
     # get existing list of ogc_server
     servers_ogc = session.query(OGCServer).all()
-    unique_servers = set([
+    unique_servers = {
         (
             server.url,
             server.image_type,
             True if server.is_single_tile is None else server.is_single_tile
         )
         for server in servers_ogc
-    ])
+    }
 
     # add new ogc_server
     for url, image_type, is_single_tile in servers_v1:

@@ -71,7 +71,7 @@ def get_url(url, request, default=None, errors=None):
         return request.static_url(netloc + obj.path)
 
     if obj.scheme == "config":
-        server = request.registry.settings.get("servers", {}).get(obj.netloc, None)
+        server = request.registry.settings.get("servers", {}).get(obj.netloc)
         if server is None:
             if default is None and errors is not None:
                 errors.add("The server '%s' isn't found in the config" % obj.netloc)
@@ -125,7 +125,7 @@ def get_url2(name, url, request, errors):
                 .format(name, url)
             )
             return None
-        server = request.registry.settings.get("servers", {}).get(url_split.netloc, None)
+        server = request.registry.settings.get("servers", {}).get(url_split.netloc)
         if server is None:
             errors.add(
                 "The server '{}' isn't found in the config".format(url_split.netloc)

@@ -1268,7 +1268,7 @@ class Entry:
         queryable_layers = [
             name for name in list(wms.contents)
             if wms[name].queryable == 1]
-        cache_version = self.settings.get("cache_version", None)
+        cache_version = self.settings.get("cache_version")
 
         set_common_headers(
             self.request, "apijs", NO_CACHE,
@@ -1292,7 +1292,7 @@ class Entry:
             name for name in list(wms.contents)
             if wms[name].queryable == 1
         ]
-        cache_version = self.settings.get("cache_version", None)
+        cache_version = self.settings.get("cache_version")
 
         set_common_headers(
             self.request, "apijs", NO_CACHE,
@@ -1327,7 +1327,7 @@ class Entry:
 
     @view_config(route_name="themes", renderer="json")
     def themes(self):
-        role_id = self.request.params.get("role_id", None)
+        role_id = self.request.params.get("role_id")
         if role_id is None and self.request.user is not None:
             role_id = self.request.user.role.id
         elif self.request.client_addr != "127.0.0.1":
@@ -1338,8 +1338,8 @@ class Entry:
         version = int(self.request.params.get("version", 1))
         catalogue = self.request.params.get("catalogue", "false") == "true"
         min_levels = int(self.request.params.get("min_levels", 1))
-        group = self.request.params.get("group", None)
-        background_layers_group = self.request.params.get("background", None)
+        group = self.request.params.get("group")
+        background_layers_group = self.request.params.get("background")
 
         export_themes = sets in ("all", "themes")
         export_group = group is not None and sets in ("all", "group")
@@ -1437,8 +1437,8 @@ class Entry:
 
     @view_config(route_name="login")
     def login(self):
-        login = self.request.POST.get("login", None)
-        password = self.request.POST.get("password", None)
+        login = self.request.POST.get("login")
+        password = self.request.POST.get("password")
         if login is None or password is None:  # pragma nocover
             log.info(
                 "'login' and 'password' should be "
@@ -1510,9 +1510,9 @@ class Entry:
     def loginchange(self):
         set_common_headers(self.request, "login", NO_CACHE)
 
-        old_password = self.request.POST.get("oldPassword", None)
-        new_password = self.request.POST.get("newPassword", None)
-        new_password_confirm = self.request.POST.get("confirmNewPassword", None)
+        old_password = self.request.POST.get("oldPassword")
+        new_password = self.request.POST.get("newPassword")
+        new_password_confirm = self.request.POST.get("confirmNewPassword")
         if new_password is None or new_password_confirm is None or old_password is None:
             log.info(
                 "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "

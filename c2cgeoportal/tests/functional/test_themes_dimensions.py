@@ -177,7 +177,7 @@ class TestThemesView(TestCase):
 
     def _get_filtered_errors(self, themes):
         regex = re.compile(r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$")
-        return set([e for e in themes["errors"] if regex.search(e) is None])
+        return {e for e in themes["errors"] if regex.search(e) is None}
 
     def test_theme_dimensions(self):
         entry = self._create_entry_obj(params={

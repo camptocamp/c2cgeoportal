@@ -427,7 +427,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
         self.assertEquals(len(themes), 1)
-        layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_layer_group_1",
@@ -453,7 +453,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
         ]))
         self.assertEquals(len(themes), 1)
-        layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_layer_group_1",
@@ -494,7 +494,7 @@ class TestEntryView(TestCase):
         }
         themes = entry.themes()
         self.assertEquals(len(themes["themes"]), 1)
-        layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_public_layer_not_mapfile",
@@ -512,7 +512,7 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes = entry.themes()
         self.assertEquals(len(themes["themes"]), 1)
-        layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
@@ -537,7 +537,7 @@ class TestEntryView(TestCase):
         themes, errors = entry._themes(None, "desktop")
         self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
-        layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
@@ -550,7 +550,7 @@ class TestEntryView(TestCase):
         themes, errors = entry._themes(request.user.role.id)
         self.assertEquals(errors, set())
         self.assertEquals(len(themes), 1)
-        layers = set([l["name"] for l in themes[0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"test_wmsfeaturesgroup",
             u"__test_public_layer",
@@ -570,7 +570,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
         self.assertEquals(len(themes["themes"]), 1)
-        layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_public_layer_not_mapfile",
@@ -587,7 +587,7 @@ class TestEntryView(TestCase):
             u"The layer '__test_public_layer_no_layers' don't have any layers",
         ]))
         self.assertEquals(len(themes["themes"]), 1)
-        layers = set([l["name"] for l in themes["themes"][0]["children"][0]["children"]])
+        layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
         self.assertEquals(layers, set([
             u"__test_public_layer2",
             u"__test_private_layer2",
