@@ -45,7 +45,7 @@ class Tile:
         return self.min_x <= x and self.max_x > x and self.min_y <= y and self.max_y > y
 
     def __str__(self):
-        return "%f, %f, %f, %f: %s" % (
+        return "{0:f}, {1:f}, {2:f}, {3:f}: {4!s}".format(
             self.min_x, self.min_y, self.max_x, self.max_y, self.filename
         )
 

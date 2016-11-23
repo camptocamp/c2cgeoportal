@@ -418,7 +418,7 @@ class TestMapserverproxyView(TestCase):
         expected_response = "".join(
             re.sub(pattern, "", l) for l in expected_response.splitlines()
         )
-        expected_response = "%s('%s');" % ("cb", expected_response)
+        expected_response = "{0!s}('{1!s}');".format("cb", expected_response)
         response_body = "".join(
             re.sub(pattern, "", l) for l in response.body.splitlines()
         )
@@ -741,11 +741,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
 
-        featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
+        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(**{
             "typename": "testpoint_unprotected",
             "fid1": self.id_lausanne,
             "fid2": self.id_paris
-        }
+        })
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
@@ -763,11 +763,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
 
-        featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
+        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(**{
             "typename": "testpoint_unprotected",
             "fid1": self.id_lausanne,
             "fid2": self.id_paris
-        }
+        })
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
@@ -785,11 +785,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
 
-        featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
+        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(**{
             "typename": "testpoint_unprotected",
             "fid1": self.id_lausanne,
             "fid2": self.id_paris
-        }
+        })
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
@@ -805,11 +805,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
 
-        featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
+        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(**{
             "typename": "testpoint_unprotected",
             "fid1": self.id_lausanne,
             "fid2": self.id_paris
-        }
+        })
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",
@@ -825,11 +825,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
 
-        featureid = "%(typename)s.%(fid1)s,%(typename)s.%(fid2)s" % {
+        featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(**{
             "typename": "testpoint_unprotected",
             "fid1": self.id_lausanne,
             "fid2": self.id_paris
-        }
+        })
         request.params.update(dict(
             service="wfs", version="1.0.0",
             request="getfeature", typename="testpoint_unprotected",

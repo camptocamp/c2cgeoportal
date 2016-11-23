@@ -683,7 +683,7 @@ class TestEntryView(TestCase):
         ]))
         self.assertEquals(
             result["queryer_attribute_urls"],
-            '{"layer_test": {"label": "%s"}}' % mapserv_url
+            '{{"layer_test": {{"label": "{0!s}"}}}}'.format(mapserv_url)
         )
 
         result = entry.get_ngeo_index_vars()
@@ -1134,7 +1134,7 @@ class TestEntryView(TestCase):
             ("VERSION", "1.1.1"),
             ("REQUEST", "GetCapabilities"),
         )
-        mapserv = "%s?map=%s&" % (mapserv_url, mapfile)
+        mapserv = "{0!s}?map={1!s}&".format(mapserv_url, mapfile)
         url = mapserv + "&".join(["=".join(p) for p in params])
         http = httplib2.Http()
         h = {"Host": host}
@@ -1387,7 +1387,7 @@ class TestEntryView(TestCase):
         self.assertIn(error, errors)
         self.assertEquals(
             len([e for e in errors if e == error]), 1,
-            "Error '%s' more than one time in errors:\n%r" % (error, errors),
+            "Error '{0!s}' more than one time in errors:\n{1!r}".format(error, errors),
         )
 
     def test_internalwms(self):

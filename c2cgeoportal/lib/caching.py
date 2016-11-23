@@ -48,9 +48,9 @@ def keygen_function(namespace, fn):
     """
 
     if namespace is None:
-        namespace = "%s:%s" % (fn.__module__, fn.__name__)
+        namespace = "{0!s}:{1!s}".format(fn.__module__, fn.__name__)
     else:  # pragma: no cover
-        namespace = "%s:%s|%s" % (fn.__module__, fn.__name__, namespace)
+        namespace = "{0!s}:{1!s}|{2!s}".format(fn.__module__, fn.__name__, namespace)
 
     args = inspect.getargspec(fn)
     has_self = args[0] and args[0][0] in ("self", "cls")
