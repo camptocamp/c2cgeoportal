@@ -148,7 +148,9 @@ class TestThemesTimeView(TestCase):
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
-    def _create_request_obj(self, params={}, **kwargs):
+    def _create_request_obj(self, params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
@@ -161,7 +163,9 @@ class TestThemesTimeView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _only(self, item, attributes=["name", "time"]):
+    def _only(self, item, attributes=None):
+        if attributes is None:
+            attributes = ["name", "time"]
         result = {}
 
         for attribute in attributes:

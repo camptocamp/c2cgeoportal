@@ -1140,7 +1140,9 @@ class Entry:
                     )
         return layers_enum
 
-    def get_cgxp_index_vars(self, templates_params={}):
+    def get_cgxp_index_vars(self, templates_params=None):
+        if templates_params is None:
+            templates_params = {}
         extra_params = {}
 
         if self.lang:
@@ -1225,7 +1227,9 @@ class Entry:
 
         return d
 
-    def get_ngeo_index_vars(self, vars={}):
+    def get_ngeo_index_vars(self, vars=None):
+        if vars is None:
+            vars = {}
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
         vars["debug"] = self.debug

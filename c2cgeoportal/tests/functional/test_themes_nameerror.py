@@ -96,7 +96,9 @@ class TestThemesNameErrorView(TestCase):
 
         transaction.commit()
 
-    def _create_request_obj(self, params={}, **kwargs):
+    def _create_request_obj(self, params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url

@@ -578,7 +578,9 @@ class TestMapserverproxyView(TestCase):
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
 
-    def _create_getcap_request(self, username=None, additional_settings={}):
+    def _create_getcap_request(self, username=None, additional_settings=None):
+        if additional_settings is None:
+            additional_settings = {}
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request(additional_settings)

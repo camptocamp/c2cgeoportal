@@ -191,7 +191,9 @@ class TestEntryView(TestCase):
             username = "__test_user"
             is_password_changed = True
 
-            def __init__(self, role="__test_role", functionalities=[]):
+            def __init__(self, role="__test_role", functionalities=None):
+                if functionalities is None:
+                    functionalities = []
                 self.role_name = role
                 self.role = G(role, functionalities)
 
