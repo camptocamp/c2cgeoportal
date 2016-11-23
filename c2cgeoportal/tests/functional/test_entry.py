@@ -474,11 +474,11 @@ class TestEntryView(TestCase):
         from c2cgeoportal.lib import caching
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
-        self.assertEquals(errors, set([
+        self.assertEquals({e[:100] for e in errors}, set([
             u"The layer '__test_public_layer' is not defined in WMS capabilities",
             u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
             u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
-            'GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS returns a wrong Content-Type: text/html\n<HTML>\n<HEAD><TITLE>MapServer Message</TITLE></HEAD>\n<!-- MapServer version 7.0.1 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->\n<BODY BGCOLOR="#FFFFFF">\nmsLoadMap(): Regular expression error. MS_DEFAULT_MAPFILE_PATTERN validation failed.\n</BODY></HTML>',
+            u"GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&S"
         ]))
 
     def test_themev2(self):
