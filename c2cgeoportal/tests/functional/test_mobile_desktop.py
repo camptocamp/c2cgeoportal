@@ -135,12 +135,12 @@ class TestMobileDesktop(TestCase):
         import json
         themes = json.loads(response_vars["themes"])
         self.assertEqual(
-            set([t["name"] for t in themes]),
+            {t["name"] for t in themes},
             set([u"__test_desktop_only_theme", u"__test_theme"]),
         )
         theme = [t for t in themes if t["name"] == u"__test_theme"]
         layers = theme[0]["children"][0]["children"]
         self.assertEqual(
-            set([l["name"] for l in layers]),
+            {l["name"] for l in layers},
             set([u"__test_layer", u"__test_desktop_only_layer"]),
         )

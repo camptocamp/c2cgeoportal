@@ -80,6 +80,7 @@ class DecimalJSON:
             return ret
         return _render
 
+
 INTERFACE_TYPE_CGXP = "cgxp"
 INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_NGEO_CATALOGUE = "ngeo"
@@ -417,7 +418,7 @@ def error_handler(http_exception, request):  # pragma: no cover
 
 def call_hook(settings, name, *args, **kwargs):
     hooks = settings.get("hooks", {})
-    hook = hooks.get(name, None)
+    hook = hooks.get(name)
     if hook is None:
         return
     parts = hook.split(".")
@@ -551,6 +552,7 @@ def includeme(config):
     # These web services are used by tools like (nagios).
     config.add_route("checker_routes", "/checker_routes", request_method="GET")
     config.add_route("checker_lang_files", "/checker_lang_files", request_method="GET")
+    config.add_route("checker_pdf", "/checker_pdf", request_method="GET")
     config.add_route("checker_pdf3", "/checker_pdf3", request_method="GET")
     config.add_route("checker_fts", "/checker_fts", request_method="GET")
     config.add_route("checker_theme_errors", "/checker_theme_errors", request_method="GET")
@@ -580,6 +582,20 @@ def includeme(config):
     config.add_route(
         "printproxy_report_get", "/printproxy/report/{ref}",
         request_method="GET"
+    )
+    # v2
+    config.add_route(
+        "printproxy_info", "/printproxy/info.json",
+        request_method="GET",
+        pregenerator=C2CPregenerator(role=True),
+    )
+    config.add_route(
+        "printproxy_create", "/printproxy/create.json",
+        request_method="POST",
+    )
+    config.add_route(
+        "printproxy_get", "/printproxy/{file}.printout",
+        request_method="GET",
     )
 
     # full text search routes

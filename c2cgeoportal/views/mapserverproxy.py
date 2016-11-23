@@ -95,7 +95,7 @@ class MapservProxy(Proxy):
     def proxy(self):
 
         self.user = self.request.user
-        self.external = bool(self.request.params.get("EXTERNAL", None))
+        self.external = bool(self.request.params.get("EXTERNAL"))
 
         # params hold the parameters we"re going to send to MapServer
         params = dict(self.request.params)

@@ -102,7 +102,7 @@ def read_record_any(fp, type):
         return read_record_point(fp)
     elif type == 8:
         return read_record_multi_point(fp)
-    elif type == 3 or type == 5:
+    elif type in [3, 5]:
         return read_record_poly_line(fp)
     else:
         return False

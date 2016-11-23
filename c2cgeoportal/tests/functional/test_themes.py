@@ -183,10 +183,10 @@ class TestThemesView(TestCase):
         return result
 
     def _get_filtered_errors(self, themes):
-        return set([
+        return {
             e for e in themes["errors"]
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
-        ])
+        }
 
     def test_version(self):
         entry = self._create_entry_obj()

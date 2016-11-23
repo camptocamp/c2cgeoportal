@@ -134,6 +134,9 @@ endif
 ifeq ($(TILECLOUD_CHAIN), TRUE)
 DEFAULT_BUILD_RULES += tilegeneration/config.yaml
 endif
+ifeq ($(PRINT_VERSION), 2)
+DEFAULT_BUILD_RULES += print
+endif
 ifeq ($(PRINT_VERSION), 3)
 DEFAULT_BUILD_RULES += print
 endif
@@ -249,9 +252,9 @@ else
 TOUCHBACK_TXRC = touch --date "$(shell stat -c '%y' $(TX_RC))" $(TX_RC)
 endif
 
-MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -o -name "*.sym" -o -name "*.conf" -print)
-MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -o -name "*.sym.mako" -o -name "*.conf.mako" -print)
-MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -o -name "*.sym.jinja" -o -name "*.conf.jinja" -print)
+MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map" -o -name "*.sym" -o -name "*.conf" \) -print)
+MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map.mako" -o -name "*.sym.mako" -o -name "*.conf.mako" \) -print)
+MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) \( -name "*.map.jinja" -o -name "*.sym.jinja" -o -name "*.conf.jinja" \) -print)
 MAP_FILES += $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
 
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
@@ -421,12 +424,23 @@ PRINT_REQUIREMENT += $(PRINT_EXTRA_LIBS) \
 	$(shell $(FIND) $(PRINT_BASE_DIR)/print-apps)
 I18N_SOURCE_FILES += print/print-apps/$(PACKAGE)/config.yaml
 endif
+ifeq ($(PRINT_VERSION), 2)
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
+PRINT_BASE_WAR ?= print-servlet-2.1-SNAPSHOT-IMG-MAGICK.war
+PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
+PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
+PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
+PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && $(FIND) -name '$(INPUT)' -type f))
+PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
+endif
 
+ifneq (, $(filter $(PRINT_VERSION), 2 3))
 PRINT_FILES += $(shell $(FIND) print $(FIND_OPTS) -not -name ".mako" -not -name ".jinja" -print)
 PRINT_MAKO_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.mako" -print)
 PRINT_JINJA_FILES += $(shell $(FIND) print $(FIND_OPTS) -name "*.jinja" -print)
 PRINT_FILES +=  $(PRINT_MAKO_FILES:.mako=) $(PRINT_JINJA_FILES:.jinja=)
 PRINT_REQUIREMENT += $(PRINT_FILES)
+endif
 
 ifeq ($(DOCKER), FALSE)
 PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
@@ -551,7 +565,9 @@ cleanall: clean
 	rm -f $(ANGULAR_LOCALES_FILES)
 
 ifdef PRINT_BASE_WAR
+ifeq ($(PRINT_VERSION), 3)
 	rm -f $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_EXTRA_LIBS)
+endif
 endif
 
 .PHONY: cleanallcache
@@ -630,7 +646,7 @@ template-generate: $(ALL_MAKO_FILES:.mako=) $(ALL_JINJA_FILES:.jinja=) .build/co
 
 $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS)
 
-%: %.mako $(INSTANCE_ID_MARKER)
+%: %.mako $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
@@ -638,7 +654,7 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine mako --files $<
 
-%: %.jinja $(INSTANCE_ID_MARKER)
+%: %.jinja $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 ifeq ($(origin VARS_FILE), undefined)
 	@echo "Error: the variable VARS_FILE is required."
@@ -646,7 +662,7 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
-$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/dev-requirements.timestamp
+$(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp
 
 .build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template$(PYTHON_BIN_POSTFIX) $(VARS_DEPENDS) $(MAKE_FILES)
 	$(PRERULE_CMD)
@@ -848,8 +864,7 @@ node_modules/ngeo/buildtools/mako_build.json: .build/node_modules.timestamp
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX)
 	$(PRERULE_CMD)
 	PYTHONIOENCODING=UTF-8 $(VENV_BIN)/mako-render \
-		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js' \
-		--var 'src_components=$(PACKAGE)/static-ngeo/components/**/*.js' \
+		--var 'src=$(PACKAGE)/static-ngeo/js/**/*.js,$(PACKAGE)/static-ngeo/components/**/*.js' \
 		--var src_set=contribs_gmf \
 		--var entry_point=$(PACKAGE)_$* \
 		--var ngeo_folder=node_modules/ngeo/ \
@@ -875,6 +890,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 
 .PRECIOUS: .build/gmftemplatecache.js
 .build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
+		.build/dev-requirements.timestamp \
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
 		$(APP_DIRECTIVES_PARTIALS_FILES) \
 		$(GMF_DIRECTIVES_PARTIALS_FILES) \
@@ -1068,8 +1084,10 @@ else  # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
+ifeq ($(PRINT_VERSION), 3)
 	$(PRERULE_CMD)
 	curl --max-redirs 0 --location --output $@ $(shell cat $<)
+endif
 
 $(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
 	$(PRERULE_CMD)
@@ -1215,33 +1233,35 @@ $(UPGRADE_MAKE_FILE):
 	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
 	exit 1
 
+$(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX): .build/requirements.timestamp $(VENV_BIN)/alembic$(PYTHON_BIN_POSTFIX)
+
 .PHONY: upgrade
-upgrade: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/pip install c2cgeoportal==${VERSION}
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION}
 
 .PHONY: upgrade1
-upgrade1: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade1: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 1
 
 .PHONY: upgrade2
-upgrade2: .build/requirements.timestamp project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
+upgrade2: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml alembic.ini alembic_static.ini $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 2
 
 .PHONY: upgrade3
-upgrade3: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade3: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 3
 
 .PHONY: upgrade4
-upgrade4: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade4: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) --step 4
 
 .PHONY: upgrade5
-upgrade5: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade5: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 5
 
 .PHONY: upgrade6
-upgrade6: .build/requirements.timestamp project.yaml $(UPGRADE_MAKE_FILE)
+upgrade6: $(VENV_BIN)/c2ctool$(PYTHON_BIN_POSTFIX) project.yaml $(UPGRADE_MAKE_FILE)
 	$(VENV_BIN)/c2ctool upgrade $(UPGRADE_ARGS) $(UPGRADE_MAKE_FILE) ${VERSION} --step 6
 
 # Docker

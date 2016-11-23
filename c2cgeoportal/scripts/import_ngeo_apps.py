@@ -78,6 +78,7 @@ class _RouteDest:
             self.constant, self.route, query
         )
 
+
 RE_NPM_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)$")
 RE_NPM_PRERELEASE_VERSION = re.compile("^([0-9]+)\.([0-9]+)\.([0-9]+)\.?([a-z]+)([0-9]+)$")
 
@@ -366,6 +367,20 @@ ${ ',\\n'.join([
                 "module.constant('defaultTheme', 'Demo');",
                 data,
             )
+            if args.interface == "desktop":
+                data = _sub(
+                    r"<head>",
+                    """<head>
+% if "no_redirect" not in request.params:
+        <script>
+            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+                window.location = "${request.route_url('mobile', _query=dict(request.GET))}";
+            }
+        </script>
+% endif
+""",
+                    data,
+                )
 
         with open(args.dst, "wt") as dst:
             dst.write(data)

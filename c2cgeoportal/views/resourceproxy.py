@@ -53,7 +53,7 @@ class ResourceProxy(Proxy):
         targets = self.settings.get("targets", [])
         if target in targets:  # pragma: no cover
             url = targets[target]
-            values = ast.literal_eval(self.request.params.get("values", None))
+            values = ast.literal_eval(self.request.params.get("values"))
             url = url % values
 
             resp, content = self._proxy(url=url)

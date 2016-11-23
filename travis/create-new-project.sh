@@ -27,7 +27,7 @@ sudo a2enmod rewrite
 sudo a2enmod wsgi
 sudo a2enmod fcgid
 
-make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini production.ini .build/config.yaml
+make -f travis.mk .build/requirements.timestamp alembic.ini alembic_static.ini production.ini .build/config.yaml .build/venv/bin/alembic
 .build/venv/bin/alembic --config alembic.ini upgrade head
 .build/venv/bin/alembic --config alembic_static.ini upgrade head
 .build/venv/bin/create-demo-theme

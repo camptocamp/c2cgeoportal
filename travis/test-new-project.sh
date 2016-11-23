@@ -13,7 +13,7 @@ else
 
     sudo cat /var/log/apache2/error.log
     sudo cat /var/log/apache2/access.log
-    curl "http://localhost/travis/$1"
+    curl "http://localhost/travis/$1" --connect-timeout 1 --max-time 120 --retry 5
 
     exit 1
 fi

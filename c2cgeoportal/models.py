@@ -173,8 +173,10 @@ class Functionality(Base):
     def __unicode__(self):
         return u"%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
 
+
 event.listen(Functionality, "after_update", cache_invalidate_cb)
 event.listen(Functionality, "after_delete", cache_invalidate_cb)
+
 
 # association table role <> functionality
 role_functionality = Table(
@@ -361,6 +363,7 @@ class Role(Base):
             return None
         return to_shape(self.extent).bounds
 
+
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
 event.listen(Role.functionalities, "append", cache_invalidate_cb)
 event.listen(Role.functionalities, "remove", cache_invalidate_cb)
@@ -404,6 +407,7 @@ class TreeItem(Base):
     def __unicode__(self):  # pragma: no cover
         type_ = self.__label__ if hasattr(self, "__label__") else self.item_type
         return u"{}: {}".format(type_, self.name or u"")
+
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
@@ -455,6 +459,7 @@ class LayergroupTreeitem(Base):
         self.group = group
         self.item = item
         self.ordering = ordering
+
 
 event.listen(LayergroupTreeitem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(LayergroupTreeitem, "after_update", cache_invalidate_cb, propagate=True)
@@ -574,6 +579,7 @@ class Theme(TreeGroup):
         TreeGroup.__init__(self, name=name)
         self.ordering = ordering
         self.icon = icon
+
 
 event.listen(Theme.functionalities, "set", cache_invalidate_cb)
 event.listen(Theme.functionalities, "append", cache_invalidate_cb)
@@ -868,6 +874,7 @@ class RestrictionArea(Base):
     def __unicode__(self):  # pragma: no cover
         return self.name or u""
 
+
 event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
 event.listen(RestrictionArea, "after_update", cache_invalidate_cb)
 event.listen(RestrictionArea, "after_delete", cache_invalidate_cb)
@@ -965,6 +972,7 @@ class Metadata(Base):
 
     def __unicode__(self):  # pragma: no cover
         return u"%s: %s" % (self.name or u"", self.value or u"")
+
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)

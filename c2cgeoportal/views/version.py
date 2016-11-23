@@ -45,7 +45,7 @@ def _add_version_info(package, orig):
 def _get_versions(request):
     result = {}
     _add_version_info("c2cgeoportal", result)
-    package = request.registry.settings.get("package", None)
+    package = request.registry.settings.get("package")
     if package is not None:
         _add_version_info(package, result)
     return result

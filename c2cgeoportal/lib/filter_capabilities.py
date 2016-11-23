@@ -68,7 +68,7 @@ def get_private_layers():
 @cache_region.cache_on_arguments()
 def get_writable_layers(role_id):
     q = get_writable_layers_query(role_id, distinct(Layer.name))
-    return set([r for r, in q.all()])
+    return {r for r, in q.all()}
 
 
 @cache_region.cache_on_arguments()
@@ -155,7 +155,7 @@ def filter_capabilities(content, role_id, wms, wms_url, headers, proxies):
     if proxies:  # pragma: no cover
         enable_proxies(proxies)
 
-    wms_structure = _wms_structure(wms_url, headers.get("Host", None))
+    wms_structure = _wms_structure(wms_url, headers.get("Host"))
     tmp_private_layers = list(get_private_layers())
     for name in get_protected_layers(role_id):
         tmp_private_layers.remove(name)
