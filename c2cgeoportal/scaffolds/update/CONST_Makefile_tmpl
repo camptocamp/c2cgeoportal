@@ -890,6 +890,7 @@ $(APP_OUTPUT_DIR)/templatecache.js: .build/gmftemplatecache.js
 
 .PRECIOUS: .build/gmftemplatecache.js
 .build/gmftemplatecache.js: node_modules/ngeo/buildtools/templatecache.mako.js \
+		.build/dev-requirements.timestamp \
 		$(VENV_BIN)/mako-render$(PYTHON_BIN_POSTFIX) \
 		$(APP_DIRECTIVES_PARTIALS_FILES) \
 		$(GMF_DIRECTIVES_PARTIALS_FILES) \
