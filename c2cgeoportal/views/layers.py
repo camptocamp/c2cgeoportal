@@ -82,8 +82,8 @@ class Layers:
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
-            'Failed getting geometry column info for table "%s".' %
-            layer.geo_table
+            'Failed getting geometry column info for table "{0!s}".'.format(
+            layer.geo_table)
         )  # pragma: no cover
 
     def _get_layer(self, layer_id):
@@ -94,13 +94,13 @@ class Layers:
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
-            raise HTTPNotFound("Layer %d not found" % layer_id)
+            raise HTTPNotFound("Layer {0:d} not found".format(layer_id))
         except MultipleResultsFound:  # pragma: no cover
             raise HTTPInternalServerError(
-                "Too many layers found with id %i" % layer_id
+                "Too many layers found with id {0:d}".format(layer_id)
             )
         if not geo_table:  # pragma: no cover
-            raise HTTPNotFound("Layer %d has no geo table" % layer_id)
+            raise HTTPNotFound("Layer {0:d} has no geo table".format(layer_id))
         return layer
 
     def _get_layers_for_request(self):
@@ -114,8 +114,8 @@ class Layers:
                 yield self._get_layer(layer_id)
         except ValueError:
             raise HTTPBadRequest(
-                "A Layer id in '%s' is not an integer" %
-                self.request.matchdict["layer_id"]
+                "A Layer id in '{0!s}' is not an integer".format(
+                self.request.matchdict["layer_id"])
             )  # pragma: no cover
 
     def _get_layer_for_request(self):
@@ -416,17 +416,17 @@ class Layers:
     @cache_region.cache_on_arguments()
     def _enumerate_attribute_values(self, general_dbsession_name, layername, fieldname):
         if layername not in self.layers_enum_config:  # pragma: no cover
-            raise HTTPBadRequest("Unknown layer: %s" % layername)
+            raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
 
         layerinfos = self.layers_enum_config[layername]
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
-            raise HTTPBadRequest("Unknown attribute: %s" % fieldname)
+            raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
         dbsession = DBSessions.get(
             layerinfos.get("dbsession", general_dbsession_name),
         )
         if dbsession is None:  # pragma: no cover
             raise HTTPInternalServerError(
-                "No dbsession found for layer '%s'" % layername
+                "No dbsession found for layer '{0!s}'".format(layername)
             )
 
         layer_table = layerinfos.get("table")
@@ -436,7 +436,7 @@ class Layers:
         table = attrinfos.get("table", layer_table)
         if table is None:  # pragma: no cover
             raise HTTPInternalServerError(
-                "No config table found for layer '%s'" % layername
+                "No config table found for layer '{0!s}'".format(layername)
             )
         layertable = get_table(table, session=dbsession)
 

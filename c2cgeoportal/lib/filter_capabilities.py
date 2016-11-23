@@ -80,7 +80,7 @@ def _wms_structure(wms_url, host):
         "REQUEST": "GetCapabilities",
     })
 
-    log.info("Get WMS GetCapabilities for URL: %s" % wms_url)
+    log.info("Get WMS GetCapabilities for URL: {0!s}".format(wms_url))
 
     # forward request to target (without Host Header)
     http = httplib2.Http()
@@ -90,12 +90,11 @@ def _wms_structure(wms_url, host):
     try:
         resp, content = http.request(wms_url, method="GET", headers=headers)
     except:  # pragma: no cover
-        raise HTTPBadGateway("Unable to GetCapabilities from wms_url %s" % wms_url)
+        raise HTTPBadGateway("Unable to GetCapabilities from wms_url {0!s}".format(wms_url))
 
     if resp.status < 200 or resp.status >= 300:  # pragma: no cover
         raise HTTPBadGateway(
-            "GetCapabilities from wms_url %s return the error: %i %s" %
-            (wms_url, resp.status, resp.reason)
+            "GetCapabilities from wms_url {0!s} return the error: {1:d} {2!s}".format(wms_url, resp.status, resp.reason)
         )
 
     try:
@@ -117,7 +116,7 @@ def _wms_structure(wms_url, host):
     except AttributeError:  # pragma: no cover
         error = "WARNING! an error occured while trying to " \
             "read the mapfile and recover the themes."
-        error = "%s\nurl: %s\nxml:\n%s" % (error, wms_url, content)
+        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, content)
         log.exception(error)
         raise HTTPBadGateway(error)
 

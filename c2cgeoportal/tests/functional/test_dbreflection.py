@@ -83,7 +83,7 @@ class TestReflection(TestCase):
             self._tables = []
 
         ctable = Table(
-            "%s_child" % tablename, Base.metadata,
+            "{0!s}_child".format(tablename), Base.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
             schema="public"
@@ -96,11 +96,11 @@ class TestReflection(TestCase):
             Column("id", types.Integer, primary_key=True),
             Column(
                 "child1_id", types.Integer,
-                ForeignKey("public.%s_child.id" % tablename)
+                ForeignKey("public.{0!s}_child.id".format(tablename))
             ),
             Column(
                 "child2_id", types.Integer,
-                ForeignKey("public.%s_child.id" % tablename)
+                ForeignKey("public.{0!s}_child.id".format(tablename))
             ),
             Column("point", Geometry("POINT", management=management)),
             Column("linestring", Geometry("LINESTRING", management=management)),

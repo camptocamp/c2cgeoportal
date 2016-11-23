@@ -65,7 +65,7 @@ def dbfreader(f):
     assert terminator == "\r"
 
     fields.insert(0, ("DeletionFlag", "C", 1, 0))
-    fmt = "".join(["%ds" % fieldinfo[2] for fieldinfo in fields])
+    fmt = "".join(["{0:d}s".format(fieldinfo[2]) for fieldinfo in fields])
     fmtsiz = struct.calcsize(fmt)
     for i in xrange(numrec):
         record = struct.unpack(fmt, f.read(fmtsiz))
