@@ -58,6 +58,7 @@ If you want to keep your CGXP interface you should:
     cp CONST_create_template/{{package}}/templates/desktop.html {{package}}/templates/
     cp CONST_create_template/{{package}}/static-ngeo/less/desktop*.less {{package}}/static-ngeo/less
     cp CONST_create_template/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
+    cp CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
 
 2. Remove the cgxp interfaces:
 
