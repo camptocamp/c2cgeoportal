@@ -88,7 +88,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Get print capabilities. """
 
         templates = get_functionality(
-            "print_template", self.config, self.request
+            "print_template", self.request
         )
 
         # get query string
