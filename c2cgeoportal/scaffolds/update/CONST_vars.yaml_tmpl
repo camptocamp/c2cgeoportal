@@ -107,11 +107,7 @@ vars:
     - de
 
     # All the application interfaces used to create the apache rewrite rules
-    interfaces:
-    - desktop
-    - mobile
-    - edit
-    - routing
+    interfaces: __import__('os').environ.get("INTERFACES").split(" ")
 
     default_interface: desktop
 
@@ -353,7 +349,7 @@ vars:
 
     # Check collector configuration
     check_collector:
-        disabled: [checker_main, checker_viewer, checker_pdf]
+        disabled: [checker_pdf]
         check_type:
             all:
             - name: checker_routes
@@ -415,6 +411,7 @@ interpreted:
     - authtkt.secret
     - python_path
     - directory
+    - interfaces
     environment:
     - modwsgi_user
     - instanceid
