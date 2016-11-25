@@ -100,7 +100,7 @@ User can be created if it doesn't exist yet."""
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
     if not os.path.isfile(app_config):
-        parser.error("Can't find config file: %s" % app_config)
+        parser.error("Can't find config file: {0!s}".format(app_config))
 
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
@@ -121,19 +121,19 @@ User can be created if it doesn't exist yet."""
         try:
             getattr(models, model)
         except AttributeError:
-            print("models.%s not found" % model)
+            print("models.{0!s} not found".format(model))
 
     # check that user exists
     sess = models.DBSession()
-    query = sess.query(models.User).filter_by(username=u"%s" % username)
+    query = sess.query(models.User).filter_by(username=u"{0!s}".format(username))
 
     result = query.count()
     if result == 0:
         if not options.create:
             # if doesn"t exist and no -c option, throw error
-            raise Exception("User %s doesn't exist in database" % username)
+            raise Exception("User {0!s} doesn't exist in database".format(username))
         else:
-            print("User %s doesn't exist in database, creating" % username)
+            print("User {0!s} doesn't exist in database, creating".format(username))
             # if doesn't exist and -c option, create user
 
             password = options.password if options.password is not None else username
@@ -141,37 +141,36 @@ User can be created if it doesn't exist yet."""
 
             # get roles
             query_role = sess.query(models.Role).filter(
-                models.Role.name == u"%s" % options.rolename)
+                models.Role.name == u"{0!s}".format(options.rolename))
 
             if query_role.count() == 0:
                 # role not found in db?
-                raise Exception(
-                    "Role matching %s doesn't exist in database" %
-                    options.rolename)
+                raise Exception("Role matching {0!s} doesn't exist in database".format(
+                    options.rolename
+                ))
 
             role = query_role.first()
 
             user = models.User(
-                username=u"%s" % username,
-                password=u"%s" % password,
-                email=u"%s" % email,
+                username=u"{0!s}".format(username),
+                password=u"{0!s}".format(password),
+                email=u"{0!s}".format(email),
                 role=role
             )
             sess.add(user)
             transaction.commit()
 
-            print(
-                "User %s created with password %s and role %s" %
-                (username, password, options.rolename)
-            )
+            print("User {0!s} created with password {1!s} and role {2!s}".format(
+                username, password, options.rolename
+            ))
 
     else:
         # if user exists (assuming username are unique)
         user = query.first()
 
         if options.password is not None:
-            print("Password set to: %s" % options.password)
-            user.password = u"%s" % options.password
+            print("Password set to: {0!s}".format(options.password))
+            user.password = u"{0!s}".format(options.password)
 
         if options.email is not None:
             user.email = options.email
@@ -179,7 +178,7 @@ User can be created if it doesn't exist yet."""
         sess.add(user)
         transaction.commit()
 
-        print("Password resetted for user %s" % username)
+        print("Password resetted for user {0!s}".format(username))
 
 
 if __name__ == "__main__":

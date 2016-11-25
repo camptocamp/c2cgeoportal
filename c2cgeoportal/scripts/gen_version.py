@@ -52,7 +52,7 @@ def _get_versions():
 def main():
     print "INFO = {"
     for key, value in _get_versions().iteritems():
-        print "    \"%s\": \"%s\"," % (key, str(value).replace("\\", "\\\\").replace("\"", "\\\""))
+        print "    \"{0!s}\": \"{1!s}\",".format(key, str(value).replace("\\", "\\\\").replace("\"", "\\\""))
     print "}"
 
 

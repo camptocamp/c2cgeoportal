@@ -161,7 +161,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 return [
                     Message(
                         None, raster_layer, None, [], u"", u"",
-                        (filename, u"raster/%s" % raster_layer)
+                        (filename, u"raster/{0!s}".format(raster_layer))
                     )
                     for raster_layer in config["vars"].get("raster", {}).keys()
                 ]
@@ -171,12 +171,12 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 for template_ in config.get("templates").keys():
                     result.append(Message(
                         None, template_, None, [], u"", u"",
-                        (filename, u"template/%s" % template_)
+                        (filename, u"template/{0!s}".format(template_))
                     ))
                     result += [
                         Message(
                             None, attribute, None, [], u"", u"",
-                            (filename, u"template/%s/%s" % (template_, attribute))
+                            (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
                         )
                         for attribute in config.get("templates")[template_].attributes.keys()
                     ]
@@ -318,7 +318,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         })
 
         if url not in self.featuretype_cache:
-            print("Get DescribeFeatureType for url: %s" % url)
+            print("Get DescribeFeatureType for url: {0!s}".format(url))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -329,15 +329,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(url, method="GET", headers=h)
             except:  # pragma: no cover
-                print("Unable to DescribeFeatureType from URL %s" % url)
+                print("Unable to DescribeFeatureType from URL {0!s}".format(url))
                 self.featuretype_cache[url] = None
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(
-                    "DescribeFeatureType from URL %s return the error: %i %s" %
-                    (url, resp.status, resp.reason)
-                )
+                print("DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                    url, resp.status, resp.reason
+                ))
                 self.featuretype_cache[url] = None
                 return []
 
@@ -349,7 +348,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     "WARNING! an error occured while trying to "
                     "read the Mapfile and recover the themes."
                 )
-                print("URL: %s\nxml:\n%s" % (url, content))
+                print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
         else:
             describe = self.featuretype_cache[url]
 
@@ -361,7 +360,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         for type_element in describe.getElementsByTagNameNS(
             "http://www.w3.org/2001/XMLSchema", "complexType"
         ):
-            if type_element.getAttribute("name") == "%sType" % layer:
+            if type_element.getAttribute("name") == "{0!s}Type".format(layer):
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"
                 ):

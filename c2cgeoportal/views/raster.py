@@ -60,7 +60,7 @@ class Raster:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer %s not found" % layer)
+                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
         else:
             rasters = self.rasters
 
@@ -80,10 +80,12 @@ class Raster:
         elif "type" not in layer or layer["type"] == "shp_index":
             raster = GeoRaster(layer["file"])
             self._rasters[ref] = raster
-        else:
+        else:  # pragma: no cover
             raise HTTPInternalServerError(
-                'Bad raster type "%s" for raster layer "%s"'
-                % (layer["type"], ref))  # pragma: no cover
+                'Bad raster type "{0!s}" for raster layer "{1!s}"'.format(
+                    layer["type"], ref
+                )
+            )
 
         result = raster.get_value(lon, lat)
         if "round" in layer:

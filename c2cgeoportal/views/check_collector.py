@@ -62,7 +62,7 @@ class CheckerCollector:  # pragma: no cover
                 check_type = params["type"] if "type" in params else \
                     host["type"] if "type" in host else "default"
                 checks = self.settings["check_type"][check_type]
-                body += "<h2>%s</h2>" % host["display"]
+                body += "<h2>{0!s}</h2>".format(host["display"])
 
                 start1 = time()
                 for check in checks:
@@ -72,12 +72,11 @@ class CheckerCollector:  # pragma: no cover
                     res, err = self._testurl("{}/{}?type={}".format(
                         host["url"], check["name"], check_type
                     ))
-                    body += "<p>%s: %s (%0.4fs)</p>" % \
-                        (check["display"], res, time() - start2)
+                    body += "<p>{0!s}: {1!s} ({2:0.4f}s)</p>".format(check["display"], res, time() - start2)
                     if err:
-                        body += "%s<hr/>" % err
-                body += "<p>Elapsed: %0.4f</p>" % (time() - start1)
-        body += "<p>Elapsed all: %0.4f</p>" % (time() - start0)
+                        body += "{0!s}<hr/>".format(err)
+                body += "<p>Elapsed: {0:0.4f}</p>".format((time() - start1))
+        body += "<p>Elapsed all: {0:0.4f}</p>".format((time() - start0))
         return Response(
             body=body, status_int=self.status_int, cache_control="no-cache"
         )
@@ -90,8 +89,8 @@ class CheckerCollector:  # pragma: no cover
 
         if resp.status != httplib.OK:
             self.status_int = max(self.status_int, resp.status)
-            return '<span style="color: red;">%i - %s</span>' % (
+            return '<span style="color: red;">{0:d} - {1!s}</span>'.format(
                 resp.status, resp.reason
             ), content
 
-        return '<span style="color: green;">%s</span>' % content, None
+        return '<span style="color: green;">{0!s}</span>'.format(content), None
