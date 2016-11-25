@@ -137,7 +137,16 @@ class TestLayers(TestCase):
             Column("name", types.Unicode),
             schema="public"
         )
+        if geom_type:
+            table1.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table1.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
         self._tables.append(table1)
+
         table2 = Table(
             tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
@@ -148,23 +157,20 @@ class TestLayers(TestCase):
             Column("last_update_date", types.DateTime),
             schema="public"
         )
-        self._tables.append(table2)
-
-        table2.drop(checkfirst=True)
-        table1.drop(checkfirst=True)
-        table1.create()
-        table2.create()
-
         if geom_type:
-            table1.append_column(
+            table2.append_column(
                 Column("geom", Geometry("POINT", srid=21781, management=management))
             )
         else:
-            table1.append_column(
+            table2.append_column(
                 Column("geom", Geometry(srid=21781, management=management))
             )
+        self._tables.append(table2)
+
+        table1.drop(checkfirst=True)
+        table2.drop(checkfirst=True)
         table1.create()
-        self._tables.append(table1)
+        table2.create()
 
         ins = table1.insert().values(name=u"c1é")
         c1_id = connection.execute(ins).inserted_primary_key[0]
