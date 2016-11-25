@@ -302,7 +302,7 @@ vars:
             lang_files: [ngeo, cgxp-api]
             phantomjs_routes:
             - name: desktop
-              query:
+              param:
                 no_redirect: true
             forward_headers: []
             routes_disable: []
@@ -313,17 +313,17 @@ vars:
         all:
             phantomjs_routes:
             - name: desktop
-              query:
+              param:
                 no_redirect: true
             - name: mobile
-              query:
+              param:
                 no_redirect: true
             - name: desktop
-              query:
+              param:
                 no_redirect: true
                 debug: true
             - name: mobile
-              query:
+              param:
                 no_redirect: true
                 debug: true
             routes:
