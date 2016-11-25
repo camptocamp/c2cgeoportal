@@ -273,14 +273,16 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     def _import_layer_wmts(self, layer, messages):
         from c2cgeoportal.models import DBSession, OGCServer
 
-        layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
+        layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
+        if len(layers) == 0:
+            layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
         server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
-        if len(server) == 1 and len(layers) >= 1:
+        if len(server) >= 1 and len(layers) >= 1:
             for wms_layer in layers:
                 try:
-                    DBSession.query(OGCServer).filter(name=server[0]).one()
+                    db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()
                     self._import_layer_attributes(
-                        server[0].url_wfs or server[0].url, wms_layer,
+                        db_server.url_wfs or db_server.url, wms_layer,
                         layer.item_type, layer.name, layer.id, messages
                     )
                 except NoResultFound:
