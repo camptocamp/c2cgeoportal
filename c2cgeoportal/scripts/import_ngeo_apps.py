@@ -165,8 +165,7 @@ def main():
             ]:
                 del json_data["devDependencies"][package]
 
-            data = dumps(json_data, indent=2, sort_keys=True)
-            data = _sub(r" +\n", "\n", data)
+            data = dumps(json_data, indent=2, sort_keys=True, encoding="utf-8", separators=(',', ': '))
             data = data + "\n"
 
         else:
