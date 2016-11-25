@@ -53,7 +53,7 @@ from a given IP or set of IP addresses (eg. intranet users).</p>
 matching IP regexp are configured in <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> (see step #4 below).
 The assigned role must obviously have been defined in the administration interface.</p>
 <p>Example of accepted IP setting:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">intranet_ip</span> <span class="o">=</span> <span class="mf">12.34</span><span class="o">.</span><span class="mf">56.78</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">intranet_ip</span> <span class="o">=</span> <span class="mf">12.34</span><span class="o">.</span><span class="mf">56.78</span>
 <span class="n">intranet_ip</span> <span class="o">=</span> <span class="o">^</span><span class="mf">12.34</span><span class="o">.</span><span class="p">(</span><span class="o">.*</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -62,100 +62,100 @@ The assigned role must obviously have been defined in the administration interfa
 <li><p class="first">Upgrade the CGXP submodule to the last version of branch 1.4.</p>
 </li>
 <li><p class="first">Edit <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code>. Replace</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span>
 </pre></div>
 </div>
 <p>by</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">locale_negotiator</span><span class="p">,</span> <span class="n">get_user_from_request</span>
 </pre></div>
 </div>
 <p>Add the following function:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="k">def</span> <span class="nf">custom_get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">None</span>
 
     <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_from_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="k">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;intranet&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;1&#39;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">c2cgeoportal.models</span> <span class="k">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Role</span>
         <span class="k">class</span> <span class="nc">O</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">O</span><span class="p">()</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_user&#39;</span><span class="p">,</span> <span class="s1">&#39;Intranet&#39;</span><span class="p">)</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;intranet_default_user&#39;</span><span class="p">,</span> <span class="s">&#39;Intranet&#39;</span><span class="p">)</span>
         <span class="n">user</span><span class="o">.</span><span class="n">functionalities</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_password_changed</span> <span class="o">=</span> <span class="k">True</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;intranet_default_role&#39;</span><span class="p">,</span> <span class="s1">&#39;intranet&#39;</span><span class="p">)</span>
+            <span class="n">rolename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;intranet_default_role&#39;</span><span class="p">,</span> <span class="s">&#39;intranet&#39;</span><span class="p">)</span>
             <span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
             <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;authFailed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;authFailed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">True</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="k">None</span>
     <span class="k">return</span> <span class="n">user</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal"><span class="pre">main()</span></code> function before</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>add</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="kc">True</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">set_request_property</span><span class="p">(</span><span class="n">custom_get_user_from_request</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="n">reify</span><span class="o">=</span><span class="k">True</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">In <code class="docutils literal"><span class="pre">apache/wsgi.conf.mako</span></code> add to <code class="docutils literal"><span class="pre">&lt;Location</span> <span class="pre">/${instanceid}/wsgi&gt;</span></code>:</p>
-<div class="code apache highlight-default"><div class="highlight"><pre><span></span>SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
+<div class="code apache highlight-default"><div class="highlight"><pre>SetEnvIf REMOTE_ADDR ${intranet_ip} intranet=1
 </pre></div>
 </div>
 <p>or, depending on the proxies setup:</p>
-<div class="code apache highlight-default"><div class="highlight"><pre><span></span>SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
+<div class="code apache highlight-default"><div class="highlight"><pre>SetEnvIf x-forwarded-for ${intranet_ip} intranet=1
 </pre></div>
 </div>
 </li>
 <li><p class="first">In the <code class="docutils literal"><span class="pre">vars</span></code> section of <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> add</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># intranet detection</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="c"># intranet detection</span>
 <span class="n">intranet_ip</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">IP</span> <span class="n">address</span> <span class="ow">or</span> <span class="n">regexp</span><span class="o">&gt;</span>
-<span class="n">intranet_default_user</span> <span class="o">=</span> <span class="s1">&#39;Intranet&#39;</span>
-<span class="n">intranet_default_role</span> <span class="o">=</span> <span class="s1">&#39;role_intranet&#39;</span>
+<span class="n">intranet_default_user</span> <span class="o">=</span> <span class="s">&#39;Intranet&#39;</span>
+<span class="n">intranet_default_role</span> <span class="o">=</span> <span class="s">&#39;role_intranet&#39;</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">At the end of <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add</p>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">intranet_default_user</span> <span class="n">intranet_default_role</span>
+<div class="code make highlight-default"><div class="highlight"><pre><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">intranet_default_user</span> <span class="n">intranet_default_role</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">In <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></code> replace</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.route_url(&#39;viewer&#39;)}$</span><span class="si">{extra_params}</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s">&quot;${request.route_url(&#39;viewer&#39;)}${extra_params}</span>
 </pre></div>
 </div>
 <p>by</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;%</span>
-<span class="n">anonymous_param</span> <span class="o">=</span> <span class="s1">&#39;&amp;anonymous&#39;</span> <span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="o">&lt;%</span>
+<span class="n">anonymous_param</span> <span class="o">=</span> <span class="s">&#39;&amp;anonymous&#39;</span> <span class="k">if</span> <span class="s">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
 <span class="o">%&gt;</span>
-<span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;${request.route_url(&#39;viewer&#39;)}$</span><span class="si">{extra_params}</span><span class="s2">$</span><span class="si">{anonymous_param}</span><span class="s2">&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">script</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s">&quot;${request.route_url(&#39;viewer&#39;)}${extra_params}${anonymous_param}&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">In <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> and <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/edit.js</span></code> add at the beginning:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;%</span>
-<span class="n">mapserverProxyUrl</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s1">&#39;mapserverproxy&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="s1">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-    <span class="n">mapserverProxyUrl</span> <span class="o">+=</span> <span class="s1">&#39;?anonymous&#39;</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="o">&lt;%</span>
+<span class="n">mapserverProxyUrl</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;mapserverproxy&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="s">&#39;anonymous&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+    <span class="n">mapserverProxyUrl</span> <span class="o">+=</span> <span class="s">&#39;?anonymous&#39;</span>
 <span class="o">%&gt;</span>
 </pre></div>
 </div>
 <p>and replace all occurences of</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>${request.route_url(&#39;mapserverproxy&#39;)}
+<div class="code python highlight-default"><div class="highlight"><pre>${request.route_url(&#39;mapserverproxy&#39;)}
 </pre></div>
 </div>
 <p>or</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>${request.route_url(&#39;mapserverproxy&#39;)}
+<div class="code python highlight-default"><div class="highlight"><pre>${request.route_url(&#39;mapserverproxy&#39;)}
 </pre></div>
 </div>
 <p>by</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>${mapserverProxyUrl}
+<div class="code python highlight-default"><div class="highlight"><pre>${mapserverProxyUrl}
 </pre></div>
 </div>
 </li>
@@ -208,7 +208,7 @@ The assigned role must obviously have been defined in the administration interfa
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

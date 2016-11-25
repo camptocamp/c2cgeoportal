@@ -58,10 +58,10 @@ the StatsD daemon. You can either define the following environment variables:</p
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1"><span class="nb">export</span> <span class="nv">STATSD_ADDRESS</span><span class="o">=</span>statsd:8125</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">STATSD_PREFIX</span><span class="o">=</span>my_app.wsgi</span>
+</style><span class="prompt1"><span class="nb">export </span><span class="nv">STATSD_ADDRESS</span><span class="o">=</span>statsd:8125</span>
+<span class="prompt1"><span class="nb">export </span><span class="nv">STATSD_PREFIX</span><span class="o">=</span>my_app.wsgi</span>
 </pre><p>Or add those lines to your <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">stats</span><span class="p">:</span>
         <span class="n">statsd_address</span><span class="p">:</span> <span class="n">statsd</span><span class="p">:</span><span class="mi">8125</span>
@@ -75,9 +75,9 @@ span.prompt1:before {
 </ul>
 <p>To enabled it (not recommended for production systems), you can either define the
 following environment variable:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">STATS_VIEW</span><span class="o">=</span>1</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">STATS_VIEW</span><span class="o">=</span>1</span>
 </pre><p>Or add one line to your <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">stats</span><span class="p">:</span>
         <span class="n">view</span><span class="p">:</span> <span class="n">true</span>
@@ -88,18 +88,18 @@ following environment variable:</p>
 <h2>Add more statistics<a class="headerlink" href="#add-more-statistics" title="Permalink to this headline">¶</a></h2>
 <p>By default, timing statistics are added for the routes and the SQL queries. If you want to
 measures special things in you application, just add code like that:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">stats</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">stats</span>
 <span class="o">...</span>
     <span class="n">measure</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">timer</span><span class="p">()</span>
-    <span class="o">...</span> <span class="c1"># The code you want to measure</span>
-    <span class="n">measure</span><span class="o">.</span><span class="n">stop</span><span class="p">([</span><span class="s2">&quot;my_feature&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">])</span>
+    <span class="o">...</span> <span class="c"># The code you want to measure</span>
+    <span class="n">measure</span><span class="o">.</span><span class="n">stop</span><span class="p">([</span><span class="s">&quot;my_feature&quot;</span><span class="p">,</span> <span class="s">&quot;something&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Or, if you know the key in advance and can use a context, you can write it like that:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">stats</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">c2cgeoportal</span> <span class="k">import</span> <span class="n">stats</span>
 <span class="o">...</span>
-    <span class="k">with</span> <span class="n">stats</span><span class="o">.</span><span class="n">timer_context</span><span class="p">([</span><span class="s2">&quot;my_feature&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">]):</span>
-        <span class="o">...</span> <span class="c1"># The code you want to measure</span>
+    <span class="k">with</span> <span class="n">stats</span><span class="o">.</span><span class="n">timer_context</span><span class="p">([</span><span class="s">&quot;my_feature&quot;</span><span class="p">,</span> <span class="s">&quot;something&quot;</span><span class="p">]):</span>
+        <span class="o">...</span> <span class="c"># The code you want to measure</span>
 </pre></div>
 </div>
 </div>
@@ -158,7 +158,7 @@ measures special things in you application, just add code like that:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

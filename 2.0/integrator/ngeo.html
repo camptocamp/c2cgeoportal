@@ -63,7 +63,7 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 <div class="section" id="html-file">
 <h1>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h1>
 <p>In this file you can add some blocks like:</p>
-<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;login&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;slide&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">header</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Login&quot;</span><span class="o">&gt;</span>
+<div class="code html highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;login&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s">&quot;slide&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">header</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Login&quot;</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span><span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -73,9 +73,9 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.</p>
 <p>All the directives should provide an example.</p>
 <p>At the end of the file you find something like:</p>
-<div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<div class="code html highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
   <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
-     <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
+     <span class="n">var</span> <span class="n">module</span> <span class="o">=</span> <span class="n">angular</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="s">&#39;&lt;package&gt;&#39;</span><span class="p">);</span>
      <span class="n">var</span> <span class="n">serverVars</span> <span class="o">=</span> <span class="p">{</span>
          <span class="o">/**</span>
           <span class="o">*</span> <span class="n">Here</span> <span class="n">the</span> <span class="n">i18n</span> <span class="ow">is</span> <span class="n">configured</span>
@@ -86,7 +86,7 @@ in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.<
           <span class="o">*/</span>
        <span class="p">}</span>
      <span class="p">};</span>
-     <span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;serverVars&#39;</span><span class="p">,</span> <span class="n">serverVars</span><span class="p">);</span>
+     <span class="n">module</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s">&#39;serverVars&#39;</span><span class="p">,</span> <span class="n">serverVars</span><span class="p">);</span>
    <span class="p">})();</span>
 <span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
 </pre></div>
@@ -95,13 +95,13 @@ in the sections &#8216;gmf/Directives&#8217; and &#8216;ngeo/Directives&#8217;.<
 <div class="section" id="controller-js-file">
 <h1>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h1>
 <p>In the controler you have some lines like:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="o">/**</span> <span class="nd">@suppress</span> <span class="p">{</span><span class="n">extraRequire</span><span class="p">}</span> <span class="o">*/</span>
-<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;gmf.authenticationDirective&#39;</span><span class="p">);</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span class="o">/**</span> <span class="nd">@suppress</span> <span class="p">{</span><span class="n">extraRequire</span><span class="p">}</span> <span class="o">*/</span>
+<span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s">&#39;gmf.authenticationDirective&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>This is needed to include the javascript of the used directives.</p>
 <p>The map configuration will be here:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>goog.base(
+<div class="code javascript highlight-default"><div class="highlight"><pre>goog.base(
       this, {
         srid: 21781,
         mapViewConfig: {
@@ -200,7 +200,7 @@ backward compatible permalinks.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

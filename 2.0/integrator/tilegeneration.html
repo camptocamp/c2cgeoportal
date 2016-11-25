@@ -108,19 +108,19 @@ EC2, SQS, SNS.</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate --interactive -s tilecloud_chain ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></li>
 <li><p class="first">In the <code class="docutils literal"><span class="pre">&lt;prokect&gt;.mk</span></code> activate the tile generation:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN ?= TRUE
+<div class="code highlight-default"><div class="highlight"><pre>TILECLOUD_CHAIN ?= TRUE
 </pre></div>
 </div>
 </li>
 <li><p class="first">If you use local cache activate the capabilities generation with:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>TILECLOUD_CHAIN_LOCAL ?= TRUE
+<div class="code highlight-default"><div class="highlight"><pre>TILECLOUD_CHAIN_LOCAL ?= TRUE
 </pre></div>
 </div>
 <p>and set the <code class="docutils literal"><span class="pre">wmtscapabilities_file</span></code> to <code class="docutils literal"><span class="pre">${wmtscapabilities_path}</span></code> in your
 <code class="docutils literal"><span class="pre">tilegeneration/config.yaml.mako</span></code> file.</p>
 </li>
 <li><p class="first">In your <code class="docutils literal"><span class="pre">&lt;prod&gt;.mk</span></code> you can also set the capabilities file name with:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">WMTSCAPABILITIES_PATH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">WMTSCapabilities</span><span class="o">.</span><span class="n">xml</span>
 </pre></div>
 </div>
 </li>
@@ -180,8 +180,8 @@ using the command:</p>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Make sure you export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>XXXXX</span>
+<span class="prompt1"><span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>YYYY</span>
 </pre><p class="last">If you forget it you will get an explicit message.</p>
 </div>
 </div>
@@ -195,7 +195,7 @@ using the command:</p>
 </ul>
 </div></blockquote>
 <p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> define <code class="docutils literal"><span class="pre">tiles_url</span></code> to something like, for S3 usage:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">tiles_url</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">tiles_url</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">b</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
 <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">c</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span><span class="o">/</span>
@@ -204,7 +204,7 @@ using the command:</p>
 </div>
 <p>The configuration of the <code class="docutils literal"><span class="pre">tiles</span></code> vhost will be done by the sysadmins.</p>
 <p>To get your tiles URL in the <code class="docutils literal"><span class="pre">viewer.js</span></code> do:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>&lt;%
+<div class="code javascript highlight-default"><div class="highlight"><pre>&lt;%
 from json import dumps
 %&gt;
 var WMTS_OPTIONS = {
@@ -214,13 +214,13 @@ var WMTS_OPTIONS = {
 </pre></div>
 </div>
 <p>And in the <code class="docutils literal"><span class="pre">mobile/config.js</span></code> do:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s2">&quot;&lt;</span><span class="si">% f</span><span class="s2">rom json import dumps %&gt;&quot;</span><span class="p">;</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span class="n">var</span> <span class="n">dummy</span> <span class="o">=</span> <span class="s">&quot;&lt;% from json import dumps %&gt;&quot;</span><span class="p">;</span>
 <span class="n">jsonFormat</span> <span class="o">=</span> <span class="n">new</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">JSON</span><span class="p">();</span>
 <span class="k">try</span> <span class="p">{</span>
-    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="n">jsonFormat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;</span><span class="p">);</span>
+    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="n">jsonFormat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;${dumps(request.registry.settings[&quot;tiles_url&quot;]) | n}&#39;</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">App</span><span class="o">.</span><span class="n">tilesURL</span><span class="p">,</span>
@@ -239,11 +239,11 @@ var WMTS_OPTIONS = {
 <h2>Internal service<a class="headerlink" href="#internal-service" title="Permalink to this headline">¶</a></h2>
 <p>If you use an internal service to access to the tiles you can use sub domaine
 to access to them by using that in <code class="docutils literal"><span class="pre">WMTS_OPTION</span></code>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s1</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s2</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s3</span><span class="s1">&#39;)}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s1">&#39;, subdomain=&#39;</span><span class="n">s4</span><span class="s1">&#39;)}&#39;</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span class="n">url</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s">&#39;, subdomain=&#39;</span><span class="n">s1</span><span class="s">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s">&#39;, subdomain=&#39;</span><span class="n">s2</span><span class="s">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s">&#39;, subdomain=&#39;</span><span class="n">s3</span><span class="s">&#39;)}&#39;</span><span class="p">,</span>
+    <span class="s">&#39;${request.route_url(&#39;</span><span class="o">&lt;</span><span class="n">view</span><span class="o">&gt;</span><span class="s">&#39;, subdomain=&#39;</span><span class="n">s4</span><span class="s">&#39;)}&#39;</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -252,8 +252,8 @@ The sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
 the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="c"># The URL template used to generate the sub domain URL</span>
+<span class="c"># %(sub)s will be replaced by the sub domain value.</span>
 <span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -322,7 +322,7 @@ the following:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

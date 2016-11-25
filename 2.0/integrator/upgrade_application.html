@@ -54,7 +54,7 @@
 <div class="section" id="easy-updating-an-application-code">
 <h2>Easy updating an application code<a class="headerlink" href="#easy-updating-an-application-code" title="Permalink to this headline">¶</a></h2>
 <p>Verify that you have in your <code class="docutils literal"><span class="pre">project.yaml.mako</span></code> file the following <code class="docutils literal"><span class="pre">template_vars</span></code>: <code class="docutils literal"><span class="pre">package</span></code>, <code class="docutils literal"><span class="pre">srid</span></code>, <code class="docutils literal"><span class="pre">extent</span></code>, <code class="docutils literal"><span class="pre">apache_vhost</span></code>, for example:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span>...
+<div class="code yaml highlight-default"><div class="highlight"><pre>...
 template_vars:
     package: ${package}
     srid: ${srid}
@@ -83,10 +83,10 @@ add in your Makefile <code class="docutils literal"><span class="pre">UPGRADE_MA
 <p class="last">You should add <code class="docutils literal"><span class="pre">UPGRADE_ARGS</span> <span class="pre">+=</span> <span class="pre">--windows</span></code> in your <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file.</p>
 </div>
 <p>Then to upgrade from 1.6 just run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade_v2</span>
 </pre><p>And for a minor upgrade run:</p>
-<pre class="highlight"><span class="prompt1"><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
+<pre class="highlight"><span class="prompt1"><span class="nb">export </span><span class="nv">VERSION</span><span class="o">=</span>&lt;target_version&gt;</span>
 <span class="prompt1">make -f &lt;makefile&gt; upgrade</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -142,15 +142,15 @@ commands</p>
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
 <p>Upgrade the main schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 <p>Upgrade the static schema:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span class="o">.</span><span class="n">build</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">alembic</span> <span class="o">--</span><span class="n">config</span> <span class="n">alembic_static</span><span class="o">.</span><span class="n">ini</span> <span class="n">upgrade</span> <span class="n">head</span>
 </pre></div>
 </div>
 </div>
@@ -211,7 +211,7 @@ commands</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

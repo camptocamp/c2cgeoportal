@@ -72,130 +72,130 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 <div class="section" id="result-in-v2">
 <h3>Result in v2<a class="headerlink" href="#result-in-v2" title="Permalink to this headline">¶</a></h3>
 <p>Base for all possible results:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;serversOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span> <span class="n">OGC</span><span class="o">&gt;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;serversOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span> <span class="n">OGC</span><span class="o">&gt;</span>
         <span class="o">...</span>
     <span class="p">}</span>
-    <span class="s2">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;background_layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
-    <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s">&quot;background_layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Server OGC:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-     <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-     <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+     <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s">&quot;imageType&quot;</span><span class="p">:</span> <span class="s">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+     <span class="s">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s">&quot;serverType&quot;</span><span class="p">:</span> <span class="s">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+     <span class="s">&quot;auth&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span>
  <span class="p">}</span>
 </pre></div>
 </div>
 <p>Theme:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;values&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;icon&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;values&gt;&quot;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s">&quot;ui_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;value&gt;&quot;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Group:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-    <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;auth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="c"># if not mixed</span>
+    <span class="s">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s">&quot;imageType&quot;</span><span class="p">:</span> <span class="s">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s">&quot;serverType&quot;</span><span class="p">:</span> <span class="s">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;auth&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span>
     <span class="p">}</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;value&gt;&quot;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Layer:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
+    <span class="s">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;value&gt;&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>WMS Layer:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
-    <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
-    <span class="c1"># derecated</span>
-    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-    <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-    <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="c1"># end derecated</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier_attribute_field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;display_name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;disclaimer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;disclamer&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;legend_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;legend_rule&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;min_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;layers&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;style&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="c"># if not mixed</span>
+    <span class="s">&quot;serverOGC&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
+    <span class="c"># derecated</span>
+    <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="s">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="s">&quot;imageType&quot;</span><span class="p">:</span> <span class="s">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+    <span class="s">&quot;serverType&quot;</span><span class="p">:</span> <span class="s">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+    <span class="s">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c"># end derecated</span>
+    <span class="s">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;identifier_attribute_field&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;display_name&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;disclaimer&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;disclamer&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s">&quot;legend_rule&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;legend_rule&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;max_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">&quot;min_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="s">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
+        <span class="s">&quot;format&quot;</span><span class="p">:</span> <span class="s">&quot;text/html&quot;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;(value|range)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="s">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;mode&quot;</span><span class="p">:</span> <span class="s">&quot;(value|range)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;interval&quot;</span><span class="p">:</span> <span class="s">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;resolution&quot;</span><span class="p">:</span> <span class="s">&quot;(year|mounth|day|secound)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
+    <span class="s">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;queryable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
     <span class="p">}]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>WMTS layer:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;matrix_set&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;matrix_set&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;layer&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;style&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;matrix_set&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;matrix_set&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;value&gt;&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -243,9 +243,9 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="annoymous-json-result">
 <h4>Annoymous JSON result<a class="headerlink" href="#annoymous-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;functionnality_value&quot;</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -254,13 +254,13 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="connected-json-result">
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="o">/</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="c1"># If false the user should change his password</span>
-    <span class="s2">&quot;role_name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;role_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
-    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionnality_value&quot;</span><span class="p">],</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;username&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="s">&quot;True&quot;</span><span class="o">/</span><span class="s">&quot;False&quot;</span><span class="p">,</span> <span class="c"># If false the user should change his password</span>
+    <span class="s">&quot;role_name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
+    <span class="s">&quot;role_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="s">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;&lt;functionnality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;functionnality_value&quot;</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -286,8 +286,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;success&quot;</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -309,8 +309,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </ul>
 <div class="section" id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;success&quot;</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -361,8 +361,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id3">
 <h3>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
@@ -403,8 +403,8 @@ or <code class="docutils literal"><span class="pre">background_layers</span></co
 </div>
 <div class="section" id="id7">
 <h4>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -424,9 +424,9 @@ This is used to be able to get the data in the client from a file select by the 
 <div class="section" id="id8">
 <h3>Result<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>The &#8216;Content-Type&#8217; header is &#8216;text/html&#8217;, and the data is:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;filename&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">The</span> <span class="n">base64</span> <span class="n">encoded</span> <span class="n">file</span><span class="o">&gt;</span>
+    <span class="s">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -459,8 +459,8 @@ and the data contains the given &#8216;csv&#8217; data.</p>
 <p>URL: <code class="docutils literal"><span class="pre">.../difference</span></code></p>
 <p>Method: <code class="docutils literal"><span class="pre">POST</span></code></p>
 <p>Data:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -582,7 +582,7 @@ and the <code class="docutils literal"><span class="pre">&lt;geomB&gt;</span></c
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

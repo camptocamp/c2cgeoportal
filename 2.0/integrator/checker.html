@@ -79,7 +79,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <li><code class="docutils literal"><span class="pre">checker_wfscapabilities</span></code>: Check the WFS GetCapabilities.</li>
 </ul>
 <p>Configuration in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">checker</span><span class="p">:</span>
     <span class="n">print_template</span><span class="p">:</span> <span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>
     <span class="n">print_center_lon</span><span class="p">:</span> <span class="n">to</span> <span class="n">be</span> <span class="n">defined</span>
     <span class="n">print_center_lat</span><span class="p">:</span> <span class="n">to</span> <span class="n">be</span> <span class="n">defined</span>
@@ -90,8 +90,8 @@ monitoring system like Nagios to check that the application is alive.</p>
 <p>If some of the checked services require an authenticated user, the
 <code class="docutils literal"><span class="pre">forward_headers</span></code> permit to forward <code class="docutils literal"><span class="pre">Cookie</span></code> or <code class="docutils literal"><span class="pre">Authorisation</span></code> headers
 in the underlying requests.</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
-    <span class="n">forward_headers</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Cookie&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorisation&#39;</span><span class="p">]</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">checker</span><span class="p">:</span>
+    <span class="n">forward_headers</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;Cookie&#39;</span><span class="p">,</span> <span class="s">&#39;Authorisation&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -100,7 +100,7 @@ in the underlying requests.</p>
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
 <p>To disable a predefined check do this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="nb">vars</span><span class="p">:</span>
     <span class="n">check_collector</span><span class="p">:</span>
         <span class="n">disabled</span><span class="p">:</span>
         <span class="o">-</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span>
@@ -110,7 +110,7 @@ structure. It is useful to perform a set of checks all at once.</p>
 </pre></div>
 </div>
 <p>To add a host:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="nb">vars</span><span class="p">:</span>
     <span class="n">check_collector</span><span class="p">:</span>
         <span class="n">hosts</span><span class="p">:</span>
         <span class="o">-</span> <span class="n">display</span><span class="p">:</span> <span class="n">Child</span>
@@ -122,7 +122,7 @@ structure. It is useful to perform a set of checks all at once.</p>
 </div>
 <p>We can use an argument type of the script to call a specific
 list of checks on all hosts, for example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>http://example.com/main/wsgi/check_collector?type=all
+<div class="highlight-default"><div class="highlight"><pre>http://example.com/main/wsgi/check_collector?type=all
 </pre></div>
 </div>
 </div>
@@ -181,7 +181,7 @@ list of checks on all hosts, for example:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

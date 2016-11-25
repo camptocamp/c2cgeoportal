@@ -50,7 +50,7 @@
 <p>We can use the <code class="docutils literal"><span class="pre">functionalities</span></code> or the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> to configure the
 interface. For instance:</p>
 <p>Activate CGXP plugin using an <code class="docutils literal"><span class="pre">authorized_plugins</span></code> functionality:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="k">if</span> <span class="s1">&#39;my_plugin&#39;</span> <span class="ow">in</span> <span class="n">functionality</span><span class="p">[</span><span class="s1">&#39;authorized_plugins&#39;</span><span class="p">]:</span>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span class="o">%</span> <span class="k">if</span> <span class="s">&#39;my_plugin&#39;</span> <span class="ow">in</span> <span class="n">functionality</span><span class="p">[</span><span class="s">&#39;authorized_plugins&#39;</span><span class="p">]:</span>
 <span class="p">{</span>
     <span class="o">//</span> <span class="n">plugin</span> <span class="n">configuration</span>
 <span class="p">},</span>
@@ -59,18 +59,18 @@ interface. For instance:</p>
 </div>
 <p>Configure the <code class="docutils literal"><span class="pre">querier</span></code> layer using the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>,
 Add in <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">viewer</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">viewer</span><span class="p">:</span>
     <span class="n">feature_types</span><span class="p">:</span>
     <span class="o">-</span> <span class="n">layer_1</span>
     <span class="o">-</span> <span class="n">layer_2</span>
 </pre></div>
 </div>
 <p>Add in your project Makefile <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code>:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
+<div class="code makefile highlight-default"><div class="highlight"><pre><span class="n">CONFIG_VARS</span> <span class="o">+=</span> <span class="n">viewer</span>
 </pre></div>
 </div>
 <p>And in <code class="docutils literal"><span class="pre">viewer.js</span></code>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>&lt;%
+<div class="code javascript highlight-default"><div class="highlight"><pre>&lt;%
 from json import dumps
 %&gt;
 % if len(request.registry.settings[&#39;viewer&#39;][&#39;feature_types&#39;]) &gt; 0:
@@ -130,7 +130,7 @@ from json import dumps
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

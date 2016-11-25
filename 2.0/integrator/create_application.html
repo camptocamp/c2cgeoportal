@@ -69,7 +69,7 @@ created by the c2cgeoportal skeletons (the <code class="docutils literal"><span 
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeletons). Projects following a parent/child
 architecture may use a different structure. Here&#8217;s an example of a structure
 for a project composed of a main application and sub-applications:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">root</span><span class="o">&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">root</span><span class="o">&gt;</span>
   <span class="o">+-</span> <span class="o">&lt;</span><span class="n">main_project</span><span class="o">&gt;</span>
   <span class="o">+-</span> <span class="o">&lt;</span><span class="n">first_sub_project</span><span class="o">&gt;</span>
   <span class="o">+-</span> <span class="o">&lt;</span><span class="n">second_sub_project</span><span class="o">&gt;</span>
@@ -96,7 +96,7 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">git clone https://github.com/camptocamp/c2cgeoportal.git</span>
-<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
+<span class="prompt1"><span class="nb">cd </span>c2cgeoportal</span>
 </pre><p>Then you should checkout the branch or tag of the version you want to install:</p>
 <pre class="highlight"><span class="prompt1">git checkout &lt;branch<span class="p">|</span>tag&gt;</span>
 </pre><p><code class="docutils literal"><span class="pre">&lt;branch|tag&gt;</span></code> can be <code class="docutils literal"><span class="pre">1.4</span></code> for the latest version of the 1.4 branch,
@@ -226,13 +226,13 @@ get it:</p>
 <span class="prompt1">mv imagemagick-mapfish-spring-application-context-override.xml print/WEB-INF/classes/</span>
 <span class="prompt1">git add print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
 </pre><p>and replace the lines:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
+<div class="highlight-default"><div class="highlight"><pre>&lt;!-- &lt;property name=&quot;cmd&quot;&gt;
     &lt;value&gt;C:\Program Files\ImageMagick-6.7.8-Q16\convert&lt;/value&gt;
 &lt;/property&gt; --&gt;
 </pre></div>
 </div>
 <p>by those ones:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">property</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span><span class="o">&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="nb">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;cmd&quot;</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="n">C</span><span class="p">:</span>\<span class="n">Program</span> <span class="n">Files</span>\<span class="n">ImageMagick</span><span class="o">-</span><span class="mf">6.7</span><span class="o">.</span><span class="mi">8</span><span class="o">-</span><span class="n">Q16</span>\<span class="n">convert</span><span class="o">&lt;/</span><span class="n">value</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="nb">property</span><span class="o">&gt;</span>
 </pre></div>
@@ -275,7 +275,7 @@ the project.</p>
 <li>Configure the instances in <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> as follows:</li>
 </ol>
 <blockquote>
-<div><div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+<div><div class="code yaml highlight-default"><div class="highlight"><pre><span class="nb">vars</span><span class="p">:</span>
 
     <span class="o">...</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">INSTANCE</span>
@@ -309,7 +309,7 @@ the project.</p>
 <li><p class="first">In <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add a custom CSS and a task to generate the make files:</p>
 </li>
 </ol>
-<div class="code make highlight-default"><div class="highlight"><pre><span></span>CSS_BASE_FILES += &lt;package&gt;/static/css/proj-$(INSTANCE).css
+<div class="code make highlight-default"><div class="highlight"><pre>CSS_BASE_FILES += &lt;package&gt;/static/css/proj-$(INSTANCE).css
 CONFIG_VARS += viewer
 ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 </pre></div>
@@ -326,18 +326,18 @@ ENVIRONMENT_VARS += INSTANCE=${INSTANCE}
 <ol class="arabic simple" start="5">
 <li>Define the host templates as follows (<code class="docutils literal"><span class="pre">main.mk</span></code>, <code class="docutils literal"><span class="pre">demo.mk</span></code>, <code class="docutils literal"><span class="pre">prod.mk</span></code>):</li>
 </ol>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>INSTANCE_ID = $(INSTANCE)
+<div class="code highlight-default"><div class="highlight"><pre>INSTANCE_ID = $(INSTANCE)
 include $(INSTANCE).mk
 </pre></div>
 </div>
 <ol class="arabic simple" start="6">
 <li>Create a <code class="docutils literal"><span class="pre">vars_&lt;instance&gt;.yaml</span></code> file with:</li>
 </ol>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">extends</span><span class="p">:</span> <span class="n">vars_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;.</span><span class="n">yaml</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">extends</span><span class="p">:</span> <span class="n">vars_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;.</span><span class="n">yaml</span>
 
 <span class="nb">vars</span><span class="p">:</span>
 
-    <span class="c1"># custom instance-specific variables for the viewer</span>
+    <span class="c"># custom instance-specific variables for the viewer</span>
     <span class="n">viewer</span><span class="p">:</span>
         <span class="n">page_title</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span>
         <span class="n">initial_extent</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">min_x</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">min_y</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">max_x</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">max_y</span><span class="o">&gt;</span><span class="p">]</span>
@@ -347,7 +347,7 @@ include $(INSTANCE).mk
         <span class="n">feature_types</span><span class="p">:</span>
         <span class="o">-</span> <span class="o">&lt;</span><span class="n">feature</span><span class="o">&gt;</span>
 
-    <span class="c1"># overwrite project settings</span>
+    <span class="c"># overwrite project settings</span>
     <span class="n">functionalities</span><span class="p">:</span>
         <span class="n">anonymous</span><span class="p">:</span>
             <span class="n">print_template</span><span class="p">:</span>
@@ -357,7 +357,7 @@ include $(INSTANCE).mk
 <ol class="arabic simple" start="7">
 <li>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></code> file do the following changes:</li>
 </ol>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span>-        &lt;meta name=&quot;keywords&quot; content=&quot;&lt;package&gt;, geoportal&quot;&gt;
+<div class="code diff highlight-default"><div class="highlight"><pre>-        &lt;meta name=&quot;keywords&quot; content=&quot;&lt;package&gt;, geoportal&quot;&gt;
 -        &lt;meta name=&quot;description&quot; content=&quot;&lt;package&gt; Geoportal Application.&quot;&gt;
 +        &lt;meta name=&quot;keywords&quot; content=&quot;${request.registry.settings[&#39;instance&#39;]}, geoportal&quot;&gt;
 +        &lt;meta name=&quot;description&quot; content=&quot;${request.registry.settings[&#39;viewer&#39;][&#39;page_title&#39;]}.&quot;&gt;
@@ -374,13 +374,13 @@ include $(INSTANCE).mk
 <ol class="arabic simple" start="8">
 <li>Create the instance CSS file <code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj-&lt;instance&gt;.css</span></code>:</li>
 </ol>
-<div class="code css highlight-default"><div class="highlight"><pre><span></span><span class="c1">#header-in {</span>
-    <span class="n">background</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s1">&#39;../images/&lt;instance&gt;_banner_left.png&#39;</span><span class="p">)</span> <span class="n">top</span> <span class="n">left</span> <span class="n">no</span><span class="o">-</span><span class="n">repeat</span><span class="p">;</span>
+<div class="code css highlight-default"><div class="highlight"><pre><span class="c">#header-in {</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s">&#39;../images/&lt;instance&gt;_banner_left.png&#39;</span><span class="p">)</span> <span class="n">top</span> <span class="n">left</span> <span class="n">no</span><span class="o">-</span><span class="n">repeat</span><span class="p">;</span>
     <span class="n">height</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">height</span><span class="o">&gt;</span><span class="n">px</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="n">header</span><span class="o">-</span><span class="n">out</span> <span class="p">{</span>
-    <span class="n">background</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s1">&#39;../images/&lt;instance&gt;_banner_right.png&#39;</span><span class="p">)</span> <span class="n">top</span> <span class="n">right</span> <span class="n">no</span><span class="o">-</span><span class="n">repeat</span><span class="p">;</span>
-    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="p">:</span> <span class="c1">#&lt;color&gt;;</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">url</span><span class="p">(</span><span class="s">&#39;../images/&lt;instance&gt;_banner_right.png&#39;</span><span class="p">)</span> <span class="n">top</span> <span class="n">right</span> <span class="n">no</span><span class="o">-</span><span class="n">repeat</span><span class="p">;</span>
+    <span class="n">background</span><span class="o">-</span><span class="n">color</span><span class="p">:</span> <span class="c">#&lt;color&gt;;</span>
     <span class="n">height</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">height</span><span class="o">&gt;</span><span class="n">px</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -394,7 +394,7 @@ define the <code class="docutils literal"><span class="pre">WMTS_OPTIONS</span><
 </dl>
 </li>
 </ol>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>var WMTS_OPTIONS = {
+<div class="code javascript highlight-default"><div class="highlight"><pre>var WMTS_OPTIONS = {
    url: &#39;${tiles_url}&#39;,
    ...
 }
@@ -413,13 +413,13 @@ var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
 <ol class="arabic simple" start="10">
 <li>In the <code class="docutils literal"><span class="pre">mapserver/c2cgeoportal.map.mako</span></code> file add the following line:</li>
 </ol>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">INCLUDE</span> <span class="s2">&quot;$</span><span class="si">{instance}</span><span class="s2">.map&quot;</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">INCLUDE</span> <span class="s">&quot;${instance}.map&quot;</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="11">
 <li>Edit <code class="docutils literal"><span class="pre">deploy/deploy.cfg.mako</span></code> as follows:</li>
 </ol>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span> [DEFAULT]
+<div class="code diff highlight-default"><div class="highlight"><pre> [DEFAULT]
 -project = &lt;package&gt;
 +project = ${instance}
 
@@ -438,7 +438,7 @@ var RESTRICTED_EXTENT = ${dumps(restricted_extent)};
 <li><p class="first">Update the deploy configuration as follows:</p>
 <pre class="highlight"><span class="prompt1">git mv deploy/hooks/post-restore-code<span class="o">{</span>,.mako<span class="o">}</span></span>
 </pre><p>Then edit it (<cite>deploy/hooks/post-restore-code.mako</cite>):</p>
-<div class="code diff highlight-default"><div class="highlight"><pre><span></span>-make -f $TARGET.mk template-clean
+<div class="code diff highlight-default"><div class="highlight"><pre>-make -f $TARGET.mk template-clean
 -make -f $TARGET.mk template-generate
 +INSTANCE=${instance} make -f $TARGET.mk template-clean
 +INSTANCE=${instance} make -f $TARGET.mk template-generate
@@ -479,7 +479,7 @@ templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>The result is also a file without the .mako.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
+<div class="highlight-default"><div class="highlight"><pre>${&lt;variablename&gt;}
 </pre></div>
 </div>
 <p>for example:</p>
@@ -570,7 +570,7 @@ But we can get only the non structured variable.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

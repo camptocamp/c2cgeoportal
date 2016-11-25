@@ -50,16 +50,16 @@
 <p>If you want to optimize the parallelization of static resource download you
 can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 something like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The used sub domain for the static resources</span>
-<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">]</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="c"># The used sub domain for the static resources</span>
+<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;s1&#39;</span><span class="p">,</span> <span class="s">&#39;s2&#39;</span><span class="p">,</span> <span class="s">&#39;s3&#39;</span><span class="p">,</span> <span class="s">&#39;s4&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Those sub domain should obviously be define in the DNS and in the Apache
 vhost. If the application is served on deferent URL and you want to use
 the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
 the following:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="c"># The URL template used to generate the sub domain URL</span>
+<span class="c"># %(sub)s will be replaced by the sub domain value.</span>
 <span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -111,7 +111,7 @@ the following:</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

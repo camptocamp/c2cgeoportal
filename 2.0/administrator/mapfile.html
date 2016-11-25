@@ -79,8 +79,8 @@ need to use a relatively large value for the <code class="docutils literal"><spa
 <ul>
 <li><p class="first">The <code class="docutils literal"><span class="pre">MAP</span></code> and all the <code class="docutils literal"><span class="pre">LAYER``s</span> <span class="pre">should</span> <span class="pre">have</span> <span class="pre">a</span> <span class="pre">``PROJECTION</span></code>. For
 example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJECTION</span>
-    <span class="s2">&quot;init=epsg:21781&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">PROJECTION</span>
+    <span class="s">&quot;init=epsg:21781&quot;</span>
 <span class="n">END</span>
 </pre></div>
 </div>
@@ -101,16 +101,16 @@ resolution into account.</p>
 <p>Layers involved in the <code class="docutils literal"><span class="pre">box</span> <span class="pre">query</span></code> and <code class="docutils literal"><span class="pre">query</span> <span class="pre">builder</span></code> features should
 support WFS GetFeature. To support WFS GetFeature a <code class="docutils literal"><span class="pre">LAYER</span></code> should define
 a template:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWFSGetFeature</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWFSGetFeature</span>
 </pre></div>
 </div>
 <p>This is a fake template, but this is required.</p>
 <p>The <code class="docutils literal"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal"><span class="pre">METADATA</span></code> section. For
 example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
-<span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
-<span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
-<span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;gml_include_items&quot;</span> <span class="s">&quot;all&quot;</span>
+<span class="s">&quot;gml_types&quot;</span> <span class="s">&quot;auto&quot;</span>
+<span class="s">&quot;gml_featureid&quot;</span> <span class="s">&quot;id&quot;</span>
+<span class="s">&quot;wfs_enable_request&quot;</span> <span class="s">&quot;*&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">gml_include_items</span></code></p>
@@ -149,16 +149,16 @@ values defined in the layer&#8217;s classes (<code class="docutils literal"><spa
 <p>Layers involved in the <code class="docutils literal"><span class="pre">point</span> <span class="pre">query</span></code> feature should support WMS
 GetFeatureInfo.</p>
 <p>To support WMS GetFeatureInfo a <code class="docutils literal"><span class="pre">LAYER</span></code> should define a template:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
 </pre></div>
 </div>
 <p>As for WFS GetFeature, this is a fake template, but it is required.</p>
 <p>The <code class="docutils literal"><span class="pre">gml_include_items</span></code>, <code class="docutils literal"><span class="pre">gml_[geometry</span> <span class="pre">name]_type</span></code> and <code class="docutils literal"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal"><span class="pre">LAYER</span></code>. For
 example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
-<span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
-<span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;gml_include_items&quot;</span> <span class="s">&quot;all&quot;</span>
+<span class="s">&quot;gml_geometries&quot;</span> <span class="s">&quot;geom&quot;</span>
+<span class="s">&quot;gml_geom_type&quot;</span> <span class="s">&quot;polygon&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">gml_include_items</span></code></p>
@@ -200,7 +200,7 @@ may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile the <code class="docutils literal"><span class="pre">DATA</span></code> property of the
 <code class="docutils literal"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM
+<div class="highlight-default"><div class="highlight"><pre>DATA &quot;the_geom FROM
       (SELECT
          geo.*
        FROM
@@ -235,7 +235,7 @@ area. Theses features won&#8217;t be displayed as they are not in the area (ie n
 <p>The <code class="docutils literal"><span class="pre">${mapfile_data_subselect}</span></code> variable is defined in the <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>
 configuration file. Its goal is to simplify the writing of the mapfile.
 It is defined as follows:</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">SELECT</span>
   <span class="n">ST_Collect</span><span class="p">(</span><span class="n">ra</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
 <span class="n">FROM</span>
   <span class="n">main</span><span class="o">.</span><span class="n">restrictionarea</span> <span class="n">AS</span> <span class="n">ra</span><span class="p">,</span>
@@ -259,7 +259,7 @@ It is defined as follows:</p>
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
 <p>If we don&#8217;t need to restrict on an area we can use the following
 <code class="docutils literal"><span class="pre">DATA</span></code> property of the <code class="docutils literal"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
+<div class="highlight-default"><div class="highlight"><pre>DATA &quot;the_geom FROM (
     SELECT
         geo.*
     FROM
@@ -274,7 +274,7 @@ It is defined as follows:</p>
 </div>
 <p>Then you don&#8217;t need to define an area in the admin interface.</p>
 <p>The <code class="docutils literal"><span class="pre">${mapfile_data_noarea_subselect}</span></code> is defined as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">SELECT</span>
     <span class="n">rra</span><span class="o">.</span><span class="n">role_id</span>
 <span class="n">FROM</span>
     <span class="n">main</span><span class="o">.</span><span class="n">restrictionarea</span> <span class="n">AS</span> <span class="n">ra</span><span class="p">,</span>
@@ -296,14 +296,14 @@ It is defined as follows:</p>
 <h3>Metadata and filename<a class="headerlink" href="#metadata-and-filename" title="Permalink to this headline">¶</a></h3>
 <p>It is required to have the following in the <code class="docutils literal"><span class="pre">VALIDATION</span></code> section of
 the <code class="docutils literal"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>${mapserver_layer_validation}
+<div class="highlight-default"><div class="highlight"><pre>${mapserver_layer_validation}
 </pre></div>
 </div>
 <p>This variable is defined in the <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code> configuration file
 as follows:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserver_layer_validation</span> <span class="o">=</span>
-    <span class="s2">&quot;default_role_id&quot;</span> <span class="s2">&quot;-1&quot;</span>
-    <span class="s2">&quot;role_id&quot;</span> <span class="s2">&quot;^-?[0-9]*$$&quot;</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">mapserver_layer_validation</span> <span class="o">=</span>
+    <span class="s">&quot;default_role_id&quot;</span> <span class="s">&quot;-1&quot;</span>
+    <span class="s">&quot;role_id&quot;</span> <span class="s">&quot;^-?[0-9]*$$&quot;</span>
 </pre></div>
 </div>
 <p>The mapfile should be a <code class="docutils literal"><span class="pre">.map.mako</span></code> file, for the variable to be
@@ -318,8 +318,8 @@ attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="http://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
 <p>To define variables, edit the matching <code class="docutils literal"><span class="pre">MAP</span></code>/<code class="docutils literal"><span class="pre">LAYER</span></code>/<code class="docutils literal"><span class="pre">VALIDATION</span></code>
 section in the MapFile and add:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
-<span class="s2">&quot;s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s">&quot;&lt;default_value&gt;&quot;</span>
+<span class="s">&quot;s_&lt;variable&gt;&quot;</span> <span class="s">&quot;&lt;validation_pattern&gt;&quot;</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">validation_pattern</span></code> is a regular expression used to validate the
@@ -333,16 +333,16 @@ insert the variable value, but not at the start of a line (to avoid escape issue
 As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal"><span class="pre">DATA</span></code> section. For instance:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">LAYER</span>
     <span class="o">...</span>
-    <span class="n">DATA</span> <span class="s2">&quot;geom FROM (SELECT t.geom, t.type, t.gid, </span><span class="si">%s</span><span class="s2">_columns</span><span class="si">% F</span><span class="s2">ROM geodata.table as t)  AS foo using unique gid using SRID=21781&quot;</span>
+    <span class="n">DATA</span> <span class="s">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=21781&quot;</span>
     <span class="n">METADATA</span>
         <span class="o">...</span>
-        <span class="s2">&quot;gml_exclude_items&quot;</span> <span class="s2">&quot;type,gid&quot;</span>
-        <span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+        <span class="s">&quot;gml_exclude_items&quot;</span> <span class="s">&quot;type,gid&quot;</span>
+        <span class="s">&quot;gml_include_items&quot;</span> <span class="s">&quot;all&quot;</span>
 
-        <span class="s2">&quot;default_s_columns&quot;</span> <span class="s2">&quot;t.name&quot;</span>
-        <span class="s2">&quot;s_columns_validation_pattern&quot;</span> <span class="s2">&quot;^[a-z,._]*$$&quot;</span>
+        <span class="s">&quot;default_s_columns&quot;</span> <span class="s">&quot;t.name&quot;</span>
+        <span class="s">&quot;s_columns_validation_pattern&quot;</span> <span class="s">&quot;^[a-z,._]*$$&quot;</span>
     <span class="n">END</span>
     <span class="n">CLASS</span>
         <span class="n">EXPRESSION</span> <span class="p">([</span><span class="nb">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -370,8 +370,8 @@ variable substitution, but they are not avalable for cached query like:
 <p>Mapserver allows different forms of legends.</p>
 <ul>
 <li><p class="first">Legend with legend text (normal configuration, f.e. <code class="docutils literal"><span class="pre">[</span> <span class="pre">o</span> <span class="pre">]</span> <span class="pre">Placemark</span></code>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CLASS</span>
-    <span class="n">NAME</span> <span class="s2">&quot;Placemark&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">CLASS</span>
+    <span class="n">NAME</span> <span class="s">&quot;Placemark&quot;</span>
     <span class="n">STYLE</span>
         <span class="o">...</span>
     <span class="n">END</span>
@@ -380,8 +380,8 @@ variable substitution, but they are not avalable for cached query like:
 </div>
 </li>
 <li><p class="first">Legend without legend text (f.e. <code class="docutils literal"><span class="pre">[</span> <span class="pre">o</span> <span class="pre">]</span></code> , often used if there is one single class in the layer ):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CLASS</span>
-    <span class="n">NAME</span> <span class="s2">&quot; &quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">CLASS</span>
+    <span class="n">NAME</span> <span class="s">&quot; &quot;</span>
     <span class="n">STYLE</span>
         <span class="o">...</span>
     <span class="n">END</span>
@@ -391,7 +391,7 @@ variable substitution, but they are not avalable for cached query like:
 <p>You can set the <code class="docutils literal"><span class="pre">legend</span> <span class="pre">rule</span></code> in the admin interface to <code class="docutils literal"><span class="pre">%20</span></code>, if you want to show the legend icon in the layer tree</p>
 </li>
 <li><p class="first">No legend (don&#8217;t set any <code class="docutils literal"><span class="pre">NAME</span></code> in the <code class="docutils literal"><span class="pre">CLASS</span></code>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CLASS</span>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">CLASS</span>
     <span class="n">STYLE</span>
         <span class="o">...</span>
     <span class="n">END</span>
@@ -411,15 +411,15 @@ because it saves MapServer from computing the extent of all layer features.</p>
 <p>To have good performance you should have tiled files with overview, and probably
 a tileindex, you can doing these steps:</p>
 <p>Convert your rasters in tiled GeoTIFF:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">of</span> <span class="n">GTiff</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TILED=YES&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TFW=YES&quot;</span> <span class="o">&lt;</span><span class="n">filename_in</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename_out</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">of</span> <span class="n">GTiff</span> <span class="o">-</span><span class="n">co</span> <span class="s">&quot;TILED=YES&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="s">&quot;TFW=YES&quot;</span> <span class="o">&lt;</span><span class="n">filename_in</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename_out</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Then build overviews for your rasters</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">gdaladdo</span> <span class="o">-</span><span class="n">r</span> <span class="n">average</span> <span class="n">filename</span><span class="o">.</span><span class="n">tif</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">16</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">gdaladdo</span> <span class="o">-</span><span class="n">r</span> <span class="n">average</span> <span class="n">filename</span><span class="o">.</span><span class="n">tif</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">16</span>
 </pre></div>
 </div>
 <p>You can generate a shapefile indexing all your rasters</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">gdaltindex</span> <span class="n">filename_index</span><span class="o">.</span><span class="n">shp</span> <span class="n">raster</span><span class="o">/*.</span><span class="n">tif</span>
+<div class="code highlight-default"><div class="highlight"><pre><span class="n">gdaltindex</span> <span class="n">filename_index</span><span class="o">.</span><span class="n">shp</span> <span class="n">raster</span><span class="o">/*.</span><span class="n">tif</span>
 </pre></div>
 </div>
 </div>
@@ -506,7 +506,7 @@ file. But note that this affects performance.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

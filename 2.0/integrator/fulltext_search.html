@@ -82,11 +82,11 @@ span.prompt1:before {
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>Here&#8217;s an example of an insertion in the <code class="docutils literal"><span class="pre">tsearch</span></code> table:</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">VALUES</span>
-  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
-   <span class="s1">&#39;text to display&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span> <span class="s1">&#39;text to search&#39;</span><span class="p">));</span>
+  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s">&#39;Layer group&#39;</span><span class="p">,</span>
+   <span class="s">&#39;text to display&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s">&#39;french&#39;</span><span class="p">,</span> <span class="s">&#39;text to search&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal"><span class="pre">Layer</span> <span class="pre">group</span></code> is the name of the layer group that should be activated,
@@ -94,10 +94,10 @@ span.prompt1:before {
 <code class="docutils literal"><span class="pre">test</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
 <code class="docutils literal"><span class="pre">french</span></code> is the used language.</p>
 <p>Here&#8217;s another example where rows from a <code class="docutils literal"><span class="pre">SELECT</span></code> are inserted:</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-  <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+  <span class="n">geom</span><span class="p">,</span> <span class="s">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -131,16 +131,16 @@ available to users of the corresponding role.</p>
 insert that data multiple times. For example, if you want to make the data
 of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
 are <code class="docutils literal"><span class="pre">1</span></code> and <code class="docutils literal"><span class="pre">2</span></code> you will use two SQL <code class="docutils literal"><span class="pre">INSERT</span></code> statements:</p>
-<div class="code sql last highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
+<div class="code sql last highlight-default"><div class="highlight"><pre><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
    <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+   <span class="n">geom</span><span class="p">,</span> <span class="s">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s">&#39;f&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 
 <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
    <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
-   <span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+   <span class="n">geom</span><span class="p">,</span> <span class="s">&#39;layer group name&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s">&#39;f&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s">&#39;german&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -150,8 +150,8 @@ are <code class="docutils literal"><span class="pre">1</span></code> and <code c
 <span id="integrator-fulltext-search-params"></span><h2>Params<a class="headerlink" href="#params" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">params</span></code> column can contain a JSON with a dictionary of parameters.
 For instance to specify a <code class="docutils literal"><span class="pre">floor</span></code>:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;floor&quot;</span><span class="p">:</span> <span class="s">&quot;1&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -162,21 +162,21 @@ for more information.</p>
 <div class="section" id="actions">
 <h2>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">actions</span></code> column contains a JSON with an array of actions like:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_layer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_layer_name&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;action&quot;</span><span class="p">:</span> <span class="s">&quot;add_layer&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;the_layer_name&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_group&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_group_name&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;action&quot;</span><span class="p">:</span> <span class="s">&quot;add_group&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;the_group_name&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;add_theme&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the_theme_name&gt;&quot;</span>
+<div class="code json highlight-default"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;action&quot;</span><span class="p">:</span> <span class="s">&quot;add_theme&quot;</span><span class="p">,</span>
+    <span class="s">&quot;data&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;the_theme_name&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -208,12 +208,12 @@ can be used.</p>
 <p>First connect to the database:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -d &lt;database&gt;</span>
 </pre><p>For that we need the Postgres unaccent extension and dictionary:</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">EXTENSION</span> <span class="n">unaccent</span><span class="p">;</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">CREATE</span> <span class="n">EXTENSION</span> <span class="n">unaccent</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Insert the unaccent dictionary into a text search configuration
 (<a class="reference external" href="http://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html">Documentation</a>):</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">fr</span> <span class="p">(</span><span class="n">COPY</span> <span class="o">=</span> <span class="n">french</span><span class="p">);</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">fr</span> <span class="p">(</span><span class="n">COPY</span> <span class="o">=</span> <span class="n">french</span><span class="p">);</span>
 <span class="n">ALTER</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">fr</span>
     <span class="n">ALTER</span> <span class="n">MAPPING</span> <span class="n">FOR</span> <span class="n">hword</span><span class="p">,</span> <span class="n">hword_part</span><span class="p">,</span> <span class="n">word</span>
     <span class="n">WITH</span> <span class="n">unaccent</span><span class="p">,</span> <span class="n">french_stem</span><span class="p">;</span>
@@ -221,15 +221,15 @@ can be used.</p>
 </div>
 <p>When populating the <code class="docutils literal"><span class="pre">tsearch</span></code> table use the text configuration &#8216;fr&#8217;
 instead of &#8216;french&#8217;. For example:</p>
-<div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="o">&lt;</span><span class="n">schema</span><span class="o">&gt;.</span><span class="n">tsearch</span>
+<div class="code sql highlight-default"><div class="highlight"><pre><span class="n">INSERT</span> <span class="n">INTO</span> <span class="o">&lt;</span><span class="n">schema</span><span class="o">&gt;.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">VALUES</span>
-  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
-   <span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">));</span>
+  <span class="p">(</span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span> <span class="s">&#39;Layer group&#39;</span><span class="p">,</span>
+   <span class="s">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">to_tsvector</span><span class="p">(</span><span class="s">&#39;fr&#39;</span><span class="p">,</span> <span class="s">&#39;Accent text to search (éàè)&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>And define the configuration in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">fulltextsearch</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">fulltextsearch</span><span class="p">:</span>
     <span class="n">languages</span><span class="p">:</span>
         <span class="n">fr</span><span class="p">:</span> <span class="n">fr</span>
 </pre></div>
@@ -305,7 +305,7 @@ configuration is named &#8216;french&#8217;.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |

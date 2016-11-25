@@ -81,7 +81,7 @@ Default is:</p>
 <p>The project variables are set in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
 which extends the default <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;some_config_var&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>they must be listed in the makefile as well using <code class="docutils literal"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
@@ -113,7 +113,7 @@ which extends the default <code class="docutils literal"><span class="pre">CONST
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
 Here is a simple example:</p>
-<div class="code makefile highlight-default"><div class="highlight"><pre><span></span>MY_FILE ?= &lt;file&gt;
+<div class="code makefile highlight-default"><div class="highlight"><pre>MY_FILE ?= &lt;file&gt;
 
 PRE_RULES = $(MY_FILE)
 
@@ -193,7 +193,7 @@ indicating that an other rule is correctly done.</p>
       &copy;2011-2016, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
