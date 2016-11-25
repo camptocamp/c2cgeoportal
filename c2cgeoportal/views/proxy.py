@@ -224,7 +224,8 @@ class Proxy:
             content_type=content_type,
         )
 
-    def _get_lower_params(self, params):
+    @staticmethod
+    def _get_lower_params(params):
         return dict(
             (k.lower(), unicode(v).lower()) for k, v in params.iteritems()
         )

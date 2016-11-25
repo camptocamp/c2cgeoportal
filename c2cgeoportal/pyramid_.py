@@ -367,7 +367,8 @@ class OgcproxyRoutePredicate:
                 return False
         return True
 
-    def phash(self):  # pragma: no cover
+    @staticmethod
+    def phash():  # pragma: no cover
         return ""
 
 

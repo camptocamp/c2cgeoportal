@@ -41,7 +41,8 @@ def setUpModule():  # noqa
 
 class TestEntryView(TestCase):
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         from pyramid import testing
         testing.setUp(
             settings={

@@ -262,7 +262,8 @@ class Entry:
             log.exception(error)
         return wms, errors
 
-    def _create_layer_query(self, role_id, version):
+    @staticmethod
+    def _create_layer_query(role_id, version):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
@@ -429,7 +430,8 @@ class Entry:
 
         return l, errors
 
-    def _merge_time(self, time, l, layer, wms, wms_layers):
+    @staticmethod
+    def _merge_time(time, l, layer, wms, wms_layers):
         errors = set()
         wmslayer = layer.name if isinstance(layer, LayerV1) else layer.layer
         try:
@@ -536,7 +538,8 @@ class Entry:
         if layer.style:
             l["style"] = layer.style
 
-    def _fill_legend_rule_query_string(self, l, layer, url):
+    @staticmethod
+    def _fill_legend_rule_query_string(l, layer, url):
         if layer.legend_rule and url:
             l["icon"] = add_url_params(url, {
                 "SERVICE": "WMS",
@@ -615,7 +618,8 @@ class Entry:
         else:
             self._fill_wmts_v2(l, layer)
 
-    def _fill_wmts_v2(self, l, layer):
+    @staticmethod
+    def _fill_wmts_v2(l, layer):
         l["layer"] = layer.layer
         l["imageType"] = layer.image_type
 
@@ -680,14 +684,16 @@ class Entry:
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
 
-    def _layer_included(self, tree_item, version):
+    @staticmethod
+    def _layer_included(tree_item, version):
         if version == 1 and type(tree_item) == LayerV1:
             return True
         if version == 2 and isinstance(tree_item, Layer):
             return type(tree_item) != LayerV1
         return False
 
-    def _is_internal_wms(self, layer):
+    @staticmethod
+    def _is_internal_wms(layer):
         return \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
 
@@ -915,7 +921,8 @@ class Entry:
 
         return export_themes, errors
 
-    def _get_functionalities(self, theme):
+    @staticmethod
+    def _get_functionalities(theme):
         result = {}
         for functionality in theme.functionalities:
             if functionality.name in result:
@@ -1552,7 +1559,8 @@ class Entry:
             "success": "true"
         }
 
-    def generate_password(self):
+    @staticmethod
+    def generate_password():
         allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         rand = Random()
 

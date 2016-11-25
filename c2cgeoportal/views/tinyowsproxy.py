@@ -152,13 +152,15 @@ class TinyOWSProxy(Proxy):
             resp, content, cache_control, "tinyows"
         )
 
-    def _filter_urls(self, content, online_resource, proxy_online_resource):
+    @staticmethod
+    def _filter_urls(content, online_resource, proxy_online_resource):
         if online_resource is not None and proxy_online_resource is not None:
             return content.replace(online_resource, proxy_online_resource)
         else:
             return content
 
-    def _parse_body(self, body):
+    @staticmethod
+    def _parse_body(body):
         """
         Read the WFS-T request body and extract the referenced type-names
         and request method.

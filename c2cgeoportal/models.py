@@ -299,7 +299,8 @@ class User(Base):
         """encrypts password on the fly."""
         self.temp_password = self.__encrypt_password(password)
 
-    def __encrypt_password(self, password):
+    @staticmethod
+    def __encrypt_password(password):
         """Hash the given password with SHA1."""
         return sha1(password.encode("utf8")).hexdigest()
 

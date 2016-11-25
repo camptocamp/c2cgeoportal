@@ -87,7 +87,8 @@ class Layers:
             )
         )  # pragma: no cover
 
-    def _get_layer(self, layer_id):
+    @staticmethod
+    def _get_layer(layer_id):
         """ Return a ``Layer`` object for ``layer_id``. """
         layer_id = int(layer_id)
         try:

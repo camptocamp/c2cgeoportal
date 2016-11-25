@@ -173,7 +173,8 @@ class C2cTool:
             step if step != 0 else "",
         ))
 
-    def get_project(self):
+    @staticmethod
+    def get_project():
         if not os.path.isfile("project.yaml"):
             print("Unable to find the required 'project.yaml' file.")
             exit(1)

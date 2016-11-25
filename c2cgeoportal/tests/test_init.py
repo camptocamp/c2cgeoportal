@@ -97,7 +97,8 @@ class TestReferer(TestCase):
                 self.referer = ref
                 self._user = TestReferer.USER
 
-            def path_info_peek(self):
+            @staticmethod
+            def path_info_peek():
                 return "main"
 
         get_user = _create_get_user_from_request(self.SETTINGS)
@@ -155,7 +156,8 @@ class TestHooks(TestCase):
     def test_no_hook(self):
         call_hook(self.settings, "test2")
 
-    def test_no_hooks(self):
+    @staticmethod
+    def test_no_hooks():
         call_hook({}, "test")
 
     def test_bad_hook(self):

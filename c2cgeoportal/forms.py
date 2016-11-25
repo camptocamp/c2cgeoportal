@@ -199,7 +199,8 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         self.auto_check = auto_check
         self.auto_collapsed = auto_collapsed
 
-    def render_tree(self):
+    @staticmethod
+    def render_tree():
         return ""
 
     def render(self, options, **kwargs):

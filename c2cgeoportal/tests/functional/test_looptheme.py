@@ -68,7 +68,8 @@ class TestLoopTheme(TestCase):
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, LayerV1, \

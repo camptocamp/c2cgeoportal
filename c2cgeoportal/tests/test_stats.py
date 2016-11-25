@@ -42,7 +42,8 @@ class TestMemoryBackend(TestCase):
         self.backend = stats._MemoryBackend()
         stats.BACKENDS = [self.backend]
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         stats.BACKENDS = []
 
     def test_get_no_stats(self):

@@ -95,7 +95,8 @@ class Raster:
 
         return result
 
-    def _round(self, value, round_to):
+    @staticmethod
+    def _round(value, round_to):
         if value is not None:
             return Decimal(str(value)).quantize(Decimal(str(round_to)))
         else:
