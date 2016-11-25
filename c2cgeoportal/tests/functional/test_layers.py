@@ -451,10 +451,10 @@ class TestLayers(TestCase):
     def test_create_no_validation(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
         metadatas = [
-            UIMetadata("geometry_validation", "False")
+            Metadata("geometry_validation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username=u"__test_user")
@@ -566,10 +566,10 @@ class TestLayers(TestCase):
 
     def test_update_no_validation(self):
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
         metadatas = [
-            UIMetadata("geometry_validation", "False")
+            Metadata("geometry_validation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username=u"__test_user")
