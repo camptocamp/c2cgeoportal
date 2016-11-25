@@ -104,7 +104,7 @@ class TestLayers(TestCase):
 
     def _create_layer(
             self, public=False, none_area=False, attr_list=False,
-            exclude_properties=False):
+            exclude_properties=False, ui_metadatas=[], geom_type=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -148,9 +148,18 @@ class TestLayers(TestCase):
             Column("child_id", types.Integer,
                    ForeignKey("public.%s_child.id" % tablename)),
             Column("name", types.Unicode),
-            Column("geom", Geometry("POINT", srid=21781, management=management)),
+            Column("last_update_user", types.Unicode),
+            Column("last_update_date", types.DateTime),
             schema="public"
         )
+        if geom_type:
+            table.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
         table.create()
         self._tables.append(table)
 
@@ -182,6 +191,10 @@ class TestLayers(TestCase):
 
         if exclude_properties:
             layer.exclude_properties = "name"
+
+        for metadata in ui_metadatas:
+            metadata.item_id = layer.id
+            DBSession.add(metadata)
 
         DBSession.add(layer)
 
@@ -385,6 +398,29 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEquals(len(collection.features), 2)
 
+    def test_create_log(self):
+        from datetime import datetime
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        ui_metadatas = [
+            UIMetadata("lastUpdateDateColumn", "last_update_date"),
+            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        ]
+        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        layers = Layers(request)
+        collection = layers.create()
+        self.assertEquals(request.response.status_int, 201)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 1)
+        properties = collection.features[0]
+        self.assertEquals(properties.last_update_user, request.user.id)
+        self.assertIsInstance(properties.last_update_date, datetime)
+
     def test_create_validation_fails(self):
         from c2cgeoportal.views.layers import Layers
 
@@ -397,6 +433,24 @@ class TestLayers(TestCase):
         self.assertEquals(request.response.status_int, 400)
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Too few points in geometry component[5 45]")
+
+    def test_create_no_validation(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        ui_metadatas = [
+            UIMetadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(ui_metadatas=ui_metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        layers = Layers(request)
+        collection = layers.create()
+        self.assertEquals(request.response.status_int, 201)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
 
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -448,6 +502,26 @@ class TestLayers(TestCase):
         self.assertEquals(feature.name, "foobar")
         self.assertEquals(feature.child, u"c2é")
 
+    def test_update_log(self):
+        from datetime import datetime
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        ui_metadatas = [
+            UIMetadata("lastUpdateDateColumn", "last_update_date"),
+            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        ]
+        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        layers = Layers(request)
+        feature = layers.update()
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.last_update_user, request.user.id)
+        self.assertIsInstance(feature.last_update_date, datetime)
+
     def test_update_validation_fails(self):
         from c2cgeoportal.views.layers import Layers
 
@@ -475,6 +549,24 @@ class TestLayers(TestCase):
         self.assertEquals(request.response.status_int, 400)
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Not simple")
+
+    def test_update_no_validation(self):
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        ui_metadatas = [
+            UIMetadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(ui_metadatas=ui_metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        layers = Layers(request)
+        feature = layers.update()
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.name, "foobar")
+        self.assertEquals(feature.child, u"c2é")
 
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -530,6 +622,22 @@ class TestLayers(TestCase):
         self.assertEquals(cls.__table__.name, "table_%d" % layer_id)
         self.assertTrue(hasattr(cls, "name"))
         self.assertTrue("child" in cls.__dict__)
+
+    def test_metadata_log(self):
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        ui_metadatas = [
+            UIMetadata("lastUpdateDateColumn", "last_update_date"),
+            UIMetadata("lastUpdateUserColumn", "last_update_user"),
+        ]
+        layer_id = self._create_layer(ui_metadatas=ui_metadatas)
+        request = self._get_request(layer_id, username=u"__test_user")
+
+        layers = Layers(request)
+        cls = layers.metadata()
+        self.assertFalse(hasattr(cls, "last_update_date"))
+        self.assertFalse(hasattr(cls, "last_update_user"))
 
     def test_metadata_exclude_properties(self):
         from c2cgeoportal.views.layers import Layers
