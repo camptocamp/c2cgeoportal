@@ -1,4 +1,4 @@
-FROM camptocamp/postgis:9.4
+FROM camptocamp/postgresql:latest
 
 ENV POSTGRES_USER www-data
 ENV POSTGRES_DB geomapfish
