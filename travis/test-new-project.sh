@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-STATUS_CODE=$(curl --write-out %{http_code} --silent --output /dev/null "http://localhost/travis/$1")
+STATUS_CODE=$(curl --write-out %{http_code} --connect-timeout 1 --max-time 120 --retry 5 --silent --output /dev/null "http://localhost/travis/$1")
 
 if [ $STATUS_CODE -eq 200 ]
 then
