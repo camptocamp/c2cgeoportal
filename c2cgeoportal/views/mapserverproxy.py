@@ -204,7 +204,7 @@ class MapservProxy(Proxy):
 
     def _proxy_callback(self, role_id, cache_control, *args, **kwargs):
         params = kwargs.get("params", {})
-        callback = params.get("callback", None)
+        callback = params.get("callback")
         if callback is not None:
             del params["callback"]
         resp, content = self._proxy(*args, **kwargs)
@@ -214,7 +214,7 @@ class MapservProxy(Proxy):
                 content, role_id, self.lower_params.get("service") == "wms",
                 self._get_wms_url(),
                 self.request.headers,
-                self.settings.get("proxies", None)
+                self.settings.get("proxies")
             )
 
         content_type = None

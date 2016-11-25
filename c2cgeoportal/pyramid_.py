@@ -728,7 +728,7 @@ def includeme(config):
 
 
 def _log_versions(settings):
-    package = settings.get("package", None)
+    package = settings.get("package")
     if package is not None:
         try:
             import c2cgeoportal.version
