@@ -180,6 +180,7 @@ vars:
         - lastUpdateUserColumn
         - name: snappingConfig
           type: json
+        - geometry_validation
         # WMTS layers
         - ogcServer
         - layers

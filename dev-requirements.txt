@@ -1,14 +1,17 @@
 setuptools>=8.0
 c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
+c2c.template>=1.2.dev
+c2c.cssmin
+alembic
+flake8==3.0.4
+flake8-copyright==0.2.0
+mccabe==0.5.2
 nose
 nosexcover
-unittest2
-flake8
-pep8-naming
-flake8-copyright
-c2c.template>=1.2.dev
-JSTools
-c2c.cssmin
+pep8-naming==0.4.1
+pycodestyle==2.0.0
+pyflakes==1.2.3
 transifex-client
-alembic
+unittest2
+JSTools
 -r doc/requirements.txt

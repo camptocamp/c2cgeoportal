@@ -106,7 +106,7 @@ class TestLayers(TestCase):
 
     def _create_layer(
             self, public=False, none_area=False, attr_list=False,
-            exclude_properties=False, metadatas=None):
+            exclude_properties=False, metadatas=None, geom_type=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -144,7 +144,8 @@ class TestLayers(TestCase):
             Column("child_id", types.Integer,
                    ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column("name", types.Unicode),
-            Column("geom", Geometry("POINT", srid=21781, management=management)),
+            Column("last_update_user", types.Unicode),
+            Column("last_update_date", types.DateTime),
             schema="public"
         )
         self._tables.append(table2)
@@ -153,6 +154,17 @@ class TestLayers(TestCase):
         table1.drop(checkfirst=True)
         table1.create()
         table2.create()
+
+        if geom_type:
+            table1.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table1.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
+        table1.create()
+        self._tables.append(table1)
 
         ins = table1.insert().values(name=u"c1é")
         c1_id = connection.execute(ins).inserted_primary_key[0]
@@ -430,6 +442,24 @@ class TestLayers(TestCase):
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Too few points in geometry component[5 45]")
 
+    def test_create_no_validation(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        metadatas = [
+            UIMetadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        layers = Layers(request)
+        collection = layers.create()
+        self.assertEquals(request.response.status_int, 201)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
+
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import Layers
@@ -527,6 +557,24 @@ class TestLayers(TestCase):
         self.assertEquals(request.response.status_int, 400)
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Not simple")
+
+    def test_update_no_validation(self):
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import UIMetadata
+
+        metadatas = [
+            UIMetadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        layers = Layers(request)
+        feature = layers.update()
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.name, "foobar")
+        self.assertEquals(feature.child, u"c2é")
 
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
