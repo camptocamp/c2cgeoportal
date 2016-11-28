@@ -41,10 +41,12 @@ from c2cgeoportal.tests.functional import (  # noqa
 @attr(functional=True)
 class TestshortenerView(TestCase):
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         pass
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Shorturl

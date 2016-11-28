@@ -180,7 +180,8 @@ class TestEntryView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -317,7 +318,8 @@ class TestEntryView(TestCase):
     # viewer view tests
     #
 
-    def _create_request_obj(self, username=None, params=None, **kwargs):
+    @staticmethod
+    def _create_request_obj(username=None, params=None, **kwargs):
         if params is None:
             params = {}
         from c2cgeoportal.models import DBSession, User
@@ -339,7 +341,8 @@ class TestEntryView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _get_filtered_errors(self, errors):
+    @staticmethod
+    def _get_filtered_errors(errors):
         regex = re.compile("The layer \\'[a-z0-9_]*\\' is not defined in WMS capabilities")
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)

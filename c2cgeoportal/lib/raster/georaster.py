@@ -42,7 +42,7 @@ class Tile:
         self.filename = filename
 
     def contains(self, x, y):
-        return self.min_x <= x and self.max_x > x and self.min_y <= y and self.max_y > y
+        return self.min_x <= x < self.max_x and self.min_y <= y < self.max_y
 
     def __str__(self):
         return "{0:f}, {1:f}, {2:f}, {3:f}: {4!s}".format(

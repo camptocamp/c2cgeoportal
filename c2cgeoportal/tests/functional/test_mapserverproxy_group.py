@@ -47,7 +47,8 @@ Base = sqlahelper.get_base()
 @attr(functional=True)
 class TestMapserverproxyViewGroup(TestCase):
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
@@ -75,7 +76,8 @@ class TestMapserverproxyViewGroup(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession, OGCServer
 
@@ -102,7 +104,8 @@ class TestMapserverproxyViewGroup(TestCase):
 
         transaction.commit()
 
-    def _create_getcap_request(self, username=None):
+    @staticmethod
+    def _create_getcap_request(username=None):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request()

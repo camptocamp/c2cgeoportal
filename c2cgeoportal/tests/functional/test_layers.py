@@ -228,7 +228,8 @@ class TestLayers(TestCase):
         self.layer_ids.append(id)
         return id
 
-    def _get_request(self, layerid, username=None):
+    @staticmethod
+    def _get_request(layerid, username=None):
         from c2cgeoportal.models import DBSession, User
         request = create_dummy_request()
         request.matchdict = {"layer_id": str(layerid)}

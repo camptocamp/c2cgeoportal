@@ -97,7 +97,8 @@ class TestMobileDesktop(TestCase):
         ])
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -118,7 +119,8 @@ class TestMobileDesktop(TestCase):
 
         transaction.commit()
 
-    def _create_entry_obj(self, username=None, params=None, **kargs):
+    @staticmethod
+    def _create_entry_obj(username=None, params=None, **kargs):
         if params is None:
             params = {}
         from c2cgeoportal.views.entry import Entry

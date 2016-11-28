@@ -62,7 +62,8 @@ class TestFilterCapabilities(TestCase):
 
         self.assertTrue("<Name>tows:parks</Name>" in filtered_xml)
 
-    def _filter_xml(self, xml, tag_name, layers_whitelist):
+    @staticmethod
+    def _filter_xml(xml, tag_name, layers_whitelist):
         from c2cgeoportal.lib.filter_capabilities import _CapabilitiesFilter
 
         parser = sax.make_parser()

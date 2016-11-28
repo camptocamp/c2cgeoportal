@@ -94,7 +94,8 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                 empty_template = Template("")
 
                 class Lookup(TemplateLookup):
-                    def get_template(self, uri):
+                    @staticmethod
+                    def get_template(uri):
                         return empty_template
 
                 class MyTemplate(MakoTemplate):
@@ -225,7 +226,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         return messages
 
-    def _import(self, object_type, messages, callback=None):
+    @staticmethod
+    def _import(object_type, messages, callback=None):
         from c2cgeoportal.models import DBSession
 
         items = DBSession.query(object_type)

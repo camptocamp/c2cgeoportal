@@ -57,7 +57,8 @@ class TestRequestProperty(TestCase):
         DBSession.add_all([u, r])
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         import transaction
@@ -135,7 +136,8 @@ class TestRequestProperty(TestCase):
         self.assertEqual(request.user.username, u"__foo")
         self.assertEqual(request.user.role.name, u"__bar")
 
-    def _create_request(self):
+    @staticmethod
+    def _create_request():
         from pyramid.request import Request
         request = Request({})
         add_user_property(request)

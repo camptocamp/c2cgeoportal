@@ -43,7 +43,8 @@ class TestSetCorsHeaders(TestCase):
         "access_control_max_age": MAX_AGE
     }
 
-    def _do(self, method, headers, credentials=False, settings=SETTINGS):
+    @staticmethod
+    def _do(method, headers, credentials=False, settings=SETTINGS):
         req = Request({}, method=method, headers=headers)
         req.response = Response()
         set_cors_headers(settings, req, "foo", credentials, req.response)

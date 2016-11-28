@@ -98,16 +98,19 @@ class BaseTemplate(Template):  # pragma: no cover
 
         return ret
 
-    def out(self, msg):
+    @staticmethod
+    def out(msg):
         print(msg)
 
-    def _args_to_vars(self, args, vars):
+    @staticmethod
+    def _args_to_vars(args, vars):
         for arg in args:
             m = re.match("(.+)=(.*)", arg)
             if m:
                 vars[m.group(1)] = m.group(2)
 
-    def _get_vars(self, vars, name, prompt, type=None):
+    @staticmethod
+    def _get_vars(vars, name, prompt, type=None):
         """
         Set an attribute in the vars dict.
         """
@@ -125,7 +128,8 @@ class BaseTemplate(Template):  # pragma: no cover
 
         vars[name] = value
 
-    def _epsg2bbox(self, srid):
+    @staticmethod
+    def _epsg2bbox(srid):
         try:
             r = requests.get("http://epsg.io/?format=json&q={}".format(srid))
             bbox = r.json()["results"][0]["bbox"]

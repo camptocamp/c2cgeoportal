@@ -101,7 +101,8 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -139,7 +140,8 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    def _create_request_obj(self, username=None, params=None, **kwargs):
+    @staticmethod
+    def _create_request_obj(username=None, params=None, **kwargs):
         if params is None:
             params = {}
         from c2cgeoportal.models import DBSession, User

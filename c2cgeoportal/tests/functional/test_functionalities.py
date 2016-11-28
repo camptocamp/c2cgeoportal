@@ -42,7 +42,8 @@ from c2cgeoportal.tests.functional import (  # noqa
 @attr(functional=True)
 class TestFunctionalities(TestCase):
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         import sqlahelper
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality
@@ -73,7 +74,8 @@ class TestFunctionalities(TestCase):
         engine = sqlahelper.get_engine()
         init(engine)
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         import transaction
         from c2cgeoportal.models import DBSession, Role, User, Functionality, OGCServer
 

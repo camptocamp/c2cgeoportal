@@ -367,7 +367,8 @@ class OgcproxyRoutePredicate:
                 return False
         return True
 
-    def phash(self):  # pragma: no cover
+    @staticmethod
+    def phash():  # pragma: no cover
         return ""
 
 
@@ -728,7 +729,7 @@ def includeme(config):
 
 
 def _log_versions(settings):
-    package = settings.get("package", None)
+    package = settings.get("package")
     if package is not None:
         try:
             import c2cgeoportal.version

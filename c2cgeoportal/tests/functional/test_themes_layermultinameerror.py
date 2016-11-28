@@ -90,7 +90,8 @@ class TestLayerMultiNameErrorView(TestCase):
         DBSession.add(theme)
         transaction.commit()
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
@@ -109,7 +110,8 @@ class TestLayerMultiNameErrorView(TestCase):
 
         transaction.commit()
 
-    def _create_request_obj(self, params=None, **kwargs):
+    @staticmethod
+    def _create_request_obj(params=None, **kwargs):
         if params is None:
             params = {}
         request = create_dummy_request(**kwargs)

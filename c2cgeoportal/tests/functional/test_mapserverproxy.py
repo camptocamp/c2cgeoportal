@@ -198,7 +198,8 @@ class TestMapserverproxyView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Functionality, Interface, DBSession, OGCServer
 
@@ -253,7 +254,8 @@ class TestMapserverproxyView(TestCase):
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
-    def _create_dummy_request(self, username=None):
+    @staticmethod
+    def _create_dummy_request(username=None):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
@@ -578,7 +580,8 @@ class TestMapserverproxyView(TestCase):
         md5sum = hashlib.md5(response.body).hexdigest()
         self.assertIn(md5sum, TWO_POINTS)
 
-    def _create_getcap_request(self, username=None, additional_settings=None):
+    @staticmethod
+    def _create_getcap_request(username=None, additional_settings=None):
         if additional_settings is None:
             additional_settings = {}
         from c2cgeoportal.models import DBSession, User

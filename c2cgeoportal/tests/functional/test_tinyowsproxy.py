@@ -75,7 +75,8 @@ class TestTinyOWSProxyView(TestCase):
     describefeaturetype_request_multiple_file = \
         data_base + "tinyows_describefeaturetype_request_multiple.xml"
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
@@ -114,7 +115,8 @@ class TestTinyOWSProxyView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
             Interface, DBSession
 
@@ -153,7 +155,8 @@ class TestTinyOWSProxyView(TestCase):
 
         transaction.commit()
 
-    def get_fake_proxy_(self, request, response_body, status):
+    @staticmethod
+    def get_fake_proxy_(request, response_body, status):
         from c2cgeoportal.views.tinyowsproxy import TinyOWSProxy
         from types import MethodType
 

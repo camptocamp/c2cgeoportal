@@ -44,7 +44,8 @@ from c2cgeoportal.tests.functional import (  # noqa
 @attr(functional=True)
 class TestFulltextsearchView(TestCase):
 
-    def setUp(self):  # noqa
+    @staticmethod
+    def setUp():  # noqa
         import transaction
         from sqlalchemy import func
         from geoalchemy2 import WKTElement
@@ -104,7 +105,8 @@ class TestFulltextsearchView(TestCase):
         DBSession.add_all([user1, user2, role1, role2, entry1, entry2, entry3, entry4, entry5, entry6])
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         import transaction
@@ -135,7 +137,8 @@ class TestFulltextsearchView(TestCase):
 
         transaction.commit()
 
-    def _create_dummy_request(self, username=None, params=None):
+    @staticmethod
+    def _create_dummy_request(username=None, params=None):
         from c2cgeoportal.models import DBSession, User
 
         request = create_dummy_request({
