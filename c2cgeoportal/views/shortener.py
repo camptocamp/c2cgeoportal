@@ -83,7 +83,7 @@ class Shortener:
 
         # see: http://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
         if len(url) > 8190:  # pragma: no cover
-            raise HTTPBadRequest("The parameter url is too long ({} > {})".format(len(url), 8190))
+            raise HTTPBadRequest("The parameter url is too long ({0} > {1})".format(len(url), 8190))
 
         # Check that it is an internal URL...
         uri_parts = urlparse(url)

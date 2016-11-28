@@ -177,7 +177,7 @@ class TestThemesViewMetadata(TestCase):
             {"name": "datetime2", "type": "datetime"},
             {"name": "unknown", "type": "unknown"},
         ]
-        types += [{"name": "url{}".format(n), "type": "url"} for n in range(1, 21)]
+        types += [{"name": "url{0}".format(n), "type": "url"} for n in range(1, 21)]
 
         request = create_dummy_request(additional_settings={
             "package": "tests",
@@ -192,7 +192,7 @@ class TestThemesViewMetadata(TestCase):
         request.route_url = route_url
 
         def static_url(url, **kargs):
-            return "http://dummy.org/{}".format(url)
+            return "http://dummy.org/{0}".format(url)
         request.static_url = static_url
         request.params = {
             "version": "2",

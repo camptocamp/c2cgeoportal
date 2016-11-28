@@ -107,7 +107,7 @@ class Checker:  # pragma: no cover
 
     def testurls(self, named_urls):
         results = [
-            "{}: {}".format(name, self.testurl(url))
+            "{0}: {1}".format(name, self.testurl(url))
             for name, url in named_urls
         ]
         return self.make_response(
@@ -279,14 +279,14 @@ class Checker:  # pragma: no cover
 
             if resp.status != httplib.OK:
                 self.set_status(resp.status, resp.reason)
-                results.append("{}: {}".format(interface, content))
+                results.append("{0}: {1}".format(interface, content))
 
             result = loads(content)
 
             if len(result["errors"]) != 0:
                 self.set_status(500, "Theme with error")
 
-                results.append("Interface '{}': Theme with error\n{}".format(
+                results.append("Interface '{0}': Theme with error\n{1}".format(
                     interface,
                     "\n".join(result["errors"])
                 ))
@@ -372,10 +372,10 @@ class Checker:  # pragma: no cover
             # check_output throws a CalledProcessError if return code is > 0
             try:
                 check_output(cmd)
-                results.append("{}: OK".format(route))
+                results.append("{0}: OK".format(route))
             except CalledProcessError as e:
-                results.append("{}: {}".format(route, e.output.replace("\n", "<br/>")))
-                self.set_status(500, "{}: JS error".format(route))
+                results.append("{0}: {1}".format(route, e.output.replace("\n", "<br/>")))
+                self.set_status(500, "{0}: JS error".format(route))
 
         return self.make_response(
             "-" if len(results) == 0 else "<br/><br/>".join(results)
