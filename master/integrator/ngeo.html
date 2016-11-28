@@ -28,8 +28,8 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
     <link rel="up" title="Additional features" href="features.html" />
-    <link rel="next" title="CGXP" href="cgxp.html" />
-    <link rel="prev" title="Interfaces" href="interface.html" />
+    <link rel="next" title="Sub domain" href="subdomain.html" />
+    <link rel="prev" title="Additional features" href="features.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -59,9 +59,8 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 <p>The style sheet file for all the project is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;package&gt;.less</span></code>.</p>
 <p>The style sheet file for one interface is <code class="docutils literal"><span class="pre">&lt;package&gt;/static-ngeo/less/&lt;interface&gt;.less</span></code>.</p>
 </div>
-</div>
 <div class="section" id="html-file">
-<h1>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h1>
+<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
 <p>In this file you can add some blocks like:</p>
 <div class="code html highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;login&quot;</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;slide&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">header</span><span class="o">-</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Login&quot;</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="n">gmf</span><span class="o">-</span><span class="n">authentication</span><span class="o">&gt;</span>
@@ -93,7 +92,7 @@ in the sections <code class="docutils literal"><span class="pre">gmf/Directives<
 </div>
 </div>
 <div class="section" id="controller-js-file">
-<h1>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h1>
+<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
 <p>In the controler you have some lines like:</p>
 <div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="o">/**</span> <span class="nd">@suppress</span> <span class="p">{</span><span class="n">extraRequire</span><span class="p">}</span> <span class="o">*/</span>
 <span class="n">goog</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s1">&#39;gmf.authenticationDirective&#39;</span><span class="p">);</span>
@@ -120,12 +119,12 @@ backward compatible permalinks.</p>
 </div>
 </div>
 <div class="section" id="background-layers">
-<h1>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h1>
+<h2>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h2>
 <p>The background layers are configured in the database, with the layer group named
 <strong>background</strong> (by default).</p>
 </div>
 <div class="section" id="wmts-layers">
-<h1>WMTS Layers<a class="headerlink" href="#wmts-layers" title="Permalink to this headline">¶</a></h1>
+<h2>WMTS Layers<a class="headerlink" href="#wmts-layers" title="Permalink to this headline">¶</a></h2>
 <p>To make the WMTS queryable you should add those <code class="docutils literal"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal"><span class="pre">OGC</span> <span class="pre">server</span></code>,</li>
@@ -139,6 +138,70 @@ backward compatible permalinks.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">See also: <a class="reference internal" href="../administrator/administrate.html#administrator-administrate-metadata"><span class="std std-ref">Metadata</span></a>, <a class="reference internal" href="../administrator/administrate.html#administrator-administrate-ogc-server"><span class="std std-ref">OGC Server</span></a>.</p>
+</div>
+</div>
+<div class="section" id="add-a-new-interface">
+<span id="integrator-ngeo-add"></span><h2>Add a new interface<a class="headerlink" href="#add-a-new-interface" title="Permalink to this headline">¶</a></h2>
+<p>Be sure you have all the required files:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">mkdir demo/static-ngeo</span>
+<span class="prompt1">cp -r CONST_create_template/demo/static-ngeo/components demo/static-ngeo/</span>
+<span class="prompt1">cp -r CONST_create_template/demo/static-ngeo/images demo/static-ngeo/</span>
+<span class="prompt1">mkdir demo/static-ngeo/js</span>
+<span class="prompt1">cp CONST_create_template/demo/static-ngeo/js/&lt;package&gt;module.js demo/static-ngeo/js/</span>
+<span class="prompt1">mkdir demo/static-ngeo/less</span>
+<span class="prompt1">cp CONST_create_template/demo/static-ngeo/less/&lt;package&gt;.less demo/static-ngeo/less/</span>
+<span class="prompt1"><span class="c1"># Add all the new files to Git</span></span>
+<span class="prompt1">git add demo/static-ngeo</span>
+</pre><p>Get the default interface files, for the mobile:</p>
+<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/mobile.html &lt;package&gt;/templates/&lt;inferface&gt;.html</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/mobile.less &lt;package&gt;/templates/&lt;inferface&gt;.less</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/mobile.js &lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span>
+</pre><p>Get the default interface files, for the desktop:</p>
+<pre class="highlight"><span class="prompt1">cp CONST_create_template/&lt;package&gt;/templates/desktop.html &lt;package&gt;/templates/&lt;inferface&gt;.html</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/less/desktop.less &lt;package&gt;/templates/&lt;inferface&gt;.less</span>
+<span class="prompt1">cp CONST_create_template/&lt;package&gt;/static-ngeo/js/desktop.js &lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span>
+</pre><p>Add them to Git:</p>
+<pre class="highlight"><span class="prompt1">git add &lt;package&gt;/templates/&lt;inferface&gt;.html</span>
+<span class="prompt1">git add &lt;package&gt;/templates/&lt;inferface&gt;.less</span>
+<span class="prompt1">git add &lt;package&gt;/static-ngeo/js/&lt;inferface&gt;.js</span>
+</pre><p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The used method has the following API:</p>
+<p><code class="docutils literal"><span class="pre">add_interface(config,</span> <span class="pre">interface_name=None,</span> <span class="pre">interface_type=INTERFACE_TYPE_CGXP,</span> <span class="pre">**kwargs)</span></code>:</p>
+<p><code class="docutils literal"><span class="pre">config</span></code> is the application configuration object.</p>
+<p><code class="docutils literal"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal"><span class="pre">interface</span></code> table,
+also used to create the route path.</p>
+<p><code class="docutils literal"><span class="pre">interface_type</span></code> may be either <code class="docutils literal"><span class="pre">INTERFACE_TYPE_CGXP</span></code>, <code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
+<code class="docutils literal"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>.</p>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<p>The administration interface gives access to an <code class="docutils literal"><span class="pre">interface</span></code> table that lists the
+available interfaces (or pages) of the application.
+The default interfaces are <code class="docutils literal"><span class="pre">desktop</span></code> add <code class="docutils literal"><span class="pre">mobile</span></code>.</p>
+</div>
+<div class="section" id="checker">
+<h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
+<p>Enable the checker for the new interface.</p>
+<p>We suggest to add only the main checker in the <code class="docutils literal"><span class="pre">defaults</span></code> it&#8217;s what&#8217;s done by default.</p>
+<p>And in the <code class="docutils literal"><span class="pre">all</span></code> (<code class="docutils literal"><span class="pre">vars.checker.all</span></code>) check all the ngeo interface in standard and debug mode:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">phantomjs_routes</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span>
+  <span class="n">param</span><span class="p">:</span>
+    <span class="n">no_redirect</span><span class="p">:</span> <span class="n">true</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">interface</span><span class="o">&gt;</span>
+  <span class="n">param</span><span class="p">:</span>
+    <span class="n">no_redirect</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">debug</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>By default it&#8217;s done for the desktop and mobile interface.</p>
 </div>
 </div>
 
@@ -155,12 +218,15 @@ backward compatible permalinks.</p>
   <ul>
 <li><a class="reference internal" href="#">ngeo</a><ul>
 <li><a class="reference internal" href="#organisation">Organisation</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#html-file">HTML file</a></li>
 <li><a class="reference internal" href="#controller-js-file">Controller (js file)</a></li>
 <li><a class="reference internal" href="#background-layers">Background layers</a></li>
 <li><a class="reference internal" href="#wmts-layers">WMTS Layers</a></li>
+<li><a class="reference internal" href="#add-a-new-interface">Add a new interface</a></li>
+<li><a class="reference internal" href="#database">Database</a></li>
+<li><a class="reference internal" href="#checker">Checker</a></li>
+</ul>
+</li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
@@ -168,8 +234,8 @@ backward compatible permalinks.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="features.html">Additional features</a><ul>
-      <li>Previous: <a href="interface.html" title="previous chapter">Interfaces</a></li>
-      <li>Next: <a href="cgxp.html" title="next chapter">CGXP</a></li>
+      <li>Previous: <a href="features.html" title="previous chapter">Additional features</a></li>
+      <li>Next: <a href="subdomain.html" title="next chapter">Sub domain</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

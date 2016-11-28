@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Sub domain &#8212; c2cgeoportal  documentation</title>
+    <title>Legacy components &#8212; c2cgeoportal  documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -28,8 +28,8 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
     <link rel="up" title="Additional features" href="features.html" />
-    <link rel="next" title="Full-text search" href="fulltext_search.html" />
-    <link rel="prev" title="ngeo" href="ngeo.html" />
+    <link rel="next" title="CGXP" href="legacy_cgxp.html" />
+    <link rel="prev" title="PDF Reporting" href="pdfreport.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -45,23 +45,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="sub-domain">
-<span id="integrator-subdomain"></span><h1>Sub domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h1>
-<p>If you want to optimize the parallelization of static resource download you
-can use sub domain to do that you should define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-something like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The used sub domain for the static resources</span>
-<span class="n">subdommains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Those sub domain should obviously be define in the DNS and in the Apache
-vhost. If the application is served on deferent URL and you want to use
-the sub domain on only one of them you can define in the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>
-the following:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The URL template used to generate the sub domain URL</span>
-<span class="c1"># %(sub)s will be replaced by the sub domain value.</span>
-<span class="n">subdomain_url_template</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//%</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="n">s</span><span class="o">.</span><span class="p">{</span><span class="n">host</span><span class="p">}</span>
-</pre></div>
+  <div class="section" id="legacy-components">
+<span id="integrator-legacy"></span><h1>Legacy components<a class="headerlink" href="#legacy-components" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="legacy_cgxp.html">CGXP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legacy_print.html">Print version 2.x</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legacy_advanced.html">Advanced configuration examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legacy_querier.html">Query builder (Querier)</a></li>
+</ul>
 </div>
 </div>
 
@@ -79,8 +71,8 @@ the following:</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="features.html">Additional features</a><ul>
-      <li>Previous: <a href="ngeo.html" title="previous chapter">ngeo</a></li>
-      <li>Next: <a href="fulltext_search.html" title="next chapter">Full-text search</a></li>
+      <li>Previous: <a href="pdfreport.html" title="previous chapter">PDF Reporting</a></li>
+      <li>Next: <a href="legacy_cgxp.html" title="next chapter">CGXP</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -89,7 +81,7 @@ the following:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/subdomain.txt"
+      <li><a href="../_sources/integrator/legacy.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -115,7 +107,7 @@ the following:</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="../_sources/integrator/subdomain.txt"
+      <a href="../_sources/integrator/legacy.txt"
           rel="nofollow">Page source</a>
     </div>
 

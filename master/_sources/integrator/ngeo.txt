@@ -23,7 +23,7 @@ The style sheet file for all the project is ``<package>/static-ngeo/less/<packag
 The style sheet file for one interface is ``<package>/static-ngeo/less/<interface>.less``.
 
 HTML file
-=========
+---------
 
 In this file you can add some blocks like:
 
@@ -63,7 +63,7 @@ At the end of the file you find something like:
 
 
 Controller (js file)
-====================
+--------------------
 
 In the controler you have some lines like:
 
@@ -95,13 +95,13 @@ The map configuration will be here:
    backward compatible permalinks.
 
 Background layers
-=================
+-----------------
 
 The background layers are configured in the database, with the layer group named
 **background** (by default).
 
 WMTS Layers
-===========
+-----------
 
 To make the WMTS queryable you should add those ``Metadata``:
 
@@ -116,3 +116,93 @@ To print the layers in the high quality you you should add those ``Metadata``:
 .. note::
 
    See also: :ref:`administrator_administrate_metadata`, :ref:`administrator_administrate_ogc_server`.
+
+.. _integrator_ngeo_add:
+
+Add a new interface
+-------------------
+
+Be sure you have all the required files:
+
+.. prompt:: bash
+
+   mkdir demo/static-ngeo
+   cp -r CONST_create_template/demo/static-ngeo/components demo/static-ngeo/
+   cp -r CONST_create_template/demo/static-ngeo/images demo/static-ngeo/
+   mkdir demo/static-ngeo/js
+   cp CONST_create_template/demo/static-ngeo/js/<package>module.js demo/static-ngeo/js/
+   mkdir demo/static-ngeo/less
+   cp CONST_create_template/demo/static-ngeo/less/<package>.less demo/static-ngeo/less/
+   # Add all the new files to Git
+   git add demo/static-ngeo
+
+Get the default interface files, for the mobile:
+
+.. prompt:: bash
+
+  cp CONST_create_template/<package>/templates/mobile.html <package>/templates/<inferface>.html
+  cp CONST_create_template/<package>/static-ngeo/less/mobile.less <package>/templates/<inferface>.less
+  cp CONST_create_template/<package>/static-ngeo/js/mobile.js <package>/static-ngeo/js/<inferface>.js
+
+Get the default interface files, for the desktop:
+
+.. prompt:: bash
+
+  cp CONST_create_template/<package>/templates/desktop.html <package>/templates/<inferface>.html
+  cp CONST_create_template/<package>/static-ngeo/less/desktop.less <package>/templates/<inferface>.less
+  cp CONST_create_template/<package>/static-ngeo/js/desktop.js <package>/static-ngeo/js/<inferface>.js
+
+Add them to Git:
+
+.. prompt:: bash
+
+  git add <package>/templates/<inferface>.html
+  git add <package>/templates/<inferface>.less
+  git add <package>/static-ngeo/js/<inferface>.js
+
+Update the interface in your ``<package>/__init__.py`` file:
+
+.. code:: python
+
+  add_interface(config, "<interface>", INTERFACE_TYPE_NGEO)
+
+The used method has the following API:
+
+``add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs)``:
+
+``config`` is the application configuration object.
+
+``interface_name`` is the name specified in the ``interface`` table,
+also used to create the route path.
+
+``interface_type`` may be either ``INTERFACE_TYPE_CGXP``, ``INTERFACE_TYPE_NGEO`` or
+``INTERFACE_TYPE_NGEO_CATALOGUE``. Constants available in ``c2cgeoportal``.
+
+Database
+--------
+
+The administration interface gives access to an ``interface`` table that lists the
+available interfaces (or pages) of the application.
+The default interfaces are ``desktop`` add ``mobile``.
+
+Checker
+-------
+
+Enable the checker for the new interface.
+
+We suggest to add only the main checker in the ``defaults`` it's what's done by default.
+
+And in the ``all`` (``vars.checker.all``) check all the ngeo interface in standard and debug mode:
+
+.. code:: yaml
+
+   phantomjs_routes:
+   - name: <interface>
+     param:
+       no_redirect: true
+   - name: <interface>
+     param:
+       no_redirect: true
+       debug: true
+
+By default it's done for the desktop and mobile interface.

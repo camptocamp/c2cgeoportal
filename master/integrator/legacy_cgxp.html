@@ -27,9 +27,9 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
-    <link rel="up" title="Additional features" href="features.html" />
-    <link rel="next" title="Sub domain" href="subdomain.html" />
-    <link rel="prev" title="ngeo" href="ngeo.html" />
+    <link rel="up" title="Legacy components" href="legacy.html" />
+    <link rel="next" title="Print version 2.x" href="legacy_print.html" />
+    <link rel="prev" title="Legacy components" href="legacy.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -47,6 +47,7 @@
             
   <div class="section" id="cgxp">
 <span id="integrator-cgxp"></span><h1>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h1>
+<p>It still possible to have CGXP interface(s) in parallel of the ngeo interface(s).</p>
 <div class="section" id="organisation">
 <h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
 <p>The main page where we can redefine the header
@@ -58,6 +59,89 @@ is define in the file: <code class="docutils literal"><span class="pre">&lt;pack
 <p>The style sheet file is: <code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code></p>
 <p>And finally the image should be placed in the folder:
 <code class="docutils literal"><span class="pre">&lt;package&gt;/static/images/</span></code></p>
+</div>
+<div class="section" id="use-the-cgxp-interface">
+<h2>Use the CGXP interface<a class="headerlink" href="#use-the-cgxp-interface" title="Permalink to this headline">¶</a></h2>
+<p>The special application named <code class="docutils literal"><span class="pre">index.html</span></code>, <code class="docutils literal"><span class="pre">viewer.js</span></code> is no more possible then you should do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* Do the following renames:
+
+  .. prompt:: bash
+
+     git mv &lt;package&gt;/templates/index.html &lt;package&gt;/templates/desktop.html
+     git mv &lt;package&gt;/templates/viewer.js &lt;package&gt;/templates/desktop.js
+
+* In the ``&lt;package&gt;/templates/desktop.html`` file do the following replacement:
+
+    - &lt;script type=&quot;text/javascript&quot; src=&quot;${request.static_url(&#39;&lt;package&gt;:static/build/app.js&#39;)}&quot;&gt;&lt;/script&gt;
+    + &lt;script type=&quot;text/javascript&quot; src=&quot;${request.static_url(&#39;&lt;package&gt;:static/build/desktop.js&#39;)}&quot;&gt;&lt;/script&gt;
+    ...
+    - &lt;script type=&quot;text/javascript&quot; src=&quot;${request.route_url(&#39;viewer&#39;, _query=extra_params)}&quot;&gt;&lt;/script&gt;
+    + &lt;script type=&quot;text/javascript&quot; src=&quot;${request.route_url(&#39;desktop.js&#39;, _query=extra_params)}&quot;&gt;&lt;/script&gt;
+
+* In the ``jsbuild/app.cfg.mako`` file do the following replacement:
+
+    - [app.js]
+    + [desktop.js]
+</pre></div>
+</div>
+<p>To configure the build of the interface you should use the <code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code> (and the <code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>)
+in your project makefile, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="p">::</span> <span class="n">make</span>
+
+   <span class="n">CGXP_INTERFACES</span> <span class="o">=</span> <span class="n">desktop</span> <span class="n">edit</span> <span class="n">routing</span>
+   <span class="n">NGEO_INTERFACES</span> <span class="o">=</span> <span class="n">mobile</span>
+</pre></div>
+</div>
+<p>Enable the CGXP check, add in your project vars file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="p">::</span><span class="n">yaml</span><span class="p">::</span>
+
+   <span class="nb">vars</span><span class="p">:</span>
+       <span class="o">...</span>
+       <span class="n">checker</span><span class="p">:</span>
+          <span class="o">...</span>
+          <span class="n">defaults</span><span class="p">:</span>
+              <span class="o">...</span>
+              <span class="n">lang_files</span><span class="p">:</span> <span class="p">[</span><span class="n">cgxp</span><span class="p">]</span>
+   <span class="n">update_paths</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">lang_files</span>
+</pre></div>
+</div>
+<p>Do not have <code class="docutils literal"><span class="pre">check_collector.disabled</span></code> in the <code class="docutils literal"><span class="pre">update_paths</span></code> (and do not readd it during
+the next upgrade steps).</p>
+<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_CGXP</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The OGC proxy is deprecated because with modern browser it is not required to have it.</p>
+<p>Then you should remove it from the CGXP <code class="docutils literal"><span class="pre">js</span></code> interface files (<code class="docutils literal"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.js</span></code>):</p>
+<div class="code diff highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">externalWFSTypes</span></code> do not exist anymore than you should remove the following line
+from the CGXP <code class="docutils literal"><span class="pre">js</span></code> interface files (<code class="docutils literal"><span class="pre">&lt;&lt;package&gt;/templates/&lt;interface&gt;.js</span></code>)</p>
+<div class="code diff highlight-default"><div class="highlight"><pre><span></span>- externalWFSTypes: ${externalWFSTypes | n},
+</pre></div>
+</div>
+</div>
+<div class="section" id="back-to-the-ngeo-interface">
+<h2>Back to the ngeo interface<a class="headerlink" href="#back-to-the-ngeo-interface" title="Permalink to this headline">¶</a></h2>
+<p>Remove the CGXP interface:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git rm &lt;package&gt;/templates/&lt;interface&gt;.html</span>
+<span class="prompt1">git rm &lt;package&gt;/templates/&lt;interface&gt;.js</span>
+</pre><p>Remove the related section in the <code class="docutils literal"><span class="pre">jsbuild/app.cfg.mako</span></code> file.</p>
+<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file
+by removing the following line:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">[,</span> <span class="n">INTERFACE_TYPE_CGXP</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To add an ngeo interface see <a class="reference internal" href="ngeo.html#integrator-ngeo-add"><span class="std std-ref">Add a new interface</span></a>.</p>
+<p>If you remove all the cgxp interface, remove the <code class="docutils literal"><span class="pre">vars.checker.defaults.lang_files</span></code> from your
+project vars file, and the <code class="docutils literal"><span class="pre">checker.defaults.lang_files</span></code> from your update_paths.</p>
 </div>
 <div class="section" id="viewer-js">
 <h2>Viewer.js<a class="headerlink" href="#viewer-js" title="Permalink to this headline">¶</a></h2>
@@ -216,6 +300,8 @@ displayed or hidden at the same time.</p>
   <ul>
 <li><a class="reference internal" href="#">CGXP</a><ul>
 <li><a class="reference internal" href="#organisation">Organisation</a></li>
+<li><a class="reference internal" href="#use-the-cgxp-interface">Use the CGXP interface</a></li>
+<li><a class="reference internal" href="#back-to-the-ngeo-interface">Back to the ngeo interface</a></li>
 <li><a class="reference internal" href="#viewer-js">Viewer.js</a><ul>
 <li><a class="reference internal" href="#portalconfig"><code class="docutils literal"><span class="pre">portalConfig</span></code></a></li>
 <li><a class="reference internal" href="#tools"><code class="docutils literal"><span class="pre">tools</span></code></a></li>
@@ -235,8 +321,10 @@ displayed or hidden at the same time.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="features.html">Additional features</a><ul>
-      <li>Previous: <a href="ngeo.html" title="previous chapter">ngeo</a></li>
-      <li>Next: <a href="subdomain.html" title="next chapter">Sub domain</a></li>
+  <li><a href="legacy.html">Legacy components</a><ul>
+      <li>Previous: <a href="legacy.html" title="previous chapter">Legacy components</a></li>
+      <li>Next: <a href="legacy_print.html" title="next chapter">Print version 2.x</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -245,7 +333,7 @@ displayed or hidden at the same time.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/integrator/cgxp.txt"
+      <li><a href="../_sources/integrator/legacy_cgxp.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -271,7 +359,7 @@ displayed or hidden at the same time.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="../_sources/integrator/cgxp.txt"
+      <a href="../_sources/integrator/legacy_cgxp.txt"
           rel="nofollow">Page source</a>
     </div>
 

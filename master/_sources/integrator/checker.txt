@@ -26,18 +26,98 @@ The return code are:
 Checker
 -------
 
-Available services:
+The checker use the following configuration structure:
 
-* ``checker_routes``: Check some routes, configured in ``routes`` aa array of objects
-  with ``name`` and ``params``, ``routes_disable`` can be use to disable only one rule.
-* ``checker_pdf3``: Check the print (try to print a page).
-* ``checker_fts``: Check the FullTextSearch.
-* ``checker_theme_errors``: Check the that the theme don't have errors on all the interfaces.
-* ``checker_lang_files``: Check that all the language files are present,
-  use the configuration global ``available_locale_names``, and the checker configuration
-  ``lang_files``, an array of string that must be in ``[cgxp, cgxp-api, ngeo]``.
-* ``checker_phantomjs``: Check with phantomjs that the pages load correctly without errors,
-  use the ``phantomjs_routes`` configuration as an array of route name to check.
+.. code:: yaml
+
+   vars:
+       # Global configuration
+       ...
+       checker:
+           default:
+               # Default checkers configuration
+           <type>: # type of checker get from the query string
+               # Checker configuration
+
+.. note::
+
+    If some of the checked services require an authenticated user, the
+    ``forward_headers`` allows to forward ``Cookie`` or ``Authorisation`` headers
+    in the underlying requests.
+
+    .. code:: yaml
+
+        checker:
+            forward_headers: ['Cookie', 'Authorisation']
+
+``checker_pdf``
+~~~~~~~~~~~~~~~
+
+Legacy, check the print version 2.x (try to print a page).
+
+Use the following configuration items::
+
+  * ``print_template``
+  * ``print_center_lon``
+  * ``print_center_lat``
+  * ``print_scale``
+
+``checker_pdf3``
+~~~~~~~~~~~~~~~~
+
+Check the print version 3.x (try to print a page).
+
+Use as spec the ``print_spec`` from configuration.
+
+``checker_fts``
+~~~~~~~~~~~~~~~
+
+Check that the FullText-search service return an element.
+
+Use the ``fulltextsearch`` from configuration as text to search.
+
+``checker_theme_errors``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check that the theme has no error for all interface present in the database.
+
+It use the ``themes`` configuration:
+
+.. code:: yaml
+
+   themes:
+       defaults:
+           params:
+               # Dictionary that represent the query string
+       <interface>:
+           params:
+               # Dictionary that represent the query string
+
+``checker_lang_files``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Check that all the language files are present,
+use the global configuration ``available_locale_names``, and the checker configuration
+``lang_files``, an array of string that must be in ``[cgxp, cgxp-api, ngeo]``.
+
+``checker_routes``
+~~~~~~~~~~~~~~~~~~
+
+Check some routes, configured in ``routes`` as array of objects with::
+
+  * ``name`` witch is the route name.
+  * ``params`` the used query string as a dictionary.
+
+In the configuration we can also fill the ``routes_disable`` to disable some routes.
+
+``checker_phantomjs``
+~~~~~~~~~~~~~~~~~~~~~
+
+Check with phantomjs that the pages load correctly without errors,
+use the ``phantomjs_routes`` configuration as an array of route name to check::
+
+  * ``name`` witch is the route name.
+  * ``params`` the used query string as a dictionary.
 
 Configuration in ``vars_<project>.yaml``:
 
@@ -49,21 +129,27 @@ Configuration in ``vars_<project>.yaml``:
         <a type>:
             <overide the default config for a specific type>
 
-
-If some of the checked services require an authenticated user, the
-``forward_headers`` permit to forward ``Cookie`` or ``Authorisation`` headers
-in the underlying requests.
-
-.. code:: yaml
-
-    checker:
-        forward_headers: ['Cookie', 'Authorisation']
-
 Check collector
 ---------------
 
 Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.
+
+The checker collector use the following configuration structure:
+
+.. code:: yaml
+
+   vars:
+       # Global configuration
+       ...
+       check_collector:
+           disable: # List of checker name that will be disable
+           check_type:
+               default:
+                   # The checker available for all type
+               <type>: # type of checker get from the query string
+               - name: # The checker name (see above)
+                 display: # The text to display in the result page
 
 To disable a predefined check do this:
 
