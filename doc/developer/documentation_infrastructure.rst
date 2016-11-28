@@ -37,5 +37,5 @@ To manually update the online doc you can log onto ``docs.camptocamp.net`` as
 .. note::
 
     The initial ``git clone`` of cgxp, and the cron configuration are managed
-    by puppet. Contrary to c2cgeoportal there's no need for a GitHub deploy
+    by puppet. Contrary to c2cgeoportal there is no need for a GitHub deploy
     key, as the CGXP repository is public.

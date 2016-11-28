@@ -275,7 +275,7 @@ class C2cTool:
         if os.path.split(os.path.realpath("."))[1] != self.project["project_folder"]:
             print("")
             print(self.color_bar)
-            print("Your project isn't in the right folder!")
+            print("Your project is not in the right folder!")
             print("It should be in folder '{0!s}' instead of folder '{1!s}'.".format(
                 self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
             ))
@@ -330,7 +330,7 @@ class C2cTool:
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
             print(self.color_bar)
             print("")
-            print(colorize("The pull isn't fast forward.", RED))
+            print(colorize("The pull is not fast forward.", RED))
             print("")
             self.print_step(1, intro="Please solve the rebase and run the step 1 again:")
             exit(1)

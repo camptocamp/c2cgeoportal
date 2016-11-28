@@ -343,7 +343,7 @@ class Checker:  # pragma: no cover
                 else:
                     self.set_status(500, "Unknown lang_files")
                     return self.make_response((
-                        "Your language type value '%s' isn't valid, "
+                        "Your language type value '%s' is not valid, "
                         "available values [cgxp, cgxp-api, ngeo]" % (
                             _type
                         )

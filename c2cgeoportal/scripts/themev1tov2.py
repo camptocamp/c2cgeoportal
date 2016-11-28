@@ -57,19 +57,19 @@ def main():
         "--no-layers",
         dest="layers",
         action="store_false",
-        help="don't import the layers"
+        help="do not import the layers"
     )
     parser.add_argument(
         "--no-groups",
         dest="groups",
         action="store_false",
-        help="don't import the groups"
+        help="do not import the groups"
     )
     parser.add_argument(
         "--no-themes",
         dest="themes",
         action="store_false",
-        help="don't import the themes"
+        help="do not import the themes"
     )
     options = parser.parse_args()
 

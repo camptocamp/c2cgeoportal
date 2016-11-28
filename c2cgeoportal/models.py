@@ -49,7 +49,7 @@ from geoalchemy2 import Geometry, func
 from geoalchemy2.shape import to_shape
 try:
     from formalchemy import Column
-# Fallback if formalchemy don't exists, used by QGIS server plugin
+# Fallback if formalchemy do not exists, used by QGIS server plugin
 except:  # pragma: no cover
     from sqlalchemy import Column as Col
 
@@ -59,7 +59,7 @@ except:  # pragma: no cover
 
 try:
     from pyramid.security import Allow, ALL_PERMISSIONS, DENY_ALL
-# Fallback if pyramid don't exists, used by QGIS server plugin
+# Fallback if pyramid do not exists, used by QGIS server plugin
 except:  # pragma: no cover
     Allow = ALL_PERMISSIONS = DENY_ALL = None
 
@@ -67,7 +67,7 @@ except:  # pragma: no cover
 try:
     from pyramid.i18n import TranslationStringFactory
     _ = TranslationStringFactory("c2cgeoportal")
-# Fallback if pyramid don't exists, used by QGIS server plugin
+# Fallback if pyramid do not exists, used by QGIS server plugin
 except:  # pragma: no cover
     def _(s):
         return s
@@ -386,7 +386,7 @@ class TreeItem(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, label=_(u"Name"), nullable=False)
-    metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # shouldn't be used in V2
+    metadata_url = Column(Unicode, label=_(u"Metadata URL"))  # should not be used in V2
     description = Column(Unicode, label=_(u"Description"))
 
     @property
@@ -526,7 +526,7 @@ class LayerGroup(TreeGroup):
     is_expanded = Column(Boolean, label=_(u"Expanded"))  # shouldn"t be used in V3
     is_internal_wms = Column(Boolean, label=_(u"Internal WMS"))
     # children have radio button instance of check box
-    is_base_layer = Column(Boolean, label=_(u"Group of base layers"))  # Shouldn't be used in V3
+    is_base_layer = Column(Boolean, label=_(u"Group of base layers"))  # Should not be used in V3
 
     def __init__(
             self, name=u"", is_expanded=False,

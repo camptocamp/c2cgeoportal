@@ -145,7 +145,7 @@ geoformalchemy.init_map = function (
         /**
          * Creates an array containing all features of
          * the vector layer. OpenLayers can not create
-         * WKT string from a GeometryCollection, so that's
+         * WKT string from a GeometryCollection, so that is
          * why we are constructing an array of Geometries.
          */
         var get_feature_collection = function () {

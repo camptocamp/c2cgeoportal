@@ -55,7 +55,7 @@ def echo(request):
 
     The response is JSON-wrapped and base64-encoded to ensure that there are no
     special HTML characters or charset problems and so that braindead ext
-    doesn't barf on it.
+    does not barf on it.
 
     See:
     http://docs.sencha.com/ext-js/3-4/#!/api/Ext.form.BasicForm-cfg-fileUpload

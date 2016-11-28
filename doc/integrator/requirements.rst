@@ -7,7 +7,7 @@ To install a GeoMapFish application you need to have the following
 components installed on your system:
 
 * **Git** (preferably to other revision control systems)
-* **Python** 2.7 (2.5 or 3.x don't work, 2.6 should work but is not supported) with development files (``python-dev``)
+* **Python** 2.7 (2.5 or 3.x do not work, 2.6 should work but is not supported) with development files (``python-dev``)
 * **VirtualEnv** >= 1.7
 * Oracle **Java** SE Development Kit 6 or 7
 * **Tomcat** >= 6.0

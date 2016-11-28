@@ -184,7 +184,7 @@ class TestThemesTimeView(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', can't be two times in the same block \(first level group\).")
+        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 

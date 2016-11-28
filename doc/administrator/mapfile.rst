@@ -150,7 +150,7 @@ example::
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
   ``the_geom`` then ``gml_the_geom_type`` should be used.
   The possible values are ``point``, ``multipoint``, ``line``, ``multiline``,
-  ``polygon``, ``multipolygon``, if you don't set the right type
+  ``polygon``, ``multipolygon``, if you do not set the right type
   for multi geometries only the first will be visible on the map.
   See also `gml_[geometry name]_type
   <http://mapserver.org/ogc/wms_server.html#index-71>`_.
@@ -197,14 +197,14 @@ replaced as appropriate. ``<table>`` is the name of the PostGIS table including
 the geographic data for this layer. ``<the_geom>`` is the name of the table's
 geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
-what's configured in the admin interface for the layer.
+what is configured in the admin interface for the layer.
 
 .. note:: The DATA example above is developed on several lines to make it
     easily readable in this documentation. However please note that Mapserver
     requires that this directive is contained on a single line.
 
 .. warning:: In some cases you can have geometries that overlap the restriction
-    area. Theses features won't be displayed as they are not in the area (ie not
+    area. Theses features will not be displayed as they are not in the area (ie not
     *contained*). *st_intersects* or other operator could be used instead of the
     *st_contains* operator.
 
@@ -235,7 +235,7 @@ It is defined as follows:
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If we don't need to restrict on an area we can use the following
+If we do not need to restrict on an area we can use the following
 ``DATA`` property of the ``LAYER``::
 
     DATA "the_geom FROM (
@@ -250,7 +250,7 @@ If we don't need to restrict on an area we can use the following
         )
     ) AS foo USING UNIQUE id USING srid=21781"
 
-Then you don't need to define an area in the admin interface.
+Then you do not need to define an area in the admin interface.
 
 The ``${mapfile_data_noarea_subselect}`` is defined as follows::
 
@@ -379,7 +379,7 @@ Mapserver allows different forms of legends.
 
   You can set the ``legend rule`` in the admin interface to ``%20``, if you want to show the legend icon in the layer tree
 
-- No legend (don't set any ``NAME`` in the ``CLASS``)::
+- No legend (do not set any ``NAME`` in the ``CLASS``)::
 
     CLASS
         STYLE

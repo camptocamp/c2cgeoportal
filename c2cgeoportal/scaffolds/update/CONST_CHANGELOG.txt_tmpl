@@ -5,7 +5,7 @@ Version 2.1.0
 =============
 
 We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
-but it's not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+but it is not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
 
 To continue to use the CGXP interface(s) you should see this documentation:
 https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy.html
@@ -173,7 +173,7 @@ And continue on the step 4.
 Version 2.0.0
 =============
 
-This changelog considers that you don't currently use an ngeo interface and you
+This changelog considers that you do not currently use an ngeo interface and you
 replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:
@@ -263,7 +263,7 @@ replace your sencha touch interface by an ngeo interface.
 
 10. Add a Layer group named 'background' with the background layers.
 
-11. It's not allowed anymore to have layers directly in a theme.
+11. It is not allowed anymore to have layers directly in a theme.
 
 12. Do the following change in the `{{package}}/templates/index.html` file:
 
@@ -368,7 +368,7 @@ Version 1.6.6
 1. Now the files `apache/mapcache.xml` and `apache/tiles.conf` are generated automatically,
    then you can remove your custom build rules.
 
-   If you don't use tilecloud-chain and you don't have a `tilegeneration/config.yaml` configuration
+   If you do not use tilecloud-chain and you do not have a `tilegeneration/config.yaml` configuration
    file, you must disable it by setting the following parameter in your Makefile:
 
    `TILECLOUD_CHAIN ?= FALSE`

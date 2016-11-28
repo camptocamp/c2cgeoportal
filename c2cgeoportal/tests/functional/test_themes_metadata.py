@@ -152,7 +152,7 @@ class TestThemesViewMetadata(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', can't be two times in the same block \(first level group\).")
+        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).")
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 
@@ -204,19 +204,19 @@ class TestThemesViewMetadata(TestCase):
         self.assertEquals(self._get_filtered_errors(themes), set([
             "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
             "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
-            "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' shouldn't have any time",
-            "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' shouldn't have any date",
+            "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
+            "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
             "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format",
-            "The attribute 'url11'='https:///static/icon.png' isn't a valid URL.",
-            "The attribute 'url12'='static://test' can't have an empty path.",
-            "The attribute 'url13'='static://test/' can't have an empty path.",
-            "The attribute 'url14'='config:///static/icon.png' can't have an empty netloc.",
-            "The server 'unknown_server' isn't found in the config",
-            "The attribute 'url16'='https://' isn't a valid URL.",
-            "The attribute 'url17'='https:///' isn't a valid URL.",
-            "The attribute 'url18'='https:///static' isn't a valid URL.",
-            "The attribute 'url19'='' isn't an URL.",
-            "The attribute 'url20'='/' isn't an URL.",
+            "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
+            "The attribute 'url12'='static://test' cannot have an empty path.",
+            "The attribute 'url13'='static://test/' cannot have an empty path.",
+            "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
+            "The server 'unknown_server' is not found in the config",
+            "The attribute 'url16'='https://' is not a valid URL.",
+            "The attribute 'url17'='https:///' is not a valid URL.",
+            "The attribute 'url18'='https:///static' is not a valid URL.",
+            "The attribute 'url19'='' is not an URL.",
+            "The attribute 'url20'='/' is not an URL.",
             "Unknown type 'unknown'.",
         ]))
         self.assertEquals(

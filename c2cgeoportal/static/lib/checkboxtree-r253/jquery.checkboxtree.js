@@ -170,7 +170,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Check ancestors on passed node
      *
-     * Don't use check() method because we won't trigger onCheck events
+     * Do not use check() method because we will not trigger onCheck events
      *
      * @private
      *
@@ -183,7 +183,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Check descendants on passed node
      *
-     * Don't use check() method because we won't trigger onCheck events
+     * Do not use check() method because we will not trigger onCheck events
      *
      * @private
      *
@@ -196,7 +196,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Check nodes that are neither ancestors or descendants of passed node
      *
-     * Don't use check() method because we won't trigger onCheck events
+     * Do not use check() method because we will not trigger onCheck events
      *
      * @private
      *
@@ -305,7 +305,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Uncheck ancestors of passed node
      *
-     * Don't use uncheck() method because we won't trigger onUncheck events
+     * Do not use uncheck() method because we will not trigger onUncheck events
      *
      * @private
      *
@@ -318,7 +318,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Uncheck descendants of passed node
      *
-     * Don't use uncheck() method because we won't trigger onUncheck events
+     * Do not use uncheck() method because we will not trigger onUncheck events
      *
      * @private
      *
@@ -331,7 +331,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Uncheck nodes that are neither ancestors or descendants of passed node
      *
-     * Don't use uncheck() method because we won't trigger onUncheck events
+     * Do not use uncheck() method because we will not trigger onUncheck events
      *
      * @private
      *
@@ -397,7 +397,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Check all tree elements
      *
-     * Don't use check() method so it won't trigger onCheck events
+     * Do not use check() method so it will not trigger onCheck events
      *
      * @public
      */
@@ -518,7 +518,7 @@ $.widget("daredevel.checkboxTree", {
     /**
      * Uncheck all tree elements
      *
-     * Don't use uncheck() method so it won't trigger onUncheck events
+     * Do not use uncheck() method so it will not trigger onUncheck events
      *
      * @public
      */

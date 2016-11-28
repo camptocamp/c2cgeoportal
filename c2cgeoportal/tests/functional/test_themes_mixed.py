@@ -177,7 +177,7 @@ class TestThemesView(TestCase):
             e for e in errors
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
         ]
-        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', can't be two times in the same block (first level group).")
+        regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block (first level group).")
         errors = [e for e in errors if regex.match(e)]
         return set(errors)
 

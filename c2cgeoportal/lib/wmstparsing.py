@@ -243,7 +243,7 @@ def _parse_default_values(default_values):
     Parse the 'default' value from OWSLib's defaulttimeposition
     and return a maximum of two dates. default value must be a
     slash separated String.
-    return None on the seconde value if it doesn't exist.
+    return None on the seconde value if it does not exist.
     """
     if default_values is None:  # pragma: no cover
         return None, None

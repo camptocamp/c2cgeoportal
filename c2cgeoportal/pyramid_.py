@@ -158,7 +158,7 @@ ngeo_static_init = False
 
 
 def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # pragma: no cover
-    # Cannot be at the header to don't load the model too early
+    # Cannot be at the header to do not load the model too early
     from c2cgeoportal.views.entry import Entry
 
     def add_interface(f):
@@ -655,7 +655,7 @@ def includeme(config):
         request_method="GET",
         pregenerator=C2CPregenerator(),
     )
-    # there's no view corresponding to that route, it is to be used from
+    # there is no view corresponding to that route, it is to be used from
     # mako templates to get the root of the "layers" web service
     config.add_route("layers_root", "/layers/", request_method="HEAD")
 
@@ -739,4 +739,4 @@ def _log_versions(settings):
                         package, project_info["git_tag"], project_info["git_hash"][0:8],
                         c2c_info["git_tag"], c2c_info["git_hash"][0:8])
         except:  # pragma: nocover
-            pass  # In some cases, we don't have the version.py file
+            pass  # In some cases, we do not have the version.py file

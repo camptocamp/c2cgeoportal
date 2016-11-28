@@ -42,7 +42,7 @@ push commits by just using ``git push``.
 
 The "origin" remote can either represent the main repository (that in the
 "camptocamp" organization) or your own fork. Creating branches in the main
-repository can ease collaboration between developers, but isn't required.
+repository can ease collaboration between developers, but is not required.
 
 Sync up a topic branch from master
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
