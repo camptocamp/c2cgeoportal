@@ -90,14 +90,14 @@ def get_url2(name, url, request, errors):
             # Relative URL like: /dummy/static/url or dummy/static/url
             return urlparse.urlunsplit(url_split)
         errors.add(
-            "{}='{}' isn't an URL."
+            "{0}='{1}' isn't an URL."
             .format(name, url)
         )
         return None
     elif url_split.scheme in ("http", "https"):
         if url_split.netloc == "":
             errors.add(
-                "{}='{}' isn't a valid URL."
+                "{0}='{1}' isn't a valid URL."
                 .format(name, url)
             )
             return None
@@ -105,36 +105,36 @@ def get_url2(name, url, request, errors):
     elif url_split.scheme == "static":
         if url_split.path in ("", "/"):
             errors.add(
-                "{}='{}' can't have an empty path."
+                "{0}='{1}' can't have an empty path."
                 .format(name, url)
             )
             return None
         proj = url_split.netloc
         package = request.registry.settings["package"]
         if proj == "":
-            proj = "{}:static".format(package)
+            proj = "{0}:static".format(package)
         elif ":" not in proj:
-            proj = "{}:{}".format(package, proj)
+            proj = "{0}:{1}".format(package, proj)
         return request.static_url(
-            "{}{}".format(proj, url_split.path)
+            "{0}{1}".format(proj, url_split.path)
         )
     elif url_split.scheme == "config":
         if url_split.netloc == "":
             errors.add(
-                "{}='{}' can't have an empty netloc."
+                "{0}='{1}' can't have an empty netloc."
                 .format(name, url)
             )
             return None
         server = request.registry.settings.get("servers", {}).get(url_split.netloc)
         if server is None:
             errors.add(
-                "The server '{}' isn't found in the config".format(url_split.netloc)
+                "The server '{0}' isn't found in the config".format(url_split.netloc)
             )
             return None
         if server[-1] != "/":
             server += "/"
         url = urlparse.urljoin(server, url_split.path[1:])
-        return url if len(url_split.query) == 0 else u"{}?{}".format(
+        return url if len(url_split.query) == 0 else u"{0}?{1}".format(
             url, url_split.query,
         )
 
@@ -171,7 +171,7 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.time() != datetime.time(0, 0, 0):
-                errors.add("The date attribute '{}'='{}' shouldn't have any time".format(
+                errors.add("The date attribute '{0}'='{1}' shouldn't have any time".format(
                     name, value,
                 ))
             else:
@@ -183,7 +183,7 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.date() != datetime.date(1, 1, 1):
-                errors.add("The time attribute '{}'='{}' shouldn't have any date".format(
+                errors.add("The time attribute '{0}'='{1}' shouldn't have any date".format(
                     name, value,
                 ))
             else:
@@ -198,19 +198,19 @@ def get_typed(name, value, types, request, errors):
                 date, "%Y-%m-%dT%H:%M:%S"
             )
         elif type_["type"] == "url":
-            return get_url2("The attribute '{}'".format(name), value, request, errors)
+            return get_url2("The attribute '{0}'".format(name), value, request, errors)
         elif type_["type"] == "json":
             try:
                 return json.loads(value)
             except Exception as e:
-                errors.append("The attribute '{}'='{}' has an error: {}".format(
+                errors.append("The attribute '{0}'='{1}' has an error: {2}".format(
                     name, value, str(e),
                 ))
         else:
-            errors.add("Unknown type '{}'.".format(type_["type"]))
+            errors.add("Unknown type '{0}'.".format(type_["type"]))
     except Exception as e:
         errors.add(
-            "Unable to parse the attribute '{}'='{}' with the type '{}', error:\n{}"
+            "Unable to parse the attribute '{0}'='{1}' with the type '{2}', error:\n{3}"
             .format(
                 name, value, type_.get("type", "string"), str(e)
             )

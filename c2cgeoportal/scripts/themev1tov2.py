@@ -143,9 +143,9 @@ def ogc_server(session):
             is_single_tile = False
         if url is None:
             url = "config://internal/mapserv"
-            name = u"source for {}".format(image_type)
+            name = u"source for {0}".format(image_type)
         else:
-            name = u"source for {} {}".format(url, image_type)
+            name = u"source for {0} {1}".format(url, image_type)
         if is_single_tile:
             name += u" with single_tile"
         identifier = (url, image_type, is_single_tile)

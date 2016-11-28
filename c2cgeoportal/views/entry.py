@@ -84,11 +84,11 @@ class DimensionInformation:
         dimensions = {}
         for dimension in layer.dimensions:
             if dimension.value is not None and not self.URL_PART_RE.match(dimension.value):  # pragma: nocover
-                errors.add("The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
+                errors.add("The layer '{0}' has an unsupported dimension value '{1}' ('{2}').".format(
                     layer.name, dimension.value, dimension.name
                 ))
             elif dimension.name in dimensions:  # pragma: nocover
-                errors.add("The layer '{}' has a duplicated dimension name '{}'.".format(
+                errors.add("The layer '{0}' has a duplicated dimension name '{1}'.".format(
                     layer.name, dimension.name
                 ))
             else:
@@ -132,10 +132,10 @@ class Entry:
                     OGCServer.name == self.mapserver_settings["default_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
+                log.error("Unable to find the OGC server named: {0}.".format(
                     self.mapserver_settings["default_ogc_server"])
                 )
-                log.error("Available OGC servers: {}".format(
+                log.error("Available OGC servers: {0}".format(
                     ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
                 )
 
@@ -145,10 +145,10 @@ class Entry:
                     OGCServer.name == self.mapserver_settings["external_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
+                log.error("Unable to find the OGC server named: {0}.".format(
                     self.mapserver_settings["external_ogc_server"])
                 )
-                log.error("Available OGC servers: {}".format(
+                log.error("Available OGC servers: {0}".format(
                     ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
                 )
 
@@ -184,7 +184,7 @@ class Entry:
         ogc_server = (ogc_server or self.default_ogc_server)
         errors = set()
         url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
+            "The OGC server '{0}'".format(ogc_server.name),
             ogc_server.url, self.request, errors
         )
         if len(errors):  # pragma: no cover
@@ -364,9 +364,9 @@ class Entry:
             "metadata": self._get_metadatas(layer, errors),
         }
         if re.search("[/?#]", layer.name):  # pragma: no cover
-            errors.add("The layer has an unsupported name '{}'.".format(layer.name))
+            errors.add("The layer has an unsupported name '{0}'.".format(layer.name))
         if isinstance(layer, LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
-            errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
+            errors.add("The layer has an unsupported layers '{0}'.".format(layer.layer))
         if layer.geo_table:
             self._fill_editable(l, layer)
         if mixed:
@@ -417,7 +417,7 @@ class Entry:
             )
             errors |= wms_errors
             if layer.layer is None or layer.layer == "":
-                errors.add("The layer '{}' don't have any layers".format(layer.name))
+                errors.add("The layer '{0}' don't have any layers".format(layer.name))
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
@@ -498,7 +498,7 @@ class Entry:
                         l["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
-                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                    "The layer '{0}' ({1}) is not defined in WMS capabilities from '{2}'".format(
                         layer_name, layer.name, layer.ogc_server.name
                     )
                 )
@@ -604,7 +604,7 @@ class Entry:
             l["url"] = get_url(layer.url, self.request, errors=errors)
         else:
             l["url"] = get_url2(
-                "The WMTS layer '{}'".format(layer.name),
+                "The WMTS layer '{0}'".format(layer.name),
                 layer.url, self.request, errors=errors
             )
 
@@ -732,7 +732,7 @@ class Entry:
         errors = set()
 
         if re.search("[/?#]", group.name):  # pragma: no cover
-            errors.add("The group has an unsupported name '{}'.".format(group.name))
+            errors.add("The group has an unsupported name '{0}'.".format(group.name))
 
         # escape loop
         if depth > 30:
@@ -888,7 +888,7 @@ class Entry:
         export_themes = []
         for theme in themes.all():
             if re.search("[/?#]", theme.name):
-                errors.add("The theme has an unsupported name '{}'.".format(theme.name))
+                errors.add("The theme has an unsupported name '{0}'.".format(theme.name))
                 continue
 
             children, children_errors = self._get_children(
@@ -899,7 +899,7 @@ class Entry:
             # test if the theme is visible for the current user
             if len(children) > 0:
                 icon = get_url2(
-                    u"The Theme '{}'".format(theme.name),
+                    u"The Theme '{0}'".format(theme.name),
                     theme.icon, self.request, errors,
                 ) if theme.icon is not None and len(theme.icon) > 0 else self.request.static_url(
                     "c2cgeoportal:static/images/blank.gif"
@@ -972,7 +972,7 @@ class Entry:
         errors = set()
         ogc_server = self.default_ogc_server
         url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
+            "The OGC server '{0}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,
             self.request, errors=errors,
         )
@@ -988,7 +988,7 @@ class Entry:
         errors = set()
         ogc_server = self.external_ogc_server
         url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
+            "The OGC server '{0}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,
             self.request, errors=errors,
         )
@@ -1257,7 +1257,7 @@ class Entry:
                 "label": t,
             } for t in wfs_types]
         else:  # pragma: no cover
-            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
+            log.error("Error while getting the WFS params: \n{0}".format("\n".join(add_errors)))
             vars["wfs_types"] = []
 
         return vars
@@ -1369,11 +1369,11 @@ class Entry:
                     url_wfs = url
                 else:
                     url = get_url2(
-                        "The OGC server '{}'".format(ogc_server.name),
+                        "The OGC server '{0}'".format(ogc_server.name),
                         ogc_server.url, self.request, errors=all_errors
                     )
                     url_wfs = get_url2(
-                        "The OGC server (WFS) '{}'".format(ogc_server.name),
+                        "The OGC server (WFS) '{0}'".format(ogc_server.name),
                         ogc_server.url_wfs, self.request, errors=all_errors
                     ) if ogc_server.url_wfs is not None else url
                 result["ogcServers"][ogc_server.name] = {
@@ -1408,7 +1408,7 @@ class Entry:
 
         result["errors"] = list(all_errors)
         if len(all_errors) > 0:
-            log.info("Theme errors:\n{}".format("\n".join(all_errors)))
+            log.info("Theme errors:\n{0}".format("\n".join(all_errors)))
         return result
 
     def _get_group(self, group, role_id, interface, version):
@@ -1420,7 +1420,7 @@ class Entry:
                 role_id=role_id, version=version
             )
         except NoResultFound:  # pragma: no cover
-            return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
+            return None, set(["Unable to find the Group named: {0}, Available Groups: {1}".format(
                 group, ", ".join([i[0] for i in DBSession.query(LayerGroup.name).all()])
             )])
 

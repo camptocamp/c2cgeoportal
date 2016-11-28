@@ -66,7 +66,7 @@ class MapservProxy(Proxy):
     def _get_wms_url(self):
         errors = set()
         url = get_url2(
-            "The OGC server '{}'".format(self._get_ogc_server().name),
+            "The OGC server '{0}'".format(self._get_ogc_server().name),
             self._get_ogc_server().url, self.request, errors
         )
         if len(errors) > 0:  # pragma: no cover
@@ -77,7 +77,7 @@ class MapservProxy(Proxy):
         ogc_server = self._get_ogc_server()
         errors = set()
         url = get_url2(
-            "The OGC server (WFS) '{}'".format(self._get_ogc_server().name),
+            "The OGC server (WFS) '{0}'".format(self._get_ogc_server().name),
             ogc_server.url_wfs or ogc_server.url,
             self.request, errors
         )
