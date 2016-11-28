@@ -137,7 +137,16 @@ class TestLayers(TestCase):
             Column("name", types.Unicode),
             schema="public"
         )
+        if geom_type:
+            table1.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table1.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
         self._tables.append(table1)
+
         table2 = Table(
             tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
@@ -148,23 +157,20 @@ class TestLayers(TestCase):
             Column("last_update_date", types.DateTime),
             schema="public"
         )
-        self._tables.append(table2)
-
-        table2.drop(checkfirst=True)
-        table1.drop(checkfirst=True)
-        table1.create()
-        table2.create()
-
         if geom_type:
-            table1.append_column(
+            table2.append_column(
                 Column("geom", Geometry("POINT", srid=21781, management=management))
             )
         else:
-            table1.append_column(
+            table2.append_column(
                 Column("geom", Geometry(srid=21781, management=management))
             )
+        self._tables.append(table2)
+
+        table1.drop(checkfirst=True)
+        table2.drop(checkfirst=True)
         table1.create()
-        self._tables.append(table1)
+        table2.create()
 
         ins = table1.insert().values(name=u"c1é")
         c1_id = connection.execute(ins).inserted_primary_key[0]
@@ -445,10 +451,10 @@ class TestLayers(TestCase):
     def test_create_no_validation(self):
         from geojson.feature import FeatureCollection
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
         metadatas = [
-            UIMetadata("geometry_validation", "False")
+            Metadata("geometry_validation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username=u"__test_user")
@@ -560,10 +566,10 @@ class TestLayers(TestCase):
 
     def test_update_no_validation(self):
         from c2cgeoportal.views.layers import Layers
-        from c2cgeoportal.models import UIMetadata
+        from c2cgeoportal.models import Metadata
 
         metadatas = [
-            UIMetadata("geometry_validation", "False")
+            Metadata("geometry_validation", "False")
         ]
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username=u"__test_user")

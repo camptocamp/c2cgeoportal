@@ -224,7 +224,7 @@ NGEO_LIBS_JS_FILES += \
 	node_modules/angular-animate/angular-animate.min.js \
 	node_modules/angular-sanitize/angular-sanitize.min.js \
 	node_modules/angular-touch/angular-touch.min.js \
-	node_modules/typeahead.js/dist/typeahead.bundle.min.js \
+	node_modules/corejs-typeahead/dist/typeahead.bundle.min.js \
 	node_modules/angular-ui-date/dist/date.js \
 	node_modules/angular-float-thead/angular-floatThead.js \
 	node_modules/floatthead/dist/jquery.floatThead.min.js \
