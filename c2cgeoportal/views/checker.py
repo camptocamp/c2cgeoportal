@@ -66,7 +66,7 @@ def build_url(name, url, request, headers=None):
         if value is not None:
             headers[header] = value
 
-    log.info("%s, URL: %s => %s" % (name, url, url_))
+    log.info("{0!s}, URL: {1!s} => {2!s}".format(name, url, url_))
     return url_, headers
 
 
@@ -89,7 +89,7 @@ class Checker:  # pragma: no cover
 
     def make_response(self, msg):
         return Response(
-            body=msg, status="%i %s" % (self.status_int, self.status), cache_control="no-cache"
+            body=msg, status="{0:d} {1!s}".format(self.status_int, self.status), cache_control="no-cache"
         )
 
     def testurl(self, url):
@@ -138,7 +138,7 @@ class Checker:  # pragma: no cover
             "comment": "Foobar",
             "title": "Bouchon",
             "units": "m",
-            "srs": "EPSG:%i" % self.request.registry.settings["srid"],
+            "srs": "EPSG:{0:d}".format(self.request.registry.settings["srid"]),
             "dpi": 254,
             "layers": [],
             "layout": self.settings["print_template"],
@@ -217,7 +217,7 @@ class Checker:  # pragma: no cover
             status = loads(content)
             if "error" in status:
                 self.set_status(500, status["error"])
-                return "Failed to do the printing: %s" % status["error"]
+                return "Failed to do the printing: {0!s}".format(status["error"])
             done = status["done"]
 
         url = self.request.route_url("printproxy_report_get", ref=job["ref"])
@@ -315,7 +315,7 @@ class Checker:  # pragma: no cover
             for lang in available_locale_names:
                 if _type == "cgxp":
                     named_urls.append((
-                        "%s-%s" % (_type, lang),
+                        "{0!s}-{1!s}".format(_type, lang),
                         self.request.static_url(
                             "{package}:static/build/lang-{lang}.js".format(
                                 package=self.request.registry.settings["package"], lang=lang
@@ -324,7 +324,7 @@ class Checker:  # pragma: no cover
                     ))
                 elif _type == "cgxp-api":
                     named_urls.append((
-                        "%s-%s" % (_type, lang),
+                        "{0!s}-{1!s}".format(_type, lang),
                         self.request.static_url(
                             "{package}:static/build/api-lang-{lang}.js".format(
                                 package=self.request.registry.settings["package"], lang=lang
@@ -333,7 +333,7 @@ class Checker:  # pragma: no cover
                     ))
                 elif _type == "ngeo":
                     named_urls.append((
-                        "%s-%s" % (_type, lang),
+                        "{0!s}-{1!s}".format(_type, lang),
                         self.request.static_url(
                             "{package}:static-ngeo/build/{lang}.json".format(
                                 package=self.request.registry.settings["package"], lang=lang
@@ -365,7 +365,7 @@ class Checker:  # pragma: no cover
 
         results = []
         for route in self.settings["phantomjs_routes"]:
-            url = self.request.route_url(route["name"], _query=route.get("query", {}))
+            url = self.request.route_url(route["name"], _query=route.get("param", {}))
 
             cmd = [executable_path, "--local-to-remote-url-access=true", checker_config_path, url]
 

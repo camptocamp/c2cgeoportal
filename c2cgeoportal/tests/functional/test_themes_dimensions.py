@@ -125,7 +125,8 @@ class TestThemesView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
@@ -148,7 +149,10 @@ class TestThemesView(TestCase):
     # viewer view tests
     #
 
-    def _create_request_obj(self, params={}, **kwargs):
+    @staticmethod
+    def _create_request_obj(params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
@@ -161,7 +165,9 @@ class TestThemesView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _only_name(self, item, attributes=["name"]):
+    def _only_name(self, item, attributes=None):
+        if attributes is None:
+            attributes = ["name"]
         result = {}
 
         for attribute in attributes:
@@ -175,7 +181,8 @@ class TestThemesView(TestCase):
 
         return result
 
-    def _get_filtered_errors(self, themes):
+    @staticmethod
+    def _get_filtered_errors(themes):
         regex = re.compile(r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$")
         return {e for e in themes["errors"] if regex.search(e) is None}
 

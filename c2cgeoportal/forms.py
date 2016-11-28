@@ -96,7 +96,7 @@ def get_fanstatic_resources(request):  # pragma: no cover
     olimgpath = request.static_url("c2cgeoportal:static/lib/openlayers/img/")
 
     def olimgpath_renderer(url):
-        return '<script>OpenLayers.ImgPath="%s";</script>' % olimgpath
+        return '<script>OpenLayers.ImgPath="{0!s}";</script>'.format(olimgpath)
     if olimgpath_js is None:
         olimgpath_js = Resource(
             fanstatic_lib,
@@ -199,7 +199,8 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         self.auto_check = auto_check
         self.auto_collapsed = auto_collapsed
 
-    def render_tree(self):
+    @staticmethod
+    def render_tree():
         return ""
 
     def render(self, options, **kwargs):
@@ -218,12 +219,12 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
                 'descendants': false,
                 'ancestors': false }"""
         result = """<script lang="text/javascript" >
-            $(document).ready(function(){
-                $("#%(id)s").checkboxTree({%(opt)s});
-            });
+            $(document).ready(function(){{
+                $("#{id!s}").checkboxTree({{{opt!s}}});
+            }});
         </script>
-        <ul id="%(id)s" class="checkboxtree">
-        """ % {"id": self.dom_id, "opt": opt}
+        <ul id="{id!s}" class="checkboxtree">
+        """.format(id=self.dom_id, opt=opt)
         result += self.render_tree()
         result += "</ul>"
         return result
@@ -258,9 +259,9 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         result = "<li>"
         if self.auto_check:
             result += '<input type="checkbox"></input>'
-        result += "<label>%(label)s</label>" % {
-            "label": item.name,
-        }
+        result += "<label>{label!s}</label>".format(
+            label=item.name,
+        )
         result += self.render_children(item, depth)
         result += "</li>"
         return result
@@ -298,18 +299,18 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
 
         result = """
         <li>
-            <input type="checkbox" id="%(id)s" name="%(name)s" value="%(value)s"%(add)s></input>
-            <label>%(type)s%(label)s</label>
-            """ % {
-            "id": "%s_%i" % (self.name, self.i),
+            <input type="checkbox" id="{id!s}" name="{name!s}" value="{value!s}"{add!s}></input>
+            <label>{type!s}{label!s}</label>
+            """.format(
+            id="{}_{}".format(self.name, self.i),
             # adds -second to fields (layer) that appears two time to
             # don"t save them twice (=> integrity error).
-            "name": self.name + ("-second" if final_item.id in self._rendered_id else ""),
-            "value": final_item.id,
-            "add": ' checked="checked"' if self.is_checked(item, final_item) else "",
-            "type": prefixs.get(final_item.item_type, ""),
-            "label": final_item.name,
-        }
+            name=self.name + ("-second" if final_item.id in self._rendered_id else ""),
+            value=final_item.id,
+            add=' checked="checked"' if self.is_checked(item, final_item) else "",
+            type=prefixs.get(final_item.item_type, ""),
+            label=final_item.name,
+        )
         self._rendered_id.append(final_item.id)
         self.i += 1
         result += self.render_children(final_item, depth)
@@ -333,7 +334,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += "<li>"
             if self.auto_check:
                 result += '<input type="checkbox"></input>'
-            result += "<label>%(name)s</label>" % {"name": _("Unlinked layers")}
+            result += "<label>{name!s}</label>".format(name=_("Unlinked layers"))
             result += "<ul>"
 
             while len(self.layer_group) > 0:
@@ -385,7 +386,7 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             result += \
                 '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
                 '</input><label>%s</label></li>\n' % (
-                    "%s_%i" % (self.name, i),
+                    "{0!s}_{1:d}".format(self.name, i),
                     self.name,
                     functionality.id,
                     ' checked="checked"' if self._is_checked(functionality.id) else "",

@@ -58,7 +58,7 @@ def exportcsv(request):
     content += csv.encode(csv_encoding)
     request.response.body = content
     response.charset = csv_encoding.encode(csv_encoding)
-    response.content_disposition = "attachment; filename=%s.%s" % (
+    response.content_disposition = "attachment; filename={0!s}.{1!s}".format(
         name.replace(" ", "_"), csv_extension
     )
     return set_common_headers(
@@ -97,8 +97,7 @@ def exportgpxkml(request):
     response = request.response
     response.body = doc.encode(charset)
     response.charset = charset
-    response.content_disposition = ("attachment; filename=%s.%s"
-                                    % (name.replace(" ", "_"), fmt))
+    response.content_disposition = ("attachment; filename={0!s}.{1!s}".format(name.replace(" ", "_"), fmt))
     return set_common_headers(
         request, "exportgpxkml", NO_CACHE,
         content_type=_CONTENT_TYPES[fmt]

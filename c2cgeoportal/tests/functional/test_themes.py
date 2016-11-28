@@ -124,7 +124,8 @@ class TestThemesView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, OGCServer, Layer, \
@@ -149,7 +150,10 @@ class TestThemesView(TestCase):
     # viewer view tests
     #
 
-    def _create_request_obj(self, params={}, **kwargs):
+    @staticmethod
+    def _create_request_obj(params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
 
@@ -182,7 +186,8 @@ class TestThemesView(TestCase):
 
         return result
 
-    def _get_filtered_errors(self, themes):
+    @staticmethod
+    def _get_filtered_errors(themes):
         return {
             e for e in themes["errors"]
             if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"

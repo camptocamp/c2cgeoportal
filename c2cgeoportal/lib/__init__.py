@@ -74,10 +74,10 @@ def get_url(url, request, default=None, errors=None):
         server = request.registry.settings.get("servers", {}).get(obj.netloc)
         if server is None:
             if default is None and errors is not None:
-                errors.add("The server '%s' isn't found in the config" % obj.netloc)
+                errors.add("The server '{0!s}' isn't found in the config".format(obj.netloc))
             return default
         else:
-            return "%s%s?%s" % (server, obj.path, obj.query)
+            return "{0!s}{1!s}?{2!s}".format(server, obj.path, obj.query)
 
     else:
         return url
@@ -347,7 +347,7 @@ class MultiDomainStaticURLInfo(StaticURLInfo):  # pragma: no cover
                 else:
                     subpath = quote(subpath)
                     return urljoin(url, subpath[1:])
-        raise ValueError("No static URL definition matching %s" % path)
+        raise ValueError("No static URL definition matching {0!s}".format(path))
 
     def add(self, config, name, spec, **extra):
         if "pregenerator" not in extra:

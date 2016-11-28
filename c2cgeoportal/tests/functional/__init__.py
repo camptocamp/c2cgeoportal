@@ -148,7 +148,9 @@ def create_default_ogcserver():
     return ogcserver, ogcserver_external
 
 
-def create_dummy_request(additional_settings={}, *args, **kargs):
+def create_dummy_request(additional_settings=None, *args, **kargs):
+    if additional_settings is None:
+        additional_settings = {}
     from c2cgeoportal.pyramid_ import default_user_validator
     request = tests.create_dummy_request({
         "mapserverproxy": {

@@ -133,7 +133,8 @@ class TestThemesTimeView(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, TreeItem, Interface, OGCServer
@@ -148,7 +149,10 @@ class TestThemesTimeView(TestCase):
         transaction.commit()
         TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
 
-    def _create_request_obj(self, params={}, **kwargs):
+    @staticmethod
+    def _create_request_obj(params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
@@ -161,7 +165,9 @@ class TestThemesTimeView(TestCase):
 
         return Entry(self._create_request_obj(**kwargs))
 
-    def _only(self, item, attributes=["name", "time"]):
+    def _only(self, item, attributes=None):
+        if attributes is None:
+            attributes = ["name", "time"]
         result = {}
 
         for attribute in attributes:
@@ -175,7 +181,8 @@ class TestThemesTimeView(TestCase):
 
         return result
 
-    def _get_filtered_errors(self, themes):
+    @staticmethod
+    def _get_filtered_errors(themes):
         errors = themes["errors"]
         regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', can't be two times in the same block \(first level group\).")
         errors = [e for e in errors if not regex.match(e)]

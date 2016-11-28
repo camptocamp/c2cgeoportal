@@ -54,9 +54,9 @@ class PdfReport(Proxy):  # pragma: no cover
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         resp, content = self._proxy(
-            "%s/buildreport.%s" % (
+            "{0!s}/buildreport.{1!s}".format(
                 self.config["print_url"],
-                spec["outputFormat"],
+                spec["outputFormat"]
             ),
             method="POST",
             body=dumps(spec),
@@ -148,9 +148,9 @@ class PdfReport(Proxy):  # pragma: no cover
             )
 
         mapserv_url = self.request.route_url("mapserverproxy")
-        vector_request_url = "%s?%s" % (
+        vector_request_url = "{0!s}?{1!s}".format(
             mapserv_url,
-            "&".join(["%s=%s" % i for i in {
+            "&".join(["{0!s}={1!s}".format(*i) for i in {
                 "service": "WFS",
                 "version": "1.1.0",
                 "outputformat": "gml3",

@@ -211,7 +211,7 @@ class Entry:
             "REQUEST": "GetCapabilities",
         })
 
-        log.info("Get WMS GetCapabilities for url: %s" % url)
+        log.info("Get WMS GetCapabilities for url: {0!s}".format(url))
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -230,12 +230,13 @@ class Entry:
         try:
             resp, content = http.request(url, method="GET", headers=headers)
         except:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url %s" % url)
+            errors.add("Unable to GetCapabilities from url {0!s}".format(url))
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            error = "GetCapabilities from URL %s return the error: %i %s" % \
-                (url, resp.status, resp.reason)
+            error = "GetCapabilities from URL {0!s} return the error: {1:d} {2!s}".format(
+                url, resp.status, resp.reason
+            )
             errors.add(error)
             log.exception(error)
             return None, errors
@@ -243,8 +244,9 @@ class Entry:
         # With wms 1.3 it returns text/xml also in case of error :-(
         if resp.get("content-type").split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
-            error = "GetCapabilities from URL %s returns a wrong Content-Type: %s\n%s" % \
-                (url, resp.get("content-type"), content.encode("utf-8"))
+            error = "GetCapabilities from URL {0!s} returns a wrong Content-Type: {1!s}\n{2!s}".format(
+                url, resp.get("content-type"), content.encode("utf-8")
+            )
             errors.add(error)
             log.exception(error)
             return None, errors
@@ -256,12 +258,13 @@ class Entry:
                 "WARNING! an error occured while trying to "
                 "read the mapfile and recover the themes."
             )
-            error = "%s\nURL: %s\n%s" % (error, url, content.encode("utf-8"))
+            error = "{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
             errors.add(error)
             log.exception(error)
         return wms, errors
 
-    def _create_layer_query(self, role_id, version):
+    @staticmethod
+    def _create_layer_query(role_id, version):
         """ Create an SQLAlchemy query for Layer and for the role
             identified to by ``role_id``.
         """
@@ -329,8 +332,8 @@ class Entry:
             resolution = self._get_layer_resolution_hint(child_layer)
             child_layer_info = {
                 "name": child_layer.name,
-                "minResolutionHint": float("%0.2f" % resolution[0]),
-                "maxResolutionHint": float("%0.2f" % resolution[1]),
+                "minResolutionHint": float("{0:0.2f}".format(resolution[0])),
+                "maxResolutionHint": float("{0:0.2f}".format(resolution[1])),
             }
             if hasattr(child_layer, "queryable"):
                 child_layer_info["queryable"] = child_layer.queryable
@@ -347,8 +350,8 @@ class Entry:
         resolution = self._get_layer_resolution_hint(layer)
         layer_info = {
             "name": layer.name,
-            "minResolutionHint": float("%0.2f" % resolution[0]),
-            "maxResolutionHint": float("%0.2f" % resolution[1]),
+            "minResolutionHint": float("{0:0.2f}".format(resolution[0])),
+            "maxResolutionHint": float("{0:0.2f}".format(resolution[1])),
         }
         layer_info["queryable"] = layer.queryable == 1 \
             if hasattr(layer, "queryable") else True
@@ -428,7 +431,8 @@ class Entry:
 
         return l, errors
 
-    def _merge_time(self, time, l, layer, wms, wms_layers):
+    @staticmethod
+    def _merge_time(time, l, layer, wms, wms_layers):
         errors = set()
         wmslayer = layer.name if isinstance(layer, LayerV1) else layer.layer
         try:
@@ -453,8 +457,7 @@ class Entry:
 
         except ValueError:  # pragma no cover
             errors.add(
-                "Error while handling time for layer '%s': %s"
-                % (layer.name, sys.exc_info()[1])
+                "Error while handling time for layer '{0!s}': {1!s}".format(layer.name, sys.exc_info()[1])
             )
 
         return errors
@@ -536,7 +539,8 @@ class Entry:
         if layer.style:
             l["style"] = layer.style
 
-    def _fill_legend_rule_query_string(self, l, layer, url):
+    @staticmethod
+    def _fill_legend_rule_query_string(l, layer, url):
         if layer.legend_rule and url:
             l["icon"] = add_url_params(url, {
                 "SERVICE": "WMS",
@@ -572,16 +576,16 @@ class Entry:
             resolutions = self._get_layer_resolution_hint(wms_layer_obj)
             if resolutions[0] <= resolutions[1]:
                 if "minResolutionHint" not in l:
-                    l["minResolutionHint"] = float("%0.2f" % resolutions[0])
+                    l["minResolutionHint"] = float("{0:0.2f}".format(resolutions[0]))
                 if "maxResolutionHint" not in l:
-                    l["maxResolutionHint"] = float("%0.2f" % resolutions[1])
+                    l["maxResolutionHint"] = float("{0:0.2f}".format(resolutions[1]))
             l["childLayers"] = self._get_child_layers_info_1(wms_layer_obj)
             if hasattr(wms_layer_obj, "queryable"):
                 l["queryable"] = wms_layer_obj.queryable
         else:
             if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
-                    "The layer '%s' is not defined in WMS capabilities" % wmslayer
+                    "The layer '{0!s}' is not defined in WMS capabilities".format(wmslayer)
                 )
 
     def _fill_external_wms(self, l, layer, errors):
@@ -615,7 +619,8 @@ class Entry:
         else:
             self._fill_wmts_v2(l, layer)
 
-    def _fill_wmts_v2(self, l, layer):
+    @staticmethod
+    def _fill_wmts_v2(l, layer):
         l["layer"] = layer.layer
         l["imageType"] = layer.image_type
 
@@ -624,9 +629,9 @@ class Entry:
             try:
                 l["dimensions"] = json.loads(layer.dimensions)
             except:  # pragma: no cover
-                errors.add(
-                    u"Unexpected error: '%s' while reading '%s' in layer '%s'" %
-                    (sys.exc_info()[0], layer.dimensions, layer.name))
+                errors.add(u"Unexpected error: '{0!s}' while reading '{1!s}' in layer '{2!s}'".format(
+                    sys.exc_info()[0], layer.dimensions, layer.name
+                ))
 
         mapserverproxy_url = self.request.route_url("mapserverproxy")
         wms, wms_layers, wms_errors = self._wms_layers(
@@ -670,24 +675,26 @@ class Entry:
 
                 if resolutions[0] != float("Inf"):
                     ql["minResolutionHint"] = float(
-                        "%0.2f" % resolutions[0])
+                        "{0:0.2f}".format(resolutions[0]))
                 if resolutions[1] != 0:
                     ql["maxResolutionHint"] = float(
-                        "%0.2f" % resolutions[1])
+                        "{0:0.2f}".format(resolutions[1]))
 
                 l["queryLayers"].append(ql)
 
                 # FIXME we do not support WMTS layers associated to
                 # MapServer layer groups for now.
 
-    def _layer_included(self, tree_item, version):
+    @staticmethod
+    def _layer_included(tree_item, version):
         if version == 1 and type(tree_item) == LayerV1:
             return True
         if version == 2 and isinstance(tree_item, Layer):
             return type(tree_item) != LayerV1
         return False
 
-    def _is_internal_wms(self, layer):
+    @staticmethod
+    def _is_internal_wms(layer):
         return \
             isinstance(layer, LayerV1) and layer.layer_type == "internal WMS"
 
@@ -697,7 +704,7 @@ class Entry:
 
         # escape loop
         if depth > 30:
-            log.error("Error: too many recursions with group '%s'" % group.name)
+            log.error("Error: too many recursions with group '{0!s}'".format(group.name))
             return ogc_servers
 
         # recurse on children
@@ -731,7 +738,7 @@ class Entry:
         # escape loop
         if depth > 30:
             errors.add(
-                "Too many recursions with group '%s'" % group.name
+                "Too many recursions with group '{0!s}'".format(group.name)
             )
             return None, errors
 
@@ -751,7 +758,7 @@ class Entry:
                 if type(group) == Theme or catalogue or \
                         group.is_internal_wms == tree_item.is_internal_wms:
                     gp, gp_errors = self._group(
-                        "%s/%s" % (path, tree_item.name),
+                        "{0!s}/{1!s}".format(path, tree_item.name),
                         tree_item, layers, depth=depth, min_levels=min_levels,
                         catalogue=catalogue, role_id=role_id, version=version, mixed=mixed,
                         time=time, dim=dim, wms_layers=wms_layers, layers_name=layers_name, **kwargs
@@ -760,10 +767,9 @@ class Entry:
                     if gp is not None:
                         children.append(gp)
                 else:
-                    errors.add(
-                        "Group '%s' cannot be in group '%s' (internal/external mix)." %
-                        (tree_item.name, group.name)
-                    )
+                    errors.add("Group '{0!s}' cannot be in group '{1!s}' (internal/external mix).".format(
+                        tree_item.name, group.name
+                    ))
             elif self._layer_included(tree_item, version):
                 if (tree_item.name in layers):
                     if (catalogue or not isinstance(tree_item, LayerV1) or
@@ -780,15 +786,16 @@ class Entry:
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
-                                errors.add("The Layer '%s' is under indented (%i/%i)." % (
+                                errors.add("The Layer '{0!s}' is under indented ({1:d}/{2:d}).".format(
                                     path + "/" + tree_item.name, depth, min_levels
                                 ))
                             else:
                                 children.append(l)
                     else:
                         errors.add(
-                            "Layer '%s' cannot be in the group '%s' (internal/external mix)." %
-                            (tree_item.name, group.name)
+                            "Layer '{0!s}' cannot be in the group '{1!s}' (internal/external mix).".format(
+                                tree_item.name, group.name
+                            )
                         )
 
         if len(children) > 0:
@@ -915,7 +922,8 @@ class Entry:
 
         return export_themes, errors
 
-    def _get_functionalities(self, theme):
+    @staticmethod
+    def _get_functionalities(theme):
         result = {}
         for functionality in theme.functionalities:
             if functionality.name in result:
@@ -939,7 +947,7 @@ class Entry:
         for item in theme.children:
             if type(item) == LayerGroup:
                 gp, gp_errors = self._group(
-                    "%s/%s" % (theme.name, item.name),
+                    "{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
                     role_id=role_id, version=version, catalogue=catalogue,
                     min_levels=min_levels
@@ -949,7 +957,7 @@ class Entry:
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
-                    errors.add("The Layer '%s' cannot be directly in the theme '%s' (0/%i)." % (
+                    errors.add("The Layer '{0!s}' cannot be directly in the theme '{1!s}' (0/{2:d}).".format(
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
@@ -1015,7 +1023,7 @@ class Entry:
         }
         wfsgc_url = add_url_params(wfs_url, params)
 
-        log.info("WFS GetCapabilities for base url: %s" % wfsgc_url)
+        log.info("WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -1026,14 +1034,13 @@ class Entry:
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=headers)
         except:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url %s" % wfsgc_url)
+            errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.add(
-                "GetCapabilities from url %s return the error: %i %s" %
-                (wfsgc_url, resp.status, resp.reason)
-            )
+            errors.add("GetCapabilities from url {0!s} return the error: {1:d} {2!s}".format(
+                wfsgc_url, resp.status, resp.reason
+            ))
             return None, errors
 
         try:
@@ -1051,7 +1058,7 @@ class Entry:
                         name_value = name_value.split(":")[1]
                     featuretypes.append(name_value)
                 else:  # pragma nocover
-                    log.warn("Feature type without name: %s" % featureType.toxml())
+                    log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
             return featuretypes, errors
         except:  # pragma: no cover
             return get_capabilities_xml, errors
@@ -1096,15 +1103,14 @@ class Entry:
             resp, content = http.request(ext_url, method="GET", headers=headers)
         except:
             errors.add(
-                "Unable to get external themes from url %s" % ext_url
+                "Unable to get external themes from url {0!s}".format(ext_url)
             )
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:
-            errors.add(
-                "Get external themes from url %s return the error: %i %s" %
-                (ext_url, resp.status, resp.reason)
-            )
+            errors.add("Get external themes from url {0!s} return the error: {1:d} {2!s}".format(
+                ext_url, resp.status, resp.reason
+            ))
             return None, errors
 
         return content, errors
@@ -1143,7 +1149,9 @@ class Entry:
                     )
         return layers_enum
 
-    def get_cgxp_index_vars(self, templates_params={}):
+    def get_cgxp_index_vars(self, templates_params=None):
+        if templates_params is None:
+            templates_params = {}
         extra_params = {}
 
         if self.lang:
@@ -1228,7 +1236,9 @@ class Entry:
 
         return d
 
-    def get_ngeo_index_vars(self, vars={}):
+    def get_ngeo_index_vars(self, vars=None):
+        if vars is None:
+            vars = {}
         set_common_headers(self.request, "ngeo_index", NO_CACHE)
 
         vars["debug"] = self.debug
@@ -1451,7 +1461,7 @@ class Entry:
         user = self.request.registry.validate_user(self.request, login, password)
         if user is not None:
             headers = remember(self.request, user)
-            log.info("User '%s' logged in." % login)
+            log.info("User '{0!s}' logged in.".format(login))
 
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1465,7 +1475,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            log.info("bad credentials for login '%s'." % login)
+            log.info("bad credentials for login '{0!s}'.".format(login))
             raise HTTPBadRequest("See server logs for details")
 
     @view_config(route_name="logout")
@@ -1478,7 +1488,7 @@ class Entry:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info("User '%s' (%i) logging out." % (
+        log.info("User '{0!s}' ({1:d}) logging out.".format(
             self.request.user.username,
             self.request.user.id
         ))
@@ -1532,7 +1542,7 @@ class Entry:
             self.request, self.request.user.username, old_password
         )
         if user is None:
-            log.info("The old password is wrong for user '%s'." % user)
+            log.info("The old password is wrong for user '{0!s}'.".format(user))
             raise HTTPBadRequest("See server logs for details")
 
         if new_password != new_password_confirm:
@@ -1546,13 +1556,14 @@ class Entry:
         u._set_password(new_password)
         u.is_password_changed = True
         DBSession.flush()
-        log.info("Password changed for user '%s'" % self.request.user.username)
+        log.info("Password changed for user '{0!s}'".format(self.request.user.username))
 
         return {
             "success": "true"
         }
 
-    def generate_password(self):
+    @staticmethod
+    def generate_password():
         allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         rand = Random()
 
@@ -1567,12 +1578,12 @@ class Entry:
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return None, None, None, "The login '%s' doesn't exist." % username
+            return None, None, None, "The login '{0!s}' doesn't exist.".format(username)
 
         if user.email is None or user.email == "":  # pragma: no cover
             return \
                 None, None, None, \
-                "The user '%s' has no registered email address." % user.username,
+                "The user '{0!s}' has no registered email address.".format(user.username),
 
         password = self.generate_password()
         user.set_temp_password(password)

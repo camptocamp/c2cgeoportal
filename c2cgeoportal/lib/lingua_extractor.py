@@ -94,7 +94,8 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                 empty_template = Template("")
 
                 class Lookup(TemplateLookup):
-                    def get_template(self, uri):
+                    @staticmethod
+                    def get_template(uri):
                         return empty_template
 
                 class MyTemplate(MakoTemplate):
@@ -161,7 +162,7 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 return [
                     Message(
                         None, raster_layer, None, [], u"", u"",
-                        (filename, u"raster/%s" % raster_layer)
+                        (filename, u"raster/{0!s}".format(raster_layer))
                     )
                     for raster_layer in config["vars"].get("raster", {}).keys()
                 ]
@@ -171,12 +172,12 @@ class GeoMapfishConfigExtractor(Extractor):  # pragma: no cover
                 for template_ in config.get("templates").keys():
                     result.append(Message(
                         None, template_, None, [], u"", u"",
-                        (filename, u"template/%s" % template_)
+                        (filename, u"template/{0!s}".format(template_))
                     ))
                     result += [
                         Message(
                             None, attribute, None, [], u"", u"",
-                            (filename, u"template/%s/%s" % (template_, attribute))
+                            (filename, u"template/{0!s}/{1!s}".format(template_, attribute))
                         )
                         for attribute in config.get("templates")[template_].attributes.keys()
                     ]
@@ -225,7 +226,8 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
 
         return messages
 
-    def _import(self, object_type, messages, callback=None):
+    @staticmethod
+    def _import(object_type, messages, callback=None):
         from c2cgeoportal.models import DBSession
 
         items = DBSession.query(object_type)
@@ -273,14 +275,16 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     def _import_layer_wmts(self, layer, messages):
         from c2cgeoportal.models import DBSession, OGCServer
 
-        layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
+        layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
+        if len(layers) == 0:
+            layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
         server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
-        if len(server) == 1 and len(layers) >= 1:
+        if len(server) >= 1 and len(layers) >= 1:
             for wms_layer in layers:
                 try:
-                    DBSession.query(OGCServer).filter(name=server[0]).one()
+                    db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()
                     self._import_layer_attributes(
-                        server[0].url_wfs or server[0].url, wms_layer,
+                        db_server.url_wfs or db_server.url, wms_layer,
                         layer.item_type, layer.name, layer.id, messages
                     )
                 except NoResultFound:
@@ -318,7 +322,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         })
 
         if url not in self.featuretype_cache:
-            print("Get DescribeFeatureType for url: %s" % url)
+            print("Get DescribeFeatureType for url: {0!s}".format(url))
             self.featuretype_cache[url] = None
 
             # forward request to target (without Host Header)
@@ -329,15 +333,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(url, method="GET", headers=h)
             except:  # pragma: no cover
-                print("Unable to DescribeFeatureType from URL %s" % url)
+                print("Unable to DescribeFeatureType from URL {0!s}".format(url))
                 self.featuretype_cache[url] = None
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print(
-                    "DescribeFeatureType from URL %s return the error: %i %s" %
-                    (url, resp.status, resp.reason)
-                )
+                print("DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                    url, resp.status, resp.reason
+                ))
                 self.featuretype_cache[url] = None
                 return []
 
@@ -349,7 +352,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     "WARNING! an error occured while trying to "
                     "read the Mapfile and recover the themes."
                 )
-                print("URL: %s\nxml:\n%s" % (url, content))
+                print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
         else:
             describe = self.featuretype_cache[url]
 
@@ -361,7 +364,7 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
         for type_element in describe.getElementsByTagNameNS(
             "http://www.w3.org/2001/XMLSchema", "complexType"
         ):
-            if type_element.getAttribute("name") == "%sType" % layer:
+            if type_element.getAttribute("name") == "{0!s}Type".format(layer):
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"
                 ):

@@ -106,7 +106,7 @@ class TestLayers(TestCase):
 
     def _create_layer(
             self, public=False, none_area=False, attr_list=False,
-            exclude_properties=False, metadatas=None):
+            exclude_properties=False, metadatas=None, geom_type=False):
         """ This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
         to it. """
@@ -129,28 +129,46 @@ class TestLayers(TestCase):
         if not self.metadata:
             self.metadata = declarative_base(bind=engine).metadata
 
-        tablename = "table_%d" % id
+        tablename = "table_{0:d}".format(id)
 
         table1 = Table(
-            "%s_child" % tablename, self.metadata,
+            "{0!s}_child".format(tablename), self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
             schema="public"
         )
+        if geom_type:
+            table1.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table1.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
         self._tables.append(table1)
+
         table2 = Table(
             tablename, self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("child_id", types.Integer,
-                   ForeignKey("public.%s_child.id" % tablename)),
+                   ForeignKey("public.{0!s}_child.id".format(tablename))),
             Column("name", types.Unicode),
-            Column("geom", Geometry("POINT", srid=21781, management=management)),
+            Column("last_update_user", types.Unicode),
+            Column("last_update_date", types.DateTime),
             schema="public"
         )
+        if geom_type:
+            table2.append_column(
+                Column("geom", Geometry("POINT", srid=21781, management=management))
+            )
+        else:
+            table2.append_column(
+                Column("geom", Geometry(srid=21781, management=management))
+            )
         self._tables.append(table2)
 
-        table2.drop(checkfirst=True)
         table1.drop(checkfirst=True)
+        table2.drop(checkfirst=True)
         table1.create()
         table2.create()
 
@@ -210,7 +228,8 @@ class TestLayers(TestCase):
         self.layer_ids.append(id)
         return id
 
-    def _get_request(self, layerid, username=None):
+    @staticmethod
+    def _get_request(layerid, username=None):
         from c2cgeoportal.models import DBSession, User
         request = create_dummy_request()
         request.matchdict = {"layer_id": str(layerid)}
@@ -274,7 +293,7 @@ class TestLayers(TestCase):
         layer_id2 = self._create_layer()
         layer_id3 = self._create_layer()
 
-        layer_ids = "%d,%d,%d" % (layer_id1, layer_id2, layer_id3)
+        layer_ids = "{0:d},{1:d},{2:d}".format(layer_id1, layer_id2, layer_id3)
         request = self._get_request(layer_ids, username=u"__test_user")
 
         layers = Layers(request)
@@ -430,6 +449,24 @@ class TestLayers(TestCase):
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Too few points in geometry component[5 45]")
 
+    def test_create_no_validation(self):
+        from geojson.feature import FeatureCollection
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import Metadata
+
+        metadatas = [
+            Metadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.method = "POST"
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        layers = Layers(request)
+        collection = layers.create()
+        self.assertEquals(request.response.status_int, 201)
+        self.assertTrue(isinstance(collection, FeatureCollection))
+        self.assertEquals(len(collection.features), 2)
+
     def test_update_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import Layers
@@ -528,6 +565,24 @@ class TestLayers(TestCase):
         self.assertTrue("validation_error" in response)
         self.assertEquals(response["validation_error"], "Not simple")
 
+    def test_update_no_validation(self):
+        from c2cgeoportal.views.layers import Layers
+        from c2cgeoportal.models import Metadata
+
+        metadatas = [
+            Metadata("geometry_validation", "False")
+        ]
+        layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
+        request = self._get_request(layer_id, username=u"__test_user")
+        request.matchdict["feature_id"] = 1
+        request.method = "PUT"
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        layers = Layers(request)
+        feature = layers.update()
+        self.assertEquals(feature.id, 1)
+        self.assertEquals(feature.name, "foobar")
+        self.assertEquals(feature.child, u"c2é")
+
     def test_delete_no_auth(self):
         from pyramid.httpexceptions import HTTPForbidden
         from c2cgeoportal.views.layers import Layers
@@ -579,7 +634,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertEquals(cls.__table__.name, "table_%d" % layer_id)
+        self.assertEquals(cls.__table__.name, "table_{0:d}".format(layer_id))
         self.assertTrue(hasattr(cls, "name"))
         self.assertTrue("child" in cls.__dict__)
 
@@ -776,7 +831,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True)
-        tablename = "table_%d" % layer_id
+        tablename = "table_{0:d}".format(layer_id)
         settings = {
             "layers": {
                 "enum": {
@@ -812,7 +867,7 @@ class TestLayers(TestCase):
         from c2cgeoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True, attr_list=True)
-        tablename = "table_%d" % layer_id
+        tablename = "table_{0:d}".format(layer_id)
         settings = {
             "layers": {
                 "enum": {

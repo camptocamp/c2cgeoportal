@@ -10,7 +10,7 @@
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.po
 /c2cgeoportal/locale/*/LC_MESSAGES/c2cgeoportal.mo
 /c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl.mk
-/c2cgeoportal/scaffolds/update/package.json_tmpl
+/c2cgeoportal/scaffolds/create/package.json_tmpl
 /c2cgeoportal/scaffolds/update/+dot+tx/CONST_config_mako
 /c2cgeoportal/scaffolds/create/+package+/templates/mobile.html_tmpl
 /c2cgeoportal/scaffolds/create/+package+/templates/desktop.html_tmpl
@@ -25,7 +25,7 @@
 /doc/administrator/administrate.rst
 /doc/developer/client_side.rst
 /doc/index.rst
-/doc/integrator/cgxp.rst
+/doc/integrator/legacy_cgxp.rst
 /doc/integrator/editing.rst
 /doc/integrator/features.rst
 /doc/integrator/fulltext_search.rst

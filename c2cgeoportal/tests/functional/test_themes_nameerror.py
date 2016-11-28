@@ -77,7 +77,8 @@ class TestThemesNameErrorView(TestCase):
         DBSession.add(theme)
         transaction.commit()
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
@@ -96,7 +97,10 @@ class TestThemesNameErrorView(TestCase):
 
         transaction.commit()
 
-    def _create_request_obj(self, params={}, **kwargs):
+    @staticmethod
+    def _create_request_obj(params=None, **kwargs):
+        if params is None:
+            params = {}
         request = create_dummy_request(**kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url

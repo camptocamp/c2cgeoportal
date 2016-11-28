@@ -42,7 +42,7 @@ def json_base64_encode(filename, file):
     Generate a JSON-wrapped base64-encoded string.
     See http://en.wikipedia.org/wiki/Base64
     """
-    yield '{"filename":%s,"data":"' % (json.dumps(filename),)
+    yield '{{"filename":{0!s},"data":"'.format(json.dumps(filename))
     yield b64encode(file.read())
     yield '","success":true}'
 

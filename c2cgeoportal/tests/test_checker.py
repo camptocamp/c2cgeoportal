@@ -37,7 +37,8 @@ from c2cgeoportal.views.checker import build_url
 
 class TestExportCSVView(TestCase):
 
-    def _create_dummy_request(self):
+    @staticmethod
+    def _create_dummy_request():
         request = DummyRequest()
         request.environ = {
             "SERVER_NAME": "example.com"

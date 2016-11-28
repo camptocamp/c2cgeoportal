@@ -129,8 +129,7 @@ class MapservProxy(Proxy):
         # don't allows direct variable substitution
         for k in params.keys():
             if k[:2].capitalize() == "S_":
-                log.warning("Direct substitution not allowed (%s=%s)." %
-                            (k, params[k]))
+                log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, params[k]))
                 del params[k]
 
         # add functionalities params
@@ -205,7 +204,7 @@ class MapservProxy(Proxy):
 
     def _proxy_callback(self, role_id, cache_control, *args, **kwargs):
         params = kwargs.get("params", {})
-        callback = params.get("callback", None)
+        callback = params.get("callback")
         if callback is not None:
             del params["callback"]
         resp, content = self._proxy(*args, **kwargs)
@@ -215,7 +214,7 @@ class MapservProxy(Proxy):
                 content, role_id, self.lower_params.get("service") == "wms",
                 self._get_wms_url(),
                 self.request.headers,
-                self.settings.get("proxies", None)
+                self.settings.get("proxies")
             )
 
         content_type = None
@@ -224,7 +223,7 @@ class MapservProxy(Proxy):
             # escape single quotes in the JavaScript string
             content = unicode(content.decode("utf8"))
             content = content.replace(u"'", u"\\'")
-            content = u"%s('%s');" % (callback, u" ".join(content.splitlines()))
+            content = u"{0!s}('{1!s}');".format(callback, u" ".join(content.splitlines()))
         else:
             content_type = resp["content-type"]
 

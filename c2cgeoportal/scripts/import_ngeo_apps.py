@@ -73,8 +73,8 @@ class _RouteDest:
         query_string = matches.group(1)
         query = ''
         if len(query_string) > 0:
-            query = ", _query=%s" % dumps(dict(parse_qsl(query_string)))
-        return r"module.constant('%s', '${request.route_url('%s'%s) | n}');" % (
+            query = ", _query={0!s}".format(dumps(dict(parse_qsl(query_string))))
+        return r"module.constant('{0!s}', '${{request.route_url('{1!s}'{2!s}) | n}}');".format(
             self.constant, self.route, query
         )
 
@@ -165,8 +165,7 @@ def main():
             ]:
                 del json_data["devDependencies"][package]
 
-            data = dumps(json_data, indent=2, sort_keys=True)
-            data = _sub(r" +\n", "\n", data)
+            data = dumps(json_data, indent=2, sort_keys=True, encoding="utf-8", separators=(',', ': '))
             data = data + "\n"
 
         else:

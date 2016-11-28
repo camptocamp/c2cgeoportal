@@ -73,10 +73,10 @@ class DecimalJSON:
                     request.response.content_type = "application/json"
                 else:
                     request.response.content_type = "text/javascript"
-                    ret = "%(callback)s(%(json)s);" % {
-                        "callback": callback,
-                        "json": ret
-                    }
+                    ret = "{callback!s}({json!s});".format(
+                        callback=callback,
+                        json=ret
+                    )
             return ret
         return _render
 
@@ -94,19 +94,19 @@ def add_interface(
             config,
             interface_name=interface_name,
             route_names=(interface_name, interface_name + ".js"),
-            routes=("/%s" % interface_name, "/%s.js" % interface_name),
-            renderers=("/%s.html" % interface_name, "/%s.js" % interface_name),
+            routes=("/{0!s}".format(interface_name), "/{0!s}.js".format(interface_name)),
+            renderers=("/{0!s}.html".format(interface_name), "/{0!s}.js".format(interface_name)),
         )
 
     elif interface_type == INTERFACE_TYPE_NGEO:
-        route = "/%s" % interface_name
+        route = "/{0!s}".format(interface_name)
 
         add_interface_ngeo(
             config,
             interface_name=interface_name,
             route_name=interface_name,
             route=route,
-            renderer="/%s.html" % interface_name,
+            renderer="/{0!s}.html".format(interface_name),
         )
 
 
@@ -130,14 +130,14 @@ def add_interface_cgxp(config, interface_name, route_names, routes, renderers): 
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        "%stheme" % route_names[0],
-        "%s%stheme/{themes}" % (routes[0], "" if routes[0][-1] == "/" else "/"),
+        "{0!s}theme".format(route_names[0]),
+        "{0!s}{1!s}theme/{{themes}}".format(routes[0], "" if routes[0][-1] == "/" else "/"),
     )
     config.add_view(
         Entry,
         decorator=add_interface,
         attr="get_cgxp_permalinktheme_vars",
-        route_name="%stheme" % route_names[0],
+        route_name="{0!s}theme".format(route_names[0]),
         renderer=renderers[0]
     )
     config.add_route(
@@ -177,15 +177,15 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
     )
     # permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        "%stheme" % route_name,
-        "%s%stheme/{themes}" % (route, "" if route[-1] == "/" else "/"),
+        "{0!s}theme".format(route_name),
+        "{0!s}{1!s}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
         request_method="GET",
     )
     config.add_view(
         Entry,
         decorator=add_interface,
         attr="get_ngeo_permalinktheme_vars",
-        route_name="%stheme" % route_name,
+        route_name="{0!s}theme".format(route_name),
         renderer=renderer
     )
 
@@ -198,14 +198,14 @@ def add_interface_ngeo(config, interface_name, route_name, route, renderer):  # 
 def add_static_view_ngeo(config):  # pragma: no cover
     """ Add the project static view for ngeo """
     package = config.get_settings()["package"]
-    _add_static_view(config, "static-ngeo", "%s:static-ngeo" % package)
+    _add_static_view(config, "static-ngeo", "{0!s}:static-ngeo".format(package))
     config.override_asset(
         to_override="c2cgeoportal:project/",
-        override_with="%s:static-ngeo/" % package
+        override_with="{0!s}:static-ngeo/".format(package)
     )
     config.add_static_view(
         name=package,
-        path="%s:static" % package,
+        path="{0!s}:static".format(package),
         cache_max_age=int(config.get_settings()["default_max_age"])
     )
 
@@ -228,10 +228,10 @@ def add_admin_interface(config):
 def add_static_view(config):
     """ Add the project static view for CGXP """
     package = config.get_settings()["package"]
-    _add_static_view(config, "static-cgxp", "%s:static" % package)
+    _add_static_view(config, "static-cgxp", "{0!s}:static".format(package))
     config.override_asset(
         to_override="c2cgeoportal:project/",
-        override_with="%s:static/" % package
+        override_with="{0!s}:static/".format(package)
     )
 
 
@@ -360,14 +360,15 @@ class OgcproxyRoutePredicate:
         try:
             ip = IP(gethostbyname(parts.netloc))
         except gaierror as e:
-            log.info("Unable to get host name for %s: %s" % (url, e))
+            log.info("Unable to get host name for {0!s}: {1!s}".format(url, e))
             return False
         for net in self.private_networks:
             if ip in net:
                 return False
         return True
 
-    def phash(self):  # pragma: no cover
+    @staticmethod
+    def phash():  # pragma: no cover
         return ""
 
 
@@ -728,7 +729,7 @@ def includeme(config):
 
 
 def _log_versions(settings):
-    package = settings.get("package", None)
+    package = settings.get("package")
     if package is not None:
         try:
             import c2cgeoportal.version

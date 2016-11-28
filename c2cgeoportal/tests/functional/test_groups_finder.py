@@ -58,7 +58,8 @@ class TestGroupsFinder(TestCase):
         DBSession.add_all([r, u])
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         import transaction
@@ -77,7 +78,8 @@ class TestGroupsFinder(TestCase):
         roles = defaultgroupsfinder(u"__test_user", request)
         self.assertEqual(roles, [u"__test_role"])
 
-    def _create_request(self):
+    @staticmethod
+    def _create_request():
         from pyramid.request import Request
         request = Request({})
         add_user_property(request)

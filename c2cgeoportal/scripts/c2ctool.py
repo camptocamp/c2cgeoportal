@@ -34,6 +34,8 @@ import sys
 import argparse
 import httplib2
 import yaml
+import json
+import shutil
 import pkg_resources
 from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
@@ -103,7 +105,7 @@ To have some help on a command type:
 
 
 def _fill_arguments(command):
-    parser = ArgumentParser(prog="%s %s" % (sys.argv[0], command), add_help=False)
+    parser = ArgumentParser(prog="{0!s} {1!s}".format(sys.argv[0], command), add_help=False)
     parser.add_argument(
         "--no-cleanall",
         help="Run clean instead of cleanall",
@@ -173,7 +175,8 @@ class C2cTool:
             step if step != 0 else "",
         ))
 
-    def get_project(self):
+    @staticmethod
+    def get_project():
         if not os.path.isfile("project.yaml"):
             print("Unable to find the required 'project.yaml' file.")
             exit(1)
@@ -185,7 +188,7 @@ class C2cTool:
         http = httplib2.Http()
         for check_type in ("", "type=all"):
             resp, content = http.request(
-                "http://localhost%s%s" % (self.project["checker_path"], check_type),
+                "http://localhost{0!s}{1!s}".format(self.project["checker_path"], check_type),
                 method="GET",
                 headers={
                     "Host": self.project["host"]
@@ -194,7 +197,7 @@ class C2cTool:
             if resp.status < 200 or resp.status >= 300:
                 print(self.color_bar)
                 print("Checker error:")
-                print("Open `http://%s%s%s` for more informations." % (
+                print("Open `http://{0!s}{1!s}{2!s}` for more informations.".format(
                     self.project["host"], self.project["checker_path"], check_type
                 ))
                 return False
@@ -273,7 +276,7 @@ class C2cTool:
             print("")
             print(self.color_bar)
             print("Your project isn't in the right folder!")
-            print("It should be in folder '%s' instead of folder '%s'." % (
+            print("It should be in folder '{0!s}' instead of folder '{1!s}'.".format(
                 self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
             ))
             print("")
@@ -308,7 +311,7 @@ class C2cTool:
         # remove all no more existing branches
         check_call(["git", "fetch", "origin", "--prune"])
         branches = check_output(["git", "branch", "--all"]).split("\n")
-        if "  remotes/origin/%s" % branch in branches:
+        if "  remotes/origin/{0!s}".format(branch) in branches:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
             except CalledProcessError:
@@ -337,19 +340,38 @@ class C2cTool:
 
         if not self.options.windows:
             check_call(["make", "-f", self.options.file, ".build/requirements.timestamp"])
-            pip_cmd = ["%s/pip" % self.venv_bin, "install"]
+            pip_cmd = ["{0!s}/pip".format(self.venv_bin), "install"]
             if self.options.version == "master":
-                check_call(["%s/pip" % self.venv_bin, "uninstall", "--yes", "c2cgeoportal"])
+                check_call(["{0!s}/pip".format(self.venv_bin), "uninstall", "--yes", "c2cgeoportal"])
                 pip_cmd += ["--pre", "c2cgeoportal"]
             else:
-                pip_cmd += ["c2cgeoportal==%s" % (self.options.version)]
+                pip_cmd += ["c2cgeoportal=={0!s}".format((self.options.version))]
             check_call(pip_cmd)
 
         check_call([
-            "%s/pcreate" % self.venv_bin, "--ignore-conflicting-name", "--overwrite",
-            "--scaffold=c2cgeoportal_update", "../%s" % self.project["project_folder"]
+            "{0!s}/pcreate".format(self.venv_bin), "--ignore-conflicting-name", "--overwrite",
+            "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
         ])
         check_call(["make", "-f", self.options.file, self.options.clean])
+
+        # Update the package.json file
+        if os.path.exists("package.json"):
+            with open("package.json", "r") as package_json_file:
+                package_json = json.loads(package_json_file.read(), encoding="utf-8")
+            with open("CONST_create_template/package.json", "r") as package_json_file:
+                template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
+            if "devDependencies" not in package_json:
+                package_json["devDependencies"] = {}
+            for package, version in template_package_json.get("devDependencies", {}).items():
+                package_json["devDependencies"][package] = version
+            with open("package.json", "w") as package_json_file:
+                json.dump(
+                    package_json, package_json_file,
+                    encoding="utf-8", sort_keys=True, separators=(',', ': '), indent=2
+                )
+                package_json_file.write("\n")
+        else:
+            shutil.copyfile("CONST_create_template/package.json", "package.json")
 
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
@@ -494,7 +516,7 @@ class C2cTool:
         print(colorize("Congratulations your upgrade is a success.", GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).strip()
-        print("Now all your files will be commited, you should do a git push %s %s." % (
+        print("Now all your files will be commited, you should do a git push {0!s} {1!s}.".format(
             self.options.git_remote, branch
         ))
 

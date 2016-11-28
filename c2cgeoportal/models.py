@@ -171,7 +171,7 @@ class Functionality(Base):
         self.description = description
 
     def __unicode__(self):
-        return u"%s - %s" % (self.name or u"", self.value or u"")  # pragma: no cover
+        return u"{0!s} - {1!s}".format(self.name or u"", self.value or u"")  # pragma: no cover
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -275,8 +275,10 @@ class User(Base):
 
     def __init__(
         self, username=u"", password=u"", email=u"", is_password_changed=False,
-        functionalities=[], role=None
+        functionalities=None, role=None
     ):
+        if functionalities is None:
+            functionalities = []
         self.username = username
         self.password = password
         self.email = email
@@ -297,7 +299,8 @@ class User(Base):
         """encrypts password on the fly."""
         self.temp_password = self.__encrypt_password(password)
 
-    def __encrypt_password(self, password):
+    @staticmethod
+    def __encrypt_password(password):
         """Hash the given password with SHA1."""
         return sha1(password.encode("utf8")).hexdigest()
 
@@ -348,7 +351,9 @@ class Role(Base):
         cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name=u"", description=u"", functionalities=[], extent=None):
+    def __init__(self, name=u"", description=u"", functionalities=None, extent=None):
+        if functionalities is None:
+            functionalities = []
         self.name = name
         self.functionalities = functionalities
         self.extent = extent
@@ -862,8 +867,12 @@ class RestrictionArea(Base):
         backref="restrictionareas", cascade="save-update,merge,refresh-expire"
     )
 
-    def __init__(self, name="", description="", layers=[], roles=[],
+    def __init__(self, name="", description="", layers=None, roles=None,
                  area=None, readwrite=False):
+        if layers is None:
+            layers = []
+        if roles is None:
+            roles = []
         self.name = name
         self.description = description
         self.layers = layers
@@ -971,7 +980,7 @@ class Metadata(Base):
         self.value = value
 
     def __unicode__(self):  # pragma: no cover
-        return u"%s: %s" % (self.name or u"", self.value or u"")
+        return u"{0!s}: {1!s}".format(self.name or u"", self.value or u"")
 
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
@@ -1060,7 +1069,7 @@ def db_chooser_tween_factory(handler, registry):  # pragma: nocover
     def db_chooser_tween(request):
         session = DBSession()
         old = session.bind
-        method_path = "%s %s" % (request.method, request.path)
+        method_path = "{0!s} {1!s}".format(request.method, request.path)
         force_master = any(r.match(method_path) for r in master_paths)
         if not force_master and (request.method in ("GET", "OPTIONS") or
                                  any(r.match(method_path) for r in slave_paths)):

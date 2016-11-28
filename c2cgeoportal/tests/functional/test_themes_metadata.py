@@ -115,7 +115,8 @@ class TestThemesViewMetadata(TestCase):
 
         transaction.commit()
 
-    def tearDown(self):  # noqa
+    @staticmethod
+    def tearDown():  # noqa
         testing.tearDown()
 
         from c2cgeoportal.models import DBSession, Layer, \
@@ -148,7 +149,8 @@ class TestThemesViewMetadata(TestCase):
 
         return result
 
-    def _get_filtered_errors(self, themes):
+    @staticmethod
+    def _get_filtered_errors(themes):
         errors = themes["errors"]
         regex = re.compile(r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', can't be two times in the same block \(first level group\).")
         errors = [e for e in errors if not regex.match(e)]

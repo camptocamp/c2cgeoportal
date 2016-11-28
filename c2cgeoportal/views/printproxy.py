@@ -88,7 +88,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Get print capabilities. """
 
         templates = get_functionality(
-            "print_template", self.config, self.request
+            "print_template", self.request
         )
 
         # get query string
@@ -119,16 +119,16 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Create PDF. """
         return self._proxy_response(
             "print",
-            "%screate.json" % (
+            "{0!s}create.json".format((
                 self.config["print_url"]
-            )
+            ))
         )
 
     @view_config(route_name="printproxy_get")
     def get(self):
         """ Get created PDF. """
 
-        resp, content = self._proxy("%s%s.printout" % (
+        resp, content = self._proxy("{0!s}{1!s}.printout".format(
             self.config["print_url"],
             self.request.matchdict.get("file")
         ))
@@ -209,7 +209,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Create PDF. """
         return self._proxy_response(
             "print",
-            "%s/report.%s" % (
+            "{0!s}/report.{1!s}".format(
                 self.config["print_url"],
                 self.request.matchdict.get("format")
             ),
@@ -220,7 +220,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ PDF status. """
         return self._proxy_response(
             "print",
-            "%s/status/%s.json" % (
+            "{0!s}/status/{1!s}.json".format(
                 self.config["print_url"],
                 self.request.matchdict.get("ref")
             ),
@@ -231,7 +231,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ PDF cancel. """
         return self._proxy_response(
             "print",
-            "%s/cancel/%s" % (
+            "{0!s}/cancel/{1!s}".format(
                 self.config["print_url"],
                 self.request.matchdict.get("ref")
             ),
@@ -242,7 +242,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Get the PDF. """
         return self._proxy_response(
             "print",
-            "%s/report/%s" % (
+            "{0!s}/report/{1!s}".format(
                 self.config["print_url"],
                 self.request.matchdict.get("ref")
             ),

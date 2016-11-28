@@ -217,7 +217,8 @@ class Import:
 
         return fill
 
-    def _layer_visible(self, layer, role):
+    @staticmethod
+    def _layer_visible(layer, role):
         for restrictionarea in layer.restrictionareas:
             if role in restrictionarea.roles:
                 return True
