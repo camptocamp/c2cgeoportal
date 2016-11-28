@@ -34,6 +34,8 @@ import sys
 import argparse
 import httplib2
 import yaml
+import json
+import shutil
 import pkg_resources
 from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
@@ -351,6 +353,25 @@ class C2cTool:
             "--scaffold=c2cgeoportal_update", "../{0!s}".format(self.project["project_folder"])
         ])
         check_call(["make", "-f", self.options.file, self.options.clean])
+
+        # Update the package.json file
+        if os.path.exists("package.json"):
+            with open("package.json", "r") as package_json_file:
+                package_json = json.loads(package_json_file.read(), encoding="utf-8")
+            with open("CONST_create_template/package.json", "r") as package_json_file:
+                template_package_json = json.loads(package_json_file.read(), encoding="utf-8")
+            if "devDependencies" not in package_json:
+                package_json["devDependencies"] = {}
+            for package, version in template_package_json.get("devDependencies", {}).items():
+                package_json["devDependencies"][package] = version
+            with open("package.json", "w") as package_json_file:
+                json.dump(
+                    package_json, package_json_file,
+                    encoding="utf-8", sort_keys=True, separators=(',', ': '), indent=2
+                )
+                package_json_file.write("\n")
+        else:
+            shutil.copyfile("CONST_create_template/package.json", "package.json")
 
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
