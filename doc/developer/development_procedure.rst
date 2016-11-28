@@ -82,7 +82,7 @@ request, for others to get notifications.
 Remove branches
 ~~~~~~~~~~~~~~~
 
-Once you're done with a topic branch (because its commits are merged
+Once you are done with a topic branch (because its commits are merged
 in the master branch) you can remove it with:
 
 .. prompt:: bash

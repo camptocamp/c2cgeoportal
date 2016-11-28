@@ -78,7 +78,7 @@ List existing skeletons
 -----------------------
 
 To list the available skeletons/templates use the following command, either
-from the root directory of c2cgeoportal (if you've followed the instructions
+from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:
 
@@ -127,7 +127,7 @@ it later.
              srid=21781 extent="420000 30000 900000 350000" apache_vhost=<vhost>
 
 This will create a directory named ``<project>`` that will be next to the
-``c2cgeoportal`` directory, or to the directory of the application you're
+``c2cgeoportal`` directory, or to the directory of the application you are
 creating this application from.
 
 Now apply the ``c2cgeoportal_update`` skeleton:
