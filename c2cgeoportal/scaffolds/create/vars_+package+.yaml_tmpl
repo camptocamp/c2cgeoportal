@@ -17,6 +17,8 @@ vars:
     - fr
     - de
 
+    default_interface: desktop
+
     authtkt:
         # One day
         timeout: 86400

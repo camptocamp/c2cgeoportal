@@ -3,6 +3,8 @@
 CGXP
 ====
 
+It still possible to have CGXP interface(s) in parallel of the ngeo interface(s).
+
 Organisation
 ------------
 
@@ -20,6 +22,102 @@ The style sheet file is: ``<package>/static/css/proj.css``
 And finally the image should be placed in the folder:
 ``<package>/static/images/``
 
+Use the CGXP interface
+----------------------
+
+The special application named ``index.html``, ``viewer.js`` is no more possible then you should do::
+
+    * Do the following renames:
+
+      .. prompt:: bash
+
+         git mv <package>/templates/index.html <package>/templates/desktop.html
+         git mv <package>/templates/viewer.js <package>/templates/desktop.js
+
+    * In the ``<package>/templates/desktop.html`` file do the following replacement:
+
+        - <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/app.js')}"></script>
+        + <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/desktop.js')}"></script>
+        ...
+        - <script type="text/javascript" src="${'$'}{request.route_url('viewer', _query=extra_params)}"></script>
+        + <script type="text/javascript" src="${'$'}{request.route_url('desktop.js', _query=extra_params)}"></script>
+
+    * In the ``jsbuild/app.cfg.mako`` file do the following replacement:
+
+        - [app.js]
+        + [desktop.js]
+
+To configure the build of the interface you should use the ``CGXP_INTERFACES`` (and the ``NGEO_INTERFACES``)
+in your project makefile, e.g.::
+
+  .. code:: make
+
+     CGXP_INTERFACES = desktop edit routing
+     NGEO_INTERFACES = mobile
+
+Enable the CGXP check, add in your project vars file::
+
+  .. code::yaml::
+
+     vars:
+         ...
+         checker:
+            ...
+            defaults:
+                ...
+                lang_files: [cgxp]
+     update_paths:
+     ...
+     - checker.defaults.lang_files
+
+Do not have ``check_collector.disabled`` in the ``update_paths`` (and do not readd it during
+the next upgrade steps).
+
+Update the interface in your ``<package>/__init__.py`` file:
+
+.. code:: python
+
+  add_interface(config, "<interface>", INTERFACE_TYPE_CGXP)
+
+
+The OGC proxy is deprecated because with modern browser it is not required to have it.
+
+Then you should remove it from the CGXP ``js`` interface files (``<package>/templates/<interface>.js``):
+
+.. code:: diff
+
+    - OpenLayers.ProxyHost = "${'$'}{request.route_url('ogcproxy') | n}?url=";
+
+The ``externalWFSTypes`` do not exist anymore than you should remove the following line
+from the CGXP ``js`` interface files (``<<package>/templates/<interface>.js``)
+
+.. code:: diff
+
+    - externalWFSTypes: ${'$'}{externalWFSTypes | n},
+
+Back to the ngeo interface
+--------------------------
+
+Remove the CGXP interface:
+
+.. prompt:: bash
+
+  git rm <package>/templates/<interface>.html
+  git rm <package>/templates/<interface>.js
+
+Remove the related section in the ``jsbuild/app.cfg.mako`` file.
+
+Update the interface in your ``<package>/__init__.py`` file
+by removing the following line:
+
+.. code:: python
+
+  add_interface(config, "<interface>"[, INTERFACE_TYPE_CGXP])
+
+To add an ngeo interface see :ref:`integrator_ngeo_add`.
+
+If you remove all the cgxp interface, remove the ``vars.checker.defaults.lang_files`` from your
+project vars file, and the ``checker.defaults.lang_files`` from your update_paths.
 
 Viewer.js
 ---------

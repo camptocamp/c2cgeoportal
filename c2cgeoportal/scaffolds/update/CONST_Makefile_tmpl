@@ -50,6 +50,8 @@ export DEVELOPMENT
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
 CGXP_INTERFACES ?=
+INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
+export INTERFACES
 # Used print version
 PRINT_VERSION ?= 3
 # Enable Docker target
@@ -849,7 +851,7 @@ $(PACKAGE)/static-ngeo/fonts/fontawesome-webfont.%: node_modules/font-awesome/fo
 	mkdir -p $(dir $@)
 	cp $< $@
 
-$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%-build.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
+$(APP_OUTPUT_DIR)/%.css: $(PACKAGE)/static-ngeo/less/%.less $(LESS_FILES) $(NGEO_FONTS) .build/node_modules.timestamp
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
 	node_modules/.bin/lessc $(LESS_ARGS) $< $@

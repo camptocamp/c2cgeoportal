@@ -24,13 +24,9 @@ Features that require additional steps (most of the time):
 .. toctree::
    :maxdepth: 1
 
-   interface
    ngeo
-   cgxp
    subdomain
-   advanced
    fulltext_search
-   querier
    editing
    print
    api
@@ -41,3 +37,4 @@ Features that require additional steps (most of the time):
    intranet
    security
    pdfreport
+   legacy
