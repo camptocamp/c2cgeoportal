@@ -30,7 +30,7 @@ You don't need to create the table yourself, as it is created by the
 ``create_db`` command line (see the section
 :ref:`integrator_install_application`).
 
-If you did want to create the table manually you'd use the following commands:
+If you did want to create the table manually you would use the following commands:
 
 .. prompt:: bash
 
