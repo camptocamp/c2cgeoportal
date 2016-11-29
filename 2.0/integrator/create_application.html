@@ -203,6 +203,76 @@ Branches are available starting at version <code class="docutils literal"><span 
 <span class="prompt1">git push origin master</span>
 </pre></div>
 </div>
+<div class="section" id="configuration-of-different-environment-in-your-project">
+<h2>Configuration of different environment in your project<a class="headerlink" href="#configuration-of-different-environment-in-your-project" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Makefile: These files are environment configuration files. Each environment will
+have its configuration file (developer, preprod, prod)</li>
+<li>vars_xxx.yaml: These files are application configuration files. Generally only
+one file is needed to configure your application.</li>
+</ul>
+</div>
+<div class="section" id="hierarchy-and-extending-your-configuration-files">
+<h3>Hierarchy and extending your configuration files<a class="headerlink" href="#hierarchy-and-extending-your-configuration-files" title="Permalink to this headline">¶</a></h3>
+<p>The configuration files (Makefile and vars) have a hierarchy between them.
+These files extend other files. A Makefile extends another Makefile
+and similarly a vars file extends another vars file. This extension is visible
+in Makefile files:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span class="n">include</span> <span class="n">CONST_Makefile</span>
+</pre></div>
+</div>
+<p>and vars files:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>CONST files are files that should not be changed because they are replaced
+during application updates, so your changes will be systematically lost. You can
+extend these files as many times as you like, although it is not recommended to
+exceed 3-4 levels for readability and simplicity.</p>
+<img alt="../_images/doc_hierarchie.png" src="../_images/doc_hierarchie.png" />
+<p>Whenever possible, it is strongly advised not to extend the
+<code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, and we recommend that you use dynamic variables as
+described below. However some use cases may need to do so:</p>
+<ul class="simple">
+<li>Configuring really different environments.</li>
+<li>Configuration of a multi-project (see below for this specific use case).</li>
+</ul>
+</div>
+<div class="section" id="use-of-dynamic-variable">
+<h3>Use of dynamic variable<a class="headerlink" href="#use-of-dynamic-variable" title="Permalink to this headline">¶</a></h3>
+<p>Variables used in the application configuration files (files <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>)
+can be made dynamic by means of environment variable. In the main file
+<code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code>, added the <code class="docutils literal"><span class="pre">interpreted</span></code> block at the bottom of the
+file.</p>
+<p>In this same file, you can change the value of a parameter by putting it in
+uppercase (example: <code class="docutils literal"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
+interpreted parameters section:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span class="n">extends</span><span class="p">:</span> <span class="n">CONST_vars</span><span class="o">.</span><span class="n">yaml</span>
+
+<span class="nb">vars</span><span class="p">:</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">HOST</span>
+<span class="o">...</span>
+<span class="n">interpreted</span><span class="p">:</span>
+    <span class="n">environment</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">log_level</span>
+        <span class="o">-</span> <span class="n">host</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal"><span class="pre">&lt;project&gt;.mk</span></code> file, add parameters you want to change as exported
+parameters:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span class="n">export</span> <span class="n">HOST</span> <span class="o">=</span> <span class="n">domaine</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
+<span class="n">export</span> <span class="n">LOG_LEVEL</span>
+</pre></div>
+</div>
+<p>In the Makefiles that extend this main file, you only need to define the
+environment variables:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span class="n">export</span> <span class="n">HOST</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
 <p>As the integrator you need to edit the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and
@@ -259,6 +329,8 @@ except the &#8216;Get the application source tree&#8217; chapter.</p>
 <p>To be consistent with c2cgeoportal terminology we will use the words <cite>project</cite>
 to refer to the whole project and <cite>instance</cite> for a dedicated configuration of
 the project.</p>
+<p>Multi-instance project use the concepts describe above:</p>
+<img alt="../_images/doc_hierarchie_multiproject.png" src="../_images/doc_hierarchie_multiproject.png" />
 <p>This procedure will deal with:</p>
 <ul class="simple">
 <li>One folder per instance <code class="docutils literal"><span class="pre">mapfile/&lt;instance&gt;</span></code>.</li>
@@ -518,6 +590,12 @@ But we can get only the non structured variable.</p>
 <li><a class="reference internal" href="#put-the-application-under-revision-control">Put the application under revision control</a><ul>
 <li><a class="reference internal" href="#to-add-a-new-child-in-an-existing-repository">To add a new child in an existing repository</a></li>
 <li><a class="reference internal" href="#to-add-a-project-in-a-new-repository">To add a project in a new repository</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-of-different-environment-in-your-project">Configuration of different environment in your project</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#hierarchy-and-extending-your-configuration-files">Hierarchy and extending your configuration files</a></li>
+<li><a class="reference internal" href="#use-of-dynamic-variable">Use of dynamic variable</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configure-the-application">Configure the application</a></li>
