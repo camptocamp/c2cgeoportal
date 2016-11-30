@@ -7,7 +7,7 @@ The print version 2.x cannot be used in the ngeo application be he still can be 
 
 The print version 3.x and the version 2.x cannot be used together.
 
-To use it you should::
+To use it you should:
 
   * Keep the print war in your repository.
   * Add ``PRINT_VERSION ?= 2`` in your project makefile.
@@ -36,11 +36,11 @@ To use it you should::
      update_paths:
      - checker.routes
 
-Back to the print version 3.x::
+Back to the print version 3.x:
 
   * Remove your war file ``git rm print/print-servlet.war``.
   * Remove the ``PRINT_VERSION`` from your project makefile (default is 3).
-  * In your project vars file remove the following keys::
+  * In your project vars file remove the following keys:
 
     * ``vars/print_url``
     * ``vars/checker/defaults/print_template``
@@ -54,26 +54,26 @@ Back to the print version 3.x::
   * Have ``checker_pdf`` in ``vars/check_collector/disabled`` (it's possible that you can completely remove it).
   * Be sure that you do this thing in your project vars file:
 
-  .. code:: yaml
+    .. code:: yaml
 
-     vars:
-         ...
-         checker:
-             defaults:
-                 ...
-                 print_spec:
-                     layout: "1 A4 portrait"
-                     outputFormat: "pdf"
-                     attributes:
-                         title: ""
-                         comments: ""
-                         datasource: []
-                         map:
-                             projection: "EPSG:21781"
-                             dpi: 254
-                             rotation: 0
-                             center: [600000, 200000]
-                             scale: 100000
-                             longitudeFirst: true
-                             layers: []
-                         legend: {}
+       vars:
+           ...
+           checker:
+               defaults:
+                   ...
+                   print_spec:
+                       layout: "1 A4 portrait"
+                       outputFormat: "pdf"
+                       attributes:
+                           title: ""
+                           comments: ""
+                           datasource: []
+                           map:
+                               projection: "EPSG:21781"
+                               dpi: 254
+                               rotation: 0
+                               center: [600000, 200000]
+                               scale: 100000
+                               longitudeFirst: true
+                               layers: []
+                           legend: {}
