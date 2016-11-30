@@ -11,7 +11,7 @@ To use it you should::
 
   * Keep the print war in your repository.
   * Add ``PRINT_VERSION ?= 2`` in your project makefile.
-  * Add in the ``vars`` of your project vars file: ``print_url: http://localhost:8080/print-{instanceid}/pdf``.
+  * Add in the ``vars`` of your project vars file: ``print_url: http://localhost:8080/print-{instanceid}/pdf/``.
   * Disable the print v3 checker and enable the print v2 one, edit your project vars file:
 
   .. code:: yaml
