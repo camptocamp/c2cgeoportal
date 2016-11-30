@@ -42,7 +42,7 @@ And continue on the step 4.
 
 5. The less build is simplified (be careful it you customise your style):
 
-    git rm {{package}}/static-ngeo/less/mobile-build.js
+    git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
 6. The checkers will be refactored, you should do at least the following change:
