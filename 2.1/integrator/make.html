@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Build the project with Make &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Use Docker to deploy your application" href="docker.html" />
+    <link rel="prev" title="Configuring Windows tools required to connect to our servers" href="windows_tools.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="build-the-project-with-make">
+<span id="integrator-make"></span><h1>Build the project with Make<a class="headerlink" href="#build-the-project-with-make" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="makefiles">
+<h2>Makefiles<a class="headerlink" href="#makefiles" title="Permalink to this headline">¶</a></h2>
+<p>Usually we have the following makefiles includes:
+<code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> -&gt; <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> -&gt; <code class="docutils literal"><span class="pre">CONST_Makefile.mk</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">CONST_Makefile.mk</span></code> is a huge makefile that is maintained by the
+GeoMapFish developers.</p>
+<p>The <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> contains the project-specific config and rules,
+Default is:</p>
+<pre class="code makefile literal-block">
+<span class="name variable"></span><span class="comment preproc">ifdef VARS_FILE
+</span><span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span> vars_&lt;package&gt;.yaml
+<span class="comment preproc">else
+</span><span class="name variable">VARS_FILE</span> <span class="operator">=</span> vars_&lt;package&gt;.yaml
+<span class="name variable">VARS_FILES</span> <span class="operator">+=</span> <span class="literal string interpol">${</span><span class="name variable">VARS_FILE</span><span class="literal string interpol">}</span>
+<span class="comment preproc">endif
+</span>
+<span class="comment preproc">include CONST_Makefile
+</span>
+</pre>
+<p>And the <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> contains the user-specific config (mainly the
+<code class="docutils literal"><span class="pre">INSTANCE_ID</span></code> config), and should look like:</p>
+<pre class="code makefile literal-block">
+<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;user&gt;
+<span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
+
+<span class="comment preproc">include &lt;package&gt;.mk
+</span>
+</pre>
+</div>
+<div class="section" id="vars-files">
+<h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
+<p>The project variables are set in the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file,
+which extends the default <code class="docutils literal"><span class="pre">CONST_vars.yaml</span></code>.</p>
+<p>To make such variables available to the python code, for instance using</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>they must be listed in the makefile as well using <code class="docutils literal"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
+<p>To get a variable from the makefile to the vars, you should make your variable as export:</p>
+<div class="code make highlight-default"><div class="highlight"><pre><span></span>export MY_VAR ?= my_value
+</pre></div>
+</div>
+<p>And in your yaml vars file add:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="n">my_var</span><span class="p">:</span> <span class="n">MY_VAR</span>
+<span class="n">interpreted</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="n">environment</span><span class="p">:</span>
+   <span class="o">-</span> <span class="o">...</span>
+   <span class="o">-</span> <span class="n">my_var</span>
+</pre></div>
+</div>
+<p>For more information see the
+<a class="reference external" href="https://github.com/sbrunner/c2c.template">c2c.template</a> documentation.</p>
+</div>
+<div class="section" id="makefile-config-variables">
+<h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this headline">¶</a></h2>
+<p>The following variables may be set in the makefiles:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">APACHE_ENTRY_POINT</span></code>: The apache entry point, defaults to <code class="docutils literal"><span class="pre">/$(INSTANCE_ID)/</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">APACHE_VHOST</span></code>: The vhost folder name in <code class="docutils literal"><span class="pre">/var/www/vhost</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project yaml configuration file.</li>
+<li><code class="docutils literal"><span class="pre">DEVELOPMENT</span></code>: if <code class="docutils literal"><span class="pre">TRUE</span></code> the <code class="docutils literal"><span class="pre">CSS</span></code> and <code class="docutils literal"><span class="pre">JS</span></code> files are not minified and the
+<code class="docutils literal"><span class="pre">development.ini</span></code> pyramid config file is used, defaults to <code class="docutils literal"><span class="pre">FALSE</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">INSTANCE_ID</span></code>: The WSGI instance id (should be unique on a server).</li>
+<li><code class="docutils literal"><span class="pre">LANGUAGES</span></code>: the list of available languages.</li>
+<li><code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code>: The list of CGXP interfaces, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>: The list of NGEO interfaces, default is <code class="docutils literal"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">POST_RULES</span></code>: postdefine some build rules, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">PRE_RULES</span></code>: predefine some build rules, default is empty.</li>
+<li><code class="docutils literal"><span class="pre">PRINT_VERSION</span></code>: , The print version we want to use (<code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code> or <code class="docutils literal"><span class="pre">NONE</span></code>), defaults to <code class="docutils literal"><span class="pre">3</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">TILECLOUD_CHAIN</span></code>: <code class="docutils literal"><span class="pre">TRUE</span></code> to indicate that we use TileCloud-chain, defaults to <code class="docutils literal"><span class="pre">TRUE</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="custom-rules">
+<h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> file we can create some other rules.
+Here is a simple example:</p>
+<div class="code makefile highlight-default"><div class="highlight"><pre><span></span>MY_FILE ?= &lt;file&gt;
+
+PRE_RULES = $(MY_FILE)
+
+$(MY_FILE): &lt;source_file&gt;
+    cp &lt;source_file&gt; $(MY_FILE)
+    # Short version:
+    # cp $&lt; $@
+
+clean: project-clean
+.PHONY: project-clean
+project-clean:
+    rm -f $(MY_FILE)
+</pre></div>
+</div>
+</div>
+<div class="section" id="note">
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">.build/*.timestamp</span></code> files are not really required  but they are flags
+indicating that an other rule is correctly done.</p>
+<p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Build the project with Make</a><ul>
+<li><a class="reference internal" href="#makefiles">Makefiles</a></li>
+<li><a class="reference internal" href="#vars-files">Vars files</a></li>
+<li><a class="reference internal" href="#makefile-config-variables">Makefile config variables</a></li>
+<li><a class="reference internal" href="#custom-rules">Custom rules</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="windows_tools.html" title="previous chapter">Configuring Windows tools required to connect to our servers</a></li>
+      <li>Next: <a href="docker.html" title="next chapter">Use Docker to deploy your application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/make.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/make.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

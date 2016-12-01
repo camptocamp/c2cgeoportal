@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Specific configuration for Arcgis &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Specific Backend Documentation" href="backend.html" />
+    <link rel="next" title="Specific configuration for GeoServer" href="backend_geoserver.html" />
+    <link rel="prev" title="Specific configuration for QGIS mapserver" href="backend_qgis.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="specific-configuration-for-arcgis">
+<span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wfs-namespace">
+<h2>WFS namespace<a class="headerlink" href="#wfs-namespace" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service which will be used
+to get the namespace required to parse the WFS response:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WFS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WFSServer&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="differentiating-wms-and-wfs-services">
+<h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
+<p>It may be necessary to differentiate the WMS and WFS services url.</p>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">mapserv_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WMSServer</span>
+<span class="n">mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
+</pre></div>
+</div>
+<p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
+<em>WFS GetCapabilities</em>.</p>
+<p>If your project has a parent (in a parent/child architecture),
+in the <code class="docutils literal"><span class="pre">config_child.yaml.mako</span></code> file also define the WFS service separately:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">external_mapserv_wfs_url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">arcgis</span><span class="o">.</span><span class="n">server</span><span class="o">/</span><span class="n">arcgis</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">SOME</span><span class="o">/</span><span class="n">FOLDER</span><span class="o">/</span><span class="n">MapServer</span><span class="o">/</span><span class="n">WFSServer</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="wfs-geometryname">
+<h2>WFS geometryName<a class="headerlink" href="#wfs-geometryname" title="Permalink to this headline">¶</a></h2>
+<p>Also, the name of the geometry parameter in the WFS response is different in ArcGis.</p>
+<p>in the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, for the <em>cgxp.plugins.WFSGetFeature</em> or <em>cgxp.plugins.GetFeature</em> plugins, add the
+following parameter in the plugin configuration:</p>
+<blockquote>
+<div>geometryName: &#8216;SHAPE&#8217;</div></blockquote>
+</div>
+<div class="section" id="note">
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<p>ArcGis (even 10.2) doesn&#8217;t understand &#8220;application/vnd.ogc.gml&#8221; for <em>INFO_FORMAT</em> in
+a <em>GetFeatureInfo</em> request and returns only a simple XML formated response
+instead of GML.</p>
+<p>This kind of result can not be parsed correctly by the <em>cgxp.plugins.GetFeature</em> plugin,
+meaning a WMS GetFeatureInfo result will not display correctly.</p>
+<p>It is recommended to use the <em>cgxp.plugins.WFSGetFeature</em> plugin that does <em>only</em> WFS
+queries.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Specific configuration for Arcgis</a><ul>
+<li><a class="reference internal" href="#wfs-namespace">WFS namespace</a></li>
+<li><a class="reference internal" href="#differentiating-wms-and-wfs-services">Differentiating WMS and WFS services</a></li>
+<li><a class="reference internal" href="#wfs-geometryname">WFS geometryName</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="backend.html">Specific Backend Documentation</a><ul>
+      <li>Previous: <a href="backend_qgis.html" title="previous chapter">Specific configuration for QGIS mapserver</a></li>
+      <li>Next: <a href="backend_geoserver.html" title="next chapter">Specific configuration for GeoServer</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/backend_arcgis.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/backend_arcgis.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

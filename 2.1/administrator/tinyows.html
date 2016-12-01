@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>WFS-T with TinyOWS &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Administrator Guide" href="index.html" />
+    <link rel="next" title="Integrator Guide" href="../integrator/index.html" />
+    <link rel="prev" title="Editing" href="editing.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wfs-t-with-tinyows">
+<span id="administrator-tinyows"></span><h1>WFS-T with TinyOWS<a class="headerlink" href="#wfs-t-with-tinyows" title="Permalink to this headline">¶</a></h1>
+<p>Based on <a class="reference external" href="http://mapserver.org/tinyows/">TinyOWS</a> c2cgeoportal layers can be
+edited via WFS-T, for example using QGIS as a client. c2cgeoportal acts as a
+proxy to TinyOWS to limit access to authorized users.</p>
+<p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
+<div class="section" id="apache-configuration-for-tinyows">
+<h2>Apache configuration for TinyOWS<a class="headerlink" href="#apache-configuration-for-tinyows" title="Permalink to this headline">¶</a></h2>
+<p>When creating a c2cgeoportal project using the <a class="reference internal" href="../integrator/create_application.html#integrator-create-application"><span class="std std-ref">Paste skeletons</span></a>
+there will already be a default Apache configuration file for TinyOWS under the
+location <code class="docutils literal"><span class="pre">apache/tinyows.conf.mako</span></code>. Uncomment the lines in this file to
+enable TinyOWS:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/tinyows /usr/lib/cgi-bin/tinyows
+&lt;Location /${instanceid}/tinyows&gt;
+  SetEnv TINYOWS_CONFIG_FILE ${directory}/mapserver/tinyows.xml
+
+  # restrict access to localhost so that all requests go through the proxy
+  Options All
+  Order deny,allow
+  Deny from all
+  Allow from 127.0.0.1 ::1
+&lt;/Location&gt;
+</pre></div>
+</div>
+<p>Make sure that the location of TinyOWS (<code class="docutils literal"><span class="pre">/usr/lib/cgi-bin/tinyows</span></code>) matches
+your installation. The configuration restricts the access to TinyOWS to
+<code class="docutils literal"><span class="pre">localhost</span></code> so that all external requests go through the TinyOWS proxy of
+c2cgeoportal.</p>
+</div>
+<div class="section" id="tinyows-configuration">
+<h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The configuration of TinyOWS is made in a XML file, which is located at
+<code class="docutils literal"><span class="pre">mapserver/tinyows.xml.mako</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">tinyows</span>
+    <span class="n">online_resource</span><span class="o">=</span><span class="s2">&quot;http://$</span><span class="si">{host}</span><span class="s2">/$</span><span class="si">{instanceid}</span><span class="s2">/wsgi/tinyows_proxy&quot;</span>
+    <span class="n">schema_dir</span><span class="o">=</span><span class="s2">&quot;/usr/share/tinyows/schema/&quot;</span>
+    <span class="n">log</span><span class="o">=</span><span class="s2">&quot;tinyows.log&quot;</span>
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">check_schema</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;</span>
+
+  <span class="o">&lt;</span><span class="n">contact</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoMapFish&quot;</span>
+      <span class="n">site</span><span class="o">=</span><span class="s2">&quot;http://www.geomapfish.org/&quot;</span>
+      <span class="n">email</span><span class="o">=</span><span class="s2">&quot;geomapfish@googlegroups.com&quot;</span> <span class="o">/&gt;</span>
+
+  <span class="o">&lt;</span><span class="n">metadata</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoMapFish TinyOWS Server&quot;</span>
+      <span class="n">title</span><span class="o">=</span><span class="s2">&quot;GeoMapFish TinyOWS Server&quot;</span> <span class="o">/&gt;</span>
+
+  <span class="o">&lt;</span><span class="n">pg</span>
+      <span class="n">host</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbhost}</span><span class="s2">&quot;</span>
+      <span class="n">user</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbuser}</span><span class="s2">&quot;</span>
+      <span class="n">password</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbpassword}</span><span class="s2">&quot;</span>
+      <span class="n">port</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{dbport}</span><span class="s2">&quot;</span>
+      <span class="n">dbname</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{db}</span><span class="s2">&quot;</span> <span class="o">/&gt;</span>
+
+  <span class="o">&lt;</span><span class="n">layer</span>
+      <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+      <span class="n">writable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+      <span class="n">ns_prefix</span><span class="o">=</span><span class="s2">&quot;tows&quot;</span>
+      <span class="n">ns_uri</span><span class="o">=</span><span class="s2">&quot;http://www.tinyows.org/&quot;</span>
+      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+      <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;edit&quot;</span>
+      <span class="n">table</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+      <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Points&quot;</span>
+      <span class="n">pkey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">tinyows</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In the root element <code class="docutils literal"><span class="pre">tinyows</span></code> the following properties have to be set:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">online_resource</span></code> - This should be the URL to the TinyOWS proxy, usually
+<code class="docutils literal"><span class="pre">http://${host}/${instanceid}/wsgi/tinyows_proxy</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">schema_dir</span></code> - The path to the TinyOWS schema directory. Adapt this path
+according to your installation.</li>
+<li><code class="docutils literal"><span class="pre">log</span></code> - Path to the TinyOWS log file. This file must be writable.</li>
+<li><code class="docutils literal"><span class="pre">log_level</span></code> - The log level (default: 1). Please refer to the
+<a class="reference external" href="http://mapserver.org/tinyows/configfile.html#tinyows-element">TinyOWS documentation</a>
+for more information.</li>
+<li><code class="docutils literal"><span class="pre">check_schema</span></code> - If the input data is validated against the schema when
+creating new features. In a vhost environment the schema check has to be
+disabled, so that the proxy can function properly. This doesn&#8217;t disable
+the validation database-side though!</li>
+</ol>
+<p>The database connection is configured in the element <code class="docutils literal"><span class="pre">pg</span></code>. By default the
+same database as for the c2cgeoportal application will be used.</p>
+<p>The layers that should be accessible with TinyOWS have to specified with
+<code class="docutils literal"><span class="pre">layer</span></code> elements:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">layer</span>
+    <span class="n">retrievable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">writable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="n">ns_prefix</span><span class="o">=</span><span class="s2">&quot;tows&quot;</span>
+    <span class="n">ns_uri</span><span class="o">=</span><span class="s2">&quot;http://www.tinyows.org/&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;edit&quot;</span>
+    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;point&quot;</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Points&quot;</span>
+    <span class="n">pkey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span> <span class="o">/&gt;</span>
+</pre></div>
+</div>
+<p>In this example a layer named <code class="docutils literal"><span class="pre">point</span></code> is created for table <code class="docutils literal"><span class="pre">point</span></code> in the
+database schema <code class="docutils literal"><span class="pre">edit</span></code> with the primary key column <code class="docutils literal"><span class="pre">id</span></code>. This layer is both
+<code class="docutils literal"><span class="pre">retrievable</span></code> and <code class="docutils literal"><span class="pre">writable</span></code>.</p>
+<p>The referenced database table must contain a single geometry column and must
+provide a sequence for the primary key so that new entities can be created.</p>
+<p>The layer&#8217;s name must match the name of a c2cgeoportal layer. This c2cgeoportal
+layer must be assigned to a restriction-area  whose``readwrite`` flag is
+enabled. The restriction-area will be used inside the proxy to restrict the
+access to a layer to the users of a restriction-area.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The actual <em>area</em> of a restriction-area is ignored in the TinyOWS proxy.
+The proxy only checks for authorized users. To limit the access to a
+specific area, the <code class="docutils literal"><span class="pre">geobbox</span></code> property has to be set for a layer in the
+TinyOWS XML configuration. Please refer to the
+<a class="reference external" href="http://mapserver.org/tinyows/configfile.html#layer-element">TinyOWS documentation</a>
+for more information.</p>
+</div>
+<p>After the configuration is made, re-build the c2cgeoportal application:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">&lt;</span><span class="n">profile</span><span class="o">&gt;.</span><span class="n">mk</span> <span class="n">build</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="editing-a-layer-with-wfs-t">
+<h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this headline">¶</a></h2>
+<p>The configured layers can now be edited using your favorite GIS supporting
+WFS-T. For example in QGIS add a new WFS layer with the URL
+<code class="docutils literal"><span class="pre">http://${host}/${instanceid}/wsgi/tinyows_proxy</span></code> (e.g.
+<code class="docutils literal"><span class="pre">http://geomapfish.demo-camptocamp.com/demo/wsgi/tinyows_proxy</span></code>). For the
+authentication use your c2cgeoportal account details.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">WFS-T with TinyOWS</a><ul>
+<li><a class="reference internal" href="#apache-configuration-for-tinyows">Apache configuration for TinyOWS</a></li>
+<li><a class="reference internal" href="#tinyows-configuration">TinyOWS configuration</a></li>
+<li><a class="reference internal" href="#editing-a-layer-with-wfs-t">Editing a layer with WFS-T</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="editing.html" title="previous chapter">Editing</a></li>
+      <li>Next: <a href="../integrator/index.html" title="next chapter">Integrator Guide</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/administrator/tinyows.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/administrator/tinyows.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

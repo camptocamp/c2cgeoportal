@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Install an existing application &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Integrator Guide" href="index.html" />
+    <link rel="next" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
+    <link rel="prev" title="Create a new application" href="create_application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="install-an-existing-application">
+<span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
+<p>On this page we explain all the procedures to build an application from
+only the code.</p>
+<p>For example If you want to use an existing database you should ignore
+all the commands concerning the database.</p>
+<dl class="docutils">
+<dt>This guide considers that:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>We use a server manages by Camptocamp, meaning:</dt>
+<dd><ul class="first last simple">
+<li>all dependencies described in the
+<a class="reference internal" href="requirements.html#integrator-requirements"><span class="std std-ref">requirements</span></a> are installed,</li>
+<li>Postgres has a GIS template <code class="docutils literal"><span class="pre">template_postgis</span></code> and a user <code class="docutils literal"><span class="pre">www-data</span></code>,</li>
+<li>Apache uses the user <code class="docutils literal"><span class="pre">www-data</span></code>.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Use Git as revision control.</p>
+</li>
+</ul>
+</dd>
+</dl>
+<p>For the others system there is some notes to give some help.</p>
+<div class="section" id="set-up-the-database">
+<h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
+application works with its own tables, which store users, layers, etc. These
+tables are located in a specific schema of the database.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Multiple specific schemas are actually used in a parent/child architecture.</p>
+</div>
+<p>If the application has MapServer layers linked to PostGIS tables, these tables
+and the application-specific tables must be in the same database, preferably in
+separate schemas. This is required for layer access control (<em>restricted
+layers</em>), where joining user/role tables to PostGIS layer tables is necessary.</p>
+<div class="section" id="create-the-database">
+<span id="integrator-install-application-create-database"></span><h3>Create the database<a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h3>
+<p>To create the database you can use:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo -u postgres createdb &lt;db_name&gt; -T template_postgis</span>
+</pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> replaced by the actual database name.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>if you don&#8217;t have the template_postgis you can use:</p>
+<p>with Postgres &gt;= 9.1 and PostGIS &gt;= 2.1:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
+</pre><p>with older versions:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql</span>
+<span class="prompt1">sudo -u postgres psql -d &lt;db_name&gt; -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql</span>
+</pre><p class="last">Note that the path of the postgis scripts and the template name can
+differ on your host.</p>
+</div>
+</div>
+<div class="section" id="create-the-schema">
+<span id="integrator-install-application-create-schema"></span><h3>Create the schema<a class="headerlink" href="#create-the-schema" title="Permalink to this headline">¶</a></h3>
+<p>Each parent or child needs two application-specific schemas,
+then to create it use:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
+</pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;schema_name&gt;</span></code> replaced by the actual database name,
+and schema name (&#8216;main&#8217; by default), respectively.</p>
+</div>
+<div class="section" id="create-a-database-user">
+<span id="integrator-install-application-create-user"></span><h3>Create a database user<a class="headerlink" href="#create-a-database-user" title="Permalink to this headline">¶</a></h3>
+<p>We use a specific user for the application, <code class="docutils literal"><span class="pre">www-data</span></code> by default.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It the user doesn&#8217;t already exist in your database, create it first:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P &lt;db_user&gt;</span>
+</pre></div>
+<p>Give the rights to the user:</p>
+<pre class="highlight"><span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT SELECT ON TABLE spatial_ref_sys TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON TABLE geometry_columns TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+</pre><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you don&#8217;t use the www-data user for Apache replace it by the right user.</p>
+</div>
+</div>
+</div>
+<div class="section" id="install-the-application">
+<h2>Install the application<a class="headerlink" href="#install-the-application" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-the-application-source-tree">
+<h3>Get the application source tree<a class="headerlink" href="#get-the-application-source-tree" title="Permalink to this headline">¶</a></h3>
+<p>If Git is used for the application use the following command to get the
+application source tree:</p>
+<pre class="highlight"><span class="prompt1">git clone git@github.com:camptocamp/&lt;my_project&gt;.git &lt;my_project&gt;</span>
+</pre><p>c2cgeoportal applications include a Git submodule for CGXP. The following
+commands should be used to download CGXP and its dependencies:</p>
+<pre class="highlight"><span class="prompt1"><span class="nb">cd</span> &lt;my_project&gt;</span>
+</pre><p>The <code class="docutils literal"><span class="pre">foreach</span></code> command aims to init and update CGXP&#8217;s own submodules, for GXP,
+OpenLayers and GeoExt.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We don&#8217;t just use <code class="docutils literal"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--recursive</span></code> here because
+that would also download GXP&#8217;s submodules. We don&#8217;t want that because we
+don&#8217;t need GXP&#8217;s submodules. CGXP indeed has its own submodules for
+OpenLayers and GeoExt.</p>
+</div>
+</div>
+<div class="section" id="non-apt-dpkg-based-os-configuration">
+<h3>Non Apt/Dpkg based OS Configuration<a class="headerlink" href="#non-apt-dpkg-based-os-configuration" title="Permalink to this headline">¶</a></h3>
+<p>For example Windows or RedHat.</p>
+<p>Disable the package checking:</p>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> add:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TEST_PACKAGES</span> <span class="o">=</span> <span class="n">FALSE</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="windows-specific-configuration">
+<h3>Windows Specific Configuration<a class="headerlink" href="#windows-specific-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Some Python modules cannot currently be installed through the Python Package
+Index (pypi) and they have to be downloaded manually and stored. This is
+because these packages use DLLs and binaries which would have to be compiled
+using a C compiler.</p>
+<p>Furthermore, some changes in the apache wsgi and mapserver configurations are
+required to make c2cgeoportal work on Windows.</p>
+<p>Also, between all the different command interfaces available on Windows (cmd,
+Cygwin, git mingw), only Windows default cmd interface handle paths correctly
+in all stage of the application setup.</p>
+<div class="section" id="command-interface-and-environment-variable">
+<h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
+<p>Only use Windows default commande interface:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
+</pre></div>
+</div>
+<p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
+<p>Complementarily you need to add all the ressource paths to your system PATH
+environment variable, for cygwin, git and node binaries.</p>
+</div>
+<div class="section" id="cygwin">
+<h4>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h4>
+<p>You must install the following packages:</p>
+<ul class="simple">
+<li>make</li>
+<li>git</li>
+<li>gettext-devel</li>
+</ul>
+</div>
+<div class="section" id="python-wheels">
+<h4>Python Wheels<a class="headerlink" href="#python-wheels" title="Permalink to this headline">¶</a></h4>
+<p>You should create a &#8220;wheels&#8221; folder at the root folder of your project.</p>
+<p>Then, go to <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>, search and download the
+following packages:</p>
+<ul class="simple">
+<li>Psycopg2</li>
+<li>Shapely</li>
+<li>Pillow</li>
+<li>Pyproj</li>
+</ul>
+<p>If your project is configured for Windows, then <code class="docutils literal"><span class="pre">make</span></code> will expect this folder
+to exist and to contain these wheels.</p>
+<p>To be sure to use the right version of these packages, open the
+<code class="docutils literal"><span class="pre">CONST_requirements_windows.txt</span></code> file and modify the versions of these
+packages according to the files you have downloaded.</p>
+</div>
+<div class="section" id="apache-wsgi-conf-mako">
+<h4>apache/wsgi.conf.mako<a class="headerlink" href="#apache-wsgi-conf-mako" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> and <code class="docutils literal"><span class="pre">WSGIProcessGroup</span></code> are not supported on windows.</p>
+<p>(<a class="reference external" href="http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGIDaemonProcess">WSGIDaemonProcess ConfigurationDirective</a>
+&#8220;Note that the <code class="docutils literal"><span class="pre">WSGIDaemonProcess</span></code> directive and corresponding features are not
+available on Windows or when running Apache 1.3.&#8221;)</p>
+<p>The following lines must be commented/removed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>WSGIDaemonProcess c2cgeoportal:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
+...
+WSGIProcessGroup c2cgeoportal:${instanceid}
+</pre></div>
+</div>
+</div>
+<div class="section" id="apache-mapserver-conf-mako">
+<h4>apache/mapserver.conf.mako<a class="headerlink" href="#apache-mapserver-conf-mako" title="Permalink to this headline">¶</a></h4>
+<p>The path to Mapserver executable must be modified:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv C:/path/to/ms4w/Apache/cgi-bin/mapserv.exe
+</pre></div>
+</div>
+</div>
+<div class="section" id="mapserver-c2cgeoportal-map-mako">
+<h4>mapserver/c2cgeoportal.map.mako<a class="headerlink" href="#mapserver-c2cgeoportal-map-mako" title="Permalink to this headline">¶</a></h4>
+<p>You must specify the path to the mapserver&#8217;s epsg file by uncommenting and adapting
+this line under <code class="docutils literal"><span class="pre">MAP</span></code> (use regular slash <code class="docutils literal"><span class="pre">/</span></code>)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJ_LIB</span><span class="s2">&quot; &quot;</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">PATH</span><span class="o">/</span><span class="n">TO</span><span class="o">/</span><span class="n">ms4w</span><span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">nad</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="project-mk">
+<h4>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h4>
+<p>The following configuration override must be added to your <code class="docutils literal"><span class="pre">&lt;project&gt;.mk</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># Sets that&#39;s we use Windows
+OPERATING_SYSTEM ?= WINDOWS
+# Path to cygwin
+CYGWIN_PATH ?= c:/path/to/cygwin
+APACHE_VHOST ?= your_apache_vhost_folder
+APACHE_CONF_DIR ?= path/to/your/$(APACHE_VHOST)/conf
+PRINT_OUTPUT ?= path/to/your/Tomcat7/webapps
+TOMCAT_SERVICE_COMMAND ?= path/to/your/Tomcat7/bin/Tomcat7.exe
+APACHE_GRACEFUL ?= path/to/your/Apache/bin/httpd.exe -k restart -n &lt;servicename&gt;
+# Where &lt;servicename&gt; is the name of the Apache service, look at your
+# Windows services panel (Start &gt; Search &gt; Services)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="rhel-6-specific-configuration">
+<h3>RHEL 6 Specific Configuration<a class="headerlink" href="#rhel-6-specific-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Specific settings are required when the c2cgeoportal application is to be run
+on RedHat Enterprise Linux (RHEL) 6.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>First of all, note that, with RHEL, you cannot install the c2cgeoportal
+application in your homedir. If you do so, you will get the following error
+in the Apache logs:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="n">access</span> <span class="n">to</span> <span class="o">/~</span><span class="n">elemoine</span><span class="o">/</span> <span class="n">denied</span>
+</pre></div>
+</div>
+<p class="last">So always install the application in an Apache-accessible directory. On
+Camptocamp <em>puppetized</em> servers you will typically install the application
+in <code class="docutils literal"><span class="pre">/var/www/vhosts/&lt;vhost&gt;/private/dev/&lt;username&gt;/</span></code>, where <code class="docutils literal"><span class="pre">&lt;vhost&gt;</span></code>
+is the name of the Apache virtual host, and <code class="docutils literal"><span class="pre">&lt;username&gt;</span></code> is your Unix
+login name.</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>&lt;project&gt;.mk<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Configure some <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> RedHat specifics:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># Service base command for Tomcat on RedHat
+TOMCAT_SERVICE_COMMAND ?= sudo service tomcat-tomcat1
+# Command prefix to acces to the webapp folder
+TOMCAT_OUTPUT_CMD_PREFIX ?= sudo -u tomcat
+# Unix user who execute the &#39;mod_wsgi&#39; processes.
+# apache on RedHat, www-data elsewhere
+MODWSGI_USER ?= apache
+# Graceful command for RedHat
+APACHE_GRACEFUL ?= sudo /usr/sbin/apachectl graceful
+# Test packages are designed for Debian. They must be disabled by adding the following
+# line to ``&lt;package&gt;.mk``::
+DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages-mobile test-packages-ngeo
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h4>apache/mapserver.conf.mako<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>On RHEL 6 the <code class="docutils literal"><span class="pre">mapserv</span></code> binary is located in <code class="docutils literal"><span class="pre">/usr/libexec/</span></code>. The
+<code class="docutils literal"><span class="pre">mapserver.conf.mako</span></code> Apache config file assumes that <code class="docutils literal"><span class="pre">mapserv</span></code> is located in
+<code class="docutils literal"><span class="pre">/usr/lib/cgi-bin/</span></code>, and should therefore be changed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>ScriptAlias /${instanceid}/mapserv /usr/libexec/mapserv
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="integrator-install-application-install-application">
+<span id="id3"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
+<p>If it doesn&#8217;t already exist, create a <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file
+(where <code class="docutils literal"><span class="pre">&lt;user&gt;</span></code> is for example your username),
+that will contain your application special
+configuration:</p>
+<pre class="code make literal-block">
+<span class="name variable">INSTANCE_ID</span> <span class="operator">=</span> &lt;instanceid&gt;
+<span class="name variable">DEVELOPMENT</span> <span class="operator">=</span> TRUE
+
+<span class="comment preproc">include &lt;package&gt;.mk
+</span>
+</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For technical simplification the file should be named <code class="docutils literal"><span class="pre">&lt;instanceid&gt;.mk</span></code>
+in other words <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</span></code> should have the same value as <code class="docutils literal"><span class="pre">&lt;user&gt;</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</span></code> should be unique on the server, the username is a good
+choice or something like <code class="docutils literal"><span class="pre">&lt;user&gt;-&lt;sub-project&gt;</span></code> in case of parent/children project.</p>
+</div>
+<p>Add it to Git:</p>
+<pre class="highlight"><span class="prompt1">git add &lt;user&gt;.mk</span>
+<span class="prompt1">git commit -m <span class="s2">&quot;Add user build file&quot;</span></span>
+</pre><p>Create the application tables, and directly set the version (details later):</p>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk upgrade-db</span>
+</pre><p>Then you can build and install the application with the command:</p>
+<pre class="highlight"><span class="prompt1">make -f &lt;user&gt;.mk build</span>
+</pre><p>This previous command will do many things like:</p>
+<blockquote>
+<div><ul class="simple">
+<li>download and install the project dependencies,</li>
+<li>adapt the application configuration to your environment,</li>
+<li>build the javascript and css resources into compressed files,</li>
+<li>compile the translation files.</li>
+</ul>
+</div></blockquote>
+<p>Your application should be available at:
+<code class="docutils literal"><span class="pre">http://&lt;hostname&gt;/&lt;instanceid&gt;</span></code>.</p>
+<p>Where the <code class="docutils literal"><span class="pre">&lt;hostname&gt;</span></code> is directly linked to the virtual host,
+and the <code class="docutils literal"><span class="pre">&lt;instanceid&gt;</span></code> is the value you provided before.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Install an existing application</a><ul>
+<li><a class="reference internal" href="#set-up-the-database">Set up the database</a><ul>
+<li><a class="reference internal" href="#create-the-database">Create the database</a></li>
+<li><a class="reference internal" href="#create-the-schema">Create the schema</a></li>
+<li><a class="reference internal" href="#create-a-database-user">Create a database user</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#install-the-application">Install the application</a><ul>
+<li><a class="reference internal" href="#get-the-application-source-tree">Get the application source tree</a></li>
+<li><a class="reference internal" href="#non-apt-dpkg-based-os-configuration">Non Apt/Dpkg based OS Configuration</a></li>
+<li><a class="reference internal" href="#windows-specific-configuration">Windows Specific Configuration</a><ul>
+<li><a class="reference internal" href="#command-interface-and-environment-variable">Command interface and environment variable</a></li>
+<li><a class="reference internal" href="#cygwin">Cygwin</a></li>
+<li><a class="reference internal" href="#python-wheels">Python Wheels</a></li>
+<li><a class="reference internal" href="#apache-wsgi-conf-mako">apache/wsgi.conf.mako</a></li>
+<li><a class="reference internal" href="#apache-mapserver-conf-mako">apache/mapserver.conf.mako</a></li>
+<li><a class="reference internal" href="#mapserver-c2cgeoportal-map-mako">mapserver/c2cgeoportal.map.mako</a></li>
+<li><a class="reference internal" href="#project-mk">&lt;project&gt;.mk</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rhel-6-specific-configuration">RHEL 6 Specific Configuration</a></li>
+<li><a class="reference internal" href="#id1">&lt;project&gt;.mk</a><ul>
+<li><a class="reference internal" href="#id2">apache/mapserver.conf.mako</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integrator-install-application-install-application">Install the application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="create_application.html" title="previous chapter">Create a new application</a></li>
+      <li>Next: <a href="upgrade_application.html" title="next chapter">Upgrading a GeoMapFish application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/install_application.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/install_application.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CGXP &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Legacy components" href="legacy.html" />
+    <link rel="next" title="Print version 2.x" href="legacy_print.html" />
+    <link rel="prev" title="Legacy components" href="legacy.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cgxp">
+<span id="integrator-cgxp"></span><h1>CGXP<a class="headerlink" href="#cgxp" title="Permalink to this headline">¶</a></h1>
+<p>It still possible to have CGXP interface(s) in parallel of the ngeo interface(s).</p>
+<div class="section" id="organisation">
+<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline">¶</a></h2>
+<p>The main page where we can redefine the header
+is in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/index.html</span></code>.</p>
+<p>The viewer (map and all related tools)
+is define in the file: <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code>.</p>
+<p>The sample for the API is in the file:
+<code class="docutils literal"><span class="pre">&lt;package&gt;/templates/apiviewer.js</span></code>.</p>
+<p>The style sheet file is: <code class="docutils literal"><span class="pre">&lt;package&gt;/static/css/proj.css</span></code></p>
+<p>And finally the image should be placed in the folder:
+<code class="docutils literal"><span class="pre">&lt;package&gt;/static/images/</span></code></p>
+</div>
+<div class="section" id="use-the-cgxp-interface">
+<h2>Use the CGXP interface<a class="headerlink" href="#use-the-cgxp-interface" title="Permalink to this headline">¶</a></h2>
+<p>The special application named <code class="docutils literal"><span class="pre">index.html</span></code>, <code class="docutils literal"><span class="pre">viewer.js</span></code> is no more possible then you should do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* Do the following renames:
+
+  .. prompt:: bash
+
+     git mv &lt;package&gt;/templates/index.html &lt;package&gt;/templates/desktop.html
+     git mv &lt;package&gt;/templates/viewer.js &lt;package&gt;/templates/desktop.js
+
+* In the ``&lt;package&gt;/templates/desktop.html`` file do the following replacement:
+
+    - &lt;script type=&quot;text/javascript&quot; src=&quot;${request.static_url(&#39;&lt;package&gt;:static/build/app.js&#39;)}&quot;&gt;&lt;/script&gt;
+    + &lt;script type=&quot;text/javascript&quot; src=&quot;${request.static_url(&#39;&lt;package&gt;:static/build/desktop.js&#39;)}&quot;&gt;&lt;/script&gt;
+    ...
+    - &lt;script type=&quot;text/javascript&quot; src=&quot;${request.route_url(&#39;viewer&#39;, _query=extra_params)}&quot;&gt;&lt;/script&gt;
+    + &lt;script type=&quot;text/javascript&quot; src=&quot;${request.route_url(&#39;desktop.js&#39;, _query=extra_params)}&quot;&gt;&lt;/script&gt;
+
+* In the ``jsbuild/app.cfg.mako`` file do the following replacement:
+
+    - [app.js]
+    + [desktop.js]
+</pre></div>
+</div>
+<p>To configure the build of the interface you should use the <code class="docutils literal"><span class="pre">CGXP_INTERFACES</span></code> (and the <code class="docutils literal"><span class="pre">NGEO_INTERFACES</span></code>)
+in your project makefile, e.g.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="p">::</span> <span class="n">make</span>
+
+   <span class="n">CGXP_INTERFACES</span> <span class="o">=</span> <span class="n">desktop</span> <span class="n">edit</span> <span class="n">routing</span>
+   <span class="n">NGEO_INTERFACES</span> <span class="o">=</span> <span class="n">mobile</span>
+</pre></div>
+</div>
+<p>Enable the CGXP check, add in your project vars file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="p">::</span><span class="n">yaml</span><span class="p">::</span>
+
+   <span class="nb">vars</span><span class="p">:</span>
+       <span class="o">...</span>
+       <span class="n">checker</span><span class="p">:</span>
+          <span class="o">...</span>
+          <span class="n">defaults</span><span class="p">:</span>
+              <span class="o">...</span>
+              <span class="n">lang_files</span><span class="p">:</span> <span class="p">[</span><span class="n">cgxp</span><span class="p">]</span>
+   <span class="n">update_paths</span><span class="p">:</span>
+   <span class="o">...</span>
+   <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">lang_files</span>
+</pre></div>
+</div>
+<p>Do not have <code class="docutils literal"><span class="pre">check_collector.disabled</span></code> in the <code class="docutils literal"><span class="pre">update_paths</span></code> (and do not readd it during
+the next upgrade steps).</p>
+<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_CGXP</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The OGC proxy is deprecated because with modern browser it is not required to have it.</p>
+<p>Then you should remove it from the CGXP <code class="docutils literal"><span class="pre">js</span></code> interface files (<code class="docutils literal"><span class="pre">&lt;package&gt;/templates/&lt;interface&gt;.js</span></code>):</p>
+<div class="code diff highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">ProxyHost</span> <span class="o">=</span> <span class="s2">&quot;${request.route_url(&#39;ogcproxy&#39;) | n}?url=&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">externalWFSTypes</span></code> do not exist anymore than you should remove the following line
+from the CGXP <code class="docutils literal"><span class="pre">js</span></code> interface files (<code class="docutils literal"><span class="pre">&lt;&lt;package&gt;/templates/&lt;interface&gt;.js</span></code>)</p>
+<div class="code diff highlight-default"><div class="highlight"><pre><span></span>- externalWFSTypes: ${externalWFSTypes | n},
+</pre></div>
+</div>
+</div>
+<div class="section" id="back-to-the-ngeo-interface">
+<h2>Back to the ngeo interface<a class="headerlink" href="#back-to-the-ngeo-interface" title="Permalink to this headline">¶</a></h2>
+<p>Remove the CGXP interface:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git rm &lt;package&gt;/templates/&lt;interface&gt;.html</span>
+<span class="prompt1">git rm &lt;package&gt;/templates/&lt;interface&gt;.js</span>
+</pre><p>Remove the related section in the <code class="docutils literal"><span class="pre">jsbuild/app.cfg.mako</span></code> file.</p>
+<p>Update the interface in your <code class="docutils literal"><span class="pre">&lt;package&gt;/__init__.py</span></code> file
+by removing the following line:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">[,</span> <span class="n">INTERFACE_TYPE_CGXP</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To add an ngeo interface see <a class="reference internal" href="ngeo.html#integrator-ngeo-add"><span class="std std-ref">Add a new interface</span></a>.</p>
+<p>If you remove all the cgxp interface, remove the <code class="docutils literal"><span class="pre">vars.checker.defaults.lang_files</span></code> from your
+project vars file, and the <code class="docutils literal"><span class="pre">checker.defaults.lang_files</span></code> from your update_paths.</p>
+</div>
+<div class="section" id="viewer-js">
+<h2>Viewer.js<a class="headerlink" href="#viewer-js" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">viewer.js</span></code> template is used to configure the client application.
+It creates a
+<a class="reference external" href="http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html">gxp.Viewer</a>
+object (<code class="docutils literal"><span class="pre">app</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">gxp.Viewer({</span> <span class="pre">...</span> <span class="pre">});</span></code>) defining the application&#8217;s UI.
+The Viewer config includes three important sections:</p>
+<div class="section" id="portalconfig">
+<h3><code class="docutils literal"><span class="pre">portalConfig</span></code><a class="headerlink" href="#portalconfig" title="Permalink to this headline">¶</a></h3>
+<p>The portal configuration assembles Ext components (containers really),
+to describe the application layout.</p>
+</div>
+<div class="section" id="tools">
+<h3><code class="docutils literal"><span class="pre">tools</span></code><a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h3>
+<p>Most of the tools used in the application are
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins.html">cgxp.plugins</a>.</p>
+<p>In most cases code examples to add to the <code class="docutils literal"><span class="pre">viewer.js</span></code> file are available.
+Don&#8217;t forget to add the plugin files in your <code class="docutils literal"><span class="pre">jsbuild/app.cfg</span></code> file.
+For example, to use the Legend panel, add:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">js</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">include</span> <span class="o">=</span>
+    <span class="o">...</span>
+    <span class="n">CGXP</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">Legend</span><span class="o">.</span><span class="n">js</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="map">
+<h3><code class="docutils literal"><span class="pre">map</span></code><a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<p>See <code class="docutils literal"><span class="pre">map</span></code> section from
+<a class="reference external" href="http://gxp.opengeo.org/master/doc/lib/widgets/Viewer.html">gxp.Viewer documentation</a></p>
+</div>
+<div class="section" id="layers">
+<h3><code class="docutils literal"><span class="pre">layers</span></code><a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h3>
+<p>In the <code class="docutils literal"><span class="pre">layers</span></code> section we configure the background layers like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;plan&#39;</span><span class="p">),</span>
+        <span class="nx">mapserverLayers</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">queryLayers</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;query_plan&#39;</span><span class="p">,</span>
+            <span class="nx">identifierAttribute</span><span class="o">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+            <span class="nx">minScaleDenominator</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="nx">maxScaleDenominator</span><span class="o">:</span> <span class="mi">1000</span>
+        <span class="p">}],</span>
+        <span class="nx">mapserverParams</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;EXTERNAL&#39;</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span>
+        <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;plan&#39;</span><span class="p">,</span>
+        <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>with <code class="docutils literal"><span class="pre">WMTS_OPTIONS</span></code> defined like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;${tile_url}&#39;</span><span class="p">,</span>
+    <span class="nx">displayInLayerSwitcher</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">transitionEffect</span><span class="o">:</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span>
+    <span class="nx">visibility</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">requestEncoding</span><span class="o">:</span> <span class="s1">&#39;REST&#39;</span><span class="p">,</span>
+    <span class="nx">buffer</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+    <span class="nx">dimensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">],</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;time&#39;</span><span class="o">:</span> <span class="s1">&#39;2011&#39;</span>
+    <span class="p">},</span>
+    <span class="nx">matrixSet</span><span class="o">:</span> <span class="s1">&#39;swissgrid&#39;</span><span class="p">,</span>
+    <span class="nx">maxExtent</span><span class="o">:</span> <span class="k">new</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">Bounds</span><span class="p">(</span><span class="mi">420000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">900000</span><span class="p">,</span> <span class="mi">350000</span><span class="p">),</span>
+    <span class="nx">projection</span><span class="o">:</span> <span class="k">new</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">Projection</span><span class="p">(</span><span class="s2">&quot;EPSG:21781&quot;</span><span class="p">),</span>
+    <span class="nx">units</span><span class="o">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span>
+    <span class="nx">formatSuffix</span><span class="o">:</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span>
+    <span class="nx">serverResolutions</span><span class="o">:</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The important points are:</p>
+<ul class="simple">
+<li>Booth <code class="docutils literal"><span class="pre">group:</span> <span class="pre">'background'</span></code> are requires by
+<a class="reference external" href="http://gxp.opengeo.org">GXP</a> (first), and by the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>
+(in <code class="docutils literal"><span class="pre">args</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">mapserverLayers</span></code> is used to know the layers to
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins/Print.html">print</a>.
+if it is not present the tiles are used.</li>
+<li><code class="docutils literal"><span class="pre">queryLayers</span></code> provide information to the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins/GetFeature.html">GetFeature</a>
+plugin on the background layers. It can also be a coma separated string.
+If it is not present the <code class="docutils literal"><span class="pre">mapserverLayers</span></code> is used.</li>
+<li><code class="docutils literal"><span class="pre">ref</span></code> is used by the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>.</li>
+<li><code class="docutils literal"><span class="pre">visibility</span></code> should be set to <code class="docutils literal"><span class="pre">false</span></code> to don&#8217;t download unneeded tiles, the
+<a class="reference external" href="http://docs.camptocamp.net/cgxp/2.1/lib/plugins/MapOpacitySlider.html">MapOpacitySlider</a>
+will manage it.</li>
+<li><code class="docutils literal"><span class="pre">transitionEffect</span></code>, <code class="docutils literal"><span class="pre">buffer</span></code> provides good value for performance
+and user experience.</li>
+</ul>
+<div class="section" id="linked-base-layers">
+<h4><code class="docutils literal"><span class="pre">linked</span> <span class="pre">base</span> <span class="pre">layers</span></code><a class="headerlink" href="#linked-base-layers" title="Permalink to this headline">¶</a></h4>
+<p>It is possible to link a base layer with one or more <em>detached</em> base layers.</p>
+<p>A <em>detached</em> base layer is a base layer that is not listed in the <code class="docutils literal"><span class="pre">MapOpacitySlider</span></code>
+dropdown list. But this layer can be linked with a normal base layer and will be
+displayed or hidden at the same time.</p>
+<p>To do so:</p>
+<ul class="simple">
+<li>in the normal base layer, add the parameter <code class="docutils literal"><span class="pre">linkedLayers</span></code> with the list of
+<em>detached</em> base layers <code class="docutils literal"><span class="pre">ref</span></code> names.</li>
+<li>add the <em>detached</em> base layer like any other normal base layer, but with
+<code class="docutils literal"><span class="pre">visibility:</span> <span class="pre">false</span></code> and no <code class="docutils literal"><span class="pre">group</span></code> in <code class="docutils literal"><span class="pre">args</span></code></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer_nice_name&#39;</span><span class="p">,</span>
+      <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer&#39;</span><span class="p">,</span>
+      <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;detached_base_layer_source_name&#39;</span><span class="p">,</span>
+      <span class="nx">transitionEffect</span><span class="o">:</span> <span class="s2">&quot;resize&quot;</span><span class="p">,</span>
+      <span class="nx">visibility</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+<span class="p">{</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="s2">&quot;olsource&quot;</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;OpenLayers.Layer.WMTS&quot;</span><span class="p">,</span>
+    <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">Ext</span><span class="p">.</span><span class="nx">applyIf</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="nx">OpenLayers</span><span class="p">.</span><span class="nx">i18n</span><span class="p">(</span><span class="s1">&#39;normal_base_layer&#39;</span><span class="p">),</span>
+        <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;normal_base_layer&#39;</span><span class="p">,</span>
+        <span class="nx">layer</span><span class="o">:</span> <span class="s1">&#39;normal_base_layer_source_name&#39;</span><span class="p">,</span>
+        <span class="nx">group</span><span class="o">:</span> <span class="s1">&#39;background&#39;</span><span class="p">,</span>
+        <span class="nx">linkedLayers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;detached_base_layer&#39;</span><span class="p">]</span>
+    <span class="p">},</span> <span class="nx">WMTS_OPTIONS</span><span class="p">)]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CGXP</a><ul>
+<li><a class="reference internal" href="#organisation">Organisation</a></li>
+<li><a class="reference internal" href="#use-the-cgxp-interface">Use the CGXP interface</a></li>
+<li><a class="reference internal" href="#back-to-the-ngeo-interface">Back to the ngeo interface</a></li>
+<li><a class="reference internal" href="#viewer-js">Viewer.js</a><ul>
+<li><a class="reference internal" href="#portalconfig"><code class="docutils literal"><span class="pre">portalConfig</span></code></a></li>
+<li><a class="reference internal" href="#tools"><code class="docutils literal"><span class="pre">tools</span></code></a></li>
+<li><a class="reference internal" href="#map"><code class="docutils literal"><span class="pre">map</span></code></a></li>
+<li><a class="reference internal" href="#layers"><code class="docutils literal"><span class="pre">layers</span></code></a><ul>
+<li><a class="reference internal" href="#linked-base-layers"><code class="docutils literal"><span class="pre">linked</span> <span class="pre">base</span> <span class="pre">layers</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+  <li><a href="legacy.html">Legacy components</a><ul>
+      <li>Previous: <a href="legacy.html" title="previous chapter">Legacy components</a></li>
+      <li>Next: <a href="legacy_print.html" title="next chapter">Print version 2.x</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/legacy_cgxp.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/legacy_cgxp.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

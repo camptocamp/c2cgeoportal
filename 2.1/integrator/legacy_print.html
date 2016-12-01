@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Print version 2.x &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Legacy components" href="legacy.html" />
+    <link rel="next" title="Advanced configuration examples" href="legacy_advanced.html" />
+    <link rel="prev" title="CGXP" href="legacy_cgxp.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="print-version-2-x">
+<span id="integrator-legacy-print"></span><h1>Print version 2.x<a class="headerlink" href="#print-version-2-x" title="Permalink to this headline">¶</a></h1>
+<p>The print version 2.x cannot be used in the ngeo application be he still can be used in the CGXP application.</p>
+<p>The print version 3.x and the version 2.x cannot be used together.</p>
+<p>To use it you should:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* Keep the print war in your repository.
+* Add ``PRINT_VERSION ?= 2`` in your project makefile.
+* Add in the ``vars`` of your project vars file: ``print_url: http://localhost:8080/print-{instanceid}/pdf/``.
+* Disable the print v3 checker and enable the print v2 one, edit your project vars file:
+
+.. code:: yaml
+
+   vars:
+       ...
+       checker:
+           defaults:
+               ...
+               routes_disable: [printproxy_capabilities]
+               routes:
+               - name: printproxy_info
+               print_template: 1 A4 portrait
+               print_center_lon: 600000
+               print_center_lat: 200000
+               print_scale: 10000
+
+       check_collector:
+           # Verify that in the `.build/config.yaml` `checker_pdf3` is present, and not `checker_pdf`.
+           disabled: [checker_pdf3]
+
+   update_paths:
+   - checker.routes
+</pre></div>
+</div>
+<p>Back to the print version 3.x:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* Remove your war file ``git rm print/print-servlet.war``.
+* Remove the ``PRINT_VERSION`` from your project makefile (default is 3).
+* In your project vars file remove the following keys::
+
+  * ``vars/print_url``
+  * ``vars/checker/defaults/print_template``
+  * ``vars/checker/defaults/print_center_lon``
+  * ``vars/checker/defaults/print_center_lat``
+  * ``vars/checker/defaults/print_scale``
+
+* Do not have ``printproxy_capabilities`` in ``vars/checker/defaults/routes_disable``.
+* Do not have a route named ``printproxy_info`` in ``vars/checker/defaults/routes``.
+* Do not have ``checker_pdf3`` in ``vars/check_collector/disabled``.
+* Have ``checker_pdf`` in ``vars/check_collector/disabled`` (it&#39;s possible that you can completely remove it).
+* Be sure that you do this thing in your project vars file:
+
+.. code:: yaml
+
+   vars:
+       ...
+       checker:
+           defaults:
+               ...
+               print_spec:
+                   layout: &quot;1 A4 portrait&quot;
+                   outputFormat: &quot;pdf&quot;
+                   attributes:
+                       title: &quot;&quot;
+                       comments: &quot;&quot;
+                       datasource: []
+                       map:
+                           projection: &quot;EPSG:21781&quot;
+                           dpi: 254
+                           rotation: 0
+                           center: [600000, 200000]
+                           scale: 100000
+                           longitudeFirst: true
+                           layers: []
+                       legend: {}
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+  <li><a href="legacy.html">Legacy components</a><ul>
+      <li>Previous: <a href="legacy_cgxp.html" title="previous chapter">CGXP</a></li>
+      <li>Next: <a href="legacy_advanced.html" title="next chapter">Advanced configuration examples</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/legacy_print.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/legacy_print.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

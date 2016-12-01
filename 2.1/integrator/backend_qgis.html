@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Specific configuration for QGIS mapserver &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Specific Backend Documentation" href="backend.html" />
+    <link rel="next" title="Specific configuration for Arcgis" href="backend_arcgis.html" />
+    <link rel="prev" title="Specific Backend Documentation" href="backend.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="specific-configuration-for-qgis-mapserver">
+<span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS mapserver<a class="headerlink" href="#specific-configuration-for-qgis-mapserver" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="viewer-configuration">
+<h2>Viewer configuration<a class="headerlink" href="#viewer-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">&lt;package&gt;/templates/viewer.js</span></code> file, define the url of the WFS service
+which will be used to get the namespace required to parse the WFS response,
+and indicate that we don&#8217;t want duplicate layer name above the legend:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cgxp</span><span class="o">.</span><span class="n">WMS_FEATURE_NS</span> <span class="o">=</span> <span class="s2">&quot;http://www.qgis.org/gml&quot;</span><span class="p">;</span>
+<span class="n">cgxp</span><span class="o">.</span><span class="n">LEGEND_INCLUDE_LAYER_NAME</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Change the DPI value to use the same as in the server:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+<span class="o">+</span> <span class="n">OpenLayers</span><span class="o">.</span><span class="n">DOTS_PER_INCH</span> <span class="o">=</span> <span class="mf">2.54</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mf">0.00028</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal"><span class="pre">cgxp_print</span></code> plugin add the following configuration:</p>
+<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">encodeLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
+<span class="n">encodeExternalLayer</span><span class="p">:</span> <span class="p">{</span> <span class="n">useNativeAngle</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">serverType</span><span class="p">:</span> <span class="s1">&#39;qgisserver&#39;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="apache-configuration">
+<h2>Apache configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal"><span class="pre">apache/mapserv.conf.mako</span></code> do the following changes:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>- ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/mapserv
++ ScriptAlias /${instanceid}/mapserv /usr/lib/cgi-bin/qgis_mapserv.fcgi
+
+- SetEnv MS_MAPFILE ${directory}/mapserver/c2cgeoportal.map
++ SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
+</pre></div>
+</div>
+</div>
+<div class="section" id="application-configuration">
+<h2>Application configuration<a class="headerlink" href="#application-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Add an OGC server in the admin interface for QGIS server (type: qgisserver, auth: Standard auth).</p>
+<p>In the <code class="docutils literal"><span class="pre">vars_&lt;project&gt;.yaml</span></code> file, define:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">mapserverproxy</span><span class="p">:</span>
+        <span class="n">default_ogc_server</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ogc</span> <span class="n">server</span> <span class="n">name</span><span class="o">&gt;</span>
+<span class="n">update_paths</span><span class="p">:</span>
+<span class="o">...</span>
+<span class="o">-</span> <span class="n">mapserverproxy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cleanup">
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
+<p>Remove the mapserver folder:</p>
+<pre class="highlight"><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git rm mapserver</span>
+</pre></div>
+<div class="section" id="qgis-desktop-configuration">
+<h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ows-configuration">
+<h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this headline">¶</a></h3>
+<p>You should setup your OWS service in the QGIS project properties in the OWS
+tab.</p>
+<p>You should take care to <strong>uncheck</strong> the checkbox <em>User Layer ids as names</em>. If
+this checkbox is enabled you will have unreliabel layers name.</p>
+<p>You should <strong>check</strong> the checkbox <em>Add geometry to feature response</em> in order
+to make the WMS GetFeatureInfo working correctly.</p>
+<p>In the <em>WFS capabilities</em> section, you should check the layers that need to be
+available in the WFS service.</p>
+<p>Finally, your QGIS project layers CRS should all be in the same CSR. This is subject to
+change.</p>
+</div>
+<div class="section" id="connect-to-postgres-database">
+<h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
+<p>This section is subject to change when the QGIS plugin is available.</p>
+<div class="section" id="throw-a-tunnel">
+<h4>Throw a tunnel<a class="headerlink" href="#throw-a-tunnel" title="Permalink to this headline">¶</a></h4>
+<p>The first solution is to create a tunnel with ssh:</p>
+<pre class="highlight"><span class="prompt1">ssh -L 5432:localhost:54532 &lt;server&gt;</span>
+</pre><p>And use the following connection attributes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
+<span class="n">Host</span><span class="p">:</span> <span class="n">localhost</span>
+<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">Disable</span>
+<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="directly-on-the-server">
+<h4>Directly on the server<a class="headerlink" href="#directly-on-the-server" title="Permalink to this headline">¶</a></h4>
+<p>For that you should ask the sysadmins to be able to access to the
+postgres port on the server from your infra.</p>
+<p>Then use the following connection attributes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">aname</span><span class="o">&gt;</span>
+<span class="n">Host</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">server</span><span class="o">&gt;</span>
+<span class="n">Port</span><span class="p">:</span> <span class="mi">5432</span>
+<span class="n">Database</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">database</span><span class="o">&gt;</span>
+<span class="n">SSL</span> <span class="n">mode</span><span class="p">:</span> <span class="n">require</span>
+<span class="n">Username</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+<span class="n">Password</span><span class="p">:</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="deploy-notes">
+<h3>Deploy notes<a class="headerlink" href="#deploy-notes" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Specific configuration for QGIS mapserver</a><ul>
+<li><a class="reference internal" href="#viewer-configuration">Viewer configuration</a></li>
+<li><a class="reference internal" href="#apache-configuration">Apache configuration</a></li>
+<li><a class="reference internal" href="#application-configuration">Application configuration</a></li>
+<li><a class="reference internal" href="#cleanup">Cleanup</a></li>
+<li><a class="reference internal" href="#qgis-desktop-configuration">QGIS Desktop configuration</a><ul>
+<li><a class="reference internal" href="#ows-configuration">OWS configuration</a></li>
+<li><a class="reference internal" href="#connect-to-postgres-database">Connect to Postgres database</a><ul>
+<li><a class="reference internal" href="#throw-a-tunnel">Throw a tunnel</a></li>
+<li><a class="reference internal" href="#directly-on-the-server">Directly on the server</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deploy-notes">Deploy notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="backend.html">Specific Backend Documentation</a><ul>
+      <li>Previous: <a href="backend.html" title="previous chapter">Specific Backend Documentation</a></li>
+      <li>Next: <a href="backend_arcgis.html" title="next chapter">Specific configuration for Arcgis</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/backend_qgis.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/backend_qgis.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

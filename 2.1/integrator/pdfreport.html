@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PDF Reporting &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Additional features" href="features.html" />
+    <link rel="next" title="Legacy components" href="legacy.html" />
+    <link rel="prev" title="Security" href="security.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pdf-reporting">
+<span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Permalink to this headline">¶</a></h1>
+<p>c2cgeoportal offers a <em>pdfreport</em> webservice that can be used to generate
+advanced PDF reports about a given feature.</p>
+<p>It is based upon <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">MapfishPrint version 3</a>
+and <a class="reference external" href="http://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
+<p>The webservice is called using the following URL schema:
+<code class="docutils literal"><span class="pre">http://&lt;host&gt;/&lt;instanceid&gt;/wsgi/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The service is configured in the main <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> file of the project
+as in the following example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">pdfreport</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">defaults</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">check_credentials</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+            <span class="l l-Scalar l-Scalar-Plain">srs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EPSG:21781</span>
+            <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">grp_ly_tilegenerierung_landeskarte</span><span class="p p-Indicator">]</span>
+                <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
+        <span class="l l-Scalar l-Scalar-Plain">layers</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">map</span><span class="p p-Indicator">:</span>
+                    <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+                    <span class="l l-Scalar l-Scalar-Plain">imageformat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">image/jpeg</span>
+            <span class="l l-Scalar l-Scalar-Plain">some_template_with_no_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+                    <span class="l l-Scalar l-Scalar-Plain">layout</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">some_template_name</span>
+                    <span class="l l-Scalar l-Scalar-Plain">outputFormat</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pdf</span>
+                    <span class="l l-Scalar l-Scalar-Plain">attributes</span><span class="p p-Indicator">:</span>
+                        <span class="l l-Scalar l-Scalar-Plain">paramID</span><span class="p p-Indicator">:</span> <span class="s">&quot;%(id)s&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">some_template_with_multi_map</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">maps</span><span class="p p-Indicator">:</span>
+                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">grp_ly_tilegenerierung_landeskarte</span>
+                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backgroundlayers</span><span class="p p-Indicator">:</span>
+                        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ly_a020_belastete_standorte_point</span>
+<span class="l l-Scalar l-Scalar-Plain">update_paths</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pdfreport</span>
+</pre></div>
+</div>
+<p>with the following parameters:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">print_url</span></code> is the local URL of the MapFish Print version 3 instance.</li>
+<li><code class="docutils literal"><span class="pre">defaults</span></code> contains the default values of parameters not provided explicitely for a given layer.</li>
+<li><code class="docutils literal"><span class="pre">layers</span></code> is an optional per-layer list of settings specific to the listed layers. The entries of the list are the layernames provided as argument of the webservice. If a layer is not listed, the default parameters above are used.</li>
+</ul>
+<p><code class="docutils literal"><span class="pre">defaults</span></code> and <code class="docutils literal"><span class="pre">layers</span></code>-specific parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">check_credentials</span></code>: boolean, wether layer credentials are checked before generating the report. Defaults to <code class="docutils literal"><span class="pre">True</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
+<li><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: string containing a comma-separated list of WMS layers that should be displayed on the map. If the curent layer must also be displayed, it should be added to the list. Please note that layernames must be embedded in double-quotes (&#8221;). Defaults to <code class="docutils literal"><span class="pre">&quot;&quot;</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">imageformat</span></code>: format of the generated map. Defaults to <code class="docutils literal"><span class="pre">image/png</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">spec_template</span></code>: optional JSON template used to build the <code class="docutils literal"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
+</ul>
+<p>If no <code class="docutils literal"><span class="pre">spec_template</span></code> is provided, the following template is used:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;layout&quot;</span><span class="p">:</span> <span class="s2">&quot;%(layername)s&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;outputFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;pdf&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;paramID&quot;</span><span class="p">:</span> <span class="s2">&quot;%(id)s&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;map&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;projection&quot;</span><span class="p">:</span> <span class="s2">&quot;%(srs)s&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;dpi&quot;</span><span class="p">:</span> <span class="mi">254</span><span class="p">,</span>
+            <span class="nt">&quot;rotation&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nt">&quot;bbox&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">],</span>
+            <span class="nt">&quot;zoomToFeatures&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;zoomType&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;minScale&quot;</span><span class="p">:</span> <span class="mi">25000</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;gml&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;style&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;[1 &gt; 0]&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="nt">&quot;fillColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                        <span class="nt">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                        <span class="nt">&quot;symbolizers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                            <span class="nt">&quot;strokeColor&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;strokeWidth&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;point&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;pointRadius&quot;</span><span class="p">:</span> <span class="mi">10</span>
+                        <span class="p">}]</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;%(vector_request_url)s&quot;</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="nt">&quot;baseURL&quot;</span><span class="p">:</span> <span class="s2">&quot;%(mapserv_url)s&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;opacity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;WMS&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;mapserver&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%(backgroundlayers)s&quot;</span><span class="p">],</span>
+                <span class="nt">&quot;imageFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;%(imageformat)s&quot;</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Variables may be inserted using the <code class="docutils literal"><span class="pre">%(&lt;variable</span> <span class="pre">name&gt;)s</span></code> syntax. The following
+variables values are passed to the template:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">layername</span></code>: name of the layer</li>
+<li><code class="docutils literal"><span class="pre">id</span></code>: feature id</li>
+<li><code class="docutils literal"><span class="pre">srs</span></code>: projection code</li>
+<li><code class="docutils literal"><span class="pre">mapserv_url</span></code>: URL of the MapServer proxy</li>
+<li><code class="docutils literal"><span class="pre">vector_request_url</span></code>: URL of the WFS GetFeature request retrieving the feature geometry in GML</li>
+<li><code class="docutils literal"><span class="pre">imageformat</span></code>: format of the WMS layer</li>
+<li><code class="docutils literal"><span class="pre">backgroundlayers</span></code>: WMS layers to display on the map (including the current layer)</li>
+</ul>
+</div>
+<div class="section" id="configuration-of-the-reports">
+<h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="http://mapfish.github.io/mapfish-print-doc/">Mapfish Print documentation</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PDF Reporting</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#configuration-of-the-reports">Configuration of the reports</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="security.html" title="previous chapter">Security</a></li>
+      <li>Next: <a href="legacy.html" title="next chapter">Legacy components</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/integrator/pdfreport.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/integrator/pdfreport.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

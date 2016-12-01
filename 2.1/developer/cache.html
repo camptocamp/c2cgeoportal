@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cache management &#8212; c2cgeoportal  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="c2cgeoportal  documentation" href="../index.html" />
+    <link rel="up" title="Developer Guide" href="index.html" />
+    <link rel="next" title="Principles" href="principles.html" />
+    <link rel="prev" title="Webservices documentation" href="webservices.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cache-management">
+<span id="developer-cache"></span><h1>Cache management<a class="headerlink" href="#cache-management" title="Permalink to this headline">¶</a></h1>
+<p>Here we describe the strategy we use to manage the cache.</p>
+<dl class="docutils">
+<dt>We have three kinds of services:</dt>
+<dd><ul class="first last simple">
+<li>Without any cache (<strong>no_cache</strong>).</li>
+<li>Cache related to the application version (<strong>public_cache</strong>).</li>
+<li>Cache related to the application version and the current role (<strong>private_cache</strong>).</li>
+</ul>
+</dd>
+</dl>
+<p>For some service we also set the header <code class="docutils literal"><span class="pre">Vary</span></code> to <code class="docutils literal"><span class="pre">Accept-Language</span></code>
+to have one cache per language.</p>
+<div class="section" id="server-side">
+<h2>Server side<a class="headerlink" href="#server-side" title="Permalink to this headline">¶</a></h2>
+<p>On the server side we set the <code class="docutils literal"><span class="pre">Cache-Control</span></code> header with a different value
+depending on the cache type.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>no_cache</strong>: <code class="docutils literal"><span class="pre">no-cache</span></code>.</li>
+<li><strong>public_cache</strong>: <code class="docutils literal"><span class="pre">max-age=864000,</span> <span class="pre">public</span></code>.</li>
+<li><strong>private_cache</strong>: <code class="docutils literal"><span class="pre">max-age=864000,</span> <span class="pre">public</span></code> or <code class="docutils literal"><span class="pre">max-age=864000,</span> <span class="pre">private</span></code> if we are logged in.</li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal"><span class="pre">max-age</span></code> is configurable in a <code class="docutils literal"><span class="pre">vars</span></code> file in the <code class="docutils literal"><span class="pre">default_max_age</span></code> attribute.</p>
+</div>
+<div class="section" id="client-side">
+<h2>Client side<a class="headerlink" href="#client-side" title="Permalink to this headline">¶</a></h2>
+<p>On the client side we will add some attribute in the URL parameters to
+force to have the right version of the cache.
+It will be done automatically by the <code class="docutils literal"><span class="pre">route_url</span></code> method.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>no_cache</strong>: nothing to add (be sure that the lib does not add custom cache).</li>
+<li><strong>public_cache</strong>: add the query param named <code class="docutils literal"><span class="pre">cache_version</span></code>.</li>
+<li><strong>private_cache</strong>: add the query param named <code class="docutils literal"><span class="pre">cache_version</span></code> and <code class="docutils literal"><span class="pre">role</span></code>.</li>
+</ul>
+</div></blockquote>
+<p>With <code class="docutils literal"><span class="pre">CGXP</span></code> interface you have the variables <code class="docutils literal"><span class="pre">version_params</span></code>, <code class="docutils literal"><span class="pre">version_role_params</span></code>
+and <code class="docutils literal"><span class="pre">version_role_user_params</span></code> that help you to create the right url.</p>
+<p>With <code class="docutils literal"><span class="pre">ngeo</span></code> interface you have the <code class="docutils literal"><span class="pre">cache_version</span></code> variable.</p>
+</div>
+<div class="section" id="service-list">
+<h2>Service list<a class="headerlink" href="#service-list" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="no-cache">
+<h3>No cache<a class="headerlink" href="#no-cache" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>cgxp_index</li>
+<li>ngeo index</li>
+<li>mobile index</li>
+<li>api js</li>
+<li>xapi js</li>
+<li>api help</li>
+<li>xapi help</li>
+<li>auto login form (loginform403)</li>
+<li>login</li>
+<li>logout</li>
+<li>login change password</li>
+<li>echo</li>
+<li>export csv</li>
+<li>full text search</li>
+<li>layers/read_many</li>
+<li>layers/read_one</li>
+<li>layers/count</li>
+<li>layers/create</li>
+<li>layers/update</li>
+<li>layers/delete</li>
+<li>WMS/GetMap</li>
+<li>WMS/GetFeatureInfo</li>
+<li>WFS/GetFeature</li>
+<li>WFS all POST</li>
+<li>PDF report</li>
+<li>print/report.pdf</li>
+<li>print/status</li>
+<li>print/get file</li>
+<li>profile</li>
+<li>raster</li>
+<li>shortener</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="public-cache">
+<h3>Public cache<a class="headerlink" href="#public-cache" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>login form</li>
+<li>layers/enumerate_attribute_values</li>
+<li>WMS/GetLegendGraphic</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="private-cache">
+<h3>Private cache<a class="headerlink" href="#private-cache" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>cgxp viewer</li>
+<li>mobile config</li>
+<li>themes</li>
+<li>layers/metadata</li>
+<li>WMS/GetCapabilities</li>
+<li>WMS/DescribeLayer</li>
+<li>WFS/GetCapabilities</li>
+<li>WFS/DescribeFeaturesType</li>
+<li>print/capabilities.json</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cache management</a><ul>
+<li><a class="reference internal" href="#server-side">Server side</a></li>
+<li><a class="reference internal" href="#client-side">Client side</a></li>
+<li><a class="reference internal" href="#service-list">Service list</a><ul>
+<li><a class="reference internal" href="#no-cache">No cache</a></li>
+<li><a class="reference internal" href="#public-cache">Public cache</a></li>
+<li><a class="reference internal" href="#private-cache">Private cache</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="webservices.html" title="previous chapter">Webservices documentation</a></li>
+      <li>Next: <a href="principles.html" title="next chapter">Principles</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer/cache.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2016, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/developer/cache.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
