@@ -190,14 +190,14 @@ replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:
 
-    at that point, the following folder should exist: /tmp/{{project}}/
+    at that point, the following folder should exist: CONST_create_template
 
-    cp /tmp/{{project}}/.jshintrc .
-    cp /tmp/{{project}}/lingua-client.cfg .
-    cp /tmp/{{project}}/lingua-server.cfg .
-    cp /tmp/{{project}}/apache/wsgi.conf.mako apache/
-    cp -r /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
-    cp /tmp/{{project}}/{{package}}/templates/mobile.html {{package}}/templates/
+    cp CONST_create_template/.jshintrc .
+    cp CONST_create_template/lingua-client.cfg .
+    cp CONST_create_template/lingua-server.cfg .
+    cp CONST_create_template/apache/wsgi.conf.mako apache/
+    cp -r CONST_create_template/{{package}}/static-ngeo {{package}}/
+    cp CONST_create_template/{{package}}/templates/mobile.html {{package}}/templates/
 
 2. Remove the no longer used files:
 
