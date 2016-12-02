@@ -95,7 +95,7 @@ span.prompt1:before {
 </pre><p>with <code class="docutils literal"><span class="pre">&lt;db_name&gt;</span></code> replaced by the actual database name.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>if you don&#8217;t have the template_postgis you can use:</p>
+<p>if you do not have the template_postgis you can use:</p>
 <p>with Postgres &gt;= 9.1 and PostGIS &gt;= 2.1:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION postgis;&quot;</span> &lt;db_name&gt;</span>
@@ -121,7 +121,7 @@ and schema name (&#8216;main&#8217; by default), respectively.</p>
 <p>We use a specific user for the application, <code class="docutils literal"><span class="pre">www-data</span></code> by default.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>It the user doesn&#8217;t already exist in your database, create it first:</p>
+<p>It the user does not already exist in your database, create it first:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P &lt;db_user&gt;</span>
 </pre></div>
 <p>Give the rights to the user:</p>
@@ -131,7 +131,7 @@ and schema name (&#8216;main&#8217; by default), respectively.</p>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you don&#8217;t use the www-data user for Apache replace it by the right user.</p>
+<p class="last">If you do not use the www-data user for Apache replace it by the right user.</p>
 </div>
 </div>
 </div>
@@ -149,9 +149,9 @@ commands should be used to download CGXP and its dependencies:</p>
 OpenLayers and GeoExt.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We don&#8217;t just use <code class="docutils literal"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--recursive</span></code> here because
-that would also download GXP&#8217;s submodules. We don&#8217;t want that because we
-don&#8217;t need GXP&#8217;s submodules. CGXP indeed has its own submodules for
+<p class="last">We do not just use <code class="docutils literal"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--recursive</span></code> here because
+that would also download GXP&#8217;s submodules. We do not want that because we
+do not need GXP&#8217;s submodules. CGXP indeed has its own submodules for
 OpenLayers and GeoExt.</p>
 </div>
 </div>
@@ -242,7 +242,7 @@ this line under <code class="docutils literal"><span class="pre">MAP</span></cod
 <div class="section" id="project-mk">
 <h4>&lt;project&gt;.mk<a class="headerlink" href="#project-mk" title="Permalink to this headline">¶</a></h4>
 <p>The following configuration override must be added to your <code class="docutils literal"><span class="pre">&lt;project&gt;.mk</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span># Sets that&#39;s we use Windows
+<div class="highlight-default"><div class="highlight"><pre><span></span># Sets that is we use Windows
 OPERATING_SYSTEM ?= WINDOWS
 # Path to cygwin
 CYGWIN_PATH ?= c:/path/to/cygwin
@@ -305,7 +305,7 @@ DISABLE_BUILD_RULES += test-packages test-packages-tilecloud-chain test-packages
 </div>
 <div class="section" id="integrator-install-application-install-application">
 <span id="id3"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
-<p>If it doesn&#8217;t already exist, create a <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file
+<p>If it does not already exist, create a <code class="docutils literal"><span class="pre">&lt;user&gt;.mk</span></code> file
 (where <code class="docutils literal"><span class="pre">&lt;user&gt;</span></code> is for example your username),
 that will contain your application special
 configuration:</p>

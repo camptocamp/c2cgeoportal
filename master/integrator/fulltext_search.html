@@ -63,10 +63,10 @@ list of options the plugin can receive.</p>
 <p>The <em>text search</em> feature requires a dedicated PostgreSQL table. The full-text
 search table should be named <code class="docutils literal"><span class="pre">tsearch</span></code> (for <em>text search</em>) and should be in
 the application-specific schema.</p>
-<p>You don&#8217;t need to create the table yourself, as it is created by the
+<p>You do not need to create the table yourself, as it is created by the
 <code class="docutils literal"><span class="pre">create_db</span></code> command line (see the section
 <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
-<p>If you did want to create the table manually you&#8217;d use the following commands:</p>
+<p>If you did want to create the table manually you would use the following commands:</p>
 <pre class="highlight"><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -81,7 +81,7 @@ span.prompt1:before {
 </div>
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
-<p>Here&#8217;s an example of an insertion in the <code class="docutils literal"><span class="pre">tsearch</span></code> table:</p>
+<p>Here is an example of an insertion in the <code class="docutils literal"><span class="pre">tsearch</span></code> table:</p>
 <div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">VALUES</span>
@@ -93,7 +93,7 @@ span.prompt1:before {
 <code class="docutils literal"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></code> is the text that is displayed in the results,
 <code class="docutils literal"><span class="pre">test</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
 <code class="docutils literal"><span class="pre">french</span></code> is the used language.</p>
-<p>Here&#8217;s another example where rows from a <code class="docutils literal"><span class="pre">SELECT</span></code> are inserted:</p>
+<p>Here is another example where rows from a <code class="docutils literal"><span class="pre">SELECT</span></code> are inserted:</p>
 <div class="code sql highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
@@ -121,7 +121,7 @@ and the application&#8217;s default language match.</p>
 <p>The <code class="docutils literal"><span class="pre">tsearch</span></code> table includes two security-related columns, namely <code class="docutils literal"><span class="pre">public</span></code>
 and <code class="docutils literal"><span class="pre">role_id</span></code>. If <code class="docutils literal"><span class="pre">public</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the row is available to any
 user, including anonymous users. And in that case, the <code class="docutils literal"><span class="pre">role_id</span></code> column is
-ignored by <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>. If <code class="docutils literal"><span class="pre">public</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the row isn&#8217;t
+ignored by <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>. If <code class="docutils literal"><span class="pre">public</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the row is not
 available to anonymous users. If <code class="docutils literal"><span class="pre">role_id</span></code> is <code class="docutils literal"><span class="pre">NULL</span></code>, the row is available
 to any authenticated user. If <code class="docutils literal"><span class="pre">role_id</span></code> is not <code class="docutils literal"><span class="pre">NULL</span></code>, the row is only
 available to users of the corresponding role.</p>

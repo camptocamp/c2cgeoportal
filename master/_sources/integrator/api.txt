@@ -42,7 +42,7 @@ Updating an existing project
 
 You can skip this section if your project has been created using c2cgeoportal
 1.2 or better. If your project was created using an older c2cgeoportal, and if
-you've just upgraded your project to c2cgeoportal 1.2, then you need to follow
+you have just upgraded your project to c2cgeoportal 1.2, then you need to follow
 the below instructions.
 
 New directories and files are provided by the ``c2cgeoportal_create`` and need
@@ -144,7 +144,7 @@ Layer tree
 
 Plugins compatible with the API
 
-    Here's the list of CGXP plugins that are known to currently work with the
+    Here is the list of CGXP plugins that are known to currently work with the
     Extended API:
 
     * ``FullTextSearch``
@@ -166,7 +166,7 @@ that these files have appropriate contents.
 ``<package>/static/css/proj.css``
 
     This file includes CSS that is specific to the application viewers. This
-    file is not used for the APIs, so it shouldn't contain CSS that pertains
+    file is not used for the APIs, so it should not contain CSS that pertains
     to OpenLayers and CGXP components used by the Simple and Extended APIs.
 
 ``<package>/static/css/proj-map.css``

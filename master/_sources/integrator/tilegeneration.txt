@@ -12,7 +12,7 @@ With this solution we solve the following issue:
 
 * We should be able to update all the generated tiles.
 
-* We shouldn't have thousands of expired files.
+* We should not have thousands of expired files.
 
 To do so we need need a tool that can generate the tiles,
 update some of them contained in given geometries and delete empty tiles.
@@ -29,7 +29,7 @@ time can grow to more than one month, especially if we have
 a high resolution (low if in m/px) on the last zoom level.
 Than for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
-We should use metatiles to don't have too may request to postgres.
+We should use metatiles to do not have too may request to postgres.
 And the tiles should be delete after the expiry time.
 
 The chosen solution is a combination of two tools:
@@ -155,7 +155,7 @@ The main thing to do is to:
 
      .build/venv/bin/generate_controller --openlayers-test
 
-If you generate the tiles locally you don't need all the configuration
+If you generate the tiles locally you do not need all the configuration
 variables, because many of them in the ``generation`` part are for
 AWS generation.
 

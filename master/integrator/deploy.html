@@ -108,13 +108,13 @@ For instance if the target database contains user-edited data such as:</p>
 <h3>Preserving user-created data<a class="headerlink" href="#preserving-user-created-data" title="Permalink to this headline">¶</a></h3>
 <p>To prevent data modified by the users (such as editable layers features or
 short permalinks) from being lost when redeploying the DataBase, such data
-must be saved in dedicated schemas that won&#8217;t be replaced.</p>
+must be saved in dedicated schemas that will not be replaced.</p>
 <p>For that we should have 4 different schemas:</p>
 <ul class="simple">
 <li>one for the application data that should be deployed (<code class="docutils literal"><span class="pre">&lt;schema&gt;</span></code>),</li>
-<li>one for the application data that shouldn&#8217;t be deployed (<code class="docutils literal"><span class="pre">&lt;schema&gt;_static</span></code>),</li>
+<li>one for the application data that should not be deployed (<code class="docutils literal"><span class="pre">&lt;schema&gt;_static</span></code>),</li>
 <li>one for the readonly geodata that should be deployed,</li>
-<li>one for the editable geodata that shouldn&#8217;t be deployed.</li>
+<li>one for the editable geodata that should not be deployed.</li>
 </ul>
 <p>We should configure the deploy tool to deploy only the
 wanted schema, by setting the following configuration in the

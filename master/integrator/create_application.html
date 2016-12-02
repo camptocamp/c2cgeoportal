@@ -52,7 +52,7 @@
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
 the <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
 <p>If you already have a c2cgeoportal application installed, and if that
-application uses a version of c2cgeoportal that fits you, then you don&#8217;t need
+application uses a version of c2cgeoportal that fits you, then you do not need
 to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
 that is already alongside the existing c2cgeoportal application.</p>
 <div class="admonition note">
@@ -67,7 +67,7 @@ application skeletons, should be applied.</p>
 <p>In the simple case the root directory of the application is the directory
 created by the c2cgeoportal skeletons (the <code class="docutils literal"><span class="pre">c2cgeoportal_create</span></code> and
 <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeletons). Projects following a parent/child
-architecture may use a different structure. Here&#8217;s an example of a structure
+architecture may use a different structure. Here is an example of a structure
 for a project composed of a main application and sub-applications:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">root</span><span class="o">&gt;</span>
   <span class="o">+-</span> <span class="o">&lt;</span><span class="n">main_project</span><span class="o">&gt;</span>
@@ -86,7 +86,7 @@ application from an existing parent application, it means you already have
 <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> installed, so you can just skip this section, and directly go
 to the next.</p>
 <p>Also, installing <code class="docutils literal"><span class="pre">c2cgeoportal</span></code>, as described in this section, requires
-access to the c2cgeoportal GitHub repository. If you can&#8217;t view the
+access to the c2cgeoportal GitHub repository. If you cannot view the
 <a class="reference external" href="https://github.com/camptocamp/c2cgeoportal">https://github.com/camptocamp/c2cgeoportal</a> page in your browser that means you
 do not have the required permissions. Please contact Camptocamp in that case.</p>
 <p>To install <code class="docutils literal"><span class="pre">c2cgeoportal</span></code> you first need to clone the c2cgeoportal repository
@@ -107,7 +107,7 @@ span.prompt1:before {
 <div class="section" id="list-existing-skeletons">
 <h2>List existing skeletons<a class="headerlink" href="#list-existing-skeletons" title="Permalink to this headline">¶</a></h2>
 <p>To list the available skeletons/templates use the following command, either
-from the root directory of c2cgeoportal (if you&#8217;ve followed the instructions
+from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -l</span>
@@ -128,7 +128,7 @@ issue with Pip.</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_create ../&lt;project&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>
+<p class="last">Do not add any &#8216;/&#8217; after the project name.</p>
 </div>
 <p>You&#8217;ll be asked to enter the SRID and the Apache vhost for this project. Note
 that the default extent would be defined directly from the srid. You can change
@@ -143,14 +143,14 @@ parameters:</p>
 </pre></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal"><span class="pre">&lt;project&gt;</span></code> that will be next to the
-<code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you&#8217;re
+<code class="docutils literal"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> skeleton:</p>
 <pre class="highlight"><span class="prompt1">.build/venv/bin/pcreate -s c2cgeoportal_update ../&lt;project&gt; <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="se">\</span>
          <span class="nv">package</span><span class="o">=</span>&lt;package&gt; <span class="nv">srid</span><span class="o">=</span>&lt;srid&gt; <span class="nv">apache_vhost</span><span class="o">=</span>&lt;vhost&gt;</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Don&#8217;t add any &#8216;/&#8217; after the project name.</p>
+<p class="last">Do not add any &#8216;/&#8217; after the project name.</p>
 </div>
 <p>The <code class="docutils literal"><span class="pre">c2cgeoportal_update</span></code> scaffold is also used to update the
 application. The files generated by this skeleton are prefixed with
@@ -207,13 +207,13 @@ Branches are available starting at version <code class="docutils literal"><span 
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
 <p>As the integrator you need to edit the <code class="docutils literal"><span class="pre">vars_&lt;package&gt;.yaml</span></code> and
 <code class="docutils literal"><span class="pre">&lt;package&gt;.mk</span></code> files to configure the application.</p>
-<p>Don&#8217;t miss to add your changes to git:</p>
+<p>Do not miss to add your changes to git:</p>
 <pre class="highlight"><span class="prompt1">git add vars_&lt;package&gt;.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
 <span class="prompt1">git push origin master</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you use the check collector don&#8217;t miss to add the new child to
+<p class="last">If you use the check collector do not miss to add the new child to
 the parent site check_collector configuration.</p>
 </div>
 <div class="admonition note">

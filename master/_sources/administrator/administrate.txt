@@ -77,7 +77,7 @@ All the layers in the admin interface have the following attributes:
 * ``Restrictions area``: the areas through which the user can see the layer.
 * ``Related Postgres table``: the related postgres table,
   used by the :ref:`administrator_editing`.
-* ``Exclude properties``: the list of attributes (database columns) that shouldn't appear in
+* ``Exclude properties``: the list of attributes (database columns) that should not appear in
   the :ref:`administrator_editing` so that they cannot be modified by the end user.
   For enumerable attributes (foreign key), the column name should end with '_id'.
 * ``Parents``: the groups and theme in which the layer is.
@@ -104,7 +104,7 @@ On WMTS layers we have the following specific attributes:
 * ``GetCapabilities URL``: the URL to the WMTS capabilities.
 * ``Layer``: the WMTS layer.
 * ``Style``: the used style, if not present we use the default style.
-* ``Matrix set``: the used matrix set, if there's only one matrix set
+* ``Matrix set``: the used matrix set, if there is only one matrix set
   in the capabilities it can be empty.
 
 layerv1 (deprecated in v2)
@@ -151,7 +151,7 @@ On ``WMTS`` layer we have the following specific attributes:
 
 * ``Base URL``: the URL to the WMTS capabilities.
 * ``Style``: the used style, if not present we use the default style.
-* ``Matrix set``: the used matrix set, if there's only one matrix set
+* ``Matrix set``: the used matrix set, if there is only one matrix set
   in the capabilities it can be empty.
 * ``WMS server URL``: optional, URL to a WMS server to use for printing
   and querying. The URL to the internal WMS is used if this field is not

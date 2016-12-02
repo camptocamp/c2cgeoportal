@@ -76,14 +76,14 @@ Preserving user-created data
 
 To prevent data modified by the users (such as editable layers features or
 short permalinks) from being lost when redeploying the DataBase, such data
-must be saved in dedicated schemas that won't be replaced.
+must be saved in dedicated schemas that will not be replaced.
 
 For that we should have 4 different schemas:
 
 * one for the application data that should be deployed (``<schema>``),
-* one for the application data that shouldn't be deployed (``<schema>_static``),
+* one for the application data that should not be deployed (``<schema>_static``),
 * one for the readonly geodata that should be deployed,
-* one for the editable geodata that shouldn't be deployed.
+* one for the editable geodata that should not be deployed.
 
 We should configure the deploy tool to deploy only the
 wanted schema, by setting the following configuration in the

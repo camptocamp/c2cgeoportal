@@ -50,7 +50,7 @@
 <div class="section" id="create-development-environment-in-a-project">
 <h2>Create development environment in a project<a class="headerlink" href="#create-development-environment-in-a-project" title="Permalink to this headline">¶</a></h2>
 <p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
-of an existing c2cgeoportal application. Here&#8217;s how:</p>
+of an existing c2cgeoportal application. Here is how:</p>
 <ul>
 <li><dl class="first docutils">
 <dt>Change current directory to your sources root directory and clone</dt>
@@ -139,7 +139,7 @@ template at your disposal:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createdb -T template_postgis c2cgeoportal_test</span>
 </pre><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>If you don&#8217;t have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
+<p>If you do not have a template named <code class="docutils literal"><span class="pre">template_postgis</span></code> use this:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test</span>
 <span class="prompt1">sudo -u postgres createlang plpgsql c2cgeoportal_test</span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test <span class="se">\</span>
@@ -153,14 +153,14 @@ template at your disposal:</p>
 </pre><p class="last">The <code class="docutils literal"><span class="pre">template0</span></code> is needed on Debian and Ubuntu to create a utf-8
 database.</p>
 </div>
-<p>If you don&#8217;t have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
+<p>If you do not have a <code class="docutils literal"><span class="pre">www-data</span></code> user you need to create one:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres createuser -P www-data</span>
 </pre><p>To create the <code class="docutils literal"><span class="pre">main</span></code> and <code class="docutils literal"><span class="pre">main_static</span></code> schema:</p>
 <pre class="highlight"><span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main TO &quot;www-data&quot;;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;CREATE SCHEMA main_static;&#39;</span></span>
 <span class="prompt1">sudo -u postgres psql -d c2cgeoportal_test -c <span class="s1">&#39;GRANT ALL ON SCHEMA main_static TO &quot;www-data&quot;;&#39;</span></span>
-</pre><p>If you don&#8217;t use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
+</pre><p>If you do not use the default variables edit the <code class="docutils literal"><span class="pre">vars.yaml</span></code> and set the <code class="docutils literal"><span class="pre">dbuser</span></code>, <code class="docutils literal"><span class="pre">dbpassword</span></code>,
 <code class="docutils literal"><span class="pre">dbhost</span></code>, <code class="docutils literal"><span class="pre">dbport</span></code>, <code class="docutils literal"><span class="pre">db</span></code>, and <code class="docutils literal"><span class="pre">mapserv_url</span></code> as appropriate.</p>
 <p><code class="docutils literal"><span class="pre">mapserv_url</span></code> needs to refer a valid <code class="docutils literal"><span class="pre">mapserv</span></code> instance running locally,
 i.e. on the machine you run the tests on. For example, if you use your desktop
@@ -180,7 +180,7 @@ to your <code class="docutils literal"><span class="pre">/var/www/&lt;virtual_ho
 <p>To know what domain name to use look at the <code class="docutils literal"><span class="pre">ServerAlias</span></code>&#8216;es
 configured for the virtual host in
 <code class="docutils literal"><span class="pre">/etc/apache2/sites-enabled/&lt;virtual_host_name&gt;</span></code>.</p>
-<p class="last">Here&#8217;s an example of a possible <code class="docutils literal"><span class="pre">mapserv_url</span></code>:
+<p class="last">Here is an example of a possible <code class="docutils literal"><span class="pre">mapserv_url</span></code>:
 <code class="docutils literal"><span class="pre">http://mapfish-geoportal-demo/mapserv</span></code>.</p>
 </div>
 <p>Once done with the editing of <code class="docutils literal"><span class="pre">vars.yaml</span></code>, run <code class="docutils literal"><span class="pre">make</span></code>
@@ -233,7 +233,7 @@ the <code class="docutils literal"><span class="pre">c2cgeoportal/scaffolds/upda
 <div class="section" id="object-model">
 <h3>Object model<a class="headerlink" href="#object-model" title="Permalink to this headline">¶</a></h3>
 <img alt="../_images/database.png" src="../_images/database.png" />
-<p><code class="docutils literal"><span class="pre">TreeItem</span></code> and <code class="docutils literal"><span class="pre">TreeGroup</span></code> are abstract (can&#8217;t be create) class used to create the tree.</p>
+<p><code class="docutils literal"><span class="pre">TreeItem</span></code> and <code class="docutils literal"><span class="pre">TreeGroup</span></code> are abstract (cannot be create) class used to create the tree.</p>
 <p><code class="docutils literal"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal"><span class="pre">LayerGroup</span></code> but without any constrains.</p>
 <p>it is not visible on this schema, but the <code class="docutils literal"><span class="pre">User</span></code> of a child schema has a link (<code class="docutils literal"><span class="pre">parent_role</span></code>)
 to the <code class="docutils literal"><span class="pre">Role</span></code> of the parent schema.</p>

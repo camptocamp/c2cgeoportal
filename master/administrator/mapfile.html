@@ -178,7 +178,7 @@ GetFeatureInfo (GML) responses. <code class="docutils literal"><span class="pre"
 with the <code class="docutils literal"><span class="pre">gml_geometries</span></code>. For example, if <code class="docutils literal"><span class="pre">geom_geometries</span></code> is set to
 <code class="docutils literal"><span class="pre">the_geom</span></code> then <code class="docutils literal"><span class="pre">gml_the_geom_type</span></code> should be used.
 The possible values are <code class="docutils literal"><span class="pre">point</span></code>, <code class="docutils literal"><span class="pre">multipoint</span></code>, <code class="docutils literal"><span class="pre">line</span></code>, <code class="docutils literal"><span class="pre">multiline</span></code>,
-<code class="docutils literal"><span class="pre">polygon</span></code>, <code class="docutils literal"><span class="pre">multipolygon</span></code>, if you don&#8217;t set the right type
+<code class="docutils literal"><span class="pre">polygon</span></code>, <code class="docutils literal"><span class="pre">multipolygon</span></code>, if you do not set the right type
 for multi geometries only the first will be visible on the map.
 See also <a class="reference external" href="http://mapserver.org/ogc/wms_server.html#index-71">gml_[geometry name]_type</a>.</div></blockquote>
 <p>See the <a class="reference external" href="http://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
@@ -218,7 +218,7 @@ replaced as appropriate. <code class="docutils literal"><span class="pre">&lt;ta
 the geographic data for this layer. <code class="docutils literal"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the table&#8217;s
 geometry column. <code class="docutils literal"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
 <code class="docutils literal"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
-what&#8217;s configured in the admin interface for the layer.</p>
+what is configured in the admin interface for the layer.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The DATA example above is developed on several lines to make it
@@ -228,7 +228,7 @@ requires that this directive is contained on a single line.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">In some cases you can have geometries that overlap the restriction
-area. Theses features won&#8217;t be displayed as they are not in the area (ie not
+area. Theses features will not be displayed as they are not in the area (ie not
 <em>contained</em>). <em>st_intersects</em> or other operator could be used instead of the
 <em>st_contains</em> operator.</p>
 </div>
@@ -257,7 +257,7 @@ It is defined as follows:</p>
 </div>
 <div class="section" id="without-restriction-on-the-restrictionarea-area">
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
-<p>If we don&#8217;t need to restrict on an area we can use the following
+<p>If we do not need to restrict on an area we can use the following
 <code class="docutils literal"><span class="pre">DATA</span></code> property of the <code class="docutils literal"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
     SELECT
@@ -272,7 +272,7 @@ It is defined as follows:</p>
 ) AS foo USING UNIQUE id USING srid=21781&quot;
 </pre></div>
 </div>
-<p>Then you don&#8217;t need to define an area in the admin interface.</p>
+<p>Then you do not need to define an area in the admin interface.</p>
 <p>The <code class="docutils literal"><span class="pre">${mapfile_data_noarea_subselect}</span></code> is defined as follows:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
     <span class="n">rra</span><span class="o">.</span><span class="n">role_id</span>
@@ -390,7 +390,7 @@ variable substitution, but they are not avalable for cached query like:
 </div>
 <p>You can set the <code class="docutils literal"><span class="pre">legend</span> <span class="pre">rule</span></code> in the admin interface to <code class="docutils literal"><span class="pre">%20</span></code>, if you want to show the legend icon in the layer tree</p>
 </li>
-<li><p class="first">No legend (don&#8217;t set any <code class="docutils literal"><span class="pre">NAME</span></code> in the <code class="docutils literal"><span class="pre">CLASS</span></code>):</p>
+<li><p class="first">No legend (do not set any <code class="docutils literal"><span class="pre">NAME</span></code> in the <code class="docutils literal"><span class="pre">CLASS</span></code>):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CLASS</span>
     <span class="n">STYLE</span>
         <span class="o">...</span>

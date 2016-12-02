@@ -20,7 +20,7 @@ Parameters
 * ``background``: parent group of background layers to get.
 * ``group``: the group to get.
 * ``catalog``: ``true`` or ``false``, different error reporting for catalog mode, default is ``false``.
-* ``min_levels``: minimum number of group levels that's required, default is ``1``.
+* ``min_levels``: minimum number of group levels that is required, default is ``1``.
 * ``role``: role name, not used by the server but it is required for the cache management.
 
 Requests examples:

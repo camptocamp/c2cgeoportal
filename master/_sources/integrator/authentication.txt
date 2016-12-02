@@ -68,7 +68,7 @@ c2cgeoportal's ``login`` and ``logout`` views, have no effect.
 
 With an authentication policy set in the application configuration the user
 name can be obtained by calling ``request.unauthenticated_userid``.
-(This function returns ``None`` if there's currently no authenticated user.)
+(This function returns ``None`` if there is currently no authenticated user.)
 But c2cgeoportal applications need to also know about the user's *role* to
 work properly.
 
@@ -179,7 +179,7 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, another *client validation* mechanism should be set up.
 ``c2cgeoportal`` provides a specific ``Configurator`` function for that, namely
 ``set_user_validator`` which allow to register a custom validator.
-Here's an example:
+Here is an example:
 
 .. code:: python
 
