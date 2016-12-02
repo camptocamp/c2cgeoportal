@@ -267,7 +267,7 @@ ifeq ($(DOCKER),FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
-I18N_DEPENDENTIES += $(MAP_FILES) \
+I18N_DEPENDENCIES += $(MAP_FILES) \
 	project.yaml
 
 # CGXP
@@ -695,7 +695,7 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
-		$(I18N_DEPENDENTIES) \
+		$(I18N_DEPENDENCIES) \
 		$(I18N_SOURCE_FILES) \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		.build/mapserver.timestamp \
