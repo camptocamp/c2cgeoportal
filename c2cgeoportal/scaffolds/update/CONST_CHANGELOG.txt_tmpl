@@ -112,7 +112,7 @@ https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
 
    Where 'example.com' is the hostname use in the browser to open the application
 
-9. in the apache/wsgi.conf.mako file do the following changes:
+9. In the apache/wsgi.conf.mako file do the following changes:
 
     -% for interface in interfaces:
     -<%
@@ -167,7 +167,7 @@ https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
-14. In the database we have added some restrictions, have a look here for more informations:
+14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 
