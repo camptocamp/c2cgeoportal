@@ -4,12 +4,13 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.1.0
 =============
 
-We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
-but it is not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+In recent versions of GeoMapFish, `CGXP` has been replaced by `ngeo` to propose
+a more modern interface to the end user. It is still possible to keep using
+`CGXP` though.
 
-To continue to use the CGXP interface(s) you should see this documentation:
-https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy.html
-And continue on the step 4.
+If you want to keep the `CGXP` interface please read the following
+documentation and then move directly to step 4:
+https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
 
 
 1. Get the new files for ngeo integration:
