@@ -42,7 +42,7 @@ push commits by just using ``git push``.
 
 The "origin" remote can either represent the main repository (that in the
 "camptocamp" organization) or your own fork. Creating branches in the main
-repository can ease collaboration between developers, but isn't required.
+repository can ease collaboration between developers, but is not required.
 
 Sync up a topic branch from master
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,7 +82,7 @@ request, for others to get notifications.
 Remove branches
 ~~~~~~~~~~~~~~~
 
-Once you're done with a topic branch (because its commits are merged
+Once you are done with a topic branch (because its commits are merged
 in the master branch) you can remove it with:
 
 .. prompt:: bash

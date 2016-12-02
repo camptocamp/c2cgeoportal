@@ -85,7 +85,7 @@ In the root element ``tinyows`` the following properties have to be set:
    for more information.
 5. ``check_schema`` - If the input data is validated against the schema when
    creating new features. In a vhost environment the schema check has to be
-   disabled, so that the proxy can function properly. This doesn't disable
+   disabled, so that the proxy can function properly. This does not disable
    the validation database-side though!
 
 The database connection is configured in the element ``pg``. By default the

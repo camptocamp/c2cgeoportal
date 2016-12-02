@@ -30,7 +30,7 @@ MAP
     RESOLUTION 96 ## Also set in Openlayers especially for legends
     DEFRESOLUTION 96
 
-    # MAXSIZE shouldn't be less than 5000 for MF print on A3
+    # MAXSIZE should not be less than 5000 for MF print on A3
     MAXSIZE 5000
 
     SHAPEPATH '/var/sig/{{package}}'

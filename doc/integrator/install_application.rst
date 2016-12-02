@@ -50,7 +50,7 @@ with ``<db_name>`` replaced by the actual database name.
 
 .. note::
 
-   if you don't have the template_postgis you can use:
+   if you do not have the template_postgis you can use:
 
    with Postgres >= 9.1 and PostGIS >= 2.1:
 
@@ -95,7 +95,7 @@ We use a specific user for the application, ``www-data`` by default.
 
 .. note::
 
-   It the user doesn't already exist in your database, create it first:
+   It the user does not already exist in your database, create it first:
 
    .. prompt:: bash
 
@@ -112,7 +112,7 @@ Give the rights to the user:
 
 .. note::
 
-   If you don't use the www-data user for Apache replace it by the right user.
+   If you do not use the www-data user for Apache replace it by the right user.
 
 
 Install the application
@@ -140,9 +140,9 @@ OpenLayers and GeoExt.
 
 .. note::
 
-    We don't just use ``git submodule update --init --recursive`` here because
-    that would also download GXP's submodules. We don't want that because we
-    don't need GXP's submodules. CGXP indeed has its own submodules for
+    We do not just use ``git submodule update --init --recursive`` here because
+    that would also download GXP's submodules. We do not want that because we
+    do not need GXP's submodules. CGXP indeed has its own submodules for
     OpenLayers and GeoExt.
 
 Non Apt/Dpkg based OS Configuration
@@ -248,7 +248,7 @@ this line under ``MAP`` (use regular slash ``/``) ::
 
 The following configuration override must be added to your ``<project>.mk``::
 
-    # Sets that's we use Windows
+    # Sets that is we use Windows
     OPERATING_SYSTEM ?= WINDOWS
     # Path to cygwin
     CYGWIN_PATH ?= c:/path/to/cygwin
@@ -314,7 +314,7 @@ On RHEL 6 the ``mapserv`` binary is located in ``/usr/libexec/``. The
 Install the application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If it doesn't already exist, create a ``<user>.mk`` file
+If it does not already exist, create a ``<user>.mk`` file
 (where ``<user>`` is for example your username),
 that will contain your application special
 configuration:

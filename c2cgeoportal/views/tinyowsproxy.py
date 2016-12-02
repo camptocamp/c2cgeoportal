@@ -67,7 +67,7 @@ class TinyOWSProxy(Proxy):
             )
         self.role_id = None if self.user is None else self.user.role.id
 
-        # params hold the parameters we're going to send to TinyOWS
+        # params hold the parameters we are going to send to TinyOWS
         params = dict(self.request.params)
         self.lower_params = self._get_lower_params(params)
 

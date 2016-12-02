@@ -34,7 +34,7 @@ The file to translate are:
 .. note::
 
    All the ``#, fuzzy`` strings should be verified ans the line should be removed.
-   (if the line isn't removed the localisation will not be used.)
+   (if the line is not removed the localisation will not be used.)
 
 ----
 CGXP

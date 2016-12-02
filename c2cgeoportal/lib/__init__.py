@@ -74,7 +74,7 @@ def get_url(url, request, default=None, errors=None):
         server = request.registry.settings.get("servers", {}).get(obj.netloc)
         if server is None:
             if default is None and errors is not None:
-                errors.add("The server '{0!s}' isn't found in the config".format(obj.netloc))
+                errors.add("The server '{0!s}' is not found in the config".format(obj.netloc))
             return default
         else:
             return "{0!s}{1!s}?{2!s}".format(server, obj.path, obj.query)
@@ -90,14 +90,14 @@ def get_url2(name, url, request, errors):
             # Relative URL like: /dummy/static/url or dummy/static/url
             return urlparse.urlunsplit(url_split)
         errors.add(
-            "{}='{}' isn't an URL."
+            "{}='{}' is not an URL."
             .format(name, url)
         )
         return None
     elif url_split.scheme in ("http", "https"):
         if url_split.netloc == "":
             errors.add(
-                "{}='{}' isn't a valid URL."
+                "{}='{}' is not a valid URL."
                 .format(name, url)
             )
             return None
@@ -105,7 +105,7 @@ def get_url2(name, url, request, errors):
     elif url_split.scheme == "static":
         if url_split.path in ("", "/"):
             errors.add(
-                "{}='{}' can't have an empty path."
+                "{}='{}' cannot have an empty path."
                 .format(name, url)
             )
             return None
@@ -121,14 +121,14 @@ def get_url2(name, url, request, errors):
     elif url_split.scheme == "config":
         if url_split.netloc == "":
             errors.add(
-                "{}='{}' can't have an empty netloc."
+                "{}='{}' cannot have an empty netloc."
                 .format(name, url)
             )
             return None
         server = request.registry.settings.get("servers", {}).get(url_split.netloc)
         if server is None:
             errors.add(
-                "The server '{}' isn't found in the config".format(url_split.netloc)
+                "The server '{}' is not found in the config".format(url_split.netloc)
             )
             return None
         if server[-1] != "/":
@@ -171,7 +171,7 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.time() != datetime.time(0, 0, 0):
-                errors.add("The date attribute '{}'='{}' shouldn't have any time".format(
+                errors.add("The date attribute '{}'='{}' should not have any time".format(
                     name, value,
                 ))
             else:
@@ -183,7 +183,7 @@ def get_typed(name, value, types, request, errors):
                 value, default=datetime.datetime(1, 1, 1, 0, 0, 0)
             )
             if date.date() != datetime.date(1, 1, 1):
-                errors.add("The time attribute '{}'='{}' shouldn't have any date".format(
+                errors.add("The time attribute '{}'='{}' should not have any date".format(
                     name, value,
                 ))
             else:

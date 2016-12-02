@@ -16,13 +16,13 @@ PYTHON_BIN_POSTFIX = .exe
 NODE_BIN_POSTFIX = .cmd
 FIND ?= $(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
-# TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
+# TILECLOUD_CHAIN require Shapely but does not have a system specific setup.
 # You can still install it but you must install Shapely manualy inside
 # TILECLOUD_CHAIN virtualenv
 TILECLOUD_CHAIN ?= FALSE
 # Some python packages are installed from already packaged wheels.
 CONST_REQUIREMENT ?= CONST_requirements_windows.txt
-# because Windows doesn't like path with //
+# because Windows does not like path with //
 PRINT_TMP ?= tmp
 else
 VENV_BIN ?= .build/venv/bin
@@ -43,7 +43,7 @@ TEMPLATE_EXCLUDE += .build node_modules \
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
 
-# Don't minify the js / css, ...
+# Do not minify the js / css, ...
 DEVELOPMENT ?= FALSE
 export DEVELOPMENT
 # Language provided by the application
@@ -1228,8 +1228,8 @@ UPGRADE_ARGS ?=
 endif
 
 $(UPGRADE_MAKE_FILE):
-	@echo "The file '$(UPGRADE_MAKE_FILE)' can't be found,"
-	@echo "this probably mean that you Makefile isn't named '<instanceid>.mk'."
+	@echo "The file '$(UPGRADE_MAKE_FILE)' cannot be found,"
+	@echo "this probably mean that you Makefile is not named '<instanceid>.mk'."
 	@echo "To solve this you can rename your Makefile or add in your Makefile"
 	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
 	exit 1

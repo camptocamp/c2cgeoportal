@@ -366,7 +366,7 @@ class Headers extends Simulation {
             .queryParam("lat", 143010)
             .headers(headers)
             .check(status.is(200))
-            // .check(headerRegex("Content-Encoding", "gzip")) // Apache doesn't seem to compress small files
+            // .check(headerRegex("Content-Encoding", "gzip")) // Apache does not seem to compress small files
             .check(headerRegex("Cache-Control", "no-cache")))
         .pause(1)
         .exec(
@@ -377,7 +377,7 @@ class Headers extends Simulation {
             .queryParam("callback", "stcCallback1003")
             .headers(headers)
             .check(status.is(200))
-            // .check(headerRegex("Content-Encoding", "gzip")) // Apache doesn't seem to compress small files
+            // .check(headerRegex("Content-Encoding", "gzip")) // Apache does not seem to compress small files
             .check(headerRegex("Cache-Control", "no-cache")))
         .pause(1)
         .exec(
@@ -770,7 +770,7 @@ class Headers extends Simulation {
             .queryParam("lat", 143010)
             .headers(headers)
             .check(status.is(200))
-            // .check(headerRegex("Content-Encoding", "gzip")) // Apache doesn't seem to compress small files
+            // .check(headerRegex("Content-Encoding", "gzip")) // Apache does not seem to compress small files
             .check(headerRegex("Cache-Control", "no-cache")))
         .pause(1)
         .exec(
@@ -781,7 +781,7 @@ class Headers extends Simulation {
             .queryParam("callback", "stcCallback1003")
             .headers(headers)
             .check(status.is(200))
-            // .check(headerRegex("Content-Encoding", "gzip")) // Apache doesn't seem to compress small files
+            // .check(headerRegex("Content-Encoding", "gzip")) // Apache does not seem to compress small files
             .check(headerRegex("Cache-Control", "no-cache")))
         .pause(1)
         .exec(

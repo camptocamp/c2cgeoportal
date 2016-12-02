@@ -60,7 +60,7 @@ script:
 
 # test new project
 - cd /tmp/travis/testgeomapfish
-- .build/venv/bin/pcreate --scaffold=c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - don't add any argument on this command
+- .build/venv/bin/pcreate --scaffold=c2cgeoportal_update --ignore-conflicting-name --overwrite /tmp/travis/testgeomapfish > /dev/null  # on upgrade - do not add any argument on this command
 - make -f travis.mk checks
 - cd $TRAVIS_FOLDER
 - travis/no-make-error.sh /tmp/travis/testgeomapfish -f travis.mk help

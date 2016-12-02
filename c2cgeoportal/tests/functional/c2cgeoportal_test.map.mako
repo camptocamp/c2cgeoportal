@@ -4,7 +4,7 @@ MAP
     EXTENT -180 -90 180 90
     UNITS dd
 
-    # MAXSIZE shouldn't be less than 4000 for MF print
+    # MAXSIZE should not be less than 4000 for MF print
     MAXSIZE 4000
 
     SHAPEPATH ''

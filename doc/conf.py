@@ -51,7 +51,7 @@ master_doc = 'index'
 project = u'c2cgeoportal'
 copyright = u'2011-2016, Camptocamp'
 
-# The version info for the project you're documenting, acts as replacement for
+# The version info for the project you are documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #

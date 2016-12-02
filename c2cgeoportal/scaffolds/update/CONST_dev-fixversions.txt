@@ -1,2 +1,2 @@
-# List of versions that shouldn't be changed by requires.io
+# List of versions that should not be changed by requires.io
 flake8==2.6.2

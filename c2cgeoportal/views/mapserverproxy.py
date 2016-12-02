@@ -115,8 +115,8 @@ class MapservProxy(Proxy):
             # possible layer_name in the params. We set layer_name
             # when either QUERY_PARAMS or LAYERS is set in the
             # WMS params, i.e. for GetMap and GetFeatureInfo
-            # requests. For GetLegendGraphic requests we don't
-            # send layer_name, but MapServer shouldn't use the DATA
+            # requests. For GetLegendGraphic requests we do not
+            # send layer_name, but MapServer should not use the DATA
             # string for GetLegendGraphic.
 
             params["role_id"] = self.user.parent_role.id if self.external else self.user.role.id
@@ -126,7 +126,7 @@ class MapservProxy(Proxy):
             if not self.external:
                 params["user_id"] = self.user.id  # pragma: no cover
 
-        # don't allows direct variable substitution
+        # do not allows direct variable substitution
         for k in params.keys():
             if k[:2].capitalize() == "S_":
                 log.warning("Direct substitution not allowed ({0!s}={1!s}).".format(k, params[k]))

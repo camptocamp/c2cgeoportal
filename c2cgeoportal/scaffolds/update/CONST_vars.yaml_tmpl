@@ -202,7 +202,7 @@ vars:
     # The name of the theme to use as the default theme.
     # The default theme is the theme loaded when no
     # theme name is specified in the mobile app URL. If unset
-    # then there's no default theme, and no theme information
+    # then there is no default theme, and no theme information
     # will be passed to the config.js template.
             default_theme:
 

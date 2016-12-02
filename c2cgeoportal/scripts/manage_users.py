@@ -52,7 +52,7 @@ def main():
 
 Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
-User can be created if it doesn't exist yet."""
+User can be created if it does not exist yet."""
 
     parser = argparse.ArgumentParser(description=usage)
     parser.add_argument(
@@ -73,7 +73,7 @@ User can be created if it doesn't exist yet."""
     parser.add_argument(
         "-c", "--create",
         action="store_true", default=False,
-        help="Create user if it doesn't already exist"
+        help="Create user if it does not already exist"
     )
     parser.add_argument(
         "-r", "--rolename",
@@ -100,7 +100,7 @@ User can be created if it doesn't exist yet."""
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
     if not os.path.isfile(app_config):
-        parser.error("Can't find config file: {0!s}".format(app_config))
+        parser.error("Cannot find config file: {0!s}".format(app_config))
 
     # loading schema name from config and setting its value to the
     # corresponding global variable from c2cgeoportal
@@ -131,10 +131,10 @@ User can be created if it doesn't exist yet."""
     if result == 0:
         if not options.create:
             # if doesn"t exist and no -c option, throw error
-            raise Exception("User {0!s} doesn't exist in database".format(username))
+            raise Exception("User {0!s} does not exist in database".format(username))
         else:
-            print("User {0!s} doesn't exist in database, creating".format(username))
-            # if doesn't exist and -c option, create user
+            print("User {0!s} does not exist in database, creating".format(username))
+            # if does not exist and -c option, create user
 
             password = options.password if options.password is not None else username
             email = options.email if options.email is not None else username
@@ -145,7 +145,7 @@ User can be created if it doesn't exist yet."""
 
             if query_role.count() == 0:
                 # role not found in db?
-                raise Exception("Role matching {0!s} doesn't exist in database".format(
+                raise Exception("Role matching {0!s} does not exist in database".format(
                     options.rolename
                 ))
 

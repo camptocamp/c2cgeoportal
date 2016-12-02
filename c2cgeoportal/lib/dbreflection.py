@@ -184,7 +184,7 @@ def get_class(tablename, session=None, exclude_properties=None):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
-    must reference a valid string. If there's no table identified by
+    must reference a valid string. If there is no table identified by
     tablename in the database a NoSuchTableError SQLAlchemy exception
     is raised.
     """
