@@ -26,6 +26,9 @@ file:
 
 .. code:: diff
 
+  - % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['app.js', 'lang-%s.js' % lang]):
+  + % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['desktop.js', 'lang-%s.js' % lang]):
+
   - <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/app.js')}"></script>
   + <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/desktop.js')}"></script>
   ...
@@ -67,6 +70,13 @@ Make also sure that you do not have ``check_collector.disabled`` in the
 ``update_paths`` (and do not readd it during the next upgrade steps).
 
 Then update the interface in your ``<package>/__init__.py`` file:
+
+.. code:: diff
+
+  - from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
+  + from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH, INTERFACE_TYPE_CGXP
+
+Also add the following line:
 
 .. code:: python
 
