@@ -355,7 +355,7 @@ class C2cTool:
         check_call(["make", "-f", self.options.file, self.options.clean])
 
         # Update the package.json file
-        if os.path.exists("package.json"):
+        if os.path.exists("package.json") and os.path.getsize("package.json") > 0:
             with open("package.json", "r") as package_json_file:
                 package_json = json.loads(package_json_file.read(), encoding="utf-8")
             with open("CONST_create_template/package.json", "r") as package_json_file:
