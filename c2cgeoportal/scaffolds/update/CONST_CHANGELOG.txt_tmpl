@@ -14,6 +14,14 @@ If you want to keep the `CGXP` interface please read the following
 documentation and then move directly to step 4:
 https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
 
+After you upgrade the application you can use the following scripts to help you on upgrade
+your data from CGXP to ngeo:
+* `.build/venv/bin/themev1tov2` to migrate the themes
+* `.build/venv/bin/l10nv1tov2` to migrate the localisation files (language strings)
+Use the `--help` argument for more information.
+
+You should also add a Layer group named 'background' with the background layers.
+
 
 1. Get the new files for ngeo integration:
 
@@ -235,12 +243,7 @@ replace your sencha touch interface by an ngeo interface.
      - add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
      + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
-6. To easer migrate your application from version 1 to version 2 some scripts are available:
-    `.build/venv/bin/themev1tov2` to migrate the theme
-    `.build/venv/bin/l10nv1tov2` to migrate the localisation
-    Use the `--help` argument for more information.
-
-7. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
+6. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
    rename 'cache_control' to 'headers' and 'max_age' to
    'cache_control_max_age':
 
@@ -251,24 +254,23 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
-8. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
+7. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
 
       <input id="password" name="password" type="password" autocomplete="on"/>
     + <input id="oldPassword" name="oldPassword" type="password" />
       <input id="newPassword" name="newPassword" type="password" />
 
-9. On the `{{package}}/models.py` removes the following lines:
+8. On the `{{package}}/models.py` remove the following lines:
 
     - LayerInternalWMS.__acl__ = [DENY_ALL]
     - LayerExternalWMS.__acl__ = [DENY_ALL]
     - LayerWMTS.__acl__ = [DENY_ALL]
     - WMTSDimension.__acl__ = [DENY_ALL]
 
-10. Add a Layer group named 'background' with the background layers.
 
-11. It is not allowed anymore to have layers directly in a theme.
+9. It is not allowed anymore to have layers directly in a theme.
 
-12. Do the following change in the `{{package}}/templates/index.html` file:
+10. Do the following change in the `{{package}}/templates/index.html` file:
 
     - % if not no_redirect and mobile_url is not None:
     + % if "no_redirect" not in request.params:
