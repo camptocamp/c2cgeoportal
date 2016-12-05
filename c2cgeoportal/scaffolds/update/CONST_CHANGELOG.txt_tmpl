@@ -4,6 +4,8 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.1.0
 =============
 
+If you upgrade from the version 1.6.x be careful to apply the steps for the version 2.0 first.
+
 In recent versions of GeoMapFish, `CGXP` has been replaced by `ngeo` to propose
 a more modern interface to the end user. It is still possible to keep using
 `CGXP` though.
