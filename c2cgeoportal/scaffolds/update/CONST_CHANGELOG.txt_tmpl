@@ -255,33 +255,14 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
-7. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
-
-      <input id="password" name="password" type="password" autocomplete="on"/>
-    + <input id="oldPassword" name="oldPassword" type="password" />
-      <input id="newPassword" name="newPassword" type="password" />
-
-8. On the `{{package}}/models.py` remove the following lines:
+7. On the `{{package}}/models.py` remove the following lines:
 
     - LayerInternalWMS.__acl__ = [DENY_ALL]
     - LayerExternalWMS.__acl__ = [DENY_ALL]
     - LayerWMTS.__acl__ = [DENY_ALL]
     - WMTSDimension.__acl__ = [DENY_ALL]
 
-
-9. It is not allowed anymore to have layers directly in a theme.
-
-10. Do the following change in the `{{package}}/templates/index.html` file:
-
-    - % if not no_redirect and mobile_url is not None:
-    + % if "no_redirect" not in request.params:
-      <script>
-          if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-    -         window.location = "${mobile_url}";
-    +         window.location = "${request.route_url('mobile', _query=dict(request.GET))}";
-          }
-      </script>
-      % endif
+8. It is not allowed anymore to have layers directly in a theme.
 
 
 Version 1.6.8

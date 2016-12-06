@@ -82,6 +82,26 @@ Also add the following line:
 
   add_interface(config, "desktop", INTERFACE_TYPE_CGXP)
 
+``externalWFSTypes`` does not exist anymore so you should remove the following line
+from ``<package>/templates/desktop.js``
+
+.. code:: javascript
+
+  externalWFSTypes: ${'$'}{externalWFSTypes | n},
+
+Do the following change in the ``<package>/templates/desktop.html`` file:
+
+.. code:: diff
+
+   - ${'%'} if not no_redirect and mobile_url is not None:
+   + ${'%'} if "no_redirect" not in request.params:
+     <script>
+         if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+   -         window.location = "${'$'}{mobile_url}";
+   +         window.location = "${'$'}{request.route_url('mobile', _query=dict(request.GET))}";
+         }
+     </script>
+     ${'%'} endif
 
 The OGC proxy is deprecated because with modern browsers it is not required anymore.
 You can simply remove the following line in  ``desktop.js``, ``edit.js`` and
@@ -91,13 +111,15 @@ You can simply remove the following line in  ``desktop.js``, ``edit.js`` and
 
   OpenLayers.ProxyHost = "${'$'}{request.route_url('ogcproxy') | n}?url=";
 
-``externalWFSTypes`` does not exist anymore so you should remove the following line
-from ``<package>/templates/desktop.js``
+Add the new oldPassword field:
+You should add the following line in ``desktop.js``, ``edit.js`` and
+``routing.js`` (in ``<package>/templates``).
 
-.. code:: javascript
+.. code:: diff
 
-  externalWFSTypes: ${'$'}{externalWFSTypes | n},
-
+     <input id="password" name="password" type="password" autocomplete="on"/>
+   + <input id="oldPassword" name="oldPassword" type="password" />
+     <input id="newPassword" name="newPassword" type="password" />
 
 More information about how to configure the interface when using `CGXP` can be
 found `here <https://camptocamp.github.io/c2cgeoportal/1.6/integrator/customize_ui.html>`_.
