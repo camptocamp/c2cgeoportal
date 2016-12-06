@@ -51,12 +51,16 @@ You should also add a Layer group named 'background' with the background layers.
     git rm CONST_versions.txt
     git rm .jshintrc
 
-5. The less build is simplified (be careful it you customise your style):
+5. Get the new and heavily modified files for ngeo integration:
+
+    cp CONST_create_template/apache/wsgi.conf.mako apache/
+
+6. The less build is simplified (be careful it you customise your style):
 
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
-6. The checkers will be refactored, you should do at least the following
+7. The checkers will be refactored, you should do at least the following
    change in your vars_{{package}}.yaml:
       checker:
     -     fulltextsearch: text to search
@@ -109,9 +113,9 @@ You should also add a Layer group named 'background' with the background layers.
     + - check_collector.disabled
       - check_collector.hosts
 
-7. In your vars_{{package}}.yaml file remove the host entry.
+8. In your vars_{{package}}.yaml file remove the host entry.
 
-8. In your {{package}}.mk add the following lines:
+9. In your {{package}}.mk add the following lines:
 
    + VISIBLE_WEB_HOST ?= example.com
    +
@@ -122,29 +126,6 @@ You should also add a Layer group named 'background' with the background layers.
    + DEPLOY_BRANCH_MAKEFILE ?= {{package}}.mk
 
    Where 'example.com' is the hostname use in the browser to open the application
-
-9. In the apache/wsgi.conf.mako file do the following changes:
-
-    -% for interface in interfaces:
-    -<%
-    -path = apache_entry_point \
-    -    if interface == "main" \
-    -    else "%s%s/" % (apache_entry_point, interface)
-    -interface = "" if interface == "main" else interface
-    -%>
-    -RewriteRule ^${path}?$ /${instanceid}/wsgi/${interface} [PT]
-    -RewriteRule ^${path}theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
-    -% endfor
-    -
-    -RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/ [PT]
-    +RewriteRule ^${apache_entry_point}?$ /${instanceid}/wsgi/${default_interface} [PT]
-    +RewriteRule ^${apache_entry_point}theme/(.+)$ /${instanceid}/wsgi/${default_interface}/theme/$1 [PT]
-    +
-    +% for interface in interfaces:
-    +RewriteRule ^${apache_entry_point}${interface}/?$ /${instanceid}/wsgi/${interface} [PT]
-    +RewriteRule ^${apache_entry_point}${interface}/theme/(.+)$ /${instanceid}/wsgi/${interface}/theme/$1 [PT]
-    +% endfor
-    +
 
 10. In your vars_{{package}}.yaml file rename `mobile_default_theme` to `default_theme`.
 
