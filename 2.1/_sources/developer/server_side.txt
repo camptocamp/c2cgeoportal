@@ -7,7 +7,7 @@ Create development environment in a project
 -------------------------------------------
 
 c2cgeoportal developers often need to test c2cgeoportal changes in the context
-of an existing c2cgeoportal application. Here's how:
+of an existing c2cgeoportal application. Here is how:
 
 * Change current directory to your sources root directory and clone
     ``c2cgeoportal`` there (in the following line the sources directory is the
@@ -123,7 +123,7 @@ template at your disposal:
 
 .. note::
 
-    If you don't have a template named ``template_postgis`` use this:
+    If you do not have a template named ``template_postgis`` use this:
 
     .. prompt:: bash
 
@@ -141,7 +141,7 @@ template at your disposal:
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
     database.
 
-If you don't have a ``www-data`` user you need to create one:
+If you do not have a ``www-data`` user you need to create one:
 
 .. prompt:: bash
 
@@ -156,7 +156,7 @@ To create the ``main`` and ``main_static`` schema:
     sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
     sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
 
-If you don't use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
+If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
 
 ``mapserv_url`` needs to refer a valid ``mapserv`` instance running locally,
@@ -181,7 +181,7 @@ machine it may be ``http://locahost/cgi-bin/mapserv``.
     configured for the virtual host in
     ``/etc/apache2/sites-enabled/<virtual_host_name>``.
 
-    Here's an example of a possible ``mapserv_url``:
+    Here is an example of a possible ``mapserv_url``:
     ``http://mapfish-geoportal-demo/mapserv``.
 
 
@@ -270,7 +270,7 @@ Object model
 .. source file is database.dia.
    export from DIA using the type "PNG (anti-crénelé) (*.png)", set the width to 1000px.
 
-``TreeItem`` and ``TreeGroup`` are abstract (can't be create) class used to create the tree.
+``TreeItem`` and ``TreeGroup`` are abstract (cannot be create) class used to create the tree.
 
 ``FullTextSearch`` references a first level ``LayerGroup`` but without any constrains.
 

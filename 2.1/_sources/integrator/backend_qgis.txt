@@ -9,7 +9,7 @@ Viewer configuration
 
 In the ``<package>/templates/viewer.js`` file, define the url of the WFS service
 which will be used to get the namespace required to parse the WFS response,
-and indicate that we don't want duplicate layer name above the legend::
+and indicate that we do not want duplicate layer name above the legend::
 
     cgxp.WMS_FEATURE_NS = "http://www.qgis.org/gml";
     cgxp.LEGEND_INCLUDE_LAYER_NAME = false;

@@ -47,7 +47,7 @@ following parameter in the plugin configuration:
 Note
 ----
 
-ArcGis (even 10.2) doesn't understand "application/vnd.ogc.gml" for *INFO_FORMAT* in
+ArcGis (even 10.2) does not understand "application/vnd.ogc.gml" for *INFO_FORMAT* in
 a *GetFeatureInfo* request and returns only a simple XML formated response
 instead of GML.
 

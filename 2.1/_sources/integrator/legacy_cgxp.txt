@@ -141,7 +141,7 @@ Most of the tools used in the application are
 `cgxp.plugins <http://docs.camptocamp.net/cgxp/2.1/lib/plugins.html>`_.
 
 In most cases code examples to add to the ``viewer.js`` file are available.
-Don't forget to add the plugin files in your ``jsbuild/app.cfg`` file.
+Do not forget to add the plugin files in your ``jsbuild/app.cfg`` file.
 For example, to use the Legend panel, add::
 
     [app.js]
@@ -222,7 +222,7 @@ The important points are:
   If it is not present the ``mapserverLayers`` is used.
 * ``ref`` is used by the
   `MapOpacitySlider <http://docs.camptocamp.net/cgxp/2.1/lib/plugins/MapOpacitySlider.html>`_.
-* ``visibility`` should be set to ``false`` to don't download unneeded tiles, the
+* ``visibility`` should be set to ``false`` to do not download unneeded tiles, the
   `MapOpacitySlider <http://docs.camptocamp.net/cgxp/2.1/lib/plugins/MapOpacitySlider.html>`_
   will manage it.
 * ``transitionEffect``, ``buffer`` provides good value for performance

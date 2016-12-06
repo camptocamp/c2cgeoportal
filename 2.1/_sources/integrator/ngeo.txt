@@ -190,7 +190,7 @@ Checker
 
 Enable the checker for the new interface.
 
-We suggest to add only the main checker in the ``defaults`` it's what's done by default.
+We suggest to add only the main checker in the ``defaults`` it is what is done by default.
 
 And in the ``all`` (``vars.checker.all``) check all the ngeo interface in standard and debug mode:
 
@@ -205,4 +205,4 @@ And in the ``all`` (``vars.checker.all``) check all the ngeo interface in standa
        no_redirect: true
        debug: true
 
-By default it's done for the desktop and mobile interface.
+By default it is done for the desktop and mobile interface.
