@@ -18,15 +18,15 @@ https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
     cp CONST_create_template/{{package}}/templates/desktop.html {{package}}/templates/
     cp CONST_create_template/{{package}}/static-ngeo/less/desktop.less {{package}}/static-ngeo/less
     cp CONST_create_template/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
-    cp CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
+    cp -r CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
 
 2. Remove the cgxp interfaces:
 
-    git rm {{package}}/templates/index.html
+    git rm -f {{package}}/templates/index.html
     git rm {{package}}/templates/viewer.js
-    git rm {{package}}/templates/edit.html
+    git rm -f {{package}}/templates/edit.html
     git rm {{package}}/templates/edit.js
-    git rm {{package}}/templates/routing.html
+    git rm -f {{package}}/templates/routing.html
     git rm {{package}}/templates/routing.js
 
 3. In the `{{package}}/__init__.py` do the following replacement:
@@ -46,7 +46,8 @@ https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
-6. The checkers will be refactored, you should do at least the following change:
+6. The checkers will be refactored, you should do at least the following
+   change in your vars_{{package}}.yaml:
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
