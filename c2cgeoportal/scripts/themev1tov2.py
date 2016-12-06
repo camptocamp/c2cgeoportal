@@ -193,14 +193,14 @@ def layer_v1tov2(session, layer):
     new_layer.interfaces = layer.interfaces
 
     if layer.layer_type[-4:] == " WMS":
-        new_layer.layer = layer.name
+        new_layer.layer = layer.layer
         new_layer.style = layer.style
         new_layer.time_mode = layer.time_mode
         new_layer.time_widget = layer.time_widget
 
     if layer.layer_type == "WMTS":
         new_layer.url = layer.url
-        new_layer.layer = layer.name
+        new_layer.layer = layer.layer
         new_layer.style = layer.style
         new_layer.matrix_set = layer.matrix_set
         new_layer.image_type = layer.image_type
