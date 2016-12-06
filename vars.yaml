@@ -4,7 +4,7 @@ vars:
     dbpassword: www-data
     dbhost: db
     dbport: 5432
-    db: geomapfish
+    db: geomapfish_test
     mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la
     mapserver_join_area: ra.area
     mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="

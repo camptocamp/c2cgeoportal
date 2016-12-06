@@ -31,6 +31,7 @@
 from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
+import sqlahelper
 import re
 import transaction
 import json
@@ -56,13 +57,28 @@ class TestEntryView(TestCase):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
+        self._tables = []
 
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, LayerV1, \
-            RestrictionArea, Theme, LayerGroup, Functionality, Interface, \
+            RestrictionArea, TreeItem, Theme, LayerGroup, Functionality, Interface, \
             LayerWMS, OGCServer, FullTextSearch, OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
         from sqlalchemy import func
+
+        from sqlalchemy import Column, Table, types
+        from sqlalchemy.ext.declarative import declarative_base
+        from geoalchemy2 import Geometry
+        from c2cgeoportal.lib.dbreflection import init
+
+        for o in DBSession.query(RestrictionArea).all():
+            DBSession.delete(o)
+        for o in DBSession.query(Role).all():
+            DBSession.delete(o)
+        for o in DBSession.query(User).all():
+            DBSession.delete(o)
+        for o in DBSession.query(TreeItem).all():
+            DBSession.delete(o)
 
         role1 = Role(name=u"__test_role1")
         role1.id = 999
@@ -77,12 +93,27 @@ class TestEntryView(TestCase):
         main = Interface(name=u"desktop")
         mobile = Interface(name=u"mobile")
 
+        engine = sqlahelper.get_engine()
+        init(engine)
+        engine.connect()
+
+        a_geo_table = Table(
+            "a_geo_table", declarative_base(bind=engine).metadata,
+            Column("id", types.Integer, primary_key=True),
+            Column("geom", Geometry("POINT", srid=21781)),
+            schema="geodata"
+        )
+
+        self._tables = [a_geo_table]
+        a_geo_table.drop(checkfirst=True)
+        a_geo_table.create()
+
         public_layer = LayerV1(name=u"__test_public_layer", public=True)
         public_layer.is_checked = False
         public_layer.interfaces = [main, mobile]
 
         private_layer = LayerV1(name=u"__test_private_layer", public=False)
-        private_layer.geo_table = "a_schema.a_geo_table"
+        private_layer.geo_table = "geodata.a_geo_table"
         private_layer.interfaces = [main, mobile]
 
         ogcserver, ogcserver_external = create_default_ogcserver()
@@ -179,8 +210,7 @@ class TestEntryView(TestCase):
 
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -215,6 +245,9 @@ class TestEntryView(TestCase):
             Interface.name == "desktop"
         ).delete()
         DBSession.query(OGCServer).delete()
+
+        for table in self._tables[::-1]:
+            table.drop(checkfirst=True)
 
         transaction.commit()
 

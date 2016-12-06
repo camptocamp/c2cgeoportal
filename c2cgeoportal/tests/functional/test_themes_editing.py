@@ -31,6 +31,7 @@
 from unittest2 import TestCase
 from nose.plugins.attrib import attr
 
+import sqlahelper
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
@@ -53,12 +54,26 @@ class TestThemeEditing(TestCase):
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
+        self._tables = []
 
         functionality.FUNCTIONALITIES_TYPES = None
 
         from c2cgeoportal.models import DBSession, User, Role, \
-            RestrictionArea, Theme, LayerGroup, Interface, LayerWMS
+            RestrictionArea, TreeItem, Theme, LayerGroup, Interface, LayerWMS
 
+        from sqlalchemy import Column, Table, types
+        from sqlalchemy.ext.declarative import declarative_base
+        from geoalchemy2 import Geometry
+        from c2cgeoportal.lib.dbreflection import init
+
+        for o in DBSession.query(RestrictionArea).all():
+            DBSession.delete(o)
+        for o in DBSession.query(Role).all():
+            DBSession.delete(o)
+        for o in DBSession.query(User).all():
+            DBSession.delete(o)
+        for o in DBSession.query(TreeItem).all():
+            DBSession.delete(o)
         ogcserver, ogcserver_external = create_default_ogcserver()
 
         role1 = Role(name=u"__test_role1")
@@ -73,9 +88,23 @@ class TestThemeEditing(TestCase):
 
         main = Interface(name=u"main")
 
+        engine = sqlahelper.get_engine()
+        init(engine)
+        engine.connect()
+        a_geo_table = Table(
+            "a_geo_table", declarative_base(bind=engine).metadata,
+            Column("id", types.Integer, primary_key=True),
+            Column("geom", Geometry("POINT", srid=21781)),
+            schema="geodata"
+        )
+
+        self._tables = [a_geo_table]
+        a_geo_table.drop(checkfirst=True)
+        a_geo_table.create()
+
         private_layer = LayerWMS(name=u"__test_private_layer", public=False)
         private_layer.layer = "__test_private_layer"
-        private_layer.geo_table = "a_schema.a_geo_table"
+        private_layer.geo_table = "geodata.a_geo_table"
         private_layer.interfaces = [main]
         private_layer.ogc_server = ogcserver
 
@@ -101,8 +130,7 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    @staticmethod
-    def tearDown():  # noqa
+    def tearDown(self):  # noqa
         testing.tearDown()
 
         functionality.FUNCTIONALITIES_TYPES = None
@@ -137,6 +165,9 @@ class TestThemeEditing(TestCase):
             Interface.name == "main"
         ).delete()
         DBSession.query(OGCServer).delete()
+
+        for table in self._tables[::-1]:
+            table.drop(checkfirst=True)
 
         transaction.commit()
 
@@ -199,6 +230,7 @@ class TestThemeEditing(TestCase):
             "interface": "main",
             "version": "2"
         }
+
         entry = Entry(request)
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set())
