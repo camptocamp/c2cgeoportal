@@ -192,7 +192,6 @@ replace your sencha touch interface by an ngeo interface.
 
     at that point, the following folder should exist: CONST_create_template
 
-    cp CONST_create_template/.jshintrc .
     cp CONST_create_template/lingua-client.cfg .
     cp CONST_create_template/lingua-server.cfg .
     cp CONST_create_template/apache/wsgi.conf.mako apache/
