@@ -41,8 +41,6 @@ add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
    You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
 
-Then to upgrade from 1.6 it is recommended to first upgrade to version 2.0.
-
 To upgrade run:
 
 .. prompt:: bash
