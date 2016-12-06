@@ -56,7 +56,8 @@ You should also add a Layer group named 'background' with the background layers.
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
-6. The checkers will be refactored, you should do at least the following change:
+6. The checkers will be refactored, you should do at least the following
+   change in your vars_{{package}}.yaml:
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
