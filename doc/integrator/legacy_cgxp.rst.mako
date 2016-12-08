@@ -18,29 +18,29 @@ and ``desktop.js`` respectively.
 
 .. prompt:: bash
 
-  git mv <package>/templates/index.html <package>/templates/desktop.html
-  git mv <package>/templates/viewer.js <package>/templates/desktop.js
+    git mv <package>/templates/index.html <package>/templates/desktop.html
+    git mv <package>/templates/viewer.js <package>/templates/desktop.js
 
 Then apply the following changes in the ``<package>/templates/desktop.html``
 file:
 
 .. code:: diff
 
-  - % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['app.js', 'lang-%s.js' % lang]):
-  + % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['desktop.js', 'lang-%s.js' % lang]):
+    - % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['app.js', 'lang-%s.js' % lang]):
+    + % for script in Merger.from_fn(jsbuild_cfg, root_dir=jsbuild_root_dir).list_run(['desktop.js', 'lang-%s.js' % lang]):
 
-  - <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/app.js')}"></script>
-  + <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/desktop.js')}"></script>
-  ...
-  - <script type="text/javascript" src="${'$'}{request.route_url('viewer', _query=extra_params)}"></script>
-  + <script type="text/javascript" src="${'$'}{request.route_url('desktop.js', _query=extra_params)}"></script>
+    - <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/app.js')}"></script>
+    + <script type="text/javascript" src="${'$'}{request.static_url('<package>:static/build/desktop.js')}"></script>
+    ...
+    - <script type="text/javascript" src="${'$'}{request.route_url('viewer', _query=extra_params)}"></script>
+    + <script type="text/javascript" src="${'$'}{request.route_url('desktop.js', _query=extra_params)}"></script>
 
 Finally apply the following change in ``jsbuild/app.cfg.mako``:
 
 .. code:: diff
 
-  - [app.js]
-  + [desktop.js]
+    - [app.js]
+    + [desktop.js]
 
 To configure the build of the interface you should set the ``CGXP_INTERFACES`` (and the ``NGEO_INTERFACES``)
 in your project makefile, e.g.:
@@ -55,19 +55,19 @@ project vars file:
 
 .. code:: yaml
 
-  vars:
-      ...
-      checker:
-         ...
-         defaults:
-             ...
-             phantomjs_routes: []
-             lang_files: [cgxp]
-         all:
-             phantomjs_routes: []
-  update_paths:
-  ...
-  - checker.defaults.lang_files
+    vars:
+        ...
+        checker:
+           ...
+           defaults:
+               ...
+               phantomjs_routes: []
+               lang_files: [cgxp]
+           all:
+               phantomjs_routes: []
+    update_paths:
+    ...
+    - checker.defaults.lang_files
 
 Make also sure that you do not have ``check_collector.disabled`` in the
 ``update_paths`` (and do not readd it during the next upgrade steps).
@@ -77,7 +77,7 @@ from ``<package>/templates/desktop.js``
 
 .. code:: javascript
 
-  externalWFSTypes: ${'$'}{externalWFSTypes | n},
+    externalWFSTypes: ${'$'}{externalWFSTypes | n},
 
 Do the following change in the ``<package>/templates/desktop.html`` file:
 
@@ -121,8 +121,8 @@ Follow the above instructions if you want to use `ngeo` instead of `CGXP`.
 
 .. prompt:: bash
 
-  git rm <package>/templates/desktop.html
-  git rm <package>/templates/desktop.js
+    git rm <package>/templates/desktop.html
+    git rm <package>/templates/desktop.js
 
 Remove the related section in the ``jsbuild/app.cfg.mako`` file.
 
@@ -131,7 +131,7 @@ by removing the following line:
 
 .. code:: python
 
-  add_interface(config, "desktop", [INTERFACE_TYPE_CGXP])
+    add_interface(config, "desktop", [INTERFACE_TYPE_CGXP])
 
 To add an ngeo interface see :ref:`integrator_ngeo_add`.
 
