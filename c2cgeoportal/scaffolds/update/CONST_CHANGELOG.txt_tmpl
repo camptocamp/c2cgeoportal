@@ -4,12 +4,13 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.1.0
 =============
 
-We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
-but it is not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+In recent versions of GeoMapFish, `CGXP` has been replaced by `ngeo` to propose
+a more modern interface to the end user. It is still possible to keep using
+`CGXP` though.
 
-To continue to use the CGXP interface(s) you should see this documentation:
-https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy.html
-And continue on the step 4.
+If you want to keep the `CGXP` interface please read the following
+documentation and then move directly to step 4:
+https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
 
 
 1. Get the new files for ngeo integration:
@@ -111,7 +112,7 @@ And continue on the step 4.
 
    Where 'example.com' is the hostname use in the browser to open the application
 
-9. in the apache/wsgi.conf.mako file do the following changes:
+9. In the apache/wsgi.conf.mako file do the following changes:
 
     -% for interface in interfaces:
     -<%
@@ -166,7 +167,7 @@ And continue on the step 4.
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
-14. In the database we have added some restrictions, have a look here for more informations:
+14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 
