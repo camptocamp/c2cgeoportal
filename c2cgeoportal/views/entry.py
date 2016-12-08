@@ -565,7 +565,7 @@ class Entry:
         if layer.max_resolution is not None:
             l["maxResolutionHint"] = layer.max_resolution
 
-        wmslayer = layer.name
+        wmslayer = layer.layer
         # now look at what is in the WMS capabilities doc
         if wmslayer in wms_layers:
             wms_layer_obj = wms[wmslayer]
