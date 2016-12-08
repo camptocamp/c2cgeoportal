@@ -69,19 +69,6 @@ project vars file:
 Make also sure that you do not have ``check_collector.disabled`` in the
 ``update_paths`` (and do not readd it during the next upgrade steps).
 
-Then update the interface in your ``<package>/__init__.py`` file:
-
-.. code:: diff
-
-  - from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH
-  + from c2cgeoportal import locale_negotiator, add_interface, INTERFACE_TYPE_SENCHA_TOUCH, INTERFACE_TYPE_CGXP
-
-Also add the following line:
-
-.. code:: python
-
-  add_interface(config, "desktop", INTERFACE_TYPE_CGXP)
-
 ``externalWFSTypes`` does not exist anymore so you should remove the following line
 from ``<package>/templates/desktop.js``
 
