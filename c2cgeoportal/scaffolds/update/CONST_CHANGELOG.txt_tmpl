@@ -61,7 +61,7 @@ You should also add a Layer group named 'background' with the background layers.
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
 7. The checkers will be refactored, you should do at least the following
-   change in your vars_{{package}}.yaml:
+   change in your `vars_{{package}}.yaml` (be careful if you use legacy components):
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
