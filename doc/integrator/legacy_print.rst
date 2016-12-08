@@ -34,7 +34,7 @@ To use it you should:
             disabled: [checker_pdf3]
 
      update_paths:
-     - checker.routes
+     - checker.defaults.routes
 
 Later on, if you want to use print version 3.x, follow the above instructions.
 
