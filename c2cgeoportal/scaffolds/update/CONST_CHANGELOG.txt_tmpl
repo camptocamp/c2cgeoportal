@@ -4,12 +4,23 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.1.0
 =============
 
-We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
-but it is not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+If you upgrade from the version 1.6.x be careful to apply the steps for the version 2.0 first.
 
-To continue to use the CGXP interface(s) you should see this documentation:
-https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy.html
-And continue on the step 4.
+In recent versions of GeoMapFish, `CGXP` has been replaced by `ngeo` to propose
+a more modern interface to the end user. It is still possible to keep using
+`CGXP` though.
+
+If you want to keep the `CGXP` interface please read the following
+documentation and then move directly to step 4:
+https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
+
+After you upgrade the application you can use the following scripts to help you on upgrade
+your data from CGXP to ngeo:
+* `.build/venv/bin/themev1tov2` to migrate the themes
+* `.build/venv/bin/l10nv1tov2` to migrate the localisation files (language strings)
+Use the `--help` argument for more information.
+
+You should also add a Layer group named 'background' with the background layers.
 
 
 1. Get the new files for ngeo integration:
@@ -17,7 +28,7 @@ And continue on the step 4.
     cp CONST_create_template/{{package}}/templates/desktop.html {{package}}/templates/
     cp CONST_create_template/{{package}}/static-ngeo/less/desktop.less {{package}}/static-ngeo/less
     cp CONST_create_template/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
-    cp CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
+    cp -r CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
 
 2. Remove the cgxp interfaces:
 
@@ -45,7 +56,8 @@ And continue on the step 4.
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
-6. The checkers will be refactored, you should do at least the following change:
+6. The checkers will be refactored, you should do at least the following
+   change in your vars_{{package}}.yaml:
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
@@ -111,7 +123,7 @@ And continue on the step 4.
 
    Where 'example.com' is the hostname use in the browser to open the application
 
-9. in the apache/wsgi.conf.mako file do the following changes:
+9. In the apache/wsgi.conf.mako file do the following changes:
 
     -% for interface in interfaces:
     -<%
@@ -166,7 +178,7 @@ And continue on the step 4.
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
-14. In the database we have added some restrictions, have a look here for more informations:
+14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 
@@ -178,14 +190,14 @@ replace your sencha touch interface by an ngeo interface.
 
 1. Get the new and heavily modified files for ngeo integration:
 
-    at that point, the following folder should exist: /tmp/{{project}}/
+    at that point, the following folder should exist: CONST_create_template
 
-    cp /tmp/{{project}}/.jshintrc .
-    cp /tmp/{{project}}/lingua-client.cfg .
-    cp /tmp/{{project}}/lingua-server.cfg .
-    cp /tmp/{{project}}/apache/wsgi.conf.mako apache/
-    cp -r /tmp/{{project}}/{{package}}/static-ngeo {{package}}/
-    cp /tmp/{{project}}/{{package}}/templates/mobile.html {{package}}/templates/
+    cp CONST_create_template/.jshintrc .
+    cp CONST_create_template/lingua-client.cfg .
+    cp CONST_create_template/lingua-server.cfg .
+    cp CONST_create_template/apache/wsgi.conf.mako apache/
+    cp -r CONST_create_template/{{package}}/static-ngeo {{package}}/
+    cp CONST_create_template/{{package}}/templates/mobile.html {{package}}/templates/
 
 2. Remove the no longer used files:
 
@@ -232,12 +244,7 @@ replace your sencha touch interface by an ngeo interface.
      - add_interface(config, "mobile", INTERFACE_TYPE_SENCHA_TOUCH)
      + add_interface(config, "mobile", INTERFACE_TYPE_NGEO)
 
-6. To easer migrate your application from version 1 to version 2 some scripts are available:
-    `.build/venv/bin/themev1tov2` to migrate the theme
-    `.build/venv/bin/l10nv1tov2` to migrate the localisation
-    Use the `--help` argument for more information.
-
-7. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
+6. If you have set the `cache_control` in your `vars_{{package}}.yaml` file,
    rename 'cache_control' to 'headers' and 'max_age' to
    'cache_control_max_age':
 
@@ -248,34 +255,14 @@ replace your sencha touch interface by an ngeo interface.
    +      "<service_name>":
    +          "cache_control_max_age": <max_age>
 
-8. In the `{{package}}/templates/(index|edit|routing).html` files do the following change:
-
-      <input id="password" name="password" type="password" autocomplete="on"/>
-    + <input id="oldPassword" name="oldPassword" type="password" />
-      <input id="newPassword" name="newPassword" type="password" />
-
-9. On the `{{package}}/models.py` removes the following lines:
+7. On the `{{package}}/models.py` remove the following lines:
 
     - LayerInternalWMS.__acl__ = [DENY_ALL]
     - LayerExternalWMS.__acl__ = [DENY_ALL]
     - LayerWMTS.__acl__ = [DENY_ALL]
     - WMTSDimension.__acl__ = [DENY_ALL]
 
-10. Add a Layer group named 'background' with the background layers.
-
-11. It is not allowed anymore to have layers directly in a theme.
-
-12. Do the following change in the `{{package}}/templates/index.html` file:
-
-    - % if not no_redirect and mobile_url is not None:
-    + % if "no_redirect" not in request.params:
-      <script>
-          if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-    -         window.location = "${mobile_url}";
-    +         window.location = "${request.route_url('mobile', _query=dict(request.GET))}";
-          }
-      </script>
-      % endif
+8. It is not allowed anymore to have layers directly in a theme.
 
 
 Version 1.6.8
