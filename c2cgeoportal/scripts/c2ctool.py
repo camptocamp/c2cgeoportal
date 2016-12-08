@@ -384,10 +384,11 @@ class C2cTool:
         else:
             print("")
             print(self.color_bar)
-            print(
-                "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
-                " (listed in the `changelog.diff` file)."
-            )
+            text = "Apply the manual migration steps based on what is in the " \
+                   "CONST_CHANGELOG.txt file (listed in the `changelog.diff` " \
+                   "file)."
+            print(colorize(text, RED))
+            print("")
             self.print_step(2)
 
     def step2(self):

@@ -4,12 +4,13 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.1.0
 =============
 
-We consider that we replace add the cgxp interfaces by the ngeo desktop interface,
-but it is not required to do it now, GeoMapFish 2.1.0 will continue to works with CGXP interfaces.
+In recent versions of GeoMapFish, `CGXP` has been replaced by `ngeo` to propose
+a more modern interface to the end user. It is still possible to keep using
+`CGXP` though.
 
-To continue to use the CGXP interface(s) you should see this documentation:
-https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy.html
-And continue on the step 4.
+If you want to keep the `CGXP` interface please read the following
+documentation and then move directly to step 4:
+https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
 
 
 1. Get the new files for ngeo integration:
@@ -17,15 +18,15 @@ And continue on the step 4.
     cp CONST_create_template/{{package}}/templates/desktop.html {{package}}/templates/
     cp CONST_create_template/{{package}}/static-ngeo/less/desktop.less {{package}}/static-ngeo/less
     cp CONST_create_template/{{package}}/static-ngeo/js/desktop.js {{package}}/static-ngeo/js
-    cp CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
+    cp -r CONST_create_template/{{package}}/static-ngeo/components {{package}}/static-ngeo/
 
 2. Remove the cgxp interfaces:
 
-    git rm {{package}}/templates/index.html
+    git rm -f {{package}}/templates/index.html
     git rm {{package}}/templates/viewer.js
-    git rm {{package}}/templates/edit.html
+    git rm -f {{package}}/templates/edit.html
     git rm {{package}}/templates/edit.js
-    git rm {{package}}/templates/routing.html
+    git rm -f {{package}}/templates/routing.html
     git rm {{package}}/templates/routing.js
 
 3. In the `{{package}}/__init__.py` do the following replacement:
@@ -45,7 +46,8 @@ And continue on the step 4.
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
 
-6. The checkers will be refactored, you should do at least the following change:
+6. The checkers will be refactored, you should do at least the following
+   change in your vars_{{package}}.yaml:
       checker:
     -     fulltextsearch: text to search
     -     print_spec:
@@ -111,7 +113,7 @@ And continue on the step 4.
 
    Where 'example.com' is the hostname use in the browser to open the application
 
-9. in the apache/wsgi.conf.mako file do the following changes:
+9. In the apache/wsgi.conf.mako file do the following changes:
 
     -% for interface in interfaces:
     -<%
@@ -166,7 +168,7 @@ And continue on the step 4.
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
-14. In the database we have added some restrictions, have a look here for more informations:
+14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
 
