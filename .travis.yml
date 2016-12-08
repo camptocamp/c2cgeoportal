@@ -5,9 +5,6 @@ python:
 
 sudo: required
 
-services:
-- docker
-
 env:
   global:
     - secure: aZWcHZWV8lN2SNU2fcUsG8+fVQLOxwDUFYDvuftZALebRG2AHINTkbS31sKbeSwS19ZYpjcuVOKC9HxNAlnMxsdO1NvvFEbSJJD/yqq0V4EfTRqptZYsFCUou0eXIUWEnoFHD1nY3NhuPQjDoad995xU92z0BzwduxUAj28liu4=
