@@ -168,12 +168,14 @@ Update the interface in your ``<package>/__init__.py`` file:
 
 The used method has the following API:
 
-``add_interface(config, interface_name=None, interface_type=INTERFACE_TYPE_CGXP, **kwargs)``:
+.. code:: python
 
-``config`` is the application configuration object.
+   add_interface(config, interface_name="desktop", interface_type=INTERFACE_TYPE_CGXP, **kwargs)
+
+Where ``config`` is the application configuration object,
 
 ``interface_name`` is the name specified in the ``interface`` table,
-also used to create the route path.
+also used to create the route path,
 
 ``interface_type`` may be either ``INTERFACE_TYPE_CGXP``, ``INTERFACE_TYPE_NGEO`` or
 ``INTERFACE_TYPE_NGEO_CATALOGUE``. Constants available in ``c2cgeoportal``.
