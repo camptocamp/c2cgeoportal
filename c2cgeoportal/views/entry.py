@@ -584,7 +584,9 @@ class Entry:
         else:
             if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
-                    "The layer '{0!s}' is not defined in WMS capabilities".format(wmslayer)
+                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                        wmslayer, layer.name, self.default_ogc_server.name
+                    )
                 )
 
     def _fill_external_wms(self, l, layer, errors):
