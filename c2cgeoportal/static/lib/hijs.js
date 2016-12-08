@@ -44,8 +44,8 @@ for (var i = 0, children; i < nodes.length; i++) {
     for (var j = 0, str; j < children.length; j++) {
         code = children[j];
 
-        if (code.length >= 0) { // It's a text node
-            // Don't highlight command-line snippets
+        if (code.length >= 0) { // It is a text node
+            // Do not highlight command-line snippets
             if (! /^\$/.test(code.nodeValue.trim())) {
                 syntax.forEach(function (s) {
                     var k = s[0], v = s[1];

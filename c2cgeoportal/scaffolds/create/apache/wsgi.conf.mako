@@ -13,7 +13,7 @@ RewriteEngine on
 
 # uncomment this if you need HTTP authentication/authorization to work (with
 # repoze.who or any other security toolkit), see the Apache mod_wsgi FAQ to
-# understand why mod_wsgi doesn't pass the user credentials to the WSGI
+# understand why mod_wsgi does not pass the user credentials to the WSGI
 # application by default.
 # http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
 WSGIPassAuthorization On

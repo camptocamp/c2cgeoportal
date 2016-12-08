@@ -506,7 +506,7 @@ class TestEntryView(TestCase):
 
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"The layer '__test_public_layer_no_layers' do not have any layers",
         ]))
 
         # autenticated
@@ -524,7 +524,7 @@ class TestEntryView(TestCase):
         ]))
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"The layer '__test_public_layer_no_layers' do not have any layers",
         ]))
 
     def test_theme_geoserver(self):
@@ -562,7 +562,7 @@ class TestEntryView(TestCase):
             u"__test_layer_group_1",
         ]))
 
-        # don't test anything related to geoserver ...
+        # do not test anything related to geoserver ...
         # unautenticated v2
         request.params = {
             "version": "2"
@@ -571,7 +571,7 @@ class TestEntryView(TestCase):
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"The layer '__test_public_layer_no_layers' do not have any layers",
         ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}
@@ -588,7 +588,7 @@ class TestEntryView(TestCase):
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set([
             u"The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_mapfile) is not defined in WMS capabilities from '__test_ogc_server'",
-            u"The layer '__test_public_layer_no_layers' don't have any layers",
+            u"The layer '__test_public_layer_no_layers' do not have any layers",
         ]))
         self.assertEquals(len(themes["themes"]), 1)
         layers = {l["name"] for l in themes["themes"][0]["children"][0]["children"]}

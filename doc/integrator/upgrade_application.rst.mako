@@ -34,14 +34,12 @@ Upgrading an application
 In the ``setup.py`` be sure not to specify a ``c2cgeoportal`` version,
 because it will prevent the installation of the new ``c2cgeoportal`` egg.
 
-We considers that your makefile is named ``<instanceid>.mk``, if it is not the case
+We consider that your makefile is named ``<instanceid>.mk``, if it is not the case
 add in your Makefile ``UPGRADE_MAKE_FILE = <user.mk>``
 
 .. note:: For Windows:
 
    You should add ``UPGRADE_ARGS += --windows`` in your ``<package>.mk`` file.
-
-Then to upgrade from 1.6 it is recommended to first upgrade to version 2.0.
 
 To upgrade run:
 
@@ -56,8 +54,7 @@ To upgrade run:
    ``SET VERSION=<target_version>``.
 
 Where ``<makefile>`` is your user Makefile (``<user>.mk``),
-``<target_version>`` is the version that you wish to upgrade to
-(for the development version it should be 'master').
+``<target_version>`` is the version that you wish to upgrade to.
 
 And follow the instructions.
 

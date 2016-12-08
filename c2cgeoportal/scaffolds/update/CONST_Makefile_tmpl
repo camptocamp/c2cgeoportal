@@ -16,13 +16,13 @@ PYTHON_BIN_POSTFIX = .exe
 NODE_BIN_POSTFIX = .cmd
 FIND ?= $(CYGWIN_PATH)/bin/find.exe
 HOME_DIR ?= ""
-# TILECLOUD_CHAIN require Shapely but doesn't have a system specific setup.
+# TILECLOUD_CHAIN require Shapely but does not have a system specific setup.
 # You can still install it but you must install Shapely manualy inside
 # TILECLOUD_CHAIN virtualenv
 TILECLOUD_CHAIN ?= FALSE
 # Some python packages are installed from already packaged wheels.
 CONST_REQUIREMENT ?= CONST_requirements_windows.txt
-# because Windows doesn't like path with //
+# because Windows does not like path with //
 PRINT_TMP ?= tmp
 else
 VENV_BIN ?= .build/venv/bin
@@ -43,7 +43,7 @@ TEMPLATE_EXCLUDE += .build node_modules \
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
 
-# Don't minify the js / css, ...
+# Do not minify the js / css, ...
 DEVELOPMENT ?= FALSE
 export DEVELOPMENT
 # Language provided by the application
@@ -193,7 +193,7 @@ APP_JS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/
 APP_JS_MAKO_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.mako" -print 2> /dev/null)
 APP_JS_JINJA_FILES += $(shell $(FIND) $(PACKAGE)/static-ngeo/js $(PACKAGE)/static-ngeo/components $(FIND_OPTS) -name "*.js.jinja" -print 2> /dev/null)
 APP_JS_FILES +=  $(APP_JS_MAKO_FILES:.mako=) $(APP_JS_JINJA_FILES:.jinja=)
-APP_HTML_FILES = $(shell $(FIND) $(PACKAGE)/templates -type f -name '*.html')
+APP_HTML_FILES += $(addprefix $(PACKAGE)/templates/, $(addsuffix .html, $(NGEO_INTERFACES)))
 NGEO_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/src/directives/partials/*.html 2> /dev/null)
 GMF_DIRECTIVES_PARTIALS_FILES = $(shell ls -1 node_modules/ngeo/contribs/gmf/src/directives/partials/*.html 2> /dev/null)
 APP_DIRECTIVES_PARTIALS_FILES = $(shell $(FIND) $(PACKAGE)/static-ngeo/components $(PACKAGE)/static-ngeo/partials $(PACKAGE)/static-ngeo/js -type f -name '*.html' 2> /dev/null)
@@ -267,7 +267,7 @@ ifeq ($(DOCKER),FALSE)
 # The theme from the database
 I18N_SOURCE_FILES += development.ini
 endif
-I18N_DEPENDENTIES += $(MAP_FILES) \
+I18N_DEPENDENCIES += $(MAP_FILES) \
 	project.yaml
 
 # CGXP
@@ -695,7 +695,7 @@ $(PACKAGE)/locale/$(PACKAGE)-server.pot: \
 .PRECIOUS: $(PACKAGE)/locale/$(PACKAGE)-client.pot
 $(PACKAGE)/locale/$(PACKAGE)-client.pot: \
 		lingua-client.cfg \
-		$(I18N_DEPENDENTIES) \
+		$(I18N_DEPENDENCIES) \
 		$(I18N_SOURCE_FILES) \
 		$(VENV_BIN)/pot-create$(PYTHON_BIN_POSTFIX) \
 		.build/mapserver.timestamp \
@@ -1129,7 +1129,7 @@ endif # !DOCKER
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.mirrorservice.org/j/ja/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
+	curl --location --output $@ https://downloads.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:
@@ -1229,8 +1229,8 @@ UPGRADE_ARGS ?=
 endif
 
 $(UPGRADE_MAKE_FILE):
-	@echo "The file '$(UPGRADE_MAKE_FILE)' can't be found,"
-	@echo "this probably mean that you Makefile isn't named '<instanceid>.mk'."
+	@echo "The file '$(UPGRADE_MAKE_FILE)' cannot be found,"
+	@echo "this probably mean that you Makefile is not named '<instanceid>.mk'."
 	@echo "To solve this you can rename your Makefile or add in your Makefile"
 	@echo "`UPGRADE_MAKE_FILE = <your_makefile_name>`."
 	exit 1

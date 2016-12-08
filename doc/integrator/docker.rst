@@ -13,7 +13,7 @@ line:
     DOCKER_BASE = camptocamp/<project_name>
     JASPERREPORTS_VERSION = 6.1.1
 
-In the private makefiles, don't specify the ``INSTANCE_ID`` (you'll be alone
+In the private makefiles, do not specify the ``INSTANCE_ID`` (you'll be alone
 in your container).
 
 After that, a ``make -f <xxx.mk> build`` will create Docker images named like

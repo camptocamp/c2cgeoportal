@@ -48,7 +48,7 @@ Add in your project Makefile ``<package>.mk``:
 
 Then, all the GET and OPTIONS requests will use one of the slave Postgres instances and the
 rest will use the master instance.
-It is assumed, here, that the views handling the GET and OPTIONS queries don't cause write
+It is assumed, here, that the views handling the GET and OPTIONS queries do not cause write
 operations to the database (not supported by slave instances). If it is not the case in your
 application (bad practice), add entries to ``db_chooser/master`` in your ``vars_<project>.yaml``.
 For forcing the use of a slave for a POST/PUT/DELETE, add entries to the ``db_chooser/slave``
@@ -56,5 +56,5 @@ configuration.
 
 For having more than one instance of slave and having an automatic election of a new
 master in case of failure, you must setup an high availability proxy (HAProxy, for example).
-This is out of the scope of this document. If you don't care about failover, you can use one
+This is out of the scope of this document. If you do not care about failover, you can use one
 DNS entry with multiple IP entries for the slaves.

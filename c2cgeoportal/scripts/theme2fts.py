@@ -62,25 +62,25 @@ def main():
         "--no-themes",
         action="store_false",
         dest="themes",
-        help="don't import the themes",
+        help="do not import the themes",
     )
     parser.add_argument(
         "--no-blocks",
         action="store_false",
         dest="blocks",
-        help="don't import the blocks (first level layer groups)",
+        help="do not import the blocks (first level layer groups)",
     )
     parser.add_argument(
         "--no-folders",
         action="store_false",
         dest="folders",
-        help="don't import the folders (tree folders)",
+        help="do not import the folders (tree folders)",
     )
     parser.add_argument(
         "--no-layers",
         action="store_false",
         dest="layers",
-        help="don't import the layers (tree leaf)",
+        help="do not import the layers (tree leaf)",
     )
     parser.add_argument(
         "--package",

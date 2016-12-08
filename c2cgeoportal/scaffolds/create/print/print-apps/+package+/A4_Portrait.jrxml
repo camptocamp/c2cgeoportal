@@ -97,7 +97,7 @@
 		</band>
 		<band height="82" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{numberOfLegendRows} != 0]]></printWhenExpression>
-			<!-- don't stretch on top -->
+			<!-- do not stretch on top -->
 			<line>
 				<reportElement x="0" y="0" width="1" height="1" forecolor="#FFFFFF" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3"/>
 			</line>

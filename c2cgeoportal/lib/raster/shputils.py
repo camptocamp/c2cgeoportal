@@ -218,7 +218,7 @@ def get_bound_centers(records):
 
 def get_true_centers(records, projected=False):
     # gets the true polygonal centroid for each feature (uses largest ring)
-    # should be spherical, but isn't
+    # should be spherical, but is not
 
     if projected:
         points = "projectedPoints"

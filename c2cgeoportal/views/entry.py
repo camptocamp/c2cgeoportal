@@ -418,7 +418,7 @@ class Entry:
             )
             errors |= wms_errors
             if layer.layer is None or layer.layer == "":
-                errors.add("The layer '{}' don't have any layers".format(layer.name))
+                errors.add("The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
@@ -481,7 +481,7 @@ class Entry:
         if layer.style:  # pragma: no cover
             l["style"] = layer.style
 
-        # now look at what's in the WMS capabilities doc
+        # now look at what is in the WMS capabilities doc
         l["childLayers"] = []
         for layer_name in layer.layer.split(","):
             if layer_name in wms_layers:
@@ -567,7 +567,7 @@ class Entry:
             l["maxResolutionHint"] = layer.max_resolution
 
         wmslayer = layer.name
-        # now look at what's in the WMS capabilities doc
+        # now look at what is in the WMS capabilities doc
         if wmslayer in wms_layers:
             wms_layer_obj = wms[wmslayer]
             metadata_urls = self._get_layer_metadata_urls(wms_layer_obj)
@@ -656,7 +656,7 @@ class Entry:
         if layer.max_resolution is not None:
             l["maxResolutionHint"] = layer.max_resolution
 
-        # if we have associated local WMS layers then look at what's in the
+        # if we have associated local WMS layers then look at what is in the
         # WMS capabilities, and add a queryLayers array with the "resolution
         # hint" information.
         if "wmsUrl" in l and l["wmsUrl"] == mapserverproxy_url:
@@ -819,7 +819,7 @@ class Entry:
                     for name, nb in Counter(layers_name).items():
                         if nb > 1:
                             errors.add(
-                                "The GeoMapFish layer name '{}', can't be two times "
+                                "The GeoMapFish layer name '{}', cannot be two times "
                                 "in the same block (first level group).".format(name)
                             )
 
@@ -1048,7 +1048,7 @@ class Entry:
             featuretypes = []
             for featureType in get_capabilities_dom.getElementsByTagNameNS(
                     self.WFS_NS, "FeatureType"):
-                # don't includes FeatureType without name
+                # do not includes FeatureType without name
                 name = featureType.getElementsByTagNameNS(self.WFS_NS, "Name").item(0)
                 if name:
                     name_value = name.childNodes[0].data
@@ -1482,7 +1482,7 @@ class Entry:
     def logout(self):
         headers = forget(self.request)
 
-        # if there's no user to log out, we send a 404 Not Found (which
+        # if there is no user to log out, we send a 404 Not Found (which
         # is the status code that applies best here)
         if not self.request.user:
             log.info("Logout on non login user.")
@@ -1548,7 +1548,7 @@ class Entry:
         if new_password != new_password_confirm:
             log.info(
                 "The new password and the new password "
-                "confirmation don't match for user '%s'." % user
+                "confirmation do not match for user '%s'." % user
             )
             raise HTTPBadRequest("See server logs for details")
 
@@ -1578,7 +1578,7 @@ class Entry:
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return None, None, None, "The login '{0!s}' doesn't exist.".format(username)
+            return None, None, None, "The login '{0!s}' does not exist.".format(username)
 
         if user.email is None or user.email == "":  # pragma: no cover
             return \

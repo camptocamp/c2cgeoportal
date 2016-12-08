@@ -26,7 +26,7 @@ The *text search* feature requires a dedicated PostgreSQL table. The full-text
 search table should be named ``tsearch`` (for *text search*) and should be in
 the application-specific schema.
 
-You don't need to create the table yourself, as it is created by the
+You do not need to create the table yourself, as it is created by the
 ``create_db`` command line (see the section
 :ref:`integrator_install_application`).
 
@@ -58,7 +58,7 @@ with ``<db_user>``, and ``<db_name>`` substituded as appropriately.
 Populate the full-text search table
 -----------------------------------
 
-Here's an example of an insertion in the ``tsearch`` table:
+Here is an example of an insertion in the ``tsearch`` table:
 
 .. code:: sql
 
@@ -73,7 +73,7 @@ Where ``Layer group`` is the name of the layer group that should be activated,
 ``test to search`` is the text that we search for,
 ``french`` is the used language.
 
-Here's another example where rows from a ``SELECT`` are inserted:
+Here is another example where rows from a ``SELECT`` are inserted:
 
 .. code:: sql
 
@@ -107,7 +107,7 @@ Security
 The ``tsearch`` table includes two security-related columns, namely ``public``
 and ``role_id``. If ``public`` is ``true`` then the row is available to any
 user, including anonymous users. And in that case, the ``role_id`` column is
-ignored by ``c2cgeoportal``. If ``public`` is ``false`` then the row isn't
+ignored by ``c2cgeoportal``. If ``public`` is ``false`` then the row is not
 available to anonymous users. If ``role_id`` is ``NULL``, the row is available
 to any authenticated user. If ``role_id`` is not ``NULL``, the row is only
 available to users of the corresponding role.
