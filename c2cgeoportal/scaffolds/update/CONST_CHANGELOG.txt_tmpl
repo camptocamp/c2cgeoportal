@@ -12,7 +12,7 @@ a more modern interface to the end user. It is still possible to keep using
 
 If you want to keep the `CGXP` interface please read the following
 documentation and then move directly to step 4:
-https://camptocamp.github.io/c2cgeoportal/2.0/integrator/legacy_cgxp.html
+https://camptocamp.github.io/c2cgeoportal/2.1/integrator/legacy_cgxp.html
 
 After you upgrade the application you can use the following scripts to help you on upgrade
 your data from CGXP to ngeo:
@@ -345,7 +345,7 @@ Version 1.6.5
 =============
 
 1. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
-   See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
+   See the doc to update your config: https://camptocamp.github.io/c2cgeoportal/1.6/integrator/pdfreport.html
 
 2. If you use ngeo in your project edit `build.json`, located at the root of the project, and change the
    `templatecache.js` line:
@@ -427,7 +427,7 @@ Version 1.6.3
 
 4. In all `mapserver/*.map` or `mapserver/*.map.mako` files, adding an EXTENT to all
    LAYER definitions will be a great performance improvement, see:
-   http://docs.camptocamp.net/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
+   https://camptocamp.github.io/c2cgeoportal/1.6/administrator/mapfile.html#performance-improvement
 
 5. In `vars_{{package}}.yaml` file add `admin_interface` key in `update_paths`:
 
@@ -506,7 +506,7 @@ Version 1.6.3
 
 
 11. In the PDF report config the show_map attribute will be removed and a map is added in the config hierarchy.
-    See the doc to update your config: http://docs.camptocamp.net/c2cgeoportal/master/integrator/pdfreport.html
+    See the doc to update your config: https://camptocamp.github.io/c2cgeoportal/1.6/integrator/pdfreport.html
 
 
 Version 1.6.2
@@ -570,7 +570,7 @@ Version 1.6
    NOT have both files.
 
 2. Follow the instructions explained in this documentation chapter:
-    http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/upgrade_application.html#easy-upgrading-an-application-from-1-5-to-1-6
+    https://camptocamp.github.io/c2cgeoportal/1.6/integrator/upgrade_application.html#easy-upgrading-an-application-from-1-5-to-1-6
 
 3. Get the new and heavily modified files:
 
@@ -596,7 +596,7 @@ Version 1.6
 
 4. Starting from version 1.6 we use a new build system based on Make that will change
    many of your habits, information are given at:
-   http://docs.camptocamp.net/c2cgeoportal/1.6/integrator/make.html
+   https://camptocamp.github.io/c2cgeoportal/1.6/integrator/make.html
 
    Main things to do:
    - Move your old `config.yaml` and your `[vars]` section of the old
@@ -615,7 +615,7 @@ Version 1.6
      `<%include file="templates/A4_portrait.mako" />`.
    - The build environments (`<user>.mk` files) must be recreated.
      For multi project mode have a look at the documentation:
-     http://docs.camptocamp.net/c2cgeoportal/master/integrator/create_application.html
+     https://camptocamp.github.io/c2cgeoportal/1.6/integrator/create_application.html
 
 5. In the `setup.cfg` file you should remove all the `[compile_catalog]`,
    `[extract_messages]`, `[init_catalog]`, `[update_catalog]` sections.
