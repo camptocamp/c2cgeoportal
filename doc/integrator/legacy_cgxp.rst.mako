@@ -99,8 +99,8 @@ You can simply remove the following line in  ``desktop.js``, ``edit.js`` and
   OpenLayers.ProxyHost = "${'$'}{request.route_url('ogcproxy') | n}?url=";
 
 Add the new oldPassword field:
-You should add the following line in ``desktop.js``, ``edit.js`` and
-``routing.js`` (in ``<package>/templates``).
+You should add the following line in ``desktop.html``, ``edit.html`` and
+``routing.html`` (in ``<package>/templates``).
 
 .. code:: diff
 
