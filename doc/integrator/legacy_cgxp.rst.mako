@@ -61,7 +61,10 @@ project vars file:
          ...
          defaults:
              ...
+             phantomjs_routes: []
              lang_files: [cgxp]
+         all:
+             phantomjs_routes: []
   update_paths:
   ...
   - checker.defaults.lang_files
