@@ -109,7 +109,7 @@ You should add the following line in ``desktop.html``, ``edit.html`` and
      <input id="newPassword" name="newPassword" type="password" />
 
 More information about how to configure the interface when using `CGXP` can be
-found `here <https://camptocamp.github.io/c2cgeoportal/1.6/integrator/customize_ui.html>`_.
+found in :ref:`integrator_ngeo_add`.
 
 Back to the ngeo interface
 --------------------------
