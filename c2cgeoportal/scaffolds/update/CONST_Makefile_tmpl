@@ -980,6 +980,8 @@ ifneq ($(NGEO_INTERFACES), "")
 	$(NPM_CMD) install --force
 	touch .build/node_modules.timestamp
 endif
+	@echo After that you should launch the `build` task.
+	@echo Unfortunately sometimes we get an error, then you should run the task `cleanall` before.
 
 .PHONY: update-git-submodules
 update-git-submodules:
