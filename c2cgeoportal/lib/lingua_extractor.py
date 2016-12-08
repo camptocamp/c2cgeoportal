@@ -37,6 +37,7 @@ import traceback
 from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
+from xml.parsers.expat import ExpatError
 from sqlalchemy.exc import ProgrammingError, NoSuchTableError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
@@ -347,6 +348,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 describe = parseString(content)
                 self.featuretype_cache[url] = describe
+            except ExpatError as e:
+                print(
+                    "WARNING! an error occured while trying to "
+                    "parse the DescribeFeatureType document."
+                )
+                print(str(e))
+                print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
             except AttributeError:
                 print(
                     "WARNING! an error occured while trying to "

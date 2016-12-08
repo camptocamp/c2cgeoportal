@@ -64,5 +64,6 @@ def main():
                     i += 1
 
                 item.name = "{}-{}".format(item.name, i)
+            names.append(item.name)
 
     transaction.commit()
