@@ -103,7 +103,7 @@ class PdfReport(Proxy):  # pragma: no cover
     def get_report(self):
         id = self.request.matchdict["id"]
         self.layername = self.request.matchdict["layername"]
-        layer_config = self.config["layers"].get(self.layername, None)
+        layer_config = self.config["layers"].get(self.layername)
 
         if layer_config is None:
             raise HTTPBadRequest("Layer not found")
