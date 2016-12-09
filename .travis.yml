@@ -16,9 +16,8 @@ before_install:
 - sudo rm --recursive --force /var/lib/apt/lists/*
 - sudo apt-get remove --assume-yes --force-yes python-zope.interface postgresql-*
 - sudo apt-get install --assume-yes --force-yes aptitude
-- sudo add-apt-repository --yes ppa:stephane-brunner/trusty-gis
 - curl --silent --location https://deb.nodesource.com/setup_4.x | sudo -E bash -
-- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs deploy cgi-mapserver
+- sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
 - sudo pip install pyignore docker-compose
 
