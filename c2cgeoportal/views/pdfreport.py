@@ -67,7 +67,8 @@ class PdfReport(Proxy):  # pragma: no cover
             resp, content, NO_CACHE, "pdfreport",
         )
 
-    def _build_map(self, mapserv_url, vector_request_url, srs, map_config):
+    @staticmethod
+    def _build_map(mapserv_url, vector_request_url, srs, map_config):
         backgroundlayers = map_config["backgroundlayers"]
         imageformat = map_config["imageformat"]
         return {
