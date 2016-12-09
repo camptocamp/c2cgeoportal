@@ -10,8 +10,8 @@ RESULT=$(cat make-err)
 rm make-err --force
 
 if [ "${RESULT}" != "" ] \
-    && [ "${RESULT}" != "apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1 for ServerName" ] \
-    && [ "${RESULT}" != "apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1 for ServerName" ]
+    && [ "${RESULT}" != "AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1. Set the 'ServerName' directive globally to suppress this message" ] \
+    && [ "${RESULT}" != "AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message" ]
 then
     echo There is some error output in the make
     make $* > /dev/null

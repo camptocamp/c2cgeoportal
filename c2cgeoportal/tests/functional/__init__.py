@@ -33,7 +33,6 @@
 
 import os
 from ConfigParser import ConfigParser
-from urlparse import urlparse, urljoin
 from webob.acceptparse import Accept
 
 import c2cgeoportal
@@ -41,7 +40,7 @@ from c2cgeoportal import tests
 from c2cgeoportal.lib import functionality, caching
 
 
-mapserv_url = None
+mapserv_url = "http://mapserver/"
 db_url = None
 
 curdir = os.path.dirname(os.path.abspath(__file__))
@@ -51,14 +50,6 @@ if os.path.exists(configfile):
     cfg = ConfigParser()
     cfg.read(configfile)
     db_url = cfg.get("test", "sqlalchemy.url")
-    mapserv_url = urlparse(cfg.get("test", "mapserv.url"))
-    host = mapserv_url.hostname
-    mapserv_url = urljoin("http://localhost/", mapserv_url.path)
-    mapfile = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "c2cgeoportal_test.map"
-    )
-    mapserv = "{0!s}?map={1!s}&".format(mapserv_url, mapfile)
 
 caching.init_region({"backend": "dogpile.cache.memory"})
 
@@ -150,9 +141,9 @@ def create_default_ogcserver():
     from c2cgeoportal.models import DBSession, OGCServer
     DBSession.query(OGCServer).delete()
     ogcserver = OGCServer(name="__test_ogc_server")
-    ogcserver.url = mapserv
+    ogcserver.url = mapserv_url
     ogcserver_external = OGCServer(name="__test_external_ogc_server")
-    ogcserver_external.url = mapserv + "external=true&"
+    ogcserver_external.url = mapserv_url + "?external=true&"
     DBSession.add_all([ogcserver, ogcserver_external])
     return ogcserver, ogcserver_external
 
@@ -177,7 +168,6 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     }, *args, **kargs)
     request.accept_language = Accept("fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3")
     request.registry.settings.update(additional_settings)
-    request.headers["Host"] = host
     request.user = None
     request.interface_name = "main"
     request.registry.validate_user = default_user_validator

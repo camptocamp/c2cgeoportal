@@ -1,0 +1,40 @@
+#!/usr/bin/python
+
+import sys
+import os
+import subprocess
+import getpass
+
+
+def main():
+
+    args = sys.argv[1:]
+    docker_cmd = ['docker', 'run']
+    if args[0][0] == '-':
+        docker_cmd.append(args[0])
+        args = args[1:]
+
+    # docker_adrs = netifaces.ifaddresses('docker0')[2][0]['addr']
+
+    docker_cmd.extend([
+        "--rm",
+        "--volume=build:/build",
+        "--volume={pwd}:/src".format(pwd=os.getcwd()),
+        "--volume={home}:{home}".format(home=os.environ["HOME"]),
+        "--volume=/tmp/travis/testgeomapfish:/tmp/travis/testgeomapfish",
+        "--env=HOME={home}".format(home=os.environ["HOME"]),
+        "--env=USER_NAME={}".format(getpass.getuser()),
+        "--env=USER_ID={}".format(os.getuid()),
+        "--env=GROUP_ID={}".format(os.getgid()),
+        "--env=TRAVIS={}".format(os.environ.get("TRAVIS", "")),
+        "--env=TRAVIS_BRANCH={}".format(os.environ.get("TRAVIS_BRANCH", "")),
+        "--env=TRAVIS_JOB_ID={}".format(os.environ.get("TRAVIS_JOB_ID", "")),
+        "camptocamp/geomapfish_build_dev",
+        "run"
+    ])
+    docker_cmd.extend(args)
+    subprocess.check_call(docker_cmd)
+
+
+if __name__ == "__main__":
+    main()

@@ -2,10 +2,9 @@ vars:
     main_version: "'.'.join(__import__('pkg_resources').get_distribution('c2cgeoportal').version.split('.')[0:2])"
     dbuser: www-data
     dbpassword: www-data
-    dbhost: localhost
+    dbhost: db
     dbport: 5432
-    db: c2cgeoportal_test
-    mapserv_url: http://{fqdn}/mapserv
+    db: geomapfish
     mapserver_join_tables: main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la
     mapserver_join_area: ra.area
     mapserver_join_where: "rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
@@ -14,7 +13,6 @@ vars:
         '"default_role_id" "-1"
         "role_id" "^-?[0-9]*$"'
     mapfile_data_subselect: "SELECT ST_Collect(ra.area) FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra, main.layer_restrictionarea AS lra, main.treeitem AS la WHERE rra.role_id = %role_id% AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name ="
-    fqdn: hostname -f
     git_branch: git rev-parse --abbrev-ref HEAD
     tx_version: TX_VERSION
 
@@ -22,9 +20,6 @@ interpreted:
     environment:
     - tx_version
     bash:
-    - fqdn
     - git_branch
-    yaml:
-    - fqdn # to trim
     python:
     - main_version

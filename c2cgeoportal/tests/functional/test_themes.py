@@ -38,9 +38,8 @@ from pyramid import testing
 from c2cgeoportal.tests.functional import (  # noqa
     tear_down_common as tearDownModule,
     set_up_common as setUpModule,
-    mapserv_url, host, create_dummy_request, create_default_ogcserver,
+    mapserv_url, create_dummy_request, create_default_ogcserver,
 )
-
 
 import logging
 log = logging.getLogger(__name__)

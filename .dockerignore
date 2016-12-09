@@ -1,0 +1,11 @@
+*
+!docker/run
+!c2cgeoportal/tests/testegg/dist/testegg-1.0.tar.gz
+!setup.py
+!README.rst
+!requirements.txt
+!c2cgeoportal/scaffolds/update/CONST_requirements.txt
+!c2cgeoportal/scaffolds/update/CONST_versions_requirements.txt
+!dev-requirements.txt
+!doc/requirements.txt
+!fixversions.txt

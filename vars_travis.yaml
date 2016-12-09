@@ -1,4 +1,0 @@
-extends: vars.yaml
-
-vars:
-    mapserv_url: http://localhost/cgi-bin/mapserv

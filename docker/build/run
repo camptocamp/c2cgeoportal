@@ -1,0 +1,58 @@
+#!/usr/bin/python
+
+import os
+import sys
+import stat
+import subprocess
+import tempfile
+import json
+import urllib
+
+
+if 'GROUP_ID' not in os.environ:
+    exit('The GROUP_ID environment variable is required')
+
+if 'USER_ID' not in os.environ:
+    exit('The USER_ID environment variable is required')
+
+if 'USER_NAME' not in os.environ:
+    exit('The USER_NAME environment variable is required')
+
+args = sys.argv[1:]
+if len(args) == 1 and args[0].startswith("%5B") :
+    args = json.loads(urllib.unquote(args[0]))
+
+subprocess.check_call(['groupadd', '-g', os.environ['GROUP_ID'], 'geomapfish'])
+subprocess.check_call(['useradd', '--shell', '/bin/bash', '--uid', os.environ['USER_ID'], '--gid', os.environ['GROUP_ID'], os.environ['USER_NAME']])
+
+# Be able to write in the build directory
+os.chmod("/build", stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH)
+
+run_file_name = "/tmp/run"
+with open(run_file_name, 'w') as run_file:
+    run_file.write("""#!/usr/bin/python
+
+import subprocess, os
+
+{umask}
+
+# Adds the c2cgeoportal binaries
+os.environ["PATH"] += ":/src/.build/venv/bin"
+
+try:
+    subprocess.check_call({args})
+except subprocess.CalledProcessError:
+    exit(2)
+
+with open("/src/SUCCESS", "w"):
+    pass
+""".format(
+        umask='os.umask(0o{})'.format(os.environ["UMASK"]) if "UMASK" in os.environ else "",
+        args=repr(args)
+    ))
+
+os.chmod(run_file_name, stat.S_IRUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
+try:
+    subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
+except subprocess.CalledProcessError:
+    exit(2)
