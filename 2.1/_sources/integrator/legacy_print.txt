@@ -22,19 +22,20 @@ To use it you should:
             defaults:
                 ...
                 routes_disable: [printproxy_capabilities]
-                routes:
-                - name: printproxy_info
                 print_template: 1 A4 portrait
                 print_center_lon: 600000
                 print_center_lat: 200000
                 print_scale: 10000
+            all:
+                routes:
+                - name: printproxy_info
 
         check_collector:
             # Verify that in the `.build/config.yaml` `checker_pdf3` is present, and not `checker_pdf`.
             disabled: [checker_pdf3]
 
      update_paths:
-     - checker.routes
+     - checker.all.routes
 
 Later on, if you want to use print version 3.x, follow the above instructions.
 

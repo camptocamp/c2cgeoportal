@@ -64,19 +64,20 @@
         <span class="n">defaults</span><span class="p">:</span>
             <span class="o">...</span>
             <span class="n">routes_disable</span><span class="p">:</span> <span class="p">[</span><span class="n">printproxy_capabilities</span><span class="p">]</span>
-            <span class="n">routes</span><span class="p">:</span>
-            <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">printproxy_info</span>
             <span class="n">print_template</span><span class="p">:</span> <span class="mi">1</span> <span class="n">A4</span> <span class="n">portrait</span>
             <span class="n">print_center_lon</span><span class="p">:</span> <span class="mi">600000</span>
             <span class="n">print_center_lat</span><span class="p">:</span> <span class="mi">200000</span>
             <span class="n">print_scale</span><span class="p">:</span> <span class="mi">10000</span>
+        <span class="nb">all</span><span class="p">:</span>
+            <span class="n">routes</span><span class="p">:</span>
+            <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">printproxy_info</span>
 
     <span class="n">check_collector</span><span class="p">:</span>
         <span class="c1"># Verify that in the `.build/config.yaml` `checker_pdf3` is present, and not `checker_pdf`.</span>
         <span class="n">disabled</span><span class="p">:</span> <span class="p">[</span><span class="n">checker_pdf3</span><span class="p">]</span>
 
  <span class="n">update_paths</span><span class="p">:</span>
- <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">routes</span>
+ <span class="o">-</span> <span class="n">checker</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">routes</span>
 </pre></div>
 </div>
 <p>Later on, if you want to use print version 3.x, follow the above instructions.</p>
