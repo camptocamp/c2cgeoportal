@@ -34,7 +34,7 @@ from c2cgeoportal.lib.filter_capabilities import get_protected_layers, \
     get_private_layers
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPForbidden, HTTPInternalServerError
+from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 
 from c2cgeoportal.lib.caching import NO_CACHE
 from c2cgeoportal.views.proxy import Proxy
@@ -67,51 +67,25 @@ class PdfReport(Proxy):  # pragma: no cover
             resp, content, NO_CACHE, "pdfreport",
         )
 
-    def _get_config(self, name, default=None):
-        config = self.layer_config.get(name)
-        if config is None:
-            config = self.config. \
-                get("defaults", {}). \
-                get(name, default)
-        return config
-
-    def _get_map_config(self, name, map_config, default=None):
-        config = map_config.get(name)
-        if config is None:
-            config = self.config. \
-                get("defaults", {}). \
-                get("map", {}). \
-                get(name, default)
-        return config
-
     def _build_map(self, mapserv_url, vector_request_url, srs, map_config):
-        backgroundlayers = self._get_map_config("backgroundlayers", map_config, [])
-        imageformat = self._get_map_config("imageformat", map_config, "image/png")
+        backgroundlayers = map_config["backgroundlayers"]
+        imageformat = map_config["imageformat"]
         return {
             "projection": srs,
             "dpi": 254,
             "rotation": 0,
             "bbox": [0, 0, 1000000, 1000000],
             "zoomToFeatures": {
-                "zoomType": self._get_map_config("zoomType", map_config, "extent"),
+                "zoomType": map_config["zoomType"],
                 "layer": "vector",
-                "minScale": self._get_map_config("minScale", map_config, 1000),
+                "minScale": map_config["minScale"],
             },
             "layers": [{
                 "type": "gml",
                 "name": "vector",
                 "style": {
                     "version": "2",
-                    "[1 > 0]": self._get_map_config("style", map_config, {
-                        "fillColor": "red",
-                        "fillOpacity": 0.2,
-                        "symbolizers": [{
-                            "strokeColor": "red",
-                            "strokeWidth": 1,
-                            "type": "point",
-                            "pointRadius": 10
-                        }]
-                    })
+                    "[1 > 0]": map_config["style"]
                 },
                 "opacity": 1,
                 "url": vector_request_url
@@ -129,9 +103,12 @@ class PdfReport(Proxy):  # pragma: no cover
     def get_report(self):
         id = self.request.matchdict["id"]
         self.layername = self.request.matchdict["layername"]
-        self.layer_config = self.config.get("layers", {}).get(self.layername, {})
+        layer_config = self.config["layers"].get(self.layername, None)
 
-        if self._get_config("check_credentials", True):
+        if layer_config is None:
+            raise HTTPBadRequest("Layer not found")
+
+        if layer_config["check_credentials"]:
             # check user credentials
             role_id = None if self.request.user is None else \
                 self.request.user.role.id
@@ -141,11 +118,7 @@ class PdfReport(Proxy):  # pragma: no cover
                     self.layername not in get_protected_layers(role_id):
                 raise HTTPForbidden
 
-        srs = self._get_config("srs")
-        if srs is None:
-            raise HTTPInternalServerError(
-                "Missing 'srs' in service configuration"
-            )
+        srs = layer_config["srs"]
 
         mapserv_url = self.request.route_url("mapserverproxy")
         vector_request_url = "{0!s}?{1!s}".format(
@@ -161,7 +134,7 @@ class PdfReport(Proxy):  # pragma: no cover
             }.items()])
         )
 
-        spec = self._get_config("spec")
+        spec = layer_config["spec"]
         if spec is None:
             spec = {
                 "layout": self.layername,
@@ -170,13 +143,13 @@ class PdfReport(Proxy):  # pragma: no cover
                     "paramID": id
                 }
             }
-            map_config = self.layer_config.get("map")
+            map_config = layer_config.get("map")
             if map_config is not None:
                 spec["attributes"]["map"] = self._build_map(
                     mapserv_url, vector_request_url, srs, map_config
                 )
 
-            maps_config = self.layer_config.get("maps")
+            maps_config = layer_config.get("maps")
             if maps_config is not None:
                 spec["attributes"]["maps"] = []
                 for map_config in maps_config:

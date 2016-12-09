@@ -276,6 +276,8 @@ vars:
     # Define whether the MapServer proxy should hide the OGC capabilities.
     hide_capabilities: false
 
+    ogcproxy_enable: false
+
     # For print proxy
     print_url: http://localhost:8080/print-{instanceid}/print/{package}
 
@@ -407,6 +409,23 @@ vars:
       # List of {method path} regexes to force the usage of the slave
       slave:
       - \w+ /printproxy/.*  # The print proxy is never writing to the DB
+
+    headers:
+        login: &default-headers
+            access_control_max_age: 3600
+        index: *default-headers
+        config: *default-headers
+        api: *default-headers
+        themes: *default-headers
+        mapserver:
+            <<: *default-headers
+            access_control_allow_origin: "*"
+        layers: *default-headers
+        print: *default-headers
+        profile: *default-headers
+        raster: *default-headers
+        error: *default-headers
+
 
 interpreted:
     python:

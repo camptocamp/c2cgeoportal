@@ -54,15 +54,14 @@ Available services are:
 
 Entry:
 
-- cgxp_index
-- cgxp_viewer
-- ngeo_index
-- apijs
-- apihelp
+- index
+- config
+- api
 
 Services:
 
 - themes
+- login
 - mapserver
 - print
 - profile

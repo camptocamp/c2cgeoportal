@@ -6,3 +6,6 @@ htmlmin==0.1.10
 Mako==1.0.6
 pep8-naming== 0.4.1
 https://github.com/transifex/transifex-client/archive/655c5e9f964bdc3e7ba4787d68b048bc670dcbf0.zip#transifex-client
+tilecloud==0.3.0
+tilecloud-chain==1.2.1
+pykwalify==1.5.1

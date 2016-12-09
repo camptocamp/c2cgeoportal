@@ -41,7 +41,6 @@ class GeometryProcessing:
 
     def __init__(self, request):
         self.request = request
-        self.settings = request.registry.settings.get("geometry_processing", {})
 
     @view_config(route_name="difference", renderer="geojson")
     def difference(self):

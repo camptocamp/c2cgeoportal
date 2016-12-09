@@ -415,17 +415,16 @@ class Layers:
 
         if self.layers_enum_config is None:  # pragma: no cover
             raise HTTPInternalServerError("Missing configuration")
-        general_dbsession_name = self.layers_enum_config.get("dbsession", "dbsession")
         layername = self.request.matchdict["layer_name"]
         fieldname = self.request.matchdict["field_name"]
         # TODO check if layer is public or not
 
         return self._enumerate_attribute_values(
-            general_dbsession_name, layername, fieldname
+            layername, fieldname
         )
 
     @cache_region.cache_on_arguments()
-    def _enumerate_attribute_values(self, general_dbsession_name, layername, fieldname):
+    def _enumerate_attribute_values(self, layername, fieldname):
         if layername not in self.layers_enum_config:  # pragma: no cover
             raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
 
@@ -433,26 +432,19 @@ class Layers:
         if fieldname not in layerinfos["attributes"]:  # pragma: no cover
             raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
         dbsession = DBSessions.get(
-            layerinfos.get("dbsession", general_dbsession_name),
+            layerinfos.get("dbsession", "dbsession"),
         )
         if dbsession is None:  # pragma: no cover
             raise HTTPInternalServerError(
                 "No dbsession found for layer '{0!s}'".format(layername)
             )
 
-        layer_table = layerinfos.get("table")
         attrinfos = layerinfos["attributes"][fieldname]
-        attrinfos = {} if attrinfos is None else attrinfos
 
-        table = attrinfos.get("table", layer_table)
-        if table is None:  # pragma: no cover
-            raise HTTPInternalServerError(
-                "No config table found for layer '{0!s}'".format(layername)
-            )
+        table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
 
-        column = attrinfos["column_name"] \
-            if "column_name" in attrinfos else fieldname
+        column = attrinfos.get("column_name", fieldname)
         attribute = getattr(layertable.columns, column)
         # For instance if `separator` is a "," we consider that the column contains a
         # comma separate list of values e.g.: "value1,value2".
