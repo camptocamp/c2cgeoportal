@@ -55,7 +55,7 @@ You should also add a Layer group named 'background' with the background layers.
 
     cp CONST_create_template/apache/wsgi.conf.mako apache/
 
-6. The less build is simplified (be careful it you customise your style):
+6. The less build is simplified (be careful if you customized the style):
 
     git rm {{package}}/static-ngeo/less/mobile-build.less
     cp CONST_create_template/{{package}}/static-ngeo/less/mobile.less {{package}}/static-ngeo/less
