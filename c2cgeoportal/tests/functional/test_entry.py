@@ -480,9 +480,9 @@ class TestEntryView(TestCase):
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
         self.assertEquals({e[:100] for e in errors}, set([
-            u"The layer '__test_public_layer' (__test_public_layer) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
-            u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
-            u"The layer 'test_wmsfeaturesgroup' (test_wmsfeaturesgroup) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
+            u"The layer '__test_public_layer' (__test_public_layer) is not defined in WMS capabilities from '__tes",
+            u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '_",
+            u"The layer 'test_wmsfeaturesgroup' (test_wmsfeaturesgroup) is not defined in WMS capabilities from '_",
             u"GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&S"
         ]))
 
