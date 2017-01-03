@@ -1,5 +1,5 @@
 
-# Copyright (c) 2015-2016, Camptocamp SA
+# Copyright (c) 2015-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
