@@ -32,8 +32,8 @@
             <!-- daily rollover -->
             <fileNamePattern>logs/${instanceid}.%d{yyyy-MM-dd}.log</fileNamePattern>
 
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <!-- keep 7 days' worth of history -->
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
 
         <encoder>

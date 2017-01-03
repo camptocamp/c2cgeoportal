@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2016, Camptocamp SA
+# Copyright (c) 2013-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -342,7 +342,7 @@ class TestEntryView(TestCase):
 
     @staticmethod
     def _get_filtered_errors(errors):
-        regex = re.compile("The layer \\'[a-z0-9_]*\\' is not defined in WMS capabilities")
+        regex = re.compile("The layer \\'[a-z0-9_]*\\' \([a-z0-9_]*\) is not defined in WMS capabilities from \\'[a-z0-9_]*\\'")
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 
@@ -428,7 +428,7 @@ class TestEntryView(TestCase):
         # unautenticated
         themes, errors = entry._themes(None, "desktop")
         self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+            u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         ]))
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
@@ -454,7 +454,7 @@ class TestEntryView(TestCase):
         request.user = DBSession.query(User).filter_by(username=u"__test_user1").one()
         themes, errors = entry._themes(request.user.role.id)
         self.assertEquals(errors, set([
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
+            u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server'",
         ]))
         self.assertEquals(len(themes), 1)
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
@@ -480,9 +480,9 @@ class TestEntryView(TestCase):
         caching.invalidate_region()
         themes, errors = entry._themes(None, "desktop")
         self.assertEquals({e[:100] for e in errors}, set([
-            u"The layer '__test_public_layer' is not defined in WMS capabilities",
-            u"The layer '__test_layer_in_group' is not defined in WMS capabilities",
-            u"The layer 'test_wmsfeaturesgroup' is not defined in WMS capabilities",
+            u"The layer '__test_public_layer' (__test_public_layer) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
+            u"The layer '__test_layer_in_group' (__test_layer_in_group) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
+            u"The layer 'test_wmsfeaturesgroup' (test_wmsfeaturesgroup) is not defined in WMS capabilities from '__test_ogc_server_notmapfile'",
             u"GetCapabilities from URL http://mapserver/?map=not_a_mapfile&VERSION=1.1.1&REQUEST=GetCapabilities&S"
         ]))
 
@@ -971,7 +971,7 @@ class TestEntryView(TestCase):
             "identifierAttribute": "name",
             "public": True,
             "metadata": {},
-        }, set(["The layer 'test internal WMS' is not defined in WMS capabilities"])))
+        }, set(["The layer 'test internal WMS' (test internal WMS) is not defined in WMS capabilities from '__test_ogc_server'"])))
 
         layer = LayerV1()
         layer.id = 20
@@ -1372,7 +1372,7 @@ class TestEntryView(TestCase):
                     "metadata": {},
                 }]
             }]
-        }, set(["The layer 'test layer in group' is not defined in WMS capabilities"])))
+        }, set(["The layer 'test layer in group' (test layer in group) is not defined in WMS capabilities from '__test_ogc_server'"])))
 
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
@@ -1414,7 +1414,7 @@ class TestEntryView(TestCase):
         group.children = [layer]
         _, errors = entry._group("", group, [layer.name], catalogue=False)
         self.assertEqual(errors, set([
-            u"The layer '' is not defined in WMS capabilities",
+            u"The layer '' () is not defined in WMS capabilities from '__test_ogc_server'",
         ]))
 
         group = LayerGroup()

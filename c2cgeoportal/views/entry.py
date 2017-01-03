@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2016, Camptocamp SA
+# Copyright (c) 2011-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -566,7 +566,7 @@ class Entry:
         if layer.max_resolution is not None:
             l["maxResolutionHint"] = layer.max_resolution
 
-        wmslayer = layer.name
+        wmslayer = layer.layer
         # now look at what is in the WMS capabilities doc
         if wmslayer in wms_layers:
             wms_layer_obj = wms[wmslayer]
@@ -585,7 +585,9 @@ class Entry:
         else:
             if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
-                    "The layer '{0!s}' is not defined in WMS capabilities".format(wmslayer)
+                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                        wmslayer, layer.name, self.default_ogc_server.name
+                    )
                 )
 
     def _fill_external_wms(self, l, layer, errors):

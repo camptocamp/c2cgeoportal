@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2016, Camptocamp SA
+# Copyright (c) 2014-2017, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -319,7 +319,7 @@ class C2cTool:
                 print("")
                 print(colorize("The pull (rebase) failed.", RED))
                 print("")
-                self.print_step(1, intro="Please solve the rebase and run the step 1 again:")
+                self.print_step(1, intro="Please solve the rebase and run the upgrade1 again:")
                 exit(1)
 
         check_call(["git", "submodule", "sync"])
@@ -332,7 +332,7 @@ class C2cTool:
             print("")
             print(colorize("The pull is not fast forward.", RED))
             print("")
-            self.print_step(1, intro="Please solve the rebase and run the step 1 again:")
+            self.print_step(1, intro="Please solve the rebase and run the upgrade1 again:")
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
@@ -455,7 +455,7 @@ class C2cTool:
             print(self.color_bar)
             print("The makefile is missing")
             print("")
-            self.print_step(4, intro="Fix it and run again the step 4:")
+            self.print_step(4, intro="Fix it and run again the upgrade4:")
             exit(1)
 
         if os.path.isfile("create.diff"):
@@ -486,7 +486,7 @@ class C2cTool:
     def step5(self):
         if not self.test_checkers():
             print("")
-            self.print_step(5, intro="Correct the checker, the step 5 again:")
+            self.print_step(5, intro="Correct the checker, the upgrade5 again:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
@@ -500,7 +500,7 @@ class C2cTool:
         print("We will commit all the above files!")
         print(
             "If there are some files which should not be commited, then you should "
-            "add them into the `.gitignore` file and launch step 5 again."
+            "add them into the `.gitignore` file and launch upgrade5 again."
         )
 
         self.print_step(6, intro="Then to commit your changes type:")
