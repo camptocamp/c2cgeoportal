@@ -78,8 +78,8 @@ and build your application to merge the old localisation with the new one.
         json_ = subprocess.check_output(["node", "-e", " ".join(jsonlines)])
         source = json.loads(json_)
 
-    with open(options.po_v2, "w+") as destionation:
-        destionation.write("""msgid ""
+    with open(options.po_v2, "w+") as destination:
+        destination.write(u"""msgid ""
 msgstr ""
 "Last-Translator: Imported from {0!s}\\n"
 "Language: {1!s}\\n"
@@ -90,7 +90,7 @@ msgstr ""
 """.format(options.json_v1, options.lang))
         for key, value in source.items():
             if isinstance(value, basestring):
-                destionation.write(("""
+                destination.write((u"""
 msgid "{0!s}"
 msgstr "{1!s}"
 """.format(key, value.replace('"', '\\"'))).encode("utf-8"),
