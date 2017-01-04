@@ -752,6 +752,7 @@ $(TX_RC):
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
+	sleep 1 # To be sure that the the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
