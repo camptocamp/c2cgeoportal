@@ -269,7 +269,7 @@ class Layers:
             for feature in features.features:
                 self._log_last_update(layer, feature)
             return features
-        except TopologicalError, e:
+        except TopologicalError as e:
             self.request.response.status_int = 400
             return {"validation_error": str(e)}
 
@@ -321,7 +321,7 @@ class Layers:
             feature = protocol.update(self.request, feature_id)
             self._log_last_update(layer, feature)
             return feature
-        except TopologicalError, e:
+        except TopologicalError as e:
             self.request.response.status_int = 400
             return {"validation_error": str(e)}
 
