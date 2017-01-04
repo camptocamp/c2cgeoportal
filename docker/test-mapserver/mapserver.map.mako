@@ -157,6 +157,9 @@ MAP
 
             ${mapserver_layer_metadata}
         END
+        VALIDATION
+            ${mapserver_layer_validation}
+        END
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
