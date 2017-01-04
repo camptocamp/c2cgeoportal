@@ -297,7 +297,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
             "l_wmts": "WMTS Layer: ",
         }
 
-        result = """
+        result = u"""
         <li>
             <input type="checkbox" id="{id!s}" name="{name!s}" value="{value!s}"{add!s}></input>
             <label>{type!s}{label!s}</label>
