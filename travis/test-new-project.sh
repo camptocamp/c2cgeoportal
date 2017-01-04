@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -x
 
 STATUS_CODE=$(curl --write-out %{http_code} --verbose --connect-timeout 1 --max-time 120 --retry 5 --silent --output /dev/null "http://localhost/travis/$1")
 
