@@ -106,7 +106,7 @@ def _ngeo_git_version():
         return version
     if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
         return os.environ["TRAVIS_TAG"]
-    return "master"
+    return "2.1"
 
 
 def ngeo_git_version():

@@ -573,6 +573,7 @@ Metadata.value.set(metadata=dict(mandatory="")).required()
 
 # Dimension
 Dimension = FieldSet(models.Dimension)
+Dimension.name.set(metadata=dict(mandatory="")).required()
 Dimension.value.set(metadata=dict(mandatory="")).required()
 
 # RestrictionArea

@@ -1017,7 +1017,8 @@ class Dimension(Base):
     def __init__(self, name="", value="", layer=None):
         self.name = name
         self.value = value
-        self.layer = layer
+        if layer is not None:
+            self.layer = layer
 
     def __unicode__(self):  # pragma: no cover
         return self.name or u""
