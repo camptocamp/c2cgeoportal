@@ -325,7 +325,8 @@ class Layers:
             self.request.response.status_int = 400
             return {"validation_error": str(e)}
 
-    def _validate_geometry(self, geom):
+    @staticmethod
+    def _validate_geometry(geom):
         if geom is not None:
             simple = DBSession.query(func.ST_IsSimple(geom)).scalar()
             if not simple:
