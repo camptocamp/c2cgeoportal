@@ -54,7 +54,7 @@ class TestThemesScale(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import DBSession, \
-            Theme, LayerGroup, Interface, LayerWMS
+            Theme, LayerGroup, Interface, LayerWMS, Metadata
 
         main = Interface(name=u"desktop")
 
@@ -80,8 +80,17 @@ class TestThemesScale(TestCase):
         layer_boothscale.interfaces = [main]
         layer_boothscale.ogc_server = ogc_server
 
+        layer_metadatascale = LayerWMS(name=u"__test_layer_metadatascale", public=True)
+        layer_metadatascale.layer = "test_boothscale"
+        layer_metadatascale.interfaces = [main]
+        layer_metadatascale.ogc_server = ogc_server
+        layer_metadatascale.metadatas = [
+            Metadata("minResolution", "100"),
+            Metadata("maxResolution", "1000"),
+        ]
+
         layer_group = LayerGroup(name=u"__test_layer_group")
-        layer_group.children = [layer_noscale, layer_minscale, layer_maxscale, layer_boothscale]
+        layer_group.children = [layer_noscale, layer_minscale, layer_maxscale, layer_boothscale, layer_metadatascale]
 
         theme = Theme(name=u"__test_theme")
         theme.interfaces = [main]
@@ -119,7 +128,19 @@ class TestThemesScale(TestCase):
     def _create_request_obj(params=None, **kwargs):
         if params is None:
             params = {}
-        request = create_dummy_request(**kwargs)
+        request = create_dummy_request(additional_settings={
+            "admin_interface": {
+                "available_metadata": [
+                    {
+                        "name": "minResolution",
+                        "type": "float"
+                    }, {
+                        "name": "maxResolution",
+                        "type": "float"
+                    }
+                ]
+            }
+        }, **kwargs)
         request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
@@ -154,7 +175,7 @@ class TestThemesScale(TestCase):
         themes = entry.themes()
         self.assertEquals(set(themes["errors"]), set())
         self.assertEquals(
-            [self._only_name(t, ["name", "childLayers"]) for t in themes["themes"]],
+            [self._only_name(t, ["name", "childLayers", "minResolutionHint", "maxResolutionHint"]) for t in themes["themes"]],
             [{
                 "name": u"__test_theme",
                 "children": [{
@@ -166,6 +187,8 @@ class TestThemesScale(TestCase):
                             "maxResolutionHint": 999999999.0,
                             "queryable": True,
                         }],
+                        "maxResolutionHint": 999999999.0,
+                        "minResolutionHint": 0.0,
                         "name": u"__test_layer_noscale",
                     }, {
                         "childLayers": [{
@@ -174,6 +197,8 @@ class TestThemesScale(TestCase):
                             "maxResolutionHint": 999999999.0,
                             "queryable": True,
                         }],
+                        "maxResolutionHint": 999999999.0,
+                        "minResolutionHint": 1.76,
                         "name": u"__test_layer_minscale",
                     }, {
                         "childLayers": [{
@@ -182,6 +207,8 @@ class TestThemesScale(TestCase):
                             "maxResolutionHint": 8.82,
                             "queryable": True,
                         }],
+                        "maxResolutionHint": 8.82,
+                        "minResolutionHint": 0.0,
                         "name": u"__test_layer_maxscale",
                     }, {
                         "childLayers": [{
@@ -190,7 +217,19 @@ class TestThemesScale(TestCase):
                             "maxResolutionHint": 8.82,
                             "queryable": True,
                         }],
+                        "maxResolutionHint": 8.82,
+                        "minResolutionHint": 1.76,
                         "name": u"__test_layer_boothscale",
+                    }, {
+                        "childLayers": [{
+                            "minResolutionHint": 1.76,
+                            "name": "test_boothscale",
+                            "maxResolutionHint": 8.82,
+                            "queryable": True,
+                        }],
+                        "maxResolutionHint": 1000.0,
+                        "minResolutionHint": 100.0,
+                        "name": u"__test_layer_metadatascale",
                     }]
                 }]
             }]
