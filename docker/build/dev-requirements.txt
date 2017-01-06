@@ -2,7 +2,7 @@ alabaster==0.7.9
 alembic==0.8.9
 Babel==2.3.4
 boto==2.45.0
-bottle==0.12.11
+bottle==0.12.12
 c2c.cssmin==0.7.dev6
 c2c.template==1.3.0
 Chameleon==3.0
@@ -24,7 +24,7 @@ https://github.com/camptocamp/fa.jquery/archive/6b781ecb416ef40caa79ca449a04159d
 https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 ipcalc==1.99.0
 isodate==0.5.4
-Jinja2==2.8
+Jinja2==2.8.1
 js.jqgrid==4.4.4
 js.jquery==1.9.1  # Fixed for admin interface
 js.jquery-form==3.9
@@ -47,7 +47,7 @@ Paste==2.0.3
 PasteDeploy==1.5.2
 PasteScript==2.0.2
 pep8-naming
-Pillow==3.4.2
+Pillow==4.0.0
 polib==1.0.8
 postmarkup==1.2.2
 psycopg2==2.6.2
