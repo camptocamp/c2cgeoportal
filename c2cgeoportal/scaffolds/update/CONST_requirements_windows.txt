@@ -3,6 +3,4 @@ wheels/psycopg2-2.6.1-cp27-none-win32.whl
 wheels/Shapely-1.5.13-cp27-none-win32.whl
 wheels/Pillow-3.1.0-cp27-none-win32.whl
 wheels/pyproj-1.9.5-cp27-none-win32.whl
-
-https://github.com/camptocamp/pyramid_closure/archive/819bc43420b3cd924d8698c5a9606592c19dbb15.zip#egg=pyramid_closure
 -e .
