@@ -58,7 +58,7 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) \
 	$(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/images/,favicon.ico logo.png background-layer-button.png) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/components/contextualdata/contextualdata.html
 
-C2C_TEMPLATE_CMD = c2c-template --vars $(VARS_FILE)
+C2C_TEMPLATE_CMD = $(BUILD_DIR)/venv/bin/python /usr/local/bin/c2c-template --vars $(VARS_FILE)
 
 
 .PHONY: help
