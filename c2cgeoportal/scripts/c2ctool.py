@@ -168,17 +168,22 @@ class C2cTool:
 
     color_bar = colorize("================================================================", GREEN)
 
-    def print_step(self, step, intro="To continue type:"):
-        print(colorize(intro, YELLOW))
-        print(colorize("make -f {} upgrade{}", GREEN).format(
-            self.options.file if self.options.file is not None else "<user.mk>",
-            step if step != 0 else "",
-        ))
+    def print_step(self, step, error=False, message=None, prompt="To continue type:"):
+        print("")
+        print(self.color_bar)
+        if message is not None:
+            print(colorize(message, RED if error else YELLOW))
+        if step >= 0:
+            print(colorize(prompt, GREEN))
+            print(colorize("make -f {} upgrade{}", GREEN).format(
+                self.options.file if self.options.file is not None else "<user.mk>",
+                step if step != 0 else "",
+            ))
 
     @staticmethod
     def get_project():
         if not os.path.isfile("project.yaml"):
-            print("Unable to find the required 'project.yaml' file.")
+            print(colorize("Unable to find the required 'project.yaml' file.", RED))
             exit(1)
 
         with open("project.yaml", "r") as f:
@@ -195,13 +200,14 @@ class C2cTool:
                 }
             )
             if resp.status < 200 or resp.status >= 300:
-                print(self.color_bar)
-                print("Checker error:")
-                print("Open `http://{0!s}{1!s}{2!s}` for more informations.".format(
+                return False, "\n".join(
+                    "Checker error:"
+                    "Open `http://{0!s}{1!s}{2!s}` for more informations."
+                ).format(
                     self.project["host"], self.project["checker_path"], check_type
-                ))
-                return False
-        return True
+                )
+
+        return True, None
 
     def __init__(self, options):
         self.options = options
@@ -240,17 +246,15 @@ class C2cTool:
                     )
                 )
         if len(messages) > 0:
-            print("")
-            print(self.color_bar)
-            print(colorize("\n".join(messages), RED))
-            print("")
-            self.print_step(0, intro="Fix it and run again the upgrade:")
+            self.print_step(
+                0, error=True, message="\n".join(messages),
+                prompt="Fix it and run again the upgrade:")
             exit(1)
 
         if self.options.version is None:
-            print("")
-            print(self.color_bar)
-            print("The VERSION environment variable is required for this upgrade step")
+            self.print_step(
+                0, error=True, message="The VERSION environment variable is required for this upgrade step",
+                prompt="Fix it and run again the upgrade:")
             exit(1)
 
         if re.match(VERSION_RE, self.options.version) is not None:
@@ -262,44 +266,42 @@ class C2cTool:
             )
             headers, _ = http.request(url)
             if headers.status != 200:
-                print("")
-                print(self.color_bar)
-                print(
-                    "Failed downloading the c2cgeoportal "
-                    "CONST_versions_requirements.txt file from URL:"
+                self.print_step(
+                    -1, error=True, message="\n".join([
+                        "Failed downloading the c2cgeoportal "
+                        "CONST_versions_requirements.txt file from URL:",
+                        url,
+                        "The upgrade is impossible"
+                    ])
                 )
-                print(url)
-                print("The upgrade is impossible")
                 exit(1)
 
         if os.path.split(os.path.realpath("."))[1] != self.project["project_folder"]:
-            print("")
-            print(self.color_bar)
-            print("Your project is not in the right folder!")
-            print("It should be in folder '{0!s}' instead of folder '{1!s}'.".format(
-                self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
-            ))
-            print("")
-            self.print_step(0, intro="Fix it and lunch again the upgrade:")
+            self.print_step(
+                0, error=True, message="\n".join([
+                    "Your project is not in the right folder!\n",
+                    "It should be in folder '{}' instead of folder '{}'.".format(
+                        self.project["project_folder"], os.path.split(os.path.realpath("."))[1]
+                    )
+                ]),
+                prompt="Fix it and lunch again the upgrade:"
+            )
             exit(1)
 
         if check_output(["git", "status", "--short"]) == "":
             self.step1()
         else:
             check_call(["git", "status"])
-            print("")
-            print(self.color_bar)
-            print(
-                "Here is the output of 'git status'. Please make sure to commit all your changes "
-                "before going further. All uncommited changes will be lost."
+            self.print_step(
+                1, message="Here is the output of 'git status'. Please make sure to commit all your "
+                "changes before going further. All uncommited changes will be lost."
             )
-            self.print_step(1)
 
     def step1(self):
         if self.options.version is None:
-            print("")
-            print(self.color_bar)
-            print("The VERSION environment variable is required for this upgrade step")
+            self.print_step(
+                1, error=True, message="The VERSION environment variable is required for this upgrade step",
+                prompt="Fix it and run it again:")
             exit(1)
 
         check_call(["git", "reset", "--hard"])
@@ -315,11 +317,9 @@ class C2cTool:
             try:
                 check_call(["git", "pull", "--rebase", self.options.git_remote, branch])
             except CalledProcessError:
-                print(self.color_bar)
-                print("")
-                print(colorize("The pull (rebase) failed.", RED))
-                print("")
-                self.print_step(1, intro="Please solve the rebase and run the upgrade1 again:")
+                self.print_step(
+                    1, error=True, message="The pull (rebase) failed.",
+                    prompt="Please solve the rebase and run it again:")
                 exit(1)
 
         check_call(["git", "submodule", "sync"])
@@ -328,11 +328,9 @@ class C2cTool:
         check_call(["git", "submodule", "foreach", "git", "submodule", "update", "--init"])
 
         if len(check_output(["git", "status", "-z"]).strip()) != 0:
-            print(self.color_bar)
-            print("")
-            print(colorize("The pull is not fast forward.", RED))
-            print("")
-            self.print_step(1, intro="Please solve the rebase and run the upgrade1 again:")
+            self.print_step(
+                1, error=True, message="The pull is not fast forward.",
+                prompt="Please solve the rebase and run it again:")
             exit(1)
 
         check_call(["git", "submodule", "foreach", "git", "submodule", "sync"])
@@ -382,13 +380,10 @@ class C2cTool:
         if os.path.getsize("changelog.diff") == 0:
             self.step2()
         else:
-            print("")
-            print(self.color_bar)
-            print(
-                "Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt file"
-                " (listed in the `changelog.diff` file)."
+            self.print_step(
+                2, message="Apply the manual migration steps based on what is in the CONST_CHANGELOG.txt "
+                "file (listed in the `changelog.diff` file)."
             )
-            self.print_step(2)
 
     def step2(self):
         if os.path.isfile("changelog.diff"):
@@ -404,12 +399,9 @@ class C2cTool:
         if os.path.getsize("ngeo.diff") == 0:
             self.step3()
         else:
-            print("")
-            print(self.color_bar)
-            print(
-                "Apply the ngeo application diff available in the `ngeo.diff` file."
+            self.print_step(
+                3, message="Apply the ngeo application diff available in the `ngeo.diff` file."
             )
-            self.print_step(3)
 
     def step3(self):
         if os.path.isfile("ngeo.diff"):
@@ -435,27 +427,23 @@ class C2cTool:
             if os.path.getsize("create.diff") == 0:
                 self.step4()
             else:
-                print("")
-                print(self.color_bar)
-                print(
-                    "This is an optional step but it helps to have a standard project.\n"
+                self.print_step(
+                    4, message="This is an optional step but it helps to have a standard project.\n"
                     "The `create.diff` file is a recommendation of the changes that you should apply "
                     "to your project.\n"
                     "An advise to be more effective: in most cases it concerns a file that "
                     "you never customize, or a file that you have heavily customized, then respectively "
                     "copy the new file from CONST_create_template, respectively ignore the changes."
                 )
-                self.print_step(4)
         else:
             self.step4()
 
     def step4(self):
         if self.options.file is None:
-            print("")
-            print(self.color_bar)
-            print("The makefile is missing")
-            print("")
-            self.print_step(4, intro="Fix it and run again the upgrade4:")
+            self.print_step(
+                4, error=True, message="The makefile is missing",
+                prompt="Fix it and run it again:"
+            )
             exit(1)
 
         if os.path.isfile("create.diff"):
@@ -472,21 +460,23 @@ class C2cTool:
                 ["sudo", "/usr/sbin/apache2ctl", "graceful"]
             ))
 
-        print("")
-        print(self.color_bar)
-        print("The upgrade is nearly done, now you should:")
-        print("- Test your application.")
+        message = [
+            "The upgrade is nearly done, now you should:",
+            "- Test your application."
+        ]
 
         if self.options.windows:
-            print("You are running on Windows, please restart your Apache server,")
-            print("because we can not do that automatically.")
+            message.append(
+                "You are running on Windows, please restart your Apache server,"
+                "because we can not do that automatically."
+            )
 
-        self.print_step(5)
+        self.print_step(5, message="\n".join(message))
 
     def step5(self):
-        if not self.test_checkers():
-            print("")
-            self.print_step(5, intro="Correct the checker, the upgrade5 again:")
+        ok, message = self.test_checkers()
+        if not ok:
+            self.print_step(5, error=True, message=message, prompt="Correct the checker, the it again:")
             exit(1)
 
         # Required to remove from the Git stage the ignored file when we lunch the step again
@@ -495,15 +485,11 @@ class C2cTool:
         check_call(["git", "add", "-A"])
         check_call(["git", "status"])
 
-        print("")
-        print(self.color_bar)
-        print("We will commit all the above files!")
-        print(
+        self.print_step(
+            6, message="We will commit all the above files!\n"
             "If there are some files which should not be commited, then you should "
-            "add them into the `.gitignore` file and launch upgrade5 again."
-        )
-
-        self.print_step(6, intro="Then to commit your changes type:")
+            "add them into the `.gitignore` file and launch upgrade5 again.",
+            prompt="Then to commit your changes type:")
 
     def step6(self):
         check_call(["git", "commit", "-m", "Upgrade to GeoMapFish {}".format(
@@ -521,7 +507,9 @@ class C2cTool:
         ))
 
     def deploy(self):
-        if not self.test_checkers():
+        ok, message = self.test_checkers()
+        if not ok:
+            print(message)
             print(colorize("Correct them and run again", RED))
             exit(1)
 
