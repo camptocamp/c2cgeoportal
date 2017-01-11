@@ -322,14 +322,15 @@ vars:
             - name: mobile
               param:
                 no_redirect: true
-            - name: desktop
-              param:
-                no_redirect: true
-                debug: true
-            - name: mobile
-              param:
-                no_redirect: true
-                debug: true
+            # phamtomjs 2.5 is required
+#            - name: desktop
+#              param:
+#                no_redirect: true
+#                debug: true
+#            - name: mobile
+#              param:
+#                no_redirect: true
+#                debug: true
             routes:
             - name: apijs
             - name: xapijs
