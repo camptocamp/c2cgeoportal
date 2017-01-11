@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2017, Camptocamp SA
 # All rights reserved.
@@ -28,33 +27,54 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Add trigger to be able to correctly change the role name
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 9268a1dffac0
+Revises: 5472fbc19f39
+Create Date: 2017-01-11 11:07:53.042003
 """
 
 from alembic import op, context
 
 # revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
+revision = '9268a1dffac0'
+down_revision = '5472fbc19f39'
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
     schema = context.get_context().config.get_main_option('schema')
     staticschema = schema + '_static'
-    parentschema = context.get_context().config.get_main_option('parentschema')
 
-    ${upgrades if upgrades else '# Instructions'}
+    op.execute("""
+CREATE OR REPLACE FUNCTION {staticschema}.on_role_name_change()
+RETURNS trigger AS
+$$
+BEGIN
+IF NEW.name <> OLD.name THEN
+UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+END IF;
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql""".format(staticschema=staticschema))
+
+    op.execute(
+        'CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW '
+        'EXECUTE PROCEDURE {staticschema}.on_role_name_change()'.format(
+            staticschema=staticschema, schema=schema
+        )
+    )
 
 
 def downgrade():
     schema = context.get_context().config.get_main_option('schema')
     staticschema = schema + '_static'
-    parentschema = context.get_context().config.get_main_option('parentschema')
 
-    ${downgrades if downgrades else '# Instructions'}
+    op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
+        schema=schema
+    ))
+    op.execute('DROP FUNCTION {staticschema}.on_role_name_change()'.format(
+        staticschema=staticschema
+    ))
