@@ -53,7 +53,7 @@ install:
 - ./docker-run make -f travis.mk build
 
 - pip install sqlalchemy psycopg2
-- python travis/waitdb postgres://www-data:www-data@localhost/geomapfish
+- python travis/waitdb postgres://www-data:www-data@localhost/geomapfish_test
 
 - travis/create-new-project.sh
 - travis/test-upgrade.sh

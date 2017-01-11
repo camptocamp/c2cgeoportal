@@ -140,6 +140,8 @@ def tear_down_common():
 def create_default_ogcserver():
     from c2cgeoportal.models import DBSession, OGCServer
     DBSession.query(OGCServer).delete()
+    import transaction
+    transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv_url
     ogcserver_external = OGCServer(name="__test_external_ogc_server")

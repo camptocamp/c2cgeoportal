@@ -2,6 +2,7 @@ extends: vars_testgeomapfish.yaml
 
 vars:
     host: localhost
+    db: geomapfish_test
 
     authorized_referers:
     - http://127.0.0.1/{instanceid}

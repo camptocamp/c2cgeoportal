@@ -171,6 +171,19 @@ WMS Layer
             "queryable": (true|false),
             "minResolutionHint": <minResolutionHint>,
             "maxResolutionHint": <maxResolutionHint>
+        }],
+        "edit_columns":[{
+            "maxLength": <maxLength>,
+            "name": "<name>",
+            "nillable": (true|false),
+            "restriction": "enumeration",
+            "enumeration": [
+                "<value>"
+            ],
+            "srid": <srid>,
+            "type": "(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)",
+            "fractionDigits": <fractionDigits>,
+            "totalDigits": <totalDigits>
         }]
     }
 

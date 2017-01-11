@@ -64,7 +64,7 @@ from c2cgeoportal.models import DBSession, User, Role, \
     Layer, LayerV1, LayerWMS, LayerWMTS, FullTextSearch, \
     OGCSERVER_TYPE_GEOSERVER, OGCSERVER_TYPE_MAPSERVER, \
     OGCSERVER_AUTH_GEOSERVER, OGCSERVER_AUTH_NOAUTH
-
+from c2cgeoportal.views.layers import get_layer_metadatas
 
 _ = TranslationStringFactory("c2cgeoportal")
 log = logging.getLogger(__name__)
@@ -472,6 +472,7 @@ class Entry:
                 .count()
             if c > 0:
                 l["editable"] = True
+                l["edit_columns"] = get_layer_metadatas(layer)
 
     def _fill_wms(self, l, layer, errors, role_id, mixed):
         wms, wms_layers, wms_errors = self._wms_layers(role_id, layer.ogc_server)

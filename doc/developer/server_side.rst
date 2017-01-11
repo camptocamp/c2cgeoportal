@@ -110,7 +110,7 @@ Functional tests
 For the functional tests you need to have MapServer and PostgreSQL/PostGIS
 installed. Make sure this is the case before proceeding.
 
-You now need to create PostGIS database (named ``c2cgeoportal_test`` for example)
+You now need to create PostGIS database (named ``geomapfish_test`` for example)
 and a schema named ``main`` into it.
 
 To create the database use the following command if you have a PostGIS database
@@ -118,7 +118,7 @@ template at your disposal:
 
 .. prompt:: bash
 
-    sudo -u postgres createdb -T template_postgis c2cgeoportal_test
+    sudo -u postgres createdb -T template_postgis geomapfish_test
 
 .. note::
 
@@ -126,15 +126,15 @@ template at your disposal:
 
     .. prompt:: bash
 
-        sudo -u postgres createdb -E UTF8 -T template0 c2cgeoportal_test
-        sudo -u postgres createlang plpgsql c2cgeoportal_test
-        sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres createdb -E UTF8 -T template0 geomapfish_test
+        sudo -u postgres createlang plpgsql geomapfish_test
+        sudo -u postgres psql -d geomapfish_test \
                -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-        sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d geomapfish_test \
                -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
-        sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d geomapfish_test \
                -c 'GRANT ALL ON geometry_columns TO "www-data";'
-        sudo -u postgres psql -d c2cgeoportal_test \
+        sudo -u postgres psql -d geomapfish_test \
                -c 'GRANT SELECT ON spatial_ref_sys TO "www-data";'
 
     The ``template0`` is needed on Debian and Ubuntu to create a utf-8
@@ -146,14 +146,16 @@ If you do not have a ``www-data`` user you need to create one:
 
     sudo -u postgres createuser -P www-data
 
-To create the ``main`` and ``main_static`` schema:
+To create the ``main``,  ``main_static``  and ``geodata`` schema:
 
 .. prompt:: bash
 
-    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main;'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'CREATE SCHEMA main_static;'
-    sudo -u postgres psql -d c2cgeoportal_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA main_static;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA main_static TO "www-data";'
+    sudo -u postgres psql -d geomapfish_test -c 'CREATE SCHEMA geodata;'
+    sudo -u postgres psql -d geomapfish_test -c 'GRANT ALL ON SCHEMA geodata TO "www-data";'
 
 If you do not use the default variables edit the ``vars.yaml`` and set the ``dbuser``, ``dbpassword``,
 ``dbhost``, ``dbport``, ``db``, and ``mapserv_url`` as appropriate.
