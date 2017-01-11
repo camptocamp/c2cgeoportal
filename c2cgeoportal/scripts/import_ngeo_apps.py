@@ -161,6 +161,7 @@ def main():
                 "karma",
                 "karma-coverage",
                 "karma-jasmine",
+                "karma-chrome-launcher",
             ]:
                 if package in json_data["devDependencies"]:
                     del json_data["devDependencies"][package]
