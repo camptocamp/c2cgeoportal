@@ -1,10 +1,3 @@
-extends: openlayers
+extends: ./node_modules/ngeo/.eslintrc.yaml
 globals:
   '{{package}}': false
-  angular: false
-  goog: false
-  ol: false
-  ngeo: false
-  gmf: false
-rules:
-  valid-jsdoc: off

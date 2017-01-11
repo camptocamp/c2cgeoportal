@@ -161,9 +161,10 @@ def main():
                 "karma",
                 "karma-coverage",
                 "karma-jasmine",
-                "karma-phantomjs-launcher",
+                "karma-chrome-launcher",
             ]:
-                del json_data["devDependencies"][package]
+                if package in json_data["devDependencies"]:
+                    del json_data["devDependencies"][package]
 
             data = dumps(json_data, indent=2, sort_keys=True, encoding="utf-8", separators=(',', ': '))
             data = data + "\n"
