@@ -226,6 +226,88 @@ Commit and push on the main repository:
     git commit -m "Initial commit"
     git push origin master
 
+Configuration of different environment in your project
+------------------------------------------------------
+
+Concepts
+........
+
+* Makefile: These files are environment configuration files. Each environment will
+  have its configuration file (developer, preprod, prod)
+* vars_xxx.yaml: These files are application configuration files. Generally only
+  one file is needed to configure your application.
+
+Hierarchy and extending your configuration files
+................................................
+
+The configuration files (Makefile and vars) have a hierarchy between them.
+These files extend other files. A Makefile extends another Makefile
+and similarly a vars file extends another vars file. This extension is visible
+in Makefile files:
+
+.. code:: make
+
+   include CONST_Makefile
+
+and vars files:
+
+.. code:: yaml
+
+    extends: CONST_vars.yaml
+
+CONST files are files that should not be changed because they are replaced
+during application updates, so your changes will be systematically lost. You can
+extend these files as many times as you like, although it is not recommended to
+exceed 3-4 levels for readability and simplicity.
+
+.. image:: ../_static/doc_hierarchie.png
+
+Whenever possible, it is strongly advised not to extend the
+``vars_<project>.yaml`` file, and we recommend that you use dynamic variables as
+described below. However some use cases may need to do so:
+
+* Configuring really different environments.
+* Configuration of a multi-project (see below for this specific use case).
+
+Use of dynamic variable
+.......................
+
+Variables used in the application configuration files (files ``vars_<project>.yaml``)
+can be made dynamic by means of environment variable. In the main file
+``vars_<project>.yaml``, added the ``interpreted`` block at the bottom of the
+file.
+
+In this same file, you can change the value of a parameter by putting it in
+uppercase (example: ``host: HOST``). This parameter must be listed in the
+interpreted parameters section:
+
+.. code:: yaml
+
+    extends: CONST_vars.yaml
+
+    vars:
+        host: HOST
+    ...
+    interpreted:
+        environment:
+            - log_level
+            - host
+
+In the ``<project>.mk`` file, add parameters you want to change as exported
+parameters:
+
+.. code:: make
+
+    export HOST = domaine.different.com
+    export LOG_LEVEL
+
+In the Makefiles that extend this main file, you only need to define the
+environment variables:
+
+.. code:: make
+
+   export HOST = prod.different.com
+
 Configure the application
 -------------------------
 
@@ -273,7 +355,6 @@ Do not miss to add your changes to git:
 
    with the right path to ``convert``.
 
-
 After creation and minimal setup the application is ready to be installed.
 Then follow the sections in the install application guide:
 
@@ -295,7 +376,6 @@ Then follow the sections in the install application guide:
     database creation as described in :ref:`integrator_install_application`,
     except the 'Get the application source tree' chapter.
 
-
 Create a multi-instance project
 -------------------------------
 
@@ -304,6 +384,10 @@ In some cases we want to create applications based on very similar code and sett
 To be consistent with c2cgeoportal terminology we will use the words `project`
 to refer to the whole project and `instance` for a dedicated configuration of
 the project.
+
+Multi-instance project use the concepts describe above:
+
+.. image:: ../_static/doc_hierarchie_multiproject.png
 
 This procedure will deal with:
 
