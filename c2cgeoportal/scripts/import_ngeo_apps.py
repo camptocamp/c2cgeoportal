@@ -331,7 +331,6 @@ ${ ',\\n'.join([
                 ("authenticationBaseUrl", r"", "base", True),
                 ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", True),
                 ("gmfRasterUrl", r"/raster", "raster", args.interface != "mobile"),
-                ("gmfProfileCsvUrl", r"/profile.csv", "profile.csv", args.interface != "mobile"),
                 ("gmfProfileJsonUrl", r"/profile.json", "profile.json", args.interface != "mobile"),
                 ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
                 ("gmfTreeUrl", r"/themes", "themes", True),
