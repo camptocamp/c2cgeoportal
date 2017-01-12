@@ -180,7 +180,7 @@ MAP_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map" -print)
 MAP_TEMPLATE_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.in" -print)
 MAP_MAKO_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.mako" -print)
 MAP_JINJA_FILES += $(shell $(FIND) mapserver $(FIND_OPTS) -name "*.map.jinja" -print)
-MAP_FILES +=  $(MAP_TEMPLATE_FILES:.in=) $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
+MAP_FILES += $(MAP_TEMPLATE_FILES:.in=) $(MAP_MAKO_FILES:.mako=) $(MAP_JINJA_FILES:.jinja=)
 
 I18N_SOURCE_FILES += $(APP_HTML_FILES) \
 	$(APP_JS_FILES) \
@@ -1036,7 +1036,7 @@ ifeq ($(DOCKER), TRUE)
 print: $(MAKO_FILES) print/Dockerfile $(PRINT_REQUIREMENT)
 	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
 
-else  # !DOCKER
+else # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
@@ -1083,7 +1083,7 @@ endif # !DOCKER
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --location --output $@ http://sourceforge.mirrorservice.org/j/ja/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
+	curl --location --output $@ https://kent.dl.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:
