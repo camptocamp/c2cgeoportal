@@ -30,7 +30,7 @@
 """Add trigger to be able to correctly change the role name
 
 Revision ID: 9268a1dffac0
-Revises: 5472fbc19f39
+Revises: 32b21aa1d0ed
 Create Date: 2017-01-11 11:07:53.042003
 """
 
@@ -38,43 +38,41 @@ from alembic import op, context
 
 # revision identifiers, used by Alembic.
 revision = '9268a1dffac0'
-down_revision = '5472fbc19f39'
+down_revision = '32b21aa1d0ed'
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
     schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
 
     op.execute("""
-CREATE OR REPLACE FUNCTION {staticschema}.on_role_name_change()
+CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
 IF NEW.name <> OLD.name THEN
-UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+UPDATE {schema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
 END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(staticschema=staticschema))
+LANGUAGE plpgsql""".format(schema=schema))
 
     op.execute(
         'CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW '
-        'EXECUTE PROCEDURE {staticschema}.on_role_name_change()'.format(
-            staticschema=staticschema, schema=schema
+        'EXECUTE PROCEDURE {schema}.on_role_name_change()'.format(
+            schema=schema
         )
     )
 
 
 def downgrade():
     schema = context.get_context().config.get_main_option('schema')
-    staticschema = schema + '_static'
 
     op.execute('DROP TRIGGER on_role_name_change ON {schema}.role'.format(
         schema=schema
     ))
-    op.execute('DROP FUNCTION {staticschema}.on_role_name_change()'.format(
-        staticschema=staticschema
+    op.execute('DROP FUNCTION {schema}.on_role_name_change()'.format(
+        schema=schema
     ))
