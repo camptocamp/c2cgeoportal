@@ -3,7 +3,7 @@
 make -f travis.mk doc
 
 DOC=false
-BRANCH=master
+BRANCH=2.1
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9]+.[0-9]+)$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
@@ -28,7 +28,9 @@ then
     git commit --message="Update documentation for the revision ${TRAVIS_COMMIT}" | true
     git push origin gh-pages
 else
-    git checkout master/searchindex.js
+    git checkout ${BRANCH}/searchindex.js
+    git checkout ${BRANCH}/_sources
+    git checkout ${BRANCH}/_static
     git status
     git diff
     git reset --hard
