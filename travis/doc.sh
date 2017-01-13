@@ -3,7 +3,7 @@
 make -f travis.mk doc
 
 DOC=false
-BRANCH=master
+BRANCH=2.1
 
 if [[ ${TRAVIS_BRANCH} =~ ^(master|[0-9]+.[0-9]+)$ ]] && [ ${TRAVIS_PULL_REQUEST} == false ]
 then
