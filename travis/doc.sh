@@ -28,7 +28,9 @@ then
     git commit --message="Update documentation for the revision ${TRAVIS_COMMIT}" | true
     git push origin gh-pages
 else
-    git checkout master/searchindex.js
+    git checkout ${BRANCH}/searchindex.js
+    git checkout ${BRANCH}/_sources
+    git checkout ${BRANCH}/_static
     git status
     git diff
     git reset --hard
