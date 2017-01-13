@@ -53,7 +53,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 
 from c2cgeoportal.lib import add_url_params, get_url2
-from c2cgeoportal.lib.bashcolor import colorize, RED
+from c2cgeoportal.lib.bashcolor import colorize, RED, YELLOW
 from c2cgeoportal.lib.dbreflection import get_class
 from c2cgeoportal.lib.caching import init_region
 
@@ -111,23 +111,33 @@ class GeoMapfishAngularExtractor(Extractor):  # pragma: no cover
                                 filename=self.filename,
                                 lookup=lookup, **options)
 
-                processed = template(
-                    filename,
-                    {
-                        "request": Request(),
-                        "lang": "fr",
-                        "debug": False,
-                        "extra_params": {},
-                        "permalink_themes": "",
-                        "fulltextsearch_groups": [],
-                        "wfs_types": [],
-                        "_": lambda x: x,
-                    },
-                    template_adapter=MyTemplate
-                )
-                int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
-                with open(int_filename, "wb") as file_open:
-                    file_open.write(processed.encode("utf-8"))
+                try:
+                    processed = template(
+                        filename,
+                        {
+                            "request": Request(),
+                            "lang": "fr",
+                            "debug": False,
+                            "extra_params": {},
+                            "permalink_themes": "",
+                            "fulltextsearch_groups": [],
+                            "wfs_types": [],
+                            "_": lambda x: x,
+                        },
+                        template_adapter=MyTemplate
+                    )
+                    int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
+                    with open(int_filename, "wb") as file_open:
+                        file_open.write(processed.encode("utf-8"))
+                except:
+                    print(colorize(
+                        "An error occurred during the '{}' template generation".format(filename),
+                        YELLOW
+                    ))
+                    print(colorize(traceback.format_exc(), YELLOW))
+                    print("------")
+                    # Continue with the original one
+                    int_filename = filename
             except:
                 print(traceback.format_exc())
 
@@ -271,7 +281,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                             (".".join(["edit", layer.item_type, str(layer.id)]), layer.name)
                         ))
             except NoSuchTableError:
-                exit(colorize("No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED))
+                print(colorize(
+                    "No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                    YELLOW
+                ))
+                print(colorize(traceback.format_exc(), YELLOW))
 
     def _import_layer_wmts(self, layer, messages):
         from c2cgeoportal.models import DBSession, OGCServer
@@ -289,8 +303,11 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                         layer.item_type, layer.name, layer.id, messages
                     )
                 except NoResultFound:
-                    print("Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
-                        server[0], layer.name
+                    print(colorize(
+                        "Error: the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
+                            server[0], layer.name
+                        ),
+                        YELLOW
                     ))
 
     def _import_layer_attributes(self, url, layer, item_type, name, layer_id, messages):
@@ -334,14 +351,14 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 resp, content = http.request(url, method="GET", headers=h)
             except:  # pragma: no cover
-                print("Unable to DescribeFeatureType from URL {0!s}".format(url))
+                print(colorize("Unable to DescribeFeatureType from URL {0!s}".format(url), YELLOW))
                 self.featuretype_cache[url] = None
                 return []
 
             if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-                print("DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
+                print(colorize("DescribeFeatureType from URL {0!s} return the error: {1:d} {2!s}".format(
                     url, resp.status, resp.reason
-                ))
+                ), YELLOW))
                 self.featuretype_cache[url] = None
                 return []
 
@@ -349,17 +366,17 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 describe = parseString(content)
                 self.featuretype_cache[url] = describe
             except ExpatError as e:
-                print(
-                    "WARNING! an error occured while trying to "
+                print(colorize(
+                    "WARNING! an error occurred while trying to "
                     "parse the DescribeFeatureType document."
-                )
-                print(str(e))
+                ), YELLOW)
+                print(colorize(str(e), YELLOW))
                 print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
             except AttributeError:
-                print(
+                print(colorize(
                     "WARNING! an error occured while trying to "
                     "read the Mapfile and recover the themes."
-                )
+                ), YELLOW)
                 print("URL: {0!s}\nxml:\n{1!s}".format(url, content))
         else:
             describe = self.featuretype_cache[url]

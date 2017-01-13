@@ -168,6 +168,15 @@ class Entry:
             ogc_server.type != OGCSERVER_TYPE_MAPSERVER
         ) else None
 
+    def _get_metadata(self, item, metadata, errors):
+        metadatas = item.get_metadatas(metadata)
+        return \
+            None if len(metadatas) == 0 \
+            else get_typed(
+                metadata, metadatas[0].value,
+                self.metadata_type, self.request, errors
+            )
+
     def _get_metadatas(self, item, errors):
         metadatas = {}
         for metadata in item.metadatas:
@@ -506,21 +515,31 @@ class Entry:
                 )
 
         if "minResolutionHint" not in l:
-            min_resolutions_hint = [
-                l_["minResolutionHint"]
-                for l_ in l["childLayers"]
-                if "minResolutionHint" in l_
-            ]
-            if len(min_resolutions_hint) > 0:
-                l["minResolutionHint"] = min(min_resolutions_hint)
+            resolution_min = self._get_metadata(layer, "minResolution", errors)
+
+            if resolution_min is not None:
+                l["minResolutionHint"] = resolution_min
+            else:
+                min_resolutions_hint = [
+                    l_["minResolutionHint"]
+                    for l_ in l["childLayers"]
+                    if "minResolutionHint" in l_
+                ]
+                if len(min_resolutions_hint) > 0:
+                    l["minResolutionHint"] = min(min_resolutions_hint)
         if "maxResolutionHint" not in l:
-            max_resolutions_hint = [
-                l_["maxResolutionHint"]
-                for l_ in l["childLayers"]
-                if "maxResolutionHint" in l_
-            ]
-            if len(max_resolutions_hint) > 0:
-                l["maxResolutionHint"] = max(max_resolutions_hint)
+            resolution_max = self._get_metadata(layer, "maxResolution", errors)
+
+            if resolution_max is not None:
+                l["maxResolutionHint"] = resolution_max
+            else:
+                max_resolutions_hint = [
+                    l_["maxResolutionHint"]
+                    for l_ in l["childLayers"]
+                    if "maxResolutionHint" in l_
+                ]
+                if len(max_resolutions_hint) > 0:
+                    l["maxResolutionHint"] = max(max_resolutions_hint)
 
         if mixed:
             l["ogcServer"] = layer.ogc_server.name

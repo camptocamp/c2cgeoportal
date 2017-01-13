@@ -758,6 +758,7 @@ $(TX_RC):
 .build/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
+	sleep 1 # To be sure that the the creation date should be after the .transifexrc file. (the $(TOUCHBACK_TXRC) lost the ms)
 	$(VENV_BIN)/tx pull -l $* --force
 	$(TOUCHBACK_TXRC)
 	test -s $@
@@ -1090,7 +1091,7 @@ ifeq ($(DOCKER), TRUE)
 print: print/Dockerfile $(PRINT_REQUIREMENT)
 	docker build -t $(DOCKER_BASE)_print:$(DOCKER_TAG) print
 
-else  # !DOCKER
+else # !DOCKER
 print: $(PRINT_OUTPUT)/$(PRINT_WAR)
 
 $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR): CONST_print_url
@@ -1137,7 +1138,7 @@ endif # !DOCKER
 print/WEB-INF/lib/jasperreports-functions-$(JASPERREPORTS_VERSION).jar:
 	$(PRERULE_CMD)
 	mkdir -p $(dir $@)
-	curl --location --output $@ https://heanet.dl.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
+	curl --location --output $@ https://kent.dl.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$(JASPERREPORTS_VERSION)/jasperreports-functions-$(JASPERREPORTS_VERSION).jar
 	unzip -t -q $@
 
 print/WEB-INF/lib/joda-time-1.6.jar:

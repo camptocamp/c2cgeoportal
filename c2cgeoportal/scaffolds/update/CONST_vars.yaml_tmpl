@@ -141,7 +141,7 @@ vars:
         map_y: 5860000
         map_zoom: 10
 
-    # The list of available variable names for the `UI metadatas` form.
+    # The list of available variable names for the `Metadatas` form.
         available_metadata:
         # Layers group
         - name: isExpanded

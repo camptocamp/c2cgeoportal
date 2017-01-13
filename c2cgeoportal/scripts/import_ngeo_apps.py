@@ -106,7 +106,7 @@ def _ngeo_git_version():
         return version
     if "TRAVIS_TAG" in os.environ and os.environ["TRAVIS_TAG"] != "":
         return os.environ["TRAVIS_TAG"]
-    return "master"
+    return "2.1"
 
 
 def ngeo_git_version():
@@ -332,7 +332,6 @@ ${ ',\\n'.join([
                 ("authenticationBaseUrl", r"", "base", True),
                 ("fulltextsearchUrl", r"/fulltextsearch", "fulltextsearch", True),
                 ("gmfRasterUrl", r"/raster", "raster", args.interface != "mobile"),
-                ("gmfProfileCsvUrl", r"/profile.csv", "profile.csv", args.interface != "mobile"),
                 ("gmfProfileJsonUrl", r"/profile.json", "profile.json", args.interface != "mobile"),
                 ("gmfPrintUrl", r"/printproxy", "printproxy", args.interface != "mobile"),
                 ("gmfTreeUrl", r"/themes", "themes", True),
