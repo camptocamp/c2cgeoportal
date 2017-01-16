@@ -22,3 +22,5 @@ RUN \
 WORKDIR /src
 
 ENV PYTHONPATH /build/venv/lib/python2.7/site-packages/
+
+ENTRYPOINT ["run"]

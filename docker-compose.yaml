@@ -20,4 +20,4 @@ c2cgeoportal:
         GROUP_ID: ${GROUP_ID}
     stdin_open: true
     tty: true
-    entrypoint: run ${RUN}
+    command: ${RUN}
