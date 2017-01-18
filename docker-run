@@ -32,7 +32,10 @@ def main():
         "camptocamp/geomapfish_build_dev",
     ])
     docker_cmd.extend(args)
-    subprocess.check_call(docker_cmd)
+    try:
+        subprocess.check_call(docker_cmd)
+    except subprocess.CalledProcessError:
+        exit(2)
 
 
 if __name__ == "__main__":
