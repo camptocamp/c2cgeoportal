@@ -1,8 +1,7 @@
 FROM python:2
 MAINTAINER Stéphane Brunner <stephane.brunner@camptocamp.com>
 
-COPY run /usr/bin/
-COPY . /tmp/
+COPY *-requirements.txt /tmp/
 
 RUN \
   apt-get update && \
@@ -18,6 +17,8 @@ RUN \
   apt-get purge --assume-yes --auto-remove curl libpq-dev libgeos-dev libjpeg-dev gcc apt-transport-https && \
   apt-get clean && \
   rm --recursive --force /tmp/* /var/tmp/* i/var/lib/apt/lists/* /root/.cache/*
+
+COPY run /usr/bin/
 
 WORKDIR /src
 
