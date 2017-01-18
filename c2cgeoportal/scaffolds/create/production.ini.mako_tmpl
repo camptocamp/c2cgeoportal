@@ -61,7 +61,7 @@ handlers =
 qualname = c2cgeoportal
 
 [logger_{{package}}]
-level = INFO
+level = WARN
 handlers =
 qualname = {{package}}
 
