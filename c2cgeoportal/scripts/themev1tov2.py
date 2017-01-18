@@ -203,7 +203,7 @@ def layer_v1tov2(session, layer):
         new_layer.layer = layer.layer
         new_layer.style = layer.style
         new_layer.matrix_set = layer.matrix_set
-        new_layer.image_type = layer.image_type
+        new_layer.image_type = layer.image_type or "image/png"
 
         if layer.dimensions is not None:
             dimensions = loads(layer.dimensions)
