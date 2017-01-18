@@ -1,5 +1,5 @@
 -r CONST_dev-fixversions.txt
-alembic==0.8.9
+alembic==0.8.10
 glob2==0.5
 c2c.versions==1.0.1
 htmlmin==0.1.10
