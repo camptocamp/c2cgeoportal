@@ -98,6 +98,8 @@ script:
 - ./docker-run make -f travis.mk doc
 - ./docker-run make -f travis.mk checks
 - ./docker-run make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
 - ./docker-compose-run nosetests
 
 after_success:
