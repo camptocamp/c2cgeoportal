@@ -53,7 +53,9 @@ You should also add a Layer group named 'background' with the background layers.
 
 5. Get the new and heavily modified files for ngeo integration:
 
+    chmod +x CONST_create_template/deploy/hooks/*
     cp CONST_create_template/apache/wsgi.conf.mako apache/
+    cp CONST_create_template/deploy/hooks/* /deploy/hooks/
 
 6. The less build is simplified (be careful if you customized the style):
 
