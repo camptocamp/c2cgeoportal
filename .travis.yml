@@ -19,7 +19,7 @@ before_install:
 - curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
-- sudo pip install pyignore docker-compose
+- sudo pip install pyignore docker-compose==1.9.0
 
 - sudo service postgresql stop
 
