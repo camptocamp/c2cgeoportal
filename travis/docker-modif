@@ -41,7 +41,9 @@ def main():
     parser.add_argument('ignore_file', nargs='?')
     args = parser.parse_args()
 
-    diff = subprocess.check_output(["git", "diff", "--summary", args.commit_range, "--"]).strip()
+    commit_range = [c for c in args.commit_range.split(".") if c != ""]
+
+    diff = subprocess.check_output(["git", "diff", "--summary", "..".join(commit_range), "--"]).strip()
     files = [] if diff == "" else [
         l.strip().split(" ")[3]
         for l in diff.split('\n')
