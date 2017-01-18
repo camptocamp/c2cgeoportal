@@ -38,7 +38,7 @@ from json import loads
 from urlparse import urlsplit
 from xml.dom.minidom import parseString
 from xml.parsers.expat import ExpatError
-from sqlalchemy.exc import ProgrammingError, NoSuchTableError
+from sqlalchemy.exc import ProgrammingError, NoSuchTableError, OperationalError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.orm.properties import ColumnProperty
@@ -207,33 +207,48 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
     def __call__(self, filename, options):
         messages = []
 
-        self.env = bootstrap(filename)
-        with open("project.yaml") as f:
-            self.package = yaml.load(f)
-        self.config = get_config(".build/config.yaml")
-
         try:
-            from c2cgeoportal.models import DBSession, Theme, LayerGroup, \
-                LayerWMS, LayerWMTS, FullTextSearch
+            self.env = bootstrap(filename)
+            with open("project.yaml") as f:
+                self.package = yaml.load(f)
+            self.config = get_config(".build/config.yaml")
 
-            self._import(Theme, messages)
-            self._import(LayerGroup, messages)
-            self._import(LayerWMS, messages, self._import_layer_wms)
-            self._import(LayerWMTS, messages, self._import_layer_wmts)
-        except ProgrammingError as e:
+            try:
+                from c2cgeoportal.models import DBSession, Theme, LayerGroup, \
+                    LayerWMS, LayerWMTS, FullTextSearch
+
+                self._import(Theme, messages)
+                self._import(LayerGroup, messages)
+                self._import(LayerWMS, messages, self._import_layer_wms)
+                self._import(LayerWMTS, messages, self._import_layer_wmts)
+            except ProgrammingError as e:
+                print(colorize(
+                    "ERROR: The database is probably not up to date "
+                    "(should be ignored when happen during the upgrade)",
+                    RED
+                ))
+                print(colorize(e, RED))
+
+            for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
+                if ln is not None and ln != "":
+                    messages.append(Message(
+                        None, ln, None, [], u"", u"",
+                        ("fts", ln.encode("ascii", errors="replace"))
+                    ))
+        except NoSuchTableError as e:
             print(colorize(
-                "ERROR: The database is probably not up to date "
-                "(should be ignored when happen during the upgrade)",
+                "ERROR: The schema didn't seem to exists "
+                "(should be ignored when happen during the deploy)",
                 RED
             ))
             print(colorize(e, RED))
-
-        for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
-            if ln is not None and ln != "":
-                messages.append(Message(
-                    None, ln, None, [], u"", u"",
-                    ("fts", ln.encode("ascii", errors="replace"))
-                ))
+        except OperationalError as e:
+            print(colorize(
+                "ERROR: The database didn't seem to exists "
+                "(should be ignored when happen during the deploy)",
+                RED
+            ))
+            print(colorize(e, RED))
 
         return messages
 
