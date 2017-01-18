@@ -1,5 +1,5 @@
 alabaster==0.7.9
-alembic==0.8.9
+alembic==0.8.10
 Babel==2.3.4
 boto==2.45.0
 bottle==0.12.13
@@ -64,7 +64,7 @@ python-dateutil==2.6.0
 pytz==2016.10
 PyYAML==3.12
 repoze.lru==0.6
-requests[security]==2.12.4
+requests[security]==2.12.5
 restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
@@ -72,7 +72,7 @@ six==1.10.0
 Sphinx==1.5.1
 sphinx-prompt==1.0.0
 SQLAHelper==1.0
-SQLAlchemy==1.1.4
+SQLAlchemy==1.1.5
 Tempita==0.5.2
 textile==2.3.6
 tilecloud==0.3.0
