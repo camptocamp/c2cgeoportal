@@ -43,7 +43,7 @@ port = ${waitress_port}
 ###
 
 [loggers]
-keys = root, {{package}}
+keys = root, sqlalchemy, c2cgeoportal, {{package}}
 
 [handlers]
 keys = console
@@ -55,10 +55,23 @@ keys = generic
 level = WARN
 handlers = console
 
+[logger_c2cgeoportal]
+level = WARN
+handlers =
+qualname = c2cgeoportal
+
 [logger_{{package}}]
-level = INFO
+level = WARN
 handlers =
 qualname = {{package}}
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+# "level = INFO" logs SQL queries.
+# "level = DEBUG" logs SQL queries and results.
+# "level = WARN" logs neither.  (Recommended for production systems.)
 
 [handler_console]
 class = StreamHandler

@@ -33,7 +33,7 @@ import sys
 import transaction
 from argparse import ArgumentParser
 from gettext import translation
-from pyramid.paster import get_app
+from pyramid.paster import get_app, setup_logging
 from sqlalchemy import func
 from c2c.template import get_config
 
@@ -104,6 +104,7 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
+    setup_logging(app_config)
     get_app(app_config, name=app_name)
 
     Import(options)

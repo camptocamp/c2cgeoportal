@@ -32,7 +32,7 @@ import sys
 import transaction
 from json import loads
 from argparse import ArgumentParser
-from pyramid.paster import get_app
+from pyramid.paster import get_app, setup_logging
 
 
 def main():
@@ -77,6 +77,7 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
+    setup_logging(app_config)
     get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config
