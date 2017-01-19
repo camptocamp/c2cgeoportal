@@ -69,15 +69,11 @@ class TestReflection(TestCase):
         """
         import sqlahelper
         from sqlalchemy import Table, Column, ForeignKey, types
-        from sqlalchemy.orm import sessionmaker
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy2 import Geometry, func
+        from geoalchemy2 import Geometry
 
         engine = sqlahelper.get_engine()
         Base = declarative_base(bind=engine)  # noqa
-        session = sessionmaker(bind=engine)()
-        postgis_version = session.execute(func.postgis_version()).scalar()
-        management = postgis_version.startswith("1.")
 
         if self._tables is None:
             self._tables = []
@@ -102,12 +98,12 @@ class TestReflection(TestCase):
                 "child2_id", types.Integer,
                 ForeignKey("public.{0!s}_child.id".format(tablename))
             ),
-            Column("point", Geometry("POINT", management=management)),
-            Column("linestring", Geometry("LINESTRING", management=management)),
-            Column("polygon", Geometry("POLYGON", management=management)),
-            Column("multipoint", Geometry("MULTIPOINT", management=management)),
-            Column("multilinestring", Geometry("MULTILINESTRING", management=management)),
-            Column("multipolygon", Geometry("MULTIPOLYGON", management=management)),
+            Column("point", Geometry("POINT")),
+            Column("linestring", Geometry("LINESTRING")),
+            Column("polygon", Geometry("POLYGON")),
+            Column("multipoint", Geometry("MULTIPOINT")),
+            Column("multilinestring", Geometry("MULTILINESTRING")),
+            Column("multipolygon", Geometry("MULTIPOLYGON")),
             schema="public"
         )
         ptable.create()

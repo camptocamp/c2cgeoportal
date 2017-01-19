@@ -97,7 +97,6 @@ try:
     postgis_version = DBSession.execute(func.postgis_version()).scalar()
 except UnboundExecutionError:  # pragma: no cover - needed by non functional tests
     postgis_version = "2.0"
-management = postgis_version.startswith("1.")
 
 AUTHORIZED_ROLE = "role_admin"
 
@@ -145,7 +144,7 @@ class FullTextSearch(GeoInterface, Base):
     lang = Column(String(2), nullable=True)
     public = Column(Boolean, server_default="true")
     ts = Column(TsVector)
-    the_geom = Column(Geometry("GEOMETRY", srid=_srid, management=management))
+    the_geom = Column(Geometry("GEOMETRY", srid=_srid))
     params = Column(JSONEncodedDict, nullable=True)
     actions = Column(JSONEncodedDict, nullable=True)
     from_theme = Column(Boolean, server_default="false")
@@ -343,7 +342,7 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True, nullable=False, label=_(u"Name"))
     description = Column(Unicode, label=_(u"Description"))
-    extent = Column(Geometry("POLYGON", srid=_srid, management=management))
+    extent = Column(Geometry("POLYGON", srid=_srid))
 
     # functionality
     functionalities = relationship(
@@ -852,7 +851,7 @@ class RestrictionArea(Base):
     ]
 
     id = Column(Integer, primary_key=True)
-    area = Column(Geometry("POLYGON", srid=_srid, management=management))
+    area = Column(Geometry("POLYGON", srid=_srid))
     name = Column(Unicode, label=_(u"Name"))
     description = Column(Unicode, label=_(u"Description"))
     readwrite = Column(Boolean, label=_(u"Read-write mode"), default=False)

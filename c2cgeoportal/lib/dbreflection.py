@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import functools
 import warnings
 
 from sqlalchemy import Table, sql, MetaData
@@ -146,8 +145,6 @@ def _get_schema(tablename):
 
 
 def get_table(tablename, schema=None, session=None):
-    from c2cgeoportal.models import management
-
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -169,13 +166,6 @@ def get_table(tablename, schema=None, session=None):
             schema=schema,
             autoload=True,
             autoload_with=engine,
-            listeners=[(
-                "column_reflect",
-                functools.partial(
-                    _column_reflect_listener,
-                    engine=engine
-                )
-            )] if management else []
         )
     return table
 
