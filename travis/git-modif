@@ -36,18 +36,15 @@ import pyignore
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('commit_range')
     parser.add_argument('base_dir')
     parser.add_argument('ignore_file', nargs='?')
     args = parser.parse_args()
 
-    commit_range = [c for c in args.commit_range.split(".") if c != ""]
-
-    diff = subprocess.check_output(["git", "diff", "--summary", "..".join(commit_range), "--"]).strip()
+    subprocess.check_output(["git", "fetch", "origin", "master:master"])
+    diff = subprocess.check_output(["git", "diff", "--name-only", "master", "--", args.base_dir]).strip()
     files = [] if diff == "" else [
-        l.strip().split(" ")[3]
+        l.strip()
         for l in diff.split('\n')
-        if l.startswith(args.base_dir)
     ]
     if args.ignore_file is not None:
         ignore = pyignore.Ignore(os.path.join(args.base_dir, args.ignore_file))

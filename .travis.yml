@@ -39,7 +39,7 @@ before_install:
 - export TRAVIS_FOLDER=`pwd`
 - mkdir --parents /tmp/travis/testgeomapfish
 - |
-    if travis/docker-modif "${TRAVIS_COMMIT_RANGE}" docker/build
+    if travis/git-modif docker/build
     then
         docker build --tag=camptocamp/geomapfish_build_dev docker/build
     else
