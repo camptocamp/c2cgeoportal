@@ -1,4 +1,0 @@
-requests[security]==2.12.4
-Sphinx==1.5.1
-sphinx-prompt==1.0.0
-alabaster==0.7.9

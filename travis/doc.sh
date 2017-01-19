@@ -14,12 +14,11 @@ fi
 
 echo == Build the doc ==
 
-GIT_REV=`git log | head --lines=1 | awk '{{print $2}}'`
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 
+git rm -r --force -- ${BRANCH}
 mkdir --parent ${BRANCH}
-rm --recursive --force ${BRANCH}/*
 mv doc/_build/html/* ${BRANCH}
 
 if [ ${DOC} == true ]
@@ -28,7 +27,7 @@ then
     git commit --message="Update documentation for the revision ${TRAVIS_COMMIT}" | true
     git push origin gh-pages
 else
-    git checkout master/searchindex.js
+    git checkout master/searchindex.js || true
     git status
     git diff
     git reset --hard

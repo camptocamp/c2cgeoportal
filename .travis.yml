@@ -111,6 +111,7 @@ after_success:
 - git config --global user.email travis@camptocamp.com
 - git config --global user.name Travis
 - git remote set-url origin git@github.com:camptocamp/c2cgeoportal.git
+- GIT_REV=`git log | head --lines=1 | awk '{{print $2}}'`
 - |
   if [ "${TRAVIS_REPO_SLUG}-${TRAVIS_PULL_REQUEST}" == camptocamp/c2cgeoportal-false ]
   then
@@ -118,8 +119,8 @@ after_success:
   fi
 
 before_deploy:
+- git checkout ${GIT_REV}
 - if [[ ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\..+$ ]] ; then
-  sed --expression 's/REQUIREMENTS [\?]= c2cgeoportal/REQUIREMENTS ?= c2cgeoportal=='"${TRAVIS_TAG}"'/g' --in-place c2cgeoportal/scaffolds/update/CONST_Makefile_tmpl;
   sed --expression 's/version="[0-9]\+\.[0-9]\+",/version="'"${TRAVIS_TAG}"'",/g' --in-place setup.py;
   git diff;
   fi

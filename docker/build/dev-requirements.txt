@@ -64,7 +64,7 @@ python-dateutil==2.6.0
 pytz==2016.10
 PyYAML==3.12
 repoze.lru==0.6
-requests==2.12.4
+requests[security]==2.12.4
 restkit==4.2.2
 Shapely==1.5.17.post1
 simplejson==3.10.0
