@@ -143,7 +143,7 @@ def ogc_server(session):
         if is_single_tile is None:
             is_single_tile = False
         if url is None:
-            url = "config://internal/mapserv"
+            url = u"config://internal/mapserv"
             name = u"source for {}".format(image_type)
         else:
             name = u"source for {} {}".format(url, image_type)
@@ -178,7 +178,7 @@ def layer_v1tov2(session, layer):
             is_single_tile = False
         url = layer.url
         if layer.url is None:
-            url = "config://internal/mapserv"
+            url = u"config://internal/mapserv"
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
             OGCServer.image_type == image_type,
@@ -262,7 +262,7 @@ def layer_add_metadata(layer, new_layer, session):
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(new_metadata("excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_metadata(u"excludeProperties", layer.exclude_properties, new_layer))
 
 
 def layergroup_v1tov2(session, group):
