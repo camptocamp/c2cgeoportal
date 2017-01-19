@@ -171,6 +171,12 @@ Version 2.0.0
 This changelog considers that you do not currently use an ngeo interface and you
 replace your sencha touch interface by an ngeo interface.
 
+If you want to keep the `Print version 2.x`, please read the following
+documentation:
+https://camptocamp.github.io/c2cgeoportal/2.1/integrator/legacy_print.html
+You must also not remove the `print/print-servlet.war` (at step 2) and not
+add it in the `.gitignore` (at step 3).
+
 1. Get the new and heavily modified files for ngeo integration:
 
     at that point, the following folder should exist: CONST_create_template
