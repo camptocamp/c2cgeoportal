@@ -41,6 +41,25 @@ Finally apply the following change in ``jsbuild/app.cfg.mako``:
 
     - [app.js]
     + [desktop.js]
+      ...
+      include =
+        CGXP/tools/tools.js
+    +   GeoExt/Lang.js
+        ...
+
+      [edit.js]
+      ...
+      include =
+        CGXP/tools/tools.js
+    +   GeoExt/Lang.js
+        ...
+
+      [routing.js]
+      ...
+      include =
+        CGXP/tools/tools.js
+    +   GeoExt/Lang.js
+        ...
 
 To configure the build of the interface you should set the ``CGXP_INTERFACES`` (and the ``NGEO_INTERFACES``)
 in your project makefile, e.g.:
@@ -127,11 +146,13 @@ Follow the above instructions if you want to use `ngeo` instead of `CGXP`.
 Remove the related section in the ``jsbuild/app.cfg.mako`` file.
 
 Update the interface in your ``<package>/__init__.py`` file
-by removing the following line:
+by removing these following lines if one of them exists:
 
 .. code:: python
 
     add_interface(config, "desktop", [INTERFACE_TYPE_CGXP])
+    # or
+    add_interface(config)
 
 To add an ngeo interface see :ref:`integrator_ngeo_add`.
 
