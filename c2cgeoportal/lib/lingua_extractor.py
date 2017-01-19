@@ -221,6 +221,13 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                 self._import(LayerGroup, messages)
                 self._import(LayerWMS, messages, self._import_layer_wms)
                 self._import(LayerWMTS, messages, self._import_layer_wmts)
+
+                for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
+                    if ln is not None and ln != "":
+                        messages.append(Message(
+                            None, ln, None, [], u"", u"",
+                            ("fts", ln.encode("ascii", errors="replace"))
+                        ))
             except ProgrammingError as e:
                 print(colorize(
                     "ERROR: The database is probably not up to date "
@@ -228,13 +235,6 @@ class GeoMapfishThemeExtractor(Extractor):  # pragma: no cover
                     RED
                 ))
                 print(colorize(e, RED))
-
-            for ln, in DBSession.query(FullTextSearch.layer_name).distinct().all():
-                if ln is not None and ln != "":
-                    messages.append(Message(
-                        None, ln, None, [], u"", u"",
-                        ("fts", ln.encode("ascii", errors="replace"))
-                    ))
         except NoSuchTableError as e:
             print(colorize(
                 "ERROR: The schema didn't seem to exists "
