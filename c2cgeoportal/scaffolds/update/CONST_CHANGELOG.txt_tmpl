@@ -161,6 +161,8 @@ You should also add a Layer group named 'background' with the background layers.
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
+    If you are using Windows, then please replace `bin` with `scripts` in the paths
+
 14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
