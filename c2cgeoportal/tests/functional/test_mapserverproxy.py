@@ -83,9 +83,9 @@ NO_POINT = ["ef33223235b26c782736c88933b35331", "aaa27d9450664d34fd8f53b6e76af1e
 
 class TestPoint(Base):
     __tablename__ = "testpoint"
-    __table_args__ = {"schema": "main"}
+    __table_args__ = {"schema": "geodata"}
     id = Column(types.Integer, primary_key=True)
-    the_geom = Column(Geometry("MULTIPOINT", srid=21781))
+    geom = Column(Geometry("POINT", srid=21781))
     name = Column(types.Unicode)
     city = Column(types.Unicode)
     country = Column(types.Unicode)
@@ -127,11 +127,8 @@ class TestMapserverproxyView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal.models import User, Role, LayerV1, RestrictionArea, \
-            Functionality, Interface, DBSession, management, OGCServer, \
+            Functionality, Interface, DBSession, OGCServer, \
             OGCSERVER_TYPE_GEOSERVER, OGCSERVER_AUTH_GEOSERVER
-
-        if management:
-            TestPoint.__table__.c.the_geom.type.management = True
 
         create_default_ogcserver()
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
@@ -141,14 +138,14 @@ class TestMapserverproxyView(TestCase):
 
         TestPoint.__table__.create(bind=DBSession.bind, checkfirst=True)
 
-        geom = WKTElement("MULTIPOINT((-90 -45))", srid=21781)
-        p1 = TestPoint(the_geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
-        geom = WKTElement("MULTIPOINT((-90 45))", srid=21781)
-        p2 = TestPoint(the_geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
-        geom = WKTElement("MULTIPOINT((90 45))", srid=21781)
-        p3 = TestPoint(the_geom=geom, name=u"éàè", city="Paris", country=u"France")
-        geom = WKTElement("MULTIPOINT((90 -45))", srid=21781)
-        p4 = TestPoint(the_geom=geom, name=u"123", city="Londre", country=u"UK")
+        geom = WKTElement("POINT(-90 -45)", srid=21781)
+        p1 = TestPoint(geom=geom, name=u"foo", city=u"Lausanne", country=u"Swiss")
+        geom = WKTElement("POINT(-90 45)", srid=21781)
+        p2 = TestPoint(geom=geom, name=u"bar", city=u"Chambéry", country=u"France")
+        geom = WKTElement("POINT(90 45)", srid=21781)
+        p3 = TestPoint(geom=geom, name=u"éàè", city="Paris", country=u"France")
+        geom = WKTElement("POINT(90 -45)", srid=21781)
+        p4 = TestPoint(geom=geom, name=u"123", city="Londre", country=u"UK")
 
         pt1 = Functionality(name=u"print_template", value=u"1 Wohlen A4 portrait")
         pt2 = Functionality(name=u"print_template", value=u"2 Wohlen A3 landscape")
@@ -251,7 +248,7 @@ class TestMapserverproxyView(TestCase):
         DBSession.query(OGCServer).delete()
 
         transaction.commit()
-        TestPoint.__table__.drop(bind=DBSession.bind, checkfirst=True)
+        DBSession.query(TestPoint).delete()
 
     @staticmethod
     def _create_dummy_request(username=None):
@@ -345,11 +342,11 @@ class TestMapserverproxyView(TestCase):
                                         <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
                                 </gml:Box>
                         </gml:boundedBy>
-                        <the_geom>
+                        <geom>
                         <gml:Point srsName="EPSG:21781">
                           <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
                         </gml:Point>
-                        </the_geom>
+                        </geom>
                         <name>foo</name>
                         <city>Lausanne</city>
                         <country>Swiss</country>
@@ -398,11 +395,11 @@ class TestMapserverproxyView(TestCase):
                                         <gml:coordinates>-90.000000,-45.000000 -90.000000,-45.000000</gml:coordinates>
                                 </gml:Box>
                         </gml:boundedBy>
-                        <the_geom>
+                        <geom>
                         <gml:Point srsName="EPSG:21781">
                           <gml:coordinates>-90.000000,-45.000000</gml:coordinates>
                         </gml:Point>
-                        </the_geom>
+                        </geom>
                         <name>foo</name>
                         <city>Lausanne</city>
                         <country>Swiss</country>

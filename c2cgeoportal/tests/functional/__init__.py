@@ -77,23 +77,6 @@ def set_up_common():
     import sqlahelper
     sqlahelper.add_engine(engine)
 
-    import alembic.config
-    import sys
-    sys.argv = [
-        "alembic", "-c", "c2cgeoportal/tests/functional/alembic.ini", "upgrade", "head"
-    ]
-    try:
-        alembic.config.main()
-    except SystemExit:  # alembic call the exit method!
-        pass
-    sys.argv = [
-        "alembic", "-c", "c2cgeoportal/tests/functional/alembic_static.ini", "upgrade", "head"
-    ]
-    try:
-        alembic.config.main()
-    except SystemExit:  # alembic call the exit method!
-        pass
-
 
 def tear_down_common():
 
@@ -116,23 +99,6 @@ def tear_down_common():
         engine.connect()
     except OperationalError:  # pragma: no cover
         return
-
-    import alembic.config
-    import sys
-    sys.argv = [
-        "alembic", "-c", "c2cgeoportal/tests/functional/alembic_static.ini", "downgrade", "base"
-    ]
-    try:
-        alembic.config.main()
-    except SystemExit:  # alembic call the exit method!
-        pass
-    sys.argv = [
-        "alembic", "-c", "c2cgeoportal/tests/functional/alembic.ini", "downgrade", "base"
-    ]
-    try:
-        alembic.config.main()
-    except SystemExit:  # alembic call the exit method!
-        pass
 
     caching.invalidate_region()
 

@@ -115,7 +115,7 @@ class TestLayers(TestCase):
         from sqlalchemy import Column, Table, types, ForeignKey
         from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry, WKTElement
-        from c2cgeoportal.models import DBSession, management, LayerV1, RestrictionArea
+        from c2cgeoportal.models import DBSession, LayerV1, RestrictionArea
 
         if self._tables is None:
             self._tables = []
@@ -139,11 +139,11 @@ class TestLayers(TestCase):
         )
         if geom_type:
             table1.append_column(
-                Column("geom", Geometry("POINT", srid=21781, management=management))
+                Column("geom", Geometry("POINT", srid=21781))
             )
         else:
             table1.append_column(
-                Column("geom", Geometry(srid=21781, management=management))
+                Column("geom", Geometry(srid=21781))
             )
         self._tables.append(table1)
 
@@ -159,11 +159,11 @@ class TestLayers(TestCase):
         )
         if geom_type:
             table2.append_column(
-                Column("geom", Geometry("POINT", srid=21781, management=management))
+                Column("geom", Geometry("POINT", srid=21781))
             )
         else:
             table2.append_column(
-                Column("geom", Geometry(srid=21781, management=management))
+                Column("geom", Geometry(srid=21781))
             )
         self._tables.append(table2)
 

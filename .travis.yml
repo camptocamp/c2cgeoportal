@@ -19,7 +19,7 @@ before_install:
 - curl --silent --location https://deb.nodesource.com/setup_6.x | sudo -E bash -
 - sudo aptitude install --assume-yes apache2 libapache2-mod-wsgi libapache2-mod-fcgid tomcat7 nodejs cgi-mapserver
 - sudo apt-get install --option Dpkg::Options::="--force-confold" --force-yes --assume-yes docker-engine
-- sudo pip install pyignore docker-compose
+- sudo pip install pyignore git+https://github.com/docker/docker-py.git@1.10.6#egg=docker docker-compose==1.9.0 requests==2.11.1
 
 - sudo service postgresql stop
 
@@ -39,7 +39,7 @@ before_install:
 - export TRAVIS_FOLDER=`pwd`
 - mkdir --parents /tmp/travis/testgeomapfish
 - |
-    if travis/docker-modif "${TRAVIS_COMMIT_RANGE}" docker/build
+    if travis/git-modif docker/build
     then
         docker build --tag=camptocamp/geomapfish_build_dev docker/build
     else
@@ -98,11 +98,9 @@ script:
 - ./docker-run make -f travis.mk doc
 - ./docker-run make -f travis.mk checks
 - ./docker-run make -f travis.mk c2cgeoportal/tests/functional/alembic.ini
-- ./docker-compose-run ./setup.py nosetests --stop --nocapture --nologcapture --verbosity 3
-- travis/status.sh
-
-after_failure:
-- ./docker-compose-run make tests
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic.ini upgrade head
+- ./docker-compose-run alembic --config c2cgeoportal/tests/functional/alembic_static.ini upgrade head
+- ./docker-compose-run nosetests
 
 after_success:
 - ./docker-run coveralls

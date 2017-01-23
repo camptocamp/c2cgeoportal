@@ -42,11 +42,11 @@ class TestRasterViews(TestCase):
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem1": {"file": "c2cgeoportal/tests/data/dem.shp",
+                "dem1": {"file": "/src/c2cgeoportal/tests/data/dem.shp",
                          "round": 0.1},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp",
+                "dem2": {"file": "/src/c2cgeoportal/tests/data/dem.shp",
                          "round": 1},
-                "dem3": {"file": "c2cgeoportal/tests/data/dem.shp"}
+                "dem3": {"file": "/src/c2cgeoportal/tests/data/dem.shp"}
             }
         }
         raster = Raster(request)
@@ -77,11 +77,11 @@ class TestRasterViews(TestCase):
 
     def test_absolute_path(self):
         from c2cgeoportal.lib.raster.georaster import GeoRaster
-        gr = GeoRaster("c2cgeoportal/tests/data/dem_absolute.shp")
+        gr = GeoRaster("/src/c2cgeoportal/tests/data/dem_absolute.shp")
         tile = gr._get_tile(548000, 216000)
-        self.assertEqual(tile.filename,
-                         "/home/sbrunner/regiogis/regiogis/c2cgeoportal/"
-                         "c2cgeoportal/tests/data/dem.bt")
+        self.assertEqual(
+            tile.filename,
+            "/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt")
 
     def test_profile_json(self):
         from decimal import Decimal
@@ -92,8 +92,8 @@ class TestRasterViews(TestCase):
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 4},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 4}
+                "dem": {"file": "/src/c2cgeoportal/tests/data/dem.shp", "round": 4},
+                "dem2": {"file": "/src/c2cgeoportal/tests/data/dem.shp", "round": 4}
             }
         }
         profile = Profile(request)
@@ -191,9 +191,9 @@ class TestRasterViews(TestCase):
         request = DummyRequest()
         request.registry.settings = {
             "raster": {
-                "dem": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
-                "dem2": {"file": "c2cgeoportal/tests/data/dem.shp", "round": 1},
-                "dem4": {"file": "c2cgeoportal/tests/data/dem4.shp", "round": 1}
+                "dem": {"file": "/src/c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem2": {"file": "/src/c2cgeoportal/tests/data/dem.shp", "round": 1},
+                "dem4": {"file": "/src/c2cgeoportal/tests/data/dem4.shp", "round": 1}
             }
         }
         profile = Profile(request)

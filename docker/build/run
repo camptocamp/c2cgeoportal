@@ -56,3 +56,9 @@ try:
     subprocess.check_call(["su", os.environ['USER_NAME'], "-c", run_file_name])
 except subprocess.CalledProcessError:
     exit(2)
+except KeyboardInterrupt:
+    print("Interrupted...")
+    exit(0)
+finally:
+    subprocess.check_call(['userdel', os.environ['USER_NAME']])
+    subprocess.check_call(['groupdel', 'geomapfish'])

@@ -30,10 +30,12 @@ def main():
         "--env=TRAVIS_BRANCH={}".format(os.environ.get("TRAVIS_BRANCH", "")),
         "--env=TRAVIS_JOB_ID={}".format(os.environ.get("TRAVIS_JOB_ID", "")),
         "camptocamp/geomapfish_build_dev",
-        "run"
     ])
     docker_cmd.extend(args)
-    subprocess.check_call(docker_cmd)
+    try:
+        subprocess.check_call(docker_cmd)
+    except subprocess.CalledProcessError:
+        exit(2)
 
 
 if __name__ == "__main__":

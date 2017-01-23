@@ -31,6 +31,7 @@
 """Pyramid application test package
 """
 
+import os
 from pyramid.testing import DummyRequest
 
 
@@ -48,5 +49,5 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
 
 
 def load_file(file_name):
-    with open(file_name) as file:
+    with open(os.path.join("/src", file_name)) as file:
         return file.read()
