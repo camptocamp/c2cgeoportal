@@ -32,7 +32,7 @@ import sys
 import transaction
 from json import loads
 from argparse import ArgumentParser
-from pyramid.paster import get_app
+from pyramid.paster import get_app, setup_logging
 
 
 def main():
@@ -77,6 +77,7 @@ def main():
     app_name = options.app_name
     if app_name is None and "#" in app_config:
         app_config, app_name = app_config.split("#", 1)
+    setup_logging(app_config)
     get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config
@@ -142,7 +143,7 @@ def ogc_server(session):
         if is_single_tile is None:
             is_single_tile = False
         if url is None:
-            url = "config://internal/mapserv"
+            url = u"config://internal/mapserv"
             name = u"source for {}".format(image_type)
         else:
             name = u"source for {} {}".format(url, image_type)
@@ -177,7 +178,7 @@ def layer_v1tov2(session, layer):
             is_single_tile = False
         url = layer.url
         if layer.url is None:
-            url = "config://internal/mapserv"
+            url = u"config://internal/mapserv"
         ogc_server = session.query(OGCServer).filter(
             OGCServer.url == url,
             OGCServer.image_type == image_type,
@@ -203,7 +204,7 @@ def layer_v1tov2(session, layer):
         new_layer.layer = layer.layer
         new_layer.style = layer.style
         new_layer.matrix_set = layer.matrix_set
-        new_layer.image_type = layer.image_type
+        new_layer.image_type = layer.image_type or "image/png"
 
         if layer.dimensions is not None:
             dimensions = loads(layer.dimensions)
@@ -261,7 +262,7 @@ def layer_add_metadata(layer, new_layer, session):
             layer.identifier_attribute_field, new_layer
         ))
     if layer.exclude_properties is not None:
-        session.add(new_metadata("excludeProperties", layer.exclude_properties, new_layer))
+        session.add(new_metadata(u"excludeProperties", layer.exclude_properties, new_layer))
 
 
 def layergroup_v1tov2(session, group):

@@ -53,7 +53,9 @@ You should also add a Layer group named 'background' with the background layers.
 
 5. Get the new and heavily modified files for ngeo integration:
 
+    chmod +x CONST_create_template/deploy/hooks/*
     cp CONST_create_template/apache/wsgi.conf.mako apache/
+    cp CONST_create_template/deploy/hooks/* /deploy/hooks/
 
 6. The less build is simplified (be careful if you customized the style):
 
@@ -159,6 +161,8 @@ You should also add a Layer group named 'background' with the background layers.
     .build/venv/bin/alembic --config alembic.ini upgrade 7d271f4527cd
     .build/venv/bin/treeitem_uniquename
 
+    If you are using Windows, then please replace `bin` with `scripts` in the paths
+
 14. In the database we have added some restrictions, have a look here for more information:
     https://github.com/camptocamp/c2cgeoportal/issues/2568
 
@@ -168,6 +172,12 @@ Version 2.0.0
 
 This changelog considers that you do not currently use an ngeo interface and you
 replace your sencha touch interface by an ngeo interface.
+
+If you want to keep the `Print version 2.x`, please read the following
+documentation:
+https://camptocamp.github.io/c2cgeoportal/2.1/integrator/legacy_print.html
+You must also not remove the `print/print-servlet.war` (at step 2) and not
+add it in the `.gitignore` (at step 3).
 
 1. Get the new and heavily modified files for ngeo integration:
 

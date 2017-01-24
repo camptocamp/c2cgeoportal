@@ -412,28 +412,28 @@ class RoListRenderer(FieldRenderer):  # pragma: no cover
 ##############################################################################
 
 image_type_options = [
-    ("image/jpeg", _("image/jpeg")),
-    ("image/png", _("image/png"))
+    (_("image/jpeg"), "image/jpeg"),
+    (_("image/png"), "image/png")
 ]
 time_options = [
-    ("disabled", _("disabled")),
-    ("value", _("value")),
-    ("range", _("range")),
+    (_("disabled"), "disabled"),
+    (_("value"), "value"),
+    (_("range"), "range"),
 ]
 time_widget_options = [
-    ("slider", _("slider")),
-    ("datepicker", _("datepicker")),
+    (_("slider"), "slider"),
+    (_("datepicker"), "datepicker"),
 ]
 ogcserver_type_options = [
-    (models.OGCSERVER_TYPE_MAPSERVER, _("MapServer")),
-    (models.OGCSERVER_TYPE_QGISSERVER, _("QGISserver")),
-    (models.OGCSERVER_TYPE_GEOSERVER, _("GeoServer")),
-    (models.OGCSERVER_TYPE_OTHER, _("Other")),
+    (_("MapServer"), models.OGCSERVER_TYPE_MAPSERVER),
+    (_("QGISserver"), models.OGCSERVER_TYPE_QGISSERVER),
+    (_("GeoServer"), models.OGCSERVER_TYPE_GEOSERVER),
+    (_("Other"), models.OGCSERVER_TYPE_OTHER),
 ]
 ogcserver_auth_options = [
-    (models.OGCSERVER_AUTH_NOAUTH, _("No auth")),
-    (models.OGCSERVER_AUTH_STANDARD, _("Standard auth")),
-    (models.OGCSERVER_AUTH_GEOSERVER, _("GeoServer auth")),
+    (_("No auth"), models.OGCSERVER_AUTH_NOAUTH),
+    (_("Standard auth"), models.OGCSERVER_AUTH_STANDARD),
+    (_("GeoServer auth"), models.OGCSERVER_AUTH_GEOSERVER),
 ]
 
 # Layer V1
@@ -442,10 +442,10 @@ LayerV1.configure(exclude=[LayerV1.parents_relation])
 LayerV1.layer_type.set(
     renderer=SelectFieldRenderer,
     options=[
-        ("internal WMS", _("internal WMS")),
-        ("external WMS", _("external WMS")),
-        ("WMTS", _("WMTS")),
-        ("no 2D", _("no 2D")),
+        (_("internal WMS"), "internal WMS"),
+        (_("external WMS"), "external WMS"),
+        (_("WMTS"), "WMTS"),
+        (_("no 2D"), "no 2D"),
     ])
 LayerV1.image_type.set(
     renderer=SelectFieldRenderer,
@@ -641,8 +641,8 @@ field_order = [
     password,
     User.role_name
 ]
-if hasattr(User, "parent_role"):  # pragma: no cover
-    field_order.append(User.parent_role)
+if hasattr(User, "parent_role_name"):  # pragma: no cover
+    field_order.append(User.parent_role_name)
 field_order.extend([
     User.email.with_metadata(mandatory="")
 ])

@@ -30,7 +30,7 @@
 
 import argparse
 import transaction
-from pyramid.paster import get_app
+from pyramid.paster import get_app, setup_logging
 
 
 def main():
@@ -51,6 +51,7 @@ def main():
     options = parser.parse_args()
 
     # read the configuration
+    setup_logging(options.iniconfig)
     get_app(options.iniconfig, options.app_name)
 
     from c2cgeoportal.models import DBSession, Interface, OGCServer, Theme, LayerGroup, LayerWMS

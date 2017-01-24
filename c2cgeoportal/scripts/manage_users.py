@@ -32,7 +32,7 @@ import os.path
 import argparse
 import warnings
 
-from pyramid.paster import get_app
+from pyramid.paster import get_app, setup_logging
 import transaction
 
 
@@ -108,6 +108,7 @@ User can be created if it does not exist yet."""
     # Ignores pyramid deprecation warnings
     warnings.simplefilter("ignore", DeprecationWarning)
 
+    setup_logging(app_config)
     get_app(app_config, name=app_name)
 
     # must be done only once we have loaded the project config

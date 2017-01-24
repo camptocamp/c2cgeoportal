@@ -200,10 +200,10 @@ class C2cTool:
                 }
             )
             if resp.status < 200 or resp.status >= 300:
-                return False, "\n".join(
-                    "Checker error:"
+                return False, "\n".join([
+                    "Checker error:",
                     "Open `http://{0!s}{1!s}{2!s}` for more informations."
-                ).format(
+                ]).format(
                     self.project["host"], self.project["checker_path"], check_type
                 )
 

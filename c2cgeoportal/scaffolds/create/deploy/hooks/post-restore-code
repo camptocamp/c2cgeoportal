@@ -5,4 +5,3 @@ CODE_DIR=$2
 
 cd $CODE_DIR
 make -f $TARGET.mk template-clean
-make -f $TARGET.mk build

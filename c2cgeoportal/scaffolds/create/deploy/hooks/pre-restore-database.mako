@@ -31,6 +31,7 @@ if psql --list --tuples-only | cut --delimiter='|' --fields=1 | grep --quiet --f
     psql -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "${schema}_static" TO "${dbuser}";' ${db}
 
     cd "${directory}"
+    make -f $TARGET.mk alembic_static.ini
     .build/venv/bin/alembic -c alembic_static.ini upgrade head
 
 fi
