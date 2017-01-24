@@ -84,11 +84,11 @@ class DimensionInformation:
         dimensions = {}
         for dimension in layer.dimensions:
             if dimension.value is not None and not self.URL_PART_RE.match(dimension.value):  # pragma: nocover
-                errors.add("The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
+                errors.add(u"The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
                     layer.name, dimension.value, dimension.name
                 ))
             elif dimension.name in dimensions:  # pragma: nocover
-                errors.add("The layer '{}' has a duplicated dimension name '{}'.".format(
+                errors.add(u"The layer '{}' has a duplicated dimension name '{}'.".format(
                     layer.name, dimension.name
                 ))
             else:
@@ -102,7 +102,7 @@ class DimensionInformation:
                     self._dimensions[name] = value
                 elif self._dimensions[name] != value and value is not None:
                     errors.add(
-                        "The layer '{}' has a wrong dimension value '{}' for '{}', "
+                        u"The layer '{}' has a wrong dimension value '{}' for '{}', "
                         "expected '{}' or empty.".format(
                             layer.name, value, name, self._dimensions[name]
                         )
@@ -132,7 +132,7 @@ class Entry:
                     OGCServer.name == self.mapserver_settings["default_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
+                log.error(u"Unable to find the OGC server named: {}.".format(
                     self.mapserver_settings["default_ogc_server"])
                 )
                 log.error("Available OGC servers: {}".format(
@@ -145,10 +145,10 @@ class Entry:
                     OGCServer.name == self.mapserver_settings["external_ogc_server"]
                 ).one()
             except NoResultFound:  # pragma: no cover
-                log.error("Unable to find the OGC server named: {}.".format(
+                log.error(u"Unable to find the OGC server named: {}.".format(
                     self.mapserver_settings["external_ogc_server"])
                 )
-                log.error("Available OGC servers: {}".format(
+                log.error(u"Available OGC servers: {}".format(
                     ", ".join([i[0] for i in DBSession.query(OGCServer.name).all()]))
                 )
 
@@ -220,7 +220,7 @@ class Entry:
             "REQUEST": "GetCapabilities",
         })
 
-        log.info("Get WMS GetCapabilities for url: {0!s}".format(url))
+        log.info(u"Get WMS GetCapabilities for url: {0!s}".format(url))
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -238,11 +238,11 @@ class Entry:
         try:
             resp, content = http.request(url, method="GET", headers=headers)
         except:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url {0!s}".format(url))
+            errors.add(u"Unable to GetCapabilities from url {0!s}".format(url))
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            error = "GetCapabilities from URL {0!s} return the error: {1:d} {2!s}".format(
+            error = u"GetCapabilities from URL {0!s} return the error: {1:d} {2!s}".format(
                 url, resp.status, resp.reason
             )
             errors.add(error)
@@ -252,7 +252,7 @@ class Entry:
         # With wms 1.3 it returns text/xml also in case of error :-(
         if resp.get("content-type").split(";")[0].strip() not in \
                 ["application/vnd.ogc.wms_xml", "text/xml"]:
-            error = "GetCapabilities from URL {0!s} returns a wrong Content-Type: {1!s}\n{2!s}".format(
+            error = u"GetCapabilities from URL {0!s} returns a wrong Content-Type: {1!s}\n{2!s}".format(
                 url, resp.get("content-type"), content.encode("utf-8")
             )
             errors.add(error)
@@ -266,7 +266,7 @@ class Entry:
                 "WARNING! an error occured while trying to "
                 "read the mapfile and recover the themes."
             )
-            error = "{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
+            error = u"{0!s}\nURL: {1!s}\n{2!s}".format(error, url, content.encode("utf-8"))
             errors.add(error)
             log.exception(error)
         return wms, errors
@@ -373,9 +373,9 @@ class Entry:
             "metadata": self._get_metadatas(layer, errors),
         }
         if re.search("[/?#]", layer.name):  # pragma: no cover
-            errors.add("The layer has an unsupported name '{}'.".format(layer.name))
+            errors.add(u"The layer has an unsupported name '{}'.".format(layer.name))
         if isinstance(layer, LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
-            errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
+            errors.add(u"The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
             self._fill_editable(l, layer)
         if mixed:
@@ -426,7 +426,7 @@ class Entry:
             )
             errors |= wms_errors
             if layer.layer is None or layer.layer == "":
-                errors.add("The layer '{}' do not have any layers".format(layer.name))
+                errors.add(u"The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
             l["type"] = "WMS"
             l["layers"] = layer.layer
@@ -465,7 +465,7 @@ class Entry:
 
         except ValueError:  # pragma no cover
             errors.add(
-                "Error while handling time for layer '{0!s}': {1!s}".format(layer.name, sys.exc_info()[1])
+                u"Error while handling time for layer '{0!s}': {1!s}".format(layer.name, sys.exc_info()[1])
             )
 
         return errors
@@ -507,7 +507,7 @@ class Entry:
                         l["childLayers"].append(self._get_child_layers_info(child_layer))
             else:
                 errors.add(
-                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                    u"The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
                         layer_name, layer.name, layer.ogc_server.name
                     )
                 )
@@ -603,7 +603,7 @@ class Entry:
         else:
             if self.default_ogc_server.type != OGCSERVER_TYPE_GEOSERVER:
                 errors.add(
-                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
+                    u"The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
                         wmslayer, layer.name, self.default_ogc_server.name
                     )
                 )
@@ -625,7 +625,7 @@ class Entry:
             l["url"] = get_url(layer.url, self.request, errors=errors)
         else:
             l["url"] = get_url2(
-                "The WMTS layer '{}'".format(layer.name),
+                u"The WMTS layer '{}'".format(layer.name),
                 layer.url, self.request, errors=errors
             )
 
@@ -724,7 +724,7 @@ class Entry:
 
         # escape loop
         if depth > 30:
-            log.error("Error: too many recursions with group '{0!s}'".format(group.name))
+            log.error(u"Error: too many recursions with group '{0!s}'".format(group.name))
             return ogc_servers
 
         # recurse on children
@@ -753,12 +753,12 @@ class Entry:
         errors = set()
 
         if re.search("[/?#]", group.name):  # pragma: no cover
-            errors.add("The group has an unsupported name '{}'.".format(group.name))
+            errors.add(u"The group has an unsupported name '{}'.".format(group.name))
 
         # escape loop
         if depth > 30:
             errors.add(
-                "Too many recursions with group '{0!s}'".format(group.name)
+                u"Too many recursions with group '{0!s}'".format(group.name)
             )
             return None, errors
 
@@ -787,7 +787,7 @@ class Entry:
                     if gp is not None:
                         children.append(gp)
                 else:
-                    errors.add("Group '{0!s}' cannot be in group '{1!s}' (internal/external mix).".format(
+                    errors.add(u"Group '{0!s}' cannot be in group '{1!s}' (internal/external mix).".format(
                         tree_item.name, group.name
                     ))
             elif self._layer_included(tree_item, version):
@@ -806,14 +806,14 @@ class Entry:
                         errors |= l_errors
                         if l is not None:
                             if depth < min_levels:
-                                errors.add("The Layer '{0!s}' is under indented ({1:d}/{2:d}).".format(
+                                errors.add(u"The Layer '{0!s}' is under indented ({1:d}/{2:d}).".format(
                                     path + "/" + tree_item.name, depth, min_levels
                                 ))
                             else:
                                 children.append(l)
                     else:
                         errors.add(
-                            "Layer '{0!s}' cannot be in the group '{1!s}' (internal/external mix).".format(
+                            u"Layer '{0!s}' cannot be in the group '{1!s}' (internal/external mix).".format(
                                 tree_item.name, group.name
                             )
                         )
@@ -839,7 +839,7 @@ class Entry:
                     for name, nb in Counter(layers_name).items():
                         if nb > 1:
                             errors.add(
-                                "The GeoMapFish layer name '{}', cannot be two times "
+                                u"The GeoMapFish layer name '{}', cannot be two times "
                                 "in the same block (first level group).".format(name)
                             )
 
@@ -909,7 +909,7 @@ class Entry:
         export_themes = []
         for theme in themes.all():
             if re.search("[/?#]", theme.name):
-                errors.add("The theme has an unsupported name '{}'.".format(theme.name))
+                errors.add(u"The theme has an unsupported name '{}'.".format(theme.name))
                 continue
 
             children, children_errors = self._get_children(
@@ -967,7 +967,7 @@ class Entry:
         for item in theme.children:
             if type(item) == LayerGroup:
                 gp, gp_errors = self._group(
-                    "{0!s}/{1!s}".format(theme.name, item.name),
+                    u"{0!s}/{1!s}".format(theme.name, item.name),
                     item, layers,
                     role_id=role_id, version=version, catalogue=catalogue,
                     min_levels=min_levels
@@ -977,7 +977,7 @@ class Entry:
                     children.append(gp)
             elif self._layer_included(item, version):
                 if min_levels > 0:
-                    errors.add("The Layer '{0!s}' cannot be directly in the theme '{1!s}' (0/{2:d}).".format(
+                    errors.add(u"The Layer '{0!s}' cannot be directly in the theme '{1!s}' (0/{2:d}).".format(
                         item.name, theme.name, min_levels
                     ))
                 elif item.name in layers:
@@ -993,7 +993,7 @@ class Entry:
         errors = set()
         ogc_server = self.default_ogc_server
         url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
+            u"The OGC server '{}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,
             self.request, errors=errors,
         )
@@ -1009,7 +1009,7 @@ class Entry:
         errors = set()
         ogc_server = self.external_ogc_server
         url = get_url2(
-            "The OGC server '{}'".format(ogc_server.name),
+            u"The OGC server '{}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,
             self.request, errors=errors,
         )
@@ -1043,7 +1043,7 @@ class Entry:
         }
         wfsgc_url = add_url_params(wfs_url, params)
 
-        log.info("WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
+        log.info(u"WFS GetCapabilities for base url: {0!s}".format(wfsgc_url))
 
         # forward request to target (without Host Header)
         http = httplib2.Http()
@@ -1053,11 +1053,11 @@ class Entry:
         try:
             resp, get_capabilities_xml = http.request(wfsgc_url, method="GET", headers=h)
         except:  # pragma: no cover
-            errors.add("Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
+            errors.add(u"Unable to GetCapabilities from url {0!s}".format(wfsgc_url))
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:  # pragma: no cover
-            errors.add("GetCapabilities from url {0!s} return the error: {1:d} {2!s}".format(
+            errors.add(u"GetCapabilities from url {0!s} return the error: {1:d} {2!s}".format(
                 wfsgc_url, resp.status, resp.reason
             ))
             return None, errors
@@ -1077,7 +1077,7 @@ class Entry:
                         name_value = name_value.split(":")[1]
                     featuretypes.append(name_value)
                 else:  # pragma nocover
-                    log.warn("Feature type without name: {0!s}".format(featureType.toxml()))
+                    log.warn(u"Feature type without name: {0!s}".format(featureType.toxml()))
             return featuretypes, errors
         except:  # pragma: no cover
             return get_capabilities_xml, errors
@@ -1121,12 +1121,12 @@ class Entry:
             resp, content = http.request(ext_url, method="GET", headers=h)
         except:
             errors.add(
-                "Unable to get external themes from url {0!s}".format(ext_url)
+                u"Unable to get external themes from url {0!s}".format(ext_url)
             )
             return None, errors
 
         if resp.status < 200 or resp.status >= 300:
-            errors.add("Get external themes from url {0!s} return the error: {1:d} {2!s}".format(
+            errors.add(u"Get external themes from url {0!s} return the error: {1:d} {2!s}".format(
                 ext_url, resp.status, resp.reason
             ))
             return None, errors
@@ -1278,7 +1278,7 @@ class Entry:
                 "label": t,
             } for t in wfs_types]
         else:  # pragma: no cover
-            log.error("Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
+            log.error(u"Error while getting the WFS params: \n{}".format("\n".join(add_errors)))
             vars["wfs_types"] = []
 
         return vars
@@ -1441,7 +1441,7 @@ class Entry:
                 role_id=role_id, version=version
             )
         except NoResultFound:  # pragma: no cover
-            return None, set(["Unable to find the Group named: {}, Available Groups: {}".format(
+            return None, set([u"Unable to find the Group named: {}, Available Groups: {}".format(
                 group, ", ".join([i[0] for i in DBSession.query(LayerGroup.name).all()])
             )])
 
@@ -1479,7 +1479,7 @@ class Entry:
         user = self.request.registry.validate_user(self.request, login, password)
         if user is not None:
             headers = remember(self.request, user)
-            log.info("User '{0!s}' logged in.".format(login))
+            log.info(u"User '{0!s}' logged in.".format(login))
 
             came_from = self.request.params.get("came_from")
             if came_from:
@@ -1493,7 +1493,7 @@ class Entry:
                     )), headers=headers),
                 )
         else:
-            log.info("bad credentials for login '{0!s}'.".format(login))
+            log.info(u"bad credentials for login '{0!s}'.".format(login))
             raise HTTPBadRequest("See server logs for details")
 
     @view_config(route_name="logout")
@@ -1506,7 +1506,7 @@ class Entry:
             log.info("Logout on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
-        log.info("User '{0!s}' ({1:d}) logging out.".format(
+        log.info(u"User '{0!s}' ({1:d}) logging out.".format(
             self.request.user.username,
             self.request.user.id
         ))
@@ -1546,26 +1546,26 @@ class Entry:
         new_password_confirm = self.request.POST.get("confirmNewPassword")
         if new_password is None or new_password_confirm is None or old_password is None:
             log.info(
-                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
+                u"'oldPassword', 'newPassword' and 'confirmNewPassword' should be "
                 "available in request params."
             )
             raise HTTPBadRequest("See server logs for details")
 
         # check if logged in
         if not self.request.user:  # pragma nocover
-            log.info("Change password on non login user.")
+            log.info(u"Change password on non login user.")
             raise HTTPBadRequest("See server logs for details")
 
         user = self.request.registry.validate_user(
             self.request, self.request.user.username, old_password
         )
         if user is None:
-            log.info("The old password is wrong for user '{0!s}'.".format(user))
+            log.info(u"The old password is wrong for user '{0!s}'.".format(user))
             raise HTTPBadRequest("See server logs for details")
 
         if new_password != new_password_confirm:
             log.info(
-                "The new password and the new password "
+                u"The new password and the new password "
                 "confirmation do not match for user '%s'." % user
             )
             raise HTTPBadRequest("See server logs for details")
@@ -1574,7 +1574,7 @@ class Entry:
         u._set_password(new_password)
         u.is_password_changed = True
         DBSession.flush()
-        log.info("Password changed for user '{0!s}'".format(self.request.user.username))
+        log.info(u"Password changed for user '{0!s}'".format(self.request.user.username))
 
         return {
             "success": "true"
@@ -1596,12 +1596,12 @@ class Entry:
         try:
             user = DBSession.query(User).filter(User.username == username).one()
         except NoResultFound:  # pragma: no cover
-            return None, None, None, "The login '{0!s}' does not exist.".format(username)
+            return None, None, None, u"The login '{0!s}' does not exist.".format(username)
 
         if user.email is None or user.email == "":  # pragma: no cover
             return \
                 None, None, None, \
-                "The user '{0!s}' has no registered email address.".format(user.username),
+                u"The user '{0!s}' has no registered email address.".format(user.username),
 
         password = self.generate_password()
         user.set_temp_password(password)
