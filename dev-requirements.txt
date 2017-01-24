@@ -6,7 +6,7 @@ coveralls==1.1
 alembic==0.8.10
 flake8==3.2.1
 flake8-copyright==0.2.0
-mccabe==0.5.3
+mccabe==0.6.0
 nose==1.3.7
 nosexcover==1.0.11
 pep8-naming==0.4.1
