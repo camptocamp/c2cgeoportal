@@ -13,7 +13,7 @@ httplib2==0.9.2
 ipcalc==1.99.0
 isodate==0.5.4
 Jinja2==2.9.4
-lingua==4.12
+lingua==4.13
 Mako==1.0.6
 Markdown==2.6.7
 MarkupSafe==0.23
@@ -33,7 +33,7 @@ pyramid_closure==1.1.0
 python-dateutil==2.6.0
 pytz==2016.10
 repoze.lru==0.6
-requests==2.12.5
+requests==2.13.0
 simplejson==3.10.0
 six==1.10.0
 SQLAHelper==1.0
