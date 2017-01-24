@@ -192,6 +192,7 @@ def layer_v1tov2(session, layer):
     new_layer.public = layer.public
     new_layer.geo_table = layer.geo_table
     new_layer.interfaces = layer.interfaces
+    new_layer.restrictionareas = layer.restrictionareas
 
     if layer.layer_type[-4:] == " WMS":
         new_layer.layer = layer.layer
