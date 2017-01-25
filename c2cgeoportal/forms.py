@@ -96,7 +96,7 @@ def get_fanstatic_resources(request):  # pragma: no cover
     olimgpath = request.static_url("c2cgeoportal:static/lib/openlayers/img/")
 
     def olimgpath_renderer(url):
-        return '<script>OpenLayers.ImgPath="{0!s}";</script>'.format(olimgpath)
+        return u'<script>OpenLayers.ImgPath="{0!s}";</script>'.format(olimgpath)
     if olimgpath_js is None:
         olimgpath_js = Resource(
             fanstatic_lib,
@@ -204,13 +204,13 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         return ""
 
     def render(self, options, **kwargs):
-        opt = ""
+        opt = u""
         if self.auto_collapsed:
-            opt += '"initializeUnchecked": "collapsed"'
+            opt += u'"initializeUnchecked": "collapsed"'
         if self.auto_collapsed and not self.auto_check:
-            opt += ","
+            opt += u","
         if not self.auto_check:
-            opt += """'onCheck': {
+            opt += u"""'onCheck': {
                 'others': false,
                 'descendants': false,
                 'ancestors': false },
@@ -218,7 +218,7 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
                 'others': false,
                 'descendants': false,
                 'ancestors': false }"""
-        result = """<script lang="text/javascript" >
+        result = u"""<script lang="text/javascript" >
             $(document).ready(function(){{
                 $("#{id!s}").checkboxTree({{{opt!s}}});
             }});
@@ -226,7 +226,7 @@ class CheckBoxTreeSet(CheckBoxSet):  # pragma: no cover
         <ul id="{id!s}" class="checkboxtree">
         """.format(id=self.dom_id, opt=opt)
         result += self.render_tree()
-        result += "</ul>"
+        result += u"</ul>"
         return result
 
 
@@ -244,26 +244,26 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         if (depth >= 5):
             return ""
 
-        result = ""
+        result = u""
         if isinstance(item, models.TreeGroup):
-            result += "<ul>"
+            result += u"<ul>"
             for child in item.children_relation:
                 result += self.render_item(child, depth + 1)
-            result += "</ul>"
+            result += u"</ul>"
         return result
 
     def render_organisational_item(self, item, depth):
         if item in self.layer_group:
             self.layer_group.remove(item)
 
-        result = "<li>"
+        result = u"<li>"
         if self.auto_check:
-            result += '<input type="checkbox"></input>'
-        result += "<label>{label!s}</label>".format(
+            result += u'<input type="checkbox"></input>'
+        result += u"<label>{label!s}</label>".format(
             label=item.name,
         )
         result += self.render_children(item, depth)
-        result += "</li>"
+        result += u"</li>"
         return result
 
     def is_checked(self, item, final_item):
@@ -314,7 +314,7 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         self._rendered_id.append(final_item.id)
         self.i += 1
         result += self.render_children(final_item, depth)
-        result += "</li>"
+        result += u"</li>"
         return result
 
     def render_tree(self):
@@ -325,25 +325,25 @@ class SimpleLayerCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         themes = models.DBSession.query(models.Theme). \
             order_by(models.Theme.ordering).all()
         self.i = 0
-        result = ""
+        result = u""
         for item in themes:
             result += self.render_item(item, 1)
 
         # add unlinked layers
         if len(self.layer) >= 0 or len(self.layer_group) > 0:
-            result += "<li>"
+            result += u"<li>"
             if self.auto_check:
-                result += '<input type="checkbox"></input>'
-            result += "<label>{name!s}</label>".format(name=_("Unlinked layers"))
-            result += "<ul>"
+                result += u'<input type="checkbox"></input>'
+            result += u"<label>{name!s}</label>".format(name=_("Unlinked layers"))
+            result += u"<ul>"
 
             while len(self.layer_group) > 0:
                 result += self.render_item(self.layer_group.pop(0), 2)
             while len(self.layer) > 0:
                 result += self.render_item(self.layer.pop(0), 2)
 
-            result += "</ul>"
-            result += "</li>"
+            result += u"</ul>"
+            result += u"</li>"
         return result
 
 
@@ -378,29 +378,29 @@ class FunctionalityCheckBoxTreeSet(CheckBoxTreeSet):  # pragma: no cover
         for functionality in functionalities:
             if prev_name != functionality.name:
                 if prev_name != u"":
-                    result += "</ul></li>\n"
+                    result += u"</ul></li>\n"
                 prev_name = functionality.name
                 result += \
-                    '<li><input type="checkbox" style="display:none"></input>' \
+                    u'<li><input type="checkbox" style="display:none"></input>' \
                     '<label>%s</label><ul>\n' % (functionality.name)
             result += \
-                '<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
+                u'<li><input type="checkbox" id="%s" name="%s" value="%i"%s>' \
                 '</input><label>%s</label></li>\n' % (
                     "{0!s}_{1:d}".format(self.name, i),
                     self.name,
                     functionality.id,
-                    ' checked="checked"' if self._is_checked(functionality.id) else "",
+                    u' checked="checked"' if self._is_checked(functionality.id) else "",
                     functionality.value)
             i += 1
-        result += "</ul></li>"
+        result += u"</ul></li>"
         return result
 
 
 class RoListRenderer(FieldRenderer):  # pragma: no cover
     def render_readonly(self, **kwargs):
-        return helpers.content_tag("span", ("," + helpers.tag("br")).join([
+        return helpers.content_tag(u"span", ("," + helpers.tag("br")).join([
             helpers.literal(value) for value in self.raw_value
-        ]), style="white-space: nowrap;")
+        ]), style=u"white-space: nowrap;")
 
 
 ##############################################################################

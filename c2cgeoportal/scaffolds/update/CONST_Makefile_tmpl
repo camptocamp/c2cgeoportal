@@ -50,6 +50,7 @@ export DEVELOPMENT
 LANGUAGES ?= en fr de
 NGEO_INTERFACES ?= desktop mobile
 CGXP_INTERFACES ?=
+CGXP_API ?= TRUE
 INTERFACES += $(NGEO_INTERFACES) $(CGXP_INTERFACES)
 export INTERFACES
 # Used print version
@@ -79,8 +80,12 @@ C2CCSSMIN_VERSION ?= $(shell grep ^c2c.cssmin== CONST_optional-requirements.txt 
 
 GIT_MODULES_FOLDER ?= .git/modules/
 
-ifneq ($(CGXP_INTERFACES), "")
+ifdef CGXP_INTERFACES
 DEFAULT_WEB_RULE += build-cgxp
+else
+ifeq ($(CGXP_API), TRUE)
+DEFAULT_WEB_RULE += build-cgxp
+endif
 endif
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += build-ngeo
