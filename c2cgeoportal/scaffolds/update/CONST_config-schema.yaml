@@ -144,7 +144,7 @@ mapping:
                                 mapping:
                                     .+:
                                         type: any
-                            regex;.+:
+                            regex;(.+):
                                 type: map
                                 mapping:
                                     defaults: *free_dict
@@ -154,7 +154,7 @@ mapping:
                                         type: map
                                         required: True
                                         mapping:
-                                            regex;.+:
+                                            regex;(.+):
                                                 type: map
                                                 mapping:
                                                     table:
@@ -230,7 +230,7 @@ mapping:
                         type: map
                         required: True
                         mapping:
-                            regex;[0-9][0-9]:
+                            regex;([0-9][0-9]):
                                 type: str
             reset_password:
                 type: map
@@ -346,13 +346,13 @@ mapping:
                         type: map
                         required: True
                         mapping:
-                            regex;[a-z]+:
+                            regex;([a-z]+):
                                 type: map
                                 mapping:
                                     params:
                                         type: map
                                         mapping:
-                                            regex;[a-z]+:
+                                            regex;([a-z]+):
                                                 type: str
             check_collector:
                 type: map
@@ -367,7 +367,7 @@ mapping:
                         type: map
                         required: True
                         mapping:
-                            regex;[a-z]+:
+                            regex;([a-z]+):
                                 type: seq
                                 sequence:
                                 -   type: map
@@ -393,5 +393,5 @@ mapping:
                                 type:
                                     type: str
                                     required: True
-            regex;.+:
+            regex;(.+):
                 type: any
